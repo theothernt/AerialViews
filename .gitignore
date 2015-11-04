@@ -1,0 +1,11 @@
+*.keystore
+
+# Android Studio
+.gradle
+/local.properties
+.DS_Store
+build
+.idea
+*.iml
+*.apk
+publish/

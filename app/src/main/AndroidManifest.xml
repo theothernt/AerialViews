@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.codingbuffalo.aerialdream"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<uses-permission android:name="android.permission.INTERNET"/>
+	
+	<application
+		android:allowBackup="true"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/daydream_name"
+		android:supportsRtl="true"
+		android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+		
+		<service
+			android:name=".AerialDream"
+			android:exported="true"
+			android:label="@string/daydream_name"
+			android:permission="android.permission.BIND_DREAM_SERVICE">
+			<intent-filter>
+				<action android:name="android.service.dreams.DreamService" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</service>
+	</application>
+
+</manifest>
