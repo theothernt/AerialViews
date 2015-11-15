@@ -35,8 +35,7 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 	private Surface        mSurface;
 	private PlayerListener mPlayerListener;
 	
-	private TextureView mTextureView;
-	private TextView    mDescriptionView;
+	private TextView mDescriptionView;
 	
 	public SimplePlayer(Context context) {
 		super(context);
@@ -61,20 +60,20 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 		
 		LayoutInflater.from(getContext()).inflate(R.layout.simple_player, this, true);
 		
-		mTextureView = (TextureView) findViewById(R.id.texture);
+		TextureView textureView = (TextureView) findViewById(R.id.texture);
 		mDescriptionView = (TextView) findViewById(R.id.description);
 		
 		mPlayer = ExoPlayer.Factory.newInstance(1);
 		mPlayer.addListener(this);
 		
-		mTextureView.setSurfaceTextureListener(this);
+		textureView.setSurfaceTextureListener(this);
 	}
 	
 	public void setPlayerListener(PlayerListener playerListener) {
 		mPlayerListener = playerListener;
 	}
 	
-	public void load(Context context, AerialVideo video) {
+	public void load(AerialVideo video) {
 		if (mSurface == null) {
 			throw new IllegalStateException("Player not ready");
 		}
@@ -82,10 +81,10 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 		Handler handler = new Handler();
 		
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter(handler, null);
-		DataSource dataSource = new DefaultUriDataSource(context, bandwidthMeter, "AerialDream");
+		DataSource dataSource = new DefaultUriDataSource(getContext(), bandwidthMeter, "AerialDream");
 		Allocator allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
 		ExtractorSampleSource sampleSource = new ExtractorSampleSource(Uri.parse(video.getUrl()), dataSource, allocator, BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
-		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(context, sampleSource, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
+		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(getContext(), sampleSource, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
 		
 		mPlayer.seekTo(0);
 		mPlayer.prepare(videoRenderer);
@@ -158,7 +157,7 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 	/* ExoPlayerListener */
 	@Override
 	public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-		Log.d("aaa", "State: " + playbackState + " duration: " + mPlayer.getDuration()) ;
+		Log.d("aaa", "State: " + playbackState + " duration: " + mPlayer.getDuration());
 		
 		if (mPlayerListener == null) {
 			return;

@@ -152,7 +152,7 @@ public class AerialView extends PercentRelativeLayout implements Callback<List<A
 	private void loadNextVideo(SimplePlayer player) {
 		AerialVideo video = mAerialVideos.get(mRandom.nextInt(mAerialVideos.size()));
 		
-		player.load(getContext(), video);
+		player.load(video);
 	}
 	
 	private Runnable mSwitcher = new Runnable() {
