@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout android:id="@+id/container"
+	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	
@@ -21,26 +21,17 @@
 		app:layout_aspectRatio="178%"
 		app:layout_widthPercent="100%"/>
 	
-	<FrameLayout
+	<TextView
 		android:id="@+id/loading"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-		
-		<ImageView
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:src="@drawable/background"/>
-		
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center"
-			android:shadowColor="#000"
-			android:shadowRadius="2"
-			android:text="Loading Aerial…"
-			android:textColor="#fff"
-			android:textSize="30sp"/>
-	
-	</FrameLayout>
-	
+		android:layout_height="match_parent"
+		android:gravity="bottom|end"
+		android:padding="40dp"
+		android:background="#000"
+		android:shadowColor="#000"
+		android:shadowRadius="2"
+		android:text="@string/loading_aerial"
+		android:textColor="#fff"
+		android:textSize="30sp"/>
+
 </android.support.percent.PercentRelativeLayout>
