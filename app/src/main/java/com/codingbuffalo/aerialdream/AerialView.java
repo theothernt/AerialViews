@@ -21,7 +21,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class AerialView extends PercentRelativeLayout implements Callback<List<AerialVideo>>, SimplePlayer.PlayerListener {
-	private static final int FADE_DURATION = 3000;
+	private static final int FADE_DURATION = 5000;
 	
 	private List<AerialVideo> mAerialVideos;
 	private Random            mRandom;
