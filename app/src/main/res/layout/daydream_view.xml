@@ -28,8 +28,6 @@
 		android:gravity="bottom|end"
 		android:padding="40dp"
 		android:background="#000"
-		android:shadowColor="#000"
-		android:shadowRadius="2"
 		android:text="@string/loading_aerial"
 		android:textColor="#fff"
 		android:textSize="30sp"/>

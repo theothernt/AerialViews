@@ -50,7 +50,7 @@ public class AerialView extends PercentRelativeLayout implements Callback<List<A
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		
-		View view = LayoutInflater.from(getContext()).inflate(R.layout.daydream_view, this, true);
+		LayoutInflater.from(getContext()).inflate(R.layout.daydream_view, this, true);
 		
 		mContainer = (PercentRelativeLayout) findViewById(R.id.container);
 		mLoadingView = findViewById(R.id.loading);
@@ -152,7 +152,7 @@ public class AerialView extends PercentRelativeLayout implements Callback<List<A
 	private void loadNextVideo(SimplePlayer player) {
 		AerialVideo video = mAerialVideos.get(mRandom.nextInt(mAerialVideos.size()));
 		
-		player.load(getContext(), video.getUrl());
+		player.load(getContext(), video);
 	}
 	
 	private Runnable mSwitcher = new Runnable() {

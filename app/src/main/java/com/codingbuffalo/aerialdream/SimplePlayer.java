@@ -9,9 +9,13 @@ import android.os.Build;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.codingbuffalo.aerialdream.service.AerialVideo;
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
 import com.google.android.exoplayer.MediaCodecTrackRenderer;
@@ -23,13 +27,16 @@ import com.google.android.exoplayer.upstream.DefaultAllocator;
 import com.google.android.exoplayer.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer.upstream.DefaultUriDataSource;
 
-public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRenderer.EventListener, TextureView.SurfaceTextureListener, ExoPlayer.Listener {
+public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrackRenderer.EventListener, TextureView.SurfaceTextureListener, ExoPlayer.Listener {
 	private static final int BUFFER_SEGMENT_SIZE  = 64 * 1024;
 	private static final int BUFFER_SEGMENT_COUNT = 256;
 	
 	private ExoPlayer      mPlayer;
 	private Surface        mSurface;
 	private PlayerListener mPlayerListener;
+	
+	private TextureView mTextureView;
+	private TextView    mDescriptionView;
 	
 	public SimplePlayer(Context context) {
 		super(context);
@@ -52,17 +59,22 @@ public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRen
 	protected void onFinishInflate() {
 		super.onFinishInflate();
 		
+		LayoutInflater.from(getContext()).inflate(R.layout.simple_player, this, true);
+		
+		mTextureView = (TextureView) findViewById(R.id.texture);
+		mDescriptionView = (TextView) findViewById(R.id.description);
+		
 		mPlayer = ExoPlayer.Factory.newInstance(1);
 		mPlayer.addListener(this);
 		
-		setSurfaceTextureListener(this);
+		mTextureView.setSurfaceTextureListener(this);
 	}
 	
 	public void setPlayerListener(PlayerListener playerListener) {
 		mPlayerListener = playerListener;
 	}
 	
-	public void load(Context context, String url) {
+	public void load(Context context, AerialVideo video) {
 		if (mSurface == null) {
 			throw new IllegalStateException("Player not ready");
 		}
@@ -72,14 +84,16 @@ public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRen
 		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter(handler, null);
 		DataSource dataSource = new DefaultUriDataSource(context, bandwidthMeter, "AerialDream");
 		Allocator allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
-		ExtractorSampleSource sampleSource = new ExtractorSampleSource(Uri.parse(url), dataSource, allocator, BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
+		ExtractorSampleSource sampleSource = new ExtractorSampleSource(Uri.parse(video.getUrl()), dataSource, allocator, BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
 		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(context, sampleSource, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
 		
 		mPlayer.seekTo(0);
 		mPlayer.prepare(videoRenderer);
+		mPlayer.setPlayWhenReady(false);
 		mPlayer.sendMessage(videoRenderer, MediaCodecVideoTrackRenderer.MSG_SET_SURFACE, mSurface);
 		
-		mPlayer.setPlayWhenReady(false);
+		// Set video description
+		mDescriptionView.setText(video.getLocation());
 	}
 	
 	public void play() {
