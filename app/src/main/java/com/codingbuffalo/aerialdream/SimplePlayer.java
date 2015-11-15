@@ -2,11 +2,13 @@ package com.codingbuffalo.aerialdream;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.SurfaceTexture;
 import android.media.MediaCodec;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +37,7 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 	private Surface        mSurface;
 	private PlayerListener mPlayerListener;
 	
-	private TextView mDescriptionView;
+	private TextView mLocationView;
 	
 	public SimplePlayer(Context context) {
 		super(context);
@@ -60,8 +62,15 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 		
 		LayoutInflater.from(getContext()).inflate(R.layout.simple_player, this, true);
 		
+		// Load preferences
+		SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+		boolean showLocation = preferences.getBoolean("show_location", true);
+		
+		// Configure views
 		TextureView textureView = (TextureView) findViewById(R.id.texture);
-		mDescriptionView = (TextView) findViewById(R.id.description);
+		mLocationView = (TextView) findViewById(R.id.location);
+		
+		mLocationView.setVisibility(showLocation ? VISIBLE : GONE);
 		
 		mPlayer = ExoPlayer.Factory.newInstance(1);
 		mPlayer.addListener(this);
@@ -92,7 +101,7 @@ public class SimplePlayer extends RelativeLayout implements MediaCodecVideoTrack
 		mPlayer.sendMessage(videoRenderer, MediaCodecVideoTrackRenderer.MSG_SET_SURFACE, mSurface);
 		
 		// Set video description
-		mDescriptionView.setText(video.getLocation());
+		mLocationView.setText(video.getLocation());
 	}
 	
 	public void play() {

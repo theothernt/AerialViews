@@ -30,6 +30,8 @@
 			<!--</intent-filter>-->
 		<!--</activity>-->
 		
+		<activity android:name=".SettingsActivity"/>
+		
 		<service
 			android:name=".AerialDream"
 			android:exported="true"
@@ -39,7 +41,12 @@
 				<action android:name="android.service.dreams.DreamService"/>
 				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
+			
+			<meta-data
+				android:name="android.service.dream"
+				android:resource="@xml/aerial_dream"/>
 		</service>
+	
 	</application>
 
 </manifest>
