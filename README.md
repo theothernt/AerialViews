@@ -15,3 +15,5 @@ How to set Aerial Dream as your screensaver:
 - Select Display
 - Select Daydream
 - Select Aerial Dream
+ 
+[![Build Status](https://travis-ci.org/cachapa/AerialDream.svg?branch=master)](https://travis-ci.org/cachapa/AerialDream)
