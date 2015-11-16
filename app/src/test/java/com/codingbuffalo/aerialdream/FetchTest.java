@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-public class ExampleUnitTest {
+public class FetchTest {
 	@Test
 	public void fetchVideos() throws Exception {
 		List<AerialVideo> videos = VideoService.fetchVideos();
