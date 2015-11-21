@@ -5,7 +5,7 @@ android:
     # use the latest revision of Android SDK Tools
   - platform-tools
   - android-23
-  - build-tools-23.0.1
+  - build-tools-23.0.2
   - extra
   
 script:
