@@ -8,8 +8,8 @@ android {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
     }
     
     buildTypes {
