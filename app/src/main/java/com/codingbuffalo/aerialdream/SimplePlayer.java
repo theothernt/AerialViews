@@ -22,8 +22,7 @@ import com.google.android.exoplayer.extractor.ExtractorSampleSource;
 import com.google.android.exoplayer.upstream.Allocator;
 import com.google.android.exoplayer.upstream.DataSource;
 import com.google.android.exoplayer.upstream.DefaultAllocator;
-import com.google.android.exoplayer.upstream.DefaultBandwidthMeter;
-import com.google.android.exoplayer.upstream.DefaultUriDataSource;
+import com.google.android.exoplayer.upstream.FileDataSource;
 
 public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRenderer.EventListener, TextureView.SurfaceTextureListener, ExoPlayer.Listener {
 	private static final int BUFFER_SEGMENT_SIZE  = 64 * 1024;
@@ -77,8 +76,7 @@ public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRen
 		
 		Handler handler = new Handler();
 		
-		DefaultBandwidthMeter bandwidthMeter = new DefaultBandwidthMeter(handler, null);
-		DataSource dataSource = new DefaultUriDataSource(getContext(), bandwidthMeter, "AerialDream");
+		DataSource dataSource = new FileDataSource();
 		Allocator allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
 		ExtractorSampleSource sampleSource = new ExtractorSampleSource(uri, dataSource, allocator, BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
 		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(getContext(), sampleSource, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
@@ -87,9 +85,6 @@ public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRen
 		mPlayer.prepare(videoRenderer);
 		mPlayer.setPlayWhenReady(false);
 		mPlayer.sendMessage(videoRenderer, MediaCodecVideoTrackRenderer.MSG_SET_SURFACE, mSurface);
-		
-		// Set video description
-		mLocationView.setText(video.getLocation());
 	}
 	
 	public void play() {

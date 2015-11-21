@@ -1,6 +1,7 @@
 package com.codingbuffalo.aerialdream;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.percent.PercentRelativeLayout;
 import android.util.AttributeSet;
@@ -12,20 +13,24 @@ import android.widget.Toast;
 
 import com.codingbuffalo.aerialdream.service.AerialVideo;
 import com.codingbuffalo.aerialdream.service.VideoService;
+import com.codingbuffalo.aerialdream.util.DownloadManager;
+import com.codingbuffalo.aerialdream.util.SimpleCallback;
 
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class AerialView extends PercentRelativeLayout implements Callback<List<AerialVideo>>, SimplePlayer.PlayerListener {
+public class AerialView extends PercentRelativeLayout implements retrofit.Callback<List<AerialVideo>>, SimplePlayer.PlayerListener {
 	private static final int FADE_DURATION = 5000;
 	
 	private List<AerialVideo> mAerialVideos;
 	private Random            mRandom;
 	private Handler           mHandler;
+	private DownloadManager   mDownloadManager;
+	private String            mVideoCachePath;
 	private boolean           mPlayerReady;
 	
 	private PercentRelativeLayout mContainer;
@@ -61,7 +66,10 @@ public class AerialView extends PercentRelativeLayout implements Callback<List<A
 		
 		mRandom = new Random(System.currentTimeMillis());
 		mHandler = new Handler();
+		mDownloadManager = new DownloadManager(1);
 		mPlayerReady = false;
+		
+		mVideoCachePath = getContext().getExternalCacheDir().getPath() + "/videos";
 		
 		VideoService.fetchVideos(this);
 	}
@@ -149,10 +157,24 @@ public class AerialView extends PercentRelativeLayout implements Callback<List<A
 		mHandler.postDelayed(mSwitcher, mActivePlayer.getDuration() - FADE_DURATION);
 	}
 	
-	private void loadNextVideo(SimplePlayer player) {
-		AerialVideo video = mAerialVideos.get(mRandom.nextInt(mAerialVideos.size()));
+	private void loadNextVideo(final SimplePlayer player) {
+		final AerialVideo video = mAerialVideos.get(mRandom.nextInt(mAerialVideos.size()));
 		
-		player.load(video);
+		// Get video filename
+		String url = video.getUrl();
+		String filename = url.substring(url.lastIndexOf('/') + 1);
+		
+		String localPath = mVideoCachePath + "/" + filename;
+		if (new File(localPath).exists()) {
+			player.load(Uri.parse(localPath));
+		} else {
+			mDownloadManager.download(video.getUrl(), mVideoCachePath, new SimpleCallback() {
+				@Override
+				public void onDownloadComplete(File file) {
+					player.load(Uri.parse(file.toString()));
+				}
+			});
+		}
 	}
 	
 	private Runnable mSwitcher = new Runnable() {
