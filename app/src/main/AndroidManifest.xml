@@ -42,9 +42,9 @@
 				<category android:name="android.intent.category.DEFAULT"/>
 			</intent-filter>
 			
-			<meta-data
-				android:name="android.service.dream"
-				android:resource="@xml/aerial_dream"/>
+			<!--<meta-data-->
+				<!--android:name="android.service.dream"-->
+				<!--android:resource="@xml/aerial_dream"/>-->
 		</service>
 	
 	</application>
