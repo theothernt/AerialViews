@@ -30,7 +30,7 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.retrofit:converter-jackson:1.9.0'
 
-    compile 'com.google.android.exoplayer:exoplayer:r1.5.2'
+    compile 'com.google.android.exoplayer:exoplayer:r1.5.4'
     
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:percent:23.1.1'

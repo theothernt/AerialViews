@@ -16,6 +16,7 @@ import android.view.TextureView;
 
 import com.google.android.exoplayer.ExoPlaybackException;
 import com.google.android.exoplayer.ExoPlayer;
+import com.google.android.exoplayer.MediaCodecSelector;
 import com.google.android.exoplayer.MediaCodecTrackRenderer;
 import com.google.android.exoplayer.MediaCodecVideoTrackRenderer;
 import com.google.android.exoplayer.extractor.ExtractorSampleSource;
@@ -79,7 +80,7 @@ public class SimplePlayer extends TextureView implements MediaCodecVideoTrackRen
 		DataSource dataSource = new FileDataSource();
 		Allocator allocator = new DefaultAllocator(BUFFER_SEGMENT_SIZE);
 		ExtractorSampleSource sampleSource = new ExtractorSampleSource(uri, dataSource, allocator, BUFFER_SEGMENT_COUNT * BUFFER_SEGMENT_SIZE);
-		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(getContext(), sampleSource, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
+		MediaCodecVideoTrackRenderer videoRenderer = new MediaCodecVideoTrackRenderer(getContext(), sampleSource, MediaCodecSelector.DEFAULT, MediaCodec.VIDEO_SCALING_MODE_SCALE_TO_FIT, 5000, handler, this, 50);
 		
 		mPlayer.seekTo(0);
 		mPlayer.prepare(videoRenderer);
