@@ -7,6 +7,9 @@ android:
   - android-23
   - build-tools-23.0.2
   - extra
+  
+  licenses:
+    - '.+'
 
 script:
   - ./gradlew clean build
