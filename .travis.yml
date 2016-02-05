@@ -1,12 +1,12 @@
 language: android
+
 android:
   components:
-    # Uncomment the lines below if you want to
-    # use the latest revision of Android SDK Tools
+  - tools
   - platform-tools
   - android-23
   - build-tools-23.0.2
   - extra
-  
+
 script:
   - ./gradlew clean build
