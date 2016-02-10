@@ -1,5 +1,9 @@
 # AerialDream
 
+[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)
+[![Build Status](https://travis-ci.org/cachapa/AerialDream.svg?branch=master)](https://travis-ci.org/cachapa/AerialDream) 
+[![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/cachapa/AerialDream/master/LICENSE)
+
 A Daydream (or screensaver) for Android inspired on Apple TV's Aerial screensaver.
 
 Currently the displayed videos are the exact same used by the newest Apple TVs.
@@ -10,10 +14,8 @@ If you have reason to believe otherwise please let me know.
 
 In short: if you work for Apple please contact me before releasing the Kraken.
 
-How to set Aerial Dream as your screensaver:
+## Set-up
 - Go into the System Preferences
 - Select Display
 - Select Daydream
 - Select Aerial Dream
- 
-[![Build Status](https://travis-ci.org/cachapa/AerialDream.svg?branch=master)](https://travis-ci.org/cachapa/AerialDream)
