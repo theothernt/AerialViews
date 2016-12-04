@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<CheckBoxPreference
-		android:key="show_location"
-		android:title="@string/show_location"
-		android:defaultValue="true"/>
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="show_clock"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:title="@string/show_clock" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="show_location"
+        android:title="@string/show_location" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="filter_time"
+        android:summary="@string/filter_time_description"
+        android:title="@string/filter_time" />
+
 </PreferenceScreen>

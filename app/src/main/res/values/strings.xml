@@ -1,5 +1,9 @@
 <resources>
-	<string name="daydream_name">Aerial Dream</string>
-	<string name="loading_aerial">Loading Aerial…</string>
-	<string name="show_location">Show location</string>
+    <string name="daydream_name">Aerial Dream</string>
+    <string name="loading_aerial">Loading Aerial…</string>
+
+    <string name="show_clock">Show clock</string>
+    <string name="show_location">Show location</string>
+    <string name="filter_time">Filter videos by time</string>
+    <string name="filter_time_description">Show only daytime videos during the day and nighttime videos at night</string>
 </resources>

@@ -1,39 +1,31 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
-        targetSdkVersion 23
-        versionCode 4
-        versionName "0.4"
+        targetSdkVersion 25
+        versionCode 8
+        versionName "1.0"
     }
-    
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    
-    packagingOptions {
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/NOTICE'
+
+    dataBinding {
+        enabled = true
     }
 }
 
 dependencies {
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.retrofit:converter-jackson:1.9.0'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+    compile 'com.squareup.okhttp3:okhttp-ws:3.2.0'
 
-    compile 'com.google.android.exoplayer:exoplayer:r1.5.4'
-    
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:percent:23.1.1'
-    
+    compile 'com.google.android.exoplayer:exoplayer:r2.0.4'
+
+    compile 'com.android.support:leanback-v17:25.0.1'
+    compile 'com.android.support:preference-leanback-v17:25.0.1'
+
     testCompile 'junit:junit:4.12'
 }
