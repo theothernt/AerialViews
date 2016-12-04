@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.view.Surface;
 import android.view.TextureView;
 import android.widget.MediaController;
 
@@ -15,7 +14,6 @@ import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.decoder.DecoderCounters;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -139,7 +137,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     /* EventListener */
     @Override
     public void onLoadingChanged(boolean isLoading) {
-
     }
 
     @Override
@@ -152,7 +149,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
-
     }
 
     @Override
@@ -163,7 +159,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPositionDiscontinuity() {
-
     }
 
     @Override
@@ -173,13 +168,11 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     }
 
     @Override
-    public void onRenderedFirstFrame(Surface surface) {
-
+    public void onRenderedFirstFrame() {
     }
 
     @Override
-    public void onVideoDisabled(DecoderCounters counters) {
-
+    public void onVideoTracksDisabled() {
     }
 
     public interface OnPlayerEventListener {
