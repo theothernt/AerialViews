@@ -9,6 +9,8 @@ public class TestActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        setTitle(R.string.daydream_name);
 
         videoController = new VideoController(this);
         setContentView(videoController.getView());

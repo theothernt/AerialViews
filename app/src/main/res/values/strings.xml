@@ -4,6 +4,11 @@
 
     <string name="show_clock">Show clock</string>
     <string name="show_location">Show location</string>
+    <string name="show_progress">Show video progress</string>
+    <string name="show_progress_description">Only visible on TVs without overscan</string>
     <string name="filter_time">Filter videos by time</string>
     <string name="filter_time_description">Show only daytime videos during the day and nighttime videos at night</string>
+    <string name="cache">Cache videos</string>
+    <string name="cache_description">Please make sure you consistently have at least 10GB free space on your device</string>
+    <string name="test">Test</string>
 </resources>

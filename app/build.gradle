@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 8
-        versionName "1.0"
+        versionCode 9
+        versionName "1.1"
     }
 
     dataBinding {
@@ -22,10 +22,10 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
     compile 'com.squareup.okhttp3:okhttp-ws:3.2.0'
 
-    compile 'com.google.android.exoplayer:exoplayer:r2.0.4'
+    compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
 
-    compile 'com.android.support:leanback-v17:25.0.1'
-    compile 'com.android.support:preference-leanback-v17:25.0.1'
+    compile 'com.android.support:leanback-v17:25.1.1'
+    compile 'com.android.support:preference-leanback-v17:25.1.1'
 
     testCompile 'junit:junit:4.12'
 }

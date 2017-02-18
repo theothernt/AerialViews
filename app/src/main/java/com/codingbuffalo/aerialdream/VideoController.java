@@ -1,58 +1,52 @@
 package com.codingbuffalo.aerialdream;
 
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Toast;
 
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding;
+import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
 import com.google.android.exoplayer2.ExoPlaybackException;
 
 import java.util.Calendar;
-import java.util.TimerTask;
 
-public class VideoController implements VideoInteractor.Listener {
-    private static final long FADE_DURATION = 5000;
+public class VideoController implements VideoInteractor.Listener, ExoPlayerView.OnPlayerEventListener {
     private AerialDreamBinding binding;
 
-    private ExoPlayerView activePlayer;
-    private ExoPlayerView bufferPlayer;
-    private Handler timer;
-
     private VideoPlaylist videos;
-    private Video activeVideo;
-    private Video bufferVideo;
 
     private boolean filterTime;
-    private boolean firstPlay = true;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false);
 
-        activePlayer = binding.videoView0;
-        bufferPlayer = binding.videoView1;
-
-        timer = new Handler();
-
         // Apply preferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean showClock = prefs.getBoolean("show_clock", false);
         boolean showLocation = prefs.getBoolean("show_location", false);
+        boolean showProgress = prefs.getBoolean("show_progress", false);
+        boolean cache = prefs.getBoolean("cache", false);
         filterTime = prefs.getBoolean("filter_time", false);
 
-        binding.clock.setVisibility(showClock ? View.VISIBLE : View.GONE);
-        binding.location.setVisibility(showLocation ? View.VISIBLE : View.GONE);
+        binding.setShowLocation(showLocation);
+        binding.setShowClock(showClock);
+        binding.setShowProgress(showProgress);
+        binding.setUseCache(cache);
+
+        binding.videoView0.setController(binding.videoView0.videoView);
+        binding.videoView1.setController(binding.videoView1.videoView);
+
+        binding.videoView0.videoView.setOnPlayerListener(this);
+        binding.videoView1.videoView.setOnPlayerListener(this);
 
         new VideoInteractor(this).fetchVideos();
     }
@@ -62,31 +56,24 @@ public class VideoController implements VideoInteractor.Listener {
     }
 
     public void start() {
-        PlayerEventListener listener0 = new PlayerEventListener(activePlayer, bufferPlayer);
-        PlayerEventListener listener1 = new PlayerEventListener(bufferPlayer, activePlayer);
+        binding.videoView0.getRoot().setAlpha(0);
 
-        activePlayer.setOnPlayerListener(listener0);
-        bufferPlayer.setOnPlayerListener(listener1);
+        binding.setVideo0(getVideo());
+        binding.setVideo1(getVideo());
 
-        activeVideo = getVideo();
-        bufferVideo = getVideo();
-        activePlayer.setVideoURI(activeVideo.getUri());
+        binding.videoView1.videoView.start();
     }
 
     public void stop() {
-        timer.removeCallbacks(replacementTask);
-
-        activePlayer.release();
-        bufferPlayer.release();
+        binding.videoView0.videoView.release();
+        binding.videoView1.videoView.release();
     }
 
-    private void playVideo() {
-        binding.location.setText(activeVideo.getLocation());
-
-        activePlayer.start();
+    private void playVideo(final VideoViewBinding deactivate, final VideoViewBinding activate) {
+        activate.videoView.start();
 
         Animation animation = new AlphaAnimation(1, 0);
-        animation.setDuration(FADE_DURATION);
+        animation.setDuration(ExoPlayerView.DURATION);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
@@ -94,9 +81,12 @@ public class VideoController implements VideoInteractor.Listener {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                binding.container.bringChildToFront(activePlayer);
-                bufferPlayer.setAlpha(1);
-                bufferPlayer.setVideoURI(bufferVideo.getUri());
+                binding.container.bringChildToFront(activate.getRoot());
+                deactivate.videoView.pause();
+                deactivate.getRoot().setAlpha(1);
+                deactivate.setVideo(getVideo());
+
+                binding.loadingView.setVisibility(View.GONE);
             }
 
             @Override
@@ -104,22 +94,8 @@ public class VideoController implements VideoInteractor.Listener {
             }
         });
 
-        bufferPlayer.startAnimation(animation);
+        deactivate.getRoot().startAnimation(animation);
     }
-
-    private Runnable replacementTask = new TimerTask() {
-        @Override
-        public void run() {
-            ExoPlayerView temp = activePlayer;
-            activePlayer = bufferPlayer;
-            bufferPlayer = temp;
-
-            activeVideo = bufferVideo;
-            bufferVideo = getVideo();
-
-            playVideo();
-        }
-    };
 
     @Override
     public void onFetch(VideoPlaylist videos) {
@@ -138,34 +114,47 @@ public class VideoController implements VideoInteractor.Listener {
         return videos.getVideo(type);
     }
 
-    private class PlayerEventListener implements ExoPlayerView.OnPlayerEventListener {
-        private ExoPlayerView thisView;
-        private ExoPlayerView otherView;
+    @Override
+    public void onPrepared(ExoPlayerView view) {
+        if (binding.loadingView.getVisibility() == View.VISIBLE && view == binding.videoView1.videoView) {
+            binding.videoView0.getRoot().setAlpha(1);
+            
+            Animation animation = new AlphaAnimation(1, 0);
+            animation.setDuration(ExoPlayerView.DURATION / 2);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
 
-        public PlayerEventListener(ExoPlayerView thisView, ExoPlayerView otherView) {
-            this.thisView = thisView;
-            this.otherView = otherView;
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    binding.loadingView.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+
+            binding.loadingView.startAnimation(animation);
         }
+    }
 
-        @Override
-        public void onPrepared() {
-            if (firstPlay) {
-                firstPlay = false;
-                playVideo();
-            } else {
-                long delay = otherView.getDuration() - otherView.getCurrentPosition() - FADE_DURATION;
-
-                timer.removeCallbacks(replacementTask);
-                timer.postDelayed(replacementTask, delay);
-            }
+    @Override
+    public void onAlmostFinished(ExoPlayerView view) {
+        if (view == binding.videoView0.videoView) {
+            playVideo(binding.videoView0, binding.videoView1);
+        } else {
+            playVideo(binding.videoView1, binding.videoView0);
         }
+    }
 
-        @Override
-        public void onError(ExoPlaybackException error) {
-            Toast.makeText(thisView.getContext(), "Error: " + error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            error.printStackTrace();
-
-            thisView.setVideoURI(bufferVideo.getUri());
+    @Override
+    public void onError(ExoPlayerView view, ExoPlaybackException error) {
+        if (view == binding.videoView0.videoView) {
+            playVideo(binding.videoView0, binding.videoView1);
+        } else {
+            playVideo(binding.videoView1, binding.videoView0);
         }
     }
 }

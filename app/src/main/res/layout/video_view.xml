@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="video"
+            type="com.codingbuffalo.aerialdream.data.Video" />
+
+        <variable
+            name="showLocation"
+            type="boolean" />
+
+        <variable
+            name="showClock"
+            type="boolean" />
+
+        <variable
+            name="showProgress"
+            type="boolean" />
+
+        <variable
+            name="useCache"
+            type="boolean" />
+
+        <variable
+            name="controller"
+            type="android.widget.MediaController.MediaPlayerControl" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.codingbuffalo.aerialdream.ExoPlayerView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            app:uri="@{video.uri}"
+            app:useCache="@{useCache}" />
+
+        <TextView
+            android:id="@+id/location"
+            style="@style/VideoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="32dp"
+            android:layout_marginStart="48dp"
+            android:text="@{video.location}"
+            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
+            tools:text="San Francisco" />
+
+        <TextClock
+            android:id="@+id/clock"
+            style="@style/VideoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="48dp"
+            android:gravity="end"
+            android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
+
+        <com.codingbuffalo.aerialdream.VideoProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom"
+            android:visibility="@{showProgress ? View.VISIBLE : View.GONE}"
+            app:controller="@{controller}" />
+
+    </FrameLayout>
+
+</layout>

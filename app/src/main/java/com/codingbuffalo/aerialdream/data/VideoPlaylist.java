@@ -1,6 +1,5 @@
 package com.codingbuffalo.aerialdream.data;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,5 +48,6 @@ public class VideoPlaylist {
         Video video = list.get(position);
         position++;
         return video;
+//        return new Video("http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_1mb.mp4", "Test", "day");
     }
 }

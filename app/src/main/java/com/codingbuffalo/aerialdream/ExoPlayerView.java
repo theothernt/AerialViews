@@ -1,6 +1,5 @@
 package com.codingbuffalo.aerialdream;
 
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
@@ -17,15 +16,25 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
+import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, SimpleExoPlayer.VideoListener, ExoPlayer.EventListener {
+    public static final long DURATION = 5000;
+
     private SimpleExoPlayer player;
+    private MediaSource mediaSource;
     private OnPlayerEventListener listener;
     private Handler handler;
     private float aspectRatio;
     private boolean prepared;
+    private boolean useCache;
 
     public ExoPlayerView(Context context) {
         this(context, null);
@@ -34,19 +43,39 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     public ExoPlayerView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        if (isInEditMode()) {
+            return;
+        }
+
         handler = new Handler();
-        player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(handler), new DefaultLoadControl());
+        player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(), new DefaultLoadControl());
 
         player.setVideoTextureView(this);
         player.setVideoListener(this);
         player.addListener(this);
     }
 
-    public void setVideoURI(Uri uri) {
-        player.setPlayWhenReady(false);
-        prepared = false;
+    public void setUseCache(boolean useCache) {
+        this.useCache = useCache;
+    }
 
-        MediaSource mediaSource = new ExtractorMediaSource(uri, new DefaultHttpDataSourceFactory("Aerial Dream"), new DefaultExtractorsFactory(), handler, null);
+    public void setUri(Uri uri) {
+        if (uri == null) {
+            return;
+        }
+
+        player.stop();
+        prepared = false;
+        if (mediaSource != null) {
+            mediaSource.releaseSource();
+        }
+
+        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
+        DataSource.Factory dataSourceFactory = useCache
+                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new NoOpCacheEvictor()), httpDataSourceFactory, 0)
+                : httpDataSourceFactory;
+
+        mediaSource = new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null);
         player.prepare(mediaSource);
     }
 
@@ -143,7 +172,11 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         if (!prepared && playbackState == ExoPlayer.STATE_READY) {
             prepared = true;
-            listener.onPrepared();
+            listener.onPrepared(this);
+        }
+
+        if (playWhenReady && playbackState == ExoPlayer.STATE_READY) {
+            postDelayed(timerRunnable, getDuration() - DURATION);
         }
     }
 
@@ -152,9 +185,13 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     }
 
     @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+    }
+
+    @Override
     public void onPlayerError(ExoPlaybackException error) {
         error.printStackTrace();
-        listener.onError(error);
+        listener.onError(this, error);
     }
 
     @Override
@@ -171,13 +208,18 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     public void onRenderedFirstFrame() {
     }
 
-    @Override
-    public void onVideoTracksDisabled() {
-    }
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            listener.onAlmostFinished(ExoPlayerView.this);
+        }
+    };
 
     public interface OnPlayerEventListener {
-        void onPrepared();
+        void onAlmostFinished(ExoPlayerView view);
 
-        void onError(ExoPlaybackException error);
+        void onPrepared(ExoPlayerView view);
+
+        void onError(ExoPlayerView view, ExoPlaybackException error);
     }
 }

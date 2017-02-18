@@ -8,6 +8,21 @@
         <item name="android:windowBackground">@android:color/black</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+    
+    <style name="VideoText">
+        <item name="android:alpha">0.9</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:shadowColor">#000</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">6</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="LoadingText" parent="VideoText">
+        <item name="android:alpha">1</item>
     </style>
 
 </resources>

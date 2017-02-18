@@ -4,11 +4,5 @@
     <color name="colorPrimaryDark">#455A64</color>
     <color name="colorAccent">#009688</color>
 
-    <color name="colorActivated">#B0BEC5</color>
-
-    <color name="colorTape">#FFC107</color>
-    
-    
-    <color name="baby_blue">#728FCE</color>
-    <color name="baby_pink">#F4C2C2</color>
+    <color name="progressBar">#9FFF</color>
 </resources>

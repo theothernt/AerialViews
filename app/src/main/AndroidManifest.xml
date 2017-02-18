@@ -20,19 +20,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--<activity-->
-            <!--android:name=".TestActivity"-->
-            <!--android:configChanges="orientation|keyboardHidden|screenSize">-->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/daydream_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
-        <!--</activity>-->
-
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".TestActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <service
             android:name=".AerialDream"

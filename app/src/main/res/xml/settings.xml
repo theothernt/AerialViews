@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <CheckBoxPreference
         android:defaultValue="false"
-        android:key="show_clock"
         android:focusable="true"
         android:focusableInTouchMode="true"
+        android:key="show_clock"
         android:title="@string/show_clock" />
 
     <CheckBoxPreference
@@ -15,8 +16,26 @@
 
     <CheckBoxPreference
         android:defaultValue="false"
+        android:key="show_progress"
+        android:summary="@string/show_progress_description"
+        android:title="@string/show_progress" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
         android:key="filter_time"
         android:summary="@string/filter_time_description"
         android:title="@string/filter_time" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="cache"
+        android:summary="@string/cache_description"
+        android:title="@string/cache" />
+
+    <Preference android:title="@string/test">
+        <intent
+            android:targetClass="com.codingbuffalo.aerialdream.TestActivity"
+            android:targetPackage="com.codingbuffalo.aerialdream" />
+    </Preference>
 
 </PreferenceScreen>
