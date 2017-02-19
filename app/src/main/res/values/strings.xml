@@ -11,7 +11,7 @@
     <string name="filter_time">Filter videos by time</string>
     <string name="filter_time_description">Show only daytime videos during the day and nighttime videos at night</string>
     <string name="cache">Cache videos</string>
-    <string name="cache_description">Please make sure you consistently have at least 10GB free space on your device</string>
+    <string name="cache_description">A full video cache will use approximately 10GB of storage space on your device</string>
 
     <string name="category_actions">Actions</string>
 
