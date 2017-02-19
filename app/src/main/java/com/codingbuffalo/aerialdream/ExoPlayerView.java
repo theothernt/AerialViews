@@ -176,6 +176,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
 
         if (playWhenReady && playbackState == ExoPlayer.STATE_READY) {
+            removeCallbacks(timerRunnable);
             postDelayed(timerRunnable, getDuration() - DURATION);
         }
     }
