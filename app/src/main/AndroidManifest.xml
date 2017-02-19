@@ -18,11 +18,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/daydream_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/DaydreamTheme">
 
         <activity
+            android:theme="@style/SettingsTheme"
             android:name=".SettingsActivity"
-            android:label="@string/daydream_name">
+            android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,41 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:key="show_clock"
-        android:title="@string/show_clock" />
+    <PreferenceCategory android:title="@string/category_settings">
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="show_location"
-        android:title="@string/show_location" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:key="show_clock"
+            android:title="@string/show_clock" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="show_progress"
-        android:summary="@string/show_progress_description"
-        android:title="@string/show_progress" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_location"
+            android:title="@string/show_location" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="filter_time"
-        android:summary="@string/filter_time_description"
-        android:title="@string/filter_time" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="show_progress"
+            android:summary="@string/show_progress_description"
+            android:title="@string/show_progress" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="cache"
-        android:summary="@string/cache_description"
-        android:title="@string/cache" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="filter_time"
+            android:summary="@string/filter_time_description"
+            android:title="@string/filter_time" />
 
-    <Preference android:title="@string/test">
-        <intent
-            android:targetClass="com.codingbuffalo.aerialdream.TestActivity"
-            android:targetPackage="com.codingbuffalo.aerialdream" />
-    </Preference>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="cache"
+            android:summary="@string/cache_description"
+            android:title="@string/cache" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/category_actions">
+
+        <Preference android:title="@string/test_settings">
+            <intent
+                android:targetClass="com.codingbuffalo.aerialdream.TestActivity"
+                android:targetPackage="com.codingbuffalo.aerialdream" />
+        </Preference>
+
+        <Preference
+            android:key="activate_screensaver"
+            android:title="@string/activate_screensaver">
+
+            <intent android:action="android.settings.SETTINGS" />
+
+        </Preference>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

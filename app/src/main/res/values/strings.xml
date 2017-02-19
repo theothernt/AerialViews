@@ -2,6 +2,8 @@
     <string name="daydream_name">Aerial Dream</string>
     <string name="loading_aerial">Loading Aerial…</string>
 
+    <string name="category_settings">Settings</string>
+
     <string name="show_clock">Show clock</string>
     <string name="show_location">Show location</string>
     <string name="show_progress">Show video progress</string>
@@ -10,5 +12,9 @@
     <string name="filter_time_description">Show only daytime videos during the day and nighttime videos at night</string>
     <string name="cache">Cache videos</string>
     <string name="cache_description">Please make sure you consistently have at least 10GB free space on your device</string>
-    <string name="test">Test</string>
+
+    <string name="category_actions">Actions</string>
+
+    <string name="test_settings">Test settings</string>
+    <string name="activate_screensaver">Activate screensaver</string>
 </resources>

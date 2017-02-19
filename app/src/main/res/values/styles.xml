@@ -1,14 +1,15 @@
 <resources>
     
-    <style name="AppTheme" parent="Theme.Leanback">
+    <style name="SettingsTheme" parent="Theme.Leanback">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+    </style>
+    
+    <style name="DaydreamTheme" parent="SettingsTheme">
         <item name="android:windowBackground">@android:color/black</item>
-
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="android:windowActionBar">false</item>
     </style>
     
     <style name="VideoText">
