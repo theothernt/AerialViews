@@ -148,13 +148,4 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             playVideo(binding.videoView1, binding.videoView0);
         }
     }
-
-    @Override
-    public void onError(ExoPlayerView view, ExoPlaybackException error) {
-        if (view == binding.videoView0.videoView) {
-            playVideo(binding.videoView0, binding.videoView1);
-        } else {
-            playVideo(binding.videoView1, binding.videoView0);
-        }
-    }
 }

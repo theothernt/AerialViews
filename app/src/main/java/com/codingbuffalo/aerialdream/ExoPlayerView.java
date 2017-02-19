@@ -191,7 +191,10 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     @Override
     public void onPlayerError(ExoPlaybackException error) {
         error.printStackTrace();
-        listener.onError(this, error);
+
+        // Attempt to reload video
+        removeCallbacks(errorRecoveryRunnable);
+        postDelayed(errorRecoveryRunnable, DURATION);
     }
 
     @Override
@@ -215,11 +218,16 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
     };
 
+    private Runnable errorRecoveryRunnable = new Runnable() {
+        @Override
+        public void run() {
+            player.prepare(mediaSource);
+        }
+    };
+
     public interface OnPlayerEventListener {
         void onAlmostFinished(ExoPlayerView view);
 
         void onPrepared(ExoPlayerView view);
-
-        void onError(ExoPlayerView view, ExoPlaybackException error);
     }
 }
