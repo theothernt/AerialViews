@@ -3,12 +3,13 @@ package com.codingbuffalo.aerialdream;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.View;
+import android.view.View; 
 import android.widget.MediaController;
 
 public class VideoProgressBar extends View {
+    private static final int COLOR = 0x66FFFFFF;
+
     private MediaController.MediaPlayerControl controller;
     private Paint paint;
 
@@ -21,7 +22,7 @@ public class VideoProgressBar extends View {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(ContextCompat.getColor(context, R.color.progressBar));
+        paint.setColor(COLOR);
     }
 
     public void setController(MediaController.MediaPlayerControl controller) {
