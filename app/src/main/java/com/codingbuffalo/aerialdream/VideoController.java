@@ -100,7 +100,12 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     @Override
     public void onFetch(VideoPlaylist videos) {
         this.videos = videos;
-        start();
+        binding.getRoot().post(new Runnable() {
+            @Override
+            public void run() {
+                start();
+            }
+        });
     }
 
     private Video getVideo() {
