@@ -21,11 +21,12 @@
             android:summary="@string/show_progress_description"
             android:title="@string/show_progress" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="filter_time"
-            android:summary="@string/filter_time_description"
-            android:title="@string/filter_time" />
+        <ListPreference
+            android:defaultValue="all"
+            android:entries="@array/video_selection_entries"
+            android:entryValues="@array/video_selection_values"
+            android:key="video_selection"
+            android:title="@string/video_selection" />
 
         <CheckBoxPreference
             android:defaultValue="false"

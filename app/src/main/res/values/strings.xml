@@ -7,9 +7,14 @@
     <string name="show_clock">Show clock</string>
     <string name="show_location">Show location</string>
     <string name="show_progress">Show video progress</string>
-    <string name="show_progress_description">Only visible on TVs without overscan</string>
-    <string name="filter_time">Filter videos by time</string>
-    <string name="filter_time_description">Show only daytime videos during the day and nighttime videos at night</string>
+    <string name="show_progress_description">Only visible on screens without overscan</string>
+    <string name="video_selection">Video selection</string>
+    <string-array name="video_selection_entries">
+        <item>Randomize all videos</item>
+        <item>Daytime videos only</item>
+        <item>Nighttime videos only</item>
+        <item>According to local time</item>
+    </string-array>
     <string name="cache">Cache videos</string>
     <string name="cache_description">A full video cache will use approximately 10GB of storage space on your device</string>
 

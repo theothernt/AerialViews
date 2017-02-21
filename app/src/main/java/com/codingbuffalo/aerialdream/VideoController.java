@@ -14,7 +14,6 @@ import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding;
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
-import com.google.android.exoplayer2.ExoPlaybackException;
 
 import java.util.Calendar;
 
@@ -23,7 +22,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     private VideoPlaylist videos;
 
-    private boolean filterTime;
+    private String videoSelection;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -35,7 +34,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         boolean showLocation = prefs.getBoolean("show_location", false);
         boolean showProgress = prefs.getBoolean("show_progress", false);
         boolean cache = prefs.getBoolean("cache", false);
-        filterTime = prefs.getBoolean("filter_time", false);
+        videoSelection = prefs.getString("video_selection", "all");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
@@ -109,13 +108,21 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     private Video getVideo() {
-        VideoPlaylist.TYPE type = VideoPlaylist.TYPE.ALL;
-
-        if (filterTime) {
-            int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            type = hour < 7 || hour >= 19 ? VideoPlaylist.TYPE.NIGHT : VideoPlaylist.TYPE.DAY;
+        VideoPlaylist.TYPE type;
+        switch (videoSelection) {
+            case "daytime":
+                type = VideoPlaylist.TYPE.DAY;
+                break;
+            case "nighttime":
+                type = VideoPlaylist.TYPE.NIGHT;
+                break;
+            case "localtime":
+                int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+                type = hour < 7 || hour >= 19 ? VideoPlaylist.TYPE.NIGHT : VideoPlaylist.TYPE.DAY;
+                break;
+            default:
+                type = VideoPlaylist.TYPE.ALL;
         }
-
         return videos.getVideo(type);
     }
 
