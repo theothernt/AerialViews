@@ -24,8 +24,8 @@
             type="boolean" />
 
         <variable
-            name="useCache"
-            type="boolean" />
+            name="cacheSize"
+            type="int" />
 
         <variable
             name="controller"
@@ -42,8 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:uri="@{video.uri}"
-            app:useCache="@{useCache}" />
+            app:cacheSize="@{cacheSize}"
+            app:uri="@{video.uri}" />
 
         <TextView
             android:id="@+id/location"

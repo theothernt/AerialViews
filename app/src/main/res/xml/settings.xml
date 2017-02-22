@@ -28,11 +28,12 @@
             android:key="video_selection"
             android:title="@string/video_selection" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="cache"
-            android:summary="@string/cache_description"
-            android:title="@string/cache" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/cache_size_entries"
+            android:entryValues="@array/cache_size_values"
+            android:key="cache_size"
+            android:title="@string/cache_size" />
 
     </PreferenceCategory>
 

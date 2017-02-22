@@ -22,11 +22,13 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.NoOpCacheEvictor;
+import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, SimpleExoPlayer.VideoListener, ExoPlayer.EventListener {
     public static final long DURATION = 5000;
+
+    private static final long GB_IN_BYTES = 1073741824;
 
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
@@ -34,7 +36,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     private Handler handler;
     private float aspectRatio;
     private boolean prepared;
-    private boolean useCache;
+    private long cacheSize;
 
     public ExoPlayerView(Context context) {
         this(context, null);
@@ -55,8 +57,12 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         player.addListener(this);
     }
 
-    public void setUseCache(boolean useCache) {
-        this.useCache = useCache;
+    public void setCacheSize(int cacheSize) {
+        if (cacheSize < 0) {
+            this.cacheSize = Long.MAX_VALUE;
+        } else {
+            this.cacheSize = cacheSize * GB_IN_BYTES;
+        }
     }
 
     public void setUri(Uri uri) {
@@ -71,8 +77,8 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
-        DataSource.Factory dataSourceFactory = useCache
-                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new NoOpCacheEvictor()), httpDataSourceFactory, 0)
+        DataSource.Factory dataSourceFactory = cacheSize > 0
+                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new LeastRecentlyUsedCacheEvictor(cacheSize)), httpDataSourceFactory, 0)
                 : httpDataSourceFactory;
 
         mediaSource = new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null);

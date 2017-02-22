@@ -30,16 +30,21 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         // Apply preferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        // Backwards compatibility
+        String cache = prefs.getBoolean("cache", false) ? "-1" : "0";
+        prefs.edit().remove("cache").apply();
+
         boolean showClock = prefs.getBoolean("show_clock", false);
         boolean showLocation = prefs.getBoolean("show_location", false);
         boolean showProgress = prefs.getBoolean("show_progress", false);
-        boolean cache = prefs.getBoolean("cache", false);
+        int cacheSize = Integer.valueOf(prefs.getString("cache_size", cache));
         videoSelection = prefs.getString("video_selection", "all");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
         binding.setShowProgress(showProgress);
-        binding.setUseCache(cache);
+        binding.setCacheSize(cacheSize);
 
         binding.videoView0.setController(binding.videoView0.videoView);
         binding.videoView1.setController(binding.videoView1.videoView);
@@ -130,7 +135,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     public void onPrepared(ExoPlayerView view) {
         if (binding.loadingView.getVisibility() == View.VISIBLE && view == binding.videoView1.videoView) {
             binding.videoView0.getRoot().setAlpha(1);
-            
+
             Animation animation = new AlphaAnimation(1, 0);
             animation.setDuration(ExoPlayerView.DURATION / 2);
             animation.setAnimationListener(new Animation.AnimationListener() {

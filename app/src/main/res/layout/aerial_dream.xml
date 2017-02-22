@@ -17,8 +17,8 @@
             type="boolean" />
 
         <variable
-            name="useCache"
-            type="boolean" />
+            name="cacheSize"
+            type="int" />
 
         <variable
             name="video0"
@@ -39,19 +39,19 @@
         <include
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
+            app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
             app:showLocation="@{showLocation}"
             app:showProgress="@{showProgress}"
-            app:useCache="@{useCache}"
             app:video="@{video0}" />
 
         <include
             android:id="@+id/video_view_1"
             layout="@layout/video_view"
+            app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
             app:showLocation="@{showLocation}"
             app:showProgress="@{showProgress}"
-            app:useCache="@{useCache}"
             app:video="@{video1}" />
 
         <TextView

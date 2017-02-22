@@ -6,4 +6,11 @@
         <item>nighttime</item>
         <item>localtime</item>
     </string-array>
+    
+    <string-array name="cache_size_values">
+        <item>0</item>  <!-- Disabled -->
+        <item>4</item>  <!-- 4GB -->
+        <item>8</item>  <!-- 8GB -->
+        <item>-1</item> <!-- Unlimited -->
+    </string-array>
 </resources>
