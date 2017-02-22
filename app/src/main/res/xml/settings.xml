@@ -46,12 +46,8 @@
         </Preference>
 
         <Preference
-            android:key="activate_screensaver"
-            android:title="@string/activate_screensaver">
-
-            <intent android:action="android.settings.SETTINGS" />
-
-        </Preference>
+            android:key="system_options"
+            android:title="@string/activate_screensaver" />
 
     </PreferenceCategory>
 
