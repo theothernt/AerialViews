@@ -8,8 +8,8 @@ android {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 11
-        versionName "1.1"
+        versionCode 12
+        versionName "1.2"
     }
 
     dataBinding {
