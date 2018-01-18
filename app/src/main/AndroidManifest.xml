@@ -16,14 +16,16 @@
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
+        android:installLocation="auto"
         android:label="@string/daydream_name"
         android:supportsRtl="true"
         android:theme="@style/DaydreamTheme">
 
         <activity
-            android:theme="@style/SettingsTheme"
             android:name=".SettingsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:banner="@mipmap/ic_launcher"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/SettingsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
