@@ -8,10 +8,6 @@
         <import type="android.view.View" />
 
         <variable
-            name="video"
-            type="com.codingbuffalo.aerialdream.data.Video" />
-
-        <variable
             name="showLocation"
             type="boolean" />
 
@@ -42,8 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            app:cacheSize="@{cacheSize}"
-            app:uri="@{video.uri}" />
+            app:cacheSize="@{cacheSize}" />
 
         <TextView
             android:id="@+id/location"
@@ -53,7 +48,6 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="32dp"
             android:layout_marginStart="48dp"
-            android:text="@{video.location}"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="San Francisco" />
 

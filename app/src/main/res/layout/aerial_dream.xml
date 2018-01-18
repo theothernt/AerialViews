@@ -20,14 +20,6 @@
             name="cacheSize"
             type="int" />
 
-        <variable
-            name="video0"
-            type="com.codingbuffalo.aerialdream.data.Video" />
-
-        <variable
-            name="video1"
-            type="com.codingbuffalo.aerialdream.data.Video" />
-
     </data>
 
     <FrameLayout
@@ -42,8 +34,7 @@
             app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
             app:showLocation="@{showLocation}"
-            app:showProgress="@{showProgress}"
-            app:video="@{video0}" />
+            app:showProgress="@{showProgress}" />
 
         <include
             android:id="@+id/video_view_1"
@@ -51,8 +42,7 @@
             app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
             app:showLocation="@{showLocation}"
-            app:showProgress="@{showProgress}"
-            app:video="@{video1}" />
+            app:showProgress="@{showProgress}" />
 
         <TextView
             android:id="@+id/loading_view"

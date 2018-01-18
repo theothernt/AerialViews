@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/video_sources">
+
+        <ListPreference
+            android:defaultValue="all"
+            android:entries="@array/source_apple_2015_entries"
+            android:entryValues="@array/source_apple_2015_values"
+            android:key="source_apple_2015"
+            android:title="@string/source_apple_2015" />
+
+        <ListPreference
+            android:defaultValue="1080_sdr"
+            android:entries="@array/source_apple_2017_entries"
+            android:entryValues="@array/source_apple_2017_values"
+            android:key="source_apple_2017"
+            android:title="@string/source_apple_2017" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/category_settings">
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:key="show_clock"
             android:title="@string/show_clock" />
 
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="show_location"
             android:title="@string/show_location" />
 
@@ -20,13 +38,6 @@
             android:key="show_progress"
             android:summary="@string/show_progress_description"
             android:title="@string/show_progress" />
-
-        <ListPreference
-            android:defaultValue="all"
-            android:entries="@array/video_selection_entries"
-            android:entryValues="@array/video_selection_values"
-            android:key="video_selection"
-            android:title="@string/video_selection" />
 
         <ListPreference
             android:defaultValue="0"

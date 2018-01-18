@@ -38,7 +38,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
     private OnPlayerEventListener listener;
-    private Handler handler;
     private float aspectRatio;
     private boolean prepared;
     private long cacheSize;
@@ -54,7 +53,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        handler = new Handler();
         player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context), new DefaultTrackSelector(), new DefaultLoadControl());
 
         player.setVideoTextureView(this);
@@ -77,9 +75,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
         player.stop();
         prepared = false;
-//        if (mediaSource != null) {
-//            mediaSource.removeEventListener(this);releaseSource();
-//        }
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
         DataSource.Factory dataSourceFactory = cacheSize > 0

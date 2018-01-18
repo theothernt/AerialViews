@@ -1,37 +1,47 @@
 package com.codingbuffalo.aerialdream.data;
 
-
 import android.support.annotation.NonNull;
 
 import com.codingbuffalo.aerialdream.data.protium.Interactor;
 import com.codingbuffalo.aerialdream.data.protium.ValueTask;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executors;
 
 public class VideoInteractor extends Interactor {
     private Listener listener;
-    private VideoRepository repository;
+    private List<VideoRepository> repositories = new LinkedList<>();
 
-    public VideoInteractor(@NonNull Listener listener) {
+    public VideoInteractor(boolean apple2015, boolean apple2017, @NonNull Listener listener) {
         super(Executors.newCachedThreadPool());
-        
+
         this.listener = listener;
-        repository = new VideoRepository();
+        if (apple2015) {
+            repositories.add(new Apple2015Repository());
+        }
+        if (apple2017) {
+            repositories.add(new Apple2017Repository());
+        }
     }
 
     public void fetchVideos() {
         execute(new FetchVideosTask());
     }
 
-    private class FetchVideosTask extends ValueTask<List<Video>> {
+    private class FetchVideosTask extends ValueTask<List<? extends Video>> {
         @Override
-        public List<Video> onExecute() throws Exception {
-            return repository.fetchVideos();
+        public List<? extends Video> onExecute() throws Exception {
+            List<Video> videos = new ArrayList<>();
+            for (VideoRepository repository : repositories) {
+                videos.addAll(repository.fetchVideos());
+            }
+            return videos;
         }
 
         @Override
-        public void onComplete(List<Video> data) {
+        public void onComplete(List<? extends Video> data) {
             listener.onFetch(new VideoPlaylist(data));
         }
     }

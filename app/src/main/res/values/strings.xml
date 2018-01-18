@@ -8,13 +8,28 @@
     <string name="show_location">Show location</string>
     <string name="show_progress">Show video progress</string>
     <string name="show_progress_description">Only visible on screens without overscan</string>
-    <string name="video_selection">Video selection</string>
-    <string-array name="video_selection_entries">
-        <item>Randomize all videos</item>
+
+    <string name="video_sources">Video sources</string>
+    <string name="disabled">Disabled</string>
+
+    <string name="source_apple_2015">2015 Apple TV (Full HD)</string>
+    <string-array name="source_apple_2015_entries">
+        <item>@string/disabled</item>
+        <item>Random</item>
         <item>Daytime videos only</item>
         <item>Nighttime videos only</item>
         <item>According to local time</item>
     </string-array>
+
+    <string name="source_apple_2017">2017 Apple TV</string>
+    <string-array name="source_apple_2017_entries">
+        <item>@string/disabled</item>
+        <item>Full HD (1080)</item>
+        <item>Full HD (1080) HDR</item>
+        <item>Ultra HD (4K)</item>
+        <item>Ultra HD (4K) HDR</item>
+    </string-array>
+
     <string name="cache_size">Video cache size</string>
     <string-array name="cache_size_entries">
         <item>No cache</item>

@@ -9,20 +9,20 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.codingbuffalo.aerialdream.data.Apple2015Video;
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding;
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
 
-import java.util.Calendar;
-
 public class VideoController implements VideoInteractor.Listener, ExoPlayerView.OnPlayerEventListener {
     private AerialDreamBinding binding;
 
-    private VideoPlaylist videos;
+    private VideoPlaylist playlist;
 
-    private String videoSelection;
+    private String source_apple_2015;
+    private String source_apple_2017;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -35,11 +35,13 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         String cache = prefs.getBoolean("cache", false) ? "-1" : "0";
         prefs.edit().remove("cache").apply();
 
-        boolean showClock = prefs.getBoolean("show_clock", false);
-        boolean showLocation = prefs.getBoolean("show_location", false);
+        boolean showClock = prefs.getBoolean("show_clock", true);
+        boolean showLocation = prefs.getBoolean("show_location", true);
         boolean showProgress = prefs.getBoolean("show_progress", false);
         int cacheSize = Integer.valueOf(prefs.getString("cache_size", cache));
-        videoSelection = prefs.getString("video_selection", "all");
+
+        source_apple_2015 = prefs.getString("source_apple_2015", "all");
+        source_apple_2017 = prefs.getString("source_apple_2017", "1080_sdr");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
@@ -52,7 +54,11 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         binding.videoView0.videoView.setOnPlayerListener(this);
         binding.videoView1.videoView.setOnPlayerListener(this);
 
-        new VideoInteractor(this).fetchVideos();
+        new VideoInteractor(
+                !source_apple_2015.equals("disabled"),
+                !source_apple_2017.equals("disabled"),
+                this
+        ).fetchVideos();
     }
 
     public View getView() {
@@ -62,8 +68,8 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     public void start() {
         binding.videoView0.getRoot().setAlpha(0);
 
-        binding.setVideo0(getVideo());
-        binding.setVideo1(getVideo());
+        loadVideo(binding.videoView0, getVideo());
+        loadVideo(binding.videoView1, getVideo());
 
         binding.videoView1.videoView.start();
     }
@@ -88,7 +94,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 binding.container.bringChildToFront(activate.getRoot());
                 deactivate.videoView.pause();
                 deactivate.getRoot().setAlpha(1);
-                deactivate.setVideo(getVideo());
+                loadVideo(deactivate, getVideo());
 
                 binding.loadingView.setVisibility(View.GONE);
             }
@@ -103,32 +109,20 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     @Override
     public void onFetch(VideoPlaylist videos) {
-        this.videos = videos;
-        binding.getRoot().post(new Runnable() {
-            @Override
-            public void run() {
-                start();
-            }
-        });
+        this.playlist = videos;
+        binding.getRoot().post(this::start);
+    }
+
+    private void loadVideo(VideoViewBinding videoBinding, Video video) {
+        String option = video instanceof Apple2015Video ? source_apple_2015 : source_apple_2017;
+        videoBinding.videoView.setUri(video.getUri(option));
+        videoBinding.location.setText(video.getLocation());
     }
 
     private Video getVideo() {
-        VideoPlaylist.TYPE type;
-        switch (videoSelection) {
-            case "daytime":
-                type = VideoPlaylist.TYPE.DAY;
-                break;
-            case "nighttime":
-                type = VideoPlaylist.TYPE.NIGHT;
-                break;
-            case "localtime":
-                int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
-                type = hour < 7 || hour >= 19 ? VideoPlaylist.TYPE.NIGHT : VideoPlaylist.TYPE.DAY;
-                break;
-            default:
-                type = VideoPlaylist.TYPE.ALL;
-        }
-        return videos.getVideo(type);
+        Video video = playlist.getVideo();
+        // Verify that the video is able to satisfy the options, otherwise skip it
+        return (video instanceof Apple2015Video && video.getUri(source_apple_2015) == null) ? getVideo() : video;
     }
 
     @Override

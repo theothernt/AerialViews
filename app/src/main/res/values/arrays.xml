@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="video_selection_values">
+    <string-array name="source_apple_2015_values">
+        <item>disabled</item>
         <item>all</item>
         <item>daytime</item>
         <item>nighttime</item>
         <item>localtime</item>
+    </string-array>
+
+    <string-array name="source_apple_2017_values">
+        <item>disabled</item>
+        <item>1080_sdr</item>
+        <item>1080_hdr</item>
+        <item>4k_sdr</item>
+        <item>4k_hdr</item>
     </string-array>
     
     <string-array name="cache_size_values">
