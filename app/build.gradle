@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.github.triplet.play'
 
 android {
     compileSdkVersion 27
     buildToolsVersion "27.0.1"
+
+    playAccountConfigs {
+        defaultAccountConfig {
+            jsonFile = rootProject.file('../AppSignature/play-store.json')
+        }
+    }
 
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
@@ -10,10 +17,33 @@ android {
         targetSdkVersion 27
         versionCode 12
         versionName "1.2"
+
+        playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
 
     dataBinding {
         enabled = true
+    }
+
+    signingConfigs {
+        release {
+            def keystorePropertiesFile = rootProject.file("../AppSignature/keystore.properties")
+            if (keystorePropertiesFile.exists()) {
+                def keystoreProperties = new Properties()
+                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+                keyAlias keystoreProperties.keyAlias
+                keyPassword keystoreProperties.keyPassword
+                storeFile file(keystoreProperties.storeFile)
+                storePassword keystoreProperties.storePassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
     }
 }
 
@@ -28,5 +58,8 @@ dependencies {
     implementation 'com.android.support:preference-leanback-v17:27.0.2'
 
     testImplementation 'junit:junit:4.12'
+}
 
+play {
+    track = 'beta'
 }

@@ -1,5 +1,3 @@
-*.keystore
-
 # Android Studio
 .gradle
 /local.properties
