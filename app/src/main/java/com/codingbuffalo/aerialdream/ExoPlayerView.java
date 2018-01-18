@@ -11,6 +11,8 @@ import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -53,7 +55,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(), new DefaultLoadControl());
 
         player.setVideoTextureView(this);
-        player.setVideoListener(this);
+        player.addVideoListener(this);
         player.addListener(this);
     }
 
@@ -176,15 +178,23 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (!prepared && playbackState == ExoPlayer.STATE_READY) {
+        if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true;
             listener.onPrepared(this);
         }
 
-        if (playWhenReady && playbackState == ExoPlayer.STATE_READY) {
+        if (playWhenReady && playbackState == Player.STATE_READY) {
             removeCallbacks(timerRunnable);
             postDelayed(timerRunnable, getDuration() - DURATION);
         }
+    }
+
+    @Override
+    public void onRepeatModeChanged(int repeatMode) {
+    }
+
+    @Override
+    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
     }
 
     @Override
@@ -205,7 +215,18 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     }
 
     @Override
-    public void onPositionDiscontinuity() {
+    public void onPositionDiscontinuity(int reason) {
+
+    }
+
+    @Override
+    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+    }
+
+    @Override
+    public void onSeekProcessed() {
+
     }
 
     @Override

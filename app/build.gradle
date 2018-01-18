@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
 
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 12
         versionName "1.2"
     }
@@ -18,14 +18,15 @@ android {
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-    compile 'com.squareup.okhttp3:okhttp-ws:3.2.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 
-    compile 'com.google.android.exoplayer:exoplayer:r2.2.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.6.1'
 
-    compile 'com.android.support:leanback-v17:25.1.1'
-    compile 'com.android.support:preference-leanback-v17:25.1.1'
+    implementation 'com.android.support:leanback-v17:27.0.2'
+    implementation 'com.android.support:preference-leanback-v17:27.0.2'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+
 }
