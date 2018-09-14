@@ -3,11 +3,13 @@ package com.codingbuffalo.aerialdream;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.TextureView;
 import android.widget.MediaController;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -26,8 +28,9 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
 import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
 import com.google.android.exoplayer2.upstream.cache.SimpleCache;
+import com.google.android.exoplayer2.video.VideoListener;
 
-public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, SimpleExoPlayer.VideoListener, ExoPlayer.EventListener {
+public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 5000;
 
     private static final long GB_IN_BYTES = 1073741824;
@@ -52,7 +55,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
 
         handler = new Handler();
-        player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector(), new DefaultLoadControl());
+        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context), new DefaultTrackSelector(), new DefaultLoadControl());
 
         player.setVideoTextureView(this);
         player.addVideoListener(this);
@@ -74,16 +77,18 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
         player.stop();
         prepared = false;
-        if (mediaSource != null) {
-            mediaSource.releaseSource();
-        }
+//        if (mediaSource != null) {
+//            mediaSource.removeEventListener(this);releaseSource();
+//        }
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
         DataSource.Factory dataSourceFactory = cacheSize > 0
                 ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new LeastRecentlyUsedCacheEvictor(cacheSize)), httpDataSourceFactory, 0)
                 : httpDataSourceFactory;
 
-        mediaSource = new ExtractorMediaSource(uri, dataSourceFactory, new DefaultExtractorsFactory(), handler, null);
+        mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .setExtractorsFactory(new DefaultExtractorsFactory())
+                .createMediaSource(uri);
         player.prepare(mediaSource);
     }
 
@@ -198,7 +203,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     }
 
     @Override
-    public void onTimelineChanged(Timeline timeline, Object manifest) {
+    public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
     }
 
     @Override

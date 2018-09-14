@@ -19,7 +19,8 @@
         android:installLocation="auto"
         android:label="@string/daydream_name"
         android:supportsRtl="true"
-        android:theme="@style/DaydreamTheme">
+        android:theme="@style/DaydreamTheme"
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".SettingsActivity"
