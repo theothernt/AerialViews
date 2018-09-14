@@ -24,7 +24,7 @@
 
         <activity
             android:name=".SettingsActivity"
-            android:banner="@mipmap/ic_launcher"
+            android:banner="@drawable/ic_banner"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/SettingsTheme">
             <intent-filter>
