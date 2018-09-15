@@ -15,8 +15,8 @@ android {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 15
-        versionName "1.5"
+        versionCode 16
+        versionName "1.6"
 
         playAccountConfig = playAccountConfigs.defaultAccountConfig
     }
