@@ -11,11 +11,11 @@
     <string-array name="source_apple_2017_values">
         <item>disabled</item>
         <item>1080_sdr</item>
-        <item>1080_hdr</item>
+        <!--<item>1080_hdr</item>-->
         <item>4k_sdr</item>
-        <item>4k_hdr</item>
+        <!--<item>4k_hdr</item>-->
     </string-array>
-    
+
     <string-array name="cache_size_values">
         <item>0</item>  <!-- Disabled -->
         <item>4</item>  <!-- 4GB -->
