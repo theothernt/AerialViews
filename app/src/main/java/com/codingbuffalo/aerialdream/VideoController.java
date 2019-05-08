@@ -39,7 +39,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         boolean showClock = prefs.getBoolean("show_clock", true);
         boolean showLocation = prefs.getBoolean("show_location", true);
         boolean showProgress = prefs.getBoolean("show_progress", false);
-        int cacheSize = Integer.valueOf(prefs.getString("cache_size", cache));
+        int cacheSize = 0;//Integer.valueOf(prefs.getString("cache_size", cache));
 
         source_apple_2015 = prefs.getString("source_apple_2015", "all");
         source_apple_2017 = prefs.getString("source_apple_2017", "1080_sdr");

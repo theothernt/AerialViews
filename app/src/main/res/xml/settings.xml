@@ -46,12 +46,12 @@
             android:summary="@string/show_progress_description"
             android:title="@string/show_progress" />
 
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/cache_size_entries"
-            android:entryValues="@array/cache_size_values"
-            android:key="cache_size"
-            android:title="@string/cache_size" />
+        <!--<ListPreference-->
+            <!--android:defaultValue="0"-->
+            <!--android:entries="@array/cache_size_entries"-->
+            <!--android:entryValues="@array/cache_size_values"-->
+            <!--android:key="cache_size"-->
+            <!--android:title="@string/cache_size" />-->
 
     </PreferenceCategory>
 
