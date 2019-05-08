@@ -17,6 +17,13 @@
             android:key="source_apple_2017"
             android:title="@string/source_apple_2017" />
 
+        <ListPreference
+            android:defaultValue="1080_sdr"
+            android:entries="@array/source_apple_2017_entries"
+            android:entryValues="@array/source_apple_2017_values"
+            android:key="source_apple_2018"
+            android:title="@string/source_apple_2018" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_settings">

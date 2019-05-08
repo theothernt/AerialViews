@@ -52,6 +52,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         pref.setSummary(pref.getEntry());
         pref = (ListPreference) findPreference("source_apple_2017");
         pref.setSummary(pref.getEntry());
+        pref = (ListPreference) findPreference("source_apple_2018");
+        pref.setSummary(pref.getEntry());
         pref = (ListPreference) findPreference("cache_size");
         pref.setSummary(pref.getEntry());
     }

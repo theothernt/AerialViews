@@ -30,6 +30,8 @@
         <!--<item>Ultra HD (4K) HDR</item>-->
     </string-array>
 
+    <string name="source_apple_2018">2018 Apple TV</string>
+
     <string name="cache_size">Video cache size</string>
     <string-array name="cache_size_entries">
         <item>No cache</item>

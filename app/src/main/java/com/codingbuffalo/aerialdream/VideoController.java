@@ -23,6 +23,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     private String source_apple_2015;
     private String source_apple_2017;
+    private String source_apple_2018;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -42,6 +43,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         source_apple_2015 = prefs.getString("source_apple_2015", "all");
         source_apple_2017 = prefs.getString("source_apple_2017", "1080_sdr");
+        source_apple_2018 = prefs.getString("source_apple_2018", "1080_sdr");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
@@ -58,6 +60,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 context,
                 !source_apple_2015.equals("disabled"),
                 !source_apple_2017.equals("disabled"),
+                !source_apple_2018.equals("disabled"),
                 this
         ).fetchVideos();
     }
