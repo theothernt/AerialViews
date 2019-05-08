@@ -1,5 +1,6 @@
 package com.codingbuffalo.aerialdream.data;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.codingbuffalo.aerialdream.data.protium.Interactor;
@@ -13,9 +14,12 @@ import java.util.concurrent.Executors;
 public class VideoInteractor extends Interactor {
     private Listener listener;
     private List<VideoRepository> repositories = new LinkedList<>();
+    private Context context;
 
-    public VideoInteractor(boolean apple2015, boolean apple2017, @NonNull Listener listener) {
+    public VideoInteractor(Context context, boolean apple2015, boolean apple2017, @NonNull Listener listener) {
         super(Executors.newCachedThreadPool());
+
+        this.context = context.getApplicationContext();
 
         this.listener = listener;
         if (apple2015) {
@@ -35,7 +39,7 @@ public class VideoInteractor extends Interactor {
         public List<? extends Video> onExecute() throws Exception {
             List<Video> videos = new ArrayList<>();
             for (VideoRepository repository : repositories) {
-                videos.addAll(repository.fetchVideos());
+                videos.addAll(repository.fetchVideos(context));
             }
             return videos;
         }

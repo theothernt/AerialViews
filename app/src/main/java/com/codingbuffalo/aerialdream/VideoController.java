@@ -55,6 +55,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         binding.videoView1.videoView.setOnPlayerListener(this);
 
         new VideoInteractor(
+                context,
                 !source_apple_2015.equals("disabled"),
                 !source_apple_2017.equals("disabled"),
                 this

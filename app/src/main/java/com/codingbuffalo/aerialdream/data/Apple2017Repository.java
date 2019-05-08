@@ -1,13 +1,15 @@
 package com.codingbuffalo.aerialdream.data;
 
-import java.io.IOException;
+import android.content.Context;
+
+import com.codingbuffalo.aerialdream.R;
+
 import java.util.List;
 
 public class Apple2017Repository extends VideoRepository {
-    private final static String ENDPOINT = "http://sylvan.apple.com/Aerials/2x/entries.json";
-
-    public List<Apple2017Video> fetchVideos() throws IOException {
-        Wrapper wrapper = fetch(Wrapper.class, ENDPOINT);
+    @Override
+    public List<Apple2017Video> fetchVideos(Context context) {
+        Wrapper wrapper = parseJson(context, R.raw.tvos11, Wrapper.class);
         return wrapper.assets;
     }
 
