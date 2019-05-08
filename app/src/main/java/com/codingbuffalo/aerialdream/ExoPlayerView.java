@@ -7,19 +7,16 @@ import android.util.AttributeSet;
 import android.view.TextureView;
 import android.widget.MediaController;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
@@ -51,7 +48,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(context), new DefaultTrackSelector(), new DefaultLoadControl());
+        player = ExoPlayerFactory.newSimpleInstance(context);
 
         player.setVideoTextureView(this);
         player.addVideoListener(this);
@@ -76,11 +73,10 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
         DataSource.Factory dataSourceFactory = cacheSize > 0
-                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new LeastRecentlyUsedCacheEvictor(cacheSize)), httpDataSourceFactory, 0)
+                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new LeastRecentlyUsedCacheEvictor(cacheSize), new ExoDatabaseProvider(getContext())), httpDataSourceFactory, 0)
                 : httpDataSourceFactory;
 
-        mediaSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .setExtractorsFactory(new DefaultExtractorsFactory())
+        mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(uri);
         player.prepare(mediaSource);
     }
