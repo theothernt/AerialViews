@@ -10,6 +10,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
 import com.codingbuffalo.aerialdream.data.Apple2015Video;
+import com.codingbuffalo.aerialdream.data.Apple2017Video;
+import com.codingbuffalo.aerialdream.data.Apple2018Video;
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
@@ -121,7 +123,10 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     private void loadVideo(VideoViewBinding videoBinding, Video video) {
-        String option = video instanceof Apple2015Video ? source_apple_2015 : source_apple_2017;
+        String option = video instanceof Apple2015Video ? source_apple_2015
+                : video instanceof Apple2017Video ? source_apple_2017
+                : video instanceof Apple2018Video ? source_apple_2018
+                : source_apple_2019;
         videoBinding.videoView.setUri(video.getUri(option));
         videoBinding.location.setText(video.getLocation());
     }
