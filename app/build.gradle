@@ -48,9 +48,9 @@ android {
 }
 
 dependencies {
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.0'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.10.8'
 
     implementation 'com.android.support:leanback-v17:28.0.0'
     implementation 'com.android.support:preference-leanback-v17:28.0.0'
@@ -71,7 +71,7 @@ clean.doFirst {
 }
 
 play {
-    serviceAccountCredentials = file("../AppSignature/play-store.json")
+    serviceAccountCredentials = rootProject.file("../AppSignature/play-store.json")
     track = 'beta'
     resolutionStrategy = "auto"
 }
