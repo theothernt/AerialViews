@@ -25,9 +25,9 @@
     <string-array name="source_apple_2017_entries">
         <item>@string/disabled</item>
         <item>Full HD (1080)</item>
-        <item>Full HD (1080) HDR</item>
+<!--        <item>Full HD (1080) HDR</item>-->
         <item>Ultra HD (4K)</item>
-        <item>Ultra HD (4K) HDR</item>
+<!--        <item>Ultra HD (4K) HDR</item>-->
     </string-array>
 
     <string name="source_apple_2018">2018 Apple TV</string>
