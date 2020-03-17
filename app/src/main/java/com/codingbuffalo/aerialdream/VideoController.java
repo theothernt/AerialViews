@@ -9,9 +9,8 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 
+import com.codingbuffalo.aerialdream.data.Apple2019Video;
 import com.codingbuffalo.aerialdream.data.Apple2015Video;
-import com.codingbuffalo.aerialdream.data.Apple2017Video;
-import com.codingbuffalo.aerialdream.data.Apple2018Video;
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
@@ -20,12 +19,8 @@ import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
 
 public class VideoController implements VideoInteractor.Listener, ExoPlayerView.OnPlayerEventListener {
     private AerialDreamBinding binding;
-
     private VideoPlaylist playlist;
-
     private String source_apple_2015;
-    private String source_apple_2017;
-    private String source_apple_2018;
     private String source_apple_2019;
 
     public VideoController(Context context) {
@@ -42,11 +37,10 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         boolean showClock = prefs.getBoolean("show_clock", true);
         boolean showLocation = prefs.getBoolean("show_location", true);
         boolean showProgress = prefs.getBoolean("show_progress", false);
-        int cacheSize = 0;//Integer.valueOf(prefs.getString("cache_size", cache));
+        int cacheSize = 0;
+        //Integer.valueOf(prefs.getString("cache_size", cache));
 
         source_apple_2015 = prefs.getString("source_apple_2015", "all");
-        source_apple_2017 = prefs.getString("source_apple_2017", "1080_sdr");
-        source_apple_2018 = prefs.getString("source_apple_2018", "1080_sdr");
         source_apple_2019 = prefs.getString("source_apple_2019", "1080_sdr");
 
         binding.setShowLocation(showLocation);
@@ -63,8 +57,6 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         new VideoInteractor(
                 context,
                 !source_apple_2015.equals("disabled"),
-                !source_apple_2017.equals("disabled"),
-                !source_apple_2018.equals("disabled"),
                 !source_apple_2019.equals("disabled"),
                 this
         ).fetchVideos();
@@ -124,8 +116,6 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     private void loadVideo(VideoViewBinding videoBinding, Video video) {
         String option = video instanceof Apple2015Video ? source_apple_2015
-                : video instanceof Apple2017Video ? source_apple_2017
-                : video instanceof Apple2018Video ? source_apple_2018
                 : source_apple_2019;
         videoBinding.videoView.setUri(video.getUri(option));
         videoBinding.location.setText(video.getLocation());
