@@ -26,7 +26,7 @@ import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
-    public static final long DURATION = 5000;
+    public static final long DURATION = 2000;
 
     private static final long GB_IN_BYTES = 1073741824;
 

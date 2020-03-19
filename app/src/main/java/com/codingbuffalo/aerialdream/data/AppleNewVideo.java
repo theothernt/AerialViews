@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 public abstract class AppleNewVideo extends Video {
+    @SerializedName("url-1080-H264")
+    private String url_1080_H264;
     @SerializedName("url-1080-SDR")
     private String url_1080_SDR;
     @SerializedName("url-1080-HDR")
@@ -29,7 +31,9 @@ public abstract class AppleNewVideo extends Video {
     private String getUrl(String option) {
         switch (option) {
             case "1080_sdr":
-                return url_1080_SDR;
+                return url_1080_H264;
+            //case "1080_sdr":
+                //return url_1080_SDR;
             case "1080_hdr":
                 return url_1080_HDR;
             case "4k_sdr":
@@ -37,7 +41,7 @@ public abstract class AppleNewVideo extends Video {
             case "4k_hdr":
                 return url_4K_HDR;
             default:
-                return url_1080_SDR;
+                return url_1080_H264;
         }
     }
 }
