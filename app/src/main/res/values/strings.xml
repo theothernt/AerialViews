@@ -6,8 +6,6 @@
 
     <string name="show_clock">Show clock</string>
     <string name="show_location">Show location</string>
-    <string name="show_progress">Show video progress</string>
-    <string name="show_progress_description">Only visible on screens without overscan</string>
 
     <string name="video_sources">Video sources</string>
     <string name="disabled">Disabled</string>
@@ -39,14 +37,6 @@
         <item>Full HD (1080p) HDR</item>
         <item>Ultra HD (4K) SDR</item>
         <item>Ultra HD (4K) HDR</item>
-    </string-array>
-
-    <string name="cache_size">Video cache size</string>
-    <string-array name="cache_size_entries">
-        <item>No cache</item>
-        <item>4 GB</item>
-        <item>8 GB</item>
-        <item>Unlimited</item>
     </string-array>
 
     <string name="category_actions">Actions</string>

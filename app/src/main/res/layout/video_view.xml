@@ -16,14 +16,6 @@
             type="boolean" />
 
         <variable
-            name="showProgress"
-            type="boolean" />
-
-        <variable
-            name="cacheSize"
-            type="int" />
-
-        <variable
             name="controller"
             type="android.widget.MediaController.MediaPlayerControl" />
 
@@ -37,8 +29,7 @@
             android:id="@+id/video_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:cacheSize="@{cacheSize}" />
+            android:layout_gravity="center" />
 
         <TextView
             android:id="@+id/location"
@@ -61,13 +52,6 @@
             android:layout_marginEnd="48dp"
             android:gravity="end"
             android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
-
-        <com.codingbuffalo.aerialdream.VideoProgressBar
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="bottom"
-            android:visibility="@{showProgress ? View.VISIBLE : View.GONE}"
-            app:controller="@{controller}" />
 
     </FrameLayout>
 

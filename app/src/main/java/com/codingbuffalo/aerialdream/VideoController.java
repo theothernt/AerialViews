@@ -30,23 +30,14 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         // Apply preferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // Backwards compatibility
-        String cache = prefs.getBoolean("cache", false) ? "-1" : "0";
-        prefs.edit().remove("cache").apply();
-
         boolean showClock = prefs.getBoolean("show_clock", true);
         boolean showLocation = prefs.getBoolean("show_location", true);
-        boolean showProgress = prefs.getBoolean("show_progress", false);
-        int cacheSize = 0;
-        //Integer.valueOf(prefs.getString("cache_size", cache));
 
         source_apple_2015 = prefs.getString("source_apple_2015", "all");
         source_apple_2019 = prefs.getString("source_apple_2019", "1080_h264");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
-        binding.setShowProgress(showProgress);
-        binding.setCacheSize(cacheSize);
 
         binding.videoView0.setController(binding.videoView0.videoView);
         binding.videoView0.videoView.setOnPlayerListener(this);

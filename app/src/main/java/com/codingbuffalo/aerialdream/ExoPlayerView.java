@@ -28,14 +28,11 @@ import com.google.android.exoplayer2.video.VideoListener;
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 2000;
 
-    private static final long GB_IN_BYTES = 1073741824;
-
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
     private OnPlayerEventListener listener;
     private float aspectRatio;
     private boolean prepared;
-    private long cacheSize;
 
     public ExoPlayerView(Context context) {
         this(context, null);
@@ -55,14 +52,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         player.addListener(this);
     }
 
-    public void setCacheSize(int cacheSize) {
-        if (cacheSize < 0) {
-            this.cacheSize = Long.MAX_VALUE;
-        } else {
-            this.cacheSize = cacheSize * GB_IN_BYTES;
-        }
-    }
-
     public void setUri(Uri uri) {
         if (uri == null) {
             return;
@@ -72,11 +61,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         prepared = false;
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
-        DataSource.Factory dataSourceFactory = cacheSize > 0
-                ? new CacheDataSourceFactory(new SimpleCache(getContext().getCacheDir(), new LeastRecentlyUsedCacheEvictor(cacheSize), new ExoDatabaseProvider(getContext())), httpDataSourceFactory, 0)
-                : httpDataSourceFactory;
-
-        mediaSource = new ProgressiveMediaSource.Factory(dataSourceFactory)
+        mediaSource = new ProgressiveMediaSource.Factory(httpDataSourceFactory)
                 .createMediaSource(uri);
         player.prepare(mediaSource);
     }

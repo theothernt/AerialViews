@@ -12,14 +12,6 @@
             name="showClock"
             type="boolean" />
 
-        <variable
-            name="showProgress"
-            type="boolean" />
-
-        <variable
-            name="cacheSize"
-            type="int" />
-
     </data>
 
     <FrameLayout
@@ -31,18 +23,8 @@
         <include
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
-            app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
-            app:showLocation="@{showLocation}"
-            app:showProgress="@{showProgress}" />
-
-       <!-- <include
-            android:id="@+id/video_view_1"
-            layout="@layout/video_view"
-            app:cacheSize="@{cacheSize}"
-            app:showClock="@{showClock}"
-            app:showLocation="@{showLocation}"
-            app:showProgress="@{showProgress}" />-->
+            app:showLocation="@{showLocation}" />
 
         <TextView
             android:id="@+id/loading_view"
