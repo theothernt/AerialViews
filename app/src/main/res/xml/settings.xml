@@ -25,9 +25,9 @@
             android:title="@string/source_apple_2018" />
 
         <ListPreference
-            android:defaultValue="1080_sdr"
-            android:entries="@array/source_apple_2017_entries"
-            android:entryValues="@array/source_apple_2017_values"
+            android:defaultValue="1080_h264"
+            android:entries="@array/source_apple_2019_entries"
+            android:entryValues="@array/source_apple_2019_values"
             android:key="source_apple_2019"
             android:title="@string/source_apple_2019" />
 
@@ -46,19 +46,6 @@
             android:defaultValue="true"
             android:key="show_location"
             android:title="@string/show_location" />
-
-      <!--  <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="show_progress"
-            android:summary="@string/show_progress_description"
-            android:title="@string/show_progress" />
--->
-        <!--<ListPreference-->
-            <!--android:defaultValue="0"-->
-            <!--android:entries="@array/cache_size_entries"-->
-            <!--android:entryValues="@array/cache_size_values"-->
-            <!--android:key="cache_size"-->
-            <!--android:title="@string/cache_size" />-->
 
     </PreferenceCategory>
 

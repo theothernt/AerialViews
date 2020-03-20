@@ -31,9 +31,7 @@ public abstract class AppleNewVideo extends Video {
     private String getUrl(String option) {
         switch (option) {
             case "1080_sdr":
-                return url_1080_H264;
-            //case "1080_sdr":
-                //return url_1080_SDR;
+                return url_1080_SDR;
             case "1080_hdr":
                 return url_1080_HDR;
             case "4k_sdr":

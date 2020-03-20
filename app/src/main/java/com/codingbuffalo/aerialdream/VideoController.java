@@ -41,7 +41,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         //Integer.valueOf(prefs.getString("cache_size", cache));
 
         source_apple_2015 = prefs.getString("source_apple_2015", "all");
-        source_apple_2019 = prefs.getString("source_apple_2019", "1080_sdr");
+        source_apple_2019 = prefs.getString("source_apple_2019", "1080_h264");
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
@@ -64,11 +64,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     public void start() {
-        //binding.videoView0.getRoot().setAlpha(0);
-
         loadVideo(binding.videoView0, getVideo());
-
-        //binding.videoView0.videoView.start();
     }
 
     public void stop() {
@@ -159,7 +155,6 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     @Override
     public void onAlmostFinished(ExoPlayerView view) {
-
         playVideo(binding.videoView0);
     }
 }

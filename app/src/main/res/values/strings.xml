@@ -32,7 +32,14 @@
 
     <string name="source_apple_2018">2018 Apple TV</string>
 
-    <string name="source_apple_2019">2019 Apple TV</string>
+    <string name="source_apple_2019">2017 Apple TV</string>
+    <string-array name="source_apple_2019_entries">
+        <item>Full HD (1080p) Legacy H.264</item>
+        <item>Full HD (1080p) SDR</item>
+        <item>Full HD (1080p) HDR</item>
+        <item>Ultra HD (4K) SDR</item>
+        <item>Ultra HD (4K) HDR</item>
+    </string-array>
 
     <string name="cache_size">Video cache size</string>
     <string-array name="cache_size_entries">
