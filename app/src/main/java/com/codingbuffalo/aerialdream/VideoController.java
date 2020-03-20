@@ -134,11 +134,10 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     @Override
     public void onPrepared(ExoPlayerView view) {
-        /*if (binding.loadingView.getVisibility() == View.VISIBLE && view == binding.videoView1.videoView) {
-            binding.videoView0.getRoot().setAlpha(1);
+        if (binding.loadingView.getVisibility() == View.VISIBLE) {
 
             Animation animation = new AlphaAnimation(1, 0);
-            animation.setDuration(ExoPlayerView.DURATION / 2);
+            animation.setDuration(ExoPlayerView.DURATION);
             animation.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
@@ -155,7 +154,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             });
 
             binding.loadingView.startAnimation(animation);
-        }*/
+        }
     }
 
     @Override
