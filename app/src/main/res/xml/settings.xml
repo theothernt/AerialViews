@@ -47,12 +47,12 @@
             android:key="show_location"
             android:title="@string/show_location" />
 
-        <CheckBoxPreference
+      <!--  <CheckBoxPreference
             android:defaultValue="false"
             android:key="show_progress"
             android:summary="@string/show_progress_description"
             android:title="@string/show_progress" />
-
+-->
         <!--<ListPreference-->
             <!--android:defaultValue="0"-->
             <!--android:entries="@array/cache_size_entries"-->
