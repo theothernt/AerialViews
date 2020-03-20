@@ -48,16 +48,8 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     }
 
     private void updateSummaries() {
-        ListPreference pref = (ListPreference) findPreference("source_apple_2015");
+        ListPreference pref = (ListPreference) findPreference("source_apple_2019");
         pref.setSummary(pref.getEntry());
-        pref = (ListPreference) findPreference("source_apple_2017");
-        pref.setSummary(pref.getEntry());
-        pref = (ListPreference) findPreference("source_apple_2018");
-        pref.setSummary(pref.getEntry());
-        pref = (ListPreference) findPreference("source_apple_2019");
-        pref.setSummary(pref.getEntry());
-//        pref = (ListPreference) findPreference("cache_size");
-//        pref.setSummary(pref.getEntry());
     }
 
     private boolean intentAvailable(Intent intent) {

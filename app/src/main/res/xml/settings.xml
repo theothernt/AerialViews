@@ -4,27 +4,6 @@
     <PreferenceCategory android:title="@string/video_sources">
 
         <ListPreference
-            android:defaultValue="all"
-            android:entries="@array/source_apple_2015_entries"
-            android:entryValues="@array/source_apple_2015_values"
-            android:key="source_apple_2015"
-            android:title="@string/source_apple_2015" />
-
-        <ListPreference
-            android:defaultValue="1080_sdr"
-            android:entries="@array/source_apple_2017_entries"
-            android:entryValues="@array/source_apple_2017_values"
-            android:key="source_apple_2017"
-            android:title="@string/source_apple_2017" />
-
-        <ListPreference
-            android:defaultValue="1080_sdr"
-            android:entries="@array/source_apple_2017_entries"
-            android:entryValues="@array/source_apple_2017_values"
-            android:key="source_apple_2018"
-            android:title="@string/source_apple_2018" />
-
-        <ListPreference
             android:defaultValue="1080_h264"
             android:entries="@array/source_apple_2019_entries"
             android:entryValues="@array/source_apple_2019_values"
