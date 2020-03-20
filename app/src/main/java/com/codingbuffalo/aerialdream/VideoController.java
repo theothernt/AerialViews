@@ -49,10 +49,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         binding.setCacheSize(cacheSize);
 
         binding.videoView0.setController(binding.videoView0.videoView);
-        binding.videoView1.setController(binding.videoView1.videoView);
-
         binding.videoView0.videoView.setOnPlayerListener(this);
-        binding.videoView1.videoView.setOnPlayerListener(this);
 
         new VideoInteractor(
                 context,
@@ -67,23 +64,29 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     public void start() {
-        binding.videoView0.getRoot().setAlpha(0);
+        //binding.videoView0.getRoot().setAlpha(0);
 
         loadVideo(binding.videoView0, getVideo());
-        loadVideo(binding.videoView1, getVideo());
 
-        binding.videoView1.videoView.start();
+        //binding.videoView0.videoView.start();
     }
 
     public void stop() {
         binding.videoView0.videoView.release();
-        binding.videoView1.videoView.release();
     }
 
-    private void playVideo(final VideoViewBinding deactivate, final VideoViewBinding activate) {
-        activate.videoView.start();
+    private void playVideo(final VideoViewBinding activate) {
 
-        Animation animation = new AlphaAnimation(1, 0);
+        loadVideo(binding.videoView0, getVideo());
+        // if video is playing
+        // fade out, then stop, then next video, fade in
+        // otherwise, next video fade in
+
+        //loadVideo(activate, getVideo());
+        //binding.container.bringChildToFront(activate.getRoot());
+        //activate.videoView.start();
+
+        /*Animation animation = new AlphaAnimation(1, 0);
         animation.setDuration(ExoPlayerView.DURATION);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -105,7 +108,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             }
         });
 
-        deactivate.getRoot().startAnimation(animation);
+        deactivate.getRoot().startAnimation(animation);*/
     }
 
     @Override
@@ -119,6 +122,8 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 : source_apple_2019;
         videoBinding.videoView.setUri(video.getUri(option));
         videoBinding.location.setText(video.getLocation());
+
+        videoBinding.videoView.start();
     }
 
     private Video getVideo() {
@@ -129,7 +134,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
     @Override
     public void onPrepared(ExoPlayerView view) {
-        if (binding.loadingView.getVisibility() == View.VISIBLE && view == binding.videoView1.videoView) {
+        /*if (binding.loadingView.getVisibility() == View.VISIBLE && view == binding.videoView1.videoView) {
             binding.videoView0.getRoot().setAlpha(1);
 
             Animation animation = new AlphaAnimation(1, 0);
@@ -150,15 +155,12 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             });
 
             binding.loadingView.startAnimation(animation);
-        }
+        }*/
     }
 
     @Override
     public void onAlmostFinished(ExoPlayerView view) {
-        if (view == binding.videoView0.videoView) {
-            playVideo(binding.videoView0, binding.videoView1);
-        } else {
-            playVideo(binding.videoView1, binding.videoView0);
-        }
+
+        playVideo(binding.videoView0);
     }
 }
