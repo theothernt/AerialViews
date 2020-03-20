@@ -36,22 +36,22 @@
             app:showLocation="@{showLocation}"
             app:showProgress="@{showProgress}" />
 
-        <include
+       <!-- <include
             android:id="@+id/video_view_1"
             layout="@layout/video_view"
             app:cacheSize="@{cacheSize}"
             app:showClock="@{showClock}"
             app:showLocation="@{showLocation}"
-            app:showProgress="@{showProgress}" />
+            app:showProgress="@{showProgress}" />-->
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/loading_view"
             style="@style/LoadingText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#000"
             android:gravity="center"
-            android:text="@string/loading_aerial" />
+            android:text="@string/loading_aerial" />-->
 
     </FrameLayout>
 
