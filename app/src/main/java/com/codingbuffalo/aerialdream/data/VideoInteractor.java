@@ -16,15 +16,12 @@ public class VideoInteractor extends Interactor {
     private List<VideoRepository> repositories = new LinkedList<>();
     private Context context;
 
-    public VideoInteractor(Context context, boolean apple2015, boolean apple2019, @NonNull Listener listener) {
+    public VideoInteractor(Context context, boolean apple2019, @NonNull Listener listener) {
         super(Executors.newCachedThreadPool());
 
         this.context = context.getApplicationContext();
         this.listener = listener;
 
-        if (apple2015) {
-            repositories.add(new Apple2015Repository());
-        }
         if (apple2019) {
             repositories.add(new Apple2019Repository());
         }

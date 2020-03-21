@@ -1,6 +1,7 @@
 <resources>
     <string name="daydream_name">Aerial Dream</string>
-    <string name="loading_aerial">Loading Aerial…</string>
+    <!--<string name="loading_aerial">Loading Aerial…</string>-->
+    <string name="loading_aerial"></string>
 
     <string name="category_settings">Settings</string>
 
