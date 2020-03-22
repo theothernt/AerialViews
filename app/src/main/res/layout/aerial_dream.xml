@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="showLocation"
             type="boolean" />
@@ -34,6 +36,17 @@
             android:background="#000"
             android:gravity="center"
             android:text="@string/loading_aerial" />
+
+        <TextClock
+            android:id="@+id/clock"
+            style="@style/VideoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="32dp"
+            android:layout_marginEnd="48dp"
+            android:gravity="end"
+            android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 

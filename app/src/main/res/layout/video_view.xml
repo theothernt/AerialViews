@@ -42,7 +42,7 @@
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="San Francisco" />
 
-        <TextClock
+        <!--<TextClock
             android:id="@+id/clock"
             style="@style/VideoText"
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:layout_marginBottom="32dp"
             android:layout_marginEnd="48dp"
             android:gravity="end"
-            android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />-->
 
     </FrameLayout>
 
