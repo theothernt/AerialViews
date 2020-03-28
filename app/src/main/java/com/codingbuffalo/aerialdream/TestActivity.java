@@ -2,6 +2,8 @@ package com.codingbuffalo.aerialdream;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 
 public class TestActivity extends Activity {
@@ -16,7 +18,19 @@ public class TestActivity extends Activity {
         videoController = new VideoController(this);
         setContentView(videoController.getView());
     }
-    
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+
+        if (event.getAction() == KeyEvent.ACTION_UP &&
+                event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
+            videoController.skipVideo();
+            return true;
+        }
+
+        return super.dispatchKeyEvent(event);
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {         
         super.onWindowFocusChanged(hasFocus);

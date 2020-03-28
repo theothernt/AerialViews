@@ -24,7 +24,6 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         LayoutInflater inflater = LayoutInflater.from(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false);
 
-        // Apply preferences
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         boolean showClock = prefs.getBoolean("show_clock", true);
@@ -57,32 +56,33 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         binding.videoView0.videoView.release();
     }
 
-    private void playNextVideo() {
-        Log.i("VideoController","playNextVideo");
-
+    public void skipVideo() {
+        fadeOutCurrentVideo();
     }
 
-    @Override
-    public void onFetch(VideoPlaylist videos) {
-        this.playlist = videos;
-        binding.getRoot().post(this::start);
+    private void fadeOutCurrentVideo() {
+        Animation animation = new AlphaAnimation(0, 1);
+        animation.setDuration(ExoPlayerView.DURATION);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                binding.loadingView.setVisibility(View.VISIBLE);
+                loadVideo(binding.videoView0, getVideo());
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        binding.loadingView.startAnimation(animation);
     }
 
-    private void loadVideo(VideoViewBinding videoBinding, Video video) {
-        videoBinding.videoView.setUri(video.getUri(source_apple_2019));
-        videoBinding.location.setText(video.getLocation());
-
-        videoBinding.videoView.start();
-    }
-
-    private Video getVideo() {
-        return playlist.getVideo();
-    }
-
-    @Override
-    public void onPrepared(ExoPlayerView view) {
-        Log.i("VideoController","onPrepared");
-
+    private void fadeInNextVideo() {
         if (binding.loadingView.getVisibility() == View.VISIBLE) {
 
             Animation animation = new AlphaAnimation(1, 0);
@@ -107,27 +107,28 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     @Override
+    public void onFetch(VideoPlaylist videos) {
+        this.playlist = videos;
+        binding.getRoot().post(this::start);
+    }
+
+    private void loadVideo(VideoViewBinding videoBinding, Video video) {
+        videoBinding.videoView.setUri(video.getUri(source_apple_2019));
+        videoBinding.location.setText(video.getLocation());
+        videoBinding.videoView.start();
+    }
+
+    private Video getVideo() {
+        return playlist.getVideo();
+    }
+
+    @Override
+    public void onPrepared(ExoPlayerView view) {
+        fadeInNextVideo();
+    }
+
+    @Override
     public void onAlmostFinished(ExoPlayerView view) {
-        Log.i("VideoController","onAlmostFinished");
-
-        Animation animation = new AlphaAnimation(0, 1);
-        animation.setDuration(ExoPlayerView.DURATION);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                binding.loadingView.setVisibility(View.VISIBLE);
-                loadVideo(binding.videoView0, getVideo());
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-        binding.loadingView.startAnimation(animation);
+        fadeOutCurrentVideo();
     }
 }
