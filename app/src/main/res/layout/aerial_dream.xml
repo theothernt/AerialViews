@@ -25,7 +25,6 @@
         <include
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
-            app:showClock="@{showClock}"
             app:showLocation="@{showLocation}" />
 
         <TextView
@@ -39,12 +38,12 @@
 
         <TextClock
             android:id="@+id/clock"
-            style="@style/VideoText"
+            style="@style/ClockText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="48dp"
+            android:layout_marginEnd="32dp"
             android:gravity="end"
             android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
 
