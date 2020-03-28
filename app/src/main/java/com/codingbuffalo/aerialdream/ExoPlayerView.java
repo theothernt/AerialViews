@@ -4,25 +4,20 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 import android.widget.MediaController;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
-import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
@@ -157,6 +152,21 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+        switch (playbackState)
+        {
+            case Player.STATE_BUFFERING:
+                Log.i("ExoPlayerView","Player State: Buffering");
+                break;
+            case Player.STATE_READY:
+                Log.i("ExoPlayerView","Player State: Ready");
+                break;
+            case Player.STATE_IDLE:
+                Log.i("ExoPlayerView","Player State: Idle");
+                break;
+            default:
+        }
+
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true;
             listener.onPrepared(this);
