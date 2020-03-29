@@ -2,7 +2,6 @@ package com.codingbuffalo.aerialdream;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
