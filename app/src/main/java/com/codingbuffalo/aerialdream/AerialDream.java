@@ -23,7 +23,7 @@ public class AerialDream extends DreamService {
         if (event.getAction() == KeyEvent.ACTION_UP &&
                 event.getKeyCode() == KeyEvent.KEYCODE_DPAD_RIGHT) {
             videoController.skipVideo();
-            return false;
+            return true;
         }
 
         return super.dispatchKeyEvent(event);

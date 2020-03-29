@@ -19,6 +19,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     private AerialDreamBinding binding;
     private VideoPlaylist playlist;
     private String source_apple_2019;
+    private boolean canSkip;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -42,25 +43,27 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 !source_apple_2019.equals("disabled"),
                 this
         ).fetchVideos();
+
+        canSkip = true;
     }
 
     public View getView() {
         return binding.getRoot();
     }
 
-    public void start() {
-        loadVideo(binding.videoView0, getVideo());
-    }
+    public void start() { loadVideo(binding.videoView0, getVideo()); }
 
     public void stop() {
         binding.videoView0.videoView.release();
     }
 
-    public void skipVideo() {
-        fadeOutCurrentVideo();
-    }
+    public void skipVideo() { fadeOutCurrentVideo(); }
 
     private void fadeOutCurrentVideo() {
+
+        if (!canSkip) return;
+        canSkip = false;
+
         Animation animation = new AlphaAnimation(0, 1);
         animation.setDuration(ExoPlayerView.DURATION);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -95,6 +98,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     binding.loadingView.setVisibility(View.GONE);
+                    canSkip = true;
                 }
 
                 @Override
