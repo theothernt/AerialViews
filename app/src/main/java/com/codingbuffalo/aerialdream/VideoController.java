@@ -117,8 +117,11 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     private void loadVideo(VideoViewBinding videoBinding, Video video) {
+        Log.i("LoadVideo", "Playing: " + video.getLocation() + " - " + video.getUri(source_apple_2019));
+
         videoBinding.videoView.setUri(video.getUri(source_apple_2019));
         videoBinding.location.setText(video.getLocation());
+
         videoBinding.videoView.start();
     }
 
@@ -134,5 +137,10 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     @Override
     public void onAlmostFinished(ExoPlayerView view) {
         fadeOutCurrentVideo();
+    }
+
+    @Override
+    public void onError(ExoPlayerView view) {
+        binding.getRoot().post(this::start);
     }
 }
