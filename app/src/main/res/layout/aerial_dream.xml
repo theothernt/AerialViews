@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="52dp"
+            android:paddingBottom="@{showLocation ? @dimen/large_padding : @dimen/small_padding}"
             android:layout_marginEnd="31dp"
             android:gravity="end"
             android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
