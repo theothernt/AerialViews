@@ -18,26 +18,26 @@
 
     <style name="ClockText">
         <item name="android:alpha">0.8</item>
-        <item name="android:paddingRight">1dp</item>
+        <item name="android:paddingRight">5px</item>
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">4</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">32sp</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
     <style name="LocationText">
-        <item name="android:alpha">0.8</item>
-        <item name="android:paddingRight">1dp</item>
+        <item name="android:alpha">0.9</item>
+        <item name="android:paddingRight">5px</item>
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">2</item>
         <item name="android:shadowDy">2</item>
         <item name="android:shadowRadius">4</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">17sp</item>
     </style>
 
 </resources>
