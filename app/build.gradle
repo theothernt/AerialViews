@@ -60,7 +60,6 @@ task fetchPlaylistTask (type: Exec) {
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine 'cmd', '/c', 'powershell', '-Command', '../fetch_playlists.ps1'
     } else {
-        println "Mac/Linux..."
         commandLine 'sh', '-c', '../fetch_playlists.sh'
     }
 }
