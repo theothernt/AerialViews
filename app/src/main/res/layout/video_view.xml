@@ -33,25 +33,14 @@
 
         <TextView
             android:id="@+id/location"
-            style="@style/VideoText"
+            style="@style/LocationText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginBottom="32dp"
-            android:layout_marginStart="48dp"
-            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="San Francisco" />
-
-        <!--<TextClock
-            android:id="@+id/clock"
-            style="@style/VideoText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="48dp"
+            android:layout_marginEnd="31dp"
             android:gravity="end"
-            android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />-->
+            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 

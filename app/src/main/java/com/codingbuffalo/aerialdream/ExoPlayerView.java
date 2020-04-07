@@ -4,33 +4,30 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.TextureView;
 import android.widget.MediaController;
-
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.database.ExoDatabaseProvider;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory;
-import com.google.android.exoplayer2.upstream.cache.LeastRecentlyUsedCacheEvictor;
-import com.google.android.exoplayer2.upstream.cache.SimpleCache;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 2000;
+    public static final long MAX_RETRIES = 3;
 
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
     private OnPlayerEventListener listener;
+    private int retries;
     private float aspectRatio;
     private boolean prepared;
 
@@ -46,10 +43,10 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
 
         player = ExoPlayerFactory.newSimpleInstance(context);
-
         player.setVideoTextureView(this);
         player.addVideoListener(this);
         player.addListener(this);
+        player.setVolume(0);
     }
 
     public void setUri(Uri uri) {
@@ -59,6 +56,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
         player.stop();
         prepared = false;
+        retries = 0;
 
         DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
         mediaSource = new ProgressiveMediaSource.Factory(httpDataSourceFactory)
@@ -157,6 +155,21 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+
+        switch (playbackState)
+        {
+            case Player.STATE_BUFFERING:
+                Log.i("ExoPlayerView","Player State: Buffering");
+                break;
+            case Player.STATE_READY:
+                Log.i("ExoPlayerView","Player State: Ready");
+                break;
+            case Player.STATE_IDLE:
+                Log.i("ExoPlayerView","Player State: Idle");
+                break;
+            default:
+        }
+
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true;
             listener.onPrepared(this);
@@ -186,7 +199,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-        error.printStackTrace();
+        //error.printStackTrace();
 
         // Attempt to reload video
         removeCallbacks(errorRecoveryRunnable);
@@ -228,7 +241,16 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     private Runnable errorRecoveryRunnable = new Runnable() {
         @Override
         public void run() {
-            player.prepare(mediaSource);
+
+            retries++;
+
+            Log.i("ExoPlayerView", "Retries: " + retries);
+
+            if (retries >= MAX_RETRIES) {
+                listener.onError(ExoPlayerView.this);
+            } else {
+                player.prepare(mediaSource);
+            }
         }
     };
 
@@ -236,5 +258,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         void onAlmostFinished(ExoPlayerView view);
 
         void onPrepared(ExoPlayerView view);
+
+        void onError(ExoPlayerView view);
     }
 }
