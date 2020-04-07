@@ -1,5 +1,3 @@
-Write-Output "Script output?!"
-
 # Set destination path
 $path = "src/main/res/raw"
 

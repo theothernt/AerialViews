@@ -55,19 +55,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-preBuild.doFirst {
-    task fetchPlaylistTask(type: Exec) {
-        // Fetch playlist files
-        if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-            println "Windows..."
-            commandLine 'cmd', '/c', 'powershell', '-Command', '../fetch_playlists.ps1'
-            //commandLine 'powershell', '-Command', '../fetch_playlists.ps1'
-        } else {
-            println "Mac/Linux..."
-            commandLine 'sh', '-c', '../fetch_playlists.sh'
-        }
+task fetchPlaylistTask (type: Exec) {
+    // Fetch playlist files
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+        commandLine 'cmd', '/c', 'powershell', '-Command', '../fetch_playlists.ps1'
+    } else {
+        println "Mac/Linux..."
+        commandLine 'sh', '-c', '../fetch_playlists.sh'
     }
 }
+
+preBuild.dependsOn fetchPlaylistTask
 
 clean.doFirst {
     // Delete playlists
