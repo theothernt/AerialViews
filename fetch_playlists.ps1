@@ -14,6 +14,7 @@ $num = (Get-ChildItem -Path $path -Recurse -Filter "tvos*.json").Count
 if ($num -ne 1)
 {
     curl.exe http://sylvan.apple.com/Aerials/resources-13.tar -o resources-13.tar
-    tar -xOf resources-13.tar entries.json > $path/tvos13.json
-    Remove-Item resources-13.tar
+    tar -xOf resources-13.tar entries.json > tvos13.json
+    Get-Content tvos13.json | Set-Content -Encoding utf8 $path/tvos13.json
+    Remove-Item resources-13.tar, tvos13.json
 }
