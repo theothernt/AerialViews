@@ -24,7 +24,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
-    public static final long DURATION = 2000;
+    public static final long DURATION = 1500;
     public static final long MAX_RETRIES = 3;
 
     private SimpleExoPlayer player;
@@ -32,6 +32,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     private OnPlayerEventListener listener;
     private int retries;
     private float aspectRatio;
+    private boolean useReducedBuffering;
     private boolean prepared;
 
     public ExoPlayerView(Context context) {
@@ -45,27 +46,14 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        DefaultLoadControl.Builder builder = new
-                DefaultLoadControl.Builder();
+        useReducedBuffering = true;
 
-        final int minBuffer = 5000;
-        final int maxBuffer = 10000;
-
-        final int bufferForPlayback = 1000;
-        final int bufferForPlaybackAfterRebuffer = 5000;
-
-        builder.setBufferDurationsMs(
-                minBuffer,
-                maxBuffer,
-                bufferForPlayback,
-                bufferForPlaybackAfterRebuffer);
-
-        DefaultLoadControl loadControl = builder.createDefaultLoadControl();
-
-        player = ExoPlayerFactory.newSimpleInstance(
-                context,
-                new DefaultTrackSelector(),
-                loadControl);
+        if (useReducedBuffering) {
+            Log.i("ExoPlayerView","Using reduced buffering...");
+            player = getPlayerWithReducedBuffering(context);
+        } else {
+            player = ExoPlayerFactory.newSimpleInstance(context);
+        }
 
         player.setVideoTextureView(this);
         player.addVideoListener(this);
@@ -277,6 +265,31 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             }
         }
     };
+
+    private SimpleExoPlayer getPlayerWithReducedBuffering(Context context) {
+        DefaultLoadControl.Builder builder = new DefaultLoadControl.Builder();
+
+        // Buffer sizes while playing
+        final int minBuffer = 5000;
+        final int maxBuffer = 10000;
+
+        // Initial buffer size to start playback
+        final int bufferForPlayback = 1000;
+        final int bufferForPlaybackAfterRebuffer = 5000;
+
+        builder.setBufferDurationsMs(
+                minBuffer,
+                maxBuffer,
+                bufferForPlayback,
+                bufferForPlaybackAfterRebuffer);
+
+        DefaultLoadControl loadControl = builder.createDefaultLoadControl();
+
+        return ExoPlayerFactory.newSimpleInstance(
+                context,
+                new DefaultTrackSelector(),
+                loadControl);
+    }
 
     public interface OnPlayerEventListener {
         void onAlmostFinished(ExoPlayerView view);
