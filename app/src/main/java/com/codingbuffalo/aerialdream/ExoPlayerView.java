@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
 import android.widget.MediaController;
+
+import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -16,6 +18,7 @@ import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
@@ -42,7 +45,28 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        player = ExoPlayerFactory.newSimpleInstance(context);
+        DefaultLoadControl.Builder builder = new
+                DefaultLoadControl.Builder();
+
+        final int minBuffer = 5000;
+        final int maxBuffer = 10000;
+
+        final int bufferForPlayback = 1000;
+        final int bufferForPlaybackAfterRebuffer = 5000;
+
+        builder.setBufferDurationsMs(
+                minBuffer,
+                maxBuffer,
+                bufferForPlayback,
+                bufferForPlaybackAfterRebuffer);
+
+        DefaultLoadControl loadControl = builder.createDefaultLoadControl();
+
+        player = ExoPlayerFactory.newSimpleInstance(
+                context,
+                new DefaultTrackSelector(),
+                loadControl);
+
         player.setVideoTextureView(this);
         player.addVideoListener(this);
         player.addListener(this);
