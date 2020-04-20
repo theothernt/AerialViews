@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
 import android.widget.MediaController;
-
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -49,7 +48,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         useReducedBuffering = true;
 
         if (useReducedBuffering) {
-            Log.i("ExoPlayerView","Using reduced buffering...");
+            Log.i("ExoPlayerView", "Using reduced buffering...");
             player = getPlayerWithReducedBuffering(context);
         } else {
             player = ExoPlayerFactory.newSimpleInstance(context);
@@ -168,16 +167,18 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
 
-        switch (playbackState)
-        {
+        switch (playbackState) {
             case Player.STATE_BUFFERING:
-                Log.i("ExoPlayerView","Player State: Buffering");
+                Log.i("ExoPlayerView", "Player: Buffering...");
                 break;
             case Player.STATE_READY:
-                Log.i("ExoPlayerView","Player State: Ready");
+                Log.i("ExoPlayerView", "Player: Ready...");
                 break;
             case Player.STATE_IDLE:
-                Log.i("ExoPlayerView","Player State: Idle");
+                Log.i("ExoPlayerView", "Player: Idle...");
+                break;
+            case Player.STATE_ENDED:
+                Log.i("ExoPlayerView", "Player: Ended...");
                 break;
             default:
         }
@@ -220,17 +221,31 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPositionDiscontinuity(int reason) {
-
+        switch (reason) {
+            case SimpleExoPlayer.DISCONTINUITY_REASON_PERIOD_TRANSITION:
+                Log.i("ExoPlayerView", "Video stutters due to period transition");
+                break;
+            case SimpleExoPlayer.DISCONTINUITY_REASON_SEEK:
+                Log.i("ExoPlayerView", "Video stutters due to a seek");
+                break;
+            case SimpleExoPlayer.DISCONTINUITY_REASON_SEEK_ADJUSTMENT:
+                Log.i("ExoPlayerView", "Video stutters due to seek adjustment");
+                break;
+            case SimpleExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
+                Log.i("ExoPlayerView", "Video stutters due to an inserted ad");
+                break;
+            case SimpleExoPlayer.DISCONTINUITY_REASON_INTERNAL:
+                Log.i("ExoPlayerView", "Video stutters due to an internal problem");
+                break;
+        }
     }
 
     @Override
     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-
     }
 
     @Override
     public void onSeekProcessed() {
-
     }
 
     @Override
