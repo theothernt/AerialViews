@@ -40,7 +40,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         new VideoInteractor(
                 context,
-                !source_apple_2019.equals("disabled"),
+                source_apple_2019,
                 this
         ).fetchVideos();
 
