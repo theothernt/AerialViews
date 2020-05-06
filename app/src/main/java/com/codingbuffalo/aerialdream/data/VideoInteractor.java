@@ -48,11 +48,6 @@ public class VideoInteractor extends Interactor {
                 remoteVideos.addAll(repository.fetchVideos(context));
             }
 
-            List<String> localVideos =  new ArrayList<String>();
-            if (videoSource != VideoSource.REMOTE) {
-                localVideos = getAllMedia();
-            }
-
             for (Video video : remoteVideos) {
                 Uri remoteUri = video.getUri(source_apple_2019);
                 String remoteFilename = remoteUri.getLastPathSegment().toLowerCase();
@@ -64,6 +59,7 @@ public class VideoInteractor extends Interactor {
                 }
 
                 if (videoSource != VideoSource.REMOTE) {
+                    List<String> localVideos = getAllMedia();
                     Uri localUri = findLocalVideo(localVideos, remoteFilename);
                     if(localUri != null) {
                         Log.i("FetchVideosTask","Local video: " + localUri.getLastPathSegment());
