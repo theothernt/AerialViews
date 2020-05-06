@@ -12,25 +12,27 @@ import androidx.databinding.DataBindingUtil;
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
+import com.codingbuffalo.aerialdream.data.VideoSource;
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding;
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
 
 public class VideoController implements VideoInteractor.Listener, ExoPlayerView.OnPlayerEventListener {
     private AerialDreamBinding binding;
     private VideoPlaylist playlist;
-    private String source_apple_2019;
+    private String videoType2019;
     private boolean canSkip;
+    private int videoSource;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         boolean showClock = prefs.getBoolean("show_clock", true);
         boolean showLocation = prefs.getBoolean("show_location", true);
 
-        source_apple_2019 = prefs.getString("source_apple_2019", "1080_h264");
+        videoType2019 = prefs.getString("source_apple_2019", "1080_h264");
+        videoSource = prefs.getInt("video_source", VideoSource.REMOTE);
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);
@@ -40,7 +42,8 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         new VideoInteractor(
                 context,
-                source_apple_2019,
+                videoSource,
+                videoType2019,
                 this
         ).fetchVideos();
 
@@ -117,9 +120,9 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     }
 
     private void loadVideo(VideoViewBinding videoBinding, Video video) {
-        Log.i("LoadVideo", "Playing: " + video.getLocation() + " - " + video.getUri(source_apple_2019));
+        Log.i("LoadVideo", "Playing: " + video.getLocation() + " - " + video.getUri(videoType2019));
 
-        videoBinding.videoView.setUri(video.getUri(source_apple_2019));
+        videoBinding.videoView.setUri(video.getUri(videoType2019));
         videoBinding.location.setText(video.getLocation());
 
         videoBinding.videoView.start();

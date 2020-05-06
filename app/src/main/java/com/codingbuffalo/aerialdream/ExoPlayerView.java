@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
 
@@ -69,7 +70,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         prepared = false;
         retries = 0;
 
-        DefaultHttpDataSourceFactory httpDataSourceFactory = new DefaultHttpDataSourceFactory("Aerial Dream");
+        DefaultDataSourceFactory httpDataSourceFactory = new DefaultDataSourceFactory(this.getContext(), "Aerial Dream");
         mediaSource = new ProgressiveMediaSource.Factory(httpDataSourceFactory)
                 .createMediaSource(uri);
         player.prepare(mediaSource);

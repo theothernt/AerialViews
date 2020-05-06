@@ -10,9 +10,6 @@ import android.util.Log;
 import com.codingbuffalo.aerialdream.data.protium.Interactor;
 import com.codingbuffalo.aerialdream.data.protium.ValueTask;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -24,22 +21,17 @@ public class VideoInteractor extends Interactor {
     private List<VideoRepository> repositories = new LinkedList<>();
     private Context context;
     private String source_apple_2019;
-    private int videoSource = 0;
+    private int videoSource;
 
-    public VideoInteractor(Context context, String source_apple_2019, @NonNull Listener listener) {
+    public VideoInteractor(Context context, int videoSource, String source_apple_2019, @NonNull Listener listener) {
         super(Executors.newCachedThreadPool());
 
         this.context = context.getApplicationContext();
         this.listener = listener;
 
+        this.videoSource = videoSource;
         this.source_apple_2019 = source_apple_2019;
         repositories.add(new Apple2019Repository());
-
-        // videoSource
-        // 0 remote only
-        // 1 local only
-        // 2 remote and local
-        this.videoSource = 2;
     }
 
     public void fetchVideos() {
@@ -61,23 +53,26 @@ public class VideoInteractor extends Interactor {
                 Uri remoteUri = video.getUri(source_apple_2019);
                 String remoteFilename = remoteUri.getLastPathSegment().toLowerCase();
 
-                if (videoSource == 0) {
-                    // add remote video only
+                if (videoSource == VideoSource.REMOTE) {
                     Log.i("","Adding remote video: " + remoteFilename);
+                    videos.add(new SimpleVideo(remoteUri, video.getLocation()));
                     continue;
                 }
 
-                if (videoSource != 0) {
-                    String localUrl = findLocalVideo(localVideos, remoteFilename);
-                    if(!localUrl.isEmpty()) {
-                        Log.i("","Adding local video: " + localUrl);
-                    } else if (videoSource == 2) {
+                if (videoSource != VideoSource.REMOTE) {
+                    Uri localUri = findLocalVideo(localVideos, remoteFilename);
+                    if(localUri != null) {
+                        Log.i("","Adding local video: " + localUri.getLastPathSegment());
+                        videos.add(new SimpleVideo(localUri, video.getLocation()));
+                    } else if (videoSource == VideoSource.LOCAL_AND_REMOTE) {
                         Log.i("","Adding remote video: " + remoteFilename);
+                        videos.add(new SimpleVideo(remoteUri, video.getLocation()));
                     }
                 }
             }
 
-            return remoteVideos;
+            Log.i("","Videos found: " + videos.size());
+            return videos;
         }
 
         @Override
@@ -86,15 +81,15 @@ public class VideoInteractor extends Interactor {
         }
     }
 
-    private String findLocalVideo(List<String> localVideos, String remoteFilename) {
+    private Uri findLocalVideo(List<String> localVideos, String remoteFilename) {
         for (String localUrl : localVideos ) {
             Uri localUri = Uri.parse(localUrl);
             String localFilename = localUri.getLastPathSegment().toLowerCase();
             if (localFilename.contains(remoteFilename)) {
-                return localUrl;
+                return localUri;
             }
         }
-        return "";
+        return null;
     }
 
     private ArrayList<String> getAllMedia() {
