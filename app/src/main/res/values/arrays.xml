@@ -7,4 +7,10 @@
         <item>4k_sdr</item>
         <item>4k_hdr</item>
     </string-array>
+
+    <string-array name="video_source_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
 </resources>

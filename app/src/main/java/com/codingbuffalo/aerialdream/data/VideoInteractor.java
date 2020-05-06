@@ -48,13 +48,17 @@ public class VideoInteractor extends Interactor {
                 remoteVideos.addAll(repository.fetchVideos(context));
             }
 
-            List<String> localVideos = getAllMedia();
+            List<String> localVideos =  new ArrayList<String>();
+            if (videoSource != VideoSource.REMOTE) {
+                localVideos = getAllMedia();
+            }
+
             for (Video video : remoteVideos) {
                 Uri remoteUri = video.getUri(source_apple_2019);
                 String remoteFilename = remoteUri.getLastPathSegment().toLowerCase();
 
                 if (videoSource == VideoSource.REMOTE) {
-                    Log.i("","Adding remote video: " + remoteFilename);
+                    Log.i("FetchVideosTask","Remote video: " + remoteFilename);
                     videos.add(new SimpleVideo(remoteUri, video.getLocation()));
                     continue;
                 }
@@ -62,16 +66,16 @@ public class VideoInteractor extends Interactor {
                 if (videoSource != VideoSource.REMOTE) {
                     Uri localUri = findLocalVideo(localVideos, remoteFilename);
                     if(localUri != null) {
-                        Log.i("","Adding local video: " + localUri.getLastPathSegment());
+                        Log.i("FetchVideosTask","Local video: " + localUri.getLastPathSegment());
                         videos.add(new SimpleVideo(localUri, video.getLocation()));
                     } else if (videoSource == VideoSource.LOCAL_AND_REMOTE) {
-                        Log.i("","Adding remote video: " + remoteFilename);
+                        Log.i("FetchVideosTask","Remote video: " + remoteFilename);
                         videos.add(new SimpleVideo(remoteUri, video.getLocation()));
                     }
                 }
             }
 
-            Log.i("","Videos found: " + videos.size());
+            Log.i("FetchVideosTask","Videos found: " + videos.size());
             return videos;
         }
 

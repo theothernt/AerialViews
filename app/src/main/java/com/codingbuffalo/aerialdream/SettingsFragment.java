@@ -19,9 +19,7 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
         findPreference("system_options").setOnPreferenceClickListener(this);
-
         getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
         updateSummaries();
     }
 
@@ -44,11 +42,15 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
         updateSummaries();
     }
 
     private void updateSummaries() {
         ListPreference pref = (ListPreference) findPreference("source_apple_2019");
+        pref.setSummary(pref.getEntry());
+
+        pref = (ListPreference) findPreference("video_source");
         pref.setSummary(pref.getEntry());
     }
 

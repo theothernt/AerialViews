@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil;
 import com.codingbuffalo.aerialdream.data.Video;
 import com.codingbuffalo.aerialdream.data.VideoInteractor;
 import com.codingbuffalo.aerialdream.data.VideoPlaylist;
-import com.codingbuffalo.aerialdream.data.VideoSource;
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding;
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding;
 
@@ -32,7 +31,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         boolean showLocation = prefs.getBoolean("show_location", true);
 
         videoType2019 = prefs.getString("source_apple_2019", "1080_h264");
-        videoSource = prefs.getInt("video_source", VideoSource.REMOTE);
+        videoSource = Integer.parseInt(prefs.getString("video_source", "0"));
 
         binding.setShowLocation(showLocation);
         binding.setShowClock(showClock);

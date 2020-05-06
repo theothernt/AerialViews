@@ -1,6 +1,5 @@
 <resources>
     <string name="daydream_name">Aerial Dream</string>
-    <!--<string name="loading_aerial">Loading Aerial…</string>-->
     <string name="loading_aerial"></string>
 
     <string name="category_settings">Settings</string>
@@ -8,15 +7,22 @@
     <string name="show_clock">Show clock</string>
     <string name="show_location">Show location</string>
 
-    <string name="video_sources">Video sources</string>
+    <string name="video_options">Video Options</string>
 
     <string name="source_apple_2019">2019 Apple TV Videos</string>
     <string-array name="source_apple_2019_entries">
-        <item>Full HD (1080p) H.264</item>
-        <item>Full HD (1080p) SDR</item>
-        <item>Full HD (1080p) HDR</item>
-        <item>Ultra HD (4K) SDR</item>
-        <item>Ultra HD (4K) HDR</item>
+        <item>1080p H.264/AVC</item>
+        <item>1080p SDR/HEVC</item>
+        <item>1080p HDR/HEVC</item>
+        <item>4K SDR/HEVC</item>
+        <item>4K HDR/HEVC</item>
+    </string-array>
+
+    <string name="video_source">Video Source</string>
+    <string-array name="video_source_entries">
+        <item>Remote only</item>
+        <item>Local only</item>
+        <item>Local and remote</item>
     </string-array>
 
     <string name="category_actions">Actions</string>

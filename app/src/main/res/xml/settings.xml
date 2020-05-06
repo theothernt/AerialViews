@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/video_sources">
+    <PreferenceCategory android:title="@string/video_options">
 
         <ListPreference
             android:defaultValue="1080_h264"
@@ -9,6 +9,13 @@
             android:entryValues="@array/source_apple_2019_values"
             android:key="source_apple_2019"
             android:title="@string/source_apple_2019" />
+
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/video_source_entries"
+            android:entryValues="@array/video_source_values"
+            android:key="video_source"
+            android:title="@string/video_source" />
 
     </PreferenceCategory>
 
