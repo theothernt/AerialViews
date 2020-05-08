@@ -1,19 +1,25 @@
 package com.codingbuffalo.aerialdream;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.support.v14.preference.PreferenceFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-
+import android.util.Log;
+import com.codingbuffalo.aerialdream.data.VideoSource;
 import java.util.List;
 
 public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SETTINGS = "android.settings.SETTINGS";
     public static final String SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS";
+    public static final String VIDEO_SOURCE = "video_source";
+    public static final String SOURCE_APPLE_2019 = "source_apple_2019";
+    public static final int PERMISSION_READ_EXTERNAL_STORAGE = 1;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -35,28 +41,66 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
                 intent = new Intent(SETTINGS);
             }
         }
-
         startActivity(intent);
         return true;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(VIDEO_SOURCE)) {
+            checkUserPermission(sharedPreferences);
+        } else {
+            updateSummaries();
+        }
+    }
 
-        updateSummaries();
+    public void checkUserPermission(SharedPreferences sharedPreferences) {
+        int pref = Integer.parseInt(sharedPreferences.getString(VIDEO_SOURCE, "0"));
+        if (pref != VideoSource.REMOTE && !hasStoragePermission()) {
+            requestPermissions(
+                    new String[] {Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSION_READ_EXTERNAL_STORAGE);
+        } else {
+            updateSummaries();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_READ_EXTERNAL_STORAGE:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_DENIED)) {
+                    resetVideoSource();
+                } else {
+                    updateSummaries();
+                }
+                break;
+        }
+    }
+
+    private boolean hasStoragePermission() {
+        return (ContextCompat.checkSelfPermission(this.getActivity(),
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED);
+    }
+
+    private void resetVideoSource() {
+        ListPreference pref = (ListPreference) findPreference(VIDEO_SOURCE);
+        pref.setValue("0");
     }
 
     private void updateSummaries() {
-        ListPreference pref = (ListPreference) findPreference("source_apple_2019");
+        ListPreference pref = (ListPreference) findPreference(SOURCE_APPLE_2019);
         pref.setSummary(pref.getEntry());
 
-        pref = (ListPreference) findPreference("video_source");
+        pref = (ListPreference) findPreference(VIDEO_SOURCE);
+        Log.i("","Pref: " + pref.getValue());
         pref.setSummary(pref.getEntry());
     }
 
     private boolean intentAvailable(Intent intent) {
         PackageManager manager = getActivity().getPackageManager();
-        List<ResolveInfo> infos = manager.queryIntentActivities(intent, 0);
-        return !infos.isEmpty();
+        List<ResolveInfo> info = manager.queryIntentActivities(intent, 0);
+        return !info.isEmpty();
     }
 }
