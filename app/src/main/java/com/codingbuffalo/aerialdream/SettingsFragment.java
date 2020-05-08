@@ -10,7 +10,6 @@ import android.support.v14.preference.PreferenceFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-import android.util.Log;
 import com.codingbuffalo.aerialdream.data.VideoSource;
 import java.util.List;
 
@@ -94,7 +93,6 @@ public class SettingsFragment extends PreferenceFragment implements Preference.O
         pref.setSummary(pref.getEntry());
 
         pref = (ListPreference) findPreference(VIDEO_SOURCE);
-        Log.i("","Pref: " + pref.getValue());
         pref.setSummary(pref.getEntry());
     }
 
