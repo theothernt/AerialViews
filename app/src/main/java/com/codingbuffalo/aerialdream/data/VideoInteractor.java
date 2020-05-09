@@ -42,10 +42,15 @@ public class VideoInteractor extends Interactor {
         @Override
         public List<? extends Video> onExecute() throws Exception {
             List<Video> remoteVideos = new ArrayList<>();
+            List<String> localVideos = new ArrayList<>();
             List<Video> videos = new ArrayList<>();
 
             for (VideoRepository repository : repositories) {
                 remoteVideos.addAll(repository.fetchVideos(context));
+            }
+
+            if (videoSource != VideoSource.REMOTE) {
+                localVideos = getAllMedia();
             }
 
             for (Video video : remoteVideos) {
@@ -59,7 +64,6 @@ public class VideoInteractor extends Interactor {
                 }
 
                 if (videoSource != VideoSource.REMOTE) {
-                    List<String> localVideos = getAllMedia();
                     Uri localUri = findLocalVideo(localVideos, remoteFilename);
                     if(localUri != null) {
                         Log.i("FetchVideosTask","Local video: " + localUri.getLastPathSegment());
