@@ -8,5 +8,6 @@ A screensaver for Android devices inspired on Apple TV's video screensaver.
 This is a modified (forked) version which features the following changes...
 
 - Support for older Android TVs (2015/ATV1)
-- Supporting only the latest Apple video feed
+- Supports only the latest Apple video feed
+- Option to play local version of video
 - Skip video feature
