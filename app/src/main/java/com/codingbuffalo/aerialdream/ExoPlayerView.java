@@ -24,7 +24,8 @@ import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 1500;
-    public static final long MAX_RETRIES = 3;
+    public static final long START_DELAY = 1500;
+    public static final long MAX_RETRIES = 2;
 
     private SimpleExoPlayer player;
     private MediaSource mediaSource;
@@ -32,6 +33,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
     private int retries;
     private float aspectRatio;
     private boolean useReducedBuffering;
+    private boolean useDelayedStart;
     private boolean prepared;
 
     public ExoPlayerView(Context context) {
@@ -45,7 +47,8 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        useReducedBuffering = true;
+        useReducedBuffering = false;
+        useDelayedStart = false;
 
         if (useReducedBuffering) {
             Log.i("ExoPlayerView", "Using reduced buffering...");
@@ -166,7 +169,6 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
         switch (playbackState) {
             case Player.STATE_BUFFERING:
                 Log.i("ExoPlayerView", "Player: Buffering...");
@@ -185,7 +187,13 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
 
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true;
-            listener.onPrepared(this);
+            if (!useDelayedStart) {
+                listener.onPrepared(this);
+            } else
+            {
+                Log.i("ExoPlayerView", "Using delayed start/prepare...");
+                postDelayed(delayedStartRunnable, START_DELAY);
+            }
         }
 
         if (playWhenReady && playbackState == Player.STATE_READY) {
@@ -265,12 +273,18 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
         }
     };
 
+    private Runnable delayedStartRunnable = new Runnable() {
+        @Override
+        public void run() {
+            listener.onPrepared(ExoPlayerView.this);
+        }
+    };
+
     private Runnable errorRecoveryRunnable = new Runnable() {
         @Override
         public void run() {
 
             retries++;
-
             Log.i("ExoPlayerView", "Retries: " + retries);
 
             if (retries >= MAX_RETRIES) {
