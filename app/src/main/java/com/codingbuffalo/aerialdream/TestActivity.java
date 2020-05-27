@@ -5,6 +5,12 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.billy.android.swipe.SmartSwipe;
+import com.billy.android.swipe.SmartSwipeWrapper;
+import com.billy.android.swipe.SwipeConsumer;
+import com.billy.android.swipe.consumer.StayConsumer;
+import com.billy.android.swipe.listener.SimpleSwipeListener;
+
 public class TestActivity extends Activity {
     private VideoController videoController;
 
@@ -15,7 +21,20 @@ public class TestActivity extends Activity {
         setTitle(R.string.daydream_name);
 
         videoController = new VideoController(this);
-        setContentView(videoController.getView());
+        View view = videoController.getView();
+        setContentView(view);
+
+        SmartSwipe.wrap(view)
+                .addConsumer(new StayConsumer())
+                .enableLeft()
+                .addListener(new SimpleSwipeListener() {
+                    @Override
+                    public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
+                        if (direction == 1) {
+                            videoController.skipVideo();
+                        }
+                    }
+                });
     }
 
     @Override
