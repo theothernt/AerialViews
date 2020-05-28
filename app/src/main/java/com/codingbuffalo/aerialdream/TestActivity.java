@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-
 import com.billy.android.swipe.SmartSwipe;
 import com.billy.android.swipe.SmartSwipeWrapper;
 import com.billy.android.swipe.SwipeConsumer;
@@ -26,11 +25,11 @@ public class TestActivity extends Activity {
 
         SmartSwipe.wrap(view)
                 .addConsumer(new StayConsumer())
-                .enableLeft()
+                .enableHorizontal()
                 .addListener(new SimpleSwipeListener() {
                     @Override
                     public void onSwipeOpened(SmartSwipeWrapper wrapper, SwipeConsumer consumer, int direction) {
-                        if (direction == 1) {
+                        if (direction == 1 || direction == 2) {
                             videoController.skipVideo();
                         }
                     }
