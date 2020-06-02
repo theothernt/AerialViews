@@ -10,4 +10,4 @@ This is a modified (forked) version which features the following changes...
 - Support for older Android TVs (2015/ATV1)
 - Supports only the latest Apple video feed
 - Option to play local version of video
-- Skip video feature
+- Skip video feature (Swipe right on your phone or press right on your TV remote's d-pad)
