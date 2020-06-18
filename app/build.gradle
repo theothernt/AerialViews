@@ -50,8 +50,8 @@ android {
 dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.10.8'
-    implementation 'com.android.support:leanback-v17:28.0.0'
-    implementation 'com.android.support:preference-leanback-v17:28.0.0'
+    implementation 'androidx.leanback:leanback:1.0.0'
+    implementation 'androidx.leanback:leanback-preference:1.0.0'
     implementation 'com.billy.android:smart-swipe:1.1.2'
     testImplementation 'junit:junit:4.13'
 }
