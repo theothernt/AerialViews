@@ -1,7 +1,7 @@
 package com.codingbuffalo.aerialdream.data;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 public class SimpleVideo extends Video {
     private Uri videoUri;

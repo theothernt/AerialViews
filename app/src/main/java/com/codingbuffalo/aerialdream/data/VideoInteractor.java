@@ -4,12 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
-
 import com.codingbuffalo.aerialdream.data.protium.Interactor;
 import com.codingbuffalo.aerialdream.data.protium.ValueTask;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;

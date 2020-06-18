@@ -6,10 +6,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
-import android.support.v14.preference.PreferenceFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.preference.ListPreference;
-import android.support.v7.preference.Preference;
+import androidx.core.content.ContextCompat;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragment;
 import com.codingbuffalo.aerialdream.data.VideoSource;
 import java.util.List;
 

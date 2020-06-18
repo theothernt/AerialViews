@@ -1,7 +1,7 @@
 package com.codingbuffalo.aerialdream.data;
 
 import android.content.Context;
-import android.support.annotation.RawRes;
+import androidx.annotation.RawRes;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;

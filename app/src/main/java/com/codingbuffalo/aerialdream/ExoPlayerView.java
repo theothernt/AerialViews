@@ -2,11 +2,11 @@ package com.codingbuffalo.aerialdream;
 
 import android.content.Context;
 import android.net.Uri;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
 import android.widget.MediaController;
+import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;

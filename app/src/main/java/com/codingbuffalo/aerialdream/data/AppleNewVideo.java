@@ -1,8 +1,7 @@
 package com.codingbuffalo.aerialdream.data;
 
 import android.net.Uri;
-import android.support.annotation.Nullable;
-
+import androidx.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 public abstract class AppleNewVideo extends Video {
