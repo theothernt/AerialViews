@@ -27,10 +27,10 @@
             android:name=".SettingsActivity"
             android:banner="@drawable/ic_banner"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/SettingsTheme">
+            android:theme="@style/Theme.AppCompat"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -56,7 +56,5 @@
                 android:resource="@xml/aerial_dream" />
 
         </service>
-
     </application>
-
 </manifest>

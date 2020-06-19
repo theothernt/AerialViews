@@ -9,11 +9,12 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
-import androidx.preference.PreferenceFragment;
+import androidx.preference.PreferenceFragmentCompat;
+
 import com.codingbuffalo.aerialdream.data.VideoSource;
 import java.util.List;
 
-public class SettingsFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SETTINGS = "android.settings.SETTINGS";
     public static final String SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS";
     public static final String VIDEO_SOURCE = "video_source";
