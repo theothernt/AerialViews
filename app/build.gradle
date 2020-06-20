@@ -9,6 +9,7 @@ allprojects {
         options.compilerArgs << "-Xlint:deprecation"
     }
 }
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"

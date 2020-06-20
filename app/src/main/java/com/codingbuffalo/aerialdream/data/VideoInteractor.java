@@ -1,13 +1,18 @@
 package com.codingbuffalo.aerialdream.data;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import android.util.Log;
 import com.codingbuffalo.aerialdream.data.protium.Interactor;
 import com.codingbuffalo.aerialdream.data.protium.ValueTask;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -96,13 +101,15 @@ public class VideoInteractor extends Interactor {
 
     private ArrayList<String> getAllMedia() {
         HashSet<String> videoItemHashSet = new HashSet<>();
-        String[] projection = {MediaStore.Video.VideoColumns.DATA, MediaStore.Video.Media.DISPLAY_NAME};
-        Cursor cursor = this.context.getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        String column = "_data";
+        String[] projection = {column};
+        Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
 
         try {
             cursor.moveToFirst();
             do {
-                videoItemHashSet.add((cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA))));
+                videoItemHashSet.add((cursor.getString(cursor.getColumnIndexOrThrow(column))));
             } while (cursor.moveToNext());
             cursor.close();
         } catch (Exception e) {
