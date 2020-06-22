@@ -20,15 +20,14 @@
         android:installLocation="auto"
         android:label="@string/daydream_name"
         android:supportsRtl="true"
-        android:theme="@style/DaydreamTheme"
+        android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true">
 
         <activity
             android:name=".SettingsActivity"
             android:banner="@drawable/ic_banner"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.AppCompat"
-            >
+            android:theme="@style/SettingsTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -54,7 +53,6 @@
             <meta-data
                 android:name="android.service.dream"
                 android:resource="@xml/aerial_dream" />
-
         </service>
     </application>
 </manifest>

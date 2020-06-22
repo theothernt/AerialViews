@@ -1,15 +1,7 @@
 <resources>
-    
-    <style name="SettingsTheme" parent="Theme.Leanback">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
-    
-    <style name="DaydreamTheme" parent="SettingsTheme">
-        <item name="android:windowBackground">@android:color/black</item>
+
+    <style name="SettingsTheme" parent="Theme.AppCompat">
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="LoadingText">
