@@ -23,7 +23,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
-    public static final long DURATION = 1500;
+    public static final long DURATION = 800;
     public static final long START_DELAY = 1500;
     public static final long MAX_RETRIES = 2;
 
@@ -47,7 +47,7 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             return;
         }
 
-        useReducedBuffering = false;
+        useReducedBuffering = true;
         useDelayedStart = false;
 
         if (useReducedBuffering) {
