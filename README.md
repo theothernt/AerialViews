@@ -33,6 +33,14 @@ This is a modified (forked) version which features the following changes...
 
 <br/>
 
+## Device support and testing...
+
+- The plan is the keep support and good performance for older Android TVs, but add options that will only work well on newer, more powerful devices (eg. Nvidia Shield or Google TV)
+
+- The app has been tested on a Sony Bravia TV (2015, 1080p, SDR) and Google TV. If you're able to test on other devices, especially with 4K and HDR, please let me know!
+
+<br/>
+
 ## Known issues...
 
 - This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
