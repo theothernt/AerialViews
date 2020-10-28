@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
+import android.view.SurfaceView;
 import android.view.TextureView;
 import android.widget.MediaController;
 import androidx.annotation.Nullable;
@@ -22,7 +24,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
 
-public class ExoPlayerView extends TextureView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
+public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 800;
     public static final long START_DELAY = 1500;
     public static final long MAX_RETRIES = 2;
@@ -57,7 +59,8 @@ public class ExoPlayerView extends TextureView implements MediaController.MediaP
             player = ExoPlayerFactory.newSimpleInstance(context);
         }
 
-        player.setVideoTextureView(this);
+        //player.setVideoTextureView(this);
+        player.setVideoSurfaceView(this);
         player.addVideoListener(this);
         player.addListener(this);
         player.setVolume(0);
