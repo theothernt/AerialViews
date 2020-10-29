@@ -21,6 +21,16 @@ This is a modified (forked) version which features the following changes...
 
 <br/>
 
+## How to install...
+
+This version of the app is not available in the Play Store so, for the moment, your options are...
+
+1. [Download the APK from the Releases page](https://github.com/theothernt/AerialDream/releases) and install it manually
+
+2. Clone this repo to your PC or Mac, download Android Studio, then build and deploy
+
+<br/>
+
 ## About remote and local playback...
 
 - The app contains a JSON manifest (ie. a list of URLs) which it uses to figure out what videos to play in which format (1080p, 4K, HDR, etc)
@@ -45,7 +55,7 @@ This is a modified (forked) version which features the following changes...
   - Sony Bravia (2015, Android TV v6)
   - Nvidia Shield (2019, Android TV v9)
   - Chromecast/Google TV (2020, Android TV v10)
-  
+
 <br/>
 
 ## Known issues...
