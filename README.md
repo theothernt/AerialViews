@@ -9,11 +9,13 @@
 
 This is a modified (forked) version which features the following changes...
 
-- Support for older Android TVs (2015/ATV1)
+- Support for older Android TVs (eg. 2015/ATV1)
 
-- Supports only the latest Apple video feed
+- Supports *only* the latest Apple video feed
 
 - Option to play local version of video
+
+- HDR support (HDR10, Dolby Vision tested)
 
 - Skip video feature (Swipe right on your phone or press right on your TV remote's d-pad)
 
@@ -35,10 +37,15 @@ This is a modified (forked) version which features the following changes...
 
 ## Device support and testing...
 
-- The plan is the keep support and good performance for older Android TVs, but add options that will only work well on newer, more powerful devices (eg. Nvidia Shield or Google TV)
+- The plan is the keep support and good performance for older Android TVs
 
-- The app has been tested on a Sony Bravia TV (2015, 1080p, SDR) and Google TV. If you're able to test on other devices, especially with 4K and HDR, please let me know!
+- Newer features, which require more powerful devices (eg. Nvidia Shield or Google TV) can be disabled or enabled
 
+- The app has been tested with...
+  - Sony Bravia (2015, Android TV v6)
+  - Nvidia Shield (2019, Android TV v9)
+  - Chromecast/Google TV (2020, Android TV v10)
+  
 <br/>
 
 ## Known issues...
@@ -46,7 +53,5 @@ This is a modified (forked) version which features the following changes...
 - This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
 
 - If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
-
-- If certain video apps (eg. Plex) are left paused and the screensaver launches, you will only see a black screen with the time as the paused app did not release its lock on the video surface
 
 - Network connection issues are not handled well, the videos will simply pause
