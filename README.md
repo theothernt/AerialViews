@@ -64,4 +64,6 @@ This version of the app is not available in the Play Store so, for the moment, y
 
 - If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
 
+- This app is designed to play Apple's video only. It will not play any random video you have on the device or USB storage
+
 - Network connection issues are not handled well, the videos will simply pause
