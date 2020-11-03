@@ -1,5 +1,9 @@
 package com.codingbuffalo.aerialdream.data;
 
+import android.net.Uri;
+
+import androidx.annotation.Nullable;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -14,6 +18,10 @@ public class VideoPlaylist {
     }
 
     public Video getVideo() {
-        return videos.get(position++ % videos.size());
+        if (videos.size() != 0) {
+            return videos.get(position++ % videos.size());
+        } else {
+            return new SimpleVideo(Uri.parse(""), "");
+        }
     }
 }
