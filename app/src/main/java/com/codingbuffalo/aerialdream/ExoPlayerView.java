@@ -4,25 +4,46 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceView;
 import android.widget.MediaController;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
+
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RendererCapabilities;
+import com.google.android.exoplayer2.RendererConfiguration;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.analytics.AnalyticsListener;
+import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
+import com.google.android.exoplayer2.metadata.Metadata;
+import com.google.android.exoplayer2.source.LoadEventInfo;
+import com.google.android.exoplayer2.source.MediaLoadData;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.source.TrackGroup;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
+import com.google.android.exoplayer2.util.EventLogger;
+import com.google.android.exoplayer2.video.MediaCodecVideoRenderer;
 import com.google.android.exoplayer2.video.VideoListener;
 
-public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
+import java.io.IOException;
+
+public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, AnalyticsListener, VideoListener, Player.EventListener {
     public static final long DURATION = 800;
     public static final long START_DELAY = 1500;
     public static final long MAX_RETRIES = 2;
@@ -34,7 +55,9 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     private float aspectRatio;
     private boolean useReducedBuffering;
     private boolean useDelayedStart;
+    private boolean showDebugNotifications;
     private boolean prepared;
+    private MappingTrackSelector trackSelector;
 
     public ExoPlayerView(Context context) {
         this(context, null);
@@ -47,6 +70,7 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             return;
         }
 
+        showDebugNotifications = true;
         useReducedBuffering = true;
         useDelayedStart = false;
 
@@ -56,6 +80,10 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         } else {
             player = ExoPlayerFactory.newSimpleInstance(context);
         }
+
+        trackSelector = (MappingTrackSelector) player.getTrackSelector();
+        //player.addAnalyticsListener(new EventLogger(trackSelector));
+        player.addAnalyticsListener(this);
 
         player.setVideoSurfaceView(this);
         player.addVideoListener(this);
@@ -76,6 +104,53 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         mediaSource = new ProgressiveMediaSource.Factory(httpDataSourceFactory)
                 .createMediaSource(uri);
         player.prepare(mediaSource);
+    }
+
+    // https://github.com/google/ExoPlayer/blob/83477497c19959f4b33c3af57cc1e646fcc3848a/library/core/src/main/java/com/google/android/exoplayer2/util/EventLogger.java
+    @Override
+    public void onTracksChanged(
+            EventTime eventTime, TrackGroupArray ignored, TrackSelectionArray trackSelections) {
+        MappingTrackSelector.MappedTrackInfo mappedTrackInfo =
+                trackSelector != null ? trackSelector.getCurrentMappedTrackInfo() : null;
+
+        if (mappedTrackInfo == null) {
+            return;
+        }
+
+        // Log tracks associated to renderers.
+        int rendererCount = mappedTrackInfo.getRendererCount();
+        for (int rendererIndex = 0; rendererIndex < rendererCount; rendererIndex++) {
+            TrackGroupArray rendererTrackGroups = mappedTrackInfo.getTrackGroups(rendererIndex);
+            TrackSelection trackSelection = trackSelections.get(rendererIndex);
+            if (rendererTrackGroups.length == 0) {
+
+            } else {
+                for (int groupIndex = 0; groupIndex < rendererTrackGroups.length; groupIndex++) {
+                    TrackGroup trackGroup = rendererTrackGroups.get(groupIndex);
+
+                    for (int trackIndex = 0; trackIndex < trackGroup.length; trackIndex++) {
+
+                        String formatSupport =
+                                RendererCapabilities.getFormatSupportString(
+                                        mappedTrackInfo.getTrackSupport(rendererIndex, groupIndex, trackIndex));
+
+                        //+ Format.toLogString(trackGroup.getFormat(trackIndex))
+                        String fps = Float.toString(trackGroup.getFormat(trackIndex).frameRate);
+                        String width = Integer.toString(trackGroup.getFormat(trackIndex).width);
+                        String height = Integer.toString(trackGroup.getFormat(trackIndex).height);
+                        String type = trackGroup.getFormat(trackIndex).sampleMimeType;
+
+                        String message =
+                                "Fps: " + fps
+                                + " Format: " + type
+                                + "\nRes: " + width + "x" + height
+                                + " Supported: " + formatSupport;
+
+                        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -220,7 +295,7 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
 
     @Override
     public void onPlayerError(ExoPlaybackException error) {
-        //error.printStackTrace();
+        error.printStackTrace();
 
         // Attempt to reload video
         removeCallbacks(errorRecoveryRunnable);
