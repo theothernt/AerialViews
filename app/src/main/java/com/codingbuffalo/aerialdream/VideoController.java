@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.Toast;
+
 import androidx.databinding.DataBindingUtil;
 import androidx.preference.PreferenceManager;
 import com.codingbuffalo.aerialdream.data.Video;
@@ -21,8 +23,11 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     private String videoType2019;
     private boolean canSkip;
     private int videoSource;
+    private Boolean showDebugNotifications;
+    private Context context;
 
     public VideoController(Context context) {
+        this.context = context;
         LayoutInflater inflater = LayoutInflater.from(context);
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -46,6 +51,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
                 this
         ).fetchVideos();
 
+        showDebugNotifications = true;
         canSkip = true;
     }
 
@@ -53,7 +59,15 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
         return binding.getRoot();
     }
 
-    public void start() { loadVideo(binding.videoView0, getVideo()); }
+    public void start() {
+        loadVideo(binding.videoView0, getVideo());
+
+        if (showDebugNotifications) {
+            String message = "Remote vids: " + this.playlist.remoteVideos
+                    + " Local vids: " + this.playlist.localVideos;
+            Toast.makeText(this.context, message, Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void stop() {
         binding.videoView0.videoView.release();

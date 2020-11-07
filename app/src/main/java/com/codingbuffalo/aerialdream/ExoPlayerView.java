@@ -81,9 +81,11 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             player = ExoPlayerFactory.newSimpleInstance(context);
         }
 
-        trackSelector = (MappingTrackSelector) player.getTrackSelector();
-        //player.addAnalyticsListener(new EventLogger(trackSelector));
-        player.addAnalyticsListener(this);
+        if (showDebugNotifications) {
+            trackSelector = (MappingTrackSelector) player.getTrackSelector();
+            //player.addAnalyticsListener(new EventLogger(trackSelector));
+            player.addAnalyticsListener(this);
+        }
 
         player.setVideoSurfaceView(this);
         player.addVideoListener(this);
