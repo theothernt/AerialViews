@@ -391,9 +391,18 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
 
         DefaultLoadControl loadControl = builder.createDefaultLoadControl();
 
+        // Enable Tunneling
+        DefaultTrackSelector.Parameters parameters = new DefaultTrackSelector
+                .ParametersBuilder()
+                .setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context))
+                .build();
+
+        DefaultTrackSelector trackSelector = new DefaultTrackSelector();
+        trackSelector.setParameters(parameters);
+
         return ExoPlayerFactory.newSimpleInstance(
                 context,
-                new DefaultTrackSelector(),
+                trackSelector,
                 loadControl);
     }
 
