@@ -1,7 +1,3 @@
-plugins {
-    id 'com.github.triplet.play' version '2.2.0'
-}
-
 apply plugin: 'com.android.application'
 
 allprojects {
@@ -61,7 +57,7 @@ dependencies {
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
     implementation 'com.billy.android:smart-swipe:1.1.2'
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
 }
 
 task fetchPlaylistTask (type: Exec) {
@@ -78,10 +74,4 @@ preBuild.dependsOn fetchPlaylistTask
 clean.doFirst {
     // Delete playlists
     delete fileTree(dir:'src/main/res/raw/', include: 'tvos**.json')
-}
-
-play {
-    serviceAccountCredentials = rootProject.file("../AppSignature/play-store.json")
-    track = 'beta'
-    resolutionStrategy = "auto"
 }
