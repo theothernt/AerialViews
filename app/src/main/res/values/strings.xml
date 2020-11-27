@@ -2,14 +2,11 @@
     <string name="daydream_name">Aerial Dream</string>
     <string name="loading_aerial"></string>
 
-    <string name="category_settings">Settings</string>
-
-    <string name="show_clock">Show clock</string>
-    <string name="show_location">Show location</string>
-
-    <string name="video_options">Video Options</string>
+    <!-- Video Options -->
+    <string name="video_options">Videos</string>
 
     <string name="source_apple_2019">2019 Apple TV Videos</string>
+    <string name="source_apple_2019_summary">Select a video quality</string>
     <string-array name="source_apple_2019_entries">
         <item>1080p H.264/AVC</item>
         <item>1080p SDR/HEVC</item>
@@ -19,12 +16,35 @@
     </string-array>
 
     <string name="video_source">Video Source</string>
+    <string name="video_source_summary">Choose a video source</string>
     <string-array name="video_source_entries">
         <item>Remote only</item>
         <item>Local only</item>
         <item>Local and remote</item>
     </string-array>
 
+    <!-- Settings -->
+    <string name="category_settings">Settings</string>
+
+    <string name="interface_options">Interface</string>
+    <string name="interface_options_summary">Customise how things look</string>
+    <string-array name="interface_options_entries">
+        <item>Show Clock</item>
+        <item>Show Location</item>
+        <item>Mute Videos</item>
+        <item>Alternate Clock/Location position</item>
+    </string-array>
+
+    <string name="performance_options">Performance &amp; Debug</string>
+    <string name="performance_options_summary">For troubleshooting issues</string>
+    <string-array name="performance_options_entries">
+        <item>Enable Tunneling</item>
+        <item>Use Reduced Video Buffers</item>
+<!--        <item>Use TextureView</item>-->
+<!--        <item>Enable Debug Notifications</item>-->
+    </string-array>
+
+    <!-- Actions -->
     <string name="category_actions">Actions</string>
 
     <string name="test_settings">Test settings</string>

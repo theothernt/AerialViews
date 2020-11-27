@@ -5,34 +5,42 @@
     <PreferenceCategory android:title="@string/video_options">
 
         <ListPreference
-            android:defaultValue="1080_h264"
+            android:defaultValue="1080_sdr"
             android:entries="@array/source_apple_2019_entries"
             android:entryValues="@array/source_apple_2019_values"
             android:key="source_apple_2019"
-            android:title="@string/source_apple_2019" />
+            android:title="@string/source_apple_2019"
+            android:dialogTitle="@string/source_apple_2019_summary" />
 
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/video_source_entries"
             android:entryValues="@array/video_source_values"
             android:key="video_source"
-            android:title="@string/video_source" />
+            android:title="@string/video_source"
+            android:dialogTitle="@string/video_source_summary" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_settings">
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:key="show_clock"
-            android:title="@string/show_clock" />
+        <MultiSelectListPreference
+            android:entries="@array/interface_options_entries"
+            android:entryValues="@array/interface_options_values"
+            android:defaultValue="@array/interface_options_defaults"
+            android:key="ui_options"
+            android:title="@string/interface_options"
+            android:summary="@string/interface_options_summary"
+            android:dialogTitle="@string/interface_options_summary" />
 
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="show_location"
-            android:title="@string/show_location" />
+        <MultiSelectListPreference
+            android:entries="@array/performance_options_entries"
+            android:entryValues="@array/performance_options_values"
+            android:defaultValue="@array/performance_options_defaults"
+            android:key="perf_options"
+            android:title="@string/performance_options"
+            android:summary="@string/performance_options_summary"
+            android:dialogTitle="@string/performance_options_summary" />
 
     </PreferenceCategory>
 

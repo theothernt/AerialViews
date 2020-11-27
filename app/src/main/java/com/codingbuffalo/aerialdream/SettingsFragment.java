@@ -8,17 +8,23 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.preference.ListPreference;
+import androidx.preference.MultiSelectListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.codingbuffalo.aerialdream.data.VideoSource;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String SETTINGS = "android.settings.SETTINGS";
     public static final String SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS";
+
     public static final String VIDEO_SOURCE = "video_source";
     public static final String SOURCE_APPLE_2019 = "source_apple_2019";
+
     public static final int PERMISSION_READ_EXTERNAL_STORAGE = 1;
 
     @Override
@@ -90,11 +96,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     }
 
     private void updateSummaries() {
-        ListPreference pref = (ListPreference) findPreference(SOURCE_APPLE_2019);
-        pref.setSummary(pref.getEntry());
+        ListPreference listPrefs = (ListPreference) findPreference(SOURCE_APPLE_2019);
+        listPrefs.setSummary(listPrefs.getEntry());
 
-        pref = (ListPreference) findPreference(VIDEO_SOURCE);
-        pref.setSummary(pref.getEntry());
+        listPrefs = (ListPreference) findPreference(VIDEO_SOURCE);
+        listPrefs.setSummary(listPrefs.getEntry());
     }
 
     private boolean intentAvailable(Intent intent) {
