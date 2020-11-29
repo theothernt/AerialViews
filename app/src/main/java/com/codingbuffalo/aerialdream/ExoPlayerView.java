@@ -6,19 +6,13 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.MediaController;
-import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.MediaItem;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
@@ -27,7 +21,7 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     public static final long MAX_RETRIES = 2;
 
     private SimpleExoPlayer player;
-    private MediaSource mediaSource;
+    private MediaItem mediaItem;
     private OnPlayerEventListener listener;
     private int retries;
     private float aspectRatio;
@@ -68,9 +62,10 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         prepared = false;
         retries = 0;
 
-        MediaItem mediaItem = new MediaItem.Builder()
+        mediaItem = new MediaItem.Builder()
                 .setUri(uri)
                 .build();
+
         player.setMediaItem(mediaItem);
         player.prepare();
     }
@@ -161,10 +156,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
 
     /* EventListener */
     @Override
-    public void onLoadingChanged(boolean isLoading) {
-    }
-
-    @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         switch (playbackState) {
             case Player.STATE_BUFFERING:
@@ -200,22 +191,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     }
 
     @Override
-    public void onRepeatModeChanged(int repeatMode) {
-    }
-
-    @Override
-    public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
-    }
-
-    @Override
-    public void onTimelineChanged(Timeline timeline, @Nullable Object manifest, int reason) {
-    }
-
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-    }
-
-    @Override
     public void onPlayerError(ExoPlaybackException error) {
         //error.printStackTrace();
 
@@ -246,21 +221,9 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     }
 
     @Override
-    public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-    }
-
-    @Override
-    public void onSeekProcessed() {
-    }
-
-    @Override
     public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
         aspectRatio = height == 0 ? 0 : (width * pixelWidthHeightRatio) / height;
         requestLayout();
-    }
-
-    @Override
-    public void onRenderedFirstFrame() {
     }
 
     private Runnable timerRunnable = new Runnable() {
@@ -287,7 +250,9 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             if (retries >= MAX_RETRIES) {
                 listener.onError(ExoPlayerView.this);
             } else {
-                player.prepare(mediaSource);
+                player.stop();
+                player.setMediaItem(mediaItem);
+                player.prepare();
             }
         }
     };
