@@ -27,7 +27,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     private float aspectRatio;
     private boolean useReducedBuffering;
     private boolean enableTunneling;
-    private boolean useDelayedStart;
     private boolean muteVideo;
     private boolean prepared;
 
@@ -45,7 +44,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         muteVideo = true;
         enableTunneling = true;
         useReducedBuffering = true;
-        useDelayedStart = false;
 
         player = buildPlayer(context);
         player.setVideoSurfaceView(this);
@@ -175,13 +173,7 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
 
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true;
-            if (!useDelayedStart) {
-                listener.onPrepared(this);
-            } else
-            {
-                Log.i("ExoPlayerView", "Using delayed start/prepare...");
-                postDelayed(delayedStartRunnable, START_DELAY);
-            }
+            listener.onPrepared(this);
         }
 
         if (playWhenReady && playbackState == Player.STATE_READY) {
