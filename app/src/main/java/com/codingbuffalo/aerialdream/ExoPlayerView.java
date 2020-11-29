@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.MediaController;
 import androidx.annotation.Nullable;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -33,7 +33,9 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     private int retries;
     private float aspectRatio;
     private boolean useReducedBuffering;
+    private boolean enableTunneling;
     private boolean useDelayedStart;
+    private boolean muteVideo;
     private boolean prepared;
 
     public ExoPlayerView(Context context) {
@@ -47,20 +49,15 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             return;
         }
 
+        muteVideo = true;
+        enableTunneling = true;
         useReducedBuffering = true;
         useDelayedStart = false;
 
-        if (useReducedBuffering) {
-            Log.i("ExoPlayerView", "Using reduced buffering...");
-            player = getPlayerWithReducedBuffering(context);
-        } else {
-            player = ExoPlayerFactory.newSimpleInstance(context);
-        }
-
+        player = buildPlayer(context);
         player.setVideoSurfaceView(this);
         player.addVideoListener(this);
         player.addListener(this);
-        player.setVolume(0);
     }
 
     public void setUri(Uri uri) {
@@ -295,29 +292,56 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         }
     };
 
-    private SimpleExoPlayer getPlayerWithReducedBuffering(Context context) {
-        DefaultLoadControl.Builder builder = new DefaultLoadControl.Builder();
+    private SimpleExoPlayer buildPlayer(Context context) {
 
-        // Buffer sizes while playing
-        final int minBuffer = 5000;
-        final int maxBuffer = 10000;
+        DefaultLoadControl loadControl;
+        if (useReducedBuffering) {
+            // Buffer sizes while playing
+            final int minBuffer = 5000;
+            final int maxBuffer = 10000;
 
-        // Initial buffer size to start playback
-        final int bufferForPlayback = 1000;
-        final int bufferForPlaybackAfterRebuffer = 5000;
+            // Initial buffer size to start playback
+            final int bufferForPlayback = 1000;
+            final int bufferForPlaybackAfterRebuffer = 5000;
 
-        builder.setBufferDurationsMs(
-                minBuffer,
-                maxBuffer,
-                bufferForPlayback,
-                bufferForPlaybackAfterRebuffer);
+            loadControl = new DefaultLoadControl
+                    .Builder()
+                    .setBufferDurationsMs(
+                            minBuffer,
+                            maxBuffer,
+                            bufferForPlayback,
+                            bufferForPlaybackAfterRebuffer)
+                    .build();
+        } else {
+            loadControl = new DefaultLoadControl
+                    .Builder()
+                    .build();
+        }
 
-        DefaultLoadControl loadControl = builder.createDefaultLoadControl();
+        DefaultTrackSelector trackSelector;
+        if (enableTunneling) {
 
-        return ExoPlayerFactory.newSimpleInstance(
-                context,
-                new DefaultTrackSelector(),
-                loadControl);
+            DefaultTrackSelector.Parameters parameters = new DefaultTrackSelector
+                    .ParametersBuilder(context)
+                    .setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context))
+                    .build();
+
+            trackSelector = new DefaultTrackSelector(context);
+            trackSelector.setParameters(parameters);
+        } else {
+            trackSelector = new DefaultTrackSelector(context);
+        }
+
+        SimpleExoPlayer player =  new SimpleExoPlayer.Builder(context)
+                .setLoadControl(loadControl)
+                .setTrackSelector(trackSelector)
+                .build();
+
+        if (muteVideo)  {
+            player.setVolume(0);
+        }
+
+        return player;
     }
 
     public interface OnPlayerEventListener {
