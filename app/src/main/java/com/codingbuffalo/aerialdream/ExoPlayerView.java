@@ -203,13 +203,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         }
     };
 
-    private Runnable delayedStartRunnable = new Runnable() {
-        @Override
-        public void run() {
-            listener.onPrepared(ExoPlayerView.this);
-        }
-    };
-
     private Runnable errorRecoveryRunnable = new Runnable() {
         @Override
         public void run() {
