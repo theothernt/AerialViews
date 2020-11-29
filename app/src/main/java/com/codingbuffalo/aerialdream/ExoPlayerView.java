@@ -17,7 +17,6 @@ import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 800;
-    public static final long START_DELAY = 1500;
     public static final long MAX_RETRIES = 2;
 
     private SimpleExoPlayer player;
@@ -189,27 +188,6 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         // Attempt to reload video
         removeCallbacks(errorRecoveryRunnable);
         postDelayed(errorRecoveryRunnable, DURATION);
-    }
-
-    @Override
-    public void onPositionDiscontinuity(int reason) {
-        switch (reason) {
-            case SimpleExoPlayer.DISCONTINUITY_REASON_PERIOD_TRANSITION:
-                Log.i("ExoPlayerView", "Video stutters due to period transition");
-                break;
-            case SimpleExoPlayer.DISCONTINUITY_REASON_SEEK:
-                Log.i("ExoPlayerView", "Video stutters due to a seek");
-                break;
-            case SimpleExoPlayer.DISCONTINUITY_REASON_SEEK_ADJUSTMENT:
-                Log.i("ExoPlayerView", "Video stutters due to seek adjustment");
-                break;
-            case SimpleExoPlayer.DISCONTINUITY_REASON_AD_INSERTION:
-                Log.i("ExoPlayerView", "Video stutters due to an inserted ad");
-                break;
-            case SimpleExoPlayer.DISCONTINUITY_REASON_INTERNAL:
-                Log.i("ExoPlayerView", "Video stutters due to an internal problem");
-                break;
-        }
     }
 
     @Override
