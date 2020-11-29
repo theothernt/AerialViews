@@ -10,16 +10,15 @@ import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoListener;
 
 public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
@@ -69,10 +68,11 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
         prepared = false;
         retries = 0;
 
-        DefaultDataSourceFactory httpDataSourceFactory = new DefaultDataSourceFactory(this.getContext(), "Aerial Dream");
-        mediaSource = new ProgressiveMediaSource.Factory(httpDataSourceFactory)
-                .createMediaSource(uri);
-        player.prepare(mediaSource);
+        MediaItem mediaItem = new MediaItem.Builder()
+                .setUri(uri)
+                .build();
+        player.setMediaItem(mediaItem);
+        player.prepare();
     }
 
     @Override
