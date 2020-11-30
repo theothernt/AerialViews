@@ -1,11 +1,15 @@
 package com.codingbuffalo.aerialdream;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceView;
 import android.widget.MediaController;
+
+import androidx.preference.PreferenceManager;
+
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -14,6 +18,8 @@ import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.video.VideoListener;
+
+import java.util.Set;
 
 public class ExoPlayerView extends SurfaceView implements MediaController.MediaPlayerControl, VideoListener, Player.EventListener {
     public static final long DURATION = 800;
@@ -40,9 +46,17 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             return;
         }
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        Set<String> uiPrefs = prefs.getStringSet("ui_options", null);
+        Set<String> perfPrefs = prefs.getStringSet("perf_options", null);
+
         muteVideo = true;
         enableTunneling = true;
         useReducedBuffering = true;
+
+        if (!uiPrefs.contains("2")) muteVideo = false;
+        if (!perfPrefs.contains("0")) muteVideo = false;
+        if (!perfPrefs.contains("1")) muteVideo = false;
 
         player = buildPlayer(context);
         player.setVideoSurfaceView(this);

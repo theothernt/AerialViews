@@ -32,7 +32,7 @@
         <item>Show Clock</item>
         <item>Show Location</item>
         <item>Mute Videos</item>
-        <item>Alternate Clock/Location position</item>
+<!--        <item>Alternate Clock/Location position</item>-->
     </string-array>
 
     <string name="performance_options">Performance &amp; Debug</string>
@@ -40,6 +40,7 @@
     <string-array name="performance_options_entries">
         <item>Enable Tunneling</item>
         <item>Use Reduced Video Buffers</item>
+<!--        <item>Exceed video renderer capabilities if necessary</item>-->
 <!--        <item>Use TextureView</item>-->
 <!--        <item>Enable Debug Notifications</item>-->
     </string-array>
