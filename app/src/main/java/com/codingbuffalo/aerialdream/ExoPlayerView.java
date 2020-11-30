@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelectionParameters;
 import com.google.android.exoplayer2.video.VideoListener;
 
 import java.util.Set;
@@ -32,6 +33,7 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     private float aspectRatio;
     private boolean useReducedBuffering;
     private boolean enableTunneling;
+    private boolean exceedRendererCapabilities;
     private boolean muteVideo;
     private boolean prepared;
 
@@ -52,11 +54,13 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
 
         muteVideo = true;
         enableTunneling = true;
-        useReducedBuffering = true;
+        useReducedBuffering = false;
+        exceedRendererCapabilities = false;
 
         if (!uiPrefs.contains("2")) muteVideo = false;
-        if (!perfPrefs.contains("0")) muteVideo = false;
-        if (!perfPrefs.contains("1")) muteVideo = false;
+        if (!perfPrefs.contains("0")) enableTunneling = false;
+        if (perfPrefs.contains("1")) useReducedBuffering = true;
+        if (perfPrefs.contains("2")) exceedRendererCapabilities = true;
 
         player = buildPlayer(context);
         player.setVideoSurfaceView(this);
@@ -237,6 +241,9 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
     private SimpleExoPlayer buildPlayer(Context context) {
 
         DefaultLoadControl loadControl;
+        DefaultLoadControl.Builder loadControlBuilder = new DefaultLoadControl
+                .Builder();
+
         if (useReducedBuffering) {
             // Buffer sizes while playing
             final int minBuffer = 5000;
@@ -246,33 +253,29 @@ public class ExoPlayerView extends SurfaceView implements MediaController.MediaP
             final int bufferForPlayback = 1000;
             final int bufferForPlaybackAfterRebuffer = 5000;
 
-            loadControl = new DefaultLoadControl
-                    .Builder()
+            loadControlBuilder
                     .setBufferDurationsMs(
                             minBuffer,
                             maxBuffer,
                             bufferForPlayback,
-                            bufferForPlaybackAfterRebuffer)
-                    .build();
-        } else {
-            loadControl = new DefaultLoadControl
-                    .Builder()
-                    .build();
+                            bufferForPlaybackAfterRebuffer);
+
         }
+        loadControl = loadControlBuilder.build();
 
         DefaultTrackSelector trackSelector;
+        DefaultTrackSelector.ParametersBuilder parametersBuilder = new DefaultTrackSelector
+                .ParametersBuilder(context);
         if (enableTunneling) {
-
-            DefaultTrackSelector.Parameters parameters = new DefaultTrackSelector
-                    .ParametersBuilder(context)
-                    .setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context))
-                    .build();
-
-            trackSelector = new DefaultTrackSelector(context);
-            trackSelector.setParameters(parameters);
-        } else {
-            trackSelector = new DefaultTrackSelector(context);
+            parametersBuilder
+                    .setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context));
         }
+        if (exceedRendererCapabilities) {
+            parametersBuilder
+                    .setExceedRendererCapabilitiesIfNecessary(true);
+        }
+        trackSelector = new DefaultTrackSelector(context);
+        trackSelector.setParameters(parametersBuilder);
 
         SimpleExoPlayer player =  new SimpleExoPlayer.Builder(context)
                 .setLoadControl(loadControl)

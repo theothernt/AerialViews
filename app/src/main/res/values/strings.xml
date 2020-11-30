@@ -40,7 +40,7 @@
     <string-array name="performance_options_entries">
         <item>Enable Tunneling</item>
         <item>Use Reduced Video Buffers</item>
-<!--        <item>Exceed video renderer capabilities if necessary</item>-->
+        <item>Exceed Renderer Capabilities</item>
 <!--        <item>Use TextureView</item>-->
 <!--        <item>Enable Debug Notifications</item>-->
     </string-array>
