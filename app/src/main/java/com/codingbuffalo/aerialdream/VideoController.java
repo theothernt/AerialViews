@@ -33,15 +33,24 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         boolean showClock = true;
         boolean showLocation = true;
+        boolean alternateText = false;
 
         if (!uiPrefs.contains("0")) showClock = false;
         if (!uiPrefs.contains("1")) showLocation = false;
+        if (uiPrefs.contains("3")) alternateText = true;
 
         videoType2019 = prefs.getString("source_apple_2019", "1080_h264");
         videoSource = Integer.parseInt(prefs.getString("video_source", "0"));
 
         binding.setShowLocation(showLocation);
-        binding.setShowClock(showClock);
+
+        if (showClock) {
+            binding.setShowClock(!alternateText);
+            binding.setShowAltClock(alternateText);
+        } else {
+            binding.setShowClock(showClock);
+            binding.setShowAltClock(showClock);
+        }
 
         binding.videoView0.setController(binding.videoView0.videoView);
         binding.videoView0.videoView.setOnPlayerListener(this);
@@ -84,6 +93,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             public void onAnimationEnd(Animation animation) {
                 binding.loadingView.setVisibility(View.VISIBLE);
                 loadVideo(binding.videoView0, getVideo());
+                binding.setAltTextPosition(!binding.getAltTextPosition());
             }
 
             @Override

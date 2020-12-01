@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="android.view.View" />
 
         <variable
@@ -14,6 +13,13 @@
             name="showClock"
             type="boolean" />
 
+        <variable
+            name="showAltClock"
+            type="boolean" />
+
+        <variable
+            name="altTextPosition"
+            type="boolean" />
     </data>
 
     <FrameLayout
@@ -25,7 +31,9 @@
         <include
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
-            app:showLocation="@{showLocation}" />
+            app:showLocation="@{showLocation}"
+            app:showAltClock="@{showAltClock}"
+            app:altTextPosition="@{altTextPosition}"/>
 
         <TextView
             android:id="@+id/loading_view"
