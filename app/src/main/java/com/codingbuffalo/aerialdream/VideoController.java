@@ -23,6 +23,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
     private String videoType2019;
     private boolean canSkip;
     private int videoSource;
+    private boolean alternateText;
 
     public VideoController(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -33,7 +34,7 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
 
         boolean showClock = true;
         boolean showLocation = true;
-        boolean alternateText = false;
+        alternateText = false;
 
         if (!uiPrefs.contains("0")) showClock = false;
         if (!uiPrefs.contains("1")) showLocation = false;
@@ -93,7 +94,9 @@ public class VideoController implements VideoInteractor.Listener, ExoPlayerView.
             public void onAnimationEnd(Animation animation) {
                 binding.loadingView.setVisibility(View.VISIBLE);
                 loadVideo(binding.videoView0, getVideo());
-                binding.setAltTextPosition(!binding.getAltTextPosition());
+                if (alternateText) {
+                    binding.setAltTextPosition(!binding.getAltTextPosition());
+                }
             }
 
             @Override
