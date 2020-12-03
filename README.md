@@ -9,7 +9,7 @@
 
 This is a modified (forked) version which features the following changes...
 
-- Support for older Android TVs (eg. 2015/ATV1)
+- Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
 
 - Supports *only* the latest Apple video feed
 
@@ -19,11 +19,13 @@ This is a modified (forked) version which features the following changes...
 
 - Skip video feature (Swipe right on your phone or press right on your TV remote's d-pad)
 
+- Alternate text position to help avoid burn-in on OLED TVs
+
 <br/>
 
 ## How to install...
 
-This version of the app is not available in the Play Store so, for the moment, your options are...
+This version of the app is not available in the Play Store, yes, so your options are...
 
 1. [Download the APK from the Releases page](https://github.com/theothernt/AerialDream/releases) and install it manually
 
@@ -47,18 +49,21 @@ This version of the app is not available in the Play Store so, for the moment, y
 
 ## Device support and testing...
 
-- The plan is the keep support and good performance for older Android TVs
+- The plan is the keep support and great performance for older Android TVs
 
 - Newer features, which require more powerful devices (eg. Nvidia Shield or Google TV) can be disabled or enabled
 
 - The app has been tested with...
   - Sony Bravia (2015, Android TV v6)
+  - Nvidia Shield (2015, Android TV v7)
   - Nvidia Shield (2019, Android TV v9)
   - Chromecast/Google TV (2020, Android TV v10)
 
 <br/>
 
 ## Known issues...
+
+- HDR videos may not play properly for everyone, even with a TV that supports HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
 
 - This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
 
