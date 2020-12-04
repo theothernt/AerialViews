@@ -14,12 +14,12 @@
         android:required="false" />
 
     <application
-        android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:installLocation="auto"
         android:label="@string/daydream_name"
+        android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true">
