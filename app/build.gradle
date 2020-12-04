@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-allprojects {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xlint:deprecation"
-    }
-}
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -78,7 +72,4 @@ preBuild.dependsOn fetchPlaylistTask
 clean.doFirst {
     // Delete playlists
     delete fileTree(dir:'src/main/res/raw/', include: 'tvos**.json')
-}
-repositories {
-    mavenCentral()
 }
