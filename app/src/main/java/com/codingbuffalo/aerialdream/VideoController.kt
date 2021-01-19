@@ -73,7 +73,7 @@ class VideoController(context: Context?) : OnPlayerEventListener {
     val view: View
         get() = binding.root
 
-    fun start() {
+    private fun start() {
         loadVideo(binding.videoView0, video)
     }
 

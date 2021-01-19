@@ -11,7 +11,6 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.video.VideoListener
-import kotlin.system.exitProcess
 
 class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, VideoListener, Player.EventListener {
     private val player: SimpleExoPlayer
@@ -70,8 +69,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         var widthMeasureSpec = widthMeasureSpec
         if (aspectRatio > 0) {
             val newWidth: Int
-            val newHeight: Int
-            newHeight = MeasureSpec.getSize(heightMeasureSpec)
+            val newHeight: Int = MeasureSpec.getSize(heightMeasureSpec)
             newWidth = (newHeight * aspectRatio).toInt()
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
         }
@@ -196,7 +194,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
                             bufferForPlaybackAfterRebuffer)
         }
         loadControl = loadControlBuilder.build()
-        val trackSelector: DefaultTrackSelector
         val parametersBuilder = ParametersBuilder(context)
         if (enableTunneling) {
             parametersBuilder
@@ -206,7 +203,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
             parametersBuilder
                     .setExceedRendererCapabilitiesIfNecessary(true)
         }
-        trackSelector = DefaultTrackSelector(context)
+        val trackSelector: DefaultTrackSelector = DefaultTrackSelector(context)
         trackSelector.setParameters(parametersBuilder)
         val player = SimpleExoPlayer.Builder(context)
                 .setLoadControl(loadControl)

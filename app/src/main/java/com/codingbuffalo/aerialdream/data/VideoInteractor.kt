@@ -10,10 +10,9 @@ class VideoInteractor(context: Context, videoSource: Int, source_apple_2019: Str
     private val repositories: MutableList<VideoRepository> = LinkedList()
     private val context: Context = context.applicationContext
     private val source_apple_2019: String
-    private val videoSource: Int
+    private val videoSource: Int = videoSource
 
     init {
-        this.videoSource = videoSource
         this.source_apple_2019 = source_apple_2019
         repositories.add(Apple2019Repository())
     }

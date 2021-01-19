@@ -8,7 +8,7 @@ class SimpleVideo(private val videoUri: Uri, override val location: String?) : V
 //        return location
 //    }
 
-    override fun getUri(option: String): Uri? {
+    override fun getUri(option: String): Uri {
         return videoUri
     }
 }
