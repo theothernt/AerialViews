@@ -15,8 +15,11 @@ import com.codingbuffalo.aerialdream.data.VideoInteractor
 import com.codingbuffalo.aerialdream.data.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEventListener {
+class VideoController(context: Context?) : OnPlayerEventListener {
     private val binding: AerialDreamBinding
     private var playlist: VideoPlaylist? = null
     private val videoType2019: String?
@@ -54,12 +57,16 @@ class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEve
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
 
-        VideoInteractor(
-                context!!,
-                videoSource,
-                videoType2019!!,
-                this
-        ).fetchVideos()
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                val interactor = VideoInteractor(
+                        context!!,
+                        videoSource,
+                        videoType2019!!)
+                playlist = interactor.fetchVideos()
+                binding.root.post { start() }
+            }
+        }
         canSkip = true
     }
 
@@ -113,11 +120,6 @@ class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEve
             })
             binding.loadingView.startAnimation(animation)
         }
-    }
-
-    override fun onFetch(videos: VideoPlaylist?) {
-        playlist = videos
-        binding.root.post { start() }
     }
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: Video?) {
