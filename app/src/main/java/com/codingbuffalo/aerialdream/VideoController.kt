@@ -10,9 +10,9 @@ import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
 import com.codingbuffalo.aerialdream.ExoPlayerView.OnPlayerEventListener
-import com.codingbuffalo.aerialdream.data.Video
-import com.codingbuffalo.aerialdream.data.VideoInteractor
-import com.codingbuffalo.aerialdream.data.VideoPlaylist
+import com.codingbuffalo.aerialdream.models.videos.Video
+import com.codingbuffalo.aerialdream.services.VideoService
+import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +59,7 @@ class VideoController(context: Context?) : OnPlayerEventListener {
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                val interactor = VideoInteractor(
+                val interactor = VideoService(
                         context!!,
                         videoSource,
                         videoType2019!!)

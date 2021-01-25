@@ -11,13 +11,17 @@ import com.billy.android.swipe.listener.SimpleSwipeListener
 
 class AerialDream : DreamService() {
     private var videoController: VideoController? = null
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
         isFullscreen = true
         isInteractive = true
         videoController = VideoController(this)
+
         val view = videoController!!.view
         setContentView(view)
+
         SmartSwipe.wrap(view)
                 .addConsumer(StayConsumer())
                 .enableHorizontal()

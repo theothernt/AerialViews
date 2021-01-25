@@ -1,9 +1,9 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.models.videos
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
-abstract class AppleNewVideo : Video() {
+abstract class Apple2019Video : Video() {
     @SerializedName("url-1080-H264")
     private val url_1080_H264: String? = null
 

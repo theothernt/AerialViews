@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.models
 
 object VideoSource {
     const val REMOTE = 0

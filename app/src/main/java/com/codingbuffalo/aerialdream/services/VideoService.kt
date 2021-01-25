@@ -1,20 +1,26 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.services
 
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import com.codingbuffalo.aerialdream.models.videos.Video
+import com.codingbuffalo.aerialdream.models.VideoPlaylist
+import com.codingbuffalo.aerialdream.models.VideoSource
+import com.codingbuffalo.aerialdream.models.videos.SimpleVideo
+import com.codingbuffalo.aerialdream.providers.Apple2019Provider
+import com.codingbuffalo.aerialdream.providers.VideoProvider
 import java.util.*
 
-class VideoInteractor(context: Context, videoSource: Int, source_apple_2019: String) {
-    private val repositories: MutableList<VideoRepository> = LinkedList()
+class VideoService(context: Context, videoSource: Int, source_apple_2019: String) {
+    private val repositories: MutableList<VideoProvider> = LinkedList()
     private val context: Context = context.applicationContext
     private val source_apple_2019: String
     private val videoSource: Int = videoSource
 
     init {
         this.source_apple_2019 = source_apple_2019
-        repositories.add(Apple2019Repository())
+        repositories.add(Apple2019Provider())
     }
 
     fun fetchVideos(): VideoPlaylist {

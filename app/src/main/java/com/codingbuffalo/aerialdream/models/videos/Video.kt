@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.models.videos
 
 import android.net.Uri
 
