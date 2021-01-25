@@ -70,19 +70,3 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.1'
 }
-
-task fetchPlaylistTask (type: Exec) {
-    // Fetch playlist files
-    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
-        commandLine 'cmd', '/c', 'powershell', '-Command', '../fetch_playlists.ps1'
-    } else {
-        commandLine 'sh', '-c', '../fetch_playlists.sh'
-    }
-}
-
-preBuild.dependsOn fetchPlaylistTask
-
-clean.doFirst {
-    // Delete playlists
-    delete fileTree(dir:'src/main/res/raw/', include: 'tvos**.json')
-}
