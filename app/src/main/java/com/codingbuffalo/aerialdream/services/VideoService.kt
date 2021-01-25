@@ -12,20 +12,17 @@ import com.codingbuffalo.aerialdream.providers.Apple2019Provider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import java.util.*
 
-class VideoService(context: Context, videoSource: Int, source_apple_2019: String) {
+class VideoService(context: Context, private val videoSource: Int, private val source_apple_2019: String) {
     private val repositories: MutableList<VideoProvider> = LinkedList()
     private val context: Context = context.applicationContext
-    private val source_apple_2019: String
-    private val videoSource: Int = videoSource
 
     init {
-        this.source_apple_2019 = source_apple_2019
         repositories.add(Apple2019Provider())
     }
 
     fun fetchVideos(): VideoPlaylist {
         val videos = buildVideoList()
-        return VideoPlaylist(videos)
+        return VideoPlaylist(videos.toMutableList())
     }
 
     private fun buildVideoList(): List<Video> {
@@ -42,7 +39,7 @@ class VideoService(context: Context, videoSource: Int, source_apple_2019: String
         }
 
         for (video in remoteVideos) {
-            val remoteUri = video.getUri(source_apple_2019)
+            val remoteUri = video.uri(source_apple_2019)
             val remoteFilename = remoteUri!!.lastPathSegment!!.toLowerCase(Locale.ROOT)
             if (videoSource == VideoSource.REMOTE) {
                 Log.i("FetchVideosTask", "Remote video: $remoteFilename")

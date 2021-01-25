@@ -8,5 +8,5 @@ abstract class Video {
     open val location: String?
         get() = accessibilityLabel
 
-    abstract fun getUri(option: String): Uri?
+    abstract fun uri(option: String): Uri?
 }

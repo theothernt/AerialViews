@@ -123,8 +123,8 @@ class VideoController(context: Context?) : OnPlayerEventListener {
     }
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: Video?) {
-        Log.i("LoadVideo", "Playing: " + video!!.location + " - " + video.getUri(videoType2019!!))
-        videoBinding.videoView.setUri(video.getUri(videoType2019))
+        Log.i("LoadVideo", "Playing: " + video!!.location + " - " + video.uri(videoType2019!!))
+        videoBinding.videoView.setUri(video.uri(videoType2019))
         videoBinding.location.text = video.location
         videoBinding.videoView.start()
     }

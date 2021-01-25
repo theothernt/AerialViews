@@ -3,9 +3,8 @@ package com.codingbuffalo.aerialdream.models
 import android.net.Uri
 import com.codingbuffalo.aerialdream.models.videos.SimpleVideo
 import com.codingbuffalo.aerialdream.models.videos.Video
-import java.util.*
 
-class VideoPlaylist(private val videos: List<Video?>) {
+class VideoPlaylist(private val videos: MutableList<Video?>) {
     private var position = 0
 
     val video: Video?
@@ -16,6 +15,6 @@ class VideoPlaylist(private val videos: List<Video?>) {
         }
 
     init {
-        Collections.shuffle(videos)
+        videos.shuffle()
     }
 }
