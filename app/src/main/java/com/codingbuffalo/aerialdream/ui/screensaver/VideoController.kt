@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream
+package com.codingbuffalo.aerialdream.ui.screensaver
 
 import android.content.Context
 import android.util.Log
@@ -9,7 +9,8 @@ import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
-import com.codingbuffalo.aerialdream.ExoPlayerView.OnPlayerEventListener
+import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
+import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.videos.Video
 import com.codingbuffalo.aerialdream.services.VideoService
 import com.codingbuffalo.aerialdream.models.VideoPlaylist

@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream
+package com.codingbuffalo.aerialdream.ui.screensaver
 
 import android.content.Context
 import android.net.Uri
