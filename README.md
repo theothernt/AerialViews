@@ -11,7 +11,7 @@ This is a modified (forked) version which features the following changes...
 
 - Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
 
-- Supports *only* the latest Apple video feed
+- Supports *only* the latest Apple video feed (this contains nearly all previous videos too!)
 
 - Option to play local version of video
 
@@ -63,7 +63,7 @@ This version of the app is not available in the Play Store, yet, so your options
 
 ## Known issues...
 
-- HDR videos may not play properly for everyone, even with a TV that supports HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
+- HDR videos may not play properly for everyone, even with a TV that supports HDR/HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
 
 - This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
 
