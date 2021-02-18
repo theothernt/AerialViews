@@ -48,7 +48,7 @@
 
         <Preference android:title="@string/test_settings">
             <intent
-                android:targetClass="com.codingbuffalo.aerialdream.TestActivity"
+                android:targetClass="com.codingbuffalo.aerialdream.ui.screensaver.TestActivity"
                 android:targetPackage="com.codingbuffalo.aerialdream" />
         </Preference>
 
