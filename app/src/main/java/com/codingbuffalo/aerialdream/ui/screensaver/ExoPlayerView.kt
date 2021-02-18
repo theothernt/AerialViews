@@ -197,13 +197,13 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         val parametersBuilder = ParametersBuilder(context)
         if (enableTunneling) {
             parametersBuilder
-                    .setTunnelingAudioSessionId(C.generateAudioSessionIdV21(context))
+                    .setTunnelingEnabled(true)
         }
         if (exceedRendererCapabilities) {
             parametersBuilder
                     .setExceedRendererCapabilitiesIfNecessary(true)
         }
-        val trackSelector: DefaultTrackSelector = DefaultTrackSelector(context)
+        val trackSelector = DefaultTrackSelector(context)
         trackSelector.setParameters(parametersBuilder)
         val player = SimpleExoPlayer.Builder(context)
                 .setLoadControl(loadControl)
@@ -225,6 +225,4 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         const val DURATION: Long = 800
         const val MAX_RETRIES: Long = 2
     }
-
-
 }

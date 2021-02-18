@@ -61,7 +61,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.12.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.13.1'
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
