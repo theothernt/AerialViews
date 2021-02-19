@@ -5,7 +5,7 @@
     <!-- Video Options -->
     <string name="video_options">Videos</string>
 
-    <string name="source_apple_2019">2019 Apple TV Videos</string>
+    <string name="source_apple_2019">Apple TV Videos</string>
     <string name="source_apple_2019_summary">Select a video quality</string>
     <string-array name="source_apple_2019_entries">
         <item>1080p H.264/AVC</item>

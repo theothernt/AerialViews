@@ -5,4 +5,5 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
- -keep class com.codingbuffalo.aerialdream.data.* { <fields>; }
+-keep class com.codingbuffalo.aerialdream.models.videos.* { <fields>; }
+-keep class com.codingbuffalo.aerialdream.providers.* { <fields>; }

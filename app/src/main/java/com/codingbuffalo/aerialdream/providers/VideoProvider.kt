@@ -1,13 +1,12 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.providers
 
 import android.content.Context
 import androidx.annotation.RawRes
+import com.codingbuffalo.aerialdream.models.videos.Video
 import com.google.gson.Gson
-import java.io.IOException
 import java.util.*
 
-abstract class VideoRepository {
-    @Throws(IOException::class)
+abstract class VideoProvider {
     abstract fun fetchVideos(context: Context): List<Video>
 
     fun <T> parseJson(context: Context, @RawRes res: Int, tClass: Class<T>?): T {

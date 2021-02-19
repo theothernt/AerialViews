@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream
+package com.codingbuffalo.aerialdream.ui.settings
 
 import android.Manifest
 import android.content.Intent
@@ -10,7 +10,8 @@ import androidx.core.content.ContextCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.codingbuffalo.aerialdream.data.VideoSource
+import com.codingbuffalo.aerialdream.R
+import com.codingbuffalo.aerialdream.models.VideoSource
 
 class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClickListener, OnSharedPreferenceChangeListener {
 

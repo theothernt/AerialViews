@@ -1,9 +1,9 @@
-package com.codingbuffalo.aerialdream.data
+package com.codingbuffalo.aerialdream.models.videos
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 
-abstract class AppleNewVideo : Video() {
+class Apple2019Video : Video() {
     @SerializedName("url-1080-H264")
     private val url_1080_H264: String? = null
 
@@ -19,7 +19,7 @@ abstract class AppleNewVideo : Video() {
     @SerializedName("url-4K-HDR")
     private val url_4K_HDR: String? = null
 
-    override fun getUri(option: String): Uri? {
+    override fun uri(option: String): Uri? {
         return Uri.parse(
                 getUrl(option) // Apple seems to be using an invalid certificate
                         ?.replace("https://", "http://")

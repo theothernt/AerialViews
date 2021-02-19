@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream
+package com.codingbuffalo.aerialdream.ui.screensaver
 
 import android.content.Context
 import android.util.Log
@@ -9,14 +9,18 @@ import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
-import com.codingbuffalo.aerialdream.ExoPlayerView.OnPlayerEventListener
-import com.codingbuffalo.aerialdream.data.Video
-import com.codingbuffalo.aerialdream.data.VideoInteractor
-import com.codingbuffalo.aerialdream.data.VideoPlaylist
+import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
+import com.codingbuffalo.aerialdream.R
+import com.codingbuffalo.aerialdream.models.videos.Video
+import com.codingbuffalo.aerialdream.services.VideoService
+import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEventListener {
+class VideoController(context: Context?) : OnPlayerEventListener {
     private val binding: AerialDreamBinding
     private var playlist: VideoPlaylist? = null
     private val videoType2019: String?
@@ -54,19 +58,23 @@ class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEve
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
 
-        VideoInteractor(
-                context!!,
-                videoSource,
-                videoType2019!!,
-                this
-        ).fetchVideos()
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                val interactor = VideoService(
+                        context!!,
+                        videoSource,
+                        videoType2019!!)
+                playlist = interactor.fetchVideos()
+                binding.root.post { start() }
+            }
+        }
         canSkip = true
     }
 
     val view: View
         get() = binding.root
 
-    fun start() {
+    private fun start() {
         loadVideo(binding.videoView0, video)
     }
 
@@ -115,14 +123,9 @@ class VideoController(context: Context?) : VideoInteractor.Listener, OnPlayerEve
         }
     }
 
-    override fun onFetch(videos: VideoPlaylist?) {
-        playlist = videos
-        binding.root.post { start() }
-    }
-
     private fun loadVideo(videoBinding: VideoViewBinding, video: Video?) {
-        Log.i("LoadVideo", "Playing: " + video!!.location + " - " + video.getUri(videoType2019!!))
-        videoBinding.videoView.setUri(video.getUri(videoType2019))
+        Log.i("LoadVideo", "Playing: " + video!!.location + " - " + video.uri(videoType2019!!))
+        videoBinding.videoView.setUri(video.uri(videoType2019))
         videoBinding.location.text = video.location
         videoBinding.videoView.start()
     }

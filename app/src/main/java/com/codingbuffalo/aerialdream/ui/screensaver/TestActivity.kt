@@ -1,6 +1,7 @@
-package com.codingbuffalo.aerialdream
+package com.codingbuffalo.aerialdream.ui.screensaver
 
-import android.service.dreams.DreamService
+import android.app.Activity
+import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import com.billy.android.swipe.SmartSwipe
@@ -8,13 +9,13 @@ import com.billy.android.swipe.SmartSwipeWrapper
 import com.billy.android.swipe.SwipeConsumer
 import com.billy.android.swipe.consumer.StayConsumer
 import com.billy.android.swipe.listener.SimpleSwipeListener
+import com.codingbuffalo.aerialdream.R
 
-class AerialDream : DreamService() {
+class TestActivity : Activity() {
     private var videoController: VideoController? = null
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        isFullscreen = true
-        isInteractive = true
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setTitle(R.string.daydream_name)
         videoController = VideoController(this)
         val view = videoController!!.view
         setContentView(view)
@@ -49,8 +50,8 @@ class AerialDream : DreamService() {
         }
     }
 
-    override fun onDreamingStopped() {
+    override fun onStop() {
         videoController!!.stop()
-        super.onDreamingStopped()
+        super.onStop()
     }
 }
