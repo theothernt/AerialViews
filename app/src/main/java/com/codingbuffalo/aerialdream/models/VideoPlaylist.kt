@@ -1,17 +1,16 @@
 package com.codingbuffalo.aerialdream.models
 
 import android.net.Uri
-import com.codingbuffalo.aerialdream.models.videos.SimpleVideo
-import com.codingbuffalo.aerialdream.models.videos.Video
+import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 
-class VideoPlaylist(private val videos: MutableList<Video?>) {
+class VideoPlaylist(private val videos: MutableList<AerialVideo>) {
     private var position = 0
 
-    val video: Video?
+    val video: AerialVideo
         get() = if (videos.isNotEmpty()) {
             videos[position++ % videos.size]
         } else {
-            SimpleVideo(Uri.parse(""), "")
+            AerialVideo(Uri.parse(""), "")
         }
 
     init {

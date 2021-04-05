@@ -11,16 +11,16 @@ import androidx.databinding.DataBindingUtil
 import androidx.preference.PreferenceManager
 import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.codingbuffalo.aerialdream.R
-import com.codingbuffalo.aerialdream.models.videos.Video
 import com.codingbuffalo.aerialdream.services.VideoService
 import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
+import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
-class VideoController(context: Context?) : OnPlayerEventListener {
+class VideoController(context: Context) : OnPlayerEventListener {
     private val binding: AerialDreamBinding
     private var playlist: VideoPlaylist? = null
     private val videoType2019: String?
@@ -34,6 +34,9 @@ class VideoController(context: Context?) : OnPlayerEventListener {
 
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         val uiPrefs = prefs.getStringSet("ui_options", null)
+
+        //val otherPrefs = PreferenceHelper.defaultPrefs(context)
+
 
         var showClock = true
         var showLocation = true
@@ -61,9 +64,9 @@ class VideoController(context: Context?) : OnPlayerEventListener {
         runBlocking {
             withContext(Dispatchers.IO) {
                 val interactor = VideoService(
-                        context!!,
-                        videoSource,
-                        videoType2019!!)
+                        context,
+                        prefs,
+                        )
                 playlist = interactor.fetchVideos()
                 binding.root.post { start() }
             }
@@ -75,7 +78,7 @@ class VideoController(context: Context?) : OnPlayerEventListener {
         get() = binding.root
 
     private fun start() {
-        loadVideo(binding.videoView0, video)
+        video?.let { loadVideo(binding.videoView0, it) }
     }
 
     fun stop() {
@@ -95,7 +98,7 @@ class VideoController(context: Context?) : OnPlayerEventListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
                 binding.loadingView.visibility = View.VISIBLE
-                loadVideo(binding.videoView0, video)
+                video?.let { loadVideo(binding.videoView0, it) }
                 if (alternateText) {
                     binding.altTextPosition = !binding.altTextPosition
                 }
@@ -123,15 +126,15 @@ class VideoController(context: Context?) : OnPlayerEventListener {
         }
     }
 
-    private fun loadVideo(videoBinding: VideoViewBinding, video: Video?) {
-        Log.i("LoadVideo", "Playing: " + video!!.location + " - " + video.uri(videoType2019!!))
-        videoBinding.videoView.setUri(video.uri(videoType2019))
+    private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
+        Log.i("LoadVideo", "Playing: " + video.location + " - " + video.uri)
+        videoBinding.videoView.setUri(video.uri)
         videoBinding.location.text = video.location
         videoBinding.videoView.start()
     }
 
-    private val video: Video?
-        get() = playlist!!.video
+    private val video: AerialVideo?
+        get() = playlist?.video
 
     override fun onPrepared(view: ExoPlayerView?) {
         fadeInNextVideo()

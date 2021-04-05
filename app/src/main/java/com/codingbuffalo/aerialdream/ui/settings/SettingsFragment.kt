@@ -47,7 +47,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
 
     private fun checkUserPermission(sharedPreferences: SharedPreferences) {
         val pref = sharedPreferences.getString(VIDEO_SOURCE, "0")!!.toInt()
-        if (pref != VideoSource.REMOTE && !hasStoragePermission()) {
+        if (pref != 0 && !hasStoragePermission()) {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     PERMISSION_READ_EXTERNAL_STORAGE)
         } else {
