@@ -3,6 +3,7 @@ package com.codingbuffalo.aerialdream.providers
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.util.Log
 import androidx.annotation.RawRes
 import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.VideoQuality
@@ -16,7 +17,7 @@ import java.util.*
 class Apple2019Provider(context: Context) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        val quality = VideoQuality.VIDEO_1080_SDR
+        val quality = VideoQuality.VIDEO_1080_H264
         val source = VideoSource.REMOTE
         val videos = mutableListOf<AerialVideo>()
 
@@ -32,14 +33,19 @@ class Apple2019Provider(context: Context) : VideoProvider(context) {
 //            videos.add(AerialVideo(it.uri(quality), it.location))
 //        }
 
-        if (source == VideoSource.REMOTE)
+        if (source == VideoSource.REMOTE) {
+            Log.i(TAG, "${source.name} vids: ${videos.size}")
             return videos
+        }
 
         val result = compareToLocalVideos(videos)
 
-        if (source == VideoSource.LOCAL)
+        if (source == VideoSource.LOCAL) {
+            Log.i(TAG, "${source.name} vids: ${result.first.size}")
             return result.first // videos matched locally
+        }
 
+        Log.i(TAG, "${source.name} vids: ${result.first.size}, ${result.second.size}")
         return result.first + result.second // matched local videos, the rest are remote
     }
 
@@ -63,7 +69,7 @@ class Apple2019Provider(context: Context) : VideoProvider(context) {
             }
         }
 
-        return Pair(matched, matched)
+        return Pair(matched, unmatched)
     }
 
     private fun <T> parseJson(context: Context, @RawRes res: Int, tClass: Class<T>?): T {
@@ -78,5 +84,6 @@ class Apple2019Provider(context: Context) : VideoProvider(context) {
 
     companion object {
         private val jsonParser = Gson()
+        private const val TAG = "Apple2019Provider"
     }
 }

@@ -8,27 +8,29 @@ import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.models.VideoSource
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.Apple2019Provider
+import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import java.util.*
 
 class VideoService(context: Context, prefs: SharedPreferences) {
 
-    private val repositories: MutableList<VideoProvider> = LinkedList()
+    private val providers = mutableListOf<VideoProvider>()
 
     init {
-
         // get all provider prefs
         // if enabled, load provider, pass prefs + context
 
-        repositories.add(Apple2019Provider(context, prefs))
+        providers.add(Apple2019Provider(context))
+        providers.add(LocalVideoProvider(context))
     }
 
     fun fetchVideos(): VideoPlaylist {
+        val videos = mutableListOf<AerialVideo>()
 
-        // for each video provider ...
-
-        val videos = emptyList<AerialVideo>() //buildVideoList()
+        providers.forEach {
+            videos.addAll(it.fetchVideos())
+        }
 
         return VideoPlaylist(videos.toMutableList())
     }
