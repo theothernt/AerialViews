@@ -11,7 +11,7 @@ This is a modified (forked) version which features the following changes...
 
 - Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
 
-- Supports *only* the latest Apple video feed (this contains nearly all previous videos too!)
+- Supports *only* the latest Apple video feed (it contains nearly all previous videos too!)
 
 - Option to play local version of video
 
@@ -30,6 +30,19 @@ This version of the app is not available in the Play Store, yet, so your options
 1. [Download the APK from the Releases page](https://github.com/theothernt/AerialDream/releases) and install it manually
 
 2. Clone this repo to your PC or Mac, download Android Studio, then build and deploy
+
+<br/>
+
+## Special note for Fire TV owners...
+
+The app can be installed and configured, like with any other Android TV device, but the ability to set Aerial Dream as the default screensaver has been disabled in the FireOS menus.
+
+To get around this, you'll have to install a command-line developer tool, run a command - and that's it. I would recommend having a look at [this guide over at Nerds Chalk](https://nerdschalk.com/change-fire-tv-screensaver-apple-tv/) for the exact steps. 
+
+Just note that the command is little different due to a name change in the code, try this instead:
+
+`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.codingbuffalo.aerialdream/.ui.screensaver.DreamActivity settings put secure screensaver_default_component com.codingbuffalo.aerialdream/.ui.screensaver.DreamActivity`
+
 
 <br/>
 
@@ -56,6 +69,7 @@ This version of the app is not available in the Play Store, yet, so your options
 - The app has been tested with...
   - Sony Bravia (2015, Android TV v6)
   - Nvidia Shield (2015, Android TV v7)
+  - Fire TV Stick 4K (2018, Android v7)
   - Nvidia Shield (2019, Android TV v9)
   - Chromecast/Google TV (2020, Android TV v10)
 
