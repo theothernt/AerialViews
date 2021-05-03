@@ -4,7 +4,6 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
@@ -61,10 +60,14 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.13.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.13.3'
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
+
+    implementation 'com.chibatching.kotpref:kotpref:2.13.1'
+    implementation 'com.chibatching.kotpref:initializer:2.13.1'
+    implementation 'com.chibatching.kotpref:enum-support:2.13.1'
 
     implementation 'com.billy.android:smart-swipe:1.1.2'
 
