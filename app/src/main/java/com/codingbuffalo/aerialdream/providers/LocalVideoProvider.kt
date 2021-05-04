@@ -14,18 +14,19 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
         // Aerial folder or all
 
         val videos = mutableListOf<AerialVideo>()
-        val filter = VideoFolder.ALL
+        val filter = VideoFolder.AERIAL
 
         val localVideos = FileHelper.findAllMedia(context)
 
         for (video in localVideos) {
 
+            val filterFolder = "/${filter.name.toLowerCase(Locale.ROOT)}/"
             val containsFolder = video
                     ?.toLowerCase(Locale.ROOT)
-                    ?.contains(filter.name.toLowerCase(Locale.ROOT))!!
+                    ?.contains(filterFolder)
 
             if (filter != VideoFolder.ALL &&
-                    !containsFolder) {
+                    !containsFolder!!) {
                 continue
             }
 

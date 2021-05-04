@@ -21,8 +21,8 @@ class Apple2019Provider(context: Context, private val prefs: Apple2019Prefs) : V
     override fun fetchVideos(): List<AerialVideo> {
         //val quality = prefs.quality
         //val source = prefs.source
-        val quality = VideoQuality.VIDEO_1080_SDR
-        val source = VideoSource.REMOTE
+        val quality = VideoQuality.VIDEO_1080_H264
+        val source = VideoSource.LOCAL_AND_REMOTE
         val videos = mutableListOf<AerialVideo>()
 
         Log.i(TAG, "$source, $quality")
