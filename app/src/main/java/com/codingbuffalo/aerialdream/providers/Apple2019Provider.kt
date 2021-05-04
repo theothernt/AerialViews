@@ -5,27 +5,39 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
+import com.chibatching.kotpref.KotprefModel
 import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.VideoQuality
 import com.codingbuffalo.aerialdream.models.VideoSource
+import com.codingbuffalo.aerialdream.models.prefs.Apple2019Prefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.models.videos.Apple2019Video
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.gson.Gson
 import java.util.*
 
-class Apple2019Provider(context: Context) : VideoProvider(context) {
+class Apple2019Provider(context: Context, private val prefs: Apple2019Prefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        val quality = VideoQuality.VIDEO_1080_H264
+        //val quality = prefs.quality
+        //val source = prefs.source
+        val quality = VideoQuality.VIDEO_1080_SDR
         val source = VideoSource.REMOTE
         val videos = mutableListOf<AerialVideo>()
 
+        Log.i(TAG, "$source, $quality")
+
+        //prefs.quality = VideoQuality.VIDEO_1080_SDR
+        //prefs.source = VideoSource.REMOTE
+
+        Log.i(TAG,"Show Location: ${prefs.useLocation}")
         // tvOS13 videos
         val wrapperOS13 = parseJson(context, R.raw.tvos13, Wrapper::class.java)
         wrapperOS13.assets?.forEach {
             videos.add(AerialVideo(it.uri(quality), it.location))
         }
+
+        Log.i(TAG, "tvOS13: ${videos.count()} vids found")
 
         // Older videos missing/removed from tvOS13 feed
 //        val wrapperLegacy = parseJson(context, R.raw.legacy, Wrapper::class.java)
@@ -59,7 +71,8 @@ class Apple2019Provider(context: Context) : VideoProvider(context) {
             val remoteFilename = video.uri.lastPathSegment!!.toLowerCase(Locale.ROOT)
 
             val videoFound = localVideos.find {
-                Uri.parse(it).lastPathSegment!!.toLowerCase(Locale.ROOT).contains(remoteFilename)
+                val localFilename = Uri.parse(it).lastPathSegment!!.toLowerCase(Locale.ROOT)
+                localFilename.contains(remoteFilename)
             }
 
             if (videoFound != null) {

@@ -65,7 +65,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
             withContext(Dispatchers.IO) {
                 val interactor = VideoService(
                         context,
-                        prefs,
                         )
                 playlist = interactor.fetchVideos()
                 binding.root.post { start() }

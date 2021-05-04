@@ -14,7 +14,7 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
         // Aerial folder or all
 
         val videos = mutableListOf<AerialVideo>()
-        val filter = VideoFolder.AERIAL
+        val filter = VideoFolder.ALL
 
         val localVideos = FileHelper.findAllMedia(context)
 
@@ -35,7 +35,7 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
         }
 
         //return videos
-        return emptyList()
+        return videos
     }
 }
 
