@@ -1,43 +1,34 @@
 package com.codingbuffalo.aerialdream.providers
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
-import com.chibatching.kotpref.KotprefModel
 import com.codingbuffalo.aerialdream.R
-import com.codingbuffalo.aerialdream.models.VideoQuality
-import com.codingbuffalo.aerialdream.models.VideoSource
-import com.codingbuffalo.aerialdream.models.prefs.Apple2019Prefs
+import com.codingbuffalo.aerialdream.models.AppleVideoSource
+import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.models.videos.Apple2019Video
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.gson.Gson
 import java.util.*
 
-class Apple2019Provider(context: Context, private val prefs: Apple2019Prefs) : VideoProvider(context) {
+class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        //val quality = prefs.quality
-        //val source = prefs.source
-        val quality = VideoQuality.VIDEO_1080_H264
-        val source = VideoSource.LOCAL_AND_REMOTE
+        val quality = prefs.quality
+        val source = prefs.source
         val videos = mutableListOf<AerialVideo>()
 
         Log.i(TAG, "$source, $quality")
 
-        //prefs.quality = VideoQuality.VIDEO_1080_SDR
-        //prefs.source = VideoSource.REMOTE
-
-        Log.i(TAG,"Show Location: ${prefs.useLocation}")
         // tvOS13 videos
         val wrapperOS13 = parseJson(context, R.raw.tvos13, Wrapper::class.java)
         wrapperOS13.assets?.forEach {
             videos.add(AerialVideo(it.uri(quality), it.location))
         }
 
-        Log.i(TAG, "tvOS13: ${videos.count()} vids found")
+        Log.i(TAG, "tvOS13: ${videos.count()} videos found")
 
         // Older videos missing/removed from tvOS13 feed
 //        val wrapperLegacy = parseJson(context, R.raw.legacy, Wrapper::class.java)
@@ -45,24 +36,23 @@ class Apple2019Provider(context: Context, private val prefs: Apple2019Prefs) : V
 //            videos.add(AerialVideo(it.uri(quality), it.location))
 //        }
 
-        if (source == VideoSource.REMOTE) {
-            Log.i(TAG, "${source.name} vids: ${videos.size}")
+        if (source == AppleVideoSource.REMOTE) {
+            Log.i(TAG, "${source.name} videos: ${videos.size}")
             return videos
         }
 
         val result = compareToLocalVideos(videos)
 
-        if (source == VideoSource.LOCAL) {
-            Log.i(TAG, "${source.name} vids: ${result.first.size}")
+        if (source == AppleVideoSource.LOCAL) {
+            Log.i(TAG, "${source.name} videos: ${result.first.size}")
             return result.first // videos matched locally
         }
 
-        Log.i(TAG, "${source.name} vids: ${result.first.size}, ${result.second.size}")
+        Log.i(TAG, "${source.name} videos: ${result.first.size}, ${result.second.size}")
         return result.first + result.second // matched local videos, the rest are remote
     }
 
     private fun compareToLocalVideos(remoteVideos: List<AerialVideo>) : Pair<List<AerialVideo>,List<AerialVideo>> {
-
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(context)
@@ -97,6 +87,6 @@ class Apple2019Provider(context: Context, private val prefs: Apple2019Prefs) : V
 
     companion object {
         private val jsonParser = Gson()
-        private const val TAG = "Apple2019Provider"
+        private const val TAG = "AppleVideoProvider"
     }
 }

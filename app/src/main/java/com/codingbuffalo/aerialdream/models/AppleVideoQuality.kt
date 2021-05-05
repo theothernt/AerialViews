@@ -1,6 +1,6 @@
 package com.codingbuffalo.aerialdream.models
 
-enum class VideoQuality() {
+enum class AppleVideoQuality() {
     VIDEO_1080_H264,
     VIDEO_1080_SDR,
     VIDEO_1080_HDR,
