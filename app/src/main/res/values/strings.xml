@@ -1,13 +1,21 @@
 <resources>
+    <!-- General -->
     <string name="daydream_name">Aerial Dream</string>
     <string name="loading_aerial"></string>
 
-    <!-- Video Options -->
-    <string name="video_options">Videos</string>
+    <!-- Categories -->
+    <string name="category_settings">Settings</string>
+    <string name="category_sources">Sources</string>
+    <string name="category_video_source">Video Source</string>
+    <string name="category_actions">Actions</string>
 
-    <string name="source_apple_2019">Apple TV Videos</string>
-    <string name="source_apple_2019_summary">Select a video quality</string>
-    <string-array name="source_apple_2019_entries">
+    <!-- Apple Video Options -->
+    <string name="apple_videos_title">Apple TV Videos</string>
+    <string name="apple_videos_summary">Use videos directly from Apple or stored locally</string>
+
+    <string name="apple_videos_quality_title">Quality</string>
+    <string name="apple_videos_quality_summary">Select a video quality</string>
+    <string-array name="apple_videos_quality_entries">
         <item>1080p H.264/AVC</item>
         <item>1080p SDR/HEVC</item>
         <item>1080p HDR/HEVC</item>
@@ -15,17 +23,28 @@
         <item>4K HDR/HEVC</item>
     </string-array>
 
-    <string name="video_source">Video Source</string>
-    <string name="video_source_summary">Choose a video source</string>
-    <string-array name="video_source_entries">
+    <string name="apple_videos_location_title">Location</string>
+    <string name="apple_videos_location_summary">Choose a video location</string>
+    <string-array name="apple_videos_location_entries">
         <item>Remote only</item>
         <item>Local only</item>
         <item>Local and remote</item>
     </string-array>
 
-    <!-- Settings -->
-    <string name="category_settings">Settings</string>
+    <!-- Local Video Options -->
+    <string name="local_videos_title">Local Videos</string>
+    <string name="local_videos_summary">Use videos stored locally on the device or externally via USB or SD card.</string>
 
+    <string name="local_videos_filter_title">Filter</string>
+    <string name="local_videos_filter_summary">Include videos from</string>
+    <string-array name="local_videos_filter_entries">
+        <item>All folders</item>
+        <item>Aerial folder only</item>
+    </string-array>
+
+    <!-- Network Video Options -->
+
+    <!-- Settings -->
     <string name="interface_options">Interface</string>
     <string name="interface_options_summary">Customise how things look</string>
     <string-array name="interface_options_entries">
@@ -45,8 +64,6 @@
     </string-array>
 
     <!-- Actions -->
-    <string name="category_actions">Actions</string>
-
     <string name="test_settings">Test settings</string>
     <string name="activate_screensaver">Open system screensaver options</string>
 </resources>

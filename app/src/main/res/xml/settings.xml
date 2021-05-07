@@ -1,61 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/video_options">
+    <PreferenceCategory app:title="@string/category_sources">
+        <Preference
+            app:title="@string/apple_videos_title"
+            app:summary="@string/apple_videos_summary"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.AppleVideosFragment"/>
 
-        <ListPreference
-            android:defaultValue="1080_sdr"
-            android:entries="@array/source_apple_2019_entries"
-            android:entryValues="@array/source_apple_2019_values"
-            android:key="source_apple_2019"
-            android:title="@string/source_apple_2019"
-            android:dialogTitle="@string/source_apple_2019_summary" />
-
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/video_source_entries"
-            android:entryValues="@array/video_source_values"
-            android:key="video_source"
-            android:title="@string/video_source"
-            android:dialogTitle="@string/video_source_summary" />
-
+        <Preference
+            app:title="@string/local_videos_title"
+            app:summary="@string/local_videos_summary"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.LocalVideosFragment"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_settings">
+    <PreferenceCategory app:title="@string/category_settings">
+        <MultiSelectListPreference
+            app:entries="@array/interface_options_entries"
+            app:entryValues="@array/interface_options_values"
+            app:defaultValue="@array/interface_options_defaults"
+            app:key="ui_options"
+            app:title="@string/interface_options"
+            app:summary="@string/interface_options_summary"
+            app:dialogTitle="@string/interface_options_summary" />
 
         <MultiSelectListPreference
-            android:entries="@array/interface_options_entries"
-            android:entryValues="@array/interface_options_values"
-            android:defaultValue="@array/interface_options_defaults"
-            android:key="ui_options"
-            android:title="@string/interface_options"
-            android:summary="@string/interface_options_summary"
-            android:dialogTitle="@string/interface_options_summary" />
-
-        <MultiSelectListPreference
-            android:entries="@array/performance_options_entries"
-            android:entryValues="@array/performance_options_values"
-            android:defaultValue="@array/performance_options_defaults"
-            android:key="perf_options"
-            android:title="@string/performance_options"
-            android:summary="@string/performance_options_summary"
-            android:dialogTitle="@string/performance_options_summary" />
-
+            app:entries="@array/performance_options_entries"
+            app:entryValues="@array/performance_options_values"
+            app:defaultValue="@array/performance_options_defaults"
+            app:key="perf_options"
+            app:title="@string/performance_options"
+            app:summary="@string/performance_options_summary"
+            app:dialogTitle="@string/performance_options_summary" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/category_actions">
-
-        <Preference android:title="@string/test_settings">
+    <PreferenceCategory app:title="@string/category_actions">
+        <Preference app:title="@string/test_settings">
             <intent
                 android:targetClass="com.codingbuffalo.aerialdream.ui.screensaver.TestActivity"
                 android:targetPackage="com.codingbuffalo.aerialdream" />
         </Preference>
 
         <Preference
-            android:key="system_options"
-            android:title="@string/activate_screensaver" />
-
+            app:key="system_options"
+            app:title="@string/activate_screensaver" />
     </PreferenceCategory>
 
 </PreferenceScreen>

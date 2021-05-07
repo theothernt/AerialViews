@@ -17,10 +17,10 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
 
     override fun fetchVideos(): List<AerialVideo> {
         val quality = prefs.quality
-        val source = prefs.source
+        val location = prefs.location
         val videos = mutableListOf<AerialVideo>()
 
-        Log.i(TAG, "$source, $quality")
+        Log.i(TAG, "$location, $quality")
 
         // tvOS13 videos
         val wrapperOS13 = parseJson(context, R.raw.tvos13, Wrapper::class.java)
@@ -36,19 +36,19 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
 //            videos.add(AerialVideo(it.uri(quality), it.location))
 //        }
 
-        if (source == AppleVideoSource.REMOTE) {
-            Log.i(TAG, "${source.name} videos: ${videos.size}")
+        if (location == AppleVideoSource.REMOTE) {
+            Log.i(TAG, "${location.name} videos: ${videos.size}")
             return videos
         }
 
         val result = compareToLocalVideos(videos)
 
-        if (source == AppleVideoSource.LOCAL) {
-            Log.i(TAG, "${source.name} videos: ${result.first.size}")
+        if (location == AppleVideoSource.LOCAL) {
+            Log.i(TAG, "${location.name} videos: ${result.first.size}")
             return result.first // videos matched locally
         }
 
-        Log.i(TAG, "${source.name} videos: ${result.first.size}, ${result.second.size}")
+        Log.i(TAG, "${location.name} videos: ${result.first.size}, ${result.second.size}")
         return result.first + result.second // matched local videos, the rest are remote
     }
 

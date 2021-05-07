@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="source_apple_2019_values">
+
+    <!-- Apple Video Options -->
+    <string-array name="apple_videos_quality_values">
         <item>1080_h264</item>
         <item>1080_sdr</item>
         <item>1080_hdr</item>
@@ -8,12 +10,25 @@
         <item>4k_hdr</item>
     </string-array>
 
-    <string-array name="video_source_values">
+    <string name="apple_videos_quality_default">1080_sdr</string>
+
+    <string-array name="apple_videos_location_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
     </string-array>
 
+    <string name="apple_videos_location_default">0</string>
+
+    <!-- Local Video Options -->
+    <string-array name="local_videos_filter_values">
+        <item>ALL</item>
+        <item>AERIAL</item>
+    </string-array>
+
+    <string name="local_videos_filter_default">ALL</string>
+
+    <!-- Setting -->
     <string-array name="interface_options_values">
         <item>0</item>
         <item>1</item>

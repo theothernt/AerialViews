@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="local_videos_enabled"
+                    app:title="Enabled" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_settings">
+                <ListPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:entries="@array/local_videos_filter_entries"
+                    app:entryValues="@array/local_videos_filter_values"
+                    app:defaultValue="@string/local_videos_filter_default"
+                    app:key="local_videos_filter"
+                    app:title="@string/local_videos_filter_title"
+                    app:summary="@string/local_videos_filter_summary"
+                    app:dialogTitle="@string/local_videos_filter_summary" />
+        </PreferenceCategory>
+</PreferenceScreen>

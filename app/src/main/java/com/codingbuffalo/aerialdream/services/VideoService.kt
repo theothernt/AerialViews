@@ -15,8 +15,8 @@ class VideoService(context: Context) {
 
     init {
 
-//        if (AppleVideoPrefs.enabled)
-//            providers.add(AppleVideoProvider(context, AppleVideoPrefs))
+        if (AppleVideoPrefs.enabled)
+            providers.add(AppleVideoProvider(context, AppleVideoPrefs))
 
         if (LocalVideoPrefs.enabled)
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))

@@ -5,6 +5,6 @@ import com.chibatching.kotpref.enumpref.enumValuePref
 import com.codingbuffalo.aerialdream.models.LocalVideoFilter
 
 object LocalVideoPrefs : KotprefModel() {
-    var enabled: Boolean by booleanPref(true)
-    var filter by enumValuePref(LocalVideoFilter.ALL)
+    var enabled: Boolean by booleanPref(true, "local_videos_enabled")
+    var filter by enumValuePref(LocalVideoFilter.ALL, "local_videos_filter")
 }
