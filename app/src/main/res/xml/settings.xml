@@ -35,7 +35,7 @@
         </Preference>
 
         <Preference
-            app:key="system_options"
+            app:key="activate_screensaver"
             app:title="@string/activate_screensaver" />
     </PreferenceCategory>
 
