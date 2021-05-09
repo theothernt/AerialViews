@@ -21,4 +21,5 @@
                     app:summary="@string/local_videos_filter_summary"
                     app:dialogTitle="@string/local_videos_filter_summary" />
         </PreferenceCategory>
+
 </PreferenceScreen>

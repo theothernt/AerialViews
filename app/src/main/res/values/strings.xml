@@ -44,24 +44,22 @@
 
     <!-- Network Video Options -->
 
-    <!-- Settings -->
-    <string name="interface_options">Interface</string>
-    <string name="interface_options_summary">Customise how things look</string>
-    <string-array name="interface_options_entries">
-        <item>Show Clock</item>
-        <item>Show Location</item>
-        <item>Mute Videos</item>
-        <item>Alternate Clock/Location position</item>
-    </string-array>
 
-    <string name="performance_options">Performance &amp; Debug</string>
-    <string name="performance_options_summary">For troubleshooting issues</string>
-    <string-array name="performance_options_entries">
-        <item>Enable Tunneling</item>
-        <item>Use Reduced Video Buffers</item>
-        <item>Exceed Renderer Capabilities</item>
-<!--        <item>Enable Debug Notifications</item>-->
-    </string-array>
+    <!-- Settings -->
+    <string name="interface_title">Interface</string>
+    <string name="interface_summary">Customise how things look</string>
+
+    <string name="interface_show_clock">Show Clock</string>
+    <string name="interface_show_location">Show Location</string>
+    <string name="interface_mute_videos">Mute Videos</string>
+    <string name="interface_alt_text_position">Alternate Clock/Location position</string>
+
+    <string name="performance_title">Performance &amp; Debug</string>
+    <string name="performance_summary">For troubleshooting issues</string>
+
+    <string name="performance_enable_tunneling">Enable Tunneling</string>
+    <string name="performance_reduced_buffers">Use Reduced Video Buffers</string>
+    <string name="performance_exceed_renderer">Exceed Renderer Capabilities</string>
 
     <!-- Actions -->
     <string name="test_settings">Test settings</string>

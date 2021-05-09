@@ -16,23 +16,15 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">
-        <MultiSelectListPreference
-            app:entries="@array/interface_options_entries"
-            app:entryValues="@array/interface_options_values"
-            app:defaultValue="@array/interface_options_defaults"
-            app:key="ui_options"
-            app:title="@string/interface_options"
-            app:summary="@string/interface_options_summary"
-            app:dialogTitle="@string/interface_options_summary" />
+        <Preference
+            app:title="@string/interface_title"
+            app:summary="@string/interface_summary"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.InterfaceFragment"/>
 
-        <MultiSelectListPreference
-            app:entries="@array/performance_options_entries"
-            app:entryValues="@array/performance_options_values"
-            app:defaultValue="@array/performance_options_defaults"
-            app:key="perf_options"
-            app:title="@string/performance_options"
-            app:summary="@string/performance_options_summary"
-            app:dialogTitle="@string/performance_options_summary" />
+        <Preference
+            app:title="@string/performance_title"
+            app:summary="@string/performance_summary"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.PerformanceFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">

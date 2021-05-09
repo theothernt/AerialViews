@@ -32,4 +32,5 @@
                     app:summary="@string/apple_videos_location_summary"
                     app:dialogTitle="@string/apple_videos_location_summary" />
         </PreferenceCategory>
+
 </PreferenceScreen>
