@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
-import androidx.preference.PreferenceManager
+import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
@@ -25,19 +25,10 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var prepared = false
 
     init {
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val uiPrefs = prefs.getStringSet("ui_options", null)
-        val perfPrefs = prefs.getStringSet("perf_options", null)
-
-        muteVideo = true
-        enableTunneling = true
-        useReducedBuffering = false
-        exceedRendererCapabilities = false
-
-        if (!uiPrefs!!.contains("2")) muteVideo = false
-        if (!perfPrefs!!.contains("0")) enableTunneling = false
-        if (perfPrefs.contains("1")) useReducedBuffering = true
-        if (perfPrefs.contains("2")) exceedRendererCapabilities = true
+        muteVideo = GeneralPrefs.muteVideos
+        enableTunneling = GeneralPrefs.enableTunneling
+        useReducedBuffering = GeneralPrefs.reducedBuffers
+        exceedRendererCapabilities = GeneralPrefs.exceedRenderer
 
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
@@ -178,6 +169,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     private fun buildPlayer(context: Context): SimpleExoPlayer {
         val loadControl: DefaultLoadControl
         val loadControlBuilder = DefaultLoadControl.Builder()
+
         if (useReducedBuffering) {
             // Buffer sizes while playing
             val minBuffer = 5000
@@ -195,20 +187,24 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
         loadControl = loadControlBuilder.build()
         val parametersBuilder = ParametersBuilder(context)
+
         if (enableTunneling) {
             parametersBuilder
                     .setTunnelingEnabled(true)
         }
+
         if (exceedRendererCapabilities) {
             parametersBuilder
                     .setExceedRendererCapabilitiesIfNecessary(true)
         }
         val trackSelector = DefaultTrackSelector(context)
         trackSelector.setParameters(parametersBuilder)
+
         val player = SimpleExoPlayer.Builder(context)
                 .setLoadControl(loadControl)
                 .setTrackSelector(trackSelector)
                 .build()
+
         if (muteVideo) {
             player.volume = 0f
         }

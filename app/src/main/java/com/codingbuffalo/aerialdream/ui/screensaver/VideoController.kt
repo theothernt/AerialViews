@@ -8,13 +8,13 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
-import androidx.preference.PreferenceManager
 import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.services.VideoService
 import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
+import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -23,39 +23,23 @@ import kotlinx.coroutines.withContext
 class VideoController(context: Context) : OnPlayerEventListener {
     private val binding: AerialDreamBinding
     private var playlist: VideoPlaylist? = null
-    private val videoType2019: String?
     private var canSkip: Boolean
-    private val videoSource: Int
     private var alternateText: Boolean
 
     init {
         val inflater = LayoutInflater.from(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false)
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-        val uiPrefs = prefs.getStringSet("ui_options", null)
+        val showTime = GeneralPrefs.showTime
+        binding.showLocation = GeneralPrefs.showLocation
+        alternateText = GeneralPrefs.alternateTextPosition
 
-        //val otherPrefs = PreferenceHelper.defaultPrefs(context)
-
-
-        var showClock = true
-        var showLocation = true
-        alternateText = false
-
-        if (!uiPrefs!!.contains("0")) showClock = false
-        if (!uiPrefs.contains("1")) showLocation = false
-        if (uiPrefs.contains("3")) alternateText = true
-
-        videoType2019 = prefs.getString("source_apple_2019", "1080_h264")
-        videoSource = prefs.getString("video_source", "0")!!.toInt()
-        binding.showLocation = showLocation
-
-        if (showClock) {
+        if (showTime) {
             binding.showClock = !alternateText
             binding.showAltClock = alternateText
         } else {
-            binding.showClock = showClock
-            binding.showAltClock = showClock
+            binding.showClock = showTime
+            binding.showAltClock = showTime
         }
 
         binding.videoView0.controller = binding.videoView0.videoView
@@ -63,9 +47,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         runBlocking {
             withContext(Dispatchers.IO) {
-                val interactor = VideoService(
-                        context,
-                        )
+                val interactor = VideoService(context)
                 playlist = interactor.fetchVideos()
                 binding.root.post { start() }
             }
