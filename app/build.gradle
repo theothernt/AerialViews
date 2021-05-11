@@ -65,6 +65,7 @@ dependencies {
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.activity:activity-ktx:1.2.3'
 
     implementation 'com.chibatching.kotpref:kotpref:2.13.1'
     implementation 'com.chibatching.kotpref:initializer:2.13.1'

@@ -5,7 +5,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
 import com.codingbuffalo.aerialdream.R
-import com.codingbuffalo.aerialdream.models.AppleVideoSource
+import com.codingbuffalo.aerialdream.models.AppleVideoLocation
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.models.videos.Apple2019Video
@@ -36,14 +36,14 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
 //            videos.add(AerialVideo(it.uri(quality), it.location))
 //        }
 
-        if (location == AppleVideoSource.REMOTE) {
+        if (location == AppleVideoLocation.REMOTE) {
             Log.i(TAG, "${location.name} videos: ${videos.size}")
             return videos
         }
 
         val result = compareToLocalVideos(videos)
 
-        if (location == AppleVideoSource.LOCAL) {
+        if (location == AppleVideoLocation.LOCAL) {
             Log.i(TAG, "${location.name} videos: ${result.first.size}")
             return result.first // videos matched locally
         }

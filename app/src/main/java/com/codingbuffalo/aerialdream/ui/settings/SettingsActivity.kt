@@ -1,5 +1,6 @@
 package com.codingbuffalo.aerialdream.ui.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
@@ -12,6 +13,7 @@ class SettingsActivity :AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
@@ -20,11 +22,13 @@ class SettingsActivity :AppCompatActivity(),
         } else {
             title = savedInstanceState.getCharSequence("TITLE_TAG")
         }
+
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
                 setTitle(R.string.daydream_name)
             }
         }
+
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
@@ -62,8 +66,4 @@ class SettingsActivity :AppCompatActivity(),
         title = pref.title
         return true
     }
-
-
-
-
 }

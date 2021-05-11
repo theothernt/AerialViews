@@ -2,22 +2,22 @@
 <resources>
     <!-- Apple Video Options -->
     <string-array name="apple_videos_quality_values">
-        <item>1080_h264</item>
-        <item>1080_sdr</item>
-        <item>1080_hdr</item>
-        <item>4k_sdr</item>
-        <item>4k_hdr</item>
+        <item>VIDEO_1080_H264</item>
+        <item>VIDEO_1080_SDR</item>
+        <item>VIDEO_1080_HDR</item>
+        <item>VIDEO_4K_SDR</item>
+        <item>VIDEO_4K_HDR</item>
     </string-array>
 
-    <string name="apple_videos_quality_default">1080_sdr</string>
+    <string name="apple_videos_quality_default">VIDEO_1080_SDR</string>
 
     <string-array name="apple_videos_location_values">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
+        <item>REMOTE</item>
+        <item>LOCAL</item>
+        <item>LOCAL_AND_REMOTE</item>
     </string-array>
 
-    <string name="apple_videos_location_default">0</string>
+    <string name="apple_videos_location_default">REMOTE</string>
 
     <!-- Local Video Options -->
     <string-array name="local_videos_filter_values">

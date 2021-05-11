@@ -1,6 +1,6 @@
 package com.codingbuffalo.aerialdream.models
 
-enum class AppleVideoSource {
+enum class AppleVideoLocation {
     REMOTE,
     LOCAL,
     LOCAL_AND_REMOTE
