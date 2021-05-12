@@ -8,13 +8,13 @@ import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.AppleVideoProvider
 import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class VideoService(context: Context) {
-
     private val providers = mutableListOf<VideoProvider>()
 
     init {
-
         if (AppleVideoPrefs.enabled)
             providers.add(AppleVideoProvider(context, AppleVideoPrefs))
 
@@ -22,13 +22,18 @@ class VideoService(context: Context) {
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))
     }
 
-    fun fetchVideos(): VideoPlaylist {
-        val videos = mutableListOf<AerialVideo>()
+    suspend fun fetchVideos(): VideoPlaylist {
+        return withContext(Dispatchers.IO) {
+            val videos = mutableListOf<AerialVideo>()
 
-        providers.forEach {
-            videos.addAll(it.fetchVideos())
+            providers.forEach {
+                videos.addAll(it.fetchVideos())
+            }
+
+            // remove dupes
+            // shuffle
+
+            VideoPlaylist(videos.toMutableList())
         }
-
-        return VideoPlaylist(videos.toMutableList())
     }
 }

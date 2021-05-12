@@ -16,9 +16,7 @@ import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 
 class VideoController(context: Context) : OnPlayerEventListener {
     private val binding: AerialDreamBinding
@@ -46,12 +44,11 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.videoView0.videoView.setOnPlayerListener(this)
 
         runBlocking {
-            withContext(Dispatchers.IO) {
-                val interactor = VideoService(context)
-                playlist = interactor.fetchVideos()
-                binding.root.post { start() }
-            }
+            val service = VideoService(context)
+            playlist = service.fetchVideos()
         }
+
+        binding.root.post { start() }
         canSkip = true
     }
 
