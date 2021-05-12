@@ -22,18 +22,14 @@ class VideoService(context: Context) {
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))
     }
 
-    suspend fun fetchVideos(): VideoPlaylist {
-        return withContext(Dispatchers.IO) {
-            val videos = mutableListOf<AerialVideo>()
+    suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
+        val videos = mutableListOf<AerialVideo>()
 
-            providers.forEach {
-                videos.addAll(it.fetchVideos())
-            }
-
-            // remove dupes
-            // shuffle
-
-            VideoPlaylist(videos.toMutableList())
+        providers.forEach {
+            videos.addAll(it.fetchVideos())
         }
+        // remove dupes
+        // shuffle
+        VideoPlaylist(videos.toMutableList())
     }
 }
