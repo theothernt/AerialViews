@@ -49,6 +49,7 @@
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Customise how things look</string>
 
+    <string name="interface_shuffle_videos">Shuffle videos</string>
     <string name="interface_show_clock">Show clock</string>
     <string name="interface_show_location">Show location</string>
     <string name="interface_mute_videos">Mute videos</string>

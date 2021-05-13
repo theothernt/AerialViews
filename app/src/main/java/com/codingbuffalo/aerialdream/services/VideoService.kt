@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
+import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.AppleVideoProvider
@@ -11,6 +12,7 @@ import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class VideoService(context: Context) {
     private val providers = mutableListOf<VideoProvider>()
@@ -35,9 +37,11 @@ class VideoService(context: Context) {
         }
 
         // remove dupes
+        //videos.distinctBy { it.uri.lastPathSegment?.toLowerCase(Locale.ROOT) }
 
-        // shuffle
+        if (GeneralPrefs.shuffleVideos)
+            videos.shuffle()
 
-        VideoPlaylist(videos.shuffled())
+        VideoPlaylist(videos)
     }
 }
