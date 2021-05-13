@@ -43,11 +43,8 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
 
-        runBlocking {
-            val service = VideoService(context)
-            playlist = service.fetchVideos()
-        }
-
+        val service = VideoService(context)
+        runBlocking { playlist = service.fetchVideos() }
         binding.root.post { start() }
         canSkip = true
     }
@@ -56,7 +53,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         get() = binding.root
 
     private fun start() {
-        video?.let { loadVideo(binding.videoView0, it) }
+        loadVideo(binding.videoView0, playlist!!.nextVideo())
     }
 
     fun stop() {
@@ -76,12 +73,11 @@ class VideoController(context: Context) : OnPlayerEventListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
                 binding.loadingView.visibility = View.VISIBLE
-                video?.let { loadVideo(binding.videoView0, it) }
+                loadVideo(binding.videoView0, playlist!!.nextVideo())
                 if (alternateText) {
                     binding.altTextPosition = !binding.altTextPosition
                 }
             }
-
             override fun onAnimationRepeat(animation: Animation) {}
         })
         binding.loadingView.startAnimation(animation)
@@ -97,7 +93,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
                     binding.loadingView.visibility = View.GONE
                     canSkip = true
                 }
-
                 override fun onAnimationRepeat(animation: Animation) {}
             })
             binding.loadingView.startAnimation(animation)
@@ -106,13 +101,10 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: " + video.location + " - " + video.uri)
-        videoBinding.videoView.setUri(video.uri)
         videoBinding.location.text = video.location
+        videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
     }
-
-    private val video: AerialVideo?
-        get() = playlist?.video
 
     override fun onPrepared(view: ExoPlayerView?) {
         fadeInNextVideo()

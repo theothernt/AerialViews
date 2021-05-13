@@ -1,6 +1,7 @@
 package com.codingbuffalo.aerialdream.services
 
 import android.content.Context
+import android.net.Uri
 import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
@@ -28,8 +29,15 @@ class VideoService(context: Context) {
         providers.forEach {
             videos.addAll(it.fetchVideos())
         }
+
+        if (videos.isEmpty()) {
+            videos.add(AerialVideo(Uri.parse(""), ""))
+        }
+
         // remove dupes
+
         // shuffle
-        VideoPlaylist(videos.toMutableList())
+
+        VideoPlaylist(videos)
     }
 }
