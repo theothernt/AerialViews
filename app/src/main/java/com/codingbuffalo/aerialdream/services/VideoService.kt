@@ -38,6 +38,6 @@ class VideoService(context: Context) {
 
         // shuffle
 
-        VideoPlaylist(videos)
+        VideoPlaylist(videos.shuffled())
     }
 }

@@ -2,10 +2,12 @@ package com.codingbuffalo.aerialdream.providers
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.codingbuffalo.aerialdream.models.LocalVideoFilter
 import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.utils.FileHelper
+import com.google.gson.Gson
 import java.util.*
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
@@ -31,6 +33,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             val location = filenameToTitleCase(uri.lastPathSegment!!)
             videos.add(AerialVideo(uri, location))
         }
+        Log.i(TAG, "filter: ${filter}, videos found: ${videos.size}")
         return videos
     }
 
@@ -46,6 +49,10 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         location.replace("-",".")
         location.replace("_",".")
         return location.split(".").joinToString(" ") { it.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
+    }
+
+    companion object {
+        private const val TAG = "LocalVideoProvider"
     }
 }
 
