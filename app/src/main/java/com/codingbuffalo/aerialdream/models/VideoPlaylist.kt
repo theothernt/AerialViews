@@ -1,6 +1,5 @@
 package com.codingbuffalo.aerialdream.models
 
-import android.net.Uri
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 
 class VideoPlaylist(private val videos: List<AerialVideo>) {

@@ -12,7 +12,6 @@ import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.*
 
 class VideoService(context: Context) {
     private val providers = mutableListOf<VideoProvider>()

@@ -7,7 +7,6 @@ import com.codingbuffalo.aerialdream.models.LocalVideoFilter
 import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.utils.FileHelper
-import com.google.gson.Gson
 import java.util.*
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {

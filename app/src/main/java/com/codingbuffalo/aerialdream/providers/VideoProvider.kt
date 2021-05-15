@@ -1,7 +1,6 @@
 package com.codingbuffalo.aerialdream.providers
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 
 abstract class VideoProvider (val context: Context) {
