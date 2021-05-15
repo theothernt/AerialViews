@@ -7,3 +7,4 @@
 
 -keep class com.codingbuffalo.aerialdream.models.videos.* { <fields>; }
 -keep class com.codingbuffalo.aerialdream.providers.* { <fields>; }
+-keep class com.codingbuffalo.aerialdream.ui.settings.* { <fields>; }
