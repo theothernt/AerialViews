@@ -49,11 +49,13 @@
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Customise how things look</string>
 
-    <string name="interface_shuffle_videos">Shuffle videos</string>
     <string name="interface_show_clock">Show clock</string>
     <string name="interface_show_location">Show location</string>
-    <string name="interface_mute_videos">Mute videos</string>
     <string name="interface_alt_text_position">Alternate text position</string>
+
+    <string name="interface_mute_videos">Mute videos</string>
+    <string name="interface_shuffle_videos">Shuffle videos</string>
+    <string name="interface_remove_duplicates">Remove duplicates</string>
 
     <string name="performance_title">Performance &amp; Debug</string>
     <string name="performance_summary">For troubleshooting issues</string>

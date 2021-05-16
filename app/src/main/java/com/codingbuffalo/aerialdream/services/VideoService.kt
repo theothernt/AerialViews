@@ -12,6 +12,7 @@ import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class VideoService(context: Context) {
     private val providers = mutableListOf<VideoProvider>()
@@ -35,8 +36,13 @@ class VideoService(context: Context) {
             videos.add(AerialVideo(Uri.parse(""), ""))
         }
 
-        // remove dupes
-        //videos.distinctBy { it.uri.lastPathSegment?.toLowerCase(Locale.ROOT) }
+        if (GeneralPrefs.removeDuplicates) {
+            // Remove duplicates based on full path
+            videos.distinctBy { it.uri.toString().toLowerCase(Locale.ROOT) }
+
+            // Remove duplicates based on filename only
+            videos.distinctBy { it.uri.lastPathSegment?.toLowerCase(Locale.ROOT) }
+        }
 
         if (GeneralPrefs.shuffleVideos)
             videos.shuffle()
