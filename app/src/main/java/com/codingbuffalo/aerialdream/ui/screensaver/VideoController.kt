@@ -28,16 +28,16 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val inflater = LayoutInflater.from(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_dream, null, false)
 
-        val showTime = GeneralPrefs.showTime
+        val showClock = GeneralPrefs.showClock
         binding.showLocation = GeneralPrefs.showLocation
         alternateText = GeneralPrefs.alternateTextPosition
 
-        if (showTime) {
+        if (showClock) {
             binding.showClock = !alternateText
             binding.showAltClock = alternateText
         } else {
-            binding.showClock = showTime
-            binding.showAltClock = showTime
+            binding.showClock = showClock
+            binding.showAltClock = showClock
         }
 
         binding.videoView0.controller = binding.videoView0.videoView

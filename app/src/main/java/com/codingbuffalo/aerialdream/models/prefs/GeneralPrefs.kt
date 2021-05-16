@@ -7,7 +7,7 @@ object GeneralPrefs : KotprefModel() {
 
     var shuffleVideos: Boolean by booleanPref(true, "shuffle_videos")
     var showLocation: Boolean by booleanPref(true, "show_location")
-    var showTime: Boolean by booleanPref(true, "show_time")
+    var showClock: Boolean by booleanPref(true, "showClock")
     var muteVideos: Boolean by booleanPref(true, "mute_videos")
     var alternateTextPosition: Boolean by booleanPref(false, "alt_text_position")
 
