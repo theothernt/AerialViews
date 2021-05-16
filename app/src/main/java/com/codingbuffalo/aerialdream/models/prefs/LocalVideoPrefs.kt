@@ -9,4 +9,5 @@ object LocalVideoPrefs : KotprefModel() {
 
     var enabled: Boolean by booleanPref(false, "local_videos_enabled")
     var filter by enumValuePref(LocalVideoFilter.ALL, "local_videos_filter")
+    var filenameAsLocation: Boolean by booleanPref(true, "local_videos_filename_location")
 }

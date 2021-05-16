@@ -42,6 +42,7 @@
         <item>Aerial folder only</item>
     </string-array>
 
+    <string name="local_videos_filename_location_title">Use filename as location</string>
     <!-- Network Video Options -->
 
 
