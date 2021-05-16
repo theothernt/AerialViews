@@ -24,6 +24,8 @@
                     -->
 
                 <CheckBoxPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
                     app:defaultValue="true"
                     app:key="local_videos_filename_location"
                     app:title="@string/local_videos_filename_location_title" />
