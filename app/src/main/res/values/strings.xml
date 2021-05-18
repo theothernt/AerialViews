@@ -5,7 +5,7 @@
 
     <!-- Categories -->
     <string name="category_settings">Settings</string>
-    <string name="category_sources">Sources</string>
+    <string name="category_sources">Video Sources</string>
     <string name="category_video_source">Video Source</string>
     <string name="category_actions">Actions</string>
 
@@ -43,6 +43,7 @@
     </string-array>
 
     <string name="local_videos_filename_location_title">Use filename as location</string>
+    <string name="local_videos_filename_location_summary">eg. \'wicklow-mountains.mp4\' becomes \'Wicklow Mountains\'</string>
     <!-- Network Video Options -->
 
 
@@ -50,13 +51,23 @@
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Customise how things look</string>
 
-    <string name="interface_show_clock">Show clock</string>
-    <string name="interface_show_location">Show location</string>
-    <string name="interface_alt_text_position">Alternate text position</string>
+    <string name="interface_show_clock_title">Show clock</string>
+    <string name="interface_show_clock_summary">Shows the current time</string>
 
-    <string name="interface_mute_videos">Mute videos</string>
-    <string name="interface_shuffle_videos">Shuffle videos</string>
-    <string name="interface_remove_duplicates">Remove duplicates</string>
+    <string name="interface_show_location_title">Show location</string>
+    <string name="interface_show_location_summary">Shows the title, usually the location, of the video</string>
+
+    <string name="interface_alt_text_position_title">Alternate text position</string>
+    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help with OLED burn-in</string>
+
+    <string name="interface_mute_videos_title">Mute videos</string>
+    <string name="interface_mute_videos_summary">Mute the sound of all videos</string>
+
+    <string name="interface_shuffle_videos_title">Shuffle videos</string>
+    <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
+
+    <string name="interface_remove_duplicates_title">Remove duplicates</string>
+    <string name="interface_remove_duplicates_summary">Removed duplicate videos from the playlist based on filename only</string>
 
     <string name="performance_title">Performance &amp; Debug</string>
     <string name="performance_summary">For troubleshooting issues</string>
