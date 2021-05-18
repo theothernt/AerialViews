@@ -43,7 +43,7 @@ This version of the app is not available in the Play Store, yet, so your options
 
 - **Local** videos can be placed in any folder
 
-- When using **local and remote** playback, local videos are used if found, but for missing vidoes, the remote version is used.
+- When using **local and remote** playback, local videos are used if found, but for missing videos, the remote version is used.
 
 <br/>
 
