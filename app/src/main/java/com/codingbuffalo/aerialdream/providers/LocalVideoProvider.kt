@@ -50,7 +50,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         // somevideo -> Somevideo
         // city-place_video -> City - Place Video
         // some.video -> Some Video
-        location = location.replace("-"," - ")
+        location = location.replace("-",".-.")
         location = location.replace("_",".")
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
