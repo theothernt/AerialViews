@@ -38,10 +38,10 @@ class VideoService(context: Context) {
 
         if (GeneralPrefs.removeDuplicates) {
             // Remove duplicates based on full path
-            videos.distinctBy { it.uri.toString().toLowerCase(Locale.ROOT) }
+            videos.distinctBy { it.uri.toString().lowercase() }
 
             // Remove duplicates based on filename only
-            videos.distinctBy { it.uri.lastPathSegment?.toLowerCase(Locale.ROOT) }
+            videos.distinctBy { it.uri.lastPathSegment?.lowercase() }
         }
 
         if (GeneralPrefs.shuffleVideos)

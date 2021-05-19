@@ -17,10 +17,10 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val localVideos = FileHelper.findAllMedia(context)
 
         for (video in localVideos) {
-            val filterFolder = "/${filter.name.toLowerCase(Locale.ROOT)}/"
+            val filterFolder = "/${filter.name.lowercase()}/"
 
             val containsFolder = video
-                    ?.toLowerCase(Locale.ROOT)
+                    ?.lowercase()
                     ?.contains(filterFolder)
 
             if (filter != LocalVideoFilter.ALL &&
@@ -52,7 +52,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         // some.video -> Some Video
         location = location.replace("-"," - ")
         location = location.replace("_",".")
-        return location.split(".").joinToString(" ") { it.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
+        return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
     companion object {

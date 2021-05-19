@@ -58,10 +58,10 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         val localVideos = FileHelper.findAllMedia(context)
 
         for (video in remoteVideos) {
-            val remoteFilename = video.uri.lastPathSegment!!.toLowerCase(Locale.ROOT)
+            val remoteFilename = video.uri.lastPathSegment!!.lowercase()
 
             val videoFound = localVideos.find {
-                val localFilename = Uri.parse(it).lastPathSegment!!.toLowerCase(Locale.ROOT)
+                val localFilename = Uri.parse(it).lastPathSegment!!.lowercase()
                 localFilename.contains(remoteFilename)
             }
 
