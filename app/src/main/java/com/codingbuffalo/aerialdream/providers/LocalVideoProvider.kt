@@ -36,6 +36,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 videos.add(AerialVideo(uri, ""))
             }
         }
+
         Log.i(TAG, "filter: ${filter}, videos found: ${videos.size}")
         return videos
     }
@@ -44,13 +45,13 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val index = filename.lastIndexOf(".")
 
         // somevideo.mov -> somevideo
-        val location = filename.substring(0, index)
+        var location = filename.substring(0, index)
 
         // somevideo -> Somevideo
-        // some-video -> Some Video
+        // city-place_video -> City - Place Video
         // some.video -> Some Video
-        location.replace("-",".")
-        location.replace("_",".")
+        location = location.replace("-"," - ")
+        location = location.replace("_",".")
         return location.split(".").joinToString(" ") { it.toLowerCase(Locale.ROOT).capitalize(Locale.ROOT) }
     }
 
