@@ -1,8 +1,10 @@
 package com.codingbuffalo.aerialdream.utils
 
 import android.content.Context
+import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
+import java.io.File
 import java.util.HashSet
 
 object FileHelper {
@@ -24,6 +26,16 @@ object FileHelper {
         }
         Log.i(TAG, "findAllMedia found ${videoItemHashSet.size} files")
         return videoItemHashSet.toList()
+    }
+
+    fun isLocalVideo(uri: Uri): Boolean {
+        return !uri.toString().contains("http://") &&
+                !uri.toString().contains("https://")
+    }
+
+    fun fileExists(uri: Uri): Boolean {
+        val file = File(uri.toString())
+        return file.exists()
     }
 
     private const val TAG = "FileHelper"

@@ -43,9 +43,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         player.stop()
         prepared = false
         retries = 0
-        mediaItem = MediaItem.Builder()
-                .setUri(uri)
-                .build()
+        mediaItem = MediaItem.fromUri(uri)
         player.setMediaItem(mediaItem!!)
         player.prepare()
     }
@@ -141,7 +139,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     override fun onPlayerError(error: ExoPlaybackException) {
-        //error.printStackTrace();
+        error.printStackTrace();
 
         // Attempt to reload video
         removeCallbacks(errorRecoveryRunnable)
@@ -219,6 +217,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     companion object {
         const val DURATION: Long = 800
-        const val MAX_RETRIES: Long = 2
+        const val MAX_RETRIES: Long = 1
     }
 }
