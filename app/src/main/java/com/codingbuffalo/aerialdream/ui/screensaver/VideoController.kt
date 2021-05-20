@@ -109,7 +109,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         Log.i("LoadVideo", "Local: $isLocalVideo, Exists: $fileExists")
 
         videoBinding.location.text = video.location
-        videoBinding.videoView.setUri(video.uri)
+        videoBinding.videoView.setUri(video.uri, !isLocalVideo)
         videoBinding.videoView.start()
     }
 

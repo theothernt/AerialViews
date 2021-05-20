@@ -16,6 +16,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     private val player: SimpleExoPlayer
     private var mediaItem: MediaItem? = null
     private var listener: OnPlayerEventListener? = null
+    private var shouldRetry = true
     private var retries = 0
     private var aspectRatio = 0f
     private var useReducedBuffering: Boolean
@@ -36,12 +37,13 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         player.addListener(this)
     }
 
-    fun setUri(uri: Uri?) {
+    fun setUri(uri: Uri?, retry: Boolean) {
         if (uri == null) {
             return
         }
         player.stop()
         prepared = false
+        shouldRetry = retry
         retries = 0
         mediaItem = MediaItem.fromUri(uri)
         player.setMediaItem(mediaItem!!)
@@ -142,8 +144,10 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         error.printStackTrace();
 
         // Attempt to reload video
-        removeCallbacks(errorRecoveryRunnable)
-        postDelayed(errorRecoveryRunnable, DURATION)
+        if (shouldRetry) {
+            removeCallbacks(errorRecoveryRunnable)
+            postDelayed(errorRecoveryRunnable, DURATION)
+        }
     }
 
     override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
