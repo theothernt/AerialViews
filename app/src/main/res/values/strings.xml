@@ -43,7 +43,7 @@
     </string-array>
 
     <string name="local_videos_filename_location_title">Use filename as location</string>
-    <string name="local_videos_filename_location_summary">eg. \'wicklow-mountains.mp4\' becomes \'Wicklow Mountains\'</string>
+    <string name="local_videos_filename_location_summary">eg. \'country-a_place.mp4\' \nbecomes \'Country - A Place\'</string>
     <!-- Network Video Options -->
 
 

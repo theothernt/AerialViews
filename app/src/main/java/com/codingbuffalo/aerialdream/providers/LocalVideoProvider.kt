@@ -44,7 +44,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
     private fun filenameToTitleCase(filename: String): String {
         val index = filename.lastIndexOf(".")
 
-        // somevideo.mov -> somevideo
+        // some.video.mov -> some.video
         var location = filename.substring(0, index)
 
         // somevideo -> Somevideo
