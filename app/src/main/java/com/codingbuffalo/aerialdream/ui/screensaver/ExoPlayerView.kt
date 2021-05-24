@@ -10,9 +10,8 @@ import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
-import com.google.android.exoplayer2.video.VideoListener
 
-class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, VideoListener, Player.EventListener {
+class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: SimpleExoPlayer
     private var mediaItem: MediaItem? = null
     private var listener: OnPlayerEventListener? = null
