@@ -11,7 +11,7 @@
 
     <!-- Apple Video Options -->
     <string name="apple_videos_title">Apple TV Videos</string>
-    <string name="apple_videos_summary">Use Apple videos directly or stored locally</string>
+    <string name="apple_videos_summary">Stream Apple videos directly or use a locally stored copy</string>
 
     <string name="apple_videos_quality_title">Quality</string>
     <string name="apple_videos_quality_summary">Select a video quality</string>
@@ -24,7 +24,7 @@
     </string-array>
 
     <string name="apple_videos_location_title">Location</string>
-    <string name="apple_videos_location_summary">Choose a video location</string>
+    <string name="apple_videos_location_summary">Choose a source location for the Apple videos</string>
     <string-array name="apple_videos_location_entries">
         <item>Remote only</item>
         <item>Local only</item>
@@ -33,7 +33,7 @@
 
     <!-- Local Video Options -->
     <string name="local_videos_title">Local Videos</string>
-    <string name="local_videos_summary">Use videos on device, USB or SD card</string>
+    <string name="local_videos_summary">Use any videos on device, USB or SD card</string>
 
     <string name="local_videos_filter_title">Filter</string>
     <string name="local_videos_filter_summary">Change what videos are included</string>

@@ -18,6 +18,7 @@ class AppleVideosFragment :
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_apple_videos, rootKey)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        updateSummaries()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -33,9 +34,20 @@ class AppleVideosFragment :
             1 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 resetPreference()
             } else {
-                // Update summary
+                updateSummaries()
             }
         }
+    }
+
+    private fun updateSummaries()
+    {
+        val quality = findPreference<ListPreference>("apple_videos_quality") as ListPreference
+        quality.title = "${quality.title} - ${quality.entry}"
+        //quality.summary = "${quality.summary} \n ${quality.entry}"
+
+        val location = findPreference<ListPreference>("apple_videos_location") as ListPreference
+        location.title = "${location.title} - ${location.entry}"
+        //location.summary = "${location.summary} \n ${location.entry}"
     }
 
     private fun requiresPermission(): Boolean {
