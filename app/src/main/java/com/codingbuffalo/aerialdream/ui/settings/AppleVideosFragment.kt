@@ -26,6 +26,8 @@ class AppleVideosFragment :
             requiresPermission() &&
             !PermissionHelper.hasStoragePermission(requireContext())) {
             requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+        } else {
+            updateSummaries()
         }
     }
 
@@ -42,12 +44,12 @@ class AppleVideosFragment :
     private fun updateSummaries()
     {
         val quality = findPreference<ListPreference>("apple_videos_quality") as ListPreference
-        quality.title = "${quality.title} - ${quality.entry}"
-        //quality.summary = "${quality.summary} \n ${quality.entry}"
+        val qualityTitle = getString(R.string.apple_videos_quality_title)
+        quality.title = "$qualityTitle - ${quality.entry}"
 
         val location = findPreference<ListPreference>("apple_videos_location") as ListPreference
-        location.title = "${location.title} - ${location.entry}"
-        //location.summary = "${location.summary} \n ${location.entry}"
+        val locationTitle = getString(R.string.apple_videos_location_title)
+        location.title = "$locationTitle - ${location.entry}"
     }
 
     private fun requiresPermission(): Boolean {
