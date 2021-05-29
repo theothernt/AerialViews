@@ -13,7 +13,7 @@ This is a modified (forked) version which features the following changes...
 
 - Supports *only* the latest Apple video feed (it contains nearly all previous videos too!)
 
-- Option to play local version of video
+- Ability to play Apple **or your videos** stored locally
 
 - HDR support (HDR10, Dolby Vision tested)
 
@@ -46,17 +46,18 @@ Just note that the command is little different due to a name change in the code,
 
 <br/>
 
-## About remote and local playback...
+## How remote and local playback of Apple videos works
 
-- The app contains a JSON manifest (ie. a list of URLs) which it uses to figure out what videos to play in which format (1080p, 4K, HDR, etc)
+- The app contains a video manifest (ie. a list of links) which it uses to figure out what videos to play in which format (1080p, 4K, HDR, etc)
 
-- When using **local** playback, the app searches for the same filenames (eg. xyz.mov) locally instead of making a remote call
+- When using **local** playback, the app searches for the same filenames (eg. xyz.mov) locally instead of making a request to a remote web server
 
 - It's important to note that **local** playback ignores videos that do not match the filenames found in the JSON manifest
 
 - **Local** videos can be placed in any folder
 
 - When using **local and remote** playback, local videos are used if found, but for missing videos, the remote version is used.
+
 
 <br/>
 
@@ -76,6 +77,8 @@ Just note that the command is little different due to a name change in the code,
 <br/>
 
 ## Known issues...
+
+- After copying videos to your Android TV device, they fail to play or appear during the screensaver. Typically a restart of your Android TV device.
 
 - HDR videos may not play properly for everyone, even with a TV that supports HDR/HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
 
