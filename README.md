@@ -3,7 +3,7 @@
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/cachapa/AerialDream/master/LICENSE)
 
-### A screensaver for Android devices inspired on Apple TV's video screensaver.
+### A screensaver for Android TV devices (including Nvidia Shield, Fire TV, Google TV, etc) inspired by the Apple TV's video screensaver.
 
 <br/>
 
