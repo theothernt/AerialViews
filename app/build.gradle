@@ -75,7 +75,5 @@ dependencies {
     implementation 'com.chibatching.kotpref:initializer:2.13.1'
     implementation 'com.chibatching.kotpref:enum-support:2.13.1'
 
-    implementation 'com.billy.android:smart-swipe:1.1.2'
-
     testImplementation 'junit:junit:4.13.2'
 }

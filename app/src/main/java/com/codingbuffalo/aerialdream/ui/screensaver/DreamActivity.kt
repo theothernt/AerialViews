@@ -3,11 +3,6 @@ package com.codingbuffalo.aerialdream.ui.screensaver
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.View
-import com.billy.android.swipe.SmartSwipe
-import com.billy.android.swipe.SmartSwipeWrapper
-import com.billy.android.swipe.SwipeConsumer
-import com.billy.android.swipe.consumer.StayConsumer
-import com.billy.android.swipe.listener.SimpleSwipeListener
 
 class DreamActivity : DreamService() {
     private var videoController: VideoController? = null
@@ -21,17 +16,6 @@ class DreamActivity : DreamService() {
 
         val view = videoController!!.view
         setContentView(view)
-
-        SmartSwipe.wrap(view)
-                .addConsumer(StayConsumer())
-                .enableHorizontal()
-                .addListener(object : SimpleSwipeListener() {
-                    override fun onSwipeOpened(wrapper: SmartSwipeWrapper, consumer: SwipeConsumer, direction: Int) {
-                        if (direction == 1 || direction == 2) {
-                            videoController!!.skipVideo()
-                        }
-                    }
-                })
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
