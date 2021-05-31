@@ -66,17 +66,17 @@ Just note that the command is little different due to a name change in the code,
 - Newer features, which require more powerful devices (eg. Nvidia Shield or Google TV) can be disabled or enabled
 
 - The app has been tested with...
-  - Sony Bravia (2015, Android TV v6)
-  - Nvidia Shield (2015, Android TV v7)
+  - Sony Bravia (2015, Android v6)
+  - Nvidia Shield (2015, Android v7)
   - Fire TV Stick 4K (2018, Android v7)
-  - Nvidia Shield (2019, Android TV v9)
-  - Chromecast/Google TV (2020, Android TV v10)
+  - Nvidia Shield (2019, Android v9)
+  - Chromecast/Google TV (2020, Android v10)
 
 <br/>
 
 ## Known issues...
 
-- After copying videos to your Android TV device, they fail to play or appear during the screensaver. Typically a restart of your Android TV device.
+- Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device.
 
 - HDR videos may not play properly for everyone, even with a TV that supports HDR/HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
 
