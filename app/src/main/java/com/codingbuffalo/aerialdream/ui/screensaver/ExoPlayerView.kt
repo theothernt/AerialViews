@@ -140,7 +140,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     override fun onPlayerError(error: ExoPlaybackException) {
-        error.printStackTrace();
+        error.printStackTrace()
 
         // Attempt to reload video
         if (shouldRetry) {

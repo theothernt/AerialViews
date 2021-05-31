@@ -33,7 +33,7 @@
             android:layout_gravity="center" />
 
         <TextClock
-            android:id="@+id/clock"
+            android:id="@+id/altClock"
             style="@style/ClockText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
