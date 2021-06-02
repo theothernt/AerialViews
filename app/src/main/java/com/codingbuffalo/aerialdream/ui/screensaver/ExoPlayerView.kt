@@ -8,15 +8,13 @@ import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.google.android.exoplayer2.*
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 
 class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: SimpleExoPlayer
-    private var mediaItem: MediaItem? = null
     private var listener: OnPlayerEventListener? = null
-    private var shouldRetry = true
-    private var retries = 0
     private var aspectRatio = 0f
     private var useReducedBuffering: Boolean
     private var enableTunneling: Boolean
@@ -36,16 +34,14 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         player.addListener(this)
     }
 
-    fun setUri(uri: Uri?, retry: Boolean) {
+    fun setUri(uri: Uri?) {
         if (uri == null) {
             return
         }
         player.stop()
         prepared = false
-        shouldRetry = retry
-        retries = 0
-        mediaItem = MediaItem.fromUri(uri)
-        player.setMediaItem(mediaItem!!)
+
+        player.setMediaItem(MediaItem.fromUri(uri))
         player.prepare()
     }
 
@@ -141,12 +137,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     override fun onPlayerError(error: ExoPlaybackException) {
         error.printStackTrace()
-
-        // Attempt to reload video
-        if (shouldRetry) {
-            removeCallbacks(errorRecoveryRunnable)
-            postDelayed(errorRecoveryRunnable, DURATION)
-        }
     }
 
     override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
@@ -155,17 +145,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     private val timerRunnable = Runnable { listener!!.onAlmostFinished(this@ExoPlayerView) }
-    private val errorRecoveryRunnable = Runnable {
-        retries++
-        Log.i("ExoPlayerView", "Retries: $retries")
-        if (retries >= MAX_RETRIES) {
-            listener!!.onError(this@ExoPlayerView)
-        } else {
-            player.stop()
-            player.setMediaItem(mediaItem!!)
-            player.prepare()
-        }
-    }
 
     private fun buildPlayer(context: Context): SimpleExoPlayer {
         val loadControl: DefaultLoadControl
@@ -220,6 +199,5 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
 
     companion object {
         const val DURATION: Long = 800
-        const val MAX_RETRIES: Long = 1
     }
 }

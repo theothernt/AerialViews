@@ -102,14 +102,8 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri}")
-
-        val isLocalVideo = FileHelper.isLocalVideo(video.uri)
-        val fileExists = FileHelper.fileExists(video.uri)
-
-        Log.i("LoadVideo", "Local: $isLocalVideo, Exists: $fileExists")
-
         videoBinding.location.text = video.location
-        videoBinding.videoView.setUri(video.uri, !isLocalVideo)
+        videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
     }
 
