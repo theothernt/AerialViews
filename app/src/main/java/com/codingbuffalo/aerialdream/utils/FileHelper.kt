@@ -33,6 +33,10 @@ object FileHelper {
                 !uri.toString().contains("https://")
     }
 
+    fun isNetworkVideo(uri: Uri): Boolean {
+        return uri.toString().contains("smb://")
+    }
+
     fun fileExists(uri: Uri): Boolean {
         val file = File(uri.toString())
         return file.exists()

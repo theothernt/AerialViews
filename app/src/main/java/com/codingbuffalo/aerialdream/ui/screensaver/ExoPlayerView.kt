@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
+import com.codingbuffalo.aerialdream.samba.SmbDataSourceFactory
+import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
@@ -40,8 +42,16 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
         player.stop()
         prepared = false
+        val mediaItem = MediaItem.fromUri(uri)
 
-        player.setMediaItem(MediaItem.fromUri(uri))
+        if (FileHelper.isNetworkVideo(uri)) {
+            val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())
+                .createMediaSource(mediaItem)
+            player.setMediaSource(mediaSource)
+        } else {
+            player.setMediaItem(mediaItem)
+        }
+
         player.prepare()
     }
 

@@ -15,4 +15,8 @@ class NetworkVideoProvider(context: Context) : VideoProvider(context) {
 
         return emptyList()
     }
+
+    companion object {
+        private const val TAG = "NetworkVideoProvider"
+    }
 }
