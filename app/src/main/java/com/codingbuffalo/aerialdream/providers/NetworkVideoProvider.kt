@@ -1,19 +1,71 @@
 package com.codingbuffalo.aerialdream.providers
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
+import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
+import com.hierynomus.mssmb2.SMB2ShareAccess
+import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.auth.AuthenticationContext
+import com.hierynomus.smbj.share.DiskShare
 
-class NetworkVideoProvider(context: Context) : VideoProvider(context) {
+class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        // get prefs
+        val videos = mutableListOf<AerialVideo>()
+        val pathSegments = Uri.parse(prefs.shareName).pathSegments.toMutableList()
+        val shareName = pathSegments.removeFirst()
+        var path = ""
+        if (pathSegments.isNotEmpty()) {
+            path = pathSegments.joinToString("/")
+        }
 
-        // check network
-        // check share access
+        val networkVideos = findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
+            prefs.hostName, shareName, path)
 
-        // get video file list (mp4, mov, mkv?)
+        networkVideos.forEach{ filename ->
+            var usernamePassword = ""
+            if (prefs.userName.isNotEmpty() && prefs.password.isNotEmpty())
+                usernamePassword = "${prefs.userName}:${prefs.password}@"
 
-        return emptyList()
+            val url = "smb://$usernamePassword${prefs.hostName}/${prefs.shareName}/$filename"
+            videos.add(AerialVideo(Uri.parse(url), ""))
+        }
+        return videos
+    }
+
+    private fun findNetworkMedia(userName: String, password: String, domainName: String,
+                                 hostName: String, shareName: String, path: String): List<String> {
+        val files = mutableListOf<String>()
+        val smbClient = SMBClient()
+        val connection = smbClient.connect(hostName)
+        val authContext = AuthenticationContext(userName, password.toCharArray(), domainName)
+        val session = connection?.authenticate(authContext)
+        val share = session?.connectShare(shareName) as DiskShare
+
+        share.list(path).forEach { item ->
+            if (isVideoFilename(item.fileName)) {
+                files.add(item.fileName)
+                //Log.i(TAG, "Video filename: ${item.fileName}")
+            } else {
+                //Log.i(TAG, "NOT Video filename: ${item.fileName}")
+            }
+        }
+
+        return files
+    }
+
+    private fun isVideoFilename(filename: String): Boolean {
+        if (filename.startsWith("."))
+            return false
+
+        if (filename.endsWith(".mov") ||
+            filename.endsWith(".mp4") ||
+            filename.endsWith(".mkv"))
+            return true
+
+        return false
     }
 
     companion object {

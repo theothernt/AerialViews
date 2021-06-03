@@ -7,9 +7,11 @@ import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
+import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.AppleVideoProvider
 import com.codingbuffalo.aerialdream.providers.LocalVideoProvider
+import com.codingbuffalo.aerialdream.providers.NetworkVideoProvider
 import com.codingbuffalo.aerialdream.providers.VideoProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,6 +25,9 @@ class VideoService(context: Context) {
 
         if (LocalVideoPrefs.enabled)
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))
+
+        if (NetworkVideoPrefs.enabled)
+            providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
     }
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
