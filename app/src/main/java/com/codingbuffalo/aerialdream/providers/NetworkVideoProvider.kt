@@ -14,6 +14,12 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
 
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
+
+        if (prefs.shareName.isEmpty() ||
+                prefs.domainName.isEmpty() ||
+                prefs.hostName.isEmpty())
+                    return videos
+
         val pathSegments = Uri.parse(prefs.shareName).pathSegments.toMutableList()
         val shareName = pathSegments.removeFirst()
         var path = ""
