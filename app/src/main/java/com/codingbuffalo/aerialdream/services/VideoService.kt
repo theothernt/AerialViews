@@ -46,12 +46,12 @@ class VideoService(context: Context) {
             var numVideos = videos.size
             // Remove duplicates based on full path
             videos = videos.distinctBy { it.uri.toString().lowercase() } as MutableList<AerialVideo>
-            Log.i(TAG, "Vids removed based on full path: ${numVideos - videos.size}")
+            Log.i(TAG, "Videos removed based on full path: ${numVideos - videos.size}")
 
             numVideos = videos.size
             // Remove duplicates based on filename only
             videos = videos.distinctBy { it.uri.lastPathSegment?.lowercase() } as MutableList<AerialVideo>
-            Log.i(TAG, "Vids removed based on filename: ${numVideos - videos.size}")
+            Log.i(TAG, "Videos removed based on filename: ${numVideos - videos.size}")
         }
 
         if (GeneralPrefs.shuffleVideos)

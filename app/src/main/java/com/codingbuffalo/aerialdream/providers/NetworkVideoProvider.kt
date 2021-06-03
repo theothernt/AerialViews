@@ -27,8 +27,13 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             path = pathSegments.joinToString("/")
         }
 
-        val networkVideos = findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
-            prefs.hostName, shareName, path)
+        val networkVideos = try {
+            findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
+                prefs.hostName, shareName, path)
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message)
+            emptyList()
+        }
 
         networkVideos.forEach{ filename ->
             var usernamePassword = ""
@@ -38,6 +43,8 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             val url = "smb://$usernamePassword${prefs.hostName}/${prefs.shareName}/$filename"
             videos.add(AerialVideo(Uri.parse(url), ""))
         }
+
+        Log.i(TAG, "Videos found: ${videos.size}")
         return videos
     }
 
@@ -59,6 +66,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             }
         }
 
+        smbClient.close()
         return files
     }
 
