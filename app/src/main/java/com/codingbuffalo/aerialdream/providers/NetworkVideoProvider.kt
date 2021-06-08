@@ -31,7 +31,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
                 prefs.hostName, shareName, path)
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message)
+            Log.e(TAG, ex.message!!)
             emptyList()
         }
 
