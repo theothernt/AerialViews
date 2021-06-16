@@ -44,11 +44,11 @@ class AppleVideosFragment :
     private fun updateSummaries()
     {
         val quality = findPreference<ListPreference>("apple_videos_quality") as ListPreference
-        val qualityTitle = getString(R.string.apple_videos_quality_title)
+        val qualityTitle = context?.getString(R.string.apple_videos_quality_title)
         quality.title = "$qualityTitle - ${quality.entry}"
 
         val location = findPreference<ListPreference>("apple_videos_location") as ListPreference
-        val locationTitle = getString(R.string.apple_videos_location_title)
+        val locationTitle = context?.getString(R.string.apple_videos_location_title)
         location.title = "$locationTitle - ${location.entry}"
     }
 
@@ -58,6 +58,6 @@ class AppleVideosFragment :
 
     private fun resetPreference() {
         val pref = findPreference<ListPreference>("apple_videos_location")
-        pref?.value = getString(R.string.apple_videos_location_default)
+        pref?.value = context?.getString(R.string.apple_videos_location_default)
     }
 }
