@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "791639863634",
+    "project_id": "aerial-views-153c9",
+    "storage_bucket": "aerial-views-153c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791639863634:android:fba56e25c44b05eeed8a8b",
+        "android_client_info": {
+          "package_name": "com.codingbuffalo.aerialdream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791639863634-8jbnk5j3giu349ed3m2hvuqacaenkn28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codingbuffalo.aerialdream",
+            "certificate_hash": "1814bf0302dd810a14cd10d427a59b9aba6be0db"
+          }
+        },
+        {
+          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
