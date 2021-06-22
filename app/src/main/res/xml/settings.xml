@@ -13,6 +13,11 @@
             app:title="@string/local_videos_title"
             app:summary="@string/local_videos_summary"
             app:fragment="com.codingbuffalo.aerialdream.ui.settings.LocalVideosFragment"/>
+
+        <Preference
+            app:title="@string/network_videos_title"
+            app:summary="@string/network_videos_summary"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.NetworkVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">

@@ -44,8 +44,22 @@
 
     <string name="local_videos_filename_location_title">Use filename as location</string>
     <string name="local_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
-    <!-- Network Video Options -->
 
+    <!-- Network Video Options -->
+    <string name="network_videos_title">Network Videos</string>
+    <string name="network_videos_summary">Use any videos from a local network (SMB/Samba) share</string>
+
+    <string name="network_videos_hostname_title">Hostname</string>
+    <string name="network_videos_hostname_summary">IP address or hostname</string>
+
+    <string name="network_videos_sharename_title">Share Name</string>
+    <string name="network_videos_sharename_summary">e.g. /videos/aerial</string>
+
+    <string name="network_videos_username_title">Username</string>
+    <string name="network_videos_username_summary">Optional</string>
+
+    <string name="network_videos_password_title">Password</string>
+    <string name="network_videos_password_summary">Optional</string>
 
     <!-- Settings -->
     <string name="interface_title">Interface</string>
