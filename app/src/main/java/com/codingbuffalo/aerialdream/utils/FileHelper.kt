@@ -10,22 +10,28 @@ import java.util.HashSet
 object FileHelper {
 
      fun findAllMedia(context: Context): List<String?> {
-        val videoItemHashSet = HashSet<String>()
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        val column = "_data"
-        val projection = arrayOf(column)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
+        val videos = mutableListOf<String>()
         try {
-            cursor!!.moveToFirst()
-            do {
-                videoItemHashSet.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
-            } while (cursor.moveToNext())
-            cursor.close()
+            val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+            val column = "_data"
+            val projection = arrayOf(column)
+            val cursor = context.contentResolver.query(uri, projection, null, null, null)
+            try {
+                cursor!!.moveToFirst()
+                do {
+                    videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
+                } while (cursor.moveToNext())
+                cursor.close()
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception in findAllMedia cursor: ${e.message}")
+                //e.printStackTrace()
+            }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e(TAG, "Exception in findAllMedia: ${e.message}")
+        } finally {
+            Log.i(TAG, "findAllMedia found ${videos.size} files")
+            return videos
         }
-        Log.i(TAG, "findAllMedia found ${videoItemHashSet.size} files")
-        return videoItemHashSet.toList()
     }
 
     fun isLocalVideo(uri: Uri): Boolean {
