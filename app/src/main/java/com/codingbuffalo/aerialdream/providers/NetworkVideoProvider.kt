@@ -30,8 +30,8 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         val networkVideos = try {
             findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
                 prefs.hostName, shareName, path)
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.message!!)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
             emptyList()
         }
 
@@ -68,6 +68,28 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
 
         smbClient.close()
         return files
+    }
+
+    fun testConnection(): Boolean {
+
+        if (prefs.shareName.isEmpty() ||
+            prefs.domainName.isEmpty() ||
+            prefs.hostName.isEmpty())
+            return false
+
+        var success = true
+        try {
+            val smbClient = SMBClient()
+            val connection = smbClient.connect(prefs.hostName)
+            val authContext = AuthenticationContext(prefs.userName, prefs.password.toCharArray(), prefs.domainName)
+            val session = connection?.authenticate(authContext)
+            success = session?.connection?.isConnected == true
+            smbClient.close()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+        } finally {
+            return success
+        }
     }
 
     companion object {

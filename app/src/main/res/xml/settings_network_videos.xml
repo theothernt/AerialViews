@@ -48,4 +48,12 @@
                     android:title="@string/network_videos_password_title" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_actions">
+                <Preference
+                    android:title="Test connection settings"
+                    android:key="network_videos_test_connection"
+                    />
+        </PreferenceCategory>
+
+
 </PreferenceScreen>
