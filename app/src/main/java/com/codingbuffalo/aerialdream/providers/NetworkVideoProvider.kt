@@ -5,7 +5,7 @@ import android.net.Uri
 import android.util.Log
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
-import com.hierynomus.mssmb2.SMB2ShareAccess
+import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.share.DiskShare
@@ -40,7 +40,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             if (prefs.userName.isNotEmpty() && prefs.password.isNotEmpty())
                 usernamePassword = "${prefs.userName}:${prefs.password}@"
 
-            val url = "smb://$usernamePassword${prefs.hostName}/${prefs.shareName}/$filename"
+            val url = "smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename"
             videos.add(AerialVideo(Uri.parse(url), ""))
         }
 
@@ -58,7 +58,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         val share = session?.connectShare(shareName) as DiskShare
 
         share.list(path).forEach { item ->
-            if (isVideoFilename(item.fileName)) {
+            if (FileHelper.isVideoFilename(item.fileName)) {
                 files.add(item.fileName)
                 //Log.i(TAG, "Video filename: ${item.fileName}")
             } else {
@@ -68,18 +68,6 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
 
         smbClient.close()
         return files
-    }
-
-    private fun isVideoFilename(filename: String): Boolean {
-        if (filename.startsWith("."))
-            return false
-
-        if (filename.endsWith(".mov") ||
-            filename.endsWith(".mp4") ||
-            filename.endsWith(".mkv"))
-            return true
-
-        return false
     }
 
     companion object {

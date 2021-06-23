@@ -5,7 +5,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
 import java.io.File
-import java.util.HashSet
 
 object FileHelper {
 
@@ -46,6 +45,18 @@ object FileHelper {
     fun fileExists(uri: Uri): Boolean {
         val file = File(uri.toString())
         return file.exists()
+    }
+
+    fun isVideoFilename(filename: String): Boolean {
+        if (filename.startsWith("."))
+            return false
+
+        if (filename.endsWith(".mov") ||
+            filename.endsWith(".mp4") ||
+            filename.endsWith(".mkv"))
+            return true
+
+        return false
     }
 
     private const val TAG = "FileHelper"
