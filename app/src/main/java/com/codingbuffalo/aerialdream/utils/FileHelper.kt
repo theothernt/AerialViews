@@ -59,5 +59,19 @@ object FileHelper {
         return false
     }
 
+    fun filenameToTitleCase(filename: String): String {
+        val index = filename.lastIndexOf(".")
+
+        // some.video.mov -> some.video
+        var location = filename.substring(0, index)
+
+        // somevideo -> Somevideo
+        // city-place_video -> City - Place Video
+        // some.video -> Some Video
+        location = location.replace("-",".-.")
+        location = location.replace("_",".")
+        return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
+    }
+
     private const val TAG = "FileHelper"
 }

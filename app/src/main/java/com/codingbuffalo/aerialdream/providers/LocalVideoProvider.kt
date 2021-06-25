@@ -28,8 +28,8 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             }
 
             val uri = Uri.parse(video)
-            if (LocalVideoPrefs.filenameAsLocation) {
-                val location = filenameToTitleCase(uri.lastPathSegment!!)
+            if (prefs.filenameAsLocation) {
+                val location = FileHelper.filenameToTitleCase(uri.lastPathSegment!!)
                 videos.add(AerialVideo(uri, location))
             }  else {
                 videos.add(AerialVideo(uri, ""))
@@ -38,20 +38,6 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
         Log.i(TAG, "filter: ${filter}, videos found: ${videos.size}")
         return videos
-    }
-
-    private fun filenameToTitleCase(filename: String): String {
-        val index = filename.lastIndexOf(".")
-
-        // some.video.mov -> some.video
-        var location = filename.substring(0, index)
-
-        // somevideo -> Somevideo
-        // city-place_video -> City - Place Video
-        // some.video -> Some Video
-        location = location.replace("-",".-.")
-        location = location.replace("_",".")
-        return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
     companion object {

@@ -40,8 +40,13 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             if (prefs.userName.isNotEmpty() && prefs.password.isNotEmpty())
                 usernamePassword = "${prefs.userName}:${prefs.password}@"
 
-            val url = "smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename"
-            videos.add(AerialVideo(Uri.parse(url), ""))
+            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
+            if (prefs.filenameAsLocation) {
+                val location = FileHelper.filenameToTitleCase(uri.lastPathSegment!!)
+                videos.add(AerialVideo(uri, location))
+            }  else {
+                videos.add(AerialVideo(uri, ""))
+            }
         }
 
         Log.i(TAG, "Videos found: ${videos.size}")
@@ -60,9 +65,6 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         share.list(path).forEach { item ->
             if (FileHelper.isVideoFilename(item.fileName)) {
                 files.add(item.fileName)
-                //Log.i(TAG, "Video filename: ${item.fileName}")
-            } else {
-                //Log.i(TAG, "NOT Video filename: ${item.fileName}")
             }
         }
 
