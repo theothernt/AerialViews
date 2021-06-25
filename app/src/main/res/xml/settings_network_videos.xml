@@ -50,6 +50,8 @@
 
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
+                    app:dependency="network_videos_enabled"
+                    app:disableDependentsState="false"
                     android:title="Test connection settings"
                     android:key="network_videos_test_connection"
                     />
