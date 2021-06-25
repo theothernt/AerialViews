@@ -8,15 +8,14 @@ import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
-import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.codingbuffalo.aerialdream.R
-import com.codingbuffalo.aerialdream.services.VideoService
-import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.databinding.AerialDreamBinding
 import com.codingbuffalo.aerialdream.databinding.VideoViewBinding
+import com.codingbuffalo.aerialdream.models.VideoPlaylist
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
-import com.codingbuffalo.aerialdream.utils.FileHelper
+import com.codingbuffalo.aerialdream.services.VideoService
+import com.codingbuffalo.aerialdream.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import kotlinx.coroutines.runBlocking
 
 class VideoController(context: Context) : OnPlayerEventListener {

@@ -1,21 +1,18 @@
 package com.codingbuffalo.aerialdream.ui.settings
 
-import android.Manifest
-import android.content.Intent
-import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.preference.Preference
-import com.codingbuffalo.aerialdream.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import androidx.preference.SwitchPreference
-import com.codingbuffalo.aerialdream.models.prefs.LocalVideoPrefs
+import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
+import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.NetworkVideoProvider
-import com.codingbuffalo.aerialdream.utils.PermissionHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class NetworkVideosFragment :
     PreferenceFragmentCompat(),
@@ -37,19 +34,22 @@ class NetworkVideosFragment :
     private fun testNetworkConnection() {
 
         showMessage("Connecting...")
-        val provider = NetworkVideoProvider(requireContext(), NetworkVideoPrefs)
-        if (!provider.testConnection()) {
-            showMessage("Failed to connect.")
-            return
-        }
+        val provider = NetworkVideoProvider(this.requireContext(), NetworkVideoPrefs)
 
-        showMessage("Connected.")
-        val videos = provider.fetchVideos()
-        showMessage("Found ${videos.size} video file(s).")
+        try {
+            var videos: List<AerialVideo>
+            runBlocking {
+                withContext(Dispatchers.IO) {
+                    videos = provider.fetchVideos()
+                }
+            }
+            showMessage("Connected, found ${videos.size} video file(s)")
+        } catch (e: Exception) {
+            showMessage("Failed to connect")
+        }
     }
 
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
-
 }

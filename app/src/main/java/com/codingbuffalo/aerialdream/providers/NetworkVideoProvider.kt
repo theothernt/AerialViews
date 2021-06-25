@@ -70,28 +70,6 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         return files
     }
 
-    fun testConnection(): Boolean {
-
-        if (prefs.shareName.isEmpty() ||
-            prefs.domainName.isEmpty() ||
-            prefs.hostName.isEmpty())
-            return false
-
-        var success = true
-        try {
-            val smbClient = SMBClient()
-            val connection = smbClient.connect(prefs.hostName)
-            val authContext = AuthenticationContext(prefs.userName, prefs.password.toCharArray(), prefs.domainName)
-            val session = connection?.authenticate(authContext)
-            success = session?.connection?.isConnected == true
-            smbClient.close()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
-        } finally {
-            return success
-        }
-    }
-
     companion object {
         private const val TAG = "NetworkVideoProvider"
     }
