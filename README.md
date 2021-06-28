@@ -7,13 +7,15 @@
 
 <br/>
 
-This is a modified (forked) version which features the following changes...
+This is a forked and modified version which features the following changes...
 
 - Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
 
 - Supports *only* the latest Apple video feed (it contains nearly all previous videos too!)
 
 - Ability to play Apple **or any other videos** stored locally
+
+- Ability to play videos from a local network share (ie. Samba/SMB)
 
 - HDR support (HDR10, Dolby Vision tested)
 
