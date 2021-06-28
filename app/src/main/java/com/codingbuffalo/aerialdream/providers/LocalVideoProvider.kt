@@ -28,8 +28,16 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             }
 
             val uri = Uri.parse(video)
+            val filename = uri.lastPathSegment!!
+
+            if (!FileHelper.isVideoFilename(filename))
+            {
+                Log.i(TAG, "Probably not a video: $filename")
+                continue
+            }
+
             if (prefs.filenameAsLocation) {
-                val location = FileHelper.filenameToTitleCase(uri.lastPathSegment!!)
+                val location = FileHelper.filenameToTitleCase(filename)
                 videos.add(AerialVideo(uri, location))
             }  else {
                 videos.add(AerialVideo(uri, ""))
