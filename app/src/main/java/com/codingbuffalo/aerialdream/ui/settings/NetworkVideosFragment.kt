@@ -1,6 +1,9 @@
 package com.codingbuffalo.aerialdream.ui.settings
 
+import android.Manifest
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -9,6 +12,7 @@ import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.NetworkVideoProvider
+import com.codingbuffalo.aerialdream.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -16,10 +20,12 @@ import kotlinx.coroutines.withContext
 
 class NetworkVideosFragment :
     PreferenceFragmentCompat(),
-    PreferenceManager.OnPreferenceTreeClickListener {
+    PreferenceManager.OnPreferenceTreeClickListener,
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
+        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -29,6 +35,18 @@ class NetworkVideosFragment :
 
         testNetworkConnection()
         return true
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        if (key == "network_videos_sharename") {
+            val shareName = NetworkVideoPrefs.shareName
+
+            if (shareName.first() != '/')
+                NetworkVideoPrefs.shareName = "/$shareName"
+
+            if (shareName.last() == '/')
+                NetworkVideoPrefs.shareName = shareName.dropLast(1)
+        }
     }
 
     private fun testNetworkConnection() {
