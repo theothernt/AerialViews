@@ -3,6 +3,7 @@ package com.codingbuffalo.aerialdream.ui.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -22,6 +23,7 @@ class NetworkVideosFragment :
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        limitTextInput()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -43,6 +45,13 @@ class NetworkVideosFragment :
             if (shareName.last() == '/')
                 NetworkVideoPrefs.shareName = shareName.dropLast(1)
         }
+    }
+
+    private fun limitTextInput() {
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private fun testNetworkConnection() {

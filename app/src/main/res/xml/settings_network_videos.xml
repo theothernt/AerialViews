@@ -16,7 +16,6 @@
                     app:disableDependentsState="false"
                     android:key="network_videos_hostname"
                     android:selectAllOnFocus="true"
-                    android:singleLine="true"
                     android:title="@string/network_videos_hostname_title" />
 
                 <EditTextPreference
@@ -24,8 +23,6 @@
                     app:dependency="network_videos_enabled"
                     app:disableDependentsState="false"
                     android:key="network_videos_sharename"
-                    android:selectAllOnFocus="true"
-                    android:singleLine="true"
                     android:title="@string/network_videos_sharename_title" />
 
                 <EditTextPreference
@@ -33,8 +30,6 @@
                     app:dependency="network_videos_enabled"
                     app:disableDependentsState="false"
                     android:key="network_videos_username"
-                    android:selectAllOnFocus="true"
-                    android:singleLine="true"
                     android:title="@string/network_videos_username_title" />
 
                 <EditTextPreference
@@ -42,9 +37,6 @@
                     app:dependency="network_videos_enabled"
                     app:disableDependentsState="false"
                     android:key="network_videos_password"
-                    android:selectAllOnFocus="true"
-                    android:inputType="textPassword"
-                    android:singleLine="true"
                     android:title="@string/network_videos_password_title" />
         </PreferenceCategory>
 
