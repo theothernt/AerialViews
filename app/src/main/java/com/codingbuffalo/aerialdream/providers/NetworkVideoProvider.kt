@@ -40,7 +40,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             if (prefs.userName.isNotEmpty() && prefs.password.isNotEmpty())
                 usernamePassword = "${prefs.userName}:${prefs.password}@"
 
-            val uri = Uri.parse("smb://$usernamePassword/${prefs.hostName}${prefs.shareName}/$filename")
+            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
             if (prefs.filenameAsLocation) {
                 val location = FileHelper.filenameToTitleCase(uri.lastPathSegment!!)
                 videos.add(AerialVideo(uri, location))
