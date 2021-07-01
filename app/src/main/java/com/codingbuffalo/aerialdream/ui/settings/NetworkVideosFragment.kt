@@ -1,9 +1,7 @@
 package com.codingbuffalo.aerialdream.ui.settings
 
-import android.Manifest
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -12,8 +10,6 @@ import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.NetworkVideoProvider
-import com.codingbuffalo.aerialdream.utils.PermissionHelper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
