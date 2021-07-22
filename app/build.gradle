@@ -72,12 +72,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.1.0'
 
     implementation 'com.google.code.gson:gson:2.8.7'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.2'
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
-    implementation 'androidx.activity:activity-ktx:1.2.3'
+    implementation 'androidx.activity:activity-ktx:1.2.4'
 
     implementation 'com.chibatching.kotpref:kotpref:2.13.1'
     implementation 'com.chibatching.kotpref:initializer:2.13.1'
