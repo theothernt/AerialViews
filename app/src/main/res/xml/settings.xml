@@ -30,6 +30,11 @@
             app:title="@string/performance_title"
             app:summary="@string/performance_summary"
             app:fragment="com.codingbuffalo.aerialdream.ui.settings.PerformanceFragment"/>
+
+        <Preference
+            app:title="Capabilities"
+            app:summary="Detected TV and codec features"
+            app:fragment="com.codingbuffalo.aerialdream.ui.settings.CapabilitiesFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_capabilities">
+                <Preference
+                    app:title="@string/capabilities_display_title"
+                    app:summary="Dolby Vision, HDR10"/>
+
+                <Preference
+                    app:title="@string/capabilities_resolution_title"
+                    app:summary="1080p, 2160p (4K), etc" />
+
+                <Preference
+                    app:title="@string/capabilities_codecs_title"
+                    app:summary="HEVC, Dobly Vision, etc"/>
+        </PreferenceCategory>
+
+</PreferenceScreen>
