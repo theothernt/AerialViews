@@ -1,4 +1,4 @@
-package com.codingbuffalo.aerialdream.samba
+package com.codingbuffalo.aerialdream.services
 
 import com.google.android.exoplayer2.upstream.DataSource
 

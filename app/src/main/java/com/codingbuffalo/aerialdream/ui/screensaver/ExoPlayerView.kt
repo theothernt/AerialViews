@@ -7,7 +7,7 @@ import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import com.codingbuffalo.aerialdream.models.prefs.GeneralPrefs
-import com.codingbuffalo.aerialdream.samba.SmbDataSourceFactory
+import com.codingbuffalo.aerialdream.services.SmbDataSourceFactory
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
