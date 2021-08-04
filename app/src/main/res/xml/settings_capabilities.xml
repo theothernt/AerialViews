@@ -4,16 +4,19 @@
 
         <PreferenceCategory app:title="@string/category_capabilities">
                 <Preference
+                    app:key="capabilities_display"
                     app:title="@string/capabilities_display_title"
-                    app:summary="Dolby Vision, HDR10"/>
+                    app:summary=""/>
 
                 <Preference
+                    app:key="capabilities_resolution"
                     app:title="@string/capabilities_resolution_title"
-                    app:summary="1080p, 2160p (4K), etc" />
+                    app:summary="" />
 
                 <Preference
+                    app:key="capabilities_codecs"
                     app:title="@string/capabilities_codecs_title"
-                    app:summary="HEVC, Dobly Vision, etc"/>
+                    app:summary=""/>
         </PreferenceCategory>
 
 </PreferenceScreen>
