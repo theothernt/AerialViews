@@ -18,18 +18,13 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     private val player: SimpleExoPlayer
     private var listener: OnPlayerEventListener? = null
     private var aspectRatio = 0f
-    private var useReducedBuffering: Boolean
-    private var enableTunneling: Boolean
-    private var exceedRendererCapabilities: Boolean
-    private var muteVideo: Boolean
+    private var useReducedBuffering: Boolean = GeneralPrefs.reducedBuffers
+    private var enableTunneling: Boolean = GeneralPrefs.enableTunneling
+    private var exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
+    private var muteVideo: Boolean = GeneralPrefs.muteVideos
     private var prepared = false
 
     init {
-        muteVideo = GeneralPrefs.muteVideos
-        enableTunneling = GeneralPrefs.enableTunneling
-        useReducedBuffering = GeneralPrefs.reducedBuffers
-        exceedRendererCapabilities = GeneralPrefs.exceedRenderer
-
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addVideoListener(this)
