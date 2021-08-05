@@ -60,10 +60,10 @@ class NetworkVideosFragment :
         val provider = NetworkVideoProvider(this.requireContext(), NetworkVideoPrefs)
 
         try {
-            var videos: List<AerialVideo>
+            val videos = mutableListOf<AerialVideo>()
             runBlocking {
                 withContext(Dispatchers.IO) {
-                    videos = provider.fetchVideos()
+                    videos.addAll(provider.fetchVideos())
                 }
             }
             showMessage("Connected, found ${videos.size} video file(s)")
