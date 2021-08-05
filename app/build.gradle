@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.codingbuffalo.aerialdream"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1 // Will be incremented automatically on release
         versionName "0.98"
     }
