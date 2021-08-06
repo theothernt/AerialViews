@@ -2,7 +2,6 @@ package com.codingbuffalo.aerialdream.ui.screensaver
 
 import android.service.dreams.DreamService
 import android.view.KeyEvent
-import android.view.View
 import com.codingbuffalo.aerialdream.utils.WindowHelper
 
 class DreamActivity : DreamService() {

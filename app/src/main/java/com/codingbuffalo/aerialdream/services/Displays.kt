@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package com.codingbuffalo.aerialdream.services
 
 import android.app.Activity
@@ -9,7 +11,7 @@ import android.os.Build
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
-enum class HDRFormat() {
+enum class HDRFormat {
     DOLBY_VISION, HDR10, HDR10_PLUS, HLG, UNKNOWN
 }
 
@@ -23,7 +25,7 @@ fun HDRTypeToHDRFormat(value: Int): HDRFormat {
     }
 }
 
-enum class PowerState() {
+enum class PowerState {
     OFF, ON, DOZE, DOZE_SUSPEND, ON_SUSPEND, UNKNOWN
 }
 

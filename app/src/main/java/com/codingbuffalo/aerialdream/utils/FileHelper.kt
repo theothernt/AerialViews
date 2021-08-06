@@ -27,10 +27,9 @@ object FileHelper {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in findAllMedia: ${e.message}")
-        } finally {
-            Log.i(TAG, "findAllMedia found ${videos.size} files")
-            return videos
         }
+         Log.i(TAG, "findAllMedia found ${videos.size} files")
+         return videos
     }
 
     fun isLocalVideo(uri: Uri): Boolean {
