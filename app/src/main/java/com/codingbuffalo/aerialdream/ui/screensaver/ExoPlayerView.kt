@@ -27,7 +27,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
-        player.addVideoListener(this)
         player.addListener(this)
     }
 
@@ -123,20 +122,21 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     /* EventListener */
     override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
         when (playbackState) {
-            Player.STATE_BUFFERING -> Log.i("ExoPlayerView", "Player: Buffering...")
-            Player.STATE_READY -> Log.i("ExoPlayerView", "Player: Ready...")
-            Player.STATE_IDLE -> Log.i("ExoPlayerView", "Player: Idle...")
-            Player.STATE_ENDED -> Log.i("ExoPlayerView", "Player: Ended...")
-            else -> {
-            }
+            Player.STATE_IDLE -> Log.i(TAG, "Player: Idle...") // 1
+            Player.STATE_BUFFERING -> Log.i(TAG, "Player: Buffering...") // 2
+            Player.STATE_READY -> Log.i(TAG, "Player: Ready...") // 3
+            Player.STATE_ENDED -> Log.i(TAG, "Player: Ended...") // 4
         }
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
+            //Log.i(TAG, "Calling onPrepared")
             listener!!.onPrepared(this)
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
+            //Log.i(TAG, "Setting timerRunnable")
             removeCallbacks(timerRunnable)
             postDelayed(timerRunnable, duration - DURATION)
+            //postDelayed(timerRunnable, (duration - (duration - 6000)).toLong())
         }
     }
 
@@ -203,6 +203,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     }
 
     companion object {
+        private const val TAG = "ExoPlayerView"
         const val DURATION: Long = 800
     }
 }

@@ -86,14 +86,9 @@ class Display(source: NativeDisplay) {
         renderOutput = OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
 
         // If available on device get display mode
-        if(Build.VERSION.SDK_INT >= 23) {
-            val mode = source.mode
-            physicalOutput = OutputDescription(mode.modeId, mode.physicalWidth, mode.physicalHeight, mode.refreshRate)
-            supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
-        } else {
-            physicalOutput = null
-            supportedModes = listOf()
-        }
+        val mode = source.mode
+        physicalOutput = OutputDescription(mode.modeId, mode.physicalWidth, mode.physicalHeight, mode.refreshRate)
+        supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
 
         // Check HDR Capabilities if available on device
         if(Build.VERSION.SDK_INT >= 24) {
