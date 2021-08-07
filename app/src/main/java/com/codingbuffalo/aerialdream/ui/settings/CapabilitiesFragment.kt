@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.services.CodecType
 import com.codingbuffalo.aerialdream.services.getCodecs
-import com.codingbuffalo.aerialdream.services.getDisplays
+import com.codingbuffalo.aerialdream.services.getDisplay
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -27,7 +27,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     }
 
     private fun buildDisplaySummary(): String {
-        val display = getDisplays(activity).first()
+        val display = getDisplay(activity)
         var summary = "Supports HDR: ${display.supportsHDR}"
         if (display.supportsHDR && display.hdrFormats.isNotEmpty()) {
             summary += "\nHDR Formats: ${display.hdrFormats.joinToString(", ")}"
@@ -36,7 +36,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     }
 
     private fun buildResolutionSummary(): String {
-        val display = getDisplays(activity).first()
+        val display = getDisplay(activity)
         var summary = "Render Output: ${display.renderOutput}"
         if (display.physicalOutput != null) {
             summary += "\nPhysical Output: ${display.physicalOutput}"

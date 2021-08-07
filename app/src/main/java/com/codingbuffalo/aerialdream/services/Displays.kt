@@ -8,6 +8,9 @@ import android.content.Context
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
+import android.view.WindowManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
@@ -46,7 +49,7 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
     }
 }
 
-class Display(source: NativeDisplay) {
+class Display(source: NativeDisplay, windowManager: WindowManager) {
     val name: String = source.name
     val id: Int = source.displayId
     val valid: Boolean = source.isValid
@@ -83,9 +86,14 @@ class Display(source: NativeDisplay) {
         supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
 
         // Get render sizes
-        val renderPoint = Point()
-        source.getSize(renderPoint)
-        renderOutput = OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
+        renderOutput = if (Build.VERSION.SDK_INT >= 30) {
+            val metrics = windowManager.currentWindowMetrics
+            OutputDescription(-1, metrics.bounds.width(), metrics.bounds.height(), source.refreshRate)
+        } else {
+            val renderPoint = Point()
+            source.getSize(renderPoint)
+            OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
+        }
 
         // If available on device get display mode
         val mode = source.mode
@@ -93,10 +101,9 @@ class Display(source: NativeDisplay) {
         supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
 
         // Check HDR Capabilities if available on device
-        if(Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= 24) {
             val capabilities = source.hdrCapabilities
             supportsHDR = if (Build.VERSION.SDK_INT >= 26) source.isHdr else capabilities != null
-
             minimumLuminance = capabilities?.desiredMinLuminance
             maximumLuminance = capabilities?.desiredMaxLuminance
             hdrFormats = capabilities?.supportedHdrTypes?.map { HDRTypeToHDRFormat(it) } ?: listOf()
@@ -123,8 +130,9 @@ class Display(source: NativeDisplay) {
     }
 }
 
-fun getDisplays(activity: Activity?): List<Display> {
-    if(activity == null) return listOf()
-    val manager = activity.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-    return manager.displays.map { Display(it) }
+fun getDisplay(activity: Activity?): Display {
+    val displayManager = activity?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    val display = displayManager.displays[0]
+    val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    return Display(display, windowManager)
 }
