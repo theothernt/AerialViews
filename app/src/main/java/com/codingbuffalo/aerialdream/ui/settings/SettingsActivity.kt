@@ -61,7 +61,7 @@ class SettingsActivity :AppCompatActivity(),
         supportFragmentManager.beginTransaction()
             .replace(R.id.settings, fragment)
             .addToBackStack(null)
-            .commit()
+            .commitAllowingStateLoss()
         title = pref.title
         return true
     }
