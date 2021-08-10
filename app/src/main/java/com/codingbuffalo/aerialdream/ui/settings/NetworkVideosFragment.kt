@@ -26,6 +26,11 @@ class NetworkVideosFragment :
         limitTextInput()
     }
 
+    override fun onDestroy() {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
+    }
+
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
 
         if (preference.key == null || !preference.key.contains("network_videos_test_connection"))

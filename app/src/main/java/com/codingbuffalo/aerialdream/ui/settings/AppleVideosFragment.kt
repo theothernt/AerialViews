@@ -21,6 +21,11 @@ class AppleVideosFragment :
         updateSummaries()
     }
 
+    override fun onDestroy() {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
+    }
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "apple_videos_location" &&
             requiresPermission() &&

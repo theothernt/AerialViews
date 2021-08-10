@@ -19,6 +19,11 @@ class LocalVideosFragment :
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
+    override fun onDestroy() {
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
+    }
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "local_videos_enabled" &&
             requiresPermission() &&
