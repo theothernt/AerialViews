@@ -9,8 +9,6 @@ import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.WindowManager
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
