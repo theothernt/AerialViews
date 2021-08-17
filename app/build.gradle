@@ -12,7 +12,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1 // Will be incremented automatically on release
-        versionName "0.98"
+        versionName "0.98.1"
     }
 
     compileOptions {
