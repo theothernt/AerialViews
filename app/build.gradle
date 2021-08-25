@@ -8,7 +8,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.codingbuffalo.aerialdream"
+        applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1 // Will be incremented automatically on release

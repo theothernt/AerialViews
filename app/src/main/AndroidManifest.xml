@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.codingbuffalo.aerialdream">
+    package="com.neilturner.aerialviews">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -34,7 +34,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name="com.neilturner.aerialviews.ui.settings.SettingsActivity"
             android:banner="@drawable/ic_banner"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/SettingsTheme">
@@ -47,11 +47,11 @@
         </activity>
 
         <activity
-            android:name=".ui.screensaver.TestActivity"
+            android:name="com.neilturner.aerialviews.ui.screensaver.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
         <service
-            android:name=".ui.screensaver.DreamActivity"
+            android:name="com.neilturner.aerialviews.ui.screensaver.DreamActivity"
             android:exported="true"
             android:label="@string/daydream_name"
             android:permission="android.permission.BIND_DREAM_SERVICE">

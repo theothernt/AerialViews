@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791639863634:android:e382263c88192469ed8a8b",
+        "android_client_info": {
+          "package_name": "com.neilturner.aerialviews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

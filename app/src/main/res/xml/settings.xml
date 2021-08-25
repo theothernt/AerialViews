@@ -7,41 +7,41 @@
         <Preference
             app:title="@string/apple_videos_title"
             app:summary="@string/apple_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.AppleVideosFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.AppleVideosFragment"/>
 
         <Preference
             app:title="@string/local_videos_title"
             app:summary="@string/local_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.LocalVideosFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.LocalVideosFragment"/>
 
         <Preference
             app:title="@string/network_videos_title"
             app:summary="@string/network_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.NetworkVideosFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">
         <Preference
             app:title="@string/interface_title"
             app:summary="@string/interface_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.InterfaceFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.InterfaceFragment"/>
 
         <Preference
             app:title="@string/performance_title"
             app:summary="@string/performance_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.PerformanceFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.PerformanceFragment"/>
 
         <Preference
             app:title="Capabilities"
             app:summary="Detected TV and codec features"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.CapabilitiesFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">
         <Preference app:title="@string/test_settings">
             <intent
-                android:targetClass="com.codingbuffalo.aerialdream.ui.screensaver.TestActivity"
-                android:targetPackage="com.codingbuffalo.aerialdream" />
+                android:targetClass="com.neilturner.aerialviews.ui.screensaver.TestActivity"
+                android:targetPackage="com.neilturner.aerialviews" />
         </Preference>
 
         <Preference
