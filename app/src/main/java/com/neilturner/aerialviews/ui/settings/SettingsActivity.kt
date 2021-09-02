@@ -24,7 +24,7 @@ class SettingsActivity :AppCompatActivity(),
 
         supportFragmentManager.addOnBackStackChangedListener {
             if (supportFragmentManager.backStackEntryCount == 0) {
-                setTitle(R.string.daydream_name)
+                setTitle(R.string.app_name)
             }
         }
 

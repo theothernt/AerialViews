@@ -10,7 +10,7 @@ class TestActivity : Activity() {
     private var videoController: VideoController? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTitle(R.string.daydream_name)
+        setTitle(R.string.app_name)
         videoController = VideoController(this)
         val view = videoController!!.view
         setContentView(view)

@@ -1,6 +1,7 @@
 <resources>
     <!-- General -->
-    <string name="daydream_name">Aerial Views</string>
+    <string name="app_name_release">Aerial Views</string>
+    <string name="app_name_debug">Aerial Views (Debug)</string>
     <string name="loading_aerial"></string>
 
     <!-- Categories -->

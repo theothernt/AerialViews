@@ -27,7 +27,7 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:installLocation="auto"
-        android:label="@string/daydream_name"
+        android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
@@ -53,7 +53,7 @@
         <service
             android:name="com.neilturner.aerialviews.ui.screensaver.DreamActivity"
             android:exported="true"
-            android:label="@string/daydream_name"
+            android:label="@string/app_name"
             android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
