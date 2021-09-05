@@ -73,7 +73,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.1'
 
-    implementation 'com.google.code.gson:gson:2.8.7'
+    implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.14.2'
 
     implementation 'androidx.leanback:leanback:1.0.0'
@@ -85,7 +85,7 @@ dependencies {
     implementation 'com.chibatching.kotpref:initializer:2.13.1'
     implementation 'com.chibatching.kotpref:enum-support:2.13.1'
 
-    implementation 'com.hierynomus:smbj:0.11.1'
+    implementation 'com.hierynomus:smbj:0.11.3'
 
     testImplementation 'junit:junit:4.13.2'
 }
