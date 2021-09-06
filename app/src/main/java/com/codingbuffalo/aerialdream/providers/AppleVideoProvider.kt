@@ -9,6 +9,7 @@ import com.codingbuffalo.aerialdream.models.AppleVideoLocation
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.models.videos.Apple2019Video
+import com.codingbuffalo.aerialdream.services.VideoService
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.gson.Gson
 import java.util.*
@@ -41,7 +42,12 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
             return videos
         }
 
-        val result = compareToLocalVideos(videos)
+        val result = try {
+            compareToLocalVideos(videos)
+        } catch(ex: Exception) {
+            Log.e(TAG, ex.message!!)
+            Pair(emptyList(), emptyList())
+        }
 
         if (location == AppleVideoLocation.LOCAL) {
             Log.i(TAG, "${location.name} videos: ${result.first.size}")
