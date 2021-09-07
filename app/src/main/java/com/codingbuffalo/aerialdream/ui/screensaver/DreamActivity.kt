@@ -1,6 +1,7 @@
 package com.codingbuffalo.aerialdream.ui.screensaver
 
 import android.service.dreams.DreamService
+import android.util.Log
 import android.view.KeyEvent
 import com.codingbuffalo.aerialdream.utils.WindowHelper
 
@@ -14,19 +15,27 @@ class DreamActivity : DreamService() {
         isInteractive = true
         videoController = VideoController(this)
 
-        val view = videoController!!.view
-        setContentView(view)
+        setContentView(videoController!!.view)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_UP &&
-                event.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-            videoController!!.skipVideo()
-            return true
+        if (event.action == KeyEvent.ACTION_UP) {
+            Log.i("", "${event.keyCode}")
+
+            if (event.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                videoController!!.skipVideo()
+                return true
+            }
+
+            // Exit if Play button is pressed but don't swallow event
+            if (event.keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
+                finish()
+            }
         }
+
         return super.dispatchKeyEvent(event)
     }
-
+    
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
