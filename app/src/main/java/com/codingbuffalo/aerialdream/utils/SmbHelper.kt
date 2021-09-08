@@ -1,5 +1,6 @@
 package com.codingbuffalo.aerialdream.utils
 
+import android.net.Uri
 import android.util.Log
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 
@@ -20,6 +21,25 @@ object SmbHelper {
         }
 
     }
+
+    fun parseUserInfo() {
+
+
+    }
+
+    fun parseShareAndPathName(uri: Uri): Pair<String, String> {
+        val segments = uri.pathSegments.toMutableList()
+        val shareName = segments.removeFirst()
+        var path = ""
+        if (segments.isNotEmpty()) {
+            path = segments.joinToString("/")
+        }
+
+        // Should use Data class in future...
+        // https://stackoverflow.com/a/48270757/247257
+        return Pair(shareName, path)
+    }
+
 
     private const val TAG = "SmbHelper"
 }

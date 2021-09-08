@@ -6,6 +6,7 @@ import android.util.Log
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.utils.FileHelper
+import com.codingbuffalo.aerialdream.utils.SmbHelper
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.share.DiskShare
@@ -20,12 +21,9 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
                 prefs.hostName.isEmpty())
                     return videos
 
-        val pathSegments = Uri.parse(prefs.shareName).pathSegments.toMutableList()
-        val shareName = pathSegments.removeFirst()
-        var path = ""
-        if (pathSegments.isNotEmpty()) {
-            path = pathSegments.joinToString("/")
-        }
+        val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
+        val shareName = shareNameAndPath.first
+        val path = shareNameAndPath.second
 
         val networkVideos = try {
             findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,

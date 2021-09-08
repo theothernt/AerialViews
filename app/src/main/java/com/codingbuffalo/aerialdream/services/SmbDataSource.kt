@@ -1,5 +1,7 @@
 package com.codingbuffalo.aerialdream.services
 
+import android.net.Uri
+import com.codingbuffalo.aerialdream.utils.SmbHelper
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.BaseDataSource
 import com.google.android.exoplayer2.upstream.DataSpec
@@ -77,9 +79,10 @@ class SmbDataSource: BaseDataSource(true) {
         userName = userInfo[0]
         password = userInfo[1]
         hostName = uri.host!!
-        val pathSegments = uri.pathSegments.toMutableList()
-        shareName = pathSegments.removeFirst()
-        path = pathSegments.joinToString("/")
+
+        val shareNameAndPath = SmbHelper.parseShareAndPathName(uri)
+        shareName = shareNameAndPath.first
+        path = shareNameAndPath.second
     }
 
     private fun openNetworkFile(): File {
