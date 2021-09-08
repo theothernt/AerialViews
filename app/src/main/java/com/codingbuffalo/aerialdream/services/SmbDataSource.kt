@@ -88,7 +88,7 @@ class SmbDataSource: BaseDataSource(true) {
     private fun openNetworkFile(): File {
         smbClient = SMBClient()
         val connection = smbClient?.connect(hostName)
-        val authContext = AuthenticationContext(userName, password.toCharArray(), domainName)
+        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 

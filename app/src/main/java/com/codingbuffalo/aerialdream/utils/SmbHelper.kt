@@ -3,6 +3,7 @@ package com.codingbuffalo.aerialdream.utils
 import android.net.Uri
 import android.util.Log
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
+import com.hierynomus.smbj.auth.AuthenticationContext
 
 object SmbHelper {
 
@@ -47,6 +48,12 @@ object SmbHelper {
         return Pair(shareName, path)
     }
 
+    fun buildAuthContext(userName: String, password: String, domainName: String): AuthenticationContext {
+        if (userName.isEmpty() && password.isEmpty())
+            return AuthenticationContext.anonymous()
+
+        return AuthenticationContext(userName, password.toCharArray(), domainName)
+    }
 
     private const val TAG = "SmbHelper"
 }

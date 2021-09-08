@@ -35,8 +35,17 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
 
         networkVideos.forEach{ filename ->
             var usernamePassword = ""
-            if (prefs.userName.isNotEmpty() && prefs.password.isNotEmpty())
-                usernamePassword = "${prefs.userName}:${prefs.password}@"
+            if (prefs.userName.isNotEmpty()) {
+                usernamePassword = prefs.userName
+
+                if (prefs.password.isNotEmpty())
+                    usernamePassword += ":${prefs.password}"
+
+                usernamePassword += "@"
+            }
+
+            // smb://username@host/sharename/path
+            // smb://username:password@host/sharename
 
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
             if (prefs.filenameAsLocation) {
@@ -56,7 +65,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         val files = mutableListOf<String>()
         val smbClient = SMBClient()
         val connection = smbClient.connect(hostName)
-        val authContext = AuthenticationContext(userName, password.toCharArray(), domainName)
+        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 
