@@ -2,6 +2,7 @@ package com.codingbuffalo.aerialdream.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -11,6 +12,7 @@ import com.codingbuffalo.aerialdream.R
 import com.codingbuffalo.aerialdream.models.prefs.NetworkVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.providers.NetworkVideoProvider
+import com.codingbuffalo.aerialdream.utils.SmbHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -42,13 +44,7 @@ class NetworkVideosFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "network_videos_sharename") {
-            val shareName = NetworkVideoPrefs.shareName
-
-            if (shareName.first() != '/')
-                NetworkVideoPrefs.shareName = "/$shareName"
-
-            if (shareName.last() == '/')
-                NetworkVideoPrefs.shareName = shareName.dropLast(1)
+            SmbHelper.fixShareName()
         }
     }
 
@@ -72,6 +68,11 @@ class NetworkVideosFragment :
                 }
             }
             showMessage("Connected, found ${videos.size} video file(s)")
+
+            videos.forEach { video ->
+                Log.i(TAG, "${video.location}: ${video.uri}")
+            }
+
         } catch (e: Exception) {
             showMessage("Failed to connect")
         }
@@ -79,5 +80,9 @@ class NetworkVideosFragment :
 
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    companion object {
+        private const val TAG = "NetworkVideoFragment"
     }
 }
