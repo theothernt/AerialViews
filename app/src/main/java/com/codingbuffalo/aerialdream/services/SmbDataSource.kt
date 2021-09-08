@@ -1,6 +1,5 @@
 package com.codingbuffalo.aerialdream.services
 
-import android.net.Uri
 import com.codingbuffalo.aerialdream.utils.SmbHelper
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.BaseDataSource
@@ -21,12 +20,12 @@ import kotlin.math.min
 class SmbDataSource: BaseDataSource(true) {
 
     private var dataSpec: DataSpec? = null
-    private var userName: String = ""
-    private var password: String = ""
-    private var hostName: String = ""
-    private var shareName: String = ""
-    private val domainName: String = "WORKGROUP"
-    private var path: String = ""
+    private var userName = ""
+    private var password = ""
+    private var hostName = ""
+    private var shareName = ""
+    private val domainName = "WORKGROUP"
+    private var path = ""
 
     private var smbClient: SMBClient? = null
     private var inputStream: InputStream? = null
@@ -75,10 +74,11 @@ class SmbDataSource: BaseDataSource(true) {
 
     private fun parseCredentials(dataSpec: DataSpec) {
         val uri = dataSpec.uri
-        val userInfo = uri.userInfo?.split(":")!!
-        userName = userInfo[0]
-        password = userInfo[1]
         hostName = uri.host!!
+
+        val userInfo = SmbHelper.parseUserInfo(uri)
+        userName = userInfo.first
+        password = userInfo.second
 
         val shareNameAndPath = SmbHelper.parseShareAndPathName(uri)
         shareName = shareNameAndPath.first

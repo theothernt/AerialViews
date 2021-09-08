@@ -9,7 +9,6 @@ import com.codingbuffalo.aerialdream.models.AppleVideoLocation
 import com.codingbuffalo.aerialdream.models.prefs.AppleVideoPrefs
 import com.codingbuffalo.aerialdream.models.videos.AerialVideo
 import com.codingbuffalo.aerialdream.models.videos.Apple2019Video
-import com.codingbuffalo.aerialdream.services.VideoService
 import com.codingbuffalo.aerialdream.utils.FileHelper
 import com.google.gson.Gson
 import java.util.*
