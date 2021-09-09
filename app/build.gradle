@@ -47,9 +47,8 @@ android {
         debug {
             //minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"false", "analyticsCollectionEnabled":"false"]
             applicationIdSuffix '.debug'
-            //versionNameSuffix '-DEBUG'
             resValue "string", "app_name", "@string/app_name_debug"
         }
         release {
@@ -57,7 +56,7 @@ android {
             minifyEnabled true
             //debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"true"]
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"true" , "analyticsCollectionEnabled":"true"]
             resValue "string", "app_name", "@string/app_name_release"
         }
     }
