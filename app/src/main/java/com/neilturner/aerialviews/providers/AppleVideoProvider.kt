@@ -41,7 +41,12 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
             return videos
         }
 
-        val result = compareToLocalVideos(videos)
+        val result = try {
+            compareToLocalVideos(videos)
+        } catch(ex: Exception) {
+            Log.e(TAG, ex.message!!)
+            Pair(emptyList(), emptyList())
+        }
 
         if (location == AppleVideoLocation.LOCAL) {
             Log.i(TAG, "${location.name} videos: ${result.first.size}")

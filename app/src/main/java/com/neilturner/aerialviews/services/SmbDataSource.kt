@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services
 
+import com.neilturner.aerialviews.utils.SmbHelper
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.BaseDataSource
 import com.google.android.exoplayer2.upstream.DataSpec
@@ -7,7 +8,6 @@ import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
 import java.io.EOFException
@@ -19,12 +19,12 @@ import kotlin.math.min
 class SmbDataSource: BaseDataSource(true) {
 
     private var dataSpec: DataSpec? = null
-    private var userName: String = ""
-    private var password: String = ""
-    private var hostName: String = ""
-    private var shareName: String = ""
-    private val domainName: String = "WORKGROUP"
-    private var path: String = ""
+    private var userName = ""
+    private var password = ""
+    private var hostName = ""
+    private var shareName = ""
+    private val domainName = "WORKGROUP"
+    private var path = ""
 
     private var smbClient: SMBClient? = null
     private var inputStream: InputStream? = null
@@ -73,19 +73,21 @@ class SmbDataSource: BaseDataSource(true) {
 
     private fun parseCredentials(dataSpec: DataSpec) {
         val uri = dataSpec.uri
-        val userInfo = uri.userInfo?.split(":")!!
-        userName = userInfo[0]
-        password = userInfo[1]
         hostName = uri.host!!
-        val pathSegments = uri.pathSegments.toMutableList()
-        shareName = pathSegments.removeFirst()
-        path = pathSegments.joinToString("/")
+
+        val userInfo = SmbHelper.parseUserInfo(uri)
+        userName = userInfo.first
+        password = userInfo.second
+
+        val shareNameAndPath = SmbHelper.parseShareAndPathName(uri)
+        shareName = shareNameAndPath.first
+        path = shareNameAndPath.second
     }
 
     private fun openNetworkFile(): File {
         smbClient = SMBClient()
         val connection = smbClient?.connect(hostName)
-        val authContext = AuthenticationContext(userName, password.toCharArray(), domainName)
+        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 

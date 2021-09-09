@@ -34,7 +34,13 @@ class VideoService(context: Context) {
         var videos = mutableListOf<AerialVideo>()
 
         providers.forEach {
-            videos.addAll(it.fetchVideos())
+            val newVideos = try {
+                it.fetchVideos()
+            } catch(ex: Exception) {
+                Log.e(TAG, ex.message!!)
+                emptyList()
+            }
+            videos.addAll(newVideos)
         }
 
         if (videos.isEmpty()) {
