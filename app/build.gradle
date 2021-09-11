@@ -59,6 +59,11 @@ android {
             manifestPlaceholders = [crashlyticsCollectionEnabled:"true" , "analyticsCollectionEnabled":"true"]
             resValue "string", "app_name", "@string/app_name_release"
         }
+        afterEvaluate {
+            android.applicationVariants.all { variant ->
+                variant.resValue 'string', 'application_id', variant.applicationId
+            }
+        }
     }
 }
 

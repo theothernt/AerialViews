@@ -17,9 +17,20 @@ class SettingsFragment :
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
 
-        if(preference.key == null || !preference.key.contains("activate_screensaver"))
+        if(preference.key.isNullOrEmpty())
             return super.onPreferenceTreeClick(preference)
 
+        if (preference.key.contains("open_system_screensaver_options")) {
+            val intent = findScreensaverIntent()
+            startActivity(intent)
+            return true
+        }
+
+        return super.onPreferenceTreeClick(preference)
+    }
+
+
+    private fun findScreensaverIntent(): Intent {
         // Check if the daydream intent is available - some devices (e.g. Nvidia Shield) do not support it
         var intent = Intent(SCREENSAVER_SETTINGS)
         if (!intentAvailable(intent)) {
@@ -30,8 +41,7 @@ class SettingsFragment :
                 intent = Intent(SETTINGS)
             }
         }
-        startActivity(intent)
-        return true
+        return intent
     }
 
     private fun intentAvailable(intent: Intent): Boolean {

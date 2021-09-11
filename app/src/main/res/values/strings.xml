@@ -97,6 +97,6 @@
     <string name="capabilities_codecs_title">Codecs</string>
 
     <!-- Actions -->
-    <string name="test_settings">Test settings</string>
-    <string name="activate_screensaver">Open system screensaver options</string>
+    <string name="test_screensaver_settings">Test screensaver settings</string>
+    <string name="open_system_screensaver_options">Open system screensaver options</string>
 </resources>
