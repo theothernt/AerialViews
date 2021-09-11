@@ -38,11 +38,11 @@
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">
-        <Preference app:title="@string/test_settings">
-            <intent
-                android:targetClass="com.neilturner.aerialviews.ui.screensaver.TestActivity"
-                android:targetPackage="com.neilturner.aerialviews" />
-        </Preference>
+<!--        <Preference app:title="@string/test_settings">-->
+<!--            <intent-->
+<!--                android:targetClass="com.neilturner.aerialviews.ui.screensaver.TestActivity"-->
+<!--                android:targetPackage="@string/packagename" />-->
+<!--        </Preference>-->
 
         <Preference
             app:key="activate_screensaver"
