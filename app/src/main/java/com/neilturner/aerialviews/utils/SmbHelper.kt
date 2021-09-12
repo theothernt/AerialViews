@@ -10,6 +10,9 @@ object SmbHelper {
     fun fixShareName() {
         val shareName = NetworkVideoPrefs.shareName
 
+        if (shareName.isNullOrEmpty())
+            return
+
         if (shareName.first() != '/') {
             NetworkVideoPrefs.shareName = "/$shareName"
             Log.i(TAG, "Fixing ShareName - removing leading slash")
