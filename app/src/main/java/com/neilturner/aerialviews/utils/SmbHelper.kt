@@ -10,7 +10,7 @@ object SmbHelper {
     fun fixShareName() {
         val shareName = NetworkVideoPrefs.shareName
 
-        if (shareName.isNullOrEmpty())
+        if (shareName.isEmpty())
             return
 
         if (shareName.first() != '/') {
