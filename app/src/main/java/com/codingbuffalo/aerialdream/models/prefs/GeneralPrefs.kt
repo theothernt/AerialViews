@@ -16,4 +16,6 @@ object GeneralPrefs : KotprefModel() {
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var reducedBuffers by booleanPref(false, "reduced_buffers")
     var exceedRenderer by booleanPref(false, "exceed_renderer")
+
+    var playbackSpeed by stringPref("1", "playback_speed")
 }

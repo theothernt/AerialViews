@@ -19,6 +19,24 @@
 
     <string name="apple_videos_location_default">REMOTE</string>
 
+    <string-array name="playback_speed_values">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>1.5</item>
+        <item>1.75</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>3</item>
+        <item>3.5</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string name="playback_speed_default">1</string>
+
     <!-- Local Video Options -->
     <string-array name="local_videos_filter_values">
         <item>ALL</item>

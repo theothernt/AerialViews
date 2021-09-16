@@ -23,6 +23,7 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
     private var exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
     private var muteVideo: Boolean = GeneralPrefs.muteVideos
     private var prepared = false
+    private var playbackSpeed = GeneralPrefs.playbackSpeed;
 
     init {
         player = buildPlayer(context)
@@ -45,7 +46,6 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         } else {
             player.setMediaItem(mediaItem)
         }
-
         player.prepare()
     }
 
@@ -193,6 +193,8 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         if (muteVideo) {
             player.volume = 0f
         }
+
+        player.setPlaybackSpeed(playbackSpeed.toFloat());
         return player
     }
 
