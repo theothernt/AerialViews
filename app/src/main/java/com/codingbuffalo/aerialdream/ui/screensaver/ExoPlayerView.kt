@@ -13,6 +13,7 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
+import kotlin.math.roundToLong
 
 class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: SimpleExoPlayer
@@ -135,7 +136,8 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         if (playWhenReady && playbackState == Player.STATE_READY) {
             //Log.i(TAG, "Setting timerRunnable")
             removeCallbacks(timerRunnable)
-            postDelayed(timerRunnable, duration - DURATION)
+            //compensate the duration based on the playback speed
+            postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
             //postDelayed(timerRunnable, (duration - (duration - 6000)).toLong())
         }
     }
