@@ -20,16 +20,26 @@ class DreamActivity : DreamService() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_UP) {
-            Log.i("", "${event.keyCode}")
+            Log.i(TAG, "${event.keyCode}")
 
-            if (event.keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                videoController!!.skipVideo()
-                return true
-            }
+            when (event.keyCode) {
+                // Capture all d-pad presses for future use
+                KeyEvent.KEYCODE_DPAD_CENTER,
+                KeyEvent.KEYCODE_DPAD_LEFT,
+                KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
+                KeyEvent.KEYCODE_DPAD_UP_LEFT,
+                KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
+                KeyEvent.KEYCODE_DPAD_UP_RIGHT,
+                KeyEvent.KEYCODE_DPAD_UP,
+                KeyEvent.KEYCODE_DPAD_DOWN -> return true
 
-            // Exit if Play button is pressed but don't swallow event
-            if (event.keyCode == KeyEvent.KEYCODE_MEDIA_PLAY) {
-                finish()
+                KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                    videoController!!.skipVideo()
+                    return true
+                }
+
+                // Any other button press will close the screensaver
+                else ->  finish()
             }
         }
 
@@ -46,5 +56,9 @@ class DreamActivity : DreamService() {
     override fun onDreamingStopped() {
         videoController!!.stop()
         super.onDreamingStopped()
+    }
+
+    companion object {
+        private const val TAG = "DreamActivity"
     }
 }
