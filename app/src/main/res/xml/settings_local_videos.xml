@@ -2,21 +2,51 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_video_source">
+        <PreferenceCategory app:title="@string/category_video_sources">
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="local_videos_enabled"
-                    app:title="Enabled" />
+                    app:title="@string/local_videos_enabled_title"
+                    app:summary="@string/local_videos_enabled_summary" />
+
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="network_videos_enabled"
+                    app:title="@string/network_videos_enabled_title"
+                    app:summary="@string/network_videos_enabled_summary" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_network_settings">
+                <Preference
+                    app:title="Credentials"
+                    app:summary="Server details and credentials for SMB access"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_settings">
                 <CheckBoxPreference
-                    app:dependency="local_videos_enabled"
-                    app:disableDependentsState="false"
                     app:defaultValue="true"
-                    app:key="local_videos_filename_location"
-                    app:title="@string/local_videos_filename_location_title"
-                    app:summary="@string/local_videos_filename_location_summary" />
+                    app:key="any_videos_filename_location"
+                    app:title="@string/any_videos_filename_location_title"
+                    app:summary="@string/any_videos_filename_location_summary" />
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="any_videos_use_apple_manifests"
+                    app:title="@string/any_videos_use_apple_manifests_title"
+                    app:summary="@string/any_videos_use_apple_manifests_summary" />
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="any_videos_use_custom_manifests"
+                    app:title="@string/any_videos_use_custom_manifests_title"
+                    app:summary="@string/any_videos_use_custom_manifests_summary" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="any_videos_ignore_non_manifest_videos"
+                    app:title="@string/any_videos_ignore_non_manifest_videos_title"
+                    app:summary="@string/any_videos_ignore_non_manifest_videos_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>

@@ -3,21 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/category_sources">
+    <PreferenceCategory app:title="@string/category_video_sources">
         <Preference
             app:title="@string/apple_videos_title"
             app:summary="@string/apple_videos_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.AppleVideosFragment"/>
 
         <Preference
-            app:title="@string/local_videos_title"
-            app:summary="@string/local_videos_summary"
+            app:title="@string/any_videos_title"
+            app:summary="@string/any_videos_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.LocalVideosFragment"/>
-
-        <Preference
-            app:title="@string/network_videos_title"
-            app:summary="@string/network_videos_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">

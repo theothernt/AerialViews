@@ -52,9 +52,9 @@ class AppleVideosFragment :
         val qualityTitle = context?.getString(R.string.apple_videos_quality_title)
         quality.title = "$qualityTitle - ${quality.entry}"
 
-        val location = findPreference<ListPreference>("apple_videos_location") as ListPreference
-        val locationTitle = context?.getString(R.string.apple_videos_location_title)
-        location.title = "$locationTitle - ${location.entry}"
+//        val location = findPreference<ListPreference>("apple_videos_location") as ListPreference
+//        val locationTitle = context?.getString(R.string.apple_videos_location_title)
+//        location.title = "$locationTitle - ${location.entry}"
     }
 
     private fun requiresPermission(): Boolean {
