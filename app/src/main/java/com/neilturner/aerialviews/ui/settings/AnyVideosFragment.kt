@@ -7,7 +7,7 @@ import android.os.Bundle
 import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.AnyVideoPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
 
 class AnyVideosFragment :
@@ -41,7 +41,7 @@ class AnyVideosFragment :
     }
 
     private fun requiresPermission(): Boolean {
-        return LocalVideoPrefs.enabled
+        return AnyVideoPrefs.enabled
     }
 
     private fun resetPreference() {

@@ -6,7 +6,7 @@ import android.util.Log
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.AnyVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.providers.AppleVideoProvider
@@ -23,8 +23,8 @@ class VideoService(context: Context) {
         if (AppleVideoPrefs.enabled)
             providers.add(AppleVideoProvider(context, AppleVideoPrefs))
 
-        if (LocalVideoPrefs.enabled)
-            providers.add(LocalVideoProvider(context, LocalVideoPrefs))
+        if (AnyVideoPrefs.enabled)
+            providers.add(LocalVideoProvider(context, AnyVideoPrefs))
 
         if (NetworkVideoPrefs.enabled)
             providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
