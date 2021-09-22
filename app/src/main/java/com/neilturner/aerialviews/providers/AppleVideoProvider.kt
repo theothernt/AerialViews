@@ -19,13 +19,13 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         val quality = prefs.quality
         val videos = mutableListOf<AerialVideo>()
 
-        // tvOS13 videos
-        val wrapperOS13 = parseJson(context, R.raw.tvos13, Wrapper::class.java)
-        wrapperOS13.assets?.forEach {
+        // tvOS videos
+        val wrapper = parseJson(context, R.raw.tvos15, Wrapper::class.java)
+        wrapper.assets?.forEach {
             videos.add(AerialVideo(it.uri(quality), it.location))
         }
 
-        Log.i(TAG, "tvOS13: ${videos.count()} $quality videos found")
+        Log.i(TAG, "tvOS: ${videos.count()} $quality videos found")
         return videos
     }
 

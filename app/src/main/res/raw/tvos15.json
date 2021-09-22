@@ -1,0 +1,1964 @@
+{
+  "assets" : [
+    {
+      "accessibilityLabel" : "Seals",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "83C65C90-270C-4490-9C69-F51FE03D7F06",
+      "pointsOfInterest" : {
+        "0" : "A016_C009_0"
+      },
+      "shotID" : "SE_A016_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/SE_A016_C009_HDR_20190717_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/SE_A016_C009_SDR_20190717_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/SE_A016_C009_SDR_20190717_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/SE_A016_C009_HDR_20190717_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/SE_A016_C009_SDR_20190717_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Southern California to Baja",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "7719B48A-2005-4011-9280-2F64EEC6FD91",
+      "pointsOfInterest" : {
+        "0" : "A114_C001_0305OT_0",
+        "20" : "A114_C001_0305OT_20",
+        "50" : "A114_C001_0305OT_50",
+        "65" : "A114_C001_0305OT_65",
+        "95" : "A114_C001_0305OT_95",
+        "130" : "A114_C001_0305OT_130",
+        "185" : "A114_C001_0305OT_185",
+        "225" : "A114_C001_0305OT_225",
+        "280" : "A114_C001_0305OT_280",
+        "290" : "A114_C001_0305OT_290"
+      },
+      "shotID" : "A114_C001",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A114_C001_0305OT_v10_HDR_FINAL_22062018_Bert_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A114_C001_0305OT_v10_SDR_FINAL_22062018_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A114_C001_0305OT_v10_SDR_FINAL_22062018_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A114_C001_0305OT_v10_HDR_FINAL_22062018_Bert_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A114_C001_0305OT_v10_SDR_FINAL_22062018_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Greenland",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "2F52E34C-39D4-4AB1-9025-8F7141FAA720",
+      "pointsOfInterest" : {
+        "0" : "GL_G002_C002_0"
+      },
+      "shotID" : "GL_G002_C002",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G002_C002_PSNK_v03_HDR_PS_20180925_HDR_4K_tuned.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G002_C002_PSNK_v03_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GL_G002_C002_PSNK_v03_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G002_C002_PSNK_v03_HDR_PS_20180925_HDR_2K_tuned.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G002_C002_PSNK_v03_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Korea and Japan Night",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "009BA758-7060-4479-8EE8-FB9B40C8FB97",
+      "pointsOfInterest" : {
+        "0" : "GMT026_363A_103NC_E1027_0",
+        "22" : "GMT026_363A_103NC_E1027_22",
+        "32" : "GMT026_363A_103NC_E1027_32",
+        "60" : "GMT026_363A_103NC_E1027_60",
+        "110" : "GMT026_363A_103NC_E1027_110",
+        "150" : "GMT026_363A_103NC_E1027_150",
+        "180" : "GMT026_363A_103NC_E1027_180",
+        "195" : "GMT026_363A_103NC_E1027_195",
+        "260" : "GMT026_363A_103NC_E1027_260"
+      },
+      "shotID" : "GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_HDR_PS_20180907_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_SDR_PS_20180907_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_SDR_PS_20180907_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_HDR_PS_20180907_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_SDR_PS_20180907_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Palau Jellies",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "BA4ECA11-592F-4727-9221-D2A32A16EB28",
+      "pointsOfInterest" : {
+        "0" : "A001_C007_0",
+        "282" : "A001_C007_282",
+        "348" : "A001_C007_348"
+      },
+      "shotID" : "PA_A001_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A001_C007_HDR_20190719_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A001_C007_SDR_20190717_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/PA_A001_C007_SDR_20190717_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A001_C007_HDR_20190719_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A001_C007_SDR_20190717_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "92E48DE9-13A1-4172-B560-29B4668A87EE",
+      "pointsOfInterest" : {
+        "0" : "LA_A008_C004_0",
+        "365" : "LA_A008_C004_365",
+        "430" : "LA_A008_C004_430"
+      },
+      "shotID" : "LA_A008_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_HDR_PS_20180917_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_SDR_PS_20180917_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_SDR_PS_20180917_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_HDR_PS_20180917_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_SDR_PS_20180917_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "London",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "A5AAFF5D-8887-42BB-8AFD-867EF557ED85",
+      "pointsOfInterest" : {
+        "0" : "L007_C007_0",
+        "24" : "L007_C007_24",
+        "49" : "L007_C007_49",
+        "104" : "L007_C007_104",
+        "149" : "L007_C007_149",
+        "279" : "L007_C007_279",
+        "299" : "L007_C007_299",
+        "324" : "L007_C007_324"
+      },
+      "shotID" : "L007_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L007_C007_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L007_C007_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_L007_C007_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L007_C007_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L007_C007_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Africa Night",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "A837FA8C-C643-4705-AE92-074EFDD067F7",
+      "pointsOfInterest" : {
+        "0" : "GMT312_162NC_139M_1041_0",
+        "70" : "GMT312_162NC_139M_1041_70",
+        "100" : "GMT312_162NC_139M_1041_100",
+        "120" : "GMT312_162NC_139M_1041_120",
+        "140" : "GMT312_162NC_139M_1041_140",
+        "165" : "GMT312_162NC_139M_1041_165",
+        "180" : "GMT312_162NC_139M_1041_180",
+        "210" : "GMT312_162NC_139M_1041_210",
+        "230" : "GMT312_162NC_139M_1041_230"
+      },
+      "shotID" : "GMT312_162NC_139M_1041_AFRICA_NIGHT",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_HDR_FINAL_20180706_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_HDR_FINAL_20180706_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "9CCB8297-E9F5-4699-AE1F-890CFBD5E29C",
+      "pointsOfInterest" : {
+        "0" : "CH_C002_C005_0"
+      },
+      "shotID" : "CH_C002_C005",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C002_C005_PSNK_v05_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C002_C005_PSNK_v05_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_CH_C002_C005_PSNK_v05_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C002_C005_PSNK_v05_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C002_C005_PSNK_v05_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Greenland",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "B8F204CE-6024-49AB-85F9-7CA2F6DCD226",
+      "pointsOfInterest" : {
+        "0" : "GL_G004_C010_0"
+      },
+      "shotID" : "GL_G004_C010",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G004_C010_PSNK_v04_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G004_C010_PSNK_v04_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GL_G004_C010_PSNK_v04_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G004_C010_PSNK_v04_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G004_C010_PSNK_v04_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Palau Coral",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "F07CC61B-30FC-4614-BDAD-3240B61F6793",
+      "pointsOfInterest" : {
+        "0" : "A004_C003_0"
+      },
+      "shotID" : "PA_A004_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A004_C003_HDR_20190719_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A004_C003_SDR_20190719_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/PA_A004_C003_SDR_20190719_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A004_C003_HDR_20190719_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A004_C003_SDR_20190719_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "35693AEA-F8C4-4A80-B77D-C94B20A68956",
+      "pointsOfInterest" : {
+        "0" : "LA_A005_C009_0"
+      },
+      "shotID" : "LA_A005_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_HDR_PS_20180914_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_SDR_PS_201809134_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_SDR_PS_201809134_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_HDR_PS_20180914_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_SDR_PS_201809134_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Sahara and Italy",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "E556BBC5-D0A0-4DB1-AC77-BC76E4A526F4",
+      "pointsOfInterest" : {
+        "0" : "A009_C001_10181A_0",
+        "30" : "A009_C001_10181A_30",
+        "110" : "A009_C001_10181A_110",
+        "155" : "A009_C001_10181A_155",
+        "195" : "A009_C001_10181A_195",
+        "210" : "A009_C001_10181A_210",
+        "230" : "A009_C001_10181A_230",
+        "245" : "A009_C001_10181A_245",
+        "285" : "A009_C001_10181A_285",
+        "310" : "A009_C001_10181A_310"
+      },
+      "shotID" : "A009_C001_10181A",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A009_C001_010181A_v09_HDR_PS_FINAL_20180725_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A009_C001_010181A_v09_SDR_PS_FINAL_20180725_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A009_C001_010181A_v09_SDR_PS_FINAL_20180725_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A009_C001_010181A_v09_HDR_PS_FINAL_20180725_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A009_C001_010181A_v09_SDR_PS_FINAL_20180725_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "F5804DD6-5963-40DA-9FA0-39C0C6E6DEF9",
+      "pointsOfInterest" : {
+        "0" : "LA_A011_C003_0"
+      },
+      "shotID" : "LA_A011_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_HDR_PS_20181002_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_SDR_PS_20181002_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_SDR_PS_20181002_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_HDR_PS_20181002_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_SDR_PS_20181002_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Kelp",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "6143116D-03BB-485E-864E-A8CF58ACF6F1",
+      "pointsOfInterest" : {
+        "0" : "A010_C002_0"
+      },
+      "shotID" : "KP_A010_C002",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/KP_A010_C002_HDR_20190717_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/KP_A010_C002_SDR_20190717_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/KP_A010_C002_SDR_20190717_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/KP_A010_C002_HDR_20190717_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/KP_A010_C002_SDR_20190717_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New York",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "44166C39-8566-4ECA-BD16-43159429B52F",
+      "pointsOfInterest" : {
+        "0" : "N013_C004_0",
+        "40" : "N013_C004_40",
+        "120" : "N013_C004_120"
+      },
+      "shotID" : "N013_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N013_C004_PS_v01_HDR_PS_20180925_F1970F7193_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N013_C004_PS_v01_SDR_PS_20180925_F1970F7193_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_N013_C004_PS_v01_SDR_PS_20180925_F1970F7193_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N013_C004_PS_v01_HDR_PS_20180925_F1970F7193_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N013_C004_PS_v01_SDR_PS_20180925_F1970F7193_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Italy to Asia",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "E5DB138A-F04E-4619-B896-DE5CB538C534",
+      "pointsOfInterest" : {
+        "0" : "GMT329_1_113NC_396B_1105_0",
+        "5" : "GMT329_1_113NC_396B_1105_5",
+        "15" : "GMT329_1_113NC_396B_1105_15",
+        "25" : "GMT329_1_113NC_396B_1105_25",
+        "40" : "GMT329_1_113NC_396B_1105_40",
+        "55" : "GMT329_1_113NC_396B_1105_55",
+        "75" : "GMT329_1_113NC_396B_1105_75"
+      },
+      "shotID" : "GMT329_113NC_396B_1105_ITALY_TO_ASIA",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_TO_ASIA_v03_HDR_PS_20180824_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_v03_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_v03_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_TO_ASIA_v03_HDR_PS_20180824_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_v03_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "EC67726A-8212-4C5E-83CF-8412932740D2",
+      "pointsOfInterest" : {
+        "0" : "LA_A006_C004_0",
+        "250" : "LA_A006_C004_250"
+      },
+      "shotID" : "LA_A006_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C004_v01_HDR_FINAL_PS_20180730_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C004_v01_SDR_FINAL_PS_20180730_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A006_C004_v01_SDR_FINAL_PS_20180730_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C004_v01_HDR_FINAL_PS_20180730_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C004_v01_SDR_FINAL_PS_20180730_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Caribbean",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "1088217C-1410-4CF7-BDE9-8F573A4DBCD9",
+      "pointsOfInterest" : {
+        "0" : "A105_C002_021206_002_0",
+        "70" : "A105_C002_021206_002_70",
+        "100" : "A105_C002_021206_002_100",
+        "150" : "A105_C002_021206_002_150",
+        "240" : "A105_C002_021206_002_240",
+        "300" : "A105_C002_021206_002_300",
+        "350" : "A105_C002_021206_002_350"
+      },
+      "shotID" : "A105_C002",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C002_v06_HDR_FINAL_25062018_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C002_v06_SDR_FINAL_25062018_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A105_C002_v06_SDR_FINAL_25062018_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C002_v06_HDR_FINAL_25062018_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C002_v06_SDR_FINAL_25062018_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "72B4390D-DF1D-4D51-B179-229BBAEFFF2C",
+      "pointsOfInterest" : {
+        "0" : "A013_C012_0",
+        "60" : "A013_C012_60",
+        "140" : "A013_C012_140",
+        "230" : "A013_C012_230",
+        "260" : "A013_C012_260"
+      },
+      "shotID" : "A013_C012",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A013_C012_0122D6_CC_v01_HDR_PS_FINAL_20180710_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A013_C012_0122D6_CC_v01_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A013_C012_0122D6_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A013_C012_0122D6_CC_v01_HDR_PS_FINAL_20180710_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A013_C012_0122D6_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Barracuda",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "2B30E324-E4FF-4CC1-BA45-A958C2D2B2EC",
+      "pointsOfInterest" : {
+        "0" : "A018_C029_0"
+      },
+      "shotID" : "BO_A018_C029",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A018_C029_HDR_20190812_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A018_C029_SDR_20190812_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/BO_A018_C029_SDR_20190812_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A018_C029_HDR_20190812_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A018_C029_SDR_20190812_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "D5E76230-81A3-4F65-A1BA-51B8CADED625",
+      "pointsOfInterest" : {
+        "0" : "CH_C007_C004_0"
+      },
+      "shotID" : "CH_C007_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C004_PSNK_v02_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C004_PSNK_v02_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_CH_C007_C004_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C004_PSNK_v02_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C004_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "North America Aurora",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "737E9E24-49BE-4104-9B72-F352DE1AD2BF",
+      "pointsOfInterest" : {
+        "0" : "GMT314_139M_170NC_0",
+        "45" : "GMT314_139M_170NC_45",
+        "55" : "GMT314_139M_170NC_55",
+        "75" : "GMT314_139M_170NC_75",
+        "110" : "GMT314_139M_170NC_110",
+        "125" : "GMT314_139M_170NC_125",
+        "185" : "GMT314_139M_170NC_185",
+        "200" : "GMT314_139M_170NC_200",
+        "210" : "GMT314_139M_170NC_210",
+        "235" : "GMT314_139M_170NC_235",
+        "250" : "GMT314_139M_170NC_250",
+        "300" : "GMT314_139M_170NC_300"
+      },
+      "shotID" : "GMT314_139M_170NC_NORTH_AMERICA_AURORA",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT314_139M_170NC_NORTH_AMERICA_AURORA__COMP_v22_HDR_20181206_v12CC_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT314_139M_170NC_NORTH_AMERICA_AURORA__COMP_v22_SDR_20181206_v12CC_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT314_139M_170NC_NORTH_AMERICA_AURORA__COMP_v22_SDR_20181206_v12CC_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT314_139M_170NC_NORTH_AMERICA_AURORA__COMP_v22_HDR_20181206_v12CC_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT314_139M_170NC_NORTH_AMERICA_AURORA__COMP_v22_SDR_20181206_v12CC_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "CE279831-1CA7-4A83-A97B-FF1E20234396",
+      "pointsOfInterest" : {
+        "0" : "LA_A006_C008_0"
+      },
+      "shotID" : "LA_A006_C008",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C008_PSNK_ALL_LOGOS_v10_HDR_PS_FINAL_20180801_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C008_PSNK_ALL_LOGOS_v10_SDR_PS_FINAL_20180801_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A006_C008_PSNK_ALL_LOGOS_v10_SDR_PS_FINAL_20180801_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C008_PSNK_ALL_LOGOS_v10_HDR_PS_FINAL_20180801_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C008_PSNK_ALL_LOGOS_v10_SDR_PS_FINAL_20180801_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Dubai",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "9680B8EB-CE2A-4395-AF41-402801F4D6A6",
+      "pointsOfInterest" : {
+        "0" : "DB_D011_C010_0",
+        "280" : "DB_D011_C010_280",
+        "330" : "DB_D011_C010_330"
+      },
+      "shotID" : "DB_D011_C010",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D011_C010_PSNK_DENOISE_v19_HDR_PS_20180914_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D011_C010_PSNK_DENOISE_v19_SDR_PS_20180914_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_DB_D011_C010_PSNK_DENOISE_v19_SDR_PS_20180914_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D011_C010_PSNK_DENOISE_v19_HDR_PS_20180914_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D011_C010_PSNK_DENOISE_v19_SDR_PS_20180914_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "West Africa to the Alps",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "63C042F0-90EF-4A95-B7CC-CC9A64BF8421",
+      "pointsOfInterest" : {
+        "0" : "A001_C004_1207W5_0",
+        "45" : "A001_C004_1207W5_45",
+        "75" : "A001_C004_1207W5_75",
+        "105" : "A001_C004_1207W5_105",
+        "125" : "A001_C004_1207W5_125",
+        "145" : "A001_C004_1207W5_145",
+        "165" : "A001_C004_1207W5_165",
+        "185" : "A001_C004_1207W5_185",
+        "220" : "A001_C004_1207W5_220"
+      },
+      "shotID" : "A001_C004_1207W5",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C004_1207W5_v23_HDR_FINAL_20180706_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C004_1207W5_v23_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A001_C004_1207W5_v23_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C004_1207W5_v23_HDR_FINAL_20180706_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C004_1207W5_v23_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Iran and Afghanistan",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "F439B0A7-D18C-4B14-9681-6520E6A74FE9",
+      "pointsOfInterest" : {
+        "0" : "A083_C002_1130KZ_0",
+        "15" : "A083_C002_1130KZ_15",
+        "60" : "A083_C002_1130KZ_60"
+      },
+      "shotID" : "A083_C002_1130KZ",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A083_C002_1130KZ_v04_HDR_PS_FINAL_20180725_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A083_C002_1130KZ_v04_SDR_PS_FINAL_20180725_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A083_C002_1130KZ_v04_SDR_PS_FINAL_20180725_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A083_C002_1130KZ_v04_HDR_PS_FINAL_20180725_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A083_C002_1130KZ_v04_SDR_PS_FINAL_20180725_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Palau Jellies",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "E580E5A5-0888-4BE8-A4CA-F74A18A643C3",
+      "pointsOfInterest" : {
+        "0" : "A002_C009_0"
+      },
+      "shotID" : "PA_A002_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A002_C009_HDR_20190730_ALT02_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A002_C009_SDR_20190730_ALT01_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/PA_A002_C009_SDR_20190730_ALT01_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A002_C009_HDR_20190730_ALT02_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A002_C009_SDR_20190730_ALT01_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Caribbean Day",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "4F881F8B-A7D9-4FDB-A917-17BF6AC5A589",
+      "pointsOfInterest" : {
+        "0" : "GMT308_139K_142NC_0",
+        "90" : "GMT308_139K_142NC_90",
+        "120" : "GMT308_139K_142NC_120",
+        "220" : "GMT308_139K_142NC_220",
+        "240" : "GMT308_139K_142NC_240",
+        "285" : "GMT308_139K_142NC_285",
+        "300" : "GMT308_139K_142NC_300",
+        "315" : "GMT308_139K_142NC_315"
+      },
+      "shotID" : "GMT308_139K_142NC_CARIBBEAN_DAY",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT308_139K_142NC_CARIBBEAN_DAY_v09_HDR_PS_FINAL_22062018_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT308_139K_142NC_CARIBBEAN_DAY_v09_SDR_FINAL_22062018_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT308_139K_142NC_CARIBBEAN_DAY_v09_SDR_FINAL_22062018_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT308_139K_142NC_CARIBBEAN_DAY_v09_HDR_PS_FINAL_22062018_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT308_139K_142NC_CARIBBEAN_DAY_v09_SDR_FINAL_22062018_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hawaii",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "3D729CFC-9000-48D3-A052-C5BD5B7A6842",
+      "pointsOfInterest" : {
+        "0" : "H012_C009_0"
+      },
+      "shotID" : "H012_C009_0",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H012_C009_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H012_C009_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_H012_C009_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H012_C009_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H012_C009_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Greenland",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "EE01F02D-1413-436C-AB05-410F224A5B7B",
+      "pointsOfInterest" : {
+        "0" : "GL_G010_C006_0"
+      },
+      "shotID" : "GL_G010_C006",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G010_C006_PSNK_NOSUN_v12_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G010_C006_PSNK_NOSUN_v12_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GL_G010_C006_PSNK_NOSUN_v12_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G010_C006_PSNK_NOSUN_v12_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G010_C006_PSNK_NOSUN_v12_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "California to Vegas",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "12318CCB-3F78-43B7-A854-EFDCCE5312CD",
+      "pointsOfInterest" : {
+        "0" : "GMT306_139NC_139J_3066_0",
+        "70" : "GMT306_139NC_139J_3066_70",
+        "85" : "GMT306_139NC_139J_3066_85",
+        "95" : "GMT306_139NC_139J_3066_95",
+        "110" : "GMT306_139NC_139J_3066_110",
+        "120" : "GMT306_139NC_139J_3066_120",
+        "155" : "GMT306_139NC_139J_3066_155",
+        "170" : "GMT306_139NC_139J_3066_170"
+      },
+      "shotID" : "GMT306_139NC_139J_3066_CALI_TO_VEGAS",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT306_139NC_139J_3066_CALI_TO_VEGAS_v08_HDR_PS_20180824_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT306_139NC_139J_3066_CALI_TO_VEGAS_v08_SDR_PS_20180824_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT306_139NC_139J_3066_CALI_TO_VEGAS_v08_SDR_PS_20180824_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT306_139NC_139J_3066_CALI_TO_VEGAS_v08_HDR_PS_20180824_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT306_139NC_139J_3066_CALI_TO_VEGAS_v08_SDR_PS_20180824_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New York",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "3BA0CFC7-E460-4B59-A817-B97F9EBB9B89",
+      "pointsOfInterest" : {
+        "0" : "N008_C009_0",
+        "246" : "N008_C009_246"
+      },
+      "shotID" : "N008_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C009_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C009_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_N008_C009_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C009_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C009_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Los Angeles",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "89B1643B-06DD-4DEC-B1B0-774493B0F7B7",
+      "pointsOfInterest" : {
+        "0" : "LA_A009_C009_0"
+      },
+      "shotID" : "LA_A009_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A009_C009_PSNK_v02_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A009_C009_PSNK_v02_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LA_A009_C009_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A009_C009_PSNK_v02_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A009_C009_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "London",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "F604AF56-EA77-4960-AEF7-82533CC1A8B3",
+      "pointsOfInterest" : {
+        "0" : "L012_C002_0",
+        "20" : "L012_C002_20",
+        "60" : "L012_C002_60",
+        "92" : "L012_C002_92",
+        "200" : "L012_C002_200",
+        "270" : "L012_C002_270"
+      },
+      "shotID" : "L012_C002",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L012_C002_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L012_c002_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_L012_c002_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L012_C002_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L012_c002_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hawaii",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "258A6797-CC13-4C3A-AB35-4F25CA3BF474",
+      "pointsOfInterest" : {
+        "0" : "H004_C009_0"
+      },
+      "shotID" : "H004_C009",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C009_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C009_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_H004_C009_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C009_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C009_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Caribbean",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "D5CFB2FF-5F8C-4637-816B-3E42FC1229B8",
+      "pointsOfInterest" : {
+        "0" : "A108_C001_0215V8_0",
+        "35" : "A108_C001_0215V8_35",
+        "50" : "A108_C001_0215V8_50",
+        "65" : "A108_C001_0215V8_65",
+        "85" : "A108_C001_0215V8_85",
+        "110" : "A108_C001_0215V8_110",
+        "125" : "A108_C001_0215V8_125",
+        "170" : "A108_C001_0215V8_170",
+        "190" : "A108_C001_0215V8_190"
+      },
+      "shotID" : "A108_C001",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A108_C001_v09_HDR_PS_FINAL_22062018_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A108_C001_v09_SDR_FINAL_22062018_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A108_C001_v09_SDR_FINAL_22062018_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A108_C001_v09_HDR_PS_FINAL_22062018_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A108_C001_v09_SDR_FINAL_22062018_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Ireland to Asia",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "7C643A39-C0B2-4BA0-8BC2-2EAA47CC580E",
+      "pointsOfInterest" : {
+        "0" : "GMT329_117NC_401C_1037_0",
+        "15" : "GMT329_117NC_401C_1037_15",
+        "45" : "GMT329_117NC_401C_1037_45",
+        "65" : "GMT329_117NC_401C_1037_65",
+        "105" : "GMT329_117NC_401C_1037_105",
+        "150" : "GMT329_117NC_401C_1037_150",
+        "165" : "GMT329_117NC_401C_1037_165",
+        "185" : "GMT329_117NC_401C_1037_185",
+        "195" : "GMT329_117NC_401C_1037_195"
+      },
+      "shotID" : "GMT329_117NC_401C_1037_IRELAND_TO_ASIA",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_117NC_401C_1037_IRELAND_TO_ASIA_v48_HDR_PS_FINAL_20180725_F0F6300_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_117NC_401C_1037_IRELAND_TO_ASIA_v48_SDR_PS_FINAL_20180725_F0F6300_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT329_117NC_401C_1037_IRELAND_TO_ASIA_v48_SDR_PS_FINAL_20180725_F0F6300_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_117NC_401C_1037_IRELAND_TO_ASIA_v48_HDR_PS_FINAL_20180725_F0F6300_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_117NC_401C_1037_IRELAND_TO_ASIA_v48_SDR_PS_FINAL_20180725_F0F6300_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Dubai",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "876D51F4-3D78-4221-8AD2-F9E78C0FD9B9",
+      "pointsOfInterest" : {
+        "0" : "DB_D008_C010_0"
+      },
+      "shotID" : "DB_D008_C010",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D008_C010_PSNK_v21_HDR_PS_20180914_F0F16157_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D008_C010_PSNK_v21_SDR_PS_20180914_F0F16157_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_DB_D008_C010_PSNK_v21_SDR_PS_20180914_F0F16157_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D008_C010_PSNK_v21_HDR_PS_20180914_F0F16157_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D008_C010_PSNK_v21_SDR_PS_20180914_F0F16157_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "044AD56C-A107-41B2-90CC-E60CCACFBCF5",
+      "pointsOfInterest" : {
+        "0" : "C003_C003_0"
+      },
+      "shotID" : "C003_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C003_C003_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C003_C003_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_C003_C003_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C003_C003_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C003_C003_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Palau Jellies",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "EC3DC957-D4C2-4732-AACE-7D0C0F390EC8",
+      "pointsOfInterest" : {
+        "0" : "A010_C007_0"
+      },
+      "shotID" : "PA_A010_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/conform_PA_A010_C007_HDR_2019070_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A010_C007_SDR_20190717_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/PA_A010_C007_SDR_20190717_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/conform_PA_A010_C007_HDR_2019070_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A010_C007_SDR_20190717_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hong Kong",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "E99FA658-A59A-4A2D-9F3B-58E7BDC71A9A",
+      "pointsOfInterest" : {
+        "0" : "HK_B005_C011_0"
+      },
+      "shotID" : "HK_B005_C011",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_B005_C011_PSNK_v16_HDR_PS_20180914_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_B005_C011_PSNK_v16_SDR_PS_20180914_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_HK_B005_C011_PSNK_v16_SDR_PS_20180914_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_B005_C011_PSNK_v16_HDR_PS_20180914_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_B005_C011_PSNK_v16_SDR_PS_20180914_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hawaii",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "499995FA-E51A-4ACE-8DFD-BDF8AFF6C943",
+      "pointsOfInterest" : {
+        "0" : "H005_C012_0"
+      },
+      "shotID" : "H005_C012",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H005_C012_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H005_C012_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_H005_C012_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H005_C012_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H005_C012_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "7825C73A-658F-48EE-B14C-EC56673094AC",
+      "pointsOfInterest" : {
+        "0" : "GMT329_2_113NC_396B_1105_0",
+        "10" : "GMT329_2_113NC_396B_1105_10",
+        "30" : "GMT329_2_113NC_396B_1105_30",
+        "45" : "GMT329_2_113NC_396B_1105_45",
+        "50" : "GMT329_2_113NC_396B_1105_50"
+      },
+      "shotID" : "GMT329_2_113NC_396B_1105",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_CHINA_v04_HDR_FINAL_20180706_F900F2700_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_CHINA_v04_SDR_FINAL_20180706_F900F2700_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT329_113NC_396B_1105_CHINA_v04_SDR_FINAL_20180706_F900F2700_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_CHINA_v04_HDR_FINAL_20180706_F900F2700_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_CHINA_v04_SDR_FINAL_20180706_F900F2700_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "3E94AE98-EAF2-4B09-96E3-452F46BC114E",
+      "pointsOfInterest" : {
+        "0" : "A015_C018_0",
+        "80" : "A015_C018_80",
+        "116" : "A015_C018_116"
+      },
+      "shotID" : "A015_C018",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A015_C018_0128ZS_v03_HDR_PS_FINAL_20180710_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A015_C018_0128ZS_v03_SDR_PS_FINAL_20180709__SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A015_C018_0128ZS_v03_SDR_PS_FINAL_20180709__SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A015_C018_0128ZS_v03_HDR_PS_FINAL_20180710_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A015_C018_0128ZS_v03_SDR_PS_FINAL_20180709__SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Nile Delta",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "3C4678E4-4D3D-4A40-8817-77752AEA62EB",
+      "pointsOfInterest" : {
+        "0" : "A050_C004_1027V8_0",
+        "20" : "A050_C004_1027V8_20",
+        "50" : "A050_C004_1027V8_50",
+        "100" : "A050_C004_1027V8_100",
+        "160" : "A050_C004_1027V8_160",
+        "185" : "A050_C004_1027V8_185",
+        "205" : "A050_C004_1027V8_205",
+        "220" : "A050_C004_1027V8_220",
+        "240" : "A050_C004_1027V8_240"
+      },
+      "shotID" : "A050_C004_1027V8",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A050_C004_1027V8_v16_HDR_FINAL_20180706_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A050_C004_1027V8_v16_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A050_C004_1027V8_v16_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A050_C004_1027V8_v16_HDR_FINAL_20180706_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A050_C004_1027V8_v16_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Dubai",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "00BA71CD-2C54-415A-A68A-8358E677D750",
+      "pointsOfInterest" : {
+        "0" : "DB_D002_C003_0",
+        "210" : "DB_D002_C003_210"
+      },
+      "shotID" : "DB_D002_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D002_C003_PSNK_v04_HDR_PS_20180914_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D002_C003_PSNK_v04_SDR_PS_20180914_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_DB_D002_C003_PSNK_v04_SDR_PS_20180914_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D002_C003_PSNK_v04_HDR_PS_20180914_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D002_C003_PSNK_v04_SDR_PS_20180914_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "B876B645-3955-420E-99DF-60139E451CF3",
+      "pointsOfInterest" : {
+        "0" : "CH_C007_C011_0"
+      },
+      "shotID" : "CH_C007_C011",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C011_PSNK_v02_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C011_PSNK_v02_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_CH_C007_C011_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C011_PSNK_v02_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C011_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Sea Stars",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "581A4F1A-2B6D-468C-A1BE-6F473F06D10B",
+      "pointsOfInterest" : {
+        "0" : "A012_C031_0"
+      },
+      "shotID" : "A012_C031",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A012_C031_HDR_20190726_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A012_C031_SDR_20190726_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/BO_A012_C031_SDR_20190726_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A012_C031_HDR_20190726_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A012_C031_SDR_20190726_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New Zealand",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "78911B7E-3C69-47AD-B635-9C2486F6301D",
+      "pointsOfInterest" : {
+        "0" : "A105_C003_0212CT_0",
+        "70" : "A105_C003_0212CT_70",
+        "110" : "A105_C003_0212CT_110",
+        "170" : "A105_C003_0212CT_170"
+      },
+      "shotID" : "A105_C003_0212CT",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C003_0212CT_FLARE_v10_HDR_PS_FINAL_20180711_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C003_0212CT_FLARE_v10_SDR_PS_FINAL_20180711_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A105_C003_0212CT_FLARE_v10_SDR_PS_FINAL_20180711_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C003_0212CT_FLARE_v10_HDR_PS_FINAL_20180711_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C003_0212CT_FLARE_v10_SDR_PS_FINAL_20180711_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Liwa",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "AFA22C08-A486-4CE8-9A13-E355B6C38559",
+      "pointsOfInterest" : {
+        "0" : "LW_L001_C003_0"
+      },
+      "shotID" : "LW_L001_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C003__PSNK_DENOISE_v04_HDR_PS_FINAL_20180803_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C003__PSNK_DENOISE_v04_SDR_PS_FINAL_20180803_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LW_L001_C003__PSNK_DENOISE_v04_SDR_PS_FINAL_20180803_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C003__PSNK_DENOISE_v04_HDR_PS_FINAL_20180803_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C003__PSNK_DENOISE_v04_SDR_PS_FINAL_20180803_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hong Kong",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "C8559883-6F3E-4AF2-8960-903710CD47B7",
+      "pointsOfInterest" : {
+        "0" : "HK_H004_C010_0",
+        "150" : "HK_H004_C010_150",
+        "330" : "HK_H004_C010_330"
+      },
+      "shotID" : "HK_H004_C010",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C010_PSNK_v08_HDR_PS_20181009_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C010_PSNK_v08_SDR_PS_20181009_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_HK_H004_C010_PSNK_v08_SDR_PS_20181009_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C010_PSNK_v08_HDR_PS_20181009_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C010_PSNK_v08_SDR_PS_20181009_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "South Africa to North Asia",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "87060EC2-D006-4102-98CC-3005C68BB343",
+      "pointsOfInterest" : {
+        "0" : "A351_C001_1213SK_0",
+        "45" : "A351_C001_1213SK_45",
+        "100" : "A351_C001_1213SK_100",
+        "130" : "A351_C001_1213SK_130",
+        "165" : "A351_C001_1213SK_165",
+        "190" : "A351_C001_1213SK_190",
+        "210" : "A351_C001_1213SK_210",
+        "240" : "A351_C001_1213SK_240",
+        "265" : "A351_C001_1213SK_265",
+        "305" : "A351_C001_1213SK_305",
+        "322" : "A351_C001_1213SK_322",
+        "360" : "A351_C001_1213SK_360",
+        "400" : "A351_C001_1213SK_400",
+        "450" : "A351_C001_1213SK_450"
+      },
+      "shotID" : "A351_C001_1213SK",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A351_C001_v06_HDR_PS_FINAL_20180725_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A351_C001_v06_SDR_PS_20180725_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A351_C001_v06_SDR_PS_20180725_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A351_C001_v06_HDR_PS_FINAL_20180725_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A351_C001_v06_SDR_PS_20180725_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Bumpheads",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "687D03A2-18A5-4181-8E85-38F3A13409B9",
+      "pointsOfInterest" : {
+        "0" : "A014_C008_0"
+      },
+      "shotID" : "BO_A014_C008",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C008_HDR_20190719_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C008_SDR_20190719_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/BO_A014_C008_SDR_20190719_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C008_HDR_20190719_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C008_SDR_20190719_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Atlantic Ocean to Spain and France",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "64D11DAB-3B57-4F14-AD2F-E59A9282FA44",
+      "pointsOfInterest" : {
+        "0" : "A001_C001_120530_0",
+        "115" : "A001_C001_120530_115",
+        "150" : "A001_C001_120530_150",
+        "180" : "A001_C001_120530_180"
+      },
+      "shotID" : "A001_C001_120530",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C001_120530_v04_HDR_FINAL_20180706_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C001_120530_v04_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A001_C001_120530_v04_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C001_120530_v04_HDR_FINAL_20180706_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A001_C001_120530_v04_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "DE851E6D-C2BE-4D9F-AB54-0F9CE994DC51",
+      "pointsOfInterest" : {
+        "0" : "A006_C003_0",
+        "140" : "A006_C003_140",
+        "191" : "A006_C003_191"
+      },
+      "shotID" : "A006_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A006_C003_1219EE_CC_v01_HDR_PS_FINAL_20180710_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A006_C003_1219EE_CC_v01_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A006_C003_1219EE_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A006_C003_1219EE_CC_v01_HDR_PS_FINAL_20180710_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A006_C003_1219EE_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Dubai",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "E991AC0C-F272-44D8-88F3-05F44EDFE3AE",
+      "pointsOfInterest" : {
+        "0" : "DB_D001_C001_0"
+      },
+      "shotID" : "DB_D001_C001",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C001_PSNK_v06_HDR_PS_20180824_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C001_PSNK_v06_SDR_PS_20180824_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_DB_D001_C001_PSNK_v06_SDR_PS_20180824_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C001_PSNK_v06_HDR_PS_20180824_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C001_PSNK_v06_SDR_PS_20180824_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Jacks",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "537A4DAB-83B0-4B66-BCD1-05E5DBB4A268",
+      "pointsOfInterest" : {
+        "0" : "A014_C023_0"
+      },
+      "shotID" : "A014_C023",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C023_HDR_20190717_F240F3709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C023_SDR_20190717_F240F3709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/BO_A014_C023_SDR_20190717_F240F3709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C023_HDR_20190717_F240F3709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A014_C023_SDR_20190717_F240F3709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New York",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "640DFB00-FBB9-45DA-9444-9F663859F4BC",
+      "pointsOfInterest" : {
+        "0" : "N008_C003_0",
+        "110" : "N008_C003_110",
+        "180" : "N008_C003_180",
+        "210" : "N008_C003_210"
+      },
+      "shotID" : "N008_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C003_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C003_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_N008_C003_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C003_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N008_C003_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Antarctica",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "03EC0F5E-CCA8-4E0A-9FEC-5BD1CE151182",
+      "pointsOfInterest" : {
+        "0" : "GMT110_112NC_364D_1054_0"
+      },
+      "shotID" : "GMT110_112NC_364D_1054_AURORA_ANTARCTICA",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT110_112NC_364D_1054_AURORA_ANTARTICA__COMP_FINAL_v34_PS_HDR_20181107_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT110_112NC_364D_1054_AURORA_ANTARTICA__COMP_FINAL_v34_PS_SDR_20181107_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT110_112NC_364D_1054_AURORA_ANTARTICA__COMP_FINAL_v34_PS_SDR_20181107_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT110_112NC_364D_1054_AURORA_ANTARTICA__COMP_FINAL_v34_PS_HDR_20181107_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT110_112NC_364D_1054_AURORA_ANTARTICA__COMP_FINAL_v34_PS_SDR_20181107_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "London",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "58754319-8709-4AB0-8674-B34F04E7FFE2",
+      "pointsOfInterest" : {
+        "0" : "L010_C006_0",
+        "78" : "L010_C006_78",
+        "178" : "L010_C006_178",
+        "258" : "L010_C006_258"
+      },
+      "shotID" : "L010_C006",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L010_C006_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L010_C006_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_L010_C006_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L010_C006_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L010_C006_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "4AD99907-9E76-408D-A7FC-8429FF014201",
+      "pointsOfInterest" : {
+        "0" : "A013_C004_0",
+        "90" : "A013_C004_90",
+        "150" : "A013_C004_150",
+        "360" : "A013_C004_360"
+      },
+      "shotID" : "A013_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_1223LV_FLARE_v21_HDR_PS_FINAL_20180710_F0F5700_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_1223LV_FLARE_v21_SDR_PS_FINAL_20180709_F0F5700_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_1223LV_FLARE_v21_SDR_PS_FINAL_20180709_F0F5700_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_1223LV_FLARE_v21_HDR_PS_FINAL_20180710_F0F5700_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_1223LV_FLARE_v21_SDR_PS_FINAL_20180709_F0F5700_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Africa and the Middle East",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "2F72BC1E-3D76-456C-81EB-842EBA488C27",
+      "pointsOfInterest" : {
+        "0" : "A103_C002_0205DG_0",
+        "45" : "A103_C002_0205DG_45",
+        "115" : "A103_C002_0205DG_115",
+        "145" : "A103_C002_0205DG_145",
+        "160" : "A103_C002_0205DG_160",
+        "180" : "A103_C002_0205DG_180",
+        "235" : "A103_C002_0205DG_235",
+        "280" : "A103_C002_0205DG_280",
+        "315" : "A103_C002_0205DG_315"
+      },
+      "shotID" : "A103_C002_0205DG",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A103_C002_0205DG_v12_HDR_FINAL_20180706_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A103_C002_0205DG_v12_SDR_FINAL_20180706_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A103_C002_0205DG_v12_SDR_FINAL_20180706_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A103_C002_0205DG_v12_HDR_FINAL_20180706_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A103_C002_0205DG_v12_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New York",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "840FE8E4-D952-4680-B1A7-AC5BACA2C1F8",
+      "pointsOfInterest" : {
+        "0" : "N003_C006_0",
+        "50" : "N003_C006_50",
+        "160" : "N003_C006_160",
+        "205" : "N003_C006_205"
+      },
+      "shotID" : "N003_C006",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N003_C006_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N003_C006_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_N003_C006_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N003_C006_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N003_C006_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "F0236EC5-EE72-4058-A6CE-1F7D2E8253BF",
+      "pointsOfInterest" : {
+        "0" : "C001_C005_0"
+      },
+      "shotID" : "C001_C005",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C001_C005_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C001_C005_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_C001_C005_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C001_C005_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C001_C005_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "EE533FBD-90AE-419A-AD13-D7A60E2015D6",
+      "pointsOfInterest" : {
+        "0" : "A008_C007_0",
+        "150" : "A008_C007_150"
+      },
+      "shotID" : "A008_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A008_C007_011550_CC_v01_HDR_PS_FINAL_20180710_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A008_C007_011550_CC_v01_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A008_C007_011550_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A008_C007_011550_CC_v01_HDR_PS_FINAL_20180710_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A008_C007_011550_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "New York Night",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "B1B5DDC5-73C8-4920-8133-BACCE38A08DE",
+      "pointsOfInterest" : {
+        "0" : "GMT307_136NC_134K_8277_0",
+        "105" : "GMT307_136NC_134K_8277_105",
+        "122" : "GMT307_136NC_134K_8277_122",
+        "180" : "GMT307_136NC_134K_8277_180",
+        "190" : "GMT307_136NC_134K_8277_190",
+        "215" : "GMT307_136NC_134K_8277_215",
+        "280" : "GMT307_136NC_134K_8277_280",
+        "320" : "GMT307_136NC_134K_8277_320"
+      },
+      "shotID" : "GMT307_136NC_134K_8277_NY_NIGHT",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT307_136NC_134K_8277_NY_NIGHT_01_v25_HDR_PS_20180907_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT307_136NC_134K_8277_NY_NIGHT_01_v25_SDR_PS_20180907_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT307_136NC_134K_8277_NY_NIGHT_01_v25_SDR_PS_20180907_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT307_136NC_134K_8277_NY_NIGHT_01_v25_HDR_PS_20180907_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT307_136NC_134K_8277_NY_NIGHT_01_v25_SDR_PS_20180907_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "London",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "7F4C26C2-67C2-4C3A-8F07-8A7BF6148C97",
+      "pointsOfInterest" : {
+        "0" : "L004_C011_0",
+        "20" : "L004_C011_20",
+        "130" : "L004_C011_130",
+        "210" : "L004_C011_210",
+        "310" : "L004_C011_310",
+        "325" : "L004_C011_325"
+      },
+      "shotID" : "L004_C011",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L004_C011_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L004_C011_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_L004_C011_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L004_C011_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L004_C011_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hawaii",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "82BD33C9-B6D2-47E7-9C42-AA3B7758921A",
+      "pointsOfInterest" : {
+        "0" : "H004_C007_0"
+      },
+      "shotID" : "H004_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C007_PS_v02_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C007_PS_v02_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_H004_C007_PS_v02_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C007_PS_v02_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H004_C007_PS_v02_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hong Kong",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "024891DE-B7F6-4187-BFE0-E6D237702EF0",
+      "pointsOfInterest" : {
+        "0" : "HK_H004_C013_0",
+        "150" : "HK_H004_C013_150",
+        "270" : "HK_H004_C013_270"
+      },
+      "shotID" : "HK_H004_C013",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/HK_H004_C013_4K_HDR_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/HK_H004_C013_4K_SDR_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_HK_H004_C013_t9_6M_HB_tag0.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/HK_H004_C013_2K_HDR_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/HK_H004_C013_2K_SDR_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Dubai",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "3FFA2A97-7D28-49EA-AA39-5BC9051B2745",
+      "pointsOfInterest" : {
+        "0" : "DB_D001_C005_0"
+      },
+      "shotID" : "DB_D001_C005",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C005_COMP_PSNK_v12_HDR_PS_20180912_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C005_COMP_PSNK_v12_SDR_PS_20180912_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_DB_D001_C005_COMP_PSNK_v12_SDR_PS_20180912_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C005_COMP_PSNK_v12_HDR_PS_20180912_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_DB_D001_C005_COMP_PSNK_v12_SDR_PS_20180912_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "85CE77BF-3413-4A7B-9B0F-732E96229A73",
+      "pointsOfInterest" : {
+        "0" : "A012_C014_0",
+        "208" : "A012_C014_208"
+      },
+      "shotID" : "A012_C014",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A012_C014_1223PT_v53_HDR_PS_FINAL_20180710_F0F8700_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A012_C014_1223PT_v53_SDR_PS_FINAL_20180709_F0F8700_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A012_C014_1223PT_v53_SDR_PS_FINAL_20180709_F0F8700_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A012_C014_1223PT_v53_HDR_PS_FINAL_20180710_F0F8700_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A012_C014_1223PT_v53_SDR_PS_FINAL_20180709_F0F8700_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hawaii",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "12E0343D-2CD9-48EA-AB57-4D680FB6D0C7",
+      "pointsOfInterest" : {
+        "0" : "H007_C003_0"
+      },
+      "shotID" : "H007_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H007_C003_PS_v01_HDR_PS_20180925_HDR_4K_tuned.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H007_C003_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_H007_C003_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H007_C003_PS_v01_HDR_PS_20180925_HDR_2K_tuned.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_H007_C003_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Hong Kong",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "FE8E1F9D-59BA-4207-B626-28E34D810D0A",
+      "pointsOfInterest" : {
+        "0" : "HK_H004_C008_0"
+      },
+      "shotID" : "HK_H004_C008",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C008_PSNK_v19_HDR_PS_20180914_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C008_PSNK_v19_SDR_PS_20180914_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_HK_H004_C008_PSNK_v19_SDR_PS_20180914_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C008_PSNK_v19_HDR_PS_20180914_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_HK_H004_C008_PSNK_v19_SDR_PS_20180914_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "San Francisco",
+      "categories" : [
+        "5EF41171-4862-4F93-800C-AD86CE5E6891"
+      ],
+      "id" : "29BDF297-EB43-403A-8719-A78DA11A2948",
+      "pointsOfInterest" : {
+        "0" : "A007_C017_0",
+        "80" : "A007_C017_80",
+        "150" : "A007_C017_150",
+        "196" : "A007_C017_196"
+      },
+      "shotID" : "A007_C017",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A007_C017_01156B_v02_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A007_C017_01156B_v02_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_A007_C017_01156B_v02_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A007_C017_01156B_v02_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A007_C017_01156B_v02_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Liwa",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "001C94AE-2BA4-4E77-A202-F7DE60E8B1C8",
+      "pointsOfInterest" : {
+        "0" : "LW_L001_C006_0"
+      },
+      "shotID" : "LW_L001_C006",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C006_PSNK_DENOISE_v02_HDR_FINAL_20180709_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C006_PSNK_DENOISE_v02_SDR_PS_FINAL_20180709_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_LW_L001_C006_PSNK_DENOISE_v02_SDR_PS_FINAL_20180709_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C006_PSNK_DENOISE_v02_HDR_FINAL_20180709_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LW_L001_C006_PSNK_DENOISE_v02_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Australia",
+      "categories" : [
+        "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
+      ],
+      "id" : "81337355-E156-4242-AAF4-711768D30A54",
+      "pointsOfInterest" : {
+        "0" : "GMT060_117NC_363D_0",
+        "50" : "GMT060_117NC_363D_50",
+        "170" : "GMT060_117NC_363D_170",
+        "220" : "GMT060_117NC_363D_220",
+        "335" : "GMT060_117NC_363D_335"
+      },
+      "shotID" : "GMT060_117NC_363D_1034_AUSTRALIA",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT060_117NC_363D_1034_AUSTRALIA_v35_HDR_PS_FINAL_20180831_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT060_117NC_363D_1034_AUSTRALIA_v35_SDR_PS_FINAL_20180731_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_GMT060_117NC_363D_1034_AUSTRALIA_v35_SDR_PS_FINAL_20180731_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT060_117NC_363D_1034_AUSTRALIA_v35_HDR_PS_FINAL_20180831_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT060_117NC_363D_1034_AUSTRALIA_v35_SDR_PS_FINAL_20180731_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "China",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "id" : "22162A9B-DB90-4517-867C-C676BC3E8E95",
+      "pointsOfInterest" : {
+        "0" : "C004_C003_0"
+      },
+      "shotID" : "C004_C003",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C004_C003_PS_v01_HDR_PS_20180925_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C004_C003_PS_v01_SDR_PS_20180925_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/comp_C004_C003_PS_v01_SDR_PS_20180925_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C004_C003_PS_v01_HDR_PS_20180925_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_C004_C003_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Humpback Whale",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "DD47D8E1-CB66-4C12-BFEA-2ADB0D8D1E2E",
+      "pointsOfInterest" : {
+        "0" : "D004_L014_0"
+      },
+      "shotID" : "D004_L014",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_WH_D004_L014_HDR_20191031_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_WH_D004_L014_SDR_20191031_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/g201_WH_D004_L014_SDR_20191031_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_WH_D004_L014_HDR_20191031_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_WH_D004_L014_SDR_20191031_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "California Dolphins",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "27A37B0F-738D-4644-A7A4-E33E7A6C1175",
+      "pointsOfInterest" : {
+        "0" : "B002_C011_0"
+      },
+      "shotID" : "B002_C011",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/DL_B002_C011_HDR_20191122_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/DL_B002_C011_SDR_20191122_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/DL_B002_C011_SDR_20191122_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/DL_B002_C011_HDR_20191122_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/DL_B002_C011_SDR_20191122_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Tahiti Waves",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "149E7795-DBDA-4F5D-B39A-14712F841118",
+      "pointsOfInterest" : {
+        "0" : "TH_803_A001_8_0"
+      },
+      "shotID" : "TH_803_A001_8",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_803_A001_8_HDR_20191031_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_803_A001_8_SDR_20191031_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/g201_TH_803_A001_8_SDR_20191031_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_803_A001_8_HDR_20191031_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_803_A001_8_SDR_20191031_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Tahiti Waves",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "8C31B06F-91A4-4F7C-93ED-56146D7F48B9",
+      "pointsOfInterest" : {
+        "0" : "TH_804_A001_8_0"
+      },
+      "shotID" : "TH_804_A001_8",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_804_A001_8_HDR_20191031_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_804_A001_8_SDR_20191031_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/g201_TH_804_A001_8_SDR_20191031_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_804_A001_8_HDR_20191031_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_TH_804_A001_8_SDR_20191031_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Red Sea Coral",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "82175C1F-153C-4EC8-AE37-2860EA828004",
+      "pointsOfInterest" : {
+        "0" : "A008_C010_0"
+      },
+      "shotID" : "A008_C010",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/RS_A008_C010_HDR_20191218_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/RS_A008_C010_SDR_20191218_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/RS_A008_C010_SDR_20191218_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/RS_A008_C010_HDR_20191218_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/RS_A008_C010_SDR_20191218_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Cownose Rays",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "58C75C62-3290-47B8-849C-56A583173570",
+      "pointsOfInterest" : {
+        "0" : "A006_C008_0"
+      },
+      "shotID" : "A006_C008",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/MEX_A006_C008_HDR_20190923_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/MEX_A006_C008_SDR_20190923_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/MEX_A006_C008_SDR_20190923_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/MEX_A006_C008_HDR_20190923_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/MEX_A006_C008_SDR_20190923_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "California Kelp Forest",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "EB3F48E7-D30F-4079-858F-1A61331D5026",
+      "pointsOfInterest" : {
+        "0" : "A016_C002_0"
+      },
+      "shotID" : "A016_C002",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_CA_A016_C002_HDR_20191114_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_CA_A016_C002_SDR_20191114_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/g201_CA_A016_C002_SDR_20191114_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_CA_A016_C002_HDR_20191114_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_CA_A016_C002_SDR_20191114_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Alaskan Jellies",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "C7AD3D0A-7EDF-412C-A237-B3C9D27381A1",
+      "pointsOfInterest" : {
+        "0" : "A003_C014_0"
+      },
+      "shotID" : "A003_C014",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_AK_A003_C014_HDR_20191028_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_AK_A003_C014_SDR_20191113_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/g201_AK_A003_C014_SDR_20191113_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_AK_A003_C014_HDR_20191028_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/g201_AK_A003_C014_SDR_20191113_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Gray Reef Sharks",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "3716DD4B-01C0-4F5B-8DD6-DB771EC472FB",
+      "pointsOfInterest" : {
+        "0" : "U009_C004_0"
+      },
+      "shotID" : "U009_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/FK_U009_C004_HDR_20191220_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/FK_U009_C004_SDR_20191220_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/FK_U009_C004_SDR_20191220_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/FK_U009_C004_HDR_20191220_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/FK_U009_C004_SDR_20191220_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Costa Rica Dolphins",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "CE9B5D5B-B6E7-47C5-8C04-59BF182E98FB",
+      "pointsOfInterest" : {
+        "0" : "A009_C007_0"
+      },
+      "shotID" : "A009_C007",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/CR_A009_C007_HDR_20191113_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/CR_A009_C007_SDR_20191113_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/CR_A009_C007_SDR_20191113_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/CR_A009_C007_HDR_20191113_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/CR_A009_C007_SDR_20191113_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Alaskan Jellies",
+      "categories" : [
+        "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
+      ],
+      "id" : "C6DC4E54-1130-44F8-AF6F-A551D8E8A181",
+      "pointsOfInterest" : {
+        "0" : "A004_C012_0"
+      },
+      "shotID" : "A004_C012",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/AK_A004_C012_HDR_20191217_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/AK_A004_C012_SDR_20191217_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/AK_A004_C012_SDR_20191217_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/AK_A004_C012_HDR_20191217_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/AK_A004_C012_SDR_20191217_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Grand Canyon",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "E334A6D2-7145-47C8-9B00-C20DED08B2D5",
+      "pointsOfInterest" : {
+        "0" : "G007_C004_0"
+      },
+      "shotID" : "G007_C004",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G007_C004_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G007_C004_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/G007_C004_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G007_C004_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G007_C004_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Grand Canyon",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "DD266E1F-5DF2-4CDB-A2EB-26CE35664657",
+      "pointsOfInterest" : {
+        "0" : "G008_C015_0106MB_0"
+      },
+      "shotID" : "G008_C015_0106MB",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G008_C015_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G008_C015_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/G008_C015_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G008_C015_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G008_C015_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Grand Canyon",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "F9F918CD-E15F-4F01-A326-84A44650C5C9",
+      "pointsOfInterest" : {
+        "0" : "G009_C003_010678_0"
+      },
+      "shotID" : "G009_C003_010678",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C003_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C003_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/G009_C003_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C003_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C003_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Grand Canyon",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "AE0115AE-C53B-4DB9-B12F-CA4B7B630CC9",
+      "pointsOfInterest" : {
+        "0" : "G009_C014_0106B9_0"
+      },
+      "shotID" : "G009_C014_0106B9",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C014_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C014_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/G009_C014_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C014_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G009_C014_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Grand Canyon",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "8002C4C8-C611-4894-A068-3D3A3C03472A",
+      "pointsOfInterest" : {
+        "0" : "G010_C026_0107KE_0"
+      },
+      "shotID" : "G010_C026_0107KE",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G010_C026_UHD_HDR_v02_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G010_C026_UHD_SDR_v02_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/G010_C026_UHD_SDR_v02_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G010_C026_UHD_HDR_v02_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/G010_C026_UHD_SDR_v02_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Patagonia",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "5C987900-AD53-469C-8210-CABBCCDDFCAE",
+      "pointsOfInterest" : {
+        "0" : "P001_C005_11059D_0"
+      },
+      "shotID" : "P001_C005_11059D",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P001_C005_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P001_C005_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/P001_C005_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P001_C005_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P001_C005_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Patagonia",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "B004358B-5A27-42E5-B49E-93FC100B2371",
+      "pointsOfInterest" : {
+        "0" : "P005_C002_1109E1_0"
+      },
+      "shotID" : "P005_C002_1109E1",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P005_C002_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P005_C002_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/P005_C002_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P005_C002_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P005_C002_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Patagonia",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "25A6CFB2-3570-4448-B114-244A4E454B7A",
+      "pointsOfInterest" : {
+        "0" : "P006_C002_11106T_0"
+      },
+      "shotID" : "P006_C002_11106T",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P006_C002_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P006_C002_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/P006_C002_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P006_C002_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P006_C002_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Patagonia",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "E5D58CC2-3C52-4206-9DA2-427DC88B5896",
+      "pointsOfInterest" : {
+        "0" : "P007_C027_0"
+      },
+      "shotID" : "P007_C027",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P007_C027_UHD_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P007_C027_UHD_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/P007_C027_UHD_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P007_C027_UHD_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/P007_C027_UHD_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "E5799A24-1949-4E66-A17B-B5EB05F28C5D",
+      "pointsOfInterest" : {
+        "0" : "Y004_C015_0227PD_0",
+        "124" : "Y004_C015_0227PD_124",
+        "146" : "Y004_C015_0227PD_146"
+      },
+      "shotID" : "Y004_C015_0227PD",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y004_C015_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y004_C015_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y004_C015_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y004_C015_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y004_C015_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "E487C6EF-B3FB-427B-A2BE-8CBA60F902F0",
+      "pointsOfInterest" : {
+        "0" : "Y005_C003_0228SC_0",
+        "40" : "Y005_C003_0228SC_40",
+        "60" : "Y005_C003_0228SC_60",
+        "155" : "Y005_C003_0228SC_155",
+        "255" : "Y005_C003_0228SC_255",
+        "285" : "Y005_C003_0228SC_285"
+      },
+      "shotID" : "Y005_C003_0228SC",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y005_C003_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y005_C003_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y005_C003_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y005_C003_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y005_C003_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "E540DEE6-4C40-42C8-9CCC-D4CB0FAD7D7B",
+      "pointsOfInterest" : {
+        "0" : "Y002_C013_0226_0",
+        "70" : "Y002_C013_0226_70",
+        "87" : "Y002_C013_0226_87",
+        "210" : "Y002_C013_0226_210"
+      },
+      "shotID" : "Y002_C013_0226",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y002_C013_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y002_C013_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y002_C013_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y002_C013_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y002_C013_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "81CA5ACD-E682-4D8B-A948-0F147EB6ED4F",
+      "pointsOfInterest" : {
+        "0" : "Y003_C009_0",
+        "93" : "Y003_C009_93",
+        "130" : "Y003_C009_130",
+        "221" : "Y003_C009_221",
+        "244" : "Y003_C009_244"
+      },
+      "shotID" : "Y003_C009_027",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y003_C009_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y003_C009_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y003_C009_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y003_C009_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y003_C009_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "4109D42A-D717-46A7-A9A2-FE53A82B25C0",
+      "pointsOfInterest" : {
+        "0" : "Y011_C001_0",
+        "44" : "Y011_C001_44",
+        "87" : "Y011_C001_87",
+        "120" : "Y011_C001_120",
+        "390" : "Y011_C001_390",
+        "470" : "Y011_C001_470",
+        "585" : "Y011_C001_585"
+      },
+      "shotID" : "Y011_C001_0305",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C001_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C001_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y011_C001_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C001_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C001_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "DAD82DCE-F3AE-4AEC-8A79-1694D412FC0A",
+      "pointsOfInterest" : {
+        "0" : "Y009_C015_0304I_0"
+      },
+      "shotID" : "Y009_C015_0304I",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y009_C015_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y009_C015_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y009_C015_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y009_C015_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y009_C015_SDR_2K_HEVC.mov"
+    },
+    {
+      "accessibilityLabel" : "Yosemite",
+      "categories" : [
+        "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
+      ],
+      "group" : "19J-1",
+      "id" : "8D04D70F-738B-441D-8D43-AF46B2BF8062",
+      "pointsOfInterest" : {
+        "0" : "Y011_C008_0",
+        "75" : "Y011_C008_75",
+        "124" : "Y011_C008_124",
+        "215" : "Y011_C008_215",
+        "396" : "Y011_C008_396"
+      },
+      "shotID" : "Y011_C008_030584",
+      "url-4K-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C008_HDR_4K_HEVC.mov",
+      "url-4K-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C008_SDR_4K_HEVC.mov",
+      "url-1080-H264" : "https:\/\/sylvan.apple.com\/Videos\/Y011_C008_SDR_2K_AVC.mov",
+      "url-1080-HDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C008_HDR_2K_HEVC.mov",
+      "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/Y011_C008_SDR_2K_HEVC.mov"
+    }
+  ],
+  "categories" : [
+    {
+      "id" : "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D",
+      "localizedDescriptionKey" : "AerialCategorySpaceDescription",
+      "localizedNameKey" : "AerialCategorySpace",
+      "preferredOrder" : 0,
+      "previewImage" : "https:\/\/sylvan.apple.com\/Aerials\/jjGqDwCNrOsVJ4of6uSVr\/snapshots\/GMT329_2_113NC_396B_1105.jpg",
+      "representativeAssetID" : "7825C73A-658F-48EE-B14C-EC56673094AC"
+    },
+    {
+      "id" : "A33A55D9-EDEA-4596-A850-6C10B54FBBB5",
+      "localizedDescriptionKey" : "AerialCategoryLandscapesDescription",
+      "localizedNameKey" : "AerialCategoryLandscapes",
+      "preferredOrder" : 1,
+      "previewImage" : "https:\/\/sylvan.apple.com\/Aerials\/jjGqDwCNrOsVJ4of6uSVr\/snapshots\/GL_G010_C006.jpg",
+      "representativeAssetID" : "EE01F02D-1413-436C-AB05-410F224A5B7B"
+    },
+    {
+      "id" : "5EF41171-4862-4F93-800C-AD86CE5E6891",
+      "localizedDescriptionKey" : "AerialCategoryCitiesDescription",
+      "localizedNameKey" : "AerialCategoryCities",
+      "preferredOrder" : 2,
+      "previewImage" : "https:\/\/sylvan.apple.com\/Aerials\/jjGqDwCNrOsVJ4of6uSVr\/snapshots\/N003_C006.jpg",
+      "representativeAssetID" : "840FE8E4-D952-4680-B1A7-AC5BACA2C1F8"
+    },
+    {
+      "id" : "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B",
+      "localizedDescriptionKey" : "AerialCategoryUnderwaterDescription",
+      "localizedNameKey" : "AerialCategoryUnderwater",
+      "preferredOrder" : 3,
+      "previewImage" : "https:\/\/sylvan.apple.com\/Aerials\/jjGqDwCNrOsVJ4of6uSVr\/snapshots\/SE_A016_C009.jpg",
+      "representativeAssetID" : "83C65C90-270C-4490-9C69-F51FE03D7F06"
+    }
+  ],
+  "initialAssetCount" : 4,
+  "version" : 1
+}
