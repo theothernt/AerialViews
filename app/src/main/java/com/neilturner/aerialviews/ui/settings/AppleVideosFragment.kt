@@ -1,15 +1,10 @@
 package com.neilturner.aerialviews.ui.settings
 
-import android.Manifest
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.AppleVideoLocation
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
-import com.neilturner.aerialviews.utils.PermissionHelper
 
 class AppleVideosFragment :
     PreferenceFragmentCompat(),

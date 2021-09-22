@@ -1,15 +1,12 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import androidx.annotation.RawRes
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.AppleVideoLocation
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.Apple2019Video
-import com.neilturner.aerialviews.utils.FileHelper
 import com.google.gson.Gson
 import java.util.*
 
