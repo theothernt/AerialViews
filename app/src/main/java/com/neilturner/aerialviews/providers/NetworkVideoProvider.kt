@@ -48,12 +48,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             // smb://username:password@host/sharename
 
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
-            if (prefs.filenameAsLocation) {
-                val location = FileHelper.filenameToTitleCase(uri.lastPathSegment!!)
-                videos.add(AerialVideo(uri, location))
-            }  else {
-                videos.add(AerialVideo(uri, ""))
-            }
+            videos.add(AerialVideo(uri, ""))
         }
 
         Log.i(TAG, "Videos found: ${videos.size}")

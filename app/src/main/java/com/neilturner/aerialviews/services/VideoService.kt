@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
 import com.neilturner.aerialviews.providers.VideoProvider
+import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -33,6 +34,7 @@ class VideoService(context: Context) {
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
         var videos = mutableListOf<AerialVideo>()
 
+        // Find all videos from all providers/sources
         providers.forEach {
             val newVideos = try {
                 it.fetchVideos()
@@ -41,11 +43,6 @@ class VideoService(context: Context) {
                 emptyList()
             }
             videos.addAll(newVideos)
-        }
-
-        if (videos.isEmpty()) {
-            Log.i(TAG, "No videos, adding empty one")
-            videos.add(AerialVideo(Uri.parse(""), ""))
         }
 
         if (GeneralPrefs.removeDuplicates) {
@@ -58,6 +55,33 @@ class VideoService(context: Context) {
             // Remove duplicates based on filename only
             videos = videos.distinctBy { it.uri.lastPathSegment?.lowercase() } as MutableList<AerialVideo>
             Log.i(TAG, "Videos removed based on filename: ${numVideos - videos.size}")
+        }
+
+        // Try and add locations by looking up video filenames in various manifests
+        if (AnyVideoPrefs.useAppleManifests) {
+
+            if (AnyVideoPrefs.ignoreNonManifestVideos) { }
+        }
+
+        if (AnyVideoPrefs.useCustomManifests) {
+
+            if (AnyVideoPrefs.ignoreNonManifestVideos) { }
+        }
+
+        // If there are still no locations, use filename as location
+        if (AnyVideoPrefs.filenameAsLocation) {
+            videos.forEach { video ->
+                if (video.location.isBlank()) {
+                    val filename = video.uri.lastPathSegment!!
+                    val location = FileHelper.filenameToTitleCase(filename)
+                    video.location = location
+                }
+            }
+        }
+
+        if (videos.isEmpty()) {
+            Log.i(TAG, "No videos, adding empty one")
+            videos.add(AerialVideo(Uri.parse(""), ""))
         }
 
         if (GeneralPrefs.shuffleVideos)
