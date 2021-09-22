@@ -10,5 +10,4 @@ object AppleVideoPrefs : KotprefModel() {
 
     var enabled by booleanPref(true, "apple_videos_enabled")
     var quality by enumValuePref(AppleVideoQuality.VIDEO_1080_SDR, "apple_videos_quality")
-    var location by enumValuePref(AppleVideoLocation.REMOTE, "apple_videos_location")
 }
