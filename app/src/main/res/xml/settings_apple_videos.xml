@@ -4,7 +4,7 @@
 
         <PreferenceCategory app:title="@string/category_video_source">
                 <SwitchPreference
-                    app:defaultValue="false"
+                    app:defaultValue="true"
                     app:key="apple_videos_enabled"
                     app:title="@string/apple_videos_enabled" />
         </PreferenceCategory>
