@@ -10,12 +10,12 @@ import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
 
-class LocalVideosFragment :
+class AnyVideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_local_videos, rootKey)
+        setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
