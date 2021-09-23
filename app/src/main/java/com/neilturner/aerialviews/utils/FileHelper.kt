@@ -58,7 +58,8 @@ object FileHelper {
         return false
     }
 
-    fun filenameToTitleCase(filename: String): String {
+    fun filenameToTitleCase(uri: Uri): String {
+        val filename = uri.lastPathSegment!!
         val index = filename.lastIndexOf(".")
 
         // some.video.mov -> some.video

@@ -42,11 +42,11 @@
 <!--                    app:title="@string/any_videos_use_custom_manifests_title"-->
 <!--                    app:summary="@string/any_videos_use_custom_manifests_summary" />-->
 
-<!--                <CheckBoxPreference-->
-<!--                    app:defaultValue="false"-->
-<!--                    app:key="any_videos_ignore_non_manifest_videos"-->
-<!--                    app:title="@string/any_videos_ignore_non_manifest_videos_title"-->
-<!--                    app:summary="@string/any_videos_ignore_non_manifest_videos_summary" />-->
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="any_videos_ignore_non_manifest_videos"
+                    app:title="@string/any_videos_ignore_non_manifest_videos_title"
+                    app:summary="@string/any_videos_ignore_non_manifest_videos_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>

@@ -3,11 +3,10 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import android.util.Log
-import com.neilturner.aerialviews.models.prefs.AnyVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 
-class LocalVideoProvider(context: Context, private val prefs: AnyVideoPrefs) : VideoProvider(context) {
+class LocalVideoProvider(context: Context) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()

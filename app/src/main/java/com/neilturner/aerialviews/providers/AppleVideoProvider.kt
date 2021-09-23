@@ -2,13 +2,11 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.util.Log
-import androidx.annotation.RawRes
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.models.videos.Apple2019Video
-import com.google.gson.Gson
-import java.util.*
+import com.neilturner.aerialviews.utils.JsonHelper
+import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 
 class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
 
@@ -17,7 +15,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         val videos = mutableListOf<AerialVideo>()
 
         // tvOS videos
-        val wrapper = parseJson(context, R.raw.tvos15, Wrapper::class.java)
+        val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Wrapper::class.java)
         wrapper.assets?.forEach {
             videos.add(AerialVideo(it.uri(quality), it.location))
         }
@@ -26,18 +24,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         return videos
     }
 
-    private fun <T> parseJson(context: Context, @RawRes res: Int, tClass: Class<T>?): T {
-        val stream = context.resources.openRawResource(res)
-        val json = Scanner(stream).useDelimiter("\\A").next()
-        return jsonParser.fromJson(json, tClass)
-    }
-
-    private class Wrapper {
-        val assets: List<Apple2019Video>? = null
-    }
-
     companion object {
-        private val jsonParser = Gson()
         private const val TAG = "AppleVideoProvider"
     }
 }
