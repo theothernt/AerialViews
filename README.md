@@ -94,3 +94,7 @@ Just note that the command is little different due to a name change in the code,
 - This app is designed to play Apple's video only. It will not play any random video you have on the device or USB storage
 
 - Network connection issues are not handled well, the videos will simply pause
+
+<br />
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U)
