@@ -6,7 +6,7 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 -keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
--keep class com.neilturner.aerialviews.providers.* { <fields>; }
+-keep class com.neilturner.aerialviews.utils.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
 
 -dontwarn javax.el.BeanELResolver

@@ -2,48 +2,31 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_video_source">
-                <SwitchPreference
-                    app:defaultValue="false"
-                    app:key="network_videos_enabled"
-                    app:title="Enabled" />
-        </PreferenceCategory>
-
         <PreferenceCategory app:title="@string/category_settings">
                 <EditTextPreference
                     android:summary="@string/network_videos_hostname_summary"
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
                     android:key="network_videos_hostname"
                     android:selectAllOnFocus="true"
                     android:title="@string/network_videos_hostname_title" />
 
                 <EditTextPreference
                     android:summary="@string/network_videos_sharename_summary"
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
                     android:key="network_videos_sharename"
                     android:title="@string/network_videos_sharename_title" />
 
                 <EditTextPreference
                     android:summary="@string/network_videos_username_summary"
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
                     android:key="network_videos_username"
                     android:title="@string/network_videos_username_title" />
 
                 <EditTextPreference
                     android:summary="@string/network_videos_password_summary"
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
                     android:key="network_videos_password"
                     android:title="@string/network_videos_password_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
                     android:title="Test connection settings"
                     android:key="network_videos_test_connection"
                     />
