@@ -13,21 +13,23 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
+import com.google.android.exoplayer2.util.EventLogger
 
-class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
+class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: SimpleExoPlayer
+    private val useReducedBuffering: Boolean = GeneralPrefs.reducedBuffers
+    private val enableTunneling: Boolean = GeneralPrefs.enableTunneling
+    private val exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
+    private val muteVideo: Boolean = GeneralPrefs.muteVideos
     private var listener: OnPlayerEventListener? = null
     private var aspectRatio = 0f
-    private var useReducedBuffering: Boolean = GeneralPrefs.reducedBuffers
-    private var enableTunneling: Boolean = GeneralPrefs.enableTunneling
-    private var exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
-    private var muteVideo: Boolean = GeneralPrefs.muteVideos
     private var prepared = false
 
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
+        //player.addAnalyticsListener(EventLogger(null));
     }
 
     fun setUri(uri: Uri?) {
@@ -129,19 +131,22 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         }
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
-            //Log.i(TAG, "Calling onPrepared")
             listener!!.onPrepared(this)
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
-            //Log.i(TAG, "Setting timerRunnable")
             removeCallbacks(timerRunnable)
             postDelayed(timerRunnable, duration - DURATION)
-            //postDelayed(timerRunnable, (duration - (duration - 6000)).toLong())
         }
     }
 
-    override fun onPlayerError(error: ExoPlaybackException) {
+    override fun onPlayerError(error: PlaybackException) {
         error.printStackTrace()
+        super.onPlayerError(error)
+    }
+
+    override fun onPlayerErrorChanged(error: PlaybackException?) {
+        error?.printStackTrace()
+        super.onPlayerErrorChanged(error)
     }
 
     override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
