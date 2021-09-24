@@ -11,5 +11,4 @@ object NetworkVideoPrefs : KotprefModel() {
     var hostName by stringPref("", "network_videos_hostname")
     var shareName by stringPref("", "network_videos_sharename")
     var domainName by stringPref("WORKGROUP", "network_videos_domainname")
-    var filenameAsLocation by booleanPref(true, "network_videos_filename_location")
 }

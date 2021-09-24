@@ -8,7 +8,7 @@ import com.neilturner.aerialviews.models.AppleVideoQuality
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.AnyVideoPrefs
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.Apple2019Video
@@ -19,7 +19,6 @@ import com.neilturner.aerialviews.providers.VideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.JsonHelper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.withContext
 
 class VideoService(private val context: Context) {
@@ -29,7 +28,7 @@ class VideoService(private val context: Context) {
         if (AppleVideoPrefs.enabled)
             providers.add(AppleVideoProvider(context, AppleVideoPrefs))
 
-        if (AnyVideoPrefs.enabled)
+        if (LocalVideoPrefs.enabled)
             providers.add(LocalVideoProvider(context))
 
         if (NetworkVideoPrefs.enabled)
@@ -64,10 +63,10 @@ class VideoService(private val context: Context) {
 
         // Try and add locations by looking up video filenames in various manifests
         val manifestVideos = mutableListOf<AerialVideo>()
-        if (AnyVideoPrefs.useAppleManifests)
+        if (GeneralPrefs.useAppleManifests)
             manifestVideos.addAll(appleManifestVideos())
 
-        if (AnyVideoPrefs.useCustomManifests)
+        if (GeneralPrefs.useCustomManifests)
             manifestVideos.addAll(customManifestVideos())
 
         val result = findVideoLocation(videos, manifestVideos)
@@ -79,12 +78,12 @@ class VideoService(private val context: Context) {
         if (result.second.isNotEmpty())
             Log.i(TAG, "Found ${result.second.count()} non-manifest videos")
 
-        if (!AnyVideoPrefs.ignoreNonManifestVideos) {
+        if (!GeneralPrefs.ignoreNonManifestVideos) {
             videos.addAll(result.second)
         }
 
         // If there are videos with no location yet, use filename as location
-        if (!AnyVideoPrefs.ignoreNonManifestVideos && AnyVideoPrefs.filenameAsLocation) {
+        if (!GeneralPrefs.ignoreNonManifestVideos && GeneralPrefs.filenameAsLocation) {
             videos.forEach { video ->
                 if (video.location.isBlank()) {
                     val location = FileHelper.filenameToTitleCase(video.uri)
