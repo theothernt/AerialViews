@@ -10,6 +10,7 @@
     <string name="category_video_sources">Video Sources</string>
     <string name="category_video_source">Video Source</string>
     <string name="category_actions">Actions</string>
+    <string name="category_playlist">Playlist</string>
     <string name="category_network_settings">Network Settings</string>
 
     <!-- Apple Video Options -->
@@ -28,14 +29,6 @@
         <item>4K HDR/HEVC</item>
     </string-array>
 
-    <string name="apple_videos_location_title">Location</string>
-    <string name="apple_videos_location_summary">Choose a source location for the Apple videos</string>
-    <string-array name="apple_videos_location_entries">
-        <item>Remote only</item>
-        <item>Local only</item>
-        <item>Local and remote</item>
-    </string-array>
-
     <!-- Any Video Options -->
     <string name="any_videos_title">Any Videos</string>
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
@@ -45,13 +38,6 @@
 
     <string name="network_videos_enabled_title">Network Videos</string>
     <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
-
-    <string name="local_videos_filter_title">Filter</string>
-    <string name="local_videos_filter_summary">Change what videos are included</string>
-    <string-array name="local_videos_filter_entries">
-        <item>All folders</item>
-        <item>Aerial folder only</item>
-    </string-array>
 
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
@@ -66,9 +52,6 @@
     <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any manifest</string>
 
     <!-- Network Video Options -->
-    <string name="network_videos_title">Network Videos</string>
-    <string name="network_videos_summary">Use any videos from a local network (SMB/Samba) share</string>
-
     <string name="network_videos_hostname_title">Hostname</string>
     <string name="network_videos_hostname_summary">IP address or hostname</string>
 

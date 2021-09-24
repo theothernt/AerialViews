@@ -116,10 +116,10 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
         if(Build.VERSION.SDK_INT >= 26) {
             supportsWideColorGamut = source.isWideColorGamut
 
-            if(Build.VERSION.SDK_INT >= 29) {
-                wideColorGamut = source.preferredWideGamutColorSpace?.name
+            wideColorGamut = if(Build.VERSION.SDK_INT >= 29) {
+                source.preferredWideGamutColorSpace?.name
             } else {
-                wideColorGamut = null
+                null
             }
         } else {
             supportsWideColorGamut = false

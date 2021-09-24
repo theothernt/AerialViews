@@ -20,7 +20,9 @@
                     app:key="alt_text_position"
                     app:summary="@string/interface_alt_text_position_summary"
                     app:title="@string/interface_alt_text_position_title" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_playlist">
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="mute_videos"
