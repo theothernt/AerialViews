@@ -29,7 +29,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
-        //player.addAnalyticsListener(EventLogger(null));
     }
 
     fun setUri(uri: Uri?) {
@@ -187,14 +186,17 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             parametersBuilder
                     .setExceedRendererCapabilitiesIfNecessary(true)
         }
+
         val trackSelector = DefaultTrackSelector(context)
-        trackSelector.setParameters(parametersBuilder)
+        trackSelector.parameters = parametersBuilder.build()
 
         val player = SimpleExoPlayer.Builder(context)
                 .setLoadControl(loadControl)
                 .setTrackSelector(trackSelector)
                 .build()
 
+        //player.addAnalyticsListener(EventLogger(trackSelector))
+        
         if (muteVideo) {
             player.volume = 0f
         }
