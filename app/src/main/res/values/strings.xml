@@ -34,9 +34,6 @@
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
 
     <!-- Local Video Options -->
-    <string name="local_videos_title">Local Videos</string>
-    <string name="local_videos_summary">Use any videos on device, USB or SD card</string>
-
     <string name="local_videos_enabled_title">Local Videos</string>
     <string name="local_videos_enabled_summary">Use any videos on device, or USB</string>
 
