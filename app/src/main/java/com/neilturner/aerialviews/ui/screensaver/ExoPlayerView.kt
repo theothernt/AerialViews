@@ -14,6 +14,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.util.EventLogger
+import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: SimpleExoPlayer
@@ -24,6 +25,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private var listener: OnPlayerEventListener? = null
     private var aspectRatio = 0f
     private var prepared = false
+    private var playbackSpeed = GeneralPrefs.playbackSpeed;
 
     init {
         player = buildPlayer(context)
@@ -46,7 +48,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         } else {
             player.setMediaItem(mediaItem)
         }
-
         player.prepare()
     }
 
@@ -134,7 +135,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
             removeCallbacks(timerRunnable)
-            postDelayed(timerRunnable, duration - DURATION)
+            //compensate the duration based on the playback speed
+            postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
         }
     }
 
@@ -200,6 +202,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (muteVideo) {
             player.volume = 0f
         }
+
+        player.setPlaybackSpeed(playbackSpeed.toFloat());
         return player
     }
 

@@ -12,7 +12,8 @@ object GeneralPrefs : KotprefModel() {
     var muteVideos by booleanPref(true, "mute_videos")
     var shuffleVideos by booleanPref(true, "shuffle_videos")
     var removeDuplicates by booleanPref(true, "remove_duplicates")
-
+    var playbackSpeed by stringPref("1", "playback_speed")
+    
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var reducedBuffers by booleanPref(false, "reduced_buffers")
     var exceedRenderer by booleanPref(false, "exceed_renderer")

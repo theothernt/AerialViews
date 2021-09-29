@@ -33,6 +33,10 @@
     <string name="any_videos_title">Any Videos</string>
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
 
+    <!-- Local Video Options -->
+    <string name="local_videos_title">Local Videos</string>
+    <string name="local_videos_summary">Use any videos on device, USB or SD card</string>
+
     <string name="local_videos_enabled_title">Local Videos</string>
     <string name="local_videos_enabled_summary">Use any videos on device, or USB</string>
 
@@ -97,6 +101,24 @@
     <string name="capabilities_resolution_title">Resolution</string>
     <string name="capabilities_codecs_title">Codecs</string>
 
+    <string name="playback_speed_title">Playback Speed</string>
+    <string name="playback_speed_summary">Choose the playback speed</string>
+    <string-array name="playback_speed_entries">
+        <item>0.25</item>
+        <item>0.5</item>
+        <item>0.75</item>
+        <item>1</item>
+        <item>1.25</item>
+        <item>1.5</item>
+        <item>1.75</item>
+        <item>2</item>
+        <item>2.5</item>
+        <item>3</item>
+        <item>3.5</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+    
     <!-- Actions -->
     <string name="test_screensaver_settings">Test screensaver settings</string>
     <string name="open_system_screensaver_options">Open system screensaver options</string>
