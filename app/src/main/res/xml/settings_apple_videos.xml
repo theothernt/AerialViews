@@ -6,7 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="true"
                     app:key="apple_videos_enabled"
-                    app:title="Enabled" />
+                    app:title="@string/apple_videos_enabled" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_settings">
@@ -20,17 +20,6 @@
                     app:title="@string/apple_videos_quality_title"
                     app:summary="@string/apple_videos_quality_summary"
                     app:dialogTitle="@string/apple_videos_quality_summary" />
-
-                <ListPreference
-                    app:defaultValue="@string/apple_videos_location_default"
-                    app:dependency="apple_videos_enabled"
-                    app:disableDependentsState="false"
-                    app:entries="@array/apple_videos_location_entries"
-                    app:entryValues="@array/apple_videos_location_values"
-                    app:key="apple_videos_location"
-                    app:title="@string/apple_videos_location_title"
-                    app:summary="@string/apple_videos_location_summary"
-                    app:dialogTitle="@string/apple_videos_location_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>

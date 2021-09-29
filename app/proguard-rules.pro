@@ -5,9 +5,9 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
--keep class com.codingbuffalo.aerialdream.models.videos.* { <fields>; }
--keep class com.codingbuffalo.aerialdream.providers.* { <fields>; }
--keep class com.codingbuffalo.aerialdream.ui.settings.* { <fields>; }
+-keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
+-keep class com.neilturner.aerialviews.utils.* { <fields>; }
+-keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
 
 -dontwarn javax.el.BeanELResolver
 -dontwarn javax.el.ELContext

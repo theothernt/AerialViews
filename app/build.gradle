@@ -8,11 +8,11 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.codingbuffalo.aerialdream"
+        applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1 // Will be incremented automatically on release
-        versionName "0.98.2"
+        versionName "0.99"
     }
 
     compileOptions {
@@ -47,14 +47,22 @@ android {
         debug {
             //minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"false"]
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"false", "analyticsCollectionEnabled":"false"]
+            applicationIdSuffix '.debug'
+            resValue "string", "app_name", "@string/app_name_debug"
         }
         release {
             signingConfig signingConfigs.release
             minifyEnabled true
             //debuggable true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"true"]
+            manifestPlaceholders = [crashlyticsCollectionEnabled:"true" , "analyticsCollectionEnabled":"true"]
+            resValue "string", "app_name", "@string/app_name_release"
+        }
+        afterEvaluate {
+            android.applicationVariants.all { variant ->
+                variant.resValue 'string', 'application_id', variant.applicationId
+            }
         }
     }
 }
@@ -63,18 +71,18 @@ dependencies {
     implementation "androidx.core:core-ktx:1.6.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    def coroutines_version = '1.5.1'
+    def coroutines_version = '1.5.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:19.0.1'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.1'
 
     implementation 'com.google.code.gson:gson:2.8.8'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'

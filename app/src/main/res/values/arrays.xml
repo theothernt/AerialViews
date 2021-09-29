@@ -19,6 +19,14 @@
 
     <string name="apple_videos_location_default">REMOTE</string>
 
+    <!-- Local Video Options -->
+    <string-array name="local_videos_filter_values">
+        <item>ALL</item>
+        <item>AERIAL</item>
+    </string-array>
+
+    <string name="local_videos_filter_default">ALL</string>
+
     <string-array name="playback_speed_values">
         <item>0.25</item>
         <item>0.5</item>
@@ -36,12 +44,4 @@
     </string-array>
 
     <string name="playback_speed_default">1</string>
-
-    <!-- Local Video Options -->
-    <string-array name="local_videos_filter_values">
-        <item>ALL</item>
-        <item>AERIAL</item>
-    </string-array>
-
-    <string name="local_videos_filter_default">ALL</string>
 </resources>

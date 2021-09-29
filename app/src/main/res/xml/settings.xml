@@ -3,50 +3,40 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="@string/category_sources">
+    <PreferenceCategory app:title="@string/category_video_sources">
         <Preference
             app:title="@string/apple_videos_title"
             app:summary="@string/apple_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.AppleVideosFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.AppleVideosFragment"/>
 
         <Preference
-            app:title="@string/local_videos_title"
-            app:summary="@string/local_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.LocalVideosFragment"/>
-
-        <Preference
-            app:title="@string/network_videos_title"
-            app:summary="@string/network_videos_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.NetworkVideosFragment"/>
+            app:title="@string/any_videos_title"
+            app:summary="@string/any_videos_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.AnyVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">
         <Preference
             app:title="@string/interface_title"
             app:summary="@string/interface_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.InterfaceFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.InterfaceFragment"/>
 
         <Preference
             app:title="@string/performance_title"
             app:summary="@string/performance_summary"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.PerformanceFragment"/>
-
-        <Preference
-            app:title="Capabilities"
-            app:summary="Detected TV and codec features"
-            app:fragment="com.codingbuffalo.aerialdream.ui.settings.CapabilitiesFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.PerformanceFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">
-        <Preference app:title="@string/test_settings">
+        <Preference app:title="@string/test_screensaver_settings">
             <intent
-                android:targetClass="com.codingbuffalo.aerialdream.ui.screensaver.TestActivity"
-                android:targetPackage="com.codingbuffalo.aerialdream" />
+                android:targetClass="com.neilturner.aerialviews.ui.screensaver.TestActivity"
+                android:targetPackage="@string/application_id" />
         </Preference>
 
         <Preference
-            app:key="activate_screensaver"
-            app:title="@string/activate_screensaver" />
+            app:key="open_system_screensaver_options"
+            app:title="@string/open_system_screensaver_options" />
     </PreferenceCategory>
 
 </PreferenceScreen>
