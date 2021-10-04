@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Parcelable
 import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
@@ -13,6 +14,7 @@ import com.neilturner.aerialviews.utils.PermissionHelper
 class AnyVideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
+    private var state: Parcelable? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
@@ -22,6 +24,16 @@ class AnyVideosFragment :
     override fun onDestroy() {
         preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
+    }
+
+    override fun onPause() {
+        state = listView.layoutManager?.onSaveInstanceState()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        if (state != null) listView.layoutManager?.onRestoreInstanceState(state)
+        super.onResume()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

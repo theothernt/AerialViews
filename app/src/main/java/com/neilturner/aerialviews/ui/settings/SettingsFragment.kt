@@ -6,18 +6,29 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
+import android.os.Parcelable
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
+    private var state: Parcelable? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings, rootKey)
     }
 
-    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+    override fun onPause() {
+        state = listView.layoutManager?.onSaveInstanceState()
+        super.onPause()
+    }
 
-        if(preference.key.isNullOrEmpty())
+    override fun onResume() {
+        if (state != null) listView.layoutManager?.onRestoreInstanceState(state)
+        super.onResume()
+    }
+
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference.key.isNullOrEmpty())
             return super.onPreferenceTreeClick(preference)
 
         if (preference.key.contains("open_system_screensaver_options")) {
@@ -28,7 +39,6 @@ class SettingsFragment :
 
         return super.onPreferenceTreeClick(preference)
     }
-
 
     private fun findScreensaverIntent(): Intent {
         // Check if the daydream intent is available - some devices (e.g. Nvidia Shield) do not support it

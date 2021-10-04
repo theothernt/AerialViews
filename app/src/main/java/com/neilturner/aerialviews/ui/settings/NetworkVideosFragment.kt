@@ -34,7 +34,6 @@ class NetworkVideosFragment :
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-
         if (preference.key == null || !preference.key.contains("network_videos_test_connection"))
             return super.onPreferenceTreeClick(preference)
 
@@ -56,7 +55,6 @@ class NetworkVideosFragment :
     }
 
     private fun testNetworkConnection() {
-
         showMessage("Connecting...")
         val provider = NetworkVideoProvider(this.requireContext(), NetworkVideoPrefs)
 
