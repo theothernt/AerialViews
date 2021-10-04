@@ -94,9 +94,9 @@
     <string name="performance_reduced_buffers">Use reduced video buffers</string>
     <string name="performance_exceed_renderer">Exceed renderer capabilities</string>
 
-    <string name="capabilities_display_title">Display</string>
+    <string name="capabilities_display_title">TV/Display</string>
+    <string name="capabilities_codecs_title">Codecs (for video playback)</string>
     <string name="capabilities_resolution_title">Resolution</string>
-    <string name="capabilities_codecs_title">Codecs</string>
 
     <string name="playback_speed_title">Playback Speed</string>
     <string name="playback_speed_summary">Choose the playback speed</string>

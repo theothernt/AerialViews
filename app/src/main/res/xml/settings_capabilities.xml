@@ -9,14 +9,14 @@
                     app:summary=""/>
 
                 <Preference
-                    app:key="capabilities_resolution"
-                    app:title="@string/capabilities_resolution_title"
-                    app:summary="" />
-
-                <Preference
                     app:key="capabilities_codecs"
                     app:title="@string/capabilities_codecs_title"
                     app:summary=""/>
+
+                <Preference
+                    app:key="capabilities_resolution"
+                    app:title="@string/capabilities_resolution_title"
+                    app:summary="" />
         </PreferenceCategory>
 
 </PreferenceScreen>
