@@ -3,7 +3,9 @@
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/cachapa/AerialDream/master/LICENSE)
 
-## A screensaver for Android TV devices (including Nvidia Shield, Fire TV, Google TV, etc) inspired by the Apple TV's video screensaver
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U)
+
+## A screensaver for Android TV devices, including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver
 
 <br/>
 
@@ -13,13 +15,11 @@ This is a forked and modified version which features the following changes...
 
 - Supports *only* the latest Apple video feed (it contains nearly all previous videos too!)
 
-- Ability to play Apple **or any other videos** stored locally
-
-- Ability to play videos from a local network share (ie. Samba/SMB)
+- Ability to play Apple videos **or any other** stored locally or on a local network (Samba/SMB) share
 
 - HDR support (Dolby Vision is required for Apple's videos)
 
-- Skip video feature (Swipe right on your phone or press right on your TV remote's d-pad)
+- Skip video feature (press right on your TV remote's d-pad)
 
 - Alternate text position to help avoid burn-in on OLED TVs
 
@@ -35,10 +35,23 @@ This version of the app is not available in the Play Store, yet, so your options
 
 <br/>
 
-
 ## Where to download Apple videos for offline/local playback
 
 Please [visit this web page to download download the tvOS 13 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
+
+<br/>
+
+## HDR videos don't seem to play, I only see black screen...
+
+Currently, Apple's videos only support Dolby Vision HDR. Even if your TV supports HDR, it might not support Dolby Vision.
+
+Here are some things to try...
+
+* Find the make and model of your TV, search online for a product page for that device and it should list the supported HDR modes (there are several!)
+
+* If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
+
+* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, Amazon Prime Video.
 
 <br/>
 
@@ -85,16 +98,10 @@ Just note that the command is little different due to a name change in the code,
 
 - Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device.
 
-- HDR videos may not play properly for everyone, even with a TV that supports HDR/HDR10 and Dolby Vision. If you get a black screen or the colours are not correct, please use the SDR option
-
 - This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
 
 - If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
 
-- This app is designed to play Apple's video only. It will not play any random video you have on the device or USB storage
-
 - Network connection issues are not handled well, the videos will simply pause
 
 <br />
-
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U)
