@@ -117,20 +117,21 @@ class VideoService(private val context: Context) {
 //            videos.addAll(allVideoQualities(it))
 //        }
 
-        JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Wrapper::class.java)
+        JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Apple2018Videos::class.java)
             .assets?.forEach {
-            videos.addAll(allVideoQualities(it))
+                videos.addAll(allVideoQualities(it))
         }
 
-        JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Wrapper::class.java)
+        JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Apple2018Videos::class.java)
             .assets?.forEach {
-            videos.addAll(allVideoQualities(it))
+                videos.addAll(allVideoQualities(it))
         }
 
-        JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Wrapper::class.java)
+        JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
             .assets?.forEach {
-            videos.addAll(allVideoQualities(it))
+                videos.addAll(allVideoQualities(it))
         }
+        Log.i(TAG, "Found ${videos.count()} Apple manifest videos")
 
         return videos
     }
@@ -142,11 +143,13 @@ class VideoService(private val context: Context) {
 
     private fun allVideoQualities(video: Apple2018Video): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
-        videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_1080_H264), video.location))
-        videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_1080_SDR), video.location))
-        videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_1080_HDR), video.location))
-        videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_4K_SDR), video.location))
-        videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_4K_HDR), video.location))
+
+        AppleVideoQuality.values().forEach { quality ->
+            val uri = video.uri(quality)
+            if (uri != null)
+                videos.add(AerialVideo(uri, video.location))
+        }
+
         return videos
     }
 

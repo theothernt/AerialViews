@@ -26,7 +26,7 @@ class Apple2018Video {
     val location: String
         get() = accessibilityLabel!!
 
-    fun uri(quality: AppleVideoQuality): Uri {
+    fun uri(quality: AppleVideoQuality): Uri? {
         return Uri.parse(
                 url(quality) // Apple seems to be using an invalid certificate
                         ?.replace("https://", "http://")

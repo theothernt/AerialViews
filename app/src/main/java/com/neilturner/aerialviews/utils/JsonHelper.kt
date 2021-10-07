@@ -16,7 +16,15 @@ object JsonHelper {
         return jsonParser.fromJson(json, tClass)
     }
 
-    class Wrapper {
+//    class Apple2018Videos {
+//        val assets: List<Apple2018Video>? = null
+//    }
+//
+//    class Apple2018Videos {
+//        val assets: List<Apple2018Video>? = null
+//    }
+
+    class Apple2018Videos {
         val assets: List<Apple2018Video>? = null
     }
 }
