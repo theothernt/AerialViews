@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.models.videos.Apple2019Video
+import com.neilturner.aerialviews.models.videos.Apple2018Video
 import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
@@ -107,16 +107,29 @@ class VideoService(private val context: Context) {
     private fun appleManifestVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
 
-        var wrapper = JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Wrapper::class.java)
-        wrapper.assets?.forEach {
-            val allQualities = allVideoQualities(it)
-            videos.addAll(allQualities)
+        //       JsonHelper.parseJson(context, R.raw.tvos10, JsonHelper.Wrapper::class.java)
+//            .assets?.forEach {
+//            videos.addAll(allVideoQualities(it))
+//        }
+
+//       JsonHelper.parseJson(context, R.raw.tvos11, JsonHelper.Wrapper::class.java)
+//            .assets?.forEach {
+//            videos.addAll(allVideoQualities(it))
+//        }
+
+        JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Wrapper::class.java)
+            .assets?.forEach {
+            videos.addAll(allVideoQualities(it))
         }
 
-        wrapper = JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Wrapper::class.java)
-        wrapper.assets?.forEach {
-            val allQualities = allVideoQualities(it)
-            videos.addAll(allQualities)
+        JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Wrapper::class.java)
+            .assets?.forEach {
+            videos.addAll(allVideoQualities(it))
+        }
+
+        JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Wrapper::class.java)
+            .assets?.forEach {
+            videos.addAll(allVideoQualities(it))
         }
 
         return videos
@@ -127,7 +140,7 @@ class VideoService(private val context: Context) {
         return emptyList()
     }
 
-    private fun allVideoQualities(video: Apple2019Video): List<AerialVideo> {
+    private fun allVideoQualities(video: Apple2018Video): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
         videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_1080_H264), video.location))
         videos.add(AerialVideo(video.uri(AppleVideoQuality.VIDEO_1080_SDR), video.location))

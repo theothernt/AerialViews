@@ -4,7 +4,7 @@ import android.net.Uri
 import com.neilturner.aerialviews.models.AppleVideoQuality
 import com.google.gson.annotations.SerializedName
 
-class Apple2019Video {
+class Apple2018Video {
 
     @SerializedName("url-1080-H264")
     private val video1080h264: String? = null

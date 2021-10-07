@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import androidx.annotation.RawRes
 import com.google.gson.Gson
-import com.neilturner.aerialviews.models.videos.Apple2019Video
+import com.neilturner.aerialviews.models.videos.Apple2018Video
 import java.util.*
 
 object JsonHelper {
@@ -17,6 +17,6 @@ object JsonHelper {
     }
 
     class Wrapper {
-        val assets: List<Apple2019Video>? = null
+        val assets: List<Apple2018Video>? = null
     }
 }
