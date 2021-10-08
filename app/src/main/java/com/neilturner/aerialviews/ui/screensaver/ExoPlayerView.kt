@@ -25,7 +25,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private var listener: OnPlayerEventListener? = null
     private var aspectRatio = 0f
     private var prepared = false
-    private var playbackSpeed = GeneralPrefs.playbackSpeed;
+    private var playbackSpeed = GeneralPrefs.playbackSpeed
 
     init {
         player = buildPlayer(context)
@@ -203,7 +203,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             player.volume = 0f
         }
 
-        player.setPlaybackSpeed(playbackSpeed.toFloat());
+        player.setPlaybackSpeed(playbackSpeed.toFloat())
         return player
     }
 
