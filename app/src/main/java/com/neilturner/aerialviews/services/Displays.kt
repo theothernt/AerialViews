@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package com.neilturner.aerialviews.services
 
 import android.app.Activity
@@ -84,11 +82,12 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
         supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
 
         // Get render sizes
-        renderOutput = if (Build.VERSION.SDK_INT >= 30) {
+        renderOutput = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             val metrics = windowManager.currentWindowMetrics
             OutputDescription(-1, metrics.bounds.width(), metrics.bounds.height(), source.refreshRate)
         } else {
             val renderPoint = Point()
+            @Suppress("DEPRECATION")
             source.getSize(renderPoint)
             OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
         }
@@ -99,9 +98,9 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
         supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
 
         // Check HDR Capabilities if available on device
-        if (Build.VERSION.SDK_INT >= 24) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val capabilities = source.hdrCapabilities
-            supportsHDR = if (Build.VERSION.SDK_INT >= 26) source.isHdr else capabilities != null
+            supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) source.isHdr else capabilities != null
             minimumLuminance = capabilities?.desiredMinLuminance
             maximumLuminance = capabilities?.desiredMaxLuminance
             hdrFormats = capabilities?.supportedHdrTypes?.map { HDRTypeToHDRFormat(it) } ?: listOf()
@@ -113,10 +112,10 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
         }
 
         // Check Wide Gamut Space Support
-        if(Build.VERSION.SDK_INT >= 26) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             supportsWideColorGamut = source.isWideColorGamut
 
-            wideColorGamut = if(Build.VERSION.SDK_INT >= 29) {
+            wideColorGamut = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 source.preferredWideGamutColorSpace?.name
             } else {
                 null
