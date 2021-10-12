@@ -23,6 +23,15 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_playlist">
+                <ListPreference
+                    app:defaultValue="@string/playback_speed_default"
+                    app:entries="@array/playback_speed_entries"
+                    app:entryValues="@array/playback_speed_values"
+                    app:key="playback_speed"
+                    app:title="@string/playback_speed_title"
+                    app:summary="@string/playback_speed_summary"
+                    app:dialogTitle="@string/playback_speed_summary" />
+
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="mute_videos"
@@ -40,14 +49,5 @@
                     app:key="remove_duplicates"
                     app:summary="@string/interface_remove_duplicates_summary"
                     app:title="@string/interface_remove_duplicates_title" />
-
-                <ListPreference
-                    app:defaultValue="@string/playback_speed_default"
-                    app:entries="@array/playback_speed_entries"
-                    app:entryValues="@array/playback_speed_values"
-                    app:key="playback_speed"
-                    app:title="@string/playback_speed_title"
-                    app:summary="@string/playback_speed_summary"
-                    app:dialogTitle="@string/playback_speed_summary" />
         </PreferenceCategory>
 </PreferenceScreen>
