@@ -46,6 +46,12 @@
 
                 <CheckBoxPreference
                     app:defaultValue="true"
+                    app:key="enable_skip_videos"
+                    app:summary="@string/interface_enable_skip_videos_summary"
+                    app:title="@string/interface_enable_skip_videos_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
                     app:key="remove_duplicates"
                     app:summary="@string/interface_remove_duplicates_summary"
                     app:title="@string/interface_remove_duplicates_title" />

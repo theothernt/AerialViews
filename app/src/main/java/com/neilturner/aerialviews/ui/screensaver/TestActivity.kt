@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class TestActivity : Activity() {
@@ -20,6 +21,9 @@ class TestActivity : Activity() {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_UP) {
             Log.i(TAG, "${event.keyCode}")
+
+            if (!GeneralPrefs.enableSkipVideos)
+                finish()
 
             when (event.keyCode) {
                 // Capture all d-pad presses for future use

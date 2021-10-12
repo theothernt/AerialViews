@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.service.dreams.DreamService
 import android.util.Log
 import android.view.KeyEvent
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class DreamActivity : DreamService() {
@@ -21,6 +22,9 @@ class DreamActivity : DreamService() {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_UP) {
             Log.i(TAG, "${event.keyCode}")
+
+            if (!GeneralPrefs.enableSkipVideos)
+                finish()
 
             when (event.keyCode) {
                 // Capture all d-pad presses for future use
