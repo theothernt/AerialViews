@@ -82,7 +82,7 @@
     <string name="interface_mute_videos_summary">Mute the sound of all videos</string>
 
     <string name="interface_enable_skip_videos_title">Skip Videos</string>
-    <string name="interface_enable_skip_videos_summary">Skip a video by pressing right on your remote\'s d-pad</string>
+    <string name="interface_enable_skip_videos_summary">Skip a video by pressing right on the d-pad of your remote</string>
 
     <string name="interface_shuffle_videos_title">Shuffle videos</string>
     <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
