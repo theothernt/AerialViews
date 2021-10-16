@@ -1,7 +1,7 @@
-# AerialDream
+# Aerial Views
 
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
-[![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/cachapa/AerialDream/master/LICENSE)
+[![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U)
 
@@ -29,7 +29,7 @@ This is a forked and modified version which features the following changes...
 
 This version of the app is not available in the Play Store, yet, so your options are...
 
-1. [Download the APK from the Releases page](https://github.com/theothernt/AerialDream/releases) and install it manually
+1. [Download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
 2. Clone this repo to your PC or Mac, download Android Studio, then build and deploy
 
@@ -37,7 +37,7 @@ This version of the app is not available in the Play Store, yet, so your options
 
 ## Where to download Apple videos for offline/local playback
 
-Please [visit this web page to download download the tvOS 13 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
+Please [visit this web page to download download the tvOS 15 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
 
 <br/>
 
@@ -57,13 +57,13 @@ Here are some things to try...
 
 ## Special note for Fire TV owners
 
-The app can be installed and configured, like with any other Android TV device, but the ability to set Aerial Dream as the default screensaver has been disabled in the FireOS menus.
+The app can be installed and configured, like with any other Android TV device, but the ability to set Aerial Views as the default screensaver has been disabled in the FireOS menus.
 
 To get around this, you'll have to install a command-line developer tool, run a command - and that's it. I would recommend having a look at [this guide over at Nerds Chalk](https://nerdschalk.com/change-fire-tv-screensaver-apple-tv/) for the exact steps.
 
 Just note that the command is little different due to a name change in the code, try this instead:
 
-`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.codingbuffalo.aerialdream/.ui.screensaver.DreamActivity settings put secure screensaver_default_component com.codingbuffalo.aerialdream/.ui.screensaver.DreamActivity`
+`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity settings put secure screensaver_default_component com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
 
 <br/>
 
@@ -97,8 +97,6 @@ Just note that the command is little different due to a name change in the code,
 ## Known issues
 
 - Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device.
-
-- This app cannot be installed at the same time as Aeriel Dream from the Google Play Store
 
 - If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
 
