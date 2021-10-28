@@ -145,7 +145,12 @@ class VideoService(private val context: Context) {
         val videos = mutableListOf<AerialVideo>()
 
         AppleVideoQuality.values().forEach { quality ->
-            val uri = video.uri(quality)
+            val uri = try {
+                video.uri(quality)
+            } catch (ex: Exception) {
+                Log.e(TAG, ex.message!!)
+                null
+            }
             if (uri != null)
                 videos.add(AerialVideo(uri, video.location))
         }
