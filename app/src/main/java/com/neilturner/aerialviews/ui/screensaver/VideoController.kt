@@ -84,6 +84,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 } else {
                     playlist!!.previousVideo()
                 }
+                previousVideo = false
 
                 loadVideo(binding.videoView0, video)
 
