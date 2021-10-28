@@ -9,5 +9,7 @@ class VideoPlaylist(private val videos: List<AerialVideo>) {
         return videos[position++ % videos.size]
     }
 
-    //fun previousVideo(): AerialVideo {}
+    fun previousVideo(): AerialVideo {
+        return videos[position-- % videos.size]
+    }
 }

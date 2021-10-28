@@ -23,6 +23,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var playlist: VideoPlaylist? = null
     private var canSkip: Boolean
     private var alternateText: Boolean
+    private var previousVideo: Boolean
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -45,8 +46,11 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         val service = VideoService(context)
         runBlocking { playlist = service.fetchVideos() }
-        binding.root.post { start() }
+
         canSkip = true
+        previousVideo = false
+
+        binding.root.post { start() }
     }
 
     val view: View
@@ -60,7 +64,8 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.videoView0.videoView.release()
     }
 
-    fun skipVideo() {
+    fun skipVideo(previous: Boolean = false) {
+        previousVideo = previous
         fadeOutCurrentVideo()
     }
 
@@ -73,7 +78,15 @@ class VideoController(context: Context) : OnPlayerEventListener {
             override fun onAnimationStart(animation: Animation) {}
             override fun onAnimationEnd(animation: Animation) {
                 binding.loadingView.visibility = View.VISIBLE
-                loadVideo(binding.videoView0, playlist!!.nextVideo())
+
+                val video = if (!previousVideo) {
+                    playlist!!.nextVideo()
+                } else {
+                    playlist!!.previousVideo()
+                }
+
+                loadVideo(binding.videoView0, video)
+
                 if (alternateText) {
                     binding.altTextPosition = !binding.altTextPosition
                 }

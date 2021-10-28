@@ -29,13 +29,17 @@ class DreamActivity : DreamService() {
             when (event.keyCode) {
                 // Capture all d-pad presses for future use
                 KeyEvent.KEYCODE_DPAD_CENTER,
-                KeyEvent.KEYCODE_DPAD_LEFT,
                 KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
                 KeyEvent.KEYCODE_DPAD_UP_LEFT,
                 KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
                 KeyEvent.KEYCODE_DPAD_UP_RIGHT,
                 KeyEvent.KEYCODE_DPAD_UP,
                 KeyEvent.KEYCODE_DPAD_DOWN -> return true
+
+                KeyEvent.KEYCODE_DPAD_LEFT -> {
+                    videoController!!.skipVideo(true)
+                    return true
+                }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
                     videoController!!.skipVideo()
