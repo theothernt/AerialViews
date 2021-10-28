@@ -117,20 +117,33 @@ class VideoService(private val context: Context) {
 //            videos.addAll(allVideoQualities(it))
 //        }
 
-        JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Apple2018Videos::class.java)
-            .assets?.forEach {
-                videos.addAll(allVideoQualities(it))
+        try {
+            JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Apple2018Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message!!)
         }
 
-        JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Apple2018Videos::class.java)
-            .assets?.forEach {
-                videos.addAll(allVideoQualities(it))
+        try {
+            JsonHelper.parseJson(context, R.raw.tvos13, JsonHelper.Apple2018Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message!!)
         }
 
-        JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
-            .assets?.forEach {
-                videos.addAll(allVideoQualities(it))
+        try {
+            JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message!!)
         }
+
         Log.i(TAG, "Found ${videos.count()} Apple manifest videos")
 
         return videos
