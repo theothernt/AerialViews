@@ -13,10 +13,10 @@
                     app:key="reduced_buffers"
                     app:title="@string/performance_reduced_buffers" />
 
-<!--                <CheckBoxPreference-->
-<!--                    app:defaultValue="false"-->
-<!--                    app:key="exceed_renderer"-->
-<!--                    app:title="@string/performance_exceed_renderer" />-->
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="exceed_renderer"
+                    app:title="@string/performance_exceed_renderer" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_actions">
