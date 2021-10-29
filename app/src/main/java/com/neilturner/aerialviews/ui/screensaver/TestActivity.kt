@@ -20,7 +20,7 @@ class TestActivity : Activity() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_UP) {
-            Log.i(TAG, "${event.keyCode}")
+            //Log.i(TAG, "${event.keyCode}")
 
             if (!GeneralPrefs.enableSkipVideos)
                 finish()
