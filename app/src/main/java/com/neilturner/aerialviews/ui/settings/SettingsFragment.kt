@@ -7,6 +7,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import android.os.Parcelable
+import android.util.Log
+import android.widget.Toast
+import java.lang.Exception
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
@@ -32,26 +35,32 @@ class SettingsFragment :
             return super.onPreferenceTreeClick(preference)
 
         if (preference.key.contains("open_system_screensaver_options")) {
-            val intent = findScreensaverIntent()
-            startActivity(intent)
+            runScreensaverIntent()
             return true
         }
 
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun findScreensaverIntent(): Intent {
-        // Check if the daydream intent is available - some devices (e.g. Nvidia Shield) do not support it
-        var intent = Intent(SCREENSAVER_SETTINGS)
-        if (!intentAvailable(intent)) {
-            // Try opening the daydream settings activity directly: https://gist.github.com/reines/bc798a2cb539f51877bb279125092104
-            intent = Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
-            if (!intentAvailable(intent)) {
-                // If all else fails, open the normal settings screen
-                intent = Intent(SETTINGS)
+    private fun runScreensaverIntent() {
+        val intents = mutableListOf<Intent>()
+        intents += Intent(SCREENSAVER_SETTINGS)
+        intents += Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
+        intents += Intent(SETTINGS)
+
+        intents.forEach { intent ->
+            //Log.i(TAG, intent.toString())
+            if (intentAvailable(intent)) {
+                try {
+                    startActivity(intent)
+                    return
+                } catch (ex: Exception) {
+                    Log.e(TAG, ex.message!!)
+                }
             }
         }
-        return intent
+
+        Toast.makeText(requireContext(), "Unable to open your device's screensaver options", Toast.LENGTH_LONG).show()
     }
 
     private fun intentAvailable(intent: Intent): Boolean {
@@ -63,5 +72,6 @@ class SettingsFragment :
     companion object {
         const val SETTINGS = "android.settings.SETTINGS"
         const val SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS"
+        const val TAG = "SettingsFragment"
     }
 }
