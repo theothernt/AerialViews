@@ -186,7 +186,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         if (exceedRendererCapabilities) {
             parametersBuilder
-                    .setExceedRendererCapabilitiesIfNecessary(true)
+                .setExceedVideoConstraintsIfNecessary(true)
+                .setExceedRendererCapabilitiesIfNecessary(true)
         }
 
         val trackSelector = DefaultTrackSelector(context)
