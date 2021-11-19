@@ -57,21 +57,29 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     private fun buildCodecsSummary(): String {
         var summary = ""
-        val supportsAVC = "True"
-        var supportsHEVC = "False"
-        var supportsDolbyVision = "False"
+        val foundAVC = "Found"
+        var foundHEVC = "Not"
+        var foundDolbyVision = "Not Found"
+        var codecsDolbyVision = ""
 
         getCodecs().forEach{ codec ->
-            if (codec.name.lowercase().contains("hevc") && codec.codingFunction == CodecType.DECODER)
-                supportsHEVC = "True"
 
-            if (codec.name.lowercase().contains("dolby") && codec.codingFunction == CodecType.DECODER)
-                supportsDolbyVision = "True"
+            if (codec.name.lowercase().contains("hevc") && codec.codingFunction == CodecType.DECODER)
+                foundHEVC = "Found"
+
+            if (codec.name.lowercase().contains("dolby") && codec.codingFunction == CodecType.DECODER) {
+                foundDolbyVision = "Found (does not guarantee HDR playback!)"
+                codecsDolbyVision += codec.name + ", "
+            }
         }
 
-        summary += "Supports AVC: $supportsAVC\n"
-        summary += "Supports HEVC: $supportsHEVC\n"
-        summary += "Supports Dolby Vision: $supportsDolbyVision\n"
+        summary += "AVC: $foundAVC\n"
+        summary += "HEVC: $foundHEVC\n"
+        summary += "Dolby Vision: $foundDolbyVision\n"
+
+        if (codecsDolbyVision.isNotEmpty())
+            summary += "\n${codecsDolbyVision.dropLast(2)}\n"
+
         return summary
     }
 }
