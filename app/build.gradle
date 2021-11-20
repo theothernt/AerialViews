@@ -77,9 +77,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Firebase
-    implementation platform('com.google.firebase:firebase-bom:28.1.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.4'
+    implementation platform('com.google.firebase:firebase-bom:29.0.0')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
 
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
