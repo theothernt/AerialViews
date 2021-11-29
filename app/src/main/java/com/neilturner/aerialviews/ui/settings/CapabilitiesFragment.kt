@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.settings
 
+import android.media.MediaCodecList
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -21,9 +23,11 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         val display = findPreference<ListPreference>("capabilities_display") as Preference
         val resolution = findPreference<ListPreference>("capabilities_resolution") as Preference
         val codecs = findPreference<ListPreference>("capabilities_codecs") as Preference
+        val decoders = findPreference<ListPreference>("capabilities_decoders") as Preference
 
         display.summary = buildDisplaySummary()
-        codecs.summary = buildCodecsSummary()
+        codecs.summary = buildCodecSummary()
+        decoders.summary = buildDecoderSummary()
         resolution.summary = buildResolutionSummary()
     }
 
@@ -41,7 +45,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         }
 
         summary += "Supports HDR10: $supportsHDR10\n"
-        summary += "Supports Dolby Vision: $supportsDolbyVision\n"
+        summary += "Supports Dolby Vision: $supportsDolbyVision"
 
         return summary
     }
@@ -55,31 +59,56 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         return summary
     }
 
-    private fun buildCodecsSummary(): String {
+    private fun buildCodecSummary(): String {
         var summary = ""
         val foundAVC = "Found"
-        var foundHEVC = "Not"
+        var foundHEVC = "Not Found"
         var foundDolbyVision = "Not Found"
-        var codecsDolbyVision = ""
 
         getCodecs().forEach{ codec ->
 
-            if (codec.name.lowercase().contains("hevc") && codec.codingFunction == CodecType.DECODER)
+            if (codec.name.lowercase().contains("hevc") &&
+                codec.isHardwareAccelerated &&
+                codec.codingFunction == CodecType.DECODER) {
                 foundHEVC = "Found"
+            }
+
 
             if (codec.name.lowercase().contains("dolby") && codec.codingFunction == CodecType.DECODER) {
-                foundDolbyVision = "Found (does not guarantee HDR playback!)"
-                codecsDolbyVision += codec.name + ", "
+                foundDolbyVision = "Found (does not guarantee HDR playback)"
             }
         }
 
         summary += "AVC: $foundAVC\n"
         summary += "HEVC: $foundHEVC\n"
-        summary += "Dolby Vision: $foundDolbyVision\n"
-
-        if (codecsDolbyVision.isNotEmpty())
-            summary += "\n${codecsDolbyVision.dropLast(2)}\n"
+        summary += "Dolby Vision: $foundDolbyVision"
 
         return summary
+    }
+
+    private fun buildDecoderSummary(): String {
+        var summary = ""
+
+        val allCodecs = getCodecs().filter {
+            it.codingFunction == CodecType.DECODER && isVideoCodec(it.mimeTypes)
+        }
+
+        if (allCodecs.isNotEmpty())
+            summary = allCodecs.joinToString (", ", "", "", -1, "") { it.name }
+
+        Log.i("", "Decoders found: ${allCodecs.count()}")
+        return summary
+    }
+
+    private fun isVideoCodec(codecs: Array<String>): Boolean {
+        val videoCodecs = codecs.filter { it.contains("video", true) &&
+                (it.contains("avc", true) ||
+                it.contains("hevc", true) ||
+                it.contains("dolby", true))
+        }
+
+
+
+        return videoCodecs.count() > 0
     }
 }

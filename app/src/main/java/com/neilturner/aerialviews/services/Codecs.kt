@@ -15,11 +15,11 @@ class Codec(source: MediaCodecInfo) {
     val codingFunction: CodecType = if (source.isEncoder) CodecType.ENCODER else CodecType.DECODER
     val mimeTypes: Array<String> = source.supportedTypes
 
-    val canonicalName: String? = if (Build.VERSION.SDK_INT >= 29) source.canonicalName else null
-    val isAlias: Boolean? = if (Build.VERSION.SDK_INT >= 29) source.isAlias else null
-    val isVendorProvided: Boolean? = if (Build.VERSION.SDK_INT >= 29) source.isVendor else null
-    val isSoftwareOnly: Boolean? = if (Build.VERSION.SDK_INT >= 29) source.isSoftwareOnly else null
-    val isHardwareAccelerated: Boolean? = if (Build.VERSION.SDK_INT >= 29) source.isHardwareAccelerated else null
+    val canonicalName: String = if (Build.VERSION.SDK_INT >= 29) source.canonicalName else ""
+    val isAlias: Boolean = if (Build.VERSION.SDK_INT >= 29) source.isAlias else false
+    val isVendorProvided: Boolean = if (Build.VERSION.SDK_INT >= 29) source.isVendor else false
+    val isSoftwareOnly: Boolean = if (Build.VERSION.SDK_INT >= 29) source.isSoftwareOnly else false
+    val isHardwareAccelerated: Boolean = if (Build.VERSION.SDK_INT >= 29) source.isHardwareAccelerated else false
 }
 
 fun getCodecs(): List<Codec> {

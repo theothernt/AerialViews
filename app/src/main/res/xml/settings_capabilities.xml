@@ -14,6 +14,11 @@
                     app:summary=""/>
 
                 <Preference
+                    app:key="capabilities_decoders"
+                    app:title="@string/capabilities_decoders_title"
+                    app:summary=""/>
+
+                <Preference
                     app:key="capabilities_resolution"
                     app:title="@string/capabilities_resolution_title"
                     app:summary="" />
