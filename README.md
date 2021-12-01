@@ -61,9 +61,11 @@ The app can be installed and configured, like with any other Android TV device, 
 
 To get around this, you'll have to install a command-line developer tool, run a command - and that's it. I would recommend having a look at [this guide over at Nerds Chalk](https://nerdschalk.com/change-fire-tv-screensaver-apple-tv/) for the exact steps.
 
-Just note that the command is little different due to a name change in the code, try this instead:
+Just note that the commands are little different due to a name change in the code, try this instead:
 
-`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity settings put secure screensaver_default_component com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity` 
+
+`adb shell settings put secure screensaver_default_component com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
 
 <br/>
 
