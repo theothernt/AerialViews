@@ -25,14 +25,16 @@ class VideoService(private val context: Context) {
     private val providers = mutableListOf<VideoProvider>()
 
     init {
-        if (AppleVideoPrefs.enabled)
-            providers.add(AppleVideoProvider(context, AppleVideoPrefs))
 
         if (LocalVideoPrefs.enabled)
             providers.add(LocalVideoProvider(context))
 
         if (NetworkVideoPrefs.enabled)
             providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
+
+        // Remote videos added last so they'll be filtered out if duplicates are found
+        if (AppleVideoPrefs.enabled)
+            providers.add(AppleVideoProvider(context, AppleVideoPrefs))
     }
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
