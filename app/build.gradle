@@ -79,8 +79,8 @@ dependencies {
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-analytics-ktx:20.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.4'
-    implementation 'com.google.firebase:firebase-perf-ktx:20.0.3'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.5'
+    implementation 'com.google.firebase:firebase-perf-ktx:20.0.4'
 
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
