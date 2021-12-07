@@ -167,8 +167,9 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             val maxBuffer = 10000
 
             // Initial buffer size to start playback
-            val bufferForPlayback = 1000
-            val bufferForPlaybackAfterRebuffer = 5000
+            val bufferForPlayback = 1024
+            val bufferForPlaybackAfterRebuffer = 1024
+
             loadControlBuilder
                     .setBufferDurationsMs(
                             minBuffer,
