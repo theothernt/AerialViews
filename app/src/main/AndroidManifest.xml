@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.neilturner.aerialviews">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,12 +33,14 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        tools:ignore="MediaCapabilities">
 
         <activity
             android:name=".ui.settings.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/SettingsTheme">
+            android:theme="@style/SettingsTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
