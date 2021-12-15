@@ -1,6 +1,7 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.ui.settings
 
-import android.media.MediaCodecList
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.ListPreference

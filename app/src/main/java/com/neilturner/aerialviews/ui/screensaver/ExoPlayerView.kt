@@ -6,14 +6,13 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.SmbDataSourceFactory
-import com.neilturner.aerialviews.utils.FileHelper
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
-import com.google.android.exoplayer2.util.EventLogger
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.services.SmbDataSourceFactory
+import com.neilturner.aerialviews.utils.FileHelper
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
