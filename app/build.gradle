@@ -65,6 +65,20 @@ android {
             }
         }
     }
+
+    flavorDimensions "version"
+    productFlavors {
+        create("googleplay") {
+            dimension = "version"
+            applicationIdSuffix = ".googleplay"
+            versionNameSuffix = "-googleplay"
+        }
+        create("github") {
+            dimension = "version"
+            applicationIdSuffix = ".github"
+            versionNameSuffix = "-github"
+        }
+    }
 }
 
 dependencies {
