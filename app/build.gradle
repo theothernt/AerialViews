@@ -13,6 +13,9 @@ android {
         targetSdkVersion 30
         versionCode 1 // Will be incremented automatically on release
         versionName "0.99.1"
+
+        manifestPlaceholders.crashlyticsCollectionEnabled = false
+        manifestPlaceholders.analyticsCollectionEnabled = false
     }
 
     compileOptions {
@@ -45,19 +48,22 @@ android {
 
     buildTypes {
         debug {
-            //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"false", "analyticsCollectionEnabled":"false"]
             applicationIdSuffix '.debug'
             resValue "string", "app_name", "@string/app_name_debug"
+
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
+            resValue "string", "app_name", "@string/app_name_release"
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             minifyEnabled true
+
+            manifestPlaceholders.crashlyticsCollectionEnabled = true
+            manifestPlaceholders.analyticsCollectionEnabled = true
+
             //debuggable true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            manifestPlaceholders = [crashlyticsCollectionEnabled:"true" , "analyticsCollectionEnabled":"true"]
-            resValue "string", "app_name", "@string/app_name_release"
         }
         afterEvaluate {
             android.applicationVariants.all { variant ->
