@@ -78,7 +78,7 @@ dependencies {
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.1'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.2'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.6'
     implementation 'com.google.firebase:firebase-perf-ktx:20.0.4'
 
