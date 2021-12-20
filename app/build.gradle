@@ -14,6 +14,8 @@ android {
         versionCode 1 // Will be incremented automatically on release
         versionName "0.99.1"
 
+        resValue "string", "app_name", "@string/app_name_release"
+
         manifestPlaceholders.crashlyticsCollectionEnabled = false
         manifestPlaceholders.analyticsCollectionEnabled = false
     }
@@ -49,13 +51,12 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
-            resValue "string", "app_name", "@string/app_name_debug"
+            debuggable true
 
             //minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         release {
-            resValue "string", "app_name", "@string/app_name_release"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             minifyEnabled true
@@ -65,15 +66,13 @@ android {
 
             //debuggable true
         }
-        afterEvaluate {
-            android.applicationVariants.all { variant ->
-                variant.resValue 'string', 'application_id', variant.applicationId
-            }
-        }
     }
 
     flavorDimensions "version"
     productFlavors {
+        create("base") {
+            dimension = "version"
+        }
         create("googleplay") {
             dimension = "version"
             applicationIdSuffix = ".googleplay"

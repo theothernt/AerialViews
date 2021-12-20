@@ -35,14 +35,28 @@ class SettingsFragment :
             return super.onPreferenceTreeClick(preference)
 
         if (preference.key.contains("open_system_screensaver_options")) {
-            runScreensaverIntent()
+            openSystemScreensaverSettings()
+            return true
+        }
+
+        if (preference.key.contains("test_screensaver_settings")) {
+            testScreensaverSettings()
             return true
         }
 
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun runScreensaverIntent() {
+    private fun testScreensaverSettings() {
+        try {
+            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
+            startActivity(intent)
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message!!)
+        }
+    }
+
+    private fun openSystemScreensaverSettings() {
         val intents = mutableListOf<Intent>()
         intents += Intent(SCREENSAVER_SETTINGS)
         intents += Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
@@ -72,6 +86,7 @@ class SettingsFragment :
     companion object {
         const val SETTINGS = "android.settings.SETTINGS"
         const val SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS"
+        const val TEST_SCREENSAVER = "com.neilturner.aerialviews.ui.screensaver.TestActivity"
         const val TAG = "SettingsFragment"
     }
 }
