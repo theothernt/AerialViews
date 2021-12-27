@@ -16,8 +16,10 @@ android {
 
         resValue "string", "app_name", "@string/app_name_release"
 
-        manifestPlaceholders.crashlyticsCollectionEnabled = false
         manifestPlaceholders.analyticsCollectionEnabled = false
+        manifestPlaceholders.crashlyticsCollectionEnabled = false
+        manifestPlaceholders.performanceCollectionEnabled = false
+
     }
 
     compileOptions {
@@ -61,8 +63,9 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled true
 
-            manifestPlaceholders.crashlyticsCollectionEnabled = true
             manifestPlaceholders.analyticsCollectionEnabled = true
+            manifestPlaceholders.crashlyticsCollectionEnabled = true
+            manifestPlaceholders.performanceCollectionEnabled = true
 
             //debuggable true
         }

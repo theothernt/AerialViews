@@ -68,12 +68,16 @@
                 android:resource="@xml/aerial_views" />
 
             <meta-data
+                android:name="firebase_analytics_collection_enabled"
+                android:value="${analyticsCollectionEnabled}" />
+
+            <meta-data
                 android:name="firebase_crashlytics_collection_enabled"
                 android:value="${crashlyticsCollectionEnabled}" />
 
             <meta-data
-                android:name="firebase_analytics_collection_enabled"
-                android:value="${analyticsCollectionEnabled}" />
+                android:name="firebase_performance_collection_enabled"
+                android:value="${performanceCollectionEnabled}" />
         </service>
 
     </application>
