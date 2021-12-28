@@ -73,125 +73,67 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:791639863634:android:37e4e99e11302741ed8a8b",
+        "android_client_info": {
+          "package_name": "com.neilturner.aerialviews.beta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791639863634:android:0f723ea2b6ec5fd0ed8a8b",
+        "android_client_info": {
+          "package_name": "com.neilturner.aerialviews.beta.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:791639863634:android:a7e8c2444e2d2b81ed8a8b",
         "android_client_info": {
           "package_name": "com.neilturner.aerialviews.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:e1fffe8cbbb1d114ed8a8b",
-        "android_client_info": {
-          "package_name": "com.neilturner.aerialviews.github"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:73286e160de01928ed8a8b",
-        "android_client_info": {
-          "package_name": "com.neilturner.aerialviews.github.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:04bfa34d3d2e5001ed8a8b",
-        "android_client_info": {
-          "package_name": "com.neilturner.aerialviews.googleplay"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC98z0PK9Eg1eCducbOehHr47Uh0BqtXss"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "791639863634-jjo9t8mgfv05dt6o28jk4hqeoosiddat.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:d0e8add89c323957ed8a8b",
-        "android_client_info": {
-          "package_name": "com.neilturner.aerialviews.googleplay.debug"
         }
       },
       "oauth_client": [

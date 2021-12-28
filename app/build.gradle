@@ -19,7 +19,6 @@ android {
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
         manifestPlaceholders.performanceCollectionEnabled = false
-
     }
 
     compileOptions {
@@ -73,18 +72,20 @@ android {
 
     flavorDimensions "version"
     productFlavors {
-        create("base") {
+        create("github") {
             dimension = "version"
+            //applicationIdSuffix = ".github"
+            //versionNameSuffix = "-github"
+        }
+        create("beta") {
+            dimension = "version"
+            applicationIdSuffix = ".beta"
+            versionNameSuffix = "-beta"
         }
         create("googleplay") {
             dimension = "version"
-            applicationIdSuffix = ".googleplay"
-            versionNameSuffix = "-googleplay"
-        }
-        create("github") {
-            dimension = "version"
-            applicationIdSuffix = ".github"
-            versionNameSuffix = "-github"
+            //applicationIdSuffix = ".googleplay"
+            //versionNameSuffix = "-googleplay"
         }
     }
 }
