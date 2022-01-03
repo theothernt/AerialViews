@@ -34,15 +34,15 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     private fun buildDisplaySummary(): String {
         var summary = ""
-        var supportsHDR10 = "False"
-        var supportsDolbyVision = "False"
+        var supportsHDR10 = "No"
+        var supportsDolbyVision = "No"
 
         val display = getDisplay(activity)
         if (display.supportsHDR && display.hdrFormats.isNotEmpty()) {
             if (display.hdrFormats.contains(HDRFormat.DOLBY_VISION))
-                supportsDolbyVision = "True"
+                supportsDolbyVision = "Yes"
             if (display.hdrFormats.contains(HDRFormat.HDR10))
-                supportsHDR10 = "True"
+                supportsHDR10 = "Yes"
         }
 
         summary += "Supports HDR10: $supportsHDR10\n"
@@ -53,31 +53,28 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     private fun buildResolutionSummary(): String {
         val display = getDisplay(activity)
-        var summary = "Render Output: ${display.renderOutput}"
+        var summary = "UI resolution: ${display.renderOutput}"
         if (display.physicalOutput != null) {
-            summary += "\nPhysical Output: ${display.physicalOutput}"
+            summary += "\nMax. video resolution: ${display.physicalOutput}"
         }
         return summary
     }
 
     private fun buildCodecSummary(): String {
         var summary = ""
-        val foundAVC = "Found"
+        var foundAVC = "Not Found"
         var foundHEVC = "Not Found"
         var foundDolbyVision = "Not Found"
 
         getCodecs().forEach{ codec ->
+            if (isCodecOfType(codec.mimeTypes, "avc"))
+                foundAVC = "Found"
 
-            if (codec.name.lowercase().contains("hevc") &&
-                codec.isHardwareAccelerated &&
-                codec.codingFunction == CodecType.DECODER) {
+            if (isCodecOfType(codec.mimeTypes, "hevc"))
                 foundHEVC = "Found"
-            }
 
-
-            if (codec.name.lowercase().contains("dolby") && codec.codingFunction == CodecType.DECODER) {
-                foundDolbyVision = "Found (does not guarantee HDR playback)"
-            }
+            if (isCodecOfType(codec.mimeTypes, "dolby"))
+                foundDolbyVision = "Found"
         }
 
         summary += "AVC: $foundAVC\n"
@@ -107,9 +104,13 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
                 it.contains("hevc", true) ||
                 it.contains("dolby", true))
         }
+        return videoCodecs.count() > 0
+    }
 
-
-
+    private fun isCodecOfType(codecs: Array<String>, type: String): Boolean {
+        val videoCodecs = codecs.filter { it.contains("video", true) &&
+                it.contains(type, true)
+        }
         return videoCodecs.count() > 0
     }
 }
