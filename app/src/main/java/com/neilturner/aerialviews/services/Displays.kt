@@ -41,7 +41,8 @@ fun DisplayStateToPowerState(value: Int): PowerState {
 
 class OutputDescription(val id: Int, val width: Int, val height: Int, val refreshRate: Float) {
     override fun toString(): String {
-        return "${width}x${height}@${refreshRate}"
+        val formattedRefreshRate = "%.2f".format(refreshRate.toDouble())
+        return "${width}x${height} @ ${formattedRefreshRate}hz"
     }
 }
 
