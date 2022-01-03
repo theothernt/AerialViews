@@ -6,17 +6,20 @@
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
-                    app:title="@string/performance_enable_tunneling" />
+                    app:summary="@string/performance_enable_tunneling_summary"
+                    app:title="@string/performance_enable_tunneling_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="reduced_buffers"
-                    app:title="@string/performance_reduced_buffers" />
+                    app:summary="@string/performance_reduced_buffers_summary"
+                    app:title="@string/performance_reduced_buffers_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="exceed_renderer"
-                    app:title="@string/performance_exceed_renderer" />
+                    app:summary="@string/performance_exceed_renderer_summary"
+                    app:title="@string/performance_exceed_renderer_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_actions">

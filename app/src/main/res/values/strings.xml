@@ -17,7 +17,7 @@
     <string name="apple_videos_title">Apple TV Videos</string>
     <string name="apple_videos_summary">Stream Apple videos directly</string>
 
-    <string name="apple_videos_enabled">Show Apple videos</string>
+    <string name="apple_videos_enabled">Use Apple videos</string>
 
     <string name="apple_videos_quality_title">Quality</string>
     <string name="apple_videos_quality_summary">Select a video quality</string>
@@ -34,23 +34,23 @@
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
 
     <!-- Local Video Options -->
-    <string name="local_videos_enabled_title">Show Local videos</string>
+    <string name="local_videos_enabled_title">Use Local videos</string>
     <string name="local_videos_enabled_summary">Use any videos on device, or USB</string>
 
-    <string name="network_videos_enabled_title">Show Network videos</string>
+    <string name="network_videos_enabled_title">Use Network videos</string>
     <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
 
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
 
-    <string name="any_videos_use_apple_manifests_title">Use Apple manifests</string>
-    <string name="any_videos_use_apple_manifests_summary">Shows locations for Apple videos</string>
+    <string name="any_videos_use_apple_manifests_title">Show locations for Apple videos</string>
+    <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
 
     <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>
     <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignore non-manifest videos</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any manifest</string>
+    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unknown videos</string>
+    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any video manifest</string>
 
     <!-- Network Video Options -->
     <string name="network_videos_hostname_title">Hostname</string>
@@ -93,9 +93,12 @@
     <string name="performance_title">Performance &amp; Debug</string>
     <string name="performance_summary">For troubleshooting issues</string>
 
-    <string name="performance_enable_tunneling">Enable tunneling</string>
-    <string name="performance_reduced_buffers">Use reduced video buffers</string>
-    <string name="performance_exceed_renderer">Exceed renderer capabilities</string>
+    <string name="performance_enable_tunneling_title">Enable tunneling</string>
+    <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
+    <string name="performance_reduced_buffers_title">Use reduced video buffers</string>
+    <string name="performance_reduced_buffers_summary">Slightly quicker video loading a slower or high latency connection</string>
+    <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
+    <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
     <string name="capabilities_display_title">TV/Display</string>
     <string name="capabilities_codecs_title">Codec Summary</string>
@@ -103,7 +106,7 @@
     <string name="capabilities_resolution_title">Resolution</string>
 
     <string name="playback_speed_title">Playback Speed</string>
-    <string name="playback_speed_summary">Choose the playback speed</string>
+    <string name="playback_speed_summary">Choose a playback speed (default: 1x)</string>
     <string-array name="playback_speed_entries">
         <item>0.25x</item>
         <item>0.5x</item>
