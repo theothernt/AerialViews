@@ -34,21 +34,6 @@ android {
         dataBinding true
     }
 
-    signingConfigs {
-        release {
-            def keystorePropertiesFile = rootProject.file("../AppSignature/keystore.properties")
-            if (keystorePropertiesFile.exists()) {
-                def keystoreProperties = new Properties()
-                keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-
-                keyAlias keystoreProperties.keyAlias
-                keyPassword keystoreProperties.keyPassword
-                storeFile file(keystoreProperties.storeFile)
-                storePassword keystoreProperties.storePassword
-            }
-        }
-    }
-
     buildTypes {
         debug {
             applicationIdSuffix '.debug'
@@ -59,8 +44,22 @@ android {
         }
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
             minifyEnabled true
+
+            // Use different keys for different flavors of app
+            productFlavors.all { flavor ->
+                def keystorePropertiesFile = rootProject.file("signing/signing.properties")
+                if (keystorePropertiesFile.exists()) {
+                    def keystoreProperties = new Properties()
+                    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+                    flavor.signingConfig = android.signingConfigs.create("${flavor.name}")
+                    flavor.signingConfig.storeFile = rootProject.file(keystoreProperties["storeFile"])
+                    flavor.signingConfig.storePassword = keystoreProperties["storePassword"]
+                    flavor.signingConfig.keyAlias = keystoreProperties["${flavor.name}"]
+                    flavor.signingConfig.keyPassword = keystoreProperties["keyPassword"]
+                }
+            }
 
             manifestPlaceholders.analyticsCollectionEnabled = true
             manifestPlaceholders.crashlyticsCollectionEnabled = true
