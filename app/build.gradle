@@ -48,7 +48,7 @@ android {
 
             // Use different keys for different flavors of app
             productFlavors.all { flavor ->
-                def keystorePropertiesFile = rootProject.file("signing/signing.properties")
+                def keystorePropertiesFile = rootProject.file("signing/${flavor.name}.properties")
                 if (keystorePropertiesFile.exists()) {
                     def keystoreProperties = new Properties()
                     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
@@ -56,7 +56,7 @@ android {
                     flavor.signingConfig = android.signingConfigs.create("${flavor.name}")
                     flavor.signingConfig.storeFile = rootProject.file(keystoreProperties["storeFile"])
                     flavor.signingConfig.storePassword = keystoreProperties["storePassword"]
-                    flavor.signingConfig.keyAlias = keystoreProperties["${flavor.name}"]
+                    flavor.signingConfig.keyAlias = keystoreProperties["keyAlias"]
                     flavor.signingConfig.keyPassword = keystoreProperties["keyPassword"]
                 }
             }
