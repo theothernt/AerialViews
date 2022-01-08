@@ -11,7 +11,7 @@ android {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1 // Will be incremented automatically on release
+        versionCode 2 // Will be incremented automatically on release
         versionName "1.0"
 
         resValue "string", "app_name", "@string/app_name_release"
