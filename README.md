@@ -7,31 +7,33 @@
 
 ## A screensaver for Android TV devices, including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver
 
-<br/>
+<br />
+
+[![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
 
 This is a forked and modified version which features the following changes...
 
 - Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
 
-- Supports *only* the latest Apple video feed (it contains nearly all previous videos too!)
+- Supports *only* the latest Apple video feed (it contains nearly all previous videos too, don't worry!)
 
 - Ability to play Apple videos **or any other** stored locally or on a local network (Samba/SMB) share
 
-- HDR support (Dolby Vision is required for Apple's videos)
+- HDR support - Dolby Vision is required for Apple's videos
 
-- Skip video feature (press right on your TV remote's d-pad)
+- Skip to next or previous video (press left or right on your TV remote's d-pad)
 
 - Alternate text position to help avoid burn-in on OLED TVs
 
 <br/>
 
-## How to install
+## How to get Aerial Views...
 
-This version of the app is not available in the Play Store, yet, so your options are...
+There are a couple of ways to install Aerial Views on your device...
 
-1. [Download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
+1. [Search for Aerial Views on the Google Play Store](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews) and install
 
-2. Clone this repo to your PC or Mac, download Android Studio, then build and deploy
+2. [Download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
 <br/>
 
@@ -51,7 +53,7 @@ Here are some things to try...
 
 * If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
 
-* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, Amazon Prime Video.
+* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, Amazon Prime Video - typically a Dolby Vision logo appears on the TV when this mode is activated
 
 <br/>
 
@@ -77,7 +79,7 @@ Just note that the commands are little different due to a name change in the cod
 
 - **Local** videos can be placed in any folder
 
-- When using **local and remote** playback, local videos are used if found, but for missing videos, the remote version is used.
+- When using **local and remote** playback, local videos are used if found, but for missing videos, the remote version is used
 
 <br/>
 
@@ -98,7 +100,7 @@ Just note that the commands are little different due to a name change in the cod
 
 ## Known issues
 
-- Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device.
+- Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device
 
 - If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
 
