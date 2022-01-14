@@ -5,8 +5,6 @@
 
 A screensaver for Android TV devices, including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver
 
-<br/>
-
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
