@@ -1,39 +1,27 @@
 # Aerial Views
 
-[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U) [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/I3I86BK6U)
+A screensaver for Android TV devices, including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver
 
-## A screensaver for Android TV devices, including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver
+<br/>
 
-<br />
+## Features include...
 
-[![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
-
-This is a forked and modified version which features the following changes...
-
-- Great performance and support for older Android TVs (eg. 2015/ATV1 platform)
-
-- Supports *only* the latest Apple video feed (it contains nearly all previous videos too, don't worry!)
-
-- Ability to play Apple videos **or any other** stored locally or on a local network (Samba/SMB) share
-
-- HDR support - Dolby Vision is required for Apple's videos
-
-- Skip to next or previous video (press left or right on your TV remote's d-pad)
-
-- Alternate text position to help avoid burn-in on OLED TVs
+* 4K Dolby Vision (HDR) videos, if your TV supports it
+* Option to avoid burn-in on OLED TVs
+* Option to play videos locally or via network share
+* Skip to next or previous video (press left or right on your TV remote's d-pad)
+* Supports *only* the latest Apple video feed (it contains nearly all previous videos too, don't worry!)
 
 <br/>
 
 ## How to get Aerial Views...
 
-There are a couple of ways to install Aerial Views on your device...
+[![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
 
-1. [Search for Aerial Views on the Google Play Store](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews) and install
-
-2. [Download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
+Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
 <br/>
 
