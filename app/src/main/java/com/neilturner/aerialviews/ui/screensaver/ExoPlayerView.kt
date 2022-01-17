@@ -10,13 +10,14 @@ import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
+import com.google.android.exoplayer2.video.VideoSize
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private val player: SimpleExoPlayer
+    private val player: ExoPlayer
     private val useReducedBuffering: Boolean = GeneralPrefs.reducedBuffers
     private val enableTunneling: Boolean = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
@@ -149,14 +150,14 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         super.onPlayerErrorChanged(error)
     }
 
-    override fun onVideoSizeChanged(width: Int, height: Int, unappliedRotationDegrees: Int, pixelWidthHeightRatio: Float) {
-        aspectRatio = if (height == 0) 0F else width * pixelWidthHeightRatio / height
+    override fun onVideoSizeChanged(videoSize: VideoSize) {
+        aspectRatio = if (height == 0) 0F else width * videoSize.pixelWidthHeightRatio / height
         requestLayout()
     }
 
     private val timerRunnable = Runnable { listener!!.onAlmostFinished(this@ExoPlayerView) }
 
-    private fun buildPlayer(context: Context): SimpleExoPlayer {
+    private fun buildPlayer(context: Context): ExoPlayer {
         val loadControl: DefaultLoadControl
         val loadControlBuilder = DefaultLoadControl.Builder()
 
@@ -193,7 +194,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val trackSelector = DefaultTrackSelector(context)
         trackSelector.parameters = parametersBuilder.build()
 
-        val player = SimpleExoPlayer.Builder(context)
+        val player = ExoPlayer.Builder(context)
                 .setLoadControl(loadControl)
                 .setTrackSelector(trackSelector)
                 .build()

@@ -105,7 +105,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-perf-ktx:20.0.4'
 
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.15.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.16.1'
 
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.leanback:leanback-preference:1.0.0'
