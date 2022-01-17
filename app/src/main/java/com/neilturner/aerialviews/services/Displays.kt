@@ -7,6 +7,7 @@ import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.WindowManager
+import com.google.android.exoplayer2.util.Util
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
@@ -46,7 +47,7 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
     }
 }
 
-class Display(source: NativeDisplay, windowManager: WindowManager) {
+class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
     val name: String = source.name
     val id: Int = source.displayId
     val valid: Boolean = source.isValid
@@ -95,7 +96,9 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
 
         // If available on device get display mode
         val mode = source.mode
-        physicalOutput = OutputDescription(mode.modeId, mode.physicalWidth, mode.physicalHeight, mode.refreshRate)
+        // Use ExoPlayer util to get display dimensions as it covers more edge cases
+        val displaySize = Util.getCurrentDisplayModeSize(context, source)
+        physicalOutput = OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
         supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
 
         // Check HDR Capabilities if available on device
@@ -131,6 +134,7 @@ class Display(source: NativeDisplay, windowManager: WindowManager) {
 fun getDisplay(activity: Activity?): Display {
     val displayManager = activity?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     val display = displayManager.displays[0]
+    val context = activity.applicationContext
     val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    return Display(display, windowManager)
+    return Display(display, windowManager, context)
 }
