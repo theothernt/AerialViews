@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 2 // Will be incremented automatically on release
         versionName "1.0"
 

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.services
 
 import com.neilturner.aerialviews.utils.SmbHelper

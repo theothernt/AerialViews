@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName", "unused", "unused")
+
 package com.neilturner.aerialviews.services
 
 import android.app.Activity

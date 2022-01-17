@@ -1,3 +1,5 @@
+@file:Suppress("unused", "unused")
+
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
