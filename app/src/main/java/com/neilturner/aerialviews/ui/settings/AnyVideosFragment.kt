@@ -4,23 +4,33 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.Manifest
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Parcelable
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
+import com.google.modernstorage.permissions.StoragePermissions
+import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.utils.PermissionHelper
 
 class AnyVideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-    private var state: Parcelable? = null
+    private var storagePermissions: StoragePermissions? = null
+    private var requestPermission: ActivityResultLauncher<String>? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        storagePermissions = StoragePermissions(requireContext())
+        requestPermission = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+                resetPreference()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -28,28 +38,31 @@ class AnyVideosFragment :
         super.onDestroy()
     }
 
-    override fun onPause() {
-        state = listView.layoutManager?.onSaveInstanceState()
-        super.onPause()
-    }
-
     override fun onResume() {
-        if (state != null) listView.layoutManager?.onRestoreInstanceState(state)
+
+        val canReadVideos = storagePermissions?.canReadFiles(
+            types = listOf(FileType.Video),
+            createdBy = StoragePermissions.CreatedBy.AllApps
+        )!!
+
+        if (!canReadVideos
+            && requiresPermission()) {
+            resetPreference()
+        }
         super.onResume()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "local_videos_enabled" &&
-            requiresPermission() &&
-            !PermissionHelper.hasStoragePermission(requireContext())) {
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
-        }
-    }
+        if (key == "local_videos_enabled"
+            && requiresPermission()) {
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            1 -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                resetPreference()
+            val canReadVideos = storagePermissions?.canReadFiles(
+                types = listOf(FileType.Video),
+                createdBy = StoragePermissions.CreatedBy.AllApps
+            )!!
+
+            if (!canReadVideos) {
+                requestPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
