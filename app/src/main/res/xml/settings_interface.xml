@@ -8,6 +8,11 @@
                     app:key="show_location"
                     app:summary="@string/interface_show_location_summary"
                     app:title="@string/interface_show_location_title" />
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="use_poi_as_location"
+                    app:summary="@string/interface_use_poi_location_summary"
+                    app:title="@string/interface_use_poi_location_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="true"

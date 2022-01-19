@@ -75,6 +75,9 @@
     <string name="interface_show_location_title">Show location</string>
     <string name="interface_show_location_summary">Shows the title, usually the location, of the video</string>
 
+    <string name="interface_use_poi_location_title">Show Point of Interest Info</string>
+    <string name="interface_use_poi_location_summary">Shows the Point of Interest info instead of Location for Apple TV Videos (Localized)</string>
+
     <string name="interface_alt_text_position_title">Alternate text position</string>
     <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
