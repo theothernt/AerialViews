@@ -36,6 +36,8 @@
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
             app:showLocation="@{showLocation}"
+            app:usePoiText="@{usePoiText}"
+            app:showClock="@{showClock}"
             app:showAltClock="@{showAltClock}"
             app:altTextPosition="@{altTextPosition}"/>
 

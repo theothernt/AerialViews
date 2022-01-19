@@ -44,7 +44,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
-        binding.videoView0.usePoiText = GeneralPrefs.usePoiText
 
         val service = VideoService(context)
         runBlocking { playlist = service.fetchVideos() }

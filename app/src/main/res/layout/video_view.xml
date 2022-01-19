@@ -18,6 +18,10 @@
             type="boolean" />
 
         <variable
+            name="showClock"
+            type="boolean" />
+
+        <variable
             name="altTextPosition"
             type="boolean" />
 
@@ -59,7 +63,8 @@
             android:layout_marginBottom="32dp"
             android:ellipsize="end"
             android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
-            android:lines="@{usePoiText ? 2 : 1}"
+            android:minLines="@{usePoiText &amp;&amp; (showClock || showAltClock) ? 2 : 1}"
+            android:maxLines="@{usePoiText ? 2 : 1}"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="POI example Text" />
 
