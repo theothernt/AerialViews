@@ -31,18 +31,20 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         val showClock = GeneralPrefs.showClock
         binding.showLocation = GeneralPrefs.showLocation
+        binding.usePoiText = GeneralPrefs.usePoiText
         alternateText = GeneralPrefs.alternateTextPosition
 
         if (showClock) {
             binding.showClock = !alternateText
             binding.showAltClock = alternateText
         } else {
-            binding.showClock = showClock
-            binding.showAltClock = showClock
+            binding.showClock = false
+            binding.showAltClock = false
         }
 
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
+        binding.videoView0.usePoiText = GeneralPrefs.usePoiText
 
         val service = VideoService(context)
         runBlocking { playlist = service.fetchVideos() }

@@ -10,6 +10,10 @@
             type="boolean" />
 
         <variable
+            name="usePoiText"
+            type="boolean" />
+
+        <variable
             name="showClock"
             type="boolean" />
 
@@ -50,7 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:paddingBottom="@{showLocation ? @dimen/large_padding : @dimen/small_padding}"
+            android:paddingBottom="@{showLocation ? (usePoiText ? @dimen/extra_padding : @dimen/large_padding) : @dimen/small_padding}"
             android:layout_marginEnd="31dp"
             android:gravity="end"
             android:visibility="@{showClock ? View.VISIBLE : View.GONE}" />
