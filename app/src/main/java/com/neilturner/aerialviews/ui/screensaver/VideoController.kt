@@ -113,9 +113,37 @@ class VideoController(context: Context) : OnPlayerEventListener {
         }
     }
 
+    private var currentPositionProgressHandler: (()->Unit)? = null
+
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
-        Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri}")
-        videoBinding.location.text = video.location
+        Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
+        videoBinding.location.text = if (GeneralPrefs.usePoiText) video.poi[0] ?: video.location else video.location
+
+        if (GeneralPrefs.usePoiText && video.poi.size > 1) { // everything else is static anyways
+            val poiTimes = video.poi.keys.sorted()
+            var lastPoi = 0
+            currentPositionProgressHandler = {
+                val time = videoBinding.videoView.currentPosition / 1000
+                val poi = poiTimes.findLast { it <= time } ?: 0
+                val update = poi != lastPoi
+                if (update) {
+                    lastPoi = poi
+                    videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
+                        videoBinding.location.text = video.poi[poi]
+                        videoBinding.location.animate().alpha(1f).setDuration(1000).start()
+                    }.start()
+                }
+                videoBinding.location.postDelayed ({
+                    currentPositionProgressHandler?.let { it() }
+                }, if (update) 3000 else 1000)
+            }
+            videoBinding.location.postDelayed ({
+                currentPositionProgressHandler?.let { it() }
+            },1000)
+        } else {
+            currentPositionProgressHandler = null
+        }
+
         videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
     }

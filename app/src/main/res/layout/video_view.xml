@@ -50,10 +50,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="31dp"
             android:layout_marginStart="31dp"
+            android:layout_marginEnd="31dp"
+            android:layout_marginBottom="32dp"
+            android:ellipsize="end"
             android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
+            android:lines="1"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
