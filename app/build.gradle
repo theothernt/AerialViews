@@ -97,6 +97,7 @@ android {
 dependencies {
     implementation "androidx.core:core-ktx:1.7.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 
     def coroutines_version = '1.6.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
