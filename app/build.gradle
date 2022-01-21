@@ -55,9 +55,14 @@ android {
 
                     flavor.signingConfig = android.signingConfigs.create("${flavor.name}")
                     flavor.signingConfig.storeFile = rootProject.file(keystoreProperties["storeFile"])
+                    if(!flavor.signingConfig.storeFile.exists()) {
+                        throw new GradleException("Keystore $flavor.signingConfig.storeFile not found!")
+                    }
                     flavor.signingConfig.storePassword = keystoreProperties["storePassword"]
                     flavor.signingConfig.keyAlias = keystoreProperties["keyAlias"]
                     flavor.signingConfig.keyPassword = keystoreProperties["keyPassword"]
+                } else {
+                    println "signing properties file $keystorePropertiesFile not found"
                 }
             }
 
