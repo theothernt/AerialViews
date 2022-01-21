@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
+import com.neilturner.aerialviews.models.LocationInformationStyle
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.UITextPrefs
@@ -107,9 +108,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        videoBinding.location.text = if (UITextPrefs.usePoiText) video.poi[0] ?: video.location else video.location
+        videoBinding.location.text = if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST) video.poi[0] ?: video.location else video.location
 
-        if (UITextPrefs.usePoiText && video.poi.size > 1) { // everything else is static anyways
+        if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
             currentPositionProgressHandler = {
