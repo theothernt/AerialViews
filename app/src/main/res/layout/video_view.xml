@@ -6,23 +6,11 @@
         <import type="android.view.Gravity" />
 
         <variable
-            name="showLocation"
-            type="boolean" />
+            name="textPrefs"
+            type="com.neilturner.aerialviews.models.prefs.UITextPrefs" />
 
         <variable
-            name="usePoiText"
-            type="boolean" />
-
-        <variable
-            name="showAltClock"
-            type="boolean" />
-
-        <variable
-            name="showClock"
-            type="boolean" />
-
-        <variable
-            name="altTextPosition"
+            name="isAlternateRun"
             type="boolean" />
 
         <variable
@@ -48,9 +36,9 @@
             android:layout_gravity="bottom"
             android:layout_marginStart="31dp"
             android:layout_marginEnd="31dp"
-            android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
-            android:paddingBottom="@{showLocation ? (usePoiText ? @dimen/extra_padding : @dimen/large_padding) : @dimen/small_padding}"
-            android:visibility="@{showAltClock ? View.VISIBLE : View.GONE}" />
+            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
+            android:paddingBottom="@{textPrefs.showLocation ? (textPrefs.usePoiText ? @dimen/extra_padding : @dimen/large_padding) : @dimen/small_padding}"
+            android:visibility="@{textPrefs.showClock ? View.VISIBLE : View.GONE}" />
 
         <TextView
             android:id="@+id/location"
@@ -62,10 +50,10 @@
             android:layout_marginEnd="31dp"
             android:layout_marginBottom="32dp"
             android:ellipsize="end"
-            android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
-            android:minLines="@{usePoiText &amp;&amp; (showClock || showAltClock) ? 2 : 1}"
-            android:maxLines="@{usePoiText ? 2 : 1}"
-            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
+            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
+            android:minLines="@{textPrefs.usePoiText &amp;&amp; textPrefs.showClock ? 2 : 1}"
+            android:maxLines="@{textPrefs.usePoiText ? 2 : 1}"
+            android:visibility="@{textPrefs.showLocation ? View.VISIBLE : View.GONE}"
             tools:text="POI example Text" />
 
     </FrameLayout>

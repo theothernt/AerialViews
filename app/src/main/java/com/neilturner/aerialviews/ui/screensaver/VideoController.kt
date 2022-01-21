@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.UITextPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
@@ -22,25 +23,13 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private val binding: AerialActivityBinding
     private var playlist: VideoPlaylist? = null
     private var canSkip: Boolean
-    private var alternateText: Boolean
     private var previousVideo: Boolean
 
     init {
         val inflater = LayoutInflater.from(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false)
 
-        val showClock = GeneralPrefs.showClock
-        binding.showLocation = GeneralPrefs.showLocation
-        binding.usePoiText = GeneralPrefs.usePoiText
-        alternateText = GeneralPrefs.alternateTextPosition
-
-        if (showClock) {
-            binding.showClock = !alternateText
-            binding.showAltClock = alternateText
-        } else {
-            binding.showClock = false
-            binding.showAltClock = false
-        }
+        binding.textPrefs = UITextPrefs
 
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
@@ -89,8 +78,8 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
                 loadVideo(binding.videoView0, video)
 
-                if (alternateText) {
-                    binding.altTextPosition = !binding.altTextPosition
+                if (UITextPrefs.alternateTextPosition) {
+                    binding.videoView0.isAlternateRun = !binding.videoView0.isAlternateRun
                 }
             }
             override fun onAnimationRepeat(animation: Animation) {}
@@ -118,9 +107,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        videoBinding.location.text = if (GeneralPrefs.usePoiText) video.poi[0] ?: video.location else video.location
+        videoBinding.location.text = if (UITextPrefs.usePoiText) video.poi[0] ?: video.location else video.location
 
-        if (GeneralPrefs.usePoiText && video.poi.size > 1) { // everything else is static anyways
+        if (UITextPrefs.usePoiText && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
             currentPositionProgressHandler = {
