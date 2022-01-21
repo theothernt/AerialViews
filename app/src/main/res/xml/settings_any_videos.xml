@@ -18,6 +18,8 @@
 
         <PreferenceCategory app:title="@string/category_network_settings">
                 <Preference
+                    app:dependency="network_videos_enabled"
+                    app:disableDependentsState="false"
                     app:title="Credentials"
                     app:summary="Server details and credentials for SMB access"
                     app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>

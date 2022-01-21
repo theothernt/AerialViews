@@ -96,7 +96,7 @@
     <string name="performance_enable_tunneling_title">Enable tunneling</string>
     <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
     <string name="performance_reduced_buffers_title">Use reduced video buffers</string>
-    <string name="performance_reduced_buffers_summary">Slightly quicker video loading a slower or high latency connection</string>
+    <string name="performance_reduced_buffers_summary">May help videos start a little faster on slower or high latency connection</string>
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
