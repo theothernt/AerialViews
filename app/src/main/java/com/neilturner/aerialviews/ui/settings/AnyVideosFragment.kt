@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.modernstorage.permissions.StoragePermissions
+import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 
@@ -40,7 +41,10 @@ class AnyVideosFragment :
 
     override fun onResume() {
 
-        val canReadVideos = storagePermissions?.canReadFiles(
+
+        //val canReadVideos = storagePermissions?.canReadFiles(
+        val canReadVideos = storagePermissions?.hasAccess(
+            action = Action.READ,
             types = listOf(FileType.Video),
             createdBy = StoragePermissions.CreatedBy.AllApps
         )!!
@@ -56,7 +60,8 @@ class AnyVideosFragment :
         if (key == "local_videos_enabled"
             && requiresPermission()) {
 
-            val canReadVideos = storagePermissions?.canReadFiles(
+            val canReadVideos = storagePermissions?.hasAccess(
+                action = Action.READ,
                 types = listOf(FileType.Video),
                 createdBy = StoragePermissions.CreatedBy.AllApps
             )!!

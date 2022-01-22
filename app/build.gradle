@@ -104,8 +104,8 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-    implementation('com.google.modernstorage:modernstorage-permissions:1.0.0-alpha04')
-    implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha04')
+    implementation('com.google.modernstorage:modernstorage-permissions:1.0.0-alpha05')
+    implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha05')
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
