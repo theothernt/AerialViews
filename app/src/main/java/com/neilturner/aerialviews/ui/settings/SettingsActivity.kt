@@ -55,7 +55,7 @@ class SettingsActivity :AppCompatActivity(),
             pref.fragment
         ).apply {
             arguments = args
-            setTargetFragment(caller, 0)
+            //setTargetFragment(caller, 0)
         }
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()

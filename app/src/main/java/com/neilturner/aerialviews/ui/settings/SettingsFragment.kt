@@ -9,6 +9,8 @@ import com.neilturner.aerialviews.R
 import android.util.Log
 import android.widget.Toast
 import com.google.modernstorage.permissions.StoragePermissions
+import com.google.modernstorage.permissions.StoragePermissions.Action
+import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import java.lang.Exception
 
@@ -42,8 +44,9 @@ class SettingsFragment :
 
         val permissionEnabled = LocalVideoPrefs.enabled
         val storagePermissions = StoragePermissions(requireContext())
-        val canReadVideos = storagePermissions.canReadFiles(
-            types = listOf(StoragePermissions.FileType.Video),
+        val canReadVideos = storagePermissions.hasAccess(
+            action = Action.READ,
+            types = listOf(FileType.Video),
             createdBy = StoragePermissions.CreatedBy.AllApps
         )
 

@@ -2,7 +2,6 @@
     <!-- General -->
     <string name="app_name_release">Aerial Views</string>
     <string name="app_name_debug">Aerial Views (Debug)</string>
-    <string name="loading_aerial"></string>
 
     <!-- Categories -->
     <string name="category_capabilities">Capabilities</string>
@@ -95,8 +94,8 @@
     <string name="interface_shuffle_videos_title">Shuffle videos</string>
     <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
 
-    <string name="interface_remove_duplicates_title">Remove duplicates</string>
-    <string name="interface_remove_duplicates_summary">Removed duplicate videos from the playlist based on filename only</string>
+    <string name="interface_remove_duplicates_title">Remove duplicate videos</string>
+    <string name="interface_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
 
     <string name="performance_title">Performance &amp; Debug</string>
     <string name="performance_summary">For troubleshooting issues</string>
