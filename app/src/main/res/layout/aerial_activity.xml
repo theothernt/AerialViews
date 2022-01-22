@@ -21,15 +21,13 @@
             layout="@layout/video_view"
             app:textPrefs="@{textPrefs}"/>
 
-        <TextView
+        <View
             android:id="@+id/loading_view"
-            style="@style/LoadingText"
+            android:alpha="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#000"
-            android:gravity="center"
-            android:text="@string/loading_aerial" />
-
+            android:gravity="center" />
     </FrameLayout>
 
 </layout>

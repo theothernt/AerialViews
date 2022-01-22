@@ -75,7 +75,4 @@
             app:flow_wrapMode="none" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </layout>
