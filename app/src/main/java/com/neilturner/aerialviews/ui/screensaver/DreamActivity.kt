@@ -38,12 +38,12 @@ class DreamActivity : DreamService() {
                 KeyEvent.KEYCODE_DPAD_DOWN -> return true
 
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    videoController!!.skipVideo(true)
+                    videoController?.skipVideo(true)
                     return true
                 }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    videoController!!.skipVideo()
+                    videoController?.skipVideo()
                     return true
                 }
 
@@ -63,7 +63,7 @@ class DreamActivity : DreamService() {
     }
 
     override fun onDreamingStopped() {
-        videoController!!.stop()
+        videoController?.stop()
         super.onDreamingStopped()
     }
 

@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
         <import type="android.view.Gravity" />
 
         <variable
-            name="showLocation"
-            type="boolean" />
+            name="textPrefs"
+            type="com.neilturner.aerialviews.models.prefs.UITextPrefs" />
 
         <variable
-            name="showAltClock"
-            type="boolean" />
-
-        <variable
-            name="altTextPosition"
+            name="isAlternateRun"
             type="boolean" />
 
         <variable
@@ -22,40 +20,62 @@
             type="android.widget.MediaController.MediaPlayerControl" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
             android:id="@+id/video_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextClock
-            android:id="@+id/altClock"
+            android:id="@+id/clock"
             style="@style/ClockText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:paddingBottom="@{showLocation ? @dimen/large_padding : @dimen/small_padding}"
-            android:layout_marginEnd="31dp"
-            android:layout_marginStart="31dp"
-            android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
-            android:visibility="@{showAltClock ? View.VISIBLE : View.GONE}" />
+            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
+            android:visibility="@{textPrefs.showClock ? View.VISIBLE : View.GONE}"
+            tools:text="23:15" />
 
         <TextView
             android:id="@+id/location"
             style="@style/LocationText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
-            android:layout_marginEnd="31dp"
-            android:layout_marginStart="31dp"
-            android:gravity="@{altTextPosition ? Gravity.START : Gravity.END}"
-            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}" />
+            android:ellipsize="end"
+            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
+            android:maxLines="2"
+            android:minLines="@{(textPrefs.locationInfoStyle == com.neilturner.aerialviews.models.LocationInformationStyle.POINT_OF_INTEREST) &amp;&amp; textPrefs.showClock ? 2 : 1}"
+            android:visibility="@{textPrefs.showLocation ? View.VISIBLE : View.GONE}"
+            tools:text="POI example Text"
+            tools:visibility="visible" />
 
-    </FrameLayout>
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flow"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_border_padding"
+            android:layout_marginEnd="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding"
+            app:flow_verticalGap="@dimen/text_block_Padding"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="clock,location"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:flow_verticalAlign="bottom"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="none" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
 </layout>
