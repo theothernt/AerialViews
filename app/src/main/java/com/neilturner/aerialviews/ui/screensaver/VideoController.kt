@@ -63,13 +63,15 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private fun fadeOutCurrentVideo() {
         if (!canSkip) return
         canSkip = false
-        val animation: Animation = AlphaAnimation(0f, 1f)
-        animation.duration = ExoPlayerView.DURATION
-        animation.setAnimationListener(object : AnimationListener {
-            override fun onAnimationStart(animation: Animation) {}
-            override fun onAnimationEnd(animation: Animation) {
-                binding.loadingView.visibility = View.VISIBLE
 
+        binding.loadingView
+            .animate()
+            .alpha(1f)
+            .setDuration(ExoPlayerView.DURATION)
+            .withStartAction {
+                binding.loadingView.visibility = View.VISIBLE
+            }
+            .withEndAction{
                 val video = if (!previousVideo) {
                     playlist!!.nextVideo()
                 } else {
@@ -82,25 +84,19 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 if (UITextPrefs.alternateTextPosition) {
                     binding.videoView0.isAlternateRun = !binding.videoView0.isAlternateRun
                 }
-            }
-            override fun onAnimationRepeat(animation: Animation) {}
-        })
-        binding.loadingView.startAnimation(animation)
+            }.start()
     }
 
     private fun fadeInNextVideo() {
         if (binding.loadingView.visibility == View.VISIBLE) {
-            val animation: Animation = AlphaAnimation(1f, 0f)
-            animation.duration = ExoPlayerView.DURATION
-            animation.setAnimationListener(object : AnimationListener {
-                override fun onAnimationStart(animation: Animation) {}
-                override fun onAnimationEnd(animation: Animation) {
+            binding.loadingView
+                .animate()
+                .alpha(0f)
+                .setDuration(ExoPlayerView.DURATION)
+                .withEndAction {
                     binding.loadingView.visibility = View.GONE
                     canSkip = true
-                }
-                override fun onAnimationRepeat(animation: Animation) {}
-            })
-            binding.loadingView.startAnimation(animation)
+                }.start()
         }
     }
 
