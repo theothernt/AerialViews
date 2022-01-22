@@ -121,7 +121,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
                         videoBinding.location.text = video.poi[poi]
-                        videoBinding.location.animate().alpha(1f).setDuration(1000).start()
+                        videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
                 }
                 videoBinding.location.postDelayed ({
