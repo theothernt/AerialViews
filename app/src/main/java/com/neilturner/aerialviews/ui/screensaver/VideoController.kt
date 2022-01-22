@@ -104,7 +104,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        videoBinding.location.text = if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST) video.poi[0] ?: video.location else video.location
+        videoBinding.location.text = if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
 
         if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
@@ -116,7 +116,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 if (update) {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
-                        videoBinding.location.text = video.poi[poi]?.replace("[\n\r]", " ")
+                        videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
                         videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
                 }
