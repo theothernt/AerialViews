@@ -4,13 +4,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="LoadingText">
-        <item name="android:alpha">1</item>
-    </style>
-
     <style name="ClockText">
         <item name="android:alpha">0.7</item>
-        <item name="android:paddingRight">5px</item>
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">2</item>
@@ -22,7 +17,6 @@
 
     <style name="LocationText">
         <item name="android:alpha">0.7</item>
-        <item name="android:paddingRight">5px</item>
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">2</item>

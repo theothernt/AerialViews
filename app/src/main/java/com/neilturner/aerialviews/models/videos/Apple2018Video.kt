@@ -23,6 +23,9 @@ class Apple2018Video {
 
     private val accessibilityLabel: String? = null
 
+    @SerializedName("pointsOfInterest")
+    val pointsOfInterest: Map<Int, String> = emptyMap()
+
     val location: String
         get() = accessibilityLabel!!
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="small_padding">32dp</dimen>
-    <dimen name="large_padding">52dp</dimen>
+    <dimen name="screen_border_padding">32dp</dimen>
+    <dimen name="text_block_padding">3dp</dimen>
 </resources>

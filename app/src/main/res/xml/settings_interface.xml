@@ -4,10 +4,10 @@
 
         <PreferenceCategory app:title="@string/interface_title">
                 <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="show_location"
-                    app:summary="@string/interface_show_location_summary"
-                    app:title="@string/interface_show_location_title" />
+                    app:defaultValue="false"
+                    app:key="alt_text_position"
+                    app:summary="@string/interface_alt_text_position_summary"
+                    app:title="@string/interface_alt_text_position_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="true"
@@ -15,11 +15,23 @@
                     app:summary="@string/interface_show_clock_summary"
                     app:title="@string/interface_show_clock_title" />
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="alt_text_position"
-                    app:summary="@string/interface_alt_text_position_summary"
-                    app:title="@string/interface_alt_text_position_title" />
+                <SwitchPreference
+                    app:defaultValue="true"
+                    app:key="show_location"
+                    app:summary="@string/interface_show_location_summary"
+                    app:title="@string/interface_show_location_title" />
+
+                <ListPreference
+                    app:dependency="show_location"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/location_information_style_default"
+                    app:entries="@array/location_information_style_entries"
+                    app:entryValues="@array/location_information_style_values"
+                    app:key="location_information_style"
+                    app:title="@string/location_information_style_title"
+                    app:summary="@string/location_information_style_summary"
+                    app:dialogTitle="@string/location_information_style_summary" />
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_playlist">

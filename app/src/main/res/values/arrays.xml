@@ -9,7 +9,14 @@
         <item>VIDEO_4K_HDR</item>
     </string-array>
 
-    <string name="apple_videos_quality_default">VIDEO_1080_SDR</string>
+    <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+    <string-array name="location_information_style_values">
+        <item>SHORT_LOCATION</item>
+        <item>POINT_OF_INTEREST</item>
+    </string-array>
+
+    <string name="location_information_style_default" translatable="false">SHORT_LOCATION</string>
 
     <string-array name="playback_speed_values">
         <item>0.25</item>
@@ -27,5 +34,5 @@
         <item>5</item>
     </string-array>
 
-    <string name="playback_speed_default">1</string>
+    <string name="playback_speed_default" translatable="false">1</string>
 </resources>
