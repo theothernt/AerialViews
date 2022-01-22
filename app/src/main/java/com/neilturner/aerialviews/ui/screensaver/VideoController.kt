@@ -116,7 +116,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 if (update) {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
-                        videoBinding.location.text = video.poi[poi]
+                        videoBinding.location.text = video.poi[poi]?.replace("[\n\r]", " ")
                         videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
                 }

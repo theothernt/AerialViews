@@ -49,12 +49,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:ellipsize="end"
             android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
-            android:maxLines="2"
-            android:minLines="@{(textPrefs.locationInfoStyle == com.neilturner.aerialviews.models.LocationInformationStyle.POINT_OF_INTEREST) &amp;&amp; textPrefs.showClock ? 2 : 1}"
             android:visibility="@{textPrefs.showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="POI example text\n over two lines"
+            tools:text="POI example text"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.helper.widget.Flow
