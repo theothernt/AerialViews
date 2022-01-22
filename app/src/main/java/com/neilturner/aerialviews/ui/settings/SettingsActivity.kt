@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
@@ -31,6 +32,7 @@ class SettingsActivity :AppCompatActivity(),
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // Save current activity title so we can set it again after a configuration change
