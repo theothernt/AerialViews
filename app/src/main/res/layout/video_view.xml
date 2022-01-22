@@ -54,7 +54,7 @@
             android:maxLines="2"
             android:minLines="@{(textPrefs.locationInfoStyle == com.neilturner.aerialviews.models.LocationInformationStyle.POINT_OF_INTEREST) &amp;&amp; textPrefs.showClock ? 2 : 1}"
             android:visibility="@{textPrefs.showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="POI example Text"
+            tools:text="POI example text\n over two lines"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.helper.widget.Flow
@@ -64,7 +64,7 @@
             android:layout_marginStart="@dimen/screen_border_padding"
             android:layout_marginEnd="@dimen/screen_border_padding"
             android:layout_marginBottom="@dimen/screen_border_padding"
-            app:flow_verticalGap="@dimen/text_block_Padding"
+            app:flow_verticalGap="@dimen/text_block_padding"
             android:orientation="vertical"
             app:constraint_referenced_ids="clock,location"
             app:layout_constraintBottom_toBottomOf="parent"
