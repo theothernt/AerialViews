@@ -78,18 +78,14 @@ android {
     productFlavors {
         create("github") {
             dimension = "version"
-            //applicationIdSuffix = ".github"
-            //versionNameSuffix = "-github"
         }
         create("beta") {
             dimension = "version"
             applicationIdSuffix = ".beta"
-            versionNameSuffix = "-beta"
+            resValue "string", "app_name", "@string/app_name_beta"
         }
         create("googleplay") {
             dimension = "version"
-            //applicationIdSuffix = ".googleplay"
-            //versionNameSuffix = "-googleplay"
         }
     }
 }

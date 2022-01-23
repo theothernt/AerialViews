@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name_release">Aerial Views</string>
-    <string name="app_name_debug">Aerial Views (Debug)</string>
+    <string name="app_name_beta">Aerial Views Beta</string>
 
     <!-- Categories -->
     <string name="category_capabilities">Capabilities</string>
