@@ -15,7 +15,7 @@
                     app:summary="@string/interface_show_clock_summary"
                     app:title="@string/interface_show_clock_title" />
 
-                <SwitchPreference
+                <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="show_location"
                     app:summary="@string/interface_show_location_summary"
@@ -24,13 +24,13 @@
                 <ListPreference
                     app:dependency="show_location"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/location_information_style_default"
-                    app:entries="@array/location_information_style_entries"
-                    app:entryValues="@array/location_information_style_values"
-                    app:key="location_information_style"
-                    app:title="@string/location_information_style_title"
-                    app:summary="@string/location_information_style_summary"
-                    app:dialogTitle="@string/location_information_style_summary" />
+                    app:defaultValue="@string/interface_show_location_style_default"
+                    app:entries="@array/interface_show_location_style_entries"
+                    app:entryValues="@array/interface_show_location_style_values"
+                    app:key="show_location_style"
+                    app:title="@string/interface_show_location_style_title"
+                    app:summary="@string/interface_show_location_style_summary"
+                    app:dialogTitle="@string/interface_show_location_style_summary" />
 
         </PreferenceCategory>
 

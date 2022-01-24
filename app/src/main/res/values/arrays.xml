@@ -11,12 +11,12 @@
 
     <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
-    <string-array name="location_information_style_values">
-        <item>SHORT_LOCATION</item>
-        <item>POINT_OF_INTEREST</item>
+    <string-array name="interface_show_location_style_values">
+        <item>SHORT</item>
+        <item>VERBOSE</item>
     </string-array>
 
-    <string name="location_information_style_default" translatable="false">SHORT_LOCATION</string>
+    <string name="interface_show_location_style_default" translatable="false">SHORT</string>
 
     <string-array name="playback_speed_values">
         <item>0.25</item>

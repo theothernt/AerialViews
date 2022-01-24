@@ -9,7 +9,7 @@
 
         <variable
             name="textPrefs"
-            type="com.neilturner.aerialviews.models.prefs.UITextPrefs" />
+            type="com.neilturner.aerialviews.models.prefs.InterfacePrefs" />
 
         <variable
             name="isAlternateRun"

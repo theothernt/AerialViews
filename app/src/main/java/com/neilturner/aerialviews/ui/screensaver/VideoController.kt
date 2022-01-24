@@ -4,17 +4,13 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.view.animation.Animation.AnimationListener
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
-import com.neilturner.aerialviews.models.LocationInformationStyle
+import com.neilturner.aerialviews.models.LocationStyle
 import com.neilturner.aerialviews.models.VideoPlaylist
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.UITextPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
@@ -30,7 +26,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val inflater = LayoutInflater.from(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false)
 
-        binding.textPrefs = UITextPrefs
+        binding.textPrefs = InterfacePrefs
 
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
@@ -81,7 +77,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
                 loadVideo(binding.videoView0, video)
 
-                if (UITextPrefs.alternateTextPosition) {
+                if (InterfacePrefs.alternateTextPosition) {
                     binding.videoView0.isAlternateRun = !binding.videoView0.isAlternateRun
                 }
             }.start()
@@ -104,9 +100,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        videoBinding.location.text = if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
+        videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
 
-        if (UITextPrefs.locationInfoStyle == LocationInformationStyle.POINT_OF_INTEREST && video.poi.size > 1) { // everything else is static anyways
+        if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
             currentPositionProgressHandler = {

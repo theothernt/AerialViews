@@ -71,16 +71,15 @@
     <string name="interface_show_clock_title">Show clock</string>
     <string name="interface_show_clock_summary">Shows the current time</string>
 
-    <string name="interface_show_location_title">Show location</string>
-    <string name="interface_show_location_summary">Shows information text, select style below</string>
+    <string name="interface_show_location_title">Show video title</string>
+    <string name="interface_show_location_summary">Shows a title or location for videos</string>
 
-    <string-array name="location_information_style_entries">
-        <item>Video Title (usually the location)</item>
-        <item>Points of Interest (for Apple, localized)</item>
+    <string name="interface_show_location_style_title">Apple videos</string>
+    <string name="interface_show_location_style_summary">Choose a video title style</string>
+    <string-array name="interface_show_location_style_entries">
+        <item>Short title or location</item>
+        <item>Full location or points of interest</item>
     </string-array>
-
-    <string name="location_information_style_title">Location information style</string>
-    <string name="location_information_style_summary">Select the style of displayed location info</string>
 
     <string name="interface_alt_text_position_title">Alternate text position</string>
     <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
