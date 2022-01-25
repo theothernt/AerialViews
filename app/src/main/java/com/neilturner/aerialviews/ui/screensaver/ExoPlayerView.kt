@@ -205,6 +205,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             player.volume = 0f
         }
 
+        player.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
         player.setPlaybackSpeed(playbackSpeed.toFloat())
         return player
     }
