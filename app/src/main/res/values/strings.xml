@@ -28,6 +28,8 @@
         <item>4K HDR/HEVC</item>
     </string-array>
 
+    <string name="apple_videos_data_usage_title">Data usage</string>
+
     <!-- Any Video Options -->
     <string name="any_videos_title">Any Videos</string>
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>

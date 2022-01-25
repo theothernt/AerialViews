@@ -22,4 +22,12 @@
                     app:dialogTitle="@string/apple_videos_quality_summary" />
         </PreferenceCategory>
 
+        <Preference
+            app:dependency="apple_videos_enabled"
+            app:disableDependentsState="false"
+            app:key="apple_videos_data_usage"
+            app:isPreferenceVisible="true"
+            app:title="@string/apple_videos_data_usage_title"
+            app:summary=""/>
+
 </PreferenceScreen>

@@ -18,6 +18,14 @@
 
     <string name="interface_show_location_style_default" translatable="false">SHORT</string>
 
+    <string-array name="apple_videos_data_usage_values">
+        <item>37GB</item>
+        <item>23GB</item>
+        <item>46GB</item>
+        <item>45GB</item>
+        <item>90GB</item>
+    </string-array>
+
     <string-array name="playback_speed_values">
         <item>0.25</item>
         <item>0.5</item>

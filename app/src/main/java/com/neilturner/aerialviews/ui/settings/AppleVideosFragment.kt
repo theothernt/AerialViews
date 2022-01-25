@@ -4,7 +4,9 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
@@ -31,5 +33,12 @@ class AppleVideosFragment :
         val quality = findPreference<ListPreference>("apple_videos_quality") as ListPreference
         val qualityTitle = context?.getString(R.string.apple_videos_quality_title)
         quality.title = "$qualityTitle - ${quality.entry}"
+
+        val dataUsage = findPreference<Preference>("apple_videos_data_usage") as Preference
+        val index = quality.findIndexOfValue(quality.value)
+        val bitrates = context?.resources?.getStringArray(R.array.apple_videos_data_usage_values)
+        val bitrate = bitrates?.get(index)
+
+        dataUsage.summary = "Approx. $bitrate per hour"
     }
 }

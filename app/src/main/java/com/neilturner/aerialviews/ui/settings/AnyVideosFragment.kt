@@ -24,10 +24,10 @@ class AnyVideosFragment :
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
+            ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (!isGranted) {
                 resetPreference()
             }
@@ -40,9 +40,6 @@ class AnyVideosFragment :
     }
 
     override fun onResume() {
-
-
-        //val canReadVideos = storagePermissions?.canReadFiles(
         val canReadVideos = storagePermissions?.hasAccess(
             action = Action.READ,
             types = listOf(FileType.Video),
