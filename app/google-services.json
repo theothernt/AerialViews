@@ -102,7 +102,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:0f723ea2b6ec5fd0ed8a8b",
+        "mobilesdk_app_id": "1:791639863634:android:434dacda9334a325ed8a8b",
         "android_client_info": {
           "package_name": "com.neilturner.aerialviews.beta.debug"
         }
@@ -131,7 +131,7 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:791639863634:android:a7e8c2444e2d2b81ed8a8b",
+        "mobilesdk_app_id": "1:791639863634:android:7d0672961f4c5f43ed8a8b",
         "android_client_info": {
           "package_name": "com.neilturner.aerialviews.debug"
         }
