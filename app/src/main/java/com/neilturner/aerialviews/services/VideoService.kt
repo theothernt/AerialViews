@@ -109,16 +109,6 @@ class VideoService(private val context: Context) {
     private fun appleManifestVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
 
-        //       JsonHelper.parseJson(context, R.raw.tvos10, JsonHelper.Wrapper::class.java)
-//            .assets?.forEach {
-//            videos.addAll(allVideoQualities(it))
-//        }
-
-//       JsonHelper.parseJson(context, R.raw.tvos11, JsonHelper.Wrapper::class.java)
-//            .assets?.forEach {
-//            videos.addAll(allVideoQualities(it))
-//        }
-
         try {
             JsonHelper.parseJson(context, R.raw.tvos12, JsonHelper.Apple2018Videos::class.java)
                 .assets?.forEach {
