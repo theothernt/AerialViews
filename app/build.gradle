@@ -119,9 +119,9 @@ dependencies {
     implementation("com.google.android.exoplayer:exoplayer-core:2.16.1")
 
     // Kotpref
-    implementation("com.chibatching.kotpref:kotpref:2.13.1")
-    implementation("com.chibatching.kotpref:initializer:2.13.1")
-    implementation("com.chibatching.kotpref:enum-support:2.13.1")
+    implementation('com.chibatching.kotpref:kotpref:2.13.2')
+    implementation('com.chibatching.kotpref:initializer:2.13.2')
+    implementation('com.chibatching.kotpref:enum-support:2.13.2')
 
     // SMB
     implementation("com.hierynomus:smbj:0.11.3")
