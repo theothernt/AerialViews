@@ -19,8 +19,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         updateCapabilities()
     }
 
-    private fun updateCapabilities()
-    {
+    private fun updateCapabilities() {
         val display = findPreference<ListPreference>("capabilities_display") as Preference
         val resolution = findPreference<ListPreference>("capabilities_resolution") as Preference
         val codecs = findPreference<ListPreference>("capabilities_codecs") as Preference
@@ -66,7 +65,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         var foundHEVC = "Not Found"
         var foundDolbyVision = "Not Found"
 
-        getCodecs().forEach{ codec ->
+        getCodecs().forEach { codec ->
             if (isCodecOfType(codec.mimeTypes, "avc"))
                 foundAVC = "Found"
 
@@ -92,23 +91,27 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         }
 
         if (allCodecs.isNotEmpty())
-            summary = allCodecs.joinToString (", ", "", "", -1, "") { it.name }
+            summary = allCodecs.joinToString(", ", "", "", -1, "") { it.name }
 
         Log.i("", "Decoders found: ${allCodecs.count()}")
         return summary
     }
 
     private fun isVideoCodec(codecs: Array<String>): Boolean {
-        val videoCodecs = codecs.filter { it.contains("video", true) &&
-                (it.contains("avc", true) ||
-                it.contains("hevc", true) ||
-                it.contains("dolby", true))
+        val videoCodecs = codecs.filter {
+            it.contains("video", true) &&
+                (
+                    it.contains("avc", true) ||
+                        it.contains("hevc", true) ||
+                        it.contains("dolby", true)
+                    )
         }
         return videoCodecs.count() > 0
     }
 
     private fun isCodecOfType(codecs: Array<String>, type: String): Boolean {
-        val videoCodecs = codecs.filter { it.contains("video", true) &&
+        val videoCodecs = codecs.filter {
+            it.contains("video", true) &&
                 it.contains(type, true)
         }
         return videoCodecs.count() > 0

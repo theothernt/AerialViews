@@ -5,8 +5,8 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.ListPreference
-import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
+import com.neilturner.aerialviews.R
 import java.util.*
 
 class InterfaceFragment :

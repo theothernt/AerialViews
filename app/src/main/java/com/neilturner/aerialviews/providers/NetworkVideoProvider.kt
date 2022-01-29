@@ -3,13 +3,12 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
-import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.share.DiskShare
-
 
 class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPrefs) : VideoProvider(context) {
 
@@ -17,23 +16,26 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         val videos = mutableListOf<AerialVideo>()
 
         if (prefs.shareName.isEmpty() ||
-                prefs.domainName.isEmpty() ||
-                prefs.hostName.isEmpty())
-                    return videos
+            prefs.domainName.isEmpty() ||
+            prefs.hostName.isEmpty()
+        )
+            return videos
 
         val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
 
         val networkVideos = try {
-            findNetworkMedia(prefs.userName, prefs.password, prefs.domainName,
-                prefs.hostName, shareName, path)
+            findNetworkMedia(
+                prefs.userName, prefs.password, prefs.domainName,
+                prefs.hostName, shareName, path
+            )
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
             emptyList()
         }
 
-        networkVideos.forEach{ filename ->
+        networkVideos.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = prefs.userName
@@ -55,8 +57,14 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         return videos
     }
 
-    private fun findNetworkMedia(userName: String, password: String, domainName: String,
-                                 hostName: String, shareName: String, path: String): List<String> {
+    private fun findNetworkMedia(
+        userName: String,
+        password: String,
+        domainName: String,
+        hostName: String,
+        shareName: String,
+        path: String
+    ): List<String> {
         val files = mutableListOf<String>()
         val smbClient = SMBClient()
         val connection = smbClient.connect(hostName)

@@ -44,7 +44,7 @@ class VideoService(private val context: Context) {
         providers.forEach {
             val newVideos = try {
                 it.fetchVideos()
-            } catch(ex: Exception) {
+            } catch (ex: Exception) {
                 Log.e(TAG, ex.message!!)
                 emptyList()
             }
@@ -163,7 +163,7 @@ class VideoService(private val context: Context) {
         return videos
     }
 
-    private fun findVideoLocation(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>) : Pair<List<AerialVideo>,List<AerialVideo>> {
+    private fun findVideoLocation(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>): Pair<List<AerialVideo>, List<AerialVideo>> {
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
 

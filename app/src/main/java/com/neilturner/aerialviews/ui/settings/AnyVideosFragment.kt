@@ -7,12 +7,12 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.neilturner.aerialviews.R
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreference
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 
 class AnyVideosFragment :
@@ -27,7 +27,8 @@ class AnyVideosFragment :
 
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
             if (!isGranted) {
                 resetPreference()
             }
@@ -46,16 +47,18 @@ class AnyVideosFragment :
             createdBy = StoragePermissions.CreatedBy.AllApps
         )!!
 
-        if (!canReadVideos
-            && requiresPermission()) {
+        if (!canReadVideos &&
+            requiresPermission()
+        ) {
             resetPreference()
         }
         super.onResume()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "local_videos_enabled"
-            && requiresPermission()) {
+        if (key == "local_videos_enabled" &&
+            requiresPermission()
+        ) {
 
             val canReadVideos = storagePermissions?.hasAccess(
                 action = Action.READ,

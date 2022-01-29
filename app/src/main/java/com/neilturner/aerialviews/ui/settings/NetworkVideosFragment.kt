@@ -72,7 +72,6 @@ class NetworkVideosFragment :
             videos.forEach { video ->
                 Log.i(TAG, "${video.location}: ${video.uri}")
             }
-
         } catch (e: Exception) {
             showMessage("Failed to connect")
         }

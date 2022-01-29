@@ -2,8 +2,8 @@ package com.neilturner.aerialviews.utils
 
 import android.net.Uri
 import android.util.Log
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.hierynomus.smbj.auth.AuthenticationContext
+import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 
 object SmbHelper {
 
@@ -60,4 +60,3 @@ object SmbHelper {
 
     private const val TAG = "SmbHelper"
 }
-

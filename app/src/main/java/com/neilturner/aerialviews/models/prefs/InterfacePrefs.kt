@@ -4,7 +4,7 @@ import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.models.LocationStyle
 
-object InterfacePrefs  : KotprefModel() {
+object InterfacePrefs : KotprefModel() {
 
     override val kotprefName = "${context.packageName}_preferences"
 

@@ -67,7 +67,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
             .withStartAction {
                 binding.loadingView.visibility = View.VISIBLE
             }
-            .withEndAction{
+            .withEndAction {
                 val video = if (!previousVideo) {
                     playlist!!.nextVideo()
                 } else {
@@ -96,7 +96,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         }
     }
 
-    private var currentPositionProgressHandler: (()->Unit)? = null
+    private var currentPositionProgressHandler: (() -> Unit)? = null
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
@@ -116,30 +116,31 @@ class VideoController(context: Context) : OnPlayerEventListener {
                         videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
                 }
-                videoBinding.location.postDelayed ({
+                videoBinding.location.postDelayed({
                     currentPositionProgressHandler?.let { it() }
                 }, if (update) 3000 else 1000)
+                }
+                videoBinding.location.postDelayed({
+                    currentPositionProgressHandler?.let { it() }
+                }, 1000)
+            } else {
+                currentPositionProgressHandler = null
             }
-            videoBinding.location.postDelayed ({
-                currentPositionProgressHandler?.let { it() }
-            },1000)
-        } else {
-            currentPositionProgressHandler = null
+
+            videoBinding.videoView.setUri(video.uri)
+            videoBinding.videoView.start()
         }
 
-        videoBinding.videoView.setUri(video.uri)
-        videoBinding.videoView.start()
-    }
+        override fun onPrepared(view: ExoPlayerView?) {
+            fadeInNextVideo()
+        }
 
-    override fun onPrepared(view: ExoPlayerView?) {
-        fadeInNextVideo()
-    }
+        override fun onAlmostFinished(view: ExoPlayerView?) {
+            fadeOutCurrentVideo()
+        }
 
-    override fun onAlmostFinished(view: ExoPlayerView?) {
-        fadeOutCurrentVideo()
+        override fun onError(view: ExoPlayerView?) {
+            binding.root.post { start() }
+        }
     }
-
-    override fun onError(view: ExoPlayerView?) {
-        binding.root.post { start() }
-    }
-}
+    

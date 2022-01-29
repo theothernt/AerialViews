@@ -2,15 +2,15 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.neilturner.aerialviews.R
-import android.util.Log
-import android.widget.Toast
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import java.lang.Exception
 
@@ -50,8 +50,9 @@ class SettingsFragment :
             createdBy = StoragePermissions.CreatedBy.AllApps
         )
 
-        if (permissionEnabled
-            && !canReadVideos) {
+        if (permissionEnabled &&
+            !canReadVideos
+        ) {
             LocalVideoPrefs.enabled = false
         }
     }
@@ -72,7 +73,7 @@ class SettingsFragment :
         intents += Intent(SETTINGS)
 
         intents.forEach { intent ->
-            //Log.i(TAG, intent.toString())
+            // Log.i(TAG, intent.toString())
             if (intentAvailable(intent)) {
                 try {
                     startActivity(intent)

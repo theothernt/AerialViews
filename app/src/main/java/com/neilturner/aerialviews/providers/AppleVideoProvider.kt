@@ -19,9 +19,14 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         // tvOS videos
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
-            videos.add(AerialVideo(it.uri(quality)!!, it.location, it.pointsOfInterest.mapValues { poi ->
-                strings[poi.value] ?: it.location
-            }))
+            videos.add(
+                AerialVideo(
+                    it.uri(quality)!!, it.location,
+                    it.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: it.location
+                    }
+                )
+            )
         }
 
         Log.i(TAG, "tvOS: ${videos.count()} $quality videos found")

@@ -20,7 +20,7 @@ object JsonHelper {
     fun parseJsonMap(context: Context, @RawRes res: Int): Map<String, String> {
         val stream = context.resources.openRawResource(res)
         val json = Scanner(stream).useDelimiter("\\A").next()
-        return jsonParser.fromJson(json, object : TypeToken<Map<String, String>>(){}.type)
+        return jsonParser.fromJson(json, object : TypeToken<Map<String, String>>() {}.type)
     }
 
 //    class Apple2018Videos {

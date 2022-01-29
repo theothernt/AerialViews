@@ -2,7 +2,6 @@
 
 package com.neilturner.aerialviews.services
 
-import com.neilturner.aerialviews.utils.SmbHelper
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.BaseDataSource
 import com.google.android.exoplayer2.upstream.DataSpec
@@ -12,13 +11,14 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
+import com.neilturner.aerialviews.utils.SmbHelper
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
 import kotlin.math.min
 
-class SmbDataSource: BaseDataSource(true) {
+class SmbDataSource : BaseDataSource(true) {
 
     private var dataSpec: DataSpec? = null
     private var userName = ""
@@ -96,8 +96,10 @@ class SmbDataSource: BaseDataSource(true) {
         val shareAccess = hashSetOf<SMB2ShareAccess>()
         shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
 
-        return share.openFile(path, EnumSet.of(AccessMask.GENERIC_READ),
-            null, shareAccess, SMB2CreateDisposition.FILE_OPEN, null)
+        return share.openFile(
+            path, EnumSet.of(AccessMask.GENERIC_READ),
+            null, shareAccess, SMB2CreateDisposition.FILE_OPEN, null
+        )
     }
 
     @Suppress("NAME_SHADOWING")

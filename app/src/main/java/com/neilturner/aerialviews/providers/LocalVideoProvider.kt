@@ -16,8 +16,7 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
             val uri = Uri.parse(video)
             val filename = uri.lastPathSegment!!
 
-            if (!FileHelper.isVideoFilename(filename))
-            {
+            if (!FileHelper.isVideoFilename(filename)) {
                 Log.i(TAG, "Probably not a video: $filename")
                 continue
             }
@@ -33,4 +32,3 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
         private const val TAG = "LocalVideoProvider"
     }
 }
-

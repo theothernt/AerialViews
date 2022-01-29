@@ -135,7 +135,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
             removeCallbacks(timerRunnable)
-            //compensate the duration based on the playback speed
+            // compensate the duration based on the playback speed
             postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
         }
     }
@@ -171,18 +171,19 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             val bufferForPlaybackAfterRebuffer = 1024
 
             loadControlBuilder
-                    .setBufferDurationsMs(
-                            minBuffer,
-                            maxBuffer,
-                            bufferForPlayback,
-                            bufferForPlaybackAfterRebuffer)
+                .setBufferDurationsMs(
+                    minBuffer,
+                    maxBuffer,
+                    bufferForPlayback,
+                    bufferForPlaybackAfterRebuffer
+                )
         }
         loadControl = loadControlBuilder.build()
         val parametersBuilder = ParametersBuilder(context)
 
         if (enableTunneling) {
             parametersBuilder
-                    .setTunnelingEnabled(true)
+                .setTunnelingEnabled(true)
         }
 
         if (exceedRendererCapabilities) {
@@ -195,12 +196,12 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         trackSelector.parameters = parametersBuilder.build()
 
         val player = ExoPlayer.Builder(context)
-                .setLoadControl(loadControl)
-                .setTrackSelector(trackSelector)
-                .build()
+            .setLoadControl(loadControl)
+            .setTrackSelector(trackSelector)
+            .build()
 
-        //player.addAnalyticsListener(EventLogger(trackSelector))
-        
+        // player.addAnalyticsListener(EventLogger(trackSelector))
+
         if (muteVideo) {
             player.volume = 0f
         }

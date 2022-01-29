@@ -7,7 +7,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class SettingsActivity :AppCompatActivity(),
+class SettingsActivity :
+    AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +58,7 @@ class SettingsActivity :AppCompatActivity(),
             pref.fragment
         ).apply {
             arguments = args
-            //setTargetFragment(caller, 0)
+            // setTargetFragment(caller, 0)
         }
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()

@@ -3,13 +3,13 @@
 package com.neilturner.aerialviews.services
 
 import android.app.Activity
-import android.view.Display as NativeDisplay
 import android.content.Context
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.WindowManager
 import com.google.android.exoplayer2.util.Util
+import android.view.Display as NativeDisplay
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
@@ -18,7 +18,7 @@ enum class HDRFormat {
 }
 
 fun HDRTypeToHDRFormat(value: Int): HDRFormat {
-    return when(value) {
+    return when (value) {
         NativeDisplay.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> HDRFormat.DOLBY_VISION
         NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10 -> HDRFormat.HDR10
         NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10_PLUS -> HDRFormat.HDR10_PLUS
@@ -32,7 +32,7 @@ enum class PowerState {
 }
 
 fun DisplayStateToPowerState(value: Int): PowerState {
-    return when(value) {
+    return when (value) {
         NativeDisplay.STATE_OFF -> PowerState.OFF
         NativeDisplay.STATE_ON -> PowerState.ON
         NativeDisplay.STATE_DOZE -> PowerState.DOZE
@@ -45,7 +45,7 @@ fun DisplayStateToPowerState(value: Int): PowerState {
 class OutputDescription(val id: Int, val width: Int, val height: Int, val refreshRate: Float) {
     override fun toString(): String {
         val formattedRefreshRate = "%.2f".format(refreshRate.toDouble())
-        return "${width}x${height} @ ${formattedRefreshRate}hz"
+        return "${width}x$height @ ${formattedRefreshRate}hz"
     }
 }
 
@@ -118,10 +118,10 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         }
 
         // Check Wide Gamut Space Support
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             supportsWideColorGamut = source.isWideColorGamut
 
-            wideColorGamut = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            wideColorGamut = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 source.preferredWideGamutColorSpace?.name
             } else {
                 null

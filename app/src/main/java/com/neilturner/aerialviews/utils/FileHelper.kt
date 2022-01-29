@@ -10,7 +10,7 @@ import java.io.File
 
 object FileHelper {
 
-     fun findAllMedia(context: Context): List<String?> {
+    fun findAllMedia(context: Context): List<String?> {
         val videos = mutableListOf<String>()
         try {
             val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
@@ -25,18 +25,18 @@ object FileHelper {
                 cursor.close()
             } catch (e: Exception) {
                 Log.e(TAG, "Exception in findAllMedia cursor: ${e.message}")
-                //e.printStackTrace()
+                // e.printStackTrace()
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception in findAllMedia: ${e.message}")
         }
-         Log.i(TAG, "findAllMedia found ${videos.size} files")
-         return videos
+        Log.i(TAG, "findAllMedia found ${videos.size} files")
+        return videos
     }
 
     fun isLocalVideo(uri: Uri): Boolean {
         return !uri.toString().contains("http://") &&
-                !uri.toString().contains("https://")
+            !uri.toString().contains("https://")
     }
 
     fun isNetworkVideo(uri: Uri): Boolean {
@@ -55,7 +55,8 @@ object FileHelper {
         if (filename.endsWith(".mov") ||
             filename.endsWith(".mp4") ||
             filename.endsWith(".webm") ||
-            filename.endsWith(".mkv"))
+            filename.endsWith(".mkv")
+        )
             return true
 
         return false
@@ -73,8 +74,8 @@ object FileHelper {
         // somevideo -> Somevideo
         // city-place_video -> City - Place Video
         // some.video -> Some Video
-        location = location.replace("-",".-.")
-        location = location.replace("_",".")
+        location = location.replace("-", ".-.")
+        location = location.replace("_", ".")
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
