@@ -15,7 +15,7 @@ import com.neilturner.aerialviews.utils.SmbHelper
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
-import java.util.*
+import java.util.EnumSet
 import kotlin.math.min
 
 class SmbDataSource : BaseDataSource(true) {

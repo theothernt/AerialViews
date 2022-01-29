@@ -105,10 +105,12 @@ class VideoController(context: Context) : OnPlayerEventListener {
         if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
+
             currentPositionProgressHandler = {
                 val time = videoBinding.videoView.currentPosition / 1000
                 val poi = poiTimes.findLast { it <= time } ?: 0
                 val update = poi != lastPoi
+
                 if (update) {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
@@ -116,31 +118,33 @@ class VideoController(context: Context) : OnPlayerEventListener {
                         videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
                 }
+
+                val interval = if (update) 3000 else 1000 // Small change to make ktlint happy
                 videoBinding.location.postDelayed({
                     currentPositionProgressHandler?.let { it() }
-                }, if (update) 3000 else 1000)
-                }
-                videoBinding.location.postDelayed({
-                    currentPositionProgressHandler?.let { it() }
-                }, 1000)
-            } else {
-                currentPositionProgressHandler = null
+                }, interval.toLong())
             }
 
-            videoBinding.videoView.setUri(video.uri)
-            videoBinding.videoView.start()
+            videoBinding.location.postDelayed({
+                currentPositionProgressHandler?.let { it() }
+            }, 1000)
+        } else {
+            currentPositionProgressHandler = null
         }
 
-        override fun onPrepared(view: ExoPlayerView?) {
-            fadeInNextVideo()
-        }
-
-        override fun onAlmostFinished(view: ExoPlayerView?) {
-            fadeOutCurrentVideo()
-        }
-
-        override fun onError(view: ExoPlayerView?) {
-            binding.root.post { start() }
-        }
+        videoBinding.videoView.setUri(video.uri)
+        videoBinding.videoView.start()
     }
-    
+
+    override fun onPrepared(view: ExoPlayerView?) {
+        fadeInNextVideo()
+    }
+
+    override fun onAlmostFinished(view: ExoPlayerView?) {
+        fadeOutCurrentVideo()
+    }
+
+    override fun onError(view: ExoPlayerView?) {
+        binding.root.post { start() }
+    }
+}
