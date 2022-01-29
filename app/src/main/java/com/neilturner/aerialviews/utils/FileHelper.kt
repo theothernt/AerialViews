@@ -66,7 +66,9 @@ object FileHelper {
         val index = filename.lastIndexOf(".")
 
         // some.video.mov -> some.video
-        var location = filename.substring(0, index)
+        var location = filename
+        if (index > 0)
+            location = filename.substring(0, index)
 
         // somevideo -> Somevideo
         // city-place_video -> City - Place Video
