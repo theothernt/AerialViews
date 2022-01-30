@@ -80,6 +80,7 @@ android {
         }
         create("beta") {
             dimension = "version"
+            versionNameSuffix = "-beta1"
         }
         create("googleplay") {
             dimension = "version"
