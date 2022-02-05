@@ -15,12 +15,12 @@ class InterfaceFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_interface, rootKey)
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateSummaries()
     }
 
     override fun onDestroy() {
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
     }
 

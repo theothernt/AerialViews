@@ -23,7 +23,7 @@ class AnyVideosFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
@@ -36,7 +36,7 @@ class AnyVideosFragment :
     }
 
     override fun onDestroy() {
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
     }
 

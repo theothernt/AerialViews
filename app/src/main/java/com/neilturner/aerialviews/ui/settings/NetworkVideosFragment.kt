@@ -26,12 +26,12 @@ class NetworkVideosFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         limitTextInput()
     }
 
     override fun onDestroy() {
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
     }
 
