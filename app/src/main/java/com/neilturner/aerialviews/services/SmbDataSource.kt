@@ -7,10 +7,8 @@ import com.google.android.exoplayer2.upstream.BaseDataSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
-import com.hierynomus.mssmb2.SMB2Dialect
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
 import com.neilturner.aerialviews.utils.SmbHelper
@@ -89,16 +87,7 @@ class SmbDataSource : BaseDataSource(true) {
     }
 
     private fun openNetworkFile(): File {
-        val dialects = listOf(SMB2Dialect.SMB_2_0_2, SMB2Dialect.SMB_2_1)
-
-        val config = SmbConfig
-            .builder()
-            .withEncryptData(false)
-            .withDialects(dialects)
-            .build()
-
-
-        smbClient = SMBClient(config)
+        smbClient = SMBClient()
         val connection = smbClient?.connect(hostName)
         val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
