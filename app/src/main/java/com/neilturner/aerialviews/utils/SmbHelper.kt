@@ -3,25 +3,32 @@ package com.neilturner.aerialviews.utils
 import android.net.Uri
 import android.util.Log
 import com.hierynomus.smbj.auth.AuthenticationContext
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 
 object SmbHelper {
 
-    fun fixShareName() {
-        val shareName = NetworkVideoPrefs.shareName
+    @Suppress("NAME_SHADOWING")
+    fun fixShareName(shareName: String): String {
+        var shareName = shareName
 
         if (shareName.isEmpty())
-            return
+            return ""
+
+        if (shareName.contains("smb:/", true)) {
+            shareName = shareName.replace("smb:/", "", true)
+            Log.i(TAG, "Fixing ShareName - removing smb:/ from sharename")
+        }
 
         if (shareName.first() != '/') {
-            NetworkVideoPrefs.shareName = "/$shareName"
-            Log.i(TAG, "Fixing ShareName - removing leading slash")
+            shareName = "/$shareName"
+            Log.i(TAG, "Fixing ShareName - adding leading slash")
         }
 
         if (shareName.last() == '/') {
-            NetworkVideoPrefs.shareName = shareName.dropLast(1)
+            shareName = shareName.dropLast(1)
             Log.i(TAG, "Fixing ShareName - removing trailing slash")
         }
+
+        return shareName
     }
 
     fun parseUserInfo(uri: Uri): Pair<String, String> {

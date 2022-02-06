@@ -45,7 +45,7 @@ class NetworkVideosFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "network_videos_sharename") {
-            SmbHelper.fixShareName()
+            NetworkVideoPrefs.shareName = SmbHelper.fixShareName(NetworkVideoPrefs.shareName)
         }
     }
 
