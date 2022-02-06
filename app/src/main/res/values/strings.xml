@@ -10,6 +10,8 @@
     <string name="category_actions">Actions</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_network_settings">Network Settings</string>
+    <string name="category_debug">Debug</string>
+    <string name="category_performance_debug">Performance &amp; Debug</string>
 
     <!-- Apple Video Options -->
     <string name="apple_videos_title">Apple TV Videos</string>
@@ -46,8 +48,8 @@
     <string name="any_videos_use_apple_manifests_title">Show locations for Apple videos</string>
     <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
 
-    <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>
-    <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>
+<!--    <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>-->
+<!--    <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>-->
 
     <string name="any_videos_ignore_non_manifest_videos_title">Ignore unknown videos</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any video manifest</string>
@@ -65,7 +67,22 @@
     <string name="network_videos_password_title">Password</string>
     <string name="network_videos_password_summary">Optional</string>
 
+    <string name="network_videos_enable_encryption_title">Enable encryption</string>
+    <string name="network_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
+
+    <string name="network_videos_smb_dialects_title">Select SMB dialects</string>
+    <string name="network_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
+    <string-array name="network_videos_smb_dialects_entries">
+        <item>v3.1.1</item>
+        <item>v3.0.2</item>
+        <item>v3.0</item>
+        <item>v2.1</item>
+        <item>v2.0.2</item>
+    </string-array>
+
     <!-- Settings -->
+    <string name="settings_debug_warning">Don\'t change the options below unless troubleshooting!</string>
+
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Customise how things look</string>
 

@@ -8,14 +8,12 @@
         <item>VIDEO_4K_SDR</item>
         <item>VIDEO_4K_HDR</item>
     </string-array>
-
     <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
     <string-array name="interface_show_location_style_values">
         <item>SHORT</item>
         <item>VERBOSE</item>
     </string-array>
-
     <string name="interface_show_location_style_default" translatable="false">SHORT</string>
 
     <string-array name="apple_videos_data_usage_values">
@@ -41,6 +39,22 @@
         <item>4</item>
         <item>5</item>
     </string-array>
-
     <string name="playback_speed_default" translatable="false">1</string>
+
+    <!-- Network Video Options -->
+    <string-array name="network_videos_smb_dialects_values">
+        <item>SMB_3_1_1</item>
+        <item>SMB_3_0_2</item>
+        <item>SMB_3_0</item>
+        <item>SMB_2_1</item>
+        <item>SMB_2_0_2</item>
+    </string-array>
+    <string-array name="network_videos_smb_dialects_default">
+        <item>SMB_3_1_1</item>
+        <item>SMB_3_0_2</item>
+        <item>SMB_3_0</item>
+        <item>SMB_2_1</item>
+        <item>SMB_2_0_2</item>
+    </string-array>
+
 </resources>

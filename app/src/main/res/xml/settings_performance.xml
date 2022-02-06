@@ -2,7 +2,10 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/performance_title">
+        <PreferenceCategory app:title="@string/category_performance_debug">
+                <Preference
+                    app:summary="@string/settings_debug_warning" />
+
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
@@ -28,5 +31,4 @@
                     app:summary="Detected TV and codec features"
                     app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
         </PreferenceCategory>
-
 </PreferenceScreen>
