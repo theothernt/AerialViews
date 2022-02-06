@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.neilturner.aerialviews.R
-import java.util.*
+import java.util.TreeSet
 
 object NetworkVideoPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -24,5 +24,4 @@ object NetworkVideoPrefs : KotprefModel() {
         // Must be sorted to get correct order for use in SmbConfig.withDialects(x,y,z)
         // prefs.smbDialects.sortedByDescending { it }.joinToString(",")
     }
-
 }
