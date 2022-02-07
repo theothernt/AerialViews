@@ -23,6 +23,21 @@
                     app:key="exceed_renderer"
                     app:summary="@string/performance_exceed_renderer_summary"
                     app:title="@string/performance_exceed_renderer_title" />
+
+                <MultiSelectListPreference
+                    app:key="network_videos_smb_dialects"
+                    app:defaultValue="@array/network_videos_smb_dialects_default"
+                    app:entries="@array/network_videos_smb_dialects_entries"
+                    app:entryValues="@array/network_videos_smb_dialects_values"
+                    app:title="@string/network_videos_smb_dialects_title"
+                    app:summary="@string/network_videos_smb_dialects_summary"
+                    app:dialogTitle="@string/network_videos_smb_dialects_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="network_videos_enable_encryption"
+                    app:summary="@string/network_videos_enable_encryption_summary"
+                    app:title="@string/network_videos_enable_encryption_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_actions">
