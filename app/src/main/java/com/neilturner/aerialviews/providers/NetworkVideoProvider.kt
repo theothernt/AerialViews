@@ -66,7 +66,8 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         path: String
     ): List<String> {
         val files = mutableListOf<String>()
-        val smbClient = SMBClient()
+        val config = SmbHelper.buildSmbConfig()
+        val smbClient = SMBClient(config)
         val connection = smbClient.connect(hostName)
         val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)

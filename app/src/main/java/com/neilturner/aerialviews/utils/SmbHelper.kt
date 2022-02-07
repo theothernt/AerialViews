@@ -2,7 +2,10 @@ package com.neilturner.aerialviews.utils
 
 import android.net.Uri
 import android.util.Log
+import com.hierynomus.mssmb2.SMB2Dialect
+import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
+import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 
 object SmbHelper {
 
@@ -63,6 +66,18 @@ object SmbHelper {
             return AuthenticationContext.anonymous()
 
         return AuthenticationContext(userName, password.toCharArray(), domainName)
+    }
+
+    fun buildSmbConfig(): SmbConfig {
+        val dialectStrings = NetworkVideoPrefs.smbDialects.sortedByDescending { it }
+        val config = SmbConfig.builder()
+        config.withEncryptData(NetworkVideoPrefs.enableEncryption)
+        if (dialectStrings.isNotEmpty()) {
+            Log.i(TAG,"Using SMB dialects: ${dialectStrings.joinToString(",")}")
+            val dialects = dialectStrings.map { SMB2Dialect.valueOf(it) }
+            config.withDialects(dialects)
+        }
+        return config.build()
     }
 
     private const val TAG = "SmbHelper"

@@ -22,6 +22,7 @@ object NetworkVideoPrefs : KotprefModel() {
         set.addAll(smbDialects)
         set
         // Must be sorted to get correct order for use in SmbConfig.withDialects(x,y,z)
-        // prefs.smbDialects.sortedByDescending { it }.joinToString(",")
+        // prefs.smbDialects.sortedByDescending { it }
+        // SMB2Dialect.valueOf(it)
     }
 }

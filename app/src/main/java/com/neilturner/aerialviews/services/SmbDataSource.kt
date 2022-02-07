@@ -87,7 +87,8 @@ class SmbDataSource : BaseDataSource(true) {
     }
 
     private fun openNetworkFile(): File {
-        smbClient = SMBClient()
+        val config = SmbHelper.buildSmbConfig()
+        smbClient = SMBClient(config)
         val connection = smbClient?.connect(hostName)
         val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
