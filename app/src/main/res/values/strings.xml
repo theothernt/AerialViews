@@ -80,6 +80,11 @@
         <item>v2.0.2</item>
     </string-array>
 
+    <string name="network_videos_import_export_settings_title">Import/Export settings</string>
+    <string name="network_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
+
+    <string name="network_videos_test_connection">Test connection settings</string>
+
     <!-- Settings -->
     <string name="settings_debug_warning">Don\'t change the options below unless troubleshooting!</string>
 

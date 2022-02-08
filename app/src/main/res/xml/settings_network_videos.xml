@@ -27,8 +27,11 @@
 
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
-                    android:title="Test connection settings"
-                    android:key="network_videos_test_connection"
-                    />
+                    android:title="@string/network_videos_import_export_settings_title"
+                    android:key="network_videos_import_export_settings" />
+
+                <Preference
+                    android:title="@string/network_videos_test_connection"
+                    android:key="network_videos_test_connection" />
         </PreferenceCategory>
 </PreferenceScreen>

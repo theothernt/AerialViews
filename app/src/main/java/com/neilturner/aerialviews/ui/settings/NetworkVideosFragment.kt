@@ -6,10 +6,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.google.modernstorage.permissions.StoragePermissions
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
@@ -23,10 +27,21 @@ class NetworkVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
+    private var storagePermissions: StoragePermissions? = null
+    private var requestPermission: ActivityResultLauncher<String>? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+
+        storagePermissions = StoragePermissions(requireContext())
+        requestPermission = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+            }
+        }
+
         limitTextInput()
     }
 
@@ -36,11 +51,20 @@ class NetworkVideosFragment :
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.key == null || !preference.key.contains("network_videos_test_connection"))
+        if (preference.key.isNullOrEmpty())
             return super.onPreferenceTreeClick(preference)
 
-        testNetworkConnection()
-        return true
+        if (preference.key.contains("network_videos_test_connection")) {
+            testNetworkConnection()
+            return true
+        }
+
+        if (preference.key.contains("network_videos_import_export_settings")) {
+            importExportSettings()
+            return true
+        }
+
+        return super.onPreferenceTreeClick(preference)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
@@ -54,6 +78,23 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.setOnBindEditTextListener { it.setSingleLine() }
+    }
+
+    private fun importExportSettings() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.apply {
+            setTitle(R.string.network_videos_import_export_settings_title)
+            setMessage(R.string.network_videos_import_export_settings_summary)
+            setNeutralButton("Cancel", null)
+            setNegativeButton("Import") { _, _ ->
+                Log.i("", "Import...")
+            }
+            setPositiveButton("Export") { _, _ ->
+                Log.i("", "Export...")
+            }
+        }
+        val dialog = builder.create()
+        dialog.show()
     }
 
     private fun testNetworkConnection() {
