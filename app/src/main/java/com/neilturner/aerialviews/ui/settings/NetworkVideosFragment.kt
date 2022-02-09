@@ -4,7 +4,10 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.Manifest
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -15,20 +18,26 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.modernstorage.permissions.StoragePermissions
+import com.google.modernstorage.storage.AndroidFileSystem
+import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
+import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import okio.buffer
+import java.io.ByteArrayInputStream
+import java.util.Properties
 
 class NetworkVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
+    private var fileSystem: AndroidFileSystem? = null
     private var storagePermissions: StoragePermissions? = null
     private var requestReadPermission: ActivityResultLauncher<String>? = null
     private var requestWritePermission: ActivityResultLauncher<String>? = null
@@ -37,12 +46,13 @@ class NetworkVideosFragment :
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        fileSystem = AndroidFileSystem(requireContext())
         storagePermissions = StoragePermissions(requireContext())
         requestReadPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showMessage("Unable to read SMB setting file: permission denied")
+                showMessage("Unable to read SMB setting file")
             } else {
                 importSettings()
             }
@@ -51,7 +61,7 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showMessage("Unable to write SMB setting file: permission denied")
+                showMessage("Unable to write SMB setting file")
             } else {
                 exportSettings()
             }
@@ -119,14 +129,57 @@ class NetworkVideosFragment :
             createdBy = StoragePermissions.CreatedBy.AllApps
         )!!
 
-        Log.i(TAG, "Can Read Files: $canReadFiles")
         if (!canReadFiles) {
+            Log.i(TAG, "Asking for permission")
             requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        } else {
+            importSettings()
         }
     }
 
     private fun importSettings() {
+        Log.i(TAG, "Importing settings from Downloads folder")
 
+        val filename = "aerial-views-smb-settings.txt"
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+        val uri = Uri.parse("$directory/$filename")
+        val path = uri.toOkioPath()
+        val properties = Properties()
+
+        if (!FileHelper.fileExists(uri)) {
+            showMessage("Can't find SMB settings file")
+            return
+        }
+
+        try {
+            fileSystem?.source(path).use { file ->
+                file?.buffer().use { buffer ->
+                    val byteArray = buffer?.readByteArray()
+                    properties.load(ByteArrayInputStream(byteArray))
+                }
+            }
+        } catch (ex: Exception) {
+            showMessage("Error while reading file")
+            return
+        }
+
+        try {
+            NetworkVideoPrefs.hostName = properties["hostname"] as String
+            NetworkVideoPrefs.shareName = properties["sharename"] as String
+            NetworkVideoPrefs.userName = properties["username"] as String
+            NetworkVideoPrefs.password = properties["password"] as String
+        } catch (ex: Exception) {
+            showMessage("Error while trying to parse SMB settings")
+            return
+        }
+
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.text = NetworkVideoPrefs.hostName
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.text = NetworkVideoPrefs.shareName
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.text = NetworkVideoPrefs.userName
+        preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
+
+        Log.i(TAG, properties.toString())
+        showMessage("Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -136,14 +189,44 @@ class NetworkVideosFragment :
             createdBy = StoragePermissions.CreatedBy.AllApps
         )!!
 
-        Log.i(TAG, "Can Write Files: $canWriteFiles")
         if (!canWriteFiles) {
+            Log.i(TAG, "Asking for permission")
             requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            exportSettings()
         }
     }
 
     private fun exportSettings() {
+        Log.i(TAG, "Exporting settings to Downloads folder")
 
+        // Build SMB config string
+        val smbSettings = mutableMapOf<String, String>()
+        smbSettings["hostname"] = NetworkVideoPrefs.hostName
+        smbSettings["sharename"] = NetworkVideoPrefs.shareName
+        smbSettings["username"] = NetworkVideoPrefs.userName
+        smbSettings["password"] = NetworkVideoPrefs.password
+
+        // Prep file handle
+        val uri = fileSystem?.createMediaStoreUri(
+            filename = "aerial-views-smb-settings-${System.currentTimeMillis()}.txt",
+            collection = MediaStore.Files.getContentUri("external"),
+            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+            // directory = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
+        )!!
+
+        // Write to file
+        val path = uri.toOkioPath()
+        fileSystem?.write(path, false) {
+            for ((key, value) in smbSettings) {
+                writeUtf8(key)
+                writeUtf8("=")
+                writeUtf8(value)
+                writeUtf8("\n")
+            }
+        }
+
+        showMessage("Successfully exported SMB settings to Downloads folder")
     }
 
     private fun testNetworkConnection() {
@@ -168,7 +251,7 @@ class NetworkVideosFragment :
     }
 
     private fun showMessage(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     companion object {

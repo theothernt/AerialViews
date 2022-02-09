@@ -99,6 +99,7 @@ dependencies {
     // Modern Storage
     implementation('com.google.modernstorage:modernstorage-permissions:1.0.0-alpha06')
     implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha06')
+    implementation("com.squareup.okio:okio:3.0.0")
 
     // Android X
     implementation("androidx.core:core-ktx:1.7.0")
