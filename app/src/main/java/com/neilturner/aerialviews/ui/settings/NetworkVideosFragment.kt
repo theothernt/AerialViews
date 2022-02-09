@@ -33,6 +33,7 @@ import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.Properties
 
+@Suppress("DEPRECATION")
 class NetworkVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
