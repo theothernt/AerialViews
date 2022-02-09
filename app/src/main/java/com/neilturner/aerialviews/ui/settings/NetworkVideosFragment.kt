@@ -2,6 +2,7 @@
 
 package com.neilturner.aerialviews.ui.settings
 
+import android.Manifest
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.modernstorage.permissions.StoragePermissions
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
@@ -28,14 +30,21 @@ class NetworkVideosFragment :
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     private var storagePermissions: StoragePermissions? = null
-    private var requestPermission: ActivityResultLauncher<String>? = null
+    private var requestReadPermission: ActivityResultLauncher<String>? = null
+    private var requestWritePermission: ActivityResultLauncher<String>? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         storagePermissions = StoragePermissions(requireContext())
-        requestPermission = registerForActivityResult(
+        requestReadPermission = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+            }
+        }
+        requestWritePermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
@@ -48,6 +57,11 @@ class NetworkVideosFragment :
     override fun onDestroy() {
         preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
+    }
+
+    override fun onResume() {
+        // TODO
+        super.onResume()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -87,14 +101,41 @@ class NetworkVideosFragment :
             setMessage(R.string.network_videos_import_export_settings_summary)
             setNeutralButton("Cancel", null)
             setNegativeButton("Import") { _, _ ->
-                Log.i("", "Import...")
+                importExportSettings()
             }
             setPositiveButton("Export") { _, _ ->
-                Log.i("", "Export...")
+                exportNetworkSettings()
             }
         }
         val dialog = builder.create()
         dialog.show()
+    }
+
+    private fun importNetworkSettings() {
+        val canReadFiles = storagePermissions?.hasAccess(
+            action = StoragePermissions.Action.READ,
+            types = listOf(StoragePermissions.FileType.Document),
+            createdBy = StoragePermissions.CreatedBy.AllApps
+        )!!
+
+        Log.i(TAG, "Can Read Files: $canReadFiles")
+        if (!canReadFiles) {
+            requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+    }
+
+    private fun exportNetworkSettings() {
+        val canWriteFiles = storagePermissions?.hasAccess(
+            action = StoragePermissions.Action.READ_AND_WRITE,
+            types = listOf(StoragePermissions.FileType.Document),
+            createdBy = StoragePermissions.CreatedBy.AllApps
+        )!!
+
+        Log.i(TAG, "Can Write Files: $canWriteFiles")
+        if (!canWriteFiles) {
+            requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
     }
 
     private fun testNetworkConnection() {
