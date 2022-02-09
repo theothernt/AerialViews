@@ -42,12 +42,18 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
+                showMessage("Unable to read SMB setting file: permission denied")
+            } else {
+                importSettings()
             }
         }
         requestWritePermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
+                showMessage("Unable to write SMB setting file: permission denied")
+            } else {
+                exportSettings()
             }
         }
 
@@ -57,11 +63,6 @@ class NetworkVideosFragment :
     override fun onDestroy() {
         preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
-    }
-
-    override fun onResume() {
-        // TODO
-        super.onResume()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -101,17 +102,17 @@ class NetworkVideosFragment :
             setMessage(R.string.network_videos_import_export_settings_summary)
             setNeutralButton("Cancel", null)
             setNegativeButton("Import") { _, _ ->
-                importExportSettings()
+                checkImportPermissions()
             }
             setPositiveButton("Export") { _, _ ->
-                exportNetworkSettings()
+                checkExportPermissions()
             }
         }
         val dialog = builder.create()
         dialog.show()
     }
 
-    private fun importNetworkSettings() {
+    private fun checkImportPermissions() {
         val canReadFiles = storagePermissions?.hasAccess(
             action = StoragePermissions.Action.READ,
             types = listOf(StoragePermissions.FileType.Document),
@@ -122,10 +123,13 @@ class NetworkVideosFragment :
         if (!canReadFiles) {
             requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+    }
+
+    private fun importSettings() {
 
     }
 
-    private fun exportNetworkSettings() {
+    private fun checkExportPermissions() {
         val canWriteFiles = storagePermissions?.hasAccess(
             action = StoragePermissions.Action.READ_AND_WRITE,
             types = listOf(StoragePermissions.FileType.Document),
@@ -136,6 +140,10 @@ class NetworkVideosFragment :
         if (!canWriteFiles) {
             requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
+    }
+
+    private fun exportSettings() {
+
     }
 
     private fun testNetworkConnection() {
