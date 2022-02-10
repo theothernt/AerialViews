@@ -53,7 +53,7 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showMessage("Unable to read SMB setting file")
+                showSimpleDialog("Unable to read SMB setting file: permission denied")
             } else {
                 importSettings()
             }
@@ -62,7 +62,7 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showMessage("Unable to write SMB setting file")
+                showSimpleDialog("Unable to write SMB setting file: permission denied")
             } else {
                 exportSettings()
             }
@@ -107,8 +107,7 @@ class NetworkVideosFragment :
     }
 
     private fun importExportSettings() {
-        val builder = AlertDialog.Builder(requireContext())
-        builder.apply {
+        AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.network_videos_import_export_settings_title)
             setMessage(R.string.network_videos_import_export_settings_summary)
             setNeutralButton("Cancel", null)
@@ -118,9 +117,8 @@ class NetworkVideosFragment :
             setPositiveButton("Export") { _, _ ->
                 checkExportPermissions()
             }
+            create().show()
         }
-        val dialog = builder.create()
-        dialog.show()
     }
 
     private fun checkImportPermissions() {
@@ -148,7 +146,7 @@ class NetworkVideosFragment :
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showMessage("Can't find SMB settings file")
+            showSimpleDialog("Can't find SMB settings file in Downloads folder: $filename")
             return
         }
 
@@ -160,7 +158,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showMessage("Error while reading file")
+            showSimpleDialog("Error while reading file")
             return
         }
 
@@ -170,7 +168,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showMessage("Error while trying to parse SMB settings")
+            showSimpleDialog("Error while trying to parse SMB settings")
             return
         }
 
@@ -180,7 +178,7 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
 
         Log.i(TAG, properties.toString())
-        showMessage("Successfully imported SMB settings from Downloads folder")
+        showSimpleDialog("Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -208,26 +206,32 @@ class NetworkVideosFragment :
         smbSettings["username"] = NetworkVideoPrefs.userName
         smbSettings["password"] = NetworkVideoPrefs.password
 
-        // Prep file handle
-        val uri = fileSystem?.createMediaStoreUri(
-            filename = "aerial-views-smb-settings-${System.currentTimeMillis()}.txt",
-            collection = MediaStore.Files.getContentUri("external"),
-            directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-            // directory = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
-        )!!
+        val filename = "aerial-views-smb-settings-${System.currentTimeMillis()}.txt"
+        try {
+            // Prep file handle
+            val uri = fileSystem?.createMediaStoreUri(
+                filename = filename,
+                collection = MediaStore.Files.getContentUri("external"),
+                directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+                // directory = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
+            )!!
 
-        // Write to file
-        val path = uri.toOkioPath()
-        fileSystem?.write(path, false) {
-            for ((key, value) in smbSettings) {
-                writeUtf8(key)
-                writeUtf8("=")
-                writeUtf8(value)
-                writeUtf8("\n")
+            // Write to file
+            val path = uri.toOkioPath()
+            fileSystem?.write(path, false) {
+                for ((key, value) in smbSettings) {
+                    writeUtf8(key)
+                    writeUtf8("=")
+                    writeUtf8(value)
+                    writeUtf8("\n")
+                }
             }
+        } catch (ex: Exception) {
+            showSimpleDialog("Error while trying to write SMB settings file to Downloads folder: $filename")
+            return
         }
 
-        showMessage("Successfully exported SMB settings to Downloads folder")
+        showSimpleDialog("Successfully exported SMB settings to Downloads folder: $filename")
     }
 
     private fun testNetworkConnection() {
@@ -253,6 +257,15 @@ class NetworkVideosFragment :
 
     private fun showMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showSimpleDialog(message: String) {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle("")
+            setMessage(message)
+            setPositiveButton("OK", null)
+            create().show()
+        }
     }
 
     companion object {
