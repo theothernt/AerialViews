@@ -111,12 +111,12 @@ dependencies {
 
     // Firebase
     releaseImplementation(platform("com.google.firebase:firebase-bom:29.0.0"))
-    releaseImplementation("com.google.firebase:firebase-analytics-ktx:20.0.2")
-    releaseImplementation('com.google.firebase:firebase-crashlytics-ktx:18.2.7')
-    releaseImplementation("com.google.firebase:firebase-perf-ktx:20.0.4")
+    releaseImplementation('com.google.firebase:firebase-analytics-ktx:20.1.0')
+    releaseImplementation('com.google.firebase:firebase-crashlytics-ktx:18.2.8')
+    releaseImplementation('com.google.firebase:firebase-perf-ktx:20.0.5')
 
     // GSON
-    implementation("com.google.code.gson:gson:2.8.9")
+    implementation('com.google.code.gson:gson:2.9.0')
 
     // ExoPlayer
     implementation("com.google.android.exoplayer:exoplayer-core:2.16.1")
