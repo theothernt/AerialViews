@@ -60,18 +60,30 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showSimpleDialog("Unable to read SMB setting file: permission denied")
+                lifecycleScope.launch {
+                    showDialog("Unable to read SMB setting file: permission denied")
+                }
             } else {
-                importSettings()
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        importSettings()
+                    }
+                }
             }
         }
         requestWritePermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showSimpleDialog("Unable to write SMB setting file: permission denied")
+                lifecycleScope.launch {
+                    showDialog("Unable to write SMB setting file: permission denied")
+                }
             } else {
-                exportSettings()
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        exportSettings()
+                    }
+                }
             }
         }
 
@@ -143,11 +155,15 @@ class NetworkVideosFragment :
             Log.i(TAG, "Asking for permission")
             requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         } else {
-            importSettings()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    importSettings()
+                }
+            }
         }
     }
 
-    private fun importSettings() {
+    private suspend fun importSettings() {
         Log.i(TAG, "Importing settings from Downloads folder")
 
         val filename = "aerial-views-smb-settings.txt"
@@ -157,7 +173,7 @@ class NetworkVideosFragment :
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showSimpleDialog("Can't find SMB settings file in Downloads folder: $filename")
+            showDialog("Can't find SMB settings file in Downloads folder: $filename")
             return
         }
 
@@ -169,7 +185,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showSimpleDialog("Error while reading file")
+            showDialog("Error while reading file")
             return
         }
 
@@ -179,7 +195,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showSimpleDialog("Error while trying to parse SMB settings")
+            showDialog("Error while trying to parse SMB settings")
             return
         }
 
@@ -189,7 +205,7 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
 
         Log.i(TAG, properties.toString())
-        showSimpleDialog("Successfully imported SMB settings from Downloads folder")
+        showDialog("Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -203,11 +219,15 @@ class NetworkVideosFragment :
             Log.i(TAG, "Asking for permission")
             requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
-            exportSettings()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    exportSettings()
+                }
+            }
         }
     }
 
-    private fun exportSettings() {
+    private suspend fun exportSettings() {
         Log.i(TAG, "Exporting settings to Downloads folder")
 
         // Build SMB config string
@@ -238,11 +258,11 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showSimpleDialog("Error while trying to write SMB settings file to Downloads folder: $filename")
+            showDialog("Error while trying to write SMB settings file to Downloads folder: $filename")
             return
         }
 
-        showSimpleDialog("Successfully exported SMB settings to Downloads folder: $filename")
+        showDialog("Successfully exported SMB settings to Downloads folder: $filename")
     }
 
     private suspend fun testNetworkConnection() {
@@ -330,15 +350,6 @@ class NetworkVideosFragment :
             return
         }
         Log.i(TAG, "Finished SMB connection test")
-    }
-
-    private fun showSimpleDialog(message: String) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle("")
-            setMessage(message)
-            setPositiveButton("OK", null)
-            create().show()
-        }
     }
 
     private suspend fun showDialog(message: String) {
