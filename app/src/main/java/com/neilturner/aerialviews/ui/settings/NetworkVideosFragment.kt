@@ -9,10 +9,10 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -20,18 +20,25 @@ import androidx.preference.PreferenceManager
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
+import com.hierynomus.msfscc.FileAttributes
+import com.hierynomus.mssmb2.SMB2ShareAccess
+import com.hierynomus.protocol.commons.EnumWithValue
+import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.connection.Connection
+import com.hierynomus.smbj.session.Session
+import com.hierynomus.smbj.share.DiskShare
+import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.providers.NetworkVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.Properties
+
 
 @Suppress("DEPRECATION")
 class NetworkVideosFragment :
@@ -81,7 +88,11 @@ class NetworkVideosFragment :
             return super.onPreferenceTreeClick(preference)
 
         if (preference.key.contains("network_videos_test_connection")) {
-            testNetworkConnection()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    testNetworkConnection()
+                }
+            }
             return true
         }
 
@@ -234,29 +245,91 @@ class NetworkVideosFragment :
         showSimpleDialog("Successfully exported SMB settings to Downloads folder: $filename")
     }
 
-    private fun testNetworkConnection() {
-        showMessage("Connecting...")
-        val provider = NetworkVideoProvider(this.requireContext(), NetworkVideoPrefs)
-
+    private suspend fun testNetworkConnection() {
+        // Check hostname
+        val config = SmbHelper.buildSmbConfig()
+        val smbClient = SMBClient(config)
+        val connection: Connection
         try {
-            val videos = mutableListOf<AerialVideo>()
-            runBlocking {
-                withContext(Dispatchers.IO) {
-                    videos.addAll(provider.fetchVideos())
+            connection = smbClient.connect(NetworkVideoPrefs.hostName)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Unable to connect to hostname: ${NetworkVideoPrefs.hostName}...\n\n${e.message!!}"
+            showDialog(message)
+            return
+        }
+        Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
+
+        // Check username + password
+        // Domain name fixed to default
+        // Handles anonymous logins also
+        val session: Session?
+        try {
+            val authContext = SmbHelper.buildAuthContext(NetworkVideoPrefs.userName, NetworkVideoPrefs.password, NetworkVideoPrefs.domainName)
+            session = connection?.authenticate(authContext)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Authentication failed...\n\n${e.message!!}"
+            showDialog(message)
+            return
+        }
+        Log.i(TAG, "Authentication successful")
+
+        // Check sharename
+        val share: Share?
+        val path: String?
+        var shareName = ""
+        try {
+            val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(NetworkVideoPrefs.shareName))
+            shareName = shareNameAndPath.first
+            path = shareNameAndPath.second
+            share = session?.connectShare(shareName) as DiskShare
+            val shareAccess = hashSetOf<SMB2ShareAccess>()
+            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Unable to connect to share: $shareName...\n\n${e.message!!}"
+            showDialog(message)
+            return
+        }
+        Log.i(TAG, "Connected to share: $shareName")
+
+        // Check for any files
+        // Check for any video files
+        var files = 0 // ignore dot files
+        var videos = 0
+        try {
+            share.list(path).forEach loop@{ item ->
+                //Log.i(TAG, item.fileName)
+                val isFolder = EnumWithValue.EnumUtils.isSet(
+                    item.fileAttributes,
+                    FileAttributes.FILE_ATTRIBUTE_DIRECTORY
+                )
+                if (!isFolder) {
+                    if (FileHelper.isVideoFilename(item.fileName)) {
+                        videos++
+                    }
+                    files++
                 }
             }
-            showMessage("Connected, found ${videos.size} video file(s)")
-
-            videos.forEach { video ->
-                Log.i(TAG, "${video.location}: ${video.uri}")
-            }
         } catch (e: Exception) {
-            showMessage("Failed to connect")
+            Log.e(TAG, e.message!!)
+            val message = "Unable to list files from: $shareName...\n\n${e.message!!}"
+            showDialog(message)
+            return
         }
-    }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        val message = "Found $files files in total, $videos of which are videos."
+        showDialog(message)
+        Log.i(TAG, "Listed $files files from: $shareName")
+
+        try {
+            smbClient.close()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            return
+        }
+        Log.i(TAG, "Finished SMB connection test")
     }
 
     private fun showSimpleDialog(message: String) {
@@ -265,6 +338,17 @@ class NetworkVideosFragment :
             setMessage(message)
             setPositiveButton("OK", null)
             create().show()
+        }
+    }
+
+    private suspend fun showDialog(message: String) {
+        withContext(Dispatchers.Main) {
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle("")
+                setMessage(message)
+                setPositiveButton("OK", null)
+                create().show()
+            }
         }
     }
 
