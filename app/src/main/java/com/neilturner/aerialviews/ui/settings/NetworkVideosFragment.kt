@@ -39,7 +39,6 @@ import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.Properties
 
-
 @Suppress("DEPRECATION")
 class NetworkVideosFragment :
     PreferenceFragmentCompat(),
@@ -320,7 +319,7 @@ class NetworkVideosFragment :
         var videos = 0
         try {
             share.list(path).forEach loop@{ item ->
-                //Log.i(TAG, item.fileName)
+                // Log.i(TAG, item.fileName)
                 val isFolder = EnumWithValue.EnumUtils.isSet(
                     item.fileAttributes,
                     FileAttributes.FILE_ATTRIBUTE_DIRECTORY
