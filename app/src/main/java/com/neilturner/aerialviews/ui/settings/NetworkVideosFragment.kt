@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.util.Patterns
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -60,7 +61,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Unable to read SMB setting file: permission denied")
+                    showDialog("Error","Unable to read SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -75,7 +76,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Unable to write SMB setting file: permission denied")
+                    showDialog("Error","Unable to write SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -172,7 +173,7 @@ class NetworkVideosFragment :
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showDialog("Can't find SMB settings file in Downloads folder: $filename")
+            showDialog("Error", "Can't find SMB settings file in Downloads folder: $filename")
             return
         }
 
@@ -184,7 +185,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Error while reading file")
+            showDialog("Error", "Error while reading file")
             return
         }
 
@@ -194,7 +195,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showDialog("Error while trying to parse SMB settings")
+            showDialog("Error","Unable to parse SMB settings")
             return
         }
 
@@ -204,7 +205,7 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
 
         Log.i(TAG, properties.toString())
-        showDialog("Successfully imported SMB settings from Downloads folder")
+        showDialog("","Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -257,14 +258,25 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Error while trying to write SMB settings file to Downloads folder: $filename")
+            showDialog("Error","Error while trying to write SMB settings file to Downloads folder: $filename")
             return
         }
 
-        showDialog("Successfully exported SMB settings to Downloads folder: $filename")
+        showDialog("Error","Successfully exported SMB settings to Downloads folder: $filename")
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
     private suspend fun testNetworkConnection() {
+
+        // Check hostname
+        val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
+        if (!validIpAddress) {
+            val message = "Hostname must be a valid IP address"
+            Log.e(TAG, message)
+            showDialog("Error", message)
+            return
+        }
+
         // Check hostname
         val config = SmbHelper.buildSmbConfig()
         val smbClient = SMBClient(config)
@@ -273,8 +285,8 @@ class NetworkVideosFragment :
             connection = smbClient.connect(NetworkVideoPrefs.hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            val message = "Unable to connect to hostname: ${NetworkVideoPrefs.hostName}...\n\n${e.message!!}"
-            showDialog(message)
+            val message = "Failed to connect to hostname: ${NetworkVideoPrefs.hostName}. Please confirm the IP address is correct."
+            showDialog("Error", message)
             return
         }
         Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
@@ -288,8 +300,8 @@ class NetworkVideosFragment :
             session = connection?.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            val message = "Authentication failed...\n\n${e.message!!}"
-            showDialog(message)
+            val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
+            showDialog("Error", message)
             return
         }
         Log.i(TAG, "Authentication successful")
@@ -307,8 +319,8 @@ class NetworkVideosFragment :
             shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            val message = "Unable to connect to share: $shareName...\n\n${e.message!!}"
-            showDialog(message)
+            val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
+            showDialog("Error", message)
             return
         }
         Log.i(TAG, "Connected to share: $shareName")
@@ -317,14 +329,17 @@ class NetworkVideosFragment :
         // Check for any video files
         var files = 0 // ignore dot files
         var videos = 0
+        var folders = 0
         try {
-            share.list(path).forEach loop@{ item ->
+            share.list(path).forEach { item ->
                 // Log.i(TAG, item.fileName)
                 val isFolder = EnumWithValue.EnumUtils.isSet(
                     item.fileAttributes,
                     FileAttributes.FILE_ATTRIBUTE_DIRECTORY
                 )
-                if (!isFolder) {
+                if (isFolder) {
+                    folders++
+                } else {
                     if (FileHelper.isVideoFilename(item.fileName)) {
                         videos++
                     }
@@ -333,14 +348,23 @@ class NetworkVideosFragment :
             }
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            val message = "Unable to list files from: $shareName...\n\n${e.message!!}"
-            showDialog(message)
+            val message = "Unable to list files from: $shareName. Please check server permissions for this share."
+            showDialog("Error", message)
             return
         }
 
-        val message = "Found $files files in total, $videos of which are videos."
-        showDialog(message)
-        Log.i(TAG, "Listed $files files from: $shareName")
+        var message: String
+        val ignored = files - videos
+        if (files == 0) {
+            message = "No files or videos found!"
+        } else {
+            message = "Found $videos videos. "
+            if (ignored > 0) {
+                message += "$ignored non-video files were ignored."
+            }
+        }
+        showDialog("Connection successful", message)
+        Log.i(TAG, message)
 
         try {
             smbClient.close()
@@ -351,10 +375,10 @@ class NetworkVideosFragment :
         Log.i(TAG, "Finished SMB connection test")
     }
 
-    private suspend fun showDialog(message: String) {
+    private suspend fun showDialog(title: String = "", message: String) {
         withContext(Dispatchers.Main) {
             AlertDialog.Builder(requireContext()).apply {
-                setTitle("")
+                setTitle(title)
                 setMessage(message)
                 setPositiveButton("OK", null)
                 create().show()

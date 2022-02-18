@@ -56,7 +56,7 @@
 
     <!-- Network Video Options -->
     <string name="network_videos_hostname_title">Hostname</string>
-    <string name="network_videos_hostname_summary">IP address or hostname</string>
+    <string name="network_videos_hostname_summary">IP address of the server</string>
 
     <string name="network_videos_sharename_title">Share Name</string>
     <string name="network_videos_sharename_summary">e.g. /video/aerial</string>
