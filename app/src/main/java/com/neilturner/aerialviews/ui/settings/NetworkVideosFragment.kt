@@ -61,7 +61,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Error","Unable to read SMB setting file: permission denied")
+                    showDialog("Error", "Unable to read SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -76,7 +76,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Error","Unable to write SMB setting file: permission denied")
+                    showDialog("Error", "Unable to write SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -195,7 +195,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showDialog("Error","Unable to parse SMB settings")
+            showDialog("Error", "Unable to parse SMB settings")
             return
         }
 
@@ -205,7 +205,7 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
 
         Log.i(TAG, properties.toString())
-        showDialog("","Successfully imported SMB settings from Downloads folder")
+        showDialog("", "Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -258,11 +258,11 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Error","Error while trying to write SMB settings file to Downloads folder: $filename")
+            showDialog("Error", "Error while trying to write SMB settings file to Downloads folder: $filename")
             return
         }
 
-        showDialog("Error","Successfully exported SMB settings to Downloads folder: $filename")
+        showDialog("Error", "Successfully exported SMB settings to Downloads folder: $filename")
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
