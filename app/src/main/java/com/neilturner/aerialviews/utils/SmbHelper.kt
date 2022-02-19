@@ -62,8 +62,10 @@ object SmbHelper {
     }
 
     fun buildAuthContext(userName: String, password: String, domainName: String): AuthenticationContext {
-        if (userName.isEmpty() && password.isEmpty())
+        if (userName.isEmpty() && password.isEmpty()) {
+            Log.i(TAG, "Using anonymous login auth")
             return AuthenticationContext.anonymous()
+        }
 
         return AuthenticationContext(userName, password.toCharArray(), domainName)
     }

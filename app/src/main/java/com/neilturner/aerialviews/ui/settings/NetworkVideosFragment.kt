@@ -9,10 +9,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.Toast
+import android.util.Patterns
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -20,14 +21,20 @@ import androidx.preference.PreferenceManager
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
+import com.hierynomus.msfscc.FileAttributes
+import com.hierynomus.mssmb2.SMB2ShareAccess
+import com.hierynomus.protocol.commons.EnumWithValue
+import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.connection.Connection
+import com.hierynomus.smbj.session.Session
+import com.hierynomus.smbj.share.DiskShare
+import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.providers.NetworkVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import java.io.ByteArrayInputStream
@@ -53,18 +60,30 @@ class NetworkVideosFragment :
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showSimpleDialog("Unable to read SMB setting file: permission denied")
+                lifecycleScope.launch {
+                    showDialog("Error", "Unable to read SMB setting file: permission denied")
+                }
             } else {
-                importSettings()
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        importSettings()
+                    }
+                }
             }
         }
         requestWritePermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
             if (!isGranted) {
-                showSimpleDialog("Unable to write SMB setting file: permission denied")
+                lifecycleScope.launch {
+                    showDialog("Error", "Unable to write SMB setting file: permission denied")
+                }
             } else {
-                exportSettings()
+                lifecycleScope.launch {
+                    withContext(Dispatchers.IO) {
+                        exportSettings()
+                    }
+                }
             }
         }
 
@@ -81,7 +100,11 @@ class NetworkVideosFragment :
             return super.onPreferenceTreeClick(preference)
 
         if (preference.key.contains("network_videos_test_connection")) {
-            testNetworkConnection()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    testNetworkConnection()
+                }
+            }
             return true
         }
 
@@ -132,11 +155,15 @@ class NetworkVideosFragment :
             Log.i(TAG, "Asking for permission")
             requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         } else {
-            importSettings()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    importSettings()
+                }
+            }
         }
     }
 
-    private fun importSettings() {
+    private suspend fun importSettings() {
         Log.i(TAG, "Importing settings from Downloads folder")
 
         val filename = "aerial-views-smb-settings.txt"
@@ -146,7 +173,7 @@ class NetworkVideosFragment :
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showSimpleDialog("Can't find SMB settings file in Downloads folder: $filename")
+            showDialog("Error", "Can't find SMB settings file in Downloads folder: $filename")
             return
         }
 
@@ -158,7 +185,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showSimpleDialog("Error while reading file")
+            showDialog("Error", "Error while reading file")
             return
         }
 
@@ -168,7 +195,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showSimpleDialog("Error while trying to parse SMB settings")
+            showDialog("Error", "Unable to parse SMB settings")
             return
         }
 
@@ -178,7 +205,7 @@ class NetworkVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
 
         Log.i(TAG, properties.toString())
-        showSimpleDialog("Successfully imported SMB settings from Downloads folder")
+        showDialog("", "Successfully imported SMB settings from Downloads folder")
     }
 
     private fun checkExportPermissions() {
@@ -192,11 +219,15 @@ class NetworkVideosFragment :
             Log.i(TAG, "Asking for permission")
             requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
-            exportSettings()
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    exportSettings()
+                }
+            }
         }
     }
 
-    private fun exportSettings() {
+    private suspend fun exportSettings() {
         Log.i(TAG, "Exporting settings to Downloads folder")
 
         // Build SMB config string
@@ -227,44 +258,131 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showSimpleDialog("Error while trying to write SMB settings file to Downloads folder: $filename")
+            showDialog("Error", "Error while trying to write SMB settings file to Downloads folder: $filename")
             return
         }
 
-        showSimpleDialog("Successfully exported SMB settings to Downloads folder: $filename")
+        showDialog("Error", "Successfully exported SMB settings to Downloads folder: $filename")
     }
 
-    private fun testNetworkConnection() {
-        showMessage("Connecting...")
-        val provider = NetworkVideoProvider(this.requireContext(), NetworkVideoPrefs)
+    @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
+    private suspend fun testNetworkConnection() {
 
+        // Check hostname
+        val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
+        if (!validIpAddress) {
+            val message = "Hostname must be a valid IP address"
+            Log.e(TAG, message)
+            showDialog("Error", message)
+            return
+        }
+
+        // Check hostname
+        val config = SmbHelper.buildSmbConfig()
+        val smbClient = SMBClient(config)
+        val connection: Connection
         try {
-            val videos = mutableListOf<AerialVideo>()
-            runBlocking {
-                withContext(Dispatchers.IO) {
-                    videos.addAll(provider.fetchVideos())
+            connection = smbClient.connect(NetworkVideoPrefs.hostName)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Failed to connect to hostname: ${NetworkVideoPrefs.hostName}. Please confirm the IP address is correct."
+            showDialog("Error", message)
+            return
+        }
+        Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
+
+        // Check username + password
+        // Domain name fixed to default
+        // Handles anonymous logins also
+        val session: Session?
+        try {
+            val authContext = SmbHelper.buildAuthContext(NetworkVideoPrefs.userName, NetworkVideoPrefs.password, NetworkVideoPrefs.domainName)
+            session = connection?.authenticate(authContext)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
+            showDialog("Error", message)
+            return
+        }
+        Log.i(TAG, "Authentication successful")
+
+        // Check sharename
+        val share: Share?
+        val path: String?
+        var shareName = ""
+        try {
+            val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(NetworkVideoPrefs.shareName))
+            shareName = shareNameAndPath.first
+            path = shareNameAndPath.second
+            share = session?.connectShare(shareName) as DiskShare
+            val shareAccess = hashSetOf<SMB2ShareAccess>()
+            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
+            showDialog("Error", message)
+            return
+        }
+        Log.i(TAG, "Connected to share: $shareName")
+
+        // Check for any files
+        // Check for any video files
+        var files = 0 // ignore dot files
+        var videos = 0
+        var folders = 0
+        try {
+            share.list(path).forEach { item ->
+                // Log.i(TAG, item.fileName)
+                val isFolder = EnumWithValue.EnumUtils.isSet(
+                    item.fileAttributes,
+                    FileAttributes.FILE_ATTRIBUTE_DIRECTORY
+                )
+                if (isFolder) {
+                    folders++
+                } else {
+                    if (FileHelper.isVideoFilename(item.fileName)) {
+                        videos++
+                    }
+                    files++
                 }
             }
-            showMessage("Connected, found ${videos.size} video file(s)")
-
-            videos.forEach { video ->
-                Log.i(TAG, "${video.location}: ${video.uri}")
-            }
         } catch (e: Exception) {
-            showMessage("Failed to connect")
+            Log.e(TAG, e.message!!)
+            val message = "Unable to list files from: $shareName. Please check server permissions for this share."
+            showDialog("Error", message)
+            return
         }
+
+        var message: String
+        val ignored = files - videos
+        if (files == 0) {
+            message = "No files or videos found!"
+        } else {
+            message = "Found $videos videos. "
+            if (ignored > 0) {
+                message += "$ignored non-video files were ignored."
+            }
+        }
+        showDialog("Connection successful", message)
+        Log.i(TAG, message)
+
+        try {
+            smbClient.close()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            return
+        }
+        Log.i(TAG, "Finished SMB connection test")
     }
 
-    private fun showMessage(message: String) {
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun showSimpleDialog(message: String) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle("")
-            setMessage(message)
-            setPositiveButton("OK", null)
-            create().show()
+    private suspend fun showDialog(title: String = "", message: String) {
+        withContext(Dispatchers.Main) {
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle(title)
+                setMessage(message)
+                setPositiveButton("OK", null)
+                create().show()
+            }
         }
     }
 
