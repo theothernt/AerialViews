@@ -21,13 +21,6 @@
 
     <string name="apple_videos_quality_title">Quality</string>
     <string name="apple_videos_quality_summary">Select a video quality</string>
-    <string-array name="apple_videos_quality_entries">
-        <item>1080p H.264/AVC</item>
-        <item>1080p SDR/HEVC</item>
-        <item>1080p HDR/HEVC</item>
-        <item>4K SDR/HEVC</item>
-        <item>4K HDR/HEVC</item>
-    </string-array>
 
     <string name="apple_videos_data_usage_title">Data usage</string>
 
@@ -72,13 +65,6 @@
 
     <string name="network_videos_smb_dialects_title">Select SMB dialects</string>
     <string name="network_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
-    <string-array name="network_videos_smb_dialects_entries">
-        <item>v3.1.1</item>
-        <item>v3.0.2</item>
-        <item>v3.0</item>
-        <item>v2.1</item>
-        <item>v2.0.2</item>
-    </string-array>
 
     <string name="network_videos_import_export_settings_title">Import/Export settings</string>
     <string name="network_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
@@ -99,10 +85,6 @@
 
     <string name="interface_show_location_style_title">Apple videos</string>
     <string name="interface_show_location_style_summary">Choose a video title style</string>
-    <string-array name="interface_show_location_style_entries">
-        <item>Short title or location</item>
-        <item>Full location or points of interest</item>
-    </string-array>
 
     <string name="interface_alt_text_position_title">Alternate text position</string>
     <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
@@ -124,34 +106,24 @@
 
     <string name="performance_enable_tunneling_title">Enable tunneling</string>
     <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
-    <string name="performance_reduced_buffers_title">Use reduced video buffers</string>
-    <string name="performance_reduced_buffers_summary">May help videos start a little faster on slower or high latency connection</string>
+
+    <string name="performance_buffering_strategy_title">Buffering strategy</string>
+    <string name="performance_buffering_strategy_summary">Changes video buffering priorities, can help with inconsistent connections</string>
+
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
     <string name="capabilities_display_title">TV/Display</string>
+
     <string name="capabilities_codecs_title">Codec Summary</string>
+
     <string name="capabilities_decoders_title">Video Decoders</string>
+
     <string name="capabilities_resolution_title">Resolution</string>
 
     <string name="playback_speed_title">Playback Speed</string>
     <string name="playback_speed_summary">Choose a playback speed (default: 1x)</string>
-    <string-array name="playback_speed_entries">
-        <item>0.25x</item>
-        <item>0.5x</item>
-        <item>0.75x</item>
-        <item>1x (default)</item>
-        <item>1.25x</item>
-        <item>1.5x</item>
-        <item>1.75x</item>
-        <item>2x</item>
-        <item>2.5x</item>
-        <item>3x</item>
-        <item>3.5x</item>
-        <item>4x</item>
-        <item>5x</item>
-    </string-array>
-    
+
     <!-- Actions -->
     <string name="test_screensaver_settings">Test screensaver settings</string>
     <string name="open_system_screensaver_options">Open system screensaver options</string>

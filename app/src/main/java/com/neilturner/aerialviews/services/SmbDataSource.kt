@@ -4,6 +4,7 @@ package com.neilturner.aerialviews.services
 
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.upstream.BaseDataSource
+import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DataSpec
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
@@ -135,5 +136,12 @@ class SmbDataSource : BaseDataSource(true) {
 
     companion object {
         private const val TAG = "SmbDataSource"
+    }
+}
+
+class SmbDataSourceFactory : DataSource.Factory {
+
+    override fun createDataSource(): DataSource {
+        return SmbDataSource()
     }
 }

@@ -71,7 +71,7 @@ class VideoService(private val context: Context) {
         if (GeneralPrefs.useCustomManifests)
             manifestVideos.addAll(customManifestVideos())
 
-        val result = findVideoLocation(videos, manifestVideos)
+        val result = findVideoLocationInManifest(videos, manifestVideos)
         videos = result.first.toMutableList()
 
         if (result.first.isNotEmpty())
@@ -136,13 +136,11 @@ class VideoService(private val context: Context) {
             Log.e(TAG, ex.message!!)
         }
 
-        Log.i(TAG, "Found ${videos.count()} Apple manifest videos")
-
+        Log.i(TAG, "${videos.count()} videos listed in Apple manifests")
         return videos
     }
 
     private fun customManifestVideos(): List<AerialVideo> {
-
         return emptyList()
     }
 
@@ -163,13 +161,13 @@ class VideoService(private val context: Context) {
         return videos
     }
 
-    private fun findVideoLocation(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>): Pair<List<AerialVideo>, List<AerialVideo>> {
+    private fun findVideoLocationInManifest(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>): Pair<List<AerialVideo>, List<AerialVideo>> {
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
-                Log.i(TAG, "HTTP/web video, ignoring")
+                Log.i(TAG, "Ignoring remote video, already has location")
                 matched.add(video)
                 continue
             }

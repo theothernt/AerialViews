@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Apple Video Options -->
+    <string-array name="apple_videos_quality_entries">
+        <item>1080p H.264/AVC</item>
+        <item>1080p SDR/HEVC</item>
+        <item>1080p HDR/HEVC</item>
+        <item>4K SDR/HEVC</item>
+        <item>4K HDR/HEVC</item>
+    </string-array>
     <string-array name="apple_videos_quality_values">
         <item>VIDEO_1080_H264</item>
         <item>VIDEO_1080_SDR</item>
@@ -10,6 +17,10 @@
     </string-array>
     <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
+    <string-array name="interface_show_location_style_entries">
+        <item>Short title or location</item>
+        <item>Full location or points of interest</item>
+    </string-array>
     <string-array name="interface_show_location_style_values">
         <item>SHORT</item>
         <item>VERBOSE</item>
@@ -24,6 +35,21 @@
         <item>90GB</item>
     </string-array>
 
+    <string-array name="playback_speed_entries">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>1x (default)</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>1.75x</item>
+        <item>2x</item>
+        <item>2.5x</item>
+        <item>3x</item>
+        <item>3.5x</item>
+        <item>4x</item>
+        <item>5x</item>
+    </string-array>
     <string-array name="playback_speed_values">
         <item>0.25</item>
         <item>0.5</item>
@@ -42,6 +68,13 @@
     <string name="playback_speed_default" translatable="false">1</string>
 
     <!-- Network Video Options -->
+    <string-array name="network_videos_smb_dialects_entries">
+        <item>v3.1.1</item>
+        <item>v3.0.2</item>
+        <item>v3.0</item>
+        <item>v2.1</item>
+        <item>v2.0.2</item>
+    </string-array>
     <string-array name="network_videos_smb_dialects_values">
         <item>SMB_3_1_1</item>
         <item>SMB_3_0_2</item>
@@ -57,4 +90,16 @@
         <item>SMB_2_0_2</item>
     </string-array>
 
+    <!-- Performance & Debug Options -->
+    <string-array name="performance_buffering_strategy_entries">
+        <item>Default strategy</item>
+        <item>Larger buffer</item>
+        <item>Faster start on higher latency connection</item>
+    </string-array>
+    <string-array name="performance_buffering_strategy_values">
+        <item>DEFAULT</item>
+        <item>DRIP_FEED</item>
+        <item>FAST_START</item>
+    </string-array>
+    <string name="performance_buffering_strategy_default" translatable="false">DEFAULT</string>
 </resources>
