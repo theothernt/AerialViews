@@ -12,11 +12,14 @@
                     app:summary="@string/performance_enable_tunneling_summary"
                     app:title="@string/performance_enable_tunneling_title" />
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="reduced_buffers"
-                    app:summary="@string/performance_reduced_buffers_summary"
-                    app:title="@string/performance_reduced_buffers_title" />
+                <ListPreference
+                    app:key="performance_buffering_strategy"
+                    app:defaultValue="@string/performance_buffering_strategy_default"
+                    app:entries="@array/performance_buffering_strategy_entries"
+                    app:entryValues="@array/performance_buffering_strategy_values"
+                    app:title="@string/performance_buffering_strategy_title"
+                    app:summary="@string/performance_buffering_strategy_summary"
+                    app:dialogTitle="@string/performance_buffering_strategy_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"

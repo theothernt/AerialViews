@@ -16,6 +16,7 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.video.VideoSize
+import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
@@ -23,7 +24,7 @@ import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private val player: ExoPlayer
-    private val useReducedBuffering: Boolean = GeneralPrefs.reducedBuffers
+    private val bufferingStrategy = BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
     private val enableTunneling: Boolean = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
     private val muteVideo: Boolean = GeneralPrefs.muteVideos
@@ -166,23 +167,24 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val loadControl: DefaultLoadControl
         val loadControlBuilder = DefaultLoadControl.Builder()
 
-        if (useReducedBuffering) {
-            // Buffer sizes while playing
-            val minBuffer = 5000
-            val maxBuffer = 10000
-
-            // Initial buffer size to start playback
-            val bufferForPlayback = 1024
-            val bufferForPlaybackAfterRebuffer = 1024
-
-            loadControlBuilder
-                .setBufferDurationsMs(
-                    minBuffer,
-                    maxBuffer,
-                    bufferForPlayback,
-                    bufferForPlaybackAfterRebuffer
-                )
-        }
+        Log.i(TAG,"Buffering: $bufferingStrategy")
+//        if (useReducedBuffering) {
+//            // Buffer sizes while playing
+//            val minBuffer = 5000
+//            val maxBuffer = 10000
+//
+//            // Initial buffer size to start playback
+//            val bufferForPlayback = 1024
+//            val bufferForPlaybackAfterRebuffer = 1024
+//
+//            loadControlBuilder
+//                .setBufferDurationsMs(
+//                    minBuffer,
+//                    maxBuffer,
+//                    bufferForPlayback,
+//                    bufferForPlaybackAfterRebuffer
+//                )
+//        }
         loadControl = loadControlBuilder.build()
         val parametersBuilder = ParametersBuilder(context)
 
