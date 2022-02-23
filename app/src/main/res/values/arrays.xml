@@ -93,7 +93,7 @@
     <!-- Performance & Debug Options -->
     <string-array name="performance_buffering_strategy_entries">
         <item>Default strategy</item>
-        <item>Keep buffer full</item>
+        <item>Larger buffer</item>
         <item>Faster start on higher latency connection</item>
     </string-array>
     <string-array name="performance_buffering_strategy_values">

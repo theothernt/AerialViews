@@ -167,24 +167,50 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val loadControl: DefaultLoadControl
         val loadControlBuilder = DefaultLoadControl.Builder()
 
-        Log.i(TAG,"Buffering: $bufferingStrategy")
-//        if (useReducedBuffering) {
-//            // Buffer sizes while playing
-//            val minBuffer = 5000
-//            val maxBuffer = 10000
-//
-//            // Initial buffer size to start playback
-//            val bufferForPlayback = 1024
-//            val bufferForPlaybackAfterRebuffer = 1024
-//
-//            loadControlBuilder
-//                .setBufferDurationsMs(
-//                    minBuffer,
-//                    maxBuffer,
-//                    bufferForPlayback,
-//                    bufferForPlaybackAfterRebuffer
-//                )
-//        }
+        Log.i(TAG, "Buffering strategy: $bufferingStrategy")
+
+        // Defaults
+        // val minBuffer = 50_000
+        // val maxBuffer = 50_000
+        // val bufferForPlayback = 2500
+        // val bufferForPlaybackAfterRebuffer = 5000
+
+        if (bufferingStrategy == BufferingStrategy.FAST_START) {
+            // Buffer sizes while playing
+            val minBuffer = 5000
+            val maxBuffer = 10_000
+
+            // Initial buffer size to start playback
+            val bufferForPlayback = 1024
+            val bufferForPlaybackAfterRebuffer = 1024
+
+            loadControlBuilder
+                .setBufferDurationsMs(
+                    minBuffer,
+                    maxBuffer,
+                    bufferForPlayback,
+                    bufferForPlaybackAfterRebuffer
+                )
+        }
+
+        if (bufferingStrategy == BufferingStrategy.DRIP_FEED) {
+            // Buffer sizes while playing
+            val minBuffer = 75_000
+            val maxBuffer = 75_000
+
+            // Initial buffer size to start playback
+            val bufferForPlayback = 4000
+            val bufferForPlaybackAfterRebuffer = 8000
+
+            loadControlBuilder
+                .setBufferDurationsMs(
+                    minBuffer,
+                    maxBuffer,
+                    bufferForPlayback,
+                    bufferForPlaybackAfterRebuffer
+                )
+        }
+
         loadControl = loadControlBuilder.build()
         val parametersBuilder = ParametersBuilder(context)
 
