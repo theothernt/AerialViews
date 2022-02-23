@@ -21,7 +21,7 @@ Or [download the APK from the Releases page](https://github.com/theothernt/Aeria
 
 ## Where to download Apple videos for offline/local playback
 
-Please [visit this web page to download download the tvOS 15 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
+Please [visit this web page to download the tvOS 15 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
 
 ## HDR videos don't seem to play, I only see black screen...
 
