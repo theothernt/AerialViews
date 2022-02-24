@@ -127,7 +127,7 @@ dependencies {
     implementation('com.chibatching.kotpref:enum-support:2.13.2')
 
     // SMB
-    implementation("com.hierynomus:smbj:0.11.3")
+    implementation('com.hierynomus:smbj:0.11.5')
 
     //testImplementation("junit:junit:4.13.")
 }
