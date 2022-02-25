@@ -12,8 +12,8 @@ android {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 3 // Will be incremented automatically on release
-        versionName "1.1"
+        versionCode 4 // Will be incremented automatically on release
+        versionName "1.1.1"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
