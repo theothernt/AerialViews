@@ -13,7 +13,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode 3 // Will be incremented automatically on release
-        versionName "1.1"
+        versionName "1.2"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -129,5 +129,6 @@ dependencies {
     // SMB
     implementation('com.hierynomus:smbj:0.11.5')
 
+    //debugImplementation('com.squareup.leakcanary:leakcanary-android:2.8.1')
     //testImplementation("junit:junit:4.13.")
 }
