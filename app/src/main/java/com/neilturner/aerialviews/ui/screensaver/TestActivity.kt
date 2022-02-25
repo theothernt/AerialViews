@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -12,7 +13,15 @@ class TestActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i(TAG, "onCreate")
+        // Setup
         setTitle(R.string.app_name)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Log.i(TAG, "onAttachedToWindow")
+        // Start playback, etc
         videoController = VideoController(this)
         setContentView(videoController!!.view)
     }
@@ -60,8 +69,16 @@ class TestActivity : Activity() {
     }
 
     override fun onStop() {
-        videoController!!.stop()
         super.onStop()
+        Log.i(TAG, "onStop")
+        // Stop playback, animations, etc
+        videoController!!.stop()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        Log.i(TAG, "onDetachedFromWindow")
+        // Remove resources
     }
 
     companion object {

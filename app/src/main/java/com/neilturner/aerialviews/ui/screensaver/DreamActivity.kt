@@ -3,6 +3,7 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.service.dreams.DreamService
+import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
@@ -12,12 +13,17 @@ class DreamActivity : DreamService() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
+        Log.i(TAG, "onAttachedToWindow")
+        // Setup
         isFullscreen = true
         isInteractive = true
         videoController = VideoController(this)
-
         setContentView(videoController!!.view)
+    }
+
+    override fun onDreamingStarted() {
+        super.onDreamingStarted()
+        // Start playback, etc
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -63,8 +69,16 @@ class DreamActivity : DreamService() {
     }
 
     override fun onDreamingStopped() {
-        videoController?.stop()
         super.onDreamingStopped()
+        Log.i(TAG, "onDreamingStopped")
+        // Stop playback, animations, etc
+        videoController?.stop()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        Log.i(TAG, "onDetachedFromWindow")
+        // Remove resources
     }
 
     companion object {
