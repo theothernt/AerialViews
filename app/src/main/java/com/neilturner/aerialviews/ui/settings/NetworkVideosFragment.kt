@@ -25,6 +25,7 @@ import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
@@ -278,21 +279,31 @@ class NetworkVideosFragment :
         // Check hostname
         val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
         if (!validIpAddress) {
-            val message = "Hostname must be a valid IP address"
+            val message = "Hostname must be a valid IP address."
             Log.e(TAG, message)
             showDialog("Error", message)
             return
         }
 
         // Check hostname
-        val config = SmbHelper.buildSmbConfig()
+        val config: SmbConfig
+        try {
+            config = SmbHelper.buildSmbConfig()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message!!)
+            val message = "Failed to create SMB config...\n\n${e.message!!}"
+            showDialog("Connection error", message)
+            return
+        }
+        Log.i(TAG, "SMB config successful")
+
         val smbClient = SMBClient(config)
         val connection: Connection
         try {
             connection = smbClient.connect(NetworkVideoPrefs.hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            val message = "Failed to connect to hostname: ${NetworkVideoPrefs.hostName}. Please confirm the IP address is correct."
+            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message!!}"
             showDialog("Connection error", message)
             return
         }
