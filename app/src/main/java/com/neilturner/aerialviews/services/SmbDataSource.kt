@@ -13,7 +13,6 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
-import com.neilturner.aerialviews.ui.settings.NetworkVideosFragment
 import com.neilturner.aerialviews.utils.SmbHelper
 import java.io.EOFException
 import java.io.IOException
@@ -75,7 +74,7 @@ class SmbDataSource : BaseDataSource(true) {
     }
 
     override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
-        //Log.i(TAG, "Read $offset-${offset+readLength}")
+        // Log.i(TAG, "Read $offset-${offset+readLength}")
         return readInternal(buffer, offset, readLength)
     }
 
