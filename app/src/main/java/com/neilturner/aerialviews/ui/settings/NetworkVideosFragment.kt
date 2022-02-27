@@ -61,7 +61,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Error", "Unable to read SMB setting file: permission denied")
+                    showDialog("Import failed", "Unable to read SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -76,7 +76,7 @@ class NetworkVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Error", "Unable to write SMB setting file: permission denied")
+                    showDialog("Export failed", "Unable to write SMB setting file: permission denied")
                 }
             } else {
                 lifecycleScope.launch {
@@ -173,7 +173,7 @@ class NetworkVideosFragment :
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showDialog("Error", "Can't find SMB settings file in Downloads folder: $filename")
+            showDialog("Import failed", "Can't find SMB settings file in Downloads folder: $filename")
             return
         }
 
@@ -185,7 +185,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Error", "Error while reading file")
+            showDialog("Import failed", "Error while reading and parsing file. Please check the file again for mistakes or invalid characters.")
             return
         }
 
@@ -195,17 +195,19 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.userName = properties["username"] as String
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
-            showDialog("Error", "Unable to parse SMB settings")
+            showDialog("Import failed", "Unable to save imported settings")
             return
         }
 
-        preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.text = NetworkVideoPrefs.hostName
-        preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.text = NetworkVideoPrefs.shareName
-        preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.text = NetworkVideoPrefs.userName
-        preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
+        withContext(Dispatchers.Main) {
+            preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.text = NetworkVideoPrefs.hostName
+            preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.text = NetworkVideoPrefs.shareName
+            preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.text = NetworkVideoPrefs.userName
+            preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
+        }
 
         Log.i(TAG, properties.toString())
-        showDialog("", "Successfully imported SMB settings from Downloads folder")
+        showDialog("Import successful", "SMB settings successfully imported from $filename")
     }
 
     private fun checkExportPermissions() {
@@ -237,16 +239,21 @@ class NetworkVideosFragment :
         smbSettings["username"] = NetworkVideoPrefs.userName
         smbSettings["password"] = NetworkVideoPrefs.password
 
-        val filename = "aerial-views-smb-settings-${System.currentTimeMillis()}.txt"
+        val filename = "aerial-views-smb-settings.txt"
+        val uri: Uri
         try {
             // Prep file handle
-            val uri = fileSystem?.createMediaStoreUri(
+            uri = fileSystem?.createMediaStoreUri(
                 filename = filename,
                 collection = MediaStore.Files.getContentUri("external"),
                 directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-                // directory = context?.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath
             )!!
+        } catch (ex: Exception) {
+            showDialog("Export failed", "The SMB settings file $filename already exists in the Downloads folder")
+            return
+        }
 
+        try {
             // Write to file
             val path = uri.toOkioPath()
             fileSystem?.write(path, false) {
@@ -258,11 +265,11 @@ class NetworkVideosFragment :
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Error", "Error while trying to write SMB settings file to Downloads folder: $filename")
+            showDialog("Export failed", "Error while trying to write SMB settings to $filename in the Downloads folder")
             return
         }
 
-        showDialog("Error", "Successfully exported SMB settings to Downloads folder: $filename")
+        showDialog("Export successful", "Successfully exported SMB settings to $filename in the Downloads folder")
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
@@ -286,7 +293,7 @@ class NetworkVideosFragment :
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
             val message = "Failed to connect to hostname: ${NetworkVideoPrefs.hostName}. Please confirm the IP address is correct."
-            showDialog("Error", message)
+            showDialog("Connection error", message)
             return
         }
         Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
@@ -301,7 +308,7 @@ class NetworkVideosFragment :
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
             val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
-            showDialog("Error", message)
+            showDialog("Connection error", message)
             return
         }
         Log.i(TAG, "Authentication successful")
@@ -320,7 +327,7 @@ class NetworkVideosFragment :
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
             val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
-            showDialog("Error", message)
+            showDialog("Connection error", message)
             return
         }
         Log.i(TAG, "Connected to share: $shareName")
@@ -349,7 +356,7 @@ class NetworkVideosFragment :
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
             val message = "Unable to list files from: $shareName. Please check server permissions for this share."
-            showDialog("Error", message)
+            showDialog("Connection error", message)
             return
         }
 
