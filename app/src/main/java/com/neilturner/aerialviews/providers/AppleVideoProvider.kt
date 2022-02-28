@@ -14,9 +14,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
     override fun fetchVideos(): List<AerialVideo> {
         val quality = prefs.quality
         val videos = mutableListOf<AerialVideo>()
-
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
-        // tvOS videos
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(

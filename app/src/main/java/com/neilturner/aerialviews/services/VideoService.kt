@@ -25,7 +25,6 @@ class VideoService(private val context: Context) {
     private val providers = mutableListOf<VideoProvider>()
 
     init {
-
         if (LocalVideoPrefs.enabled)
             providers.add(LocalVideoProvider(context))
 
@@ -155,7 +154,7 @@ class VideoService(private val context: Context) {
                 null
             }
             if (uri != null)
-                videos.add(AerialVideo(uri, video.location))
+                videos.add(AerialVideo(uri, video.location, video.pointsOfInterest))
         }
 
         return videos
@@ -164,6 +163,7 @@ class VideoService(private val context: Context) {
     private fun findVideoLocationInManifest(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>): Pair<List<AerialVideo>, List<AerialVideo>> {
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
+        val strings = JsonHelper.parseJsonMap(context, R.raw.tvos15_strings)
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
@@ -179,7 +179,12 @@ class VideoService(private val context: Context) {
             }
 
             if (videoFound != null) {
-                matched.add(AerialVideo(video.uri, videoFound.location))
+                matched.add(AerialVideo(
+                    video.uri, videoFound.location,
+                    videoFound.poi.mapValues { poi ->
+                        strings[poi.value] ?: videoFound.location
+                    }
+                ))
             } else {
                 unmatched.add(video)
             }
