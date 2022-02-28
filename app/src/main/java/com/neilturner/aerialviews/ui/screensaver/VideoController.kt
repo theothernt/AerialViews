@@ -99,7 +99,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
-        Log.i("LoadVideo", "Playing: ${video.location} - ${video.uri} (${video.poi})")
+        Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
         videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
 
         if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
@@ -114,6 +114,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 if (update) {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
+                        if (!canSkip) return@withEndAction
                         videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
                         videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
                     }.start()
@@ -146,5 +147,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     override fun onError(view: ExoPlayerView?) {
         binding.root.post { start() }
+    }
+
+    companion object {
+        private const val TAG = "VideoController"
     }
 }
