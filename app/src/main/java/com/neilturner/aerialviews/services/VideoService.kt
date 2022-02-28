@@ -156,7 +156,6 @@ class VideoService(private val context: Context) {
             if (uri != null)
                 videos.add(AerialVideo(uri, video.location, video.pointsOfInterest))
         }
-
         return videos
     }
 
@@ -167,7 +166,7 @@ class VideoService(private val context: Context) {
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
-                Log.i(TAG, "Ignoring remote video, already has location")
+                Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
                 matched.add(video)
                 continue
             }

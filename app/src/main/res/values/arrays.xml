@@ -18,8 +18,8 @@
     <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
     <string-array name="interface_show_location_style_entries">
-        <item>Short title or location</item>
-        <item>Full location or points of interest</item>
+        <item>Short</item>
+        <item>Points of interest</item>
     </string-array>
     <string-array name="interface_show_location_style_values">
         <item>SHORT</item>
