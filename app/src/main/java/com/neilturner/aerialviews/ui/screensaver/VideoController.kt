@@ -111,12 +111,13 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 val poi = poiTimes.findLast { it <= time } ?: 0
                 val update = poi != lastPoi
 
-                if (update) {
+                if (update && canSkip) {
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
-                        if (!canSkip) return@withEndAction
-                        videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
-                        videoBinding.location.animate().alpha(0.7f).setDuration(1000).start()
+                        if (canSkip) {
+                            videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
+                        }
+                        videoBinding.location.animate().alpha(0.7f).setDuration(800).start()
                     }.start()
                 }
 

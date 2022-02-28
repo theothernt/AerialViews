@@ -252,6 +252,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     companion object {
         private const val TAG = "ExoPlayerView"
-        const val DURATION: Long = 800
+        const val DURATION: Long = 1000
     }
 }
