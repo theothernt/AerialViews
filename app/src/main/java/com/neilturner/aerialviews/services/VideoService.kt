@@ -179,12 +179,14 @@ class VideoService(private val context: Context) {
             }
 
             if (videoFound != null) {
-                matched.add(AerialVideo(
-                    video.uri, videoFound.location,
-                    videoFound.poi.mapValues { poi ->
-                        strings[poi.value] ?: videoFound.location
-                    }
-                ))
+                matched.add(
+                    AerialVideo(
+                        video.uri, videoFound.location,
+                        videoFound.poi.mapValues { poi ->
+                            strings[poi.value] ?: videoFound.location
+                        }
+                    )
+                )
             } else {
                 unmatched.add(video)
             }
