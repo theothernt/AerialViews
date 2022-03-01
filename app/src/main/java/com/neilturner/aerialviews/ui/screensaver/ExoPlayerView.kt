@@ -178,7 +178,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (bufferingStrategy == BufferingStrategy.FAST_START) {
             // Buffer sizes while playing
             val minBuffer = 5000
-            val maxBuffer = 10_000
+            val maxBuffer = 40_000
 
             // Initial buffer size to start playback
             val bufferForPlayback = 1024
@@ -193,7 +193,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 )
         }
 
-        if (bufferingStrategy == BufferingStrategy.DRIP_FEED) {
+        if (bufferingStrategy == BufferingStrategy.BIGGER) {
             // Buffer sizes while playing
             val minBuffer = 75_000
             val maxBuffer = 75_000
@@ -201,6 +201,24 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             // Initial buffer size to start playback
             val bufferForPlayback = 4000
             val bufferForPlaybackAfterRebuffer = 8000
+
+            loadControlBuilder
+                .setBufferDurationsMs(
+                    minBuffer,
+                    maxBuffer,
+                    bufferForPlayback,
+                    bufferForPlaybackAfterRebuffer
+                )
+        }
+
+        if (bufferingStrategy == BufferingStrategy.SMALLER) {
+            // Buffer sizes while playing
+            val minBuffer = 10_000
+            val maxBuffer = 10_000
+
+            // Initial buffer size to start playback
+            val bufferForPlayback = 4000
+            val bufferForPlaybackAfterRebuffer = 4000
 
             loadControlBuilder
                 .setBufferDurationsMs(

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models
 
 enum class BufferingStrategy {
     DEFAULT,
-    DRIP_FEED,
+    BIGGER,
+    SMALLER,
     FAST_START,
 }
