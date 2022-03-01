@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "BlockingMethodInNonBlockingContext")
 
 package com.neilturner.aerialviews.ui.settings
 
