@@ -14,38 +14,34 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class VideoController(context: Context) : OnPlayerEventListener {
+    private var currentPositionProgressHandler: (() -> Unit)? = null
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val binding: AerialActivityBinding
     private var playlist: VideoPlaylist? = null
-    private var canSkip: Boolean
-    private var previousVideo: Boolean
+    private var canSkip = false
+    private var previousVideo = false
 
     init {
         val inflater = LayoutInflater.from(context)
         binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false)
-
         binding.textPrefs = InterfacePrefs
-
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
 
         val service = VideoService(context)
-        runBlocking { playlist = service.fetchVideos() }
-
-        canSkip = true
-        previousVideo = false
-
-        binding.root.post { start() }
+        coroutineScope.launch {
+            playlist = service.fetchVideos()
+            loadVideo(binding.videoView0, playlist!!.nextVideo())
+        }
     }
 
     val view: View
         get() = binding.root
-
-    private fun start() {
-        loadVideo(binding.videoView0, playlist!!.nextVideo())
-    }
 
     fun stop() {
         binding.videoView0.videoView.release()
@@ -96,8 +92,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
         }
     }
 
-    private var currentPositionProgressHandler: (() -> Unit)? = null
-
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
         videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
@@ -144,10 +138,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     override fun onAlmostFinished(view: ExoPlayerView?) {
         fadeOutCurrentVideo()
-    }
-
-    override fun onError(view: ExoPlayerView?) {
-        binding.root.post { start() }
     }
 
     companion object {

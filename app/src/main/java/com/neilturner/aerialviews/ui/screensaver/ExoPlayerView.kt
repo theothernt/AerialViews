@@ -147,13 +147,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     override fun onPlayerError(error: PlaybackException) {
-        error.printStackTrace()
         super.onPlayerError(error)
+        error.printStackTrace()
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
-        error?.printStackTrace()
         super.onPlayerErrorChanged(error)
+        error?.printStackTrace()
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
@@ -265,7 +265,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     interface OnPlayerEventListener {
         fun onAlmostFinished(view: ExoPlayerView?)
         fun onPrepared(view: ExoPlayerView?)
-        fun onError(view: ExoPlayerView?)
     }
 
     companion object {
