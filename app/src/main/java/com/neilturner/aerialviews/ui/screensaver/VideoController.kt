@@ -25,6 +25,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var playlist: VideoPlaylist? = null
     private var canSkip = false
     private var previousVideo = false
+    val view: View
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -32,6 +33,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.textPrefs = InterfacePrefs
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
+        view = binding.root
 
         val service = VideoService(context)
         coroutineScope.launch {
@@ -40,10 +42,8 @@ class VideoController(context: Context) : OnPlayerEventListener {
         }
     }
 
-    val view: View
-        get() = binding.root
-
     fun stop() {
+        currentPositionProgressHandler = null
         binding.videoView0.videoView.release()
     }
 
