@@ -44,12 +44,12 @@ class TestActivity : Activity() {
                 KeyEvent.KEYCODE_DPAD_DOWN -> return true
 
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    videoController!!.skipVideo(true)
+                    videoController.skipVideo(true)
                     return true
                 }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    videoController!!.skipVideo()
+                    videoController.skipVideo()
                     return true
                 }
 

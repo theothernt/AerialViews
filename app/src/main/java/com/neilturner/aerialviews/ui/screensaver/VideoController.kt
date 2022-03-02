@@ -21,10 +21,10 @@ import kotlinx.coroutines.launch
 class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private lateinit var playlist: VideoPlaylist
     private val binding: AerialActivityBinding
-    private var playlist: VideoPlaylist? = null
-    private var canSkip = false
     private var previousVideo = false
+    private var canSkip = false
     val view: View
 
     init {
@@ -38,7 +38,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val service = VideoService(context)
         coroutineScope.launch {
             playlist = service.fetchVideos()
-            loadVideo(binding.videoView0, playlist!!.nextVideo())
+            loadVideo(binding.videoView0, playlist.nextVideo())
         }
     }
 
@@ -65,9 +65,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
             }
             .withEndAction {
                 val video = if (!previousVideo) {
-                    playlist!!.nextVideo()
+                    playlist.nextVideo()
                 } else {
-                    playlist!!.previousVideo()
+                    playlist.previousVideo()
                 }
                 previousVideo = false
 

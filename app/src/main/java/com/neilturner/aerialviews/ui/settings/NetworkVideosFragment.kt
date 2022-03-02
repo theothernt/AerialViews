@@ -46,10 +46,10 @@ class NetworkVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
-    private var fileSystem: AndroidFileSystem? = null
-    private var storagePermissions: StoragePermissions? = null
-    private var requestReadPermission: ActivityResultLauncher<String>? = null
-    private var requestWritePermission: ActivityResultLauncher<String>? = null
+    private lateinit var fileSystem: AndroidFileSystem
+    private lateinit var storagePermissions: StoragePermissions
+    private lateinit var requestReadPermission: ActivityResultLauncher<String>
+    private lateinit var requestWritePermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
@@ -146,15 +146,15 @@ class NetworkVideosFragment :
     }
 
     private fun checkImportPermissions() {
-        val canReadFiles = storagePermissions?.hasAccess(
+        val canReadFiles = storagePermissions.hasAccess(
             action = StoragePermissions.Action.READ,
             types = listOf(StoragePermissions.FileType.Document),
             createdBy = StoragePermissions.CreatedBy.AllApps
-        )!!
+        )
 
         if (!canReadFiles) {
             Log.i(TAG, "Asking for permission")
-            requestReadPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
@@ -164,6 +164,7 @@ class NetworkVideosFragment :
         }
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext") // code runs inside Dispatcher.IO
     private suspend fun importSettings() {
         Log.i(TAG, "Importing settings from Downloads folder")
 
@@ -179,9 +180,9 @@ class NetworkVideosFragment :
         }
 
         try {
-            fileSystem?.source(path).use { file ->
-                file?.buffer().use { buffer ->
-                    val byteArray = buffer?.readByteArray()
+            fileSystem.source(path).use { file ->
+                file.buffer().use { buffer ->
+                    val byteArray = buffer.readByteArray()
                     properties.load(ByteArrayInputStream(byteArray))
                 }
             }
@@ -212,15 +213,15 @@ class NetworkVideosFragment :
     }
 
     private fun checkExportPermissions() {
-        val canWriteFiles = storagePermissions?.hasAccess(
+        val canWriteFiles = storagePermissions.hasAccess(
             action = StoragePermissions.Action.READ_AND_WRITE,
             types = listOf(StoragePermissions.FileType.Document),
             createdBy = StoragePermissions.CreatedBy.AllApps
-        )!!
+        )
 
         if (!canWriteFiles) {
             Log.i(TAG, "Asking for permission")
-            requestWritePermission?.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
@@ -244,7 +245,7 @@ class NetworkVideosFragment :
         val uri: Uri
         try {
             // Prep file handle
-            uri = fileSystem?.createMediaStoreUri(
+            uri = fileSystem.createMediaStoreUri(
                 filename = filename,
                 collection = MediaStore.Files.getContentUri("external"),
                 directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
@@ -257,7 +258,7 @@ class NetworkVideosFragment :
         try {
             // Write to file
             val path = uri.toOkioPath()
-            fileSystem?.write(path, false) {
+            fileSystem.write(path, false) {
                 for ((key, value) in smbSettings) {
                     writeUtf8(key)
                     writeUtf8("=")

@@ -18,8 +18,8 @@ import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 class AnyVideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-    private var storagePermissions: StoragePermissions? = null
-    private var requestPermission: ActivityResultLauncher<String>? = null
+    private lateinit var storagePermissions: StoragePermissions
+    private lateinit var requestPermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
@@ -41,11 +41,11 @@ class AnyVideosFragment :
     }
 
     override fun onResume() {
-        val canReadVideos = storagePermissions?.hasAccess(
+        val canReadVideos = storagePermissions.hasAccess(
             action = Action.READ,
             types = listOf(FileType.Video),
             createdBy = StoragePermissions.CreatedBy.AllApps
-        )!!
+        )
 
         if (!canReadVideos &&
             requiresPermission()
@@ -60,14 +60,14 @@ class AnyVideosFragment :
             requiresPermission()
         ) {
 
-            val canReadVideos = storagePermissions?.hasAccess(
+            val canReadVideos = storagePermissions.hasAccess(
                 action = Action.READ,
                 types = listOf(FileType.Video),
                 createdBy = StoragePermissions.CreatedBy.AllApps
-            )!!
+            )
 
             if (!canReadVideos) {
-                requestPermission?.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
     }
