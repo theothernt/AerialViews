@@ -57,6 +57,8 @@ class NetworkVideosFragment :
 
         fileSystem = AndroidFileSystem(requireContext())
         storagePermissions = StoragePermissions(requireContext())
+
+        // Import/read permission request
         requestReadPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -66,12 +68,12 @@ class NetworkVideosFragment :
                 }
             } else {
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        importSettings()
-                    }
+                    importSettings()
                 }
             }
         }
+
+        // Export/write permission request
         requestWritePermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -81,9 +83,7 @@ class NetworkVideosFragment :
                 }
             } else {
                 lifecycleScope.launch {
-                    withContext(Dispatchers.IO) {
-                        exportSettings()
-                    }
+                    exportSettings()
                 }
             }
         }
@@ -102,9 +102,7 @@ class NetworkVideosFragment :
 
         if (preference.key.contains("network_videos_test_connection")) {
             lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
                     testNetworkConnection()
-                }
             }
             return true
         }
@@ -157,15 +155,13 @@ class NetworkVideosFragment :
             requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
                     importSettings()
-                }
             }
         }
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // code runs inside Dispatcher.IO
-    private suspend fun importSettings() {
+    private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing settings from Downloads folder")
 
         val filename = "aerial-views-smb-settings.txt"
@@ -176,7 +172,7 @@ class NetworkVideosFragment :
 
         if (!FileHelper.fileExists(uri)) {
             showDialog("Import failed", "Can't find SMB settings file in Downloads folder: $filename")
-            return
+            return@withContext
         }
 
         try {
@@ -186,9 +182,9 @@ class NetworkVideosFragment :
                     properties.load(ByteArrayInputStream(byteArray))
                 }
             }
-        } catch (ex: Exception) {
+        } catch (e: Exception) {
             showDialog("Import failed", "Error while reading and parsing file. Please check the file again for mistakes or invalid characters.")
-            return
+            return@withContext
         }
 
         try {
@@ -198,7 +194,7 @@ class NetworkVideosFragment :
             NetworkVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
-            return
+            return@withContext
         }
 
         withContext(Dispatchers.Main) {
@@ -224,14 +220,12 @@ class NetworkVideosFragment :
             requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
-                withContext(Dispatchers.IO) {
                     exportSettings()
-                }
             }
         }
     }
 
-    private suspend fun exportSettings() {
+    private suspend fun exportSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Exporting settings to Downloads folder")
 
         // Build SMB config string
@@ -252,7 +246,7 @@ class NetworkVideosFragment :
             )!!
         } catch (ex: Exception) {
             showDialog("Export failed", "The SMB settings file $filename already exists in the Downloads folder")
-            return
+            return@withContext
         }
 
         try {
@@ -268,14 +262,14 @@ class NetworkVideosFragment :
             }
         } catch (ex: Exception) {
             showDialog("Export failed", "Error while trying to write SMB settings to $filename in the Downloads folder")
-            return
+            return@withContext
         }
 
         showDialog("Export successful", "Successfully exported SMB settings to $filename in the Downloads folder")
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
-    private suspend fun testNetworkConnection() {
+    private suspend fun testNetworkConnection() = withContext(Dispatchers.IO) {
 
         // Check hostname
         val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
@@ -283,7 +277,7 @@ class NetworkVideosFragment :
             val message = "Hostname must be a valid IP address."
             Log.e(TAG, message)
             showDialog("Error", message)
-            return
+            return@withContext
         }
 
         // Check hostname
@@ -294,7 +288,7 @@ class NetworkVideosFragment :
             Log.e(TAG, e.message!!)
             val message = "Failed to create SMB config...\n\n${e.message!!}"
             showDialog("Connection error", message)
-            return
+            return@withContext
         }
         Log.i(TAG, "SMB config successful")
 
@@ -306,7 +300,7 @@ class NetworkVideosFragment :
             Log.e(TAG, e.message!!)
             val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message!!}"
             showDialog("Connection error", message)
-            return
+            return@withContext
         }
         Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
 
@@ -321,7 +315,7 @@ class NetworkVideosFragment :
             Log.e(TAG, e.message!!)
             val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
             showDialog("Connection error", message)
-            return
+            return@withContext
         }
         Log.i(TAG, "Authentication successful")
 
@@ -340,7 +334,7 @@ class NetworkVideosFragment :
             Log.e(TAG, e.message!!)
             val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
             showDialog("Connection error", message)
-            return
+            return@withContext
         }
         Log.i(TAG, "Connected to share: $shareName")
 
@@ -369,7 +363,7 @@ class NetworkVideosFragment :
             Log.e(TAG, e.message!!)
             val message = "Unable to list files from: $shareName. Please check server permissions for this share."
             showDialog("Connection error", message)
-            return
+            return@withContext
         }
 
         var message: String
@@ -389,19 +383,17 @@ class NetworkVideosFragment :
             smbClient.close()
         } catch (e: Exception) {
             Log.e(TAG, e.message!!)
-            return
+            return@withContext
         }
         Log.i(TAG, "Finished SMB connection test")
     }
 
-    private suspend fun showDialog(title: String = "", message: String) {
-        withContext(Dispatchers.Main) {
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle(title)
-                setMessage(message)
-                setPositiveButton("OK", null)
-                create().show()
-            }
+    private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OK", null)
+            create().show()
         }
     }
 
