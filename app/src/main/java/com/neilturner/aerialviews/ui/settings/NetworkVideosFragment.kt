@@ -102,7 +102,7 @@ class NetworkVideosFragment :
 
         if (preference.key.contains("network_videos_test_connection")) {
             lifecycleScope.launch {
-                    testNetworkConnection()
+                testNetworkConnection()
             }
             return true
         }
@@ -155,7 +155,7 @@ class NetworkVideosFragment :
             requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
-                    importSettings()
+                importSettings()
             }
         }
     }
@@ -220,7 +220,7 @@ class NetworkVideosFragment :
             requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
-                    exportSettings()
+                exportSettings()
             }
         }
     }
