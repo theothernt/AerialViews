@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.DefaultLoadControl
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
@@ -20,6 +19,7 @@ import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.PlayerHelper
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
@@ -165,72 +165,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     private fun buildPlayer(context: Context): ExoPlayer {
-        val loadControl: DefaultLoadControl
-        val loadControlBuilder = DefaultLoadControl.Builder()
-
         Log.i(TAG, "Buffering strategy: $bufferingStrategy")
-
-        // Defaults
-        // val minBuffer = 50_000
-        // val maxBuffer = 50_000
-        // val bufferForPlayback = 2500
-        // val bufferForPlaybackAfterRebuffer = 5000
-
-        if (bufferingStrategy == BufferingStrategy.FAST_START) {
-            // Buffer sizes while playing
-            val minBuffer = 5000
-            val maxBuffer = 40_000
-
-            // Initial buffer size to start playback
-            val bufferForPlayback = 1024
-            val bufferForPlaybackAfterRebuffer = 1024
-
-            loadControlBuilder
-                .setBufferDurationsMs(
-                    minBuffer,
-                    maxBuffer,
-                    bufferForPlayback,
-                    bufferForPlaybackAfterRebuffer
-                )
-        }
-
-        if (bufferingStrategy == BufferingStrategy.BIGGER) {
-            // Buffer sizes while playing
-            val minBuffer = 75_000
-            val maxBuffer = 75_000
-
-            // Initial buffer size to start playback
-            val bufferForPlayback = 4000
-            val bufferForPlaybackAfterRebuffer = 8000
-
-            loadControlBuilder
-                .setBufferDurationsMs(
-                    minBuffer,
-                    maxBuffer,
-                    bufferForPlayback,
-                    bufferForPlaybackAfterRebuffer
-                )
-        }
-
-        if (bufferingStrategy == BufferingStrategy.SMALLER) {
-            // Buffer sizes while playing
-            val minBuffer = 10_000
-            val maxBuffer = 10_000
-
-            // Initial buffer size to start playback
-            val bufferForPlayback = 4000
-            val bufferForPlaybackAfterRebuffer = 4000
-
-            loadControlBuilder
-                .setBufferDurationsMs(
-                    minBuffer,
-                    maxBuffer,
-                    bufferForPlayback,
-                    bufferForPlaybackAfterRebuffer
-                )
-        }
-
-        loadControl = loadControlBuilder.build()
+        val loadControl = PlayerHelper.BufferingStrategy(bufferingStrategy).build()
         val parametersBuilder = ParametersBuilder(context)
 
         if (enableTunneling) {
