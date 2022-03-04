@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.graphics.alpha
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -17,11 +18,13 @@ import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
+    private var textAlpha by Delegates.notNull<Float>()
     private val binding: AerialActivityBinding
     private var previousVideo = false
     private var canSkip = false
@@ -33,6 +36,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.textPrefs = InterfacePrefs
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
+        textAlpha = R.style.LocationText.alpha.toFloat()
         view = binding.root
 
         val service = VideoService(context)
@@ -71,6 +75,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 }
                 previousVideo = false
 
+                currentPositionProgressHandler = null
+                binding.videoView0.location.text = ""
+                binding.videoView0.location.alpha = textAlpha
                 loadVideo(binding.videoView0, video)
 
                 if (InterfacePrefs.alternateTextPosition) {
@@ -107,11 +114,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
                 if (update && canSkip) {
                     lastPoi = poi
-                    videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
-                        if (canSkip) {
-                            videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
-                        }
-                        videoBinding.location.animate().alpha(0.7f).setDuration(800).start()
+                    videoBinding.location.animate().alpha(0f).setDuration(1000 * 2).withEndAction {
+                        videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
+                        videoBinding.location.animate().alpha(textAlpha).setDuration(1000 * 2).start()
                     }.start()
                 }
 
