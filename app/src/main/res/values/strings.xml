@@ -44,8 +44,8 @@
 <!--    <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>-->
 <!--    <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>-->
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unknown videos</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any video manifest</string>
+    <string name="any_videos_ignore_non_manifest_videos_title">Ignore non-Apple videos on local storage or local network</string>
+    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
 
     <!-- Network Video Options -->
     <string name="network_videos_hostname_title">Hostname</string>
