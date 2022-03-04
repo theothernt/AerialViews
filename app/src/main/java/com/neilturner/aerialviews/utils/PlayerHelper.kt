@@ -5,7 +5,7 @@ import com.neilturner.aerialviews.models.BufferingStrategy
 
 object PlayerHelper {
 
-    fun BufferingStrategy(strategy: BufferingStrategy): DefaultLoadControl.Builder {
+    fun bufferingStrategy(strategy: BufferingStrategy): DefaultLoadControl.Builder {
         val loadControlBuilder = DefaultLoadControl.Builder()
 
         // Defaults

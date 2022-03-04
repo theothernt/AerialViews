@@ -166,7 +166,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     private fun buildPlayer(context: Context): ExoPlayer {
         Log.i(TAG, "Buffering strategy: $bufferingStrategy")
-        val loadControl = PlayerHelper.BufferingStrategy(bufferingStrategy).build()
+        val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
         val parametersBuilder = ParametersBuilder(context)
 
         if (enableTunneling) {
