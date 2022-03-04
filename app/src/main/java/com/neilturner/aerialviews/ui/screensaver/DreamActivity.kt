@@ -9,7 +9,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class DreamActivity : DreamService() {
-    private var videoController: VideoController? = null
+    private lateinit var videoController: VideoController
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -18,7 +18,7 @@ class DreamActivity : DreamService() {
         isFullscreen = true
         isInteractive = true
         videoController = VideoController(this)
-        setContentView(videoController!!.view)
+        setContentView(videoController.view)
     }
 
     override fun onDreamingStarted() {
@@ -44,12 +44,12 @@ class DreamActivity : DreamService() {
                 KeyEvent.KEYCODE_DPAD_DOWN -> return true
 
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    videoController?.skipVideo(true)
+                    videoController.skipVideo(true)
                     return true
                 }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    videoController?.skipVideo()
+                    videoController.skipVideo()
                     return true
                 }
 
@@ -57,14 +57,13 @@ class DreamActivity : DreamService() {
                 else -> finish()
             }
         }
-
         return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && videoController?.view != null) {
-            WindowHelper.hideSystemUI(window, videoController!!.view)
+        if (hasFocus) {
+            WindowHelper.hideSystemUI(window, videoController.view)
         }
     }
 
@@ -72,7 +71,7 @@ class DreamActivity : DreamService() {
         super.onDreamingStopped()
         Log.i(TAG, "onDreamingStopped")
         // Stop playback, animations, etc
-        videoController?.stop()
+        videoController.stop()
     }
 
     override fun onDetachedFromWindow() {

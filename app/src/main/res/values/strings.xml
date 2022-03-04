@@ -10,7 +10,7 @@
     <string name="category_actions">Actions</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_network_settings">Network Settings</string>
-    <string name="category_debug">Debug</string>
+<!--    <string name="category_debug">Debug</string>-->
     <string name="category_performance_debug">Performance &amp; Debug</string>
 
     <!-- Apple Video Options -->

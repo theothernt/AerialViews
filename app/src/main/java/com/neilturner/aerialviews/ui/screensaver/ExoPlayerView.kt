@@ -23,20 +23,27 @@ import com.neilturner.aerialviews.utils.FileHelper
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private val player: ExoPlayer
+    private var timerRunnable = Runnable { listener!!.onAlmostFinished(this@ExoPlayerView) }
     private val bufferingStrategy = BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
-    private val enableTunneling: Boolean = GeneralPrefs.enableTunneling
-    private val exceedRendererCapabilities: Boolean = GeneralPrefs.exceedRenderer
-    private val muteVideo: Boolean = GeneralPrefs.muteVideos
+    private val enableTunneling = GeneralPrefs.enableTunneling
+    private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
+    private val muteVideo = GeneralPrefs.muteVideos
+    private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
+    private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
-    private var playbackSpeed = GeneralPrefs.playbackSpeed
 
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
+    }
+
+    fun release() {
+        player.release()
+        listener = null
+        removeCallbacks(timerRunnable) // was causing circular reference if not cleaned up
     }
 
     fun setUri(uri: Uri?) {
@@ -76,10 +83,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     fun setOnPlayerListener(listener: OnPlayerEventListener?) {
         this.listener = listener
-    }
-
-    fun release() {
-        player.release()
     }
 
     /* MediaPlayerControl */
@@ -147,21 +150,19 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     override fun onPlayerError(error: PlaybackException) {
-        error.printStackTrace()
         super.onPlayerError(error)
+        error.printStackTrace()
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
-        error?.printStackTrace()
         super.onPlayerErrorChanged(error)
+        error?.printStackTrace()
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
         aspectRatio = if (height == 0) 0F else width * videoSize.pixelWidthHeightRatio / height
         requestLayout()
     }
-
-    private val timerRunnable = Runnable { listener!!.onAlmostFinished(this@ExoPlayerView) }
 
     private fun buildPlayer(context: Context): ExoPlayer {
         val loadControl: DefaultLoadControl
@@ -265,7 +266,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     interface OnPlayerEventListener {
         fun onAlmostFinished(view: ExoPlayerView?)
         fun onPrepared(view: ExoPlayerView?)
-        fun onError(view: ExoPlayerView?)
     }
 
     companion object {

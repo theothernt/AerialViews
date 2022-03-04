@@ -23,7 +23,7 @@ import kotlin.math.min
 
 class SmbDataSource : BaseDataSource(true) {
 
-    private var dataSpec: DataSpec? = null
+    private lateinit var dataSpec: DataSpec
     private var userName = ""
     private var password = ""
     private var hostName = ""
@@ -78,7 +78,7 @@ class SmbDataSource : BaseDataSource(true) {
         return readInternal(buffer, offset, readLength)
     }
 
-    override fun getUri() = dataSpec?.uri
+    override fun getUri() = dataSpec.uri
 
     override fun close() {
         Log.i(TAG, "Closing connection.")

@@ -9,7 +9,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class TestActivity : Activity() {
-    private var videoController: VideoController? = null
+    private lateinit var videoController: VideoController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class TestActivity : Activity() {
         Log.i(TAG, "onAttachedToWindow")
         // Start playback, etc
         videoController = VideoController(this)
-        setContentView(videoController!!.view)
+        setContentView(videoController.view)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -44,12 +44,12 @@ class TestActivity : Activity() {
                 KeyEvent.KEYCODE_DPAD_DOWN -> return true
 
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
-                    videoController!!.skipVideo(true)
+                    videoController.skipVideo(true)
                     return true
                 }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                    videoController!!.skipVideo()
+                    videoController.skipVideo()
                     return true
                 }
 
@@ -57,14 +57,13 @@ class TestActivity : Activity() {
                 else -> finish()
             }
         }
-
         return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && videoController?.view != null) {
-            WindowHelper.hideSystemUI(window, videoController!!.view)
+        if (hasFocus) {
+            WindowHelper.hideSystemUI(window, videoController.view)
         }
     }
 
@@ -72,7 +71,7 @@ class TestActivity : Activity() {
         super.onStop()
         Log.i(TAG, "onStop")
         // Stop playback, animations, etc
-        videoController!!.stop()
+        videoController.stop()
     }
 
     override fun onDetachedFromWindow() {
