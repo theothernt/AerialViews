@@ -171,23 +171,27 @@ class VideoService(private val context: Context) {
                 continue
             }
 
-            val filename = video.uri.lastPathSegment!!.lowercase()
-            val videoFound = manifestVideos.find {
-                val manifestFilename = it.uri.lastPathSegment!!.lowercase()
-                manifestFilename.contains(filename)
-            }
+            try {
+                val filename = video.uri.lastPathSegment!!.lowercase()
+                val videoFound = manifestVideos.find {
+                    val manifestFilename = it.uri.lastPathSegment!!.lowercase()
+                    manifestFilename.contains(filename)
+                }
 
-            if (videoFound != null) {
-                matched.add(
-                    AerialVideo(
-                        video.uri, videoFound.location,
-                        videoFound.poi.mapValues { poi ->
-                            strings[poi.value] ?: videoFound.location
-                        }
+                if (videoFound != null) {
+                    matched.add(
+                        AerialVideo(
+                            video.uri, videoFound.location,
+                            videoFound.poi.mapValues { poi ->
+                                strings[poi.value] ?: videoFound.location
+                            }
+                        )
                     )
-                )
-            } else {
-                unmatched.add(video)
+                } else {
+                    unmatched.add(video)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, e.message!!)
             }
         }
         return Pair(matched, unmatched)
