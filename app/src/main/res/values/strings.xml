@@ -122,7 +122,7 @@
     <string name="capabilities_resolution_title">Resolution</string>
 
     <string name="playback_speed_title">Playback Speed</string>
-    <string name="playback_speed_summary">Choose a playback speed (default: 1x)</string>
+    <string name="playback_speed_summary">Choose a playback speed</string>
 
     <!-- Actions -->
     <string name="test_screensaver_settings">Test screensaver settings</string>
