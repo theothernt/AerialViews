@@ -24,7 +24,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
-    private var textAlpha by Delegates.notNull<Float>()
+    private val textAlpha = 0.7f
     private val binding: AerialActivityBinding
     private var previousVideo = false
     private var canSkip = false
@@ -36,7 +36,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
         binding.textPrefs = InterfacePrefs
         binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
-        textAlpha = R.style.LocationText.alpha.toFloat()
         view = binding.root
 
         val service = VideoService(context)
@@ -114,9 +113,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
                 if (update && canSkip) {
                     lastPoi = poi
-                    videoBinding.location.animate().alpha(0f).setDuration(1000 * 2).withEndAction {
+                    videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
                         videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
-                        videoBinding.location.animate().alpha(textAlpha).setDuration(1000 * 2).start()
+                        videoBinding.location.animate().alpha(textAlpha).setDuration(1000).start()
                     }.start()
                 }
 
