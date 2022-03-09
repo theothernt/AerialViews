@@ -32,7 +32,7 @@ object PlayerHelper {
                 )
         }
 
-        if (strategy == BufferingStrategy.BIGGER) {
+        if (strategy == BufferingStrategy.LARGER) {
             // Buffer sizes while playing
             val minBuffer = 75_000
             val maxBuffer = 75_000
