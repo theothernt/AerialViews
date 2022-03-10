@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import java.util.Locale
 
 class InterfaceFragment :
     PreferenceFragmentCompat(),
