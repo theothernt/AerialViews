@@ -14,10 +14,6 @@
         <variable
             name="isAlternateRun"
             type="boolean" />
-
-        <variable
-            name="controller"
-            type="android.widget.MediaController.MediaPlayerControl" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

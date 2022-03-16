@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
+import com.neilturner.aerialviews.databinding.LoadingViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LocationStyle
 import com.neilturner.aerialviews.models.VideoPlaylist
@@ -23,17 +25,22 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private val textAlpha = 0.7f
-    private val binding: AerialActivityBinding
     private var previousVideo = false
     private var canSkip = false
+    private val videoView: VideoViewBinding
+    private val loadingView: View
+    private val loadingText: TextView
     val view: View
 
     init {
         val inflater = LayoutInflater.from(context)
-        binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false)
+        val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
         binding.textPrefs = InterfacePrefs
-        binding.videoView0.controller = binding.videoView0.videoView
         binding.videoView0.videoView.setOnPlayerListener(this)
+
+        videoView = binding.videoView0
+        loadingView = binding.loadingView.root
+        loadingText = binding.loadingView.loadingText
         view = binding.root
 
         val service = VideoService(context)
@@ -45,7 +52,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     fun stop() {
         currentPositionProgressHandler = null
-        binding.videoView0.videoView.release()
+        videoView.videoView.release()
     }
 
     fun skipVideo(previous: Boolean = false) {
@@ -57,40 +64,41 @@ class VideoController(context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
-        binding.loadingView
+        loadingView
             .animate()
             .alpha(1f)
             .setDuration(ExoPlayerView.DURATION)
             .withStartAction {
-                binding.loadingView.visibility = View.VISIBLE
+                loadingView.visibility = View.VISIBLE
             }
             .withEndAction {
+                currentPositionProgressHandler = null
+
                 val video = if (!previousVideo) {
                     playlist.nextVideo()
                 } else {
                     playlist.previousVideo()
                 }
                 previousVideo = false
+                loadVideo(videoView, video)
 
-                currentPositionProgressHandler = null
-                binding.videoView0.location.text = ""
-                binding.videoView0.location.alpha = textAlpha
-                loadVideo(binding.videoView0, video)
-
+                videoView.location.text = ""
+                videoView.location.alpha = textAlpha
                 if (InterfacePrefs.alternateTextPosition) {
-                    binding.videoView0.isAlternateRun = !binding.videoView0.isAlternateRun
+                    videoView.isAlternateRun = !videoView.isAlternateRun
                 }
             }.start()
     }
 
     private fun fadeInNextVideo() {
-        if (binding.loadingView.visibility == View.VISIBLE) {
-            binding.loadingView
+        if (loadingView.visibility == View.VISIBLE) {
+            loadingView
                 .animate()
                 .alpha(0f)
                 .setDuration(ExoPlayerView.DURATION)
                 .withEndAction {
-                    binding.loadingView.visibility = View.GONE
+                    loadingText.visibility = View.GONE
+                    loadingView.visibility = View.GONE
                     canSkip = true
                 }.start()
         }

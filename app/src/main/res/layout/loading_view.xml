@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+    <View
+        android:id="@+id/loading_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000" />
+
+    <TextView
+        android:alpha="0.7"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginStart="@dimen/screen_border_padding"
+        android:layout_marginEnd="@dimen/screen_border_padding"
+        android:layout_marginBottom="@dimen/screen_border_padding"
+        android:gravity="bottom"
+        android:id="@+id/loading_text"
+        style="@style/LocationText"
+        android:text="Loading..." />
+
+    </FrameLayout>
+</layout>
