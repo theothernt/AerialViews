@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
-import com.neilturner.aerialviews.databinding.LoadingViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LocationStyle
 import com.neilturner.aerialviews.models.VideoPlaylist
@@ -80,10 +79,11 @@ class VideoController(context: Context) : OnPlayerEventListener {
                     playlist.previousVideo()
                 }
                 previousVideo = false
-                loadVideo(videoView, video)
 
                 videoView.location.text = ""
                 videoView.location.alpha = textAlpha
+                loadVideo(videoView, video)
+
                 if (InterfacePrefs.alternateTextPosition) {
                     videoView.isAlternateRun = !videoView.isAlternateRun
                 }
