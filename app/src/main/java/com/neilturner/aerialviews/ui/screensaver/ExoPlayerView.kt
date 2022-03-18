@@ -188,7 +188,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             .setTrackSelector(trackSelector)
             .build()
 
-        // player.addAnalyticsListener(EventLogger(trackSelector))
+        // player.addAnalyticsListener(com.google.android.exoplayer2.util.EventLogger(trackSelector))
 
         if (muteVideo) {
             player.volume = 0f

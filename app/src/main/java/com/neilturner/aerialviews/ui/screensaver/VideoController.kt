@@ -45,7 +45,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val service = VideoService(context)
         coroutineScope.launch {
             playlist = service.fetchVideos()
-            loadVideo(binding.videoView0, playlist.nextVideo())
+            loadVideo(videoView, playlist.nextVideo())
         }
     }
 
@@ -57,6 +57,16 @@ class VideoController(context: Context) : OnPlayerEventListener {
     fun skipVideo(previous: Boolean = false) {
         previousVideo = previous
         fadeOutCurrentVideo()
+    }
+
+    private fun fadeOutLoading() {
+        loadingText
+            .animate()
+            .alpha(0f)
+            .setDuration(1000)
+            .withEndAction {
+                loadingText.visibility = TextView.GONE
+            }.start()
     }
 
     private fun fadeOutCurrentVideo() {
@@ -91,17 +101,26 @@ class VideoController(context: Context) : OnPlayerEventListener {
     }
 
     private fun fadeInNextVideo() {
-        if (loadingView.visibility == View.VISIBLE) {
-            loadingView
-                .animate()
-                .alpha(0f)
-                .setDuration(ExoPlayerView.DURATION)
-                .withEndAction {
-                    loadingText.visibility = View.GONE
-                    loadingView.visibility = View.GONE
-                    canSkip = true
-                }.start()
+        if (loadingView.visibility == View.GONE)
+            return
+
+        var delay: Long = 0
+        if (loadingText.visibility == View.VISIBLE) {
+            Log.i(TAG, "Adding delay")
+            delay = 1000
+            fadeOutLoading()
         }
+
+        loadingView
+            .animate()
+            .alpha(0f)
+            .setDuration(ExoPlayerView.DURATION)
+            .setStartDelay(delay)
+            .withEndAction {
+                loadingText.visibility = View.GONE
+                loadingView.visibility = View.GONE
+                canSkip = true
+            }.start()
     }
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
