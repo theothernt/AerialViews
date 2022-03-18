@@ -106,7 +106,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         var delay: Long = 0
         if (loadingText.visibility == View.VISIBLE) {
-            Log.i(TAG, "Adding delay")
             delay = 1000
             fadeOutLoading()
         }
