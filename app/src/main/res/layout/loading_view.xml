@@ -22,7 +22,7 @@
         android:gravity="bottom"
         android:id="@+id/loading_text"
         style="@style/LocationText"
-        android:text="Loading..." />
+        android:text="@string/loading_title" />
 
     </FrameLayout>
 </layout>

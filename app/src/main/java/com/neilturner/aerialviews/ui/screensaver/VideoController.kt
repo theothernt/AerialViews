@@ -116,7 +116,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
             .setDuration(ExoPlayerView.DURATION)
             .setStartDelay(delay)
             .withEndAction {
-                loadingText.visibility = View.GONE
                 loadingView.visibility = View.GONE
                 canSkip = true
             }.start()
