@@ -11,6 +11,7 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(context)
+        var filtered = 0
 
         for (video in localVideos) {
             val uri = Uri.parse(video)
@@ -21,10 +22,16 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
                 continue
             }
 
+            if (!uri?.path!!.contains("/Aerial/")) {
+                filtered++
+                continue
+            }
+
             videos.add(AerialVideo(uri, ""))
         }
 
-        Log.i(TAG, "videos found: ${videos.size}")
+        Log.i(TAG, "Videos removed by filter: $filtered")
+        Log.i(TAG, "Videos found: ${videos.size}")
         return videos
     }
 
