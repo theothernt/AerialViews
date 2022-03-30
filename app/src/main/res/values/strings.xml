@@ -11,6 +11,7 @@
     <string name="category_actions">Actions</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_network_settings">Network Settings</string>
+    <string name="category_local_storage_settings">Local Storage Settings</string>
     <string name="category_performance_debug">Performance &amp; Debug</string>
 
     <!-- Apple Video Options -->
@@ -35,11 +36,19 @@
     <string name="network_videos_enabled_title">Use Network videos</string>
     <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
 
+    <string name="local_videos_filter_enabled_title">Enable folder filter</string>
+    <string name="local_videos_filter_enabled_summary">Only play videos from a specific folder or folders on device, USB, etc</string>
+
+    <string name="local_videos_filter_folder_title">Specify a folder name</string>
+    <string name="local_videos_filter_folder_summary">Eg. using \'Aerial\' will play all videos from /Downloads/Aerial/</string>
+
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
 
     <string name="any_videos_use_apple_manifests_title">Show locations/POI for matched Apple videos</string>
     <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
+
+    <string name="local_videos_filter_test">Test filter settings</string>
 
 <!--    <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>-->
 <!--    <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>-->

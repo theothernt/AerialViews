@@ -3,10 +3,11 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 
-class LocalVideoProvider(context: Context) : VideoProvider(context) {
+class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
@@ -22,7 +23,7 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
                 continue
             }
 
-            if (!uri?.path!!.contains("/Aerial/")) {
+            if (prefs.filter_enabled && shouldFilter(uri)) {
                 filtered++
                 continue
             }
@@ -30,9 +31,15 @@ class LocalVideoProvider(context: Context) : VideoProvider(context) {
             videos.add(AerialVideo(uri, ""))
         }
 
-        Log.i(TAG, "Videos removed by filter: $filtered")
         Log.i(TAG, "Videos found: ${videos.size}")
+        Log.i(TAG, "Videos removed by filter: $filtered")
+
         return videos
+    }
+
+    private fun shouldFilter(uri: Uri): Boolean {
+        val pathSegments = uri.pathSegments.dropLast(1) // x/y/z.mp4
+        return !pathSegments.last().contains(prefs.filter_name, true) // x/y
     }
 
     companion object {

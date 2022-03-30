@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_video_sources">
@@ -23,6 +23,29 @@
                     app:title="Credentials"
                     app:summary="Server details and credentials for SMB access"
                     app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_local_storage_settings">
+                <SwitchPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="false"
+                    app:key="local_videos_filter_enabled"
+                    app:title="@string/local_videos_filter_enabled_title"
+                    app:summary="@string/local_videos_filter_enabled_summary" />
+
+                <EditTextPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    android:key="local_videos_filter_folder_name"
+                    android:title="@string/local_videos_filter_folder_title"
+                    android:summary="@string/local_videos_filter_folder_summary" />
+
+                <Preference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    android:key="local_videos_test_filter"
+                    android:title="@string/local_videos_filter_test" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_settings">

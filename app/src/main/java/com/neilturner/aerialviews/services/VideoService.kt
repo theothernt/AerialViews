@@ -26,7 +26,7 @@ class VideoService(private val context: Context) {
 
     init {
         if (LocalVideoPrefs.enabled)
-            providers.add(LocalVideoProvider(context))
+            providers.add(LocalVideoProvider(context, LocalVideoPrefs))
 
         if (NetworkVideoPrefs.enabled)
             providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))

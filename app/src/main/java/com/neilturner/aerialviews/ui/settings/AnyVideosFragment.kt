@@ -7,16 +7,21 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.lifecycleScope
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import kotlinx.coroutines.launch
 
 class AnyVideosFragment :
     PreferenceFragmentCompat(),
+    PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
@@ -55,6 +60,20 @@ class AnyVideosFragment :
         super.onResume()
     }
 
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference.key.isNullOrEmpty())
+            return super.onPreferenceTreeClick(preference)
+
+        if (preference.key.contains("local_videos_filter_test")) {
+            lifecycleScope.launch {
+                testLocalVideosFilter()
+            }
+            return true
+        }
+
+        return super.onPreferenceTreeClick(preference)
+    }
+
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "local_videos_enabled" &&
             requiresPermission()
@@ -70,6 +89,10 @@ class AnyVideosFragment :
                 requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
+    }
+
+    private fun testLocalVideosFilter() {
+
     }
 
     private fun requiresPermission(): Boolean {
