@@ -4,9 +4,12 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.Manifest
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -17,7 +20,11 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.utils.FileHelper
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AnyVideosFragment :
     PreferenceFragmentCompat(),
@@ -64,7 +71,7 @@ class AnyVideosFragment :
         if (preference.key.isNullOrEmpty())
             return super.onPreferenceTreeClick(preference)
 
-        if (preference.key.contains("local_videos_filter_test")) {
+        if (preference.key.contains("local_videos_test_filter")) {
             lifecycleScope.launch {
                 testLocalVideosFilter()
             }
@@ -91,8 +98,42 @@ class AnyVideosFragment :
         }
     }
 
-    private fun testLocalVideosFilter() {
+    private suspend fun testLocalVideosFilter() {
+        if (LocalVideoPrefs.filter_folder_name.isEmpty()) {
+            showDialog("Error", "No folder has been specified.")
+            return
+        }
 
+        val videos = mutableListOf<AerialVideo>()
+        val localVideos = FileHelper.findAllMedia(requireContext())
+        var filtered = 0
+
+        for (video in localVideos) {
+            val uri = Uri.parse(video)
+            val filename = uri.lastPathSegment!!
+
+            if (!FileHelper.isVideoFilename(filename)) {
+                Log.i(TAG, "Probably not a video: $filename")
+                continue
+            }
+
+            if (LocalVideoPrefs.filter_enabled && shouldFilter(uri)) {
+                filtered++
+                continue
+            }
+
+            videos.add(AerialVideo(uri, ""))
+        }
+
+        var message = "Videos found: ${localVideos.size}\n"
+        message += "Videos removed by filter: $filtered\n"
+        message += "Videos selected for playback: ${localVideos.size-filtered}"
+        showDialog("Results", message)
+    }
+
+    private fun shouldFilter(uri: Uri): Boolean {
+        val pathSegments = uri.pathSegments.dropLast(1) // x/y/z.mp4
+        return !pathSegments.last().contains(LocalVideoPrefs.filter_folder_name, true) // x/y
     }
 
     private fun requiresPermission(): Boolean {
@@ -102,5 +143,18 @@ class AnyVideosFragment :
     private fun resetPreference() {
         val pref = findPreference<SwitchPreference>("local_videos_enabled")
         pref?.isChecked = false
+    }
+
+    private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton("OK", null)
+            create().show()
+        }
+    }
+
+    companion object {
+        private const val TAG = "AnyVideosFragment"
     }
 }

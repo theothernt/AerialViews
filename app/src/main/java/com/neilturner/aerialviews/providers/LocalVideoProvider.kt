@@ -31,15 +31,16 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(uri, ""))
         }
 
-        Log.i(TAG, "Videos found: ${videos.size}")
+        Log.i(TAG, "Videos found: ${localVideos.size}")
         Log.i(TAG, "Videos removed by filter: $filtered")
+        Log.i(TAG, "Videos selected for playback: ${localVideos.size-filtered}")
 
         return videos
     }
 
     private fun shouldFilter(uri: Uri): Boolean {
         val pathSegments = uri.pathSegments.dropLast(1) // x/y/z.mp4
-        return !pathSegments.last().contains(prefs.filter_name, true) // x/y
+        return !pathSegments.last().contains(prefs.filter_folder_name, true) // x/y
     }
 
     companion object {

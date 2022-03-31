@@ -398,6 +398,6 @@ class NetworkVideosFragment :
     }
 
     companion object {
-        private const val TAG = "NetworkVideoFragment"
+        private const val TAG = "NetworkVideosFragment"
     }
 }
