@@ -126,7 +126,12 @@ class AnyVideosFragment :
         }
 
         var message = "Videos found: ${localVideos.size}\n"
-        message += "Videos removed by filter: $filtered\n"
+        if (LocalVideoPrefs.filter_enabled) {
+            message += "Videos removed by filter: $filtered\n"
+        } else {
+            message += "Videos removed by filter: (disabled)\n"
+        }
+
         message += "Videos selected for playback: ${localVideos.size-filtered}"
         showDialog("Results", message)
     }

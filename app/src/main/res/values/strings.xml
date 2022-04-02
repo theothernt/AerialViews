@@ -36,7 +36,7 @@
     <string name="network_videos_enabled_title">Use Network videos</string>
     <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
 
-    <string name="local_videos_filter_enabled_title">Enable folder filter</string>
+    <string name="local_videos_filter_enabled_title">Use folder filter</string>
     <string name="local_videos_filter_enabled_summary">Only play videos from a specific folder or folders on device, USB, etc</string>
 
     <string name="local_videos_filter_folder_title">Specify a folder name</string>
