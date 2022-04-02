@@ -33,7 +33,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
         Log.i(TAG, "Videos found: ${localVideos.size}")
         Log.i(TAG, "Videos removed by filter: $filtered")
-        Log.i(TAG, "Videos selected for playback: ${localVideos.size-filtered}")
+        Log.i(TAG, "Videos selected for playback: ${localVideos.size - filtered}")
 
         return videos
     }

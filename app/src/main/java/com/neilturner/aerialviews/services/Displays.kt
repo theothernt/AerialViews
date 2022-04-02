@@ -1,4 +1,5 @@
-@file:Suppress("FunctionName", "unused", "unused", "MemberVisibilityCanBePrivate",
+@file:Suppress(
+    "FunctionName", "unused", "unused", "MemberVisibilityCanBePrivate",
     "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",
     "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",
     "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",

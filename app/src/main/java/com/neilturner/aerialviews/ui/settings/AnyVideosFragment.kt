@@ -132,7 +132,7 @@ class AnyVideosFragment :
             message += "Videos removed by filter: (disabled)\n"
         }
 
-        message += "Videos selected for playback: ${localVideos.size-filtered}"
+        message += "Videos selected for playback: ${localVideos.size - filtered}"
         showDialog("Results", message)
     }
 
