@@ -23,7 +23,7 @@ import com.neilturner.aerialviews.utils.PlayerHelper
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private var timerRunnable = Runnable { listener!!.onAlmostFinished(this@ExoPlayerView) }
+    private var timerRunnable = Runnable { listener?.onAlmostFinished(this@ExoPlayerView) }
     private val bufferingStrategy = BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
@@ -42,8 +42,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     fun release() {
         player.release()
-        listener = null
         removeCallbacks(timerRunnable) // was causing circular reference if not cleaned up
+        listener = null
     }
 
     fun setUri(uri: Uri?) {
@@ -140,7 +140,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
-            listener!!.onPrepared(this)
+            listener?.onPrepared(this)
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
             removeCallbacks(timerRunnable)
