@@ -13,7 +13,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 31
         versionCode 4 // Will be incremented automatically on release
-        versionName "1.2"
+        versionName "1.2.1"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
