@@ -41,9 +41,9 @@ class SettingsFragment :
     }
 
     private fun resetLocalPermissionIfNeeded() {
-
-        val permissionEnabled = LocalVideoPrefs.enabled
         val storagePermissions = StoragePermissions(requireContext())
+        val permissionEnabled = LocalVideoPrefs.enabled
+
         val canReadVideos = storagePermissions.hasAccess(
             action = Action.READ,
             types = listOf(FileType.Video),
