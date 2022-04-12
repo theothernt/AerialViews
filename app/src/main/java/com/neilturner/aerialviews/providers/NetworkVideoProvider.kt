@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
+import java.net.URLEncoder
 
 class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPrefs) : VideoProvider(context) {
 
@@ -40,10 +41,10 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         networkVideos.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
-                usernamePassword = prefs.userName
+                usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
 
                 if (prefs.password.isNotEmpty())
-                    usernamePassword += ":${prefs.password}"
+                    usernamePassword += ":" + URLEncoder.encode(prefs.password, "utf-8")
 
                 usernamePassword += "@"
             }
