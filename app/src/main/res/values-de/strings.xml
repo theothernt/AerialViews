@@ -4,7 +4,7 @@
     <string name="loading_title">Wird geladen...</string>
 
     <!-- Categories -->
-    <string name="category_capabilities">TV-Fähigkeiten</string>
+    <string name="category_capabilities">TV-Funktionen</string>
     <string name="category_settings">Einstellungen</string>
     <string name="category_video_sources">Video-Quellen</string>
     <string name="category_video_source">Video-Quelle</string>
@@ -15,7 +15,7 @@
     <string name="category_performance_debug">Performance &amp; Debugging</string>
 
     <!-- Apple Video Options -->
-    <string name="apple_videos_title">Videos von Apple TV</string>
+    <string name="apple_videos_title">Apple TV Videos</string>
     <string name="apple_videos_summary">Direktes Streaming der Apple Videos</string>
 
     <string name="apple_videos_enabled">Nutze Apple Videos</string>
@@ -27,7 +27,7 @@
 
     <!-- Any Video Options -->
     <string name="any_videos_title">Alle Videos</string>
-    <string name="any_videos_summary">Verwende alle verfügbaren Videos (Interner Speicher, USB, Netzwerk)</string>
+    <string name="any_videos_summary">Verwende alle verfügbaren Videos vom Gerätespeicher, USB oder lokalem Netzwerk</string>
 
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Nutze lokale Videos</string>
@@ -93,7 +93,7 @@
     <string name="interface_show_location_summary">Zeigt einen Titel oder Standort des laufenden Videos an</string>
 
     <string name="interface_show_location_style_title">Apple Videos</string>
-    <string name="interface_show_location_style_summary">Wähle Stil des Videotitels</string>
+    <string name="interface_show_location_style_summary">Wähle den Stil des Videotitels</string>
 
     <string name="interface_alt_text_position_title">Alternative Textposition</string>
     <string name="interface_alt_text_position_summary">Position von Uhr & Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
@@ -120,7 +120,7 @@
     <string name="performance_buffering_strategy_summary">Ändern der Prioritäten beim Zwischenspeichern kann bei instabilen Verbindungen helfen</string>
 
     <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
-    <string name="performance_exceed_renderer_summary">Höhere Auflösungen zu erlauben ist auf den meisten Geräten nicht ratsam!</string>
+    <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
 
     <string name="capabilities_display_title">TV / Display</string>
 
