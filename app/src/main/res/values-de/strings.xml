@@ -20,41 +20,41 @@
 
     <string name="apple_videos_enabled">Nutze Apple Videos</string>
 
-    <string name="apple_videos_quality_title">Qualit�t</string>
-    <string name="apple_videos_quality_summary">Videoqualit�t ausw�hlen</string>
+    <string name="apple_videos_quality_title">Qualität</string>
+    <string name="apple_videos_quality_summary">Videoqualität auswählen</string>
 
     <string name="apple_videos_data_usage_title">Datenverbrauch</string>
 
     <!-- Any Video Options -->
     <string name="any_videos_title">Alle Videos</string>
-    <string name="any_videos_summary">Verwende alle verf�gbaren Videos vom Ger�tespeicher, USB oder lokalem Netzwerk</string>
+    <string name="any_videos_summary">Verwende alle verfügbaren Videos vom Gerätespeicher, USB oder lokalem Netzwerk</string>
 
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Nutze lokale Videos</string>
-    <string name="local_videos_enabled_summary">Verwende alle verf�gbaren Videos vom Ger�tespeicher / USB</string>
+    <string name="local_videos_enabled_summary">Verwende alle verfügbaren Videos vom Gerätespeicher / USB</string>
 
     <string name="network_videos_enabled_title">Nutze Videos aus Netzwerkfreigabe</string>
-    <string name="network_videos_enabled_summary">Verwende alle verf�gbaren Videos aus einer lokalen Netzwerkfreigabe (SMB/Samba)</string>
+    <string name="network_videos_enabled_summary">Verwende alle verfügbaren Videos aus einer lokalen Netzwerkfreigabe (SMB/Samba)</string>
 
     <string name="local_videos_filter_enabled_title">Nutze Verzeichnisfilter</string>
-    <string name="local_videos_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Ger�tespeicher / USB / Netzwerk)</string>
+    <string name="local_videos_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Gerätespeicher / USB / Netzwerk)</string>
 
     <string name="local_videos_filter_folder_title">Verzeichnisnamen einstellen</string>
-    <string name="local_videos_filter_folder_summary">Beispiel: \'Aerial\' verwendet s�mtliche Videos aus dem Ordner /Downloads/Aerial/</string>
+    <string name="local_videos_filter_folder_summary">Beispiel: \'Aerial\' verwendet sämtliche Videos aus dem Ordner /Downloads/Aerial/</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
-    <string name="any_videos_use_apple_manifests_title">Orte / Sehensw�rdigkeiten f�r passende Apple Videos anzeigen</string>
+    <string name="any_videos_use_apple_manifests_title">Orte / Sehenswürdigkeiten für passende Apple Videos anzeigen</string>
     <string name="any_videos_use_apple_manifests_summary">Nutzt die Video-Manifeste verschiedener Versionen von tvOS</string>
 
     <string name="local_videos_filter_test">Teste Filtereinstellungen</string>
 
 <!--    <string name="any_videos_use_custom_manifests_title">Nutze Manifeste von Drittanbietern</string>-->
-<!--    <string name="any_videos_use_custom_manifests_summary">Zeigt Ortsangaben aus selbst hinzugef�gten Manifesten</string>-->
+<!--    <string name="any_videos_use_custom_manifests_summary">Zeigt Ortsangaben aus selbst hinzugefügten Manifesten</string>-->
 
     <string name="any_videos_ignore_non_manifest_videos_title">Ignoriere nicht von Apple stammende Videos aus lokalen Speichern oder Netzwerken</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">�berspringe Videos die nicht in Video-Manifesten von Apple vorkommen</string>
+    <string name="any_videos_ignore_non_manifest_videos_summary">Überspringe Videos die nicht in Video-Manifesten von Apple vorkommen</string>
 
     <!-- Network Video Options -->
     <string name="network_videos_hostname_title">Hostname</string>
@@ -69,11 +69,11 @@
     <string name="network_videos_password_title">Passwort</string>
     <string name="network_videos_password_summary">Optional</string>
 
-    <string name="network_videos_enable_encryption_title">Verschl�sselung aktivieren</string>
-    <string name="network_videos_enable_encryption_summary">Verschl�sselte SMB-Verbindung aktivieren (reduziert evtl. Netzwerkgeschwindigkeit)</string>
+    <string name="network_videos_enable_encryption_title">Verschlüsselung aktivieren</string>
+    <string name="network_videos_enable_encryption_summary">Verschlüsselte SMB-Verbindung aktivieren (reduziert evtl. Netzwerkgeschwindigkeit)</string>
 
-    <string name="network_videos_smb_dialects_title">SMB-Protokolldialekte w�hlen</string>
-    <string name="network_videos_smb_dialects_summary">Verwendete Version des SMB-Protokolls ausw�hlen</string>
+    <string name="network_videos_smb_dialects_title">SMB-Protokolldialekte wählen</string>
+    <string name="network_videos_smb_dialects_summary">Verwendete Version des SMB-Protokolls auswählen</string>
 
     <string name="network_videos_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
     <string name="network_videos_import_export_settings_summary">SMB-Anmeldeinformationen im Downloadordner Sichern oder daraus Wiederherstellen</string>
@@ -81,7 +81,7 @@
     <string name="network_videos_test_connection">Teste Verbindungseinstellungen</string>
 
     <!-- Settings -->
-    <string name="settings_debug_warning">Die untenstehenden Optionen sollten nur bei auftretenden Problemen ge�ndert werden!</string>
+    <string name="settings_debug_warning">Die untenstehenden Optionen sollten nur bei auftretenden Problemen geändert werden!</string>
 
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Konfiguriere das Aussehen</string>
@@ -93,19 +93,19 @@
     <string name="interface_show_location_summary">Zeigt einen Titel oder Standort des laufenden Videos an</string>
 
     <string name="interface_show_location_style_title">Apple Videos</string>
-    <string name="interface_show_location_style_summary">W�hle den Stil des Videotitels</string>
+    <string name="interface_show_location_style_summary">Wähle den Stil des Videotitels</string>
 
     <string name="interface_alt_text_position_title">Alternative Textposition</string>
-    <string name="interface_alt_text_position_summary">Position von Uhr &amp; Standort nach jedem Video �ndern um Einbrennen zu verhindern (OLED)</string>
+    <string name="interface_alt_text_position_summary">Position von Uhr &amp; Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
 
     <string name="interface_mute_videos_title">Stummschaltung der Videos</string>
     <string name="interface_mute_videos_summary">Videos ohne Ton wiedergegeben</string>
 
-    <string name="interface_enable_skip_videos_title">N�chstes / Vorheriges Video</string>
-    <string name="interface_enable_skip_videos_summary">�berspringe ein Video mit der Fernbedienung (rechts / links auf D-Pad)</string>
+    <string name="interface_enable_skip_videos_title">Nächstes / Vorheriges Video</string>
+    <string name="interface_enable_skip_videos_summary">Überspringe ein Video mit der Fernbedienung (rechts / links auf D-Pad)</string>
 
     <string name="interface_shuffle_videos_title">Reihenfolge der Videos mischen</string>
-    <string name="interface_shuffle_videos_summary">Videos in zuf�lliger Reihenfolge wiedergeben</string>
+    <string name="interface_shuffle_videos_summary">Videos in zufälliger Reihenfolge wiedergeben</string>
 
     <string name="interface_remove_duplicates_title">Entferne duplizierte Videos</string>
     <string name="interface_remove_duplicates_summary">Entferne Videos mit gleichem Dateinamen aus der Wiedergabeliste</string>
@@ -114,26 +114,26 @@
     <string name="performance_summary">Zum Beheben von Problemen</string>
 
     <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
-    <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (f�r fl�ssiges 4K / HD wichtig)</string>
+    <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
 
     <string name="performance_buffering_strategy_title">Pufferstrategie</string>
-    <string name="performance_buffering_strategy_summary">�ndern der Priorit�ten beim Zwischenspeichern kann bei instabilen Verbindungen helfen</string>
+    <string name="performance_buffering_strategy_summary">Ändern der Prioritäten beim Zwischenspeichern kann bei instabilen Verbindungen helfen</string>
 
-    <string name="performance_exceed_renderer_title">Maximale Aufl�sung des TVs �berschreiten</string>
-    <string name="performance_exceed_renderer_summary">Eine h�here Aufl�sung ist auf den meisten Ger�ten nicht ratsam!</string>
+    <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
+    <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
 
     <string name="capabilities_display_title">TV / Display</string>
 
-    <string name="capabilities_codecs_title">Unterst�tze Codecs</string>
+    <string name="capabilities_codecs_title">Unterstütze Codecs</string>
 
-    <string name="capabilities_decoders_title">Verf�gbare Decoder</string>
+    <string name="capabilities_decoders_title">Verfügbare Decoder</string>
 
-    <string name="capabilities_resolution_title">Bildschirmaufl�sung</string>
+    <string name="capabilities_resolution_title">Bildschirmauflösung</string>
 
     <string name="playback_speed_title">Wiedergabegeschwindigkeit</string>
-    <string name="playback_speed_summary">W�hle eine Wiedergabegeschwindigkeit</string>
+    <string name="playback_speed_summary">Wähle eine Wiedergabegeschwindigkeit</string>
 
     <!-- Actions -->
     <string name="test_screensaver_settings">Teste Einstellungen des Bildschirmschoners</string>
-    <string name="open_system_screensaver_options">�ffne die Systemeinstellungen des Bildschirmschoners</string>
+    <string name="open_system_screensaver_options">Öffne die Systemeinstellungen des Bildschirmschoners</string>
 </resources>
