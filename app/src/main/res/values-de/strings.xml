@@ -40,7 +40,7 @@
     <string name="local_videos_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Gerätespeicher / USB / Netzwerk)</string>
 
     <string name="local_videos_filter_folder_title">Verzeichnisnamen einstellen</string>
-    <string name="local_videos_filter_folder_summary">Beispiel: \'Aerial\' verwendet sämtliche Videos aus dem Ordner /Downloads/Aerial/</string>
+    <string name="local_videos_filter_folder_summary">Beispiel: \'Aerial\' spielt nur Videos aus dem Verzeichnis /Downloads/Aerial/ ab & amp; ignoriert andere Ordner</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
