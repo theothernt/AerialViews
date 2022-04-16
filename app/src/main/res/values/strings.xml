@@ -40,7 +40,7 @@
     <string name="local_videos_filter_enabled_summary">Only play videos from a specific folder or folders on device, USB, etc</string>
 
     <string name="local_videos_filter_folder_title">Specify a folder name</string>
-    <string name="local_videos_filter_folder_summary">Eg. using \'Aerial\' will play all videos from /Downloads/Aerial/</string>
+    <string name="local_videos_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
 
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
