@@ -98,9 +98,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
 
     // Modern Storage
-    implementation("com.google.modernstorage:modernstorage-permissions:1.0.0-alpha06")
-    implementation("com.google.modernstorage:modernstorage-storage:1.0.0-alpha06")
-    implementation("com.squareup.okio:okio:3.0.0")
+    implementation("com.google.modernstorage:modernstorage-bom:1.0.0-alpha06")
+    implementation("com.google.modernstorage:modernstorage-permissions")
+    implementation("com.google.modernstorage:modernstorage-storage")
+    implementation("com.squareup.okio:okio")
 
     // Android X
     implementation("androidx.core:core-ktx:1.7.0")
@@ -131,7 +132,7 @@ dependencies {
     implementation("com.hierynomus:smbj:0.11.5")
 
     // Memory leaks
-    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.8.1")
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.9')
 
     // Unit testing
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
