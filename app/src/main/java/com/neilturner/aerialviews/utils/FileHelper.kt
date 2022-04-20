@@ -62,6 +62,13 @@ object FileHelper {
         return false
     }
 
+    @Suppress("NAME_SHADOWING")
+    fun shouldFilter(uri: Uri, folder: String): Boolean {
+        var folder = if (folder.first() != '/') "/$folder" else folder
+        folder = if (folder.last() != '/') "$folder/" else folder
+        return !uri.path!!.contains(folder, true)
+    }
+
     fun filenameToTitleCase(uri: Uri): String {
         val filename = uri.lastPathSegment!!
         val index = filename.lastIndexOf(".")
