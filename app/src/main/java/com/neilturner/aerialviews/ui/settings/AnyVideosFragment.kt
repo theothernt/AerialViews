@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -45,6 +46,8 @@ class AnyVideosFragment :
                 resetPreference()
             }
         }
+
+        limitTextInput()
     }
 
     override fun onDestroy() {
@@ -96,6 +99,10 @@ class AnyVideosFragment :
                 requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
+    }
+
+    private fun limitTextInput() {
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private suspend fun testLocalVideosFilter() {
