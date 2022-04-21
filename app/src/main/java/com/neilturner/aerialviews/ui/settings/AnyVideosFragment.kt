@@ -121,13 +121,13 @@ class AnyVideosFragment :
             val filename = uri.lastPathSegment!!
 
             if (!FileHelper.isVideoFilename(filename)) {
-                Log.i(TAG, "Probably not a video: $filename")
+                //Log.i(TAG, "Probably not a video: $filename")
                 excluded++
                 continue
             }
 
             if (LocalVideoPrefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder_name)) {
-                Log.i(TAG, "Filtering out video: $filename")
+                //Log.i(TAG, "Filtering out video: $filename")
                 filtered++
                 continue
             }

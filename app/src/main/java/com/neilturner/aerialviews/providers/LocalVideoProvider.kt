@@ -20,13 +20,13 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             val filename = uri.lastPathSegment!!
 
             if (!FileHelper.isVideoFilename(filename)) {
-                Log.i(TAG, "Probably not a video: $filename")
+                //Log.i(TAG, "Probably not a video: $filename")
                 excluded++
                 continue
             }
 
             if (prefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder_name)) {
-                Log.i(TAG, "Filtering out video: $filename")
+                //Log.i(TAG, "Filtering out video: $filename")
                 filtered++
                 continue
             }
