@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.Test
+package com.neilturner.aerialviews
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

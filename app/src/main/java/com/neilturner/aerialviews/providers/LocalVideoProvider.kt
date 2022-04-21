@@ -42,11 +42,6 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         return videos
     }
 
-    private fun shouldFilter(uri: Uri): Boolean {
-        val pathSegments = uri.pathSegments.dropLast(1) // x/y/z.mp4
-        return !pathSegments.last().contains(prefs.filter_folder_name, true) // x/y
-    }
-
     companion object {
         private const val TAG = "LocalVideoProvider"
     }
