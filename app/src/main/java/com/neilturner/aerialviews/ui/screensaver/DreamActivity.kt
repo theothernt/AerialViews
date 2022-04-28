@@ -31,7 +31,7 @@ class DreamActivity : DreamService() {
             // Log.i(TAG, "${event.keyCode}")
 
             if (!GeneralPrefs.enableSkipVideos)
-                finish()
+                wakeUp()
 
             when (event.keyCode) {
                 // Capture all d-pad presses for future use
@@ -54,7 +54,7 @@ class DreamActivity : DreamService() {
                 }
 
                 // Any other button press will close the screensaver
-                else -> finish()
+                else -> wakeUp()
             }
         }
         return super.dispatchKeyEvent(event)
