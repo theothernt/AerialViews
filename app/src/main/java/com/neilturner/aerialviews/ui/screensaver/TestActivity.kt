@@ -67,11 +67,12 @@ class TestActivity : Activity() {
         }
     }
 
+    @Suppress("SAFE_CALL_WILL_CHANGE_NULLABILITY")
     override fun onStop() {
         super.onStop()
         Log.i(TAG, "onStop")
         // Stop playback, animations, etc
-        videoController.stop()
+        videoController?.stop()
     }
 
     override fun onDetachedFromWindow() {

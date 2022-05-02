@@ -67,11 +67,12 @@ class DreamActivity : DreamService() {
         }
     }
 
+    @Suppress("SAFE_CALL_WILL_CHANGE_NULLABILITY")
     override fun onDreamingStopped() {
         super.onDreamingStopped()
         Log.i(TAG, "onDreamingStopped")
         // Stop playback, animations, etc
-        videoController.stop()
+        videoController?.stop()
     }
 
     override fun onDetachedFromWindow() {
