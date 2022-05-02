@@ -6,7 +6,6 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -121,13 +120,13 @@ class AnyVideosFragment :
             val filename = uri.lastPathSegment!!
 
             if (!FileHelper.isVideoFilename(filename)) {
-                //Log.i(TAG, "Probably not a video: $filename")
+                // Log.i(TAG, "Probably not a video: $filename")
                 excluded++
                 continue
             }
 
             if (LocalVideoPrefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder_name)) {
-                //Log.i(TAG, "Filtering out video: $filename")
+                // Log.i(TAG, "Filtering out video: $filename")
                 filtered++
                 continue
             }
