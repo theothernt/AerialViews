@@ -166,7 +166,7 @@ class VideoService(private val context: Context) {
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
-                //Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
+                // Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
                 matched.add(video)
                 continue
             }

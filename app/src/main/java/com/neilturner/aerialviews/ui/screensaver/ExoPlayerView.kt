@@ -153,13 +153,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        //error?.printStackTrace()
+        // error?.printStackTrace()
         error.cause?.let { Firebase.crashlytics.recordException(it) }
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        //error?.printStackTrace()
+        // error?.printStackTrace()
         error?.message?.let { Log.e(TAG, it) }
     }
 
