@@ -7,12 +7,12 @@ apply plugin: "org.jmailen.kotlinter"
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 6 // Will be incremented automatically on release
         versionName "1.2.3"
 
