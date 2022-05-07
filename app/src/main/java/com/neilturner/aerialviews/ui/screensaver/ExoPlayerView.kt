@@ -15,6 +15,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.video.VideoSize
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
@@ -147,16 +149,19 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             // compensate the duration based on the playback speed
             postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
         }
+        Log.i(TAG, "PlayWhenReady: $playWhenReady:${player.playWhenReady}")
     }
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        error.printStackTrace()
+        //error?.printStackTrace()
+        error.cause?.let { Firebase.crashlytics.recordException(it) }
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        error?.printStackTrace()
+        //error?.printStackTrace()
+        error?.message?.let { Log.e(TAG, it) }
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
