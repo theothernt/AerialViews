@@ -149,7 +149,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             // compensate the duration based on the playback speed
             postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
         }
-        Log.i(TAG, "PlayWhenReady: $playWhenReady:${player.playWhenReady}")
     }
 
     override fun onPlayerError(error: PlaybackException) {
