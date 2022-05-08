@@ -29,7 +29,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextClock
+        <com.neilturner.aerialviews.utils.TextClock
             android:id="@+id/clock"
             style="@style/ClockText"
             android:layout_width="0dp"
