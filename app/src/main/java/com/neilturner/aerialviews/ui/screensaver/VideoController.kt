@@ -45,7 +45,10 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val service = VideoService(context)
         coroutineScope.launch {
             playlist = service.fetchVideos()
-            loadVideo(videoView, playlist.nextVideo())
+            if (playlist.size > 0)
+                loadVideo(videoView, playlist.nextVideo())
+            else
+                showLoadingError()
         }
     }
 
@@ -57,6 +60,10 @@ class VideoController(context: Context) : OnPlayerEventListener {
     fun skipVideo(previous: Boolean = false) {
         previousVideo = previous
         fadeOutCurrentVideo()
+    }
+
+    private fun showLoadingError() {
+        loadingText.text = R.string.loading_error.toString()
     }
 
     private fun fadeOutLoading() {

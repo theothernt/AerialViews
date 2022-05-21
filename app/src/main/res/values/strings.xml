@@ -2,6 +2,7 @@
     <!-- General -->
     <string name="app_name">Aerial Views</string>
     <string name="loading_title">Loading...</string>
+    <string name="loading_error">No videos found, please check your settings.</string>
 
     <!-- Categories -->
     <string name="category_capabilities">Capabilities</string>

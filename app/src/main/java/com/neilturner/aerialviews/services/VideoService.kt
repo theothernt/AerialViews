@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.AppleVideoQuality
@@ -93,12 +92,7 @@ class VideoService(private val context: Context) {
             }
         }
 
-        if (videos.isEmpty()) {
-            Log.i(TAG, "No videos, adding empty one")
-            videos.add(AerialVideo(Uri.parse(""), ""))
-        }
-
-        if (GeneralPrefs.shuffleVideos)
+        if (!videos.isEmpty() && GeneralPrefs.shuffleVideos)
             videos.shuffle()
 
         Log.i(TAG, "Total vids: ${videos.size}")
