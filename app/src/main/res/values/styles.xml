@@ -5,25 +5,25 @@
     </style>
 
     <style name="ClockText">
-        <item name="android:alpha">0.7</item>
+        <item name="android:alpha">1</item>
         <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:shadowColor">#000</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">5</item>
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">#e9e9e9</item>
         <item name="android:textSize">36sp</item>
+        <item name="android:shadowColor">#111</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
     </style>
 
     <style name="LocationText">
-        <item name="android:alpha">0.7</item>
+        <item name="android:alpha">1</item>
         <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:shadowColor">#000</item>
-        <item name="android:shadowDx">2</item>
-        <item name="android:shadowDy">2</item>
-        <item name="android:shadowRadius">5</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:shadowColor">#000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1</item>
     </style>
 
 </resources>

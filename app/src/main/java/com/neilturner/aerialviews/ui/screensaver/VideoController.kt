@@ -23,7 +23,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
-    private val textAlpha = 0.7f
+    private val textAlpha = 1f
     private var previousVideo = false
     private var canSkip = false
     private val videoView: VideoViewBinding
@@ -111,9 +111,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
         if (loadingView.visibility == View.GONE)
             return
 
-        var delay: Long = 0
         if (loadingText.visibility == View.VISIBLE) {
-            delay = 1000
             fadeOutLoading()
         }
 
@@ -121,7 +119,6 @@ class VideoController(context: Context) : OnPlayerEventListener {
             .animate()
             .alpha(0f)
             .setDuration(ExoPlayerView.DURATION)
-            .setStartDelay(delay)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
