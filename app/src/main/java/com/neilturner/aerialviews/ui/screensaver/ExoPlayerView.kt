@@ -22,10 +22,11 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PlayerHelper
+import java.lang.Runnable
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private var timerRunnable = Runnable { listener?.onAlmostFinished(this@ExoPlayerView) }
+    private var timerRunnable = Runnable { listener?.onAlmostFinished() }
     private val bufferingStrategy = BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
@@ -142,7 +143,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
-            listener?.onPrepared(this)
+            listener?.onPrepared()
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
             removeCallbacks(timerRunnable)
@@ -155,6 +156,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         super.onPlayerError(error)
         // error?.printStackTrace()
         error.cause?.let { Firebase.crashlytics.recordException(it) }
+        removeCallbacks(timerRunnable)
+        postDelayed({ listener?.onError() }, 3000)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
@@ -204,8 +207,9 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     interface OnPlayerEventListener {
-        fun onAlmostFinished(view: ExoPlayerView?)
-        fun onPrepared(view: ExoPlayerView?)
+        fun onAlmostFinished()
+        fun onError()
+        fun onPrepared()
     }
 
     companion object {

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -19,10 +20,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(context: Context) : OnPlayerEventListener {
+class VideoController(private val context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
+    private lateinit var currentVideo: AerialVideo
     private val textAlpha = 1f
     private var previousVideo = false
     private var canSkip = false
@@ -127,6 +129,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
+        currentVideo = video
         videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
 
         if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
@@ -161,14 +164,26 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
         videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
+        Log.i(TAG, "LoadVideo: Start")
     }
 
-    override fun onPrepared(view: ExoPlayerView?) {
+    override fun onPrepared() {
         fadeInNextVideo()
     }
 
-    override fun onAlmostFinished(view: ExoPlayerView?) {
+    override fun onAlmostFinished() {
         fadeOutCurrentVideo()
+    }
+
+    override fun onError() {
+        val message = "Error while trying to play ${currentVideo.uri}"
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+
+        if (loadingView.visibility == View.VISIBLE) {
+            loadVideo(videoView, playlist.nextVideo())
+        } else {
+            fadeOutCurrentVideo()
+        }
     }
 
     companion object {
