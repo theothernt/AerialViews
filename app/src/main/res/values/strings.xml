@@ -18,13 +18,11 @@
     <!-- Apple Video Options -->
     <string name="apple_videos_title">Apple TV Videos</string>
     <string name="apple_videos_summary">Stream Apple videos directly</string>
-
     <string name="apple_videos_enabled">Use Apple videos</string>
+    <string name="apple_videos_data_usage_title">Data usage</string>
 
     <string name="apple_videos_quality_title">Quality</string>
     <string name="apple_videos_quality_summary">Select a video quality</string>
-
-    <string name="apple_videos_data_usage_title">Data usage</string>
 
     <!-- Any Video Options -->
     <string name="any_videos_title">Any Videos</string>

@@ -2,6 +2,7 @@
     <!-- General -->
     <string name="app_name">Aerial Views</string>
     <string name="loading_title">Wird geladen...</string>
+    <!--    <string name="loading_error"></string>-->
 
     <!-- Categories -->
     <string name="category_capabilities">TV-Funktionen</string>
