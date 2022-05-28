@@ -164,7 +164,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
-        Log.i(TAG, "LoadVideo: Start")
     }
 
     override fun onPrepared() {
