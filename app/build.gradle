@@ -92,7 +92,7 @@ android {
 
 dependencies {
     // Kotlin
-    def coroutines_version = '1.6.1'
+    def coroutines_version = '1.6.2'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
@@ -111,8 +111,8 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.0.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.2.10')
-    implementation('com.google.firebase:firebase-perf-ktx:20.0.6')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.2.11')
+    implementation('com.google.firebase:firebase-perf-ktx:20.1.0')
 
     // GSON
     implementation("com.google.code.gson:gson:2.9.0")
