@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.video.VideoSize
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
 import com.neilturner.aerialviews.models.BufferingStrategy
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
@@ -27,17 +28,24 @@ import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var timerRunnable = Runnable { listener?.onAlmostFinished() }
-    private val bufferingStrategy = BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
+    private val bufferingStrategy: BufferingStrategy
     private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
 
     init {
+        // Use smaller buffer for local and network playback
+        bufferingStrategy = if (!AppleVideoPrefs.enabled) {
+            BufferingStrategy.SMALLER
+        } else {
+            BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
+        }
+
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
