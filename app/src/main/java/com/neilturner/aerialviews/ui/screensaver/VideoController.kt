@@ -131,6 +131,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
         currentVideo = video
         videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
+        if (videoBinding.location.text.isBlank()) {
+            videoBinding.location.visibility = View.GONE
+        } else if (InterfacePrefs.showLocation) {
+            videoBinding.location.visibility = View.VISIBLE
+        }
 
         if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
