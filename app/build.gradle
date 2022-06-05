@@ -16,10 +16,6 @@ android {
         targetSdkVersion 32
         versionCode 7 // Will be incremented automatically on release
         versionName "1.2.3"
-
-        manifestPlaceholders.analyticsCollectionEnabled = false
-        manifestPlaceholders.crashlyticsCollectionEnabled = false
-        manifestPlaceholders.performanceCollectionEnabled = false
     }
 
     compileOptions {
@@ -42,6 +38,10 @@ android {
 
             //minifyEnabled true
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            manifestPlaceholders.analyticsCollectionEnabled = false
+            manifestPlaceholders.crashlyticsCollectionEnabled = false
+            manifestPlaceholders.performanceCollectionEnabled = false
         }
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
