@@ -105,7 +105,8 @@ class AnyVideosFragment :
     }
 
     private suspend fun testLocalVideosFilter() {
-        if (LocalVideoPrefs.filter_folder_name.isEmpty()) {
+        if (LocalVideoPrefs.filter_folder_name.isEmpty() &&
+                LocalVideoPrefs.filter_enabled) {
             showDialog("Error", "No folder has been specified.")
             return
         }
