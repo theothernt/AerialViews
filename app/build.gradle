@@ -87,6 +87,10 @@ android {
         create("googleplay") {
             dimension = "version"
         }
+        create("amazon") {
+            dimension = "version"
+            minSdkVersion 25
+        }
     }
 }
 
