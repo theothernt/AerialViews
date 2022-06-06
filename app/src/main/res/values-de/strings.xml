@@ -1,7 +1,8 @@
 <resources>
     <!-- General -->
     <string name="app_name">Aerial Views</string>
-    <string name="loading_title">Wird geladen...</string>
+    <string name="loading_title">Wird geladen…</string>
+    <string name="loading_error">Keine Videos gefunden, bitte überprüfen Sie Ihre Einstellungen</string>
 
     <!-- Categories -->
     <string name="category_capabilities">TV-Funktionen</string>
