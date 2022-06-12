@@ -64,6 +64,14 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         fadeOutCurrentVideo()
     }
 
+    fun increaseSpeed() {
+        videoView.videoView.increaseSpeed()
+    }
+
+    fun decreaseSpeed() {
+        videoView.videoView.decreaseSpeed()
+    }
+
     private fun showLoadingError() {
         loadingText.text = R.string.loading_error.toString()
     }

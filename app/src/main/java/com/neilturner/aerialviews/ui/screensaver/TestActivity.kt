@@ -30,25 +30,46 @@ class TestActivity : Activity() {
         if (event.action == KeyEvent.ACTION_UP) {
             // Log.i(TAG, "${event.keyCode}")
 
-            if (!GeneralPrefs.enableSkipVideos)
-                finish()
-
             when (event.keyCode) {
                 // Capture all d-pad presses for future use
                 KeyEvent.KEYCODE_DPAD_CENTER,
                 KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
                 KeyEvent.KEYCODE_DPAD_UP_LEFT,
                 KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
-                KeyEvent.KEYCODE_DPAD_UP_RIGHT,
-                KeyEvent.KEYCODE_DPAD_UP,
-                KeyEvent.KEYCODE_DPAD_DOWN -> return true
+                KeyEvent.KEYCODE_DPAD_UP_RIGHT -> return true
+
+                KeyEvent.KEYCODE_DPAD_UP -> {
+                    if (!GeneralPrefs.enablePlaybackSpeedChange) {
+                        finish()
+                        return true
+                    }
+                    videoController.increaseSpeed()
+                    return true
+                }
+
+                KeyEvent.KEYCODE_DPAD_DOWN -> {
+                    if (!GeneralPrefs.enablePlaybackSpeedChange) {
+                        finish()
+                        return true
+                    }
+                    videoController.decreaseSpeed()
+                    return true
+                }
 
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
+                    if (!GeneralPrefs.enableSkipVideos) {
+                        finish()
+                        return true
+                    }
                     videoController.skipVideo(true)
                     return true
                 }
 
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                    if (!GeneralPrefs.enableSkipVideos) {
+                        finish()
+                        return true
+                    }
                     videoController.skipVideo()
                     return true
                 }
