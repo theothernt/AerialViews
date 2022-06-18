@@ -4,6 +4,13 @@
     <string name="loading_title">Loading…</string>
     <string name="loading_error">No videos found, please check your settings.</string>
 
+    <!-- Buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <string name="button_import">Import</string>
+    <string name="button_export">Export</string>
+
     <!-- Categories -->
     <string name="category_capabilities">Capabilities</string>
     <string name="category_settings">Settings</string>
@@ -26,9 +33,14 @@
 
     <string name="apple_videos_data_usage_title">Data usage</string>
 
+    <string name="apple_videos_data_estimate_summary">Approx. %1$d per hour</string>
+
     <!-- Any Video Options -->
     <string name="any_videos_title">Any Videos</string>
     <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
+
+    <string name="any_videos_credentials_title">Credentials</string>
+    <string name="any_videos_credentials_summary">Server details and credentials for SMB access</string>
 
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Use Local videos</string>
@@ -122,6 +134,9 @@
 
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
+
+    <string name="performance_capabilities_title">Capabilities</string>
+    <string name="performance_capabilities_summary">Detected TV and codec features</string>
 
     <string name="capabilities_display_title">TV/Display</string>
 

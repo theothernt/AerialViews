@@ -161,7 +161,7 @@ class AnyVideosFragment :
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("OK", null)
+            setPositiveButton(R.string.button_ok, null)
             create().show()
         }
     }

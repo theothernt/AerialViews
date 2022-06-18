@@ -132,11 +132,11 @@ class NetworkVideosFragment :
         AlertDialog.Builder(requireContext()).apply {
             setTitle(R.string.network_videos_import_export_settings_title)
             setMessage(R.string.network_videos_import_export_settings_summary)
-            setNeutralButton("Cancel", null)
-            setNegativeButton("Import") { _, _ ->
+            setNeutralButton(R.string.button_cancel, null)
+            setNegativeButton(R.string.button_import) { _, _ ->
                 checkImportPermissions()
             }
-            setPositiveButton("Export") { _, _ ->
+            setPositiveButton(R.string.button_export) { _, _ ->
                 checkExportPermissions()
             }
             create().show()
@@ -392,7 +392,7 @@ class NetworkVideosFragment :
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("OK", null)
+            setPositiveButton(R.string.button_ok, null)
             create().show()
         }
     }

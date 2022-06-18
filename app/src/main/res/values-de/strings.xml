@@ -4,6 +4,12 @@
     <string name="loading_title">Wird geladen…</string>
     <string name="loading_error">Keine Videos gefunden, bitte überprüfen Sie Ihre Einstellungen</string>
 
+    <!-- Buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_cancel"></string>
+    <string name="button_import"></string>
+    <string name="button_export"></string>
+
     <!-- Categories -->
     <string name="category_capabilities">TV-Funktionen</string>
     <string name="category_settings">Einstellungen</string>
@@ -26,9 +32,14 @@
 
     <string name="apple_videos_data_usage_title">Datenverbrauch</string>
 
+    <string name="apple_videos_data_estimate_summary"></string>
+
     <!-- Any Video Options -->
     <string name="any_videos_title">Alle Videos</string>
     <string name="any_videos_summary">Verwende alle verfügbaren Videos vom Gerätespeicher, USB oder lokalem Netzwerk</string>
+
+    <string name="any_videos_credentials_title"></string>
+    <string name="any_videos_credentials_summary"></string>
 
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Nutze lokale Videos</string>
@@ -122,6 +133,9 @@
 
     <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
     <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
+
+    <string name="performance_capabilities_title">Capabilities</string>
+    <string name="performance_capabilities_summary">Detected TV and codec features</string>
 
     <string name="capabilities_display_title">TV / Display</string>
 

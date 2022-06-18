@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Apple Video Options -->
-    <string-array name="apple_videos_quality_entries">
+    <string-array name="apple_videos_quality_entries" translatable="false">
         <item>1080p H.264/AVC</item>
         <item>1080p SDR/HEVC</item>
         <item>1080p HDR/HEVC</item>
         <item>4K SDR/HEVC</item>
         <item>4K HDR/HEVC</item>
     </string-array>
-    <string-array name="apple_videos_quality_values">
+    <string-array name="apple_videos_quality_values" translatable="false">
         <item>VIDEO_1080_H264</item>
         <item>VIDEO_1080_SDR</item>
         <item>VIDEO_1080_HDR</item>
@@ -21,13 +21,13 @@
         <item>Short titles</item>
         <item>Points of interest (Localised)</item>
     </string-array>
-    <string-array name="interface_show_location_style_values">
+    <string-array name="interface_show_location_style_values" translatable="false">
         <item>SHORT</item>
         <item>VERBOSE</item>
     </string-array>
     <string name="interface_show_location_style_default" translatable="false">SHORT</string>
 
-    <string-array name="apple_videos_data_usage_values">
+    <string-array name="apple_videos_data_usage_values" translatable="false">
         <item>37GB</item>
         <item>23GB</item>
         <item>46GB</item>
@@ -35,7 +35,7 @@
         <item>90GB</item>
     </string-array>
 
-    <string-array name="playback_speed_entries">
+    <string-array name="playback_speed_entries" translatable="false">
         <item>0.25x</item>
         <item>0.5x</item>
         <item>0.75x</item>
@@ -50,7 +50,7 @@
         <item>4x</item>
         <item>5x</item>
     </string-array>
-    <string-array name="playback_speed_values">
+    <string-array name="playback_speed_values" translatable="false">
         <item>0.25</item>
         <item>0.5</item>
         <item>0.75</item>
@@ -68,21 +68,21 @@
     <string name="playback_speed_default" translatable="false">1</string>
 
     <!-- Network Video Options -->
-    <string-array name="network_videos_smb_dialects_entries">
+    <string-array name="network_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>
         <item>v3.0.2</item>
         <item>v3.0</item>
         <item>v2.1</item>
         <item>v2.0.2</item>
     </string-array>
-    <string-array name="network_videos_smb_dialects_values">
+    <string-array name="network_videos_smb_dialects_values" translatable="false">
         <item>SMB_3_1_1</item>
         <item>SMB_3_0_2</item>
         <item>SMB_3_0</item>
         <item>SMB_2_1</item>
         <item>SMB_2_0_2</item>
     </string-array>
-    <string-array name="network_videos_smb_dialects_default">
+    <string-array name="network_videos_smb_dialects_default" translatable="false">
         <item>SMB_3_1_1</item>
         <item>SMB_3_0_2</item>
         <item>SMB_3_0</item>
@@ -97,7 +97,7 @@
         <item>Smaller buffer</item>
         <item>Faster start on higher latency connection</item>
     </string-array>
-    <string-array name="performance_buffering_strategy_values">
+    <string-array name="performance_buffering_strategy_values" translatable="false">
         <item>DEFAULT</item>
         <item>LARGER</item>
         <item>SMALLER</item>

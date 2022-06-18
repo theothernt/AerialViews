@@ -16,6 +16,10 @@ android {
         targetSdkVersion 32
         versionCode 7
         versionName "1.3.0"
+
+        manifestPlaceholders.analyticsCollectionEnabled = false
+        manifestPlaceholders.crashlyticsCollectionEnabled = false
+        manifestPlaceholders.performanceCollectionEnabled = false
     }
 
     compileOptions {
@@ -37,11 +41,7 @@ android {
             debuggable true
 
             //minifyEnabled true
-            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-
-            manifestPlaceholders.analyticsCollectionEnabled = false
-            manifestPlaceholders.crashlyticsCollectionEnabled = false
-            manifestPlaceholders.performanceCollectionEnabled = false
+            //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro
         }
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
