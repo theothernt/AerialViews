@@ -33,7 +33,7 @@
 
     <string name="apple_videos_data_usage_title">Data usage</string>
 
-    <string name="apple_videos_data_estimate_summary">Approx. %1$d per hour</string>
+    <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
     <!-- Any Video Options -->
     <string name="any_videos_title">Any Videos</string>
