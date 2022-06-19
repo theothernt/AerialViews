@@ -1,3 +1,5 @@
+@file:Suppress("JoinDeclarationAndAssignment")
+
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context

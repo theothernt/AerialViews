@@ -92,7 +92,7 @@ class VideoService(private val context: Context) {
             }
         }
 
-        if (!videos.isEmpty() && GeneralPrefs.shuffleVideos)
+        if (videos.isNotEmpty() && GeneralPrefs.shuffleVideos)
             videos.shuffle()
 
         Log.i(TAG, "Total vids: ${videos.size}")

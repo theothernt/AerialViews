@@ -1,4 +1,4 @@
-@file:Suppress("unused")
+@file:Suppress("unused", "RedundantOverride")
 
 package com.neilturner.aerialviews.ui.screensaver
 
