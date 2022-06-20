@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.Paramet
 import com.google.android.exoplayer2.video.VideoSize
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -29,7 +30,7 @@ import java.lang.Runnable
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private var timerRunnable = Runnable { listener?.onAlmostFinished() }
+    private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val muteVideo = GeneralPrefs.muteVideos
@@ -55,7 +56,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     fun release() {
         player.release()
-        removeCallbacks(timerRunnable) // was causing circular reference if not cleaned up
+        removeCallbacks(almostFinishedRunnable) // was causing circular reference if not cleaned up
         listener = null
     }
 
@@ -156,17 +157,54 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             listener?.onPrepared()
         }
         if (playWhenReady && playbackState == Player.STATE_READY) {
-            removeCallbacks(timerRunnable)
-            // compensate the duration based on the playback speed
-            postDelayed(timerRunnable, ((duration / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION))
+            setupAlmostFinishedRunnable()
         }
+    }
+
+    fun increaseSpeed() {
+        val currentSpeed = GeneralPrefs.playbackSpeed
+        val speedValues = resources.getStringArray(R.array.playback_speed_values)
+        val currentSpeedIdx = speedValues.indexOf(currentSpeed)
+        if(currentSpeedIdx == speedValues.size - 1) {
+            //we are at maximum speed already
+            return
+        }
+        val newSpeed = speedValues.get(currentSpeedIdx + 1)
+        GeneralPrefs.playbackSpeed = newSpeed
+        player.setPlaybackSpeed(newSpeed.toFloat())
+        setupAlmostFinishedRunnable()
+    }
+
+    fun decreaseSpeed() {
+        val currentSpeed = GeneralPrefs.playbackSpeed
+        val speedValues = resources.getStringArray(R.array.playback_speed_values)
+        val currentSpeedIdx = speedValues.indexOf(currentSpeed)
+        if(currentSpeedIdx == 0) {
+            //we are at minimum speed already
+            return
+        }
+        val newSpeed = speedValues.get(currentSpeedIdx - 1)
+        GeneralPrefs.playbackSpeed = newSpeed
+        player.setPlaybackSpeed(newSpeed.toFloat())
+        setupAlmostFinishedRunnable()
+    }
+
+    fun setupAlmostFinishedRunnable() {
+        removeCallbacks(almostFinishedRunnable)
+        // compensate the duration based on the playback speed
+        // take into account the current player position in case of speed changes during playback
+        var delay = (((duration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
+        if(delay < 0) {
+            delay = 0
+        }
+        postDelayed(almostFinishedRunnable, delay)
     }
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
         // error?.printStackTrace()
         error.cause?.let { Firebase.crashlytics.recordException(it) }
-        removeCallbacks(timerRunnable)
+        removeCallbacks(almostFinishedRunnable)
         postDelayed({ listener?.onError() }, 3000)
     }
 

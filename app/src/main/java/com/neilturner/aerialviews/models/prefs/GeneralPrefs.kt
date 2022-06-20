@@ -9,6 +9,7 @@ object GeneralPrefs : KotprefModel() {
     var shuffleVideos by booleanPref(true, "shuffle_videos")
     var removeDuplicates by booleanPref(true, "remove_duplicates")
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
+    var enablePlaybackSpeedChange by booleanPref(true, "enable_playback_speed_change")
     var playbackSpeed by stringPref("1", "playback_speed")
 
     var enableTunneling by booleanPref(true, "enable_tunneling")
