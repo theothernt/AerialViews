@@ -15,7 +15,8 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Googl
 
 ## How to get Aerial Views...
 
-[![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
+[![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews) &nbsp;&nbsp;
+[<img alt="Amazon Appstore badge" src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" width="153">](http://www.amazon.com/gp/mas/dl/android?p=com.neilturner.aerialviews)
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
