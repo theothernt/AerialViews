@@ -28,9 +28,7 @@ class DreamActivity : DreamService() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (event.action == KeyEvent.ACTION_UP) {
-             // Log.i(TAG, "${event.keyCode}")
-
-
+            // Log.i(TAG, "${event.keyCode}")
 
             when (event.keyCode) {
                 // Capture all d-pad presses for future use

@@ -165,8 +165,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
-        if(currentSpeedIdx == speedValues.size - 1) {
-            //we are at maximum speed already
+        if (currentSpeedIdx == speedValues.size - 1) {
+            // we are at maximum speed already
             return
         }
         val newSpeed = speedValues.get(currentSpeedIdx + 1)
@@ -179,8 +179,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
-        if(currentSpeedIdx == 0) {
-            //we are at minimum speed already
+        if (currentSpeedIdx == 0) {
+            // we are at minimum speed already
             return
         }
         val newSpeed = speedValues.get(currentSpeedIdx - 1)
@@ -194,7 +194,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
         var delay = (((duration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
-        if(delay < 0) {
+        if (delay < 0) {
             delay = 0
         }
         postDelayed(almostFinishedRunnable, delay)
