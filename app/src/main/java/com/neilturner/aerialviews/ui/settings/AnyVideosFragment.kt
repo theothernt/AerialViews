@@ -105,7 +105,9 @@ class AnyVideosFragment :
     }
 
     private suspend fun testLocalVideosFilter() {
-        if (LocalVideoPrefs.filter_folder_name.isEmpty()) {
+        if (LocalVideoPrefs.filter_folder_name.isEmpty() &&
+            LocalVideoPrefs.filter_enabled
+        ) {
             showDialog("Error", "No folder has been specified.")
             return
         }
@@ -159,7 +161,7 @@ class AnyVideosFragment :
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)
-            setPositiveButton("OK", null)
+            setPositiveButton(R.string.button_ok, null)
             create().show()
         }
     }

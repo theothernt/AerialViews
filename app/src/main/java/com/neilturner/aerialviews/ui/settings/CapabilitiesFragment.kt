@@ -106,7 +106,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
                         it.contains("dolby", true)
                     )
         }
-        return videoCodecs.count() > 0
+        return videoCodecs.isNotEmpty()
     }
 
     private fun isCodecOfType(codecs: Array<String>, type: String): Boolean {
@@ -114,6 +114,6 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
             it.contains("video", true) &&
                 it.contains(type, true)
         }
-        return videoCodecs.count() > 0
+        return videoCodecs.isNotEmpty()
     }
 }

@@ -103,11 +103,24 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         }
 
         // If available on device get display mode
-        val mode = source.mode
-        // Use ExoPlayer util to get display dimensions as it covers more edge cases
-        val displaySize = Util.getCurrentDisplayModeSize(context, source)
-        physicalOutput = OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
-        supportedModes = source.supportedModes.map { OutputDescription(it.modeId, it.physicalWidth, it.physicalHeight, it.refreshRate) }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val mode = source.mode
+            // Use ExoPlayer util to get display dimensions as it covers more edge cases
+            val displaySize = Util.getCurrentDisplayModeSize(context, source)
+            physicalOutput =
+                OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
+            supportedModes = source.supportedModes.map {
+                OutputDescription(
+                    it.modeId,
+                    it.physicalWidth,
+                    it.physicalHeight,
+                    it.refreshRate
+                )
+            }
+        } else {
+            physicalOutput = null
+            supportedModes = listOf()
+        }
 
         // Check HDR Capabilities if available on device
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

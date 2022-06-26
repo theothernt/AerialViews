@@ -52,12 +52,12 @@ object PlayerHelper {
 
         if (strategy == BufferingStrategy.SMALLER) {
             // Buffer sizes while playing
-            val minBuffer = 10_000
-            val maxBuffer = 10_000
+            val minBuffer = 5000
+            val maxBuffer = 5000
 
             // Initial buffer size to start playback
-            val bufferForPlayback = 4000
-            val bufferForPlaybackAfterRebuffer = 4000
+            val bufferForPlayback = 1024
+            val bufferForPlaybackAfterRebuffer = 1024
 
             loadControlBuilder
                 .setBufferDurationsMs(

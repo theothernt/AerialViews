@@ -45,8 +45,8 @@
 
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
-                    app:title="Capabilities"
-                    app:summary="Detected TV and codec features"
+                    app:title="@string/performance_capabilities_title"
+                    app:summary="@string/performance_capabilities_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
         </PreferenceCategory>
 </PreferenceScreen>
