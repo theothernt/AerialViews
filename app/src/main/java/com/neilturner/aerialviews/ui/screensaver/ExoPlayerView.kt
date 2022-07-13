@@ -189,7 +189,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         setupAlmostFinishedRunnable()
     }
 
-    fun setupAlmostFinishedRunnable() {
+    private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
@@ -203,7 +203,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
         // error?.printStackTrace()
-        error.cause?.let { Firebase.crashlytics.recordException(it) }
+        //error.cause?.let { Firebase.crashlytics.recordException(it) }
         removeCallbacks(almostFinishedRunnable)
         postDelayed({ listener?.onError() }, 3000)
     }
