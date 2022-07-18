@@ -167,7 +167,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             // we are at maximum speed already
             return
         }
-        val newSpeed = speedValues.get(currentSpeedIdx + 1)
+        val newSpeed = speedValues[currentSpeedIdx + 1]
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
         setupAlmostFinishedRunnable()
@@ -181,7 +181,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             // we are at minimum speed already
             return
         }
-        val newSpeed = speedValues.get(currentSpeedIdx - 1)
+        val newSpeed = speedValues[currentSpeedIdx - 1]
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
         setupAlmostFinishedRunnable()

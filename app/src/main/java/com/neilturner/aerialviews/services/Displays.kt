@@ -87,9 +87,14 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         val flags = source.flags
         isPresentation = (flags and NativeDisplay.FLAG_PRESENTATION) == NativeDisplay.FLAG_PRESENTATION
         isPrivate = (flags and NativeDisplay.FLAG_PRIVATE) == NativeDisplay.FLAG_PRIVATE
-        isRound = (flags and NativeDisplay.FLAG_ROUND) == NativeDisplay.FLAG_ROUND
         isSecure = (flags and NativeDisplay.FLAG_SECURE) == NativeDisplay.FLAG_SECURE
         supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
+
+        isRound = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            (flags and NativeDisplay.FLAG_ROUND) == NativeDisplay.FLAG_ROUND
+        } else {
+            false
+        }
 
         // Get render sizes
         renderOutput = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
