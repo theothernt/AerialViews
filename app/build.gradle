@@ -113,7 +113,7 @@ dependencies {
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:21.0.0')
+    implementation('com.google.firebase:firebase-analytics-ktx:21.1.0')
     implementation('com.google.firebase:firebase-crashlytics-ktx:18.2.11')
     implementation('com.google.firebase:firebase-perf-ktx:20.1.0')
 
