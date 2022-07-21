@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -188,8 +187,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     override fun onError() {
-        val message = "Error while trying to play ${currentVideo.uri}"
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        // val message = "Error while trying to play ${currentVideo.uri}"
+        // Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 
         if (loadingView.visibility == View.VISIBLE) {
             loadVideo(videoView, playlist.nextVideo())

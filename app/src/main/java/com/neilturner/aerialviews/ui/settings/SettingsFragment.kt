@@ -73,9 +73,9 @@ class SettingsFragment :
         intents += Intent(SETTINGS)
 
         intents.forEach { intent ->
-            // Log.i(TAG, intent.toString())
             if (intentAvailable(intent)) {
                 try {
+                    Log.i(TAG, "Trying... $intent")
                     startActivity(intent)
                     return
                 } catch (ex: Exception) {
@@ -90,6 +90,9 @@ class SettingsFragment :
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager
         val info = manager.queryIntentActivities(intent, 0)
+        if (info.isEmpty()) {
+            Log.i(TAG, "Intent not available... $intent")
+        }
         return info.isNotEmpty()
     }
 

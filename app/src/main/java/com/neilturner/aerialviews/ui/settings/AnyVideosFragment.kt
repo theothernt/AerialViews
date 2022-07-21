@@ -114,19 +114,10 @@ class AnyVideosFragment :
 
         val videos = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(requireContext())
-        var excluded = 0
         var filtered = 0
 
         for (video in localVideos) {
             val uri = Uri.parse(video)
-            val filename = uri.lastPathSegment!!
-
-            if (!FileHelper.isVideoFilename(filename)) {
-                // Log.i(TAG, "Probably not a video: $filename")
-                excluded++
-                continue
-            }
-
             if (LocalVideoPrefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder_name)) {
                 // Log.i(TAG, "Filtering out video: $filename")
                 filtered++
@@ -137,14 +128,12 @@ class AnyVideosFragment :
         }
 
         var message = "Videos found by Media Scanner: ${localVideos.size}\n"
-        message += "Videos with supported file extensions: ${localVideos.size - excluded}\n"
         message += if (LocalVideoPrefs.filter_enabled) {
             "Videos removed by filter: $filtered\n"
         } else {
             "Videos removed by filter: (disabled)\n"
         }
-
-        message += "Videos selected for playback: ${localVideos.size - (filtered + excluded)}"
+        message += "Videos selected for playback: ${localVideos.size - filtered}"
         showDialog("Results", message)
     }
 
