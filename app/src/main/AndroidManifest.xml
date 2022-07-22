@@ -54,6 +54,7 @@
         </activity>
 
         <activity
+            android:exported="true"
             android:name=".ui.screensaver.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
