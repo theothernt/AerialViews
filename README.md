@@ -5,7 +5,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-July 2022 - Please read if you're a [Nvidia Shield](), [Amazon Fire TV]() or [Chromecast with Google TV]()
+July 2022 - Please read if you have a [Nvidia Shield](), [Amazon Fire TV]() or [Chromecast with Google TV]()
 
 ## Features include...
 
@@ -28,15 +28,15 @@ Please [visit this web page to download the tvOS 15 videos](https://aerial-video
 
 ## HDR videos don't seem to play, I only see black screen...
 
-Currently, Apple's videos only support Dolby Vision HDR. Even if your TV supports HDR, it might not support Dolby Vision.
+Apple's videos only support Dolby Vision HDR. Even if your TV supports HDR, it might not support Dolby Vision.
 
 Here are some things to try...
 
-* Find the make and model of your TV, search online for a product page for that device and it should list the supported HDR modes (there are several!)
+* Find the make and model of your TV, search online for a product page for that device and it should list the supported HDR modes (there are a few!)
 
 * If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
 
-* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, Amazon Prime Video - typically a Dolby Vision logo appears on the TV when this mode is activated
+* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, or Amazon Prime Video
 
 ## Nvidia Shield users
 
@@ -68,6 +68,7 @@ The only way to achieve this is...
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
   <br /><br />`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+
 
 ## How remote and local playback of Apple videos works
 
