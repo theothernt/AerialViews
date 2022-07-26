@@ -3,15 +3,17 @@
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/:license-gpl%20v3-brightgreen.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
 
-A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Google TV. Inspired by the Apple TV's video screensaver.
+A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
+
+July 2022 - Please read if you're a [Nvidia Shield](), [Amazon Fire TV]() or [Chromecast with Google TV]()
 
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Option to avoid burn-in on OLED TVs
-* Option to play videos locally or via network share
+* Option to play videos locally or from a network share
 * Skip to next or previous video (press left or right on your TV remote's d-pad)
-* Supports *only* the latest Apple video feed (it contains nearly all previous videos too, don't worry!)
+* Supports the latest Apple video feed with over 100 videos
 
 ## How to get Aerial Views...
 
@@ -36,17 +38,36 @@ Here are some things to try...
 
 * Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, Amazon Prime Video - typically a Dolby Vision logo appears on the TV when this mode is activated
 
-## Special note for Fire TV owners
+## Nvidia Shield users
 
-The app can be installed and configured, like with any other Android TV device, but the ability to set Aerial Views as the default screensaver has been disabled in the FireOS menus.
+If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled: 
 
-To get around this, you'll have to install a command-line developer tool, run a command - and that's it. I would recommend having a look at [this guide over at Nerds Chalk](https://nerdschalk.com/change-fire-tv-screensaver-apple-tv/) for the exact steps.
+`Settings > Device Preferences > Storage > Scan for
+media automatically`
 
-Just note that the commands are little different due to a name change in the code, try this instead:
 
-`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+## Chromecast with Google TV users
 
-`adb shell settings put secure screensaver_default_component com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+Unfortunately, as of July 2022, an update to Google TV removed user-interface option to set Aerial Views (or any other 3rd party screensaver) as default, or change the screensaver timeout.
+
+The only way to achieve this is...
+1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
+2. Enable developer mode on your Android TV device
+3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
+  <br /><br />`adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+
+
+## Amazon Fire TV users
+
+Install the app from either the Amazon Appstore or sideload the APK.
+
+On a Fire TV device there is no user-interface option to set Aerial Views (or any other 3rd party screensaver) as default.
+
+The only way to achieve this is...
+1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
+2. Enable developer mode on your Android TV device
+3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
+  <br /><br />`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
 
 ## How remote and local playback of Apple videos works
 
@@ -56,25 +77,4 @@ Just note that the commands are little different due to a name change in the cod
 
 * **Local** videos can be placed in any folder
 
-* When using **local and remote** playback, local videos are used if found, but for missing videos, the remote version is used
-
-## Device support and testing
-
-* The plan is the keep support and great performance for older Android TVs
-
-* Newer features, which require more powerful devices (eg. Nvidia Shield or Google TV) can be disabled or enabled
-
-* The app has been tested with...
-  * Sony Bravia (2015, Android v6)
-  * Nvidia Shield (2015, Android v7)
-  * Fire TV Stick 4K (2018, Android v7)
-  * Nvidia Shield (2019, Android v9)
-  * Chromecast/Google TV (2020, Android v10)
-
-## Known issues
-
-* Sometimes after copying videos to your Android TV device they fail to play or appear during the screensaver. A quick fix is to restart your Android TV device
-
-* If set to local playback only and there are no videos, there is no error message or notification - only a black screen with the time
-
-* Network connection issues are not handled well, the videos will simply pause
+* When using **local and remote** playback, videos are used if found, but for missing videos, the remote version is used
