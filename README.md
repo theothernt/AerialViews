@@ -5,7 +5,7 @@
 
 ### A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-Please read if you have a [Nvidia Shield](nvidia-shield-users), [Chromecast with Google TV](#chromecast-with-google-tv-users) or [Amazon Fire TV](#amazon-fire-tv-users)
+Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#chromecast-with-google-tv-users) or [Amazon Fire TV](#amazon-fire-tv-users)
 
 ## Features include...
 
