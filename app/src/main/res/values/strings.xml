@@ -48,6 +48,9 @@
     <string name="network_videos_enabled_title">Use Network videos</string>
     <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
 
+    <string name="local_videos_notice_title">Nvidia Shield users, make sure the following option is enabled…</string>
+    <string name="local_videos_notice_summary">Settings > Device Preferences > Storage > Scan for media automatically</string>
+
     <string name="local_videos_filter_enabled_title">Use folder filter</string>
     <string name="local_videos_filter_enabled_summary">Only play videos from a specific folder or folders on device, USB, etc</string>
 

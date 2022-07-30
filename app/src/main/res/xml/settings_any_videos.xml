@@ -31,8 +31,8 @@
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
                     app:key="local_videos_notice"
-                    app:title="Nvidia Shield users, make sure the following option is enabled..."
-                    app:summary="Settings > Device Preferences > Storage > Scan for media automatically"/>
+                    app:title="@string/local_videos_notice_title"
+                    app:summary="@string/local_videos_notice_summary"/>
 
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
