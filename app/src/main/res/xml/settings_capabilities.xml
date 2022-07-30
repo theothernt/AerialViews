@@ -4,6 +4,11 @@
 
         <PreferenceCategory app:title="@string/category_capabilities">
                 <Preference
+                    app:key="capabilities_device"
+                    app:title="@string/capabilities_device_title"
+                    app:summary=""/>
+
+                <Preference
                     app:key="capabilities_display"
                     app:title="@string/capabilities_display_title"
                     app:summary=""/>

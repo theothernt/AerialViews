@@ -137,12 +137,10 @@
     <string name="performance_capabilities_title">Capabilities</string>
     <string name="performance_capabilities_summary">Detected TV and codec features</string>
 
+    <string name="capabilities_device_title">Device</string>
     <string name="capabilities_display_title">TV/Display</string>
-
     <string name="capabilities_codecs_title">Codec Summary</string>
-
     <string name="capabilities_decoders_title">Video Decoders</string>
-
     <string name="capabilities_resolution_title">Resolution</string>
 
     <string name="playback_speed_title">Playback Speed</string>
