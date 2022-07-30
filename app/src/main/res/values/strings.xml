@@ -32,7 +32,6 @@
     <string name="apple_videos_quality_summary">Select a video quality</string>
 
     <string name="apple_videos_data_usage_title">Data usage</string>
-
     <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
     <!-- Any Video Options -->
