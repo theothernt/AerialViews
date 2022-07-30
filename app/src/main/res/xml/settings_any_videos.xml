@@ -26,6 +26,14 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_local_storage_settings">
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:key="local_videos_notice"
+                    app:title="Nvidia Shield users, make sure the following option is enabled..."
+                    app:summary="Settings > Device Preferences > Storage > Scan for media automatically"/>
+
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
