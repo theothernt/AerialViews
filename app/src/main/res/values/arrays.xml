@@ -2,11 +2,11 @@
 <resources>
     <!-- Apple Video Options -->
     <string-array name="apple_videos_quality_entries" translatable="false">
-        <item>1080p H.264/AVC</item>
-        <item>1080p SDR/HEVC</item>
-        <item>1080p HDR/HEVC</item>
-        <item>4K SDR/HEVC</item>
-        <item>4K HDR/HEVC</item>
+        <item>1080p H.264</item>
+        <item>1080p HEVC</item>
+        <item>1080p HEVC Dolby Vision</item>
+        <item>4K HEVC</item>
+        <item>4K HEVC Dolby Vision</item>
     </string-array>
     <string-array name="apple_videos_quality_values" translatable="false">
         <item>VIDEO_1080_H264</item>
