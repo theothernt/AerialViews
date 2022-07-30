@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.os.Build
-import java.util.*
+import java.util.Locale
 
 object DeviceHelper {
 
@@ -12,7 +12,7 @@ object DeviceHelper {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
         return if (model.lowercase(Locale.getDefault())
-                .startsWith(manufacturer.lowercase(Locale.getDefault()))
+            .startsWith(manufacturer.lowercase(Locale.getDefault()))
         ) {
             capitalize(model)
         } else {
