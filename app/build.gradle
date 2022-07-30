@@ -109,7 +109,7 @@ dependencies {
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation('androidx.activity:activity-ktx:1.5.0')
+    implementation('androidx.activity:activity-ktx:1.5.1')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
 
     // Firebase
@@ -135,8 +135,8 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.9.1')
 
     // Unit testing
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.2")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.2")
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.0')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
 }
 
 tasks.withType(Test) {
