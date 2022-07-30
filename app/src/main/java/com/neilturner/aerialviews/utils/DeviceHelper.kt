@@ -8,7 +8,11 @@ object DeviceHelper {
     // Based on
     // https://stackoverflow.com/a/27836910/247257
 
-    fun getDeviceName(): String {
+    fun androidVersion(): String {
+        return "v${Build.VERSION.RELEASE}"
+    }
+
+    fun deviceName(): String {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
         return if (model.lowercase(Locale.getDefault())
@@ -32,9 +36,9 @@ object DeviceHelper {
         }
     }
 
-    fun isFireTV(): Boolean = getDeviceName().contains("AFT", true)
+    fun isFireTV(): Boolean = deviceName().contains("AFT", true)
 
-    fun isNvidaShield(): Boolean = getDeviceName().contains("NVIDIA", true)
+    fun isNvidaShield(): Boolean = deviceName().contains("NVIDIA", true)
 
-    fun isChromecastWithGoogleTV(): Boolean = getDeviceName().contains("Google Chromecast", true)
+    fun isChromecastWithGoogleTV(): Boolean = deviceName().contains("Google Chromecast", true)
 }

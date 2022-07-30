@@ -37,7 +37,8 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     private fun buildDeviceSummary(): String {
         var summary = ""
 
-        summary += "Model: ${DeviceHelper.getDeviceName()}\n"
+        summary += "Model: ${DeviceHelper.deviceName()}\n"
+        summary += "Android: ${DeviceHelper.androidVersion()}"
 
         return summary
     }
