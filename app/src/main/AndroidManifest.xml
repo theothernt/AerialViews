@@ -37,7 +37,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat"
         android:usesCleartextTraffic="true"
-        tools:ignore="MediaCapabilities"
+        tools:ignore="DataExtractionRules,MediaCapabilities"
         tools:targetApi="m">
 
         <activity
