@@ -15,7 +15,6 @@ import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.ParametersBuilder
 import com.google.android.exoplayer2.video.VideoSize
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.BufferingStrategy
@@ -81,13 +80,11 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         super.onDetachedFromWindow()
     }
 
-    @Suppress("NAME_SHADOWING")
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var widthMeasureSpec = widthMeasureSpec
+    override fun onMeasure(_widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var widthMeasureSpec = _widthMeasureSpec
         if (aspectRatio > 0) {
-            val newWidth: Int
-            val newHeight: Int = MeasureSpec.getSize(heightMeasureSpec)
-            newWidth = (newHeight * aspectRatio).toInt()
+            val newHeight = MeasureSpec.getSize(heightMeasureSpec)
+            val newWidth = (newHeight * aspectRatio).toInt()
             widthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -143,7 +140,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     /* EventListener */
-    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+    override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
             Player.STATE_IDLE -> Log.i(TAG, "Player: Idle...") // 1
             Player.STATE_BUFFERING -> Log.i(TAG, "Player: Buffering...") // 2
@@ -154,7 +151,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             prepared = true
             listener?.onPrepared()
         }
-        if (playWhenReady && playbackState == Player.STATE_READY) {
+        if (player.playWhenReady && playbackState == Player.STATE_READY) {
             setupAlmostFinishedRunnable()
         }
     }
@@ -220,7 +217,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private fun buildPlayer(context: Context): ExoPlayer {
         Log.i(TAG, "Buffering strategy: $bufferingStrategy")
         val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
-        val parametersBuilder = ParametersBuilder(context)
+        val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
         if (enableTunneling) {
             parametersBuilder
