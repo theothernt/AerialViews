@@ -56,6 +56,10 @@ The only way to achieve this is...
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
   <br /><br />`adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
 
+To restore the default Ambient screensaver, use the following ADB command...
+    
+`adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop`
+
 
 ## Amazon Fire TV users
 
