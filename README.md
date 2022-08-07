@@ -10,7 +10,7 @@ Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast wit
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
-* Option to avoid burn-in on OLED TVs
+* Option to avoid burn-in on QD/OLED TVs
 * Option to play videos locally or from a network share
 * Skip to next or previous video (press left or right on your TV remote's d-pad)
 * Supports the latest Apple video feed with over 100 videos
@@ -54,11 +54,15 @@ The only way to achieve this is...
 1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  <br /><br />`adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+  ```
+  adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+  ```
 
 To restore the default Ambient screensaver, use the following ADB command...
-    
-`adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop`
+
+``` 
+adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
+```
 
 
 ## Amazon Fire TV users
@@ -71,7 +75,9 @@ The only way to achieve this is...
 1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  <br /><br />`adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity`
+  ```
+  adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+  ```
 
 
 ## How remote and local playback of Apple videos works
