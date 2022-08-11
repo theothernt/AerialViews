@@ -76,7 +76,7 @@ The only way to achieve this is...
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
   ```
-  adb shell settings put secure screensaver_components com.amazon.ftv.screensaver/.app.services.ScreensaverService:com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+  adb shell settings put secure screensaver_components com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
   ```
 
 
