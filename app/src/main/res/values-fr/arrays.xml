@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Apple Video Options -->
+
+    <string-array name="interface_show_location_style_entries">
+        <item>Short titles</item>
+        <item>Points of interest (Localised)</item>
+    </string-array>
+
+    <!-- Performance & Debug Options -->
+    <string-array name="performance_buffering_strategy_entries">
+        <item>Default</item>
+        <item>Larger buffer</item>
+        <item>Smaller buffer</item>
+        <item>Faster start on higher latency connection</item>
+    </string-array>
+
+</resources>

@@ -64,9 +64,6 @@
 
     <string name="local_videos_filter_test">Teste Filtereinstellungen</string>
 
-<!--    <string name="any_videos_use_custom_manifests_title">Nutze Manifeste von Drittanbietern</string>-->
-<!--    <string name="any_videos_use_custom_manifests_summary">Zeigt Ortsangaben aus selbst hinzugefügten Manifesten</string>-->
-
     <string name="any_videos_ignore_non_manifest_videos_title">Ignoriere nicht von Apple stammende Videos aus lokalen Speichern oder Netzwerken</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Überspringe Videos die nicht in Video-Manifesten von Apple vorkommen</string>
 

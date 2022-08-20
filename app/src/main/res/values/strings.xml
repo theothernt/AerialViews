@@ -26,7 +26,6 @@
     <string name="apple_videos_title">Apple TV Videos</string>
     <string name="apple_videos_summary">Stream Apple videos directly</string>
     <string name="apple_videos_enabled">Use Apple videos</string>
-    <string name="apple_videos_data_usage_title">Data usage</string>
 
     <string name="apple_videos_quality_title">Quality</string>
     <string name="apple_videos_quality_summary">Select a video quality</string>
@@ -64,9 +63,6 @@
     <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
 
     <string name="local_videos_filter_test">Test filter settings</string>
-
-<!--    <string name="any_videos_use_custom_manifests_title">Use 3rd party manifests</string>-->
-<!--    <string name="any_videos_use_custom_manifests_summary">Shows locations based on a manifest you supply</string>-->
 
     <string name="any_videos_ignore_non_manifest_videos_title">Ignore non-Apple videos on local storage or local network</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
