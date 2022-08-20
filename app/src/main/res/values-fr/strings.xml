@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- General -->
     <string name="app_name">Aerial Views</string>
@@ -43,7 +42,7 @@
     
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Utiliser des vidéos locales</string>
-    <string name="local_videos_enabled_summary">Utilisez toutes les vidéos disponibles à partir de la mémoire de l'appareil / USB</string>
+    <string name="local_videos_enabled_summary">Utilisez toutes les vidéos disponibles à partir de la mémoire de l\'appareil / USB</string>
     
     <string name="network_videos_enabled_title">Utiliser les vidéos sur le réseau</string>
     <string name="network_videos_enabled_summary">Utiliser toutes les vidéos disponibles sur un partage sur le réseau local (SMB / Samba)</string>
@@ -55,12 +54,12 @@
     <string name="local_videos_filter_enabled_summary">Jouer seulement les vidéos de certains dossiers (appareil / USB / réseau)</string>
 
     <string name="local_videos_filter_folder_title">Définir les noms des répertoires</string>
-    <string name="local_videos_filter_folder_summary">Exemple: «Aerial» ne joue que des vidéos du répertoire / téléchargements / Aerial / ab &amp; ignore d'autres dossiers</string>
+    <string name="local_videos_filter_folder_summary">Exemple: «Aerial» ne joue que des vidéos du répertoire / téléchargements / Aerial / ab &amp; ignore d\'autres dossiers</string>
 
     <string name="any_videos_filename_location_title">Utiliser les noms de fichiers comme emplacement</string>
     <string name="any_videos_filename_location_summary">Exemple: «ville-un_endroit.mp4» est affiché comme «ville - un endroit»</string>
 
-    <string name="any_videos_use_apple_manifests_title">Voir les lieux / points d'intérêt pour les vidéos Apple correspondantes</string>
+    <string name="any_videos_use_apple_manifests_title">Voir les lieux / points d\'intérêt pour les vidéos Apple correspondantes</string>
     <string name="any_videos_use_apple_manifests_summary">Utilisez le manifeste vidéo de différentes versions de TVOS</string>
 
     <string name="local_videos_filter_test">Tester les paramètres du filtre</string>
@@ -70,13 +69,13 @@
 
    
     <!-- Network Video Options -->
-    <string name="network_videos_hostname_title">Nom d'hôte</string>
+    <string name="network_videos_hostname_title">Nom d\'hôte</string>
     <string name="network_videos_hostname_summary">Adresse IP du serveur</string>
 
     <string name="network_videos_sharename_title">Nom du partage réseau</string>
     <string name="network_videos_sharename_summary">Exemple: /video/aérien/</string>
 
-    <string name="network_videos_username_title">Nom d'utilisateur</string>
+    <string name="network_videos_username_title">Nom d\'utilisateur</string>
     <string name="network_videos_username_summary">Facultatif</string>
 
     <string name="network_videos_password_title">Mot de passe</string>
@@ -97,10 +96,10 @@
     <string name="settings_debug_warning">Les options ci-dessous ne doivent être modifiées que si des problèmes se produisent!</string>
 
     <string name="interface_title">Configuration de la mise en page</string>
-    <string name="interface_summary">Personnalisation de l'apparence</string>
+    <string name="interface_summary">Personnalisation de l\'apparence</string>
     
-    <string name="interface_show_clock_title">Afficher l'horloge</string>
-    <string name="interface_show_clock_summary">Montre l'heure courante</string>
+    <string name="interface_show_clock_title">Afficher l\'horloge</string>
+    <string name="interface_show_clock_summary">Montre l\'heure courante</string>
 
     <string name="interface_show_location_title">Afficher les titres vidéo</string>
     <string name="interface_show_location_summary">Affiche un titre ou un emplacement de la vidéo en cours</string>
@@ -109,7 +108,7 @@
     <string name="interface_show_location_style_summary">Choisissez le style du titre vidéo</string>
 
     <string name="interface_alt_text_position_title">Alterner la position du texte</string>
-    <string name="interface_alt_text_position_summary">Modifiez la position de l'horloge et de l'emplacement après chaque vidéo pour éviter les brûlures d'écran (OLED)</string>
+    <string name="interface_alt_text_position_summary">Modifiez la position de l\'horloge et de l\'emplacement après chaque vidéo pour éviter les brûlures d\'écran (OLED)</string>
 
     <string name="interface_mute_videos_title">Silence</string>
     <string name="interface_mute_videos_summary">Lecture des vidéos sans le son</string>
@@ -132,7 +131,7 @@
     <string name="performance_buffering_strategy_title">Stratégie de préchargement</string>
     <string name="performance_buffering_strategy_summary">Changer la priorité de la mémoire tampon, peut aider les connexions instables</string>
     
-    <string name="performance_exceed_renderer_title">Dépasser la résolution maximale de l'écran</string>
+    <string name="performance_exceed_renderer_title">Dépasser la résolution maximale de l\'écran</string>
     <string name="performance_exceed_renderer_summary">"Une résolution plus élevée n'est pas recommandée sur la plupart des appareils!"</string>
     
     <string name="performance_capabilities_title">Capabilities</string>
@@ -148,6 +147,6 @@
     <string name="playback_speed_summary">Choisissez une vitesse de lecture</string>
 
     <!-- Actions -->
-    <string name="test_screensaver_settings">Tester l'économiseur d'écran</string>
+    <string name="test_screensaver_settings">Tester l\'économiseur d\'écran</string>
     <string name="open_system_screensaver_options">"Ouvrir les paramètres système "</string>
 </resources>
