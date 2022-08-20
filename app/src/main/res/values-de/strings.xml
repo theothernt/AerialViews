@@ -6,9 +6,9 @@
 
     <!-- Buttons -->
     <string name="button_ok">OK</string>
-    <string name="button_cancel"></string>
-    <string name="button_import"></string>
-    <string name="button_export"></string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_import">Import</string>
+    <string name="button_export">Export</string>
 
     <!-- Categories -->
     <string name="category_capabilities">TV-Funktionen</string>
@@ -31,15 +31,14 @@
     <string name="apple_videos_quality_summary">Videoqualität auswählen</string>
 
     <string name="apple_videos_data_usage_title">Datenverbrauch</string>
-
-    <string name="apple_videos_data_estimate_summary"></string>
+    <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
     <!-- Any Video Options -->
     <string name="any_videos_title">Alle Videos</string>
     <string name="any_videos_summary">Verwende alle verfügbaren Videos vom Gerätespeicher, USB oder lokalem Netzwerk</string>
 
-    <string name="any_videos_credentials_title"></string>
-    <string name="any_videos_credentials_summary"></string>
+    <string name="any_videos_credentials_title">Credentials</string>
+    <string name="any_videos_credentials_summary">Server details and credentials for SMB access</string>
 
     <!-- Local Video Options -->
     <string name="local_videos_enabled_title">Nutze lokale Videos</string>
@@ -47,6 +46,9 @@
 
     <string name="network_videos_enabled_title">Nutze Videos aus Netzwerkfreigabe</string>
     <string name="network_videos_enabled_summary">Verwende alle verfügbaren Videos aus einer lokalen Netzwerkfreigabe (SMB/Samba)</string>
+
+    <string name="local_videos_notice_title">Nvidia Shield users, make sure the following option is enabled…</string>
+    <string name="local_videos_notice_summary">Settings > Device Preferences > Storage > Scan for media automatically</string>
 
     <string name="local_videos_filter_enabled_title">Nutze Verzeichnisfilter</string>
     <string name="local_videos_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Gerätespeicher / USB / Netzwerk)</string>
@@ -137,12 +139,10 @@
     <string name="performance_capabilities_title">Capabilities</string>
     <string name="performance_capabilities_summary">Detected TV and codec features</string>
 
+    <string name="capabilities_device_title">Device</string>
     <string name="capabilities_display_title">TV / Display</string>
-
     <string name="capabilities_codecs_title">Unterstütze Codecs</string>
-
     <string name="capabilities_decoders_title">Verfügbare Decoder</string>
-
     <string name="capabilities_resolution_title">Bildschirmauflösung</string>
 
     <string name="playback_speed_title">Wiedergabegeschwindigkeit</string>

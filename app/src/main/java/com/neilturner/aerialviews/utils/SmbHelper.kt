@@ -42,8 +42,10 @@ object SmbHelper {
         val userInfo = uri.userInfo ?: return Pair(userName, password)
 
         val parts = userInfo.split(":")
-        userName = parts.elementAt(0)
-        password = parts.elementAt(1)
+        if (parts.isNotEmpty()) {
+            userName = parts.elementAtOrElse(0) {""}
+            password = parts.elementAtOrElse(1) {""}
+        }
         return Pair(userName, password)
     }
 
@@ -65,6 +67,11 @@ object SmbHelper {
         if (userName.isEmpty() && password.isEmpty()) {
             Log.i(TAG, "Using anonymous login auth")
             return AuthenticationContext.anonymous()
+        }
+
+        if (userName.equals("guest", true)) {
+            Log.i(TAG, "Using guest login auth")
+            return AuthenticationContext.guest()
         }
 
         return AuthenticationContext(userName, password.toCharArray(), domainName)

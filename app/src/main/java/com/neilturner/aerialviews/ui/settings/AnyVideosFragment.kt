@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -21,6 +22,7 @@ import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +49,7 @@ class AnyVideosFragment :
         }
 
         limitTextInput()
+        showNoticeIfNeeded()
     }
 
     override fun onDestroy() {
@@ -153,6 +156,14 @@ class AnyVideosFragment :
             setPositiveButton(R.string.button_ok, null)
             create().show()
         }
+    }
+
+    private fun showNoticeIfNeeded() {
+        if (!DeviceHelper.isNvidaShield()) {
+            return
+        }
+        val notice = findPreference<ListPreference>("local_videos_notice") as Preference
+        notice.isVisible = true
     }
 
     companion object {

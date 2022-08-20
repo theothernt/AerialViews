@@ -19,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(private val context: Context) : OnPlayerEventListener {
+class VideoController(context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist

@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.services.CodecType
 import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
+import com.neilturner.aerialviews.utils.DeviceHelper
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -20,15 +21,26 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateCapabilities() {
+        val device = findPreference<ListPreference>("capabilities_device") as Preference
         val display = findPreference<ListPreference>("capabilities_display") as Preference
         val resolution = findPreference<ListPreference>("capabilities_resolution") as Preference
         val codecs = findPreference<ListPreference>("capabilities_codecs") as Preference
         val decoders = findPreference<ListPreference>("capabilities_decoders") as Preference
 
+        device.summary = buildDeviceSummary()
         display.summary = buildDisplaySummary()
         codecs.summary = buildCodecSummary()
         decoders.summary = buildDecoderSummary()
         resolution.summary = buildResolutionSummary()
+    }
+
+    private fun buildDeviceSummary(): String {
+        var summary = ""
+
+        summary += "Model: ${DeviceHelper.deviceName()}\n"
+        summary += "Android: ${DeviceHelper.androidVersion()}"
+
+        return summary
     }
 
     private fun buildDisplaySummary(): String {

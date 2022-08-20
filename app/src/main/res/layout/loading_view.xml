@@ -18,7 +18,7 @@
         android:layout_gravity="start"
         android:layout_marginStart="@dimen/screen_border_padding"
         android:layout_marginEnd="@dimen/screen_border_padding"
-        android:layout_marginBottom="@dimen/screen_border_padding"
+        android:layout_marginBottom="@dimen/screen_border_padding_bottom"
         android:gravity="bottom"
         android:id="@+id/loading_text"
         style="@style/LocationText"

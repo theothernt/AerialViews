@@ -124,10 +124,9 @@ class SmbDataSource : BaseDataSource(true) {
         )
     }
 
-    @Suppress("NAME_SHADOWING")
     @Throws(IOException::class)
-    private fun readInternal(buffer: ByteArray, offset: Int, readLength: Int): Int {
-        var readLength = readLength
+    private fun readInternal(buffer: ByteArray, offset: Int, _readLength: Int): Int {
+        var readLength = _readLength
 
         if (readLength == 0) {
             return 0

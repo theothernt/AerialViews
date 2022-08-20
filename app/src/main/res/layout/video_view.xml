@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_border_padding"
             android:layout_marginEnd="@dimen/screen_border_padding"
-            android:layout_marginBottom="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
             app:flow_verticalGap="@dimen/text_block_padding"
             android:orientation="vertical"
             app:constraint_referenced_ids="clock,location"
