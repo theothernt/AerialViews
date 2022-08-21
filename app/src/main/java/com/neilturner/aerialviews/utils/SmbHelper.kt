@@ -43,8 +43,8 @@ object SmbHelper {
 
         val parts = userInfo.split(":")
         if (parts.isNotEmpty()) {
-            userName = parts.elementAtOrElse(0) {""}
-            password = parts.elementAtOrElse(1) {""}
+            userName = parts.elementAtOrElse(0) { "" }
+            password = parts.elementAtOrElse(1) { "" }
         }
         return Pair(userName, password)
     }
