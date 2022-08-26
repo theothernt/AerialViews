@@ -83,7 +83,7 @@ class TestActivity : Activity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus) {
+        if (hasFocus && this::videoController.isInitialized) {
             WindowHelper.hideSystemUI(window, videoController.view)
         }
     }
