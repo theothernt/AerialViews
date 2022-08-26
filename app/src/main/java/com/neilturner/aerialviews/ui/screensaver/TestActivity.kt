@@ -31,12 +31,21 @@ class TestActivity : Activity() {
             // Log.i(TAG, "${event.keyCode}")
 
             when (event.keyCode) {
-                // Capture all d-pad presses for future use
-                KeyEvent.KEYCODE_DPAD_CENTER,
                 KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
                 KeyEvent.KEYCODE_DPAD_UP_LEFT,
                 KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
                 KeyEvent.KEYCODE_DPAD_UP_RIGHT -> return true
+
+                KeyEvent.KEYCODE_DPAD_CENTER -> {
+                    // Only disable OK button if left/right/up/down keys are in use
+                    // to avoid accidental presses
+                    if (GeneralPrefs.enablePlaybackSpeedChange ||
+                        !GeneralPrefs.enableSkipVideos) {
+                        return true
+                    }
+                    finish()
+                    return true
+                }
 
                 KeyEvent.KEYCODE_DPAD_UP -> {
                     if (!GeneralPrefs.enablePlaybackSpeedChange) {
