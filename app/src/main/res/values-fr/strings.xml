@@ -1,7 +1,7 @@
 <resources>
     <!-- General -->
     <string name="app_name">Aerial Views</string>
-    <string name="loading_title">Chargement...</string>
+    <string name="loading_title">Chargement…</string>
     <string name="loading_error">No videos found, please check your settings.</string>
 
     <!-- Buttons -->
