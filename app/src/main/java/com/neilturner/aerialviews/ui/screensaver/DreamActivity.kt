@@ -40,7 +40,8 @@ class DreamActivity : DreamService() {
                     // Only disable OK button if left/right/up/down keys are in use
                     // to avoid accidental presses
                     if (GeneralPrefs.enablePlaybackSpeedChange ||
-                        !GeneralPrefs.enableSkipVideos) {
+                        !GeneralPrefs.enableSkipVideos
+                    ) {
                         return true
                     }
                     wakeUp()
