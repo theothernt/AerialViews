@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- General -->
+    <string name="app_name">Aerial Views</string>
+    <string name="loading_title">Loading…</string>
+    <string name="loading_error">No videos found, please check your settings.</string>
+    <!-- Buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_import">Import</string>
+    <string name="button_export">Export</string>
+    <!-- Categories -->
+    <string name="category_capabilities">Capabilities</string>
+    <string name="category_settings">Settings</string>
+    <string name="category_video_sources">Video Sources</string>
+    <string name="category_video_source">Video Source</string>
+    <string name="category_actions">Actions</string>
+    <string name="category_playlist">Playlist</string>
+    <string name="category_network_settings">Network Settings</string>
+    <string name="category_local_storage_settings">Local Storage Settings</string>
+    <string name="category_performance_debug">Performance &amp; Debug</string>
+    <!-- Apple Video Options -->
+    <string name="apple_videos_title">Apple TV Videos</string>
+    <string name="apple_videos_summary">Stream Apple videos directly</string>
+    <string name="apple_videos_enabled">Use Apple videos</string>
+    <string name="apple_videos_quality_title">Quality</string>
+    <string name="apple_videos_quality_summary">Select a video quality</string>
+    <string name="apple_videos_data_usage_title">Data usage</string>
+    <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
+    <!-- Any Video Options -->
+    <string name="any_videos_title">Any Videos</string>
+    <string name="any_videos_summary">Use any videos on device, USB or local network share</string>
+    <string name="any_videos_credentials_title">Credentials</string>
+    <string name="any_videos_credentials_summary">Server details and credentials for SMB access</string>
+    <!-- Local Video Options -->
+    <string name="local_videos_enabled_title">Use Local videos</string>
+    <string name="local_videos_enabled_summary">Use any videos on device, or USB</string>
+    <string name="network_videos_enabled_title">Use Network videos</string>
+    <string name="network_videos_enabled_summary">Use any videos from a local network (SMB/Samba) share</string>
+    <string name="local_videos_notice_title">Nvidia Shield users, make sure the following option is enabled…</string>
+    <string name="local_videos_notice_summary">Settings &gt; Device Preferences &gt; Storage &gt; Scan for media automatically</string>
+    <string name="local_videos_filter_enabled_title">Use folder filter</string>
+    <string name="local_videos_filter_enabled_summary">Only play videos from a specific folder or folders on device, USB, etc</string>
+    <string name="local_videos_filter_folder_title">Specify a folder name</string>
+    <string name="local_videos_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
+    <string name="any_videos_filename_location_title">Use filename as location</string>
+    <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
+    <string name="any_videos_use_apple_manifests_title">Show locations/POI for matched Apple videos</string>
+    <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
+    <string name="local_videos_filter_test">Test filter settings</string>
+    <string name="any_videos_ignore_non_manifest_videos_title">Ignore non-Apple videos on local storage or local network</string>
+    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
+    <!-- Network Video Options -->
+    <string name="network_videos_hostname_title">Hostname</string>
+    <string name="network_videos_hostname_summary">IP address of the server</string>
+    <string name="network_videos_sharename_title">Share Name</string>
+    <string name="network_videos_sharename_summary">e.g. /video/aerial</string>
+    <string name="network_videos_username_title">Username</string>
+    <string name="network_videos_username_summary">Optional</string>
+    <string name="network_videos_password_title">Password</string>
+    <string name="network_videos_password_summary">Optional</string>
+    <string name="network_videos_enable_encryption_title">Enable encryption</string>
+    <string name="network_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
+    <string name="network_videos_smb_dialects_title">Select SMB dialects</string>
+    <string name="network_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
+    <string name="network_videos_import_export_settings_title">Import/Export settings</string>
+    <string name="network_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
+    <string name="network_videos_test_connection">Test connection settings</string>
+    <!-- Settings -->
+    <string name="settings_debug_warning">Don\'t change the options below unless troubleshooting!</string>
+    <string name="interface_title">Interface</string>
+    <string name="interface_summary">Customise how things look</string>
+    <string name="interface_show_clock_title">Show clock</string>
+    <string name="interface_show_clock_summary">Shows the current time</string>
+    <string name="interface_show_location_title">Show video title</string>
+    <string name="interface_show_location_summary">Shows a title or location for videos</string>
+    <string name="interface_show_location_style_title">Apple videos</string>
+    <string name="interface_show_location_style_summary">Choose a video title style</string>
+    <string name="interface_alt_text_position_title">Alternate text position</string>
+    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+    <string name="interface_mute_videos_title">Mute videos</string>
+    <string name="interface_mute_videos_summary">Mute the sound of all videos</string>
+    <string name="interface_enable_skip_videos_title">Skip to next or previous video</string>
+    <string name="interface_enable_skip_videos_summary">Skip a video by pressing left or right on the d-pad of your remote</string>
+    <string name="interface_shuffle_videos_title">Shuffle videos</string>
+    <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
+    <string name="interface_remove_duplicates_title">Remove duplicate videos</string>
+    <string name="interface_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+    <string name="performance_title">Performance &amp; Debug</string>
+    <string name="performance_summary">For troubleshooting issues</string>
+    <string name="performance_enable_tunneling_title">Enable tunneling</string>
+    <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
+    <string name="performance_buffering_strategy_title">Buffering strategy</string>
+    <string name="performance_buffering_strategy_summary">Changes video buffering priorities, can help with inconsistent connections</string>
+    <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
+    <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
+    <string name="performance_capabilities_title">Capabilities</string>
+    <string name="performance_capabilities_summary">Detected TV and codec features</string>
+    <string name="capabilities_device_title">Device</string>
+    <string name="capabilities_display_title">TV/Display</string>
+    <string name="capabilities_codecs_title">Codec Summary</string>
+    <string name="capabilities_decoders_title">Video Decoders</string>
+    <string name="capabilities_resolution_title">Resolution</string>
+    <string name="playback_speed_title">Playback Speed</string>
+    <string name="playback_speed_summary">Choose a playback speed</string>
+    <!-- Actions -->
+    <string name="test_screensaver_settings">Test screensaver settings</string>
+    <string name="open_system_screensaver_options">Open system screensaver options</string>
+</resources>
