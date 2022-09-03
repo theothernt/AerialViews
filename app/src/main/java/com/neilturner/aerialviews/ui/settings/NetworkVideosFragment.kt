@@ -286,7 +286,7 @@ class NetworkVideosFragment :
             config = SmbHelper.buildSmbConfig()
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            val message = "Failed to create SMB config...\n\n${e.message.toString()}"
+            val message = "Failed to create SMB config...\n\n${e.message}"
             showDialog("Connection error", message)
             return@withContext
         }
@@ -298,7 +298,7 @@ class NetworkVideosFragment :
             connection = smbClient.connect(NetworkVideoPrefs.hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message.toString()}"
+            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message}"
             showDialog("Connection error", message)
             return@withContext
         }
