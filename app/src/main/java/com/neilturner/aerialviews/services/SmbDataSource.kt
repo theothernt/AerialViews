@@ -57,7 +57,7 @@ class SmbDataSource : BaseDataSource(true) {
         try {
             remoteFile = openNetworkFile()
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             return 0
         }
 

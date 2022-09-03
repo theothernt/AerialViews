@@ -62,7 +62,7 @@ class SettingsFragment :
             val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
             startActivity(intent)
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message!!)
+            Log.e(TAG, ex.message.toString())
         }
     }
 
@@ -79,7 +79,7 @@ class SettingsFragment :
                     startActivity(intent)
                     return
                 } catch (ex: Exception) {
-                    Log.e(TAG, ex.message!!)
+                    Log.e(TAG, ex.message.toString())
                 }
             }
         }

@@ -285,8 +285,8 @@ class NetworkVideosFragment :
         try {
             config = SmbHelper.buildSmbConfig()
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
-            val message = "Failed to create SMB config...\n\n${e.message!!}"
+            Log.e(TAG, e.message.toString())
+            val message = "Failed to create SMB config...\n\n${e.message.toString()}"
             showDialog("Connection error", message)
             return@withContext
         }
@@ -297,8 +297,8 @@ class NetworkVideosFragment :
         try {
             connection = smbClient.connect(NetworkVideoPrefs.hostName)
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
-            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message!!}"
+            Log.e(TAG, e.message.toString())
+            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message.toString()}"
             showDialog("Connection error", message)
             return@withContext
         }
@@ -312,7 +312,7 @@ class NetworkVideosFragment :
             val authContext = SmbHelper.buildAuthContext(NetworkVideoPrefs.userName, NetworkVideoPrefs.password, NetworkVideoPrefs.domainName)
             session = connection?.authenticate(authContext)
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
             showDialog("Connection error", message)
             return@withContext
@@ -331,7 +331,7 @@ class NetworkVideosFragment :
             val shareAccess = hashSetOf<SMB2ShareAccess>()
             shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
             showDialog("Connection error", message)
             return@withContext
@@ -360,7 +360,7 @@ class NetworkVideosFragment :
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             val message = "Unable to list files from: $shareName. Please check server permissions for this share."
             showDialog("Connection error", message)
             return@withContext
@@ -382,7 +382,7 @@ class NetworkVideosFragment :
         try {
             smbClient.close()
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             return@withContext
         }
         Log.i(TAG, "Finished SMB connection test")

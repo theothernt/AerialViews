@@ -43,7 +43,7 @@ class VideoService(private val context: Context) {
             val newVideos = try {
                 it.fetchVideos()
             } catch (ex: Exception) {
-                Log.e(TAG, ex.message!!)
+                Log.e(TAG, ex.message.toString())
                 emptyList()
             }
             videos.addAll(newVideos)
@@ -57,7 +57,7 @@ class VideoService(private val context: Context) {
 
             numVideos = videos.size
             // Remove duplicates based on filename only
-            videos = videos.distinctBy { it.uri.lastPathSegment?.lowercase() } as MutableList<AerialVideo>
+            videos = videos.distinctBy { it.uri.lastPathSegment.toString().lowercase() } as MutableList<AerialVideo>
             Log.i(TAG, "Videos removed based on filename: ${numVideos - videos.size}")
         }
 
@@ -108,7 +108,7 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message!!)
+            Log.e(TAG, ex.message.toString())
         }
 
         try {
@@ -117,7 +117,7 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message!!)
+            Log.e(TAG, ex.message.toString())
         }
 
         try {
@@ -126,7 +126,7 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message!!)
+            Log.e(TAG, ex.message.toString())
         }
 
         Log.i(TAG, "${videos.count()} videos listed in Apple manifests")
@@ -144,7 +144,7 @@ class VideoService(private val context: Context) {
             val uri = try {
                 video.uri(quality)
             } catch (ex: Exception) {
-                Log.e(TAG, ex.message!!)
+                Log.e(TAG, ex.message.toString())
                 null
             }
             if (uri != null)
@@ -166,9 +166,9 @@ class VideoService(private val context: Context) {
             }
 
             try {
-                val filename = video.uri.lastPathSegment!!.lowercase()
+                val filename = video.uri.lastPathSegment.toString().lowercase()
                 val videoFound = manifestVideos.find {
-                    val manifestFilename = it.uri.lastPathSegment!!.lowercase()
+                    val manifestFilename = it.uri.lastPathSegment.toString().lowercase()
                     manifestFilename.contains(filename)
                 }
 
@@ -185,7 +185,7 @@ class VideoService(private val context: Context) {
                     unmatched.add(video)
                 }
             } catch (e: Exception) {
-                Log.e(TAG, e.message!!)
+                Log.e(TAG, e.message.toString())
             }
         }
         return Pair(matched, unmatched)

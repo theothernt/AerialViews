@@ -34,7 +34,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
                 prefs.hostName, shareName, path
             )
         } catch (e: Exception) {
-            Log.e(TAG, e.message!!)
+            Log.e(TAG, e.message.toString())
             emptyList()
         }
 
