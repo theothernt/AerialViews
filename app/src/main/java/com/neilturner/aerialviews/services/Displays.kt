@@ -90,8 +90,11 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         isSecure = (flags and NativeDisplay.FLAG_SECURE) == NativeDisplay.FLAG_SECURE
         supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
 
-        isRound =
+        isRound = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             (flags and NativeDisplay.FLAG_ROUND) == NativeDisplay.FLAG_ROUND
+        } else {
+            false
+        }
 
         // Get render sizes
         renderOutput = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -105,26 +108,38 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         }
 
         // If available on device get display mode
-        val mode = source.mode
-        // Use ExoPlayer util to get display dimensions as it covers more edge cases
-        val displaySize = Util.getCurrentDisplayModeSize(context, source)
-        physicalOutput =
-            OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
-        supportedModes = source.supportedModes.map {
-            OutputDescription(
-                it.modeId,
-                it.physicalWidth,
-                it.physicalHeight,
-                it.refreshRate
-            )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val mode = source.mode
+            // Use ExoPlayer util to get display dimensions as it covers more edge cases
+            val displaySize = Util.getCurrentDisplayModeSize(context, source)
+            physicalOutput =
+                OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
+            supportedModes = source.supportedModes.map {
+                OutputDescription(
+                    it.modeId,
+                    it.physicalWidth,
+                    it.physicalHeight,
+                    it.refreshRate
+                )
+            }
+        } else {
+            physicalOutput = null
+            supportedModes = listOf()
         }
 
         // Check HDR Capabilities if available on device
-        val capabilities = source.hdrCapabilities
-        supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) source.isHdr else capabilities != null
-        minimumLuminance = capabilities?.desiredMinLuminance
-        maximumLuminance = capabilities?.desiredMaxLuminance
-        hdrFormats = capabilities?.supportedHdrTypes?.map { HDRTypeToHDRFormat(it) } ?: listOf()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val capabilities = source.hdrCapabilities
+            supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) source.isHdr else capabilities != null
+            minimumLuminance = capabilities?.desiredMinLuminance
+            maximumLuminance = capabilities?.desiredMaxLuminance
+            hdrFormats = capabilities?.supportedHdrTypes?.map { HDRTypeToHDRFormat(it) } ?: listOf()
+        } else {
+            supportsHDR = false
+            minimumLuminance = null
+            maximumLuminance = null
+            hdrFormats = listOf()
+        }
 
         // Check Wide Gamut Space Support
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
