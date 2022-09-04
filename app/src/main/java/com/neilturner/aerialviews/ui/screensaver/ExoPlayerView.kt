@@ -142,10 +142,10 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     /* EventListener */
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
-            Player.STATE_IDLE -> Log.i(TAG, "Player: Idle...") // 1
-            Player.STATE_BUFFERING -> Log.i(TAG, "Player: Buffering...") // 2
-            Player.STATE_READY -> Log.i(TAG, "Player: Playing...") // 3
-            Player.STATE_ENDED -> Log.i(TAG, "Player: Ended...") // 4
+            Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
+            Player.STATE_BUFFERING -> Log.i(TAG, "Buffering...") // 2
+            Player.STATE_READY -> Log.i(TAG, "Playing...") // 3
+            Player.STATE_ENDED -> Log.i(TAG, "Playback ended...") // 4
         }
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
