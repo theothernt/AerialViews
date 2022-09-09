@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
+import com.neilturner.aerialviews.utils.DeviceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +32,7 @@ class VideoController(context: Context) : OnPlayerEventListener {
     private var canSkip = false
     private val videoView: VideoViewBinding
     private val loadingView: View
-    private val loadingText: TextView
+    private var loadingText: TextView
     val view: View
 
     init {
@@ -50,6 +53,17 @@ class VideoController(context: Context) : OnPlayerEventListener {
                 loadVideo(videoView, playlist.nextVideo())
             else
                 showLoadingError()
+        }
+
+        if (DeviceHelper.isFireTV()) {
+            val newColor = Color.parseColor("#e9e9e9")
+            val newFont = Typeface.create("sans-serif-light", Typeface.NORMAL)
+
+            loadingText.setTextColor(newColor)
+            loadingText.typeface = newFont
+
+            binding.videoView0.location.setTextColor(newColor)
+            binding.videoView0.location.typeface = newFont
         }
     }
 
