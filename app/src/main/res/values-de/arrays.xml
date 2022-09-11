@@ -3,16 +3,16 @@
     <!-- Apple Video Options -->
 
     <string-array name="interface_show_location_style_entries">
-        <item>Short titles</item>
-        <item>Points of interest (Localised)</item>
+        <item>Kurze Titel</item>
+        <item>Sehenswürdigkeiten (Lokalisiert)</item>
     </string-array>
 
     <!-- Performance & Debug Options -->
     <string-array name="performance_buffering_strategy_entries">
-        <item>Default</item>
-        <item>Larger buffer</item>
-        <item>Smaller buffer</item>
-        <item>Faster start on higher latency connection</item>
+        <item>Standard</item>
+        <item>Größerer Puffer</item>
+        <item>Kleinerer Puffer</item>
+        <item>Schneller Starten bei Verbindung mit hoher Latenz</item>
     </string-array>
 
 </resources>
