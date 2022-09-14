@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.models.videos
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import com.neilturner.aerialviews.models.AppleVideoQuality
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class Apple2018Video {
 
@@ -27,7 +28,7 @@ class Apple2018Video {
     val pointsOfInterest: Map<Int, String> = emptyMap()
 
     val location: String
-        get() = accessibilityLabel!!
+        get() = accessibilityLabel.toStringOrEmpty()
 
     fun uri(quality: AppleVideoQuality): Uri? {
         return Uri.parse(
