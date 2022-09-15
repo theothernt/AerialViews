@@ -49,10 +49,13 @@ class VideoController(context: Context) : OnPlayerEventListener {
         val service = VideoService(context)
         coroutineScope.launch {
             playlist = service.fetchVideos()
-            if (playlist.size > 0)
+            Log.i(TAG, "Playlist items: ${playlist.size}")
+            if (playlist.size > 0) {
                 loadVideo(videoView, playlist.nextVideo())
-            else
-                showLoadingError()
+            } else {
+
+                showLoadingError(context)
+            }
         }
 
         if (DeviceHelper.isFireTV()) {
@@ -85,8 +88,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
         videoView.videoView.decreaseSpeed()
     }
 
-    private fun showLoadingError() {
-        loadingText.text = R.string.loading_error.toString()
+    private fun showLoadingError(context: Context) {
+        val res = context.resources!!
+        loadingText.text = res.getString(R.string.loading_error)
     }
 
     private fun fadeOutLoading() {
