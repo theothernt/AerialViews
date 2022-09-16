@@ -62,16 +62,15 @@ object FileHelper {
         return false
     }
 
-    @Suppress("NAME_SHADOWING")
-    fun shouldFilter(uri: Uri, folder: String): Boolean {
-        if (folder.isEmpty())
+    fun shouldFilter(uri: Uri, _folder: String): Boolean {
+        if (_folder.isEmpty() || _folder.isBlank())
             return false
 
-        var folder = if (folder.first() != '/') "/$folder" else folder
+        var folder = if (_folder.first() != '/') "/$_folder" else _folder
         folder = if (folder.last() != '/') "$folder/" else folder
 
-        // Log.i(TAG, "Looking for $folder in ${uri.path}")
-        return !uri.path!!.contains(folder, true)
+        Log.i(TAG, "Looking for $folder in ${uri.path}")
+        return !uri.path.toStringOrEmpty().contains(folder, true)
     }
 
     fun filenameToTitleCase(uri: Uri): String {
