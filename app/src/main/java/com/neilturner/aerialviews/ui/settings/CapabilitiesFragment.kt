@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.services.CodecType
@@ -20,11 +21,11 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateCapabilities() {
-        val device = findPreference<ListPreference>("capabilities_device")
-        val display = findPreference<ListPreference>("capabilities_display")
-        val resolution = findPreference<ListPreference>("capabilities_resolution")
-        val codecs = findPreference<ListPreference>("capabilities_codecs")
-        val decoders = findPreference<ListPreference>("capabilities_decoders")
+        val device = findPreference<Preference>("capabilities_device")
+        val display = findPreference<Preference>("capabilities_display")
+        val resolution = findPreference<Preference>("capabilities_resolution")
+        val codecs = findPreference<Preference>("capabilities_codecs")
+        val decoders = findPreference<Preference>("capabilities_decoders")
 
         device?.summary = buildDeviceSummary()
         display?.summary = buildDisplaySummary()
