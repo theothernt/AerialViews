@@ -28,11 +28,11 @@ class InterfaceFragment :
     }
 
     private fun updateSummaries() {
-        val locationStyle = findPreference<ListPreference>("show_location_style") as ListPreference
+        val locationStyle = findPreference<ListPreference>("show_location_style")
         val locationStyleTitle = context?.getString(R.string.interface_show_location_style_title)
-        val formattedLocationStyle = locationStyle.entry.toString()
+        val formattedLocationStyle = locationStyle?.entry.toString()
         // .replaceFirstChar { it.lowercase(Locale.getDefault()) }
 
-        locationStyle.title = "$locationStyleTitle - $formattedLocationStyle"
+        locationStyle?.title = "$locationStyleTitle - $formattedLocationStyle"
     }
 }

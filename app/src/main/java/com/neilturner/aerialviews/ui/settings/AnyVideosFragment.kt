@@ -104,7 +104,8 @@ class AnyVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")?.setOnBindEditTextListener { it.setSingleLine() }
+        val textPref = preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")
+        textPref?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private suspend fun testLocalVideosFilter() {
@@ -162,8 +163,8 @@ class AnyVideosFragment :
         if (!DeviceHelper.isNvidaShield()) {
             return
         }
-        val notice = findPreference<ListPreference>("local_videos_notice") as Preference
-        notice.isVisible = true
+        val notice = findPreference<ListPreference>("local_videos_notice")
+        notice?.isVisible = true
     }
 
     companion object {
