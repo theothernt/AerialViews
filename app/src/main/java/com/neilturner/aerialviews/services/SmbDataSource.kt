@@ -14,6 +14,7 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
 import com.neilturner.aerialviews.utils.SmbHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
@@ -96,7 +97,7 @@ class SmbDataSource : BaseDataSource(true) {
 
     private fun parseCredentials(dataSpec: DataSpec) {
         val uri = dataSpec.uri
-        hostName = uri.host!!
+        hostName = uri.host.toStringOrEmpty()
 
         val userInfo = SmbHelper.parseUserInfo(uri)
         userName = userInfo.first

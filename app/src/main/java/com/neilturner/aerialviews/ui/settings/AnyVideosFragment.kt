@@ -24,6 +24,7 @@ import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -123,7 +124,7 @@ class AnyVideosFragment :
 
         for (video in localVideos) {
             val uri = Uri.parse(video)
-            val filename = uri.lastPathSegment!!
+            val filename = uri.lastPathSegment.toStringOrEmpty()
 
             if (!FileHelper.isVideoFilename(filename)) {
                 // Log.i(TAG, "Probably not a video: $filename")

@@ -52,10 +52,10 @@ object FileHelper {
         if (filename.startsWith(".")) // Ignore hidden files
             return false
 
-        if (filename.endsWith(".mov") ||
-            filename.endsWith(".mp4") ||
-            filename.endsWith(".webm") ||
-            filename.endsWith(".mkv")
+        if (filename.endsWith(".mov", true) ||
+            filename.endsWith(".mp4", true) ||
+            filename.endsWith(".webm", true) ||
+            filename.endsWith(".mkv", true)
         )
             return true
 

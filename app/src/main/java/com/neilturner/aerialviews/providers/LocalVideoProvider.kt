@@ -6,6 +6,7 @@ import android.util.Log
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
@@ -17,7 +18,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
         for (video in localVideos) {
             val uri = Uri.parse(video)
-            val filename = uri.lastPathSegment!!
+            val filename = uri.lastPathSegment.toStringOrEmpty()
 
             if (!FileHelper.isVideoFilename(filename)) {
                 // Log.i(TAG, "Probably not a video: $filename")
