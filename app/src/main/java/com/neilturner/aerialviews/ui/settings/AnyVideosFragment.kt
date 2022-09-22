@@ -175,7 +175,7 @@ class AnyVideosFragment :
         if (!DeviceHelper.isNvidaShield()) {
             return
         }
-        val notice = findPreference<ListPreference>("local_videos_notice")
+        val notice = findPreference<Preference>("local_videos_notice")
         notice?.isVisible = true
     }
 
