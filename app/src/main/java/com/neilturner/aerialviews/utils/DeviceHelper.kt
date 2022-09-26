@@ -36,9 +36,14 @@ object DeviceHelper {
         }
     }
 
+    // Simple but it should work for the moment!
+    fun isEmulator(): Boolean = deviceName().contains("sdk_google_atv", true)
+
     fun isFireTV(): Boolean = deviceName().contains("AFT", true)
 
     fun isNvidaShield(): Boolean = deviceName().contains("NVIDIA", true)
 
-    fun isChromecastWithGoogleTV(): Boolean = deviceName().contains("Google Chromecast", true)
+    fun isGoogleTV(): Boolean = deviceName().contains("Google Chromecast", true)
+
+    fun hasHevcSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && !isEmulator())
 }
