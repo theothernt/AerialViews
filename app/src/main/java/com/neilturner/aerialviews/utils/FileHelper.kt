@@ -49,22 +49,26 @@ object FileHelper {
     }
 
     fun isVideoFilename(filename: String): Boolean {
-        if (filename.startsWith(".")) // Ignore hidden files
+        if (filename.startsWith(".")) {
+            // Ignore hidden files
             return false
+        }
 
         if (filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
             filename.endsWith(".webm", true) ||
             filename.endsWith(".mkv", true)
-        )
+        ) {
             return true
+        }
 
         return false
     }
 
     fun shouldFilter(uri: Uri, _folder: String): Boolean {
-        if (_folder.isEmpty() || _folder.isBlank())
+        if (_folder.isEmpty() || _folder.isBlank()) {
             return false
+        }
 
         var folder = if (_folder.first() != '/') "/$_folder" else _folder
         folder = if (folder.last() != '/') "$folder/" else folder
@@ -79,8 +83,9 @@ object FileHelper {
 
         // some.video.mov -> some.video
         var location = filename
-        if (index > 0)
+        if (index > 0) {
             location = filename.substring(0, index)
+        }
 
         // somevideo -> Somevideo
         // city-place_video -> City - Place Video

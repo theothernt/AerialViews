@@ -13,8 +13,9 @@ object SmbHelper {
     fun fixShareName(shareName: String): String {
         var shareName = shareName
 
-        if (shareName.isEmpty())
+        if (shareName.isEmpty()) {
             return ""
+        }
 
         if (shareName.contains("smb:/", true)) {
             shareName = shareName.replace("smb:/", "", true)

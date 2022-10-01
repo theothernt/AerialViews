@@ -4,5 +4,5 @@ enum class BufferingStrategy {
     DEFAULT,
     LARGER,
     SMALLER,
-    FAST_START,
+    FAST_START
 }

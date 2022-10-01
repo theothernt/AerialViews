@@ -120,8 +120,12 @@ class SmbDataSource : BaseDataSource(true) {
         shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
 
         return share.openFile(
-            path, EnumSet.of(AccessMask.GENERIC_READ),
-            null, shareAccess, SMB2CreateDisposition.FILE_OPEN, null
+            path,
+            EnumSet.of(AccessMask.GENERIC_READ),
+            null,
+            shareAccess,
+            SMB2CreateDisposition.FILE_OPEN,
+            null
         )
     }
 

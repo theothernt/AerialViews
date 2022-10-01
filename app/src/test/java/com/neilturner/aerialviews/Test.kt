@@ -7,7 +7,6 @@ internal class Test {
 
     @Test
     fun addition() {
-
         val answer = 2 + 2
         assertEquals(4, answer)
     }

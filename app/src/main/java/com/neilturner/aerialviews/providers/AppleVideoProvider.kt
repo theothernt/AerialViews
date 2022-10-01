@@ -19,7 +19,8 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         wrapper.assets?.forEach {
             videos.add(
                 AerialVideo(
-                    it.uri(quality)!!, it.location,
+                    it.uri(quality)!!,
+                    it.location,
                     it.pointsOfInterest.mapValues { poi ->
                         strings[poi.value] ?: it.location
                     }

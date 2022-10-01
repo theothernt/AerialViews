@@ -135,8 +135,9 @@ class VideoController(context: Context) : OnPlayerEventListener {
     }
 
     private fun fadeInNextVideo() {
-        if (loadingView.visibility == View.GONE)
+        if (loadingView.visibility == View.GONE) {
             return
+        }
 
         if (loadingText.visibility == View.VISIBLE) {
             fadeOutLoading()

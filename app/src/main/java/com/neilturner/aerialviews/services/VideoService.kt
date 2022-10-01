@@ -24,15 +24,18 @@ class VideoService(private val context: Context) {
     private val providers = mutableListOf<VideoProvider>()
 
     init {
-        if (LocalVideoPrefs.enabled)
+        if (LocalVideoPrefs.enabled) {
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))
+        }
 
-        if (NetworkVideoPrefs.enabled)
+        if (NetworkVideoPrefs.enabled) {
             providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
+        }
 
         // Remote videos added last so they'll be filtered out if duplicates are found
-        if (AppleVideoPrefs.enabled)
+        if (AppleVideoPrefs.enabled) {
             providers.add(AppleVideoProvider(context, AppleVideoPrefs))
+        }
     }
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
@@ -63,20 +66,24 @@ class VideoService(private val context: Context) {
 
         // Try and add locations by looking up video filenames in various manifests
         val manifestVideos = mutableListOf<AerialVideo>()
-        if (GeneralPrefs.useAppleManifests)
+        if (GeneralPrefs.useAppleManifests) {
             manifestVideos.addAll(appleManifestVideos())
+        }
 
-        if (GeneralPrefs.useCustomManifests)
+        if (GeneralPrefs.useCustomManifests) {
             manifestVideos.addAll(customManifestVideos())
+        }
 
         val result = findVideoLocationInManifest(videos, manifestVideos)
         videos = result.first.toMutableList()
 
-        if (result.first.isNotEmpty())
+        if (result.first.isNotEmpty()) {
             Log.i(TAG, "Found ${result.first.count()} manifest videos")
+        }
 
-        if (result.second.isNotEmpty())
+        if (result.second.isNotEmpty()) {
             Log.i(TAG, "Found ${result.second.count()} non-manifest videos")
+        }
 
         if (!GeneralPrefs.ignoreNonManifestVideos) {
             videos.addAll(result.second)
@@ -92,8 +99,9 @@ class VideoService(private val context: Context) {
             }
         }
 
-        if (videos.isNotEmpty() && GeneralPrefs.shuffleVideos)
+        if (videos.isNotEmpty() && GeneralPrefs.shuffleVideos) {
             videos.shuffle()
+        }
 
         Log.i(TAG, "Total vids: ${videos.size}")
         VideoPlaylist(videos)
@@ -147,8 +155,9 @@ class VideoService(private val context: Context) {
                 Log.e(TAG, ex.message.toString())
                 null
             }
-            if (uri != null)
+            if (uri != null) {
                 videos.add(AerialVideo(uri, video.location, video.pointsOfInterest))
+            }
         }
         return videos
     }
@@ -175,7 +184,8 @@ class VideoService(private val context: Context) {
                 if (videoFound != null) {
                     matched.add(
                         AerialVideo(
-                            video.uri, videoFound.location,
+                            video.uri,
+                            videoFound.location,
                             videoFound.poi.mapValues { poi ->
                                 strings[poi.value] ?: videoFound.location
                             }

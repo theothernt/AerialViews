@@ -97,8 +97,9 @@ class NetworkVideosFragment :
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.key.isNullOrEmpty())
+        if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
+        }
 
         if (preference.key.contains("network_videos_test_connection")) {
             lifecycleScope.launch {
@@ -270,7 +271,6 @@ class NetworkVideosFragment :
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
     private suspend fun testNetworkConnection() = withContext(Dispatchers.IO) {
-
         // Check hostname
         val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
         if (!validIpAddress) {

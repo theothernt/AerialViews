@@ -49,10 +49,12 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
         val display = getDisplay(activity)
         if (display.supportsHDR && display.hdrFormats.isNotEmpty()) {
-            if (display.hdrFormats.contains(HDRFormat.DOLBY_VISION))
+            if (display.hdrFormats.contains(HDRFormat.DOLBY_VISION)) {
                 supportsDolbyVision = "Yes"
-            if (display.hdrFormats.contains(HDRFormat.HDR10))
+            }
+            if (display.hdrFormats.contains(HDRFormat.HDR10)) {
                 supportsHDR10 = "Yes"
+            }
         }
 
         summary += "Supports HDR10: $supportsHDR10\n"
@@ -77,14 +79,17 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         var foundDolbyVision = "Not Found"
 
         getCodecs().forEach { codec ->
-            if (isCodecOfType(codec.mimeTypes, "avc"))
+            if (isCodecOfType(codec.mimeTypes, "avc")) {
                 foundAVC = "Found"
+            }
 
-            if (isCodecOfType(codec.mimeTypes, "hevc"))
+            if (isCodecOfType(codec.mimeTypes, "hevc")) {
                 foundHEVC = "Found"
+            }
 
-            if (isCodecOfType(codec.mimeTypes, "dolby"))
+            if (isCodecOfType(codec.mimeTypes, "dolby")) {
                 foundDolbyVision = "Found"
+            }
         }
 
         summary += "AVC: $foundAVC\n"
@@ -101,8 +106,9 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
             it.codingFunction == CodecType.DECODER && isVideoCodec(it.mimeTypes)
         }
 
-        if (allCodecs.isNotEmpty())
+        if (allCodecs.isNotEmpty()) {
             summary = allCodecs.joinToString(", ", "", "", -1, "") { it.name }
+        }
 
         Log.i("", "Decoders found: ${allCodecs.count()}")
         return summary

@@ -21,8 +21,9 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         if (prefs.shareName.isEmpty() ||
             prefs.domainName.isEmpty() ||
             prefs.hostName.isEmpty()
-        )
+        ) {
             return videos
+        }
 
         val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
         val shareName = shareNameAndPath.first
@@ -30,8 +31,12 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
 
         val networkVideos = try {
             findNetworkMedia(
-                prefs.userName, prefs.password, prefs.domainName,
-                prefs.hostName, shareName, path
+                prefs.userName,
+                prefs.password,
+                prefs.domainName,
+                prefs.hostName,
+                shareName,
+                path
             )
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
@@ -43,8 +48,9 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
 
-                if (prefs.password.isNotEmpty())
+                if (prefs.password.isNotEmpty()) {
                     usernamePassword += ":" + URLEncoder.encode(prefs.password, "utf-8")
+                }
 
                 usernamePassword += "@"
             }
@@ -84,8 +90,9 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isVideoFilename && !isFolder)
+            if (isVideoFilename && !isFolder) {
                 files.add(item.fileName)
+            }
         }
 
         smbClient.close()

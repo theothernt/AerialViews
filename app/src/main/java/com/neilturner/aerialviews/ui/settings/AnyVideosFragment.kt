@@ -73,8 +73,9 @@ class AnyVideosFragment :
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.key.isNullOrEmpty())
+        if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
+        }
 
         if (preference.key.contains("local_videos_test_filter")) {
             lifecycleScope.launch {
@@ -90,7 +91,6 @@ class AnyVideosFragment :
         if (key == "local_videos_enabled" &&
             requiresPermission()
         ) {
-
             val canReadVideos = storagePermissions.hasAccess(
                 action = Action.READ,
                 types = listOf(FileType.Video),

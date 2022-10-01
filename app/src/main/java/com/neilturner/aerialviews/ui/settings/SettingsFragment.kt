@@ -24,8 +24,9 @@ class SettingsFragment :
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.key.isNullOrEmpty())
+        if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
+        }
 
         if (preference.key.contains("open_system_screensaver_options")) {
             openSystemScreensaverSettings()
