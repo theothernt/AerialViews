@@ -1,6 +1,11 @@
+@file:Suppress("DEPRECATION")
+
 package com.neilturner.aerialviews.ui.settings
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -90,11 +95,18 @@ class SettingsFragment :
 
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager
-        val info = manager.queryIntentActivities(intent, 0)
-        if (info.isEmpty()) {
+        val intents = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            manager.queryIntentActivities(intent, PackageManager.ResolveInfoFlags.of(
+                PackageManager.MATCH_DEFAULT_ONLY.toLong()
+            ))
+        } else {
+            manager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+        }
+
+        if (intents.isEmpty()) {
             Log.i(TAG, "Intent not available... $intent")
         }
-        return info.isNotEmpty()
+        return intents.isNotEmpty()
     }
 
     companion object {

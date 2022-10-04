@@ -8,12 +8,12 @@ apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     namespace 'com.neilturner.aerialviews'
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode 9
         versionName "1.3.2"
 
