@@ -28,12 +28,15 @@ import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
+    private var canChangePlaybackRunnable = Runnable { canChangePlaybackSpeed = true }
+    private var onErrorRunnable = Runnable { listener?.onError()}
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
     private val bufferingStrategy: BufferingStrategy
+    private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
@@ -53,7 +56,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     fun release() {
         player.release()
-        removeCallbacks(almostFinishedRunnable) // was causing circular reference if not cleaned up
+        handler.removeCallbacksAndMessages(null) // Removes all callbacks, prevents leaks
         listener = null
     }
 
@@ -157,6 +160,21 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     fun increaseSpeed() {
+        if (!canChangePlaybackSpeed) {
+            return
+        }
+
+        if (!prepared || !player.isPlaying) {
+            return // Must be playing a video
+        }
+
+        if (duration - player.currentPosition <= 3) {
+            return // No speed changes at the end of video
+        }
+
+        canChangePlaybackSpeed = false
+        postDelayed(canChangePlaybackRunnable, 3000)
+
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
@@ -167,11 +185,27 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val newSpeed = speedValues[currentSpeedIdx + 1]
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
+
         setupAlmostFinishedRunnable()
         listener?.onPlaybackSpeedChanged()
     }
 
     fun decreaseSpeed() {
+        if (!canChangePlaybackSpeed) {
+            return
+        }
+
+        if (!prepared || !player.isPlaying) {
+            return // Must be playing a video
+        }
+
+        if (duration - player.currentPosition <= 3) {
+            return // No speed changes at the end of video
+        }
+
+        canChangePlaybackSpeed = false
+        postDelayed(canChangePlaybackRunnable, 3000)
+
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
@@ -182,6 +216,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val newSpeed = speedValues[currentSpeedIdx - 1]
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
+
         setupAlmostFinishedRunnable()
         listener?.onPlaybackSpeedChanged()
     }
@@ -202,7 +237,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         // error?.printStackTrace()
         // error.cause?.let { Firebase.crashlytics.recordException(it) }
         removeCallbacks(almostFinishedRunnable)
-        postDelayed({ listener?.onError() }, 3000)
+        postDelayed(onErrorRunnable, 3000)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
