@@ -160,37 +160,14 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     fun increaseSpeed() {
-        if (!canChangePlaybackSpeed) {
-            return
-        }
-
-        if (!prepared || !player.isPlaying) {
-            return // Must be playing a video
-        }
-
-        if (duration - player.currentPosition <= 3) {
-            return // No speed changes at the end of video
-        }
-
-        canChangePlaybackSpeed = false
-        postDelayed(canChangePlaybackRunnable, 3000)
-
-        val currentSpeed = GeneralPrefs.playbackSpeed
-        val speedValues = resources.getStringArray(R.array.playback_speed_values)
-        val currentSpeedIdx = speedValues.indexOf(currentSpeed)
-        if (currentSpeedIdx == speedValues.size - 1) {
-            // we are at maximum speed already
-            return
-        }
-        val newSpeed = speedValues[currentSpeedIdx + 1]
-        GeneralPrefs.playbackSpeed = newSpeed
-        player.setPlaybackSpeed(newSpeed.toFloat())
-
-        setupAlmostFinishedRunnable()
-        listener?.onPlaybackSpeedChanged()
+       changeSpeed(true)
     }
 
     fun decreaseSpeed() {
+        changeSpeed(false)
+    }
+
+    private fun changeSpeed(increase: Boolean) {
         if (!canChangePlaybackSpeed) {
             return
         }
@@ -209,11 +186,21 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
-        if (currentSpeedIdx == 0) {
-            // we are at minimum speed already
-            return
+
+        if (!increase && currentSpeedIdx == 0) {
+            return // we are at minimum speed already
         }
-        val newSpeed = speedValues[currentSpeedIdx - 1]
+
+        if (increase && currentSpeedIdx == speedValues.size - 1) {
+            return // we are at maximum speed already
+        }
+
+        val newSpeed = if (increase) {
+            speedValues[currentSpeedIdx + 1]
+        } else {
+            speedValues[currentSpeedIdx - 1]
+        }
+
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
 
