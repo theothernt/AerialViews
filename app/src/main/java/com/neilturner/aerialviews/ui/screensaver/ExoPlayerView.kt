@@ -168,6 +168,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
         setupAlmostFinishedRunnable()
+        listener?.onPlaybackSpeedChanged()
     }
 
     fun decreaseSpeed() {
@@ -182,6 +183,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         GeneralPrefs.playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
         setupAlmostFinishedRunnable()
+        listener?.onPlaybackSpeedChanged()
     }
 
     private fun setupAlmostFinishedRunnable() {
@@ -253,6 +255,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         fun onAlmostFinished()
         fun onError()
         fun onPrepared()
+        fun onPlaybackSpeedChanged()
     }
 
     companion object {

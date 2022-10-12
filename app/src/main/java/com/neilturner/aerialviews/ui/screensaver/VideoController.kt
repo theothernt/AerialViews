@@ -7,12 +7,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LocationStyle
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
@@ -22,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(context: Context) : OnPlayerEventListener {
+class VideoController(private val context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
@@ -203,6 +205,11 @@ class VideoController(context: Context) : OnPlayerEventListener {
 
     override fun onAlmostFinished() {
         fadeOutCurrentVideo()
+    }
+
+    override fun onPlaybackSpeedChanged() {
+        val message = "Playback speed changed to: ${GeneralPrefs.playbackSpeed}x"
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onError() {
