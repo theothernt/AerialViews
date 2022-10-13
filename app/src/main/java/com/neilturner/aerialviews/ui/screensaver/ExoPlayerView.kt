@@ -29,7 +29,7 @@ import kotlin.math.roundToLong
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
     private var canChangePlaybackRunnable = Runnable { canChangePlaybackSpeed = true }
-    private var onErrorRunnable = Runnable { listener?.onError()}
+    private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val muteVideo = GeneralPrefs.muteVideos
@@ -160,7 +160,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     fun increaseSpeed() {
-       changeSpeed(true)
+        changeSpeed(true)
     }
 
     fun decreaseSpeed() {
