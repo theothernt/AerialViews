@@ -56,7 +56,9 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     fun release() {
         player.release()
-        handler.removeCallbacksAndMessages(null) // Removes all callbacks, prevents leaks
+        removeCallbacks(almostFinishedRunnable)
+        removeCallbacks(canChangePlaybackRunnable)
+        removeCallbacks(onErrorRunnable)
         listener = null
     }
 
