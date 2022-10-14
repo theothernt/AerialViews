@@ -178,8 +178,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             return // Must be playing a video
         }
 
-        if (player.currentPosition <= 3)
-        {
+        if (player.currentPosition <= 3) {
             return // No speed change at the start of the video
         }
 
