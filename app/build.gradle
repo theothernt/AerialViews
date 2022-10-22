@@ -117,9 +117,9 @@ dependencies {
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:21.1.1')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.2.13')
-    implementation('com.google.firebase:firebase-perf-ktx:20.1.1')
+    implementation('com.google.firebase:firebase-analytics-ktx:21.2.0')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.1')
+    implementation('com.google.firebase:firebase-perf-ktx:20.2.0')
 
     // GSON
     implementation('com.google.code.gson:gson:2.9.1')
