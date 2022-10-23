@@ -28,7 +28,7 @@ import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
-    private var canChangePlaybackRunnable = Runnable { canChangePlaybackSpeed = true }
+    private var canChangePlaybackSpeedRunnable = Runnable { canChangePlaybackSpeed = true }
     private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
@@ -57,7 +57,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     fun release() {
         player.release()
         removeCallbacks(almostFinishedRunnable)
-        removeCallbacks(canChangePlaybackRunnable)
+        removeCallbacks(canChangePlaybackSpeedRunnable)
         removeCallbacks(onErrorRunnable)
         listener = null
     }
@@ -187,7 +187,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         canChangePlaybackSpeed = false
-        postDelayed(canChangePlaybackRunnable, 3000)
+        postDelayed(canChangePlaybackSpeedRunnable, 2000)
 
         val currentSpeed = GeneralPrefs.playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
