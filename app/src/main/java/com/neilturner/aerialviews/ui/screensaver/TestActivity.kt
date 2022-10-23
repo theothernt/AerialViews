@@ -27,7 +27,7 @@ class TestActivity : Activity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_UP) {
+        if (event.action == KeyEvent.ACTION_UP && this::videoController.isInitialized) {
             // Log.i(TAG, "${event.keyCode}")
 
             when (event.keyCode) {
