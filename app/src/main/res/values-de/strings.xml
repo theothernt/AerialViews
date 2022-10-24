@@ -147,4 +147,6 @@
     <!-- Actions -->
     <string name="test_screensaver_settings">Teste Einstellungen des Bildschirmschoners</string>
     <string name="open_system_screensaver_options">Öffne die Systemeinstellungen des Bildschirmschoners</string>
+    <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
+    <string name="interface_enable_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
 </resources>

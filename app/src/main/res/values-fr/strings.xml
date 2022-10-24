@@ -148,4 +148,6 @@
     <!-- Actions -->
     <string name="test_screensaver_settings">Tester l\'économiseur d\'écran</string>
     <string name="open_system_screensaver_options">"Ouvrir les paramètres système "</string>
+    <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
+    <string name="interface_enable_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
 </resources>
