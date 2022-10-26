@@ -94,6 +94,9 @@
     <!-- Settings -->
     <string name="settings_debug_warning">Don\'t change the options below unless troubleshooting!</string>
 
+    <string name="general_import_export_settings_title">Import/Export settings</string>
+    <string name="general_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
+
     <string name="interface_title">Interface</string>
     <string name="interface_summary">Customise how things look</string>
 

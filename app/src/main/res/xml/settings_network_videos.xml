@@ -28,6 +28,7 @@
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
                     android:title="@string/network_videos_import_export_settings_title"
+                    android:summary="@string/network_videos_import_export_settings_summary"
                     android:key="network_videos_import_export_settings" />
 
                 <Preference

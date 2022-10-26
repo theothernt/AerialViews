@@ -149,4 +149,6 @@
     <string name="open_system_screensaver_options">Öffne die Systemeinstellungen des Bildschirmschoners</string>
     <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
     <string name="interface_enable_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
+    <string name="general_import_export_settings_title">Import/Export settings</string>
+    <string name="general_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
 </resources>

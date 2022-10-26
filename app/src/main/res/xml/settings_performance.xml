@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <PreferenceCategory app:title="@string/category_actions">
                 <Preference
                     app:title="@string/performance_capabilities_title"
                     app:summary="@string/performance_capabilities_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
+
+                <Preference
+                    android:title="@string/general_import_export_settings_title"
+                    android:summary="@string/general_import_export_settings_summary"
+                    android:key="general_import_export_settings" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_performance_debug">
