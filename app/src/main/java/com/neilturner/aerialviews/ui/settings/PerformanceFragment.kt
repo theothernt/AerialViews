@@ -15,6 +15,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
@@ -40,6 +42,9 @@ class PerformanceFragment : PreferenceFragmentCompat(),
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_performance, rootKey)
+
+        fileSystem = AndroidFileSystem(requireContext())
+        storagePermissions = StoragePermissions(requireContext())
 
         // Import/read permission request
         requestReadPermission = registerForActivityResult(
@@ -121,14 +126,13 @@ class PerformanceFragment : PreferenceFragmentCompat(),
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing settings from Downloads folder")
 
-        val filename = "aerial-views-settings.txt"
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        val uri = Uri.parse("$directory/$filename")
+        val uri = Uri.parse("$directory/$SETTINGS_FILENAME")
         val path = uri.toOkioPath()
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showDialog("Import failed", "Can't find settings file in Downloads folder: $filename")
+            showDialog("Import failed", "Can't find settings file in Downloads folder: $SETTINGS_FILENAME")
             return@withContext
         }
 
@@ -139,57 +143,60 @@ class PerformanceFragment : PreferenceFragmentCompat(),
                     properties.load(ByteArrayInputStream(byteArray))
                 }
             }
-        } catch (e: Exception) {
+        } catch (ex: Exception) {
             showDialog("Import failed", "Error while reading and parsing file. Please check the file again for mistakes or invalid characters.")
+            Log.e(TAG, "Import failed", ex)
+            ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
         try {
             // Apple prefs
-            AppleVideoPrefs.enabled = properties["apple_videos_enabled"] as Boolean
+            AppleVideoPrefs.enabled = properties["apple_videos_enabled"].toString().toBoolean()
             AppleVideoPrefs.quality = AppleVideoQuality.valueOf(properties["apple_videos_quality"] as String)
 
             // Local video prefs
-            LocalVideoPrefs.enabled = properties["local_videos_enabled"] as Boolean
-            LocalVideoPrefs.filter_enabled = properties["local_videos_filter_enabled"] as Boolean
+            LocalVideoPrefs.enabled = properties["local_videos_enabled"].toString().toBoolean()
+            LocalVideoPrefs.filter_enabled = properties["local_videos_filter_enabled"].toString().toBoolean()
             LocalVideoPrefs.filter_folder_name = properties["local_videos_filter_folder_name"] as String
 
             // Network video prefs?
-            NetworkVideoPrefs.enabled = properties["network_videos_enabled"] as Boolean
-            NetworkVideoPrefs.enableEncryption  = properties["network_videos_enable_encryption"] as Boolean
+            NetworkVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
+            NetworkVideoPrefs.enableEncryption  = properties["network_videos_enable_encryption"].toString().toBoolean()
             val smbDialects = (properties["network_videos_smb_dialects"] as String).split(",").toList()
             NetworkVideoPrefs.smbDialects.clear()
             NetworkVideoPrefs.smbDialects.addAll(smbDialects)
 
             // Interface prefs
-            InterfacePrefs.showClock = properties["show_clock"] as Boolean
-            InterfacePrefs.showLocation = properties["show_location"] as Boolean
+            InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
+            InterfacePrefs.showLocation = properties["show_location"].toString().toBoolean()
             InterfacePrefs.showLocationStyle = LocationStyle.valueOf(properties["show_location_style"] as String)
-            InterfacePrefs.alternateTextPosition = properties["alt_text_position"] as Boolean
+            InterfacePrefs.alternateTextPosition = properties["alt_text_position"].toString().toBoolean()
 
             // General prefs
-            GeneralPrefs.muteVideos = properties["mute_videos"] as Boolean
-            GeneralPrefs.shuffleVideos = properties["shuffle_videos"] as Boolean
-            GeneralPrefs.removeDuplicates = properties["remove_duplicates"] as Boolean
-            GeneralPrefs.enableSkipVideos = properties["enable_skip_videos"] as Boolean
-            GeneralPrefs.enablePlaybackSpeedChange = properties["enable_playback_speed_change"] as Boolean
+            GeneralPrefs.muteVideos = properties["mute_videos"].toString().toBoolean()
+            GeneralPrefs.shuffleVideos = properties["shuffle_videos"].toString().toBoolean()
+            GeneralPrefs.removeDuplicates = properties["remove_duplicates"].toString().toBoolean()
+            GeneralPrefs.enableSkipVideos = properties["enable_skip_videos"].toString().toBoolean()
+            GeneralPrefs.enablePlaybackSpeedChange = properties["enable_playback_speed_change"].toString().toBoolean()
             GeneralPrefs.playbackSpeed = properties["playback_speed"] as String
 
-            GeneralPrefs.enableTunneling = properties["enable_tunneling"] as Boolean
-            GeneralPrefs.exceedRenderer = properties["exceed_renderer"] as Boolean
+            GeneralPrefs.enableTunneling = properties["enable_tunneling"].toString().toBoolean()
+            GeneralPrefs.exceedRenderer = properties["exceed_renderer"].toString().toBoolean()
             GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
 
-            GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"] as Boolean
-            GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"] as Boolean
-            GeneralPrefs.useCustomManifests = properties["any_videos_use_custom_manifests"] as Boolean
-            GeneralPrefs.ignoreNonManifestVideos = properties["any_videos_ignore_non_manifest_videos"] as Boolean
+            GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"].toString().toBoolean()
+            GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
+            GeneralPrefs.useCustomManifests = properties["any_videos_use_custom_manifests"].toString().toBoolean()
+            GeneralPrefs.ignoreNonManifestVideos = properties["any_videos_ignore_non_manifest_videos"].toString().toBoolean()
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
+            Log.e(TAG, "Import failed", ex)
+            ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
-        Log.i(TAG, properties.toString())
-        showDialog("Import successful", "Settings successfully imported from $filename")
+        showDialog("Import successful", "Settings successfully imported from $SETTINGS_FILENAME")
     }
 
     private fun checkExportPermissions() {
@@ -253,17 +260,17 @@ class PerformanceFragment : PreferenceFragmentCompat(),
         settings["any_videos_use_custom_manifests"] = GeneralPrefs.useCustomManifests.toString()
         settings["any_videos_ignore_non_manifest_videos"] = GeneralPrefs.ignoreNonManifestVideos.toString()
 
-        val filename = "aerial-views-smb-settings.txt"
         val uri: Uri
         try {
             // Prep file handle
             uri = fileSystem.createMediaStoreUri(
-                filename = filename,
+                filename = SETTINGS_FILENAME,
                 collection = MediaStore.Files.getContentUri("external"),
                 directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
             )!!
         } catch (ex: Exception) {
-            showDialog("Export failed", "The SMB settings file $filename already exists in the Downloads folder")
+            showDialog("Export failed", "The settings file $SETTINGS_FILENAME already exists in the Downloads folder")
+            Log.e(TAG, "Export failed", ex)
             return@withContext
         }
 
@@ -279,11 +286,13 @@ class PerformanceFragment : PreferenceFragmentCompat(),
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Export failed", "Error while trying to write settings to $filename in the Downloads folder")
+            showDialog("Export failed", "Error while trying to write settings to $SETTINGS_FILENAME in the Downloads folder")
+            Log.e(TAG, "Import failed", ex)
+            ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
-        showDialog("Export successful", "Successfully exported settings to $filename in the Downloads folder")
+        showDialog("Export successful", "Successfully exported settings to $SETTINGS_FILENAME in the Downloads folder")
     }
 
     private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {
@@ -297,5 +306,6 @@ class PerformanceFragment : PreferenceFragmentCompat(),
 
     companion object {
         private const val TAG = "PerfVideosFragment"
+        private const val SETTINGS_FILENAME = "aerial-views-settings.txt"
     }
 }
