@@ -163,7 +163,7 @@ class NetworkVideosFragment :
 
     @Suppress("BlockingMethodInNonBlockingContext") // code runs inside Dispatcher.IO
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Importing settings from Downloads folder")
+        Log.i(TAG, "Importing SMB settings from Downloads folder")
 
         val filename = "aerial-views-smb-settings.txt"
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
@@ -227,9 +227,9 @@ class NetworkVideosFragment :
     }
 
     private suspend fun exportSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Exporting settings to Downloads folder")
+        Log.i(TAG, "Exporting SMB settings to Downloads folder")
 
-        // Build SMB config string
+        // Build SMB config list
         val smbSettings = mutableMapOf<String, String>()
         smbSettings["hostname"] = NetworkVideoPrefs.hostName
         smbSettings["sharename"] = NetworkVideoPrefs.shareName
