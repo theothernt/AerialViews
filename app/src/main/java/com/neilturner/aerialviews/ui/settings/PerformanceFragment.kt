@@ -23,17 +23,22 @@ import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.AppleVideoQuality
 import com.neilturner.aerialviews.models.LocationStyle
-import com.neilturner.aerialviews.models.prefs.*
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlin.text.split
 import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.*
+import kotlin.text.split
 
-class PerformanceFragment : PreferenceFragmentCompat(),
+class PerformanceFragment :
+    PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var fileSystem: AndroidFileSystem
     private lateinit var storagePermissions: StoragePermissions
@@ -162,7 +167,7 @@ class PerformanceFragment : PreferenceFragmentCompat(),
 
             // Network video prefs?
             NetworkVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
-            NetworkVideoPrefs.enableEncryption  = properties["network_videos_enable_encryption"].toString().toBoolean()
+            NetworkVideoPrefs.enableEncryption = properties["network_videos_enable_encryption"].toString().toBoolean()
             val smbDialects = (properties["network_videos_smb_dialects"] as String).split(",").toList()
             NetworkVideoPrefs.smbDialects.clear()
             NetworkVideoPrefs.smbDialects.addAll(smbDialects)
