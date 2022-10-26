@@ -1,4 +1,6 @@
-@file:Suppress("unused", "unused")
+@file:Suppress("unused", "unused", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted"
+)
 
 package com.neilturner.aerialviews.utils
 
