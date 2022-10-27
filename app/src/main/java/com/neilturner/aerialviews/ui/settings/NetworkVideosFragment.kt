@@ -217,7 +217,7 @@ class NetworkVideosFragment :
         val canWriteFiles = storagePermissions.hasAccess(
             action = StoragePermissions.Action.READ_AND_WRITE,
             types = listOf(StoragePermissions.FileType.Document),
-            createdBy = StoragePermissions.CreatedBy.AllApps
+            createdBy = StoragePermissions.CreatedBy.Self
         )
 
         if (!canWriteFiles) {
