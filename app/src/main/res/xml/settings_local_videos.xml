@@ -6,26 +6,9 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="local_videos_enabled"
-                    app:title="@string/local_videos_enabled_title"
-                    app:summary="@string/local_videos_enabled_summary" />
+                    app:title="Use Local or USB storage" />
+                <!-- app:title="@string/local_videos_enabled_title" /> -->
 
-                <SwitchPreference
-                    app:defaultValue="false"
-                    app:key="network_videos_enabled"
-                    app:title="@string/network_videos_enabled_title"
-                    app:summary="@string/network_videos_enabled_summary" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_network_settings">
-                <Preference
-                    app:dependency="network_videos_enabled"
-                    app:disableDependentsState="false"
-                    app:title="@string/any_videos_credentials_title"
-                    app:summary="@string/any_videos_credentials_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.NetworkVideosFragment"/>
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_local_storage_settings">
                 <Preference
                     app:isPreferenceVisible="false"
                     app:dependency="local_videos_enabled"
@@ -33,7 +16,9 @@
                     app:key="local_videos_notice"
                     app:title="@string/local_videos_notice_title"
                     app:summary="@string/local_videos_notice_summary"/>
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="Folder Filter">
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"

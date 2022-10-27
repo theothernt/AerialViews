@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="Remote">
+        <Preference
+            app:title="Apple Videos"
+            app:summary="Stream Apple videos using your internet connection"
+            app:fragment="com.neilturner.aerialviews.ui.settings.sources.AppleVideosFragment"/>
+
+<!--        <Preference-->
+<!--            app:title="Aerial Community Videos"-->
+<!--            app:summary="Stream community videos using your internet connection"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.CommunityVideosFragment"/>-->
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Local">
+        <Preference
+            app:title="Local or USB storage"
+            app:summary="Play videos directly from your device or attached USB storage"
+            app:fragment="com.neilturner.aerialviews.ui.settings.sources.LocalVideosFragment"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Network">
+        <Preference
+            app:title="SMB/Samba Network Share"
+            app:summary="Play videos from a network share on a PC or NAS device"
+            app:fragment="com.neilturner.aerialviews.ui.settings.sources.SambaVideosFragment"/>
+
+<!--        <Preference-->
+<!--            app:title="WebDAV Server"-->
+<!--            app:summary="Play videos stored on a WebDAV server locally or remotely"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.WebdavVideosFragment"/>-->
+    </PreferenceCategory>
+
+</PreferenceScreen>

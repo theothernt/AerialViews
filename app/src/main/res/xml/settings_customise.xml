@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="Customise">
+        <Preference
+            app:title="Appearance"
+            app:summary="Customise how things look while videos are playing"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.AppearanceFragment"/>
+
+        <Preference
+            app:title="Video Playlist"
+            app:summary="Mute videos, randomise the order, etc"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.PlaylistFragment"/>
+
+        <Preference
+            app:title="Device Capabilities"
+            app:summary="View video codecs, resolution support, and other capabilities"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.CapabilitiesFragment"/>
+
+        <Preference
+            app:title="Troubleshooting"
+            app:summary="Performance &amp; debug options for troubleshooting"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.TroubleshootingFragment"/>
+
+        <Preference
+            app:title="Credits"
+            app:summary="About the app and the components used"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.AboutFragment"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_actions">
+        <Preference
+            android:title="@string/general_import_export_settings_title"
+            android:summary="@string/general_import_export_settings_summary"
+            android:key="general_import_export_settings" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

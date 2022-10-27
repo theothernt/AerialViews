@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.settings.customise
 
 import android.Manifest
 import android.net.Uri
@@ -37,7 +37,7 @@ import java.io.ByteArrayInputStream
 import java.util.*
 import kotlin.text.split
 
-class PerformanceFragment :
+class TroubleshootingFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var fileSystem: AndroidFileSystem
@@ -46,7 +46,7 @@ class PerformanceFragment :
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_performance, rootKey)
+        setPreferencesFromResource(R.xml.settings_troubleshooting, rootKey)
 
         fileSystem = AndroidFileSystem(requireContext())
         storagePermissions = StoragePermissions(requireContext())

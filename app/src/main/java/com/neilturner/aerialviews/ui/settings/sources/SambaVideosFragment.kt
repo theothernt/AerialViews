@@ -1,6 +1,6 @@
 @file:Suppress("unused", "BlockingMethodInNonBlockingContext")
 
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.settings.sources
 
 import android.Manifest
 import android.content.SharedPreferences
@@ -44,7 +44,7 @@ import java.io.ByteArrayInputStream
 import java.util.Properties
 
 @Suppress("DEPRECATION")
-class NetworkVideosFragment :
+class SambaVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -54,7 +54,7 @@ class NetworkVideosFragment :
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_network_videos, rootKey)
+        setPreferencesFromResource(R.xml.settings_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         fileSystem = AndroidFileSystem(requireContext())
@@ -404,7 +404,7 @@ class NetworkVideosFragment :
     }
 
     companion object {
-        private const val TAG = "NetworkVideosFragment"
+        private const val TAG = "SambakVideosFragment"
         private const val SMB_SETTINGS_FILENAME = "aerial-views-smb-settings.txt"
     }
 }

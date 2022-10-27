@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.settings.customise
 
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,12 +8,12 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class InterfaceFragment :
+class AppearanceFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_interface, rootKey)
+        setPreferencesFromResource(R.xml.settings_appearance, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateSummaries()
     }

@@ -2,28 +2,16 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/category_video_sources">
+    <PreferenceCategory app:title="Settings">
         <Preference
-            app:title="@string/apple_videos_title"
-            app:summary="@string/apple_videos_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.AppleVideosFragment"/>
+            app:title="Video Sources"
+            app:summary="Choose where to play videos from eg. streaming, USB storage, network sources"
+            app:fragment="com.neilturner.aerialviews.ui.settings.SourcesFragment"/>
 
         <Preference
-            app:title="@string/any_videos_title"
-            app:summary="@string/any_videos_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.AnyVideosFragment"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/category_settings">
-        <Preference
-            app:title="@string/interface_title"
-            app:summary="@string/interface_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.InterfaceFragment"/>
-
-        <Preference
-            app:title="@string/performance_title"
-            app:summary="@string/performance_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.PerformanceFragment"/>
+            app:title="Customise"
+            app:summary="Change how things look, performance and playlist options, etc"
+            app:fragment="com.neilturner.aerialviews.ui.settings.CustomiseFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">

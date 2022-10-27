@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.settings.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
