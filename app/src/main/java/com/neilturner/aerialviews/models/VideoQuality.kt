@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models
 
-enum class AppleVideoQuality {
+enum class VideoQuality {
     VIDEO_1080_H264,
     VIDEO_1080_SDR,
     VIDEO_1080_HDR,
