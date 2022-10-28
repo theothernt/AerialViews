@@ -11,7 +11,7 @@
 <!--        <Preference-->
 <!--            app:title="Aerial Community Videos"-->
 <!--            app:summary="Stream the Aerial Community Videos using your internet connection"-->
-<!--            app:fragment="com.neilturner.aerialviews.ui.settings.AerialCommunityVideosFragment"/>-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.sources.AerialCommunityVideosFragment"/>-->
 
 <!--        <Preference-->
 <!--            app:title="Aerial Shots"-->
@@ -28,7 +28,7 @@
 
     <PreferenceCategory app:title="Network">
         <Preference
-            app:title="SMB/Samba Network Share"
+            app:title="SMB/Samba Share"
             app:summary="Play videos from a network share on a PC or NAS device"
             app:fragment="com.neilturner.aerialviews.ui.settings.sources.SambaVideosFragment"/>
 

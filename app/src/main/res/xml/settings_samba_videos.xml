@@ -6,7 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="network_videos_enabled"
-                    app:title="Use SMB/Samba Network Share" />
+                    app:title="Use SMB/Samba share videos" />
                 <!-- app:title="@string/network_videos_enabled_title" /> -->
         </PreferenceCategory>
 

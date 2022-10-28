@@ -6,7 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="local_videos_enabled"
-                    app:title="Use Local or USB storage" />
+                    app:title="Use Local or USB storage videos" />
                 <!-- app:title="@string/local_videos_enabled_title" /> -->
 
                 <Preference
@@ -39,32 +39,6 @@
                     app:disableDependentsState="false"
                     android:key="local_videos_test_filter"
                     android:title="@string/local_videos_filter_test" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_settings">
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="any_videos_filename_location"
-                    app:title="@string/any_videos_filename_location_title"
-                    app:summary="@string/any_videos_filename_location_summary" />
-
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="any_videos_use_apple_manifests"
-                    app:title="@string/any_videos_use_apple_manifests_title"
-                    app:summary="@string/any_videos_use_apple_manifests_summary" />
-
-<!--                <CheckBoxPreference-->
-<!--                    app:defaultValue="true"-->
-<!--                    app:key="any_videos_use_custom_manifests"-->
-<!--                    app:title="@string/any_videos_use_custom_manifests_title"-->
-<!--                    app:summary="@string/any_videos_use_custom_manifests_summary" />-->
-
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="any_videos_ignore_non_manifest_videos"
-                    app:title="@string/any_videos_ignore_non_manifest_videos_title"
-                    app:summary="@string/any_videos_ignore_non_manifest_videos_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>
