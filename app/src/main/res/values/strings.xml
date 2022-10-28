@@ -64,7 +64,7 @@
 
     <string name="local_videos_filter_test">Test filter settings</string>
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignore non-Apple videos on local storage or local network</string>
+    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unrecognised/non-Apple videos</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
 
     <!-- Network Video Options -->
@@ -148,7 +148,7 @@
     <string name="capabilities_decoders_title">Video Decoders</string>
     <string name="capabilities_resolution_title">Resolution</string>
 
-    <string name="playback_speed_title">Playback Speed</string>
+    <string name="playback_speed_title">Playback speed</string>
     <string name="playback_speed_summary">Choose a playback speed</string>
 
     <!-- Actions -->

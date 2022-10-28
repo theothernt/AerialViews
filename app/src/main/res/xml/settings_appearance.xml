@@ -32,6 +32,12 @@
                     app:summary="@string/interface_show_location_style_summary"
                     app:dialogTitle="@string/interface_show_location_style_summary" />
 
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="any_videos_filename_location"
+                    app:title="@string/any_videos_filename_location_title"
+                    app:summary="@string/any_videos_filename_location_summary" />
+
                 <ListPreference
                     app:defaultValue="@string/playback_speed_default"
                     app:entries="@array/playback_speed_entries"
