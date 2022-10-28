@@ -10,7 +10,7 @@
 
         <Preference
             app:title="Customise"
-            app:summary="Change how things look, performance and playlist options, etc"
+            app:summary="Change how things look, performance, playlist options, etc"
             app:fragment="com.neilturner.aerialviews.ui.settings.CustomiseFragment"/>
     </PreferenceCategory>
 

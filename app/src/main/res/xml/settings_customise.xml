@@ -23,10 +23,10 @@
             app:summary="Performance &amp; debug options for troubleshooting"
             app:fragment="com.neilturner.aerialviews.ui.settings.customise.TroubleshootingFragment"/>
 
-        <Preference
-            app:title="Credits"
-            app:summary="About the app and the components used"
-            app:fragment="com.neilturner.aerialviews.ui.settings.customise.AboutFragment"/>
+<!--        <Preference-->
+<!--            app:title="Credits"-->
+<!--            app:summary="About the app and the components used"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.customise.AboutFragment"/>-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">

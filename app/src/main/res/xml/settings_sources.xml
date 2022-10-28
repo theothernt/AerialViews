@@ -10,8 +10,13 @@
 
 <!--        <Preference-->
 <!--            app:title="Aerial Community Videos"-->
-<!--            app:summary="Stream community videos using your internet connection"-->
-<!--            app:fragment="com.neilturner.aerialviews.ui.settings.CommunityVideosFragment"/>-->
+<!--            app:summary="Stream the Aerial Community Videos using your internet connection"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.AerialCommunityVideosFragment"/>-->
+
+<!--        <Preference-->
+<!--            app:title="Aerial Shots"-->
+<!--            app:summary="Stream the Aerial Shots videos using your internet connection"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.settings.sources.AerialShotsVideosFragment"/>-->
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Local">
