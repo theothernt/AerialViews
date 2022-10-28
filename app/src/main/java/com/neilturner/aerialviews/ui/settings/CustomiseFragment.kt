@@ -23,8 +23,11 @@ import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.AppleVideoQuality
 import com.neilturner.aerialviews.models.LocationStyle
-import com.neilturner.aerialviews.models.prefs.*
-import com.neilturner.aerialviews.ui.settings.customise.TroubleshootingFragment
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,7 +36,8 @@ import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.*
 
-class CustomiseFragment : PreferenceFragmentCompat(),
+class CustomiseFragment :
+    PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var fileSystem: AndroidFileSystem
     private lateinit var storagePermissions: StoragePermissions
@@ -127,12 +131,12 @@ class CustomiseFragment : PreferenceFragmentCompat(),
         Log.i(TAG, "Importing settings from Downloads folder")
 
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        val uri = Uri.parse("$directory/${SETTINGS_FILENAME}")
+        val uri = Uri.parse("$directory/$SETTINGS_FILENAME")
         val path = uri.toOkioPath()
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
-            showDialog("Import failed", "Can't find settings file in Downloads folder: ${SETTINGS_FILENAME}")
+            showDialog("Import failed", "Can't find settings file in Downloads folder: $SETTINGS_FILENAME")
             return@withContext
         }
 
@@ -196,7 +200,7 @@ class CustomiseFragment : PreferenceFragmentCompat(),
             return@withContext
         }
 
-        showDialog("Import successful", "Settings successfully imported from ${SETTINGS_FILENAME}")
+        showDialog("Import successful", "Settings successfully imported from $SETTINGS_FILENAME")
     }
 
     private fun checkExportPermissions() {
@@ -269,7 +273,7 @@ class CustomiseFragment : PreferenceFragmentCompat(),
                 directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
             )!!
         } catch (ex: Exception) {
-            showDialog("Export failed", "The settings file ${SETTINGS_FILENAME} already exists in the Downloads folder")
+            showDialog("Export failed", "The settings file $SETTINGS_FILENAME already exists in the Downloads folder")
             Log.e(TAG, "Export failed", ex)
             return@withContext
         }
@@ -286,13 +290,13 @@ class CustomiseFragment : PreferenceFragmentCompat(),
                 }
             }
         } catch (ex: Exception) {
-            showDialog("Export failed", "Error while trying to write settings to ${SETTINGS_FILENAME} in the Downloads folder")
+            showDialog("Export failed", "Error while trying to write settings to $SETTINGS_FILENAME in the Downloads folder")
             Log.e(TAG, "Import failed", ex)
             ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
-        showDialog("Export successful", "Successfully exported settings to ${SETTINGS_FILENAME} in the Downloads folder")
+        showDialog("Export successful", "Successfully exported settings to $SETTINGS_FILENAME in the Downloads folder")
     }
 
     private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {

@@ -1,4 +1,8 @@
-@file:Suppress("unused", "unused", "BooleanMethodIsAlwaysInverted", "BooleanMethodIsAlwaysInverted",
+@file:Suppress(
+    "unused",
+    "unused",
+    "BooleanMethodIsAlwaysInverted",
+    "BooleanMethodIsAlwaysInverted",
     "BooleanMethodIsAlwaysInverted"
 )
 
