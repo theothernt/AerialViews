@@ -21,7 +21,7 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.AppleVideoQuality
+import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.LocationStyle
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -157,7 +157,7 @@ class CustomiseFragment :
         try {
             // Apple prefs
             AppleVideoPrefs.enabled = properties["apple_videos_enabled"].toString().toBoolean()
-            AppleVideoPrefs.quality = AppleVideoQuality.valueOf(properties["apple_videos_quality"] as String)
+            AppleVideoPrefs.quality = VideoQuality.valueOf(properties["apple_videos_quality"] as String)
 
             // Local video prefs
             LocalVideoPrefs.enabled = properties["local_videos_enabled"].toString().toBoolean()
