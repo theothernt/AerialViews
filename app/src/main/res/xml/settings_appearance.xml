@@ -32,9 +32,6 @@
                     app:summary="@string/interface_show_location_style_summary"
                     app:dialogTitle="@string/interface_show_location_style_summary" />
 
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="">
                 <ListPreference
                     app:defaultValue="@string/playback_speed_default"
                     app:entries="@array/playback_speed_entries"
@@ -43,18 +40,5 @@
                     app:title="@string/playback_speed_title"
                     app:summary="@string/playback_speed_summary"
                     app:dialogTitle="@string/playback_speed_summary" />
-
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="enable_playback_speed_change"
-                    app:summary="@string/interface_enable_playback_speed_change_summary"
-                    app:title="@string/interface_enable_playback_speed_change_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="enable_skip_videos"
-                    app:summary="@string/interface_enable_skip_videos_summary"
-                    app:title="@string/interface_enable_skip_videos_title" />
-
         </PreferenceCategory>
 </PreferenceScreen>

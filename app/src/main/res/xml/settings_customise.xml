@@ -14,6 +14,11 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.customise.PlaylistFragment"/>
 
         <Preference
+            app:title="D-pad/Remote"
+            app:summary="Customise d-pad actions on your remote"
+            app:fragment="com.neilturner.aerialviews.ui.settings.customise.DpadRemoteFragment"/>
+
+        <Preference
             app:title="Device Capabilities"
             app:summary="View video codecs, resolution support, and other capabilities"
             app:fragment="com.neilturner.aerialviews.ui.settings.customise.CapabilitiesFragment"/>
