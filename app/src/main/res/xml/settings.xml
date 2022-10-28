@@ -5,7 +5,7 @@
     <PreferenceCategory app:title="Settings">
         <Preference
             app:title="Video Sources"
-            app:summary="Choose where to play videos from eg. streaming, USB storage, network sources"
+            app:summary="Play videos from streaming, USB storage, and network sources"
             app:fragment="com.neilturner.aerialviews.ui.settings.SourcesFragment"/>
 
         <Preference
