@@ -13,7 +13,7 @@ class Comm2VideoProvider(context: Context, private val prefs: Comm2VideoPrefs) :
     override fun fetchVideos(): List<AerialVideo> {
         val quality = prefs.quality
         val videos = mutableListOf<AerialVideo>()
-        val wrapper = parseJson(context, R.raw.aerialshots, JsonHelper.AerialShotsVideos::class.java)
+        val wrapper = parseJson(context, R.raw.comm2, JsonHelper.Comm2Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
                 AerialVideo(

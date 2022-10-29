@@ -29,11 +29,11 @@ object JsonHelper {
         val assets: List<Apple2018Video>? = null
     }
 
-    class AerialCommunityVideos {
+    class Comm1Videos {
         val assets: List<Comm1Video>? = null
     }
 
-    class AerialShotsVideos {
+    class Comm2Videos {
         val assets: List<Comm2Video>? = null
     }
 }

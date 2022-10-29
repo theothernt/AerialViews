@@ -11,8 +11,8 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.videos.AbstractVideo
 import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.models.videos.Apple2018Video
 import com.neilturner.aerialviews.providers.Comm1VideoProvider
 import com.neilturner.aerialviews.providers.Comm2VideoProvider
 import com.neilturner.aerialviews.providers.AppleVideoProvider
@@ -79,23 +79,13 @@ class VideoService(private val context: Context) {
         // Try and add locations by looking up video filenames in various manifests
         val manifestVideos = mutableListOf<AerialVideo>()
         if (GeneralPrefs.useAppleManifests) {
-            manifestVideos.addAll(appleManifestVideos())
-        }
-
-        if (GeneralPrefs.useCustomManifests) {
-            manifestVideos.addAll(customManifestVideos())
+            manifestVideos.addAll(allManifestVideos())
         }
 
         val result = findVideoLocationInManifest(videos, manifestVideos)
         videos = result.first.toMutableList()
-
-        if (result.first.isNotEmpty()) {
-            Log.i(TAG, "Found ${result.first.count()} manifest videos")
-        }
-
-        if (result.second.isNotEmpty()) {
-            Log.i(TAG, "Found ${result.second.count()} non-manifest videos")
-        }
+        Log.i(TAG, "Found ${result.first.count()} manifest videos")
+        Log.i(TAG, "Found ${result.second.count()} non-manifest videos")
 
         if (!GeneralPrefs.ignoreNonManifestVideos) {
             videos.addAll(result.second)
@@ -119,7 +109,7 @@ class VideoService(private val context: Context) {
         VideoPlaylist(videos)
     }
 
-    private fun appleManifestVideos(): List<AerialVideo> {
+    private fun allManifestVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
 
         try {
@@ -149,22 +139,36 @@ class VideoService(private val context: Context) {
             Log.e(TAG, ex.message.toString())
         }
 
-        Log.i(TAG, "${videos.count()} videos listed in Apple manifests")
+        try {
+            JsonHelper.parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+        }
+
+        try {
+            JsonHelper.parseJson(context, R.raw.comm2, JsonHelper.Comm2Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+        }
+
+        Log.i(TAG, "${videos.count()} videos listed in Apple and community manifests")
         return videos
     }
 
-    private fun customManifestVideos(): List<AerialVideo> {
-        return emptyList()
-    }
-
-    private fun allVideoQualities(video: Apple2018Video): List<AerialVideo> {
+    private fun allVideoQualities(video: AbstractVideo): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
 
         VideoQuality.values().forEach { quality ->
             val uri = try {
                 video.uri(quality)
             } catch (ex: Exception) {
-                Log.e(TAG, ex.message.toString())
+                Log.e(TAG, "Exception while getting list of video quality URIs", ex)
                 null
             }
             if (uri != null) {
@@ -181,7 +185,7 @@ class VideoService(private val context: Context) {
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
-                // Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
+                //Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
                 matched.add(video)
                 continue
             }
