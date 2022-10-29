@@ -5,17 +5,17 @@ import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AbstractVideo
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.Comm1VideoProvider
 import com.neilturner.aerialviews.providers.Comm2VideoProvider
-import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
 import com.neilturner.aerialviews.providers.VideoProvider
@@ -185,7 +185,7 @@ class VideoService(private val context: Context) {
 
         for (video in foundVideos) {
             if (!FileHelper.isLocalVideo(video.uri)) {
-                //Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
+                // Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
                 matched.add(video)
                 continue
             }

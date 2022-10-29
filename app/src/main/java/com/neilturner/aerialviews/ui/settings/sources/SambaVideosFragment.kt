@@ -404,7 +404,7 @@ class SambaVideosFragment :
     }
 
     companion object {
-        private const val TAG = "SambakVideosFragment"
+        private const val TAG = "SambaVideosFragment"
         private const val SMB_SETTINGS_FILENAME = "aerial-views-smb-settings.txt"
     }
 }
