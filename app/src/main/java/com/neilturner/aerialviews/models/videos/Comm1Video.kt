@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.models.videos
 import android.net.Uri
 import com.neilturner.aerialviews.models.VideoQuality
 
-class AerialCommunityVideo : AbstractVideo() {
+class Comm1Video : AbstractVideo() {
 
     override fun uri(quality: VideoQuality): Uri? {
         return Uri.parse(

@@ -9,14 +9,14 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.sources.AppleVideosFragment"/>
 
         <Preference
-            app:title="Aerial Community Videos"
-            app:summary="Stream the Aerial Community Videos using your internet connection"
-            app:fragment="com.neilturner.aerialviews.ui.settings.sources.AerialCommunityVideosFragment"/>
+            app:title="Community Videos by Jetson Creative"
+            app:summary="Stream the community videos using your internet connection"
+            app:fragment="com.neilturner.aerialviews.ui.settings.sources.Comm1VideosFragment"/>
 
         <Preference
-            app:title="Aerial Shots"
-            app:summary="Stream the Aerial Shots videos using your internet connection"
-            app:fragment="com.neilturner.aerialviews.ui.settings.sources.AerialShotsVideosFragment"/>
+            app:title="Community Videos by Robin Fourcade"
+            app:summary="Stream the community videos using your internet connection"
+            app:fragment="com.neilturner.aerialviews.ui.settings.sources.Comm2VideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Local">

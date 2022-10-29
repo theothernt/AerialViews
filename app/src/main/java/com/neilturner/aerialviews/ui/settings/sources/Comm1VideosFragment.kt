@@ -8,12 +8,12 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class AerialCommunityVideosFragment :
+class Comm1VideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_aerial_community_videos, rootKey)
+        setPreferencesFromResource(R.xml.settings_comm1_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateSummaries()
     }
@@ -29,7 +29,7 @@ class AerialCommunityVideosFragment :
 
     private fun updateSummaries() {
         val res = context?.resources!!
-        val quality = findPreference<ListPreference>("aerial_community_videos_quality")
+        val quality = findPreference<ListPreference>("comm1_videos_quality")
         val qualityTitle = res.getString(R.string.apple_videos_quality_title)
         quality?.title = "$qualityTitle - ${quality?.entry}"
     }

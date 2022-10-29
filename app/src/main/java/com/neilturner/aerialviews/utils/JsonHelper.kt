@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.annotation.RawRes
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.neilturner.aerialviews.models.videos.AerialCommunityVideo
-import com.neilturner.aerialviews.models.videos.AerialShotsVideo
+import com.neilturner.aerialviews.models.videos.Comm1Video
+import com.neilturner.aerialviews.models.videos.Comm2Video
 import com.neilturner.aerialviews.models.videos.Apple2018Video
 import java.util.Scanner
 
@@ -30,10 +30,10 @@ object JsonHelper {
     }
 
     class AerialCommunityVideos {
-        val assets: List<AerialCommunityVideo>? = null
+        val assets: List<Comm1Video>? = null
     }
 
     class AerialShotsVideos {
-        val assets: List<AerialShotsVideo>? = null
+        val assets: List<Comm2Video>? = null
     }
 }

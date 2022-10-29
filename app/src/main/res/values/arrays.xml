@@ -24,18 +24,18 @@
         <item>90GB</item>
     </string-array>
 
-    <!-- Aerial Community Videos -->
-    <string-array name="aerial_community_videos_quality_entries" translatable="false">
+    <!-- Community Videos -->
+    <string-array name="comm1_videos_quality_entries" translatable="false">
         <item>1080p H.264</item>
         <item>1080p HEVC</item>
         <item>4K HEVC</item>
     </string-array>
-    <string-array name="aerial_community_videos_quality_values" translatable="false">
+    <string-array name="comm1_videos_quality_values" translatable="false">
         <item>VIDEO_1080_H264</item>
         <item>VIDEO_1080_SDR</item>
         <item>VIDEO_4K_SDR</item>
     </string-array>
-    <string name="aerial_community_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+    <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
     <!-- Location style -->
     <string-array name="interface_show_location_style_entries">

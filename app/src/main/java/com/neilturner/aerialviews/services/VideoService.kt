@@ -5,16 +5,16 @@ import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.VideoQuality
-import com.neilturner.aerialviews.models.prefs.AerialCommunityVideoPrefs
-import com.neilturner.aerialviews.models.prefs.AerialShotsVideoPrefs
+import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
+import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.Apple2018Video
-import com.neilturner.aerialviews.providers.AerialCommunityVideoProvider
-import com.neilturner.aerialviews.providers.AerialShotsVideoProvider
+import com.neilturner.aerialviews.providers.Comm1VideoProvider
+import com.neilturner.aerialviews.providers.Comm2VideoProvider
 import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.providers.NetworkVideoProvider
@@ -36,12 +36,12 @@ class VideoService(private val context: Context) {
             providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
         }
 
-        if (AerialCommunityVideoPrefs.enabled) {
-            providers.add(AerialCommunityVideoProvider(context, AerialCommunityVideoPrefs))
+        if (Comm1VideoPrefs.enabled) {
+            providers.add(Comm1VideoProvider(context, Comm1VideoPrefs))
         }
 
-        if (AerialShotsVideoPrefs.enabled) {
-            providers.add(AerialShotsVideoProvider(context, AerialShotsVideoPrefs))
+        if (Comm2VideoPrefs.enabled) {
+            providers.add(Comm2VideoProvider(context, Comm2VideoPrefs))
         }
 
         // Remote videos added last so they'll be filtered out if duplicates are found

@@ -28,7 +28,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
             )
         }
 
-        Log.i(TAG, "tvOS: ${videos.count()} $quality videos found")
+        Log.i(TAG, "${videos.count()} $quality videos found")
         return videos
     }
 
