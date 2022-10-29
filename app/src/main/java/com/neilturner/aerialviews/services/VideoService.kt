@@ -3,8 +3,8 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AerialCommunityVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AerialShotsVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -58,7 +58,7 @@ class VideoService(private val context: Context) {
             val newVideos = try {
                 it.fetchVideos()
             } catch (ex: Exception) {
-                Log.e(TAG, ex.message.toString())
+                Log.e(TAG, "Exception in fetchVideos()", ex)
                 emptyList()
             }
             videos.addAll(newVideos)

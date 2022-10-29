@@ -4,11 +4,9 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AerialShotsVideoPrefs
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
-import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class AerialShotsVideoProvider(context: Context, private val prefs: AerialShotsVideoPrefs) : VideoProvider(context) {
 
