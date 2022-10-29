@@ -62,6 +62,7 @@ object FileHelper {
 
         if (filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
+            filename.endsWith(".m4v", true) ||
             filename.endsWith(".webm", true) ||
             filename.endsWith(".mkv", true)
         ) {
