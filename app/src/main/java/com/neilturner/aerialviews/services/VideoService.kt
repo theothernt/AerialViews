@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
 import com.neilturner.aerialviews.models.videos.AbstractVideo
@@ -58,41 +59,40 @@ class VideoService(private val context: Context) {
             val newVideos = try {
                 it.fetchVideos()
             } catch (ex: Exception) {
-                Log.e(TAG, "Exception in fetchVideos()", ex)
+                Log.e(TAG, "Exception in video provider", ex)
                 emptyList()
             }
             videos.addAll(newVideos)
         }
 
+        // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
-            var numVideos = videos.size
-            // Remove duplicates based on full path
-            videos = videos.distinctBy { it.uri.toString().lowercase() } as MutableList<AerialVideo>
-            Log.i(TAG, "Videos removed based on full path: ${numVideos - videos.size}")
-
-            numVideos = videos.size
-            // Remove duplicates based on filename only
+            val numVideos = videos.size
             videos = videos.distinctBy { it.uri.lastPathSegment.toString().lowercase() } as MutableList<AerialVideo>
-            Log.i(TAG, "Videos removed based on filename: ${numVideos - videos.size}")
+            Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
         }
 
-        // Try and add locations by looking up video filenames in various manifests
-        val manifestVideos = mutableListOf<AerialVideo>()
-        if (GeneralPrefs.useAppleManifests) {
-            manifestVideos.addAll(allManifestVideos())
-        }
+        // Try to add location/POIs to local and network videos
+        if (InterfacePrefs.showLocation) {
 
-        val result = findVideoLocationInManifest(videos, manifestVideos)
-        videos = result.first.toMutableList()
-        Log.i(TAG, "Found ${result.first.count()} manifest videos")
-        Log.i(TAG, "Found ${result.second.count()} non-manifest videos")
+            val manifestVideos = mutableListOf<AerialVideo>()
+            if (GeneralPrefs.useAppleManifests) {
+                manifestVideos.addAll(allManifestVideos())
+            }
 
-        if (!GeneralPrefs.ignoreNonManifestVideos) {
-            videos.addAll(result.second)
+            val result = findVideoLocationInManifest(videos, manifestVideos)
+            videos = result.first.toMutableList()
+            Log.i(TAG, "Found ${result.first.count()} manifest videos")
+
+            if (!GeneralPrefs.ignoreNonManifestVideos) {
+                videos.addAll(result.second)
+            }
         }
 
         // If there are videos with no location yet, use filename as location
-        if (!GeneralPrefs.ignoreNonManifestVideos && GeneralPrefs.filenameAsLocation) {
+        if (!GeneralPrefs.ignoreNonManifestVideos &&
+            InterfacePrefs.showLocation &&
+            GeneralPrefs.filenameAsLocation) {
             videos.forEach { video ->
                 if (video.location.isBlank()) {
                     val location = FileHelper.filenameToTitleCase(video.uri)
@@ -101,6 +101,7 @@ class VideoService(private val context: Context) {
             }
         }
 
+        // Randomise video order
         if (videos.isNotEmpty() && GeneralPrefs.shuffleVideos) {
             videos.shuffle()
         }
