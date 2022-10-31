@@ -22,6 +22,7 @@ import com.neilturner.aerialviews.providers.NetworkVideoProvider
 import com.neilturner.aerialviews.providers.VideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.JsonHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -74,25 +75,44 @@ class VideoService(private val context: Context) {
 
         // Try to add location/POIs to local and network videos
         if (InterfacePrefs.showLocation) {
+            val recognisedVideos = mutableListOf<AerialVideo>()
+            val unrecognisedVideos = mutableListOf<AerialVideo>()
 
-            val manifestVideos = mutableListOf<AerialVideo>()
-            if (GeneralPrefs.useAppleManifests) {
-                manifestVideos.addAll(allManifestVideos())
-            }
+            val videos1 = videosWithTranslatedPointsOfInterest()
+            val poiStrings = JsonHelper.parseJsonMap(context, R.raw.tvos15_strings)
+            val result1 = findVideoLocationInManifestAlt(videos, videos1, poiStrings)
+            videos = result1.first.toMutableList()
+            Log.i(TAG, "Found ${result1.first.count()} manifest videos")
 
-            val result = findVideoLocationInManifest(videos, manifestVideos)
-            videos = result.first.toMutableList()
-            Log.i(TAG, "Found ${result.first.count()} manifest videos")
+            val videos2 = videosWithPointsOfInterest()
+            val result2 = findVideoLocationInManifestAlt(result1.second, videos2, communityVideos = true)
+            videos.addAll(result2.first)
+            Log.i(TAG, "Found ${result2.first.count()} manifest videos")
+
+            val videos3 = videosWithLocations()
+            val result3 = findVideoLocationInManifestAlt(result2.second, videos3)
+            videos.addAll(result3.first)
+            Log.i(TAG, "Found ${result3.first.count()} manifest videos")
+
+//            val manifestVideos = mutableListOf<AerialVideo>()
+//            if (GeneralPrefs.useAppleManifests) {
+//                manifestVideos.addAll(allManifestVideos())
+//            }
+
+            // val result = findVideoLocationInManifest(videos, manifestVideos)
+            // videos = result.first.toMutableList()
+            // Log.i(TAG, "Found ${result.first.count()} manifest videos")
 
             if (!GeneralPrefs.ignoreNonManifestVideos) {
-                videos.addAll(result.second)
+                videos.addAll(result3.second)
             }
         }
 
         // If there are videos with no location yet, use filename as location
         if (!GeneralPrefs.ignoreNonManifestVideos &&
             InterfacePrefs.showLocation &&
-            GeneralPrefs.filenameAsLocation) {
+            GeneralPrefs.filenameAsLocation
+        ) {
             videos.forEach { video ->
                 if (video.location.isBlank()) {
                     val location = FileHelper.filenameToTitleCase(video.uri)
@@ -110,7 +130,25 @@ class VideoService(private val context: Context) {
         VideoPlaylist(videos)
     }
 
-    private fun allManifestVideos(): List<AerialVideo> {
+    // Apple videos that map to translated POI strings
+    private fun videosWithTranslatedPointsOfInterest(): List<AerialVideo> {
+        val videos = mutableListOf<AerialVideo>()
+
+        try {
+            JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
+                .assets?.forEach {
+                    videos.addAll(allVideoQualities(it))
+                }
+        } catch (ex: Exception) {
+            Log.e(TAG, "Exception while parsing tvOS 15 manifest", ex)
+        }
+
+        return videos
+    }
+
+    // Older apple videos with single location string
+    // Can add all translations later?
+    private fun videosWithLocations(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
 
         try {
@@ -119,7 +157,7 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Log.e(TAG, "Exception while parsing tvOS 12 manifest", ex)
         }
 
         try {
@@ -128,17 +166,16 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Log.e(TAG, "Exception while parsing tvOS 13 manifest", ex)
         }
 
-        try {
-            JsonHelper.parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
-                .assets?.forEach {
-                    videos.addAll(allVideoQualities(it))
-                }
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
-        }
+        // Some video filenames are found in multiple manifests
+        return videos.distinctBy { it.uri.toString().lowercase() }
+    }
+
+    // Community videos with a single POI string
+    private fun videosWithPointsOfInterest(): List<AerialVideo> {
+        val videos = mutableListOf<AerialVideo>()
 
         try {
             JsonHelper.parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
@@ -146,7 +183,7 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Log.e(TAG, "Exception while parsing Community 1 manifest", ex)
         }
 
         try {
@@ -155,9 +192,15 @@ class VideoService(private val context: Context) {
                     videos.addAll(allVideoQualities(it))
                 }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Log.e(TAG, "Exception while parsing Community 2 manifest", ex)
         }
 
+        // As there are no HDR videos, H.264 filenames are returned
+        return videos.distinctBy { it.uri.toString().lowercase() }
+    }
+
+    private fun allManifestVideos(): List<AerialVideo> {
+        val videos = mutableListOf<AerialVideo>()
         Log.i(TAG, "${videos.count()} videos listed in Apple and community manifests")
         return videos
     }
@@ -179,45 +222,65 @@ class VideoService(private val context: Context) {
         return videos
     }
 
-    private fun findVideoLocationInManifest(foundVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>): Pair<List<AerialVideo>, List<AerialVideo>> {
+    private fun findVideoLocationInManifestAlt(providerVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>, poiStrings: Map<String, String> = emptyMap(), communityVideos: Boolean = false): Pair<List<AerialVideo>, List<AerialVideo>> {
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
-        val strings = JsonHelper.parseJsonMap(context, R.raw.tvos15_strings)
 
-        for (video in foundVideos) {
+        for (video in providerVideos) {
+            // Skip if remote/streaming video
             if (!FileHelper.isLocalVideo(video.uri)) {
-                // Log.i(TAG, "Ignoring remote Apple video, already has location + POI")
                 matched.add(video)
                 continue
             }
 
             try {
-                val filename = video.uri.lastPathSegment.toString().lowercase()
+                // Check if video filename exists in manifest video list
+                val filename = video.uri.lastPathSegment.toStringOrEmpty().lowercase()
                 val videoFound = manifestVideos.find {
-                    val manifestFilename = it.uri.lastPathSegment.toString().lowercase()
+                    val manifestFilename = it.uri.lastPathSegment.toStringOrEmpty().lowercase()
                     manifestFilename.contains(filename)
                 }
 
-                if (videoFound != null) {
+                // Add manifest location/POI data to video
+                if (videoFound != null && poiStrings.isNotEmpty()) {
                     matched.add(
                         AerialVideo(
                             video.uri,
                             videoFound.location,
                             videoFound.poi.mapValues { poi ->
-                                strings[poi.value] ?: videoFound.location
+                                poiStrings[poi.value] ?: videoFound.location
                             }
                         )
                     )
-                } else {
+                }
+
+                if (videoFound != null && poiStrings.isEmpty()) {
+                    // Community videos have a single POI string
+                    if (communityVideos) {
+                        matched.add(
+                            AerialVideo(
+                                video.uri,
+                                videoFound.location,
+                                videoFound.poi
+                            )
+                        )
+                    } else { // Older videos only get locations
+                        AerialVideo(
+                            video.uri,
+                            videoFound.location
+                        )
+                    }
+                }
+
+                if (videoFound == null) {
                     unmatched.add(video)
                 }
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Log.e(TAG, "Exception while comparing provider and manifest videos", ex)
             }
         }
         return Pair(matched, unmatched)
     }
-
     companion object {
         private const val TAG = "VideoService"
     }
