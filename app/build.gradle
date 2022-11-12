@@ -118,7 +118,7 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.2.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.1')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.2')
     implementation('com.google.firebase:firebase-perf-ktx:20.2.0')
 
     // GSON
@@ -136,7 +136,7 @@ dependencies {
     implementation("com.hierynomus:smbj:0.11.5")
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.9.1')
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.10')
 
     // Unit testing
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.1')
