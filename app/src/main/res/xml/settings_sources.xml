@@ -10,12 +10,12 @@
 
         <Preference
             app:title="Videos by Jetson Creative"
-            app:summary="Stream the community videos using your internet connection"
+            app:summary="Stream community videos using your internet connection"
             app:fragment="com.neilturner.aerialviews.ui.settings.sources.Comm1VideosFragment"/>
 
         <Preference
             app:title="Videos by Robin Fourcade"
-            app:summary="Stream the community videos using your internet connection"
+            app:summary="Stream community videos using your internet connection"
             app:fragment="com.neilturner.aerialviews.ui.settings.sources.Comm2VideosFragment"/>
     </PreferenceCategory>
 
