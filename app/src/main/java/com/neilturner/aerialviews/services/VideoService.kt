@@ -115,15 +115,15 @@ class VideoService(private val context: Context) {
 
         val videos1 = videosWithTranslatedPointsOfInterest()
         val poiStrings = JsonHelper.parseJsonMap(context, R.raw.tvos15_strings)
-        val result1 = findVideoLocationInManifestAlt(videos, videos1, poiStrings)
+        val result1 = findVideoLocationInManifest(videos, videos1, poiStrings)
         recognisedVideos.addAll(result1.first)
 
         val videos2 = videosWithPointsOfInterest()
-        val result2 = findVideoLocationInManifestAlt(result1.second, videos2, communityVideos = true)
+        val result2 = findVideoLocationInManifest(result1.second, videos2, communityVideos = true)
         recognisedVideos.addAll(result2.first)
 
         val videos3 = videosWithLocations()
-        val result3 = findVideoLocationInManifestAlt(result2.second, videos3)
+        val result3 = findVideoLocationInManifest(result2.second, videos3)
         recognisedVideos.addAll(result3.first)
         unrecognisedVideos.addAll(result3.second)
 
@@ -221,7 +221,7 @@ class VideoService(private val context: Context) {
         return videos
     }
 
-    private fun findVideoLocationInManifestAlt(providerVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>, poiStrings: Map<String, String> = emptyMap(), communityVideos: Boolean = false): Pair<List<AerialVideo>, List<AerialVideo>> {
+    private fun findVideoLocationInManifest(providerVideos: List<AerialVideo>, manifestVideos: List<AerialVideo>, poiStrings: Map<String, String> = emptyMap(), communityVideos: Boolean = false): Pair<List<AerialVideo>, List<AerialVideo>> {
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()
 
