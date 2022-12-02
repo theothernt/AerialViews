@@ -3,11 +3,20 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
+import android.hardware.display.DisplayManager
+import android.hardware.display.DisplayManager.MATCH_CONTENT_FRAMERATE_ALWAYS
 import android.net.Uri
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Surface
+import android.view.Surface.CHANGE_FRAME_RATE_ALWAYS
+import android.view.Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
+import android.view.Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -24,6 +33,7 @@ import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PlayerHelper
 import java.lang.Runnable
+import java.util.Arrays
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
@@ -52,6 +62,46 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
+
+        // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.i(TAG, "Android 12, handle frame rate switching in app")
+            player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
+        }
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    fun setRefreshRate(context: Context, surface: Surface, newRefreshRate: Float) {
+        // https://gist.github.com/pflammertsma/5a453e24938722b4218528a3e5a60259#file-mainactivity-kt
+
+        /* Copyright 2021 Google LLC.
+        SPDX-License-Identifier: Apache-2.0 */
+
+        // Determine whether the transition will be seamless.
+        // Non-seamless transitions may cause a 1-2 second black screen.
+        val refreshRates = display?.mode?.alternativeRefreshRates?.toList()
+        val willBeSeamless = refreshRates?.contains(newRefreshRate)
+        if (willBeSeamless == true) {
+            Log.i(TAG, "Trying seamless...")
+            // Set the frame rate, but only if the transition will be seamless.
+            surface.setFrameRate(newRefreshRate,
+                FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
+                CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS)
+        } else {
+            Log.i(TAG, "Trying non-seamless...")
+            val prefersNonSeamless = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
+                .matchContentFrameRateUserPreference == MATCH_CONTENT_FRAMERATE_ALWAYS
+            if (prefersNonSeamless) {
+                // Show UX to inform the user that a switch is about to occur
+                //showUxForNonSeamlessSwitchWithDelay();
+                // Set the frame rate if the user has requested it to match content
+                surface.setFrameRate(newRefreshRate,
+                    FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
+                    CHANGE_FRAME_RATE_ALWAYS)
+            }
+        }
     }
 
     fun release() {
@@ -152,12 +202,26 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             Player.STATE_READY -> Log.i(TAG, "Playing...") // 3
             Player.STATE_ENDED -> Log.i(TAG, "Playback ended...") // 4
         }
+
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
             listener?.onPrepared()
         }
+
         if (player.playWhenReady && playbackState == Player.STATE_READY) {
             setupAlmostFinishedRunnable()
+        }
+
+        if (playbackState == Player.STATE_READY &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val frameRate = player.videoFormat?.frameRate
+            val surface = this.holder.surface
+            if (frameRate != null) {
+                Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
+                setRefreshRate(context, surface, frameRate)
+            } else {
+                Log.i(TAG, "Unable to get video frame rate...")
+            }
         }
     }
 
