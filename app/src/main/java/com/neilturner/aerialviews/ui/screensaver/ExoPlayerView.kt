@@ -114,7 +114,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val activeMode = display.mode
 
         Log.i(TAG, "Supported modes: ${supportedModes.size}")
-        if (supportedModes.size == 1) {
+        if (supportedModes.size > 1) {
             // Refresh rate >= video FPS
             val modesHigh = mutableListOf<Display.Mode>()
 
@@ -138,7 +138,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             }
 
             Log.i(TAG, "Available modes: $modesResolutionCount")
-            if (modesResolutionCount == 1) {
+            if (modesResolutionCount > 1) {
                 var modeBest: Display.Mode? = null
                 var modes = "Available refreshRates:"
 
