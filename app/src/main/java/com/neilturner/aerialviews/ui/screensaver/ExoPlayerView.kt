@@ -2,6 +2,7 @@
 
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.app.Activity
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.hardware.display.DisplayManager.MATCH_CONTENT_FRAMERATE_ALWAYS
@@ -9,14 +10,16 @@ import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
+import android.view.Display
 import android.view.Surface
 import android.view.Surface.CHANGE_FRAME_RATE_ALWAYS
 import android.view.Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
 import android.view.Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE
 import android.view.SurfaceView
+import android.view.WindowManager
 import android.widget.MediaController.MediaPlayerControl
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -25,6 +28,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.video.VideoSize
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -32,8 +36,6 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PlayerHelper
-import java.lang.Runnable
-import java.util.Arrays
 import kotlin.math.roundToLong
 
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
@@ -69,7 +71,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             Log.i(TAG, "Android 12, handle frame rate switching in app")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
-
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -102,6 +103,83 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                     CHANGE_FRAME_RATE_ALWAYS)
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun setLegacyRefreshRate(context: Context, surface: Surface, newRefreshRate: Float) {
+
+        val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        val display = displayManager.displays[0]
+        val supportedModes = display.supportedModes
+        val activeMode = display.mode
+
+        Log.i(TAG, "Supported modes: ${supportedModes.size}")
+        if (supportedModes.size == 1) {
+            // Refresh rate >= video FPS
+            val modesHigh = mutableListOf<Display.Mode>()
+
+            // Max refresh rate
+            var modeTop = activeMode
+            var modesResolutionCount = 0
+
+            // Filter only resolutions same as current
+            for (mode in supportedModes) {
+                if (mode.physicalWidth == activeMode.physicalWidth &&
+                    mode.physicalHeight == activeMode.physicalHeight
+                ) {
+                    modesResolutionCount++;
+
+                    if (normRate(mode.refreshRate) >= normRate(newRefreshRate))
+                        modesHigh.add(mode);
+
+                    if (normRate(mode.refreshRate) > normRate(modeTop.refreshRate))
+                        modeTop = mode;
+                }
+            }
+
+            Log.i(TAG, "Available modes: $modesResolutionCount")
+            if (modesResolutionCount == 1) {
+                var modeBest: Display.Mode? = null
+                var modes = "Available refreshRates:"
+
+                for (mode in modesHigh) {
+                    modes += " " + mode.refreshRate;
+                    if (normRate(mode.refreshRate) % normRate(newRefreshRate) <= 0.0001f) {
+                        if (modeBest == null || normRate(mode.refreshRate) > normRate(modeBest.refreshRate)) {
+                            modeBest = mode
+                        }
+                    }
+
+                    //val window = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    Log.i(TAG, "Trying to change window properties...")
+                    val activity = context as Activity
+                    val window = activity.window;
+                    val layoutParams = window.attributes
+
+                    if (modeBest == null)
+                        modeBest = modeTop
+
+                    val switchingModes = modeBest?.modeId != activeMode?.modeId
+                    if (switchingModes) {
+                        layoutParams.preferredDisplayModeId = modeBest?.modeId!!
+                        window.attributes = layoutParams;
+                    } else {
+                        Log.i(TAG, "No need to switch modes")
+                    }
+
+                    if (BuildConfig.DEBUG)
+                        Toast.makeText(activity, modes + "\n" +
+                                "Video frameRate: " + newRefreshRate + "\n" +
+                                "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show();
+                }
+            }
+        } else {
+            Log.i(TAG, "Only 1 mode found, exiting")
+        }
+    }
+
+    private fun normRate(rate: Float): Int {
+        return (rate * 100f).toInt()
     }
 
     fun release() {
@@ -212,15 +290,22 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             setupAlmostFinishedRunnable()
         }
 
-        if (playbackState == Player.STATE_READY &&
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (playbackState == Player.STATE_READY) {
             val frameRate = player.videoFormat?.frameRate
             val surface = this.holder.surface
-            if (frameRate != null) {
-                Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
-                setRefreshRate(context, surface, frameRate)
-            } else {
+
+            if (frameRate == null || frameRate == 0f) {
                 Log.i(TAG, "Unable to get video frame rate...")
+                return
+            }
+
+            Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Log.i(TAG, "Android 12")
+                setRefreshRate(context, surface, frameRate)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.i(TAG, "Not Android 12")
+                setLegacyRefreshRate(context, surface, frameRate)
             }
         }
     }
