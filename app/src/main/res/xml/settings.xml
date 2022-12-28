@@ -2,26 +2,26 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="Settings">
+    <PreferenceCategory app:title="@string/category_settings">
         <Preference
-            app:title="Video Sources"
-            app:summary="Play videos from streaming, USB storage, and network sources"
+            app:title="@string/settings_video_sources_title"
+            app:summary="@string/settings_video_sources_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.SourcesFragment"/>
 
         <Preference
-            app:title="Customise"
-            app:summary="Change how things look, performance and playlist options, etc"
+            app:title="@string/settings_customise_title"
+            app:summary="@string/settings_customise_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.CustomiseFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">
         <Preference
-            app:key="test_screensaver_settings"
-            app:title="@string/test_screensaver_settings" />
+            app:key="preview_screensaver"
+            app:title="@string/settings_preview_screensaver" />
 
         <Preference
-            app:key="open_system_screensaver_options"
-            app:title="@string/open_system_screensaver_options" />
+            app:key="system_options"
+            app:title="@string/settings_system_options" />
     </PreferenceCategory>
 
 </PreferenceScreen>

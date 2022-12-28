@@ -6,7 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="comm2_videos_enabled"
-                    app:title="Use Aerial Shots videos" />
+                    app:title="@string/comm2_videos_enabled" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_settings">
@@ -17,9 +17,9 @@
                     app:entries="@array/comm1_videos_quality_entries"
                     app:entryValues="@array/comm1_videos_quality_values"
                     app:key="comm2_videos_quality"
-                    app:title="@string/apple_videos_quality_title"
-                    app:summary="@string/apple_videos_quality_summary"
-                    app:dialogTitle="@string/apple_videos_quality_summary" />
+                    app:title="@string/videos_quality_title"
+                    app:summary="@string/videos_quality_summary"
+                    app:dialogTitle="@string/videos_quality_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>

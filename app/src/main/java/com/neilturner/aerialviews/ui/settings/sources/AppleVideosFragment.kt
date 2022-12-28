@@ -31,7 +31,7 @@ class AppleVideosFragment :
     private fun updateSummaries() {
         val res = context?.resources!!
         val quality = findPreference<ListPreference>("apple_videos_quality")
-        val qualityTitle = res.getString(R.string.apple_videos_quality_title)
+        val qualityTitle = res.getString(R.string.videos_quality_title)
         quality?.title = "$qualityTitle - ${quality?.entry}"
 
         val dataUsage = findPreference<Preference>("apple_videos_data_usage")

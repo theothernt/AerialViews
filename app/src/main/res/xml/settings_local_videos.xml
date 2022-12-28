@@ -6,8 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="local_videos_enabled"
-                    app:title="Use Local or USB storage videos" />
-                <!-- app:title="@string/local_videos_enabled_title" /> -->
+                    app:title="@string/local_videos_enabled_title" />
 
                 <Preference
                     app:isPreferenceVisible="false"
@@ -18,7 +17,7 @@
                     app:summary="@string/local_videos_notice_summary"/>
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="Folder Filter">
+        <PreferenceCategory app:title="@string/category_folder_filter">
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"

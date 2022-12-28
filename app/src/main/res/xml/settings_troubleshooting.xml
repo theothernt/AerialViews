@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="Video &amp; Render Options">
+        <PreferenceCategory app:title="@string/category_video_render_options">
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
@@ -24,21 +24,21 @@
                     app:title="@string/performance_exceed_renderer_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="Samba/SMB Option">
+        <PreferenceCategory app:title="@string/category_samba_options">
                 <MultiSelectListPreference
                     app:key="network_videos_smb_dialects"
                     app:defaultValue="@array/network_videos_smb_dialects_default"
                     app:entries="@array/network_videos_smb_dialects_entries"
                     app:entryValues="@array/network_videos_smb_dialects_values"
-                    app:title="@string/network_videos_smb_dialects_title"
-                    app:summary="@string/network_videos_smb_dialects_summary"
-                    app:dialogTitle="@string/network_videos_smb_dialects_title" />
+                    app:title="@string/samba_videos_smb_dialects_title"
+                    app:summary="@string/samba_videos_smb_dialects_summary"
+                    app:dialogTitle="@string/samba_videos_smb_dialects_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="network_videos_enable_encryption"
-                    app:summary="@string/network_videos_enable_encryption_summary"
-                    app:title="@string/network_videos_enable_encryption_title" />
+                    app:summary="@string/samba_videos_enable_encryption_summary"
+                    app:title="@string/samba_videos_enable_encryption_title" />
         </PreferenceCategory>
 
 </PreferenceScreen>

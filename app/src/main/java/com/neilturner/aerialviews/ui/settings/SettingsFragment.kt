@@ -32,12 +32,12 @@ class SettingsFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("open_system_screensaver_options")) {
+        if (preference.key.contains("system_options")) {
             openSystemScreensaverSettings()
             return true
         }
 
-        if (preference.key.contains("test_screensaver_settings")) {
+        if (preference.key.contains("preview_screensaver")) {
             testScreensaverSettings()
             return true
         }
