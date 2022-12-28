@@ -1,6 +1,6 @@
 @file:Suppress("unused", "BlockingMethodInNonBlockingContext")
 
-package com.neilturner.aerialviews.ui.settings.sources
+package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
 import android.content.SharedPreferences
@@ -54,7 +54,7 @@ class SambaVideosFragment :
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_samba_videos, rootKey)
+        setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         fileSystem = AndroidFileSystem(requireContext())

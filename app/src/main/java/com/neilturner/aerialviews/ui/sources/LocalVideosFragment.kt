@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings.sources
+package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
 import android.content.SharedPreferences
@@ -36,7 +36,7 @@ class LocalVideosFragment :
     private lateinit var requestPermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_local_videos, rootKey)
+        setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         storagePermissions = StoragePermissions(requireContext())
@@ -179,6 +179,6 @@ class LocalVideosFragment :
     }
 
     companion object {
-        private const val TAG = "TroubleshootingFragment"
+        private const val TAG = "LocalVideosFragment"
     }
 }

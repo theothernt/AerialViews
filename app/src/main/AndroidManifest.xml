@@ -41,7 +41,7 @@
         tools:targetApi="m">
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/SettingsTheme"
             android:exported="true">

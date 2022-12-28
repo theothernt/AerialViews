@@ -1,20 +1,19 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings.sources
+package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.ListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class AppleVideosFragment :
+class Comm1VideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_apple_videos, rootKey)
+        setPreferencesFromResource(R.xml.sources_comm1_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateSummaries()
     }
@@ -30,15 +29,8 @@ class AppleVideosFragment :
 
     private fun updateSummaries() {
         val res = context?.resources!!
-        val quality = findPreference<ListPreference>("apple_videos_quality")
+        val quality = findPreference<ListPreference>("comm1_videos_quality")
         val qualityTitle = res.getString(R.string.videos_quality_title)
         quality?.title = "$qualityTitle - ${quality?.entry}"
-
-        val dataUsage = findPreference<Preference>("apple_videos_data_usage")
-        val index = quality?.findIndexOfValue(quality.value)
-        val bitrates = res.getStringArray(R.array.apple_videos_data_usage_values)
-        val bitrate = index?.let { bitrates[it] }
-
-        dataUsage?.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 }

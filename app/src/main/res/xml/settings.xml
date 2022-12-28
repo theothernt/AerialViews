@@ -1,27 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory app:title="@string/category_settings">
         <Preference
-            app:title="@string/settings_video_sources_title"
-            app:summary="@string/settings_video_sources_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.SourcesFragment"/>
+            app:title="Appearance"
+            app:summary="Customise how things look while videos are playing"
+            app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceFragment"/>
 
         <Preference
-            app:title="@string/settings_customise_title"
-            app:summary="@string/settings_customise_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.CustomiseFragment"/>
+            app:title="Video Playlist"
+            app:summary="Mute videos, randomise the order, etc"
+            app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistFragment"/>
+
+        <Preference
+            app:title="D-pad/Remote"
+            app:summary="Customise d-pad actions on your remote"
+            app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
+
+        <Preference
+            app:title="Device Capabilities"
+            app:summary="View video codecs, resolution support, and other capabilities"
+            app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
+
+        <Preference
+            app:title="Troubleshooting"
+            app:summary="Performance &amp; debug options for troubleshooting"
+            app:fragment="com.neilturner.aerialviews.ui.settings.TroubleshootingFragment"/>
+
+<!--        <Preference-->
+<!--            app:title="Credits"-->
+<!--            app:summary="About the app and the components used"-->
+<!--            app:fragment="com.neilturner.aerialviews.ui.AboutFragment"/>-->
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/category_actions">
-        <Preference
-            app:key="preview_screensaver"
-            app:title="@string/settings_preview_screensaver" />
-
-        <Preference
-            app:key="system_options"
-            app:title="@string/settings_system_options" />
-    </PreferenceCategory>
+<!--    <PreferenceCategory app:title="@string/category_actions">-->
+<!--        <Preference-->
+<!--            android:title="@string/general_import_export_settings_title"-->
+<!--            android:summary="@string/general_import_export_settings_summary"-->
+<!--            android:key="general_import_export_settings" />-->
+<!--    </PreferenceCategory>-->
 
 </PreferenceScreen>

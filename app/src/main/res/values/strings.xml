@@ -2,7 +2,7 @@
     <!-- General -->
     <string name="app_name" translatable="false">Aerial Views</string>
     <string name="loading_title">Loading…</string>
-    <string name="loading_error">No videos found, please check your settings.</string>
+    <string name="loading_error">No videos found, please check your settings</string>
 
     <!-- Common Buttons -->
     <string name="button_ok">OK</string>
@@ -11,7 +11,6 @@
     <string name="button_export">Export</string>
 
     <!-- Common Categories -->
-    <string name="category_settings">Settings</string>
     <string name="category_actions">Actions</string>
     <string name="category_video_source">Video Source</string>
 
@@ -19,17 +18,17 @@
     <string name="videos_quality_title">Quality</string>
     <string name="videos_quality_summary">Select a video quality</string>
 
-    <!-- Settings  -->
+    <!-- Main  -->
     <string name="settings_video_sources_title">Video Sources</string>
     <string name="settings_video_sources_summary">Play videos from internet, USB storage, and network sources</string>
 
-    <string name="settings_customise_title">Customise</string>
-    <string name="settings_customise_summary">Change performance, playlist, and appearance options</string>
+    <string name="settings_settings_title">Settings</string>
+    <string name="settings_settings_summary">Change performance, playlist, and appearance options</string>
 
     <string name="settings_preview_screensaver">Test screensaver settings</string>
     <string name="settings_system_options">Open system screensaver options</string>
 
-    <!-- Settings / Video Sources -->
+    <!-- Main / Video Sources -->
     <string name="category_remote">Remote</string>
     <string name="category_local">Local</string>
     <string name="category_network">Network</string>
@@ -52,19 +51,19 @@
     <string name="sources_webdav_title">WebDAV server</string>
     <string name="sources_webdav_summary">Play videos stored on a WebDAV server locally or remotely</string>
 
-    <!-- Settings / Video Sources / Apple videos -->
+    <!-- Main / Video Sources / Apple videos -->
     <string name="apple_videos_enabled">Use Apple videos</string>
 
     <string name="apple_videos_data_usage_title">Data usage</string>
     <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
-    <!-- Settings / Video Sources / Comm1 videos -->
+    <!-- Main / Video Sources / Comm1 videos -->
     <string name="comm1_videos_enabled">Use community videos</string>
 
-    <!-- Settings / Video Sources / Comm2 videos -->
+    <!-- Main / Video Sources / Comm2 videos -->
     <string name="comm2_videos_enabled">Use community videos</string>
 
-    <!-- Settings / Video Sources / Local+USB videos -->
+    <!-- Main / Video Sources / Local+USB videos -->
     <string name="category_folder_filter">Folder Filter</string>
 
     <string name="local_videos_enabled_title">Use Local or USB storage videos</string>
@@ -78,7 +77,7 @@
     <string name="local_videos_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
 
-    <!-- Settings / Video Sources / Samba videos -->
+    <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Server details and credentials</string>
 
     <string name="samba_videos_enabled_title">Use SMB/Samba share videos</string>
@@ -101,10 +100,10 @@
 
     <string name="samba_videos_test_connection">Test connection settings</string>
 
-    <!-- Settings / Video Sources / WebDAV videos -->
+    <!-- Main / Video Sources / WebDAV videos -->
 
-    <!-- Settings / Customise -->
-    <string name="category_customise">Customise</string>
+    <!-- Main / Settings -->
+    <string name="category_settings">Settings</string>
 
     <!-- Main / Settings / Troubleshooting -->
     <string name="category_video_render_options">Video &amp; Render Options</string>
@@ -118,11 +117,9 @@
 
 
     <!-- OLD -->
-
+    <string name="category_customise">Customise</string>
     <string name="category_capabilities">Capabilities</string>
-
     <string name="category_video_sources">Video Sources</string>
-
     <string name="category_playlist">Playlist</string>
     <string name="category_network_settings">Network Settings</string>
     <string name="category_local_storage_settings">Local Storage Settings</string>
