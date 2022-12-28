@@ -34,11 +34,11 @@
 <!--            app:fragment="com.neilturner.aerialviews.ui.settings.customise.AboutFragment"/>-->
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/category_actions">
-        <Preference
-            android:title="@string/general_import_export_settings_title"
-            android:summary="@string/general_import_export_settings_summary"
-            android:key="general_import_export_settings" />
-    </PreferenceCategory>
+<!--    <PreferenceCategory app:title="@string/category_actions">-->
+<!--        <Preference-->
+<!--            android:title="@string/general_import_export_settings_title"-->
+<!--            android:summary="@string/general_import_export_settings_summary"-->
+<!--            android:key="general_import_export_settings" />-->
+<!--    </PreferenceCategory>-->
 
 </PreferenceScreen>
