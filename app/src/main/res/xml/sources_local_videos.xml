@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_video_sources">
+        <PreferenceCategory app:title="@string/category_video_source">
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="local_videos_enabled"

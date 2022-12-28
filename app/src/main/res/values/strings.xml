@@ -18,7 +18,7 @@
     <string name="videos_quality_title">Quality</string>
     <string name="videos_quality_summary">Select a video quality</string>
 
-    <!-- Main  -->
+    <!-- Main -->
     <string name="settings_video_sources_title">Video Sources</string>
     <string name="settings_video_sources_summary">Play videos from internet, USB storage, and network sources</string>
 
@@ -77,6 +77,8 @@
     <string name="local_videos_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
 
+    <string name="local_videos_filter_test">Test filter settings</string>
+
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Server details and credentials</string>
 
@@ -94,7 +96,6 @@
     <string name="samba_videos_password_title">Password</string>
     <string name="samba_videos_password_summary">Optional</string>
 
-
     <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
     <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
 
@@ -105,52 +106,32 @@
     <!-- Main / Settings -->
     <string name="category_settings">Settings</string>
 
-    <!-- Main / Settings / Troubleshooting -->
-    <string name="category_video_render_options">Video &amp; Render Options</string>
-    <string name="category_samba_options">Samba/SMB Options</string>
+    <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_appearance_summary">Customise how things look while videos are playing</string>
 
-    <string name="samba_videos_enable_encryption_title">Enable encryption</string>
-    <string name="samba_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
+    <string name="settings_playlist_title">Playlist</string>
+    <string name="settings_playlist_summary">Mute videos, randomise the order, etc</string>
 
-    <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
-    <string name="samba_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
+    <string name="settings_dpad_title">D-Pad/Remote</string>
+    <string name="settings_dpad_summary">Customise d-pad actions on your remote</string>
 
+    <string name="settings_capabilities_title">Device capabilities</string>
+    <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
 
-    <!-- OLD -->
-    <string name="category_customise">Customise</string>
-    <string name="category_capabilities">Capabilities</string>
-    <string name="category_video_sources">Video Sources</string>
-    <string name="category_playlist">Playlist</string>
-    <string name="category_network_settings">Network Settings</string>
-    <string name="category_local_storage_settings">Local Storage Settings</string>
-    <string name="category_performance_debug">Performance &amp; Debug</string>
+    <string name="settings_troubleshooting_title">Troubleshooting</string>
+    <string name="settings_troubleshooting_summary">Performance &amp; debug options for troubleshooting</string>
 
-    <string name="any_videos_credentials_title">Credentials</string>
-    <string name="any_videos_credentials_summary">Server details and credentials for SMB access</string>
+    <string name="settings_about_title">About</string>
+    <string name="settings_about_summary">About the app, components used, etc</string>
 
-    <string name="network_videos_enabled_title">Use Network videos</string>
+    <string name="settings_import_export_settings_title">Import/Export settings</string>
+    <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
 
-    <string name="any_videos_filename_location_title">Use filename as location</string>
-    <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
+    <!-- Main / Settings / Appearance -->
+    <string name="category_appearance">Appearance</string>
 
-    <string name="any_videos_use_apple_manifests_title">Show locations/POI for matched Apple videos</string>
-    <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>
-
-    <string name="local_videos_filter_test">Test filter settings</string>
-
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unrecognised/non-Apple videos</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
-
-    <!-- Network Video Options -->
-
-    <!-- Settings -->
-    <string name="settings_debug_warning">Don\'t change the options below unless troubleshooting!</string>
-
-    <string name="general_import_export_settings_title">Import/Export settings</string>
-    <string name="general_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
-
-    <string name="interface_title">Interface</string>
-    <string name="interface_summary">Customise how things look</string>
+    <string name="interface_alt_text_position_title">Alternate text position</string>
+    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
     <string name="interface_show_clock_title">Show clock</string>
     <string name="interface_show_clock_summary">Shows the current time</string>
@@ -161,11 +142,32 @@
     <string name="interface_show_location_style_title">Apple videos</string>
     <string name="interface_show_location_style_summary">Choose a video title style</string>
 
-    <string name="interface_alt_text_position_title">Alternate text position</string>
-    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+    <string name="any_videos_filename_location_title">Use filename as location</string>
+    <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
+
+    <!-- Main / Settings / Playlist -->
+    <string name="category_playlist">Playlist</string>
 
     <string name="interface_mute_videos_title">Mute videos</string>
     <string name="interface_mute_videos_summary">Mute the sound of all videos</string>
+
+    <string name="interface_shuffle_videos_title">Shuffle videos</string>
+    <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
+
+    <string name="playback_speed_title">Playback speed</string>
+    <string name="playback_speed_summary">Choose a playback speed</string>
+
+    <string name="interface_remove_duplicates_title">Remove duplicate videos</string>
+    <string name="interface_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+
+    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unrecognised/non-Apple videos</string>
+    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
+
+<!--    <string name="any_videos_use_apple_manifests_title">Show locations/POI for matched Apple videos</string>-->
+<!--    <string name="any_videos_use_apple_manifests_summary">Uses the video manifests from various versions of tvOS</string>-->
+
+    <!-- Main / Settings / D-Pad/Remote -->
+    <string name="category_dpad">D-Pad/Remote</string>
 
     <string name="interface_enable_skip_videos_title">Skip to next or previous video</string>
     <string name="interface_enable_skip_videos_summary">Skip a video by pressing left or right on the d-pad of your remote</string>
@@ -173,14 +175,18 @@
     <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
     <string name="interface_enable_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
 
-    <string name="interface_shuffle_videos_title">Shuffle videos</string>
-    <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
+    <!-- Main / Settings / Device capabilities -->
+    <string name="category_capabilities">Capabilities</string>
 
-    <string name="interface_remove_duplicates_title">Remove duplicate videos</string>
-    <string name="interface_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+    <string name="capabilities_device_title">Device</string>
+    <string name="capabilities_display_title">TV/Display</string>
+    <string name="capabilities_codecs_title">Codec Summary</string>
+    <string name="capabilities_decoders_title">Video Decoders</string>
+    <string name="capabilities_resolution_title">Resolution</string>
 
-    <string name="performance_title">Performance &amp; Debug</string>
-    <string name="performance_summary">For troubleshooting issues</string>
+    <!-- Main / Settings / Troubleshooting -->
+    <string name="category_video_render_options">Video &amp; Render options</string>
+    <string name="category_samba_options">Samba/SMB options</string>
 
     <string name="performance_enable_tunneling_title">Enable tunneling</string>
     <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
@@ -191,16 +197,13 @@
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
-    <string name="performance_capabilities_title">Capabilities</string>
-    <string name="performance_capabilities_summary">Detected TV and codec features</string>
+    <string name="samba_videos_enable_encryption_title">Enable encryption</string>
+    <string name="samba_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
 
-    <string name="capabilities_device_title">Device</string>
-    <string name="capabilities_display_title">TV/Display</string>
-    <string name="capabilities_codecs_title">Codec Summary</string>
-    <string name="capabilities_decoders_title">Video Decoders</string>
-    <string name="capabilities_resolution_title">Resolution</string>
+    <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
+    <string name="samba_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
 
-    <string name="playback_speed_title">Playback speed</string>
-    <string name="playback_speed_summary">Choose a playback speed</string>
+    <!-- Main / Settings / About -->
+    <string name="category_about">About</string>
 
 </resources>

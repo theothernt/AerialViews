@@ -4,33 +4,33 @@
 
     <PreferenceCategory app:title="@string/category_settings">
         <Preference
-            app:title="Appearance"
-            app:summary="Customise how things look while videos are playing"
+            app:title="@string/settings_appearance_title"
+            app:summary="@string/settings_appearance_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceFragment"/>
 
         <Preference
-            app:title="Video Playlist"
-            app:summary="Mute videos, randomise the order, etc"
+            app:title="@string/settings_playlist_title"
+            app:summary="@string/settings_playlist_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistFragment"/>
 
         <Preference
-            app:title="D-pad/Remote"
-            app:summary="Customise d-pad actions on your remote"
+            app:title="@string/settings_dpad_title"
+            app:summary="@string/settings_dpad_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
 
         <Preference
-            app:title="Device Capabilities"
-            app:summary="View video codecs, resolution support, and other capabilities"
+            app:title="@string/settings_capabilities_title"
+            app:summary="@string/settings_capabilities_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
 
         <Preference
-            app:title="Troubleshooting"
-            app:summary="Performance &amp; debug options for troubleshooting"
+            app:title="@string/settings_troubleshooting_title"
+            app:summary="@string/settings_troubleshooting_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.TroubleshootingFragment"/>
 
 <!--        <Preference-->
-<!--            app:title="Credits"-->
-<!--            app:summary="About the app and the components used"-->
+<!--            app:title="@string/settings_about_title"-->
+<!--            app:summary="@string/settings_about_summary"-->
 <!--            app:fragment="com.neilturner.aerialviews.ui.AboutFragment"/>-->
     </PreferenceCategory>
 
