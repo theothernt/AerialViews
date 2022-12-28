@@ -127,10 +127,10 @@ class VideoService(private val context: Context) {
         recognisedVideos.addAll(result3.first)
         unrecognisedVideos.addAll(result3.second)
 
-        Log.i(TAG, "Found ${result1.first.count()} tvOS15 manifest videos")
-        Log.i(TAG, "Found ${result2.first.count()} community manifest videos")
-        Log.i(TAG, "Found ${result3.first.count()} legacy manifest videos")
-        Log.i(TAG, "Found ${result3.second.count()} unrecognised manifest videos")
+        //Log.i(TAG, "Found ${result1.first.count()} tvOS15 manifest videos")
+        //Log.i(TAG, "Found ${result2.first.count()} community manifest videos")
+        //Log.i(TAG, "Found ${result3.first.count()} legacy manifest videos")
+        //Log.i(TAG, "Found ${result3.second.count()} unrecognised manifest videos")
 
         return Pair(recognisedVideos, unrecognisedVideos)
     }
