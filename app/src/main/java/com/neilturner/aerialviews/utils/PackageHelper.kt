@@ -31,14 +31,4 @@ object PackageHelper {
             false
         }
     }
-
-    fun versionCode(context: Context): Int {
-        return try {
-            context.packageManager
-                .getPackageInfoCompat(context.packageName, 0).baseRevisionCode
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-            0
-        }
-    }
 }

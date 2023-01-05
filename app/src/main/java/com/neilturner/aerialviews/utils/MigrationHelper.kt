@@ -1,12 +1,16 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
+import com.google.firebase.encoders.json.BuildConfig
 
 class MigrationHelper(val context: Context) {
 
     private val prefsPackageName = "${context.packageName}_preferences"
 
+    @RequiresApi(Build.VERSION_CODES.P)
     fun upgradeSettings() {
 
         // If first install, exit early
@@ -19,26 +23,33 @@ class MigrationHelper(val context: Context) {
         if (!PackageHelper.isPackageUpdate(context)) {
             Log.i(TAG, "Package not updated, no migration needed")
             return
+        } else {
+            Log.i(TAG, "Package updated, checking if migration is needed")
         }
 
-        //val versionCode = lastKnownVersion()
-        val version = PackageHelper.versionCode(context)
+        val latestVersion = BuildConfig.VERSION_CODE
         val lastKnownVersion = lastKnownVersion()
 
-        if (lastKnownVersion == version) {
+        if (lastKnownVersion == latestVersion) {
             Log.i(TAG, "Package updated but already migrated")
             return
         }
 
-        if (version <= 10) {
-            // If less than v10, if apple disabled, disable comm1 and commm2
-
-            // If less than v11, migrate other/new setting
-            Log.i(TAG, "Migration settings for release 10")
-        }
+        if (lastKnownVersion <= 10) release10()
+        if (lastKnownVersion <= 11) release11()
 
         // After all migrations, set version to latest
-        //updateKnownVersion(version)
+        updateKnownVersion(latestVersion)
+    }
+
+    private fun release10() {
+        // If less than v10, if apple disabled, disable comm1 and commm2
+        // If less than v11, migrate other/new setting
+        Log.i(TAG, "Migrating settings for release 10")
+    }
+
+    private fun release11() {
+        Log.i(TAG, "Migrating settings for release 11")
     }
 
     // Get saved revision code or return 0
