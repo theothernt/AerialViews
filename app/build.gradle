@@ -122,7 +122,7 @@ dependencies {
     implementation('com.google.firebase:firebase-perf-ktx:20.3.0')
 
     // GSON
-    implementation('com.google.code.gson:gson:2.10')
+    implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
     implementation("com.google.android.exoplayer:exoplayer-core:2.18.2")
