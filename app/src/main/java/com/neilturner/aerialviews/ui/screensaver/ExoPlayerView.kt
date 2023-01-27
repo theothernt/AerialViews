@@ -16,7 +16,6 @@ import android.view.Surface.CHANGE_FRAME_RATE_ALWAYS
 import android.view.Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
 import android.view.Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE
 import android.view.SurfaceView
-import android.view.WindowManager
 import android.widget.MediaController.MediaPlayerControl
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -127,13 +126,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 if (mode.physicalWidth == activeMode.physicalWidth &&
                     mode.physicalHeight == activeMode.physicalHeight
                 ) {
-                    modesResolutionCount++;
+                    modesResolutionCount++
 
                     if (normRate(mode.refreshRate) >= normRate(newRefreshRate))
-                        modesHigh.add(mode);
+                        modesHigh.add(mode)
 
                     if (normRate(mode.refreshRate) > normRate(modeTop.refreshRate))
-                        modeTop = mode;
+                        modeTop = mode
                 }
             }
 
@@ -143,7 +142,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 var modes = "Available refreshRates:"
 
                 for (mode in modesHigh) {
-                    modes += " " + mode.refreshRate;
+                    modes += " " + mode.refreshRate
                     if (normRate(mode.refreshRate) % normRate(newRefreshRate) <= 0.0001f) {
                         if (modeBest == null || normRate(mode.refreshRate) > normRate(modeBest.refreshRate)) {
                             modeBest = mode
@@ -152,8 +151,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
                     //val window = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                     Log.i(TAG, "Trying to change window properties...")
-                    val activity = context as Activity
-                    val window = activity.window;
+                    val activity = context as? Activity
+                    if (activity == null) {
+                        Log.i(TAG, "Unable to get Window object")
+                        return
+                    }
+
+                    val window = activity.window
                     val layoutParams = window.attributes
 
                     if (modeBest == null)
@@ -162,7 +166,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                     val switchingModes = modeBest?.modeId != activeMode?.modeId
                     if (switchingModes) {
                         layoutParams.preferredDisplayModeId = modeBest?.modeId!!
-                        window.attributes = layoutParams;
+                        window.attributes = layoutParams
                     } else {
                         Log.i(TAG, "No need to switch modes")
                     }
@@ -170,7 +174,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                     if (BuildConfig.DEBUG)
                         Toast.makeText(activity, modes + "\n" +
                                 "Video frameRate: " + newRefreshRate + "\n" +
-                                "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show();
+                                "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show()
                 }
             }
         } else {
