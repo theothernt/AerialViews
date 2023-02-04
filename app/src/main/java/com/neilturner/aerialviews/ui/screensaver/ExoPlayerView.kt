@@ -106,6 +106,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun setLegacyRefreshRate(context: Context, newRefreshRate: Float) {
+        // https://github.com/moneytoo/Player/blob/6d3dc72734d7d9d2df2267eaf35cc473ac1dd3b4/app/src/main/java/com/brouken/player/Utils.java
 
         val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val display = displayManager.displays[0]
