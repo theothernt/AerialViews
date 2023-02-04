@@ -105,7 +105,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun setLegacyRefreshRate(context: Context, surface: Surface, newRefreshRate: Float) {
+    fun setLegacyRefreshRate(context: Context, newRefreshRate: Float) {
 
         val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val display = displayManager.displays[0]
@@ -148,34 +148,33 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                             modeBest = mode
                         }
                     }
-
-                    //val window = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                    Log.i(TAG, "Trying to change window properties...")
-                    val activity = context as? Activity
-                    if (activity == null) {
-                        Log.i(TAG, "Unable to get Window object")
-                        return
-                    }
-
-                    val window = activity.window
-                    val layoutParams = window.attributes
-
-                    if (modeBest == null)
-                        modeBest = modeTop
-
-                    val switchingModes = modeBest?.modeId != activeMode?.modeId
-                    if (switchingModes) {
-                        layoutParams.preferredDisplayModeId = modeBest?.modeId!!
-                        window.attributes = layoutParams
-                    } else {
-                        Log.i(TAG, "No need to switch modes")
-                    }
-
-                    if (BuildConfig.DEBUG)
-                        Toast.makeText(activity, modes + "\n" +
-                                "Video frameRate: " + newRefreshRate + "\n" +
-                                "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show()
                 }
+
+                Log.i(TAG, "Trying to change window properties...")
+                val activity = context as? Activity
+                if (activity == null) {
+                    Log.i(TAG, "Unable to get Window object")
+                    return
+                }
+
+                val window = activity.window
+                val layoutParams = window.attributes
+
+                if (modeBest == null)
+                    modeBest = modeTop
+
+                val switchingModes = modeBest?.modeId != activeMode?.modeId
+                if (switchingModes) {
+                    layoutParams.preferredDisplayModeId = modeBest?.modeId!!
+                    window.attributes = layoutParams
+                } else {
+                    Log.i(TAG, "No need to switch modes")
+                }
+
+                if (BuildConfig.DEBUG)
+                    Toast.makeText(activity, modes + "\n" +
+                            "Video frameRate: " + newRefreshRate + "\n" +
+                            "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show()
             }
         } else {
             Log.i(TAG, "Only 1 mode found, exiting")
@@ -309,7 +308,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 setRefreshRate(context, surface, frameRate)
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Log.i(TAG, "Not Android 12")
-                setLegacyRefreshRate(context, surface, frameRate)
+                setLegacyRefreshRate(context, frameRate)
             }
         }
     }

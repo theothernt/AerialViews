@@ -213,8 +213,6 @@ class VideoController(private val context: Context, private val window: Window) 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
-
-
     override fun onError() {
         // val message = "Error while trying to play ${currentVideo.uri}"
         // Toast.makeText(context, message, Toast.LENGTH_LONG).show()
