@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -24,7 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(private val context: Context) : OnPlayerEventListener {
+class VideoController(private val context: Context, private val window: Window) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
@@ -211,6 +212,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         val message = "Playback speed changed to: ${GeneralPrefs.playbackSpeed}x"
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
+
+
 
     override fun onError() {
         // val message = "Error while trying to play ${currentVideo.uri}"

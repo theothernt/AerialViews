@@ -22,7 +22,7 @@ class TestActivity : Activity() {
         super.onAttachedToWindow()
         Log.i(TAG, "onAttachedToWindow")
         // Start playback, etc
-        videoController = VideoController(this)
+        videoController = VideoController(this, window)
         setContentView(videoController.view)
     }
 

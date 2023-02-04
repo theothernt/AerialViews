@@ -17,7 +17,7 @@ class DreamActivity : DreamService() {
         // Setup
         isFullscreen = true
         isInteractive = true
-        videoController = VideoController(this)
+        videoController = VideoController(this, window)
         setContentView(videoController.view)
     }
 
