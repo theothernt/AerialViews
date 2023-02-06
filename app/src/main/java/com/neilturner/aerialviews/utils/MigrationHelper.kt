@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.util.Log
-import com.google.firebase.encoders.json.BuildConfig
+import com.neilturner.aerialviews.BuildConfig
 
 class MigrationHelper(val context: Context) {
 
