@@ -166,10 +166,11 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
                 val switchingModes = modeBest?.modeId != activeMode?.modeId
                 if (switchingModes) {
+                    Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${modeBest?.modeId}")
                     layoutParams.preferredDisplayModeId = modeBest?.modeId!!
                     window.attributes = layoutParams
                 } else {
-                    Log.i(TAG, "No need to switch modes")
+                    Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
                 }
 
                 if (BuildConfig.DEBUG)
