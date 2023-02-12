@@ -26,9 +26,6 @@ class MainFragment :
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
-
-        val migration = context?.let { MigrationHelper(it) }
-        migration?.upgradeSettings()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
