@@ -7,11 +7,16 @@ import com.neilturner.aerialviews.BuildConfig
 class MigrationHelper(val context: Context) {
 
     private val prefsPackageName = "${context.packageName}_preferences"
+    private val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
 
     fun upgradeSettings() {
+        val latestVersion = BuildConfig.VERSION_CODE
+        val lastKnownVersion = getLastKnownVersion()
+
         // If first install, exit early
         if (PackageHelper.isFirstInstall(context)) {
             Log.i(TAG, "Fresh install, no migration needed")
+            updateKnownVersion(latestVersion)
             return
         }
 
@@ -22,9 +27,6 @@ class MigrationHelper(val context: Context) {
         } else {
             Log.i(TAG, "Package updated, checking if migration is needed")
         }
-
-        val latestVersion = BuildConfig.VERSION_CODE
-        val lastKnownVersion = lastKnownVersion()
 
         if (lastKnownVersion == latestVersion) {
             Log.i(TAG, "Package updated but already migrated")
@@ -39,9 +41,12 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release10() {
-        // If less than v10, if apple disabled, disable comm1 and commm2
-        // If less than v11, migrate other/new setting
         Log.i(TAG, "Migrating settings for release 10")
+        val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
+        if (!appleVideosEnabled) {
+            prefs.edit().putBoolean("comm1_videos_enabled", false).apply()
+            prefs.edit().putBoolean("comm2_videos_enabled", false).apply()
+        }
     }
 
     private fun release11() {
@@ -49,14 +54,12 @@ class MigrationHelper(val context: Context) {
     }
 
     // Get saved revision code or return 0
-    private fun lastKnownVersion(): Int {
-        val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
+    private fun getLastKnownVersion(): Int {
         return prefs.getInt("last_known_version", 0)
     }
 
     // Update saved revision code or return 0
     private fun updateKnownVersion(versionCode: Int) {
-        val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
         prefs.edit().putInt("last_known_version", versionCode).apply()
     }
 
