@@ -36,7 +36,7 @@ class MigrationHelper(val context: Context) {
         }
 
         if (lastKnownVersion <= 10) release10()
-        //if (lastKnownVersion <= 11) release11()
+        // if (lastKnownVersion <= 11) release11()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
