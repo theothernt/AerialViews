@@ -169,7 +169,7 @@
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
 
-    <string name="interface_enable_skip_videos_title">Skip to next or previous video</string>
+    <string name="interface_enable_skip_videos_title">Allow skipping to next/previous video</string>
     <string name="interface_enable_skip_videos_summary">Skip a video by pressing left or right on the d-pad of your remote</string>
 
     <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
