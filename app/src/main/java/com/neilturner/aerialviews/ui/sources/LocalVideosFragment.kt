@@ -59,17 +59,18 @@ class LocalVideosFragment :
     }
 
     override fun onResume() {
-        val canReadVideos = storagePermissions.hasAccess(
-            action = Action.READ,
-            types = listOf(FileType.Video),
-            createdBy = StoragePermissions.CreatedBy.AllApps
-        )
-
-        if (!canReadVideos &&
-            requiresPermission()
-        ) {
-            resetPreference()
-        }
+//        val canReadVideos = storagePermissions.hasAccess(
+//            action = Action.READ,
+//            types = listOf(FileType.Video),
+//            createdBy = StoragePermissions.CreatedBy.AllApps
+//        )
+//
+//        if (!canReadVideos &&
+//            requiresPermission()
+//        ) {
+//            Log.i(TAG, "Reset pref. on resume")
+//            resetPreference()
+//        }
         super.onResume()
     }
 
@@ -104,7 +105,6 @@ class LocalVideosFragment :
                 } else {
                     requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
-
             }
         }
     }
