@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="true"
+                    app:key="comm2_videos_enabled"
+                    app:title="@string/comm2_videos_enabled" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_settings">
+                <ListPreference
+                    app:dependency="comm2_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/comm1_videos_quality_default"
+                    app:entries="@array/comm1_videos_quality_entries"
+                    app:entryValues="@array/comm1_videos_quality_values"
+                    app:key="comm2_videos_quality"
+                    app:title="@string/videos_quality_title"
+                    app:summary="@string/videos_quality_summary"
+                    app:dialogTitle="@string/videos_quality_summary" />
+        </PreferenceCategory>
+
+</PreferenceScreen>

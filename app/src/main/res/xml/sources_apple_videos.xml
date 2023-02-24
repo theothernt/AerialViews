@@ -17,9 +17,9 @@
                     app:entries="@array/apple_videos_quality_entries"
                     app:entryValues="@array/apple_videos_quality_values"
                     app:key="apple_videos_quality"
-                    app:title="@string/apple_videos_quality_title"
-                    app:summary="@string/apple_videos_quality_summary"
-                    app:dialogTitle="@string/apple_videos_quality_summary" />
+                    app:title="@string/videos_quality_title"
+                    app:summary="@string/videos_quality_summary"
+                    app:dialogTitle="@string/videos_quality_summary" />
         </PreferenceCategory>
 
         <Preference

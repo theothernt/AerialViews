@@ -15,7 +15,7 @@ android {
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 33
         versionCode 10
-        versionName "1.3.3"
+        versionName "1.4.0"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -118,14 +118,14 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.2.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.3')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.5')
     implementation('com.google.firebase:firebase-perf-ktx:20.3.1')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('com.google.android.exoplayer:exoplayer-core:2.18.2')
+    implementation('com.google.android.exoplayer:exoplayer-core:2.18.3')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")

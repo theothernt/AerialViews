@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="network_videos_enabled"
+                    app:title="@string/samba_videos_enabled_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_server_details">
+                <EditTextPreference
+                    android:summary="@string/samba_videos_hostname_summary"
+                    android:key="network_videos_hostname"
+                    android:selectAllOnFocus="true"
+                    android:title="@string/samba_videos_hostname_title" />
+
+                <EditTextPreference
+                    android:summary="@string/samba_videos_sharename_summary"
+                    android:key="network_videos_sharename"
+                    android:title="@string/samba_videos_sharename_title" />
+
+                <EditTextPreference
+                    android:summary="@string/samba_videos_username_summary"
+                    android:key="network_videos_username"
+                    android:title="@string/samba_videos_username_title" />
+
+                <EditTextPreference
+                    android:summary="@string/samba_videos_password_summary"
+                    android:key="network_videos_password"
+                    android:title="@string/samba_videos_password_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_actions">
+                <Preference
+                    android:title="@string/samba_videos_test_connection"
+                    android:key="network_videos_test_connection" />
+
+                <Preference
+                    android:title="@string/samba_videos_import_export_settings_title"
+                    android:summary="@string/samba_videos_import_export_settings_summary"
+                    android:key="network_videos_import_export_settings" />
+        </PreferenceCategory>
+</PreferenceScreen>

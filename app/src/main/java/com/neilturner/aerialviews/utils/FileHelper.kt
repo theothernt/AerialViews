@@ -1,4 +1,7 @@
-@file:Suppress("unused", "unused")
+@file:Suppress(
+    "unused",
+    "unused"
+)
 
 package com.neilturner.aerialviews.utils
 
@@ -56,8 +59,10 @@ object FileHelper {
 
         if (filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
+            filename.endsWith(".m4v", true) ||
             filename.endsWith(".webm", true) ||
-            filename.endsWith(".mkv", true)
+            filename.endsWith(".mkv", true) ||
+            filename.endsWith(".ts", true)
         ) {
             return true
         }

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class SettingsActivity :
+class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
@@ -18,7 +18,7 @@ class SettingsActivity :
         if (savedInstanceState == null) {
             supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.settings, SettingsFragment())
+                .replace(R.id.settings, MainFragment())
                 .commit()
         } else {
             title = savedInstanceState.getCharSequence("TITLE_TAG")

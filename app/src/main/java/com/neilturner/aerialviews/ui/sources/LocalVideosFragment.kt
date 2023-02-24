@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
 import android.content.SharedPreferences
@@ -28,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AnyVideosFragment :
+class LocalVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
@@ -36,7 +36,7 @@ class AnyVideosFragment :
     private lateinit var requestPermission: ActivityResultLauncher<String>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_any_videos, rootKey)
+        setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         storagePermissions = StoragePermissions(requireContext())
@@ -179,6 +179,6 @@ class AnyVideosFragment :
     }
 
     companion object {
-        private const val TAG = "AnyVideosFragment"
+        private const val TAG = "LocalVideosFragment"
     }
 }

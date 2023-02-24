@@ -1,0 +1,110 @@
+{
+    "assets": [
+        {
+            "id": "french_alps_mont_blanc_202202",
+            "pointsOfInterest": {
+                "0": "Flying towards Mont Blanc, Megève, France"
+            },
+            "title": "Alps",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_mont_blanc_2_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_mont_blanc_2_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_mont_blanc_2_4k_hevc.m4v"
+        },
+        {
+            "id": "french_alps_sea_of_clouds_202202",
+            "pointsOfInterest": {
+                "0": "Flight over sea of clouds, Megève, France"
+            },
+            "title": "Sea of Clouds 1",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_4k_hevc.m4v"
+        },
+        {
+            "id": "french_alps_sea_of_clouds_2_202202",
+            "pointsOfInterest": {
+                "0": "Flight over sea of clouds, Megève, France"
+            },
+            "title": "Sea of Clouds 2",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_2_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_2_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/french-alps-2022-v1/robinfrcd_french_alps_sea_of_clouds_2_4k_hevc.m4v"
+        },
+        {
+            "id": "video_aurland_202109",
+            "pointsOfInterest": {
+                "0": "Flight over Aurland Fjord, Norway"
+            },
+            "title": "Aurland",
+            "accessibilityLabel": "Norway",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_aurland_1080p_H264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_aurland_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_aurland_4k.m4v"
+        },
+        {
+            "id": "video_henningsvaer_202109",
+            "pointsOfInterest": {
+                "0": "Flight over Henningsvaer Stadium, Norway"
+            },
+            "title": "Henningsvaer",
+            "accessibilityLabel": "Norway",
+            "scene": "beach",
+            "timeOfDay": "sunset",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_hennigsvaer_1080p_H264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_hennigsvaer_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_hennigsvaer_4k.m4v"
+        },
+        {
+            "id": "video_nusfjord_202109",
+            "pointsOfInterest": {
+                "0": "Flight over Nusfjord, Lofoten, Norway"
+            },
+            "title": "Nusfjord",
+            "accessibilityLabel": "Norway",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_nusfjord_1080p_H264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_nusfjord_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_nusfjord_4k.m4v"
+        },
+        {
+            "id": "video_reine_202109",
+            "pointsOfInterest": {
+                "0": "Flight over Reinevågen, Lofoten, Norway"
+            },
+            "title": "Reine",
+            "accessibilityLabel": "Norway",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_reine_1080p_H264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_reine_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_reine_4k.m4v"
+        },
+        {
+            "id": "video_vettisfossen_202109",
+            "pointsOfInterest": {
+                "0": "In front of Vettisfossen waterfall, Norway"
+            },
+            "title": "Vettisfossen",
+            "accessibilityLabel": "Norway",
+            "scene": "waterfall",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_vettisfossen_1080p_H264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_vettisfossen_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/norway-2021-v1/robinfrcd_vettisfossen_4k.m4v"
+        }
+    ],
+    "version": 1,
+    "initialAssetCount": 1
+}
