@@ -86,20 +86,24 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (willBeSeamless == true) {
             Log.i(TAG, "Trying seamless...")
             // Set the frame rate, but only if the transition will be seamless.
-            surface.setFrameRate(newRefreshRate,
+            surface.setFrameRate(
+                newRefreshRate,
                 FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
-                CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS)
+                CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
+            )
         } else {
             Log.i(TAG, "Trying non-seamless...")
             val prefersNonSeamless = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
                 .matchContentFrameRateUserPreference == MATCH_CONTENT_FRAMERATE_ALWAYS
             if (prefersNonSeamless) {
                 // Show UX to inform the user that a switch is about to occur
-                //showUxForNonSeamlessSwitchWithDelay();
+                // showUxForNonSeamlessSwitchWithDelay();
                 // Set the frame rate if the user has requested it to match content
-                surface.setFrameRate(newRefreshRate,
+                surface.setFrameRate(
+                    newRefreshRate,
                     FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
-                    CHANGE_FRAME_RATE_ALWAYS)
+                    CHANGE_FRAME_RATE_ALWAYS
+                )
             }
         }
     }
@@ -129,11 +133,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 ) {
                     modesResolutionCount++
 
-                    if (normRate(mode.refreshRate) >= normRate(newRefreshRate))
+                    if (normRate(mode.refreshRate) >= normRate(newRefreshRate)) {
                         modesHigh.add(mode)
+                    }
 
-                    if (normRate(mode.refreshRate) > normRate(modeTop.refreshRate))
+                    if (normRate(mode.refreshRate) > normRate(modeTop.refreshRate)) {
                         modeTop = mode
+                    }
                 }
             }
 
@@ -161,8 +167,9 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                 val window = activity.window
                 val layoutParams = window.attributes
 
-                if (modeBest == null)
+                if (modeBest == null) {
                     modeBest = modeTop
+                }
 
                 val switchingModes = modeBest?.modeId != activeMode?.modeId
                 if (switchingModes) {
@@ -173,10 +180,15 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
                     Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
                 }
 
-                if (BuildConfig.DEBUG)
-                    Toast.makeText(activity, modes + "\n" +
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(
+                        activity,
+                        modes + "\n" +
                             "Video frameRate: " + newRefreshRate + "\n" +
-                            "Current display refreshRate: " + modeBest?.refreshRate, Toast.LENGTH_LONG).show()
+                            "Current display refreshRate: " + modeBest?.refreshRate,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
         } else {
             Log.i(TAG, "Only 1 mode found, exiting")
