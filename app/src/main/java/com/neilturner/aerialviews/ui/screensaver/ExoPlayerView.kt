@@ -218,7 +218,12 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         removeCallbacks(almostFinishedRunnable)
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-        var delay = (((duration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
+
+        var targetDuration = 240 * 1000 // 4 mins
+        if (duration < targetDuration) {
+            targetDuration = duration
+        }
+        var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
         if (delay < 0) {
             delay = 0
         }
