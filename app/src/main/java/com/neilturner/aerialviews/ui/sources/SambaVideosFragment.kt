@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.ui.sources
 import android.Manifest
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -150,12 +151,16 @@ class SambaVideosFragment :
         val canReadFiles = storagePermissions.hasAccess(
             action = StoragePermissions.Action.READ,
             types = listOf(StoragePermissions.FileType.Document),
-            createdBy = StoragePermissions.CreatedBy.AllApps
+            createdBy = StoragePermissions.CreatedBy.Self
         )
 
         if (!canReadFiles) {
             Log.i(TAG, "Asking for permission")
-            requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                requestReadPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
+            } else {
+                requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
         } else {
             lifecycleScope.launch {
                 importSettings()
