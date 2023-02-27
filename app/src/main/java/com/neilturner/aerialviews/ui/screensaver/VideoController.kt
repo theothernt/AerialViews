@@ -112,7 +112,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingView
             .animate()
             .alpha(1f)
-            .setDuration(ExoPlayerView.DURATION)
+            .setDuration(ExoPlayerView.FADE_DURATION)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
             }
@@ -148,7 +148,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingView
             .animate()
             .alpha(0f)
-            .setDuration(ExoPlayerView.DURATION)
+            .setDuration(ExoPlayerView.FADE_DURATION)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true

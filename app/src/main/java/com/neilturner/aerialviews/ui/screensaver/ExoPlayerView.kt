@@ -223,7 +223,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (duration < targetDuration) {
             targetDuration = duration
         }
-        var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
+        var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
         if (delay < 0) {
             delay = 0
         }
@@ -293,6 +293,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     companion object {
         private const val TAG = "ExoPlayerView"
-        const val DURATION: Long = 1000
+        const val FADE_DURATION: Long = 1000
     }
 }
