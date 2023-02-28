@@ -81,6 +81,21 @@
     </string-array>
     <string name="playback_speed_default" translatable="false">1</string>
 
+    <!-- Max. video length -->
+    <string-array name="playback_max_video_length_entries" translatable="false">
+        <item>No limit (default)</item>
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+    </string-array>
+    <string-array name="playback_max_video_length_values" translatable="false">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
+    <string name="playback_max_video_length_default" translatable="false">0</string>
+
     <!-- Network Video Options -->
     <string-array name="network_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>

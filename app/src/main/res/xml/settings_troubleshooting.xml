@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+        <PreferenceCategory app:title="@string/category_playlist">
+                <ListPreference
+                    app:key="playback_max_video_length"
+                    app:defaultValue="@string/playback_max_video_length_default"
+                    app:entries="@array/playback_max_video_length_entries"
+                    app:entryValues="@array/playback_max_video_length_values"
+                    app:title="@string/playback_max_video_length_title"
+                    app:summary="@string/playback_max_video_length_summary"
+                    app:dialogTitle="@string/playback_max_video_length_title" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_video_render_options">
                 <CheckBoxPreference
                     app:defaultValue="true"
