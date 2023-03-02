@@ -11,6 +11,7 @@ object GeneralPrefs : KotprefModel() {
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
     var enablePlaybackSpeedChange by booleanPref(false, "enable_playback_speed_change")
     var playbackSpeed by stringPref("1", "playback_speed")
+    var maxVideoLength by stringPref("0", "playback_max_video_length")
 
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var exceedRenderer by booleanPref(false, "exceed_renderer")

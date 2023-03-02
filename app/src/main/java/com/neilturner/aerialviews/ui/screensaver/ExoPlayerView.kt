@@ -216,13 +216,15 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
+
+        // Check if we need to limit the duration of the video
+        var targetDuration = duration
+        if (GeneralPrefs.maxVideoLength.toInt() >= 10) {
+            targetDuration = GeneralPrefs.maxVideoLength.toInt() * 1000
+        }
+
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-
-        var targetDuration = 240 * 1000 // 4 mins
-        if (duration < targetDuration) {
-            targetDuration = duration
-        }
         var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
         if (delay < 0) {
             delay = 0
