@@ -382,9 +382,19 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
+
+        // Check if we need to limit the duration of the video
+        var targetDuration = duration
+        val limit = GeneralPrefs.maxVideoLength.toInt()
+        if (limit >= 10 &&
+            limit > duration
+        ) {
+            targetDuration = limit * 1000
+        }
+
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-        var delay = (((duration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - DURATION)
+        var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
         if (delay < 0) {
             delay = 0
         }
@@ -454,6 +464,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     companion object {
         private const val TAG = "ExoPlayerView"
-        const val DURATION: Long = 1000
+        const val FADE_DURATION: Long = 1000
     }
 }

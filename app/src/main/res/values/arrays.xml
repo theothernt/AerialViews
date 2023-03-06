@@ -81,6 +81,41 @@
     </string-array>
     <string name="playback_speed_default" translatable="false">1</string>
 
+    <!-- Max. video length -->
+    <string-array name="playback_max_video_length_entries" translatable="false">
+        <item>No limit (default)</item>
+        <item>10 sec</item>
+        <item>20 sec</item>
+        <item>30 sec</item>
+        <item>1 min</item>
+        <item>2 min</item>
+        <item>3 min</item>
+        <item>4 min</item>
+        <item>5 min</item>
+        <item>6 min</item>
+        <item>7 min</item>
+        <item>8 min</item>
+        <item>9 min</item>
+        <item>10 min</item>
+    </string-array>
+    <string-array name="playback_max_video_length_values" translatable="false">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
+        <item>180</item>
+        <item>240</item>
+        <item>300</item>
+        <item>360</item>
+        <item>420</item>
+        <item>480</item>
+        <item>540</item>
+        <item>600</item>
+    </string-array>
+    <string name="playback_max_video_length_default" translatable="false">0</string>
+
     <!-- Network Video Options -->
     <string-array name="network_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>

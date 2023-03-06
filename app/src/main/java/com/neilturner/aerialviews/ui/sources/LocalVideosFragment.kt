@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.ui.sources
 import android.Manifest
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -58,17 +59,18 @@ class LocalVideosFragment :
     }
 
     override fun onResume() {
-        val canReadVideos = storagePermissions.hasAccess(
-            action = Action.READ,
-            types = listOf(FileType.Video),
-            createdBy = StoragePermissions.CreatedBy.AllApps
-        )
-
-        if (!canReadVideos &&
-            requiresPermission()
-        ) {
-            resetPreference()
-        }
+//        val canReadVideos = storagePermissions.hasAccess(
+//            action = Action.READ,
+//            types = listOf(FileType.Video),
+//            createdBy = StoragePermissions.CreatedBy.AllApps
+//        )
+//
+//        if (!canReadVideos &&
+//            requiresPermission()
+//        ) {
+//            Log.i(TAG, "Reset pref. on resume")
+//            resetPreference()
+//        }
         super.onResume()
     }
 
@@ -98,7 +100,11 @@ class LocalVideosFragment :
             )
 
             if (!canReadVideos) {
-                requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    requestPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
+                } else {
+                    requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+                }
             }
         }
     }

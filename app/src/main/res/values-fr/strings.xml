@@ -184,7 +184,7 @@
     <string name="capabilities_resolution_title">"Résolution d'écran"</string>
 
     <!-- Main / Settings / Troubleshooting -->
-    <string name="category_video_render_options">Video &amp; Render options</string>
+    <string name="category_video_render_options">Video &amp; render options</string>
     <string name="category_samba_options">Samba/SMB options</string>
 
     <string name="performance_enable_tunneling_title">Activer le tunneling</string>

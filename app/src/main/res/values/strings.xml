@@ -185,8 +185,11 @@
     <string name="capabilities_resolution_title">Resolution</string>
 
     <!-- Main / Settings / Troubleshooting -->
-    <string name="category_video_render_options">Video &amp; Render options</string>
+    <string name="category_video_render_options">Video &amp; render options</string>
     <string name="category_samba_options">Samba/SMB options</string>
+
+    <string name="playback_max_video_length_title">Limit video length</string>
+    <string name="playback_max_video_length_summary">Skip to the next video after a specified number of seconds</string>
 
     <string name="performance_enable_tunneling_title">Enable tunneling</string>
     <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
