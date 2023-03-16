@@ -33,6 +33,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
+    private val useRefreshRateSwitching = false
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
@@ -56,7 +57,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
             Log.i(TAG, "Android 12, handle frame rate switching in app")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
@@ -167,26 +168,29 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         if (player.playWhenReady && playbackState == Player.STATE_READY) {
+            if (useRefreshRateSwitching) {
+                setRefreshRate()
+            }
             setupAlmostFinishedRunnable()
         }
+    }
 
-        if (playbackState == Player.STATE_READY) {
-            val frameRate = player.videoFormat?.frameRate
-            val surface = this.holder.surface
+    private fun setRefreshRate() {
+        val frameRate = player.videoFormat?.frameRate
+        val surface = this.holder.surface
 
-            if (frameRate == null || frameRate == 0f) {
-                Log.i(TAG, "Unable to get video frame rate...")
-                return
-            }
+        if (frameRate == null || frameRate == 0f) {
+            Log.i(TAG, "Unable to get video frame rate...")
+            return
+        }
 
-            Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Log.i(TAG, "Android 12")
-                WindowHelper.setRefreshRate(context, surface, display, frameRate)
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Log.i(TAG, "Not Android 12")
-                WindowHelper.setLegacyRefreshRate(context, frameRate)
-            }
+        Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.i(TAG, "Android 12")
+            WindowHelper.setRefreshRate(context, surface, display, frameRate)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.i(TAG, "Not Android 12")
+            WindowHelper.setLegacyRefreshRate(context, frameRate)
         }
     }
 
