@@ -74,7 +74,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         prepared = false
         val mediaItem = MediaItem.fromUri(uri)
         if (philipsDolbyVisionFix) {
-            PhilipsMediaCodecAdapterFactory.mediaUri = uri.toString()
+            PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
         if (FileHelper.isNetworkVideo(uri)) {
             val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())

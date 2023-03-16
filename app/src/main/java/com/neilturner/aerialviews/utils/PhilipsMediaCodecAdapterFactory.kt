@@ -13,13 +13,13 @@ import java.io.IOException
 class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
     @Throws(IOException::class)
     override fun createAdapter(configuration: MediaCodecAdapter.Configuration): MediaCodecAdapter {
-        if (mediaUri == null) {
+        if (mediaUrl == null) {
             return SynchronousMediaCodecAdapter.Factory().createAdapter(configuration)
         }
         try {
             val extractor = MediaExtractor()
-            extractor.setDataSource(mediaUri!!)
-            mediaUri = null
+            extractor.setDataSource(mediaUrl!!)
+            mediaUrl = null
             val trackFormat = extractor.getTrackFormat(0)
             val codecData = trackFormat.getByteBuffer("csd-0")
             if (codecData != null && codecData.limit() != 0) {
@@ -32,13 +32,13 @@ class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
         } catch (e: IOException) {
             throw RuntimeException(e)
         } finally {
-            mediaUri = null
+            mediaUrl = null
         }
         return SynchronousMediaCodecAdapter.Factory().createAdapter(configuration)
     }
 
     companion object {
         private const val TAG = "PhilipsMediaCodecAdapter"
-        var mediaUri: String? = null
+        var mediaUrl: String? = null
     }
 }

@@ -8,7 +8,7 @@ import com.google.android.exoplayer2.mediacodec.MediaCodecAdapter
 
 // https://github.com/bdwixx/AerialViews/blob/philips-exoplayer-fix/app/src/main/java/com/neilturner/aerialviews/utils/CustomRendererFactory.java
 
-class CustomRendererFactory(context: Context?) : DefaultRenderersFactory(context!!) {
+class CustomRendererFactory(context: Context) : DefaultRenderersFactory(context) {
     private var renderFactory: PhilipsMediaCodecAdapterFactory? = null
     override fun getCodecAdapterFactory(): MediaCodecAdapter.Factory {
         Log.d(TAG, "Manufacturer: " + Build.MANUFACTURER)
