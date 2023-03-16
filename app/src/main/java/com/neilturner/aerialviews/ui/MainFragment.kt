@@ -73,8 +73,8 @@ class MainFragment :
 
     private fun openSystemScreensaverSettings() {
         val intents = mutableListOf<Intent>()
-        intents += Intent(SCREENSAVER_SETTINGS)
         intents += Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
+        intents += Intent(SCREENSAVER_SETTINGS)
         intents += Intent(SETTINGS)
 
         intents.forEach { intent ->
