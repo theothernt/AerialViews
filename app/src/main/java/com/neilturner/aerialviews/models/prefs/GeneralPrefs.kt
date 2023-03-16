@@ -16,7 +16,7 @@ object GeneralPrefs : KotprefModel() {
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var exceedRenderer by booleanPref(false, "exceed_renderer")
     var bufferingStrategy by stringPref("DEFAULT", "performance_buffering_strategy")
-    var useRefreshRateSwitching by booleanPref(false, "use_refresh_rate_switching")
+    var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
 
     var filenameAsLocation by booleanPref(true, "any_videos_filename_location")
     var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")
