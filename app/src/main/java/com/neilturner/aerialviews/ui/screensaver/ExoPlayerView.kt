@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.PlaybackException
@@ -21,7 +22,9 @@ import com.neilturner.aerialviews.models.BufferingStrategy
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
+import com.neilturner.aerialviews.utils.CustomRendererFactory
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.utils.PlayerHelper
 import java.lang.Runnable
 import kotlin.math.roundToLong
@@ -32,6 +35,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
+    private val philipsDolbyVisionFix = false
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
@@ -69,7 +73,9 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         player.stop()
         prepared = false
         val mediaItem = MediaItem.fromUri(uri)
-
+        if (philipsDolbyVisionFix) {
+            PhilipsMediaCodecAdapterFactory.mediaUri = uri.toString()
+        }
         if (FileHelper.isNetworkVideo(uri)) {
             val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())
                 .createMediaSource(mediaItem)
@@ -273,9 +279,15 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         val trackSelector = DefaultTrackSelector(context)
         trackSelector.parameters = parametersBuilder.build()
 
+        var rendererFactory = DefaultRenderersFactory(context)
+        if (philipsDolbyVisionFix) {
+            rendererFactory = CustomRendererFactory(context)
+        }
+
         val player = ExoPlayer.Builder(context)
             .setLoadControl(loadControl)
             .setTrackSelector(trackSelector)
+            .setRenderersFactory(rendererFactory)
             .build()
 
         // player.addAnalyticsListener(com.google.android.exoplayer2.util.EventLogger(trackSelector))
