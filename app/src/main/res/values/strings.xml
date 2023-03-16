@@ -197,6 +197,9 @@
     <string name="performance_buffering_strategy_title">Buffering strategy</string>
     <string name="performance_buffering_strategy_summary">Changes video buffering priorities, can help with inconsistent connections</string>
 
+    <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
+    <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
