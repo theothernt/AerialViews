@@ -177,7 +177,7 @@ class LocalVideosFragment :
     }
 
     private fun showNoticeIfNeeded() {
-        if (!DeviceHelper.isNvidaShield()) {
+        if (!DeviceHelper.isNvidiaShield()) {
             return
         }
         val notice = findPreference<Preference>("local_videos_notice")

@@ -57,7 +57,7 @@ object DeviceHelper {
 
     fun isFireTV(): Boolean = deviceName().contains("AFT", true)
 
-    fun isNvidaShield(): Boolean = deviceName().contains("NVIDIA", true)
+    fun isNvidiaShield(): Boolean = deviceName().contains("NVIDIA", true)
 
     fun isGoogleTV(): Boolean = deviceName().contains("Google Chromecast", true)
 
