@@ -74,4 +74,4 @@ lint/tmp/
 # lint/reports/
 
 # macOS
-*.Ds_Store
+*.DS_Store
