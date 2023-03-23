@@ -16,6 +16,7 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.utils.DeviceHelper
 import java.lang.Exception
 
 class MainFragment :
@@ -32,14 +33,13 @@ class MainFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        val canAccessScreensaverSettings = true
         if (preference.key.contains("system_options")) {
-            if (canAccessScreensaverSettings) {
-                openSystemScreensaverSettings()
-            } else {
+            if (!DeviceHelper.canAccessScreensaverSettings()) {
                 showUserWarning()
+                // Show warning but try to invoke screensaver settings anyway
+                // just in case device detection is wrong in future, etc
             }
-
+            openSystemScreensaverSettings()
             return true
         }
 
@@ -99,7 +99,11 @@ class MainFragment :
     }
 
     private fun showUserWarning() {
-
+        Toast.makeText(
+            activity,
+            "The manufacturer removed this feature\n please refer to the Aerial Views website on how to set this screensaver as default.",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun intentAvailable(intent: Intent): Boolean {

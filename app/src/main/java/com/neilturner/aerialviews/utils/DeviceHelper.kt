@@ -36,6 +36,16 @@ object DeviceHelper {
         }
     }
 
+    fun canAccessScreensaverSettings(): Boolean {
+        if (isFireTV())
+            return false
+
+        if (isGoogleTV())
+            return false
+
+        return true
+    }
+
     // https://stackoverflow.com/a/55355049/247257
     fun isEmulator(): Boolean = (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic")) ||
         Build.FINGERPRINT.startsWith("generic") ||
