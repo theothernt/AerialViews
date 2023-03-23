@@ -32,8 +32,14 @@ class MainFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
+        val canAccessScreensaverSettings = true
         if (preference.key.contains("system_options")) {
-            openSystemScreensaverSettings()
+            if (canAccessScreensaverSettings) {
+                openSystemScreensaverSettings()
+            } else {
+                showUserWarning()
+            }
+
             return true
         }
 
@@ -90,6 +96,10 @@ class MainFragment :
         }
 
         Toast.makeText(requireContext(), "Unable to open your device's screensaver options", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showUserWarning() {
+
     }
 
     private fun intentAvailable(intent: Intent): Boolean {
