@@ -37,6 +37,8 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis().toString() + "\"")
+
             applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
@@ -46,6 +48,8 @@ android {
             //proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro
         }
         release {
+            buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis().toString() + "\"")
+
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile(
