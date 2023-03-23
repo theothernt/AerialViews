@@ -3,12 +3,39 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
+import java.util.Date
 
 class AboutFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_about, rootKey)
+        updateSummary()
+    }
+
+    private fun updateSummary() {
+        val version = findPreference<Preference>("about_version")
+        val type = findPreference<Preference>("about_type")
+        val date = findPreference<Preference>("about_date")
+
+        version?.summary = buildVersionSummary()
+        type?.summary = buildTypeSummary()
+        date?.summary = buildDateSummary()
+    }
+
+    private fun buildVersionSummary(): String {
+        return "Aerial Views ${BuildConfig.VERSION_NAME}"
+    }
+
+    private fun buildTypeSummary(): String {
+        return "${BuildConfig.FLAVOR} ${BuildConfig.BUILD_TYPE}"
+    }
+
+    private fun buildDateSummary(): String {
+        val date = Date(BuildConfig.BUILD_TIME.toLong())
+        return date.toString()
     }
 }

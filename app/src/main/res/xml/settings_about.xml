@@ -2,6 +2,19 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <PreferenceCategory app:title="@string/category_about">
+                <Preference
+                    app:key="about_version"
+                    app:title="@string/about_version_title"
+                    app:summary=""/>
 
+                <Preference
+                    app:key="about_type"
+                    app:title="@string/about_type_title"
+                    app:summary=""/>
+
+                <Preference
+                    app:key="about_date"
+                    app:title="@string/about_date_title"
+                    app:summary=""/>
         </PreferenceCategory>
 </PreferenceScreen>

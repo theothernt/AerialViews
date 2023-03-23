@@ -210,4 +210,8 @@
 
     <!-- Main / Settings / About -->
     <string name="category_about">About</string>
+
+    <string name="about_version_title">Version</string>
+    <string name="about_type_title">Type</string>
+    <string name="about_date_title">Date</string>
 </resources>
