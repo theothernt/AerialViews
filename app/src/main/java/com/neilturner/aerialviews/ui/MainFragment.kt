@@ -101,7 +101,7 @@ class MainFragment :
     private fun showUserWarning() {
         Toast.makeText(
             activity,
-            "The manufacturer removed this feature\n please refer to the Aerial Views website on how to set this screensaver as default.",
+            "This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details",
             Toast.LENGTH_LONG
         ).show()
     }
