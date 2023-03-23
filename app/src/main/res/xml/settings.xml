@@ -28,10 +28,10 @@
             app:summary="@string/settings_troubleshooting_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.TroubleshootingFragment"/>
 
-<!--        <Preference-->
-<!--            app:title="@string/settings_about_title"-->
-<!--            app:summary="@string/settings_about_summary"-->
-<!--            app:fragment="com.neilturner.aerialviews.ui.AboutFragment"/>-->
+        <Preference
+            app:title="@string/settings_about_title"
+            app:summary="@string/settings_about_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.AboutFragment"/>
     </PreferenceCategory>
 
 <!--    <PreferenceCategory app:title="@string/category_actions">-->
