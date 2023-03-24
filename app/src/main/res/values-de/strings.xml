@@ -140,9 +140,10 @@
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
-    <!-- Main / Settings / Playlist -->
     <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
     <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+
+    <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>
 
     <string name="interface_mute_videos_title">Stummschaltung der Videos</string>
@@ -187,6 +188,7 @@
 
     <string name="playback_max_video_length_title">Limit video length</string>
     <string name="playback_max_video_length_summary">Skip to the next video after a specified number of seconds</string>
+
     <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
     <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
 
@@ -195,6 +197,7 @@
 
     <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+
     <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
     <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
 

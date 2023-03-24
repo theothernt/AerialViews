@@ -141,9 +141,10 @@
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
 
-    <!-- Main / Settings / Playlist -->
     <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
     <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+
+    <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
 
     <string name="interface_mute_videos_title">Без звука</string>
@@ -197,6 +198,7 @@
 
     <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+
     <string name="performance_exceed_renderer_title">Превышать возможности рендеринга</string>
     <string name="performance_exceed_renderer_summary">Превышение максимального обнаруженного разрешения видео — бесполезно для большинства устройств!</string>
 
