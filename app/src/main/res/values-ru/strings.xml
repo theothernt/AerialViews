@@ -122,7 +122,7 @@
     <string name="settings_troubleshooting_summary">Параметры производительности и отладки для устранения неполадок</string>
 
     <string name="settings_about_title">О приложении</string>
-    <string name="settings_about_summary">О приложении, используемых компонентах и т. д.</string>
+    <string name="settings_about_summary">Version, build info, etc</string>
 
     <string name="settings_import_export_settings_title">Импорт/экспорт настроек</string>
     <string name="settings_import_export_settings_summary">Импортирует или экспортирует настройки в папку Загрузки</string>
@@ -214,6 +214,5 @@
     <string name="category_about">О приложении</string>
 
     <string name="about_version_title">Version</string>
-    <string name="about_type_title">Type</string>
-    <string name="about_date_title">Date</string>
+    <string name="about_date_title">Build Date</string>
 </resources>

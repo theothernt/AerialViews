@@ -7,6 +7,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
+import java.text.SimpleDateFormat
+import java.util.Locale
 import java.util.Date
 
 class AboutFragment : PreferenceFragmentCompat() {
@@ -18,24 +20,19 @@ class AboutFragment : PreferenceFragmentCompat() {
 
     private fun updateSummary() {
         val version = findPreference<Preference>("about_version")
-        val type = findPreference<Preference>("about_type")
         val date = findPreference<Preference>("about_date")
 
         version?.summary = buildVersionSummary()
-        type?.summary = buildTypeSummary()
         date?.summary = buildDateSummary()
     }
 
     private fun buildVersionSummary(): String {
-        return "Aerial Views ${BuildConfig.VERSION_NAME}"
-    }
-
-    private fun buildTypeSummary(): String {
-        return "${BuildConfig.FLAVOR} ${BuildConfig.BUILD_TYPE}"
+        return "Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})"
     }
 
     private fun buildDateSummary(): String {
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy 'at' HH:mm", Locale.getDefault())
         val date = Date(BuildConfig.BUILD_TIME.toLong())
-        return date.toString()
+        return dateFormat.format(date)
     }
 }

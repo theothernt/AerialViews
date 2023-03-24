@@ -8,11 +8,6 @@
                     app:summary=""/>
 
                 <Preference
-                    app:key="about_type"
-                    app:title="@string/about_type_title"
-                    app:summary=""/>
-
-                <Preference
                     app:key="about_date"
                     app:title="@string/about_date_title"
                     app:summary=""/>

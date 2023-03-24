@@ -121,7 +121,7 @@
     <string name="settings_troubleshooting_summary">Leistungs- &amp; Debug-Einstellungen zur Problembehebung</string>
 
     <string name="settings_about_title">Über</string>
-    <string name="settings_about_summary">Über die App, benutzte Komponenten, usw.</string>
+    <string name="settings_about_summary">Version, build info, etc</string>
 
     <string name="settings_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
     <string name="settings_import_export_settings_summary">Einstellungen im Downloadordner Sichern oder daraus Wiederherstellen</string>
@@ -212,6 +212,5 @@
     <string name="category_about">Über</string>
 
     <string name="about_version_title">Version</string>
-    <string name="about_type_title">Type</string>
-    <string name="about_date_title">Date</string>
+    <string name="about_date_title">Build Date</string>
 </resources>
