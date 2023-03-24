@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
 import com.google.android.exoplayer2.DefaultRenderersFactory
 import com.google.android.exoplayer2.mediacodec.MediaCodecAdapter

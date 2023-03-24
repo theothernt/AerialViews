@@ -16,6 +16,7 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.utils.DeviceHelper
 import java.lang.Exception
 
 class MainFragment :
@@ -33,6 +34,11 @@ class MainFragment :
         }
 
         if (preference.key.contains("system_options")) {
+            if (!DeviceHelper.canAccessScreensaverSettings()) {
+                showUserWarning()
+                // Show warning but try to invoke screensaver settings anyway
+                // just in case device detection is wrong in future, etc
+            }
             openSystemScreensaverSettings()
             return true
         }
@@ -90,6 +96,14 @@ class MainFragment :
         }
 
         Toast.makeText(requireContext(), "Unable to open your device's screensaver options", Toast.LENGTH_LONG).show()
+    }
+
+    private fun showUserWarning() {
+        Toast.makeText(
+            activity,
+            "This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun intentAvailable(intent: Intent): Boolean {
