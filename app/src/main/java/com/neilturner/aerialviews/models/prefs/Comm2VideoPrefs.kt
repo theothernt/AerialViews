@@ -9,5 +9,5 @@ object Comm2VideoPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(true, "comm2_videos_enabled")
-    var quality by enumValuePref(if (DeviceHelper.hasHevcSupport()) VideoQuality.VIDEO_1080_SDR else VideoQuality.VIDEO_1080_H264, "comm2_videos_quality")
+    var quality by enumValuePref(VideoQuality.VIDEO_1080_SDR, "comm2_videos_quality")
 }
