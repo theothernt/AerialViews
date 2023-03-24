@@ -136,11 +136,7 @@
     <string name="interface_show_clock_title">Show clock</string>
     <string name="interface_show_clock_summary">Shows the current time</string>
 
-    <string name="interface_show_location_title">Show video title</string>
-    <string name="interface_show_location_summary">Shows a title or location for videos</string>
-
-    <string name="interface_show_location_style_title">Apple videos</string>
-    <string name="interface_show_location_style_summary">Choose a video title style</string>
+    <string name="interface_show_location_title">Show video title or points of interest</string>
 
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>

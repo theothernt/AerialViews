@@ -135,11 +135,7 @@
     <string name="interface_show_clock_title">Afficher l\'horloge</string>
     <string name="interface_show_clock_summary">Montre l\'heure courante</string>
 
-    <string name="interface_show_location_title">Afficher les titres vidéo</string>
-    <string name="interface_show_location_summary">Affiche un titre ou un emplacement de la vidéo en cours</string>
-
-    <string name="interface_show_location_style_title">Vidéos Apple</string>
-    <string name="interface_show_location_style_summary">Choisissez le style du titre vidéo</string>
+    <string name="interface_show_location_title">Show video location or points of interest</string>
 
     <string name="any_videos_filename_location_title">Utiliser les noms de fichiers comme emplacement</string>
     <string name="any_videos_filename_location_summary">Exemple: «ville-un_endroit.mp4» est affiché comme «ville - un endroit»</string>

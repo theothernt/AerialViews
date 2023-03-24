@@ -173,8 +173,7 @@ class SettingsFragment :
 
             // Interface prefs
             InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
-            InterfacePrefs.showLocation = properties["show_location"].toString().toBoolean()
-            InterfacePrefs.showLocationStyle = LocationStyle.valueOf(properties["show_location_style"] as String)
+            InterfacePrefs.showLocation = LocationStyle.valueOf(properties["show_location"] as String)
             InterfacePrefs.alternateTextPosition = properties["alt_text_position"].toString().toBoolean()
 
             // General prefs
@@ -244,7 +243,6 @@ class SettingsFragment :
         // Interface prefs
         settings["show_clock"] = InterfacePrefs.showClock.toString()
         settings["show_location"] = InterfacePrefs.showLocation.toString()
-        settings["show_location_style"] = InterfacePrefs.showLocationStyle.toString()
         settings["alt_text_position"] = InterfacePrefs.alternateTextPosition.toString()
 
         // General prefs

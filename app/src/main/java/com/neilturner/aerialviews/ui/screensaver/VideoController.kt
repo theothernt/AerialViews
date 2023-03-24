@@ -41,7 +41,8 @@ class VideoController(private val context: Context, private val window: Window) 
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
-        binding.textPrefs = InterfacePrefs
+        binding.interfacePrefs = InterfacePrefs
+        binding.showLocation = InterfacePrefs.showLocation != LocationStyle.OFF
         binding.videoView0.videoView.setOnPlayerListener(this)
 
         videoView = binding.videoView0
@@ -159,14 +160,19 @@ class VideoController(private val context: Context, private val window: Window) 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
         currentVideo = video
-        videoBinding.location.text = if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE) video.poi[0]?.replace("\n", " ") ?: video.location else video.location
+        videoBinding.location.text = if (InterfacePrefs.showLocation == LocationStyle.POI) {
+            video.poi[0]?.replace("\n", " ") ?: video.location
+        } else {
+            video.location
+        }
+
         if (videoBinding.location.text.isBlank()) {
             videoBinding.location.visibility = View.GONE
-        } else if (InterfacePrefs.showLocation) {
+        } else if (InterfacePrefs.showLocation != LocationStyle.OFF) {
             videoBinding.location.visibility = View.VISIBLE
         }
 
-        if (InterfacePrefs.showLocationStyle == LocationStyle.VERBOSE && video.poi.size > 1) { // everything else is static anyways
+        if (InterfacePrefs.showLocation == LocationStyle.POI && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Location style -->
-    <string-array name="interface_show_location_style_entries">
-        <item>Kurze Titel</item>
-        <item>Sehenswürdigkeiten (Lokalisiert)</item>
+    <string-array name="interface_show_location_entries">
+        <item>Off</item>
+        <item>Location (in English only)</item>
+        <item>Points of interest (in many languages)</item>
     </string-array>
 
     <!-- Troubleshooting options -->

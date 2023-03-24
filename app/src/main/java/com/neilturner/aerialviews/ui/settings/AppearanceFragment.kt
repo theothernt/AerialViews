@@ -14,25 +14,25 @@ class AppearanceFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        updateSummaries()
+        //preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        //updateSummaries()
     }
 
     override fun onDestroy() {
-        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+        //preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
         super.onDestroy()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        updateSummaries()
+        //updateSummaries()
     }
 
     private fun updateSummaries() {
-        val locationStyle = findPreference<ListPreference>("show_location_style")
-        val locationStyleTitle = context?.getString(R.string.interface_show_location_style_title)
-        val formattedLocationStyle = locationStyle?.entry.toString()
-        // .replaceFirstChar { it.lowercase(Locale.getDefault()) }
-
-        locationStyle?.title = "$locationStyleTitle - $formattedLocationStyle"
+//        val locationStyle = findPreference<ListPreference>("show_location_style")
+//        val locationStyleTitle = context?.getString(R.string.interface_show_location_style_title)
+//        val formattedLocationStyle = locationStyle?.entry.toString()
+//        // .replaceFirstChar { it.lowercase(Locale.getDefault()) }
+//
+//        locationStyle?.title = "$locationStyleTitle - $formattedLocationStyle"
     }
 }

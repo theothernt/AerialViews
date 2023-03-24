@@ -15,22 +15,14 @@
                     app:summary="@string/interface_show_clock_summary"
                     app:title="@string/interface_show_clock_title" />
 
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="show_location"
-                    app:summary="@string/interface_show_location_summary"
-                    app:title="@string/interface_show_location_title" />
-
                 <ListPreference
-                    app:dependency="show_location"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@string/interface_show_location_style_default"
-                    app:entries="@array/interface_show_location_style_entries"
-                    app:entryValues="@array/interface_show_location_style_values"
-                    app:key="show_location_style"
-                    app:title="@string/interface_show_location_style_title"
-                    app:summary="@string/interface_show_location_style_summary"
-                    app:dialogTitle="@string/interface_show_location_style_summary" />
+                    app:defaultValue="@string/interface_show_location_default"
+                    app:entries="@array/interface_show_location_entries"
+                    app:entryValues="@array/interface_show_location_values"
+                    app:key="show_location"
+                    app:title="@string/interface_show_location_title"
+                    app:dialogTitle="@string/interface_show_location_title"
+                    app:useSimpleSummaryProvider="true" />
 
                 <CheckBoxPreference
                     app:defaultValue="true"

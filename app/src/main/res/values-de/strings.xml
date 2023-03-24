@@ -135,11 +135,7 @@
     <string name="interface_show_clock_title">Zeige Uhr</string>
     <string name="interface_show_clock_summary">Zeigt die aktuelle Zeit</string>
 
-    <string name="interface_show_location_title">Zeige Videotitel</string>
-    <string name="interface_show_location_summary">Zeigt einen Titel oder Standort des laufenden Videos an</string>
-
-    <string name="interface_show_location_style_title">Apple Videos</string>
-    <string name="interface_show_location_style_summary">Wähle den Stil des Videotitels</string>
+    <string name="interface_show_location_title">Show video location or points of interest</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>

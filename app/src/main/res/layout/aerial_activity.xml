@@ -6,8 +6,12 @@
         <import type="android.view.View" />
 
         <variable
-            name="textPrefs"
+            name="interfacePrefs"
             type="com.neilturner.aerialviews.models.prefs.InterfacePrefs" />
+
+        <variable
+            name="showLocation"
+            type="boolean" />
     </data>
 
     <FrameLayout
@@ -18,7 +22,8 @@
         <include
             android:id="@+id/video_view_0"
             layout="@layout/video_view"
-            app:textPrefs="@{textPrefs}"/>
+            app:interfacePrefs="@{interfacePrefs}"
+            app:showLocation="@{showLocation}"/>
 
         <include
             android:id="@+id/loading_view"

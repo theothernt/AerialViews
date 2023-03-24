@@ -36,7 +36,7 @@ class MigrationHelper(val context: Context) {
         }
 
         if (lastKnownVersion <= 10) release10()
-        // if (lastKnownVersion <= 11) release11()
+        if (lastKnownVersion <= 11) release11()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -63,6 +63,23 @@ class MigrationHelper(val context: Context) {
 
     private fun release11() {
         Log.i(TAG, "Migrating settings for release 11")
+
+        val locationEnabled = prefs.getBoolean("show_location", true)
+        val locationType = prefs.getString("show_location_style", "VERBOSE").toStringOrEmpty()
+
+        Log.i(TAG, "Remove old video location pref and set new POI default")
+        prefs.edit().remove("show_location").apply()
+        prefs.edit().putString("show_location", "POI").apply()
+
+        if (locationEnabled) {
+            if (locationType.contains("SHORT")) {
+                Log.i(TAG, "Set video location to title")
+                prefs.edit().putString("show_location", "TITLE").apply()
+            }
+        } else {
+            Log.i(TAG, "Set video location to off")
+            prefs.edit().putString("show_location", "OFF").apply()
+        }
     }
 
     // Get saved revision code or return 0

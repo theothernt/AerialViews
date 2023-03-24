@@ -8,8 +8,12 @@
         <import type="android.view.Gravity" />
 
         <variable
-            name="textPrefs"
+            name="interfacePrefs"
             type="com.neilturner.aerialviews.models.prefs.InterfacePrefs" />
+
+        <variable
+            name="showLocation"
+            type="boolean" />
 
         <variable
             name="isAlternateRun"
@@ -37,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
-            android:visibility="@{textPrefs.showClock ? View.VISIBLE : View.GONE}"
+            android:visibility="@{interfacePrefs.showClock ? View.VISIBLE : View.GONE}"
             tools:text="23:15" />
 
         <TextView
@@ -47,8 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
-            android:visibility="@{textPrefs.showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="POI example text"
+            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
+            tools:text="Example location text"
             tools:visibility="visible" />
 
         <androidx.constraintlayout.helper.widget.Flow

@@ -37,16 +37,18 @@
     </string-array>
     <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
-    <!-- Location style -->
-    <string-array name="interface_show_location_style_entries">
-        <item>Short titles</item>
-        <item>Points of interest (Localised)</item>
+    <!-- Video title or POI -->
+    <string-array name="interface_show_location_entries">
+        <item>Off</item>
+        <item>Location (in English only)</item>
+        <item>Points of interest (in many languages)</item>
     </string-array>
-    <string-array name="interface_show_location_style_values" translatable="false">
-        <item>SHORT</item>
-        <item>VERBOSE</item>
+    <string-array name="interface_show_location_values" translatable="false">
+        <item>OFF</item>
+        <item>TITLE</item>
+        <item>POI</item>
     </string-array>
-    <string name="interface_show_location_style_default" translatable="false">SHORT</string>
+    <string name="interface_show_location_default" translatable="false">POI</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries" translatable="false">

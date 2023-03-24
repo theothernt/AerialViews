@@ -136,11 +136,7 @@
     <string name="interface_show_clock_title">Показать часы</string>
     <string name="interface_show_clock_summary">Показывает текущее время</string>
 
-    <string name="interface_show_location_title">Показать название видео</string>
-    <string name="interface_show_location_summary">Показывает название или место для видео</string>
-
-    <string name="interface_show_location_style_title">Видео Apple</string>
-    <string name="interface_show_location_style_summary">Выберите стиль заголовка видео</string>
+    <string name="interface_show_location_title">Show video location or points of interest</string>
 
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
