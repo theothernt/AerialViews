@@ -8,8 +8,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import java.text.SimpleDateFormat
-import java.util.Locale
 import java.util.Date
+import java.util.Locale
 
 class AboutFragment : PreferenceFragmentCompat() {
 
