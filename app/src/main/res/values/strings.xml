@@ -206,7 +206,7 @@
     <string name="samba_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
 
     <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
-    <string name="samba_videos_smb_dialects_summary">Choose which version of the SMB protocol to use</string>
+    <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
 
     <!-- Main / Settings / About -->
     <string name="category_about">About</string>
