@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui
 
 import android.app.Application
+import android.util.Log
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -14,6 +15,7 @@ class App : Application() {
         super.onCreate()
 
         if (!DeviceHelper.hasHevcSupport() && GeneralPrefs.firstRun) {
+            Log.i(TAG, "Setting default video quality to H.264")
             changeVideoQuality()
             GeneralPrefs.firstRun = false
         }
@@ -25,5 +27,9 @@ class App : Application() {
         AppleVideoPrefs.quality = VideoQuality.VIDEO_1080_H264
         Comm1VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
         Comm2VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
+    }
+
+    companion object {
+        const val TAG = "App"
     }
 }

@@ -18,7 +18,7 @@
                     app:entryValues="@array/comm1_videos_quality_values"
                     app:key="comm1_videos_quality"
                     app:title="@string/videos_quality_title"
-                    app:summary="@string/videos_quality_summary"
+                    app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/videos_quality_summary" />
         </PreferenceCategory>
 </PreferenceScreen>
