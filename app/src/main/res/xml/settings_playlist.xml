@@ -21,7 +21,7 @@
                     app:entryValues="@array/playback_speed_values"
                     app:key="playback_speed"
                     app:title="@string/playback_speed_title"
-                    app:summary="@string/playback_speed_summary"
+                    app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playback_speed_summary" />
 
                 <CheckBoxPreference
