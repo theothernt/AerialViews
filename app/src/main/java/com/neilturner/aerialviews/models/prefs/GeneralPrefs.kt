@@ -5,6 +5,8 @@ import com.chibatching.kotpref.KotprefModel
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
+    var firstRun by booleanPref(true, "first_run")
+
     var muteVideos by booleanPref(true, "mute_videos")
     var shuffleVideos by booleanPref(true, "shuffle_videos")
     var removeDuplicates by booleanPref(true, "remove_duplicates")
