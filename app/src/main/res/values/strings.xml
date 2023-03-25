@@ -15,7 +15,7 @@
     <string name="category_video_source">Video Source</string>
 
     <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Quality</string>
+    <string name="videos_quality_title">Video quality</string>
     <string name="videos_quality_summary">Select a video quality</string>
 
     <!-- Main -->
