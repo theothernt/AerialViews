@@ -14,7 +14,7 @@
     <string name="category_video_source">Video-Quelle</string>
 
     <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Qualität</string>
+    <string name="videos_quality_title">Video quality</string>
     <string name="videos_quality_summary">Videoqualität auswählen</string>
 
     <!-- Main -->
@@ -135,7 +135,7 @@
     <string name="interface_show_clock_title">Zeige Uhr</string>
     <string name="interface_show_clock_summary">Zeigt die aktuelle Zeit</string>
 
-    <string name="interface_show_location_title">Show video location or points of interest</string>
+    <string name="interface_show_location_title">Show video location</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
