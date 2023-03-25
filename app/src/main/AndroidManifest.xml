@@ -28,6 +28,7 @@
         android:required="true" />
 
     <application
+        android:name=".ui.App"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@drawable/ic_launcher"
