@@ -16,9 +16,10 @@ class TroubleshootingFragment : PreferenceFragmentCompat() {
         updateSummary()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun updateSummary() {
         val dialects = findPreference<MultiSelectListPreference>("network_videos_smb_dialects")
-        dialects?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+        dialects?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             dialects?.setSummaryFromValues(newValue as Set<String>)
             true
         }
