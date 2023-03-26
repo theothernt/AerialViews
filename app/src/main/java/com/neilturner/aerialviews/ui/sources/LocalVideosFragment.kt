@@ -58,22 +58,6 @@ class LocalVideosFragment :
         super.onDestroy()
     }
 
-    override fun onResume() {
-//        val canReadVideos = storagePermissions.hasAccess(
-//            action = Action.READ,
-//            types = listOf(FileType.Video),
-//            createdBy = StoragePermissions.CreatedBy.AllApps
-//        )
-//
-//        if (!canReadVideos &&
-//            requiresPermission()
-//        ) {
-//            Log.i(TAG, "Reset pref. on resume")
-//            resetPreference()
-//        }
-        super.onResume()
-    }
-
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
