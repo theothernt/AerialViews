@@ -21,7 +21,7 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.LocationStyle
+import com.neilturner.aerialviews.models.LocationType
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -173,7 +173,7 @@ class SettingsFragment :
 
             // Interface prefs
             InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
-            InterfacePrefs.showLocation = LocationStyle.valueOf(properties["show_location"] as String)
+            InterfacePrefs.showLocation = LocationType.valueOf(properties["location_style"] as String)
             InterfacePrefs.alternateTextPosition = properties["alt_text_position"].toString().toBoolean()
 
             // General prefs
@@ -242,7 +242,7 @@ class SettingsFragment :
 
         // Interface prefs
         settings["show_clock"] = InterfacePrefs.showClock.toString()
-        settings["show_location"] = InterfacePrefs.showLocation.toString()
+        settings["location_style"] = InterfacePrefs.showLocation.toString()
         settings["alt_text_position"] = InterfacePrefs.alternateTextPosition.toString()
 
         // General prefs

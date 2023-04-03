@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models
 
-enum class LocationStyle {
+enum class LocationType {
     OFF,
     TITLE,
     POI

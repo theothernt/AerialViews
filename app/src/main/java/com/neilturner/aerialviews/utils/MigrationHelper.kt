@@ -68,17 +68,16 @@ class MigrationHelper(val context: Context) {
         val locationType = prefs.getString("show_location_style", "VERBOSE").toStringOrEmpty()
 
         Log.i(TAG, "Remove old video location pref and set new POI default")
-        prefs.edit().remove("show_location").apply()
-        prefs.edit().putString("show_location", "POI").apply()
+        prefs.edit().putString("location_style", "POI").apply()
 
         if (locationEnabled) {
             if (locationType.contains("SHORT")) {
                 Log.i(TAG, "Set video location to title")
-                prefs.edit().putString("show_location", "TITLE").apply()
+                prefs.edit().putString("location_style", "TITLE").apply()
             }
         } else {
             Log.i(TAG, "Set video location to off")
-            prefs.edit().putString("show_location", "OFF").apply()
+            prefs.edit().putString("location_style", "OFF").apply()
         }
     }
 
