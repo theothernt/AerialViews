@@ -3,8 +3,8 @@
     <!-- Location style -->
     <string-array name="interface_show_location_entries">
         <item>Off</item>
-        <item>Location (in English only)</item>
-        <item>Points of interest (in many languages)</item>
+        <item>Location or title</item>
+        <item>Points of interest (available in many languages)</item>
     </string-array>
 
     <!-- Troubleshooting options -->
