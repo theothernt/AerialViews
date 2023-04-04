@@ -7,7 +7,7 @@ import com.google.gson.reflect.TypeToken
 import com.neilturner.aerialviews.models.videos.Apple2018Video
 import com.neilturner.aerialviews.models.videos.Comm1Video
 import com.neilturner.aerialviews.models.videos.Comm2Video
-import java.util.*
+import java.util.Scanner
 
 object JsonHelper {
 
@@ -21,7 +21,7 @@ object JsonHelper {
 
     fun parseJsonMap(context: Context, @RawRes res: Int): Map<String, String> {
         val stream = context.resources.openRawResource(res)
-        //val stream = LocaleHelper.localeResource(Locale.JAPANESE, res, context)
+        // val stream = LocaleHelper.localeResource(Locale.JAPANESE, res, context)
         val json = Scanner(stream).useDelimiter("\\A").next()
         return jsonParser.fromJson(json, object : TypeToken<Map<String, String>>() {}.type)
     }
