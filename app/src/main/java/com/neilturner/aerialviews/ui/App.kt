@@ -16,21 +16,24 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        if (!DeviceHelper.hasHevcSupport() && GeneralPrefs.firstRun) {
+        // Highlight possible ANR (long pause) issues
+//        if (BuildConfig.DEBUG) {
+//            StrictMode.setThreadPolicy(
+//                StrictMode.ThreadPolicy.Builder()
+//                    .detectNetwork()
+//                    .detectDiskReads()
+//                    .detectDiskWrites()
+//                    .penaltyLog()
+//                    .build()
+//            )
+//        }
+
+        if (!DeviceHelper.hasHevcSupport() &&
+            !GeneralPrefs.checkForHevcSupport
+        ) {
             Log.i(TAG, "Setting default video quality to H.264")
             changeVideoQuality()
-            GeneralPrefs.firstRun = false
-        }
-
-        if (BuildConfig.DEBUG) {
-            StrictMode.setThreadPolicy(
-                StrictMode.ThreadPolicy.Builder()
-                    .detectNetwork()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .penaltyLog()
-                    .build()
-            )
+            GeneralPrefs.checkForHevcSupport = true
         }
     }
 
