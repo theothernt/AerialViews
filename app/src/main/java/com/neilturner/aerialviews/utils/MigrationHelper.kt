@@ -35,8 +35,8 @@ class MigrationHelper(val context: Context) {
             return
         }
 
-        if (lastKnownVersion <= 10) release10()
-        if (lastKnownVersion <= 11) release11()
+        if (lastKnownVersion < 10) release10()
+        if (lastKnownVersion < 11) release11()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -68,6 +68,7 @@ class MigrationHelper(val context: Context) {
         val locationType = prefs.getString("show_location_style", "VERBOSE").toStringOrEmpty()
 
         Log.i(TAG, "Remove old video location pref and set new POI default")
+        prefs.edit().remove("show_location").apply()
         prefs.edit().putString("location_style", "POI").apply()
 
         if (locationEnabled) {

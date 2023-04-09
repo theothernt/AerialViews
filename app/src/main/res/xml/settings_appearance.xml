@@ -19,7 +19,7 @@
                     app:defaultValue="@string/interface_show_location_default"
                     app:entries="@array/interface_show_location_entries"
                     app:entryValues="@array/interface_show_location_values"
-                    app:key="show_location"
+                    app:key="location_style"
                     app:title="@string/interface_show_location_title"
                     app:dialogTitle="@string/interface_show_location_title"
                     app:useSimpleSummaryProvider="true" />
