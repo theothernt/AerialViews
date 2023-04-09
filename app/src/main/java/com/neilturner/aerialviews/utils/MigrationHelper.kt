@@ -15,13 +15,6 @@ class MigrationHelper(val context: Context) {
 
         Log.i(TAG, "Build code $lastKnownVersion, Last known version $lastKnownVersion")
 
-        // If first install, exit early
-        if (PackageHelper.isFirstInstall(context)) {
-            Log.i(TAG, "Fresh install, no migration needed")
-            updateKnownVersion(latestVersion)
-            return
-        }
-
         // If package not updated, exit early
         if (!PackageHelper.isPackageUpdate(context)) {
             Log.i(TAG, "Package not updated, no migration needed")
@@ -45,24 +38,38 @@ class MigrationHelper(val context: Context) {
     private fun release10() {
         Log.i(TAG, "Migrating settings for release 10")
 
+        val communityVideosEnabled = prefs.contains("comm1_videos_enabled") ||
+                prefs.contains("comm2_videos_enabled")
         val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
-        if (!appleVideosEnabled) {
+
+        if (!appleVideosEnabled && !communityVideosEnabled) {
             Log.i(TAG, "Disabling new community videos")
             prefs.edit().putBoolean("comm1_videos_enabled", false).apply()
             prefs.edit().putBoolean("comm2_videos_enabled", false).apply()
             return
+        } else {
+            Log.i(TAG, "Leaving community videos enabled")
         }
 
         val videoQuality = prefs.getString("apple_videos_quality", "").toStringOrEmpty()
-        if (videoQuality.contains("4K", true)) {
+        if (videoQuality.contains("4K", true) &&
+                appleVideosEnabled) {
             Log.i(TAG, "Setting community videos to 4K")
             prefs.edit().putString("comm1_videos_quality", "VIDEO_4K_SDR").apply()
             prefs.edit().putString("comm2_videos_quality", "VIDEO_4K_SDR").apply()
+        } else {
+            Log.i(TAG, "Not setting community videos to 4K")
         }
     }
 
     private fun release11() {
         Log.i(TAG, "Migrating settings for release 11")
+
+        val oldLocationSetting = prefs.contains("show_location")
+        if (!oldLocationSetting) {
+            Log.i(TAG, "Old location setting does not exist, no need to migrate")
+            return
+        }
 
         val locationEnabled = prefs.getBoolean("show_location", true)
         val locationType = prefs.getString("show_location_style", "VERBOSE").toStringOrEmpty()
