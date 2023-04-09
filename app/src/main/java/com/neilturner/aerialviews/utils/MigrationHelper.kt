@@ -13,7 +13,7 @@ class MigrationHelper(val context: Context) {
         val latestVersion = BuildConfig.VERSION_CODE
         val lastKnownVersion = getLastKnownVersion()
 
-        Log.i(TAG, "Build code $lastKnownVersion, Last known version $lastKnownVersion")
+        Log.i(TAG, "Build code $latestVersion, Last known version $lastKnownVersion")
 
         // If package not updated, exit early
         if (!PackageHelper.isPackageUpdate(context)) {
@@ -38,6 +38,7 @@ class MigrationHelper(val context: Context) {
     private fun release10() {
         Log.i(TAG, "Migrating settings for release 10")
 
+        // Covers case when Apple videos are disabled but Community videos are not
         val communityVideosEnabled = prefs.contains("comm1_videos_enabled") ||
                 prefs.contains("comm2_videos_enabled")
         val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
@@ -65,6 +66,7 @@ class MigrationHelper(val context: Context) {
     private fun release11() {
         Log.i(TAG, "Migrating settings for release 11")
 
+        // Setting key will exist if changed or if user has visited that settings fragment/ui
         val oldLocationSetting = prefs.contains("show_location")
         if (!oldLocationSetting) {
             Log.i(TAG, "Old location setting does not exist, no need to migrate")
