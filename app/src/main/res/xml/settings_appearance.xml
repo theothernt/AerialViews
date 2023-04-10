@@ -30,11 +30,11 @@
                     app:title="@string/any_videos_filename_location_title"
                     app:summary="@string/any_videos_filename_location_summary" />
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="refresh_rate_switching"
-                    app:summary="@string/refresh_rate_switching_summary"
-                    app:title="@string/refresh_rate_switching_title" />
+<!--                <CheckBoxPreference-->
+<!--                    app:defaultValue="false"-->
+<!--                    app:key="refresh_rate_switching"-->
+<!--                    app:summary="@string/refresh_rate_switching_summary"-->
+<!--                    app:title="@string/refresh_rate_switching_title" />-->
 
         </PreferenceCategory>
 </PreferenceScreen>
