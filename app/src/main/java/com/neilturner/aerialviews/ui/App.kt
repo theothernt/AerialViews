@@ -1,9 +1,7 @@
 package com.neilturner.aerialviews.ui
 
 import android.app.Application
-import android.os.StrictMode
 import android.util.Log
-import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs

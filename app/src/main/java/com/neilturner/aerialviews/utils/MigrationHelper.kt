@@ -40,7 +40,7 @@ class MigrationHelper(val context: Context) {
 
         // Covers case when Apple videos are disabled but Community videos are not
         val communityVideosEnabled = prefs.contains("comm1_videos_enabled") ||
-                prefs.contains("comm2_videos_enabled")
+            prefs.contains("comm2_videos_enabled")
         val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
 
         if (!appleVideosEnabled && !communityVideosEnabled) {
@@ -54,7 +54,8 @@ class MigrationHelper(val context: Context) {
 
         val videoQuality = prefs.getString("apple_videos_quality", "").toStringOrEmpty()
         if (videoQuality.contains("4K", true) &&
-                appleVideosEnabled) {
+            appleVideosEnabled
+        ) {
             Log.i(TAG, "Setting community videos to 4K")
             prefs.edit().putString("comm1_videos_quality", "VIDEO_4K_SDR").apply()
             prefs.edit().putString("comm2_videos_quality", "VIDEO_4K_SDR").apply()
