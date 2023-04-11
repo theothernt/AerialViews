@@ -10,9 +10,6 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
-    <!-- There are no ads in this app! -->
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
-
     <queries>
         <intent>
             <action android:name="android.settings.DREAM_SETTINGS" />

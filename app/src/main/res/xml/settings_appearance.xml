@@ -19,7 +19,7 @@
                     app:defaultValue="@string/interface_show_location_default"
                     app:entries="@array/interface_show_location_entries"
                     app:entryValues="@array/interface_show_location_values"
-                    app:key="show_location"
+                    app:key="location_style"
                     app:title="@string/interface_show_location_title"
                     app:dialogTitle="@string/interface_show_location_title"
                     app:useSimpleSummaryProvider="true" />
@@ -30,11 +30,11 @@
                     app:title="@string/any_videos_filename_location_title"
                     app:summary="@string/any_videos_filename_location_summary" />
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="refresh_rate_switching"
-                    app:summary="@string/refresh_rate_switching_summary"
-                    app:title="@string/refresh_rate_switching_title" />
+<!--                <CheckBoxPreference-->
+<!--                    app:defaultValue="false"-->
+<!--                    app:key="refresh_rate_switching"-->
+<!--                    app:summary="@string/refresh_rate_switching_summary"-->
+<!--                    app:title="@string/refresh_rate_switching_title" />-->
 
         </PreferenceCategory>
 </PreferenceScreen>
