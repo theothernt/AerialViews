@@ -2,16 +2,29 @@
 
 package com.neilturner.aerialviews.ui.sources
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
-class AppleVideosFragment : PreferenceFragmentCompat() {
+class AppleVideosFragment :
+    PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        updateSummaries()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         updateSummaries()
     }
 
@@ -22,7 +35,6 @@ class AppleVideosFragment : PreferenceFragmentCompat() {
         val index = quality?.findIndexOfValue(quality.value)
         val bitrates = res.getStringArray(R.array.apple_videos_data_usage_values)
         val bitrate = index?.let { bitrates[it] }
-
         dataUsage?.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 }
