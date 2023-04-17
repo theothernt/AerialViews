@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.settings
 
 import android.Manifest
@@ -126,7 +124,6 @@ class SettingsFragment :
         }
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext") // code runs inside Dispatcher.IO
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing settings from Downloads folder")
 
