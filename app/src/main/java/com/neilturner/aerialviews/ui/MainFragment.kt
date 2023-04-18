@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -26,6 +28,11 @@ class MainFragment :
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
+
+        //val appLocale = LocaleListCompat.forLanguageTags("ja")
+        val appLocale = LocaleListCompat.forLanguageTags("de-DE")
+        // Call this on the main thread as it may require Activity.restart()
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
