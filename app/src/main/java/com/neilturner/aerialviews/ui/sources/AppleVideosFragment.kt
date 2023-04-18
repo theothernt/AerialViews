@@ -12,17 +12,23 @@ class AppleVideosFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
-        updateSummaries()
+        updateSummary()
     }
 
-    private fun updateSummaries() {
-        val res = context?.resources!!
+    private fun updateSummary() {
         val quality = findPreference<ListPreference>("apple_videos_quality")
-        val dataUsage = findPreference<Preference>("apple_videos_data_usage")
-        val index = quality?.findIndexOfValue(quality.value)
-        val bitrates = res.getStringArray(R.array.apple_videos_data_usage_values)
-        val bitrate = index?.let { bitrates[it] }
+        quality?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            quality?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
+            true
+        }
+        quality?.findIndexOfValue(quality.value)?.let { updateDataUsageSummary(it) }
+    }
 
+    private fun updateDataUsageSummary(index: Int) {
+        val res = context?.resources!!
+        val dataUsage = findPreference<Preference>("apple_videos_data_usage")
+        val bitrateList = res.getStringArray(R.array.apple_videos_data_usage_values)
+        val bitrate = bitrateList[index]
         dataUsage?.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 }
