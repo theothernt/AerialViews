@@ -7,13 +7,13 @@ import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import java.net.URLEncoder
 
-class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPrefs) : VideoProvider(context) {
+class NetworkVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()

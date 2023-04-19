@@ -4,7 +4,7 @@ import com.chibatching.kotpref.KotprefModel
 import com.neilturner.aerialviews.R
 import java.util.TreeSet
 
-object NetworkVideoPrefs : KotprefModel() {
+object SambaVideoPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "network_videos_enabled")

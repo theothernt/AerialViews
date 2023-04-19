@@ -25,7 +25,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -162,11 +162,11 @@ class SettingsFragment :
             LocalVideoPrefs.filter_folder_name = properties["local_videos_filter_folder_name"] as String
 
             // Network video prefs?
-            NetworkVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
-            NetworkVideoPrefs.enableEncryption = properties["network_videos_enable_encryption"].toString().toBoolean()
+            SambaVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
+            SambaVideoPrefs.enableEncryption = properties["network_videos_enable_encryption"].toString().toBoolean()
             val smbDialects = (properties["network_videos_smb_dialects"] as String).split(",").toList()
-            NetworkVideoPrefs.smbDialects.clear()
-            NetworkVideoPrefs.smbDialects.addAll(smbDialects)
+            SambaVideoPrefs.smbDialects.clear()
+            SambaVideoPrefs.smbDialects.addAll(smbDialects)
 
             // Interface prefs
             InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
@@ -232,9 +232,9 @@ class SettingsFragment :
         settings["local_videos_filter_folder_name"] = LocalVideoPrefs.filter_folder_name
 
         // Network video prefs?
-        settings["network_videos_enabled"] = NetworkVideoPrefs.enabled.toString()
-        settings["network_videos_enable_encryption"] = NetworkVideoPrefs.enableEncryption.toString()
-        val smbDialects = NetworkVideoPrefs.smbDialects.joinToString(separator = ",")
+        settings["network_videos_enabled"] = SambaVideoPrefs.enabled.toString()
+        settings["network_videos_enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
+        val smbDialects = SambaVideoPrefs.smbDialects.joinToString(separator = ",")
         settings["network_videos_smb_dialects"] = smbDialects
 
         // Interface prefs

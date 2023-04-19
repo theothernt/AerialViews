@@ -12,7 +12,7 @@ import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AbstractVideo
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.providers.AppleVideoProvider
@@ -35,8 +35,8 @@ class VideoService(private val context: Context) {
             providers.add(LocalVideoProvider(context, LocalVideoPrefs))
         }
 
-        if (NetworkVideoPrefs.enabled) {
-            providers.add(NetworkVideoProvider(context, NetworkVideoPrefs))
+        if (SambaVideoPrefs.enabled) {
+            providers.add(NetworkVideoProvider(context, SambaVideoPrefs))
         }
 
         if (Comm1VideoPrefs.enabled) {

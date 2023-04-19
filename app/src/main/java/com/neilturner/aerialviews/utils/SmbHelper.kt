@@ -5,7 +5,7 @@ import android.util.Log
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 
 object SmbHelper {
 
@@ -79,9 +79,9 @@ object SmbHelper {
     }
 
     fun buildSmbConfig(): SmbConfig {
-        val dialectStrings = NetworkVideoPrefs.smbDialects.sortedByDescending { it }
+        val dialectStrings = SambaVideoPrefs.smbDialects.sortedByDescending { it }
         val config = SmbConfig.builder()
-        config.withEncryptData(NetworkVideoPrefs.enableEncryption)
+        config.withEncryptData(SambaVideoPrefs.enableEncryption)
         if (dialectStrings.isNotEmpty()) {
             Log.i(TAG, "Using SMB dialects: ${dialectStrings.joinToString(",")}")
             val dialects = dialectStrings.map { SMB2Dialect.valueOf(it) }
