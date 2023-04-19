@@ -118,22 +118,22 @@
     </string-array>
     <string name="playback_max_video_length_default" translatable="false">0</string>
 
-    <!-- Network Video Options -->
-    <string-array name="network_videos_smb_dialects_entries" translatable="false">
+    <!-- Samba Video Options -->
+    <string-array name="samba_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>
         <item>v3.0.2</item>
         <item>v3.0</item>
         <item>v2.1</item>
         <item>v2.0.2</item>
     </string-array>
-    <string-array name="network_videos_smb_dialects_values" translatable="false">
+    <string-array name="samba_videos_smb_dialects_values" translatable="false">
         <item>SMB_3_1_1</item>
         <item>SMB_3_0_2</item>
         <item>SMB_3_0</item>
         <item>SMB_2_1</item>
         <item>SMB_2_0_2</item>
     </string-array>
-    <string-array name="network_videos_smb_dialects_default" translatable="false">
+    <string-array name="samba_videos_smb_dialects_default" translatable="false">
         <item>SMB_3_1_1</item>
         <item>SMB_3_0_2</item>
         <item>SMB_3_0</item>

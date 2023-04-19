@@ -19,7 +19,7 @@ import com.neilturner.aerialviews.providers.AppleVideoProvider
 import com.neilturner.aerialviews.providers.Comm1VideoProvider
 import com.neilturner.aerialviews.providers.Comm2VideoProvider
 import com.neilturner.aerialviews.providers.LocalVideoProvider
-import com.neilturner.aerialviews.providers.NetworkVideoProvider
+import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.providers.VideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.JsonHelper
@@ -36,7 +36,7 @@ class VideoService(private val context: Context) {
         }
 
         if (SambaVideoPrefs.enabled) {
-            providers.add(NetworkVideoProvider(context, SambaVideoPrefs))
+            providers.add(SambaVideoProvider(context, SambaVideoPrefs))
         }
 
         if (Comm1VideoPrefs.enabled) {

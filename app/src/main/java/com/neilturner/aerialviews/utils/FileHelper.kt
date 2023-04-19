@@ -42,7 +42,7 @@ object FileHelper {
             !uri.toString().contains("https://", true)
     }
 
-    fun isNetworkVideo(uri: Uri): Boolean {
+    fun isSambaVideo(uri: Uri): Boolean {
         return uri.toString().contains("smb://", true)
     }
 

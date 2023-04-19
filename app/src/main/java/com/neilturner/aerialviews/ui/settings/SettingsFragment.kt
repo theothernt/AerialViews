@@ -161,10 +161,10 @@ class SettingsFragment :
             LocalVideoPrefs.filter_enabled = properties["local_videos_filter_enabled"].toString().toBoolean()
             LocalVideoPrefs.filter_folder_name = properties["local_videos_filter_folder_name"] as String
 
-            // Network video prefs?
-            SambaVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
-            SambaVideoPrefs.enableEncryption = properties["network_videos_enable_encryption"].toString().toBoolean()
-            val smbDialects = (properties["network_videos_smb_dialects"] as String).split(",").toList()
+            // Samba video prefs?
+            SambaVideoPrefs.enabled = properties["samba_videos_enabled"].toString().toBoolean()
+            SambaVideoPrefs.enableEncryption = properties["samba_videos_enable_encryption"].toString().toBoolean()
+            val smbDialects = (properties["samba_videos_smb_dialects"] as String).split(",").toList()
             SambaVideoPrefs.smbDialects.clear()
             SambaVideoPrefs.smbDialects.addAll(smbDialects)
 
@@ -231,11 +231,11 @@ class SettingsFragment :
         settings["local_videos_filter_enabled"] = LocalVideoPrefs.filter_enabled.toString()
         settings["local_videos_filter_folder_name"] = LocalVideoPrefs.filter_folder_name
 
-        // Network video prefs?
-        settings["network_videos_enabled"] = SambaVideoPrefs.enabled.toString()
-        settings["network_videos_enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
+        // Samba video prefs?
+        settings["samba_videos_enabled"] = SambaVideoPrefs.enabled.toString()
+        settings["samba_videos_enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
         val smbDialects = SambaVideoPrefs.smbDialects.joinToString(separator = ",")
-        settings["network_videos_smb_dialects"] = smbDialects
+        settings["samba_videos_smb_dialects"] = smbDialects
 
         // Interface prefs
         settings["show_clock"] = InterfacePrefs.showClock.toString()

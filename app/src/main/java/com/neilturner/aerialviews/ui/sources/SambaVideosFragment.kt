@@ -104,14 +104,14 @@ class SambaVideosFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("network_videos_test_connection")) {
+        if (preference.key.contains("samba_videos_test_connection")) {
             lifecycleScope.launch {
-                testNetworkConnection()
+                testSambaConnection()
             }
             return true
         }
 
-        if (preference.key.contains("network_videos_import_export_settings")) {
+        if (preference.key.contains("samba_videos_import_export_settings")) {
             importExportSettings()
             return true
         }
@@ -120,7 +120,7 @@ class SambaVideosFragment :
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "network_videos_sharename") {
+        if (key == "samba_videos_sharename") {
             SambaVideoPrefs.shareName = SmbHelper.fixShareName(SambaVideoPrefs.shareName)
         }
     }
@@ -209,10 +209,10 @@ class SambaVideosFragment :
         }
 
         withContext(Dispatchers.Main) {
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.text = SambaVideoPrefs.hostName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.text = SambaVideoPrefs.shareName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.text = SambaVideoPrefs.userName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = SambaVideoPrefs.password
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaVideoPrefs.hostName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaVideoPrefs.shareName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaVideoPrefs.userName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaVideoPrefs.password
         }
 
         showDialog("Import successful", "SMB settings successfully imported from $SMB_SETTINGS_FILENAME")
@@ -281,7 +281,7 @@ class SambaVideosFragment :
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
-    private suspend fun testNetworkConnection() = withContext(Dispatchers.IO) {
+    private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
         // Check hostname
         val validIpAddress = Patterns.IP_ADDRESS.matcher(SambaVideoPrefs.hostName).matches()
         if (!validIpAddress) {

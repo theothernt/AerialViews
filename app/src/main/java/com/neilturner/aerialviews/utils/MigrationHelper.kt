@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 
 class MigrationHelper(val context: Context) {
 
@@ -30,6 +31,8 @@ class MigrationHelper(val context: Context) {
 
         if (lastKnownVersion < 10) release10()
         if (lastKnownVersion < 11) release11()
+        //if (lastKnownVersion < 12) release12()
+        if (lastKnownVersion < 13) release13()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -90,6 +93,23 @@ class MigrationHelper(val context: Context) {
             Log.i(TAG, "Set video location to off")
             prefs.edit().putString("location_style", "OFF").apply()
         }
+    }
+
+    private fun release13() {
+        Log.i(TAG, "Migrating settings for release 13")
+
+        val sambaUsed = prefs.contains("network_videos_enabled")
+        if (sambaUsed) {
+            prefs.edit().putBoolean("samba_videos_enabled", prefs.getBoolean("network_videos_enabled", false)).apply()
+            prefs.edit().putBoolean("samba_videos_enable_encryption", prefs.getBoolean("network_videos_enable_encryption", false)).apply()
+            prefs.edit().putString("samba_videos_username", prefs.getString("network_videos_username", "")).apply()
+            prefs.edit().putString("samba_videos_password", prefs.getString("network_videos_password", "")).apply()
+            prefs.edit().putString("samba_videos_hostname", prefs.getString("network_videos_hostname", "")).apply()
+            prefs.edit().putString("samba_videos_sharename", prefs.getString("network_videos_sharename", "")).apply()
+            prefs.edit().putString("samba_videos_domainname", prefs.getString("network_videos_domainname", "WORKGROUP")).apply()
+            prefs.edit().putStringSet("samba_videos_smb_dialects", prefs.getStringSet("network_videos_smb_dialects", emptySet())).apply()
+
+            }
     }
 
     // Get saved revision code or return 0

@@ -56,7 +56,7 @@ class SmbDataSource : BaseDataSource(true) {
 
         val remoteFile: File
         try {
-            remoteFile = openNetworkFile()
+            remoteFile = openSambaFile()
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             return 0
@@ -108,7 +108,7 @@ class SmbDataSource : BaseDataSource(true) {
         path = shareNameAndPath.second
     }
 
-    private fun openNetworkFile(): File {
+    private fun openSambaFile(): File {
         val config = SmbHelper.buildSmbConfig()
         smbClient = SMBClient(config)
         val connection = smbClient?.connect(hostName)
