@@ -183,7 +183,7 @@ class SettingsFragment :
 
             GeneralPrefs.enableTunneling = properties["enable_tunneling"].toString().toBoolean()
             GeneralPrefs.exceedRenderer = properties["exceed_renderer"].toString().toBoolean()
-            GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
+            //GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
 
             GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"].toString().toBoolean()
             GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
@@ -252,7 +252,7 @@ class SettingsFragment :
 
         settings["enable_tunneling"] = GeneralPrefs.enableTunneling.toString()
         settings["exceed_renderer"] = GeneralPrefs.exceedRenderer.toString()
-        settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
+        //settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
 
         settings["any_videos_filename_location"] = GeneralPrefs.filenameAsLocation.toString()
         settings["any_videos_use_apple_manifests"] = GeneralPrefs.useAppleManifests.toString()
