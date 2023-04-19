@@ -2,11 +2,13 @@
 
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.content.res.Configuration
 import android.service.dreams.DreamService
 import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
+import java.util.Locale
 
 class DreamActivity : DreamService() {
     private lateinit var videoController: VideoController
@@ -17,7 +19,11 @@ class DreamActivity : DreamService() {
         // Setup
         isFullscreen = true
         isInteractive = true
-        videoController = VideoController(this, window)
+
+        val context = createConfigurationContext(Configuration())
+        context.resources.configuration.setLocale(Locale.CHINA)
+
+        videoController = VideoController(context, window)
         setContentView(videoController.view)
     }
 
