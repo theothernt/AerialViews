@@ -20,9 +20,11 @@ class DreamActivity : DreamService() {
         isFullscreen = true
         isInteractive = true
 
-        val context = createConfigurationContext(Configuration())
-        context.resources.configuration.setLocale(Locale.CHINA)
+        val config = Configuration(this.resources.configuration)
+        config.setLocale(Locale.GERMANY)
+        val context = createConfigurationContext(config)
 
+        // Start playback, etc
         videoController = VideoController(context, window)
         setContentView(videoController.view)
     }

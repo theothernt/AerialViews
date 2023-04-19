@@ -1,12 +1,14 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.WindowHelper
+import java.util.Locale
 
 class TestActivity : Activity() {
     private lateinit var videoController: VideoController
@@ -21,8 +23,13 @@ class TestActivity : Activity() {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         Log.i(TAG, "onAttachedToWindow")
+
+        val config = Configuration(this.resources.configuration)
+        config.setLocale(Locale.GERMANY)
+        val context = createConfigurationContext(config)
+
         // Start playback, etc
-        videoController = VideoController(this, window)
+        videoController = VideoController(context, window)
         setContentView(videoController.view)
     }
 
