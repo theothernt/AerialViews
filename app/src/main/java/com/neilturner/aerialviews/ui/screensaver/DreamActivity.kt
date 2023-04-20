@@ -23,7 +23,7 @@ class DreamActivity : DreamService() {
         isInteractive = true
 
         // Start playback, etc
-        videoController = if (!InterfacePrefs.localeMenu.startsWith("default")) {
+        videoController = if (!InterfacePrefs.localeScreensaver.startsWith("default")) {
             val config = Configuration(this.resources.configuration)
             config.setLocale(LocaleHelper.localeFromString(InterfacePrefs.localeScreensaver))
             val context = createConfigurationContext(config)

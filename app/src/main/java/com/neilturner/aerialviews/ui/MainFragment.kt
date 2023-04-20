@@ -34,7 +34,6 @@ class MainFragment :
             LocaleListCompat.forLanguageTags(InterfacePrefs.localeMenu)
         } else {
             LocaleListCompat.getEmptyLocaleList()
-
         }
         AppCompatDelegate.setApplicationLocales(appLocale)
     }

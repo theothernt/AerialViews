@@ -177,14 +177,14 @@
         <item>System locale (default)</item>
         <item>English</item>
         <item>German</item>
-        <item>Arabic (Egypt)</item>
+        <item>Arabic</item>
         <item>Japanese</item>
     </string-array>
     <string-array name="locale_screensaver_values" translatable="false">
-        <item>default</item>
+        <item>System locale (default)</item>
         <item>en-IE</item>
         <item>de-DE</item>
-        <item>ar-EG</item>
+        <item>ar</item>
         <item>ja-JP</item>
     </string-array>
     <string name="locale_screensaver_default" translatable="false">default</string>
