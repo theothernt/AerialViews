@@ -11,4 +11,7 @@ object InterfacePrefs : KotprefModel() {
     var showClock by booleanPref(true, "show_clock")
     var showLocation by enumValuePref(LocationType.POI, "location_style")
     var alternateTextPosition by booleanPref(false, "alt_text_position")
+
+    var localeMenu by stringPref("default", "locale_menu")
+    var localeScreensaver by stringPref("default", "locale_screensaver")
 }
