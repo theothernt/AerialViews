@@ -120,7 +120,7 @@ dependencies {
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation('androidx.activity:activity-ktx:1.7.0')
+    implementation('androidx.activity:activity-ktx:1.7.1')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
     implementation('androidx.appcompat:appcompat:1.6.1')
 
@@ -133,7 +133,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('com.google.android.exoplayer:exoplayer-core:2.18.5')
+    implementation('com.google.android.exoplayer:exoplayer-core:2.18.6')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
