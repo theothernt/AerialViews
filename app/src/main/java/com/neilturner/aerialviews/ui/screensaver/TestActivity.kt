@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
@@ -24,12 +25,15 @@ class TestActivity : Activity() {
         super.onAttachedToWindow()
         Log.i(TAG, "onAttachedToWindow")
 
-        val config = Configuration(this.resources.configuration)
-        config.setLocale(Locale.GERMANY)
-        val context = createConfigurationContext(config)
-
         // Start playback, etc
-        videoController = VideoController(context, window)
+        videoController = if (!InterfacePrefs.localeMenu.startsWith("default")) {
+            val config = Configuration(this.resources.configuration)
+            config.setLocale(Locale(InterfacePrefs.localeMenu))
+            val context = createConfigurationContext(config)
+            VideoController(context, window)
+        } else {
+            VideoController(this, window)
+        }
         setContentView(videoController.view)
     }
 
