@@ -71,7 +71,7 @@
                     app:key="locale_screensaver"
                     app:defaultValue="@string/locale_screensaver_default"
                     app:entries="@array/locale_screensaver_entries"
-                    app:entryValues="@array/locale_menu_values"
+                    app:entryValues="@array/locale_screensaver_values"
                     app:title="@string/locale_screensaver_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
