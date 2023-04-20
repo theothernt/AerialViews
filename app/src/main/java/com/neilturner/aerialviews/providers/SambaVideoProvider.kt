@@ -7,13 +7,13 @@ import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import java.net.URLEncoder
 
-class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPrefs) : VideoProvider(context) {
+class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
         val videos = mutableListOf<AerialVideo>()
@@ -29,8 +29,8 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
 
-        val networkVideos = try {
-            findNetworkMedia(
+        val sambaVideos = try {
+            findSambaMedia(
                 prefs.userName,
                 prefs.password,
                 prefs.domainName,
@@ -43,7 +43,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
             emptyList()
         }
 
-        networkVideos.forEach { filename ->
+        sambaVideos.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
@@ -66,7 +66,7 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
         return videos
     }
 
-    private fun findNetworkMedia(
+    private fun findSambaMedia(
         userName: String,
         password: String,
         domainName: String,
@@ -100,6 +100,6 @@ class NetworkVideoProvider(context: Context, private val prefs: NetworkVideoPref
     }
 
     companion object {
-        private const val TAG = "NetworkVideoProvider"
+        private const val TAG = "SambaVideoProvider"
     }
 }

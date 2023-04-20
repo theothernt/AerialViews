@@ -19,14 +19,11 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.video.VideoSize
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.BufferingStrategy
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.CustomRendererFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PhilipsMediaCodecAdapterFactory
-import com.neilturner.aerialviews.utils.PlayerHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlin.math.roundToLong
 
@@ -41,7 +38,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
-    private val bufferingStrategy: BufferingStrategy
+    //private val bufferingStrategy: BufferingStrategy
     private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
@@ -49,11 +46,11 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     init {
         // Use smaller buffer for local and network playback
-        bufferingStrategy = if (!AppleVideoPrefs.enabled) {
-            BufferingStrategy.SMALLER
-        } else {
-            BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
-        }
+//        bufferingStrategy = if (!AppleVideoPrefs.enabled) {
+//            BufferingStrategy.SMALLER
+//        } else {
+//            BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
+//        }
 
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
@@ -85,7 +82,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (philipsDolbyVisionFix) {
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
-        if (FileHelper.isNetworkVideo(uri)) {
+        if (FileHelper.isSambaVideo(uri)) {
             val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())
                 .createMediaSource(mediaItem)
             player.setMediaSource(mediaSource)
@@ -259,8 +256,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         // Check if we need to limit the duration of the video
         var targetDuration = duration
         val limit = GeneralPrefs.maxVideoLength.toInt()
-        if (limit >= 10 &&
-            limit > duration
+        if (limit in 10 until duration
         ) {
             targetDuration = limit * 1000
         }
@@ -294,8 +290,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     private fun buildPlayer(context: Context): ExoPlayer {
-        Log.i(TAG, "Buffering strategy: $bufferingStrategy")
-        val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
+        //Log.i(TAG, "Buffering strategy: $bufferingStrategy")
+        //val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
         if (enableTunneling) {
@@ -318,7 +314,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         val player = ExoPlayer.Builder(context)
-            .setLoadControl(loadControl)
+            //.setLoadControl(loadControl)
             .setTrackSelector(trackSelector)
             .setRenderersFactory(rendererFactory)
             .build()

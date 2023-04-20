@@ -25,7 +25,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -161,12 +161,12 @@ class SettingsFragment :
             LocalVideoPrefs.filter_enabled = properties["local_videos_filter_enabled"].toString().toBoolean()
             LocalVideoPrefs.filter_folder_name = properties["local_videos_filter_folder_name"] as String
 
-            // Network video prefs?
-            NetworkVideoPrefs.enabled = properties["network_videos_enabled"].toString().toBoolean()
-            NetworkVideoPrefs.enableEncryption = properties["network_videos_enable_encryption"].toString().toBoolean()
-            val smbDialects = (properties["network_videos_smb_dialects"] as String).split(",").toList()
-            NetworkVideoPrefs.smbDialects.clear()
-            NetworkVideoPrefs.smbDialects.addAll(smbDialects)
+            // Samba video prefs?
+            SambaVideoPrefs.enabled = properties["samba_videos_enabled"].toString().toBoolean()
+            SambaVideoPrefs.enableEncryption = properties["samba_videos_enable_encryption"].toString().toBoolean()
+            val smbDialects = (properties["samba_videos_smb_dialects"] as String).split(",").toList()
+            SambaVideoPrefs.smbDialects.clear()
+            SambaVideoPrefs.smbDialects.addAll(smbDialects)
 
             // Interface prefs
             InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
@@ -183,7 +183,7 @@ class SettingsFragment :
 
             GeneralPrefs.enableTunneling = properties["enable_tunneling"].toString().toBoolean()
             GeneralPrefs.exceedRenderer = properties["exceed_renderer"].toString().toBoolean()
-            GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
+            //GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
 
             GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"].toString().toBoolean()
             GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
@@ -231,11 +231,11 @@ class SettingsFragment :
         settings["local_videos_filter_enabled"] = LocalVideoPrefs.filter_enabled.toString()
         settings["local_videos_filter_folder_name"] = LocalVideoPrefs.filter_folder_name
 
-        // Network video prefs?
-        settings["network_videos_enabled"] = NetworkVideoPrefs.enabled.toString()
-        settings["network_videos_enable_encryption"] = NetworkVideoPrefs.enableEncryption.toString()
-        val smbDialects = NetworkVideoPrefs.smbDialects.joinToString(separator = ",")
-        settings["network_videos_smb_dialects"] = smbDialects
+        // Samba video prefs?
+        settings["samba_videos_enabled"] = SambaVideoPrefs.enabled.toString()
+        settings["samba_videos_enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
+        val smbDialects = SambaVideoPrefs.smbDialects.joinToString(separator = ",")
+        settings["samba_videos_smb_dialects"] = smbDialects
 
         // Interface prefs
         settings["show_clock"] = InterfacePrefs.showClock.toString()
@@ -252,7 +252,7 @@ class SettingsFragment :
 
         settings["enable_tunneling"] = GeneralPrefs.enableTunneling.toString()
         settings["exceed_renderer"] = GeneralPrefs.exceedRenderer.toString()
-        settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
+        //settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
 
         settings["any_videos_filename_location"] = GeneralPrefs.filenameAsLocation.toString()
         settings["any_videos_use_apple_manifests"] = GeneralPrefs.useAppleManifests.toString()
