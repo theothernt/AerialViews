@@ -30,10 +30,13 @@ class MainFragment :
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
 
-        if (!InterfacePrefs.localeMenu.startsWith("default")) {
-            val appLocale = LocaleListCompat.forLanguageTags(InterfacePrefs.localeMenu)
-            AppCompatDelegate.setApplicationLocales(appLocale)
+        val appLocale = if (!InterfacePrefs.localeMenu.startsWith("default")) {
+            LocaleListCompat.forLanguageTags(InterfacePrefs.localeMenu)
+        } else {
+            LocaleListCompat.getEmptyLocaleList()
+
         }
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
