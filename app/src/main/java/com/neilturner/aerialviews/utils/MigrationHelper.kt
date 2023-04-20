@@ -108,7 +108,7 @@ class MigrationHelper(val context: Context) {
             prefs.edit().putString("samba_videos_sharename", prefs.getString("network_videos_sharename", "")).apply()
             prefs.edit().putString("samba_videos_domainname", prefs.getString("network_videos_domainname", "WORKGROUP")).apply()
             prefs.edit().putStringSet("samba_videos_smb_dialects", prefs.getStringSet("network_videos_smb_dialects", emptySet())).apply()
-
+            prefs.edit().remove("network_videos_enabled").apply()
             }
     }
 
