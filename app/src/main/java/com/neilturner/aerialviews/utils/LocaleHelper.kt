@@ -28,4 +28,18 @@ object LocaleHelper {
         config.setLocale(requestedLocale)
         return context.createConfigurationContext(config).resources.openRawResource(res)
     }
+
+    fun localeFromString(locale: String): Locale {
+        val parts = locale.split("-")
+        if (parts.size == 1) {
+            return Locale(parts[0])
+        }
+        if (parts.size == 2) {
+            return Locale(parts[0], parts[1])
+        }
+        if (parts.size == 3) {
+            return Locale(parts[0], parts[1], parts[2])
+        }
+        return Locale.ENGLISH
+    }
 }
