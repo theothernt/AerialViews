@@ -34,7 +34,7 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.NetworkVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SmbHelper
 import kotlinx.coroutines.Dispatchers
@@ -104,14 +104,14 @@ class SambaVideosFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("network_videos_test_connection")) {
+        if (preference.key.contains("samba_videos_test_connection")) {
             lifecycleScope.launch {
-                testNetworkConnection()
+                testSambaConnection()
             }
             return true
         }
 
-        if (preference.key.contains("network_videos_import_export_settings")) {
+        if (preference.key.contains("samba_videos_import_export_settings")) {
             importExportSettings()
             return true
         }
@@ -120,8 +120,8 @@ class SambaVideosFragment :
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "network_videos_sharename") {
-            NetworkVideoPrefs.shareName = SmbHelper.fixShareName(NetworkVideoPrefs.shareName)
+        if (key == "samba_videos_sharename") {
+            SambaVideoPrefs.shareName = SmbHelper.fixShareName(SambaVideoPrefs.shareName)
         }
     }
 
@@ -197,10 +197,10 @@ class SambaVideosFragment :
         }
 
         try {
-            NetworkVideoPrefs.hostName = properties["hostname"] as String
-            NetworkVideoPrefs.shareName = properties["sharename"] as String
-            NetworkVideoPrefs.userName = properties["username"] as String
-            NetworkVideoPrefs.password = properties["password"] as String
+            SambaVideoPrefs.hostName = properties["hostname"] as String
+            SambaVideoPrefs.shareName = properties["sharename"] as String
+            SambaVideoPrefs.userName = properties["username"] as String
+            SambaVideoPrefs.password = properties["password"] as String
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
             Log.e(TAG, "Import failed", ex)
@@ -209,10 +209,10 @@ class SambaVideosFragment :
         }
 
         withContext(Dispatchers.Main) {
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_hostname")?.text = NetworkVideoPrefs.hostName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_sharename")?.text = NetworkVideoPrefs.shareName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_username")?.text = NetworkVideoPrefs.userName
-            preferenceScreen.findPreference<EditTextPreference>("network_videos_password")?.text = NetworkVideoPrefs.password
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaVideoPrefs.hostName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaVideoPrefs.shareName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaVideoPrefs.userName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaVideoPrefs.password
         }
 
         showDialog("Import successful", "SMB settings successfully imported from $SMB_SETTINGS_FILENAME")
@@ -240,10 +240,10 @@ class SambaVideosFragment :
 
         // Build SMB config list
         val smbSettings = mutableMapOf<String, String>()
-        smbSettings["hostname"] = NetworkVideoPrefs.hostName
-        smbSettings["sharename"] = NetworkVideoPrefs.shareName
-        smbSettings["username"] = NetworkVideoPrefs.userName
-        smbSettings["password"] = NetworkVideoPrefs.password
+        smbSettings["hostname"] = SambaVideoPrefs.hostName
+        smbSettings["sharename"] = SambaVideoPrefs.shareName
+        smbSettings["username"] = SambaVideoPrefs.userName
+        smbSettings["password"] = SambaVideoPrefs.password
 
         val uri: Uri
         try {
@@ -281,9 +281,9 @@ class SambaVideosFragment :
     }
 
     @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
-    private suspend fun testNetworkConnection() = withContext(Dispatchers.IO) {
+    private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
         // Check hostname
-        val validIpAddress = Patterns.IP_ADDRESS.matcher(NetworkVideoPrefs.hostName).matches()
+        val validIpAddress = Patterns.IP_ADDRESS.matcher(SambaVideoPrefs.hostName).matches()
         if (!validIpAddress) {
             val message = "Hostname must be a valid IP address."
             Log.e(TAG, message)
@@ -306,21 +306,21 @@ class SambaVideosFragment :
         val smbClient = SMBClient(config)
         val connection: Connection
         try {
-            connection = smbClient.connect(NetworkVideoPrefs.hostName)
+            connection = smbClient.connect(SambaVideoPrefs.hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            val message = "Hostname error: ${NetworkVideoPrefs.hostName}...\n\n${e.message}"
+            val message = "Hostname error: ${SambaVideoPrefs.hostName}...\n\n${e.message}"
             showDialog("Connection error", message)
             return@withContext
         }
-        Log.i(TAG, "Connected to ${NetworkVideoPrefs.hostName}")
+        Log.i(TAG, "Connected to ${SambaVideoPrefs.hostName}")
 
         // Check username + password
         // Domain name fixed to default
         // Handles anonymous logins also
         val session: Session?
         try {
-            val authContext = SmbHelper.buildAuthContext(NetworkVideoPrefs.userName, NetworkVideoPrefs.password, NetworkVideoPrefs.domainName)
+            val authContext = SmbHelper.buildAuthContext(SambaVideoPrefs.userName, SambaVideoPrefs.password, SambaVideoPrefs.domainName)
             session = connection?.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
@@ -335,7 +335,7 @@ class SambaVideosFragment :
         val path: String?
         var shareName = ""
         try {
-            val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(NetworkVideoPrefs.shareName))
+            val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(SambaVideoPrefs.shareName))
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
             share = session?.connectShare(shareName) as DiskShare

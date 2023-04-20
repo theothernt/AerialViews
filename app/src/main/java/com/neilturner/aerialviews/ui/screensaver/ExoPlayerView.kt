@@ -19,14 +19,11 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.video.VideoSize
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.BufferingStrategy
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.SmbDataSourceFactory
 import com.neilturner.aerialviews.utils.CustomRendererFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PhilipsMediaCodecAdapterFactory
-import com.neilturner.aerialviews.utils.PlayerHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlin.math.roundToLong
 
@@ -85,7 +82,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (philipsDolbyVisionFix) {
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
-        if (FileHelper.isNetworkVideo(uri)) {
+        if (FileHelper.isSambaVideo(uri)) {
             val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())
                 .createMediaSource(mediaItem)
             player.setMediaSource(mediaSource)
