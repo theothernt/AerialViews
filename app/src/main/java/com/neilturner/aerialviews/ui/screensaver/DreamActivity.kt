@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper
+import java.util.Locale
 
 class DreamActivity : DreamService() {
     private lateinit var videoController: VideoController
@@ -23,8 +24,10 @@ class DreamActivity : DreamService() {
 
         // Start playback, etc
         videoController = if (!InterfacePrefs.localeScreensaver.startsWith("default")) {
+            val locale = LocaleHelper.localeFromString(InterfacePrefs.localeScreensaver)
+            Locale.setDefault(locale)
             val config = Configuration(this.resources.configuration)
-            config.setLocale(LocaleHelper.localeFromString(InterfacePrefs.localeScreensaver))
+            config.setLocale(locale)
             val context = createConfigurationContext(config)
             Log.i(TAG, "Locale: ${InterfacePrefs.localeScreensaver}")
             VideoController(context, window)
