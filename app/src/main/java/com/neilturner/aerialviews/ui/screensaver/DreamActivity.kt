@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper
-import java.util.Locale
 
 class DreamActivity : DreamService() {
     private lateinit var videoController: VideoController

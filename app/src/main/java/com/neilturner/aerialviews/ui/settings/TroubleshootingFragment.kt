@@ -2,7 +2,6 @@
 
 package com.neilturner.aerialviews.ui.settings
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
@@ -41,7 +40,7 @@ class TroubleshootingFragment : PreferenceFragmentCompat() {
 
     private fun askForRestart() {
         AlertDialog.Builder(requireContext()).apply {
-            //setTitle(R.string.samba_videos_import_export_settings_title)
+            // setTitle(R.string.samba_videos_import_export_settings_title)
             setMessage("Restart to change menu locale?")
             setNegativeButton(R.string.button_cancel) { _, _ ->
             }

@@ -17,7 +17,8 @@ object GeneralPrefs : KotprefModel() {
 
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var exceedRenderer by booleanPref(false, "exceed_renderer")
-    //var bufferingStrategy by stringPref("DEFAULT", "performance_buffering_strategy")
+
+    // var bufferingStrategy by stringPref("DEFAULT", "performance_buffering_strategy")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 

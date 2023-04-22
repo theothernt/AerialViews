@@ -38,7 +38,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private val muteVideo = GeneralPrefs.muteVideos
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var listener: OnPlayerEventListener? = null
-    //private val bufferingStrategy: BufferingStrategy
+
+    // private val bufferingStrategy: BufferingStrategy
     private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
@@ -290,8 +291,8 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     }
 
     private fun buildPlayer(context: Context): ExoPlayer {
-        //Log.i(TAG, "Buffering strategy: $bufferingStrategy")
-        //val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
+        // Log.i(TAG, "Buffering strategy: $bufferingStrategy")
+        // val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
         if (enableTunneling) {
@@ -314,7 +315,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         val player = ExoPlayer.Builder(context)
-            //.setLoadControl(loadControl)
+            // .setLoadControl(loadControl)
             .setTrackSelector(trackSelector)
             .setRenderersFactory(rendererFactory)
             .build()
