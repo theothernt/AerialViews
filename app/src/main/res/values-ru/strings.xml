@@ -208,6 +208,12 @@
     <string name="samba_videos_smb_dialects_title">Выберите диалекты SMB</string>
     <string name="samba_videos_smb_dialects_summary">Выберите, какую версию SMB протокола использовать</string>
 
+    <string name="locale_menu_title">Menu text locale</string>
+    <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
+
+    <string name="locale_restart_app_title">Restart App</string>
+    <string name="locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+
     <!-- Main / Settings / About -->
     <string name="category_about">О приложении</string>
 

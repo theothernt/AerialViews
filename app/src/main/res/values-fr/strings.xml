@@ -207,6 +207,12 @@
     <string name="samba_videos_smb_dialects_title">Sélectionnez le dialecte du protocole SMB</string>
     <string name="samba_videos_smb_dialects_summary">Sélectionnez la version du protocole SMB</string>
 
+    <string name="locale_menu_title">Menu text locale</string>
+    <string name="locale_screensaver_title">Screensaver time/location text locale</string>
+
+    <string name="locale_restart_app_title">Restart App</string>
+    <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
+
     <!-- Main / Settings / About -->
     <string name="category_about">About</string>
 

@@ -207,6 +207,12 @@
     <string name="samba_videos_smb_dialects_title">SMB-Protokolldialekte wählen</string>
     <string name="samba_videos_smb_dialects_summary">Verwendete Version des SMB-Protokolls auswählen</string>
 
+    <string name="locale_menu_title">Menu text locale</string>
+    <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
+
+    <string name="locale_restart_app_title">Restart App</string>
+    <string name="locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+
     <!-- Main / Settings / About -->
     <string name="category_about">Über</string>
 

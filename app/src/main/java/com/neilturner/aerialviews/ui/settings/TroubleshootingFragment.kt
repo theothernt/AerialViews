@@ -40,8 +40,8 @@ class TroubleshootingFragment : PreferenceFragmentCompat() {
 
     private fun askForRestart() {
         AlertDialog.Builder(requireContext()).apply {
-            // setTitle(R.string.samba_videos_import_export_settings_title)
-            setMessage("Restart to change menu locale?")
+            setTitle(R.string.locale_restart_app_title)
+            setMessage(R.string.locale_restart_app_summary)
             setNegativeButton(R.string.button_cancel) { _, _ ->
             }
             setPositiveButton(R.string.button_ok) { _, _ ->

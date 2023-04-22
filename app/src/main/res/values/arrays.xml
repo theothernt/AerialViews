@@ -157,7 +157,7 @@
     <string name="performance_buffering_strategy_default" translatable="false">DEFAULT</string>
 
     <!-- Locale options -->
-    <string-array name="locale_menu_entries">
+    <string-array name="locale_menu_entries" translatable="false">
         <item>System locale (default)</item>
         <item>English</item>
         <item>German</item>
@@ -173,7 +173,7 @@
     </string-array>
     <string name="locale_menu_default" translatable="false">default</string>
 
-    <string-array name="locale_screensaver_entries">
+    <string-array name="locale_screensaver_entries" translatable="false">
         <item>System locale (default)</item>
         <item>English</item>
         <item>German</item>
