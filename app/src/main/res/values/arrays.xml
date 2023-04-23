@@ -181,7 +181,7 @@
         <item>Japanese</item>
     </string-array>
     <string-array name="locale_screensaver_values" translatable="false">
-        <item>System locale (default)</item>
+        <item>default</item>
         <item>en-IE</item>
         <item>de-DE</item>
         <item>ar</item>
