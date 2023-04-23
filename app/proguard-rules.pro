@@ -14,6 +14,7 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
+# Added to suppress build warnings
 -dontwarn javax.el.BeanELResolver
 -dontwarn javax.el.ELContext
 -dontwarn javax.el.ELResolver

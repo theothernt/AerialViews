@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
+@Suppress("MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate")
 abstract class AbstractVideo {
     @SerializedName("url-1080-H264")
     protected val video1080h264: String? = null

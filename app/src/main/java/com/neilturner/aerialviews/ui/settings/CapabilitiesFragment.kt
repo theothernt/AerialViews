@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 
+@Suppress("BooleanMethodIsAlwaysInverted")
 class CapabilitiesFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_capabilities, rootKey)

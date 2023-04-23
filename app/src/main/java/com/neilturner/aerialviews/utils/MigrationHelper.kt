@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
 
+@Suppress("SameParameterValue")
 class MigrationHelper(val context: Context) {
 
     private val prefsPackageName = "${context.packageName}_preferences"
