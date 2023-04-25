@@ -189,11 +189,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Log.i(TAG, "Android 12")
-            WindowHelper.setRefreshRate(context, surface, display, frameRate)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.i(TAG, "Not Android 12")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             WindowHelper.setLegacyRefreshRate(context, frameRate)
         }
     }
