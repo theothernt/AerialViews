@@ -43,6 +43,7 @@
             style="@style/ClockText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textDirection="locale"
             android:layout_gravity="bottom"
             android:gravity="@{isClockAlternateRun ? Gravity.START : Gravity.END}"
             android:visibility="@{interfacePrefs.clockStyle ? View.VISIBLE : View.GONE}"
