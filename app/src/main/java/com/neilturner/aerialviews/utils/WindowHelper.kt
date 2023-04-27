@@ -17,11 +17,11 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.neilturner.aerialviews.BuildConfig
-
-// https://stackoverflow.com/a/64828067/247257
+import kotlin.math.roundToInt
 
 object WindowHelper {
     fun hideSystemUI(window: Window, view: View) {
+        // https://stackoverflow.com/a/64828067/247257
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, view).let { controller ->
             controller.hide(WindowInsetsCompat.Type.systemBars())
@@ -76,15 +76,12 @@ object WindowHelper {
 
         val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
         val display = displayManager.displays[0]
-        val supportedModes = display.supportedModes
+        val supportedModes = display.supportedModes.sortedBy { it.refreshRate }
         val activeMode = display.mode
 
         Log.i(TAG, "Supported modes: ${supportedModes.size}")
         if (supportedModes.size > 1) {
-            // Refresh rate >= video FPS
             val modesHigh = mutableListOf<Display.Mode>()
-
-            // Max refresh rate
             var modeTop = activeMode
             var modesResolutionCount = 0
 
@@ -95,14 +92,18 @@ object WindowHelper {
                 ) {
                     modesResolutionCount++
 
-                    if (normRate(mode.refreshRate) >= normRate(newRefreshRate)) {
+                    if (mode.refreshRate.roundToInt() >= newRefreshRate.roundToInt()) {
                         modesHigh.add(mode)
                     }
 
-                    if (normRate(mode.refreshRate) > normRate(modeTop.refreshRate)) {
+                    if (mode.refreshRate.roundToInt() > modeTop.refreshRate.roundToInt()) {
                         modeTop = mode
                     }
                 }
+            }
+
+            val refreshRates = modesHigh.map {
+                it.refreshRate.toString().take(5)
             }
 
             Log.i(TAG, "Available modes: $modesResolutionCount")
@@ -112,8 +113,10 @@ object WindowHelper {
 
                 for (mode in modesHigh) {
                     modes += " " + mode.refreshRate
-                    if (normRate(mode.refreshRate) % normRate(newRefreshRate) <= 0.0001f) {
-                        if (modeBest == null || normRate(mode.refreshRate) > normRate(modeBest.refreshRate)) {
+                    //Log.i(TAG, "Rate: ${mode.refreshRate} NormRate:${normRate(mode.refreshRate)}")
+
+                    if (mode.refreshRate.roundToInt() % newRefreshRate.roundToInt() == 0) {
+                        if (modeBest == null || mode.refreshRate.roundToInt() > modeBest.refreshRate.roundToInt()) {
                             modeBest = mode
                         }
                     }
@@ -145,9 +148,9 @@ object WindowHelper {
                 if (BuildConfig.DEBUG) {
                     Toast.makeText(
                         activity,
-                        modes + "\n" +
-                            "Video frameRate: " + newRefreshRate + "\n" +
-                            "Current display refreshRate: " + modeBest?.refreshRate,
+                        //"Available: " + refreshRates.joinToString(",") + "\n" +
+                            "Video: " + newRefreshRate + "\n" +
+                            "Refresh rate: " + modeBest?.refreshRate,
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -155,10 +158,6 @@ object WindowHelper {
         } else {
             Log.i(TAG, "Only 1 mode found, exiting")
         }
-    }
-
-    private fun normRate(rate: Float): Int {
-        return (rate * 100f).toInt()
     }
 
     private const val TAG = "WindowHelper"
