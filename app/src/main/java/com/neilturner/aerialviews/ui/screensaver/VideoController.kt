@@ -143,10 +143,6 @@ class VideoController(private val context: Context, private val window: Window) 
                     videoView.isLocationAlternateRun = !videoView.isLocationAlternateRun
                     videoView.isClockAlternateRun = !videoView.isClockAlternateRun
                 }
-
-                //if (InterfacePrefs.clockForceLatinDigits) {
-                    //videoView.clock.gravity = videoView.location.gravity
-                //}
             }.start()
     }
 
