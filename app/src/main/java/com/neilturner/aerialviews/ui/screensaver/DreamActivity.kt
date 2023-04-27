@@ -25,7 +25,13 @@ class DreamActivity : DreamService() {
         // Start playback, etc
         videoController = if (!InterfacePrefs.localeScreensaver.startsWith("default")) {
             val locale = LocaleHelper.localeFromString(InterfacePrefs.localeScreensaver)
-            Locale.setDefault(locale)
+
+            if (InterfacePrefs.clockForceLatinDigits) {
+                Locale.setDefault(Locale.UK)
+            } else {
+                Locale.setDefault(locale)
+            }
+
             val config = Configuration(this.resources.configuration)
             config.setLocale(locale)
             val context = createConfigurationContext(config)

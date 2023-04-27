@@ -75,7 +75,7 @@ class VideoService(private val context: Context) {
         }
 
         // Try to add location/POIs to local and network videos
-        if (InterfacePrefs.showLocation != LocationType.OFF) {
+        if (InterfacePrefs.locationStyle != LocationType.OFF) {
             val matches = matchVideosWithManifestData(videos)
             videos = matches.first.toMutableList()
 
@@ -90,7 +90,7 @@ class VideoService(private val context: Context) {
 
         // If there are videos with no location yet, use filename as location
         if (!GeneralPrefs.ignoreNonManifestVideos &&
-            InterfacePrefs.showLocation != LocationType.OFF &&
+            InterfacePrefs.locationStyle != LocationType.OFF &&
             GeneralPrefs.filenameAsLocation
         ) {
             videos.forEach { video ->
