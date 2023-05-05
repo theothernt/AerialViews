@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
@@ -25,8 +24,6 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.net.Inet4Address
-import java.util.Locale
 
 class VideoController(private val context: Context, private val window: Window) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
