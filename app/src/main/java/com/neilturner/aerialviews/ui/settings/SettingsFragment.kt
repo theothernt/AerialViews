@@ -169,8 +169,8 @@ class SettingsFragment :
             SambaVideoPrefs.smbDialects.addAll(smbDialects)
 
             // Interface prefs
-            InterfacePrefs.showClock = properties["show_clock"].toString().toBoolean()
-            InterfacePrefs.showLocation = LocationType.valueOf(properties["location_style"] as String)
+            InterfacePrefs.clockStyle = properties["show_clock"].toString().toBoolean()
+            InterfacePrefs.locationStyle = LocationType.valueOf(properties["location_style"] as String)
             InterfacePrefs.alternateTextPosition = properties["alt_text_position"].toString().toBoolean()
 
             // General prefs
@@ -238,8 +238,8 @@ class SettingsFragment :
         settings["samba_videos_smb_dialects"] = smbDialects
 
         // Interface prefs
-        settings["show_clock"] = InterfacePrefs.showClock.toString()
-        settings["location_style"] = InterfacePrefs.showLocation.toString()
+        settings["show_clock"] = InterfacePrefs.clockStyle.toString()
+        settings["location_style"] = InterfacePrefs.locationStyle.toString()
         settings["alt_text_position"] = InterfacePrefs.alternateTextPosition.toString()
 
         // General prefs

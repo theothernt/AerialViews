@@ -3,7 +3,7 @@
         {
             "id": "french_alps_mont_blanc_202202",
             "pointsOfInterest": {
-                "0": "Flying towards Mont Blanc, Megève, France"
+                "0": "french_alps_mont_blanc_202202_0"
             },
             "title": "Alps",
             "accessibilityLabel": "France",
@@ -16,7 +16,7 @@
         {
             "id": "french_alps_sea_of_clouds_202202",
             "pointsOfInterest": {
-                "0": "Flight over sea of clouds, Megève, France"
+                "0": "french_alps_sea_of_clouds_202202_0"
             },
             "title": "Sea of Clouds 1",
             "accessibilityLabel": "France",
@@ -29,7 +29,7 @@
         {
             "id": "french_alps_sea_of_clouds_2_202202",
             "pointsOfInterest": {
-                "0": "Flight over sea of clouds, Megève, France"
+                "0": "french_alps_sea_of_clouds_2_202202_0"
             },
             "title": "Sea of Clouds 2",
             "accessibilityLabel": "France",
@@ -42,7 +42,7 @@
         {
             "id": "video_aurland_202109",
             "pointsOfInterest": {
-                "0": "Flight over Aurland Fjord, Norway"
+                "0": "video_aurland_202109_0"
             },
             "title": "Aurland",
             "accessibilityLabel": "Norway",
@@ -55,7 +55,7 @@
         {
             "id": "video_henningsvaer_202109",
             "pointsOfInterest": {
-                "0": "Flight over Henningsvaer Stadium, Norway"
+                "0": "video_henningsvaer_202109_0"
             },
             "title": "Henningsvaer",
             "accessibilityLabel": "Norway",
@@ -68,7 +68,7 @@
         {
             "id": "video_nusfjord_202109",
             "pointsOfInterest": {
-                "0": "Flight over Nusfjord, Lofoten, Norway"
+                "0": "video_nusfjord_202109_0"
             },
             "title": "Nusfjord",
             "accessibilityLabel": "Norway",
@@ -81,7 +81,7 @@
         {
             "id": "video_reine_202109",
             "pointsOfInterest": {
-                "0": "Flight over Reinevågen, Lofoten, Norway"
+                "0": "video_reine_202109_0"
             },
             "title": "Reine",
             "accessibilityLabel": "Norway",
@@ -94,7 +94,7 @@
         {
             "id": "video_vettisfossen_202109",
             "pointsOfInterest": {
-                "0": "In front of Vettisfossen waterfall, Norway"
+                "0": "video_vettisfossen_202109_0"
             },
             "title": "Vettisfossen",
             "accessibilityLabel": "Norway",

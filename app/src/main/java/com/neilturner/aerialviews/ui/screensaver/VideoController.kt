@@ -42,7 +42,7 @@ class VideoController(private val context: Context, private val window: Window) 
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
         binding.interfacePrefs = InterfacePrefs
-        binding.showLocation = InterfacePrefs.showLocation != LocationType.OFF
+        binding.showLocation = InterfacePrefs.locationStyle != LocationType.OFF
         binding.videoView0.videoView.setOnPlayerListener(this)
 
         videoView = binding.videoView0
@@ -60,6 +60,10 @@ class VideoController(private val context: Context, private val window: Window) 
 
                 showLoadingError(context)
             }
+        }
+
+        if (InterfacePrefs.clockForceLatinDigits) {
+            videoView.isClockAlternateRun = !videoView.isClockAlternateRun
         }
 
         if (DeviceHelper.isFireTV()) {
@@ -133,7 +137,8 @@ class VideoController(private val context: Context, private val window: Window) 
                 loadVideo(videoView, video)
 
                 if (InterfacePrefs.alternateTextPosition) {
-                    videoView.isAlternateRun = !videoView.isAlternateRun
+                    videoView.isLocationAlternateRun = !videoView.isLocationAlternateRun
+                    videoView.isClockAlternateRun = !videoView.isClockAlternateRun
                 }
             }.start()
     }
@@ -160,7 +165,7 @@ class VideoController(private val context: Context, private val window: Window) 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
         currentVideo = video
-        videoBinding.location.text = if (InterfacePrefs.showLocation == LocationType.POI) {
+        videoBinding.location.text = if (InterfacePrefs.locationStyle == LocationType.POI) {
             video.poi[0]?.replace("\n", " ") ?: video.location
         } else {
             video.location
@@ -168,11 +173,11 @@ class VideoController(private val context: Context, private val window: Window) 
 
         if (videoBinding.location.text.isBlank()) {
             videoBinding.location.visibility = View.GONE
-        } else if (InterfacePrefs.showLocation != LocationType.OFF) {
+        } else if (InterfacePrefs.locationStyle != LocationType.OFF) {
             videoBinding.location.visibility = View.VISIBLE
         }
 
-        if (InterfacePrefs.showLocation == LocationType.POI && video.poi.size > 1) { // everything else is static anyways
+        if (InterfacePrefs.locationStyle == LocationType.POI && video.poi.size > 1) { // everything else is static anyways
             val poiTimes = video.poi.keys.sorted()
             var lastPoi = 0
 

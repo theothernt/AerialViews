@@ -23,9 +23,9 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
 
         <Preference
-            app:title="@string/settings_troubleshooting_title"
-            app:summary="@string/settings_troubleshooting_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.TroubleshootingFragment"/>
+            app:title="@string/settings_advanced_title"
+            app:summary="@string/settings_advanced_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.AdvancedFragment"/>
 
         <Preference
             app:title="@string/settings_about_title"

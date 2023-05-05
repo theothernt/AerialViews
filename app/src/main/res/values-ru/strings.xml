@@ -15,7 +15,7 @@
     <string name="category_video_source">Источник видео</string>
 
     <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Video quality</string>
+    <string name="videos_quality_title">Качество видео</string>
     <string name="videos_quality_summary">Выберите качество видео</string>
 
     <!-- Main -->
@@ -118,8 +118,8 @@
     <string name="settings_capabilities_title">Возможности устройства</string>
     <string name="settings_capabilities_summary">Просмотр видеокодеков, поддержки разрешений и другие возможности</string>
 
-    <string name="settings_troubleshooting_title">Поиск неполадок</string>
-    <string name="settings_troubleshooting_summary">Параметры производительности и отладки для устранения неполадок</string>
+    <string name="settings_advanced_title">Advanced</string>
+    <string name="settings_advanced_summary">Параметры производительности и отладки для устранения неполадок</string>
 
     <string name="settings_about_title">О приложении</string>
     <string name="settings_about_summary">Version, build info, etc</string>
@@ -136,7 +136,7 @@
     <string name="interface_show_clock_title">Показать часы</string>
     <string name="interface_show_clock_summary">Показывает текущее время</string>
 
-    <string name="interface_show_location_title">Show video location, title or points of interest</string>
+    <string name="interface_show_location_title">Показывать местоположение, название или точки интереса</string>
 
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
@@ -183,7 +183,7 @@
     <string name="capabilities_decoders_title">Видео декодеры</string>
     <string name="capabilities_resolution_title">Разрешение</string>
 
-    <!-- Main / Settings / Troubleshooting -->
+    <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Параметры видео и рендеринга</string>
     <string name="category_samba_options">Samba/SMB настройки</string>
 
@@ -196,8 +196,8 @@
     <string name="performance_buffering_strategy_title">Буферизация</string>
     <string name="performance_buffering_strategy_summary">Измените приоритеты буферизации видео, может помочь с непостоянным подключением</string>
 
-    <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
-    <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+    <string name="philips_dolby_vision_fix_title">Использовать альтернативный анализ MediaCodec</string>
+    <string name="philips_dolby_vision_fix_summary">Исправляет воспроизведение в Dolby Vision на некоторых старых телевизорах Philips</string>
 
     <string name="performance_exceed_renderer_title">Превышать возможности рендеринга</string>
     <string name="performance_exceed_renderer_summary">Превышение максимального обнаруженного разрешения видео — бесполезно для большинства устройств!</string>
@@ -217,6 +217,6 @@
     <!-- Main / Settings / About -->
     <string name="category_about">О приложении</string>
 
-    <string name="about_version_title">Version</string>
-    <string name="about_date_title">Build Date</string>
+    <string name="about_version_title">Версия</string>
+    <string name="about_date_title">Дата сборки</string>
 </resources>

@@ -10,7 +10,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_florida_miami_brickell_sunset_00036.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_florida_miami_brickell_sunset_00036.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Sunset flight around downtown Miami"
+            "0" : "video_inspire_florida_miami_brickell_sunset_00036_0"
          }
       },
       {
@@ -23,7 +23,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_nevada_lasvegas_northstrip_021.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_nevada_lasvegas_northstrip_021.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Rising over Las Vegas around sunset"
+            "0" : "video_inspire_nevada_lasvegas_northstrip_021_0"
          }
       },
       {
@@ -36,7 +36,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_oregon_lone-ranch-beach_00015.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_oregon_lone-ranch-beach_00015.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flying around rocks on the Oregon Coast"
+            "0" : "video_inspire_oregon_lone-ranch-beach_00015"
          }
       },
       {
@@ -49,7 +49,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_oregon_lone-ranch-beach_00001.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_oregon_lone-ranch-beach_00001.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Exploring Lone Ranch Beach on the Oregon Coast"
+            "0" : "video_inspire_oregon_lone-ranch-beach_00001_0"
          }
       },
       {
@@ -62,7 +62,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_vineyard_sierra-mar_sunrise_110.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_vineyard_sierra-mar_sunrise_110.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Morning flight over Sierra Mar Vineyard"
+            "0" : "video_inspire_california_vineyard_sierra-mar_sunrise_110_0"
          }
       },
       {
@@ -75,7 +75,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_italy_como_cerano-dintelvi_006.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_italy_como_cerano-dintelvi_006.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Exploring around Como Cerano d'Intelvi, Italy"
+            "0" : "video_inspire_italy_como_cerano-dintelvi_006_0"
          }
       },
       {
@@ -88,7 +88,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_oregon_portland_00064.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_oregon_portland_00064.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Sunset flight around downtown Portland, Oregon"
+            "0" : "video_inspire_oregon_portland_00064_0"
          }
       },
       {
@@ -101,7 +101,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_big-sur_2020_00001.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_big-sur_2020_00001.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Morning flight along the coast of Big Sur"
+            "0" : "video_inspire_california_big-sur_2020_00001_0"
          }
       },
       {
@@ -114,7 +114,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_catalina_avalon_00053.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_catalina_avalon_00053.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flying over Avalon on Catalina Island"
+            "0" : "video_inspire_california_catalina_avalon_00053_0"
          }
       },
       {
@@ -127,7 +127,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_uk_london_hampstead-heath_003.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_uk_london_hampstead-heath_003.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "London flyby from Hampstead Heath"
+            "0" : "video_inspire_uk_london_hampstead-heath_003_0"
          }
       },
       {
@@ -140,7 +140,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_texas_pecos_foggy-landscape_00018.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_texas_pecos_foggy-landscape_00018.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Fog clings to the landscape in West Texas near Pecos"
+            "0" : "video_inspire_texas_pecos_foggy-landscape_00018_0"
          }
       },
       {
@@ -153,7 +153,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_sanfrancisco_castro_005.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_sanfrancisco_castro_005.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Karl the Fog flows over Twin Peaks in San Francisco"
+            "0" : "video_inspire_sanfrancisco_castro_005_0"
          }
       },
       {
@@ -166,7 +166,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_big-sur_landscape_054.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_big-sur_landscape_054.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Exploring Big Sur around Bixby Creek"
+            "0" : "video_inspire_california_big-sur_landscape_054_0"
          }
       },
       {
@@ -179,7 +179,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_alabama_montgomery_countryside_00007.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_alabama_montgomery_countryside_00007.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flight through the fog over grazing lands in rural Alabama"
+            "0" : "video_inspire_alabama_montgomery_countryside_00007_0"
          }
       },
       {
@@ -192,7 +192,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_big-sur_bixby_005.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_big-sur_bixby_005.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flight around Bixby Creek Bridge in Big Sur"
+            "0" : "video_inspire_california_big-sur_bixby_005_0"
          }
       },
       {
@@ -205,7 +205,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_santa-barbara_050.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_santa-barbara_050.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Sunset flight around Santa Barbara Pier"
+            "0" : "video_inspire_california_santa_0"
          }
       },
       {
@@ -218,7 +218,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_oregon_lone-ranch-beach_00021.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_oregon_lone-ranch-beach_00021.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flying around rocks on the Oregon Coast"
+            "0" : "video_inspire_oregon_lone-ranch-beach_00021_0"
          }
       },
       {
@@ -231,7 +231,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_uk_edinburgh_arthursseat_010.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_uk_edinburgh_arthursseat_010.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Edinburgh flyby around Salisbury Crags"
+            "0" : "video_inspire_uk_edinburgh_arthursseat_010_0"
          }
       },
       {
@@ -244,7 +244,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_texas_austin_oct2019_evening_00085.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_texas_austin_oct2019_evening_00085.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Evening flight through Austin, Texas"
+            "0" : "video_inspire_texas_austin_oct2019_evening_00085_0"
          }
       },
       {
@@ -257,7 +257,7 @@
          "url-1080-SDR":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-sdr/video_inspire_california_catalina_00005.1080-sdr.mov",
          "url-1080-H264":"https://github.com/glouel/AerialCommunity/releases/download/mw2-1080p-h264/video_inspire_california_catalina_00005.1080-h264.mov",
          "pointsOfInterest" : {
-            "0" : "Flying over the west end of Catalina Island"
+            "0" : "video_inspire_california_catalina_00005_0"
          }
       }
    ],

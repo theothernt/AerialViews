@@ -126,8 +126,8 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.2.2')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.6')
-    implementation('com.google.firebase:firebase-perf-ktx:20.3.1')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.7')
+    implementation('com.google.firebase:firebase-perf-ktx:20.3.2')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
@@ -147,8 +147,8 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.10')
 
     // Unit testing
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.2')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.2')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.3')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.3')
 }
 
 tasks.withType(Test) {

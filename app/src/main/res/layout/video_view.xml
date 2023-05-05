@@ -16,7 +16,11 @@
             type="boolean" />
 
         <variable
-            name="isAlternateRun"
+            name="isClockAlternateRun"
+            type="boolean" />
+
+        <variable
+            name="isLocationAlternateRun"
             type="boolean" />
     </data>
 
@@ -39,9 +43,10 @@
             style="@style/ClockText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textDirection="locale"
             android:layout_gravity="bottom"
-            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
-            android:visibility="@{interfacePrefs.showClock ? View.VISIBLE : View.GONE}"
+            android:gravity="@{isClockAlternateRun ? Gravity.START : Gravity.END}"
+            android:visibility="@{interfacePrefs.clockStyle ? View.VISIBLE : View.GONE}"
             tools:text="23:15" />
 
         <TextView
@@ -50,7 +55,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="@{isAlternateRun ? Gravity.START : Gravity.END}"
+            android:gravity="@{isLocationAlternateRun ? Gravity.START : Gravity.END}"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="Example location text"
             tools:visibility="visible" />

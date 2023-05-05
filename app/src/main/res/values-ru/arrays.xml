@@ -2,17 +2,52 @@
 <resources>
     <!-- Location style -->
     <string-array name="interface_show_location_entries">
-        <item>Off</item>
-        <item>Location or title</item>
-        <item>Points of interest (available in many languages)</item>
+        <item>Выкл</item>
+        <item>Место или название</item>
+        <item>Точки интереса (доступно на многих языках)</item>
     </string-array>
 
-    <!-- Troubleshooting options -->
+    <!-- Advanced options -->
     <string-array name="performance_buffering_strategy_entries">
-        <item>Default</item>
-        <item>Larger buffer</item>
-        <item>Smaller buffer</item>
-        <item>Faster start on higher latency connection</item>
+        <item>По умолчанию</item>
+        <item>Увеличенный размер буфера</item>
+        <item>Уменьшиный размер буфера</item>
+        <item>Более быстрый старт при соединении, но с более высокой задержкой</item>
+    </string-array>
+
+    <!-- Playback speed -->
+    <string-array name="playback_speed_entries">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>1x (по умолчанию)</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>1.75x</item>
+        <item>2x</item>
+        <item>2.5x</item>
+        <item>3x</item>
+        <item>3.5x</item>
+        <item>4x</item>
+        <item>5x</item>
+    </string-array>
+
+    <!-- Max. video length -->
+    <string-array name="playback_max_video_length_entries">
+        <item>Без ограничений (по умолчанию)</item>
+        <item>10 сек</item>
+        <item>20 сек</item>
+        <item>30 сек</item>
+        <item>1 мин</item>
+        <item>2 мин</item>
+        <item>3 мин</item>
+        <item>4 мин</item>
+        <item>5 мин</item>
+        <item>6 мин</item>
+        <item>7 мин</item>
+        <item>8 мин</item>
+        <item>9 мин</item>
+        <item>10 мин</item>
     </string-array>
 
 </resources>
