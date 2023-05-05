@@ -7,12 +7,47 @@
         <item>Points of interest (available in many languages)</item>
     </string-array>
 
-    <!-- Troubleshooting options -->
+    <!-- Advanced options -->
     <string-array name="performance_buffering_strategy_entries">
         <item>Default</item>
         <item>Larger buffer</item>
         <item>Smaller buffer</item>
         <item>Faster start on higher latency connection</item>
+    </string-array>
+
+    <!-- Playback speed -->
+    <string-array name="playback_speed_entries">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>1x (default)</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>1.75x</item>
+        <item>2x</item>
+        <item>2.5x</item>
+        <item>3x</item>
+        <item>3.5x</item>
+        <item>4x</item>
+        <item>5x</item>
+    </string-array>
+
+    <!-- Max. video length -->
+    <string-array name="playback_max_video_length_entries">
+        <item>No limit (default)</item>
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+        <item>4 minutes</item>
+        <item>5 minutes</item>
+        <item>6 minutes</item>
+        <item>7 minutes</item>
+        <item>8 minutes</item>
+        <item>9 minutes</item>
+        <item>10 minutes</item>
     </string-array>
 
 </resources>

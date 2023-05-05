@@ -117,8 +117,8 @@
     <string name="settings_capabilities_title">Fähigkeiten des Geräts</string>
     <string name="settings_capabilities_summary">Video-Codecs, Auflösungen und andere Fähigkeiten ansehen</string>
 
-    <string name="settings_troubleshooting_title">Problembehebung</string>
-    <string name="settings_troubleshooting_summary">Leistungs- &amp; Debug-Einstellungen zur Problembehebung</string>
+    <string name="settings_advanced_title">Advanced</string>
+    <string name="settings_advanced_summary">Leistungs- &amp; Debug-Einstellungen zur Problembehebung</string>
 
     <string name="settings_about_title">Über</string>
     <string name="settings_about_summary">Version, build info, etc</string>
@@ -182,7 +182,7 @@
     <string name="capabilities_decoders_title">Video-Decoder</string>
     <string name="capabilities_resolution_title">Bildschirmauflösung</string>
 
-    <!-- Main / Settings / Troubleshooting -->
+    <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Video- &amp; renderoptionen</string>
     <string name="category_samba_options">Optionen für Samba / SMB</string>
 

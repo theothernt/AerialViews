@@ -12,10 +12,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 
-class TroubleshootingFragment : PreferenceFragmentCompat() {
+class AdvancedFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_troubleshooting, rootKey)
+        setPreferencesFromResource(R.xml.settings_advanced, rootKey)
         updateSummary()
         restartOnLanguageChange()
     }

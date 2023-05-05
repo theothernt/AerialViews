@@ -51,7 +51,7 @@
     <string name="interface_show_location_default" translatable="false">POI</string>
 
     <!-- Playback speed -->
-    <string-array name="playback_speed_entries" translatable="false">
+    <string-array name="playback_speed_entries">
         <item>0.25x</item>
         <item>0.5x</item>
         <item>0.75x</item>
@@ -84,21 +84,21 @@
     <string name="playback_speed_default" translatable="false">1</string>
 
     <!-- Max. video length -->
-    <string-array name="playback_max_video_length_entries" translatable="false">
+    <string-array name="playback_max_video_length_entries">
         <item>No limit (default)</item>
-        <item>10 sec</item>
-        <item>20 sec</item>
-        <item>30 sec</item>
-        <item>1 min</item>
-        <item>2 min</item>
-        <item>3 min</item>
-        <item>4 min</item>
-        <item>5 min</item>
-        <item>6 min</item>
-        <item>7 min</item>
-        <item>8 min</item>
-        <item>9 min</item>
-        <item>10 min</item>
+        <item>10 seconds</item>
+        <item>20 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+        <item>4 minutes</item>
+        <item>5 minutes</item>
+        <item>6 minutes</item>
+        <item>7 minutes</item>
+        <item>8 minutes</item>
+        <item>9 minutes</item>
+        <item>10 minutes</item>
     </string-array>
     <string-array name="playback_max_video_length_values" translatable="false">
         <item>0</item>
