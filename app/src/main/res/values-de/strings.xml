@@ -14,7 +14,7 @@
     <string name="category_video_source">Video-Quelle</string>
 
     <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Video quality</string>
+    <string name="videos_quality_title">Videoqualität</string>
     <string name="videos_quality_summary">Videoqualität auswählen</string>
 
     <!-- Main -->
@@ -117,11 +117,11 @@
     <string name="settings_capabilities_title">Fähigkeiten des Geräts</string>
     <string name="settings_capabilities_summary">Video-Codecs, Auflösungen und andere Fähigkeiten ansehen</string>
 
-    <string name="settings_advanced_title">Advanced</string>
+    <string name="settings_advanced_title">Fortgeschritten</string>
     <string name="settings_advanced_summary">Leistungs- &amp; Debug-Einstellungen zur Problembehebung</string>
 
     <string name="settings_about_title">Über</string>
-    <string name="settings_about_summary">Version, build info, etc</string>
+    <string name="settings_about_summary">Version, Build-Infos, usw. </string>
 
     <string name="settings_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
     <string name="settings_import_export_settings_summary">Einstellungen im Downloadordner Sichern oder daraus Wiederherstellen</string>
@@ -135,13 +135,13 @@
     <string name="interface_show_clock_title">Zeige Uhr</string>
     <string name="interface_show_clock_summary">Zeigt die aktuelle Zeit</string>
 
-    <string name="interface_show_location_title">Show video location, title or points of interest</string>
+    <string name="interface_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
-    <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
-    <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+    <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
+    <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>
@@ -183,11 +183,11 @@
     <string name="capabilities_resolution_title">Bildschirmauflösung</string>
 
     <!-- Main / Settings / Advanced -->
-    <string name="category_video_render_options">Video- &amp; renderoptionen</string>
+    <string name="category_video_render_options">Video- &amp; Renderoptionen</string>
     <string name="category_samba_options">Optionen für Samba / SMB</string>
 
-    <string name="playback_max_video_length_title">Limit video length</string>
-    <string name="playback_max_video_length_summary">Skip to the next video after a specified number of seconds</string>
+    <string name="playback_max_video_length_title">Videolänge begrenzen</string>
+    <string name="playback_max_video_length_summary">Starte nächstes Video nach einer gewissen Abspielzeit</string>
 
     <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
     <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
@@ -195,8 +195,8 @@
     <string name="performance_buffering_strategy_title">Pufferstrategie</string>
     <string name="performance_buffering_strategy_summary">Ändern der Prioritäten beim Zwischenspeichern kann bei instabilen Verbindungen helfen</string>
 
-    <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
-    <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+    <string name="philips_dolby_vision_fix_title">Alternatives MediaCodec-Parsing verwenden</string>
+    <string name="philips_dolby_vision_fix_summary">Ermöglicht Wiedergabe von Dolby Vision auf älteren Philips TVs</string>
 
     <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
     <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
@@ -207,15 +207,15 @@
     <string name="samba_videos_smb_dialects_title">SMB-Protokolldialekte wählen</string>
     <string name="samba_videos_smb_dialects_summary">Verwendete Version des SMB-Protokolls auswählen</string>
 
-    <string name="locale_menu_title">Menu text locale</string>
-    <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
+    <string name="locale_menu_title">Sprache der Menütexte</string>
+    <string name="locale_screensaver_title">Sprache der Bildschirmschonertexte (Uhr, Ort)</string>
 
-    <string name="locale_restart_app_title">Restart App</string>
-    <string name="locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+    <string name="locale_restart_app_title">Neustart der App</string>
+    <string name="locale_restart_app_summary">Die Änderung der Menüsprache erfordert einen App-Neustart</string>
 
     <!-- Main / Settings / About -->
     <string name="category_about">Über</string>
 
     <string name="about_version_title">Version</string>
-    <string name="about_date_title">Build Date</string>
+    <string name="about_date_title">Build-Datum</string>
 </resources>
