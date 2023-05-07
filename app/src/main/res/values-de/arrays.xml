@@ -2,9 +2,9 @@
 <resources>
     <!-- Location style -->
     <string-array name="interface_show_location_entries">
-        <item>Off</item>
-        <item>Location or title</item>
-        <item>Points of interest (available in many languages)</item>
+        <item>Aus</item>
+        <item>Ort oder Titel</item>
+        <item>Sehenswürdigkeiten (Verfügbar in vielen Sprachen)</item>
     </string-array>
 
     <!-- Advanced options -->
@@ -20,7 +20,7 @@
         <item>0.25x</item>
         <item>0.5x</item>
         <item>0.75x</item>
-        <item>1x (default)</item>
+        <item>1x (Standard)</item>
         <item>1.25x</item>
         <item>1.5x</item>
         <item>1.75x</item>
@@ -34,20 +34,20 @@
 
     <!-- Max. video length -->
     <string-array name="playback_max_video_length_entries">
-        <item>No limit (default)</item>
-        <item>10 seconds</item>
-        <item>20 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
-        <item>4 minutes</item>
-        <item>5 minutes</item>
-        <item>6 minutes</item>
-        <item>7 minutes</item>
-        <item>8 minutes</item>
-        <item>9 minutes</item>
-        <item>10 minutes</item>
+        <item>Kein Limit (Standard)</item>
+        <item>10 Sekunden</item>
+        <item>20 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>3 Minuten</item>
+        <item>4 Minuten</item>
+        <item>5 Minuten</item>
+        <item>6 Minuten</item>
+        <item>7 Minuten</item>
+        <item>8 Minuten</item>
+        <item>9 Minuten</item>
+        <item>10 Minuten</item>
     </string-array>
 
 </resources>
