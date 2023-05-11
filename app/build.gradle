@@ -116,7 +116,7 @@ dependencies {
     implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha06')
 
     // Android X
-    implementation('androidx.core:core-ktx:1.10.0')
+    implementation('androidx.core:core-ktx:1.10.1')
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
