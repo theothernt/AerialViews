@@ -210,8 +210,9 @@ class VideoController(private val context: Context, private val window: Window) 
         }
 
         if (InterfacePrefs.clockStyle &&
-                InterfacePrefs.locationStyle != LocationType.OFF &&
-                videoBinding.location.text.isNotBlank()) {
+            InterfacePrefs.locationStyle != LocationType.OFF &&
+            videoBinding.location.text.isNotBlank()
+        ) {
             if (isLtrText(videoBinding.location.text.toStringOrEmpty())) {
                 videoBinding.clock.textDirection = View.TEXT_DIRECTION_LTR
             } else {
