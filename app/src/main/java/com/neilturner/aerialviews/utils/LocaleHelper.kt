@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.RawRes
 import java.io.InputStream
+import java.text.Bidi
 import java.util.Locale
 
 object LocaleHelper {
@@ -41,5 +42,9 @@ object LocaleHelper {
             return Locale(parts[0], parts[1], parts[2])
         }
         return Locale.ENGLISH
+    }
+
+    fun isLtrText(text: String): Boolean {
+        return Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isLeftToRight
     }
 }

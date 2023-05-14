@@ -27,9 +27,13 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
-## Where to download Apple videos for offline/local playback
+## Where to download videos for offline/local playback
 
-Please [visit this web page to download the tvOS 15 videos](https://aerial-videos.netlify.app/) supported by this screensaver.
+Please visit this web page to download the videos from...
+
+* [Apple](https://aerial-videos.netlify.app/#apple) (118 videos)
+* [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
+* [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (8 community videos)
 
 ## HDR videos don't seem to play, I only see black screen...
 
@@ -45,7 +49,7 @@ Here are some things to try...
 
 ## Nvidia Shield users
 
-If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled: 
+If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled:
 
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
@@ -55,16 +59,18 @@ media automatically`
 Unfortunately, as of July 2022, an update to Google TV removed user-interface option to set Aerial Views (or any other 3rd party screensaver) as default, or change the screensaver timeout.
 
 The only way to achieve this is...
+
 1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  ```
+  
+  ```sh
   adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
   ```
 
 To restore the default Ambient screensaver, use the following ADB command...
 
-``` 
+```sh
 adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
 ```
 
@@ -75,19 +81,11 @@ Install the app from either the Amazon Appstore or sideload the APK.
 On a Fire TV device there is no user-interface option to set Aerial Views (or any other 3rd party screensaver) as default.
 
 The only way to achieve this is...
+
 1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
 2. Enable developer mode on your Android TV device
 3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  ```
+  
+  ```sh
   adb shell settings put secure screensaver_components com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
   ```
-
-## How remote and local playback of Apple videos works
-
-* The app contains a video manifest (ie. a list of links) which it uses to figure out what videos to play in which format (1080p, 4K, HDR, etc)
-
-* When using **local** playback, the app searches for the same filenames (eg. xyz.mov) locally instead of making a request to a remote web server
-
-* **Local** videos can be placed in any folder
-
-* When using **local and remote** playback, videos are used if found, but for missing videos, the remote version is used

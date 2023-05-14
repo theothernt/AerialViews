@@ -21,6 +21,8 @@ import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.utils.LocaleHelper.isLtrText
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -205,6 +207,16 @@ class VideoController(private val context: Context, private val window: Window) 
             }, 1000)
         } else {
             currentPositionProgressHandler = null
+        }
+
+        if (InterfacePrefs.clockStyle &&
+                InterfacePrefs.locationStyle != LocationType.OFF &&
+                videoBinding.location.text.isNotBlank()) {
+            if (isLtrText(videoBinding.location.text.toStringOrEmpty())) {
+                videoBinding.clock.textDirection = View.TEXT_DIRECTION_LTR
+            } else {
+                videoBinding.clock.textDirection = View.TEXT_DIRECTION_LOCALE
+            }
         }
 
         videoBinding.videoView.setUri(video.uri)

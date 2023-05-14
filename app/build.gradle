@@ -106,7 +106,7 @@ android {
 
 dependencies {
     // Kotlin
-    def coroutines_version = '1.6.4'
+    def coroutines_version = '1.7.1'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
@@ -116,7 +116,7 @@ dependencies {
     implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha06')
 
     // Android X
-    implementation('androidx.core:core-ktx:1.10.0')
+    implementation('androidx.core:core-ktx:1.10.1')
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
