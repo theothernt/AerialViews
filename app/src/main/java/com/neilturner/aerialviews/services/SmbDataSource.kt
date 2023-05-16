@@ -3,10 +3,10 @@
 package com.neilturner.aerialviews.services
 
 import android.util.Log
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.upstream.BaseDataSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DataSpec
+import androidx.media3.common.C
+import androidx.media3.datasource.BaseDataSource
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DataSpec
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess

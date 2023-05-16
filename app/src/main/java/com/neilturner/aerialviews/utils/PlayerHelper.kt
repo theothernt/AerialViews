@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.utils
 
-import com.google.android.exoplayer2.DefaultLoadControl
+import androidx.media3.exoplayer.DefaultLoadControl
 import com.neilturner.aerialviews.models.BufferingStrategy
 
 object PlayerHelper {
