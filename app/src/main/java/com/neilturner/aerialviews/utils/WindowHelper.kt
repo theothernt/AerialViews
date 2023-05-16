@@ -38,35 +38,18 @@ object WindowHelper {
     fun setRefreshRate(context: Context, surface: Surface, display: Display, newRefreshRate: Float) {
         // https://gist.github.com/pflammertsma/5a453e24938722b4218528a3e5a60259#file-mainactivity-kt
 
-        /* Copyright 2021 Google LLC.
-        SPDX-License-Identifier: Apache-2.0 */
-
-        // Determine whether the transition will be seamless.
-        // Non-seamless transitions may cause a 1-2 second black screen.
         val refreshRates = display.mode?.alternativeRefreshRates?.toList()
         val willBeSeamless = refreshRates?.contains(newRefreshRate)
         if (willBeSeamless == true) {
             Log.i(TAG, "Trying seamless...")
-            // Set the frame rate, but only if the transition will be seamless.
             surface.setFrameRate(
                 newRefreshRate,
                 Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
                 Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
             )
         } else {
-            Log.i(TAG, "Trying non-seamless...")
-            val prefersNonSeamless = (context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager)
-                .matchContentFrameRateUserPreference == DisplayManager.MATCH_CONTENT_FRAMERATE_ALWAYS
-            if (prefersNonSeamless) {
-                // Show UX to inform the user that a switch is about to occur
-                // showUxForNonSeamlessSwitchWithDelay();
-                // Set the frame rate if the user has requested it to match content
-                surface.setFrameRate(
-                    newRefreshRate,
-                    Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
-                    Surface.CHANGE_FRAME_RATE_ALWAYS
-                )
-            }
+            Log.i(TAG, "Seamless not supported, trying legacy...")
+            setLegacyRefreshRate(context, newRefreshRate)
         }
     }
 
@@ -107,15 +90,18 @@ object WindowHelper {
         }
 
         val activity = context as? Activity
-        if (activity != null) {
-            val window = activity.window
-            val switchingModes = newMode.modeId != activeMode?.modeId
-            if (switchingModes) {
-                Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
-                window.attributes.preferredDisplayModeId = newMode.modeId
-            } else {
-                Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
-            }
+        if (activity == null) {
+            Log.i(TAG, "Unable to get current Activity")
+            return
+        }
+
+        val window = activity.window
+        val switchingModes = newMode.modeId != activeMode?.modeId
+        if (switchingModes) {
+            Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
+            window.attributes.preferredDisplayModeId = newMode.modeId
+        } else {
+            Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
         }
 
         val refreshRates = suitableModes.map {
