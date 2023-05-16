@@ -75,7 +75,7 @@ object WindowHelper {
         // https://github.com/moneytoo/Player/blob/6d3dc72734d7d9d2df2267eaf35cc473ac1dd3b4/app/src/main/java/com/brouken/player/Utils.java
 
         val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-        val display = displayManager.displays[0]
+        val display = displayManager.displays.first()
         val supportedModes = display.supportedModes.sortedBy { it.refreshRate }
         val activeMode = display.mode
 
@@ -84,11 +84,6 @@ object WindowHelper {
             Log.i(TAG, "Only 1 mode found, exiting")
             return
         }
-
-//        if (activeMode.refreshRate.roundToInt() % newRefreshRate.roundToInt() == 0) {
-//            Log.i(TAG, "Current frame rate within refresh rate range")
-//            return
-//        }
 
         // Only use same resolution as current
         val suitableModes = getModesForResolution(supportedModes, activeMode, newRefreshRate)
@@ -148,10 +143,6 @@ object WindowHelper {
                 if (mode.refreshRate.roundToInt() >= newRefreshRate.roundToInt()) {
                     filteredModes.add(mode)
                 }
-
-//                if (mode.refreshRate.roundToInt() > modeTop.refreshRate.roundToInt()) {
-//                    modeTop = mode
-//                }
             }
         }
 
