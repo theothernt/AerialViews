@@ -79,85 +79,83 @@ object WindowHelper {
         val supportedModes = display.supportedModes.sortedBy { it.refreshRate }
         val activeMode = display.mode
 
-        Log.i(TAG, "Supported modes: ${supportedModes.size}")
-        if (supportedModes.size > 1) {
-            val modesHigh = mutableListOf<Display.Mode>()
-            var modeTop = activeMode
-            var modesResolutionCount = 0
-
-            // Filter only resolutions same as current
-            for (mode in supportedModes) {
-                if (mode.physicalWidth == activeMode.physicalWidth &&
-                    mode.physicalHeight == activeMode.physicalHeight
-                ) {
-                    modesResolutionCount++
-
-                    if (mode.refreshRate.roundToInt() >= newRefreshRate.roundToInt()) {
-                        modesHigh.add(mode)
-                    }
-
-                    if (mode.refreshRate.roundToInt() > modeTop.refreshRate.roundToInt()) {
-                        modeTop = mode
-                    }
-                }
-            }
-
-            val refreshRates = modesHigh.map {
-                it.refreshRate.toString().take(5)
-            }
-
-            Log.i(TAG, "Available modes: $modesResolutionCount")
-            if (modesResolutionCount > 1) {
-                var modeBest: Display.Mode? = null
-                var modes = "Available refreshRates:"
-
-                for (mode in modesHigh) {
-                    modes += " " + mode.refreshRate
-                    //Log.i(TAG, "Rate: ${mode.refreshRate} NormRate:${normRate(mode.refreshRate)}")
-
-                    if (mode.refreshRate.roundToInt() % newRefreshRate.roundToInt() == 0) {
-                        if (modeBest == null || mode.refreshRate.roundToInt() > modeBest.refreshRate.roundToInt()) {
-                            modeBest = mode
-                        }
-                    }
-                }
-
-                Log.i(TAG, "Trying to change window properties...")
-                val activity = context as? Activity
-                if (activity == null) {
-                    Log.i(TAG, "Unable to get Window object")
-                    return
-                }
-
-                val window = activity.window
-                val layoutParams = window.attributes
-
-                if (modeBest == null) {
-                    modeBest = modeTop
-                }
-
-                val switchingModes = modeBest?.modeId != activeMode?.modeId
-                if (switchingModes) {
-                    Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${modeBest?.modeId}")
-                    layoutParams.preferredDisplayModeId = modeBest?.modeId!!
-                    window.attributes = layoutParams
-                } else {
-                    Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
-                }
-
-                if (BuildConfig.DEBUG) {
-                    Toast.makeText(
-                        activity,
-                        //"Available: " + refreshRates.joinToString(",") + "\n" +
-                            "Video: " + newRefreshRate + "\n" +
-                            "Refresh rate: " + modeBest?.refreshRate,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        } else {
+        // No additional modes supported, exit early
+        if (supportedModes.size == 1) {
             Log.i(TAG, "Only 1 mode found, exiting")
+            return
         }
+
+//        if (activeMode.refreshRate.roundToInt() % newRefreshRate.roundToInt() == 0) {
+//            Log.i(TAG, "Current frame rate within refresh rate range")
+//            return
+//        }
+
+        // Only use same resolution as current
+        val suitableModes = getModesForResolution(supportedModes, activeMode, newRefreshRate)
+        if (suitableModes.isEmpty()) {
+            Log.i(TAG, "No suitable frame rates found at this resolution, exiting")
+            return
+        }
+
+        var newMode: Display.Mode? = null
+        for (mode in suitableModes) {
+            if (mode.refreshRate.roundToInt() % newRefreshRate.roundToInt() == 0) {
+                if (newMode == null || mode.refreshRate.roundToInt() > newMode.refreshRate.roundToInt()) {
+                    newMode = mode
+                }
+            }
+        }
+
+        if (newMode == null) {
+            Log.i(TAG, "No new mode chosen")
+            return
+        }
+
+        val activity = context as? Activity
+        if (activity != null) {
+            val window = activity.window
+            val switchingModes = newMode.modeId != activeMode?.modeId
+            if (switchingModes) {
+                Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
+                window.attributes.preferredDisplayModeId = newMode.modeId
+            } else {
+                Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
+            }
+        }
+
+        val refreshRates = suitableModes.map {
+            it.refreshRate.toString().take(5)
+        }
+
+        if (BuildConfig.DEBUG) {
+            Toast.makeText(
+                activity,
+                "Available: ${refreshRates.joinToString(", ")}\n" +
+                    "Selected: ${newMode.refreshRate.toString().take(5)} (${newRefreshRate.toString().take(5)} fps)",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getModesForResolution(supportedModes: List<Display.Mode>, activeMode: Display.Mode, newRefreshRate: Float): List<Display.Mode> {
+        val filteredModes = mutableListOf<Display.Mode>()
+
+        for (mode in supportedModes) {
+            if (mode.physicalWidth == activeMode.physicalWidth &&
+                mode.physicalHeight == activeMode.physicalHeight
+            ) {
+                if (mode.refreshRate.roundToInt() >= newRefreshRate.roundToInt()) {
+                    filteredModes.add(mode)
+                }
+
+//                if (mode.refreshRate.roundToInt() > modeTop.refreshRate.roundToInt()) {
+//                    modeTop = mode
+//                }
+            }
+        }
+
+        return filteredModes
     }
 
     private const val TAG = "WindowHelper"
