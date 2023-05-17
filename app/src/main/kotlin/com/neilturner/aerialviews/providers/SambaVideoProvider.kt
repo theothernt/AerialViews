@@ -10,7 +10,7 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.SmbHelper
+import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
 class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
@@ -25,7 +25,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return videos
         }
 
-        val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
+        val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
 
@@ -75,10 +75,10 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         path: String
     ): List<String> {
         val files = mutableListOf<String>()
-        val config = SmbHelper.buildSmbConfig()
+        val config = SambaHelper.buildSmbConfig()
         val smbClient = SMBClient(config)
         val connection = smbClient.connect(hostName)
-        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
+        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 

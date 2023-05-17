@@ -20,7 +20,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.video.VideoSize
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.SmbDataSourceFactory
+import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.utils.CustomRendererFactory
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.PhilipsMediaCodecAdapterFactory
@@ -84,7 +84,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
         if (FileHelper.isSambaVideo(uri)) {
-            val mediaSource = ProgressiveMediaSource.Factory(SmbDataSourceFactory())
+            val mediaSource = ProgressiveMediaSource.Factory(SambaDataSourceFactory())
                 .createMediaSource(mediaItem)
             player.setMediaSource(mediaSource)
         } else {

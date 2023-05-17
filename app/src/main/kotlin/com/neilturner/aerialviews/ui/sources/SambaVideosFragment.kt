@@ -36,7 +36,7 @@ import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.SmbHelper
+import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -121,7 +121,7 @@ class SambaVideosFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key == "samba_videos_sharename") {
-            SambaVideoPrefs.shareName = SmbHelper.fixShareName(SambaVideoPrefs.shareName)
+            SambaVideoPrefs.shareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
         }
     }
 
@@ -294,7 +294,7 @@ class SambaVideosFragment :
         // Check hostname
         val config: SmbConfig
         try {
-            config = SmbHelper.buildSmbConfig()
+            config = SambaHelper.buildSmbConfig()
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             val message = "Failed to create SMB config...\n\n${e.message}"
@@ -320,7 +320,7 @@ class SambaVideosFragment :
         // Handles anonymous logins also
         val session: Session?
         try {
-            val authContext = SmbHelper.buildAuthContext(SambaVideoPrefs.userName, SambaVideoPrefs.password, SambaVideoPrefs.domainName)
+            val authContext = SambaHelper.buildAuthContext(SambaVideoPrefs.userName, SambaVideoPrefs.password, SambaVideoPrefs.domainName)
             session = connection?.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
@@ -335,7 +335,7 @@ class SambaVideosFragment :
         val path: String?
         var shareName = ""
         try {
-            val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(SambaVideoPrefs.shareName))
+            val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(SambaVideoPrefs.shareName))
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
             share = session?.connectShare(shareName) as DiskShare

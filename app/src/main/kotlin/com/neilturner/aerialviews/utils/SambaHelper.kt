@@ -7,7 +7,7 @@ import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 
-object SmbHelper {
+object SambaHelper {
 
     @Suppress("NAME_SHADOWING")
     fun fixShareName(shareName: String): String {
@@ -90,5 +90,5 @@ object SmbHelper {
         return config.build()
     }
 
-    private const val TAG = "SmbHelper"
+    private const val TAG = "SambaHelper"
 }
