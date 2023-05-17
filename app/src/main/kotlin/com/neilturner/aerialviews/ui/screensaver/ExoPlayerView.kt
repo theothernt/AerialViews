@@ -256,10 +256,11 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         // Check if we need to limit the duration of the video
         var targetDuration = duration
-        val limit = GeneralPrefs.maxVideoLength.toInt()
-        if (limit in 10 until duration
+        val limit = GeneralPrefs.maxVideoLength.toInt() * 1000
+        val tenSeconds = 10 * 1000
+        if (limit in tenSeconds until duration
         ) {
-            targetDuration = limit * 1000
+            targetDuration = limit
         }
 
         // compensate the duration based on the playback speed
