@@ -1,8 +1,8 @@
 package com.neilturner.aerialviews.utils
 
 import android.media.MediaExtractor
-import com.google.android.exoplayer2.mediacodec.MediaCodecAdapter
-import com.google.android.exoplayer2.mediacodec.SynchronousMediaCodecAdapter
+import androidx.media3.exoplayer.mediacodec.MediaCodecAdapter
+import androidx.media3.exoplayer.mediacodec.SynchronousMediaCodecAdapter
 import java.io.IOException
 
 // https://github.com/bdwixx/AerialViews/blob/philips-exoplayer-fix/app/src/main/java/com/neilturner/aerialviews/utils/PhilipsMediaCodecAdapterFactory.java

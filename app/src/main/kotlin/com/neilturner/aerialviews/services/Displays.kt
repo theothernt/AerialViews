@@ -14,7 +14,7 @@ import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.WindowManager
-import com.google.android.exoplayer2.util.Util
+import androidx.media3.common.util.Util
 import android.view.Display as NativeDisplay
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
