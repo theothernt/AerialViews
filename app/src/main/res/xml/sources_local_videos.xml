@@ -8,6 +8,17 @@
                     app:key="local_videos_enabled"
                     app:title="@string/local_videos_enabled_title" />
 
+                <ListPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/local_videos_access_default"
+                    app:entries="@array/local_videos_access_entries"
+                    app:entryValues="@array/local_videos_access_values"
+                    app:key="local_videos_access"
+                    app:title="Choose how videos are found"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="Choose how videos are found" />
+
                 <Preference
                     app:isPreferenceVisible="false"
                     app:dependency="local_videos_enabled"
@@ -15,9 +26,19 @@
                     app:key="local_videos_notice"
                     app:title="@string/local_videos_notice_title"
                     app:summary="@string/local_videos_notice_summary"/>
+
+
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_folder_filter">
+        <PreferenceCategory app:title="Media scanner options">
+                <Preference
+                    app:isPreferenceVisible="true"
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:key="local_videos_media_scanner"
+                    app:title="Media scanner status"
+                    app:summary="Not connected"/>
+
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
@@ -37,7 +58,33 @@
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
                     android:key="local_videos_test_filter"
-                    android:title="@string/local_videos_filter_test" />
+                    android:title="Test Media Scanner" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="Folder access options">
+
+                <ListPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/local_videos_legacy_volume_default"
+                    app:entries="@array/local_videos_legacy_volume_entries"
+                    app:entryValues="@array/local_videos_legacy_volume_values"
+                    app:key="local_videos_legacy_volume"
+                    app:title="Choose a volume"
+                    app:useSimpleSummaryProvider="true" />
+
+                <EditTextPreference
+                    app:dependency="local_videos_enabled"
+                    android:summary="Enter a folder name eg. /videos/"
+                    android:key="local_videos_legacy_folder"
+                    app:useSimpleSummaryProvider="true"
+                    android:title="Enter a folder name (eg. /videos/)" />
+
+                <Preference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    android:key="local_videos_legacy_test"
+                    android:title="Test folder access" />
         </PreferenceCategory>
 
 </PreferenceScreen>
