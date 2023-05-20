@@ -17,6 +17,41 @@ object StorageHelper {
 
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 
+    fun getStorageVols(context: Context): List<StorageVolume?> {
+        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            getStorageVolsLow(context)
+        } else {
+            getStorageVols24(context)
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private fun getStorageVols24(context: Context): List<StorageVolume?> {
+        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+        try {
+            return Objects.requireNonNull(storageManager).storageVolumes
+        } catch (e: java.lang.NullPointerException) {
+            e.printStackTrace()
+        }
+        return ArrayList()
+    }
+
+    private fun getStorageVolsLow(context: Context): List<StorageVolume?> {
+        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+        try {
+            val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
+            val result = getVolumeList.invoke(storageManager)
+            return result as List<StorageVolume?>
+        } catch (e: InvocationTargetException) {
+            e.printStackTrace()
+        } catch (e: NoSuchMethodException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
+        return ArrayList()
+    }
+
     fun getStoragePaths(context: Context): LinkedHashMap<String?, String?> {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             getStoragePathsLow(context)
