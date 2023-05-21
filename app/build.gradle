@@ -35,6 +35,14 @@ android {
         dataBinding true
     }
 
+    kotlin {
+        sourceSets.all {
+            languageSettings {
+                languageVersion = "2.0"
+            }
+        }
+    }
+
     buildTypes {
         debug {
             buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis().toString() + "\"")
@@ -133,7 +141,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.0.1')
+    implementation('androidx.media3:media3-exoplayer:1.0.2')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
@@ -144,7 +152,7 @@ dependencies {
     implementation("com.hierynomus:smbj:0.11.5")
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.10')
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.11')
 
     // Unit testing
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.3')
