@@ -127,6 +127,7 @@ class SambaVideosFragment :
 
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.setOnBindEditTextListener { it.setSingleLine() }
@@ -198,6 +199,7 @@ class SambaVideosFragment :
 
         try {
             SambaVideoPrefs.hostName = properties["hostname"] as String
+            SambaVideoPrefs.domainName = properties["domainname"] as String
             SambaVideoPrefs.shareName = properties["sharename"] as String
             SambaVideoPrefs.userName = properties["username"] as String
             SambaVideoPrefs.password = properties["password"] as String
@@ -210,6 +212,7 @@ class SambaVideosFragment :
 
         withContext(Dispatchers.Main) {
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaVideoPrefs.hostName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaVideoPrefs.domainName
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaVideoPrefs.shareName
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaVideoPrefs.userName
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaVideoPrefs.password
@@ -241,6 +244,7 @@ class SambaVideosFragment :
         // Build SMB config list
         val smbSettings = mutableMapOf<String, String>()
         smbSettings["hostname"] = SambaVideoPrefs.hostName
+        smbSettings["domainname"] = SambaVideoPrefs.domainName
         smbSettings["sharename"] = SambaVideoPrefs.shareName
         smbSettings["username"] = SambaVideoPrefs.userName
         smbSettings["password"] = SambaVideoPrefs.password

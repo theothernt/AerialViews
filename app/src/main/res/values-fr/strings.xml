@@ -86,6 +86,9 @@
     <string name="samba_videos_hostname_title">Nom d\'hôte</string>
     <string name="samba_videos_hostname_summary">Adresse IP du serveur</string>
 
+    <string name="samba_videos_domainname_title">Domain name</string>
+    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server (Optional)</string>
+
     <string name="samba_videos_sharename_title">Nom du partage réseau</string>
     <string name="samba_videos_sharename_summary">Exemple: /video/aérien/</string>
 

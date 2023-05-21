@@ -17,6 +17,12 @@
                     android:title="@string/samba_videos_hostname_title" />
 
                 <EditTextPreference
+                    android:summary="@string/samba_videos_domainname_summary"
+                    android:key="samba_videos_domainname"
+                    android:selectAllOnFocus="true"
+                    android:title="@string/samba_videos_domainname_title" />
+
+                <EditTextPreference
                     android:summary="@string/samba_videos_sharename_summary"
                     android:key="samba_videos_sharename"
                     android:title="@string/samba_videos_sharename_title" />
