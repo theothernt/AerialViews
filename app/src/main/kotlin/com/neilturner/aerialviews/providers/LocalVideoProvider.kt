@@ -28,7 +28,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             return videos
         }
 
-        val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_volume}"
+        val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_folder}"
         val directory = File(externalStorageDir)
         if (directory.exists() && directory.isDirectory) {
             val files = directory.listFiles()

@@ -119,15 +119,15 @@
     <string name="playback_max_video_length_default" translatable="false">0</string>
 
     <!-- Local Video Options -->
-    <string-array name="local_videos_access_entries">
+    <string-array name="local_videos_search_type_entries">
         <item>Media scanner - Android scans all local storage, USB devices, etc for videos</item>
         <item>Folder - Specify a single folder where videos are stored (Android 12 or less)</item>
     </string-array>
-    <string-array name="local_videos_access_values" translatable="false">
+    <string-array name="local_videos_search_type_values" translatable="false">
         <item>mediastore</item>
         <item>folder</item>
     </string-array>
-    <string name="local_videos_access_default" translatable="false">mediastore</string>
+    <string name="local_videos_search_type_default" translatable="false">mediastore</string>
 
     <string-array name="local_videos_legacy_volume_entries">
         <item>No volumes found</item>
