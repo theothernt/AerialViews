@@ -4,13 +4,10 @@ import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
-import android.os.storage.StorageVolume
 import android.util.Log
 import androidx.annotation.RequiresApi
 import java.lang.reflect.Array
 import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
-import java.util.Objects
 
 object StorageHelper {
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
@@ -33,7 +30,7 @@ object StorageHelper {
                 Log.d("X", "  ---Object--" + vol + " | desc: " + vol.getDescription(context))
                 if (Build.VERSION.SDK_INT >= 30) {
                     val dir = vol.directory ?: continue
-                    paths[dir.absolutePath] = vol.mediaStoreVolumeName.toString() //formatPathAsLabel(dir.absolutePath)
+                    paths[dir.absolutePath] = vol.getDescription(context)
                 } else {
                     val getPath = vol.javaClass.getMethod("getPath")
                     val path = getPath.invoke(vol) as String
@@ -63,7 +60,6 @@ object StorageHelper {
         try {
             val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
             val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
-            val getDescription = storageVolumeClazz.getMethod("getDescription")
             val getPath = storageVolumeClazz.getMethod("getPath")
             val result = getVolumeList.invoke(storageManager) as Any
             val length: Int = Array.getLength(result)
@@ -72,10 +68,9 @@ object StorageHelper {
                 val storageVolumeElement: Any = Array.get(result, i) as Any
                 Log.d("X", "  ---Object--" + storageVolumeElement + "i==" + i)
                 val path = getPath.invoke(storageVolumeElement) as String
-                val volumeName = getDescription.invoke(storageVolumeElement) as String
                 Log.d("X", "  ---path_total--$path")
                 Log.d("X", "    ---path--$path")
-                paths[path] = volumeName //formatPathAsLabel(path)
+                paths[path] = formatPathAsLabel(path)
             }
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
