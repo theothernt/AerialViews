@@ -129,14 +129,6 @@
     </string-array>
     <string name="local_videos_search_type_default" translatable="false">mediastore</string>
 
-    <string-array name="local_videos_legacy_volume_entries">
-        <item>No volumes found</item>
-    </string-array>
-    <string-array name="local_videos_legacy_volume_values" translatable="false">
-        <item>none</item>
-    </string-array>
-    <string name="local_videos_legacy_volume_default" translatable="false">none</string>
-
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>

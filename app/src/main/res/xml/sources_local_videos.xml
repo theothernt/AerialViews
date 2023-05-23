@@ -55,20 +55,16 @@
                 <ListPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/local_videos_legacy_volume_default"
-                    app:entries="@array/local_videos_legacy_volume_entries"
-                    app:entryValues="@array/local_videos_legacy_volume_values"
                     app:key="local_videos_legacy_volume"
-                    app:title="Choose a volume"
-                    app:useSimpleSummaryProvider="true" />
+                    app:title="@string/local_videos_legacy_volume_title"
+                    app:summary="@string/local_videos_legacy_volume_summary" />
 
                 <EditTextPreference
                     app:dependency="local_videos_enabled"
-                    app:defaultValue="No folder specified"
-                    android:summary="Enter a folder name eg. /videos/"
+                    app:disableDependentsState="false"
                     android:key="local_videos_legacy_folder"
-                    app:useSimpleSummaryProvider="true"
-                    android:title="Enter a folder name (eg. /videos/)" />
+                    android:title="@string/local_videos_filter_folder_title"
+                    android:summary="@string/local_videos_filter_folder_summary" />
 
                 <Preference
                     app:dependency="local_videos_enabled"

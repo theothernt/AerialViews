@@ -77,6 +77,12 @@
     <string name="local_videos_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
 
+    <string name="local_videos_legacy_volume_title">Choose a volume</string>
+    <string name="local_videos_legacy_volume_summary">No volume specified</string>
+
+    <string name="local_videos_legacy_folder_title">Choose a folder (eg. /videos/)</string>
+    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+
     <string name="local_videos_filter_test">Test filter settings</string>
 
     <!-- Main / Video Sources / Samba videos -->

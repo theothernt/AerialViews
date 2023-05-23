@@ -7,7 +7,6 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -40,7 +39,6 @@ class LocalVideosFragment :
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
@@ -55,8 +53,10 @@ class LocalVideosFragment :
         }
 
         limitTextInput()
-        findVolumeList()
         showNoticeIfNeeded()
+
+        updateVolumeAndFolderSummary()
+        findVolumeList()
     }
 
     override fun onDestroy() {
@@ -98,9 +98,11 @@ class LocalVideosFragment :
             }
         }
 
-        if (key == "local_videos_legacy_volume") {
-            val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
-            Log.i(TAG, "Value: ${listPref?.entry}")
+        if (key == "local_videos_legacy_volume" ||
+                key == "local_videos_legacy_folder") {
+            //val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
+            //Log.i(TAG, "Value: ${listPref?.entry}")
+            updateVolumeAndFolderSummary()
         }
     }
 
@@ -171,7 +173,20 @@ class LocalVideosFragment :
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
+    private fun updateVolumeAndFolderSummary() {
+        val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
+        val folder = preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
+        val res = context?.resources
+
+        if (LocalVideoPrefs.legacy_volume.isEmpty()) {
+            volume?.summary = res?.getString(R.string.local_videos_legacy_volume_summary)
+        }
+
+        if (LocalVideoPrefs.legacy_folder.isEmpty()) {
+            folder?.summary = res?.getString(R.string.local_videos_legacy_folder_summary)
+        }
+    }
+
     private fun findVolumeList() {
         val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
 
@@ -181,7 +196,7 @@ class LocalVideosFragment :
 
         listPref?.entries = entries
         listPref?.entryValues = values
-        listPref?.setDefaultValue(listPref.entries.first())
+        listPref?.setDefaultValue(listPref.value.first())
     }
 
     private fun showNoticeIfNeeded() {
