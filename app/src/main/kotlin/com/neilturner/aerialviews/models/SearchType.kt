@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models
 
 enum class SearchType {
-    MEDIASTORE,
+    MEDIA_STORE,
     FOLDER_ACCESS
 }

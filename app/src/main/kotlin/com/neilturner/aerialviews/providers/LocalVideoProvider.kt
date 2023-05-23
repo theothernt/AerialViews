@@ -13,7 +13,7 @@ import java.io.File
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        return if (prefs.searchType == SearchType.MEDIASTORE) {
+        return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch()
         } else {
             folderAccessFetch()
@@ -24,7 +24,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val videos = mutableListOf<AerialVideo>()
 
         if (prefs.legacy_volume.isEmpty() ||
-            prefs.legacy_volume.isEmpty()
+            prefs.legacy_folder.isEmpty()
         ) {
             return videos
         }

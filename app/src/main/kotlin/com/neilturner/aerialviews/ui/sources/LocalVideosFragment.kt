@@ -43,6 +43,8 @@ class LocalVideosFragment :
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+
+
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -107,8 +109,8 @@ class LocalVideosFragment :
     }
 
     private fun limitTextInput() {
-        val textPref = preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")
-        textPref?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder_summary")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private suspend fun testLocalVideosFilter() {
@@ -200,7 +202,6 @@ class LocalVideosFragment :
 
         listPref?.entries = entries
         listPref?.entryValues = values
-        listPref?.setDefaultValue(listPref.value.first())
     }
 
     private fun showNoticeIfNeeded() {

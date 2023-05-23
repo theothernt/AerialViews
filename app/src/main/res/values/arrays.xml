@@ -124,10 +124,10 @@
         <item>Folder - Specify a single folder where videos are stored (Android 12 or less)</item>
     </string-array>
     <string-array name="local_videos_search_type_values" translatable="false">
-        <item>mediastore</item>
-        <item>folder</item>
+        <item>MEDIA_STORE</item>
+        <item>FOLDER_ACCESS</item>
     </string-array>
-    <string name="local_videos_search_type_default" translatable="false">mediastore</string>
+    <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
 
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">
