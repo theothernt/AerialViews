@@ -15,7 +15,7 @@ import java.util.Objects
 object StorageHelper {
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 
-    fun getStoragePaths(context: Context): LinkedHashMap<String?, String?> {
+    fun getStoragePaths(context: Context): LinkedHashMap<String, String> {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             getStoragePathsLow(context)
         } else {
@@ -24,21 +24,21 @@ object StorageHelper {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    private fun getStoragePaths24(context: Context): LinkedHashMap<String?, String?> {
-        val paths = LinkedHashMap<String?, String?>()
+    private fun getStoragePaths24(context: Context): LinkedHashMap<String, String> {
+        val paths = LinkedHashMap<String, String>()
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
-            val result = Objects.requireNonNull(storageManager).storageVolumes
+            val result = storageManager.storageVolumes
             for (vol in result) {
                 Log.d("X", "  ---Object--" + vol + " | desc: " + vol.getDescription(context))
                 if (Build.VERSION.SDK_INT >= 30) {
                     val dir = vol.directory ?: continue
-                    paths[dir.absolutePath] = formatPathAsLabel(dir.absolutePath)
+                    paths[dir.absolutePath] = vol.mediaStoreVolumeName.toString() //formatPathAsLabel(dir.absolutePath)
                 } else {
                     val getPath = vol.javaClass.getMethod("getPath")
                     val path = getPath.invoke(vol) as String
                     Log.d("X", "    ---path--$path")
-                    paths[path] = formatPathAsLabel(path)
+                    paths[path] = vol.getDescription(context) //formatPathAsLabel(path)
                 }
             }
         } catch (e: InvocationTargetException) {
@@ -57,12 +57,13 @@ object StorageHelper {
         return paths
     }
 
-    private fun getStoragePathsLow(context: Context): LinkedHashMap<String?, String?> {
-        val paths = LinkedHashMap<String?, String?>()
+    private fun getStoragePathsLow(context: Context): LinkedHashMap<String, String> {
+        val paths = LinkedHashMap<String, String>()
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
             val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
             val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
+            val getDescription = storageVolumeClazz.getMethod("getDescription")
             val getPath = storageVolumeClazz.getMethod("getPath")
             val result = getVolumeList.invoke(storageManager) as Any
             val length: Int = Array.getLength(result)
@@ -71,9 +72,10 @@ object StorageHelper {
                 val storageVolumeElement: Any = Array.get(result, i) as Any
                 Log.d("X", "  ---Object--" + storageVolumeElement + "i==" + i)
                 val path = getPath.invoke(storageVolumeElement) as String
+                val volumeName = getDescription.invoke(storageVolumeElement) as String
                 Log.d("X", "  ---path_total--$path")
                 Log.d("X", "    ---path--$path")
-                paths[path] = formatPathAsLabel(path)
+                paths[path] = volumeName //formatPathAsLabel(path)
             }
         } catch (e: ClassNotFoundException) {
             e.printStackTrace()
