@@ -12,7 +12,6 @@ import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.util.Objects
 
-
 object StorageHelper {
 
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
@@ -131,7 +130,6 @@ object StorageHelper {
     private fun formatPathAsLabel(path: String): String {
         return "[ $path ]"
     }
-
 
     fun getStoragePath(context: Context, isRemovable: Boolean): String {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {

@@ -24,7 +24,8 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val videos = mutableListOf<AerialVideo>()
 
         if (prefs.legacy_volume.isEmpty() ||
-                prefs.legacy_volume.isEmpty()) {
+            prefs.legacy_volume.isEmpty()
+        ) {
             return videos
         }
 
