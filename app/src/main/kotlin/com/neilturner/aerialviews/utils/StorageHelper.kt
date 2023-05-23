@@ -25,17 +25,19 @@ object StorageHelper {
         val paths = LinkedHashMap<String, String>()
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
-            val result = storageManager.storageVolumes
-            for (vol in result) {
-                Log.d("X", "  ---Object--" + vol + " | desc: " + vol.getDescription(context))
+            val volumes = storageManager.storageVolumes
+            for (vol in volumes) {
+                var description = vol.getDescription(context)
+                if (description.contains("internal", true)) {
+                    description = "Internal"
+                }
                 if (Build.VERSION.SDK_INT >= 30) {
                     val dir = vol.directory ?: continue
-                    paths[dir.absolutePath] = vol.getDescription(context)
+                    paths[dir.absolutePath] = "${dir.absolutePath} ($description)"
                 } else {
                     val getPath = vol.javaClass.getMethod("getPath")
                     val path = getPath.invoke(vol) as String
-                    Log.d("X", "    ---path--$path")
-                    paths[path] = vol.getDescription(context) //formatPathAsLabel(path)
+                    paths[path] = "$path ($description)"
                 }
             }
         } catch (e: InvocationTargetException) {

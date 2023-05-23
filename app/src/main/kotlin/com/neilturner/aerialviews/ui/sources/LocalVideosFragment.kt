@@ -180,10 +180,14 @@ class LocalVideosFragment :
 
         if (LocalVideoPrefs.legacy_volume.isEmpty()) {
             volume?.summary = res?.getString(R.string.local_videos_legacy_volume_summary)
+        } else {
+            volume?.summary = LocalVideoPrefs.legacy_volume
         }
 
         if (LocalVideoPrefs.legacy_folder.isEmpty()) {
             folder?.summary = res?.getString(R.string.local_videos_legacy_folder_summary)
+        } else {
+            folder?.summary = LocalVideoPrefs.legacy_folder
         }
     }
 

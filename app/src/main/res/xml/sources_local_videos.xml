@@ -63,8 +63,8 @@
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
                     android:key="local_videos_legacy_folder"
-                    android:title="@string/local_videos_filter_folder_title"
-                    android:summary="@string/local_videos_filter_folder_summary" />
+                    android:title="@string/local_videos_legacy_folder_title"
+                    android:summary="@string/local_videos_legacy_folder_summary" />
 
                 <Preference
                     app:dependency="local_videos_enabled"
