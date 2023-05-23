@@ -13,7 +13,6 @@ import java.lang.reflect.Method
 import java.util.Objects
 
 object StorageHelper {
-
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 
     fun getStorageVols(context: Context): List<StorageVolume?> {
@@ -28,11 +27,11 @@ object StorageHelper {
     private fun getStorageVols24(context: Context): List<StorageVolume?> {
         val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
-            return Objects.requireNonNull(storageManager).storageVolumes
-        } catch (e: java.lang.NullPointerException) {
+            return storageManager.storageVolumes
+        } catch (e: NullPointerException) {
             e.printStackTrace()
         }
-        return ArrayList()
+        return emptyList()
     }
 
     private fun getStorageVolsLow(context: Context): List<StorageVolume?> {
@@ -48,7 +47,7 @@ object StorageHelper {
         } catch (e: IllegalAccessException) {
             e.printStackTrace()
         }
-        return ArrayList()
+        return emptyList()
     }
 
     fun getStoragePaths(context: Context): LinkedHashMap<String?, String?> {

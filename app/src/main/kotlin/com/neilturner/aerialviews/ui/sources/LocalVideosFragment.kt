@@ -7,11 +7,14 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -24,6 +27,7 @@ import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +40,7 @@ class LocalVideosFragment :
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
@@ -50,6 +55,7 @@ class LocalVideosFragment :
         }
 
         limitTextInput()
+        findVolumeList()
         showNoticeIfNeeded()
     }
 
@@ -90,6 +96,11 @@ class LocalVideosFragment :
                     requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
             }
+        }
+
+        if (key == "local_videos_legacy_volume") {
+            val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
+            Log.i(TAG, "Value: ${listPref?.entry}")
         }
     }
 
@@ -158,6 +169,19 @@ class LocalVideosFragment :
             setPositiveButton(R.string.button_ok, null)
             create().show()
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    private fun findVolumeList() {
+        val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
+
+        val vols = StorageHelper.getStoragePaths(requireContext())
+        val entries = vols.map { it.key }.toTypedArray()
+        val values = vols.map { it.value }.toTypedArray()
+
+        listPref?.entries = entries
+        listPref?.entryValues = values
+        listPref?.setDefaultValue(listPref.entries.first())
     }
 
     private fun showNoticeIfNeeded() {
