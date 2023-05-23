@@ -8,7 +8,7 @@ object LocalVideoPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "local_videos_enabled")
-    var searchType by enumValuePref(SearchType.MEDIASTORE, "local_video_search_type")
+    var searchType by enumValuePref(SearchType.MEDIASTORE, "local_videos_search_type")
 
     var filter_enabled by booleanPref(false, "local_videos_filter_enabled")
     var filter_folder_name by stringPref("", "local_videos_filter_folder_name")
