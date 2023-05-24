@@ -102,8 +102,7 @@ class LocalVideosFragment :
 
         if (key == "local_videos_legacy_volume" ||
                 key == "local_videos_legacy_folder") {
-            //val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
-            //Log.i(TAG, "Value: ${listPref?.entry}")
+            LocalVideoPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalVideoPrefs.legacy_folder)
             updateVolumeAndFolderSummary()
         }
     }

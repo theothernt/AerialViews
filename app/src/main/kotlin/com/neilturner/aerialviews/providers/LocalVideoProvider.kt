@@ -31,12 +31,16 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
         val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_folder}"
         val directory = File(externalStorageDir)
-        if (directory.exists() && directory.isDirectory) {
-            val files = directory.listFiles()
-            if (files != null) {
-                for (file in files) {
-                    videos.add(AerialVideo(Uri.fromFile(file), ""))
-                }
+
+        if (!directory.exists() || !directory.isDirectory) {
+            return videos
+        }
+
+        val files = directory.listFiles() ?: return videos
+
+        for (file in files) {
+            if (FileHelper.isVideoFilename(file.name)) {
+                videos.add(AerialVideo(Uri.fromFile(file), ""))
             }
         }
 

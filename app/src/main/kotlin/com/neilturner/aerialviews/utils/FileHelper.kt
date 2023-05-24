@@ -100,5 +100,26 @@ object FileHelper {
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
+    @Suppress("NAME_SHADOWING")
+    fun fixLegacyFolder(folder: String): String {
+        var folder = folder
+
+        if (folder.isEmpty()) {
+            return ""
+        }
+
+        if (folder.first() != '/') {
+            folder = "/$folder"
+            Log.i(TAG, "Fixing folder - adding leading slash")
+        }
+
+        if (folder.last() == '/') {
+            folder = folder.dropLast(1)
+            Log.i(TAG, "Fixing folder - removing trailing slash")
+        }
+
+        return folder
+    }
+
     private const val TAG = "FileHelper"
 }
