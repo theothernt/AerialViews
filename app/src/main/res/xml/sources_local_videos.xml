@@ -15,9 +15,8 @@
                     app:entries="@array/local_videos_search_type_entries"
                     app:entryValues="@array/local_videos_search_type_values"
                     app:key="local_videos_search_type"
-                    app:title="Choose how videos are found"
-                    app:useSimpleSummaryProvider="true"
-                    app:dialogTitle="Choose how videos are found" />
+                    app:title="@string/local_videos_search_type_title"
+                    app:useSimpleSummaryProvider="true" />
 
                 <Preference
                     app:isPreferenceVisible="false"
