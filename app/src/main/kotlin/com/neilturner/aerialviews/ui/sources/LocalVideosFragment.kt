@@ -98,7 +98,8 @@ class LocalVideosFragment :
         }
 
         if (key == "local_videos_legacy_volume" ||
-                key == "local_videos_legacy_folder") {
+            key == "local_videos_legacy_folder"
+        ) {
             LocalVideoPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalVideoPrefs.legacy_folder)
             updateVolumeAndFolderSummary()
         }

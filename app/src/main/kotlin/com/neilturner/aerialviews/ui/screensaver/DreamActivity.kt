@@ -2,6 +2,7 @@
 
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.service.dreams.DreamService
 import android.util.Log
@@ -15,6 +16,7 @@ import java.util.Locale
 class DreamActivity : DreamService() {
     private lateinit var videoController: VideoController
 
+    @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         Log.i(TAG, "onAttachedToWindow")
