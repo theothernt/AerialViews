@@ -19,7 +19,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
     }
 
-    fun fetchTest(): String {
+    override fun fetchTest(): String {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().second
         } else {
@@ -31,17 +31,19 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val videos = mutableListOf<AerialVideo>()
         var excluded = 0
 
-        if (prefs.legacy_volume.isEmpty() ||
-            prefs.legacy_folder.isEmpty()
-        ) {
-            return Pair(videos, "Volume or folder is empty")
+        if (prefs.legacy_volume.isEmpty()) {
+            return Pair(videos, "Volume not specified")
+        }
+
+        if (prefs.legacy_folder.isEmpty()) {
+            return Pair(videos, "Folder not specified")
         }
 
         val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_folder}"
         val directory = File(externalStorageDir)
 
         if (!directory.exists() || !directory.isDirectory) {
-            return Pair(videos, "Folder doesn't exist")
+            return Pair(videos, "Folder does not exist")
         }
 
         val files = directory.listFiles() ?: return Pair(videos, "No files found")
@@ -61,7 +63,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         var message = "Videos found in folder: ${videos.size}\n"
-        message += "Videos with supported file extensions: ${videos.size - excluded}\n"
+        message += "Videos with unsupported file extensions: $excluded\n"
         message += "Videos selected for playback: ${videos.size - excluded}"
 
         return Pair(videos, message)
@@ -102,7 +104,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         var message = "Videos found by media scanner: ${localVideos.size}\n"
-        message += "Videos with supported file extensions: ${localVideos.size - excluded}\n"
+        message += "Videos with unsupported file extensions: $excluded\n"
         message += if (prefs.filter_enabled) {
             "Videos removed by filter: $filtered\n"
         } else {

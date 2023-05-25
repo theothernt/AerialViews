@@ -34,7 +34,10 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
+import com.neilturner.aerialviews.providers.LocalVideoProvider
+import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
@@ -283,125 +286,11 @@ class SambaVideosFragment :
 
         showDialog("Export successful", "Successfully exported SMB settings to $SMB_SETTINGS_FILENAME in the Downloads folder")
     }
-
-    @Suppress("BlockingMethodInNonBlockingContext") // ran on an IO/background context
+    
     private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
-        // Check hostname
-        val validIpAddress = Patterns.IP_ADDRESS.matcher(SambaVideoPrefs.hostName).matches()
-        if (!validIpAddress) {
-            val message = "Hostname must be a valid IP address."
-            Log.e(TAG, message)
-            showDialog("Error", message)
-            return@withContext
-        }
-
-        // Check hostname
-        val config: SmbConfig
-        try {
-            config = SambaHelper.buildSmbConfig()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            val message = "Failed to create SMB config...\n\n${e.message}"
-            showDialog("Connection error", message)
-            return@withContext
-        }
-        Log.i(TAG, "SMB config successful")
-
-        val smbClient = SMBClient(config)
-        val connection: Connection
-        try {
-            connection = smbClient.connect(SambaVideoPrefs.hostName)
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            val message = "Hostname error: ${SambaVideoPrefs.hostName}...\n\n${e.message}"
-            showDialog("Connection error", message)
-            return@withContext
-        }
-        Log.i(TAG, "Connected to ${SambaVideoPrefs.hostName}")
-
-        // Check username + password
-        // Domain name fixed to default
-        // Handles anonymous logins also
-        val session: Session?
-        try {
-            val authContext = SambaHelper.buildAuthContext(SambaVideoPrefs.userName, SambaVideoPrefs.password, SambaVideoPrefs.domainName)
-            session = connection?.authenticate(authContext)
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            val message = "Authentication failed. Please check the username and password, or server settings if using anonymous login"
-            showDialog("Connection error", message)
-            return@withContext
-        }
-        Log.i(TAG, "Authentication successful")
-
-        // Check sharename
-        val share: Share?
-        val path: String?
-        var shareName = ""
-        try {
-            val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(SambaVideoPrefs.shareName))
-            shareName = shareNameAndPath.first
-            path = shareNameAndPath.second
-            share = session?.connectShare(shareName) as DiskShare
-            val shareAccess = hashSetOf<SMB2ShareAccess>()
-            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            val message = "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions."
-            showDialog("Connection error", message)
-            return@withContext
-        }
-        Log.i(TAG, "Connected to share: $shareName")
-
-        // Check for any files
-        // Check for any video files
-        var files = 0 // ignore dot files
-        var videos = 0
-        var folders = 0
-        try {
-            share.list(path).forEach { item ->
-                val isFolder = EnumWithValue.EnumUtils.isSet(
-                    item.fileAttributes,
-                    FileAttributes.FILE_ATTRIBUTE_DIRECTORY
-                )
-                if (isFolder) {
-                    folders++
-                } else {
-                    if (FileHelper.isSupportedVideoType(item.fileName)) {
-                        videos++
-                    }
-                    if (!FileHelper.isDotOrHiddenFile(item.fileName)) {
-                        files++
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            val message = "Unable to list files from: $shareName. Please check server permissions for this share."
-            showDialog("Connection error", message)
-            return@withContext
-        }
-
-        var message: String
-        val ignored = files - videos
-        if (files == 0) {
-            message = "No files or videos found!"
-        } else {
-            message = "Found $videos videos. "
-            if (ignored > 0) {
-                message += "$ignored non-video files were ignored."
-            }
-        }
-        showDialog("Connection successful", message)
-        Log.i(TAG, message)
-
-        try {
-            smbClient.close()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return@withContext
-        }
-        Log.i(TAG, "Finished SMB connection test")
+        val provider = SambaVideoProvider(requireContext(), SambaVideoPrefs)
+        val result = provider.fetchTest()
+        showDialog("Results", result)
     }
 
     private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {

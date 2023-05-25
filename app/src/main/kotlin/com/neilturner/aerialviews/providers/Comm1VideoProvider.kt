@@ -32,6 +32,9 @@ class Comm1VideoProvider(context: Context, private val prefs: Comm1VideoPrefs) :
         return videos
     }
 
+    override fun fetchTest(): String {
+        return ""
+    }
     companion object {
         private const val TAG = "Comm1VideoProvider"
     }
