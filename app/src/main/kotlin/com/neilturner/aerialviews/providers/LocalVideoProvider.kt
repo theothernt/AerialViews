@@ -29,6 +29,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
     private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
+        var excluded = 0
 
         if (prefs.legacy_volume.isEmpty() ||
             prefs.legacy_folder.isEmpty()
@@ -47,11 +48,18 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
         for (file in files) {
             if (FileHelper.isVideoFilename(file.name)) {
-                videos.add(AerialVideo(Uri.fromFile(file), ""))
+                excluded++
+                continue
             }
+
+            videos.add(AerialVideo(Uri.fromFile(file), ""))
         }
 
-        return Pair(videos, "Video found: ${videos.size}")
+        var message = "Videos found in folder: ${videos.size}\n"
+        message += "Videos with supported file extensions: ${videos.size - excluded}\n"
+        message += "Videos selected for playback: ${videos.size - excluded}"
+
+        return Pair(videos, message)
     }
 
     private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
