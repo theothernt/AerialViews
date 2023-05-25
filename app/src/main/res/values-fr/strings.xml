@@ -202,7 +202,6 @@
     <string name="category_samba_options">Samba/SMB options</string>
 
     <string name="playback_max_video_length_title">Limit video length</string>
-    <string name="playback_max_video_length_summary">Skip to the next video after a specified number of seconds</string>
 
     <string name="performance_enable_tunneling_title">Activer le tunneling</string>
     <string name="performance_enable_tunneling_summary">Utilisez une accélération matérielle (important pour le streaming 4K / HD)</string>

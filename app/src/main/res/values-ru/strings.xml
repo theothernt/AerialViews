@@ -204,7 +204,6 @@
     <string name="category_samba_options">Samba/SMB настройки</string>
 
     <string name="playback_max_video_length_title">Ограничить длину видео</string>
-    <string name="playback_max_video_length_summary">Перейти к следующему видео через указанное количество секунд</string>
 
     <string name="performance_enable_tunneling_title">Включить туннелирование</string>
     <string name="performance_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>

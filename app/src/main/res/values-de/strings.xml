@@ -202,7 +202,6 @@
     <string name="category_samba_options">Optionen für Samba / SMB</string>
 
     <string name="playback_max_video_length_title">Videolänge begrenzen</string>
-    <string name="playback_max_video_length_summary">Starte nächstes Video nach einer gewissen Abspielzeit</string>
 
     <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
     <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
