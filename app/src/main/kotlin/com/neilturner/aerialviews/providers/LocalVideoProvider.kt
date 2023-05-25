@@ -63,7 +63,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder_name)) {
+            if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder)) {
                 filtered++
                 continue
             }

@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -43,8 +42,6 @@ class LocalVideosFragment :
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-
-
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -71,7 +68,7 @@ class LocalVideosFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("local_videos_test_filter")) {
+        if (preference.key.contains("local_videos_search_test")) {
             lifecycleScope.launch {
                 testLocalVideosFilter()
             }
@@ -108,12 +105,12 @@ class LocalVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_filter_folder_name")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_folder")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private suspend fun testLocalVideosFilter() {
-        if (LocalVideoPrefs.filter_folder_name.isEmpty() &&
+        if (LocalVideoPrefs.filter_folder.isEmpty() &&
             LocalVideoPrefs.filter_enabled
         ) {
             showDialog("Error", "No folder has been specified.")
@@ -135,7 +132,7 @@ class LocalVideosFragment :
                 continue
             }
 
-            if (LocalVideoPrefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder_name)) {
+            if (LocalVideoPrefs.filter_enabled && FileHelper.shouldFilter(uri, LocalVideoPrefs.filter_folder)) {
                 // Log.i(TAG, "Filtering out video: $filename")
                 filtered++
                 continue
@@ -207,7 +204,7 @@ class LocalVideosFragment :
         if (!DeviceHelper.isNvidiaShield()) {
             return
         }
-        val notice = findPreference<Preference>("local_videos_notice")
+        val notice = findPreference<Preference>("local_videos_shield_notice")
         notice?.isVisible = true
     }
 

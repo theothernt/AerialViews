@@ -159,7 +159,7 @@ class SettingsFragment :
             // Local video prefs
             LocalVideoPrefs.enabled = properties["local_videos_enabled"].toString().toBoolean()
             LocalVideoPrefs.filter_enabled = properties["local_videos_filter_enabled"].toString().toBoolean()
-            LocalVideoPrefs.filter_folder_name = properties["local_videos_filter_folder_name"] as String
+            LocalVideoPrefs.filter_folder = properties["local_videos_filter_folder_name"] as String
 
             // Samba video prefs?
             SambaVideoPrefs.enabled = properties["samba_videos_enabled"].toString().toBoolean()
@@ -229,7 +229,7 @@ class SettingsFragment :
         // Local video prefs
         settings["local_videos_enabled"] = LocalVideoPrefs.enabled.toString()
         settings["local_videos_filter_enabled"] = LocalVideoPrefs.filter_enabled.toString()
-        settings["local_videos_filter_folder_name"] = LocalVideoPrefs.filter_folder_name
+        settings["local_videos_filter_folder_name"] = LocalVideoPrefs.filter_folder
 
         // Samba video prefs?
         settings["samba_videos_enabled"] = SambaVideoPrefs.enabled.toString()

@@ -33,6 +33,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 11) release11()
         // if (lastKnownVersion < 12) release12()
         if (lastKnownVersion < 13) release13()
+        if (lastKnownVersion < 14) release14()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -109,6 +110,16 @@ class MigrationHelper(val context: Context) {
             prefs.edit().putString("samba_videos_domainname", prefs.getString("network_videos_domainname", "WORKGROUP")).apply()
             prefs.edit().putStringSet("samba_videos_smb_dialects", prefs.getStringSet("network_videos_smb_dialects", emptySet())).apply()
             prefs.edit().remove("network_videos_enabled").apply()
+        }
+    }
+
+    private fun release14() {
+        Log.i(TAG, "Migrating settings for release 14")
+
+        val filterFolderUsed = prefs.contains("local_videos_filter_folder_name")
+        if (filterFolderUsed) {
+            prefs.edit().putString("local_videos_media_store_filter_folder", prefs.getString("local_videos_filter_folder_name", "")).apply()
+            prefs.edit().remove("local_videos_filter_folder_name").apply()
         }
     }
 
