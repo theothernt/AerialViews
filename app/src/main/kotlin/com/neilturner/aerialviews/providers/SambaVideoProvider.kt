@@ -83,14 +83,17 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         val share = session?.connectShare(shareName) as DiskShare
 
         share.list(path).forEach { item ->
-            val isVideoFilename = FileHelper.isVideoFilename(item.fileName)
+            val isDotOrHiddenFile = FileHelper.isDotOrHiddenFile(item.fileName)
+            val isSupportedVideoType = FileHelper.isSupportedVideoType(item.fileName)
 
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isVideoFilename && !isFolder) {
+            if (isDotOrHiddenFile &&
+                isSupportedVideoType &&
+                !isFolder) {
                 files.add(item.fileName)
             }
         }

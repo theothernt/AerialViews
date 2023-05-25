@@ -360,7 +360,6 @@ class SambaVideosFragment :
         var folders = 0
         try {
             share.list(path).forEach { item ->
-                // Log.i(TAG, item.fileName)
                 val isFolder = EnumWithValue.EnumUtils.isSet(
                     item.fileAttributes,
                     FileAttributes.FILE_ATTRIBUTE_DIRECTORY
@@ -368,10 +367,12 @@ class SambaVideosFragment :
                 if (isFolder) {
                     folders++
                 } else {
-                    if (FileHelper.isVideoFilename(item.fileName)) {
+                    if (FileHelper.isSupportedVideoType(item.fileName)) {
                         videos++
                     }
-                    files++
+                    if (!FileHelper.isDotOrHiddenFile(item.fileName)) {
+                        files++
+                    }
                 }
             }
         } catch (e: Exception) {

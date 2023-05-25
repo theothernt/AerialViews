@@ -47,7 +47,12 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         val files = directory.listFiles() ?: return Pair(videos, "No files found")
 
         for (file in files) {
-            if (FileHelper.isVideoFilename(file.name)) {
+            // x/y/file.mp4
+            if (FileHelper.isDotOrHiddenFile(file.name.split("/").last())) {
+                continue
+            }
+
+            if (FileHelper.isSupportedVideoType(file.name)) {
                 excluded++
                 continue
             }
@@ -78,7 +83,12 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             val uri = Uri.parse(video)
             val filename = uri.lastPathSegment.toStringOrEmpty()
 
-            if (!FileHelper.isVideoFilename(filename)) {
+            // file.mp4
+            if (FileHelper.isDotOrHiddenFile(filename)) {
+                continue
+            }
+
+            if (!FileHelper.isSupportedVideoType(filename)) {
                 excluded++
                 continue
             }
