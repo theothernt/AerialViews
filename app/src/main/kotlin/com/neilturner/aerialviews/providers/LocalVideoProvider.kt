@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
@@ -14,29 +13,37 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
     override fun fetchVideos(): List<AerialVideo> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
-            mediaStoreFetch()
+            mediaStoreFetch().first
         } else {
-            folderAccessFetch()
+            folderAccessFetch().first
         }
     }
 
-    private fun folderAccessFetch(): List<AerialVideo> {
+    fun fetchTest(): String {
+        return if (prefs.searchType == SearchType.MEDIA_STORE) {
+            mediaStoreFetch().second
+        } else {
+            folderAccessFetch().second
+        }
+    }
+
+    private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
 
         if (prefs.legacy_volume.isEmpty() ||
             prefs.legacy_folder.isEmpty()
         ) {
-            return videos
+            return Pair(videos, "Volume or folder is empty")
         }
 
         val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_folder}"
         val directory = File(externalStorageDir)
 
         if (!directory.exists() || !directory.isDirectory) {
-            return videos
+            return Pair(videos, "Folder doesn't exist")
         }
 
-        val files = directory.listFiles() ?: return videos
+        val files = directory.listFiles() ?: return Pair(videos, "No files found")
 
         for (file in files) {
             if (FileHelper.isVideoFilename(file.name)) {
@@ -44,15 +51,20 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             }
         }
 
-        Log.i(TAG, "Videos found by folder access: ${videos.size}")
-        return videos
+        return Pair(videos, "Video found: ${videos.size}")
     }
 
-    private fun mediaStoreFetch(): List<AerialVideo> {
+    private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(context)
         var excluded = 0
         var filtered = 0
+
+        if (prefs.filter_folder.isEmpty() &&
+            prefs.filter_enabled
+        ) {
+            return Pair(videos, "No folder specified for filter")
+        }
 
         for (video in localVideos) {
             val uri = Uri.parse(video)
@@ -71,12 +83,16 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(uri, ""))
         }
 
-        Log.i(TAG, "Videos found by Media Scanner: ${localVideos.size}")
-        Log.i(TAG, "Videos with supported file extensions: ${localVideos.size - excluded}")
-        Log.i(TAG, "Videos removed by filter: $filtered")
-        Log.i(TAG, "Videos selected for playback: ${localVideos.size - (filtered + excluded)}")
+        var message = "Videos found by media scanner: ${localVideos.size}\n"
+        message += "Videos with supported file extensions: ${localVideos.size - excluded}\n"
+        message += if (prefs.filter_enabled) {
+            "Videos removed by filter: $filtered\n"
+        } else {
+            "Videos removed by filter: (disabled)\n"
+        }
+        message += "Videos selected for playback: ${localVideos.size - (filtered + excluded)}"
 
-        return videos
+        return Pair(videos, message)
     }
 
     companion object {
