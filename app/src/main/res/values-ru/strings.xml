@@ -64,20 +64,33 @@
     <string name="comm2_videos_enabled">Использовать видео сообщества</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_folder_filter">Фильтр папок</string>
+    <string name="category_media_scanner_options">Media scanner options</string>
+    <string name="category_folder_access_options">Folder access options</string>
 
     <string name="local_videos_enabled_title">Использовать видео с локального или USB-накопителя</string>
 
-    <string name="local_videos_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
-    <string name="local_videos_notice_summary">Настройки > Настройки устройства > Хранилище > Автоматическое сканирование медиафайлов</string>
+    <string name="local_videos_search_type_title">Choose how videos are found</string>
+    <string name="local_videos_search_test">Test video search</string>
 
-    <string name="local_videos_filter_enabled_title">Фильтр папок</string>
-    <string name="local_videos_filter_enabled_summary">Воспроизведение видео только из определенной папки или папок на устройстве, USB и т. д.</string>
+    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
 
-    <string name="local_videos_filter_folder_title">Укажите название папки</string>
-    <string name="local_videos_filter_folder_summary">"Если вы храните видео, например, в /Videos/Aerial/, использование 'Aerial' будет отфильтровывать видео из других папок"</string>
+    <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
+    <string name="local_videos_shield_notice_summary">Настройки > Настройки устройства > Хранилище > Автоматическое сканирование медиафайлов</string>
 
-    <string name="local_videos_filter_test">Протестировать настройки фильтра</string>
+    <string name="local_videos_media_store_filter_enabled_title">Фильтр папок</string>
+    <string name="local_videos_media_store_filter_enabled_summary">Воспроизведение видео только из определенной папки или папок на устройстве, USB и т. д.</string>
+
+    <string name="local_videos_media_store_filter_folder_title">Укажите название папки</string>
+    <string name="local_videos_media_store_filter_folder_summary">"Если вы храните видео, например, в /Videos/Aerial/, использование 'Aerial' будет отфильтровывать видео из других папок"</string>
+
+    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+
+    <string name="local_videos_legacy_volume_title">Choose a volume</string>
+    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+
+    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
+    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Сведения о сервере и учетные данные</string>

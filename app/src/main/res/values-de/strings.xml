@@ -63,20 +63,32 @@
     <string name="comm2_videos_enabled">Nutze Community-Videos</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_folder_filter">Verzeichnisfilter</string>
+    <string name="category_media_scanner_options">Media scanner options</string>
+    <string name="category_folder_access_options">Folder access options</string>
 
     <string name="local_videos_enabled_title">Nutze lokal gespeicherte Videos (Gerätespeicher oder USB)</string>
 
-    <string name="local_videos_notice_title">"Nvidia Shield"-Nutzer: Bitte folgende Option aktivieren…</string>
-    <string name="local_videos_notice_summary">Einstellungen > Geräteeinstellungen > Speicher > Automatisch nach Medien durchsuchen</string>
+    <string name="local_videos_search_type_title">Choose how videos are found</string>
+    <string name="local_videos_search_test">Test video search</string>
 
-    <string name="local_videos_filter_enabled_title">Nutze Verzeichnisfilter</string>
-    <string name="local_videos_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Gerätespeicher / USB / Netzwerk)</string>
+    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
 
-    <string name="local_videos_filter_folder_title">Verzeichnisnamen einstellen</string>
-    <string name="local_videos_filter_folder_summary">Speicherst du Videos zum Beispiel unter /Videos/Aerial/ wird \'Aerial\' Videos anderer Ordner herausfiltern</string>
+    <string name="local_videos_shield_notice_title">"Nvidia Shield"-Nutzer: Bitte folgende Option aktivieren…</string>
+    <string name="local_videos_shield_notice_summary">Einstellungen > Geräteeinstellungen > Speicher > Automatisch nach Medien durchsuchen</string>
 
-    <string name="local_videos_filter_test">Teste Filtereinstellungen</string>
+    <string name="local_videos_media_store_filter_enabled_title">Nutze Verzeichnisfilter</string>
+    <string name="local_videos_media_store_filter_enabled_summary">Verwende nur Videos aus bestimmten Ordnern (Gerätespeicher / USB / Netzwerk)</string>
+
+    <string name="local_videos_media_store_filter_folder_title">Verzeichnisnamen einstellen</string>
+    <string name="local_videos_media_store_filter_folder_summary">Speicherst du Videos zum Beispiel unter /Videos/Aerial/ wird \'Aerial\' Videos anderer Ordner herausfiltern</string>
+
+    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+
+    <string name="local_videos_legacy_volume_title">Choose a volume</string>
+    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+
+    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
+    <string name="local_videos_legacy_folder_summary">No folder specified</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Serverdetails und Zugangsdaten</string>

@@ -70,7 +70,6 @@
     <string name="local_videos_enabled_title">Use Local or USB storage videos</string>
 
     <string name="local_videos_search_type_title">Choose how videos are found</string>
-
     <string name="local_videos_search_test">Test video search</string>
 
     <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
