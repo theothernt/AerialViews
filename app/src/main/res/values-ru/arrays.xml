@@ -9,8 +9,8 @@
 
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
-        <item>Media scanner - Android scans all local storage, USB devices, etc for videos</item>
-        <item>Folder - Specify a single folder where videos are stored (Android 12 or less)</item>
+        <item>Media scanner</item>
+        <item>Folder access (legacy)</item>
     </string-array>
 
     <!-- Advanced options -->

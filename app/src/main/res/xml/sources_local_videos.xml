@@ -29,12 +29,14 @@
                 <Preference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
+                    app:selectable="false"
                     app:summary="@string/local_videos_media_store_summary"/>
 
                 <Preference
                     app:isPreferenceVisible="false"
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
+                    app:selectable="false"
                     app:key="local_videos_shield_notice"
                     app:title="@string/local_videos_shield_notice_title"
                     app:summary="@string/local_videos_shield_notice_summary"/>
@@ -59,6 +61,7 @@
                 <Preference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
+                    app:selectable="false"
                     app:summary="@string/local_videos_legacy_summary"/>
 
                 <ListPreference
