@@ -91,7 +91,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isDotOrHiddenFile &&
+            if (!isDotOrHiddenFile &&
                 isSupportedVideoType &&
                 !isFolder) {
                 files.add(item.fileName)
