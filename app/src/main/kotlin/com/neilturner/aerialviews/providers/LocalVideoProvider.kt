@@ -54,7 +54,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            if (FileHelper.isSupportedVideoType(file.name)) {
+            if (!FileHelper.isSupportedVideoType(file.name)) {
                 excluded++
                 continue
             }
@@ -62,9 +62,9 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(Uri.fromFile(file), ""))
         }
 
-        var message = "Videos found in folder: ${videos.size}\n"
+        var message = "Videos found in folder: ${files.size}\n"
         message += "Videos with unsupported file extensions: $excluded\n"
-        message += "Videos selected for playback: ${videos.size - excluded}"
+        message += "Videos selected for playback: ${videos.size}"
 
         return Pair(videos, message)
     }
@@ -110,7 +110,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         } else {
             "Videos removed by filter: (disabled)\n"
         }
-        message += "Videos selected for playback: ${localVideos.size - (filtered + excluded)}"
+        message += "Videos selected for playback: ${videos.size}"
 
         return Pair(videos, message)
     }
