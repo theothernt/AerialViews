@@ -18,14 +18,14 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
 
         <Preference
-            app:title="@string/settings_capabilities_title"
-            app:summary="@string/settings_capabilities_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
-
-        <Preference
             app:title="@string/settings_advanced_title"
             app:summary="@string/settings_advanced_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.AdvancedFragment"/>
+
+        <Preference
+            app:title="@string/settings_capabilities_title"
+            app:summary="@string/settings_capabilities_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>
 
         <Preference
             app:title="@string/settings_about_title"

@@ -98,8 +98,8 @@
     <string name="samba_videos_hostname_title">Hostname</string>
     <string name="samba_videos_hostname_summary">IP-Adresse des Servers</string>
 
-    <string name="samba_videos_domainname_title">Domain name</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server (Optional)</string>
+    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
+    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server</string>
 
     <string name="samba_videos_sharename_title">Name der Freigabe</string>
     <string name="samba_videos_sharename_summary">Beispiel: /video/aerial</string>

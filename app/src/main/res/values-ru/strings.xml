@@ -91,7 +91,6 @@
     <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
 
-
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Сведения о сервере и учетные данные</string>
 
@@ -100,8 +99,8 @@
     <string name="samba_videos_hostname_title">Имя хоста</string>
     <string name="samba_videos_hostname_summary">IP-адрес сервера</string>
 
-    <string name="samba_videos_domainname_title">Domain name</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server (Optional)</string>
+    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
+    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server</string>
 
     <string name="samba_videos_sharename_title">Имя общего доступа</string>
     <string name="samba_videos_sharename_summary">напр. /video/aerial</string>
