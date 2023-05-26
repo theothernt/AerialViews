@@ -128,12 +128,12 @@ dependencies {
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation('androidx.activity:activity-ktx:1.7.1')
+    implementation('androidx.activity:activity-ktx:1.7.2')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
     implementation('androidx.appcompat:appcompat:1.6.1')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:21.2.2')
+    implementation('com.google.firebase:firebase-analytics-ktx:21.3.0')
     implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.7')
     implementation('com.google.firebase:firebase-perf-ktx:20.3.2')
 
