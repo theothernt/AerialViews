@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.util.Patterns
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -24,19 +23,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
-import com.hierynomus.msfscc.FileAttributes
-import com.hierynomus.mssmb2.SMB2ShareAccess
-import com.hierynomus.protocol.commons.EnumWithValue
-import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.SmbConfig
-import com.hierynomus.smbj.connection.Connection
-import com.hierynomus.smbj.session.Session
-import com.hierynomus.smbj.share.DiskShare
-import com.hierynomus.smbj.share.Share
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
-import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -47,7 +35,6 @@ import okio.buffer
 import java.io.ByteArrayInputStream
 import java.util.Properties
 
-@Suppress("DEPRECATION")
 class SambaVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
@@ -286,7 +273,7 @@ class SambaVideosFragment :
 
         showDialog("Export successful", "Successfully exported SMB settings to $SMB_SETTINGS_FILENAME in the Downloads folder")
     }
-    
+
     private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
         val provider = SambaVideoProvider(requireContext(), SambaVideoPrefs)
         val result = provider.fetchTest()

@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.hierynomus.msfscc.FileAttributes
-import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.SmbConfig
@@ -13,7 +12,6 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.ui.sources.SambaVideosFragment
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
@@ -92,7 +90,6 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         Log.i(TAG, "Videos found: ${videos.size}")
         return Pair(videos, sambaVideos.second)
     }
-
 
     private fun findSambaMedia(
         userName: String,
