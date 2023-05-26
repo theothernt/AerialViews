@@ -4,30 +4,59 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.hierynomus.msfscc.FileAttributes
+import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.SmbConfig
+import com.hierynomus.smbj.connection.Connection
+import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.ui.sources.SambaVideosFragment
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.SmbHelper
+import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
 class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
+        return sambaFetch().first
+    }
+
+    override fun fetchTest(): String {
+        return sambaFetch().second
+    }
+
+    private fun sambaFetch(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
 
-        if (prefs.shareName.isEmpty() ||
-            prefs.domainName.isEmpty() ||
-            prefs.hostName.isEmpty()
-        ) {
-            return videos
+        // Check hostname
+        // Validate IP address or hostname?
+        if (prefs.hostName.isEmpty()) {
+            return Pair(videos, "Hostname not specified")
         }
 
-        val shareNameAndPath = SmbHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
-        val shareName = shareNameAndPath.first
-        val path = shareNameAndPath.second
+        // Check domain name - can be empty?
+        // prefs.domainName.isEmpty()
+
+        // Check share name
+        if (prefs.shareName.isEmpty()) {
+            return Pair(videos, "Share name not specified")
+        }
+
+        //  Check share name
+        var shareName = ""
+        var path = ""
+        try {
+            // /Videos/Aerial/Community -> Videos + /Aerial/Community
+            val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
+            shareName = shareNameAndPath.first
+            path = shareNameAndPath.second
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            return Pair(videos, "Failed to parse share name")
+        }
 
         val sambaVideos = try {
             findSambaMedia(
@@ -40,10 +69,10 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             )
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            emptyList()
+            Pair(emptyList(), e.message.toString())
         }
 
-        sambaVideos.forEach { filename ->
+        sambaVideos.first.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
@@ -54,17 +83,16 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
                 usernamePassword += "@"
             }
-
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
-
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
             videos.add(AerialVideo(uri, ""))
         }
 
         Log.i(TAG, "Videos found: ${videos.size}")
-        return videos
+        return Pair(videos, sambaVideos.second)
     }
+
 
     private fun findSambaMedia(
         userName: String,
@@ -73,30 +101,75 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         hostName: String,
         shareName: String,
         path: String
-    ): List<String> {
+    ): Pair<List<String>, String> {
         val files = mutableListOf<String>()
-        val config = SmbHelper.buildSmbConfig()
+        var excluded = 0
+
+        // SMB Config
+        val config: SmbConfig
+        try {
+            config = SambaHelper.buildSmbConfig()
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            return Pair(files, "Failed to create SMB config")
+        }
+
+        // SMB Client
         val smbClient = SMBClient(config)
-        val connection = smbClient.connect(hostName)
-        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
-        val session = connection?.authenticate(authContext)
-        val share = session?.connectShare(shareName) as DiskShare
+        val connection: Connection
+        try {
+            connection = smbClient.connect(hostName)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            return Pair(files, "Failed to connect, hostname error")
+        }
+
+        // SMB Auth + session
+        val session: Session?
+        try {
+            val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
+            session = connection?.authenticate(authContext)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            return Pair(files, "Authentication failed. Please check the username and password, or server settings if using anonymous login")
+        }
+
+        val share: DiskShare
+        try {
+            share = session?.connectShare(shareName) as DiskShare
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
+        }
 
         share.list(path).forEach { item ->
-            val isVideoFilename = FileHelper.isVideoFilename(item.fileName)
-
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isVideoFilename && !isFolder) {
-                files.add(item.fileName)
+            if (isFolder) {
+                return@forEach
             }
-        }
 
+            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
+                return@forEach
+            }
+
+            if (!FileHelper.isSupportedVideoType(item.fileName)) {
+                excluded++
+                return@forEach
+            }
+
+            files.add(item.fileName)
+        }
         smbClient.close()
-        return files
+
+        // Show user normal auth vs anonymous vs guest?
+        var message = "Videos found on samba share: ${files.size}\n"
+        message += "Videos with unsupported file extensions: $excluded\n"
+        message += "Videos selected for playback: ${files.size - excluded}"
+        return Pair(files, message)
     }
 
     companion object {

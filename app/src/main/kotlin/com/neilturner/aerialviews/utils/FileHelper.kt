@@ -47,16 +47,14 @@ object FileHelper {
     }
 
     fun fileExists(uri: Uri): Boolean {
-        val file = File(uri.toString())
-        return file.exists()
+        return File(uri.toString()).exists()
     }
 
-    fun isVideoFilename(filename: String): Boolean {
-        if (filename.startsWith(".")) {
-            // Ignore hidden files
-            return false
-        }
+    fun isDotOrHiddenFile(filename: String): Boolean {
+        return filename.startsWith(".")
+    }
 
+    fun isSupportedVideoType(filename: String): Boolean {
         if (filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
             filename.endsWith(".m4v", true) ||
@@ -66,7 +64,6 @@ object FileHelper {
         ) {
             return true
         }
-
         return false
     }
 
@@ -98,6 +95,27 @@ object FileHelper {
         location = location.replace("-", ".-.")
         location = location.replace("_", ".")
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
+    }
+
+    @Suppress("NAME_SHADOWING")
+    fun fixLegacyFolder(folder: String): String {
+        var folder = folder
+
+        if (folder.isEmpty()) {
+            return ""
+        }
+
+        if (folder.first() != '/') {
+            folder = "/$folder"
+            Log.i(TAG, "Fixing folder - adding leading slash")
+        }
+
+        if (folder.last() == '/') {
+            folder = folder.dropLast(1)
+            Log.i(TAG, "Fixing folder - removing trailing slash")
+        }
+
+        return folder
     }
 
     private const val TAG = "FileHelper"

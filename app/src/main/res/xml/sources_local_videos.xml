@@ -8,36 +8,74 @@
                     app:key="local_videos_enabled"
                     app:title="@string/local_videos_enabled_title" />
 
+                <ListPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/local_videos_search_type_default"
+                    app:entries="@array/local_videos_search_type_entries"
+                    app:entryValues="@array/local_videos_search_type_values"
+                    app:key="local_videos_search_type"
+                    app:title="@string/local_videos_search_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    android:key="local_videos_search_test"
+                    android:title="@string/local_videos_search_test" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_media_scanner_options">
+                <Preference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:selectable="false"
+                    app:summary="@string/local_videos_media_store_summary"/>
+
                 <Preference
                     app:isPreferenceVisible="false"
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
-                    app:key="local_videos_notice"
-                    app:title="@string/local_videos_notice_title"
-                    app:summary="@string/local_videos_notice_summary"/>
-        </PreferenceCategory>
+                    app:selectable="false"
+                    app:key="local_videos_shield_notice"
+                    app:title="@string/local_videos_shield_notice_title"
+                    app:summary="@string/local_videos_shield_notice_summary"/>
 
-        <PreferenceCategory app:title="@string/category_folder_filter">
                 <SwitchPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="false"
-                    app:key="local_videos_filter_enabled"
-                    app:title="@string/local_videos_filter_enabled_title"
-                    app:summary="@string/local_videos_filter_enabled_summary" />
+                    app:key="local_videos_media_store_filter_enabled"
+                    app:title="@string/local_videos_media_store_filter_enabled_title"
+                    app:summary="@string/local_videos_media_store_filter_enabled_summary" />
 
                 <EditTextPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
-                    android:key="local_videos_filter_folder_name"
-                    android:title="@string/local_videos_filter_folder_title"
-                    android:summary="@string/local_videos_filter_folder_summary" />
+                    android:key="local_videos_media_store_filter_folder"
+                    android:title="@string/local_videos_media_store_filter_folder_title"
+                    android:summary="@string/local_videos_media_store_filter_folder_summary" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_folder_access_options">
                 <Preference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
-                    android:key="local_videos_test_filter"
-                    android:title="@string/local_videos_filter_test" />
-        </PreferenceCategory>
+                    app:selectable="false"
+                    app:summary="@string/local_videos_legacy_summary"/>
 
+                <ListPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:key="local_videos_legacy_volume"
+                    app:title="@string/local_videos_legacy_volume_title"
+                    app:summary="@string/local_videos_legacy_volume_summary" />
+
+                <EditTextPreference
+                    app:dependency="local_videos_enabled"
+                    app:disableDependentsState="false"
+                    android:key="local_videos_legacy_folder"
+                    android:title="@string/local_videos_legacy_folder_title"
+                    android:summary="@string/local_videos_legacy_folder_summary" />
+        </PreferenceCategory>
 </PreferenceScreen>

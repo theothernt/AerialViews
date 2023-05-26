@@ -118,6 +118,17 @@
     </string-array>
     <string name="playback_max_video_length_default" translatable="false">0</string>
 
+    <!-- Local Video Options -->
+    <string-array name="local_videos_search_type_entries">
+        <item>Media scanner</item>
+        <item>Folder access (legacy)</item>
+    </string-array>
+    <string-array name="local_videos_search_type_values" translatable="false">
+        <item>MEDIA_STORE</item>
+        <item>FOLDER_ACCESS</item>
+    </string-array>
+    <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
+
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>

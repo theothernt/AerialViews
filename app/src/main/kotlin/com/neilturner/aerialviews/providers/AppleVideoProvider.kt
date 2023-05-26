@@ -32,6 +32,10 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         return videos
     }
 
+    override fun fetchTest(): String {
+        return ""
+    }
+
     companion object {
         private const val TAG = "AppleVideoProvider"
     }

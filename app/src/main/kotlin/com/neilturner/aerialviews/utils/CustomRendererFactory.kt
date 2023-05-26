@@ -2,8 +2,8 @@ package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.util.Log
-import com.google.android.exoplayer2.DefaultRenderersFactory
-import com.google.android.exoplayer2.mediacodec.MediaCodecAdapter
+import androidx.media3.exoplayer.DefaultRenderersFactory
+import androidx.media3.exoplayer.mediacodec.MediaCodecAdapter
 
 // https://github.com/bdwixx/AerialViews/blob/philips-exoplayer-fix/app/src/main/java/com/neilturner/aerialviews/utils/CustomRendererFactory.java
 

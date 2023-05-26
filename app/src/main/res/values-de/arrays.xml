@@ -7,6 +7,12 @@
         <item>Sehenswürdigkeiten (Verfügbar in vielen Sprachen)</item>
     </string-array>
 
+    <!-- Local Video Options -->
+    <string-array name="local_videos_search_type_entries">
+        <item>Media scanner</item>
+        <item>Folder access (legacy)</item>
+    </string-array>
+
     <!-- Advanced options -->
     <string-array name="performance_buffering_strategy_entries">
         <item>Standard</item>

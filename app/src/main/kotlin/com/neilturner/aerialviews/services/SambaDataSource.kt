@@ -3,17 +3,17 @@
 package com.neilturner.aerialviews.services
 
 import android.util.Log
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.upstream.BaseDataSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DataSpec
+import androidx.media3.common.C
+import androidx.media3.datasource.BaseDataSource
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DataSpec
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
-import com.neilturner.aerialviews.utils.SmbHelper
+import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.EOFException
 import java.io.IOException
@@ -22,7 +22,7 @@ import java.lang.Exception
 import java.util.EnumSet
 import kotlin.math.min
 
-class SmbDataSource : BaseDataSource(true) {
+class SambaDataSource : BaseDataSource(true) {
 
     private lateinit var dataSpec: DataSpec
     private var userName = ""
@@ -99,20 +99,20 @@ class SmbDataSource : BaseDataSource(true) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
 
-        val userInfo = SmbHelper.parseUserInfo(uri)
+        val userInfo = SambaHelper.parseUserInfo(uri)
         userName = userInfo.first
         password = userInfo.second
 
-        val shareNameAndPath = SmbHelper.parseShareAndPathName(uri)
+        val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         shareName = shareNameAndPath.first
         path = shareNameAndPath.second
     }
 
     private fun openSambaFile(): File {
-        val config = SmbHelper.buildSmbConfig()
+        val config = SambaHelper.buildSmbConfig()
         smbClient = SMBClient(config)
         val connection = smbClient?.connect(hostName)
-        val authContext = SmbHelper.buildAuthContext(userName, password, domainName)
+        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 
@@ -159,13 +159,13 @@ class SmbDataSource : BaseDataSource(true) {
     }
 
     companion object {
-        private const val TAG = "SmbDataSource"
+        private const val TAG = "SambaDataSource"
     }
 }
 
-class SmbDataSourceFactory : DataSource.Factory {
+class SambaDataSourceFactory : DataSource.Factory {
 
     override fun createDataSource(): DataSource {
-        return SmbDataSource()
+        return SambaDataSource()
     }
 }
