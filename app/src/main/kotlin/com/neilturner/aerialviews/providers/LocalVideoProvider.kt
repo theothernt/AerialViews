@@ -62,7 +62,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(Uri.fromFile(file), ""))
         }
 
-        var message = "Videos found in folder: ${files.size}\n"
+        var message = "Videos found in folder: ${videos.size + excluded}\n"
         message += "Videos with unsupported file extensions: $excluded\n"
         message += "Videos selected for playback: ${videos.size}"
 

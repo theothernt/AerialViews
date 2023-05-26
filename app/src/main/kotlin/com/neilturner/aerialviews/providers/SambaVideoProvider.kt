@@ -139,10 +139,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
 
-        var total = 0
         share.list(path).forEach { item ->
-            total++
-
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
@@ -166,7 +163,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         smbClient.close()
 
         // Show user normal auth vs anonymous vs guest?
-        var message = "Videos found on samba share: ${total}\n"
+        var message = "Videos found on samba share: ${files.size + excluded}\n"
         message += "Videos with unsupported file extensions: $excluded\n"
         message += "Videos selected for playback: ${files.size}"
         return Pair(files, message)
