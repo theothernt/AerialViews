@@ -29,5 +29,11 @@
                     app:key="any_videos_filename_location"
                     app:title="@string/any_videos_filename_location_title"
                     app:summary="@string/any_videos_filename_location_summary" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="any_videos_filename_hide_numbers"
+                    app:title="@string/any_videos_filename_hide_numbers_title"
+                    app:summary="@string/any_videos_filename_hide_numbers_summary" />
         </PreferenceCategory>
 </PreferenceScreen>

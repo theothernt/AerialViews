@@ -156,6 +156,9 @@
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
 
+    <string name="any_videos_filename_hide_numbers_title">Скрыть цифры в имени файла</string>
+    <string name="any_videos_filename_hide_numbers_summary">При использовании имени файла в качестве местоположения, e.g. \'country_2.mp4\' станет \'Country\'</string>
+
     <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
     <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 

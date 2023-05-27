@@ -95,7 +95,10 @@ class VideoService(private val context: Context) {
         ) {
             videos.forEach { video ->
                 if (video.location.isBlank()) {
-                    val location = FileHelper.filenameToTitleCase(video.uri)
+                    var location = FileHelper.filenameToTitleCase(video.uri)
+                    if (GeneralPrefs.hideNumbersFromFilename) {
+                        location = location.replace(Regex("[0-9]"), "")
+                    }
                     video.location = location
                 }
             }

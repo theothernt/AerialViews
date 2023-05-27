@@ -186,6 +186,7 @@ class SettingsFragment :
             // GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
 
             GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"].toString().toBoolean()
+            GeneralPrefs.hideNumbersFromFilename = properties["any_videos_filename_hide_numbers"].toString().toBoolean()
             GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
             GeneralPrefs.useCustomManifests = properties["any_videos_use_custom_manifests"].toString().toBoolean()
             GeneralPrefs.ignoreNonManifestVideos = properties["any_videos_ignore_non_manifest_videos"].toString().toBoolean()
@@ -255,6 +256,7 @@ class SettingsFragment :
         // settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
 
         settings["any_videos_filename_location"] = GeneralPrefs.filenameAsLocation.toString()
+        settings["any_videos_filename_hide_numbers"] = GeneralPrefs.hideNumbersFromFilename.toString()
         settings["any_videos_use_apple_manifests"] = GeneralPrefs.useAppleManifests.toString()
         settings["any_videos_use_custom_manifests"] = GeneralPrefs.useCustomManifests.toString()
         settings["any_videos_ignore_non_manifest_videos"] = GeneralPrefs.ignoreNonManifestVideos.toString()

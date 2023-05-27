@@ -155,6 +155,9 @@
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
+    <string name="any_videos_filename_hide_numbers_title">Zahlen im Dateinamen ausblenden</string>
+    <string name="any_videos_filename_hide_numbers_summary">Bei Verwendung des Dateinamens als Speicherort, \'Stadt_2.mp4\' wird als \'Stadt\'</string>
+
     <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
     <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
 
