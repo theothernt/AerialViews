@@ -176,9 +176,6 @@
     <string name="any_videos_ignore_non_manifest_videos_title">Ignorer les vidéos non Apple sur le stockage local et le réseau</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Ignorer les vidéos qui ne sont pas listées dans les manifestes vidéo Apple</string>
 
-<!--    <string name="any_videos_use_apple_manifests_title">Voir les lieux / points d\'intérêt pour les vidéos Apple correspondantes</string>-->
-<!--    <string name="any_videos_use_apple_manifests_summary">Utilisez le manifeste vidéo de différentes versions de TVOS</string>-->
-
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
 

@@ -177,9 +177,6 @@
     <string name="any_videos_ignore_non_manifest_videos_title">Игнорировать видео не Apple в локальном хранилище или в локальной сети</string>
     <string name="any_videos_ignore_non_manifest_videos_summary">Пропускать видео, не указанные ни в одном видеоманифесте Apple</string>
 
-<!--    <string name="any_videos_use_apple_manifests_title">Показать Местоположения или POI для соответствующих видео Apple</string> -->
-<!--    <string name="any_videos_use_apple_manifests_summary">Использует видеоманифесты из разных версий tvOS</string> -->
-
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">Крестовине пульта управления</string>
 

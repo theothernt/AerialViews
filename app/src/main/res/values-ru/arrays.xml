@@ -13,14 +13,6 @@
         <item>Folder access (legacy)</item>
     </string-array>
 
-    <!-- Advanced options -->
-    <string-array name="performance_buffering_strategy_entries">
-        <item>По умолчанию</item>
-        <item>Увеличенный размер буфера</item>
-        <item>Уменьшиный размер буфера</item>
-        <item>Более быстрый старт при соединении, но с более высокой задержкой</item>
-    </string-array>
-
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
         <item>0.25x</item>
@@ -55,5 +47,4 @@
         <item>9 мин</item>
         <item>10 мин</item>
     </string-array>
-
 </resources>
