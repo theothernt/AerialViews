@@ -1,0 +1,232 @@
+<resources>
+    <!-- General -->
+    <string name="loading_title">Завантаження…</string>
+    <string name="loading_error">Відео не знайдено, перевірте налаштування</string>
+
+    <!-- Common Buttons -->
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Скасування</string>
+    <string name="button_import">Імпорт</string>
+    <string name="button_export">Експорт</string>
+
+    <!-- Common Categories -->
+    <string name="category_actions">Дії</string>
+    <string name="category_video_source">Джерело відео</string>
+
+    <!-- Common Prefs/Options -->
+    <string name="videos_quality_title">Якість відео</string>
+    <string name="videos_quality_summary">Виберіть якість відео</string>
+    
+    <!-- Main -->
+    <string name="settings_video_sources_title">Джерела відео</string>
+    <string name="settings_video_sources_summary">Відтворення відео з Інтернету, USB-накопичувачів і мережевих джерел</string>
+
+    <string name="settings_settings_title">Налаштування</string>
+    <string name="settings_settings_summary">Змінити параметри продуктивності, плейлиста і зовнішнього вигляду</string>
+
+    <string name="settings_preview_screensaver">Протестувати налаштування заставки</string>
+    <string name="settings_system_options">Відкрити системні налаштування заставки</string>
+
+    <!-- Main / Video Sources -->
+    <string name="category_remote">Змінне сховище</string>
+    <string name="category_local">Локальне сховище</string>
+    <string name="category_network">Мережа</string>
+
+    <string name="sources_apple_title">Відео Apple</string>
+    <string name="sources_apple_summary">Потокове відео Apple, за допомогою підключення до Інтернету</string>
+    
+    <string name="sources_comm1_title">Відео від Jetson Creative</string>
+    <string name="sources_comm1_summary">Потокове відео спільноти, використовуючи підключення до Інтернету</string>
+    
+    <string name="sources_comm2_title">Відео від Robin Fourcade</string>
+    <string name="sources_comm2_summary">Потокове відео спільноти, використовуючи підключення до Інтернету</string>
+    
+    <string name="sources_local_title">Локальне або USB-сховище</string>
+    <string name="sources_local_summary">Відтворення відео безпосередньо з вашого пристрою або підключеного USB-накопичувача</string>
+    
+    <string name="sources_samba_title">SMB/Samba share</string>
+    <string name="sources_samba_summary">Відтворення відео з локальної мережевої папки на ПК або пристрої NAS</string>
+    
+    <string name="sources_webdav_title">WebDAV сервер</string>
+    <string name="sources_webdav_summary">Відтворення відео, що зберігаються на сервері WebDAV, локально або віддалено</string>
+   
+    <!-- Main / Video Sources / Apple videos -->
+    <string name="apple_videos_enabled">Використовуйте відео Apple</string>
+    
+    <string name="apple_videos_data_usage_title">Використання даних</string>
+    <string name="apple_videos_data_estimate_summary">Прибл. %1$s на годину</string>
+    
+    <!-- Main / Video Sources / Comm1 videos -->
+    <string name="comm1_videos_enabled">Використовувати відео спільноти</string>
+
+    <!-- Main / Video Sources / Comm2 videos -->
+    <string name="comm2_videos_enabled">Використовувати відео спільноти</string>
+
+    <!-- Main / Video Sources / Local+USB videos -->
+    <string name="category_media_scanner_options">Media scanner options</string>
+    <string name="category_folder_access_options">Folder access options</string>
+
+    <string name="local_videos_enabled_title">Використовувати відео з локального або USB-накопичувача</string>
+
+    <string name="local_videos_search_type_title">Choose how videos are found</string>
+    <string name="local_videos_search_test">Test local search settings</string>
+
+    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
+
+    <string name="local_videos_shield_notice_title">Користувачі Nvidia Shield, переконайтеся, що включена наступна опція…</string>
+    <string name="local_videos_shield_notice_summary">Налаштування > Налаштування пристрою > Сховище > Автоматичне сканування медіафайлів</string>
+    
+    <string name="local_videos_media_store_filter_enabled_title">Фільтр папок</string>
+    <string name="local_videos_media_store_filter_enabled_summary">Відтворення відео лише з певної папки або папок на пристрої, USB тощо.</string>
+    
+    <string name="local_videos_media_store_filter_folder_title">Вкажіть назву папки</string>
+    <string name="local_videos_media_store_filter_folder_summary">"Якщо ви зберігаєте відео, наприклад, у /Videos/Aerial/, використання 'Aerial' буде фільтрувати відео з інших папок"</string>
+    
+    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+
+    <string name="local_videos_legacy_volume_title">Choose a volume</string>
+    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+
+    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
+    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+
+    <!-- Main / Video Sources / Samba videos -->
+    <string name="category_server_details">Відомості про сервер і облікові дані</string>
+
+    <string name="samba_videos_enabled_title">Використовуйте SMB/Samba для обміну відео</string>
+
+    <string name="samba_videos_hostname_title">"Ім'я хоста"</string>
+    <string name="samba_videos_hostname_summary">IP-адреса сервера</string>
+    
+    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
+    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server </string>
+
+    <string name="samba_videos_sharename_title">"Ім'я спільного доступу"</string>
+    <string name="samba_videos_sharename_summary">напр. /video/aerial</string>
+    
+    <string name="samba_videos_username_title">"Ім'я користувача"</string>
+    <string name="samba_videos_username_summary">"Не обов'язково"</string>
+    
+    <string name="samba_videos_password_title">Пароль</string>
+    <string name="samba_videos_password_summary">"Не обов'язково"</string>
+    
+    <string name="samba_videos_import_export_settings_title">Імпорт/експорт налаштувань</string>
+    <string name="samba_videos_import_export_settings_summary">Імпортує або експортує ваші облікові дані SMB у папку Завантаження</string>
+    
+    <string name="samba_videos_test_connection">Протестувати налаштування підключення</string>
+
+    <!-- Main / Video Sources / WebDAV videos -->
+
+    <!-- Main / Settings -->
+    <string name="category_settings">Налаштування</string>
+
+    <string name="settings_appearance_title">Вигляд</string>
+    <string name="settings_appearance_summary">Налаштуйте зовнішній вигляд під час відтворення відео</string>
+    
+    <string name="settings_playlist_title">Плейлист</string>
+    <string name="settings_playlist_summary">Вимкнення звуку відео, рандомізація, тощо.</string>
+    
+    <string name="settings_dpad_title">Хрестовина пульта управління</string>
+    <string name="settings_dpad_summary">Налаштуйте дії хрестовини на пульті дистанційного керування</string>
+    
+    <string name="settings_capabilities_title">Можливості пристрою</string>
+    <string name="settings_capabilities_summary">Перегляд відео кодеків, роздільна здатність екрану та інші можливості</string>
+    
+    <string name="settings_advanced_title">Додатково</string>
+    <string name="settings_advanced_summary">Параметри продуктивності та налагодження для усунення несправностей</string>
+    
+    <string name="settings_about_title">Про додаток</string>
+    <string name="settings_about_summary">Версія, інформація про збірку, тощо</string>
+
+    <string name="settings_import_export_settings_title">Імпорт/експорт налаштувань</string>
+    <string name="settings_import_export_settings_summary">Імпортує або експортує налаштування в папку Завантаження</string>
+
+    <!-- Main / Settings / Appearance -->
+    <string name="category_appearance">Вид</string>
+
+    <string name="interface_alt_text_position_title">Альтернативна позиція тексту</string>
+    <string name="interface_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
+    
+    <string name="interface_show_clock_title">Показати годинник</string>
+    <string name="interface_show_clock_summary">Показує поточний час</string>
+    
+    <string name="interface_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
+
+    <string name="any_videos_filename_location_title">"Ім'я файлу як місцезнаходження"</string>
+    <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' буде 'Country - A Place'"</string>
+    
+    <string name="refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
+    <string name="refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
+    
+    <!-- Main / Settings / Playlist -->
+    <string name="category_playlist">Плейлист</string>
+
+    <string name="interface_mute_videos_title">Без звуку</string>
+    <string name="interface_mute_videos_summary">Вимкнути звук у всіх відео</string>
+    
+    <string name="interface_shuffle_videos_title">Перемішати відео</string>
+    <string name="interface_shuffle_videos_summary">Програвання відео у випадковому порядку</string>
+    
+    <string name="playback_speed_title">Швидкість відтворення</string>
+    <string name="playback_speed_summary">Виберіть швидкість відтворення</string>
+    
+    <string name="interface_remove_duplicates_title">Видалити дублікати відео</string>
+    <string name="interface_remove_duplicates_summary">Видалити дублікати відео зі списку відтворення лише за назвою файлу</string>
+    
+    <string name="any_videos_ignore_non_manifest_videos_summary">Пропустити відео, не зазначені в жодному відеоманіфесті Apple</string>
+    <string name="any_videos_ignore_non_manifest_videos_title">Ігнорувати відео не Apple в локальному сховищі або в локальній мережі</string>
+    
+    <!-- Main / Settings / D-Pad/Remote -->
+    <string name="category_dpad">Хрестовині пульта управління</string>
+
+    <string name="interface_enable_skip_videos_title">Дозволити перехід до наступного/попереднього відео</string>
+    <string name="interface_enable_skip_videos_summary">Перемикати відео, натисканням вліво або вправо на хрестовині пульта управління</string>
+    
+    <string name="interface_enable_playback_speed_change_title">Дозволити зміну швидкості під час відтворення</string>
+    <string name="interface_enable_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
+    
+    <!-- Main / Settings / Device capabilities -->
+    <string name="category_capabilities">Можливості</string>
+
+    <string name="capabilities_device_title">Пристрій</string>
+    <string name="capabilities_display_title">ТВ/Дисплей</string>
+    <string name="capabilities_codecs_title">Кодеки</string>
+    <string name="capabilities_decoders_title">Відео декодери</string>
+    <string name="capabilities_resolution_title">Роздільна здатність екрану</string>
+    
+    <!-- Main / Settings / Advanced -->
+    <string name="category_video_render_options">Параметри відео та рендеринга</string>
+    <string name="category_samba_options">Samba/SMB налаштування</string>
+
+    <string name="playback_max_video_length_title">Обмежити довжину відео</string>
+    
+    <string name="performance_enable_tunneling_title">Увімкнути тунелювання</string>
+    <string name="performance_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
+    
+    <string name="performance_buffering_strategy_title">Буферизація</string>
+    <string name="performance_buffering_strategy_summary">Змініть пріоритети буферизації відео, може допомогти з непостійним підключенням</string>
+    
+    <string name="philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
+    <string name="philips_dolby_vision_fix_summary">Виправлення відтворення Dolby Vision на деяких старих телевізорах Philips</string>
+    
+    <string name="performance_exceed_renderer_title">Перевищувати можливості рендеринга</string>
+    <string name="performance_exceed_renderer_summary">Перевищення максимального виявленого дозволу відео — марно для більшості пристроїв!</string>
+    
+    <string name="samba_videos_enable_encryption_title">Увімкнути шифрування</string>
+    <string name="samba_videos_enable_encryption_summary">"Включає шифрування для SMB-з'єднань, може знизити загальну швидкість передачі"</string>
+    
+    <string name="samba_videos_smb_dialects_title">Виберіть діалекти SMB</string>
+    <string name="samba_videos_smb_dialects_summary">Виберіть, яку версію SMB протоколу використовувати</string>
+    
+    <string name="locale_menu_title">Мова меню</string>
+    <string name="locale_screensaver_title">Мова заставки (годинник, місце розташування)</string>
+
+    <string name="locale_restart_app_title">Перезапустити додаток</string>
+    <string name="locale_restart_app_summary">Для зміни мови, додаток необхідно перезапустити</string>
+    
+    <!-- Main / Settings / About -->
+    <string name="category_about">Про додаток</string>
+
+    <string name="about_version_title">Версія</string>
+    <string name="about_date_title">Дата збірки</string>
+</resources>
