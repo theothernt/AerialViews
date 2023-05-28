@@ -2,15 +2,15 @@
 <resources>
     <!-- Location style -->
     <string-array name="interface_show_location_entries">
-        <item>Выкл</item>
-        <item>Место или название</item>
-        <item>Точки интереса (доступно на многих языках)</item>
+        <item>Выключено</item>
+        <item>Местоположение или название</item>
+        <item>Достопримечательности (доступны на многих языках)</item>
     </string-array>
 
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
-        <item>Media scanner</item>
-        <item>Folder access (legacy)</item>
+        <item>Медиа-сканер</item>
+        <item>Доступ к папкам (устаревший)</item>
     </string-array>
 
     <!-- Playback speed -->

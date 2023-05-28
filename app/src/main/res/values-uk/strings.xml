@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- General -->
     <string name="loading_title">Завантаження…</string>
@@ -63,15 +64,15 @@
     <string name="comm2_videos_enabled">Використовувати відео спільноти</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Media scanner options</string>
-    <string name="category_folder_access_options">Folder access options</string>
+    <string name="category_media_scanner_options">Опції сканера мультимедіа</string>
+    <string name="category_folder_access_options">Параметри доступу до папок</string>
 
     <string name="local_videos_enabled_title">Використовувати відео з локального або USB-накопичувача</string>
 
-    <string name="local_videos_search_type_title">Choose how videos are found</string>
-    <string name="local_videos_search_test">Test local search settings</string>
+    <string name="local_videos_search_type_title">Виберіть спосіб пошуку відео</string>
+    <string name="local_videos_search_test">Протестуйте налаштування локального пошуку</string>
 
-    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
+    <string name="local_videos_media_store_summary">Android сканує всі локальні сховища, USB-пристрої та інше, на наявність відео</string>
 
     <string name="local_videos_shield_notice_title">Користувачі Nvidia Shield, переконайтеся, що включена наступна опція…</string>
     <string name="local_videos_shield_notice_summary">Налаштування > Налаштування пристрою > Сховище > Автоматичне сканування медіафайлів</string>
@@ -82,13 +83,13 @@
     <string name="local_videos_media_store_filter_folder_title">Вкажіть назву папки</string>
     <string name="local_videos_media_store_filter_folder_summary">"Якщо ви зберігаєте відео, наприклад, у /Videos/Aerial/, використання 'Aerial' буде фільтрувати відео з інших папок"</string>
     
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+    <string name="local_videos_legacy_summary">Вкажіть одну папку, в якій зберігаються відео (Android 12 або нижче)</string>
 
-    <string name="local_videos_legacy_volume_title">Choose a volume</string>
-    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+    <string name="local_videos_legacy_volume_title">Виберіть обсяг</string>
+    <string name="local_videos_legacy_volume_summary">Том не вибрано</string>
 
-    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
-    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+    <string name="local_videos_legacy_folder_title">Вкажіть папку (наприклад, /videos)</string>
+    <string name="local_videos_legacy_folder_summary">Папка не вказана</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Відомості про сервер і облікові дані</string>
@@ -98,8 +99,8 @@
     <string name="samba_videos_hostname_title">"Ім'я хоста"</string>
     <string name="samba_videos_hostname_summary">IP-адреса сервера</string>
     
-    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server </string>
+    <string name="samba_videos_domainname_title">"Доменне ім'я (необов'язково)"</string>
+    <string name="samba_videos_domainname_summary">"Доменне ім'я або робоча група сервера"</string>
 
     <string name="samba_videos_sharename_title">"Ім'я спільного доступу"</string>
     <string name="samba_videos_sharename_summary">напр. /video/aerial</string>

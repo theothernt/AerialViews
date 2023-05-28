@@ -55,7 +55,7 @@
     <string name="apple_videos_enabled">Использовать видео Apple</string>
 
     <string name="apple_videos_data_usage_title">Использование данных</string>
-    <string name="apple_videos_data_estimate_summary">Прибл. %1$s в час</string>
+    <string name="apple_videos_data_estimate_summary">Приблизительно %1$s в час</string>
 
     <!-- Main / Video Sources / Comm1 videos -->
     <string name="comm1_videos_enabled">Использовать видео сообщества</string>
@@ -64,15 +64,15 @@
     <string name="comm2_videos_enabled">Использовать видео сообщества</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Media scanner options</string>
-    <string name="category_folder_access_options">Folder access options</string>
+    <string name="category_media_scanner_options">Опции сканера мультимедиа</string>
+    <string name="category_folder_access_options">Параметры доступа к папкам</string>
 
     <string name="local_videos_enabled_title">Использовать видео с локального или USB-накопителя</string>
 
-    <string name="local_videos_search_type_title">Choose how videos are found</string>
-    <string name="local_videos_search_test">Test local search settings</string>
+    <string name="local_videos_search_type_title">Выберите способ поиска видео</string>
+    <string name="local_videos_search_test">Протестируйте настройки локального поиска</string>
 
-    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
+    <string name="local_videos_media_store_summary">Android сканирует все локальные хранилища, USB-устройства и т.д. на наличие видео</string>
 
     <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
     <string name="local_videos_shield_notice_summary">Настройки > Настройки устройства > Хранилище > Автоматическое сканирование медиафайлов</string>
@@ -83,13 +83,13 @@
     <string name="local_videos_media_store_filter_folder_title">Укажите название папки</string>
     <string name="local_videos_media_store_filter_folder_summary">"Если вы храните видео, например, в /Videos/Aerial/, использование 'Aerial' будет отфильтровывать видео из других папок"</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+    <string name="local_videos_legacy_summary">Укажите одну папку, в которой хранятся видео (Android 12 или ниже)</string>
 
-    <string name="local_videos_legacy_volume_title">Choose a volume</string>
-    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+    <string name="local_videos_legacy_volume_title">Выберите объем</string>
+    <string name="local_videos_legacy_volume_summary">Том не выбран</string>
 
-    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
-    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+    <string name="local_videos_legacy_folder_title">Укажите папку (например, videos)</string>
+    <string name="local_videos_legacy_folder_summary">Папка не указана</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Сведения о сервере и учетные данные</string>
@@ -99,11 +99,11 @@
     <string name="samba_videos_hostname_title">Имя хоста</string>
     <string name="samba_videos_hostname_summary">IP-адрес сервера</string>
 
-    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server</string>
+    <string name="samba_videos_domainname_title">Доменное имя (необязательно)</string>
+    <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера</string>
 
     <string name="samba_videos_sharename_title">Имя общего доступа</string>
-    <string name="samba_videos_sharename_summary">напр. /video/aerial</string>
+    <string name="samba_videos_sharename_summary">например /video/aerial</string>
 
     <string name="samba_videos_username_title">Имя пользователя</string>
     <string name="samba_videos_username_summary">Необязательно</string>
@@ -133,11 +133,11 @@
     <string name="settings_capabilities_title">Возможности устройства</string>
     <string name="settings_capabilities_summary">Просмотр видеокодеков, поддержки разрешений и другие возможности</string>
 
-    <string name="settings_advanced_title">Advanced</string>
+    <string name="settings_advanced_title">Дополнительно</string>
     <string name="settings_advanced_summary">Параметры производительности и отладки для устранения неполадок</string>
 
     <string name="settings_about_title">О приложении</string>
-    <string name="settings_about_summary">Version, build info, etc</string>
+    <string name="settings_about_summary">Версия, информация о сборке и т.д.</string>
 
     <string name="settings_import_export_settings_title">Импорт/экспорт настроек</string>
     <string name="settings_import_export_settings_summary">Импортирует или экспортирует настройки в папку Загрузки</string>
@@ -156,8 +156,8 @@
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
 
-    <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
-    <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+    <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
+    <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
