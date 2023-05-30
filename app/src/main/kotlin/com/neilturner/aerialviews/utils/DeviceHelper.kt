@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.neilturner.aerialviews.utils
 
 import android.os.Build

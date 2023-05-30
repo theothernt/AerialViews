@@ -1,10 +1,4 @@
-@file:Suppress(
-    "FunctionName", "unused", "unused", "MemberVisibilityCanBePrivate",
-    "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",
-    "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",
-    "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate",
-    "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate", "MemberVisibilityCanBePrivate"
-)
+@file:Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
 
 package com.neilturner.aerialviews.services
 

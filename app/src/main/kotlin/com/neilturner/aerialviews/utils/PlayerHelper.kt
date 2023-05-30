@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.utils
 
 import androidx.media3.exoplayer.DefaultLoadControl

@@ -38,9 +38,9 @@ class DreamActivity : DreamService() {
             config.setLocale(locale)
             val context = createConfigurationContext(config)
             Log.i(TAG, "Locale: ${InterfacePrefs.localeScreensaver}")
-            VideoController(context, window)
+            VideoController(context)
         } else {
-            VideoController(this, window)
+            VideoController(this)
         }
         setContentView(videoController.view)
     }
