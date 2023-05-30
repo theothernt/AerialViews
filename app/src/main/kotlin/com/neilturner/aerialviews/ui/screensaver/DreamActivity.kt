@@ -1,5 +1,3 @@
-@file:Suppress("unused", "RedundantOverride")
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.annotation.SuppressLint

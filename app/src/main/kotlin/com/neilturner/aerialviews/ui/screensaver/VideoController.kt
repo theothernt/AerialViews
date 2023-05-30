@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context

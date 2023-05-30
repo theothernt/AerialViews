@@ -1,5 +1,3 @@
-@file:Suppress("unused", "BlockingMethodInNonBlockingContext")
-
 package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
@@ -159,7 +157,6 @@ class SambaVideosFragment :
         }
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext") // code runs inside Dispatcher.IO
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing SMB settings from Downloads folder")
 

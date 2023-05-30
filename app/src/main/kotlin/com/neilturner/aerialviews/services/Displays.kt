@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName", "unused", "MemberVisibilityCanBePrivate")
-
 package com.neilturner.aerialviews.services
 
 import android.app.Activity

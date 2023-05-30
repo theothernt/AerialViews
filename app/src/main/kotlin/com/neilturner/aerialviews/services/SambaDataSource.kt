@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.services
 
 import android.util.Log

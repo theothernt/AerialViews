@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
