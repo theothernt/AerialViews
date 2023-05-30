@@ -203,9 +203,6 @@
     <string name="performance_enable_tunneling_title">Activer le tunneling</string>
     <string name="performance_enable_tunneling_summary">Utilisez une accélération matérielle (important pour le streaming 4K / HD)</string>
 
-    <string name="performance_buffering_strategy_title">Stratégie de préchargement</string>
-    <string name="performance_buffering_strategy_summary">Changer la priorité de la mémoire tampon, peut aider les connexions instables</string>
-
     <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
