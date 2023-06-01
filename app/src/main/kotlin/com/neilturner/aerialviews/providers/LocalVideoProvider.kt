@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
@@ -29,9 +30,13 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
 
     private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
+        val allFiles = mutableListOf<File>()
+        var foldersFound = 0
+        var filesFound = 0
         var excluded = 0
 
-        if (prefs.legacy_volume.isEmpty()) {
+        if (prefs.legacy_volume.isEmpty() &&
+                !prefs.legacy_volumes_scan_all) {
             return Pair(videos, "Volume not specified")
         }
 
@@ -39,16 +44,42 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             return Pair(videos, "Folder not specified")
         }
 
-        val externalStorageDir = "${prefs.legacy_volume}${prefs.legacy_folder}"
-        val directory = File(externalStorageDir)
+        val folders = mutableListOf<String>()
+        if (prefs.legacy_volumes_scan_all) {
+            val vols = StorageHelper.getStoragePaths(context)
+            val entries = vols.map { it.value }.toTypedArray()
+            //val values = vols.map { it.key }.toTypedArray()
+            for (entry in entries) {
+                folders.add("$entry${prefs.legacy_folder}")
+            }
+        } else {
+            folders.add("${prefs.legacy_volume}${prefs.legacy_folder}")
+        }
 
-        if (!directory.exists() || !directory.isDirectory) {
+        for (folder in folders) {
+            val directory = File(folder)
+            if (!directory.exists() || !directory.isDirectory) {
+                foldersFound++
+                continue
+            }
+
+            val files = directory.listFiles() //?:
+            if (files != null &&
+                files.isNotEmpty()) {
+                filesFound =+ files.size
+                allFiles.addAll(files)
+            }
+        }
+
+        if (foldersFound == 0) {
             return Pair(videos, "Folder does not exist")
         }
 
-        val files = directory.listFiles() ?: return Pair(videos, "No files found")
+        if (filesFound == 0) {
+            return Pair(videos, "No files found")
+        }
 
-        for (file in files) {
+        for (file in allFiles) {
             // x/y/file.mp4
             if (FileHelper.isDotOrHiddenFile(file.name.split("/").last())) {
                 continue
