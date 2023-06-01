@@ -71,6 +71,11 @@
                     app:title="@string/local_videos_legacy_volume_title"
                     app:summary="@string/local_videos_legacy_volume_summary" />
 
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="local_videos_legacy_volume_scan_all"
+                    app:title="@string/local_videos_legacy_volume_scan_all_title" />
+
                 <EditTextPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
