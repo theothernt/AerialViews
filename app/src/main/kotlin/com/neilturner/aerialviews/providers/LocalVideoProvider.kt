@@ -35,8 +35,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         var filesFound = 0
         var excluded = 0
 
-        if (prefs.legacy_volume.isEmpty() &&
-                !prefs.legacy_volumes_scan_all) {
+        if (prefs.legacy_volume.isEmpty()) {
             return Pair(videos, "Volume not specified")
         }
 
@@ -45,7 +44,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         val folders = mutableListOf<String>()
-        if (prefs.legacy_volumes_scan_all) {
+        if (prefs.legacy_volume.contains("All volumes", false)) {
             val vols = StorageHelper.getStoragePaths(context)
             val values = vols.map { it.key }.toTypedArray()
             for (entry in values) {

@@ -154,11 +154,14 @@ class LocalVideosFragment :
         val listPref = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
 
         val vols = StorageHelper.getStoragePaths(requireContext())
-        val entries = vols.map { it.value }.toTypedArray()
-        val values = vols.map { it.key }.toTypedArray()
+        val entries = vols.map { it.value }.toMutableList()
+        val values = vols.map { it.key }.toMutableList()
 
-        listPref?.entries = entries
-        listPref?.entryValues = values
+        entries.add("All volumes")
+        values.add("All volumes")
+
+        listPref?.entries = entries.toTypedArray()
+        listPref?.entryValues = values.toTypedArray()
     }
 
     private fun showNoticeIfNeeded() {

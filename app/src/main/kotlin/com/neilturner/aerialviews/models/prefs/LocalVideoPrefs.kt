@@ -13,7 +13,6 @@ object LocalVideoPrefs : KotprefModel() {
     var filter_enabled by booleanPref(false, "local_videos_media_store_filter_enabled")
     var filter_folder by stringPref("", "local_videos_media_store_filter_folder_name")
 
-    var legacy_volumes_scan_all by booleanPref(false, "local_videos_legacy_volume_scan_all")
     var legacy_volume by stringPref("", "local_videos_legacy_volume")
     var legacy_folder by stringPref("", "local_videos_legacy_folder")
 }
