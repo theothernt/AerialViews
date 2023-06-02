@@ -62,8 +62,9 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             foldersFound++
             val files = directory.listFiles()
             if (files != null &&
-                files.isNotEmpty()) {
-                filesFound =+ files.size
+                files.isNotEmpty()
+            ) {
+                filesFound = +files.size
                 allFiles.addAll(files)
             }
         }
