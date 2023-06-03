@@ -25,6 +25,7 @@ import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -99,6 +100,10 @@ class LocalVideosFragment :
             key == "local_videos_legacy_folder"
         ) {
             LocalVideoPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalVideoPrefs.legacy_folder)
+
+            val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
+            LocalVideoPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
+
             updateVolumeAndFolderSummary()
         }
     }
@@ -140,7 +145,7 @@ class LocalVideosFragment :
         if (LocalVideoPrefs.legacy_volume.isEmpty()) {
             volume?.summary = res?.getString(R.string.local_videos_legacy_volume_summary)
         } else {
-            volume?.summary = LocalVideoPrefs.legacy_volume
+            volume?.summary = LocalVideoPrefs.legacy_volume_label
         }
 
         if (LocalVideoPrefs.legacy_folder.isEmpty()) {
@@ -158,7 +163,7 @@ class LocalVideosFragment :
         val values = vols.map { it.key }.toMutableList()
 
         entries.add("All volumes")
-        values.add("All volumes")
+        values.add("/all")
 
         listPref?.entries = entries.toTypedArray()
         listPref?.entryValues = values.toTypedArray()

@@ -44,7 +44,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         val folders = mutableListOf<String>()
-        if (prefs.legacy_volume.contains("All volumes", false)) {
+        if (prefs.legacy_volume.contains("/all", false)) {
             val vols = StorageHelper.getStoragePaths(context)
             val values = vols.map { it.key }.toTypedArray()
             for (entry in values) {
