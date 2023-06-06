@@ -120,7 +120,9 @@ class VideoService(private val context: Context) {
         recognisedVideos.addAll(result1.first)
 
         val videos2 = videosWithPointsOfInterest()
-        val result2 = findVideoLocationInManifest(result1.second, videos2, communityVideos = true)
+        val comm1PoiStrings = JsonHelper.parseJsonMap(context, R.raw.comm1_strings)
+        val comm2PoiStrings = JsonHelper.parseJsonMap(context, R.raw.comm2_strings)
+        val result2 = findVideoLocationInManifest(result1.second, videos2, comm1PoiStrings + comm2PoiStrings)
         recognisedVideos.addAll(result2.first)
 
         val videos3 = videosWithLocations()
