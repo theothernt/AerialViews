@@ -3,8 +3,8 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: "org.jmailen.kotlinter"
-apply plugin: "de.mannodermaus.android-junit5"
+apply plugin: 'org.jmailen.kotlinter'
+apply plugin: 'de.mannodermaus.android-junit5'
 
 android {
     namespace 'com.neilturner.aerialviews'
