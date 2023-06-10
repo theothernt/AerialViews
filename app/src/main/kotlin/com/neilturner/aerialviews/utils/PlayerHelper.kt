@@ -2,11 +2,13 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import androidx.media3.exoplayer.DefaultLoadControl
 import com.neilturner.aerialviews.models.BufferingStrategy
 
 object PlayerHelper {
 
+    @SuppressLint("UnsafeOptInUsageError")
     fun bufferingStrategy(strategy: BufferingStrategy): DefaultLoadControl.Builder {
         val loadControlBuilder = DefaultLoadControl.Builder()
 

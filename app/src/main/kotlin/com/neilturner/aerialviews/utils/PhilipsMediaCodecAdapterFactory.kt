@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.media.MediaExtractor
 import androidx.media3.exoplayer.mediacodec.MediaCodecAdapter
 import androidx.media3.exoplayer.mediacodec.SynchronousMediaCodecAdapter
@@ -11,6 +12,7 @@ import java.io.IOException
 // No support for ASynchronousMediaCodecAdapter bc its inaccessible outside of the exoplayer package :(
 // By default ASynchronousMediaCodecAdapter is only used above Android 12
 class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
+    @SuppressLint("UnsafeOptInUsageError")
     @Throws(IOException::class)
     override fun createAdapter(configuration: MediaCodecAdapter.Configuration): MediaCodecAdapter {
         if (mediaUrl == null) {

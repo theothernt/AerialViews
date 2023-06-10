@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
@@ -20,6 +21,7 @@ import java.lang.Exception
 import java.util.EnumSet
 import kotlin.math.min
 
+@SuppressLint("UnsafeOptInUsageError")
 class SambaDataSource : BaseDataSource(true) {
 
     private lateinit var dataSpec: DataSpec
@@ -44,6 +46,7 @@ class SambaDataSource : BaseDataSource(true) {
         Log.i(TAG, "Finalize")
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun open(dataSpec: DataSpec): Long {
         transferInitializing(dataSpec)
 
@@ -72,13 +75,16 @@ class SambaDataSource : BaseDataSource(true) {
         return bytesToRead
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
         // Log.i(TAG, "Read $offset-${offset+readLength}")
         return readInternal(buffer, offset, readLength)
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun close() {
         Log.i(TAG, "Closing connection.")
         try {
@@ -93,6 +99,7 @@ class SambaDataSource : BaseDataSource(true) {
         }
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun parseCredentials(dataSpec: DataSpec) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
@@ -127,6 +134,7 @@ class SambaDataSource : BaseDataSource(true) {
         )
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     @Throws(IOException::class)
     private fun readInternal(buffer: ByteArray, offset: Int, _readLength: Int): Int {
         var readLength = _readLength
@@ -163,6 +171,7 @@ class SambaDataSource : BaseDataSource(true) {
 
 class SambaDataSourceFactory : DataSource.Factory {
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource {
         return SambaDataSource()
     }
