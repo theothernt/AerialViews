@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
@@ -47,6 +48,7 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
     }
 }
 
+@SuppressLint("UnsafeOptInUsageError")
 class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
     val name: String = source.name
     val id: Int = source.displayId

@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Build
@@ -25,6 +26,7 @@ import com.neilturner.aerialviews.utils.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlin.math.roundToLong
 
+@SuppressLint("UnsafeOptInUsageError")
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
     private var canChangePlaybackSpeedRunnable = Runnable { canChangePlaybackSpeed = true }
@@ -71,6 +73,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         listener = null
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     fun setUri(uri: Uri?) {
         if (uri == null) {
             return
@@ -151,6 +154,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         return player.duration > 0
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int {
         return player.audioSessionId
     }
@@ -177,6 +181,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun setRefreshRate() {
         val frameRate = player.videoFormat?.frameRate
         val surface = this.holder.surface
@@ -285,6 +290,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         requestLayout()
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun buildPlayer(context: Context): ExoPlayer {
         // Log.i(TAG, "Buffering strategy: $bufferingStrategy")
         // val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
