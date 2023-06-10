@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
@@ -20,6 +21,11 @@ class TestActivity : Activity() {
         Log.i(TAG, "onCreate")
         // Setup
         setTitle(R.string.app_name)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Test Screensaver", TAG)
     }
 
     override fun onAttachedToWindow() {

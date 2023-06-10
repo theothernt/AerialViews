@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
@@ -45,6 +46,7 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
+        LoggingHelper.logScreenView("Screensaver", TAG)
         // Start playback, etc
     }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.LoggingHelper
 
 class MainActivity :
     AppCompatActivity(),
@@ -31,6 +32,11 @@ class MainActivity :
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Main", TAG)
     }
 
     @SuppressLint("MissingSuperCall")
@@ -67,5 +73,9 @@ class MainActivity :
             .commitAllowingStateLoss()
         title = pref.title
         return true
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
     }
 }

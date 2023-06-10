@@ -27,12 +27,13 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okio.buffer
 import java.io.ByteArrayInputStream
-import java.util.*
+import java.util.Properties
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
@@ -77,6 +78,11 @@ class SettingsFragment :
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Settings", TAG)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
