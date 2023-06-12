@@ -35,30 +35,21 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
     private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
-    private val muteVideo = GeneralPrefs.muteVideos
+    private val maxVideoLength = GeneralPrefs.maxVideoLength
     private var playbackSpeed = GeneralPrefs.playbackSpeed
+    private val muteVideo = GeneralPrefs.muteVideos
     private var listener: OnPlayerEventListener? = null
-
-    // private val bufferingStrategy: BufferingStrategy
     private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
 
     init {
-        // Use smaller buffer for local and network playback
-//        bufferingStrategy = if (!AppleVideoPrefs.enabled) {
-//            BufferingStrategy.SMALLER
-//        } else {
-//            BufferingStrategy.valueOf(GeneralPrefs.bufferingStrategy)
-//        }
-
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
             Log.i(TAG, "Android 12, handle frame rate switching in app")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
@@ -225,7 +216,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         canChangePlaybackSpeed = false
         postDelayed(canChangePlaybackSpeedRunnable, 2000)
 
-        val currentSpeed = GeneralPrefs.playbackSpeed
+        val currentSpeed = playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
         val currentSpeedIdx = speedValues.indexOf(currentSpeed)
 
@@ -243,7 +234,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             speedValues[currentSpeedIdx - 1]
         }
 
-        GeneralPrefs.playbackSpeed = newSpeed
+        playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
 
         setupAlmostFinishedRunnable()
@@ -255,7 +246,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         // Check if we need to limit the duration of the video
         var targetDuration = duration
-        val limit = GeneralPrefs.maxVideoLength.toInt() * 1000
+        val limit = maxVideoLength.toInt() * 1000
         val tenSeconds = 10 * 1000
         if (limit in tenSeconds until duration
         ) {
@@ -264,7 +255,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-        var delay = (((targetDuration - player.currentPosition) / GeneralPrefs.playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
+        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
         if (delay < 0) {
             delay = 0
         }
@@ -273,15 +264,14 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        // error?.printStackTrace()
-        // error.cause?.let { Firebase.crashlytics.recordException(it) }
+        // error.printStackTrace()
         removeCallbacks(almostFinishedRunnable)
         postDelayed(onErrorRunnable, 3000)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        // error?.printStackTrace()
+        // error.printStackTrace()
         error?.message?.let { Log.e(TAG, it) }
     }
 
@@ -292,8 +282,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun buildPlayer(context: Context): ExoPlayer {
-        // Log.i(TAG, "Buffering strategy: $bufferingStrategy")
-        // val loadControl = PlayerHelper.bufferingStrategy(bufferingStrategy).build()
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
         if (enableTunneling) {
@@ -316,7 +304,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         }
 
         val player = ExoPlayer.Builder(context)
-            // .setLoadControl(loadControl)
             .setTrackSelector(trackSelector)
             .setRenderersFactory(rendererFactory)
             .build()
