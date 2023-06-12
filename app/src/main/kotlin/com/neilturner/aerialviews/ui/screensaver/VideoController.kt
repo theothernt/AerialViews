@@ -139,7 +139,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
                 if (shouldAlternateTextPosition) {
                     videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
-
                 }
             }.start()
     }
