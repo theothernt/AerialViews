@@ -37,13 +37,14 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val videoView: VideoViewBinding
     private val loadingView: View
     private var loadingText: TextView
+    private var shouldAlternateTextPosition = InterfacePrefs.alternateTextPosition
+    private var showClock = InterfacePrefs.clockStyle
+    private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     val view: View
 
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
-        binding.interfacePrefs = InterfacePrefs
-        binding.showLocation = InterfacePrefs.locationStyle != LocationType.OFF
         binding.videoView0.videoView.setOnPlayerListener(this)
 
         videoView = binding.videoView0
@@ -63,9 +64,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             }
         }
 
-        if (InterfacePrefs.clockForceLatinDigits) {
-            videoView.isClockAlternateRun = !videoView.isClockAlternateRun
-        }
+        videoView.showClock = showClock
+        videoView.showLocation = showLocation
 
         if (DeviceHelper.isFireTV()) {
             val newColor = Color.parseColor("#e9e9e9")
@@ -137,9 +137,9 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 videoView.location.alpha = textAlpha
                 loadVideo(videoView, video)
 
-                if (InterfacePrefs.alternateTextPosition) {
-                    videoView.isLocationAlternateRun = !videoView.isLocationAlternateRun
-                    videoView.isClockAlternateRun = !videoView.isClockAlternateRun
+                if (shouldAlternateTextPosition) {
+                    videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
+
                 }
             }.start()
     }
@@ -208,8 +208,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             currentPositionProgressHandler = null
         }
 
-        if (InterfacePrefs.clockStyle &&
-            InterfacePrefs.locationStyle != LocationType.OFF &&
+        if (InterfacePrefs.locationStyle != LocationType.OFF &&
             videoBinding.location.text.isNotBlank()
         ) {
             if (isLtrText(videoBinding.location.text.toStringOrEmpty())) {

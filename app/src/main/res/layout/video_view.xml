@@ -12,15 +12,15 @@
             type="com.neilturner.aerialviews.models.prefs.InterfacePrefs" />
 
         <variable
+            name="shouldAlternateTextPosition"
+            type="boolean" />
+
+        <variable
             name="showLocation"
             type="boolean" />
 
         <variable
-            name="isClockAlternateRun"
-            type="boolean" />
-
-        <variable
-            name="isLocationAlternateRun"
+            name="showClock"
             type="boolean" />
     </data>
 
@@ -43,10 +43,10 @@
             style="@style/ClockText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textDirection="locale"
             android:layout_gravity="bottom"
-            android:gravity="@{isClockAlternateRun ? Gravity.START : Gravity.END}"
-            android:visibility="@{interfacePrefs.clockStyle ? View.VISIBLE : View.GONE}"
+            android:textDirection="@{shouldAlternateTextPosition ? View.TEXT_DIRECTION_LTR : View.TEXT_DIRECTION_RTL}"
+            android:gravity="@{shouldAlternateTextPosition ? Gravity.START : Gravity.END}"
+            android:visibility="@{showClock ? View.VISIBLE : View.GONE}"
             tools:text="23:15" />
 
         <TextView
@@ -55,10 +55,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="@{isLocationAlternateRun ? Gravity.START : Gravity.END}"
+            android:textDirection="@{shouldAlternateTextPosition ? View.TEXT_DIRECTION_LTR : View.TEXT_DIRECTION_RTL}"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="Example location text"
-            tools:visibility="visible" />
+            tools:text="Example location text" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:clipChildren="false"
