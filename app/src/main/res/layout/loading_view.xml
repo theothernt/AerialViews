@@ -20,6 +20,7 @@
         android:layout_marginEnd="@dimen/screen_border_padding"
         android:layout_marginBottom="@dimen/screen_border_padding_bottom"
         android:gravity="bottom"
+        android:textAlignment="viewStart"
         android:id="@+id/loading_text"
         style="@style/LocationText"
         android:text="@string/loading_title" />

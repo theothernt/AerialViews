@@ -44,8 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="end"
-            android:textDirection="@{shouldAlternateTextPosition ? View.TEXT_DIRECTION_LTR : View.TEXT_DIRECTION_RTL}"
+            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_START : View.TEXT_ALIGNMENT_VIEW_END}"
             android:visibility="@{showClock ? View.VISIBLE : View.GONE}"
             tools:text="23:15" />
 
@@ -55,8 +54,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="end"
-            android:textDirection="@{shouldAlternateTextPosition ? View.TEXT_DIRECTION_LTR : View.TEXT_DIRECTION_RTL}"
+            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_START : View.TEXT_ALIGNMENT_VIEW_END}"
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="Example location text" />
 
