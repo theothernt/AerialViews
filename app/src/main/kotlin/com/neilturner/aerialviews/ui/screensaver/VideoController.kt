@@ -103,6 +103,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     private fun fadeOutLoading() {
+        videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
         loadingText
             .animate()
             .alpha(0f)
