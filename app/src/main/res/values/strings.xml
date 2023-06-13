@@ -121,6 +121,8 @@
     <!-- Main / Settings -->
     <string name="category_settings">Settings</string>
 
+    <string name="settings_customise_title">Customise...</string>
+
     <string name="settings_appearance_title">Appearance</string>
     <string name="settings_appearance_summary">Customise how things look while videos are playing</string>
 
@@ -144,20 +146,24 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Appearance</string>
-
-    <string name="interface_alt_text_position_title">Alternate text position</string>
-    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_location">Location</string>
+    <string name="category_other">Other</string>
 
     <string name="interface_show_clock_title">Show clock</string>
     <string name="interface_show_clock_summary">Shows the current time</string>
 
     <string name="interface_show_location_title">Show video location, title or points of interest</string>
 
+    <string name="interface_alt_text_position_title">Alternate text position</string>
+    <string name="interface_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+
     <string name="any_videos_filename_location_title">Use filename as location</string>
     <string name="any_videos_filename_location_summary">eg. \'country-a_place.mp4\' becomes \'Country - A Place\'</string>
 
-    <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
-    <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+    <!-- Main / Settings / Appearance / Clock -->
+
+    <!-- Main / Settings / Appearance / Location -->
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>
@@ -200,6 +206,9 @@
     <string name="category_samba_options">Samba/SMB options</string>
 
     <string name="playback_max_video_length_title">Limit video length</string>
+
+    <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
+    <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 
     <string name="performance_enable_tunneling_title">Enable tunneling</string>
     <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
