@@ -121,8 +121,6 @@
     <!-- Main / Settings -->
     <string name="category_settings">Settings</string>
 
-    <string name="settings_customise_title">Customise...</string>
-
     <string name="settings_appearance_title">Appearance</string>
     <string name="settings_appearance_summary">Customise how things look while videos are playing</string>
 
@@ -150,8 +148,12 @@
     <string name="category_location">Location</string>
     <string name="category_other">Other</string>
 
+    <string name="settings_appearance_clock_title">Clock settings…</string>
+
     <string name="interface_show_clock_title">Show clock</string>
     <string name="interface_show_clock_summary">Shows the current time</string>
+
+    <string name="settings_appearance_location_title">Location settings…</string>
 
     <string name="interface_show_location_title">Show video location, title or points of interest</string>
 
