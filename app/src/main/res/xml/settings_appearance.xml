@@ -6,10 +6,12 @@
 
                 <Preference
                     app:title="@string/appearance_clock_title"
+                    app:summary="@string/appearance_clock_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceClockFragment"/>
 
                 <Preference
                     app:title="@string/appearance_location_title"
+                    app:summary="@string/appearance_location_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
         </PreferenceCategory>
 
