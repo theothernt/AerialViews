@@ -156,6 +156,13 @@
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
+    <string name="category_other">Other</string>
+
+    <string name="appearance_clock_title">Clock</string>
+    <string name="appearance_clock_summary">Customise the display and format of the clock</string>
+
+    <string name="appearance_location_title">Location</string>
+    <string name="appearance_location_summary">Customise how location is displayed for Apple and Community videos</string>
 
     <string name="appearance_show_clock_title">Показать часы</string>
     <string name="appearance_show_clock_summary">Показывает текущее время</string>

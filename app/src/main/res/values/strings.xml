@@ -150,7 +150,7 @@
     <string name="appearance_clock_summary">Customise the display and format of the clock</string>
 
     <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Customise the how location is displayed for Apple and Community videos</string>
+    <string name="appearance_location_summary">Customise how location is displayed for Apple and Community videos</string>
 
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
