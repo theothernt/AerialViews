@@ -9,9 +9,11 @@ object InterfacePrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var clockStyle by booleanPref(true, "show_clock")
+    var clockSize by stringPref("36", "clock_size")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
+    var locationSize by stringPref("18", "location_size")
 
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 

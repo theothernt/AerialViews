@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -39,7 +40,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var loadingText: TextView
     private var shouldAlternateTextPosition = InterfacePrefs.alternateTextPosition
     private var showClock = InterfacePrefs.clockStyle
+    private var clockSize = InterfacePrefs.clockSize
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
+    private var locationSize = InterfacePrefs.locationSize
+
     val view: View
 
     init {
@@ -65,7 +69,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         }
 
         videoView.showClock = showClock
+        videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
+
         videoView.showLocation = showLocation
+        videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
 
         if (DeviceHelper.isFireTV()) {
             val newColor = Color.parseColor("#e9e9e9")
