@@ -145,20 +145,30 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вид</string>
 
-    <string name="interface_alt_text_position_title">Альтернативна позиція тексту</string>
-    <string name="interface_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
-    
-    <string name="interface_show_clock_title">Показати годинник</string>
-    <string name="interface_show_clock_summary">Показує поточний час</string>
-    
-    <string name="interface_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
+    <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
+    <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
 
     <string name="any_videos_filename_location_title">"Ім'я файлу як місцезнаходження"</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' буде 'Country - A Place'"</string>
     
     <string name="refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
     <string name="refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
-    
+
+    <!-- Main / Settings / Appearance / Clock -->
+    <string name="category_clock">Clock</string>
+
+    <string name="appearance_show_clock_title">Показати годинник</string>
+    <string name="appearance_show_clock_summary">Показує поточний час</string>
+
+    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+
+    <!-- Main / Settings / Appearance / Location -->
+    <string name="category_location">Location</string>
+
+    <string name="appearance_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
+
+    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
 

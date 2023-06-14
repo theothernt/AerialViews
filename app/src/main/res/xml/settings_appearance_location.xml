@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_location">
-
                 <ListPreference
                     app:defaultValue="@string/interface_show_location_default"
                     app:entries="@array/interface_show_location_entries"
@@ -20,6 +19,5 @@
                     app:key="location_size"
                     app:title="@string/appearance_location_size_title"
                     app:useSimpleSummaryProvider="true" />
-
         </PreferenceCategory>
 </PreferenceScreen>

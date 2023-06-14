@@ -145,19 +145,29 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вид</string>
 
-    <string name="interface_alt_text_position_title">Альтернативная позиция текста</string>
-    <string name="interface_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
-
-    <string name="interface_show_clock_title">Показать часы</string>
-    <string name="interface_show_clock_summary">Показывает текущее время</string>
-
-    <string name="interface_show_location_title">Показывать местоположение, название или точки интереса</string>
+    <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
+    <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
 
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
     <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
 
     <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
     <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
+
+    <!-- Main / Settings / Appearance / Clock -->
+    <string name="category_clock">Clock</string>
+
+    <string name="appearance_show_clock_title">Показать часы</string>
+    <string name="appearance_show_clock_summary">Показывает текущее время</string>
+
+    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+
+    <!-- Main / Settings / Appearance / Location -->
+    <string name="category_location">Location</string>
+
+    <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
+
+    <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>

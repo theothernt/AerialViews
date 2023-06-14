@@ -144,19 +144,29 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Aussehen</string>
 
-    <string name="interface_alt_text_position_title">Alternative Textposition</string>
-    <string name="interface_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
-
-    <string name="interface_show_clock_title">Zeige Uhr</string>
-    <string name="interface_show_clock_summary">Zeigt die aktuelle Zeit</string>
-
-    <string name="interface_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
+    <string name="appearance_alt_text_position_title">Alternative Textposition</string>
+    <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
     <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
     <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
+
+    <!-- Main / Settings / Appearance / Clock -->
+    <string name="category_clock">Clock</string>
+
+    <string name="appearance_show_clock_title">Zeige Uhr</string>
+    <string name="appearance_show_clock_summary">Zeigt die aktuelle Zeit</string>
+
+    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+
+    <!-- Main / Settings / Appearance / Location -->
+    <string name="category_location">Location</string>
+
+    <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
+
+    <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>

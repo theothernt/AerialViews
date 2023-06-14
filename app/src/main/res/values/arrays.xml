@@ -96,7 +96,7 @@
         <item>20sp</item>
         <item>18sp</item>
     </string-array>
-    <string-array name="appearance_clock_size_values">
+    <string-array name="appearance_clock_size_values" translatable="false">
         <item>36</item>
         <item>34</item>
         <item>32</item>
@@ -122,7 +122,7 @@
         <item>20sp</item>
         <item>18sp (default)</item>
     </string-array>
-    <string-array name="appearance_location_size_values">
+    <string-array name="appearance_location_size_values" translatable="false">
         <item>36</item>
         <item>34</item>
         <item>32</item>
