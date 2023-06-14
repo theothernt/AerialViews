@@ -164,10 +164,14 @@
     <string name="appearance_show_clock_title">Show clock</string>
     <string name="appearance_show_clock_summary">Shows the current time</string>
 
+    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_location">Location</string>
 
     <string name="appearance_show_location_title">Show video location, title or points of interest</string>
+
+    <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>

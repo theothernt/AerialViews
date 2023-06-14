@@ -13,5 +13,13 @@
                     app:dialogTitle="@string/appearance_show_location_title"
                     app:useSimpleSummaryProvider="true" />
 
+                <ListPreference
+                    app:defaultValue="@string/appearance_location_size_default"
+                    app:entries="@array/appearance_location_size_entries"
+                    app:entryValues="@array/appearance_location_size_values"
+                    app:key="location_size"
+                    app:title="@string/appearance_location_size_title"
+                    app:useSimpleSummaryProvider="true" />
+
         </PreferenceCategory>
 </PreferenceScreen>

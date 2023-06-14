@@ -10,5 +10,12 @@
                     app:summary="@string/appearance_show_clock_summary"
                     app:title="@string/appearance_show_clock_title" />
 
+                <ListPreference
+                    app:defaultValue="@string/appearance_clock_size_default"
+                    app:entries="@array/appearance_clock_size_entries"
+                    app:entryValues="@array/appearance_clock_size_values"
+                    app:key="clock_size"
+                    app:title="@string/appearance_clock_size_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>
