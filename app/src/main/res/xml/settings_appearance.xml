@@ -3,29 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_appearance">
-
                 <Preference
                     app:title="@string/appearance_clock_title"
-                    app:summary="@string/appearance_clock_summary"
+                    app:summary="Display the current time"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceClockFragment"/>
 
                 <Preference
-                    app:title="@string/appearance_location_title"
-                    app:summary="@string/appearance_location_summary"
+                    app:title="Location"
+                    app:summary="Display the video title, location or points of interest"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+
+                <Preference
+                    app:title="Weather"
+                    app:summary="Display the current weather conditions"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+
+                <Preference
+                    app:title="Custom message"
+                    app:summary="Display up to 2 lines of custom text"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+
+                <Preference
+                    app:title="Font"
+                    app:summary="Change the typeface of all screensaver text"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_other">
+        <PreferenceCategory app:title="Options">
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="alt_text_position"
                     app:summary="@string/appearance_alt_text_position_summary"
                     app:title="@string/appearance_alt_text_position_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="any_videos_filename_location"
-                    app:title="@string/any_videos_filename_location_title"
-                    app:summary="@string/any_videos_filename_location_summary" />
         </PreferenceCategory>
 </PreferenceScreen>
