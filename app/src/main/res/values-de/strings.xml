@@ -12,6 +12,7 @@
     <!-- Common Categories -->
     <string name="category_actions">Aktionen</string>
     <string name="category_video_source">Video-Quelle</string>
+    <string name="category_options">Options</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Videoqualität</string>
@@ -143,7 +144,6 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Aussehen</string>
-    <string name="category_other">Other</string>
 
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Customise the display and format of the clock</string>
@@ -153,9 +153,6 @@
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
     <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
-
-    <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
-    <string name="any_videos_filename_location_summary">Beispiel: \'Stadt-ein_ort.mp4\' wird als \'Stadt - Ein Ort\' angezeigt</string>
 
     <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
     <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
@@ -169,9 +166,13 @@
     <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_location">Location</string>
+    <string name="category_apple_and_community_videos">Apple and Community videos</string>
+    <string name="category_all_other_videos">All other videos</string>
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
+
+    <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
+    <string name="any_videos_filename_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
 
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 

@@ -13,6 +13,7 @@
     <!-- Common Categories -->
     <string name="category_actions">Действия</string>
     <string name="category_video_source">Источник видео</string>
+    <string name="category_options">Options</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Качество видео</string>
@@ -148,15 +149,11 @@
     <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
     <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
 
-    <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
-    <string name="any_videos_filename_location_summary">"напр. 'country-a_place.mp4' станет 'Country - A Place'"</string>
-
     <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
     <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
-    <string name="category_other">Other</string>
 
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Customise the display and format of the clock</string>
@@ -170,9 +167,13 @@
     <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_location">Location</string>
+    <string name="category_apple_and_community_videos">Apple and Community videos</string>
+    <string name="category_all_other_videos">All other videos</string>
 
     <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
+
+    <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
+    <string name="any_videos_filename_location_summary">"напр. 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
 
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 

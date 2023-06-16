@@ -5,31 +5,36 @@
         <PreferenceCategory app:title="@string/category_appearance">
                 <Preference
                     app:title="@string/appearance_clock_title"
-                    app:summary="Display the current time"
+                    app:summary="@string/appearance_clock_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceClockFragment"/>
 
                 <Preference
-                    app:title="Location"
-                    app:summary="Display the video title, location or points of interest"
+                    app:title="@string/appearance_location_title"
+                    app:summary="@string/appearance_location_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
 
                 <Preference
-                    app:title="Weather"
-                    app:summary="Display the current weather conditions"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+                    app:title="@string/appearance_weather_title"
+                    app:summary="@string/appearance_weather_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceWeatherFragment"/>
 
                 <Preference
-                    app:title="Custom message"
-                    app:summary="Display up to 2 lines of custom text"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+                    app:title="@string/appearance_music_title"
+                    app:summary="@string/appearance_music_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMusicFragment"/>
 
                 <Preference
-                    app:title="Font"
-                    app:summary="Change the typeface of all screensaver text"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
+                    app:title="@string/appearance_message_title"
+                    app:summary="@string/appearance_message_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_typeface_title"
+                    app:summary="@string/appearance_typeface_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceFontFragment"/>
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="Options">
+        <PreferenceCategory app:title="@string/category_options">
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="alt_text_position"
