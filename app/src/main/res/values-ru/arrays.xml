@@ -30,6 +30,32 @@
         <item>5x</item>
     </string-array>
 
+    <!-- Text sizes -->
+    <string-array name="appearance_clock_size_entries">
+        <item>36sp (по умолчанию)</item>
+        <item>34sp</item>
+        <item>32sp</item>
+        <item>30sp</item>
+        <item>28sp</item>
+        <item>26sp</item>
+        <item>24sp</item>
+        <item>22sp</item>
+        <item>20sp</item>
+        <item>18sp</item>
+    </string-array>
+    <string-array name="appearance_location_size_entries">
+        <item>36sp</item>
+        <item>34sp</item>
+        <item>32sp</item>
+        <item>30sp</item>
+        <item>28sp</item>
+        <item>26sp</item>
+        <item>24sp</item>
+        <item>22sp</item>
+        <item>20sp</item>
+        <item>18sp (по умолчанию)</item>
+    </string-array>
+
     <!-- Max. video length -->
     <string-array name="playback_max_video_length_entries">
         <item>Без ограничений (по умолчанию)</item>
