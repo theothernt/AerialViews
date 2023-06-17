@@ -145,6 +145,7 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Appearance</string>
+    <string name="category_overlays">Overlays</string>
 
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Display the current time</string>

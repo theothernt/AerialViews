@@ -144,18 +144,28 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Aussehen</string>
+    <string name="category_overlays">Overlays</string>
 
     <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Customise the display and format of the clock</string>
+    <string name="appearance_clock_summary">Display the current time</string>
 
     <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Customise how location is displayed for Apple and Community videos</string>
+    <string name="appearance_location_summary">Display location or points of interest</string>
+
+    <string name="appearance_weather_title">Weather</string>
+    <string name="appearance_weather_summary">Display the current weather conditions</string>
+
+    <string name="appearance_music_title">Music</string>
+    <string name="appearance_music_summary">Display the currently playing song</string>
+
+    <string name="appearance_message_title">Message</string>
+    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+
+    <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_typeface_summary">Change the font used to display all screensaver text</string>
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
     <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
-
-    <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
-    <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
@@ -217,6 +227,9 @@
     <string name="category_samba_options">Optionen für Samba / SMB</string>
 
     <string name="playback_max_video_length_title">Videolänge begrenzen</string>
+
+    <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
+    <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
 
     <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
     <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>

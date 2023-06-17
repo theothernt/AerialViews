@@ -145,21 +145,31 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вид</string>
+    <string name="category_overlays">Overlays</string>
+
+    <string name="appearance_clock_title">Clock</string>
+    <string name="appearance_clock_summary">Display the current time</string>
+
+    <string name="appearance_location_title">Location</string>
+    <string name="appearance_location_summary">Display location or points of interest</string>
+
+    <string name="appearance_weather_title">Weather</string>
+    <string name="appearance_weather_summary">Display the current weather conditions</string>
+
+    <string name="appearance_music_title">Music</string>
+    <string name="appearance_music_summary">Display the currently playing song</string>
+
+    <string name="appearance_message_title">Message</string>
+    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+
+    <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_typeface_summary">Change the font used to display all screensaver text</string>
 
     <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
     <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
 
-    <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
-    <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
-
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
-
-    <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Customise the display and format of the clock</string>
-
-    <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Customise how location is displayed for Apple and Community videos</string>
 
     <string name="appearance_show_clock_title">Показать часы</string>
     <string name="appearance_show_clock_summary">Показывает текущее время</string>
@@ -218,6 +228,9 @@
     <string name="category_samba_options">Samba/SMB настройки</string>
 
     <string name="playback_max_video_length_title">Ограничить длину видео</string>
+
+    <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
+    <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
 
     <string name="performance_enable_tunneling_title">Включить туннелирование</string>
     <string name="performance_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>
