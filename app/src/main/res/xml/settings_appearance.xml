@@ -13,27 +13,27 @@
                     app:summary="@string/appearance_location_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
 
-                <Preference
-                    app:title="@string/appearance_weather_title"
-                    app:summary="@string/appearance_weather_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceWeatherFragment"/>
+<!--                <Preference-->
+<!--                    app:title="@string/appearance_weather_title"-->
+<!--                    app:summary="@string/appearance_weather_summary"-->
+<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceWeatherFragment"/>-->
 
-                <Preference
-                    app:title="@string/appearance_music_title"
-                    app:summary="@string/appearance_music_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMusicFragment"/>
+<!--                <Preference-->
+<!--                    app:title="@string/appearance_music_title"-->
+<!--                    app:summary="@string/appearance_music_summary"-->
+<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMusicFragment"/>-->
 
-                <Preference
-                    app:title="@string/appearance_message_title"
-                    app:summary="@string/appearance_message_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>
+<!--                <Preference-->
+<!--                    app:title="@string/appearance_message_title"-->
+<!--                    app:summary="@string/appearance_message_summary"-->
+<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>-->
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">
-                <Preference
-                    app:title="@string/appearance_typeface_title"
-                    app:summary="@string/appearance_typeface_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypefaceFragment"/>
+<!--                <Preference-->
+<!--                    app:title="@string/appearance_typeface_title"-->
+<!--                    app:summary="@string/appearance_typeface_summary"-->
+<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypefaceFragment"/>-->
 
                 <CheckBoxPreference
                     app:defaultValue="false"
