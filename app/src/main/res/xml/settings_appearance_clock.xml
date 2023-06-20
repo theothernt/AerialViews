@@ -13,8 +13,8 @@
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="clock_force_latin_digits"
-                    app:summary="@string/appearance_show_clock_summary"
-                    app:title="@string/appearance_show_clock_title" />
+                    app:summary="@string/appearance_show_force_latin_digits_summary"
+                    app:title="@string/appearance_show_force_latin_digits_title" />
 
                 <ListPreference
                     app:defaultValue="@string/appearance_clock_size_default"
