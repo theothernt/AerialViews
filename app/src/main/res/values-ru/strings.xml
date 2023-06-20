@@ -174,6 +174,9 @@
     <string name="appearance_show_clock_title">Показать часы</string>
     <string name="appearance_show_clock_summary">Показывает текущее время</string>
 
+    <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
+    <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
+
     <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
 
     <!-- Main / Settings / Appearance / Location -->
