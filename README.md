@@ -89,3 +89,9 @@ The only way to achieve this is...
   ```sh
   adb shell settings put secure screensaver_components com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
   ```
+
+To restore the default screensaver, use the following ADB command...
+
+```sh
+adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
+```
