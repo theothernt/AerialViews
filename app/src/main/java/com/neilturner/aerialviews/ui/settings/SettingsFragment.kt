@@ -310,7 +310,7 @@ class SettingsFragment :
     }
 
     companion object {
-        private const val TAG = "CustomiseVideosFragment"
+        private const val TAG = "SettingsFragment"
         private const val SETTINGS_FILENAME = "aerial-views-settings.txt"
     }
 }
