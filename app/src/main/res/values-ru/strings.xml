@@ -13,7 +13,7 @@
     <!-- Common Categories -->
     <string name="category_actions">Действия</string>
     <string name="category_video_source">Источник видео</string>
-    <string name="category_options">Options</string>
+    <string name="category_options">Опции</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Качество видео</string>
@@ -104,7 +104,7 @@
     <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера</string>
 
     <string name="samba_videos_sharename_title">Имя общего доступа</string>
-    <string name="samba_videos_sharename_summary">например /video/aerial</string>
+    <string name="samba_videos_sharename_summary">например /Video/Aerial</string>
 
     <string name="samba_videos_username_title">Имя пользователя</string>
     <string name="samba_videos_username_summary">Необязательно</string>
@@ -145,50 +145,50 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вид</string>
-    <string name="category_overlays">Overlays</string>
+    <string name="category_overlays">Наложение</string>
 
-    <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Display the current time</string>
+    <string name="appearance_clock_title">Часы</string>
+    <string name="appearance_clock_summary">Отображение текущего времени</string>
 
-    <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Display location or points of interest</string>
+    <string name="appearance_location_title">Местоположение</string>
+    <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
 
-    <string name="appearance_weather_title">Weather</string>
-    <string name="appearance_weather_summary">Display the current weather conditions</string>
+    <string name="appearance_weather_title">Погода</string>
+    <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
 
-    <string name="appearance_music_title">Music</string>
-    <string name="appearance_music_summary">Display the currently playing song</string>
+    <string name="appearance_music_title">Музыка</string>
+    <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
 
-    <string name="appearance_message_title">Message</string>
-    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+    <string name="appearance_message_title">Сообщение</string>
+    <string name="appearance_message_summary">Отображать до 2 строк пользовательского текста</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
-    <string name="appearance_typeface_summary">Change the font used to display all screensaver text</string>
+    <string name="appearance_typeface_title">Шрифт</string>
+    <string name="appearance_typeface_summary">Измените шрифт, используемый для отображения всего текста заставки</string>
 
     <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
     <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
 
     <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Часы</string>
 
     <string name="appearance_show_clock_title">Показать часы</string>
     <string name="appearance_show_clock_summary">Показывает текущее время</string>
 
-    <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-    <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
+    <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
+    <string name="appearance_show_force_latin_digits_summary">Всегда показывайть западные цифры, независимо от настроек языкового стандарта системы</string>
 
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+    <string name="appearance_clock_size_title">Отрегулируйте размер текста часов</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos</string>
-    <string name="category_all_other_videos">All other videos</string>
+    <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
+    <string name="category_all_other_videos">Все остальные видео</string>
 
     <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
 
     <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
-    <string name="any_videos_filename_location_summary">"напр. 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
+    <string name="any_videos_filename_location_summary">"например 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
 
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+    <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>

@@ -13,7 +13,7 @@
     <!-- Common Categories -->
     <string name="category_actions">Дії</string>
     <string name="category_video_source">Джерело відео</string>
-    <string name="category_options">Options</string>
+    <string name="category_options">Опції</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Якість відео</string>
@@ -56,7 +56,7 @@
     <string name="apple_videos_enabled">Використовуйте відео Apple</string>
     
     <string name="apple_videos_data_usage_title">Використання даних</string>
-    <string name="apple_videos_data_estimate_summary">Прибл. %1$s на годину</string>
+    <string name="apple_videos_data_estimate_summary">Приблизно %1$s на годину</string>
     
     <!-- Main / Video Sources / Comm1 videos -->
     <string name="comm1_videos_enabled">Використовувати відео спільноти</string>
@@ -89,7 +89,7 @@
     <string name="local_videos_legacy_volume_title">Виберіть обсяг</string>
     <string name="local_videos_legacy_volume_summary">Том не вибрано</string>
 
-    <string name="local_videos_legacy_folder_title">Вкажіть папку (наприклад, /videos)</string>
+    <string name="local_videos_legacy_folder_title">Вкажіть папку (наприклад, /Videos)</string>
     <string name="local_videos_legacy_folder_summary">Папка не вказана</string>
 
     <!-- Main / Video Sources / Samba videos -->
@@ -104,7 +104,7 @@
     <string name="samba_videos_domainname_summary">"Доменне ім'я або робоча група сервера"</string>
 
     <string name="samba_videos_sharename_title">"Ім'я спільного доступу"</string>
-    <string name="samba_videos_sharename_summary">напр. /video/aerial</string>
+    <string name="samba_videos_sharename_summary">наприклад /Video/Aerial</string>
     
     <string name="samba_videos_username_title">"Ім'я користувача"</string>
     <string name="samba_videos_username_summary">"Не обов'язково"</string>
@@ -144,51 +144,51 @@
     <string name="settings_import_export_settings_summary">Імпортує або експортує налаштування в папку Завантаження</string>
 
     <!-- Main / Settings / Appearance -->
-    <string name="category_appearance">Вид</string>
-    <string name="category_overlays">Overlays</string>
+    <string name="category_appearance">Вигляд</string>
+    <string name="category_overlays">Накладення</string>
 
-    <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Display the current time</string>
+    <string name="appearance_clock_title">Годинник</string>
+    <string name="appearance_clock_summary">Відображення поточного часу</string>
 
-    <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Display location or points of interest</string>
+    <string name="appearance_location_title">Місце розташування</string>
+    <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
 
-    <string name="appearance_weather_title">Weather</string>
-    <string name="appearance_weather_summary">Display the current weather conditions</string>
+    <string name="appearance_weather_title">Погода</string>
+    <string name="appearance_weather_summary">Відображення поточних погодних умов</string>
 
-    <string name="appearance_music_title">Music</string>
-    <string name="appearance_music_summary">Display the currently playing song</string>
+    <string name="appearance_music_title">Музика</string>
+    <string name="appearance_music_summary">Відображення відтворюваної в даний момент пісні</string>
 
-    <string name="appearance_message_title">Message</string>
-    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+    <string name="appearance_message_title">Повідомлення</string>
+    <string name="appearance_message_summary">Відображати до 2 рядків користувацького тексту</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
-    <string name="appearance_typeface_summary">Change the font used to display all screensaver text</string>
+    <string name="appearance_typeface_title">Шрифт</string>
+    <string name="appearance_typeface_summary">Змініть шрифт, який використовується для відображення всього тексту заставки</string>
 
     <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
     <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
 
     <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Годинник</string>
 
     <string name="appearance_show_clock_title">Показати годинник</string>
     <string name="appearance_show_clock_summary">Показує поточний час</string>
 
-    <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-    <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
+    <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
+    <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
 
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+    <string name="appearance_clock_size_title">Відрегулюйте розмір тексту годинника</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos</string>
-    <string name="category_all_other_videos">All other videos</string>
+    <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
+    <string name="category_all_other_videos">Всі інші відео</string>
 
     <string name="appearance_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
 
     <string name="any_videos_filename_location_title">"Ім'я файлу як місцезнаходження"</string>
-    <string name="any_videos_filename_location_summary">"напр. 'japan-mount_fuji.mp4' буде 'Japan - Mount Fuji'"</string>
+    <string name="any_videos_filename_location_summary">"наприклад 'japan-mount_fuji.mp4' буде 'Japan - Mount Fuji'"</string>
 
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+    <string name="appearance_location_size_title">Відрегулюйте розмір тексту розташування</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
