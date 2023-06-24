@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -23,7 +24,8 @@
         android:textAlignment="viewStart"
         android:id="@+id/loading_text"
         style="@style/LocationText"
-        android:text="@string/loading_title" />
+        android:text="@string/loading_title"
+        tools:ignore="RtlCompat" />
 
     </FrameLayout>
 </layout>
