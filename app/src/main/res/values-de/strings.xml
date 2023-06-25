@@ -12,7 +12,7 @@
     <!-- Common Categories -->
     <string name="category_actions">Aktionen</string>
     <string name="category_video_source">Video-Quelle</string>
-    <string name="category_options">Options</string>
+    <string name="category_options">Optionen</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Videoqualität</string>
@@ -64,15 +64,15 @@
     <string name="comm2_videos_enabled">Nutze Community-Videos</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Media scanner options</string>
-    <string name="category_folder_access_options">Folder access options</string>
+    <string name="category_media_scanner_options">Optionen für Medien-Scanner</string>
+    <string name="category_folder_access_options">Optionen für Ordnerzugriff</string>
 
     <string name="local_videos_enabled_title">Nutze lokal gespeicherte Videos (Gerätespeicher oder USB)</string>
 
-    <string name="local_videos_search_type_title">Choose how videos are found</string>
-    <string name="local_videos_search_test">Test local search settings</string>
+    <string name="local_videos_search_type_title">Wählen wie Videos gefunden werden</string>
+    <string name="local_videos_search_test">Teste lokale Sucheinstellungen</string>
 
-    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
+    <string name="local_videos_media_store_summary">Android scannt alle lokalen Speicher, USB-Geräte, usw. nach Videos</string>
 
     <string name="local_videos_shield_notice_title">"Nvidia Shield"-Nutzer: Bitte folgende Option aktivieren…</string>
     <string name="local_videos_shield_notice_summary">Einstellungen > Geräteeinstellungen > Speicher > Automatisch nach Medien durchsuchen</string>
@@ -83,13 +83,13 @@
     <string name="local_videos_media_store_filter_folder_title">Verzeichnisnamen einstellen</string>
     <string name="local_videos_media_store_filter_folder_summary">Speicherst du Videos zum Beispiel unter /Videos/Aerial/ wird \'Aerial\' Videos anderer Ordner herausfiltern</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+    <string name="local_videos_legacy_summary">Wähle einen einzigen Ordner für gespeicherte Videos (Android 12 oder niedriger)</string>
 
-    <string name="local_videos_legacy_volume_title">Choose a volume</string>
-    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
+    <string name="local_videos_legacy_volume_title">Laufwerk wählen</string>
+    <string name="local_videos_legacy_volume_summary">Kein Laufwerk gewählt</string>
 
-    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
-    <string name="local_videos_legacy_folder_summary">No folder specified</string>
+    <string name="local_videos_legacy_folder_title">Ordner wählen (z.B. /videos)</string>
+    <string name="local_videos_legacy_folder_summary">Kein Ordner gewählt</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Serverdetails und Zugangsdaten</string>
@@ -99,8 +99,8 @@
     <string name="samba_videos_hostname_title">Hostname</string>
     <string name="samba_videos_hostname_summary">IP-Adresse des Servers</string>
 
-    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server</string>
+    <string name="samba_videos_domainname_title">Domain-Name (Optional)</string>
+    <string name="samba_videos_domainname_summary">Domain-Name oder Arbeitsgruppe des Servers</string>
 
     <string name="samba_videos_sharename_title">Name der Freigabe</string>
     <string name="samba_videos_sharename_summary">Beispiel: /video/aerial</string>
@@ -144,50 +144,50 @@
 
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Aussehen</string>
-    <string name="category_overlays">Overlays</string>
+    <string name="category_overlays">Bildüberlagerungen</string>
 
-    <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Display the current time</string>
+    <string name="appearance_clock_title">Uhr</string>
+    <string name="appearance_clock_summary">Zeige aktuelle Zeit an</string>
 
-    <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Display location or points of interest</string>
+    <string name="appearance_location_title">Ort</string>
+    <string name="appearance_location_summary">Zeige Ort oder Sehenswürdigkeiten an</string>
 
-    <string name="appearance_weather_title">Weather</string>
-    <string name="appearance_weather_summary">Display the current weather conditions</string>
+    <string name="appearance_weather_title">Wetter</string>
+    <string name="appearance_weather_summary">Zeige aktuelle Wetterbedingungen an</string>
 
-    <string name="appearance_music_title">Music</string>
-    <string name="appearance_music_summary">Display the currently playing song</string>
+    <string name="appearance_music_title">Musik</string>
+    <string name="appearance_music_summary">Zeige den aktuell laufenden Song an</string>
 
-    <string name="appearance_message_title">Message</string>
-    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+    <string name="appearance_message_title">Nachricht</string>
+    <string name="appearance_message_summary">Zeige bis zu 2 Zeilen persönlichen Text an</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
-    <string name="appearance_typeface_summary">Change the font used to display all screensaver text</string>
+    <string name="appearance_typeface_title">Schriftart</string>
+    <string name="appearance_typeface_summary">Ändere die Schriftart des angezeigten Bildschirmschonertextes</string>
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
     <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
 
     <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Clock</string>
+    <string name="category_clock">Uhr</string>
 
     <string name="appearance_show_clock_title">Zeige Uhr</string>
     <string name="appearance_show_clock_summary">Zeigt die aktuelle Zeit</string>
 
-    <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-    <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
+    <string name="appearance_show_force_latin_digits_title">Lateinische Ziffern erzwingen</string>
+    <string name="appearance_show_force_latin_digits_summary">Eingestellte Systemsprache ignorieren und immer Westliche Ziffern verwenden</string>
 
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+    <string name="appearance_clock_size_title">Textgröße der Uhrzeit anpassen</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos</string>
-    <string name="category_all_other_videos">All other videos</string>
+    <string name="category_apple_and_community_videos">Apple und Community-Videos</string>
+    <string name="category_all_other_videos">Alle anderen Videos</string>
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
     <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
     <string name="any_videos_filename_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
 
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+    <string name="appearance_location_size_title">Textgröße der Ortsangabe anpassen</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>
