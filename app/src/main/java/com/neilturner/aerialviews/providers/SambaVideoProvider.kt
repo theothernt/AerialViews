@@ -19,14 +19,14 @@ import java.net.URLEncoder
 class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        return sambaFetch().first
+        return fetchSambaVideos().first
     }
 
     override fun fetchTest(): String {
-        return sambaFetch().second
+        return fetchSambaVideos().second
     }
 
-    private fun sambaFetch(): Pair<List<AerialVideo>, String> {
+    private fun fetchSambaVideos(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
 
         // Check hostname

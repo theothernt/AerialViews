@@ -12,8 +12,16 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 class Comm1VideoProvider(context: Context, private val prefs: Comm1VideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        val quality = prefs.quality
+        return fetchCommunityVideos().first
+    }
+
+    override fun fetchTest(): String {
+        return fetchCommunityVideos().second
+    }
+
+    private fun fetchCommunityVideos(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
+        val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
         wrapper.assets?.forEach {
@@ -29,12 +37,9 @@ class Comm1VideoProvider(context: Context, private val prefs: Comm1VideoPrefs) :
         }
 
         Log.i(TAG, "${videos.count()} $quality videos found")
-        return videos
+        return Pair(videos, "")
     }
 
-    override fun fetchTest(): String {
-        return ""
-    }
     companion object {
         private const val TAG = "Comm1VideoProvider"
     }

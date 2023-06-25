@@ -12,8 +12,16 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
 
     override fun fetchVideos(): List<AerialVideo> {
-        val quality = prefs.quality
+        return fetchAppleVideos().first
+    }
+
+    override fun fetchTest(): String {
+        return fetchAppleVideos().second
+    }
+
+    private fun fetchAppleVideos(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
+        val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
@@ -29,11 +37,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         }
 
         Log.i(TAG, "${videos.count()} $quality videos found")
-        return videos
-    }
-
-    override fun fetchTest(): String {
-        return ""
+        return Pair(videos, "")
     }
 
     companion object {
