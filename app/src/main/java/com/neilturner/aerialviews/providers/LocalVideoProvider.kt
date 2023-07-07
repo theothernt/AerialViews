@@ -5,6 +5,7 @@ import android.net.Uri
 import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
@@ -26,6 +27,10 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         } else {
             folderAccessFetch().second
         }
+    }
+
+    override fun fetchMetadata(): List<VideoMetadata> {
+        return emptyList()
     }
 
     private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {

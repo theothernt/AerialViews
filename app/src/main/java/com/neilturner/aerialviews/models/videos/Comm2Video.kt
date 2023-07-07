@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
 import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.utils.FileHelper
 
 class Comm2Video : AbstractVideo() {
 
@@ -16,11 +17,11 @@ class Comm2Video : AbstractVideo() {
         )
     }
 
-    override fun allUris(): List<Uri> {
-        val uris = mutableSetOf<Uri>()
+    override fun allUrls(): List<String> {
+        val urls = mutableSetOf<String>()
         enumValues<VideoQuality>().forEach { quality ->
-            uriAtQuality(quality).let { uri -> uris.add(uri) }
+            uriAtQuality(quality).let { uri -> urls.add(FileHelper.filenameFromPath(uri)) }
         }
-        return uris.toList()
+        return urls.toList()
     }
 }

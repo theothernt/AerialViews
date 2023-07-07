@@ -32,5 +32,5 @@ abstract class AbstractVideo {
 
     abstract fun uriAtQuality(quality: VideoQuality): Uri
 
-    abstract fun allUris(): List<Uri>
+    abstract fun allUrls(): List<String>
 }

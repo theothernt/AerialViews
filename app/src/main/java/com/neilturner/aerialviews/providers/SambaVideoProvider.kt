@@ -12,6 +12,7 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
@@ -24,6 +25,10 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
     override fun fetchTest(): String {
         return fetchSambaVideos().second
+    }
+
+    override fun fetchMetadata(): List<VideoMetadata> {
+        return emptyList()
     }
 
     private fun fetchSambaVideos(): Pair<List<AerialVideo>, String> {

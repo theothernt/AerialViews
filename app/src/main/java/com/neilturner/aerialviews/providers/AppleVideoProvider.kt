@@ -20,14 +20,13 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         return fetchAppleVideos().second
     }
 
-    fun fetchMetaData(): List<VideoMetadata> {
+    override fun fetchMetadata(): List<VideoMetadata> {
         val metadata = mutableListOf<VideoMetadata>()
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
-
         wrapper.assets?.forEach {
             val video = VideoMetadata(
-                it.allUris(),
+                it.allUrls(),
                 it.location,
                 it.pointsOfInterest.mapValues { poi ->
                     strings[poi.value] ?: it.location
@@ -46,7 +45,7 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         wrapper.assets?.forEach {
             videos.add(
                 AerialVideo(
-                    it.uriAtQuality(quality)!!,
+                    it.uriAtQuality(quality),
                     it.location,
                     it.pointsOfInterest.mapValues { poi ->
                         strings[poi.value] ?: it.location
