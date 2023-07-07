@@ -62,13 +62,8 @@ object FileHelper {
         return false
     }
 
-    fun filenameFromPath(uri: Uri): String {
-        val path = uri.path
-        return if (path != null) {
-            path.substring(path.lastIndexOf('/') + 1)
-        } else {
-            ""
-        }
+    fun filenameFromUri(uri: Uri): String {
+        return uri.lastPathSegment ?: ""
     }
 
     fun shouldFilter(uri: Uri, _folder: String): Boolean {

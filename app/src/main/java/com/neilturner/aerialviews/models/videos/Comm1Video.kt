@@ -20,7 +20,7 @@ class Comm1Video : AbstractVideo() {
     override fun allUrls(): List<String> {
         val urls = mutableSetOf<String>()
         enumValues<VideoQuality>().forEach { quality ->
-            uriAtQuality(quality).let { uri -> urls.add(FileHelper.filenameFromPath(uri)) }
+            uriAtQuality(quality).let { uri -> urls.add(FileHelper.filenameFromUri(uri)) }
         }
         return urls.toList()
     }
