@@ -8,21 +8,21 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 @Suppress("MemberVisibilityCanBePrivate")
 abstract class AbstractVideo {
     @SerializedName("url-1080-H264")
-    protected val video1080h264: String? = null
+    internal val video1080h264: String? = null
 
     @SerializedName("url-1080-SDR")
-    protected val video1080sdr: String? = null
+    internal val video1080sdr: String? = null
 
     @SerializedName("url-1080-HDR")
-    protected val video1080hdr: String? = null
+    internal val video1080hdr: String? = null
 
     @SerializedName("url-4K-SDR")
-    protected val video4ksdr: String? = null
+    internal val video4ksdr: String? = null
 
     @SerializedName("url-4K-HDR")
-    protected val video4khdr: String? = null
+    internal val video4khdr: String? = null
 
-    val accessibilityLabel: String? = null
+    internal val accessibilityLabel: String? = null
 
     @SerializedName("pointsOfInterest")
     val pointsOfInterest: Map<Int, String> = emptyMap()
@@ -30,5 +30,7 @@ abstract class AbstractVideo {
     val location: String
         get() = accessibilityLabel.toStringOrEmpty()
 
-    abstract fun uri(quality: VideoQuality): Uri?
+    abstract fun uriAtQuality(quality: VideoQuality): Uri
+
+    abstract fun allUris(): List<Uri>
 }

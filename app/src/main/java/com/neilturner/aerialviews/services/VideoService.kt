@@ -212,7 +212,7 @@ class VideoService(private val context: Context) {
 
         VideoQuality.values().forEach { quality ->
             val uri = try {
-                video.uri(quality)
+                video.uriAtQuality(quality)
             } catch (ex: Exception) {
                 Log.e(TAG, "Exception while getting list of video quality URIs", ex)
                 null

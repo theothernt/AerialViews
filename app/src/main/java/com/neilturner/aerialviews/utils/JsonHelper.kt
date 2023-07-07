@@ -21,7 +21,6 @@ object JsonHelper {
 
     fun parseJsonMap(context: Context, @RawRes res: Int): Map<String, String> {
         val stream = context.resources.openRawResource(res)
-        // val stream = LocaleHelper.localeResource(Locale.JAPANESE, res, context)
         val json = Scanner(stream).useDelimiter("\\A").next()
         return jsonParser.fromJson(json, object : TypeToken<Map<String, String>>() {}.type)
     }

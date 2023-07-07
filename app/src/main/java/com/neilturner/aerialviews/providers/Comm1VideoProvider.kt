@@ -27,7 +27,7 @@ class Comm1VideoProvider(context: Context, private val prefs: Comm1VideoPrefs) :
         wrapper.assets?.forEach {
             videos.add(
                 AerialVideo(
-                    it.uri(quality)!!,
+                    it.uriAtQuality(quality)!!,
                     it.location,
                     it.pointsOfInterest.mapValues { poi ->
                         strings[poi.value] ?: it.location
