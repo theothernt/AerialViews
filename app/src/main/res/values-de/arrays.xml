@@ -9,8 +9,8 @@
 
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
-        <item>Media scanner</item>
-        <item>Folder access (legacy)</item>
+        <item>Medien-Scanner</item>
+        <item>Ordnerzugriff (Veraltet)</item>
     </string-array>
 
     <!-- Playback speed -->
