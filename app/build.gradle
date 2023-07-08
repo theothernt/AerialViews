@@ -141,7 +141,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.0.2')
+    implementation('androidx.media3:media3-exoplayer:1.1.0')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
@@ -149,7 +149,7 @@ dependencies {
     implementation("com.chibatching.kotpref:enum-support:2.13.2")
 
     // SMB
-    implementation("com.hierynomus:smbj:0.11.5")
+    implementation('com.hierynomus:smbj:0.12.0')
 
     // Memory leaks
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.12')
