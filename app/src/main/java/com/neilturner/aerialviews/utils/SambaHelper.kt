@@ -17,6 +17,12 @@ object SambaHelper {
             return ""
         }
 
+        if (shareName.contains("\\", true)) {
+            shareName = shareName.replace('\\', '/')
+            shareName = shareName.replace("//", "/", true)
+            Log.i(TAG, "Fixing ShareName - replacing back slashes with forward slashes in sharename")
+        }
+
         if (shareName.contains("smb:/", true)) {
             shareName = shareName.replace("smb:/", "", true)
             Log.i(TAG, "Fixing ShareName - removing smb:/ from sharename")
