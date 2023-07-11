@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.SimpleVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper

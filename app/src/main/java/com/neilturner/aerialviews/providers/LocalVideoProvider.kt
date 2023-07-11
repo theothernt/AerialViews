@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.SimpleVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper

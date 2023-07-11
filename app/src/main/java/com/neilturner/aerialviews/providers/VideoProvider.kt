@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.SimpleVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 
