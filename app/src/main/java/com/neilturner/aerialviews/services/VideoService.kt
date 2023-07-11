@@ -64,7 +64,7 @@ class VideoService(private val context: Context) {
                 Log.e(TAG, "Exception in video provider", ex)
                 emptyList()
             }
-            videos.addAll(newVideos)
+            //videos.addAll(newVideos)
         }
 
         // Remove duplicates based on filename only
