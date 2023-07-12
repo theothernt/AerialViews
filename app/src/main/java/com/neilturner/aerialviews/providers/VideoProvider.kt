@@ -10,4 +10,12 @@ abstract class VideoProvider(val context: Context) {
     abstract fun fetchTest(): String
 
     abstract fun fetchMetadata(): List<VideoMetadata>
+
+    // supportsLocations
+    // supportsPointsOfInterest
+
+    // type
+    // VideoType.LOCAL, REMOTE
+    // LOCAL/LAN vs REMOVE/HTTPS/WEBDAV
+
 }

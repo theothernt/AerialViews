@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.models.videos
 import android.net.Uri
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.filename
 
 class Apple2018Video : AbstractVideo() {
 
@@ -23,7 +24,7 @@ class Apple2018Video : AbstractVideo() {
     override fun allUrls(): List<String> {
         val urls = mutableSetOf<String>()
         enumValues<VideoQuality>().forEach { quality ->
-            uriAtQuality(quality).let { uri -> urls.add(FileHelper.filenameFromUri(uri)) }
+            uriAtQuality(quality).let { uri -> urls.add(uri.filename) }
         }
         return urls.toList()
     }

@@ -62,10 +62,6 @@ object FileHelper {
         return false
     }
 
-    fun filenameFromUri(uri: Uri): String {
-        return uri.lastPathSegment ?: ""
-    }
-
     fun shouldFilter(uri: Uri, _folder: String): Boolean {
         if (_folder.isEmpty() || _folder.isBlank()) {
             return false
