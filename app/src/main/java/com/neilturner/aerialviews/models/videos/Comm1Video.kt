@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
 import com.neilturner.aerialviews.models.VideoQuality
-import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filename
 
 class Comm1Video : AbstractVideo() {

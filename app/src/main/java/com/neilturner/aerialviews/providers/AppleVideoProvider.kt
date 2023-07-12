@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
-import com.neilturner.aerialviews.models.videos.SimpleVideo
+import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
@@ -12,7 +12,7 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
 
-    override fun fetchVideos(): List<SimpleVideo> {
+    override fun fetchVideos(): List<AerialVideo> {
         return fetchAppleVideos().first
     }
 
@@ -37,13 +37,13 @@ class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) :
         return metadata
     }
 
-    private fun fetchAppleVideos(): Pair<List<SimpleVideo>, String> {
-        val videos = mutableListOf<SimpleVideo>()
+    private fun fetchAppleVideos(): Pair<List<AerialVideo>, String> {
+        val videos = mutableListOf<AerialVideo>()
         val quality = prefs.quality
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
-                SimpleVideo(
+                AerialVideo(
                     it.uriAtQuality(quality)
                 )
             )

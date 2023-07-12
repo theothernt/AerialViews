@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.videos.SimpleVideo
+import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
@@ -13,7 +13,7 @@ import java.io.File
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
-    override fun fetchVideos(): List<SimpleVideo> {
+    override fun fetchVideos(): List<AerialVideo> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().first
         } else {
@@ -33,8 +33,8 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         return emptyList()
     }
 
-    private fun folderAccessFetch(): Pair<List<SimpleVideo>, String> {
-        val videos = mutableListOf<SimpleVideo>()
+    private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
+        val videos = mutableListOf<AerialVideo>()
         val allFiles = mutableListOf<File>()
         var foldersFound = 0
         var filesFound = 0
@@ -93,7 +93,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(SimpleVideo(Uri.fromFile(file)))
+            videos.add(AerialVideo(Uri.fromFile(file)))
         }
 
         var message = "Videos found in folder: ${videos.size + excluded}\n"
@@ -103,8 +103,8 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         return Pair(videos, message)
     }
 
-    private fun mediaStoreFetch(): Pair<List<SimpleVideo>, String> {
-        val videos = mutableListOf<SimpleVideo>()
+    private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
+        val videos = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(context)
         var excluded = 0
         var filtered = 0
@@ -134,7 +134,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(SimpleVideo(uri))
+            videos.add(AerialVideo(uri))
         }
 
         var message = "Videos found by media scanner: ${localVideos.size}\n"

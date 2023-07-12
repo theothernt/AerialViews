@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
-import com.neilturner.aerialviews.models.videos.SimpleVideo
+import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
@@ -12,7 +12,7 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class Comm2VideoProvider(context: Context, private val prefs: Comm2VideoPrefs) : VideoProvider(context) {
 
-    override fun fetchVideos(): List<SimpleVideo> {
+    override fun fetchVideos(): List<AerialVideo> {
         return fetchCommunityVideos().first
     }
 
@@ -37,13 +37,13 @@ class Comm2VideoProvider(context: Context, private val prefs: Comm2VideoPrefs) :
         return metadata
     }
 
-    private fun fetchCommunityVideos(): Pair<List<SimpleVideo>, String> {
-        val videos = mutableListOf<SimpleVideo>()
+    private fun fetchCommunityVideos(): Pair<List<AerialVideo>, String> {
+        val videos = mutableListOf<AerialVideo>()
         val quality = prefs.quality
         val wrapper = parseJson(context, R.raw.comm2, JsonHelper.Comm2Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
-                SimpleVideo(
+                AerialVideo(
                     it.uriAtQuality(quality)
                 )
             )
