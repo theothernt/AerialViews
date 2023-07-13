@@ -40,7 +40,6 @@ class VideoService(private val context: Context) {
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
         var videos = mutableListOf<AerialVideo>()
-        val metadata = mutableListOf<VideoMetadata>()
 
         // Find all videos from all providers/sources
         providers.forEach {
@@ -60,26 +59,14 @@ class VideoService(private val context: Context) {
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
         }
 
+        // Randomise video order
+        if (GeneralPrefs.shuffleVideos) {
+            videos.shuffle()
+        }
+
         // Try to add location/POIs to all videos
         if (InterfacePrefs.locationStyle != LocationType.OFF) {
-            providers.forEach {
-                try {
-                    metadata.addAll((it.fetchMetadata()))
-                } catch (ex: Exception) {
-                    Log.e(TAG, "Exception while fetching metadata", ex)
-                }
-            }
-
-            // Find video id in metadata list
-            videos.forEach { video ->
-                metadata.forEach metadata@{ metadata ->
-                    if (metadata.urls.any { it.contains(video.uri.filename, true) }) {
-                        video.location = metadata.location
-                        video.poi = metadata.poi
-                        return@metadata
-                    }
-                }
-            }
+            addMetadataToVideos(videos, providers)
         }
 
         // If there are videos with no location yet, use filename as location
@@ -94,13 +81,31 @@ class VideoService(private val context: Context) {
             }
         }
 
-        // Randomise video order
-        if (GeneralPrefs.shuffleVideos) {
-            videos.shuffle()
-        }
-
         Log.i(TAG, "Total vids: ${videos.size}")
         VideoPlaylist(videos)
+    }
+
+    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<VideoProvider>): List<AerialVideo> {
+        val metadata = mutableListOf<VideoMetadata>()
+        providers.forEach {
+            try {
+                metadata.addAll((it.fetchMetadata()))
+            } catch (ex: Exception) {
+                Log.e(TAG, "Exception while fetching metadata", ex)
+            }
+        }
+
+        // Find video id in metadata list
+        videos.forEach { video ->
+            metadata.forEach metadata@{ metadata ->
+                if (metadata.urls.any { it.contains(video.uri.filename, true) }) {
+                    video.location = metadata.location
+                    video.poi = metadata.poi
+                    return@metadata
+                }
+            }
+        }
+        return videos
     }
 
     companion object {
