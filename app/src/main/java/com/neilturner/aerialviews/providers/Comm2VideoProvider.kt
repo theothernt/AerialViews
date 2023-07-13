@@ -12,6 +12,9 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class Comm2VideoProvider(context: Context, private val prefs: Comm2VideoPrefs) : VideoProvider(context) {
 
+    override val enabled: Boolean
+        get() = prefs.enabled
+
     override fun fetchVideos(): List<AerialVideo> {
         return fetchCommunityVideos().first
     }

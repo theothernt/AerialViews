@@ -12,6 +12,9 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
 
+    override val enabled: Boolean
+        get() = prefs.enabled
+
     override fun fetchVideos(): List<AerialVideo> {
         return fetchAppleVideos().first
     }

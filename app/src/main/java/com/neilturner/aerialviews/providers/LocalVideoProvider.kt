@@ -13,6 +13,9 @@ import java.io.File
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
+    override val enabled: Boolean
+        get() = prefs.enabled
+
     override fun fetchVideos(): List<AerialVideo> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().first

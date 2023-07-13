@@ -28,26 +28,14 @@ class VideoService(private val context: Context) {
     private val providers = mutableListOf<VideoProvider>()
 
     init {
-        if (LocalVideoPrefs.enabled) {
-            providers.add(LocalVideoProvider(context, LocalVideoPrefs))
-        }
+        providers.add(LocalVideoProvider(context, LocalVideoPrefs))
+        providers.add(SambaVideoProvider(context, SambaVideoPrefs))
 
-        if (SambaVideoPrefs.enabled) {
-            providers.add(SambaVideoProvider(context, SambaVideoPrefs))
-        }
-
-        if (Comm1VideoPrefs.enabled) {
-            providers.add(Comm1VideoProvider(context, Comm1VideoPrefs))
-        }
-
-        if (Comm2VideoPrefs.enabled) {
-            providers.add(Comm2VideoProvider(context, Comm2VideoPrefs))
-        }
-
+        // Prefer local videos first
         // Remote videos added last so they'll be filtered out if duplicates are found
-        if (AppleVideoPrefs.enabled) {
-            providers.add(AppleVideoProvider(context, AppleVideoPrefs))
-        }
+        providers.add(Comm1VideoProvider(context, Comm1VideoPrefs))
+        providers.add(Comm2VideoProvider(context, Comm2VideoPrefs))
+        providers.add(AppleVideoProvider(context, AppleVideoPrefs))
     }
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
@@ -57,7 +45,9 @@ class VideoService(private val context: Context) {
         // Find all videos from all providers/sources
         providers.forEach {
             try {
-                videos.addAll(it.fetchVideos())
+                if (it.enabled) {
+                    videos.addAll(it.fetchVideos())
+                }
             } catch (ex: Exception) {
                 Log.e(TAG, "Exception while fetching videos", ex)
             }

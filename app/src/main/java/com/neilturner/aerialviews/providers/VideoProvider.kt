@@ -5,14 +5,14 @@ import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 
 abstract class VideoProvider(val context: Context) {
+
+    abstract val enabled: Boolean
+
     abstract fun fetchVideos(): List<AerialVideo>
 
     abstract fun fetchTest(): String
 
     abstract fun fetchMetadata(): List<VideoMetadata>
-
-    // supportsLocations
-    // supportsPointsOfInterest
 
     // type
     // VideoType.LOCAL, REMOTE
