@@ -31,7 +31,7 @@ Or [download the APK from the Releases page](https://github.com/theothernt/Aeria
 
 Please visit this web page to download the videos from...
 
-* [Apple](https://aerial-videos.netlify.app/#apple) (118 videos)
+* [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
 * [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (8 community videos)
 
