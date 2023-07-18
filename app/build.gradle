@@ -14,8 +14,8 @@ android {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 33
-        versionCode 14
-        versionName "1.5.0"
+        versionCode 15
+        versionName "1.5.1"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -134,14 +134,14 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.3.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.7')
-    implementation('com.google.firebase:firebase-perf-ktx:20.3.3')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.4.0')
+    implementation('com.google.firebase:firebase-perf-ktx:20.4.0')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.0.2')
+    implementation('androidx.media3:media3-exoplayer:1.1.0')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
@@ -149,10 +149,10 @@ dependencies {
     implementation("com.chibatching.kotpref:enum-support:2.13.2")
 
     // SMB
-    implementation("com.hierynomus:smbj:0.11.5")
+    implementation('com.hierynomus:smbj:0.12.1')
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.11')
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.12')
 
     // Unit testing
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.3')
