@@ -59,25 +59,36 @@ class VideoService(private val context: Context) {
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
         }
 
-        // Try to add location/POIs to all videos
-        if (InterfacePrefs.locationStyle != LocationType.OFF) {
-            addMetadataToVideos(videos, providers)
+        // Add metadata to videos for filtering matched and unmatched
+        val result = addMetadataToVideos(videos, providers)
+        videos = result.first.toMutableList()
 
-            // Remove unmatched Apple/Community videos
-            if (GeneralPrefs.ignoreNonManifestVideos) {
-                videos.removeAll { it.location.isBlank() }
+        // Add unmatched videos
+        if (!GeneralPrefs.ignoreNonManifestVideos) {
+            // Add filename as video location
+            if (GeneralPrefs.filenameAsLocation) {
+                result.second.forEach {video ->
+                    if (video.location.isBlank()) {
+                        video.location = FileHelper.filenameToTitleCase(video.uri)
+                    }
+                }
             }
+            videos.addAll(result.second)
         }
 
-        // If there are videos with no location yet, use filename as location
-        if (!GeneralPrefs.ignoreNonManifestVideos &&
-            InterfacePrefs.locationStyle != LocationType.OFF &&
-            GeneralPrefs.filenameAsLocation
-        ) {
-            videos.forEach { video ->
-                if (video.location.isBlank()) {
-                    video.location = FileHelper.filenameToTitleCase(video.uri)
-                }
+        // Removed unneeded location data
+        when (InterfacePrefs.locationStyle) {
+            LocationType.POI -> videos.forEach { video ->
+                video.location = ""
+            }
+
+            LocationType.TITLE -> videos.forEach { video ->
+                video.poi = emptyMap()
+            }
+
+            else -> videos.forEach { video ->
+                video.location = ""
+                video.poi = emptyMap()
             }
         }
 
@@ -90,8 +101,11 @@ class VideoService(private val context: Context) {
         VideoPlaylist(videos)
     }
 
-    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<VideoProvider>): List<AerialVideo> {
+    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<VideoProvider>): Pair<List<AerialVideo>, List<AerialVideo>> {
         val metadata = mutableListOf<VideoMetadata>()
+        val matched = mutableListOf<AerialVideo>()
+        val unmatched = mutableListOf<AerialVideo>()
+
         providers.forEach {
             try {
                 metadata.addAll((it.fetchMetadata()))
@@ -101,16 +115,18 @@ class VideoService(private val context: Context) {
         }
 
         // Find video id in metadata list
-        videos.forEach { video ->
-            metadata.forEach metadata@{ metadata ->
+        videos.forEach video@{ video ->
+            metadata.forEach { metadata ->
                 if (metadata.urls.any { it.contains(video.uri.filename, true) }) {
                     video.location = metadata.location
                     video.poi = metadata.poi
-                    return@metadata
+                    matched.add(video)
+                    return@video
                 }
             }
+            unmatched.add(video)
         }
-        return videos
+        return Pair(matched, unmatched)
     }
 
     companion object {
