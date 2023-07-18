@@ -134,8 +134,8 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.3.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.3.7')
-    implementation('com.google.firebase:firebase-perf-ktx:20.3.3')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.4.0')
+    implementation('com.google.firebase:firebase-perf-ktx:20.4.0')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
