@@ -59,14 +59,14 @@ class VideoService(private val context: Context) {
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
         }
 
-        // Randomise video order
-        if (GeneralPrefs.shuffleVideos) {
-            videos.shuffle()
-        }
-
         // Try to add location/POIs to all videos
         if (InterfacePrefs.locationStyle != LocationType.OFF) {
             addMetadataToVideos(videos, providers)
+
+            // Remove unmatched Apple/Community videos
+            if (GeneralPrefs.ignoreNonManifestVideos) {
+                videos.removeAll { it.location.isBlank() }
+            }
         }
 
         // If there are videos with no location yet, use filename as location
@@ -79,6 +79,11 @@ class VideoService(private val context: Context) {
                     video.location = FileHelper.filenameToTitleCase(video.uri)
                 }
             }
+        }
+
+        // Randomise video order
+        if (GeneralPrefs.shuffleVideos) {
+            videos.shuffle()
         }
 
         Log.i(TAG, "Total vids: ${videos.size}")
