@@ -138,7 +138,16 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
 
-        listFilesAndFolder(share, path, files)
+        val folderQueue = ArrayDeque(listOf(path))
+        while (folderQueue.isNotEmpty()) {
+            val filesAndFolders = listFilesAndFolders(share, path)
+
+            files.addAll(filesAndFolders.first)
+
+            if (filesAndFolders.second.isNotEmpty()) {
+                folderQueue.addAll(filesAndFolders.second)
+            }
+        }
         smbClient.close()
 
         // Filter out non-video, dot files, etc
@@ -155,7 +164,8 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         return Pair(filteredFiles, message)
     }
 
-    private fun listFilesAndFolder(share: DiskShare, path: String, files: MutableList<String>) {
+    private fun listFilesAndFolders(share: DiskShare, path: String): Pair<List<String>, List<String>> {
+        val filesAndFolders = Pair(mutableListOf<String>(), mutableListOf<String>())
         share.list(path).forEach { item ->
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
@@ -166,12 +176,13 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
                 return@forEach
             }
 
-            if (!isFolder) {
-                files.add("$path/${item.fileName}")
+            if (isFolder) {
+                filesAndFolders.second.add("$path/${item.fileName}")
             } else {
-                listFilesAndFolder(share, "$path/${item.fileName}", files)
+                filesAndFolders.first.add("$path/${item.fileName}")
             }
         }
+        return filesAndFolders
     }
 
     companion object {
