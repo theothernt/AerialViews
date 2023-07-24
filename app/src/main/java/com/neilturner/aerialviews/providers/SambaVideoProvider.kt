@@ -83,7 +83,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             }
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
-            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
+            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/${shareName}/$filename")
             videos.add(AerialVideo(uri, ""))
         }
 
@@ -139,12 +139,13 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         }
 
         val folderQueue = ArrayDeque(listOf(path))
+        val recursive = false
         while (folderQueue.isNotEmpty()) {
-            val filesAndFolders = listFilesAndFolders(share, path)
+            val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
 
             files.addAll(filesAndFolders.first)
 
-            if (filesAndFolders.second.isNotEmpty()) {
+            if (recursive) {
                 folderQueue.addAll(filesAndFolders.second)
             }
         }
@@ -166,6 +167,8 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
     private fun listFilesAndFolders(share: DiskShare, path: String): Pair<List<String>, List<String>> {
         val filesAndFolders = Pair(mutableListOf<String>(), mutableListOf<String>())
+        Log.i(TAG, "isConnected: ${share.isConnected}")
+        Log.i(TAG, "Path: $path")
         share.list(path).forEach { item ->
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
