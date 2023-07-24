@@ -162,10 +162,14 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isFolder) {
-                listFilesAndFolder(share, "$path\\${item.fileName}", files)
+            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
+                return@forEach
+            }
+
+            if (!isFolder) {
+                files.add("$path/${item.fileName}")
             } else {
-                files.add(item.fileName)
+                listFilesAndFolder(share, "$path/${item.fileName}", files)
             }
         }
     }
