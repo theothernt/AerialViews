@@ -100,7 +100,6 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         path: String
     ): Pair<List<String>, String> {
         val files = mutableListOf<String>()
-        var excluded = 0
 
         // SMB Config
         val config: SmbConfig
@@ -139,6 +138,24 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
 
+        listFilesAndFolder(share, path, files)
+        smbClient.close()
+
+        // Filter out non-video, dot files, etc
+        val filteredFiles = files.filter { item ->
+            !FileHelper.isDotOrHiddenFile(item) && FileHelper.isSupportedVideoType(item)
+        }
+
+        // Show user normal auth vs anonymous vs guest?
+        
+        val excluded = files.size - filteredFiles.size
+        var message = "Videos found on samba share: ${files.size + excluded}\n"
+        message += "Videos with unsupported file extensions: $excluded\n"
+        message += "Videos selected for playback: ${files.size}"
+        return Pair(filteredFiles, message)
+    }
+
+    private fun listFilesAndFolder(share: DiskShare, path: String, files: MutableList<String>) {
         share.list(path).forEach { item ->
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
@@ -146,27 +163,11 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             )
 
             if (isFolder) {
-                return@forEach
+                listFilesAndFolder(share, "$path\\${item.fileName}", files)
+            } else {
+                files.add(item.fileName)
             }
-
-            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
-                return@forEach
-            }
-
-            if (!FileHelper.isSupportedVideoType(item.fileName)) {
-                excluded++
-                return@forEach
-            }
-
-            files.add(item.fileName)
         }
-        smbClient.close()
-
-        // Show user normal auth vs anonymous vs guest?
-        var message = "Videos found on samba share: ${files.size + excluded}\n"
-        message += "Videos with unsupported file extensions: $excluded\n"
-        message += "Videos selected for playback: ${files.size}"
-        return Pair(files, message)
     }
 
     companion object {
