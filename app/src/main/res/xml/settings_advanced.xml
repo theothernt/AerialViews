@@ -64,21 +64,4 @@
                     app:title="@string/locale_screensaver_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_samba_options">
-                <MultiSelectListPreference
-                    app:key="samba_videos_smb_dialects"
-                    app:defaultValue="@array/samba_videos_smb_dialects_default"
-                    app:entries="@array/samba_videos_smb_dialects_entries"
-                    app:entryValues="@array/samba_videos_smb_dialects_values"
-                    app:title="@string/samba_videos_smb_dialects_title"
-                    app:summary="@string/samba_videos_smb_dialects_summary"
-                    app:dialogTitle="@string/samba_videos_smb_dialects_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="samba_videos_enable_encryption"
-                    app:summary="@string/samba_videos_enable_encryption_summary"
-                    app:title="@string/samba_videos_enable_encryption_title" />
-        </PreferenceCategory>
 </PreferenceScreen>
