@@ -38,7 +38,13 @@
                     android:title="@string/samba_videos_password_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_actions">
+        <PreferenceCategory app:title="@string/category_advanced">
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="samba_videos_search_subfolders"
+                    app:title="@string/samba_videos_search_subfolders_title"
+                    app:summary="@string/samba_videos_search_subfolders_summary" />
+
                 <Preference
                     android:title="@string/samba_videos_test_connection"
                     android:key="samba_videos_test_connection" />

@@ -16,6 +16,8 @@ object SambaVideoPrefs : KotprefModel() {
 
     var enableEncryption by booleanPref(false, "samba_videos_enable_encryption")
 
+    var searchSubfolders by booleanPref(false, "samba_videos_search_subfolders")
+
     val smbDialects by stringSetPref("samba_videos_smb_dialects") {
         val smbDialects = context.resources.getStringArray(R.array.samba_videos_smb_dialects_default)
         val set = TreeSet<String>()

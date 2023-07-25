@@ -139,13 +139,12 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         }
 
         val folderQueue = ArrayDeque(listOf(path))
-        val recursive = false
         while (folderQueue.isNotEmpty()) {
             val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
 
             files.addAll(filesAndFolders.first)
 
-            if (recursive) {
+            if (prefs.searchSubfolders) {
                 folderQueue.addAll(filesAndFolders.second)
             }
         }
@@ -153,7 +152,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
         // Filter out non-video, dot files, etc
         val filteredFiles = files.filter { item ->
-            !FileHelper.isDotOrHiddenFile(item) && FileHelper.isSupportedVideoType(item)
+            FileHelper.isSupportedVideoType(item)
         }
 
         // Show user normal auth vs anonymous vs guest?
