@@ -138,16 +138,17 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
 
-        val folderQueue = ArrayDeque(listOf(path))
-        while (folderQueue.isNotEmpty()) {
-            val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
-
-            files.addAll(filesAndFolders.first)
-
-            if (prefs.searchSubfolders) {
-                folderQueue.addAll(filesAndFolders.second)
-            }
-        }
+//        val folderQueue = ArrayDeque(listOf(path))
+//        while (folderQueue.isNotEmpty()) {
+//            val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
+//
+//            files.addAll(filesAndFolders.first)
+//
+//            if (prefs.searchSubfolders) {
+//                folderQueue.addAll(filesAndFolders.second)
+//            }
+//        }
+        files.addAll(listFilesAndFoldersRecursive(share, path))
         smbClient.close()
 
         // Filter out non-video, dot files, etc
@@ -185,6 +186,27 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             }
         }
         return filesAndFolders
+    }
+
+    private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {
+        val files = mutableListOf<String>()
+        share.list(path).forEach { item ->
+            val isFolder = EnumWithValue.EnumUtils.isSet(
+                item.fileAttributes,
+                FileAttributes.FILE_ATTRIBUTE_DIRECTORY
+            )
+
+            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
+                return@forEach
+            }
+
+            if (isFolder && prefs.searchSubfolders) {
+                files.addAll(listFilesAndFoldersRecursive(share, "$path/${item.fileName}"))
+            } else if (!isFolder) {
+                files.add("$path/${item.fileName}")
+            }
+        }
+        return files
     }
 
     companion object {
