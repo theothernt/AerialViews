@@ -12,6 +12,7 @@
 
     <!-- Common Categories -->
     <string name="category_actions">Actions</string>
+    <string name="category_advanced">Advanced</string>
     <string name="category_video_source">Video Source</string>
     <string name="category_options">Options</string>
 
@@ -114,6 +115,9 @@
 
     <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
     <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
+
+    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
+    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
 
     <string name="samba_videos_test_connection">Test connection settings</string>
 

@@ -7,6 +7,10 @@
                     app:defaultValue="false"
                     app:key="samba_videos_enabled"
                     app:title="@string/samba_videos_enabled_title" />
+
+                <Preference
+                    android:title="@string/samba_videos_test_connection"
+                    android:key="samba_videos_test_connection" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_server_details">
@@ -38,10 +42,27 @@
                     android:title="@string/samba_videos_password_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_actions">
-                <Preference
-                    android:title="@string/samba_videos_test_connection"
-                    android:key="samba_videos_test_connection" />
+        <PreferenceCategory app:title="@string/category_advanced">
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="samba_videos_search_subfolders"
+                    app:title="@string/samba_videos_search_subfolders_title"
+                    app:summary="@string/samba_videos_search_subfolders_summary" />
+
+                <MultiSelectListPreference
+                    app:defaultValue="@array/samba_videos_smb_dialects_default"
+                    app:key="samba_videos_smb_dialects"
+                    app:entries="@array/samba_videos_smb_dialects_entries"
+                    app:entryValues="@array/samba_videos_smb_dialects_values"
+                    app:title="@string/samba_videos_smb_dialects_title"
+                    app:summary="@string/samba_videos_smb_dialects_summary"
+                    app:dialogTitle="@string/samba_videos_smb_dialects_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="samba_videos_enable_encryption"
+                    app:summary="@string/samba_videos_enable_encryption_summary"
+                    app:title="@string/samba_videos_enable_encryption_title" />
 
                 <Preference
                     android:title="@string/samba_videos_import_export_settings_title"

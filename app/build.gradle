@@ -114,7 +114,7 @@ android {
 
 dependencies {
     // Kotlin
-    def coroutines_version = '1.7.2'
+    def coroutines_version = '1.7.3'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
@@ -155,8 +155,8 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.12')
 
     // Unit testing
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.9.3')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.3')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.0')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 }
 
 tasks.withType(Test) {

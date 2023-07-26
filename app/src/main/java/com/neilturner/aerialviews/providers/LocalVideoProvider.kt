@@ -5,12 +5,16 @@ import android.net.Uri
 import com.neilturner.aerialviews.models.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
+
+    override val enabled: Boolean
+        get() = prefs.enabled
 
     override fun fetchVideos(): List<AerialVideo> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
@@ -26,6 +30,10 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         } else {
             folderAccessFetch().second
         }
+    }
+
+    override fun fetchMetadata(): List<VideoMetadata> {
+        return emptyList()
     }
 
     private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
@@ -88,7 +96,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(AerialVideo(Uri.fromFile(file), ""))
+            videos.add(AerialVideo(Uri.fromFile(file)))
         }
 
         var message = "Videos found in folder: ${videos.size + excluded}\n"
@@ -129,7 +137,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(AerialVideo(uri, ""))
+            videos.add(AerialVideo(uri))
         }
 
         var message = "Videos found by media scanner: ${localVideos.size}\n"

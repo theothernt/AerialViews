@@ -12,21 +12,29 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
 class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
+    override val enabled: Boolean
+        get() = prefs.enabled
+
     override fun fetchVideos(): List<AerialVideo> {
-        return sambaFetch().first
+        return fetchSambaVideos().first
     }
 
     override fun fetchTest(): String {
-        return sambaFetch().second
+        return fetchSambaVideos().second
     }
 
-    private fun sambaFetch(): Pair<List<AerialVideo>, String> {
+    override fun fetchMetadata(): List<VideoMetadata> {
+        return emptyList()
+    }
+
+    private fun fetchSambaVideos(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
 
         // Check hostname
@@ -83,7 +91,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             }
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
-            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
+            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/${shareName}/$filename")
             videos.add(AerialVideo(uri, ""))
         }
 
@@ -100,7 +108,6 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         path: String
     ): Pair<List<String>, String> {
         val files = mutableListOf<String>()
-        var excluded = 0
 
         // SMB Config
         val config: SmbConfig
@@ -139,34 +146,75 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
 
+//        val folderQueue = ArrayDeque(listOf(path))
+//        while (folderQueue.isNotEmpty()) {
+//            val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
+//
+//            files.addAll(filesAndFolders.first)
+//
+//            if (prefs.searchSubfolders) {
+//                folderQueue.addAll(filesAndFolders.second)
+//            }
+//        }
+        files.addAll(listFilesAndFoldersRecursive(share, path))
+        smbClient.close()
+
+        // Filter out non-video, dot files, etc
+        val filteredFiles = files.filter { item ->
+            FileHelper.isSupportedVideoType(item)
+        }
+
+        // Show user normal auth vs anonymous vs guest?
+        
+        val excluded = files.size - filteredFiles.size
+        var message = "Videos found on samba share: ${files.size + excluded}\n"
+        message += "Videos with unsupported file extensions: $excluded\n"
+        message += "Videos selected for playback: ${files.size}"
+        return Pair(filteredFiles, message)
+    }
+
+    private fun listFilesAndFolders(share: DiskShare, path: String): Pair<List<String>, List<String>> {
+        val filesAndFolders = Pair(mutableListOf<String>(), mutableListOf<String>())
+        Log.i(TAG, "isConnected: ${share.isConnected}")
+        Log.i(TAG, "Path: $path")
         share.list(path).forEach { item ->
             val isFolder = EnumWithValue.EnumUtils.isSet(
                 item.fileAttributes,
                 FileAttributes.FILE_ATTRIBUTE_DIRECTORY
             )
 
-            if (isFolder) {
+            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
                 return@forEach
             }
+
+            if (isFolder) {
+                filesAndFolders.second.add("$path/${item.fileName}")
+            } else {
+                filesAndFolders.first.add("$path/${item.fileName}")
+            }
+        }
+        return filesAndFolders
+    }
+
+    private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {
+        val files = mutableListOf<String>()
+        share.list(path).forEach { item ->
+            val isFolder = EnumWithValue.EnumUtils.isSet(
+                item.fileAttributes,
+                FileAttributes.FILE_ATTRIBUTE_DIRECTORY
+            )
 
             if (FileHelper.isDotOrHiddenFile(item.fileName)) {
                 return@forEach
             }
 
-            if (!FileHelper.isSupportedVideoType(item.fileName)) {
-                excluded++
-                return@forEach
+            if (isFolder && prefs.searchSubfolders) {
+                files.addAll(listFilesAndFoldersRecursive(share, "$path/${item.fileName}"))
+            } else if (!isFolder) {
+                files.add("$path/${item.fileName}")
             }
-
-            files.add(item.fileName)
         }
-        smbClient.close()
-
-        // Show user normal auth vs anonymous vs guest?
-        var message = "Videos found on samba share: ${files.size + excluded}\n"
-        message += "Videos with unsupported file extensions: $excluded\n"
-        message += "Videos selected for playback: ${files.size}"
-        return Pair(files, message)
+        return files
     }
 
     companion object {
