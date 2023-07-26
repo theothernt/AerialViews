@@ -36,6 +36,15 @@
 <!--                    app:title="@string/any_videos_use_apple_manifests_title"-->
 <!--                    app:summary="@string/any_videos_use_apple_manifests_summary" />-->
 
+                <ListPreference
+                    app:key="playback_max_video_length"
+                    app:defaultValue="@string/playback_max_video_length_default"
+                    app:entries="@array/playback_max_video_length_entries"
+                    app:entryValues="@array/playback_max_video_length_values"
+                    app:title="@string/playback_max_video_length_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playback_max_video_length_title" />
+
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="any_videos_ignore_non_manifest_videos"
