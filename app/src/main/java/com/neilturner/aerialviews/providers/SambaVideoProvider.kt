@@ -12,21 +12,29 @@ import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
 class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
 
+    override val enabled: Boolean
+        get() = prefs.enabled
+
     override fun fetchVideos(): List<AerialVideo> {
-        return sambaFetch().first
+        return fetchSambaVideos().first
     }
 
     override fun fetchTest(): String {
-        return sambaFetch().second
+        return fetchSambaVideos().second
     }
 
-    private fun sambaFetch(): Pair<List<AerialVideo>, String> {
+    override fun fetchMetadata(): List<VideoMetadata> {
+        return emptyList()
+    }
+
+    private fun fetchSambaVideos(): Pair<List<AerialVideo>, String> {
         val videos = mutableListOf<AerialVideo>()
 
         // Check hostname
@@ -84,7 +92,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}${prefs.shareName}/$filename")
-            videos.add(AerialVideo(uri, ""))
+            videos.add(AerialVideo(uri))
         }
 
         Log.i(TAG, "Videos found: ${videos.size}")
