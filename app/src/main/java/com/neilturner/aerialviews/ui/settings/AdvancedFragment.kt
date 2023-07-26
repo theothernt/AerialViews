@@ -14,18 +14,7 @@ class AdvancedFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_advanced, rootKey)
-        updateSummary()
         restartOnLanguageChange()
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun updateSummary() {
-        val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
-        dialects?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            dialects?.setSummaryFromValues(newValue as Set<String>)
-            true
-        }
-        dialects?.setSummaryFromValues(dialects.values)
     }
 
     private fun restartOnLanguageChange() {

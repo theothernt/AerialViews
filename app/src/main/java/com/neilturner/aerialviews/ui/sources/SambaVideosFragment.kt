@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -26,6 +27,7 @@ import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,6 +82,7 @@ class SambaVideosFragment :
         }
 
         limitTextInput()
+        updateSummary()
     }
 
     override fun onDestroy() {
@@ -111,6 +114,16 @@ class SambaVideosFragment :
         if (key == "samba_videos_sharename") {
             SambaVideoPrefs.shareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
         }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun updateSummary() {
+        val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
+        dialects?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            dialects?.setSummaryFromValues(newValue as Set<String>)
+            true
+        }
+        dialects?.setSummaryFromValues(dialects.values)
     }
 
     private fun limitTextInput() {
