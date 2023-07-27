@@ -117,6 +117,11 @@ class SambaVideosFragment :
         sharename?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue.toStringOrEmpty().isNotEmpty()) sharename?.summary =
                 SambaHelper.fixShareName(SambaVideoPrefs.shareName) else sharename?.summary = getString(R.string.samba_videos_sharename_summary)
+
+            if (newValue.toStringOrEmpty() != SambaVideoPrefs.shareName) {
+                sharename?.text = SambaVideoPrefs.shareName
+            }
+
             true
         }
         if (sharename?.text.toStringOrEmpty().isNotEmpty()) sharename?.summary =
