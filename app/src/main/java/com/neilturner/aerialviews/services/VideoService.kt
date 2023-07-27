@@ -67,7 +67,7 @@ class VideoService(private val context: Context) {
         if (!GeneralPrefs.ignoreNonManifestVideos) {
             // Add filename as video location
             if (GeneralPrefs.filenameAsLocation) {
-                result.second.forEach {video ->
+                result.second.forEach { video ->
                     if (video.location.isBlank()) {
                         video.location = FileHelper.filenameToTitleCase(video.uri)
                     }

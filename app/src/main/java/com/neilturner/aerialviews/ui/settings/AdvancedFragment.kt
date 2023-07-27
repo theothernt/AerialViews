@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.ListPreference
-import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.setSummaryFromValues
 
 class AdvancedFragment : PreferenceFragmentCompat() {
 

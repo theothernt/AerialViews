@@ -91,7 +91,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             }
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
-            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/${shareName}/$filename")
+            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/$shareName/$filename")
             videos.add(AerialVideo(uri, ""))
         }
 
@@ -165,7 +165,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         }
 
         // Show user normal auth vs anonymous vs guest?
-        
+
         val excluded = files.size - filteredFiles.size
         var message = "Videos found on samba share: ${files.size + excluded}\n"
         message += "Videos with unsupported file extensions: $excluded\n"
