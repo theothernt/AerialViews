@@ -28,6 +28,7 @@ import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,8 +38,7 @@ import java.util.Properties
 
 class SambaVideosFragment :
     PreferenceFragmentCompat(),
-    PreferenceManager.OnPreferenceTreeClickListener,
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var fileSystem: AndroidFileSystem
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestReadPermission: ActivityResultLauncher<String>
@@ -46,7 +46,6 @@ class SambaVideosFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         fileSystem = AndroidFileSystem(requireContext())
         storagePermissions = StoragePermissions(requireContext())
@@ -85,11 +84,6 @@ class SambaVideosFragment :
         updateSummary()
     }
 
-    override fun onDestroy() {
-        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
-        super.onDestroy()
-    }
-
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
@@ -110,12 +104,6 @@ class SambaVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key == "samba_videos_sharename") {
-            SambaVideoPrefs.shareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
-        }
-    }
-
     @Suppress("UNCHECKED_CAST")
     private fun updateSummary() {
         val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
@@ -124,6 +112,15 @@ class SambaVideosFragment :
             true
         }
         dialects?.setSummaryFromValues(dialects.values)
+
+        val sharename = findPreference<EditTextPreference>("samba_videos_sharename")
+        sharename?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue.toStringOrEmpty().isNotEmpty()) sharename?.summary =
+                SambaHelper.fixShareName(SambaVideoPrefs.shareName) else sharename?.summary = getString(R.string.samba_videos_sharename_summary)
+            true
+        }
+        if (sharename?.text.toStringOrEmpty().isNotEmpty()) sharename?.summary =
+            sharename?.text else sharename?.summary = getString(R.string.samba_videos_sharename_summary)
     }
 
     private fun limitTextInput() {

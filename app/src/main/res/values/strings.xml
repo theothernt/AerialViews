@@ -98,28 +98,35 @@
 
     <string name="samba_videos_enabled_title">Use SMB/Samba share videos</string>
 
+    <string name="samba_videos_test_connection">Test connection settings</string>
+
     <string name="samba_videos_hostname_title">Hostname</string>
     <string name="samba_videos_hostname_summary">IP address of the server</string>
 
-    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server </string>
+    <string name="samba_videos_domainname_title">Domain name</string>
+    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server. Optional</string>
 
     <string name="samba_videos_sharename_title">Share Name</string>
-    <string name="samba_videos_sharename_summary">e.g. /video/aerial</string>
+    <string name="samba_videos_sharename_summary">The name of the share and folder containing videos e.g. /video/aerial</string>
 
     <string name="samba_videos_username_title">Username</string>
-    <string name="samba_videos_username_summary">Optional</string>
+    <string name="samba_videos_username_summary">Not set. Optional</string>
 
     <string name="samba_videos_password_title">Password</string>
-    <string name="samba_videos_password_summary">Optional</string>
-
-    <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
-    <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
+    <string name="samba_videos_password_summary">Not set. Optional</string>
+    <string name="samba_videos_password_set_summary">Password set</string>
 
     <string name="samba_videos_search_subfolders_title">Search subfolders</string>
     <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
 
-    <string name="samba_videos_test_connection">Test connection settings</string>
+    <string name="samba_videos_enable_encryption_title">Enable encryption</string>
+    <string name="samba_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
+
+    <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
+    <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
+
+    <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
+    <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
 
     <!-- Main / Video Sources / WebDAV videos -->
 
@@ -247,12 +254,6 @@
 
     <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
     <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
-
-    <string name="samba_videos_enable_encryption_title">Enable encryption</string>
-    <string name="samba_videos_enable_encryption_summary">Enables encryption for SMB connections, can reduce overall transfer speed</string>
-
-    <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
-    <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
 
     <string name="locale_menu_title">Menu text locale</string>
     <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
