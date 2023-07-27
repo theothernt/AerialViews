@@ -113,6 +113,24 @@ class SambaVideosFragment :
         }
         dialects?.setSummaryFromValues(dialects.values)
 
+        val hostname = findPreference<EditTextPreference>("samba_videos_hostname")
+        hostname?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue.toStringOrEmpty().isNotEmpty()) hostname?.summary =
+                SambaVideoPrefs.hostName else hostname?.summary = getString(R.string.samba_videos_hostname_summary)
+            true
+        }
+        if (hostname?.text.toStringOrEmpty().isNotEmpty()) hostname?.summary =
+            hostname?.text else hostname?.summary = getString(R.string.samba_videos_hostname_summary)
+
+        val domainname = findPreference<EditTextPreference>("samba_videos_domainname")
+        domainname?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue.toStringOrEmpty().isNotEmpty()) domainname?.summary =
+                SambaVideoPrefs.domainName else domainname?.summary = getString(R.string.samba_videos_domainname_summary)
+            true
+        }
+        if (domainname?.text.toStringOrEmpty().isNotEmpty()) domainname?.summary =
+            domainname?.text else domainname?.summary = getString(R.string.samba_videos_hostname_summary)
+
         val sharename = findPreference<EditTextPreference>("samba_videos_sharename")
         sharename?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             if (newValue.toStringOrEmpty().isNotEmpty()) sharename?.summary =
@@ -121,11 +139,28 @@ class SambaVideosFragment :
             if (newValue.toStringOrEmpty() != SambaVideoPrefs.shareName) {
                 sharename?.text = SambaVideoPrefs.shareName
             }
-
             true
         }
         if (sharename?.text.toStringOrEmpty().isNotEmpty()) sharename?.summary =
             sharename?.text else sharename?.summary = getString(R.string.samba_videos_sharename_summary)
+
+        val username = findPreference<EditTextPreference>("samba_videos_username")
+        username?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue.toStringOrEmpty().isNotEmpty()) username?.summary =
+                SambaVideoPrefs.userName else username?.summary = getString(R.string.samba_videos_username_summary)
+            true
+        }
+        if (username?.text.toStringOrEmpty().isNotEmpty()) username?.summary =
+            username?.text else username?.summary = getString(R.string.samba_videos_username_summary)
+
+        val password = findPreference<EditTextPreference>("samba_videos_password")
+        password?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            if (newValue.toStringOrEmpty().isNotEmpty()) password?.summary =
+                getString(R.string.samba_videos_password_set_summary) else password?.summary = getString(R.string.samba_videos_password_summary)
+            true
+        }
+        if (password?.text.toStringOrEmpty().isNotEmpty()) password?.summary =
+            getString(R.string.samba_videos_password_set_summary) else password?.summary = getString(R.string.samba_videos_password_summary)
     }
 
     private fun limitTextInput() {
