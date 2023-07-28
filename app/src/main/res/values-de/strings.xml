@@ -231,17 +231,17 @@
 
     <string name="playlist_max_video_length_title">Videolänge begrenzen</string>
 
-    <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
-    <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
+    <string name="advanced_refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
+    <string name="advanced_refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>
 
-    <string name="performance_enable_tunneling_title">Aktiviere Tunneling</string>
-    <string name="performance_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
+    <string name="advanced_enable_tunneling_title">Aktiviere Tunneling</string>
+    <string name="advanced_enable_tunneling_summary">Verwende Hardwarebeschleunigung (für flüssiges 4K / HD wichtig)</string>
 
-    <string name="philips_dolby_vision_fix_title">Alternatives MediaCodec-Parsing verwenden</string>
-    <string name="philips_dolby_vision_fix_summary">Ermöglicht Wiedergabe von Dolby Vision auf älteren Philips TVs</string>
+    <string name="advanced_philips_dolby_vision_fix_title">Alternatives MediaCodec-Parsing verwenden</string>
+    <string name="advanced_philips_dolby_vision_fix_summary">Ermöglicht Wiedergabe von Dolby Vision auf älteren Philips TVs</string>
 
-    <string name="performance_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
-    <string name="performance_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
+    <string name="advanced_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
+    <string name="advanced_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
 
     <string name="samba_videos_enable_encryption_title">Verschlüsselung aktivieren</string>
     <string name="samba_videos_enable_encryption_summary">Verschlüsselte SMB-Verbindung aktivieren (reduziert evtl. Netzwerkgeschwindigkeit)</string>
@@ -249,11 +249,11 @@
     <string name="samba_videos_smb_dialects_title">SMB-Protokolldialekte wählen</string>
     <string name="samba_videos_smb_dialects_summary">Verwendete Version des SMB-Protokolls auswählen</string>
 
-    <string name="locale_menu_title">Sprache der Menütexte</string>
-    <string name="locale_screensaver_title">Sprache der Bildschirmschonertexte (Uhr, Ort)</string>
+    <string name="advanced_locale_menu_title">Sprache der Menütexte</string>
+    <string name="advanced_locale_screensaver_title">Sprache der Bildschirmschonertexte (Uhr, Ort)</string>
 
-    <string name="locale_restart_app_title">Neustart der App</string>
-    <string name="locale_restart_app_summary">Die Änderung der Menüsprache erfordert einen App-Neustart</string>
+    <string name="advanced_locale_restart_app_title">Neustart der App</string>
+    <string name="advanced_locale_restart_app_summary">Die Änderung der Menüsprache erfordert einen App-Neustart</string>
 
     <!-- Main / Settings / About -->
     <string name="category_about">Über</string>

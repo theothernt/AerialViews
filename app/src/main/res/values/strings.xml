@@ -243,23 +243,23 @@
     <string name="category_video_render_options">Video &amp; render options</string>
     <string name="category_samba_options">Samba/SMB options</string>
 
-    <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
-    <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
+    <string name="advanced_refresh_rate_switching_title">Auto refresh rate switching</string>
+    <string name="advanced_refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 
-    <string name="performance_enable_tunneling_title">Enable tunneling</string>
-    <string name="performance_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
+    <string name="advanced_enable_tunneling_title">Enable tunneling</string>
+    <string name="advanced_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
 
-    <string name="philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
-    <string name="philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+    <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
+    <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
-    <string name="performance_exceed_renderer_title">Exceed renderer capabilities</string>
-    <string name="performance_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
+    <string name="advanced_exceed_renderer_title">Exceed renderer capabilities</string>
+    <string name="advanced_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
 
-    <string name="locale_menu_title">Menu text locale</string>
-    <string name="locale_screensaver_title">Screensaver text (clock, location) locale</string>
+    <string name="advanced_locale_menu_title">Menu text locale</string>
+    <string name="advanced_locale_screensaver_title">Screensaver text (clock, location) locale</string>
 
-    <string name="locale_restart_app_title">Restart App</string>
-    <string name="locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+    <string name="advanced_locale_restart_app_title">Restart App</string>
+    <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 
     <!-- Main / Settings / About -->
     <string name="category_about">About</string>

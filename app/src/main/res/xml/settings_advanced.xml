@@ -5,14 +5,14 @@
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="refresh_rate_switching"
-                    app:summary="@string/refresh_rate_switching_summary"
-                    app:title="@string/refresh_rate_switching_title" />
+                    app:summary="@string/advanced_refresh_rate_switching_summary"
+                    app:title="@string/advanced_refresh_rate_switching_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
-                    app:summary="@string/performance_enable_tunneling_summary"
-                    app:title="@string/performance_enable_tunneling_title" />
+                    app:summary="@string/advanced_enable_tunneling_summary"
+                    app:title="@string/advanced_enable_tunneling_title" />
 
 <!--                <ListPreference-->
 <!--                    app:key="performance_buffering_strategy"-->
@@ -26,14 +26,14 @@
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="exceed_renderer"
-                    app:summary="@string/performance_exceed_renderer_summary"
-                    app:title="@string/performance_exceed_renderer_title" />
+                    app:summary="@string/advanced_exceed_renderer_summary"
+                    app:title="@string/advanced_exceed_renderer_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="philips_dolby_vision_fix"
-                    app:summary="@string/philips_dolby_vision_fix_summary"
-                    app:title="@string/philips_dolby_vision_fix_title" />
+                    app:summary="@string/advanced_philips_dolby_vision_fix_summary"
+                    app:title="@string/advanced_philips_dolby_vision_fix_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_appearance">
@@ -42,7 +42,7 @@
                     app:defaultValue="@string/locale_menu_default"
                     app:entries="@array/locale_menu_entries"
                     app:entryValues="@array/locale_menu_values"
-                    app:title="@string/locale_menu_title"
+                    app:title="@string/advanced_locale_menu_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
@@ -50,7 +50,7 @@
                     app:defaultValue="@string/locale_screensaver_default"
                     app:entries="@array/locale_screensaver_entries"
                     app:entryValues="@array/locale_screensaver_values"
-                    app:title="@string/locale_screensaver_title"
+                    app:title="@string/advanced_locale_screensaver_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

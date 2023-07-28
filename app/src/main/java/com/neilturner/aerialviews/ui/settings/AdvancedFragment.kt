@@ -25,8 +25,8 @@ class AdvancedFragment : PreferenceFragmentCompat() {
 
     private fun askForRestart() {
         AlertDialog.Builder(requireContext()).apply {
-            setTitle(R.string.locale_restart_app_title)
-            setMessage(R.string.locale_restart_app_summary)
+            setTitle(R.string.advanced_locale_restart_app_title)
+            setMessage(R.string.advanced_locale_restart_app_summary)
             setNegativeButton(R.string.button_cancel) { _, _ ->
             }
             setPositiveButton(R.string.button_ok) { _, _ ->

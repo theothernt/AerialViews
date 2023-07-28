@@ -232,17 +232,17 @@
 
     <string name="playlist_max_video_length_title">Обмежити довжину відео</string>
 
-    <string name="refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
-    <string name="refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
+    <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
+    <string name="advanced_refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
 
-    <string name="performance_enable_tunneling_title">Увімкнути тунелювання</string>
-    <string name="performance_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
+    <string name="advanced_enable_tunneling_title">Увімкнути тунелювання</string>
+    <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
 
-    <string name="philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
-    <string name="philips_dolby_vision_fix_summary">Виправлення відтворення Dolby Vision на деяких старих телевізорах Philips</string>
+    <string name="advanced_philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
+    <string name="advanced_philips_dolby_vision_fix_summary">Виправлення відтворення Dolby Vision на деяких старих телевізорах Philips</string>
     
-    <string name="performance_exceed_renderer_title">Перевищувати можливості рендеринга</string>
-    <string name="performance_exceed_renderer_summary">Перевищення максимального виявленого дозволу відео — марно для більшості пристроїв!</string>
+    <string name="advanced_exceed_renderer_title">Перевищувати можливості рендеринга</string>
+    <string name="advanced_exceed_renderer_summary">Перевищення максимального виявленого дозволу відео — марно для більшості пристроїв!</string>
     
     <string name="samba_videos_enable_encryption_title">Увімкнути шифрування</string>
     <string name="samba_videos_enable_encryption_summary">"Включає шифрування для SMB-з'єднань, може знизити загальну швидкість передачі"</string>
@@ -250,11 +250,11 @@
     <string name="samba_videos_smb_dialects_title">Виберіть діалекти SMB</string>
     <string name="samba_videos_smb_dialects_summary">Виберіть, яку версію SMB протоколу використовувати</string>
     
-    <string name="locale_menu_title">Мова меню</string>
-    <string name="locale_screensaver_title">Мова заставки (годинник, місце розташування)</string>
+    <string name="advanced_locale_menu_title">Мова меню</string>
+    <string name="advanced_locale_screensaver_title">Мова заставки (годинник, місце розташування)</string>
 
-    <string name="locale_restart_app_title">Перезапустити додаток</string>
-    <string name="locale_restart_app_summary">Для зміни мови, додаток необхідно перезапустити</string>
+    <string name="advanced_locale_restart_app_title">Перезапустити додаток</string>
+    <string name="advanced_locale_restart_app_summary">Для зміни мови, додаток необхідно перезапустити</string>
     
     <!-- Main / Settings / About -->
     <string name="category_about">Про додаток</string>
