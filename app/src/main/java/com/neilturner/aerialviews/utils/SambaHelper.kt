@@ -37,7 +37,6 @@ object SambaHelper {
             shareName = shareName.dropLast(1)
             Log.i(TAG, "Fixing ShareName - removing trailing slash")
         }
-
         return shareName
     }
 
@@ -64,9 +63,6 @@ object SambaHelper {
         if (segments.isNotEmpty()) {
             path = segments.joinToString("/")
         }
-
-        // Should use Data class in future...
-        // https://stackoverflow.com/a/48270757/247257
         return Pair(shareName, path)
     }
 
@@ -80,7 +76,6 @@ object SambaHelper {
             Log.i(TAG, "Using guest login auth")
             return AuthenticationContext.guest()
         }
-
         return AuthenticationContext(userName, password.toCharArray(), domainName)
     }
 
