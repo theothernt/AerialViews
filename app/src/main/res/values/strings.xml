@@ -196,37 +196,39 @@
 
     <string name="appearance_show_location_title">Show location or points of interest</string>
 
-    <string name="any_videos_filename_location_title">Use filename as location</string>
-    <string name="any_videos_filename_location_summary">eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</string>
+    <string name="appearance_use_filename_as_location_title">Use filename as location</string>
+    <string name="appearance_use_filename_as_location_summary">eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</string>
 
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>
 
-    <string name="interface_mute_videos_title">Mute videos</string>
-    <string name="interface_mute_videos_summary">Mute the sound of all videos</string>
+    <string name="playlist_mute_videos_title">Mute videos</string>
+    <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
-    <string name="interface_shuffle_videos_title">Shuffle videos</string>
-    <string name="interface_shuffle_videos_summary">Randomises the order of the videos</string>
+    <string name="playlist_shuffle_videos_title">Shuffle videos</string>
+    <string name="playlist_shuffle_videos_summary">Randomises the order of the videos</string>
 
-    <string name="playback_speed_title">Playback speed</string>
-    <string name="playback_speed_summary">Choose a playback speed</string>
+    <string name="playlist_max_video_length_title">Limit video length</string>
 
-    <string name="interface_remove_duplicates_title">Remove duplicate videos</string>
-    <string name="interface_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+    <string name="playlist_playback_speed_title">Playback speed</string>
+    <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignore unrecognised/non-Apple videos</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Skip videos not listed in any Apple video manifest</string>
+    <string name="playlist_remove_duplicates_title">Remove duplicate videos</string>
+    <string name="playlist_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+
+    <string name="playlist_ignore_unmatched_videos_title">Ignore unrecognised/non-Apple videos</string>
+    <string name="playlist_ignore_unmatched_videos_summary">Skip videos not listed in any Apple video manifest</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
 
-    <string name="interface_enable_skip_videos_title">Allow skipping to next/previous video</string>
-    <string name="interface_enable_skip_videos_summary">Skip a video by pressing left or right on the d-pad of your remote</string>
+    <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video</string>
+    <string name="playlist_allow_video_skipping_summary">Skip a video by pressing left or right on the d-pad of your remote</string>
 
-    <string name="interface_enable_playback_speed_change_title">Allow speed change during playback</string>
-    <string name="interface_enable_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
+    <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
+    <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Capabilities</string>
@@ -240,8 +242,6 @@
     <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Video &amp; render options</string>
     <string name="category_samba_options">Samba/SMB options</string>
-
-    <string name="playback_max_video_length_title">Limit video length</string>
 
     <string name="refresh_rate_switching_title">Auto refresh rate switching</string>
     <string name="refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>

@@ -184,37 +184,37 @@
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
-    <string name="any_videos_filename_location_title">Nutze Dateinamen als Ortsangabe</string>
-    <string name="any_videos_filename_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
+    <string name="appearance_use_filename_as_location_title">Nutze Dateinamen als Ortsangabe</string>
+    <string name="appearance_use_filename_as_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
 
     <string name="appearance_location_size_title">Textgröße der Ortsangabe anpassen</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>
 
-    <string name="interface_mute_videos_title">Stummschaltung der Videos</string>
-    <string name="interface_mute_videos_summary">Videos ohne Ton wiedergegeben</string>
+    <string name="playlist_mute_videos_title">Stummschaltung der Videos</string>
+    <string name="playlist_mute_videos_summary">Videos ohne Ton wiedergegeben</string>
 
-    <string name="interface_shuffle_videos_title">Reihenfolge der Videos mischen</string>
-    <string name="interface_shuffle_videos_summary">Videos in zufälliger Reihenfolge wiedergeben</string>
+    <string name="playlist_shuffle_videos_title">Reihenfolge der Videos mischen</string>
+    <string name="playlist_shuffle_videos_summary">Videos in zufälliger Reihenfolge wiedergeben</string>
 
-    <string name="playback_speed_title">Wiedergabegeschwindigkeit</string>
-    <string name="playback_speed_summary">Wähle eine Wiedergabegeschwindigkeit</string>
+    <string name="playlist_playback_speed_title">Wiedergabegeschwindigkeit</string>
+    <string name="playlist_playback_speed_summary">Wähle eine Wiedergabegeschwindigkeit</string>
 
-    <string name="interface_remove_duplicates_title">Entferne duplizierte Videos</string>
-    <string name="interface_remove_duplicates_summary">Entferne Videos mit gleichem Dateinamen aus der Wiedergabeliste</string>
+    <string name="playlist_remove_duplicates_title">Entferne duplizierte Videos</string>
+    <string name="playlist_remove_duplicates_summary">Entferne Videos mit gleichem Dateinamen aus der Wiedergabeliste</string>
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Ignoriere unbekannte / nicht von Apple stammende Videos</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Überspringe Videos die nicht in Video-Manifesten von Apple vorkommen</string>
+    <string name="playlist_ignore_unmatched_videos_title">Ignoriere unbekannte / nicht von Apple stammende Videos</string>
+    <string name="playlist_ignore_unmatched_videos_summary">Überspringe Videos die nicht in Video-Manifesten von Apple vorkommen</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad / Fernbedienung</string>
 
-    <string name="interface_enable_skip_videos_title">Nächstes / Vorheriges Video</string>
-    <string name="interface_enable_skip_videos_summary">Überspringe ein Video mit der Fernbedienung (Rechts / Links auf dem D-Pad der Fernbedienung)</string>
+    <string name="playlist_allow_video_skipping_title">Nächstes / Vorheriges Video</string>
+    <string name="playlist_allow_video_skipping_summary">Überspringe ein Video mit der Fernbedienung (Rechts / Links auf dem D-Pad der Fernbedienung)</string>
 
-    <string name="interface_enable_playback_speed_change_title">Geschwindigkeitsänderung während der Wiedergabe</string>
-    <string name="interface_enable_playback_speed_change_summary">Ändere die Wiedergabegeschwindigkeit (Hoch / Runter auf dem D-Pad der Fernbedienung)</string>
+    <string name="playlist_allow_playback_speed_change_title">Geschwindigkeitsänderung während der Wiedergabe</string>
+    <string name="playlist_allow_playback_speed_change_summary">Ändere die Wiedergabegeschwindigkeit (Hoch / Runter auf dem D-Pad der Fernbedienung)</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">TV-Funktionen</string>
@@ -229,7 +229,7 @@
     <string name="category_video_render_options">Video- &amp; Renderoptionen</string>
     <string name="category_samba_options">Optionen für Samba / SMB</string>
 
-    <string name="playback_max_video_length_title">Videolänge begrenzen</string>
+    <string name="playlist_max_video_length_title">Videolänge begrenzen</string>
 
     <string name="refresh_rate_switching_title">Automatische Bildwiederholungsrate</string>
     <string name="refresh_rate_switching_summary">Passe die Bildwiederholungsrate des Displays an die Videoframerate an</string>

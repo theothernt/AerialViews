@@ -185,37 +185,37 @@
 
     <string name="appearance_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
 
-    <string name="any_videos_filename_location_title">"Ім'я файлу як місцезнаходження"</string>
-    <string name="any_videos_filename_location_summary">"наприклад 'japan-mount_fuji.mp4' буде 'Japan - Mount Fuji'"</string>
+    <string name="appearance_use_filename_as_location_title">"Ім'я файлу як місцезнаходження"</string>
+    <string name="appearance_use_filename_as_location_summary">"наприклад 'japan-mount_fuji.mp4' буде 'Japan - Mount Fuji'"</string>
 
     <string name="appearance_location_size_title">Відрегулюйте розмір тексту розташування</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
 
-    <string name="interface_mute_videos_title">Без звуку</string>
-    <string name="interface_mute_videos_summary">Вимкнути звук у всіх відео</string>
+    <string name="playlist_mute_videos_title">Без звуку</string>
+    <string name="playlist_mute_videos_summary">Вимкнути звук у всіх відео</string>
     
-    <string name="interface_shuffle_videos_title">Перемішати відео</string>
-    <string name="interface_shuffle_videos_summary">Програвання відео у випадковому порядку</string>
+    <string name="playlist_shuffle_videos_title">Перемішати відео</string>
+    <string name="playlist_shuffle_videos_summary">Програвання відео у випадковому порядку</string>
     
-    <string name="playback_speed_title">Швидкість відтворення</string>
-    <string name="playback_speed_summary">Виберіть швидкість відтворення</string>
+    <string name="playlist_playback_speed_title">Швидкість відтворення</string>
+    <string name="playlist_playback_speed_summary">Виберіть швидкість відтворення</string>
     
-    <string name="interface_remove_duplicates_title">Видалити дублікати відео</string>
-    <string name="interface_remove_duplicates_summary">Видалити дублікати відео зі списку відтворення лише за назвою файлу</string>
+    <string name="playlist_remove_duplicates_title">Видалити дублікати відео</string>
+    <string name="playlist_remove_duplicates_summary">Видалити дублікати відео зі списку відтворення лише за назвою файлу</string>
     
-    <string name="any_videos_ignore_non_manifest_videos_summary">Пропустити відео, не зазначені в жодному відеоманіфесті Apple</string>
-    <string name="any_videos_ignore_non_manifest_videos_title">Ігнорувати відео не Apple в локальному сховищі або в локальній мережі</string>
+    <string name="playlist_ignore_unmatched_videos_summary">Пропустити відео, не зазначені в жодному відеоманіфесті Apple</string>
+    <string name="playlist_ignore_unmatched_videos_title">Ігнорувати відео не Apple в локальному сховищі або в локальній мережі</string>
     
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">Хрестовині пульта управління</string>
 
-    <string name="interface_enable_skip_videos_title">Дозволити перехід до наступного/попереднього відео</string>
-    <string name="interface_enable_skip_videos_summary">Перемикати відео, натисканням вліво або вправо на хрестовині пульта управління</string>
+    <string name="playlist_allow_video_skipping_title">Дозволити перехід до наступного/попереднього відео</string>
+    <string name="playlist_allow_video_skipping_summary">Перемикати відео, натисканням вліво або вправо на хрестовині пульта управління</string>
     
-    <string name="interface_enable_playback_speed_change_title">Дозволити зміну швидкості під час відтворення</string>
-    <string name="interface_enable_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
+    <string name="playlist_allow_playback_speed_change_title">Дозволити зміну швидкості під час відтворення</string>
+    <string name="playlist_allow_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
     
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Можливості</string>
@@ -230,7 +230,7 @@
     <string name="category_video_render_options">Параметри відео та рендеринга</string>
     <string name="category_samba_options">Samba/SMB налаштування</string>
 
-    <string name="playback_max_video_length_title">Обмежити довжину відео</string>
+    <string name="playlist_max_video_length_title">Обмежити довжину відео</string>
 
     <string name="refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
     <string name="refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>

@@ -5,13 +5,13 @@
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_skip_videos"
-                    app:summary="@string/interface_enable_skip_videos_summary"
-                    app:title="@string/interface_enable_skip_videos_title" />
+                    app:summary="@string/playlist_allow_video_skipping_summary"
+                    app:title="@string/playlist_allow_video_skipping_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="enable_playback_speed_change"
-                    app:summary="@string/interface_enable_playback_speed_change_summary"
-                    app:title="@string/interface_enable_playback_speed_change_title" />
+                    app:summary="@string/playlist_allow_playback_speed_change_summary"
+                    app:title="@string/playlist_allow_playback_speed_change_title" />
         </PreferenceCategory>
 </PreferenceScreen>

@@ -185,37 +185,37 @@
 
     <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
 
-    <string name="any_videos_filename_location_title">Имя файла в качестве местоположения</string>
-    <string name="any_videos_filename_location_summary">"например 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
+    <string name="appearance_use_filename_as_location_title">Имя файла в качестве местоположения</string>
+    <string name="appearance_use_filename_as_location_summary">"например 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
 
     <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
 
-    <string name="interface_mute_videos_title">Без звука</string>
-    <string name="interface_mute_videos_summary">Отключить звук во всех видео</string>
+    <string name="playlist_mute_videos_title">Без звука</string>
+    <string name="playlist_mute_videos_summary">Отключить звук во всех видео</string>
 
-    <string name="interface_shuffle_videos_title">Перемешать видео</string>
-    <string name="interface_shuffle_videos_summary">Проигрывание видео в случайном порядок</string>
+    <string name="playlist_shuffle_videos_title">Перемешать видео</string>
+    <string name="playlist_shuffle_videos_summary">Проигрывание видео в случайном порядок</string>
 
-    <string name="playback_speed_title">Скорость воспроизведения</string>
-    <string name="playback_speed_summary">Выберите скорость воспроизведения</string>
+    <string name="playlist_playback_speed_title">Скорость воспроизведения</string>
+    <string name="playlist_playback_speed_summary">Выберите скорость воспроизведения</string>
 
-    <string name="interface_remove_duplicates_title">Удалить дубликаты видео</string>
-    <string name="interface_remove_duplicates_summary">Удалить дубликаты видео из плейлиста только по имени файла</string>
+    <string name="playlist_remove_duplicates_title">Удалить дубликаты видео</string>
+    <string name="playlist_remove_duplicates_summary">Удалить дубликаты видео из плейлиста только по имени файла</string>
 
-    <string name="any_videos_ignore_non_manifest_videos_title">Игнорировать видео не Apple в локальном хранилище или в локальной сети</string>
-    <string name="any_videos_ignore_non_manifest_videos_summary">Пропускать видео, не указанные ни в одном видеоманифесте Apple</string>
+    <string name="playlist_ignore_unmatched_videos_title">Игнорировать видео не Apple в локальном хранилище или в локальной сети</string>
+    <string name="playlist_ignore_unmatched_videos_summary">Пропускать видео, не указанные ни в одном видеоманифесте Apple</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">Крестовине пульта управления</string>
 
-    <string name="interface_enable_skip_videos_title">Разрешить переход к следующему/предыдущему видео</string>
-    <string name="interface_enable_skip_videos_summary">Переключать видео, нажатием влево или вправо на крестовине пульта управления</string>
+    <string name="playlist_allow_video_skipping_title">Разрешить переход к следующему/предыдущему видео</string>
+    <string name="playlist_allow_video_skipping_summary">Переключать видео, нажатием влево или вправо на крестовине пульта управления</string>
 
-    <string name="interface_enable_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
-    <string name="interface_enable_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
+    <string name="playlist_allow_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
+    <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Возможности</string>
@@ -230,7 +230,7 @@
     <string name="category_video_render_options">Параметры видео и рендеринга</string>
     <string name="category_samba_options">Samba/SMB настройки</string>
 
-    <string name="playback_max_video_length_title">Ограничить длину видео</string>
+    <string name="playlist_max_video_length_title">Ограничить длину видео</string>
 
     <string name="refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
     <string name="refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>

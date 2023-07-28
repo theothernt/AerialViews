@@ -17,8 +17,8 @@
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="any_videos_filename_location"
-                    app:title="@string/any_videos_filename_location_title"
-                    app:summary="@string/any_videos_filename_location_summary" />
+                    app:title="@string/appearance_use_filename_as_location_title"
+                    app:summary="@string/appearance_use_filename_as_location_summary" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">
