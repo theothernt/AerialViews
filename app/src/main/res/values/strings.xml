@@ -114,7 +114,6 @@
 
     <string name="samba_videos_password_title">Password</string>
     <string name="samba_videos_password_summary">Not set. Optional</string>
-    <string name="samba_videos_password_set_summary">Password set</string>
 
     <string name="samba_videos_search_subfolders_title">Search subfolders</string>
     <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
