@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -37,6 +38,7 @@ import java.util.Properties
 
 class SambaVideosFragment :
     PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var fileSystem: AndroidFileSystem
     private lateinit var storagePermissions: StoragePermissions
@@ -45,6 +47,7 @@ class SambaVideosFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         fileSystem = AndroidFileSystem(requireContext())
         storagePermissions = StoragePermissions(requireContext())
@@ -83,6 +86,11 @@ class SambaVideosFragment :
         updateSummary()
     }
 
+    override fun onDestroy() {
+        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
+        super.onDestroy()
+    }
+
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
@@ -103,101 +111,56 @@ class SambaVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    @Suppress("UNCHECKED_CAST")
-    private fun updateSummary() {
-        val res = context?.resources
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
 
+        updateSummary()
+    }
+    
+    private fun updateSummary() {
         val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
-        dialects?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            dialects?.setSummaryFromValues(newValue as Set<String>)
-            true
-        }
         dialects?.setSummaryFromValues(dialects.values)
 
         // Host name
         val hostname = findPreference<EditTextPreference>("samba_videos_hostname")
-        hostname?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue.toStringOrEmpty().isNotEmpty()) {
-                hostname?.summary = SambaVideoPrefs.hostName
-            } else {
-                hostname?.summary = res?.getString(R.string.samba_videos_hostname_summary)
-            }
-            true
-        }
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {
             hostname?.summary = hostname?.text
         } else {
-            hostname?.summary = res?.getString(R.string.samba_videos_hostname_summary)
+            hostname?.summary = getString(R.string.samba_videos_hostname_summary)
         }
 
         // Domain name
         val domainname = findPreference<EditTextPreference>("samba_videos_domainname")
-        domainname?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue.toStringOrEmpty().isNotEmpty()) {
-                domainname?.summary = SambaVideoPrefs.domainName
-            } else {
-                domainname?.summary = res?.getString(R.string.samba_videos_domainname_summary)
-            }
-            true
-        }
         if (domainname?.text.toStringOrEmpty().isNotEmpty()) {
             domainname?.summary = domainname?.text
         } else {
-            domainname?.summary = res?.getString(R.string.samba_videos_domainname_summary)
+            domainname?.summary = getString(R.string.samba_videos_domainname_summary)
         }
 
         // Share name
         val sharename = findPreference<EditTextPreference>("samba_videos_sharename")
-        sharename?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { pref, newValue ->
-            val control = pref as EditTextPreference
-            if (newValue.toStringOrEmpty().isNotEmpty()) {
-                Log.i(TAG, "Not empty")
-                val fixedShareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
-                SambaVideoPrefs.shareName = fixedShareName
-                control.summary = fixedShareName
-                control.text = fixedShareName
-            } else {
-                Log.i(TAG, "Empty")
-                control.summary = res?.getString(R.string.samba_videos_sharename_summary)
-            }
-            true
-        }
         if (sharename?.text.toStringOrEmpty().isNotEmpty()) {
-            sharename?.summary = sharename?.text
+            val fixedShareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
+            SambaVideoPrefs.shareName = fixedShareName
+            sharename?.summary = fixedShareName
+            sharename?.text = fixedShareName
         } else {
-            sharename?.summary = res?.getString(R.string.samba_videos_sharename_summary)
+            sharename?.summary = getString(R.string.samba_videos_sharename_summary)
         }
 
         // Username
         val username = findPreference<EditTextPreference>("samba_videos_username")
-        username?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue.toStringOrEmpty().isNotEmpty()) {
-                username?.summary = SambaVideoPrefs.userName
-            } else {
-                username?.summary = res?.getString(R.string.samba_videos_username_summary)
-            }
-            true
-        }
         if (username?.text.toStringOrEmpty().isNotEmpty()) {
             username?.summary = username?.text
         } else {
-            username?.summary = res?.getString(R.string.samba_videos_username_summary)
+            username?.summary = getString(R.string.samba_videos_username_summary)
         }
 
         // Password
         val password = findPreference<EditTextPreference>("samba_videos_password")
-        password?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            if (newValue.toStringOrEmpty().isNotEmpty()) {
-                password?.summary = "*".repeat(SambaVideoPrefs.password.length)
-            } else {
-                password?.summary = res?.getString(R.string.samba_videos_password_summary)
-            }
-            true
-        }
         if (password?.text.toStringOrEmpty().isNotEmpty()) {
             password?.summary = "*".repeat(SambaVideoPrefs.password.length)
         } else {
-            password?.summary = res?.getString(R.string.samba_videos_password_summary)
+            password?.summary = getString(R.string.samba_videos_password_summary)
         }
     }
 
