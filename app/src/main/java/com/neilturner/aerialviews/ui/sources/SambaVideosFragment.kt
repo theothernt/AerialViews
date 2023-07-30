@@ -112,10 +112,9 @@ class SambaVideosFragment :
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-
         updateSummary()
     }
-    
+
     private fun updateSummary() {
         val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
         dialects?.setSummaryFromValues(dialects.values)
