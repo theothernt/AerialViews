@@ -59,12 +59,12 @@ android {
             applicationIdSuffix '.debug'
             debuggable true
             minifyEnabled false
-            pseudoLocalesEnabled true
 
-//            minifyEnabled true
-//            proguardFiles getDefaultProguardFile(
-//                    'proguard-android-optimize.txt'),
-//                    'proguard-rules.pro'
+            // pseudoLocalesEnabled true
+            // minifyEnabled true
+            // proguardFiles getDefaultProguardFile(
+            // 'proguard-android-optimize.txt'),
+            // 'proguard-rules.pro'
         }
         release {
             buildConfigField("String", "BUILD_TIME", "\"" + System.currentTimeMillis().toString() + "\"")
@@ -103,7 +103,7 @@ android {
         }
     }
 
-    flavorDimensions "version"
+    flavorDimensions += "version"
     productFlavors {
         create("github") {
             dimension = "version"
@@ -168,7 +168,7 @@ dependencies {
     testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.0')
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     useJUnitPlatform()
     testLogging {
         exceptionFormat "full"
