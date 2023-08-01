@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.models.prefs
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.models.LocationType
+import com.neilturner.aerialviews.models.MessageType
 
 object InterfacePrefs : KotprefModel() {
 
@@ -14,6 +15,11 @@ object InterfacePrefs : KotprefModel() {
 
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
+
+    var messageStyle by enumValuePref(MessageType.OFF, "message_style")
+    var messageSize by stringPref("36", "message_size")
+    var messageLine1 by stringPref("", "message_line1")
+    var messageLine2 by stringPref("", "message_line2")
 
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 

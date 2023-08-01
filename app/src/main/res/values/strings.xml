@@ -200,6 +200,17 @@
 
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
+    <!-- Main / Settings / Appearance / Message -->
+    <string name="category_message">Message</string>
+
+    <string name="appearance_message_style_title">Display up to 2 lines of custom text</string>
+
+    <string name="appearance_message_line1_title">Line 1</string>
+    <string name="appearance_message_line1_summary">Enter text to display, including emoji 👍</string>
+    <string name="appearance_message_line2_title">Line 2</string>
+
+    <string name="appearance_message_size_title">Adjust the size of the text</string>
+
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>
 
