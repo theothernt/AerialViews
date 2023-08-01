@@ -17,7 +17,7 @@ object InterfacePrefs : KotprefModel() {
     var locationSize by stringPref("18", "location_size")
 
     var messageStyle by enumValuePref(MessageType.OFF, "message_style")
-    var messageSize by stringPref("36", "message_size")
+    var messageSize by stringPref("18", "message_size")
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
 

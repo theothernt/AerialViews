@@ -20,6 +20,14 @@
             type="boolean" />
 
         <variable
+            name="showMessageLine1"
+            type="boolean" />
+
+        <variable
+            name="showMessageLine2"
+            type="boolean" />
+
+        <variable
             name="showClock"
             type="boolean" />
     </data>
@@ -58,6 +66,27 @@
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="Example location text" />
 
+        <TextView
+            android:id="@+id/message1"
+            style="@style/MessageText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
+            android:visibility="@{showMessageLine1 ? View.VISIBLE : View.GONE}"
+            tools:text="Example message line 1 text" />
+
+        <TextView
+            android:id="@+id/message2"
+            style="@style/MessageText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
+            android:visibility="@{showMessageLine1 ? View.VISIBLE : View.GONE}"
+            tools:text="Example message line 2 text" />
+
+
         <androidx.constraintlayout.helper.widget.Flow
             android:clipChildren="false"
             android:clipToPadding="false"
@@ -69,7 +98,7 @@
             android:layout_marginBottom="@dimen/screen_border_padding_bottom"
             app:flow_verticalGap="@dimen/text_block_padding"
             android:orientation="vertical"
-            app:constraint_referenced_ids="clock,location"
+            app:constraint_referenced_ids="clock,location,message1,message2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
