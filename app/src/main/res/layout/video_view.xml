@@ -20,11 +20,11 @@
             type="boolean" />
 
         <variable
-            name="showMessageLine1"
+            name="showMessage1"
             type="boolean" />
 
         <variable
-            name="showMessageLine2"
+            name="showMessage2"
             type="boolean" />
 
         <variable
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
-            android:visibility="@{showMessageLine1 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{showMessage1 ? View.VISIBLE : View.GONE}"
             tools:text="Example message line 1 text" />
 
         <TextView
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
-            android:visibility="@{showMessageLine1 ? View.VISIBLE : View.GONE}"
+            android:visibility="@{showMessage2 ? View.VISIBLE : View.GONE}"
             tools:text="Example message line 2 text" />
 
 

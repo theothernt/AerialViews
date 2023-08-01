@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LocationType
+import com.neilturner.aerialviews.models.MessageType
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
@@ -39,10 +40,16 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val loadingView: View
     private var loadingText: TextView
     private var shouldAlternateTextPosition = InterfacePrefs.alternateTextPosition
+
     private var showClock = InterfacePrefs.clockStyle
     private var clockSize = InterfacePrefs.clockSize
+
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     private var locationSize = InterfacePrefs.locationSize
+
+    private var showMessage1 = InterfacePrefs.messageStyle != MessageType.OFF
+    private var showMessage2 = InterfacePrefs.messageStyle == MessageType.TWO_LINE
+    private var messageSize = InterfacePrefs.messageSize
 
     val view: View
 
@@ -73,6 +80,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         videoView.showLocation = showLocation
         videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
+
+        videoView.showMessage1 = showMessage1
+        videoView.showMessage2 = showMessage2
+        videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
+        videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
 
         if (DeviceHelper.isFireTV()) {
             val newColor = Color.parseColor("#e9e9e9")

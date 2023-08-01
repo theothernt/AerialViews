@@ -29,7 +29,7 @@ import kotlin.math.roundToLong
 @SuppressLint("UnsafeOptInUsageError")
 class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
     private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
-    private var canChangePlaybackSpeedRunnable = Runnable { canChangePlaybackSpeed = true }
+    private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
     private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
