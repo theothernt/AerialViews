@@ -27,6 +27,6 @@ allprojects {
 
 apply plugin: 'com.osacky.doctor'
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }
