@@ -11,9 +11,7 @@
                     app:title="@string/appearance_message_style_title"
                     app:dialogTitle="@string/appearance_message_style_title"
                     app:useSimpleSummaryProvider="true" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_options">
                 <EditTextPreference
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line1"
@@ -23,7 +21,9 @@
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line2"
                     app:title="@string/appearance_message_line2_title" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_options">
                 <ListPreference
                     app:defaultValue="@string/appearance_message_size_default"
                     app:entries="@array/appearance_message_size_entries"

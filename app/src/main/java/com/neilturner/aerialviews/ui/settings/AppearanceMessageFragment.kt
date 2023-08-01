@@ -8,8 +8,8 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class AppearanceMessageFragment :
-    SharedPreferences.OnSharedPreferenceChangeListener,
-    PreferenceFragmentCompat() {
+    PreferenceFragmentCompat(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_message, rootKey)

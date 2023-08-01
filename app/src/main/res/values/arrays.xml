@@ -61,7 +61,7 @@
         <item>ONE_LINE</item>
         <item>TWO_LINE</item>
     </string-array>
-    <string name="appearance_message_style_default" translatable="false">Off</string>
+    <string name="appearance_message_style_default" translatable="false">OFF</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
