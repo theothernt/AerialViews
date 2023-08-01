@@ -66,6 +66,25 @@
             android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
             tools:text="Example location text" />
 
+        <androidx.constraintlayout.helper.widget.Flow
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:id="@+id/flow1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_border_padding"
+            android:layout_marginEnd="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
+            app:flow_verticalGap="@dimen/text_block_padding"
+            android:orientation="vertical"
+            app:constraint_referenced_ids="clock,location"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:flow_verticalAlign="bottom"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="none" />
+
         <TextView
             android:id="@+id/message1"
             style="@style/MessageText"
@@ -90,7 +109,7 @@
         <androidx.constraintlayout.helper.widget.Flow
             android:clipChildren="false"
             android:clipToPadding="false"
-            android:id="@+id/flow"
+            android:id="@+id/flow2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_border_padding"
@@ -98,7 +117,7 @@
             android:layout_marginBottom="@dimen/screen_border_padding_bottom"
             app:flow_verticalGap="@dimen/text_block_padding"
             android:orientation="vertical"
-            app:constraint_referenced_ids="clock,location,message1,message2"
+            app:constraint_referenced_ids="message1,message2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

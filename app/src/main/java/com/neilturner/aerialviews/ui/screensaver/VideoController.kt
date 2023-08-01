@@ -81,8 +81,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         videoView.showLocation = showLocation
         videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
 
-        videoView.showMessage1 = showMessage1
-        videoView.showMessage2 = showMessage2
+        videoView.showMessage1 = showMessage1 && InterfacePrefs.messageLine1.isNotBlank()
+        videoView.showMessage2 = showMessage2 && InterfacePrefs.messageLine2.isNotBlank()
+        videoView.message1.text = InterfacePrefs.messageLine1
+        videoView.message2.text = InterfacePrefs.messageLine2
         videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
         videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
 
