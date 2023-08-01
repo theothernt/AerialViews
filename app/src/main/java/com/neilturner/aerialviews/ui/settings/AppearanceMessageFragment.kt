@@ -30,7 +30,7 @@ class AppearanceMessageFragment :
 
     private fun updateSummary() {
         // Line 1
-        val line1 = findPreference<EditTextPreference>("appearance_message_line1")
+        val line1 = findPreference<EditTextPreference>("message_line1")
         if (line1?.text.toStringOrEmpty().isNotEmpty()) {
             line1?.summary = line1?.text
         } else {
@@ -38,7 +38,7 @@ class AppearanceMessageFragment :
         }
 
         // Line 2
-        val line2 = findPreference<EditTextPreference>("appearance_message_line2")
+        val line2 = findPreference<EditTextPreference>("message_line2")
         if (line2?.text.toStringOrEmpty().isNotEmpty()) {
             line2?.summary = line2?.text
         } else {
@@ -47,7 +47,7 @@ class AppearanceMessageFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("appearance_message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("appearance_message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 }
