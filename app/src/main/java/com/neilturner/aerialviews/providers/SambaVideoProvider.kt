@@ -173,29 +173,6 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         return Pair(filteredFiles, message)
     }
 
-    private fun listFilesAndFolders(share: DiskShare, path: String): Pair<List<String>, List<String>> {
-        val filesAndFolders = Pair(mutableListOf<String>(), mutableListOf<String>())
-        Log.i(TAG, "isConnected: ${share.isConnected}")
-        Log.i(TAG, "Path: $path")
-        share.list(path).forEach { item ->
-            val isFolder = EnumWithValue.EnumUtils.isSet(
-                item.fileAttributes,
-                FileAttributes.FILE_ATTRIBUTE_DIRECTORY
-            )
-
-            if (FileHelper.isDotOrHiddenFile(item.fileName)) {
-                return@forEach
-            }
-
-            if (isFolder) {
-                filesAndFolders.second.add("$path/${item.fileName}")
-            } else {
-                filesAndFolders.first.add("$path/${item.fileName}")
-            }
-        }
-        return filesAndFolders
-    }
-
     private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {
         val files = mutableListOf<String>()
         share.list(path).forEach { item ->

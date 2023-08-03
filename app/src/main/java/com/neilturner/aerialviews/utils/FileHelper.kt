@@ -32,10 +32,10 @@ object FileHelper {
         return videos
     }
 
-    fun isLocalVideo(uri: Uri): Boolean {
-        return !uri.toString().contains("http://", true) &&
-            !uri.toString().contains("https://", true)
-    }
+//    fun isLocalVideo(uri: Uri): Boolean {
+//        return !uri.toString().contains("http://", true) &&
+//            !uri.toString().contains("https://", true)
+//    }
 
     fun isSambaVideo(uri: Uri): Boolean {
         return uri.toString().contains("smb://", true)
@@ -62,16 +62,16 @@ object FileHelper {
         return false
     }
 
-    fun shouldFilter(uri: Uri, _folder: String): Boolean {
-        if (_folder.isEmpty() || _folder.isBlank()) {
+    fun shouldFilter(uri: Uri, folder: String): Boolean {
+        if (folder.isEmpty() || folder.isBlank()) {
             return false
         }
 
-        var folder = if (_folder.first() != '/') "/$_folder" else _folder
-        folder = if (folder.last() != '/') "$folder/" else folder
+        var newFolder = if (folder.first() != '/') "/$folder" else folder
+        newFolder = if (newFolder.last() != '/') "$newFolder/" else newFolder
 
-        Log.i(TAG, "Looking for $folder in ${uri.path}")
-        return !uri.path.toStringOrEmpty().contains(folder, true)
+        Log.i(TAG, "Looking for $newFolder in ${uri.path}")
+        return !uri.path.toStringOrEmpty().contains(newFolder, true)
     }
 
     fun filenameToTitleCase(uri: Uri): String {

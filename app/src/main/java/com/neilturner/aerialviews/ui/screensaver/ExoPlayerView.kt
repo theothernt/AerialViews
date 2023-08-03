@@ -90,14 +90,14 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         super.onDetachedFromWindow()
     }
 
-    override fun onMeasure(_widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        var widthMeasureSpec = _widthMeasureSpec
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var newWidthMeasureSpec = widthMeasureSpec
         if (aspectRatio > 0) {
             val newHeight = MeasureSpec.getSize(heightMeasureSpec)
             val newWidth = (newHeight * aspectRatio).toInt()
-            widthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
+            newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
         }
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
     }
 
     fun setOnPlayerListener(listener: OnPlayerEventListener?) {

@@ -24,7 +24,7 @@ import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class VideoService(private val context: Context) {
+class VideoService(val context: Context) {
     private val providers = mutableListOf<VideoProvider>()
 
     init {

@@ -45,7 +45,7 @@ android {
     }
 
     kotlin {
-        sourceSets.all {
+        sourceSets.configureEach {
             languageSettings {
                 languageVersion = "2.0"
             }

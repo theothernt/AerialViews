@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.neilturner.aerialviews.services
 
 import android.annotation.SuppressLint
@@ -16,7 +18,7 @@ enum class HDRFormat {
     DOLBY_VISION, HDR10, HDR10_PLUS, HLG, UNKNOWN
 }
 
-fun HDRTypeToHDRFormat(value: Int): HDRFormat {
+fun hdrTypeToFormat(value: Int): HDRFormat {
     return when (value) {
         NativeDisplay.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> HDRFormat.DOLBY_VISION
         NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10 -> HDRFormat.HDR10
@@ -30,7 +32,7 @@ enum class PowerState {
     OFF, ON, DOZE, DOZE_SUSPEND, ON_SUSPEND, UNKNOWN
 }
 
-fun DisplayStateToPowerState(value: Int): PowerState {
+fun displayStateToPowerState(value: Int): PowerState {
     return when (value) {
         NativeDisplay.STATE_OFF -> PowerState.OFF
         NativeDisplay.STATE_ON -> PowerState.ON
@@ -52,8 +54,8 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
 class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
     val name: String = source.name
     val id: Int = source.displayId
-    val valid: Boolean = source.isValid
-    val state: PowerState = DisplayStateToPowerState(source.state)
+    //val valid: Boolean = source.isValid
+    val state: PowerState = displayStateToPowerState(source.state)
 
     // flags
     val isPresentation: Boolean
@@ -127,7 +129,7 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
             supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) source.isHdr else capabilities != null
             minimumLuminance = capabilities?.desiredMinLuminance
             maximumLuminance = capabilities?.desiredMaxLuminance
-            hdrFormats = capabilities?.supportedHdrTypes?.map { HDRTypeToHDRFormat(it) } ?: listOf()
+            hdrFormats = capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
         } else {
             supportsHDR = false
             minimumLuminance = null

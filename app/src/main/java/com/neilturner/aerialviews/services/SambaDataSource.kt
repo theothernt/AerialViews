@@ -136,10 +136,9 @@ class SambaDataSource : BaseDataSource(true) {
 
     @SuppressLint("UnsafeOptInUsageError")
     @Throws(IOException::class)
-    private fun readInternal(buffer: ByteArray, offset: Int, _readLength: Int): Int {
-        var readLength = _readLength
-
-        if (readLength == 0) {
+    private fun readInternal(buffer: ByteArray, offset: Int, readLength: Int): Int {
+        var newReadLength = readLength
+        if (newReadLength == 0) {
             return 0
         }
 
@@ -148,10 +147,10 @@ class SambaDataSource : BaseDataSource(true) {
             if (bytesRemaining == 0L) {
                 return C.RESULT_END_OF_INPUT
             }
-            readLength = min(readLength.toLong(), bytesRemaining).toInt()
+            newReadLength = min(newReadLength.toLong(), bytesRemaining).toInt()
         }
 
-        val read = inputStream!!.read(buffer, offset, readLength)
+        val read = inputStream!!.read(buffer, offset, newReadLength)
         if (read == -1) {
             if (bytesToRead != C.LENGTH_UNSET.toLong()) {
                 throw EOFException()

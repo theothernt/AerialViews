@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
@@ -128,7 +126,8 @@ class LocalVideosFragment :
         pref?.isChecked = false
     }
 
-    private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {
+    @Suppress("SameParameterValue")
+    private suspend fun showDialog(title: String, message: String) = withContext(Dispatchers.Main) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)
