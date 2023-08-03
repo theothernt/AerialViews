@@ -12,6 +12,7 @@
 
     <!-- Common Categories -->
     <string name="category_actions">Действия</string>
+    <string name="category_advanced">Advanced</string>
     <string name="category_video_source">Источник видео</string>
     <string name="category_options">Опции</string>
 
@@ -112,6 +113,9 @@
     <string name="samba_videos_password_title">Пароль</string>
     <string name="samba_videos_password_summary">Необязательно</string>
 
+    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
+    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
+
     <string name="samba_videos_import_export_settings_title">Импорт/экспорт настроек</string>
     <string name="samba_videos_import_export_settings_summary">Импортирует или экспортирует ваши учетные данные SMB в папку Загрузки</string>
 
@@ -189,6 +193,17 @@
     <string name="appearance_use_filename_as_location_summary">"например 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
 
     <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
+
+    <!-- Main / Settings / Appearance / Message -->
+    <string name="category_message">Message</string>
+
+    <string name="appearance_message_style_title">Show custom message</string>
+
+    <string name="appearance_message_line1_title">Line 1</string>
+    <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+    <string name="appearance_message_line2_title">Line 2</string>
+
+    <string name="appearance_message_size_title">Adjust the size of the text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>

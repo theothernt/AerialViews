@@ -11,6 +11,7 @@
 
     <!-- Common Categories -->
     <string name="category_actions">Aktionen</string>
+    <string name="category_advanced">Advanced</string>
     <string name="category_video_source">Video-Quelle</string>
     <string name="category_options">Optionen</string>
 
@@ -111,6 +112,9 @@
     <string name="samba_videos_password_title">Passwort</string>
     <string name="samba_videos_password_summary">Optional</string>
 
+    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
+    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
+
     <string name="samba_videos_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
     <string name="samba_videos_import_export_settings_summary">SMB-Zugangsdaten im Downloadordner Sichern oder daraus Wiederherstellen</string>
 
@@ -188,6 +192,17 @@
     <string name="appearance_use_filename_as_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
 
     <string name="appearance_location_size_title">Textgröße der Ortsangabe anpassen</string>
+
+    <!-- Main / Settings / Appearance / Message -->
+    <string name="category_message">Message</string>
+
+    <string name="appearance_message_style_title">Show custom message</string>
+
+    <string name="appearance_message_line1_title">Line 1</string>
+    <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+    <string name="appearance_message_line2_title">Line 2</string>
+
+    <string name="appearance_message_size_title">Adjust the size of the text</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Wiedergabeliste</string>
