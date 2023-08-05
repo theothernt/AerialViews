@@ -210,6 +210,59 @@
     </string-array>
     <string name="playback_max_video_length_default" translatable="false">0</string>
 
+    <!-- Font selection -->
+    <string-array name="appearance_font_entries">
+        <item>Roboto</item>
+        <item>Roboto Thin (Default)</item>
+        <item>Roboto Light</item>
+        <item>Roboto Medium</item>
+        <item>Roboto Black</item>
+        <item>Roboto Condensed</item>
+        <item>Roboto Condensed Light</item>
+        <item>Roboto Condensed Medium</item>
+        <item>Open Sans</item>
+        <item>Open Sans Light</item>
+        <item>Open Sans Medium</item>
+        <item>Open Sans Condensed</item>
+        <item>Open Sans Condensed Light</item>
+        <item>Open Sans Condensed Medium</item>
+        <item>Open Sans Semi-Condensed</item>
+        <item>Open Sans Semi-Condensed Light</item>
+        <item>Open Sans Semi-Condensed Medium</item>
+        <item>Carrois Gothic SC</item>
+        <item>Noto Serif</item>
+        <item>Droid Sans Mono</item>
+        <item>Cutive Mono</item>
+        <item>Coming Soon</item>
+        <item>Dancing Script</item>
+    </string-array>
+    <string-array name="appearance_font_values" translatable="false">
+        <item>sans-serif</item>
+        <item>sans-serif-thin</item>
+        <item>sans-serif-light</item>
+        <item>sans-serif-medium</item>
+        <item>sans-serif-black</item>
+        <item>sans-serif-condensed</item>
+        <item>sans-serif-condensed-light</item>
+        <item>sans-serif-condensed-medium</item>
+        <item>font/opensans.ttf</item>
+        <item>font/opensans-light.ttf</item>
+        <item>font/opensans-medium.ttf</item>
+        <item>font/opensans-condensed.ttf</item>
+        <item>font/opensans-condensed-light.ttf</item>
+        <item>font/opensans-condensed-medium.ttf</item>
+        <item>font/opensans-semi-condensed.ttf</item>
+        <item>font/opensans-semi-condensed-light.ttf</item>
+        <item>font/opensans-semi-condensed-medium.ttf</item>
+        <item>sans-serif-smallcaps</item>
+        <item>serif</item>
+        <item>monospace</item>
+        <item>serif-monospace</item>
+        <item>casual</item>
+        <item>cursive</item>
+    </string-array>
+    <string name="appearance_font_default" translatable="false">sans-serif-thin</string>
+
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
         <item>Media scanner</item>
