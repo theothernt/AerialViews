@@ -1,6 +1,136 @@
 {
     "assets": [
         {
+            "id": "robinfrcd_capmechant_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_capmechant_202304_0"
+            },
+            "title": "Cap Méchant",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_capmechant2_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_capmechant2_202304_0"
+            },
+            "title": "Cap Méchant",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "sunset",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant2_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechan2_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant2_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_grandcoude_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_grandcoude_202304_0"
+            },
+            "title": "Grand Coude",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_grandetang_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_grandetang_202304_0"
+            },
+            "title": "Grand Etang",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_lagon_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_lagon_202304_0"
+            },
+            "title": "Coral Reef",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_mafate_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_mafate_202304_0"
+            },
+            "title": "Mafate",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_pitondesneiges_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_pitondesneiges_202304_0"
+            },
+            "title": "Piton des Neiges",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_pitonfournaise_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_pitonfournaise_202304_0"
+            },
+            "title": "Plaine des Sables",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_trestastar_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_trestastar_202304_0"
+            },
+            "title": "Tresta Star",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_troudefer_202304",
+            "pointsOfInterest": {
+                "0": "robinfrcd_troudefer_202304_0"
+            },
+            "title": "Trou de Fer",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_4k_hevc.m4v"
+        },
+        {
             "id": "french_alps_mont_blanc_202202",
             "pointsOfInterest": {
                 "0": "french_alps_mont_blanc_202202_0"
