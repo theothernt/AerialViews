@@ -3,7 +3,7 @@
         {
             "id": "robinfrcd_capmechant_202304",
             "pointsOfInterest": {
-                "0": "Flying over rough sea at Cap Méchant, Réunion, France"
+                "0": "robinfrcd_capmechant_202304_0"
             },
             "title": "Cap Méchant",
             "accessibilityLabel": "France",
@@ -16,7 +16,7 @@
         {
             "id": "robinfrcd_capmechant2_202304",
             "pointsOfInterest": {
-                "0": "Flying over rough sea at Cap Méchant, Réunion, France"
+                "0": "robinfrcd_capmechant2_202304_0"
             },
             "title": "Cap Méchant",
             "accessibilityLabel": "France",
@@ -29,7 +29,7 @@
         {
             "id": "robinfrcd_grandcoude_202304",
             "pointsOfInterest": {
-                "0": "Flying over Grand Coude road, Réunion, France"
+                "0": "robinfrcd_grandcoude_202304_0"
             },
             "title": "Grand Coude",
             "accessibilityLabel": "France",
@@ -42,7 +42,7 @@
         {
             "id": "robinfrcd_grandetang_202304",
             "pointsOfInterest": {
-                "0": "Flying over Grand Etang, Réunion, France"
+                "0": "robinfrcd_grandetang_202304_0"
             },
             "title": "Grand Etang",
             "accessibilityLabel": "France",
@@ -55,7 +55,7 @@
         {
             "id": "robinfrcd_lagon_202304",
             "pointsOfInterest": {
-                "0": "Flying over Saint-Leu Coral Reef, Réunion, France"
+                "0": "robinfrcd_lagon_202304_0"
             },
             "title": "Coral Reef",
             "accessibilityLabel": "France",
@@ -68,7 +68,7 @@
         {
             "id": "robinfrcd_mafate_202304",
             "pointsOfInterest": {
-                "0": "Flying towards an îlet in Mafate, Réunion, France"
+                "0": "robinfrcd_mafate_202304_0"
             },
             "title": "Mafate",
             "accessibilityLabel": "France",
@@ -81,7 +81,7 @@
         {
             "id": "robinfrcd_pitondesneiges_202304",
             "pointsOfInterest": {
-                "0": "Flying around Piton des Neiges, Réunion, France"
+                "0": "robinfrcd_pitondesneiges_202304_0"
             },
             "title": "Piton des Neiges",
             "accessibilityLabel": "France",
@@ -94,7 +94,7 @@
         {
             "id": "robinfrcd_pitonfournaise_202304",
             "pointsOfInterest": {
-                "0": "Flying over Plaine des Sables, Piton de la Fournaise, Réunion, France"
+                "0": "robinfrcd_pitonfournaise_202304_0"
             },
             "title": "Plaine des Sables",
             "accessibilityLabel": "France",
@@ -107,7 +107,7 @@
         {
             "id": "robinfrcd_trestastar_202304",
             "pointsOfInterest": {
-                "0": "Flying around Tresta Star wreck, Piton de la Fournaise, Réunion, France"
+                "0": "robinfrcd_trestastar_202304_0"
             },
             "title": "Tresta Star",
             "accessibilityLabel": "France",
@@ -120,7 +120,7 @@
         {
             "id": "robinfrcd_troudefer_202304",
             "pointsOfInterest": {
-                "0": "Flying over Trou de Fer, Réunion, France"
+                "0": "robinfrcd_troudefer_202304_0"
             },
             "title": "Trou de Fer",
             "accessibilityLabel": "France",
