@@ -1,6 +1,136 @@
 {
     "assets": [
         {
+            "id": "robinfrcd_capmechant_202304",
+            "pointsOfInterest": {
+                "0": "Flying over rough sea at Cap Méchant, Réunion, France"
+            },
+            "title": "Cap Méchant",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_capmechant2_202304",
+            "pointsOfInterest": {
+                "0": "Flying over rough sea at Cap Méchant, Réunion, France"
+            },
+            "title": "Cap Méchant",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "sunset",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant2_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechan2_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_CapMechant2_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_grandcoude_202304",
+            "pointsOfInterest": {
+                "0": "Flying over Grand Coude road, Réunion, France"
+            },
+            "title": "Grand Coude",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandCoude_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_grandetang_202304",
+            "pointsOfInterest": {
+                "0": "Flying over Grand Etang, Réunion, France"
+            },
+            "title": "Grand Etang",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_GrandEtang_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_lagon_202304",
+            "pointsOfInterest": {
+                "0": "Flying over Saint-Leu Coral Reef, Réunion, France"
+            },
+            "title": "Coral Reef",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Lagon_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_mafate_202304",
+            "pointsOfInterest": {
+                "0": "Flying towards an îlet in Mafate, Réunion, France"
+            },
+            "title": "Mafate",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_Mafate_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_pitondesneiges_202304",
+            "pointsOfInterest": {
+                "0": "Flying around Piton des Neiges, Réunion, France"
+            },
+            "title": "Piton des Neiges",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonDesNeiges_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_pitonfournaise_202304",
+            "pointsOfInterest": {
+                "0": "Flying over Plaine des Sables, Piton de la Fournaise, Réunion, France"
+            },
+            "title": "Plaine des Sables",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_PitonFournaise_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_trestastar_202304",
+            "pointsOfInterest": {
+                "0": "Flying around Tresta Star wreck, Piton de la Fournaise, Réunion, France"
+            },
+            "title": "Tresta Star",
+            "accessibilityLabel": "France",
+            "scene": "sea",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrestaStar_4k_hevc.m4v"
+        },
+        {
+            "id": "robinfrcd_troudefer_202304",
+            "pointsOfInterest": {
+                "0": "Flying over Trou de Fer, Réunion, France"
+            },
+            "title": "Trou de Fer",
+            "accessibilityLabel": "France",
+            "scene": "nature",
+            "timeOfDay": "day",
+            "url-1080-H264": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_1080p_h264.m4v",
+            "url-1080-HDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_1080p_hevc.m4v",
+            "url-4K-SDR": "https://github.com/RobinFrcd/AerialShots/releases/download/reunion-2022/robinfrcd_reunion_TrouDeFer_4k_hevc.m4v"
+        },
+        {
             "id": "french_alps_mont_blanc_202202",
             "pointsOfInterest": {
                 "0": "french_alps_mont_blanc_202202_0"
