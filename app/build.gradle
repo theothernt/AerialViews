@@ -150,7 +150,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.1.0')
+    implementation('androidx.media3:media3-exoplayer:1.1.1')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
