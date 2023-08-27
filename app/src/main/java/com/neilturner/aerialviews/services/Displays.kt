@@ -54,7 +54,8 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
 class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
     val name: String = source.name
     val id: Int = source.displayId
-    //val valid: Boolean = source.isValid
+
+    // val valid: Boolean = source.isValid
     val state: PowerState = displayStateToPowerState(source.state)
 
     // flags
