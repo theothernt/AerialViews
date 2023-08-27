@@ -21,6 +21,8 @@ object InterfacePrefs : KotprefModel() {
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
 
+    var fontTypeface by stringPref("", "font_typeface")
+
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 
     var localeMenu by stringPref("default", "locale_menu")
