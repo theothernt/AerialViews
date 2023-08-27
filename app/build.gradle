@@ -105,17 +105,17 @@ android {
 
     flavorDimensions += "version"
     productFlavors {
-        create("github") {
+        register("github") {
             dimension = "version"
         }
-        create("beta") {
+        register("beta") {
             dimension = "version"
             versionNameSuffix = "-beta1"
         }
-        create("googleplay") {
+        register("googleplay") {
             dimension = "version"
         }
-        create("amazon") {
+        register("amazon") {
             dimension = "version"
         }
     }
@@ -143,8 +143,8 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:21.3.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.4.0')
-    implementation('com.google.firebase:firebase-perf-ktx:20.4.0')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.4.1')
+    implementation('com.google.firebase:firebase-perf-ktx:20.4.1')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')

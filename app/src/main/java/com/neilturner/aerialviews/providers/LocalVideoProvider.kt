@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
+@Suppress("unused")
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
     override val enabled: Boolean
