@@ -166,8 +166,8 @@
     <string name="appearance_message_title">Сообщение</string>
     <string name="appearance_message_summary">Отображать до 2 строк пользовательского текста</string>
 
-    <string name="appearance_typeface_title">Шрифт</string>
-    <string name="appearance_typeface_summary">Измените шрифт, используемый для отображения всего текста заставки</string>
+    <string name="appearance_typography_title">Шрифт</string>
+    <string name="appearance_typography_summary">Измените шрифт, используемый для отображения всего текста заставки</string>
 
     <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
     <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>

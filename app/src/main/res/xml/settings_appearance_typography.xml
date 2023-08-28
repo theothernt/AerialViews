@@ -5,11 +5,11 @@
         <PreferenceCategory app:title="@string/category_typography">
 
                 <ListPreference
-                    app:defaultValue=""
+                    app:defaultValue="@string/appearance_font_default"
                     app:entries="@array/appearance_font_entries"
                     app:entryValues="@array/appearance_font_values"
                     app:key="font_typeface"
-                    app:title="@string/appearance_typeface_title"
+                    app:title="@string/appearance_typography_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

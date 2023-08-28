@@ -165,8 +165,8 @@
     <string name="appearance_message_title">Nachricht</string>
     <string name="appearance_message_summary">Zeige bis zu 2 Zeilen persönlichen Text an</string>
 
-    <string name="appearance_typeface_title">Schriftart</string>
-    <string name="appearance_typeface_summary">Ändere die Schriftart des angezeigten Bildschirmschonertextes</string>
+    <string name="appearance_typography_title">Typography</string>
+    <string name="appearance_typography_summary">Ändere die Schriftart des angezeigten Bildschirmschonertextes</string>
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
     <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>

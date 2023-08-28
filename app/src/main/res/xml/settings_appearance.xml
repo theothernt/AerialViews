@@ -31,9 +31,9 @@
 
         <PreferenceCategory app:title="@string/category_options">
                 <Preference
-                    app:title="@string/appearance_typeface_title"
-                    app:summary="@string/appearance_typeface_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypefaceFragment"/>
+                    app:title="@string/appearance_typography_title"
+                    app:summary="@string/appearance_typography_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypographyFragment"/>
 
                 <CheckBoxPreference
                     app:defaultValue="false"

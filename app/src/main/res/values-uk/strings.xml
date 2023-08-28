@@ -166,8 +166,8 @@
     <string name="appearance_message_title">Повідомлення</string>
     <string name="appearance_message_summary">Відображати до 2 рядків користувацького тексту</string>
 
-    <string name="appearance_typeface_title">Шрифт</string>
-    <string name="appearance_typeface_summary">Змініть шрифт, який використовується для відображення всього тексту заставки</string>
+    <string name="appearance_typography_title">Шрифт</string>
+    <string name="appearance_typography_summary">Змініть шрифт, який використовується для відображення всього тексту заставки</string>
 
     <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
     <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
