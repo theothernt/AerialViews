@@ -6,7 +6,7 @@
 
     <style name="ClockText">
         <item name="android:alpha">1</item>
-        <item name="android:fontFamily">@font/opensans_light</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">36sp</item>
         <item name="android:shadowColor">#000</item>
@@ -17,7 +17,7 @@
 
     <style name="LocationText">
         <item name="android:alpha">1</item>
-        <item name="android:fontFamily">@font/opensans_light</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">18sp</item>
         <item name="android:shadowColor">#000</item>
@@ -28,7 +28,7 @@
 
     <style name="MessageText">
         <item name="android:alpha">1</item>
-        <item name="android:fontFamily">@font/opensans_light</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textColor">#fff</item>
         <item name="android:textSize">18sp</item>
         <item name="android:shadowColor">#000</item>

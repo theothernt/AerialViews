@@ -215,6 +215,9 @@
 
     <string name="category_typography">Typography</string>
 
+    <string name="appearance_typeface_title">Typeface</string>
+
+    <string name="appearance_weight_title">Weight</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>

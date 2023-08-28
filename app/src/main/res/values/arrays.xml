@@ -212,30 +212,34 @@
 
     <!-- Font selection -->
     <string-array name="appearance_font_entries">
-        <item>Roboto Thin</item>
-        <item>Roboto Light</item>
-        <item>Roboto Regular</item>
-        <item>Roboto Medium</item>
-        <item>Roboto Bold</item>
-        <item>Open Sans Light (Default)</item>
-        <item>Open Sans Regular</item>
-        <item>Open Sans Medium</item>
-        <item>Open Sans SemiBold</item>
-        <item>Open Sans Bold</item>
+        <item>Open Sans (Default)</item>
+        <item>Roboto</item>
     </string-array>
     <string-array name="appearance_font_values" translatable="false">
-        <item>sans-serif-thin</item>
-        <item>sans-serif-light</item>
+        <item>open-sans</item>
         <item>sans-serif</item>
-        <item>sans-serif-medium</item>
-        <item>sans-serif-bold</item>
-        <item>font/opensans_light.ttf</item>
-        <item>font/opensans_regular.ttf</item>
-        <item>font/opensans_medium.ttf</item>
-        <item>font/opensans_semibold.ttf</item>
-        <item>font/opensans_bold.ttf</item>
     </string-array>
-    <string name="appearance_font_default" translatable="false">font/opensans_light.ttf</string>
+    <string name="appearance_font_default" translatable="false">open-sans</string>
+
+    <string-array name="appearance_font_weight_entries">
+        <item>100</item>
+        <item>200</item>
+        <item>300 (default)</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+        <item>700</item>
+    </string-array>
+    <string-array name="appearance_font_weight_values" translatable="false">
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+        <item>500</item>
+        <item>600</item>
+        <item>700</item>
+    </string-array>
+    <string name="appearance_font_weight_default" translatable="false">300</string>
 
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">

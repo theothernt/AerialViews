@@ -9,6 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.FontResourcesParserCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.TypefaceCompat
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -47,9 +50,9 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     private var locationSize = InterfacePrefs.locationSize
 
-    private var showMessage1 = InterfacePrefs.messageStyle != MessageType.OFF
-    private var showMessage2 = InterfacePrefs.messageStyle == MessageType.TWO_LINE
-    private var messageSize = InterfacePrefs.messageSize
+//    private var showMessage1 = InterfacePrefs.messageStyle != MessageType.OFF
+//    private var showMessage2 = InterfacePrefs.messageStyle == MessageType.TWO_LINE
+//    private var messageSize = InterfacePrefs.messageSize
 
     val view: View
 
@@ -58,9 +61,17 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
         binding.videoView0.videoView.setOnPlayerListener(this)
 
+        val font = if (InterfacePrefs.fontTypeface == "open-sans") {
+            ResourcesCompat.getFont(context, R.font.opensans)
+        } else {
+            Typeface.create("san-serif", Typeface.NORMAL)
+        }
+        val typeface = TypefaceCompat.create(context, font, InterfacePrefs.fontWeight.toInt(), false)
+
         videoView = binding.videoView0
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
+        loadingText.typeface = typeface
         view = binding.root
 
         val service = VideoService(context)
@@ -76,17 +87,19 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         }
 
         videoView.showClock = showClock
+        videoView.clock.typeface = typeface
         videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
 
         videoView.showLocation = showLocation
+        videoView.location.typeface = typeface
         videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
 
-        videoView.showMessage1 = showMessage1 && InterfacePrefs.messageLine1.isNotBlank()
-        videoView.showMessage2 = showMessage2 && InterfacePrefs.messageLine2.isNotBlank()
-        videoView.message1.text = InterfacePrefs.messageLine1
-        videoView.message2.text = InterfacePrefs.messageLine2
-        videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
-        videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
+//        videoView.showMessage1 = showMessage1 && InterfacePrefs.messageLine1.isNotBlank()
+//        videoView.showMessage2 = showMessage2 && InterfacePrefs.messageLine2.isNotBlank()
+//        videoView.message1.text = InterfacePrefs.messageLine1
+//        videoView.message2.text = InterfacePrefs.messageLine2
+//        videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
+//        videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
 
         if (DeviceHelper.isFireTV()) {
             val newColor = Color.parseColor("#e9e9e9")

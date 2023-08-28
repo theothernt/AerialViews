@@ -16,12 +16,13 @@ object InterfacePrefs : KotprefModel() {
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
 
-    var messageStyle by enumValuePref(MessageType.OFF, "message_style")
-    var messageSize by stringPref("18", "message_size")
-    var messageLine1 by stringPref("", "message_line1")
-    var messageLine2 by stringPref("", "message_line2")
+//    var messageStyle by enumValuePref(MessageType.OFF, "message_style")
+//    var messageSize by stringPref("18", "message_size")
+//    var messageLine1 by stringPref("", "message_line1")
+//    var messageLine2 by stringPref("", "message_line2")
 
-    var fontTypeface by stringPref("", "font_typeface")
+    var fontTypeface by stringPref("open-sans", "font_typeface")
+    var fontWeight by stringPref("300", "font_weight")
 
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 
