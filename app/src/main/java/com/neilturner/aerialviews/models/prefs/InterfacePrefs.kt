@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.models.prefs
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.models.LocationType
-import com.neilturner.aerialviews.models.MessageType
 
 object InterfacePrefs : KotprefModel() {
 
