@@ -172,8 +172,8 @@
     <string name="appearance_message_title">Message</string>
     <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
 
-    <string name="appearance_typography_title">Typeface</string>
-    <string name="appearance_typography_summary">Change the font used to display all screensaver text</string>
+    <string name="appearance_typography_title">Typography</string>
+    <string name="appearance_typography_summary">Change the font and other properties of the text used by the screensaver</string>
 
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
