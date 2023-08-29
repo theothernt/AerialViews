@@ -205,6 +205,14 @@
 
     <string name="appearance_message_size_title">Adjust the size of the text</string>
 
+    <!-- Main / Settings / Appearance / Typography -->
+
+    <string name="category_typography">Typography</string>
+
+    <string name="appearance_typeface_title">Typeface</string>
+
+    <string name="appearance_weight_title">Weight</string>
+
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
 
