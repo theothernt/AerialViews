@@ -92,6 +92,19 @@ object FileHelper {
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
+    fun filenameToString(uri: Uri): String {
+        val filename = uri.lastPathSegment.toStringOrEmpty()
+        val index = filename.lastIndexOf(".")
+
+        // some.video.mov -> some.video
+        var location = filename
+        if (index > 0) {
+            location = filename.substring(0, index)
+        }
+
+        return location
+    }
+
     @Suppress("NAME_SHADOWING")
     fun fixLegacyFolder(folder: String): String {
         var folder = folder

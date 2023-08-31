@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.util.Log
+import com.neilturner.aerialviews.models.FilenameAsLocation
 import com.neilturner.aerialviews.models.LocationType
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -66,10 +67,17 @@ class VideoService(val context: Context) {
         // Add unmatched videos
         if (!GeneralPrefs.ignoreNonManifestVideos) {
             // Add filename as video location
-            if (GeneralPrefs.filenameAsLocation) {
+            if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
                 result.second.forEach { video ->
                     if (video.location.isBlank()) {
                         video.location = FileHelper.filenameToTitleCase(video.uri)
+                    }
+                }
+            }
+            if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
+                result.second.forEach { video ->
+                    if (video.location.isBlank()) {
+                        video.location = FileHelper.filenameToString(video.uri)
                     }
                 }
             }

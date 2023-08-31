@@ -2,6 +2,6 @@ package com.neilturner.aerialviews.models
 
 enum class FilenameAsLocation {
     DISABLED,
-    CUSTOM, // use built-in formatting
-    NONE // as-is, leave alone
+    FORMATTED, // use built-in formatting
+    SIMPLE // as-is, leave alone
 }

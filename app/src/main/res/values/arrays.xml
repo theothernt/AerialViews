@@ -58,8 +58,8 @@
     </string-array>
     <string-array name="filename_as_location_values" translatable="false">
         <item>DISABLED</item>
-        <item>CUSTOM</item>
-        <item>NONE</item>
+        <item>FORMATTED</item>
+        <item>SIMPLE</item>
     </string-array>
     <string name="filename_as_location_default" translatable="false">DISABLED</string>
 
