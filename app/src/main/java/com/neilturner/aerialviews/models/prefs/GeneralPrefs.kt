@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
+import com.chibatching.kotpref.enumpref.enumValuePref
+import com.neilturner.aerialviews.models.FilenameAsLocation
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -22,7 +24,9 @@ object GeneralPrefs : KotprefModel() {
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
-    var filenameAsLocation by booleanPref(true, "any_videos_filename_location")
+    //var filenameAsLocation by booleanPref(true, "filename_as_location")
+    var filenameAsLocation by enumValuePref(FilenameAsLocation.NONE, "filename_as_location")
+
     var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")
     var useCustomManifests by booleanPref(true, "any_videos_use_custom_manifests")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
