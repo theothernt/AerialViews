@@ -34,6 +34,7 @@ class MigrationHelper(val context: Context) {
         // if (lastKnownVersion < 12) release12()
         if (lastKnownVersion < 13) release13()
         if (lastKnownVersion < 14) release14()
+        if (lastKnownVersion < 15) release15()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -120,6 +121,19 @@ class MigrationHelper(val context: Context) {
         if (filterFolderUsed) {
             prefs.edit().putString("local_videos_media_store_filter_folder", prefs.getString("local_videos_filter_folder_name", "")).apply()
             prefs.edit().remove("local_videos_filter_folder_name").apply()
+        }
+    }
+
+    private fun release15() {
+        Log.i(TAG, "Migrating settings for release 15")
+
+        val filenameAsLocationUsed = prefs.contains("any_videos_filename_location")
+        if (filenameAsLocationUsed) {
+            val filenameAsLocationEnabled = prefs.getBoolean("any_videos_filename_location", false)
+            if (filenameAsLocationEnabled) {
+                prefs.edit().putString("filename_as_location", "FORMATTED").apply()
+            }
+            prefs.edit().remove("any_videos_filename_location").apply()
         }
     }
 
