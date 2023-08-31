@@ -85,20 +85,20 @@ class VideoService(val context: Context) {
         }
 
         // Removed unneeded location data
-        when (InterfacePrefs.locationStyle) {
-            LocationType.POI -> videos.forEach { video ->
-                video.location = ""
-            }
-
-            LocationType.TITLE -> videos.forEach { video ->
-                video.poi = emptyMap()
-            }
-
-            else -> videos.forEach { video ->
-                video.location = ""
-                video.poi = emptyMap()
-            }
-        }
+//        when (InterfacePrefs.locationStyle) {
+//            LocationType.POI -> videos.forEach { video ->
+//                video.location = ""
+//            }
+//
+//            LocationType.TITLE -> videos.forEach { video ->
+//                video.poi = emptyMap()
+//            }
+//
+//            else -> videos.forEach { video ->
+//                video.location = ""
+//                video.poi = emptyMap()
+//            }
+//        }
 
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
