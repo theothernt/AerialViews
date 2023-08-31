@@ -14,11 +14,14 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_all_other_videos">
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="any_videos_filename_location"
-                    app:title="@string/appearance_use_filename_as_location_title"
-                    app:summary="@string/appearance_use_filename_as_location_summary" />
+                <ListPreference
+                    app:defaultValue="@string/filename_as_location_default"
+                    app:entries="@array/filename_as_location_entries"
+                    app:entryValues="@array/filename_as_location_values"
+                    app:key="filename_as_location"
+                    app:title="@string/appearance_filename_as_location_title"
+                    app:dialogTitle="@string/appearance_filename_as_location_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">

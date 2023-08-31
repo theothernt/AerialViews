@@ -189,8 +189,7 @@
 
     <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
 
-    <string name="appearance_use_filename_as_location_title">Имя файла в качестве местоположения</string>
-    <string name="appearance_use_filename_as_location_summary">"например 'japan-mount_fuji.mp4' станет 'Japan - Mount Fuji'"</string>
+    <string name="appearance_filename_as_location_title">Имя файла в качестве местоположения</string>
 
     <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
 

@@ -188,8 +188,7 @@
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
-    <string name="appearance_use_filename_as_location_title">Nutze Dateinamen als Ortsangabe</string>
-    <string name="appearance_use_filename_as_location_summary">Beispiel: \'japan-mount_fuji.mp4\' wird als \'Japan - Mount Fuji\' angezeigt</string>
+    <string name="appearance_filename_as_location_title">Nutze Dateinamen als Ortsangabe</string>
 
     <string name="appearance_location_size_title">Textgröße der Ortsangabe anpassen</string>
 

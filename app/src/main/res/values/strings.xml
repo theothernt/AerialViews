@@ -195,8 +195,7 @@
 
     <string name="appearance_show_location_title">Show location or points of interest</string>
 
-    <string name="appearance_use_filename_as_location_title">Use filename as location</string>
-    <string name="appearance_use_filename_as_location_summary">eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</string>
+    <string name="appearance_filename_as_location_title">Use filename as location</string>
 
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 

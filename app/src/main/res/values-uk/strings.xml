@@ -189,8 +189,7 @@
 
     <string name="appearance_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
 
-    <string name="appearance_use_filename_as_location_title">"Ім'я файлу як місцезнаходження"</string>
-    <string name="appearance_use_filename_as_location_summary">"наприклад 'japan-mount_fuji.mp4' буде 'Japan - Mount Fuji'"</string>
+    <string name="appearance_filename_as_location_title">"Ім'я файлу як місцезнаходження"</string>
 
     <string name="appearance_location_size_title">Відрегулюйте розмір тексту розташування</string>
 

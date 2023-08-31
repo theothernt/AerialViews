@@ -188,8 +188,8 @@
 
     <string name="appearance_show_location_title">Show video location, title or points of interest</string>
 
-    <string name="appearance_use_filename_as_location_title">Utiliser les noms de fichiers comme emplacement</string>
-    <string name="appearance_use_filename_as_location_summary">Exemple: «japan-mount_fuji.mp4» est affiché comme «Japan - Mount Fuji»</string>
+    <string name="appearance_filename_as_location_title">Utiliser les noms de fichiers comme emplacement</string>
+
     <string name="appearance_location_size_title">Adjust the size of the location text</string>
 
     <!-- Main / Settings / Appearance / Message -->
