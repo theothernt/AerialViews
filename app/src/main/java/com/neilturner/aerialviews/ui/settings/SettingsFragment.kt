@@ -19,6 +19,7 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.FilenameAsLocation
 import com.neilturner.aerialviews.models.LocationType
 import com.neilturner.aerialviews.models.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -191,7 +192,7 @@ class SettingsFragment :
             GeneralPrefs.exceedRenderer = properties["exceed_renderer"].toString().toBoolean()
             // GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
 
-            GeneralPrefs.filenameAsLocation = properties["any_videos_filename_location"].toString().toBoolean()
+            GeneralPrefs.filenameAsLocation = FilenameAsLocation.valueOf(properties["any_videos_filename_location"]as String)
             GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
             GeneralPrefs.useCustomManifests = properties["any_videos_use_custom_manifests"].toString().toBoolean()
             GeneralPrefs.ignoreNonManifestVideos = properties["any_videos_ignore_non_manifest_videos"].toString().toBoolean()
