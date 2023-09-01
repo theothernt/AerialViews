@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Location style -->
+    <!-- Video title or POI -->
     <string-array name="interface_show_location_entries">
         <item>Off</item>
         <item>Location or title</item>
         <item>Points of interest (available in many languages)</item>
+    </string-array>
+
+    <!-- Use filename as location -->
+    <string-array name="filename_as_location_entries">
+        <item>Disabled</item>
+        <item>Use formatting</item>
+        <item>Use filename as-is</item>
+    </string-array>
+    <string-array name="filename_as_location_summary_entries">
+        <item>Disabled</item>
+        <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
+        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
     </string-array>
 
     <!-- Local Video Options -->
