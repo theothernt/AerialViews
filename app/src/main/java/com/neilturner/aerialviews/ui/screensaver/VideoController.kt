@@ -99,16 +99,16 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 //        videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
 //        videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
 
-        if (DeviceHelper.isFireTV()) {
-            val newColor = Color.parseColor("#e9e9e9")
-            val newFont = Typeface.create("sans-serif-light", Typeface.NORMAL)
-
-            loadingText.setTextColor(newColor)
-            loadingText.typeface = newFont
-
-            binding.videoView0.location.setTextColor(newColor)
-            binding.videoView0.location.typeface = newFont
-        }
+//        if (DeviceHelper.isFireTV()) {
+//            val newColor = Color.parseColor("#e9e9e9")
+//            val newFont = Typeface.create("sans-serif-light", Typeface.NORMAL)
+//
+//            loadingText.setTextColor(newColor)
+//            loadingText.typeface = newFont
+//
+//            binding.videoView0.location.setTextColor(newColor)
+//            binding.videoView0.location.typeface = newFont
+//        }
     }
 
     fun stop() {
