@@ -15,10 +15,11 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
+* Over 150 videos from Apple, Jetson Creative and Robin Fourcade
 * Option to avoid burn-in on QD/OLED TVs
-* Option to play videos locally or from a network share
-* Skip to next or previous video (press left or right on your TV remote's d-pad)
-* Supports the latest Apple video feed with over 100 videos
+* Play videos from your device, USB storage or network share
+* Skip videos, change speed with the d-pad
+* Refresh rate switching
 
 ## How to get Aerial Views...
 
