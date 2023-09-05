@@ -33,7 +33,7 @@ Please visit this web page to download the videos from...
 
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
-* [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (8 community videos)
+* [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (18 community videos)
 
 ## HDR videos don't seem to play, I only see black screen...
 
