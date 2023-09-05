@@ -24,7 +24,7 @@ object GeneralPrefs : KotprefModel() {
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
-    //var filenameAsLocation by booleanPref(true, "filename_as_location")
+    // var filenameAsLocation by booleanPref(true, "filename_as_location")
     var filenameAsLocation by enumValuePref(FilenameAsLocation.DISABLED, "filename_as_location")
 
     var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")

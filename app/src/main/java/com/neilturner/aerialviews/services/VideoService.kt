@@ -3,13 +3,11 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.models.FilenameAsLocation
-import com.neilturner.aerialviews.models.LocationType
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo

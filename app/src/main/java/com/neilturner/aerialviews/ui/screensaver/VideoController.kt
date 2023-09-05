@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.util.Log
 import android.util.TypedValue
@@ -22,7 +21,6 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
-import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.LocaleHelper.isLtrText
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
