@@ -102,6 +102,7 @@ class MigrationHelper(val context: Context) {
 
         val sambaUsed = prefs.contains("network_videos_enabled")
         if (sambaUsed) {
+            Log.i(TAG, "Migrating samba settings/keys")
             prefs.edit().putBoolean("samba_videos_enabled", prefs.getBoolean("network_videos_enabled", false)).apply()
             prefs.edit().putBoolean("samba_videos_enable_encryption", prefs.getBoolean("network_videos_enable_encryption", false)).apply()
             prefs.edit().putString("samba_videos_username", prefs.getString("network_videos_username", "")).apply()
@@ -110,6 +111,15 @@ class MigrationHelper(val context: Context) {
             prefs.edit().putString("samba_videos_sharename", prefs.getString("network_videos_sharename", "")).apply()
             prefs.edit().putString("samba_videos_domainname", prefs.getString("network_videos_domainname", "WORKGROUP")).apply()
             prefs.edit().putStringSet("samba_videos_smb_dialects", prefs.getStringSet("network_videos_smb_dialects", emptySet())).apply()
+
+            Log.i(TAG, "Deleting old network settings/keys")
+            prefs.edit().remove("network_videos_enable_encryption").apply()
+            prefs.edit().remove("network_videos_username").apply()
+            prefs.edit().remove("network_videos_password").apply()
+            prefs.edit().remove("network_videos_hostname").apply()
+            prefs.edit().remove("network_videos_sharename").apply()
+            prefs.edit().remove("network_videos_domainname").apply()
+            prefs.edit().remove("network_videos_smb_dialects").apply()
             prefs.edit().remove("network_videos_enabled").apply()
         }
     }
@@ -119,6 +129,7 @@ class MigrationHelper(val context: Context) {
 
         val filterFolderUsed = prefs.contains("local_videos_filter_folder_name")
         if (filterFolderUsed) {
+            Log.i(TAG, "Migrating samba settings/keys")
             prefs.edit().putString("local_videos_media_store_filter_folder", prefs.getString("local_videos_filter_folder_name", "")).apply()
             prefs.edit().remove("local_videos_filter_folder_name").apply()
         }
@@ -131,6 +142,7 @@ class MigrationHelper(val context: Context) {
         if (filenameAsLocationUsed) {
             val filenameAsLocationEnabled = prefs.getBoolean("any_videos_filename_location", false)
             if (filenameAsLocationEnabled) {
+                Log.i(TAG, "Migrating filename as location setting/key")
                 prefs.edit().putString("filename_as_location", "FORMATTED").apply()
             }
             prefs.edit().remove("any_videos_filename_location").apply()
