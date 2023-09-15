@@ -32,7 +32,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
     private var onErrorRunnable = Runnable { listener?.onError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
-    private val exceedRendererCapabilities = GeneralPrefs.exceedRenderer
     private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
     private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
     private val maxVideoLength = GeneralPrefs.maxVideoLength
@@ -287,12 +286,6 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         if (enableTunneling) {
             parametersBuilder
                 .setTunnelingEnabled(true)
-        }
-
-        if (exceedRendererCapabilities) {
-            parametersBuilder
-                .setExceedVideoConstraintsIfNecessary(true)
-                .setExceedRendererCapabilitiesIfNecessary(true)
         }
 
         val trackSelector = DefaultTrackSelector(context)

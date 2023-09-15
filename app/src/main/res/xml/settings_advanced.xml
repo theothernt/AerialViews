@@ -25,12 +25,6 @@
 
                 <CheckBoxPreference
                     app:defaultValue="false"
-                    app:key="exceed_renderer"
-                    app:summary="@string/advanced_exceed_renderer_summary"
-                    app:title="@string/advanced_exceed_renderer_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="false"
                     app:key="philips_dolby_vision_fix"
                     app:summary="@string/advanced_philips_dolby_vision_fix_summary"
                     app:title="@string/advanced_philips_dolby_vision_fix_title" />

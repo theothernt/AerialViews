@@ -187,14 +187,8 @@ class SettingsFragment :
             GeneralPrefs.enableSkipVideos = properties["enable_skip_videos"].toString().toBoolean()
             GeneralPrefs.enablePlaybackSpeedChange = properties["enable_playback_speed_change"].toString().toBoolean()
             GeneralPrefs.playbackSpeed = properties["playback_speed"] as String
-
             GeneralPrefs.enableTunneling = properties["enable_tunneling"].toString().toBoolean()
-            GeneralPrefs.exceedRenderer = properties["exceed_renderer"].toString().toBoolean()
-            // GeneralPrefs.bufferingStrategy = properties["performance_buffering_strategy"] as String
-
             GeneralPrefs.filenameAsLocation = FilenameAsLocation.valueOf(properties["any_videos_filename_location"]as String)
-            GeneralPrefs.useAppleManifests = properties["any_videos_use_apple_manifests"].toString().toBoolean()
-            GeneralPrefs.useCustomManifests = properties["any_videos_use_custom_manifests"].toString().toBoolean()
             GeneralPrefs.ignoreNonManifestVideos = properties["any_videos_ignore_non_manifest_videos"].toString().toBoolean()
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
@@ -256,14 +250,8 @@ class SettingsFragment :
         settings["enable_skip_videos"] = GeneralPrefs.enableSkipVideos.toString()
         settings["enable_playback_speed_change"] = GeneralPrefs.enablePlaybackSpeedChange.toString()
         settings["playback_speed"] = GeneralPrefs.playbackSpeed
-
         settings["enable_tunneling"] = GeneralPrefs.enableTunneling.toString()
-        settings["exceed_renderer"] = GeneralPrefs.exceedRenderer.toString()
-        // settings["performance_buffering_strategy"] = GeneralPrefs.bufferingStrategy
-
         settings["any_videos_filename_location"] = GeneralPrefs.filenameAsLocation.toString()
-        settings["any_videos_use_apple_manifests"] = GeneralPrefs.useAppleManifests.toString()
-        settings["any_videos_use_custom_manifests"] = GeneralPrefs.useCustomManifests.toString()
         settings["any_videos_ignore_non_manifest_videos"] = GeneralPrefs.ignoreNonManifestVideos.toString()
 
         val uri: Uri

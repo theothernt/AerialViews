@@ -18,7 +18,6 @@ object GeneralPrefs : KotprefModel() {
     var maxVideoLength by stringPref("0", "playback_max_video_length")
 
     var enableTunneling by booleanPref(true, "enable_tunneling")
-    var exceedRenderer by booleanPref(false, "exceed_renderer")
 
     // var bufferingStrategy by stringPref("DEFAULT", "performance_buffering_strategy")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
@@ -27,7 +26,7 @@ object GeneralPrefs : KotprefModel() {
     // var filenameAsLocation by booleanPref(true, "filename_as_location")
     var filenameAsLocation by enumValuePref(FilenameAsLocation.FORMATTED, "filename_as_location")
 
-    var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")
-    var useCustomManifests by booleanPref(true, "any_videos_use_custom_manifests")
+    //var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")
+    //var useCustomManifests by booleanPref(true, "any_videos_use_custom_manifests")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
 }
