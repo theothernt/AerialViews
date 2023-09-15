@@ -63,6 +63,14 @@ class TestActivity : Activity() {
                 KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
                 KeyEvent.KEYCODE_DPAD_UP_RIGHT -> return true
 
+                KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
+                KeyEvent.KEYCODE_MEDIA_REWIND,
+                KeyEvent.KEYCODE_MEDIA_PLAY,
+                KeyEvent.KEYCODE_MEDIA_PAUSE,
+                KeyEvent.KEYCODE_MEDIA_NEXT,
+                KeyEvent.KEYCODE_MEDIA_PREVIOUS,
+                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> return super.dispatchKeyEvent(event)
+
                 KeyEvent.KEYCODE_DPAD_CENTER -> {
                     // Only disable OK button if left/right/up/down keys are in use
                     // to avoid accidental presses
