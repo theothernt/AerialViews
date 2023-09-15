@@ -11,7 +11,7 @@ object LocalVideoPrefs : KotprefModel() {
     var searchType by enumValuePref(SearchType.MEDIA_STORE, "local_videos_search_type")
 
     var filter_enabled by booleanPref(false, "local_videos_media_store_filter_enabled")
-    var filter_folder by stringPref("", "local_videos_media_store_filter_folder_name")
+    var filter_folder by stringPref("", "local_videos_media_store_filter_folder")
 
     var legacy_volume_label by stringPref("", "local_videos_legacy_volume_label")
     var legacy_volume by stringPref("", "local_videos_legacy_volume")
