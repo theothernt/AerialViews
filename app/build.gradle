@@ -15,7 +15,7 @@ android {
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 33
         versionCode 15
-        versionName "1.5.1"
+        versionName "1.5.2"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -110,7 +110,7 @@ android {
         }
         register("beta") {
             dimension = "version"
-            versionNameSuffix = "-beta2"
+            versionNameSuffix = "-beta1"
         }
         register("googleplay") {
             dimension = "version"
