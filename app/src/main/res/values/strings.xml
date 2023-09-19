@@ -269,9 +269,6 @@
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
-    <string name="advanced_exceed_renderer_title">Exceed renderer capabilities</string>
-    <string name="advanced_exceed_renderer_summary">Exceed maximum detected video resolution - not useful to most devices!</string>
-
     <string name="advanced_locale_menu_title">Menu text locale</string>
     <string name="advanced_locale_screensaver_title">Screensaver text (clock, location) locale</string>
 

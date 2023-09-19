@@ -262,9 +262,6 @@
     <string name="advanced_philips_dolby_vision_fix_title">Alternatives MediaCodec-Parsing verwenden</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Ermöglicht Wiedergabe von Dolby Vision auf älteren Philips TVs</string>
 
-    <string name="advanced_exceed_renderer_title">Maximale Auflösung des TVs überschreiten</string>
-    <string name="advanced_exceed_renderer_summary">Eine höhere Auflösung ist auf den meisten Geräten nicht ratsam!</string>
-
     <string name="samba_videos_enable_encryption_title">Verschlüsselung aktivieren</string>
     <string name="samba_videos_enable_encryption_summary">Verschlüsselte SMB-Verbindung aktivieren (reduziert evtl. Netzwerkgeschwindigkeit)</string>
 

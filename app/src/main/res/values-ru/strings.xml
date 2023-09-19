@@ -263,9 +263,6 @@
     <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ MediaCodec</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Исправляет воспроизведение в Dolby Vision на некоторых старых телевизорах Philips</string>
 
-    <string name="advanced_exceed_renderer_title">Превышать возможности рендеринга</string>
-    <string name="advanced_exceed_renderer_summary">Превышение максимального обнаруженного разрешения видео — бесполезно для большинства устройств!</string>
-
     <string name="samba_videos_enable_encryption_title">Включить шифрование</string>
     <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи</string>
 

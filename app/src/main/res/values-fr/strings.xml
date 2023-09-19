@@ -262,9 +262,6 @@
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
-    <string name="advanced_exceed_renderer_title">Dépasser la résolution maximale de l\'écran</string>
-    <string name="advanced_exceed_renderer_summary">"Une résolution plus élevée n'est pas recommandée sur la plupart des appareils!"</string>
-
     <string name="samba_videos_enable_encryption_title">Activer le cryptage</string>
     <string name="samba_videos_enable_encryption_summary">Activer le chiffrement des connexions SMB (peut potentiellement réduire la vitesse de transfert)</string>
 

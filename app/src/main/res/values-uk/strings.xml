@@ -262,10 +262,7 @@
 
     <string name="advanced_philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Виправлення відтворення Dolby Vision на деяких старих телевізорах Philips</string>
-    
-    <string name="advanced_exceed_renderer_title">Перевищувати можливості рендеринга</string>
-    <string name="advanced_exceed_renderer_summary">Перевищення максимального виявленого дозволу відео — марно для більшості пристроїв!</string>
-    
+
     <string name="samba_videos_enable_encryption_title">Увімкнути шифрування</string>
     <string name="samba_videos_enable_encryption_summary">"Включає шифрування для SMB-з'єднань, може знизити загальну швидкість передачі"</string>
     
