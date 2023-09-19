@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
+        <PreferenceCategory app:title="@string/category_slots">
+                <Preference
+                    app:title="@string/appearance_top_row_title"
+                    app:summary="@string/appearance_top_row_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTopRowFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_bottom_row_title"
+                    app:summary="@string/appearance_bottom_row_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBottomRowFragment"/>
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_overlays">
                 <Preference
                     app:title="@string/appearance_clock_title"

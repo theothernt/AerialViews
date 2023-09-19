@@ -156,6 +156,13 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Appearance</string>
     <string name="category_overlays">Overlays</string>
+    <string name="category_slots">Slots</string>
+
+    <string name="appearance_top_row_title">Top Row</string>
+    <string name="appearance_top_row_summary">Choose overlays for the top-left and top-right of the screen</string>
+
+    <string name="appearance_bottom_row_title">Bottom Row</string>
+    <string name="appearance_bottom_row_summary">Choose overlays for the bottom-left and bottom-right of the screen</string>
 
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Display the current time</string>
@@ -177,6 +184,10 @@
 
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+
+    <!-- Main / Settings / Appearance / Rows -->
+    <string name="category_top_row">Top Row</string>
+    <string name="category_bottom_row">Bottom Row</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
