@@ -186,8 +186,15 @@
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
     <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row">Top Row</string>
-    <string name="category_bottom_row">Bottom Row</string>
+    <string name="category_top_row_left">Top Row - Left</string>
+    <string name="category_top_row_right">Top Row - Right</string>
+
+    <string name="category_bottom_row_left">Bottom Row - Left</string>
+    <string name="category_bottom_row_right">Bottom Row - Right</string>
+
+    <string name="appearance_slot1_title">Slot 1</string>
+    <string name="appearance_slot2_title">Slot 2</string>
+    <string name="appearance_slot_summary">Empty</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>

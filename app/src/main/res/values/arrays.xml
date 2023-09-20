@@ -68,19 +68,6 @@
         <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
     </string-array>
 
-    <!-- Message -->
-<!--    <string-array name="appearance_message_style_entries">-->
-<!--        <item>Off</item>-->
-<!--        <item>1 line of text</item>-->
-<!--        <item>2 lines of text</item>-->
-<!--    </string-array>-->
-<!--    <string-array name="appearance_message_style_values" translatable="false">-->
-<!--        <item>OFF</item>-->
-<!--        <item>ONE_LINE</item>-->
-<!--        <item>TWO_LINE</item>-->
-<!--    </string-array>-->
-<!--    <string name="appearance_message_style_default" translatable="false">OFF</string>-->
-
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
         <item>0.25x</item>
