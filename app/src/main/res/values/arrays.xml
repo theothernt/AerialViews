@@ -69,14 +69,15 @@
     </string-array>
 
     <!-- Slots -->
-    <string-array name="slot_summary_entries">
+    <string-array name="slot_entries">
         <item>Empty</item>
         <item>Clock</item>
-<!--        <item>Date</item>-->
         <item>Location</item>
-<!--        <item>Message - Line 1</item>-->
-<!--        <item>Message - Line 2</item>-->
-<!--        <item>Music - Now Playing</item>-->
+    </string-array>
+    <string-array name="slot_values">
+        <item>EMPTY</item>
+        <item>CLOCK</item>
+        <item>LOCATION</item>
     </string-array>
 
     <!-- Playback speed -->
