@@ -68,6 +68,17 @@
         <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
     </string-array>
 
+    <!-- Slots -->
+    <string-array name="slot_summary_entries">
+        <item>Empty</item>
+        <item>Clock</item>
+<!--        <item>Date</item>-->
+        <item>Location</item>
+<!--        <item>Message - Line 1</item>-->
+<!--        <item>Message - Line 2</item>-->
+<!--        <item>Music - Now Playing</item>-->
+    </string-array>
+
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
         <item>0.25x</item>
