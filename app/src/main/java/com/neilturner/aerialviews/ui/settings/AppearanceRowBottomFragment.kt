@@ -53,6 +53,7 @@ class AppearanceRowBottomFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSlotList(list: ListPreference?, slotEntries: Array<String>, slotValues: Array<String>, slotPrefs: List<Pair<SlotType, String>>) {
+        val entries = slotEntries.toMutableList()
         slotValues.forEachIndexed { index, value ->
             if (value == SlotType.EMPTY.toString()) {
                 return@forEachIndexed
@@ -60,11 +61,11 @@ class AppearanceRowBottomFragment : PreferenceFragmentCompat() {
 
             val found = slotPrefs.find { it.first.toString() == value }
             if (found != null) {
-                slotEntries[index] += " (${found.second})"
+                entries[index] += " (${found.second})"
             }
         }
 
-        list?.entries = slotEntries
+        list?.entries = entries.toTypedArray()
         list?.entryValues = slotValues
     }
 }
