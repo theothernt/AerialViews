@@ -17,11 +17,11 @@ object InterfacePrefs : KotprefModel() {
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
 
-    var slotBottomLeft1 = enumValuePref(SlotType.EMPTY, "slot_bottom_left1")
-    var slotBottomLeft2 = enumValuePref(SlotType.EMPTY, "slot_bottom_left2")
+    var slotBottomLeft1 by enumValuePref(SlotType.EMPTY, "slot_bottom_left1")
+    var slotBottomLeft2 by enumValuePref(SlotType.EMPTY, "slot_bottom_left2")
 
-    var slotBottomRight1 = enumValuePref(SlotType.EMPTY, "slot_bottom_right1")
-    var slotBottomRight2 = enumValuePref(SlotType.EMPTY, "slot_bottom_right2")
+    var slotBottomRight1 by enumValuePref(SlotType.EMPTY, "slot_bottom_right1")
+    var slotBottomRight2 by enumValuePref(SlotType.EMPTY, "slot_bottom_right2")
 
 //    var messageStyle by enumValuePref(MessageType.OFF, "message_style")
 //    var messageSize by stringPref("18", "message_size")

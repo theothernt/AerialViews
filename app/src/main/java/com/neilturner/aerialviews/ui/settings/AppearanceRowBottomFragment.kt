@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
+import android.util.Log
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.chibatching.kotpref.pref.AbstractPref
@@ -31,8 +32,8 @@ class AppearanceRowBottomFragment : PreferenceFragmentCompat() {
         updateSlotSummary(bottomRight2, summaryList, InterfacePrefs.slotBottomRight2)
     }
 
-    private fun updateSlotSummary(list: ListPreference?, summaryList: Array<String>, slotPref: AbstractPref<SlotType>) {
-        val index = SlotType.valueOf(slotPref.toString()).ordinal
+    private fun updateSlotSummary(list: ListPreference?, summaryList: Array<String>, slot: SlotType) {
+        val index = SlotType.valueOf(slot.toString()).ordinal
         val summary = summaryList[index]
         list?.summary = summary
     }
