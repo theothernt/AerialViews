@@ -6,24 +6,28 @@
         <ListPreference
             app:key="slot_bottom_left1"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot1_title" />
+            app:title="@string/appearance_slot1_title"
+            app:defaultValue="@string/slot_default" />
 
         <ListPreference
             app:key="slot_bottom_left2"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot2_title" />
+            app:title="@string/appearance_slot2_title"
+            app:defaultValue="@string/slot_default" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_bottom_row_right">
         <ListPreference
             app:key="slot_bottom_right1"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot1_title" />
+            app:title="@string/appearance_slot1_title"
+            app:defaultValue="@string/slot_default" />
 
         <ListPreference
             app:key="slot_bottom_right2"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot2_title" />
+            app:title="@string/appearance_slot2_title"
+            app:defaultValue="@string/slot_default" />
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -74,11 +74,12 @@
         <item>Clock</item>
         <item>Location</item>
     </string-array>
-    <string-array name="slot_values">
+    <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>LOCATION</item>
     </string-array>
+    <string name="slot_default" translatable="false">EMPTY</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">

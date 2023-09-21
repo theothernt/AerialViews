@@ -35,21 +35,15 @@ class AppearanceRowBottomFragment : PreferenceFragmentCompat() {
         // If slot type is used, get slot name (eg. Bottom Left Slot 1)
 
         val slotPrefs = mutableListOf<Pair<SlotType, String>>()
-        slotPrefs.add(Pair(InterfacePrefs.slotBottomLeft1, "Bottom Left Slot 1"))
-        slotPrefs.add(Pair(InterfacePrefs.slotBottomLeft2, "Bottom Left Slot 2"))
-        slotPrefs.add(Pair(InterfacePrefs.slotBottomRight1, "Bottom Right Slot 1"))
-        slotPrefs.add(Pair(InterfacePrefs.slotBottomRight2, "Bottom Right Slot 2"))
+        slotPrefs.add(Pair(InterfacePrefs.slotBottomLeft1, "Bottom Left - Slot 1"))
+        slotPrefs.add(Pair(InterfacePrefs.slotBottomLeft2, "Bottom Left - Slot 2"))
+        slotPrefs.add(Pair(InterfacePrefs.slotBottomRight1, "Bottom Right - Slot 1"))
+        slotPrefs.add(Pair(InterfacePrefs.slotBottomRight2, "Bottom Right - Slot 2"))
 
         updateSlotList(bottomLeft1, slotEntries, slotValues, slotPrefs)
-
-        // slotPrefs.find { it -> it.first == SlotType.EMPTY }
-
-//        val entries = slotEntries.toMutableList()
-//        val values = slotValues.toMutableList()
-//
-//        bottomLeft1?.entries = slotEntries
-//        bottomLeft1?.entryValues = slotValues
-
+        updateSlotList(bottomLeft2, slotEntries, slotValues, slotPrefs)
+        updateSlotList(bottomRight1, slotEntries, slotValues, slotPrefs)
+        updateSlotList(bottomRight2, slotEntries, slotValues, slotPrefs)
     }
 
     private fun updateSlotSummary(list: ListPreference?, summaryList: Array<String>, slot: SlotType) {
