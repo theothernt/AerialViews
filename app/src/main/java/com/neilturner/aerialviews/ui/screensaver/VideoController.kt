@@ -1,15 +1,12 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.TypefaceCompat
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -21,6 +18,7 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
+import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.LocaleHelper.isLtrText
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
@@ -57,18 +55,24 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
         binding.videoView0.videoView.setOnPlayerListener(this)
 
-        val font = if (InterfacePrefs.fontTypeface == "open-sans") {
-            ResourcesCompat.getFont(context, R.font.opensans)
-        } else {
-            Typeface.create("san-serif", Typeface.NORMAL)
-        }
-        val typeface = TypefaceCompat.create(context, font, InterfacePrefs.fontWeight.toInt(), false)
-
         videoView = binding.videoView0
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
-        loadingText.typeface = typeface
         view = binding.root
+
+        try {
+            val typeface = FontHelper.getTypeface(context)
+            loadingText.typeface = typeface
+            videoView.clock.typeface = typeface
+            videoView.location.typeface = typeface
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception in while ${e.message}")
+        }
+
+        videoView.showClock = showClock
+        videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
+        videoView.showLocation = showLocation
+        videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
 
         val service = VideoService(context)
         coroutineScope.launch {
@@ -81,32 +85,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 showLoadingError(context)
             }
         }
-
-        videoView.showClock = showClock
-        videoView.clock.typeface = typeface
-        videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
-
-        videoView.showLocation = showLocation
-        videoView.location.typeface = typeface
-        videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
-
-//        videoView.showMessage1 = showMessage1 && InterfacePrefs.messageLine1.isNotBlank()
-//        videoView.showMessage2 = showMessage2 && InterfacePrefs.messageLine2.isNotBlank()
-//        videoView.message1.text = InterfacePrefs.messageLine1
-//        videoView.message2.text = InterfacePrefs.messageLine2
-//        videoView.message1.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
-//        videoView.message2.setTextSize(TypedValue.COMPLEX_UNIT_SP, messageSize.toFloat())
-
-//        if (DeviceHelper.isFireTV()) {
-//            val newColor = Color.parseColor("#e9e9e9")
-//            val newFont = Typeface.create("sans-serif-light", Typeface.NORMAL)
-//
-//            loadingText.setTextColor(newColor)
-//            loadingText.typeface = newFont
-//
-//            binding.videoView0.location.setTextColor(newColor)
-//            binding.videoView0.location.typeface = newFont
-//        }
     }
 
     fun stop() {
