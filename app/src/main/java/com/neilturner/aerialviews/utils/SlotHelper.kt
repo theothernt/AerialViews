@@ -41,7 +41,7 @@ object SlotHelper {
     }
 
     fun entriesAndValues(context: Context): Pair<Array<String>, Array<String>> {
-        val res = context?.resources!!
+        val res = context.resources!!
         val entries = res.getStringArray(R.array.slot_entries) // Empty, Clock, etc
         val values = res.getStringArray(R.array.slot_values) // EMPTY, CLOCK, etc
         return Pair(entries, values)
