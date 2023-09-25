@@ -27,6 +27,7 @@ class AppearanceRowBottomFragment :
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key.contains("slot_", false)) {
             updateSlot(key)
+            updateSlots()
         }
     }
 
