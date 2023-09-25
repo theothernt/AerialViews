@@ -6,7 +6,6 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
-import com.neilturner.aerialviews.models.SlotType
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class AppearanceRowBottomFragment :
@@ -27,24 +26,8 @@ class AppearanceRowBottomFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key.contains("slot_", false)) {
-            updateSlot(key)
+            SlotHelper.updateSlot(preferenceScreen, key)
             updateDropDownAndSummary()
-        }
-    }
-
-    private fun updateSlot(slotName: String) {
-        val currentPrefs = SlotHelper.currentPrefs()
-        val pref = currentPrefs.find { it.second == slotName }?.first
-
-        currentPrefs.forEach {
-            if (it.second == slotName) {
-                return@forEach
-            }
-
-            if (it.first == pref) {
-                val pref = preferenceScreen.findPreference<ListPreference>(it.second)
-                pref?.value = SlotType.EMPTY.toString()
-            }
         }
     }
 
