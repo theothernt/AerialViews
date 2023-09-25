@@ -1,10 +1,9 @@
 package com.neilturner.aerialviews.models.prefs
 
-import androidx.preference.ListPreference
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.models.LocationType
-import com.neilturner.aerialviews.models.videos.SlotType
+import com.neilturner.aerialviews.models.SlotType
 
 object InterfacePrefs : KotprefModel() {
 

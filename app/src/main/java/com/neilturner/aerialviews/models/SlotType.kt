@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.models.videos
+package com.neilturner.aerialviews.models
 
 enum class SlotType {
     EMPTY,
