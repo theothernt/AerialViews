@@ -7,6 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.SlotType
+import com.neilturner.aerialviews.utils.SlotHelper
 
 class AppearanceRowBottomFragment :
     PreferenceFragmentCompat(),
@@ -16,7 +17,7 @@ class AppearanceRowBottomFragment :
         setPreferencesFromResource(R.xml.settings_appearance_row_bottom, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        updateSlots()
+        updateDropDownAndSummary()
     }
 
     override fun onDestroy() {
@@ -27,82 +28,44 @@ class AppearanceRowBottomFragment :
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key.contains("slot_", false)) {
             updateSlot(key)
-            updateSlots()
+            updateDropDownAndSummary()
         }
     }
 
     private fun updateSlot(slotName: String) {
-        val slotPrefs = buildSlotPrefs()
-        val slotPref = slotPrefs.find { it.second == slotName }?.first
+        val currentPrefs = SlotHelper.currentPrefs()
+        val pref = currentPrefs.find { it.second == slotName }?.first
 
-        slotPrefs.forEach {
+        currentPrefs.forEach {
             if (it.second == slotName) {
                 return@forEach
             }
 
-            if (it.first == slotPref) {
+            if (it.first == pref) {
                 val pref = preferenceScreen.findPreference<ListPreference>(it.second)
                 pref?.value = SlotType.EMPTY.toString()
             }
-
         }
     }
 
-    private fun updateSlots() {
+    private fun updateDropDownAndSummary() {
         val bottomLeft1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left1")
         val bottomLeft2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left2")
         val bottomRight1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right1")
         val bottomRight2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right2")
 
-        val res = context?.resources!!
-        val slotEntries = res.getStringArray(R.array.slot_entries) // Empty, Clock, etc
-        val slotValues = res.getStringArray(R.array.slot_values) // Empty, Clock, etc
+        val strings = SlotHelper.entriesAndValues(requireContext())
 
-        updateSlotSummary(bottomLeft1, slotEntries, InterfacePrefs.slotBottomLeft1)
-        updateSlotSummary(bottomLeft2, slotEntries, InterfacePrefs.slotBottomLeft2)
-        updateSlotSummary(bottomRight1, slotEntries, InterfacePrefs.slotBottomRight1)
-        updateSlotSummary(bottomRight2, slotEntries, InterfacePrefs.slotBottomRight2)
+        SlotHelper.updateSummary(bottomLeft1, strings.first, InterfacePrefs.slotBottomLeft1)
+        SlotHelper.updateSummary(bottomLeft2, strings.first, InterfacePrefs.slotBottomLeft2)
+        SlotHelper.updateSummary(bottomRight1, strings.first, InterfacePrefs.slotBottomRight1)
+        SlotHelper.updateSummary(bottomRight2, strings.first, InterfacePrefs.slotBottomRight2)
 
-        // Given a list of slots types (entries, values)
-        // Find which slot type is used in which slot
-        // If slot type is used, get slot name (eg. Bottom Left Slot 1)
+        val slotPrefs = SlotHelper.currentPrefs()
 
-        val slotPrefs = buildSlotPrefs()
-
-        updateSlotList(bottomLeft1, slotEntries, slotValues, slotPrefs)
-        updateSlotList(bottomLeft2, slotEntries, slotValues, slotPrefs)
-        updateSlotList(bottomRight1, slotEntries, slotValues, slotPrefs)
-        updateSlotList(bottomRight2, slotEntries, slotValues, slotPrefs)
-    }
-
-    private fun buildSlotPrefs(): List<Triple<SlotType, String, String>> {
-        val slotPrefs = mutableListOf<Triple<SlotType, String, String>>()
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft1, "slot_bottom_left1", "Bottom Left, Slot 1"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft2, "slot_bottom_left2","Bottom Left, Slot 2"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight1, "slot_bottom_right1", "Bottom Right, Slot 1"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight2, "slot_bottom_right2", "Bottom Right, Slot 2"))
-        return slotPrefs
-    }
-    private fun updateSlotSummary(list: ListPreference?, summaryList: Array<String>, slot: SlotType) {
-        val index = SlotType.valueOf(slot.toString()).ordinal
-        val summary = summaryList[index]
-        list?.summary = summary
-    }
-
-    private fun updateSlotList(list: ListPreference?, slotEntries: Array<String>, slotValues: Array<String>, slotPrefs: List<Triple<SlotType, String, String>>) {
-        val entries = slotEntries.toMutableList()
-        slotValues.forEachIndexed { index, value ->
-            if (value == SlotType.EMPTY.toString()) {
-                return@forEachIndexed
-            }
-
-            val found = slotPrefs.find { it.first.toString() == value }
-            if (found != null) {
-                entries[index] += " (${found.third})"
-            }
-        }
-
-        list?.entries = entries.toTypedArray()
-        list?.entryValues = slotValues
+        SlotHelper.updateDropDown(bottomLeft1, strings.first, strings.second, slotPrefs)
+        SlotHelper.updateDropDown(bottomLeft2, strings.first, strings.second, slotPrefs)
+        SlotHelper.updateDropDown(bottomRight1, strings.first, strings.second, slotPrefs)
+        SlotHelper.updateDropDown(bottomRight2, strings.first, strings.second, slotPrefs)
     }
 }
