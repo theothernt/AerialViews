@@ -1,9 +1,8 @@
 package com.neilturner.aerialviews.models
 
-enum class SlotType {
+enum class OverlayType {
     EMPTY,
     CLOCK,
-
     // DATE,
     LOCATION
     // MESSAGE1,
