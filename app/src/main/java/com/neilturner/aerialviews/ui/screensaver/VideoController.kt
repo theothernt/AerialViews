@@ -26,10 +26,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class VideoController(private val context: Context) : OnPlayerEventListener {
+    // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
-    private lateinit var currentVideo: AerialVideo
+    //private lateinit var currentVideo: AerialVideo
     private val textAlpha = 1f
     private var previousVideo = false
     private var canSkip = false
@@ -43,10 +44,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     private var locationSize = InterfacePrefs.locationSize
-
-//    private var showMessage1 = InterfacePrefs.messageStyle != MessageType.OFF
-//    private var showMessage2 = InterfacePrefs.messageStyle == MessageType.TWO_LINE
-//    private var messageSize = InterfacePrefs.messageSize
 
     val view: View
 
@@ -85,6 +82,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 showLoadingError(context)
             }
         }
+
+        // 1. Load playlist
+        // 2. load video, setup location/POI, start playback call
+        // 3. playback started callback, fade out loading text, fade out loading view
+        // 4. when video is almost finished - or skip - fade in loading view
+        // 5. goto 2
     }
 
     fun stop() {
@@ -111,6 +114,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     private fun fadeOutLoading() {
+        // Fade out TextView
         loadingText
             .animate()
             .alpha(0f)
@@ -124,6 +128,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
+        // Fade in LoadView (ie. black screen)
         loadingView
             .animate()
             .alpha(1f)
@@ -132,8 +137,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 loadingView.visibility = View.VISIBLE
             }
             .withEndAction {
+                // Clean up handler
                 currentPositionProgressHandler = null
 
+                // Pick next/previous video
                 val video = if (!previousVideo) {
                     playlist.nextVideo()
                 } else {
@@ -141,10 +148,15 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 }
                 previousVideo = false
 
+                // Setting text + alpha on fade out
+                // Should be moved?
                 videoView.location.text = ""
                 videoView.location.alpha = textAlpha
+
                 loadVideo(videoView, video)
 
+                // Change text alignment per video
+                // Should be moved?
                 if (shouldAlternateTextPosition) {
                     videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
                 }
@@ -152,14 +164,19 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     private fun fadeInNextVideo() {
+        // LoadingView should always be hidden/gone
+        // Remove?
         if (loadingView.visibility == View.GONE) {
             return
         }
 
+        // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
             fadeOutLoading()
         }
 
+        // Fade out LoadingView
+        // Video should be playing underneath
         loadingView
             .animate()
             .alpha(0f)
@@ -172,29 +189,36 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        currentVideo = video
+        //currentVideo = video
+
+        // 1. If POI, set POI text, if empty use location, or else use location
         videoBinding.location.text = if (InterfacePrefs.locationStyle == LocationType.POI) {
             video.poi[0]?.replace("\n", " ") ?: video.location
         } else {
             video.location
         }
 
+        // 2. Hide TextView if POI/location text is blank, or Location is set to off
         if (videoBinding.location.text.isBlank()) {
             videoBinding.location.visibility = View.GONE
         } else if (InterfacePrefs.locationStyle != LocationType.OFF) {
             videoBinding.location.visibility = View.VISIBLE
         }
 
+        // 3. If set to POI, set timer to update text when interval is reached
         if (InterfacePrefs.locationStyle == LocationType.POI && video.poi.size > 1) { // everything else is static anyways
-            val poiTimes = video.poi.keys.sorted()
+            val poiTimes = video.poi.keys.sorted() // sort ahead of time?
             var lastPoi = 0
 
             currentPositionProgressHandler = {
+                // Find POI string at current position/time
                 val time = videoBinding.videoView.currentPosition / 1000
                 val poi = poiTimes.findLast { it <= time } ?: 0
                 val update = poi != lastPoi
 
+                // If new string and not fading in/out + loading new video
                 if (update && canSkip) {
+                    // Set new string and fade in
                     lastPoi = poi
                     videoBinding.location.animate().alpha(0f).setDuration(1000).withEndAction {
                         videoBinding.location.text = video.poi[poi]?.replace("\n", " ")
@@ -202,19 +226,25 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                     }.start()
                 }
 
+                // Set new interval for POI string update
+                // Longer is a new string has just been set
                 val interval = if (update) 3000 else 1000 // Small change to make ktlint happy
                 videoBinding.location.postDelayed({
                     currentPositionProgressHandler?.let { it() }
                 }, interval.toLong())
             }
 
+            // Setup handler for initial run of this video
             videoBinding.location.postDelayed({
                 currentPositionProgressHandler?.let { it() }
             }, 1000)
         } else {
+            // POI is off or empty, so disable handler
             currentPositionProgressHandler = null
         }
 
+        // 4. Is a location is visible and text is LTR (eg. Arabic), set text direction
+        // May not be needed as text alignment can be used?
         if (InterfacePrefs.locationStyle != LocationType.OFF &&
             videoBinding.location.text.isNotBlank()
         ) {
@@ -225,15 +255,18 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             }
         }
 
+        // 5. Set new video and init playback
         videoBinding.videoView.setUri(video.uri)
         videoBinding.videoView.start()
     }
 
     override fun onPrepared() {
+        // Player has buffered video and has started playback
         fadeInNextVideo()
     }
 
     override fun onAlmostFinished() {
+        // Player indicates video is nearly over
         fadeOutCurrentVideo()
     }
 
