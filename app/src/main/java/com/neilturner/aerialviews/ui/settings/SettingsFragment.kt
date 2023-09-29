@@ -19,9 +19,9 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.FilenameAsLocation
-import com.neilturner.aerialviews.models.LocationType
-import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.models.enums.FilenameAsLocation
+import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs

@@ -6,6 +6,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class AppearanceRowBottomFragment :
@@ -26,7 +27,7 @@ class AppearanceRowBottomFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         if (key.contains("slot_", false)) {
-            SlotHelper.updateSlot(preferenceScreen, key)
+            SlotHelper.removeDuplicateOverlays(preferenceScreen, key)
             updateDropDownAndSummary()
         }
     }
@@ -37,18 +38,18 @@ class AppearanceRowBottomFragment :
         val bottomRight1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right1")
         val bottomRight2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right2")
 
-        val strings = SlotHelper.entriesAndValues(requireContext())
+        val overlayData = OverlayHelper.entriesAndValues(requireContext())
 
-        SlotHelper.updateSummary(bottomLeft1, strings.first, InterfacePrefs.slotBottomLeft1)
-        SlotHelper.updateSummary(bottomLeft2, strings.first, InterfacePrefs.slotBottomLeft2)
-        SlotHelper.updateSummary(bottomRight1, strings.first, InterfacePrefs.slotBottomRight1)
-        SlotHelper.updateSummary(bottomRight2, strings.first, InterfacePrefs.slotBottomRight2)
+        SlotHelper.updateSummary(bottomLeft1, overlayData.first, InterfacePrefs.slotBottomLeft1)
+        SlotHelper.updateSummary(bottomLeft2, overlayData.first, InterfacePrefs.slotBottomLeft2)
+        SlotHelper.updateSummary(bottomRight1, overlayData.first, InterfacePrefs.slotBottomRight1)
+        SlotHelper.updateSummary(bottomRight2, overlayData.first, InterfacePrefs.slotBottomRight2)
 
-        val slotPrefs = SlotHelper.currentPrefs()
+        val slotPrefs = SlotHelper.slotPrefs()
 
-        SlotHelper.updateDropDown(bottomLeft1, strings.first, strings.second, slotPrefs)
-        SlotHelper.updateDropDown(bottomLeft2, strings.first, strings.second, slotPrefs)
-        SlotHelper.updateDropDown(bottomRight1, strings.first, strings.second, slotPrefs)
-        SlotHelper.updateDropDown(bottomRight2, strings.first, strings.second, slotPrefs)
+        SlotHelper.buildOverlayList(bottomLeft1, overlayData.first, overlayData.second, slotPrefs)
+        SlotHelper.buildOverlayList(bottomLeft2, overlayData.first, overlayData.second, slotPrefs)
+        SlotHelper.buildOverlayList(bottomRight1, overlayData.first, overlayData.second, slotPrefs)
+        SlotHelper.buildOverlayList(bottomRight2, overlayData.first, overlayData.second, slotPrefs)
     }
 }

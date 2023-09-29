@@ -1,8 +1,9 @@
-package com.neilturner.aerialviews.models
+package com.neilturner.aerialviews.models.enums
 
 enum class OverlayType {
     EMPTY,
     CLOCK,
+
     // DATE,
     LOCATION
     // MESSAGE1,

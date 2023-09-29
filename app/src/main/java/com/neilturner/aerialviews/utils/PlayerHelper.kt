@@ -4,7 +4,7 @@ package com.neilturner.aerialviews.utils
 
 import android.annotation.SuppressLint
 import androidx.media3.exoplayer.DefaultLoadControl
-import com.neilturner.aerialviews.models.BufferingStrategy
+import com.neilturner.aerialviews.models.enums.BufferingStrategy
 
 object PlayerHelper {
 

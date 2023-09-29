@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
-import com.neilturner.aerialviews.models.LocationType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
@@ -30,7 +30,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
-    //private lateinit var currentVideo: AerialVideo
+
+    // private lateinit var currentVideo: AerialVideo
     private val textAlpha = 1f
     private var previousVideo = false
     private var canSkip = false
@@ -70,6 +71,16 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
         videoView.showLocation = showLocation
         videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
+
+        val video = playlist.nextVideo()
+        // SlotHelper.addLocationData(video.location, video.poi)
+        // SlotHelper.loadOverlays(flow1, "slot_bottom_left1", "slot_bottom_left2")
+
+        // TextLocation (context, poi)
+        // AltTextClock
+        // TextDate
+        // TextMessage1, TextMessage2
+        // MusicText / NowPlayingText
 
         val service = VideoService(context)
         coroutineScope.launch {
@@ -189,7 +200,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
-        //currentVideo = video
+        // currentVideo = video
 
         // 1. If POI, set POI text, if empty use location, or else use location
         videoBinding.location.text = if (InterfacePrefs.locationStyle == LocationType.POI) {

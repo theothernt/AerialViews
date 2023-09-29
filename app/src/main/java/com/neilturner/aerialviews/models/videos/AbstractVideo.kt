@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
-import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 @Suppress("MemberVisibilityCanBePrivate")

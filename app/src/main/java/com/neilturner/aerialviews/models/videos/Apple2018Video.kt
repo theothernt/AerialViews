@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
-import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.utils.filename
 
 class Apple2018Video : AbstractVideo() {

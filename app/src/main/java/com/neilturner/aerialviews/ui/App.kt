@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.ui
 
 import android.app.Application
 import android.util.Log
-import com.neilturner.aerialviews.models.VideoQuality
+import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs

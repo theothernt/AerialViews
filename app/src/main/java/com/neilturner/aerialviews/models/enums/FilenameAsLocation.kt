@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.models
+package com.neilturner.aerialviews.models.enums
 
 enum class FilenameAsLocation {
     DISABLED,

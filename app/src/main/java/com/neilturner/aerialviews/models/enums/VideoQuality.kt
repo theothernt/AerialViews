@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.models
+package com.neilturner.aerialviews.models.enums
 
 enum class VideoQuality {
     VIDEO_1080_H264,

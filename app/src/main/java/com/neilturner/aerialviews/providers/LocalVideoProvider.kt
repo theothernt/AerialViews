@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import com.neilturner.aerialviews.models.SearchType
+import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata

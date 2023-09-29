@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.models
+package com.neilturner.aerialviews.models.enums
 
 @Suppress("unused")
 enum class MessageType {
