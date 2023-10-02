@@ -11,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
-import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
@@ -47,8 +47,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     private var locationSize = InterfacePrefs.locationSize
-
-
 
     val view: View
 
@@ -196,7 +194,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        //overlayHelper.loadOverlays()
+        // overlayHelper.loadOverlays()
         // currentVideo = video
 
         // If show-location:

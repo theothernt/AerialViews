@@ -10,7 +10,7 @@ import com.neilturner.aerialviews.ui.overlays.TextLocation
 
 class OverlayHelper(private val context: Context) {
 
-    //private var locationData: Pair<String, Map<Int, String>>
+    // private var locationData: Pair<String, Map<Int, String>>
 
     fun entriesAndValues(): Pair<Array<String>, Array<String>> {
         val res = context.resources!!

@@ -2,8 +2,8 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.util.Log
-import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
