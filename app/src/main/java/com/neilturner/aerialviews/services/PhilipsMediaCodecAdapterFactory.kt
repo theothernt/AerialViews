@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.services
 
 import android.annotation.SuppressLint
 import android.media.MediaExtractor

@@ -20,6 +20,7 @@ import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.LocaleHelper.isLtrText
+import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
+    private lateinit var overlayHelper: OverlayHelper
 
     // private lateinit var currentVideo: AerialVideo
     private val textAlpha = 1f
@@ -46,12 +48,15 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
     private var locationSize = InterfacePrefs.locationSize
 
+
+
     val view: View
 
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
         binding.videoView0.videoView.setOnPlayerListener(this)
+        overlayHelper = OverlayHelper(context)
 
         videoView = binding.videoView0
         loadingView = binding.loadingView.root
@@ -71,16 +76,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
         videoView.showLocation = showLocation
         videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
-
-        val video = playlist.nextVideo()
-        // SlotHelper.addLocationData(video.location, video.poi)
-        // SlotHelper.loadOverlays(flow1, "slot_bottom_left1", "slot_bottom_left2")
-
-        // TextLocation (context, poi)
-        // AltTextClock
-        // TextDate
-        // TextMessage1, TextMessage2
-        // MusicText / NowPlayingText
 
         val service = VideoService(context)
         coroutineScope.launch {
@@ -200,7 +195,23 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
     private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
+
+        //overlayHelper.loadOverlays()
         // currentVideo = video
+
+        // If show-location:
+        // OverlayHelper.addLocationData(video.location, video.poi)
+
+        // OverlayHelper.loadOverlays(flow1, "slot_bottom_left1", "slot_bottom_left2")
+        // ...
+        // ...
+        // OverlayHelper.loadOverlays(flow1, "slot_top_right1", "slot_top_right2")
+
+        // TextLocation (context, poi)
+        // AltTextClock
+        // TextDate
+        // TextMessage1, TextMessage2
+        // MusicText / NowPlayingText
 
         // 1. If POI, set POI text, if empty use location, or else use location
         videoBinding.location.text = if (InterfacePrefs.locationStyle == LocationType.POI) {
