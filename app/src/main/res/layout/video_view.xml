@@ -38,7 +38,7 @@
         >
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
-            android:id="@+id/video_view"
+            android:id="@+id/player"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

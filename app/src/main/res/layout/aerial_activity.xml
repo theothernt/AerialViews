@@ -7,7 +7,7 @@
         android:keepScreenOn="true">
 
         <include
-            android:id="@+id/video_view_0"
+            android:id="@+id/video_view"
             layout="@layout/video_view" />
 
         <include

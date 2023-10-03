@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
@@ -12,14 +10,17 @@ class AltTextClock : TextClock {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-    constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
     override fun onDetachedFromWindow() {
         // Fixes a commonly reported crash with this control ?!
         try {
             super.onDetachedFromWindow()
         } catch (e: Exception) {
-            Log.e("AltTextClock", e.message, e.cause)
+            Log.e(TAG, e.message, e.cause)
         }
+    }
+
+    companion object {
+        private const val TAG = "AltTextClock"
     }
 }
