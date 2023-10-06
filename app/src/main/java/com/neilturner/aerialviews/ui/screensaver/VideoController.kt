@@ -119,6 +119,14 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         if (shouldAlternateOverlays) {
             flip = !flip
+            val array = emptyArray<Int>()
+            flowBottomLeft.referencedIds = array.toIntArray()
+            flowBottomRight.referencedIds = array.toIntArray()
+            flowBottomLeft.requestLayout()
+            flowBottomRight.requestLayout()
+        }
+        else {
+            flip = true
         }
 
         if (flip) {
@@ -128,6 +136,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             flowBottomLeft.referencedIds = bottomRightIds.toIntArray()
             flowBottomRight.referencedIds = bottomLeftIds.toIntArray()
         }
+        flowBottomLeft.requestLayout()
+        flowBottomRight.requestLayout()
 
         player.setUri(video.uri)
         player.start()
