@@ -38,6 +38,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var typeface: Typeface? = null
 
     private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
+    private var flip = false
     private var previousVideo = false
     private var canSkip = false
 
@@ -116,7 +117,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        var flip = false
         if (shouldAlternateOverlays) {
             flip = !flip
         }
@@ -126,7 +126,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             flowBottomRight.referencedIds = bottomRightIds.toIntArray()
         } else {
             flowBottomLeft.referencedIds = bottomRightIds.toIntArray()
-            flowBottomRight.referencedIds = bottomRightIds.toIntArray()
+            flowBottomRight.referencedIds = bottomLeftIds.toIntArray()
         }
 
         player.setUri(video.uri)
