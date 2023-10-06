@@ -7,10 +7,10 @@ import com.neilturner.aerialviews.models.videos.AerialVideo
 
 object OverlayHelper {
 
-    var typeface: Typeface? = null
-    var interfacePrefs: InterfacePrefs? = null
-    var generalPrefs: GeneralPrefs? = null
-    var video: AerialVideo? = null
+//    var typeface: Typeface? = null
+//    var interfacePrefs: InterfacePrefs? = null
+//    var generalPrefs: GeneralPrefs? = null
+//    var video: AerialVideo? = null
 
 //    fun loadOverlays(flow: Flow, slot1: String, slot2: String) {
 //        val prefs = SlotHelper.slotPrefs()
@@ -24,24 +24,6 @@ object OverlayHelper {
 //                    flow.addView(overlay)
 //                }
 //            }
-//        }
-//    }
-
-//    private fun getOverlay(type: OverlayType): View? {
-//        return when (type) {
-//            OverlayType.CLOCK -> {
-//                val clock = AltTextClock(context)
-//                clock.typeface = typeface
-//                clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, interfacePrefs!!.clockSize.toFloat())
-//                return clock
-//            }
-//            OverlayType.LOCATION -> {
-//                val location = TextLocation(context)
-//                location.typeface = typeface
-//                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, interfacePrefs!!.locationSize.toFloat())
-//                return location
-//            }
-//            else -> null
 //        }
 //    }
 }

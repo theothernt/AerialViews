@@ -37,6 +37,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private lateinit var playlist: VideoPlaylist
     private var typeface: Typeface? = null
 
+    private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
     private var previousVideo = false
     private var canSkip = false
 
@@ -50,6 +51,9 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val flowTopLeft: Flow
     private val flowTopRight: Flow
     val view: View
+
+    private val bottomLeftIds: List<Int>
+    private val bottomRightIds: List<Int>
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -74,6 +78,24 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         typeface = FontHelper.getTypeface(context)
         loadingText.typeface = typeface
 
+        val view1 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1)
+        val view2 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2)
+        val view3 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT1)
+        val view4 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT2)
+
+        view1.id = generateViewId()
+        view2.id = generateViewId()
+        view3.id = generateViewId()
+        view4.id = generateViewId()
+
+        layout.addView(view1)
+        layout.addView(view2)
+        layout.addView(view3)
+        layout.addView(view4)
+
+        bottomLeftIds = mutableListOf(view1.id, view2.id)
+        bottomRightIds = mutableListOf(view3.id, view4.id)
+
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
             if (playlist.size > 0) {
@@ -94,27 +116,18 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        val view1 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1)
-        val view2 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2)
+        var flip = false
+        if (shouldAlternateOverlays) {
+            flip = !flip
+        }
 
-        val view3 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT1)
-        val view4 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT2)
-
-        view1.id = generateViewId()
-        view2.id = generateViewId()
-        view3.id = generateViewId()
-        view4.id = generateViewId()
-
-        val leftIds = arrayOf(view1.id, view2.id)
-        val rightIds = arrayOf(view3.id, view4.id)
-
-        layout.addView(view1)
-        layout.addView(view2)
-        layout.addView(view3)
-        layout.addView(view4)
-
-        flowBottomLeft.referencedIds = leftIds.toIntArray()
-        flowBottomRight.referencedIds = rightIds.toIntArray()
+        if (flip) {
+            flowBottomLeft.referencedIds = bottomLeftIds.toIntArray()
+            flowBottomRight.referencedIds = bottomRightIds.toIntArray()
+        } else {
+            flowBottomLeft.referencedIds = bottomRightIds.toIntArray()
+            flowBottomRight.referencedIds = bottomRightIds.toIntArray()
+        }
 
         player.setUri(video.uri)
         player.start()
