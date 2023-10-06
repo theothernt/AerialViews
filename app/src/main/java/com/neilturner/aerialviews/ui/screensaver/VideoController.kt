@@ -1,25 +1,30 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
+import android.graphics.Typeface
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.helper.widget.Flow
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
-import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
+import com.neilturner.aerialviews.ui.overlays.AltTextClock
+import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.neilturner.aerialviews.utils.FontHelper
-import com.neilturner.aerialviews.utils.OverlayHelper
+import com.neilturner.aerialviews.utils.SlotHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,61 +32,56 @@ import kotlinx.coroutines.launch
 class VideoController(private val context: Context) : OnPlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
-    private var overlayHelper: OverlayHelper
+    private var typeface: Typeface? = null
 
-    // private lateinit var currentVideo: AerialVideo
-    private val textAlpha = 1f
     private var previousVideo = false
     private var canSkip = false
+
     private val videoView: VideoViewBinding
     private val loadingView: View
     private var loadingText: TextView
-    private var shouldAlternateTextPosition = InterfacePrefs.alternateTextPosition
-
-    private var showClock = InterfacePrefs.clockStyle
-    private var clockSize = InterfacePrefs.clockSize
-
-    private var showLocation = InterfacePrefs.locationStyle != LocationType.OFF
-    private var locationSize = InterfacePrefs.locationSize
-
+    private var player: ExoPlayerView
+    private val flowBottomLeft: Flow
+    private val flowBottomRight: Flow
+    private val flowTopLeft: Flow
+    private val flowTopRight: Flow
     val view: View
 
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
-        binding.videoView.player.setOnPlayerListener(this)
-        overlayHelper = OverlayHelper(context)
 
-        videoView = binding.videoView
+        view = binding.root
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
-        view = binding.root
 
-        try {
-            val typeface = FontHelper.getTypeface(context)
-            loadingText.typeface = typeface
-            videoView.clock.typeface = typeface
-            videoView.location.typeface = typeface
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception in while ${e.message}")
-        }
+        videoView = binding.videoView
+        player = videoView.player
+        player.setOnPlayerListener(this)
 
-        videoView.showClock = showClock
-        videoView.clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, clockSize.toFloat())
-        videoView.showLocation = showLocation
-        videoView.location.setTextSize(TypedValue.COMPLEX_UNIT_SP, locationSize.toFloat())
+        flowBottomLeft = videoView.flowBottomLeft
+        flowBottomRight = videoView.flowBottomRight
+        flowTopLeft = videoView.flowTopLeft
+        flowTopRight = videoView.flowTopRight
 
-        val service = VideoService(context)
+        // Should try/catch etc
+        // Take pref as param
+        typeface = FontHelper.getTypeface(context)
+        loadingText.typeface = typeface
+
         coroutineScope.launch {
-            playlist = service.fetchVideos()
-            Log.i(TAG, "Playlist items: ${playlist.size}")
+            playlist = VideoService(context).fetchVideos()
             if (playlist.size > 0) {
-                loadVideo(videoView, playlist.nextVideo())
+                Log.i(TAG, "Playlist items: ${playlist.size}")
+                loadVideo(playlist.nextVideo())
             } else {
-
                 showLoadingError(context)
             }
         }
+
+        // loop through overlay prefs and init chosen overlays + name into list
+        // (after load video) clear slots
+        // for each slot, find overlay name, find name in overlay list and add
 
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
@@ -90,29 +90,44 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         // 5. goto 2
     }
 
-    private fun loadVideo(videoBinding: VideoViewBinding, video: AerialVideo) {
+    private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        // overlayHelper.loadOverlays()
-        // currentVideo = video
+        flowBottomLeft.addView(getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1))
+        flowBottomRight.addView(getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2))
 
-        // If show-location:
-        // OverlayHelper.addLocationData(video.location, video.poi)
+        player.setUri(video.uri)
+        player.start()
+    }
 
-        // OverlayHelper.loadOverlays(flow1, "slot_bottom_left1", "slot_bottom_left2")
-        // ...
-        // ...
-        // OverlayHelper.loadOverlays(flow1, "slot_top_right1", "slot_top_right2")
+    private fun getOverlayForSlot(slotType: SlotType): View {
+        val prefs = SlotHelper.slotPrefs()
+        val overlay = prefs.find { it.second == slotType }
+        return getOverlay(overlay?.first ?: OverlayType.UNKNOWN)
+    }
 
-        // TextLocation (context, poi)
-        // AltTextClock
-        // TextDate
-        // TextMessage1, TextMessage2
-        // MusicText / NowPlayingText
-
-        // 5. Set new video and init playback
-        videoBinding.player.setUri(video.uri)
-        videoBinding.player.start()
+    private fun getOverlay(type: OverlayType): View {
+        when (type) {
+            OverlayType.CLOCK -> {
+                val clock = AltTextClock(context)
+                clock.typeface = typeface
+                clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.clockSize.toFloat())
+                return clock
+            }
+            OverlayType.LOCATION -> {
+                val location = TextLocation(context)
+                location.typeface = typeface
+                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
+                location.text = "Location view"
+                return location
+            }
+            else -> {
+                val emptyView = TextView(context)
+                //emptyView.visibility = View.GONE
+                emptyView.text = "Empty view"
+                return emptyView
+            }
+        }
     }
 
     private fun fadeOutLoading() {
@@ -173,16 +188,16 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
                 // Setting text + alpha on fade out
                 // Should be moved?
-                videoView.location.text = ""
-                videoView.location.alpha = textAlpha
+                // videoView.location.text = ""
+                // videoView.location.alpha = textAlpha
 
-                loadVideo(videoView, video)
+                loadVideo(video)
 
                 // Change text alignment per video
                 // Should be moved?
-                if (shouldAlternateTextPosition) {
-                    videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
-                }
+//                if (shouldAlternateTextPosition) {
+//                    videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
+//                }
             }.start()
     }
 
@@ -192,7 +207,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     fun stop() {
-        videoView.player.release()
+        player.release()
     }
 
     fun skipVideo(previous: Boolean = false) {
@@ -201,11 +216,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     fun increaseSpeed() {
-        videoView.player.increaseSpeed()
+        player.increaseSpeed()
     }
 
     fun decreaseSpeed() {
-        videoView.player.decreaseSpeed()
+        player.decreaseSpeed()
     }
 
     override fun onPrepared() {
@@ -228,7 +243,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         // Toast.makeText(context, message, Toast.LENGTH_LONG).show()
 
         if (loadingView.visibility == View.VISIBLE) {
-            loadVideo(videoView, playlist.nextVideo())
+            loadVideo(playlist.nextVideo())
         } else {
             fadeOutCurrentVideo()
         }

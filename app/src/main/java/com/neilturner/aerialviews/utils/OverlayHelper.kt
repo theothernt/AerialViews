@@ -1,44 +1,47 @@
 package com.neilturner.aerialviews.utils
 
-import android.content.Context
-import android.view.View
-import androidx.constraintlayout.helper.widget.Flow
-import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.ui.overlays.AltTextClock
-import com.neilturner.aerialviews.ui.overlays.TextLocation
+import android.graphics.Typeface
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.videos.AerialVideo
 
-class OverlayHelper(private val context: Context) {
+object OverlayHelper {
 
-    // private var locationData: Pair<String, Map<Int, String>>
+    var typeface: Typeface? = null
+    var interfacePrefs: InterfacePrefs? = null
+    var generalPrefs: GeneralPrefs? = null
+    var video: AerialVideo? = null
 
-    fun entriesAndValues(): Pair<Array<String>, Array<String>> {
-        val res = context.resources!!
-        val entries = res.getStringArray(R.array.slot_entries) // Empty, Clock, etc
-        val values = res.getStringArray(R.array.slot_values) // EMPTY, CLOCK, etc
-        return Pair(entries, values)
-    }
+//    fun loadOverlays(flow: Flow, slot1: String, slot2: String) {
+//        val prefs = SlotHelper.slotPrefs()
+//        val overlays = mutableListOf<Triple<OverlayType, String, String>?>()
+//        overlays.add(prefs.find { it.second == slot1 })
+//        overlays.add(prefs.find { it.second == slot2 })
+//        overlays.forEach {
+//            if (it != null && it.first != OverlayType.EMPTY) {
+//                val overlay = getOverlay(it.first)
+//                if (overlay != null) {
+//                    flow.addView(overlay)
+//                }
+//            }
+//        }
+//    }
 
-    fun loadOverlays(flow: Flow, slot1: String, slot2: String) {
-        val prefs = SlotHelper.slotPrefs()
-        val overlays = mutableListOf<Triple<OverlayType, String, String>?>()
-        overlays.add(prefs.find { it.second == slot1 })
-        overlays.add(prefs.find { it.second == slot2 })
-        overlays.forEach {
-            if (it != null && it.first != OverlayType.EMPTY) {
-                val overlay = getOverlay(it.first)
-                if (overlay != null) {
-                    flow.addView(overlay)
-                }
-            }
-        }
-    }
-
-    private fun getOverlay(type: OverlayType): View? {
-        return when (type) {
-            OverlayType.CLOCK -> AltTextClock(context)
-            OverlayType.LOCATION -> TextLocation(context)
-            else -> null
-        }
-    }
+//    private fun getOverlay(type: OverlayType): View? {
+//        return when (type) {
+//            OverlayType.CLOCK -> {
+//                val clock = AltTextClock(context)
+//                clock.typeface = typeface
+//                clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, interfacePrefs!!.clockSize.toFloat())
+//                return clock
+//            }
+//            OverlayType.LOCATION -> {
+//                val location = TextLocation(context)
+//                location.typeface = typeface
+//                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, interfacePrefs!!.locationSize.toFloat())
+//                return location
+//            }
+//            else -> null
+//        }
+//    }
 }

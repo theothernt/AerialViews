@@ -6,7 +6,6 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
-import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class AppearanceRowBottomFragment :
@@ -38,8 +37,7 @@ class AppearanceRowBottomFragment :
         val bottomRight1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right1")
         val bottomRight2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_right2")
 
-        val helper = OverlayHelper(requireContext())
-        val overlayData = helper.entriesAndValues()
+        val overlayData = SlotHelper.entriesAndValues(requireContext())
 
         SlotHelper.updateSummary(bottomLeft1, overlayData.first, InterfacePrefs.slotBottomLeft1)
         SlotHelper.updateSummary(bottomLeft2, overlayData.first, InterfacePrefs.slotBottomLeft2)

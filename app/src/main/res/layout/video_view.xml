@@ -1,41 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <import type="android.view.View" />
-        <import type="android.view.Gravity" />
-
-        <variable
-            name="interfacePrefs"
-            type="com.neilturner.aerialviews.models.prefs.InterfacePrefs" />
-
-        <variable
-            name="shouldAlternateTextPosition"
-            type="boolean" />
-
-        <variable
-            name="showLocation"
-            type="boolean" />
-
-        <variable
-            name="showMessage1"
-            type="boolean" />
-
-        <variable
-            name="showMessage2"
-            type="boolean" />
-
-        <variable
-            name="showClock"
-            type="boolean" />
-    </data>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
             android:id="@+id/player"
@@ -46,84 +15,65 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.neilturner.aerialviews.ui.overlays.AltTextClock
-            android:id="@+id/clock"
-            style="@style/ClockText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_START : View.TEXT_ALIGNMENT_VIEW_END}"
-            android:visibility="@{showClock ? View.VISIBLE : View.GONE}"
-            tools:text="23:15" />
-
-        <TextView
-            android:id="@+id/location"
-            style="@style/LocationText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_START : View.TEXT_ALIGNMENT_VIEW_END}"
-            android:visibility="@{showLocation ? View.VISIBLE : View.GONE}"
-            tools:text="Example location text" />
-
         <androidx.constraintlayout.helper.widget.Flow
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:id="@+id/flow1"
+            android:id="@+id/flowTopLeft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_border_padding"
-            android:layout_marginEnd="@dimen/screen_border_padding"
-            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
+            android:layout_marginTop="@dimen/screen_border_padding_bottom"
             android:orientation="vertical"
-            app:constraint_referenced_ids="clock,location"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:flow_horizontalAlign="start"
             app:flow_verticalAlign="bottom"
+            app:flow_verticalGap="@dimen/text_block_padding"
             app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none" />
-
-        <TextView
-            android:id="@+id/message1"
-            style="@style/MessageText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
-            android:visibility="@{showMessage1 ? View.VISIBLE : View.GONE}"
-            tools:text="Example message line 1 text" />
-
-        <TextView
-            android:id="@+id/message2"
-            style="@style/MessageText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:textAlignment="@{shouldAlternateTextPosition ? View.TEXT_ALIGNMENT_VIEW_END : View.TEXT_ALIGNMENT_VIEW_START}"
-            android:visibility="@{showMessage2 ? View.VISIBLE : View.GONE}"
-            tools:text="Example message line 2 text" />
-
+            app:flow_wrapMode="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.helper.widget.Flow
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:id="@+id/flow2"
+            android:id="@+id/flowTopRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/screen_border_padding_bottom"
+            android:layout_marginEnd="@dimen/screen_border_padding"
+            android:orientation="vertical"
+            app:flow_horizontalAlign="end"
+            app:flow_verticalAlign="bottom"
+            app:flow_verticalGap="@dimen/text_block_padding"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flowBottomLeft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
+            android:orientation="vertical"
+            app:flow_horizontalAlign="start"
+            app:flow_verticalAlign="bottom"
+            app:flow_verticalGap="@dimen/text_block_padding"
+            app:flow_verticalStyle="packed"
+            app:flow_wrapMode="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flowBottomRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/screen_border_padding"
             android:layout_marginBottom="@dimen/screen_border_padding_bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
             android:orientation="vertical"
-            app:constraint_referenced_ids="message1,message2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:flow_horizontalAlign="end"
             app:flow_verticalAlign="bottom"
+            app:flow_verticalGap="@dimen/text_block_padding"
             app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none" />
+            app:flow_wrapMode="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

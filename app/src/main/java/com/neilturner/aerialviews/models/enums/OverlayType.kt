@@ -5,8 +5,10 @@ enum class OverlayType {
     CLOCK,
 
     // DATE,
-    LOCATION
+    LOCATION,
+
     // MESSAGE1,
     // MESSAGE2,
     // MUSIC,
+    UNKNOWN
 }

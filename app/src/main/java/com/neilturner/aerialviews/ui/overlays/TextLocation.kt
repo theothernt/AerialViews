@@ -15,7 +15,6 @@ class TextLocation : AppCompatTextView {
     private val canSkip = true
     // video current position
 
-
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -26,7 +25,6 @@ class TextLocation : AppCompatTextView {
     }
 
     private fun loadVideo(video: AerialVideo) {
-
         // 1. If POI, set POI text, if empty use location, or else use location
         this.text = if (InterfacePrefs.locationStyle == LocationType.POI) {
             video.poi[0]?.replace("\n", " ") ?: video.location
@@ -90,7 +88,6 @@ class TextLocation : AppCompatTextView {
 //                videoBinding.clock.textDirection = View.TEXT_DIRECTION_LOCALE
 //            }
 //        }
-
     }
 
     companion object {
