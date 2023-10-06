@@ -130,17 +130,17 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         when (type) {
             OverlayType.CLOCK -> {
                 val clock = AltTextClock(context)
+                TextViewCompat.setTextAppearance(clock, R.style.ClockText)
                 clock.typeface = typeface
                 clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.clockSize.toFloat())
-                TextViewCompat.setTextAppearance(clock, R.style.ClockText)
                 return clock
             }
             OverlayType.LOCATION -> {
                 val location = TextLocation(context)
-                location.typeface = typeface
-                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
                 TextViewCompat.setTextAppearance(location, R.style.LocationText)
-                location.text = R.string.appearance_location_title.toString()
+                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
+                location.typeface = typeface
+                location.text = context.resources.getString(R.string.appearance_location_title)
                 return location
             }
             else -> {
