@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat.generateViewId
+import androidx.core.widget.TextViewCompat
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -83,10 +84,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             }
         }
 
-        // loop through overlay prefs and init chosen overlays + name into list
-        // (after load video) clear slots
-        // for each slot, find overlay name, find name in overlay list and add
-
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
         // 3. playback started callback, fade out loading text, fade out loading view
@@ -100,19 +97,24 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         val view1 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1)
         val view2 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2)
 
+        val view3 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT1)
+        val view4 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT2)
+
         view1.id = generateViewId()
         view2.id = generateViewId()
+        view3.id = generateViewId()
+        view4.id = generateViewId()
 
-        val view1Id = arrayOf(view1.id)
-        val view2Id = arrayOf(view2.id)
+        val leftIds = arrayOf(view1.id, view2.id)
+        val rightIds = arrayOf(view3.id, view4.id)
 
         layout.addView(view1)
         layout.addView(view2)
+        layout.addView(view3)
+        layout.addView(view4)
 
-        //layout.addView(view1)
-        //flowBottomRight.addView(view1)
-        //flowBottomRight.referencedIds = view1Id.toIntArray()
-        flowBottomRight.referencedIds = view2Id.toIntArray() + view1Id.toIntArray()
+        flowBottomLeft.referencedIds = leftIds.toIntArray()
+        flowBottomRight.referencedIds = rightIds.toIntArray()
 
         player.setUri(video.uri)
         player.start()
@@ -130,19 +132,20 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 val clock = AltTextClock(context)
                 clock.typeface = typeface
                 clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.clockSize.toFloat())
+                TextViewCompat.setTextAppearance(clock, R.style.ClockText)
                 return clock
             }
             OverlayType.LOCATION -> {
                 val location = TextLocation(context)
                 location.typeface = typeface
                 location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
-                location.text = "Location view"
+                TextViewCompat.setTextAppearance(location, R.style.LocationText)
+                location.text = R.string.appearance_location_title.toString()
                 return location
             }
             else -> {
                 val emptyView = TextView(context)
-                //emptyView.visibility = View.GONE
-                emptyView.text = "Empty view"
+                emptyView.visibility = View.GONE
                 return emptyView
             }
         }
