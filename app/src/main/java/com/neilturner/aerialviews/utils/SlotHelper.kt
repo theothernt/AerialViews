@@ -48,7 +48,7 @@ object SlotHelper {
             }
 
             if (it.first == slotPref) {
-                val pref = prefScreen.findPreference<ListPreference>(it.second.toString())
+                val pref = prefScreen.findPreference<ListPreference>(it.second.toString().lowercase())
                 pref?.value = OverlayType.EMPTY.toString()
             }
         }
