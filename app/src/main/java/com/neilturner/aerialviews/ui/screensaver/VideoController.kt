@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.helper.widget.Flow
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat.generateViewId
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -37,6 +39,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var previousVideo = false
     private var canSkip = false
 
+    private val layout: ConstraintLayout
     private val videoView: VideoViewBinding
     private val loadingView: View
     private var loadingText: TextView
@@ -56,6 +59,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText = binding.loadingView.loadingText
 
         videoView = binding.videoView
+        layout = videoView.layout
         player = videoView.player
         player.setOnPlayerListener(this)
 
@@ -93,8 +97,22 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        flowBottomLeft.addView(getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1))
-        flowBottomRight.addView(getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2))
+        val view1 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1)
+        val view2 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2)
+
+        view1.id = generateViewId()
+        view2.id = generateViewId()
+
+        val view1Id = arrayOf(view1.id)
+        val view2Id = arrayOf(view2.id)
+
+        layout.addView(view1)
+        layout.addView(view2)
+
+        //layout.addView(view1)
+        //flowBottomRight.addView(view1)
+        //flowBottomRight.referencedIds = view1Id.toIntArray()
+        flowBottomRight.referencedIds = view2Id.toIntArray() + view1Id.toIntArray()
 
         player.setUri(video.uri)
         player.start()
