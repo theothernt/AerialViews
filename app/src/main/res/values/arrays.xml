@@ -73,11 +73,15 @@
         <item>Empty</item>
         <item>Clock</item>
         <item>Location</item>
+        <item>Date</item>
+        <item>Music</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>LOCATION</item>
+        <item>DATE</item>
+        <item>MUSIC</item>
     </string-array>
     <string name="slot_default" translatable="false">EMPTY</string>
 

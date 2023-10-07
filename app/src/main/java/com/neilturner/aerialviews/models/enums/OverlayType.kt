@@ -3,12 +3,10 @@ package com.neilturner.aerialviews.models.enums
 enum class OverlayType {
     EMPTY,
     CLOCK,
-
-    // DATE,
     LOCATION,
-
+    DATE,
+    MUSIC,
     // MESSAGE1,
     // MESSAGE2,
-    // MUSIC,
     UNKNOWN
 }

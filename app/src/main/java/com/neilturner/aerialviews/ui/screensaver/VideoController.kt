@@ -163,9 +163,27 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 TextViewCompat.setTextAppearance(location, R.style.LocationText)
                 location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
                 location.typeface = typeface
-                location.text = context.resources.getString(R.string.appearance_location_title)
+                location.text = "Somewhere lovely!"
                 return location
             }
+            OverlayType.DATE -> {
+                val location = TextLocation(context)
+                TextViewCompat.setTextAppearance(location, R.style.LocationText)
+                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
+                location.typeface = typeface
+                location.text = "Today's date!"
+                return location
+            }
+
+            OverlayType.MUSIC -> {
+                val location = TextLocation(context)
+                TextViewCompat.setTextAppearance(location, R.style.LocationText)
+                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
+                location.typeface = typeface
+                location.text = "Music 🎶"
+                return location
+            }
+
             else -> {
                 val emptyView = TextView(context)
                 emptyView.visibility = View.GONE
