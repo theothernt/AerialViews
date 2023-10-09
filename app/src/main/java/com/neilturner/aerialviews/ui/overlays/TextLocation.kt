@@ -12,7 +12,8 @@ class TextLocation : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val textAlpha = 1f // start + end values?
-    private val canSkip = true
+    private var canSkip = false
+
     // video current position
 
     constructor(context: Context) : super(context)

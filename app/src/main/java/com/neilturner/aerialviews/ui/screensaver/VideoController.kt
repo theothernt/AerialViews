@@ -79,23 +79,27 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         typeface = FontHelper.getTypeface(context)
         loadingText.typeface = typeface
 
-        val view1 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT1)
-        val view2 = getOverlayForSlot(SlotType.SLOT_BOTTOM_LEFT2)
-        val view3 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT1)
-        val view4 = getOverlayForSlot(SlotType.SLOT_BOTTOM_RIGHT2)
+        // OverlayHelper.setupOverlays(context, typeface, InterfacePrefs, GeneralPrefs)
 
-        view1.id = generateViewId()
-        view2.id = generateViewId()
-        view3.id = generateViewId()
-        view4.id = generateViewId()
+        val views = mutableListOf<View?>()
+        for (type in SlotType.entries) {
+            val view = getOverlayForSlot(type)
+            view?.id = generateViewId()
+            views.add(view)
+        }
 
-        layout.addView(view1)
-        layout.addView(view2)
-        layout.addView(view3)
-        layout.addView(view4)
+        // Build id lists for the 4 corners
+        // If both slots are empty, add empty view
 
-        bottomLeftIds = mutableListOf(view1.id, view2.id)
-        bottomRightIds = mutableListOf(view3.id, view4.id)
+        // TEMP
+        val view = TextView(context)
+        view.text = "Empty View"
+        layout.addView(view)
+
+        buildReferenceIds(views[0], views[1], views[2], views[3], view).run {
+            bottomLeftIds = first
+            bottomRightIds = second
+        }
 
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
@@ -119,15 +123,15 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         if (shouldAlternateOverlays) {
             flip = !flip
-            val array = emptyArray<Int>()
-            flowBottomLeft.referencedIds = array.toIntArray()
-            flowBottomRight.referencedIds = array.toIntArray()
-            flowBottomLeft.requestLayout()
-            flowBottomRight.requestLayout()
-        }
-        else {
+        } else {
             flip = true
         }
+
+        // Find reference to Location overlay
+        // If found, update location data
+
+        // OverlayHelper.(flow1, flow2, leftIds, rightIds, flip)
+        // OverlayHelper.(flow3, flow4, leftIds, rightIds, flip)
 
         if (flip) {
             flowBottomLeft.referencedIds = bottomLeftIds.toIntArray()
@@ -143,10 +147,15 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         player.start()
     }
 
-    private fun getOverlayForSlot(slotType: SlotType): View {
+    private fun getOverlayForSlot(slotType: SlotType): View? {
         val prefs = SlotHelper.slotPrefs()
         val overlay = prefs.find { it.second == slotType }
-        return getOverlay(overlay?.first ?: OverlayType.UNKNOWN)
+
+        return if (overlay?.first != null) {
+            getOverlay(overlay.first)
+        } else {
+            null
+        }
     }
 
     private fun getOverlay(type: OverlayType): View {
@@ -183,13 +192,26 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 location.text = "Music 🎶"
                 return location
             }
-
             else -> {
                 val emptyView = TextView(context)
                 emptyView.visibility = View.GONE
                 return emptyView
             }
         }
+    }
+
+    private fun buildReferenceIds(left1: View?, left2: View?, right1: View?, right2: View?, empty: View): Pair<List<Int>, List<Int>> {
+        var leftIds = listOfNotNull(left1?.id, left2?.id)
+        var rightIds = listOfNotNull(right1?.id, right2?.id)
+
+        if (leftIds.isEmpty() && rightIds.isNotEmpty()) {
+            leftIds = listOf(empty.id)
+        }
+
+        if (leftIds.isNotEmpty() && rightIds.isEmpty()) {
+            rightIds = listOf(empty.id)
+        }
+        return Pair(leftIds, rightIds)
     }
 
     private fun fadeOutLoading() {
