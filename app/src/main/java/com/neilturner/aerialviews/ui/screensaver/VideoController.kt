@@ -86,6 +86,9 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             val view = getOverlayForSlot(type)
             view?.id = generateViewId()
             views.add(view)
+            if (view != null) {
+                layout.addView(view)
+            }
         }
 
         // Build id lists for the 4 corners
@@ -93,13 +96,13 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         // TEMP
         val view = TextView(context)
-        view.text = "Empty View"
+        view.height = 0
+        view.width = 0
         layout.addView(view)
 
-        buildReferenceIds(views[0], views[1], views[2], views[3], view).run {
-            bottomLeftIds = first
-            bottomRightIds = second
-        }
+        val ids = buildReferenceIds(views[0], views[1], views[2], views[3], view)
+        bottomLeftIds = ids.first
+        bottomRightIds = ids.second
 
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
@@ -150,15 +153,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun getOverlayForSlot(slotType: SlotType): View? {
         val prefs = SlotHelper.slotPrefs()
         val overlay = prefs.find { it.second == slotType }
-
-        return if (overlay?.first != null) {
-            getOverlay(overlay.first)
-        } else {
-            null
-        }
+        return getOverlay(overlay?.first)
     }
 
-    private fun getOverlay(type: OverlayType): View {
+    private fun getOverlay(type: OverlayType?): View? {
         when (type) {
             OverlayType.CLOCK -> {
                 val clock = AltTextClock(context)
@@ -176,12 +174,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 return location
             }
             OverlayType.DATE -> {
-                val location = TextLocation(context)
-                TextViewCompat.setTextAppearance(location, R.style.LocationText)
-                location.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
-                location.typeface = typeface
-                location.text = "Today's date!"
-                return location
+                val date = TextView(context)
+                TextViewCompat.setTextAppearance(date, R.style.LocationText)
+                date.setTextSize(TypedValue.COMPLEX_UNIT_SP, InterfacePrefs.locationSize.toFloat())
+                date.typeface = typeface
+                date.text = "Today's date!"
+                return date
             }
 
             OverlayType.MUSIC -> {
@@ -193,9 +191,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 return location
             }
             else -> {
-                val emptyView = TextView(context)
-                emptyView.visibility = View.GONE
-                return emptyView
+                return null
             }
         }
     }
