@@ -7,15 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
+import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -58,10 +61,14 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         typeface = FontHelper.getTypeface(context)
         loadingText.typeface = typeface
 
+        // Init overlays and set initial positions
         OverlayHelper.buildOverlaysAndIds(context, videoView, typeface, InterfacePrefs).run {
             bottomLeftIds = first
             bottomRightIds = second
         }
+
+        // Set initial prefs for overlays
+        // typeface, InterfacePrefs
 
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
@@ -83,6 +90,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
+        // Set overlay data for current video
+        (OverlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+            updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
+        }
+
+        // Set overlay positions
         OverlayHelper.assignOverlaysAndIds(
             videoView.flowBottomLeft,
             videoView.flowBottomRight,
