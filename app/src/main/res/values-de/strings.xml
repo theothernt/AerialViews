@@ -149,6 +149,13 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Aussehen</string>
     <string name="category_overlays">Bildüberlagerungen</string>
+    <string name="category_slots">Slots</string>
+
+    <string name="appearance_top_row_title">Top Left &amp; Right</string>
+    <string name="appearance_top_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+
+    <string name="appearance_bottom_row_title">Bottom Left &amp; Right</string>
+    <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
 
     <string name="appearance_clock_title">Uhr</string>
     <string name="appearance_clock_summary">Zeige aktuelle Zeit an</string>
@@ -170,6 +177,17 @@
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
     <string name="appearance_alt_text_position_summary">Position von Uhr und Standort nach jedem Video ändern um Einbrennen zu verhindern (OLED)</string>
+
+    <!-- Main / Settings / Appearance / Rows -->
+    <string name="category_top_row_left">Top Left</string>
+    <string name="category_top_row_right">Top Right</string>
+
+    <string name="category_bottom_row_left">Bottom Left</string>
+    <string name="category_bottom_row_right">Bottom Right</string>
+
+    <string name="appearance_slot1_title">Bottom Slot</string>
+    <string name="appearance_slot2_title">Top Slot</string>
+    <string name="appearance_slot_summary">Empty</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Uhr</string>

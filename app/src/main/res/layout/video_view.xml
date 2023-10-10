@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -8,16 +9,19 @@
         android:layout_height="match_parent">
 
         <TextView
+            tools:ignore="MissingConstraints"
             android:id="@+id/emptyViewTop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
         <TextView
+            tools:ignore="MissingConstraints"
             android:id="@+id/emptyViewBottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="gone"
+             />
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
             android:id="@+id/player"

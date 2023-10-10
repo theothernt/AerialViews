@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Apple Video Options -->
     <string-array name="apple_videos_quality_entries" translatable="false">
         <item>1080p H.264</item>
@@ -81,7 +81,7 @@
         <item>LOCATION</item>
         <item>DATE</item>
     </string-array>
-    <string name="slot_default" translatable="false">EMPTY</string>
+    <string name="slot_default" translatable="false" tools:keep="@string/slot_default">EMPTY</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
