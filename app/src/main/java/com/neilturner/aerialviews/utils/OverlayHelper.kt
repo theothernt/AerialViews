@@ -37,7 +37,6 @@ object OverlayHelper {
         }
     }
 
-
     // Initialise chosen overlays, add them to the layout then return IDs for later use
     fun buildOverlaysAndIds(context: Context, root: VideoViewBinding, typeface: Typeface?, prefs: InterfacePrefs): Pair<List<Int>, List<Int>> {
         val views = mutableListOf<View?>()

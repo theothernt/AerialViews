@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.helper.widget.Flow
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -89,7 +88,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             videoView.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
-            shouldAlternateOverlays)
+            shouldAlternateOverlays
+        )
 
         player.setUri(video.uri)
         player.start()
@@ -157,12 +157,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 // videoView.location.alpha = textAlpha
 
                 loadVideo(video)
-
-                // Change text alignment per video
-                // Should be moved?
-//                if (shouldAlternateTextPosition) {
-//                    videoView.shouldAlternateTextPosition = !videoView.shouldAlternateTextPosition
-//                }
             }.start()
     }
 

@@ -158,11 +158,11 @@
     <string name="category_overlays">Overlays</string>
     <string name="category_slots">Slots</string>
 
-    <string name="appearance_top_row_title">Top Row</string>
-    <string name="appearance_top_row_summary">Choose overlays for the top-left and top-right of the screen</string>
+    <string name="appearance_top_row_title">Top Left &amp; Right</string>
+    <string name="appearance_top_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
 
-    <string name="appearance_bottom_row_title">Bottom Row</string>
-    <string name="appearance_bottom_row_summary">Choose overlays for the bottom-left and bottom-right of the screen</string>
+    <string name="appearance_bottom_row_title">Bottom Left &amp; Right</string>
+    <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
 
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Display the current time</string>
@@ -186,14 +186,14 @@
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
     <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Top Row - Left</string>
-    <string name="category_top_row_right">Top Row - Right</string>
+    <string name="category_top_row_left">Top Left</string>
+    <string name="category_top_row_right">Top Right</string>
 
-    <string name="category_bottom_row_left">Bottom Row - Left</string>
-    <string name="category_bottom_row_right">Bottom Row - Right</string>
+    <string name="category_bottom_row_left">Bottom Left</string>
+    <string name="category_bottom_row_right">Bottom Right</string>
 
-    <string name="appearance_slot1_title">Slot 1</string>
-    <string name="appearance_slot2_title">Slot 2</string>
+    <string name="appearance_slot1_title">Bottom Slot</string>
+    <string name="appearance_slot2_title">Top Slot</string>
     <string name="appearance_slot_summary">Empty</string>
 
     <!-- Main / Settings / Appearance / Clock -->
