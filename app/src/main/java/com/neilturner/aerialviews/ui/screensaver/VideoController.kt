@@ -30,7 +30,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var typeface: Typeface? = null
 
     private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
-    private var flip = false
     private var previousVideo = false
     private var canSkip = false
 
@@ -38,10 +37,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val loadingView: View
     private var loadingText: TextView
     private var player: ExoPlayerView
-    private val flowBottomLeft: Flow
-    private val flowBottomRight: Flow
-    private val flowTopLeft: Flow
-    private val flowTopRight: Flow
     val view: View
 
     private val bottomLeftIds: List<Int>
@@ -59,17 +54,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         player = videoView.player
         player.setOnPlayerListener(this)
 
-        flowBottomLeft = videoView.flowBottomLeft
-        flowBottomRight = videoView.flowBottomRight
-        flowTopLeft = videoView.flowTopLeft
-        flowTopRight = videoView.flowTopRight
-
         // Should try/catch etc
         // Take pref as param
         typeface = FontHelper.getTypeface(context)
         loadingText.typeface = typeface
 
-        OverlayHelper.buildOverlayIds(context, videoView, typeface, InterfacePrefs).run {
+        OverlayHelper.buildOverlaysAndIds(context, videoView, typeface, InterfacePrefs).run {
             bottomLeftIds = first
             bottomRightIds = second
         }
@@ -94,27 +84,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        if (shouldAlternateOverlays) {
-            flip = !flip
-        } else {
-            flip = true
-        }
-
-        // Find reference to Location overlay
-        // If found, update location data
-
-        // OverlayHelper.(flow1, flow2, leftIds, rightIds, flip)
-        // OverlayHelper.(flow3, flow4, leftIds, rightIds, flip)
-
-        if (flip) {
-            flowBottomLeft.referencedIds = bottomLeftIds.toIntArray()
-            flowBottomRight.referencedIds = bottomRightIds.toIntArray()
-        } else {
-            flowBottomLeft.referencedIds = bottomRightIds.toIntArray()
-            flowBottomRight.referencedIds = bottomLeftIds.toIntArray()
-        }
-        flowBottomLeft.requestLayout()
-        flowBottomRight.requestLayout()
+        OverlayHelper.assignOverlaysAndIds(
+            videoView.flowBottomLeft,
+            videoView.flowBottomRight,
+            bottomLeftIds,
+            bottomRightIds,
+            shouldAlternateOverlays)
 
         player.setUri(video.uri)
         player.start()

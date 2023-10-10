@@ -20,6 +20,10 @@ class TextLocation : AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
+    init {
+        this.text = "A lovely location..."
+    }
+
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         currentPositionProgressHandler = null
