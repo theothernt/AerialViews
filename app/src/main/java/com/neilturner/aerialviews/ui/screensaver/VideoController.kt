@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.findViewTreeOnBackPressedDispatcherOwner
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -66,9 +65,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             bottomLeftIds = first
             bottomRightIds = second
         }
-
-        // Set initial prefs for overlays
-        // typeface, InterfacePrefs
 
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
@@ -147,6 +143,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
+        (OverlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+            isFadingOutVideo = true
+        }
+
         // Fade in LoadView (ie. black screen)
         loadingView
             .animate()
@@ -163,11 +163,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                     playlist.previousVideo()
                 }
                 previousVideo = false
-
-                // Setting text + alpha on fade out
-                // Should be moved?
-                // videoView.location.text = ""
-                // videoView.location.alpha = textAlpha
 
                 loadVideo(video)
             }.start()
