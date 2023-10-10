@@ -66,8 +66,9 @@ object OverlayHelper {
 
     // Figure out which IDs go where, add an empty view if needed
     private fun buildReferenceIds(left1: View?, left2: View?, right1: View?, right2: View?, empty: View): Pair<List<Int>, List<Int>> {
-        var leftIds = listOfNotNull(left1?.id, left2?.id)
-        var rightIds = listOfNotNull(right1?.id, right2?.id)
+        // Reverse order of views due to how the Flow control display order
+        var leftIds = listOfNotNull(left2?.id, left1?.id)
+        var rightIds = listOfNotNull(right2?.id, right1?.id)
 
         // If one side (Flow) is empty, add an invisible view
         // Fixes a bug that causes layout issues

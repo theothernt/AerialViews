@@ -63,10 +63,10 @@ object SlotHelper {
 
     fun slotPrefs(): List<Triple<OverlayType, SlotType, String>> {
         val slotPrefs = mutableListOf<Triple<OverlayType, SlotType, String>>()
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, "Bottom Left, Slot 1"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, "Bottom Left, Slot 2"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, "Bottom Right, Slot 1"))
-        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, "Bottom Right, Slot 2"))
+        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, "Bottom Left, Bottom Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, "Bottom Left, Top Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, "Bottom Right, Bottom Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, "Bottom Right, Top Slot"))
         return slotPrefs
     }
 }
