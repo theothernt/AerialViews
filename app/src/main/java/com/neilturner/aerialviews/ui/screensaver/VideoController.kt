@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 class VideoController(private val context: Context) : OnPlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
+    private var overlayHelper: OverlayHelper
     private var typeface: Typeface? = null
 
     private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
@@ -61,7 +62,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText.typeface = typeface
 
         // Init overlays and set initial positions
-        OverlayHelper.buildOverlaysAndIds(context, videoView, typeface, InterfacePrefs).run {
+        overlayHelper = OverlayHelper(context)
+        overlayHelper.buildOverlaysAndIds(videoView, typeface, InterfacePrefs).run {
             bottomLeftIds = first
             bottomRightIds = second
         }
@@ -87,12 +89,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
         // Set overlay data for current video
-        (OverlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+        (overlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
             updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
         }
 
         // Set overlay positions
-        OverlayHelper.assignOverlaysAndIds(
+        overlayHelper.assignOverlaysAndIds(
             videoView.flowBottomLeft,
             videoView.flowBottomRight,
             bottomLeftIds,
@@ -143,7 +145,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
-        (OverlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+        (overlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
             isFadingOutVideo = true
         }
 
