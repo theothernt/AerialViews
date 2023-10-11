@@ -13,14 +13,17 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import kotlin.reflect.KClass
 
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
 
-    private var overlays = mutableListOf<Pair<OverlayType, View?>>()
+    private var overlays = mutableListOf<View?>()
     private var alternateOverlays = false
 
-    fun findOverlay(type: OverlayType): View? {
-        return overlays.find { it.first == type }?.second
+    fun <T: Any> findOverlay(clazz: KClass<T>): T? {
+        return overlays
+            .filterNotNull()
+            .find { it::class == clazz } as T?
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
@@ -47,7 +50,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             val slot = slots.find { it.second == type }
             val view = getOverlay(slot!!.first)
             view?.id = ViewCompat.generateViewId()
-            overlays.add(Pair(slot.first, view))
+            overlays.add(view)
             if (view != null) {
                 root.layout.addView(view)
             }
@@ -56,10 +59,10 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         val bottomEmptyView = root.emptyViewBottom
         // val topEmptyView = TextView(context)
         return buildReferenceIds(
-            overlays[0].second,
-            overlays[1].second,
-            overlays[2].second,
-            overlays[3].second,
+            overlays[0],
+            overlays[1],
+            overlays[2],
+            overlays[3],
             bottomEmptyView
         )
     }

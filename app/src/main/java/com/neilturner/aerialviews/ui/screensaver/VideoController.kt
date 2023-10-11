@@ -89,9 +89,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
         // Set overlay data for current video
-        (overlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+        overlayHelper.findOverlay(TextLocation::class)?.apply {
             updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
         }
+
+        val x = overlayHelper.findOverlay(TextLocation::class)
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
@@ -145,7 +147,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
-        (overlayHelper.findOverlay(OverlayType.LOCATION) as TextLocation).apply {
+        overlayHelper.findOverlay(TextLocation::class)?.apply {
             isFadingOutVideo = true
         }
 
