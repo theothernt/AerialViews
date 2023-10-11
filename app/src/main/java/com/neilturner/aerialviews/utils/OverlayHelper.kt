@@ -20,7 +20,8 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     private var overlays = mutableListOf<View?>()
     private var alternateOverlays = false
 
-    fun <T: Any> findOverlay(clazz: KClass<T>): T? {
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> findOverlay(clazz: KClass<T>): T? {
         return overlays
             .filterNotNull()
             .find { it::class == clazz } as T?
