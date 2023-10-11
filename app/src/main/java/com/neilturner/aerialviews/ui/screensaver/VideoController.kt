@@ -62,8 +62,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText.typeface = typeface
 
         // Init overlays and set initial positions
-        overlayHelper = OverlayHelper(context)
-        overlayHelper.buildOverlaysAndIds(videoView, typeface, InterfacePrefs).run {
+        overlayHelper = OverlayHelper(context, typeface, InterfacePrefs)
+        overlayHelper.buildOverlaysAndIds(videoView).run {
             bottomLeftIds = first
             bottomRightIds = second
         }

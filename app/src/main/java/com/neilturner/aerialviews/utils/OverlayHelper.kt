@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 
-class OverlayHelper(private val context: Context) {
+class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
 
     private var overlays = mutableListOf<Pair<OverlayType, View?>>()
     private var alternateOverlays = false
@@ -41,11 +41,11 @@ class OverlayHelper(private val context: Context) {
     }
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
-    fun buildOverlaysAndIds(root: VideoViewBinding, typeface: Typeface?, prefs: InterfacePrefs): Pair<List<Int>, List<Int>> {
+    fun buildOverlaysAndIds(root: VideoViewBinding): Pair<List<Int>, List<Int>> {
         val slots = SlotHelper.slotPrefs()
         for (type in SlotType.entries) {
             val slot = slots.find { it.second == type }
-            val view = getOverlay(typeface, prefs, slot!!.first)
+            val view = getOverlay(slot!!.first)
             view?.id = ViewCompat.generateViewId()
             overlays.add(Pair(slot.first, view))
             if (view != null) {
@@ -84,7 +84,7 @@ class OverlayHelper(private val context: Context) {
         return Pair(leftIds, rightIds)
     }
 
-    private fun getOverlay(font: Typeface?, prefs: InterfacePrefs, type: OverlayType): View? {
+    private fun getOverlay(type: OverlayType): View? {
         when (type) {
             OverlayType.CLOCK -> {
                 return AltTextClock(context).apply {
