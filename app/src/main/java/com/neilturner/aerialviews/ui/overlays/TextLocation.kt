@@ -50,18 +50,6 @@ class TextLocation : AppCompatTextView {
             // POI is off or empty, so disable handler
             currentPositionProgressHandler = null
         }
-
-        // 4. Is a location is visible and text is LTR (eg. Arabic), set text direction
-        // May not be needed as text alignment can be used?
-//        if (InterfacePrefs.locationStyle != LocationType.OFF &&
-//            this.text.isNotBlank()
-//        ) {
-//            if (LocaleHelper.isLtrText(this.text.toStringOrEmpty())) {
-//                videoBinding.clock.textDirection = View.TEXT_DIRECTION_LTR
-//            } else {
-//                videoBinding.clock.textDirection = View.TEXT_DIRECTION_LOCALE
-//            }
-//        }
     }
 
     private fun updatePointsOfInterest(poi: Map<Int, String>, player: ExoPlayerView) {
