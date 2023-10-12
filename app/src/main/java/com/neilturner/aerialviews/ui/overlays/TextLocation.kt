@@ -20,7 +20,7 @@ class TextLocation : AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        TextViewCompat.setTextAppearance(this, R.style.LocationText)
+        TextViewCompat.setTextAppearance(this, R.style.OverlayText)
     }
 
     override fun onDetachedFromWindow() {

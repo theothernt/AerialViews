@@ -13,7 +13,7 @@ class TextDate : AppCompatTextView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        TextViewCompat.setTextAppearance(this, R.style.LocationText)
+        TextViewCompat.setTextAppearance(this, R.style.OverlayText)
         this.text = "1/1/2020"
     }
 }

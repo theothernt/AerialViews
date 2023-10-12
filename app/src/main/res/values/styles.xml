@@ -4,33 +4,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="ClockText">
+    <style name="OverlayText">
         <item name="android:alpha">1</item>
         <item name="android:fontFamily">sans-serif-thin</item>
         <item name="android:textColor">#fff</item>
-        <item name="android:textSize">36sp</item>
-        <item name="android:shadowColor">#000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-    </style>
-
-    <style name="LocationText">
-        <item name="android:alpha">1</item>
-        <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:textColor">#fff</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:shadowColor">#000</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">1</item>
-    </style>
-
-    <style name="MessageText">
-        <item name="android:alpha">1</item>
-        <item name="android:fontFamily">sans-serif-thin</item>
-        <item name="android:textColor">#fff</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:shadowColor">#000</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
