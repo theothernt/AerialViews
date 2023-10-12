@@ -17,9 +17,13 @@ object InterfacePrefs : KotprefModel() {
 
     var slotBottomLeft1 by enumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
     var slotBottomLeft2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-
     var slotBottomRight1 by enumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
     var slotBottomRight2 by enumValuePref(OverlayType.CLOCK, "slot_bottom_right2")
+
+    var slotTopLeft1 by enumValuePref(OverlayType.EMPTY, "slot_top_left1")
+    var slotTopLeft2 by enumValuePref(OverlayType.EMPTY, "slot_top_left2")
+    var slotTopRight1 by enumValuePref(OverlayType.EMPTY, "slot_top_right1")
+    var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
 
 //    var messageStyle by enumValuePref(MessageType.OFF, "message_style")
 //    var messageSize by stringPref("18", "message_size")

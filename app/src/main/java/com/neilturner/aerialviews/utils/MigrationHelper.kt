@@ -35,7 +35,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 13) release13()
         if (lastKnownVersion < 14) release14()
         if (lastKnownVersion < 15) release15()
-        //if (lastKnownVersion < 16) release16()
+        // if (lastKnownVersion < 16) release16()
         if (lastKnownVersion < 17) release17()
 
         // After all migrations, set version to latest
@@ -168,7 +168,6 @@ class MigrationHelper(val context: Context) {
         }
 
         // Clock - migrate slot and size
-
     }
 
     // Get saved revision code or return 0

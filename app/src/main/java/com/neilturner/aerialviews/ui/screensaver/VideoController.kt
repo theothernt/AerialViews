@@ -92,8 +92,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
         }
 
-        val x = overlayHelper.findOverlay(TextLocation::class)
-
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
             videoView.flowBottomLeft,

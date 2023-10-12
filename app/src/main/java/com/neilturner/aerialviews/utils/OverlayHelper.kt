@@ -57,34 +57,21 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             }
         }
 
-        val bottomEmptyView = root.emptyViewBottom
-        // val topEmptyView = TextView(context)
         return buildReferenceIds(
             overlays[0],
             overlays[1],
             overlays[2],
             overlays[3],
-            bottomEmptyView
+            root.emptyView1,
+            root.emptyView2
         )
     }
 
     // Figure out which IDs go where, add an empty view if needed
-    private fun buildReferenceIds(left1: View?, left2: View?, right1: View?, right2: View?, empty: View): Pair<List<Int>, List<Int>> {
+    private fun buildReferenceIds(left1: View?, left2: View?, right1: View?, right2: View?, empty1: View, empty2: View): Pair<List<Int>, List<Int>> {
         // Reverse order of views due to how the Flow control display order
-        var leftIds = listOfNotNull(left2?.id, left1?.id)
-        var rightIds = listOfNotNull(right2?.id, right1?.id)
-
-        // If one side (Flow) is empty, add an invisible view
-        // Fixes a bug that causes layout issues
-        if (leftIds.isEmpty() && rightIds.isNotEmpty()) {
-            empty.visibility = View.INVISIBLE
-            leftIds = listOf(empty.id)
-        }
-
-        if (leftIds.isNotEmpty() && rightIds.isEmpty()) {
-            empty.visibility = View.INVISIBLE
-            rightIds = listOf(empty.id)
-        }
+        var leftIds = listOfNotNull(empty2.id, left2?.id, left1?.id)
+        var rightIds = listOfNotNull(empty1.id, right2?.id, right1?.id)
         return Pair(leftIds, rightIds)
     }
 

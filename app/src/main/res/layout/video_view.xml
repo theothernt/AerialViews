@@ -10,18 +10,33 @@
 
         <TextView
             tools:ignore="MissingConstraints"
-            android:id="@+id/emptyViewTop"
+            android:id="@+id/emptyView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
         <TextView
             tools:ignore="MissingConstraints"
-            android:id="@+id/emptyViewBottom"
+            android:id="@+id/emptyView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="invisible"
              />
+
+        <TextView
+            tools:ignore="MissingConstraints"
+            android:id="@+id/emptyView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+        <TextView
+            tools:ignore="MissingConstraints"
+            android:id="@+id/emptyView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            />
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
             android:id="@+id/player"
