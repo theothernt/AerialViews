@@ -193,8 +193,7 @@
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Годинник</string>
 
-    <string name="appearance_show_clock_title">Показати годинник</string>
-    <string name="appearance_show_clock_summary">Показує поточний час</string>
+    <string name="appearance_clock_type_title">Clock type</string>
 
     <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
     <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>

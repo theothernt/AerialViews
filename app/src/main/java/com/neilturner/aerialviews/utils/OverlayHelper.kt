@@ -57,6 +57,10 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             }
         }
 
+        findOverlay(AltTextClock::class)?.apply {
+            updateFormat(prefs.clockFormat)
+        }
+
         return buildReferenceIds(
             overlays[0],
             overlays[1],

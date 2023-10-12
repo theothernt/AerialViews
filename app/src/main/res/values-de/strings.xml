@@ -192,8 +192,7 @@
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Uhr</string>
 
-    <string name="appearance_show_clock_title">Zeige Uhr</string>
-    <string name="appearance_show_clock_summary">Zeigt die aktuelle Zeit</string>
+    <string name="appearance_clock_type_title">Clock type</string>
 
     <string name="appearance_show_force_latin_digits_title">Lateinische Ziffern erzwingen</string>
     <string name="appearance_show_force_latin_digits_summary">Eingestellte Systemsprache ignorieren und immer Westliche Ziffern verwenden</string>

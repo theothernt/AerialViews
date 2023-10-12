@@ -37,16 +37,29 @@
     </string-array>
     <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
+    <!-- Clock format -->
+    <string-array name="clock_format_entries">
+        <item>System default</item>
+        <item>12-Hour</item>
+        <item>24-Hour</item>
+    </string-array>
+    <string-array name="clock_format_values" translatable="false">
+        <item>DEFAULT</item>
+        <item>HOUR_12</item>
+        <item>HOUR_24</item>
+    </string-array>
+    <string name="clock_format_default" translatable="false">DEFAULT</string>
+
     <!-- Video title or POI -->
-    <string-array name="interface_show_location_entries">
+    <string-array name="location_type_entries">
         <item>Location or title</item>
         <item>Points of interest (available in many languages)</item>
     </string-array>
-    <string-array name="interface_show_location_values" translatable="false">
+    <string-array name="location_style_values" translatable="false">
         <item>TITLE</item>
         <item>POI</item>
     </string-array>
-    <string name="interface_show_location_default" translatable="false">POI</string>
+    <string name="location_style_default" translatable="false">POI</string>
 
     <!-- Use filename as location -->
     <string-array name="filename_as_location_entries">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Video title or POI -->
-    <string-array name="interface_show_location_entries">
+    <string-array name="location_type_entries">
         <item>Ort oder Titel</item>
         <item>Sehenswürdigkeiten (Verfügbar in vielen Sprachen)</item>
     </string-array>

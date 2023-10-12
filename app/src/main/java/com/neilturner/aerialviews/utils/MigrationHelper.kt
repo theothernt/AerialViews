@@ -168,6 +168,7 @@ class MigrationHelper(val context: Context) {
         }
 
         // Clock - migrate slot and size
+        // show_clock
     }
 
     // Get saved revision code or return 0

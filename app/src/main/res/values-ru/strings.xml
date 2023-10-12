@@ -193,8 +193,7 @@
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Часы</string>
 
-    <string name="appearance_show_clock_title">Показать часы</string>
-    <string name="appearance_show_clock_summary">Показывает текущее время</string>
+    <string name="appearance_clock_type_title">Clock type</string>
 
     <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
     <string name="appearance_show_force_latin_digits_summary">Всегда показывайть западные цифры, независимо от настроек языкового стандарта системы</string>
