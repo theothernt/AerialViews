@@ -7,12 +7,14 @@ import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.VideoViewBinding
+import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import java.text.DateFormat
 import kotlin.reflect.KClass
 
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
@@ -59,6 +61,10 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
 
         findOverlay(AltTextClock::class)?.apply {
             updateFormat(prefs.clockFormat)
+        }
+
+        findOverlay(TextDate::class)?.apply {
+            updateFormat(DateType.FULL, "")
         }
 
         return buildReferenceIds(
