@@ -39,12 +39,10 @@
 
     <!-- Video title or POI -->
     <string-array name="interface_show_location_entries">
-        <item>Off</item>
         <item>Location or title</item>
         <item>Points of interest (available in many languages)</item>
     </string-array>
     <string-array name="interface_show_location_values" translatable="false">
-        <item>OFF</item>
         <item>TITLE</item>
         <item>POI</item>
     </string-array>

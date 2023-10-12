@@ -36,11 +36,9 @@ class TextLocation : AppCompatTextView {
             location
         }
 
-        // Hide TextView if POI/location text is blank, or Location is set to off
+        // Hide TextView if POI/location text is blank
         if (this.text.isBlank()) {
             this.visibility = View.GONE
-        } else if (locationType != LocationType.OFF) {
-            this.visibility = View.VISIBLE
         }
 
         // If set to POI, set timer to update text when interval is reached

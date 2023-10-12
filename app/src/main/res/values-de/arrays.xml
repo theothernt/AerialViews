@@ -2,7 +2,6 @@
 <resources>
     <!-- Video title or POI -->
     <string-array name="interface_show_location_entries">
-        <item>Aus</item>
         <item>Ort oder Titel</item>
         <item>Sehenswürdigkeiten (Verfügbar in vielen Sprachen)</item>
     </string-array>
