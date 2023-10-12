@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import java.text.DateFormat
 import kotlin.reflect.KClass
 
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
