@@ -7,7 +7,7 @@
                     app:defaultValue="@string/clock_format_default"
                     app:entries="@array/clock_format_entries"
                     app:entryValues="@array/clock_format_values"
-                    app:key="clock_type"
+                    app:key="clock_format"
                     app:title="@string/appearance_clock_type_title"
                     app:useSimpleSummaryProvider="true" />
 
