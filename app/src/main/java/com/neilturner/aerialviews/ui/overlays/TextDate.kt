@@ -12,6 +12,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class TextDate : AppCompatTextView {
 
@@ -34,7 +35,7 @@ class TextDate : AppCompatTextView {
             else -> {
                 try {
                     val today = Calendar.getInstance().time
-                    val formatter = SimpleDateFormat(custom)
+                    val formatter = SimpleDateFormat(custom, Locale.getDefault())
                     formatter.format(today)
                 } catch (ex: Exception) {
                     Log.i(TAG, "Exception while trying custom date formatting")
