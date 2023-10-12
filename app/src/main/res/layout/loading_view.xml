@@ -23,7 +23,7 @@
         android:gravity="bottom"
         android:textAlignment="viewStart"
         android:id="@+id/loading_text"
-        style="@style/LocationText"
+        style="@style/LoadingText"
         android:text="@string/loading_title"
         tools:ignore="RtlCompat" />
 
