@@ -3,9 +3,12 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.utils.DateHelper
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -19,27 +22,32 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSummary() {
-        val control = findPreference<EditTextPreference>("date_custom")
-        control?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            control?.summary = dateFormatting(newValue as String)
+        val textPref = findPreference<ListPreference>("date_format")
+        textPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            textPref?.summary = dateFormatting(DateType.valueOf(textPref?.value!!), null)
             true
         }
-        control?.summary = dateFormatting(control?.text)
+        textPref?.summary = dateFormatting(DateType.valueOf(textPref?.value!!), null)
+
+        val editPref = findPreference<EditTextPreference>("date_custom")
+        editPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            editPref?.summary = dateFormatting(DateType.CUSTOM, newValue as String)
+            true
+        }
+        editPref?.summary = dateFormatting(DateType.CUSTOM, editPref?.text)
     }
 
-    private fun dateFormatting(format: String?): String {
-        val result = try {
-            val today = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(format, Locale.getDefault())
-            formatter.format(today)
-        } catch (ex: Exception) {
-            Log.i(TAG, "Exception while trying custom date formatting")
-            "Invalid custom date format!"
+    private fun dateFormatting(type: DateType, custom: String?): String {
+        return if (type == DateType.CUSTOM && custom == null) {
+            "CUSTOM"
+        } else if (type == DateType.CUSTOM) {
+            "$custom (eg. ${DateHelper.formatDate(type, custom!!)})"
+        } else {
+            "$type (eg. ${DateHelper.formatDate(type, custom!!)})"
         }
-        return "$format - ($result)"
     }
 
     companion object {
-        private const val TAG = "AppearanceLocationFrag"
+        private const val TAG = "AppearanceDateFragment"
     }
 }

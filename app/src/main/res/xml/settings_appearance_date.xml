@@ -11,9 +11,16 @@
                     app:useSimpleSummaryProvider="true" />
 
                 <EditTextPreference
+                    app:enabled="false"
                     app:defaultValue="@string/date_custom_default"
                     app:key="date_custom"
                     app:title="@string/appearance_date_custom_title" />
+
+                <Preference
+                    app:dependency="date_custom"
+                    app:disableDependentsState="false"
+                    app:selectable="false"
+                    app:summary="@string/appearance_date_notice_summary"/>
 
                 <ListPreference
                     app:defaultValue="@string/text_size_default"

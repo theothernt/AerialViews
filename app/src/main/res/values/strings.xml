@@ -212,6 +212,7 @@
     <string name="category_date">Date</string>
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
+    <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
     <string name="appearance_date_size_title">Adjust the size of the date text</string>
 
     <!-- Main / Settings / Appearance / Location -->

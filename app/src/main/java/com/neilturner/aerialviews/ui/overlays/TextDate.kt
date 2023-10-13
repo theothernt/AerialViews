@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.utils.DateHelper
 import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -25,25 +26,7 @@ class TextDate : AppCompatTextView {
     }
 
     fun updateFormat(type: DateType, custom: String) {
-        val date = when (type) {
-            DateType.FULL -> {
-                DateFormat.getDateInstance(DateFormat.FULL).format(Date())
-            }
-            DateType.COMPACT -> {
-                DateFormat.getDateInstance(DateFormat.SHORT).format(Date())
-            }
-            else -> {
-                try {
-                    val today = Calendar.getInstance().time
-                    val formatter = SimpleDateFormat(custom, Locale.getDefault())
-                    formatter.format(today)
-                } catch (ex: Exception) {
-                    Log.i(TAG, "Exception while trying custom date formatting")
-                    "Invalid custom date format!"
-                }
-            }
-        }
-        this.text = date
+        this.text = DateHelper.formatDate(type, custom)
     }
 
     companion object {
