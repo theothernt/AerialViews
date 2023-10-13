@@ -3,8 +3,10 @@ package com.neilturner.aerialviews.models.prefs
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
+import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
+import java.text.DateFormat
 
 object InterfacePrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -13,7 +15,8 @@ object InterfacePrefs : KotprefModel() {
     var clockSize by stringPref("20", "clock_size")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
-    var dateFormat by enumValuePref(ClockType.DEFAULT, "date_format")
+    var dateFormat by enumValuePref(DateType.COMPACT, "date_format")
+    var dateCustom by stringPref("yyyy-MM-dd", "date_custom")
     var dateSize by stringPref("20", "date_size")
 
     var locationStyle by enumValuePref(LocationType.POI, "location_style")

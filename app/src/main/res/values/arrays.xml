@@ -62,6 +62,7 @@
         <item>CUSTOM</item>
     </string-array>
     <string name="date_format_default" translatable="false">COMPACT</string>
+    <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
 
     <!-- Video title or POI -->
     <string-array name="location_type_entries">

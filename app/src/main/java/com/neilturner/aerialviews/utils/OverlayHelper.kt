@@ -63,7 +63,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         }
 
         findOverlay(TextDate::class)?.apply {
-            updateFormat(DateType.FULL, "")
+            updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
         return buildReferenceIds(
@@ -100,7 +100,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             }
             OverlayType.DATE -> {
                 return TextDate(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = font
                 }
             }
