@@ -167,8 +167,16 @@ class MigrationHelper(val context: Context) {
             }
         }
 
-        // Clock - migrate slot and size
-        // show_clock
+        // Clock
+        val clockUsed = prefs.contains("show_clock")
+        if (clockUsed) {
+            val clockEnabled = prefs.getBoolean("show_clock", false)
+            if (!clockEnabled) {
+                prefs.edit().putString("slot_bottom_left1", "EMPTY").apply()
+            } else {
+                Log.i(TAG, "No change to clock as default is used")
+            }
+        }
     }
 
     // Get saved revision code or return 0
