@@ -14,12 +14,12 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSummary() {
-        val summary = findPreference<ListPreference>("filename_as_location")
-        summary?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            summary?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
+        val control = findPreference<ListPreference>("filename_as_location")
+        control?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            control?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
             true
         }
-        summary?.findIndexOfValue(summary.value)?.let { updateDataUsageSummary(it) }
+        control?.findIndexOfValue(control.value)?.let { updateDataUsageSummary(it) }
     }
 
     private fun updateDataUsageSummary(index: Int) {

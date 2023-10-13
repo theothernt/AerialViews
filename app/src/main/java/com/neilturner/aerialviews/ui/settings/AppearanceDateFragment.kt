@@ -14,17 +14,17 @@ import java.util.Locale
 class AppearanceDateFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.settings_appearance_clock, rootKey)
+        setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
         updateSummary()
     }
 
     private fun updateSummary() {
-        val summary = findPreference<EditTextPreference>("date_custom")
-        summary?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            summary?.text = dateFormatting(newValue as String)
+        val control = findPreference<EditTextPreference>("date_custom")
+        control?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            control?.summary = dateFormatting(newValue as String)
             true
         }
-        summary?.text = dateFormatting(summary?.text)
+        control?.summary = dateFormatting(control?.text)
     }
 
     private fun dateFormatting(format: String?): String {
