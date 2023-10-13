@@ -6,7 +6,6 @@ import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
-import java.text.DateFormat
 
 object InterfacePrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"

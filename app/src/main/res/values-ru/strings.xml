@@ -164,6 +164,9 @@
     <string name="appearance_location_title">Местоположение</string>
     <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
 
+    <string name="appearance_date_title">Date</string>
+    <string name="appearance_date_summary">Display the current date</string>
+
     <string name="appearance_weather_title">Погода</string>
     <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
 

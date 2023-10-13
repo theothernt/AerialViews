@@ -3,11 +3,9 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.ui.overlays.TextDate
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.Calendar

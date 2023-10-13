@@ -7,7 +7,6 @@ import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.VideoViewBinding
-import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs

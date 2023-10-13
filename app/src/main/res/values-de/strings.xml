@@ -163,6 +163,9 @@
     <string name="appearance_location_title">Ort</string>
     <string name="appearance_location_summary">Zeige Ort oder Sehenswürdigkeiten an</string>
 
+    <string name="appearance_date_title">Date</string>
+    <string name="appearance_date_summary">Display the current date</string>
+
     <string name="appearance_weather_title">Wetter</string>
     <string name="appearance_weather_summary">Zeige aktuelle Wetterbedingungen an</string>
 
