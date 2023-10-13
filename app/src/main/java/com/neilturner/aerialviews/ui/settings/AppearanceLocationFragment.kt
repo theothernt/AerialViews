@@ -1,15 +1,10 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
-import android.util.Log
-import androidx.preference.EditTextPreference
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class AppearanceLocationFragment : PreferenceFragmentCompat() {
 
@@ -19,27 +14,19 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSummary() {
-        val summary = findPreference<EditTextPreference>("date_custom")
+        val summary = findPreference<ListPreference>("filename_as_location")
         summary?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            summary?.text = dateFormatting(newValue as String)
+            summary?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
             true
         }
-        summary?.text = dateFormatting(summary?.text)
+        summary?.findIndexOfValue(summary.value)?.let { updateDataUsageSummary(it) }
     }
 
-    private fun dateFormatting(format: String?): String {
-        val result = try {
-            val today = Calendar.getInstance().time
-            val formatter = SimpleDateFormat(format, Locale.getDefault())
-            formatter.format(today)
-        } catch (ex: Exception) {
-            Log.i(TAG, "Exception while trying custom date formatting")
-            "Invalid custom date format!"
-        }
-        return "$format - ($result)"
-    }
-
-    companion object {
-        private const val TAG = "AppearanceLocationFrag"
+    private fun updateDataUsageSummary(index: Int) {
+        val res = context?.resources!!
+        val pref = findPreference<Preference>("filename_as_location")
+        val summaryList = res.getStringArray(R.array.filename_as_location_summary_entries)
+        val summary = summaryList[index]
+        pref?.summary = summary
     }
 }
