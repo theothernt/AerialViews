@@ -192,13 +192,19 @@
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Часы</string>
-
-    <string name="appearance_clock_type_title">Clock type</string>
+    <string name="appearance_clock_format_title">Clock format</string>
 
     <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
     <string name="appearance_show_force_latin_digits_summary">Всегда показывайть западные цифры, независимо от настроек языкового стандарта системы</string>
 
     <string name="appearance_clock_size_title">Отрегулируйте размер текста часов</string>
+
+    <!-- Main / Settings / Appearance / Date -->
+    <string name="category_date">Date</string>
+    <string name="appearance_date_format_title">Date format</string>
+
+    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>

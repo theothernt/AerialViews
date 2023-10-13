@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_date">
+                <ListPreference
+                    app:defaultValue="@string/date_format_default"
+                    app:entries="@array/date_format_entries"
+                    app:entryValues="@array/date_format_values"
+                    app:key="clock_format"
+                    app:title="@string/appearance_date_format_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/text_size_default"
+                    app:entries="@array/text_size_entries"
+                    app:entryValues="@array/text_size_values"
+                    app:key="clock_size"
+                    app:title="@string/appearance_date_size_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+</PreferenceScreen>

@@ -6,7 +6,7 @@ import android.util.Log
 import android.widget.TextClock
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.ClockFormat
+import com.neilturner.aerialviews.models.enums.ClockType
 
 class AltTextClock : TextClock {
 
@@ -18,13 +18,13 @@ class AltTextClock : TextClock {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
     }
 
-    fun updateFormat(format: ClockFormat) {
-        if (format == ClockFormat.HOUR_12) {
+    fun updateFormat(format: ClockType) {
+        if (format == ClockType.HOUR_12) {
             this.format12Hour = "hh:mm a"
             this.format24Hour = "hh:mm a"
         }
 
-        if (format == ClockFormat.HOUR_24) {
+        if (format == ClockType.HOUR_24) {
             this.format12Hour = "HH:mm"
             this.format24Hour = "HH:mm"
         }

@@ -19,7 +19,7 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.ClockFormat
+import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.VideoQuality
@@ -177,7 +177,7 @@ class SettingsFragment :
             SambaVideoPrefs.smbDialects.addAll(smbDialects)
 
             // Interface prefs
-            InterfacePrefs.clockFormat = ClockFormat.valueOf(properties["clock_format"] as String)
+            InterfacePrefs.clockFormat = ClockType.valueOf(properties["clock_format"] as String)
             InterfacePrefs.locationStyle = LocationType.valueOf(properties["location_style"] as String)
             InterfacePrefs.alternateTextPosition = properties["alt_text_position"].toString().toBoolean()
 

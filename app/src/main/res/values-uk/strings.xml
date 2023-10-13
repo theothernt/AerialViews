@@ -192,13 +192,19 @@
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Годинник</string>
-
-    <string name="appearance_clock_type_title">Clock type</string>
+    <string name="appearance_clock_format_title">Clock format</string>
 
     <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
     <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
 
     <string name="appearance_clock_size_title">Відрегулюйте розмір тексту годинника</string>
+
+    <!-- Main / Settings / Appearance / Date -->
+    <string name="category_date">Date</string>
+    <string name="appearance_date_format_title">Date format</string>
+
+    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
