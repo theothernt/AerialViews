@@ -24,7 +24,7 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     private fun updateSummary() {
         val textPref = findPreference<ListPreference>("date_format")
         textPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            textPref?.summary = dateFormatting(DateType.valueOf(textPref?.value!!), null)
+            textPref?.summary = dateFormatting(DateType.valueOf(newValue as String), null)
             true
         }
         textPref?.summary = dateFormatting(DateType.valueOf(textPref?.value!!), null)
@@ -41,9 +41,9 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
         return if (type == DateType.CUSTOM && custom == null) {
             "CUSTOM"
         } else if (type == DateType.CUSTOM) {
-            "$custom (eg. ${DateHelper.formatDate(type, custom!!)})"
+            "$custom (eg. ${DateHelper.formatDate(type, custom)})"
         } else {
-            "$type (eg. ${DateHelper.formatDate(type, custom!!)})"
+            "$type (eg. ${DateHelper.formatDate(type, custom)})"
         }
     }
 

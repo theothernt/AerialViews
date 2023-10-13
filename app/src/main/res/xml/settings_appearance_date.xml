@@ -7,8 +7,7 @@
                     app:entries="@array/date_format_entries"
                     app:entryValues="@array/date_format_values"
                     app:key="date_format"
-                    app:title="@string/appearance_date_format_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:title="@string/appearance_date_format_title" />
 
                 <EditTextPreference
                     app:enabled="false"

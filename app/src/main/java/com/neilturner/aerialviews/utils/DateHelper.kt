@@ -10,7 +10,7 @@ import java.util.Date
 import java.util.Locale
 
 object DateHelper {
-    fun formatDate(type: DateType, custom: String): String {
+    fun formatDate(type: DateType, custom: String?): String {
         return when (type) {
             DateType.FULL -> {
                 DateFormat.getDateInstance(DateFormat.FULL).format(Date())
