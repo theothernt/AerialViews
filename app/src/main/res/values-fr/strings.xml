@@ -203,6 +203,8 @@
 
     <!-- Main / Settings / Appearance / Date -->
     <string name="category_date">Date</string>
+    <string name="category_custom_format">Custom format</string>
+
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
