@@ -17,19 +17,23 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateSummary() {
-        val textPref = findPreference<ListPreference>("date_format")
-        textPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            textPref?.summary = dateFormatting(DateType.valueOf(newValue as String), null)
-            true
-        }
-        textPref?.summary = dateFormatting(DateType.valueOf(textPref?.value!!), null)
-
         val editPref = findPreference<EditTextPreference>("date_custom")
         editPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
             editPref?.summary = dateFormatting(DateType.CUSTOM, newValue as String)
             true
         }
         editPref?.summary = dateFormatting(DateType.CUSTOM, editPref?.text)
+
+        val textPref = findPreference<ListPreference>("date_format")
+        textPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            val dateType = DateType.valueOf(newValue as String)
+            textPref?.summary = dateFormatting(dateType, null)
+            editPref?.isEnabled = dateType == DateType.CUSTOM
+            true
+        }
+        val dateType = DateType.valueOf(textPref?.value!!)
+        textPref.summary = dateFormatting(dateType, null)
+        editPref?.isEnabled = dateType == DateType.CUSTOM
     }
 
     private fun dateFormatting(type: DateType, custom: String?): String {
