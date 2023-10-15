@@ -75,8 +75,8 @@
         <item>26sp</item>
         <item>24sp</item>
         <item>22sp</item>
-        <item>20sp (по умолчанию)</item>
-        <item>18sp</item>
+        <item>20sp</item>
+        <item>18sp (по умолчанию)</item>
     </string-array>
 
     <!-- Max. video length -->

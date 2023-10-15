@@ -11,15 +11,15 @@ object InterfacePrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")
-    var clockSize by stringPref("20", "clock_size")
+    var clockSize by stringPref("18", "clock_size")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     var dateFormat by enumValuePref(DateType.COMPACT, "date_format")
     var dateCustom by stringPref("yyyy-MM-dd", "date_custom")
-    var dateSize by stringPref("20", "date_size")
+    var dateSize by stringPref("18", "date_size")
 
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
-    var locationSize by stringPref("20", "location_size")
+    var locationSize by stringPref("18", "location_size")
 
     var slotBottomLeft1 by enumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
     var slotBottomLeft2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
