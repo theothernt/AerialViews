@@ -188,8 +188,8 @@
     <string name="category_bottom_row_left">Bottom Left</string>
     <string name="category_bottom_row_right">Bottom Right</string>
 
-    <string name="appearance_slot1_title">Bottom Slot</string>
-    <string name="appearance_slot2_title">Top Slot</string>
+    <string name="appearance_slot1_title">Lower Slot</string>
+    <string name="appearance_slot2_title">Upper Slot</string>
     <string name="appearance_slot_summary">Empty</string>
 
     <!-- Main / Settings / Appearance / Clock -->
