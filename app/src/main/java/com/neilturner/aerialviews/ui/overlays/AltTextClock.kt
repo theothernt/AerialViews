@@ -20,8 +20,8 @@ class AltTextClock : TextClock {
 
     fun updateFormat(format: ClockType) {
         if (format == ClockType.HOUR_12) {
-            this.format12Hour = "hh:mm a"
-            this.format24Hour = "hh:mm a"
+            this.format12Hour = "h:mm a"
+            this.format24Hour = "h:mm a"
         }
 
         if (format == ClockType.HOUR_24) {
