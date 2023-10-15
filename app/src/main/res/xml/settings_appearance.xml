@@ -46,15 +46,15 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">
-                <Preference
-                    app:title="@string/appearance_typography_title"
-                    app:summary="@string/appearance_typography_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypographyFragment"/>
-
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="alt_text_position"
                     app:summary="@string/appearance_alt_text_position_summary"
                     app:title="@string/appearance_alt_text_position_title" />
+
+                <Preference
+                    app:title="@string/appearance_typography_title"
+                    app:summary="@string/appearance_typography_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTypographyFragment"/>
         </PreferenceCategory>
 </PreferenceScreen>

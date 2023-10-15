@@ -15,6 +15,18 @@
                     app:summary="@string/playlist_shuffle_videos_summary"
                     app:title="@string/playlist_shuffle_videos_title" />
 
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="remove_duplicates"
+                    app:summary="@string/playlist_remove_duplicates_summary"
+                    app:title="@string/playlist_remove_duplicates_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="any_videos_ignore_non_manifest_videos"
+                    app:title="@string/playlist_ignore_unmatched_videos_title"
+                    app:summary="@string/playlist_ignore_unmatched_videos_summary" />
+
                 <ListPreference
                     app:defaultValue="@string/playback_speed_default"
                     app:entries="@array/playback_speed_entries"
@@ -23,18 +35,6 @@
                     app:title="@string/playlist_playback_speed_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_playback_speed_summary" />
-
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="remove_duplicates"
-                    app:summary="@string/playlist_remove_duplicates_summary"
-                    app:title="@string/playlist_remove_duplicates_title" />
-
-<!--                <CheckBoxPreference-->
-<!--                    app:defaultValue="true"-->
-<!--                    app:key="any_videos_use_apple_manifests"-->
-<!--                    app:title="@string/any_videos_use_apple_manifests_title"-->
-<!--                    app:summary="@string/any_videos_use_apple_manifests_summary" />-->
 
                 <ListPreference
                     app:key="playback_max_video_length"
@@ -45,11 +45,6 @@
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_max_video_length_title" />
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="any_videos_ignore_non_manifest_videos"
-                    app:title="@string/playlist_ignore_unmatched_videos_title"
-                    app:summary="@string/playlist_ignore_unmatched_videos_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>
