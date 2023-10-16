@@ -1,3 +1,4 @@
+//file:noinspection GrDeprecatedAPIUsage
 buildscript {
     ext.kotlin_version = '1.9.10'
     repositories {
