@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
@@ -240,6 +241,11 @@ class SambaVideosFragment :
             SambaVideoPrefs.shareName = properties["sharename"] as String
             SambaVideoPrefs.userName = properties["username"] as String
             SambaVideoPrefs.password = properties["password"] as String
+            SambaVideoPrefs.searchSubfolders = properties["search_subfolders"] as Boolean
+            SambaVideoPrefs.enableEncryption = properties["enable_encryption"] as Boolean
+
+            SambaVideoPrefs.smbDialects.clear()
+            SambaVideoPrefs.smbDialects.addAll(properties["enable_encryption"].toString().split(","))
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
             Log.e(TAG, "Import failed", ex)
@@ -253,6 +259,14 @@ class SambaVideosFragment :
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaVideoPrefs.shareName
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaVideoPrefs.userName
             preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaVideoPrefs.password
+
+            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
+            SambaVideoPrefs.searchSubfolders
+            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
+            SambaVideoPrefs.enableEncryption
+
+            preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
+                SambaVideoPrefs.smbDialects.toSet()
         }
 
         showDialog("Import successful", "SMB settings successfully imported from $SMB_SETTINGS_FILENAME")
@@ -285,6 +299,9 @@ class SambaVideosFragment :
         smbSettings["sharename"] = SambaVideoPrefs.shareName
         smbSettings["username"] = SambaVideoPrefs.userName
         smbSettings["password"] = SambaVideoPrefs.password
+        smbSettings["search_subfolders"] = SambaVideoPrefs.searchSubfolders.toString()
+        smbSettings["enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
+        smbSettings["smb_dialects"] = SambaVideoPrefs.smbDialects.joinToString { "," }
 
         val uri: Uri
         try {
