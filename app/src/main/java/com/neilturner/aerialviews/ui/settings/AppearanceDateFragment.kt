@@ -14,6 +14,8 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
+
+        limitTextInput()
         updateSummary()
     }
 
@@ -35,6 +37,10 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
         val dateType = DateType.valueOf(textPref?.value!!)
         textPref.summary = dateFormatting(dateType, null)
         editPref?.isEnabled = dateType == DateType.CUSTOM
+    }
+
+    private fun limitTextInput() {
+        preferenceScreen.findPreference<EditTextPreference>("date_custom")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private fun dateFormatting(type: DateType, custom: String?): String {
