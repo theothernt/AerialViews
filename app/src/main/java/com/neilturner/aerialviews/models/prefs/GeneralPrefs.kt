@@ -24,7 +24,7 @@ object GeneralPrefs : KotprefModel() {
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
     // var filenameAsLocation by booleanPref(true, "filename_as_location")
-    var filenameAsLocation by enumValuePref(FilenameAsLocation.FORMATTED, "filename_as_location")
+    var filenameAsLocation by enumValuePref(FilenameAsLocation.DISABLED, "filename_as_location")
 
     // var useAppleManifests by booleanPref(true, "any_videos_use_apple_manifests")
     // var useCustomManifests by booleanPref(true, "any_videos_use_custom_manifests")
