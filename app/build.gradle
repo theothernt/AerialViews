@@ -142,9 +142,9 @@ dependencies {
     implementation('androidx.appcompat:appcompat:1.6.1')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:21.3.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:18.4.3')
-    implementation('com.google.firebase:firebase-perf-ktx:20.4.1')
+    implementation('com.google.firebase:firebase-analytics-ktx:21.4.0')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:18.5.0')
+    implementation('com.google.firebase:firebase-perf-ktx:20.5.0')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
