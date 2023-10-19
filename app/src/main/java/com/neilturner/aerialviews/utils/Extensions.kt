@@ -25,3 +25,14 @@ fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): Pa
 fun MultiSelectListPreference.setSummaryFromValues(values: Set<String>) {
     summary = values.joinToString(", ") { entries[findIndexOfValue(it)] }
 }
+
+// https://stackoverflow.com/a/64913206/247257
+fun Any?.toBoolean() = this?.toString().equals("true", ignoreCase = true)
+
+// https://stackoverflow.com/a/41855007/247257
+inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
+    return enumValues<T>().any { it.name == name }
+}
+inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
+    return enumValues<T>().find { it.name == name }
+}

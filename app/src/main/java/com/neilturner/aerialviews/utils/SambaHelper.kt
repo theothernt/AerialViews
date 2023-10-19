@@ -80,7 +80,7 @@ object SambaHelper {
     }
 
     fun buildSmbConfig(): SmbConfig {
-        val dialectStrings = SambaVideoPrefs.smbDialects.sortedByDescending { it }
+        val dialectStrings = SambaVideoPrefs.smbDialects
         val config = SmbConfig.builder()
             .withEncryptData(SambaVideoPrefs.enableEncryption)
             .withReadBufferSize(1024 * 512)

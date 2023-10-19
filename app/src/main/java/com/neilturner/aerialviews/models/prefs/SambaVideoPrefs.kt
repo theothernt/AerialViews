@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.neilturner.aerialviews.R
-import java.util.TreeSet
 
 object SambaVideoPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -17,11 +16,10 @@ object SambaVideoPrefs : KotprefModel() {
     var enableEncryption by booleanPref(false, "samba_videos_enable_encryption")
     val smbDialects by stringSetPref("samba_videos_smb_dialects") {
         val smbDialects = context.resources.getStringArray(R.array.samba_videos_smb_dialects_default)
-        val set = TreeSet<String>()
+        val set = sortedSetOf<String>()
+        set.sortedDescending()
         set.addAll(smbDialects)
         set
-        // Must be sorted to get correct order for use in SmbConfig.withDialects(x,y,z)
-        // prefs.smbDialects.sortedByDescending { it }
-        // SMB2Dialect.valueOf(it)
+        // Must be sorted descending to get correct order for use in SmbConfig.withDialects(x,y,z)
     }
 }

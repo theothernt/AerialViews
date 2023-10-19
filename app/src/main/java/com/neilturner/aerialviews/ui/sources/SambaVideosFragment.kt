@@ -23,12 +23,15 @@ import com.google.firebase.ktx.Firebase
 import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
+import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.providers.SambaVideoProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.utils.enumContains
 import com.neilturner.aerialviews.utils.setSummaryFromValues
+import com.neilturner.aerialviews.utils.toBoolean
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -162,6 +165,14 @@ class SambaVideosFragment :
         } else {
             password?.summary = getString(R.string.samba_videos_password_summary)
         }
+
+        // Subfolders
+        val subfolders = findPreference<CheckBoxPreference>("samba_videos_search_subfolders")
+        subfolders?.isChecked = SambaVideoPrefs.searchSubfolders
+
+        // Encryption
+        val encryption = findPreference<CheckBoxPreference>("samba_videos_enable_encryption")
+        encryption?.isChecked = SambaVideoPrefs.enableEncryption
     }
 
     private fun limitTextInput() {
@@ -241,11 +252,14 @@ class SambaVideosFragment :
             SambaVideoPrefs.shareName = properties["sharename"] as String
             SambaVideoPrefs.userName = properties["username"] as String
             SambaVideoPrefs.password = properties["password"] as String
-            SambaVideoPrefs.searchSubfolders = properties["search_subfolders"] as Boolean
-            SambaVideoPrefs.enableEncryption = properties["enable_encryption"] as Boolean
 
+            val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
+            val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
             SambaVideoPrefs.smbDialects.clear()
-            SambaVideoPrefs.smbDialects.addAll(properties["enable_encryption"].toString().split(","))
+            SambaVideoPrefs.smbDialects.addAll(validDialects)
+
+            SambaVideoPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
+            SambaVideoPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
         } catch (ex: Exception) {
             showDialog("Import failed", "Unable to save imported settings")
             Log.e(TAG, "Import failed", ex)
@@ -267,6 +281,10 @@ class SambaVideosFragment :
 
             preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
                 SambaVideoPrefs.smbDialects.toSet()
+
+            updateSummary()
+
+
         }
 
         showDialog("Import successful", "SMB settings successfully imported from $SMB_SETTINGS_FILENAME")
@@ -299,9 +317,11 @@ class SambaVideosFragment :
         smbSettings["sharename"] = SambaVideoPrefs.shareName
         smbSettings["username"] = SambaVideoPrefs.userName
         smbSettings["password"] = SambaVideoPrefs.password
+
+        smbSettings["smb_dialects"] = SambaVideoPrefs.smbDialects.joinToString(",").replace(" ", "")
+
         smbSettings["search_subfolders"] = SambaVideoPrefs.searchSubfolders.toString()
         smbSettings["enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
-        smbSettings["smb_dialects"] = SambaVideoPrefs.smbDialects.joinToString { "," }
 
         val uri: Uri
         try {
