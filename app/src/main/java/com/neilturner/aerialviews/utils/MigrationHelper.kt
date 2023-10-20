@@ -172,9 +172,17 @@ class MigrationHelper(val context: Context) {
         if (clockUsed) {
             val clockEnabled = prefs.getBoolean("show_clock", false)
             if (!clockEnabled) {
+                Log.i(TAG, "Clock disabled so removing overlay from default slot")
                 prefs.edit().putString("slot_bottom_left1", "EMPTY").apply()
             } else {
-                Log.i(TAG, "No change to clock as default is used")
+                Log.i(TAG, "Set new clock prefs")
+                val textSize = prefs.getString("clock_size", "18")
+                if (textSize == "36") {
+                    Log.i(TAG, "Clock text size at old default, updating to new size")
+                    prefs.edit().putString("clock_size", "18").apply()
+                } else {
+                    Log.i(TAG, "Clock text size is custom, leaving alone")
+                }
             }
         }
     }
