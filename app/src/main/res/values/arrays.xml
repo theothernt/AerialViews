@@ -153,6 +153,7 @@
         <item>22sp</item>
         <item>20sp</item>
         <item>18sp (default)</item>
+        <item>16sp</item>
     </string-array>
     <string-array name="text_size_values" translatable="false">
         <item>36</item>
@@ -165,6 +166,7 @@
         <item>22</item>
         <item>20</item>
         <item>18</item>
+        <item>16</item>
     </string-array>
     <string name="text_size_default" translatable="false">20</string>
 
