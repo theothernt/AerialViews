@@ -7,6 +7,7 @@ import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.VideoViewBinding
+import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.InterfacePrefs
@@ -45,7 +46,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     }
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
-    fun buildOverlaysAndIds(root: VideoViewBinding): Pair<List<Int>, List<Int>> {
+    fun buildOverlaysAndIds(root: VideoViewBinding): OverlayIds {
         val slots = SlotHelper.slotPrefs()
         for (type in SlotType.entries) {
             val slot = slots.find { it.second == type }
@@ -65,7 +66,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
-        return buildReferenceIds(
+        val bottomRow = buildReferenceIds(
             overlays[0],
             overlays[1],
             overlays[2],
@@ -73,6 +74,17 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             root.emptyView1,
             root.emptyView2
         )
+
+        val topRow = buildReferenceIds(
+            overlays[5],
+            overlays[4],
+            overlays[7],
+            overlays[6],
+            root.emptyView3,
+            root.emptyView4
+        )
+
+        return OverlayIds(bottomRow.first, bottomRow.second, topRow.first, topRow.second)
     }
 
     // Figure out which IDs go where, add an empty view if needed

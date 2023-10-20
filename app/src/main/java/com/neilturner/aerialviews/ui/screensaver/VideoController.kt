@@ -40,6 +40,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var player: ExoPlayerView
     val view: View
 
+    private val topLeftIds: List<Int>
+    private val topRightIds: List<Int>
     private val bottomLeftIds: List<Int>
     private val bottomRightIds: List<Int>
 
@@ -62,10 +64,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         // Init overlays and set initial positions
         overlayHelper = OverlayHelper(context, typeface, InterfacePrefs)
-        overlayHelper.buildOverlaysAndIds(videoView).run {
-            bottomLeftIds = first
-            bottomRightIds = second
-        }
+        val overlayIds = overlayHelper.buildOverlaysAndIds(videoView)
+        this.bottomLeftIds = overlayIds.bottomLeftIds
+        this.bottomRightIds = overlayIds.bottomRightIds
+        this.topLeftIds = overlayIds.topLeftIds
+        this.topRightIds = overlayIds.topRightIds
 
         coroutineScope.launch {
             playlist = VideoService(context).fetchVideos()
@@ -98,6 +101,14 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             videoView.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
+            shouldAlternateOverlays
+        )
+
+        overlayHelper.assignOverlaysAndIds(
+            videoView.flowTopLeft,
+            videoView.flowTopRight,
+            topLeftIds,
+            topRightIds,
             shouldAlternateOverlays
         )
 
