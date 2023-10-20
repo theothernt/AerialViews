@@ -67,6 +67,10 @@ object SlotHelper {
         slotPrefs.add(Triple(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, "Bottom Left, Top Slot"))
         slotPrefs.add(Triple(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, "Bottom Right, Bottom Slot"))
         slotPrefs.add(Triple(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, "Bottom Right, Top Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, "Top Left, Bottom Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, "Top Left, Top Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, "Top Right, Bottom Slot"))
+        slotPrefs.add(Triple(InterfacePrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, "Top Right, Top Slot"))
         return slotPrefs
     }
 }

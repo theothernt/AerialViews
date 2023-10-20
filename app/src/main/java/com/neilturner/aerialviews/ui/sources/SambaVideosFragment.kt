@@ -283,8 +283,6 @@ class SambaVideosFragment :
                 SambaVideoPrefs.smbDialects.toSet()
 
             updateSummary()
-
-
         }
 
         showDialog("Import successful", "SMB settings successfully imported from $SMB_SETTINGS_FILENAME")

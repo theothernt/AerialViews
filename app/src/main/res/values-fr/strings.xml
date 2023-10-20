@@ -151,10 +151,10 @@
     <string name="category_overlays">Overlays</string>
     <string name="category_slots">Slots</string>
 
-    <string name="appearance_top_row_title">Top Left &amp; Right</string>
-    <string name="appearance_top_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+    <string name="appearance_top_row_title">Top Row</string>
+    <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
 
-    <string name="appearance_bottom_row_title">Bottom Left &amp; Right</string>
+    <string name="appearance_bottom_row_title">Bottom Row</string>
     <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
 
     <string name="appearance_clock_title">Clock</string>
