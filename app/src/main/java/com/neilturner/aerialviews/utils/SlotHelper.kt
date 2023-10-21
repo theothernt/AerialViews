@@ -13,8 +13,8 @@ object SlotHelper {
 
     // Update summary to show assigned overlay name
     fun updateSummary(list: ListPreference?, summaryList: Array<String>, slot: OverlayType) {
-        // should show - Message Line 1
-        // and not MESSAGE 1 or Message Line 1 (Slot name) etc
+        // should show - Location
+        // and not LOCATION or Location (Slot name) etc
         val index = OverlayType.valueOf(slot.toString()).ordinal
         val summary = summaryList[index]
         list?.summary = summary
