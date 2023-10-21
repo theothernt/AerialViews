@@ -76,10 +76,10 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         )
 
         val topRow = buildReferenceIds(
-            overlays[5],
             overlays[4],
-            overlays[7],
+            overlays[5],
             overlays[6],
+            overlays[7],
             root.emptyView3,
             root.emptyView4
         )

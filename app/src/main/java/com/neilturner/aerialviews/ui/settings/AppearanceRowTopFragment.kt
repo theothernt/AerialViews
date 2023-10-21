@@ -14,6 +14,8 @@ class AppearanceRowTopFragment :
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_row_top, rootKey)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+
         updateDropDownAndSummary()
     }
 
