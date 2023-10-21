@@ -49,8 +49,8 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     fun buildOverlaysAndIds(root: VideoViewBinding): OverlayIds {
         val slots = SlotHelper.slotPrefs()
         for (type in SlotType.entries) {
-            val slot = slots.find { it.second == type }
-            val view = getOverlay(slot!!.first)
+            val slot = slots.find { it.type == type }
+            val view = getOverlay(slot!!.pref)
             view?.id = ViewCompat.generateViewId()
             overlays.add(view)
             if (view != null) {
