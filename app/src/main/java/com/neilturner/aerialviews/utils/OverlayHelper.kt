@@ -19,7 +19,6 @@ import kotlin.reflect.KClass
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
 
     private var overlays = mutableListOf<View?>()
-    private var alternateOverlays = false
 
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> findOverlay(clazz: KClass<T>): T? {
@@ -29,7 +28,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
-    fun assignOverlaysAndIds(leftFlow: Flow, rightFlow: Flow, leftIds: List<Int>, rightIds: List<Int>, shouldAlternateOverlays: Boolean) {
+    fun assignOverlaysAndIds(leftFlow: Flow, rightFlow: Flow, leftIds: List<Int>, rightIds: List<Int>, alternateOverlays: Boolean) {
         if (!alternateOverlays) {
             leftFlow.referencedIds = leftIds.toIntArray()
             rightFlow.referencedIds = rightIds.toIntArray()
@@ -39,10 +38,6 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         }
         leftFlow.requestLayout()
         rightFlow.requestLayout()
-
-        if (shouldAlternateOverlays) {
-            alternateOverlays = !alternateOverlays
-        }
     }
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use

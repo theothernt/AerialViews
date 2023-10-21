@@ -31,6 +31,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var typeface: Typeface? = null
 
     private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
+    private var alternate = false
     private var previousVideo = false
     private var canSkip = false
 
@@ -101,7 +102,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             videoView.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
-            shouldAlternateOverlays
+            alternate
         )
 
         overlayHelper.assignOverlaysAndIds(
@@ -109,8 +110,12 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             videoView.flowTopRight,
             topLeftIds,
             topRightIds,
-            shouldAlternateOverlays
+            alternate
         )
+
+        if (shouldAlternateOverlays) {
+            alternate = !alternate
+        }
 
         player.setUri(video.uri)
         player.start()
