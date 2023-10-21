@@ -62,20 +62,20 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         }
 
         val bottomRow = buildReferenceIds(
+            root.emptyView1,
             overlays[0],
             overlays[1],
+            root.emptyView2,
             overlays[2],
             overlays[3],
-            root.emptyView1,
-            root.emptyView2
         )
 
         val topRow = buildReferenceIds(
             overlays[4],
             overlays[5],
+            root.emptyView3,
             overlays[6],
             overlays[7],
-            root.emptyView3,
             root.emptyView4
         )
 
@@ -83,10 +83,10 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     }
 
     // Figure out which IDs go where, add an empty view if needed
-    private fun buildReferenceIds(left1: View?, left2: View?, right1: View?, right2: View?, empty1: View, empty2: View): Pair<List<Int>, List<Int>> {
+    private fun buildReferenceIds(view1: View?, view2: View?, view3: View?, view4: View?, view5: View?, view6: View?): Pair<List<Int>, List<Int>> {
         // Reverse order of views due to how the Flow control display order
-        val leftIds = listOfNotNull(empty2.id, left2?.id, left1?.id)
-        val rightIds = listOfNotNull(empty1.id, right2?.id, right1?.id)
+        val leftIds = listOfNotNull(view1?.id, view2?.id, view3?.id)
+        val rightIds = listOfNotNull(view4?.id, view5?.id, view6?.id)
         return Pair(leftIds, rightIds)
     }
 
