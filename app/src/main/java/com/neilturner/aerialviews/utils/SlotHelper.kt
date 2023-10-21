@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import android.content.res.Resources
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceScreen
 import com.neilturner.aerialviews.R
