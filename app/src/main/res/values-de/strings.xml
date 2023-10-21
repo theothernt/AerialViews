@@ -192,6 +192,15 @@
     <string name="appearance_slot2_title">Upper Slot</string>
     <string name="appearance_slot_summary">Empty</string>
 
+    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
+    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
+    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
+    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
+    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
+    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
+    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
+    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Uhr</string>
     <string name="appearance_clock_format_title">Clock format</string>
