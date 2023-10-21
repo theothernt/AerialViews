@@ -41,7 +41,7 @@ object SlotHelper {
 
     // If overlay is already assigned to another slot, remove it
     fun removeDuplicateOverlays(prefScreen: PreferenceScreen, slotName: String) {
-        val allSlots = slotPrefs()
+        val allSlots = slotPrefs(prefScreen.context)
         val currentSlot = allSlots.find { it.type.toString().lowercase() == slotName }
 
         allSlots.forEach {
@@ -73,9 +73,9 @@ object SlotHelper {
         return Pair(entries, values)
     }
 
-    fun slotPrefs(): List<SlotPref> {
+    fun slotPrefs(context: Context): List<SlotPref> {
         val slotPrefs = mutableListOf<SlotPref>()
-        val res = Resources.getSystem()
+        val res = context.resources!!
         slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
         slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
         slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))

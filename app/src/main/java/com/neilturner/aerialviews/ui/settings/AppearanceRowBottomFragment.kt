@@ -44,7 +44,7 @@ class AppearanceRowBottomFragment :
         SlotHelper.updateSummary(bottomRight1, overlayData.first, InterfacePrefs.slotBottomRight1)
         SlotHelper.updateSummary(bottomRight2, overlayData.first, InterfacePrefs.slotBottomRight2)
 
-        val slotPrefs = SlotHelper.slotPrefs()
+        val slotPrefs = SlotHelper.slotPrefs(requireContext())
 
         SlotHelper.buildOverlayList(bottomLeft1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomLeft2, overlayData.first, overlayData.second, slotPrefs)

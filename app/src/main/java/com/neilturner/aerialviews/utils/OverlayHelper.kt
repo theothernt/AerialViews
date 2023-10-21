@@ -47,7 +47,7 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
     fun buildOverlaysAndIds(root: VideoViewBinding): OverlayIds {
-        val slots = SlotHelper.slotPrefs()
+        val slots = SlotHelper.slotPrefs(root.root.context)
         for (type in SlotType.entries) {
             val slot = slots.find { it.type == type }
             val view = getOverlay(slot!!.pref)
