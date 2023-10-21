@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
+import android.content.res.Resources
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceScreen
 import com.neilturner.aerialviews.R
@@ -74,14 +75,15 @@ object SlotHelper {
 
     fun slotPrefs(): List<SlotPref> {
         val slotPrefs = mutableListOf<SlotPref>()
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, "Bottom Left, Bottom Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, "Bottom Left, Top Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, "Bottom Right, Bottom Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, "Bottom Right, Top Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, "Top Left, Bottom Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, "Top Left, Top Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, "Top Right, Bottom Slot"))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, "Top Right, Top Slot"))
+        val res = Resources.getSystem()
+        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, res.getString(R.string.appearance_bottom_right_upper_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, res.getString(R.string.appearance_top_left_lower_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, res.getString(R.string.appearance_top_left_upper_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, res.getString(R.string.appearance_top_right_lower_slot)))
+        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, res.getString(R.string.appearance_top_right_upper_slot)))
         return slotPrefs
     }
 }
