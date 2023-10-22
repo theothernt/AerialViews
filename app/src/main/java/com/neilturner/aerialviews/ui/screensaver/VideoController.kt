@@ -126,7 +126,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText
             .animate()
             .alpha(0f)
-            .setDuration(1000)
+            .setDuration(500)
             .withEndAction {
                 loadingText.visibility = TextView.GONE
             }.start()
