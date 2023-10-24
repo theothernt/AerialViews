@@ -84,7 +84,7 @@
     <string name="local_videos_media_store_filter_folder_title">Définir les noms des répertoires</string>
     <string name="local_videos_media_store_filter_folder_summary">Exemple: «Aerial» ne joue que des vidéos du répertoire / téléchargements / Aerial / ab &amp; ignore d\'autres dossiers</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored</string>
 
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>

@@ -85,7 +85,7 @@
     <string name="local_videos_media_store_filter_folder_title">Вкажіть назву папки</string>
     <string name="local_videos_media_store_filter_folder_summary">"Якщо ви зберігаєте відео, наприклад, у /Videos/Aerial/, використання 'Aerial' буде фільтрувати відео з інших папок"</string>
     
-    <string name="local_videos_legacy_summary">Вкажіть одну папку, в якій зберігаються відео (Android 12 або нижче)</string>
+    <string name="local_videos_legacy_summary">Вкажіть одну папку, в якій зберігаються відео</string>
 
     <string name="local_videos_legacy_volume_title">Виберіть обсяг</string>
     <string name="local_videos_legacy_volume_summary">Том не вибрано</string>

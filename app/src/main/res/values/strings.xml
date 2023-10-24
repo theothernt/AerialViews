@@ -85,7 +85,7 @@
     <string name="local_videos_media_store_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_media_store_filter_folder_summary">If you store videos in e.g. /Videos/Aerial/ using \'Aerial\' will filter out videos from other folders</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored (Android 12 or less)</string>
+    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored</string>
 
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>

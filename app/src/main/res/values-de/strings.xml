@@ -84,7 +84,7 @@
     <string name="local_videos_media_store_filter_folder_title">Verzeichnisnamen einstellen</string>
     <string name="local_videos_media_store_filter_folder_summary">Speicherst du Videos zum Beispiel unter /Videos/Aerial/ wird \'Aerial\' Videos anderer Ordner herausfiltern</string>
 
-    <string name="local_videos_legacy_summary">Wähle einen einzigen Ordner für gespeicherte Videos (Android 12 oder niedriger)</string>
+    <string name="local_videos_legacy_summary">Wähle einen einzigen Ordner für gespeicherte Videos</string>
 
     <string name="local_videos_legacy_volume_title">Laufwerk wählen</string>
     <string name="local_videos_legacy_volume_summary">Kein Laufwerk gewählt</string>
