@@ -18,6 +18,9 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.SearchType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
@@ -77,6 +80,7 @@ class LocalVideosFragment :
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+
         if (key == "local_videos_enabled" &&
             requiresPermission()
         ) {
@@ -104,6 +108,23 @@ class LocalVideosFragment :
             LocalVideoPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
 
             updateVolumeAndFolderSummary()
+        }
+
+        if (LocalVideoPrefs.enabled) {
+            enableOptions(LocalVideoPrefs.searchType)
+        }
+    }
+
+    private fun enableOptions(type: SearchType) {
+        val mediaStoreOptions = preferenceScreen.findPreference<Preference>("local_videos_media_store_notice")
+        val legacyOptions = preferenceScreen.findPreference<Preference>("local_videos_legacy_notice")
+
+        if (type == SearchType.MEDIA_STORE) {
+            mediaStoreOptions?.isEnabled = true
+            legacyOptions?.isEnabled = false
+        } else {
+            mediaStoreOptions?.isEnabled = false
+            legacyOptions?.isEnabled = true
         }
     }
 
