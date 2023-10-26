@@ -153,6 +153,7 @@
     <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
     <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
 
+    <string name="samba_videos_permission_denied">Permission Denied</string>
     <string name="samba_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / WebDAV videos -->

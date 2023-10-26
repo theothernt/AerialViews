@@ -65,7 +65,7 @@ class SambaVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Import failed", "Unable to read SMB setting file: permission denied")
+                    showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_permission_denied))
                 }
             } else {
                 lifecycleScope.launch {
@@ -80,7 +80,7 @@ class SambaVideosFragment :
         ) { isGranted: Boolean ->
             if (!isGranted) {
                 lifecycleScope.launch {
-                    showDialog("Export failed", "Unable to write SMB setting file: permission denied")
+                    showDialog(resources.getString(R.string.samba_videos_export_failed), resources.getString(R.string.samba_videos_permission_denied))
                 }
             } else {
                 lifecycleScope.launch {
