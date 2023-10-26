@@ -91,10 +91,24 @@
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>
 
     <string name="local_videos_legacy_all_entry">All volumes</string>
-    <string name="local_videos_legacy_all_value">/all</string>
 
     <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
+
+    <string name="local_videos_legacy_no_volume">Volume not specified</string>
+    <string name="local_videos_legacy_no_folder">Folder not specified</string>
+    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
+    <string name="local_videos_legacy_no_files_found">No files found</string>
+
+    <string name="local_videos_legacy_test_summary1">Videos found in folder: %1$</string>
+    <string name="local_videos_legacy_test_summary2">Videos with unsupported file extensions: %1$</string>
+    <string name="local_videos_legacy_test_summary3">Videos selected for playback: %1$</string>
+
+    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
+    <string name="local_videos_media_store_test_summary1">Videos found by media scanner: %1$</string>
+    <string name="local_videos_media_store_test_summary2">Videos with unsupported file extensions: %1$</string>
+    <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$</string>
+    <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Server details and credentials</string>

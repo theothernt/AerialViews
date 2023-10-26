@@ -192,7 +192,7 @@ class LocalVideosFragment :
         val values = vols.map { it.key }.toMutableList()
 
         entries.add(resources.getString(R.string.local_videos_legacy_all_entry))
-        values.add(resources.getString(R.string.local_videos_legacy_all_value))
+        values.add("/all") // values should not be translated!
 
         listPref?.entries = entries.toTypedArray()
         listPref?.entryValues = values.toTypedArray()
