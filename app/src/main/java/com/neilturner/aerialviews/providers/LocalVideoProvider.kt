@@ -143,9 +143,9 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), localVideos.size) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary1), excluded) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary1), filtered) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary1), videos.size)
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary2), excluded) + "\n"
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary3), filtered) + "\n"
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary4), videos.size)
 
         return Pair(videos, message)
     }
