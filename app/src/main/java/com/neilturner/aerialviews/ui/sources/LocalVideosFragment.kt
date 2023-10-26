@@ -112,19 +112,28 @@ class LocalVideosFragment :
 
         if (LocalVideoPrefs.enabled) {
             enableOptions(LocalVideoPrefs.searchType)
+        } else {
+            enableOptions(null)
         }
     }
 
-    private fun enableOptions(type: SearchType) {
+    private fun enableOptions(type: SearchType? = null) {
         val mediaStoreOptions = preferenceScreen.findPreference<Preference>("local_videos_media_store_notice")
         val legacyOptions = preferenceScreen.findPreference<Preference>("local_videos_legacy_notice")
 
-        if (type == SearchType.MEDIA_STORE) {
-            mediaStoreOptions?.isEnabled = true
-            legacyOptions?.isEnabled = false
-        } else {
-            mediaStoreOptions?.isEnabled = false
-            legacyOptions?.isEnabled = true
+        when (type) {
+            SearchType.MEDIA_STORE -> {
+                mediaStoreOptions?.isEnabled = true
+                legacyOptions?.isEnabled = false
+            }
+            SearchType.FOLDER_ACCESS -> {
+                mediaStoreOptions?.isEnabled = false
+                legacyOptions?.isEnabled = true
+            }
+            else -> {
+                mediaStoreOptions?.isEnabled = false
+                legacyOptions?.isEnabled = false
+            }
         }
     }
 
