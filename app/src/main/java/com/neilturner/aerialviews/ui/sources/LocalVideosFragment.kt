@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -36,12 +37,13 @@ class LocalVideosFragment :
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
-    private val resources = context?.resources!!
+    private lateinit var resources: Resources
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        resources = context?.resources!!
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
