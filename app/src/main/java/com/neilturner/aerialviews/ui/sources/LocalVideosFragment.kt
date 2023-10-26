@@ -150,7 +150,7 @@ class LocalVideosFragment :
     private suspend fun testLocalVideosFilter() {
         val provider = LocalVideoProvider(requireContext(), LocalVideoPrefs)
         val result = provider.fetchTest()
-        showDialog("Results", result)
+        showDialog(resources.getString(R.string.local_videos_test_results), result)
     }
 
     private fun requiresPermission(): Boolean {

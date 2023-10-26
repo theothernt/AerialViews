@@ -110,6 +110,8 @@
     <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
     <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
 
+    <string name="local_videos_test_results">Test Results</string>
+
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Server details and credentials</string>
 
