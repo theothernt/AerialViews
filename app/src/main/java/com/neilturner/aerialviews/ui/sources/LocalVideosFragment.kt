@@ -36,6 +36,7 @@ class LocalVideosFragment :
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
+    private val resources = context?.resources!!
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
@@ -167,16 +168,15 @@ class LocalVideosFragment :
     private fun updateVolumeAndFolderSummary() {
         val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
         val folder = preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
-        val res = context?.resources
 
         if (LocalVideoPrefs.legacy_volume.isEmpty()) {
-            volume?.summary = res?.getString(R.string.local_videos_legacy_volume_summary)
+            volume?.summary = resources.getString(R.string.local_videos_legacy_volume_summary)
         } else {
             volume?.summary = LocalVideoPrefs.legacy_volume_label
         }
 
         if (LocalVideoPrefs.legacy_folder.isEmpty()) {
-            folder?.summary = res?.getString(R.string.local_videos_legacy_folder_summary)
+            folder?.summary = resources.getString(R.string.local_videos_legacy_folder_summary)
         } else {
             folder?.summary = LocalVideoPrefs.legacy_folder
         }
@@ -189,8 +189,8 @@ class LocalVideosFragment :
         val entries = vols.map { it.value }.toMutableList()
         val values = vols.map { it.key }.toMutableList()
 
-        entries.add("All volumes")
-        values.add("/all")
+        entries.add(resources.getString(R.string.local_videos_legacy_all_entry))
+        values.add(resources.getString(R.string.local_videos_legacy_all_value))
 
         listPref?.entries = entries.toTypedArray()
         listPref?.entryValues = values.toTypedArray()

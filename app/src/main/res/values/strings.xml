@@ -90,6 +90,9 @@
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>
 
+    <string name="local_videos_legacy_all_entry">All volumes</string>
+    <string name="local_videos_legacy_all_value">/all</string>
+
     <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
 
