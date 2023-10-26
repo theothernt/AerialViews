@@ -53,6 +53,7 @@ class LocalVideosFragment :
         limitTextInput()
         showNoticeIfNeeded()
 
+        updateEnabledOptions()
         updateVolumeAndFolderSummary()
         findVolumeList()
     }
@@ -107,14 +108,18 @@ class LocalVideosFragment :
             updateVolumeAndFolderSummary()
         }
 
+        updateEnabledOptions()
+    }
+
+    private fun updateEnabledOptions() {
         if (LocalVideoPrefs.enabled) {
-            enableOptions(LocalVideoPrefs.searchType)
+            enabledOptions(LocalVideoPrefs.searchType)
         } else {
-            enableOptions(null)
+            enabledOptions(null)
         }
     }
 
-    private fun enableOptions(type: SearchType? = null) {
+    private fun enabledOptions(type: SearchType? = null) {
         val mediaStoreOptions = preferenceScreen.findPreference<Preference>("local_videos_media_store_notice")
         val legacyOptions = preferenceScreen.findPreference<Preference>("local_videos_legacy_notice")
 
