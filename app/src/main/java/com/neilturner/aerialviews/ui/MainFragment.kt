@@ -4,6 +4,7 @@ package com.neilturner.aerialviews.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +27,7 @@ class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
 
-    private val resources = context?.resources!!
+    private lateinit var resources: Resources
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
@@ -38,6 +39,8 @@ class MainFragment :
             LocaleListCompat.getEmptyLocaleList()
         }
         AppCompatDelegate.setApplicationLocales(appLocale)
+
+        resources = requireContext().resources
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
