@@ -44,13 +44,16 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
         preferenceScreen.findPreference<EditTextPreference>("date_custom")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private fun dateFormatting(type: DateType, custom: String?): String {
-        return if (type == DateType.CUSTOM && custom == null) {
+    private fun dateFormatting(type: DateType, format: String?): String {
+        val res = requireContext().resources
+        val forExample = res.getString(R.string.appearance_date_custom_example)
+        val formatError = res.getString(R.string.appearance_date_custom_error)
+        return if (type == DateType.CUSTOM && format == null) {
             "CUSTOM"
         } else if (type == DateType.CUSTOM) {
-            "$custom (eg. ${DateHelper.formatDate(type, custom)})"
+            "$format ($forExample ${DateHelper.formatDate(type, format, formatError)})"
         } else {
-            "$type (eg. ${DateHelper.formatDate(type, custom)})"
+            "$type ($forExample ${DateHelper.formatDate(type, format, formatError)})"
         }
     }
 
