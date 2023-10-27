@@ -220,7 +220,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     override fun onPlaybackSpeedChanged() {
-        val message = String.format(resources.getString(R.string.playlist_playback_speed_changed), GeneralPrefs.playbackSpeed)
+        val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
