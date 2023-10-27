@@ -45,15 +45,13 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     }
 
     private fun dateFormatting(type: DateType, format: String?): String {
-        val res = requireContext().resources
-        val forExample = res.getString(R.string.appearance_date_custom_example)
-        val formatError = res.getString(R.string.appearance_date_custom_error)
+        val forExample = requireContext().resources.getString(R.string.appearance_date_custom_example)
         return if (type == DateType.CUSTOM && format == null) {
             "CUSTOM"
         } else if (type == DateType.CUSTOM) {
-            "$format ($forExample ${DateHelper.formatDate(type, format, formatError)})"
+            "$format ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
         } else {
-            "$type ($forExample ${DateHelper.formatDate(type, format, formatError)})"
+            "$type ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
         }
     }
 

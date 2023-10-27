@@ -12,7 +12,7 @@ import java.util.Date
 import java.util.Locale
 
 object DateHelper {
-    fun formatDate(type: DateType, custom: String?, error: String): String {
+    fun formatDate(context: Context, type: DateType, custom: String?): String {
         return when (type) {
             DateType.FULL -> {
                 DateFormat.getDateInstance(DateFormat.FULL).format(Date())
@@ -27,7 +27,7 @@ object DateHelper {
                     formatter.format(today)
                 } catch (ex: Exception) {
                     Log.i(TAG, "Exception while trying custom date formatting")
-                    error
+                    context.resources.getString(R.string.appearance_date_custom_error)
                 }
             }
         }
