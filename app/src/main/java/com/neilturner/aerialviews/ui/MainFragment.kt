@@ -26,6 +26,8 @@ class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
 
+    private val resources = context?.resources!!
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
@@ -105,16 +107,18 @@ class MainFragment :
             }
         }
 
-        Toast.makeText(requireContext(), "Unable to open your device's screensaver options", Toast.LENGTH_LONG).show()
-    }
-
-    private fun showUserWarning() {
         Toast.makeText(
-            activity,
-            "This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details",
+            requireContext(),
+            resources.getString(R.string.settings_system_options_error),
             Toast.LENGTH_LONG
         ).show()
     }
+
+    private fun showUserWarning() = Toast.makeText(
+        activity,
+        resources.getString(R.string.settings_system_options_removed),
+        Toast.LENGTH_LONG
+    ).show()
 
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager

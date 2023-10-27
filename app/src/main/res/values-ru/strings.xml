@@ -30,6 +30,9 @@
     <string name="settings_preview_screensaver">Протестировать настройки заставки</string>
     <string name="settings_system_options">Открыть системные настройки заставки</string>
 
+    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
+    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
+
     <!-- Main / Video Sources -->
     <string name="category_remote">Съемное хранилище</string>
     <string name="category_local">Локальное хранилище</string>
@@ -311,6 +314,8 @@
     <string name="playlist_allow_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
     <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
 
+    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+    s
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Возможности</string>
 

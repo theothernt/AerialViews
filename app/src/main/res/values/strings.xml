@@ -30,6 +30,9 @@
     <string name="settings_preview_screensaver">Test screensaver settings</string>
     <string name="settings_system_options">Open system screensaver options</string>
 
+    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
+    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
+
     <!-- Main / Video Sources -->
     <string name="category_remote">Remote</string>
     <string name="category_local">Local</string>
