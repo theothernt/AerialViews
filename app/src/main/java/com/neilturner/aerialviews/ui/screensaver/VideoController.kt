@@ -29,6 +29,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
     private var typeface: Typeface? = null
+    private val resources = context.resources!!
 
     private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
     private var alternate = false
@@ -77,7 +78,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
                 loadVideo(playlist.nextVideo())
             } else {
-                showLoadingError(context)
+                showLoadingError()
             }
         }
 
@@ -187,9 +188,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             }.start()
     }
 
-    private fun showLoadingError(context: Context) {
-        val res = context.resources!!
-        loadingText.text = res.getString(R.string.loading_error)
+    private fun showLoadingError() {
+        loadingText.text = resources.getString(R.string.loading_error)
     }
 
     fun stop() {
@@ -220,14 +220,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     override fun onPlaybackSpeedChanged() {
-        val message = "Playback speed changed to: ${GeneralPrefs.playbackSpeed}x"
+        val message = String.format(resources.getString(R.string.playlist_playback_speed_changed), GeneralPrefs.playbackSpeed)
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onError() {
-        // val message = "Error while trying to play ${currentVideo.uri}"
-        // Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-
         if (loadingView.visibility == View.VISIBLE) {
             loadVideo(playlist.nextVideo())
         } else {

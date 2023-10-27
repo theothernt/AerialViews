@@ -320,6 +320,8 @@
     <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
     <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
 
+    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Capabilities</string>
 
