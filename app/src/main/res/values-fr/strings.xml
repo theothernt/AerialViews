@@ -112,6 +112,7 @@
     <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
     <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
 
+    <string name="local_videos_permission_denied">Permission Denied</string>
     <string name="local_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / Samba videos -->
