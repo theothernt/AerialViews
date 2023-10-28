@@ -174,7 +174,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
     @SuppressLint("UnsafeOptInUsageError")
     private fun setRefreshRate() {
         val frameRate = player.videoFormat?.frameRate
-        val surface = this.holder.surface
+        // val surface = this.holder.surface
 
         if (frameRate == null || frameRate == 0f) {
             Log.i(TAG, "Unable to get video frame rate...")

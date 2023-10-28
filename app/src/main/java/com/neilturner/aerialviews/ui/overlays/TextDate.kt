@@ -21,7 +21,7 @@ class TextDate : AppCompatTextView {
     }
 
     fun updateFormat(type: DateType, custom: String) {
-        this.text = DateHelper.formatDate(type, custom)
+        this.text = DateHelper.formatDate(context, type, custom)
     }
 
     companion object {

@@ -4,6 +4,7 @@ package com.neilturner.aerialviews.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,8 @@ class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
 
+    private lateinit var resources: Resources
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
@@ -36,6 +39,8 @@ class MainFragment :
             LocaleListCompat.getEmptyLocaleList()
         }
         AppCompatDelegate.setApplicationLocales(appLocale)
+
+        resources = requireContext().resources
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -105,16 +110,18 @@ class MainFragment :
             }
         }
 
-        Toast.makeText(requireContext(), "Unable to open your device's screensaver options", Toast.LENGTH_LONG).show()
-    }
-
-    private fun showUserWarning() {
         Toast.makeText(
-            activity,
-            "This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details",
+            requireContext(),
+            resources.getString(R.string.settings_system_options_error),
             Toast.LENGTH_LONG
         ).show()
     }
+
+    private fun showUserWarning() = Toast.makeText(
+        activity,
+        resources.getString(R.string.settings_system_options_removed),
+        Toast.LENGTH_LONG
+    ).show()
 
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.Manifest
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
@@ -19,8 +20,6 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.providers.LocalVideoProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
@@ -38,11 +37,13 @@ class LocalVideosFragment :
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
+    private lateinit var resources: Resources
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        resources = context?.resources!!
         storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -55,6 +56,7 @@ class LocalVideosFragment :
         limitTextInput()
         showNoticeIfNeeded()
 
+        updateEnabledOptions()
         updateVolumeAndFolderSummary()
         findVolumeList()
     }
@@ -80,7 +82,6 @@ class LocalVideosFragment :
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-
         if (key == "local_videos_enabled" &&
             requiresPermission()
         ) {
@@ -110,21 +111,34 @@ class LocalVideosFragment :
             updateVolumeAndFolderSummary()
         }
 
+        updateEnabledOptions()
+    }
+
+    private fun updateEnabledOptions() {
         if (LocalVideoPrefs.enabled) {
-            enableOptions(LocalVideoPrefs.searchType)
+            enabledOptions(LocalVideoPrefs.searchType)
+        } else {
+            enabledOptions(null)
         }
     }
 
-    private fun enableOptions(type: SearchType) {
+    private fun enabledOptions(type: SearchType? = null) {
         val mediaStoreOptions = preferenceScreen.findPreference<Preference>("local_videos_media_store_notice")
         val legacyOptions = preferenceScreen.findPreference<Preference>("local_videos_legacy_notice")
 
-        if (type == SearchType.MEDIA_STORE) {
-            mediaStoreOptions?.isEnabled = true
-            legacyOptions?.isEnabled = false
-        } else {
-            mediaStoreOptions?.isEnabled = false
-            legacyOptions?.isEnabled = true
+        when (type) {
+            SearchType.MEDIA_STORE -> {
+                mediaStoreOptions?.isEnabled = true
+                legacyOptions?.isEnabled = false
+            }
+            SearchType.FOLDER_ACCESS -> {
+                mediaStoreOptions?.isEnabled = false
+                legacyOptions?.isEnabled = true
+            }
+            else -> {
+                mediaStoreOptions?.isEnabled = false
+                legacyOptions?.isEnabled = false
+            }
         }
     }
 
@@ -136,7 +150,7 @@ class LocalVideosFragment :
     private suspend fun testLocalVideosFilter() {
         val provider = LocalVideoProvider(requireContext(), LocalVideoPrefs)
         val result = provider.fetchTest()
-        showDialog("Results", result)
+        showDialog(resources.getString(R.string.local_videos_test_results), result)
     }
 
     private fun requiresPermission(): Boolean {
@@ -161,16 +175,15 @@ class LocalVideosFragment :
     private fun updateVolumeAndFolderSummary() {
         val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
         val folder = preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
-        val res = context?.resources
 
         if (LocalVideoPrefs.legacy_volume.isEmpty()) {
-            volume?.summary = res?.getString(R.string.local_videos_legacy_volume_summary)
+            volume?.summary = resources.getString(R.string.local_videos_legacy_volume_summary)
         } else {
             volume?.summary = LocalVideoPrefs.legacy_volume_label
         }
 
         if (LocalVideoPrefs.legacy_folder.isEmpty()) {
-            folder?.summary = res?.getString(R.string.local_videos_legacy_folder_summary)
+            folder?.summary = resources.getString(R.string.local_videos_legacy_folder_summary)
         } else {
             folder?.summary = LocalVideoPrefs.legacy_folder
         }
@@ -183,8 +196,8 @@ class LocalVideosFragment :
         val entries = vols.map { it.value }.toMutableList()
         val values = vols.map { it.key }.toMutableList()
 
-        entries.add("All volumes")
-        values.add("/all")
+        entries.add(resources.getString(R.string.local_videos_legacy_all_entry))
+        values.add("/all") // values should not be translated!
 
         listPref?.entries = entries.toTypedArray()
         listPref?.entryValues = values.toTypedArray()

@@ -1,7 +1,10 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
@@ -11,7 +14,6 @@ import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
-@Suppress("unused")
 class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
 
     override val enabled: Boolean
@@ -38,6 +40,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
     }
 
     private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
+        val res = context.resources!!
         val videos = mutableListOf<AerialVideo>()
         val allFiles = mutableListOf<File>()
         var foldersFound = 0
@@ -45,11 +48,11 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         var excluded = 0
 
         if (prefs.legacy_volume.isEmpty()) {
-            return Pair(videos, "Volume not specified")
+            return Pair(videos, res.getString(R.string.local_videos_legacy_no_volume))
         }
 
         if (prefs.legacy_folder.isEmpty()) {
-            return Pair(videos, "Folder not specified")
+            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder))
         }
 
         val folders = mutableListOf<String>()
@@ -70,8 +73,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             }
             foldersFound++
             val files = directory.listFiles()
-            if (files != null &&
-                files.isNotEmpty()
+            if (!files.isNullOrEmpty()
             ) {
                 filesFound = +files.size
                 allFiles.addAll(files)
@@ -79,11 +81,11 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         }
 
         if (foldersFound == 0) {
-            return Pair(videos, "Folder does not exist")
+            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder_found))
         }
 
         if (filesFound == 0) {
-            return Pair(videos, "No files found")
+            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder_found))
         }
 
         for (file in allFiles) {
@@ -100,14 +102,15 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(Uri.fromFile(file)))
         }
 
-        var message = "Videos found in folder: ${videos.size + excluded}\n"
-        message += "Videos with unsupported file extensions: $excluded\n"
-        message += "Videos selected for playback: ${videos.size}"
+        var message = String.format(res.getString(R.string.local_videos_legacy_test_summary1), videos.size + excluded) + "\n"
+        message += String.format(res.getString(R.string.local_videos_legacy_test_summary2), excluded) + "\n"
+        message += String.format(res.getString(R.string.local_videos_legacy_test_summary3), videos.size)
 
         return Pair(videos, message)
     }
 
     private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
+        val res = context.resources!!
         val videos = mutableListOf<AerialVideo>()
         val localVideos = FileHelper.findAllMedia(context)
         var excluded = 0
@@ -116,7 +119,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
         if (prefs.filter_folder.isEmpty() &&
             prefs.filter_enabled
         ) {
-            return Pair(videos, "No folder specified for filter")
+            return Pair(videos, res.getString(R.string.local_videos_media_store_no_folder))
         }
 
         for (video in localVideos) {
@@ -141,14 +144,10 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
             videos.add(AerialVideo(uri))
         }
 
-        var message = "Videos found by media scanner: ${localVideos.size}\n"
-        message += "Videos with unsupported file extensions: $excluded\n"
-        message += if (prefs.filter_enabled) {
-            "Videos removed by filter: $filtered\n"
-        } else {
-            "Videos removed by filter: (disabled)\n"
-        }
-        message += "Videos selected for playback: ${videos.size}"
+        var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), localVideos.size) + "\n"
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary2), excluded) + "\n"
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary3), filtered) + "\n"
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary4), videos.size)
 
         return Pair(videos, message)
     }

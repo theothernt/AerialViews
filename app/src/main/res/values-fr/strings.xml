@@ -29,6 +29,9 @@
     <string name="settings_preview_screensaver">Tester l\'économiseur d\'écran</string>
     <string name="settings_system_options">"Ouvrir les paramètres système "</string>
 
+    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
+    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
+
     <!-- Main / Video Sources -->
     <string name="category_remote">Remote</string>
     <string name="category_local">Local</string>
@@ -89,8 +92,28 @@
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>
 
+    <string name="local_videos_legacy_all_entry">All volumes</string>
+
     <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
+
+    <string name="local_videos_legacy_no_volume">Volume not specified</string>
+    <string name="local_videos_legacy_no_folder">Folder not specified</string>
+    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
+    <string name="local_videos_legacy_no_files_found">No files found</string>
+
+    <string name="local_videos_legacy_test_summary1">Videos found in folder: %1$s</string>
+    <string name="local_videos_legacy_test_summary2">Videos with unsupported file extensions: %1$s</string>
+    <string name="local_videos_legacy_test_summary3">Videos selected for playback: %1$s</string>
+
+    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
+    <string name="local_videos_media_store_test_summary1">Videos found by media scanner: %1$s</string>
+    <string name="local_videos_media_store_test_summary2">Videos with unsupported file extensions: %1$s</string>
+    <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
+    <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
+
+    <string name="local_videos_permission_denied">Permission Denied</string>
+    <string name="local_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Server details and credentials</string>
@@ -119,6 +142,22 @@
     <string name="samba_videos_import_export_settings_summary">Importer ou exporter les identifiants SMB vers le dossier de téléchargement</string>
 
     <string name="samba_videos_test_connection">Tester les paramètres de connexion</string>
+
+    <string name="samba_videos_import_failed">Import failed</string>
+    <string name="samba_videos_import_success">Import successful</string>
+    <string name="samba_videos_unable_to_save">Unable to save imported settings</string>
+    <string name="samba_videos_file_not_found">Can\'t find SMB settings file in Downloads folder: %1$s</string>
+    <string name="samba_videos_error_parsing">Error while reading and parsing file. Please check the file again for mistakes or invalid characters.</string>
+    <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
+
+    <string name="samba_videos_export_failed">Export failed</string>
+    <string name="samba_videos_export_success">Export successful</string>
+    <string name="samba_videos_file_already_exists">The SMB settings file %1$s already exists in the Downloads folder</string>
+    <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
+    <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
+
+    <string name="samba_videos_permission_denied">Permission Denied</string>
+    <string name="samba_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / WebDAV videos -->
 
@@ -219,6 +258,9 @@
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
     <string name="appearance_date_size_title">Adjust the size of the date text</string>
 
+    <string name="appearance_date_custom_error">Invalid custom date format!</string>
+    <string name="appearance_date_custom_example">e.g.</string> // For example
+
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple and Community videos</string>
     <string name="category_all_other_videos">All other videos</string>
@@ -274,6 +316,8 @@
 
     <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
     <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
+
+    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Fonctions TV</string>
