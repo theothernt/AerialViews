@@ -287,7 +287,7 @@
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
     <string name="appearance_message_line2_title">Line 2</string>
 
-    <string name="appearance_message_size_title">Adjust the size of the text</string>
+    <string name="appearance_message_size_title">Adjust the size of the message text</string>
 
     <!-- Main / Settings / Appearance / Typography -->
 

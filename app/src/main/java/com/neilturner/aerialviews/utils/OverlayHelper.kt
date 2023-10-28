@@ -91,28 +91,22 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     }
 
     private fun getOverlay(type: OverlayType): View? {
-        when (type) {
-            OverlayType.CLOCK -> {
-                return AltTextClock(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                    typeface = font
-                }
+        return when (type) {
+            OverlayType.CLOCK -> AltTextClock(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
+                typeface = font
             }
-            OverlayType.LOCATION -> {
-                return TextLocation(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
-                    typeface = font
-                }
+            OverlayType.LOCATION -> TextLocation(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
+                typeface = font
             }
-            OverlayType.DATE -> {
-                return TextDate(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = font
-                }
+            OverlayType.DATE -> TextDate(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
+                typeface = font
             }
-            else -> {
-                return null
-            }
+            OverlayType.MESSAGE1,
+            OverlayType.MESSAGE2 -> return null
+            else -> return null
         }
     }
 }

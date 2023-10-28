@@ -29,10 +29,10 @@
                     app:summary="@string/appearance_date_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceDateFragment"/>
 
-<!--                <Preference-->
-<!--                    app:title="@string/appearance_message_title"-->
-<!--                    app:summary="@string/appearance_message_summary"-->
-<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>-->
+                <Preference
+                    app:title="@string/appearance_message_title"
+                    app:summary="@string/appearance_message_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>
 
 <!--                <Preference-->
 <!--                    app:title="@string/appearance_weather_title"-->
