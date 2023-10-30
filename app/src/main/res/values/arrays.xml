@@ -172,7 +172,7 @@
         <item>18</item>
         <item>16</item>
     </string-array>
-    <string name="text_size_default" translatable="false">20</string>
+    <string name="text_size_default" translatable="false">18</string>
 
     <!-- Max. video length -->
     <string-array name="playback_max_video_length_entries">
