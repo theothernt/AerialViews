@@ -92,9 +92,13 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
+        overlayHelper.findOverlay<TextLocation>().forEach {
+            it.isFadingOutVideo
+        }
+
         // Set overlay data for current video
-        overlayHelper.findOverlay(TextLocation::class)?.apply {
-            updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
+        overlayHelper.findOverlay<TextLocation>().forEach {
+            it.updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
         }
 
         // Set overlay positions
@@ -163,8 +167,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay(TextLocation::class)?.apply {
-            isFadingOutVideo = true
+        overlayHelper.findOverlay<TextLocation>().forEach {
+            it.isFadingOutVideo = true
         }
 
         // Fade in LoadView (ie. black screen)

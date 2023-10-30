@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.VideoViewBinding
@@ -18,13 +19,10 @@ import kotlin.reflect.KClass
 
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
 
-    private var overlays = mutableListOf<View?>()
+    var overlays = mutableListOf<View?>()
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : Any> findOverlay(clazz: KClass<T>): T? {
-        return overlays
-            .filterNotNull()
-            .find { it::class == clazz } as T?
+    inline fun <reified T : View> findOverlay(): List<T> {
+        return overlays.filterIsInstance<T>()
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
@@ -53,12 +51,12 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             }
         }
 
-        findOverlay(AltTextClock::class)?.apply {
-            updateFormat(prefs.clockFormat)
+        findOverlay<AltTextClock>().forEach {
+            it.updateFormat(prefs.clockFormat)
         }
 
-        findOverlay(TextDate::class)?.apply {
-            updateFormat(prefs.dateFormat, prefs.dateCustom)
+        findOverlay<TextDate>().forEach {
+            it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
         val bottomRow = buildReferenceIds(
