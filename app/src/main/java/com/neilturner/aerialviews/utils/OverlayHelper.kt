@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Typeface
 import android.util.TypedValue
 import android.view.View
-import android.widget.TextView
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.VideoViewBinding
@@ -15,7 +14,7 @@ import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import kotlin.reflect.KClass
+import com.neilturner.aerialviews.ui.overlays.TextMessage
 
 class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
 
@@ -57,6 +56,14 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
 
         findOverlay<TextDate>().forEach {
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
+        }
+
+        findOverlay<TextMessage>().forEach {
+            if (it.type == OverlayType.MESSAGE1) {
+                it.updateMessage(prefs.messageLine1)
+            } else {
+                it.updateMessage(prefs.messageLine2)
+            }
         }
 
         val bottomRow = buildReferenceIds(
@@ -103,7 +110,11 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
                 typeface = font
             }
             OverlayType.MESSAGE1,
-            OverlayType.MESSAGE2 -> return null
+            OverlayType.MESSAGE2 -> TextMessage(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                typeface = font
+                this.type = type
+            }
             else -> return null
         }
     }

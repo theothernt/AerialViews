@@ -7,10 +7,11 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.utils.DateHelper
+import com.neilturner.aerialviews.models.enums.OverlayType
 
 class TextMessage : AppCompatTextView {
+
+    var type = OverlayType.MESSAGE1
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
