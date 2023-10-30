@@ -99,12 +99,16 @@
         <item>Clock</item>
         <item>Location</item>
         <item>Date</item>
+        <item>Message Line 1</item>
+        <item>Message Line 2</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>LOCATION</item>
         <item>DATE</item>
+        <item>MESSAGE1</item>
+        <item>MESSAGE2</item>
     </string-array>
     <string name="slot_default" translatable="false" tools:keep="@string/slot_default">EMPTY</string>
 
