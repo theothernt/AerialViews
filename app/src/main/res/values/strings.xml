@@ -337,8 +337,8 @@
     <string name="capabilities_decoders_title">Video Decoders</string>
     <string name="capabilities_resolution_title">Resolution</string>
 
-    <string name="capabilities_model">Model</string>
-    <string name="capabilities_android">Android</string>
+    <string name="capabilities_model">Model: %1$s</string>
+    <string name="capabilities_android">Android: %1$s</string>
     <string name="capabilities_yes">Yes</string>
     <string name="capabilities_no">No</string>
 

@@ -39,7 +39,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     private fun buildDeviceSummary(): String {
         var summary = ""
-        summary += String.format(resources.getString(R.string.capabilities_model), DeviceHelper.deviceName())
+        summary += String.format(resources.getString(R.string.capabilities_model), DeviceHelper.deviceName()) + "\n"
         summary += String.format(resources.getString(R.string.capabilities_android), DeviceHelper.androidVersion())
         return summary
     }
@@ -59,7 +59,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
             }
         }
 
-        summary += String.format(resources.getString(R.string.capabilities_supports_hdr10), supportsHDR10)
+        summary += String.format(resources.getString(R.string.capabilities_supports_hdr10), supportsHDR10) + "\n"
         summary += String.format(resources.getString(R.string.capabilities_supports_dolby_vision), supportsDolbyVision)
         return summary
     }
