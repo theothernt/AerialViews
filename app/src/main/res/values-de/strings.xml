@@ -259,7 +259,7 @@
     <string name="appearance_date_size_title">Passe die Größe des Textes an</string>
 
     <string name="appearance_date_custom_error">Ungültiges eigenes Datumsformat!</string>
-    <string name="appearance_date_custom_example">zum Beispiel //</string>
+    <string name="appearance_date_custom_example">z.B. </string>
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple und Community-Videos</string>
