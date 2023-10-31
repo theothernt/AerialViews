@@ -110,7 +110,7 @@
         <item>MESSAGE1</item>
         <item>MESSAGE2</item>
     </string-array>
-    <string name="slot_default" translatable="false" tools:keep="@string/slot_default">EMPTY</string>
+    <string name="slot_default" translatable="false">EMPTY</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">

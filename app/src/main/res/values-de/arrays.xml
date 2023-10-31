@@ -15,7 +15,7 @@
    <string-array name="filename_as_location_summary_entries">
         <item>Disabled</item>
         <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-       <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
     </string-array>
 
     <!-- Local Video Options -->
@@ -30,22 +30,12 @@
         <item>12-Hour</item>
         <item>24-Hour</item>
     </string-array>
-    <string-array name="clock_format_values" translatable="false">
-        <item>DEFAULT</item>
-        <item>HOUR_12</item>
-        <item>HOUR_24</item>
-    </string-array>
 
     <!-- Date format -->
     <string-array name="date_format_entries">
         <item>Compact</item>
         <item>Full</item>
         <item>Custom</item>
-    </string-array>
-    <string-array name="date_format_values" translatable="false">
-        <item>COMPACT</item>
-        <item>FULL</item>
-        <item>CUSTOM</item>
     </string-array>
 
     <!-- Playback speed -->
