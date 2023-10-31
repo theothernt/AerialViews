@@ -20,12 +20,12 @@
 
     <!-- Slots -->
     <string-array name="slot_entries">
-        <item>Empty</item>
-        <item>Clock</item>
-        <item>Location</item>
-        <item>Date</item>
-        <item>Message Line 1</item>
-        <item>Message Line 2</item>
+        <item>Порожній</item>
+        <item>Годинник</item>
+        <item>Місцезнаходження</item>
+        <item>Дата</item>
+        <item>Повідомлення - Рядок 1</item>
+        <item>Повідомлення - Рядок 2</item>
     </string-array>
 
     <!-- Local Video Options -->
@@ -47,7 +47,7 @@
         <item>Повний</item>
         <item>Свій</item>
     </string-array>
-
+    
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
         <item>0.25x</item>
