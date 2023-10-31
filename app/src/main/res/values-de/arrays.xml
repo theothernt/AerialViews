@@ -8,14 +8,14 @@
 
     <!-- Use filename as location -->
     <string-array name="filename_as_location_entries">
-        <item>Disabled</item>
-        <item>Use formatting</item>
-        <item>Use filename as-is</item>
+        <item>Deaktiviert</item>
+        <item>Formatierung benutzen</item>
+        <item>Kompletten Dateinamen benutzen</item>
     </string-array>
    <string-array name="filename_as_location_summary_entries">
-        <item>Disabled</item>
-        <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+        <item>Deaktiviert</item>
+        <item>Nutze Formatierung z.B. \'japan-mount_fuji.mp4\' wird \'Japan - Mount Fuji\'</item>
+        <item>Nutze kompletten Dateinamen z.B. \'Flug in Richtung Mount Pilatus.mp4\' bleibt \'Flug in Richtung Mount Pilatus\'</item>
     </string-array>
 
     <!-- Local Video Options -->
@@ -26,16 +26,16 @@
 
     <!-- Clock format -->
     <string-array name="clock_format_entries">
-        <item>System default</item>
-        <item>12-Hour</item>
-        <item>24-Hour</item>
+        <item>Systemstandard</item>
+        <item>12-Stunden</item>
+        <item>24-Stunden</item>
     </string-array>
 
     <!-- Date format -->
     <string-array name="date_format_entries">
-        <item>Compact</item>
-        <item>Full</item>
-        <item>Custom</item>
+        <item>Kompakt</item>
+        <item>Voll</item>
+        <item>Angepasst</item>
     </string-array>
 
     <!-- Playback speed -->
