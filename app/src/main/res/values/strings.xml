@@ -266,7 +266,7 @@
     <string name="appearance_date_size_title">Adjust the size of the date text</string>
 
     <string name="appearance_date_custom_error">Invalid custom date format!</string>
-    <string name="appearance_date_custom_example">e.g.</string> // For example
+    <string name="appearance_date_custom_example">e.g.</string>
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple and Community videos</string>
