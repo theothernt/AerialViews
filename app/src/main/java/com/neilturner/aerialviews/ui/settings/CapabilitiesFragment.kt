@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.Preference
@@ -12,8 +13,13 @@ import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
+
+    private lateinit var resources: Resources
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_capabilities, rootKey)
+        resources = context?.resources!!
+
         updateCapabilities()
     }
 
@@ -33,67 +39,63 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     private fun buildDeviceSummary(): String {
         var summary = ""
-
-        summary += "Model: ${DeviceHelper.deviceName()}\n"
-        summary += "Android: ${DeviceHelper.androidVersion()}"
-
+        summary += String.format(resources.getString(R.string.capabilities_model), DeviceHelper.deviceName())
+        summary += String.format(resources.getString(R.string.capabilities_android), DeviceHelper.androidVersion())
         return summary
     }
 
     private fun buildDisplaySummary(): String {
         var summary = ""
-        var supportsHDR10 = "No"
-        var supportsDolbyVision = "No"
+        var supportsHDR10 = resources.getString(R.string.capabilities_no)
+        var supportsDolbyVision = resources.getString(R.string.capabilities_no)
 
         val display = getDisplay(activity)
         if (display.supportsHDR && display.hdrFormats.isNotEmpty()) {
             if (display.hdrFormats.contains(HDRFormat.DOLBY_VISION)) {
-                supportsDolbyVision = "Yes"
+                supportsDolbyVision = resources.getString(R.string.capabilities_yes)
             }
             if (display.hdrFormats.contains(HDRFormat.HDR10)) {
-                supportsHDR10 = "Yes"
+                supportsHDR10 = resources.getString(R.string.capabilities_yes)
             }
         }
 
-        summary += "Supports HDR10: $supportsHDR10\n"
-        summary += "Supports Dolby Vision: $supportsDolbyVision"
-
+        summary += String.format(resources.getString(R.string.capabilities_supports_hdr10), supportsHDR10)
+        summary += String.format(resources.getString(R.string.capabilities_supports_dolby_vision), supportsDolbyVision)
         return summary
     }
 
     private fun buildResolutionSummary(): String {
         val display = getDisplay(activity)
-        var summary = "UI resolution: ${display.renderOutput}"
+        var summary = String.format(resources.getString(R.string.capabilities_ui_resolution), display.renderOutput)
         if (display.physicalOutput != null) {
-            summary += "\nMax. video resolution: ${display.physicalOutput}"
+            summary += "\n" + String.format(resources.getString(R.string.capabilities_max_video_resolution), display.physicalOutput)
         }
         return summary
     }
 
     private fun buildCodecSummary(): String {
         var summary = ""
-        var foundAVC = "Not Found"
-        var foundHEVC = "Not Found"
-        var foundDolbyVision = "Not Found"
+        var foundAVC = resources.getString(R.string.capabilities_not_found)
+        var foundHEVC = resources.getString(R.string.capabilities_not_found)
+        var foundDolbyVision = resources.getString(R.string.capabilities_not_found)
 
         getCodecs().forEach { codec ->
             if (isCodecOfType(codec.mimeTypes, "avc")) {
-                foundAVC = "Found"
+                foundAVC = resources.getString(R.string.capabilities_found)
             }
 
             if (isCodecOfType(codec.mimeTypes, "hevc")) {
-                foundHEVC = "Found"
+                foundHEVC = resources.getString(R.string.capabilities_found)
             }
 
             if (isCodecOfType(codec.mimeTypes, "dolby")) {
-                foundDolbyVision = "Found"
+                foundDolbyVision = resources.getString(R.string.capabilities_found)
             }
         }
 
-        summary += "AVC: $foundAVC\n"
-        summary += "HEVC: $foundHEVC\n"
-        summary += "Dolby Vision: $foundDolbyVision"
-
+        summary += String.format(resources.getString(R.string.capabilities_avc), foundAVC) + "\n"
+        summary += String.format(resources.getString(R.string.capabilities_hevc), foundHEVC) + "\n"
+        summary += String.format(resources.getString(R.string.capabilities_dolby_vision), foundDolbyVision)
         return summary
     }
 
