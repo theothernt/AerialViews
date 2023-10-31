@@ -8,15 +8,30 @@
 
     <!-- Use filename as location -->
     <string-array name="filename_as_location_entries">
-        <item>Disabled</item>
-        <item>Use formatting</item>
-        <item>Use filename as-is</item>
+        <item>Выключено</item>
+        <item>Использовать форматирование</item>
+        <item>Использовать имя файла как есть</item>
     </string-array>
     <string-array name="filename_as_location_summary_entries">
-        <item>Disabled</item>
-        <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+        <item>Выключено</item>
+        <item>"Использовать форматирование, например. 'japan-mount_fuji.mp4' becomes 'Japan - Mount Fuji'"</item>
+        <item>"Использовать имя файла как есть, например. 'Flying toward Mount Pilatus.mp4' becomes 'Flying toward Mount Pilatus'"</item>
     </string-array>
+
+    <!-- Slots -->
+    <string-array name="slot_entries">
+        <item>Пустой</item>
+        <item>Часы</item>
+        <item>Местоположение</item>
+        <item>Дата</item>
+    </string-array>
+    <string-array name="slot_values" translatable="false">
+        <item>EMPTY</item>
+        <item>CLOCK</item>
+        <item>LOCATION</item>
+        <item>DATE</item>
+    </string-array>
+    <string name="slot_default" translatable="false" tools:keep="@string/slot_default">EMPTY</string>
 
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
@@ -26,9 +41,9 @@
 
     <!-- Clock format -->
     <string-array name="clock_format_entries">
-        <item>System default</item>
-        <item>12-Hour</item>
-        <item>24-Hour</item>
+        <item>Системный</item>
+        <item>12-часовой</item>
+        <item>24-часовой</item>
     </string-array>
     <string-array name="clock_format_values" translatable="false">
         <item>DEFAULT</item>
@@ -38,9 +53,9 @@
 
     <!-- Date format -->
     <string-array name="date_format_entries">
-        <item>Compact</item>
-        <item>Full</item>
-        <item>Custom</item>
+        <item>Компактный</item>
+        <item>Полный</item>
+        <item>Свой</item>
     </string-array>
     <string-array name="date_format_values" translatable="false">
         <item>COMPACT</item>
@@ -76,7 +91,7 @@
         <item>24sp</item>
         <item>22sp</item>
         <item>20sp</item>
-        <item>18sp (по умолчанию)</item>
+        <item>18sp</item>
         <item>16sp</item>
     </string-array>
 
