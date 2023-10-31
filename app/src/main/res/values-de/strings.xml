@@ -136,7 +136,7 @@
     <string name="samba_videos_password_summary">Optional</string>
 
     <string name="samba_videos_search_subfolders_title">Durchsuche Unterordner</string>
-    <string name="samba_videos_search_subfolders_summary">Durchsuche alle Unterordner  nach Videos</string>
+    <string name="samba_videos_search_subfolders_summary">Durchsuche alle Unterordner nach Videos</string>
 
     <string name="samba_videos_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
     <string name="samba_videos_import_export_settings_summary">SMB-Zugangsdaten im Downloadordner Sichern oder daraus Wiederherstellen</string>
@@ -191,10 +191,10 @@
     <string name="category_slots">Slots</string>
 
     <string name="appearance_top_row_title">Obere Reihe</string>
-    <string name="appearance_top_row_summary">Wähle Overlays für die obere linke  &amp; rechte Bildschirmseite</string>
+    <string name="appearance_top_row_summary">Wähle Overlays für die obere linke &amp; rechte Bildschirmseite</string>
 
     <string name="appearance_bottom_row_title">Untere Reihe</string>
-    <string name="appearance_bottom_row_summary">Wähle Overlays für die untere linke  &amp; rechte Bildschirmseite</string>
+    <string name="appearance_bottom_row_summary">Wähle Overlays für die untere linke &amp; rechte Bildschirmseite</string>
 
     <string name="appearance_clock_title">Uhr</string>
     <string name="appearance_clock_summary">Zeige aktuelle Zeit an</string>
