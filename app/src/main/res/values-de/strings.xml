@@ -214,7 +214,7 @@
     <string name="appearance_message_title">Nachricht</string>
     <string name="appearance_message_summary">Zeige bis zu 2 Zeilen persönlichen Text an</string>
 
-    <string name="appearance_typography_title">Typography</string>
+    <string name="appearance_typography_title">Typografie</string>
     <string name="appearance_typography_summary">Ändere die Schriftart des angezeigten Bildschirmschonertextes</string>
 
     <string name="appearance_alt_text_position_title">Alternative Textposition</string>
@@ -328,18 +328,18 @@
     <string name="capabilities_decoders_title">Video-Decoder</string>
     <string name="capabilities_resolution_title">Bildschirmauflösung</string>
 
-    <string name="capabilities_model">Model: %1$s</string>
+    <string name="capabilities_model">Modell: %1$s</string>
     <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Yes</string>
-    <string name="capabilities_no">No</string>
+    <string name="capabilities_yes">Ja</string>
+    <string name="capabilities_no">Nein</string>
 
-    <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
-    <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
+    <string name="capabilities_ui_resolution">UI-Auflösung: %1$s</string>
+    <string name="capabilities_max_video_resolution">Max. Video-Auflösung: %1$s</string>
 
-    <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Found</string>
-    <string name="capabilities_not_found">Not Found</string>
+    <string name="capabilities_supports_hdr10">Unterstützt HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Unterstützt Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Gefunden</string>
+    <string name="capabilities_not_found">Nicht Gefunden</string>
     <string name="capabilities_avc">AVC: %1$s</string>
     <string name="capabilities_hevc">HEVC: %1$s</string>
     <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
