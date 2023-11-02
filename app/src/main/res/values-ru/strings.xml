@@ -329,18 +329,18 @@
     <string name="capabilities_decoders_title">Видео декодеры</string>
     <string name="capabilities_resolution_title">Разрешение</string>
 
-    <string name="capabilities_model">Model: %1$s</string>
+    <string name="capabilities_model">Модель: %1$s</string>
     <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Yes</string>
-    <string name="capabilities_no">No</string>
+    <string name="capabilities_yes">Да</string>
+    <string name="capabilities_no">Нет</string>
 
-    <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
-    <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
+    <string name="capabilities_ui_resolution">Разрешение пользовательского интерфейса: %1$s</string>
+    <string name="capabilities_max_video_resolution">Макс. разрешение видео: %1$s</string>
 
-    <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Found</string>
-    <string name="capabilities_not_found">Not Found</string>
+    <string name="capabilities_supports_hdr10">Поддержка HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Поддержка Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Найдено</string>
+    <string name="capabilities_not_found">Не найдено</string>
     <string name="capabilities_avc">AVC: %1$s</string>
     <string name="capabilities_hevc">HEVC: %1$s</string>
     <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>

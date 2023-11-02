@@ -328,23 +328,23 @@
     <string name="capabilities_codecs_title">Кодеки</string>
     <string name="capabilities_decoders_title">Відео декодери</string>
     <string name="capabilities_resolution_title">Роздільна здатність екрану</string>
-
-    <string name="capabilities_model">Model: %1$s</string>
+    
+    <string name="capabilities_model">Модель: %1$s</string>
     <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Yes</string>
-    <string name="capabilities_no">No</string>
+    <string name="capabilities_yes">Так</string>
+    <string name="capabilities_no">Ні</string>
 
-    <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
-    <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
+    <string name="capabilities_ui_resolution">Роздільна здатність інтерфейсу: %1$s</string>
+    <string name="capabilities_max_video_resolution">Макс. роздільна здатність відео: %1$s</string>
 
-    <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Found</string>
-    <string name="capabilities_not_found">Not Found</string>
+    <string name="capabilities_supports_hdr10">Підтримка HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Підтримка Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Знайдено</string>
+    <string name="capabilities_not_found">Не знайдено</string>
     <string name="capabilities_avc">AVC: %1$s</string>
     <string name="capabilities_hevc">HEVC: %1$s</string>
     <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
-    
+
     <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Параметри відео та рендеринга</string>
     <string name="category_samba_options">Samba/SMB налаштування</string>
