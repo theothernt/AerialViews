@@ -4,11 +4,13 @@
         <ListPreference
             app:key="slot_top_left2"
             app:summary="@string/appearance_slot_summary"
+            app:defaultValue="@string/slot_default"
             app:title="@string/appearance_slot2_title" />
 
         <ListPreference
             app:key="slot_top_left1"
             app:summary="@string/appearance_slot_summary"
+            app:defaultValue="@string/slot_default"
             app:title="@string/appearance_slot1_title" />
     </PreferenceCategory>
 
@@ -16,11 +18,13 @@
         <ListPreference
             app:key="slot_top_right2"
             app:summary="@string/appearance_slot_summary"
+            app:defaultValue="@string/slot_default"
             app:title="@string/appearance_slot2_title" />
 
         <ListPreference
             app:key="slot_top_right1"
             app:summary="@string/appearance_slot_summary"
+            app:defaultValue="@string/slot_default"
             app:title="@string/appearance_slot1_title" />
     </PreferenceCategory>
 </PreferenceScreen>

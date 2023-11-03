@@ -18,7 +18,7 @@ import com.google.modernstorage.permissions.StoragePermissions
 import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import java.lang.Exception
@@ -33,8 +33,8 @@ class MainFragment :
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
 
-        val appLocale = if (!InterfacePrefs.localeMenu.startsWith("default")) {
-            LocaleListCompat.forLanguageTags(InterfacePrefs.localeMenu)
+        val appLocale = if (!GeneralPrefs.localeMenu.startsWith("default")) {
+            LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
         } else {
             LocaleListCompat.getEmptyLocaleList()
         }

@@ -3,19 +3,29 @@
     <!-- Video title or POI -->
     <string-array name="location_type_entries">
         <item>Місцезнаходження або назва</item>
-        <item>"Пам'ятки (доступні багатьма мовами)"</item>
+        <item>Пам\'ятки (доступні багатьма мовами)</item>
     </string-array>
 
     <!-- Use filename as location -->
     <string-array name="filename_as_location_entries">
-        <item>Disabled</item>
-        <item>Use formatting</item>
-        <item>Use filename as-is</item>
+        <item>Вимкнено</item>
+        <item>Використовувати форматування</item>
+        <item>Використовувати ім\'я файлу як є</item>
     </string-array>
     <string-array name="filename_as_location_summary_entries">
-        <item>Disabled</item>
-        <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+        <item>Вимкнено</item>
+        <item>Використовувати форматування, наприклад. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
+        <item>Використовувати ім\'я файлу як є, наприклад. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+    </string-array>
+
+    <!-- Slots -->
+    <string-array name="slot_entries">
+        <item>Порожній</item>
+        <item>Годинник</item>
+        <item>Місцезнаходження</item>
+        <item>Дата</item>
+        <item>Повідомлення - Рядок 1</item>
+        <item>Повідомлення - Рядок 2</item>
     </string-array>
 
     <!-- Local Video Options -->
@@ -26,26 +36,16 @@
 
     <!-- Clock format -->
     <string-array name="clock_format_entries">
-        <item>System default</item>
-        <item>12-Hour</item>
-        <item>24-Hour</item>
-    </string-array>
-    <string-array name="clock_format_values" translatable="false">
-        <item>DEFAULT</item>
-        <item>HOUR_12</item>
-        <item>HOUR_24</item>
+        <item>Системний</item>
+        <item>12-годинний</item>
+        <item>24-годинний</item>
     </string-array>
 
     <!-- Date format -->
     <string-array name="date_format_entries">
-        <item>Compact</item>
-        <item>Full</item>
-        <item>Custom</item>
-    </string-array>
-    <string-array name="date_format_values" translatable="false">
-        <item>COMPACT</item>
-        <item>FULL</item>
-        <item>CUSTOM</item>
+        <item>Компактний</item>
+        <item>Повний</item>
+        <item>Свій</item>
     </string-array>
     
     <!-- Playback speed -->

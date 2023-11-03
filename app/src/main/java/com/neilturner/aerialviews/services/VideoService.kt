@@ -83,7 +83,7 @@ class VideoService(val context: Context) {
         }
 
         // Removed unneeded location data
-//        when (InterfacePrefs.locationStyle) {
+//        when (GeneralPrefs.locationStyle) {
 //            LocationType.POI -> videos.forEach { video ->
 //                video.location = ""
 //            }

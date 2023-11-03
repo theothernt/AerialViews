@@ -10,21 +10,18 @@ import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import kotlin.reflect.KClass
+import com.neilturner.aerialviews.ui.overlays.TextMessage
 
-class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
+class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: GeneralPrefs) {
 
-    private var overlays = mutableListOf<View?>()
+    var overlays = mutableListOf<View?>()
 
-    @Suppress("UNCHECKED_CAST")
-    fun <T : Any> findOverlay(clazz: KClass<T>): T? {
-        return overlays
-            .filterNotNull()
-            .find { it::class == clazz } as T?
+    inline fun <reified T : View> findOverlay(): List<T> {
+        return overlays.filterIsInstance<T>()
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
@@ -53,12 +50,20 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
             }
         }
 
-        findOverlay(AltTextClock::class)?.apply {
-            updateFormat(prefs.clockFormat)
+        findOverlay<AltTextClock>().forEach {
+            it.updateFormat(prefs.clockFormat)
         }
 
-        findOverlay(TextDate::class)?.apply {
-            updateFormat(prefs.dateFormat, prefs.dateCustom)
+        findOverlay<TextDate>().forEach {
+            it.updateFormat(prefs.dateFormat, prefs.dateCustom)
+        }
+
+        findOverlay<TextMessage>().forEach {
+            if (it.type == OverlayType.MESSAGE1) {
+                it.updateMessage(prefs.messageLine1)
+            } else {
+                it.updateMessage(prefs.messageLine2)
+            }
         }
 
         val bottomRow = buildReferenceIds(
@@ -91,28 +96,26 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
     }
 
     private fun getOverlay(type: OverlayType): View? {
-        when (type) {
-            OverlayType.CLOCK -> {
-                return AltTextClock(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                    typeface = font
-                }
+        return when (type) {
+            OverlayType.CLOCK -> AltTextClock(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
+                typeface = font
             }
-            OverlayType.LOCATION -> {
-                return TextLocation(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
-                    typeface = font
-                }
+            OverlayType.LOCATION -> TextLocation(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
+                typeface = font
             }
-            OverlayType.DATE -> {
-                return TextDate(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = font
-                }
+            OverlayType.DATE -> TextDate(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
+                typeface = font
             }
-            else -> {
-                return null
+            OverlayType.MESSAGE1,
+            OverlayType.MESSAGE2 -> TextMessage(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                typeface = font
+                this.type = type
             }
+            else -> return null
         }
     }
 }

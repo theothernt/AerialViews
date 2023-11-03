@@ -12,7 +12,7 @@
 
     <!-- Common Categories -->
     <string name="category_actions">Действия</string>
-    <string name="category_advanced">Advanced</string>
+    <string name="category_advanced">Расширенные</string>
     <string name="category_video_source">Источник видео</string>
     <string name="category_options">Опции</string>
 
@@ -30,11 +30,11 @@
     <string name="settings_preview_screensaver">Протестировать настройки заставки</string>
     <string name="settings_system_options">Открыть системные настройки заставки</string>
 
-    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
-    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
+    <string name="settings_system_options_error">Невозможно открыть параметры заставки вашего устройства</string>
+    <string name="settings_system_options_removed">Эта функция удалена производителем\nПожалуйста, посетите веб-сайт Aerial Views для получения более подробной информации.</string>
 
     <!-- Main / Video Sources -->
-    <string name="category_remote">Съемное хранилище</string>
+    <string name="category_remote">Потоковые видео</string>
     <string name="category_local">Локальное хранилище</string>
     <string name="category_network">Сеть</string>
 
@@ -93,28 +93,28 @@
     <string name="local_videos_legacy_volume_title">Выберите объем</string>
     <string name="local_videos_legacy_volume_summary">Том не выбран</string>
 
-    <string name="local_videos_legacy_all_entry">All volumes</string>
+    <string name="local_videos_legacy_all_entry">Все тома</string>
 
     <string name="local_videos_legacy_folder_title">Укажите папку (например, videos)</string>
     <string name="local_videos_legacy_folder_summary">Папка не указана</string>
 
-    <string name="local_videos_legacy_no_volume">Volume not specified</string>
-    <string name="local_videos_legacy_no_folder">Folder not specified</string>
-    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
-    <string name="local_videos_legacy_no_files_found">No files found</string>
+    <string name="local_videos_legacy_no_volume">Объем не указан</string>
+    <string name="local_videos_legacy_no_folder">Папка не указана</string>
+    <string name="local_videos_legacy_no_folder_found">Папка не существует</string>
+    <string name="local_videos_legacy_no_files_found">Файлы не найдены</string>
 
-    <string name="local_videos_legacy_test_summary1">Videos found in folder: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Videos selected for playback: %1$s</string>
+    <string name="local_videos_legacy_test_summary1">Видео найдены в папке: %1$s</string>
+    <string name="local_videos_legacy_test_summary2">Видео с неподдерживаемыми расширениями файлов: %1$s</string>
+    <string name="local_videos_legacy_test_summary3">Видео выбраны для воспроизведения: %1$s</string>
 
-    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
-    <string name="local_videos_media_store_test_summary1">Videos found by media scanner: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
+    <string name="local_videos_media_store_no_folder">Для фильтра не указана папка</string>
+    <string name="local_videos_media_store_test_summary1">Видео найденые медиасканером: %1$s</string>
+    <string name="local_videos_media_store_test_summary2">Видео с неподдерживаемыми расширениями файлов: %1$s</string>
+    <string name="local_videos_media_store_test_summary3">Видео удалены фильтром: %1$s</string>
+    <string name="local_videos_media_store_test_summary4">Видео выбраные для воспроизведения: %1$s</string>
 
-    <string name="local_videos_permission_denied">Permission Denied</string>
-    <string name="local_videos_test_results">Test results</string>
+    <string name="local_videos_permission_denied">Доступ запрещен</string>
+    <string name="local_videos_test_results">Результаты теста</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Сведения о сервере и учетные данные</string>
@@ -136,29 +136,29 @@
     <string name="samba_videos_password_title">Пароль</string>
     <string name="samba_videos_password_summary">Необязательно</string>
 
-    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
-    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
+    <string name="samba_videos_search_subfolders_title">Поиск в подпапках</string>
+    <string name="samba_videos_search_subfolders_summary">Искать видео во всех подпапках</string>
 
     <string name="samba_videos_import_export_settings_title">Импорт/экспорт настроек</string>
     <string name="samba_videos_import_export_settings_summary">Импортирует или экспортирует ваши учетные данные SMB в папку Загрузки</string>
 
     <string name="samba_videos_test_connection">Протестировать настройки подключения</string>
 
-    <string name="samba_videos_import_failed">Import failed</string>
-    <string name="samba_videos_import_success">Import successful</string>
-    <string name="samba_videos_unable_to_save">Unable to save imported settings</string>
-    <string name="samba_videos_file_not_found">Can\'t find SMB settings file in Downloads folder: %1$s</string>
-    <string name="samba_videos_error_parsing">Error while reading and parsing file. Please check the file again for mistakes or invalid characters.</string>
-    <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
+    <string name="samba_videos_import_failed">Импорт не удался</string>
+    <string name="samba_videos_import_success">Импорт выполнен успешно</string>
+    <string name="samba_videos_unable_to_save">Не удалось сохранить импортированные настройки</string>
+    <string name="samba_videos_file_not_found">Не могу найти файл настроек SMB в папке «Загрузки».: %1$s</string>
+    <string name="samba_videos_error_parsing">Ошибка при чтении и анализе файла. Пожалуйста, проверьте файл еще раз на наличие ошибок или недопустимых символов.</string>
+    <string name="samba_videos_import_save_success">Настройки SMB успешно импортированы из: %1$s</string>
 
-    <string name="samba_videos_export_failed">Export failed</string>
-    <string name="samba_videos_export_success">Export successful</string>
-    <string name="samba_videos_file_already_exists">The SMB settings file %1$s already exists in the Downloads folder</string>
-    <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
-    <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
+    <string name="samba_videos_export_failed">Экспорт не удался</string>
+    <string name="samba_videos_export_success">Экспорт выполнен успешно</string>
+    <string name="samba_videos_file_already_exists">Файл настроек SMB %1$s уже существует в папке «Загрузки»</string>
+    <string name="samba_videos_unable_to_write">Ошибка при попытке записать настройки SMB в %1$s в папке «Загрузки»</string>
+    <string name="samba_videos_export_write_success">Настройки SMB успешно экспортированы в %1$s в папке «Загрузки»</string>
 
-    <string name="samba_videos_permission_denied">Permission Denied</string>
-    <string name="samba_videos_test_results">Test results</string>
+    <string name="samba_videos_permission_denied">Доступ запрещен</string>
+    <string name="samba_videos_test_results">Результаты теста</string>
 
     <!-- Main / Video Sources / WebDAV videos -->
 
@@ -189,13 +189,13 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вид</string>
     <string name="category_overlays">Наложение</string>
-    <string name="category_slots">Slots</string>
+    <string name="category_slots">Слоты</string>
 
-    <string name="appearance_top_row_title">Top Row</string>
-    <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
+    <string name="appearance_top_row_title">Верхний ряд</string>
+    <string name="appearance_top_row_summary">Выберите наложения для верхнего левого угла &amp; справа от экрана</string>
 
-    <string name="appearance_bottom_row_title">Bottom Row</string>
-    <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+    <string name="appearance_bottom_row_title">Нижний ряд</string>
+    <string name="appearance_bottom_row_summary">Выберите наложения для нижнего левого угла &amp; справа от экрана</string>
 
     <string name="appearance_clock_title">Часы</string>
     <string name="appearance_clock_summary">Отображение текущего времени</string>
@@ -203,8 +203,8 @@
     <string name="appearance_location_title">Местоположение</string>
     <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
 
-    <string name="appearance_date_title">Date</string>
-    <string name="appearance_date_summary">Display the current date</string>
+    <string name="appearance_date_title">Дата</string>
+    <string name="appearance_date_summary">Отобразить текущую дату</string>
 
     <string name="appearance_weather_title">Погода</string>
     <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
@@ -222,28 +222,28 @@
     <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
 
     <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Top Left</string>
-    <string name="category_top_row_right">Top Right</string>
+    <string name="category_top_row_left">Верхний левый</string>
+    <string name="category_top_row_right">Верний правый</string>
 
-    <string name="category_bottom_row_left">Bottom Left</string>
-    <string name="category_bottom_row_right">Bottom Right</string>
+    <string name="category_bottom_row_left">Внизу слева</string>
+    <string name="category_bottom_row_right">Внизу справа</string>
 
-    <string name="appearance_slot1_title">Lower Slot</string>
-    <string name="appearance_slot2_title">Upper Slot</string>
-    <string name="appearance_slot_summary">Empty</string>
+    <string name="appearance_slot1_title">Нижний слот</string>
+    <string name="appearance_slot2_title">Верхний слот</string>
+    <string name="appearance_slot_summary">Пустой</string>
 
-    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
-    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
-    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
-    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
-    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
-    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
-    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
-    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+    <string name="appearance_bottom_left_lower_slot">Внизу слева, нижний слот</string>
+    <string name="appearance_bottom_left_upper_slot">Внизу слева, верхний слот</string>
+    <string name="appearance_bottom_right_lower_slot">Внизу справа, нижний слот</string>
+    <string name="appearance_bottom_right_upper_slot">Внизу справа, верхний слот</string>
+    <string name="appearance_top_left_lower_slot">Вверху слева, нижний слот</string>
+    <string name="appearance_top_left_upper_slot">Верхний левый, верхний слот</string>
+    <string name="appearance_top_right_lower_slot">Вверху справа, нижний слот</string>
+    <string name="appearance_top_right_upper_slot">Вверху справа, верхний слот</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Часы</string>
-    <string name="appearance_clock_format_title">Clock format</string>
+    <string name="appearance_clock_format_title">Формат часов</string>
 
     <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
     <string name="appearance_show_force_latin_digits_summary">Всегда показывайть западные цифры, независимо от настроек языкового стандарта системы</string>
@@ -251,16 +251,16 @@
     <string name="appearance_clock_size_title">Отрегулируйте размер текста часов</string>
 
     <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Date</string>
-    <string name="category_custom_format">Custom format</string>
+    <string name="category_date">Дата</string>
+    <string name="category_custom_format">Свой формат</string>
 
-    <string name="appearance_date_format_title">Date format</string>
-    <string name="appearance_date_custom_title">Specify a custom date format</string>
-    <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+    <string name="appearance_date_format_title">Формат даты</string>
+    <string name="appearance_date_custom_title">Укажите собственный формат даты</string>
+    <string name="appearance_date_notice_summary">Для получения дополнительной информации о форматах даты найдите \'Android SimpleDateFormat\'</string>
+    <string name="appearance_date_size_title">Отрегулируйте размер текста даты</string>
 
-    <string name="appearance_date_custom_error">Invalid custom date format!</string>
-    <string name="appearance_date_custom_example">e.g.</string> // For example
+    <string name="appearance_date_custom_error">Неверный пользовательский формат даты!</string>
+    <string name="appearance_date_custom_example">напр.</string>
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
@@ -273,23 +273,23 @@
     <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
 
     <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Message</string>
+    <string name="category_message">Сообщение</string>
 
-    <string name="appearance_message_style_title">Show custom message</string>
+    <string name="appearance_message_style_title">Показывать пользовательское сообщение</string>
 
-    <string name="appearance_message_line1_title">Line 1</string>
-    <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
-    <string name="appearance_message_line2_title">Line 2</string>
+    <string name="appearance_message_line1_title">Строка 1</string>
+    <string name="appearance_message_line1_summary">Введите текст для отображения, включая эмодзи</string>
+    <string name="appearance_message_line2_title">Строка 2</string>
 
-    <string name="appearance_message_size_title">Adjust the size of the text</string>
+    <string name="appearance_message_size_title">Отрегулируйте размер текста</string>
 
     <!-- Main / Settings / Appearance / Typography -->
 
-    <string name="category_typography">Typography</string>
+    <string name="category_typography">Оформление</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_typeface_title">Шрифт</string>
 
-    <string name="appearance_weight_title">Weight</string>
+    <string name="appearance_weight_title">Начертание шрифта</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
@@ -318,8 +318,8 @@
     <string name="playlist_allow_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
     <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
 
-    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
-    s
+    <string name="playlist_playback_speed_changed">Скорость воспроизведения изменена на: %1$s</string>
+ 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Возможности</string>
 
@@ -328,6 +328,22 @@
     <string name="capabilities_codecs_title">Кодеки</string>
     <string name="capabilities_decoders_title">Видео декодеры</string>
     <string name="capabilities_resolution_title">Разрешение</string>
+
+    <string name="capabilities_model">Модель: %1$s</string>
+    <string name="capabilities_android">Android: %1$s</string>
+    <string name="capabilities_yes">Да</string>
+    <string name="capabilities_no">Нет</string>
+
+    <string name="capabilities_ui_resolution">Разрешение пользовательского интерфейса: %1$s</string>
+    <string name="capabilities_max_video_resolution">Макс. разрешение видео: %1$s</string>
+
+    <string name="capabilities_supports_hdr10">Поддержка HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Поддержка Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Найдено</string>
+    <string name="capabilities_not_found">Не найдено</string>
+    <string name="capabilities_avc">AVC: %1$s</string>
+    <string name="capabilities_hevc">HEVC: %1$s</string>
+    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
     <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Параметры видео и рендеринга</string>
@@ -347,7 +363,7 @@
     <string name="samba_videos_enable_encryption_title">Включить шифрование</string>
     <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи</string>
 
-    <string name="samba_videos_smb_dialects_title">Выберите диалекты SMB</string>
+    <string name="samba_videos_smb_dialects_title">Выберите версию SMB</string>
     <string name="samba_videos_smb_dialects_summary">Выберите, какую версию SMB протокола использовать</string>
 
     <string name="advanced_locale_menu_title">Язык текста меню</string>

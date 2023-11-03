@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.SlotPref
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 
 object SlotHelper {
 
@@ -56,7 +56,7 @@ object SlotHelper {
 
                 if (pref == null) {
                     // not on-screen, update pref only
-                    InterfacePrefs.preferences.edit().putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString()).apply()
+                    GeneralPrefs.preferences.edit().putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString()).apply()
                 } else {
                     // on-screen, control + pref are updated
                     pref.value = OverlayType.EMPTY.toString()
@@ -75,14 +75,14 @@ object SlotHelper {
     fun slotPrefs(context: Context): List<SlotPref> {
         val slotPrefs = mutableListOf<SlotPref>()
         val res = context.resources!!
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, res.getString(R.string.appearance_bottom_right_upper_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, res.getString(R.string.appearance_top_left_lower_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, res.getString(R.string.appearance_top_left_upper_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, res.getString(R.string.appearance_top_right_lower_slot)))
-        slotPrefs.add(SlotPref(InterfacePrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, res.getString(R.string.appearance_top_right_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, res.getString(R.string.appearance_bottom_right_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, res.getString(R.string.appearance_top_left_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, res.getString(R.string.appearance_top_left_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, res.getString(R.string.appearance_top_right_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, res.getString(R.string.appearance_top_right_upper_slot)))
         return slotPrefs
     }
 }

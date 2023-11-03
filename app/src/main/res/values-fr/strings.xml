@@ -259,7 +259,7 @@
     <string name="appearance_date_size_title">Adjust the size of the date text</string>
 
     <string name="appearance_date_custom_error">Invalid custom date format!</string>
-    <string name="appearance_date_custom_example">e.g.</string> // For example
+    <string name="appearance_date_custom_example">e.g.</string>
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple and Community videos</string>
@@ -327,6 +327,22 @@
     <string name="capabilities_codecs_title">Prise en charge des codecs</string>
     <string name="capabilities_decoders_title">Décodeurs disponibles</string>
     <string name="capabilities_resolution_title">"Résolution d'écran"</string>
+
+    <string name="capabilities_model">Model: %1$s</string>
+    <string name="capabilities_android">Android: %1$s</string>
+    <string name="capabilities_yes">Yes</string>
+    <string name="capabilities_no">No</string>
+
+    <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
+    <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
+
+    <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Found</string>
+    <string name="capabilities_not_found">Not Found</string>
+    <string name="capabilities_avc">AVC: %1$s</string>
+    <string name="capabilities_hevc">HEVC: %1$s</string>
+    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
     <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Video &amp; render options</string>

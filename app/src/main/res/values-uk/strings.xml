@@ -12,7 +12,7 @@
 
     <!-- Common Categories -->
     <string name="category_actions">Дії</string>
-    <string name="category_advanced">Advanced</string>
+    <string name="category_advanced">Розширені</string>
     <string name="category_video_source">Джерело відео</string>
     <string name="category_options">Опції</string>
 
@@ -30,11 +30,11 @@
     <string name="settings_preview_screensaver">Протестувати налаштування заставки</string>
     <string name="settings_system_options">Відкрити системні налаштування заставки</string>
 
-    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
-    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
+    <string name="settings_system_options_error">Неможливо відкрити параметри заставки вашого пристрою</string>
+    <string name="settings_system_options_removed">Ця функція була видалена виробником\nДля отримання додаткової інформації відвідайте веб-сайт Aerial Views</string>
 
     <!-- Main / Video Sources -->
-    <string name="category_remote">Змінне сховище</string>
+    <string name="category_remote">Потокові відео</string>
     <string name="category_local">Локальне сховище</string>
     <string name="category_network">Мережа</string>
 
@@ -92,29 +92,29 @@
 
     <string name="local_videos_legacy_volume_title">Виберіть обсяг</string>
     <string name="local_videos_legacy_volume_summary">Том не вибрано</string>
-
-    <string name="local_videos_legacy_all_entry">All volumes</string>
+	
+    <string name="local_videos_legacy_all_entry">Всі томи</string>
 
     <string name="local_videos_legacy_folder_title">Вкажіть папку (наприклад, /Videos)</string>
     <string name="local_videos_legacy_folder_summary">Папка не вказана</string>
 
-    <string name="local_videos_legacy_no_volume">Volume not specified</string>
-    <string name="local_videos_legacy_no_folder">Folder not specified</string>
-    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
-    <string name="local_videos_legacy_no_files_found">No files found</string>
+    <string name="local_videos_legacy_no_volume">Обсяг не вказано</string>
+    <string name="local_videos_legacy_no_folder">Папка не вказана</string>
+    <string name="local_videos_legacy_no_folder_found">Папка не існує</string>
+    <string name="local_videos_legacy_no_files_found">Файли не знайдено</string>
 
-    <string name="local_videos_legacy_test_summary1">Videos found in folder: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Videos selected for playback: %1$s</string>
+    <string name="local_videos_legacy_test_summary1">Відео знайдено в папці: %1$s</string>
+    <string name="local_videos_legacy_test_summary2">Відео з непідтримуваними розширеннями файлів: %1$s</string>
+    <string name="local_videos_legacy_test_summary3">Відео, вибрані для відтворення: %1$s</string>
 
-    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
-    <string name="local_videos_media_store_test_summary1">Videos found by media scanner: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
+    <string name="local_videos_media_store_no_folder">Для фільтра не вказано папку</string>
+    <string name="local_videos_media_store_test_summary1">Відео, знайдені медіасканером: %1$s</string>
+    <string name="local_videos_media_store_test_summary2">Відео з непідтримуваними розширеннями файлів: %1$s</string>
+    <string name="local_videos_media_store_test_summary3">Відео видалені фільтром: %1$s</string>
+    <string name="local_videos_media_store_test_summary4">Відео, вибрані для відтворення: %1$s</string>
 
-    <string name="local_videos_permission_denied">Permission Denied</string>
-    <string name="local_videos_test_results">Test results</string>
+    <string name="local_videos_permission_denied">У дозволі відмовлено</string>
+    <string name="local_videos_test_results">Результати випробувань</string>
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="category_server_details">Відомості про сервер і облікові дані</string>
@@ -136,29 +136,29 @@
     <string name="samba_videos_password_title">Пароль</string>
     <string name="samba_videos_password_summary">"Не обов'язково"</string>
 
-    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
-    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
+    <string name="samba_videos_search_subfolders_title">Пошук у підпапках</string>
+    <string name="samba_videos_search_subfolders_summary">Шукати відео у всіх підпапках</string>
     
     <string name="samba_videos_import_export_settings_title">Імпорт/експорт налаштувань</string>
     <string name="samba_videos_import_export_settings_summary">Імпортує або експортує ваші облікові дані SMB у папку Завантаження</string>
     
     <string name="samba_videos_test_connection">Протестувати налаштування підключення</string>
 
-    <string name="samba_videos_import_failed">Import failed</string>
-    <string name="samba_videos_import_success">Import successful</string>
-    <string name="samba_videos_unable_to_save">Unable to save imported settings</string>
-    <string name="samba_videos_file_not_found">Can\'t find SMB settings file in Downloads folder: %1$s</string>
-    <string name="samba_videos_error_parsing">Error while reading and parsing file. Please check the file again for mistakes or invalid characters.</string>
-    <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
+    <string name="samba_videos_import_failed">Помилка імпорту</string>
+    <string name="samba_videos_import_success">Імпорт успішний</string>
+    <string name="samba_videos_unable_to_save">Не вдалося зберегти імпортовані налаштування</string>
+    <string name="samba_videos_file_not_found">Не вдається знайти файл налаштувань SMB у папці завантажень: %1$s</string>
+    <string name="samba_videos_error_parsing">Помилка під час читання та аналізу файлу. Перевірте файл ще раз на наявність помилок або недійсних символів</string>
+    <string name="samba_videos_import_save_success">Налаштування SMB успішно імпортовано з: %1$s</string>
 
-    <string name="samba_videos_export_failed">Export failed</string>
-    <string name="samba_videos_export_success">Export successful</string>
-    <string name="samba_videos_file_already_exists">The SMB settings file %1$s already exists in the Downloads folder</string>
-    <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
-    <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
+    <string name="samba_videos_export_failed">Помилка експорту</string>
+    <string name="samba_videos_export_success">Успішно експортовано</string>
+    <string name="samba_videos_file_already_exists">Файл налаштувань SMB %1$s уже існує в папці завантажень</string>
+    <string name="samba_videos_unable_to_write">Помилка під час спроби записати налаштування SMB до %1$s у папці завантажень</string>
+    <string name="samba_videos_export_write_success">Налаштування SMB успішно експортовано до %1$s у папці завантажень</string>
 
-    <string name="samba_videos_permission_denied">Permission Denied</string>
-    <string name="samba_videos_test_results">Test results</string>
+    <string name="samba_videos_permission_denied">У дозволі відмовлено</string>
+    <string name="samba_videos_test_results">Результати випробувань</string>
 
     <!-- Main / Video Sources / WebDAV videos -->
 
@@ -189,13 +189,13 @@
     <!-- Main / Settings / Appearance -->
     <string name="category_appearance">Вигляд</string>
     <string name="category_overlays">Накладення</string>
-    <string name="category_slots">Slots</string>
+    <string name="category_slots">Слоти</string>
 
-    <string name="appearance_top_row_title">Top Row</string>
-    <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
+    <string name="appearance_top_row_title">Верхній ряд</string>
+    <string name="appearance_top_row_summary">Виберіть накладання для верхнього лівого кута &amp; праворуч від екрана</string>
 
-    <string name="appearance_bottom_row_title">Bottom Row</string>
-    <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+    <string name="appearance_bottom_row_title">Нижній ряд</string>
+    <string name="appearance_bottom_row_summary">Виберіть накладання для нижнього лівого кута &amp; праворуч від екрана</string>
 
     <string name="appearance_clock_title">Годинник</string>
     <string name="appearance_clock_summary">Відображення поточного часу</string>
@@ -203,8 +203,8 @@
     <string name="appearance_location_title">Місце розташування</string>
     <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
 
-    <string name="appearance_date_title">Date</string>
-    <string name="appearance_date_summary">Display the current date</string>
+    <string name="appearance_date_title">Дата</string>
+    <string name="appearance_date_summary">Відображення поточної дати</string>
 
     <string name="appearance_weather_title">Погода</string>
     <string name="appearance_weather_summary">Відображення поточних погодних умов</string>
@@ -222,28 +222,28 @@
     <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
 
     <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Top Left</string>
-    <string name="category_top_row_right">Top Right</string>
+    <string name="category_top_row_left">Верхній лівий</string>
+    <string name="category_top_row_right">Верхній правий</string>
 
-    <string name="category_bottom_row_left">Bottom Left</string>
-    <string name="category_bottom_row_right">Bottom Right</string>
+    <string name="category_bottom_row_left">Нижній лівий</string>
+    <string name="category_bottom_row_right">Нижній правий</string>
 
-    <string name="appearance_slot1_title">Lower Slot</string>
-    <string name="appearance_slot2_title">Upper Slot</string>
-    <string name="appearance_slot_summary">Empty</string>
+    <string name="appearance_slot1_title">Нижній слот</string>
+    <string name="appearance_slot2_title">Верхній слот</string>
+    <string name="appearance_slot_summary">Порожній</string>
 
-    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
-    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
-    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
-    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
-    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
-    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
-    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
-    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+    <string name="appearance_bottom_left_lower_slot">Внизу зліва, нижній слот</string>
+    <string name="appearance_bottom_left_upper_slot">Нижній лівий, верхній слот</string>
+    <string name="appearance_bottom_right_lower_slot">Внизу праворуч, нижній слот</string>
+    <string name="appearance_bottom_right_upper_slot">Нижній правий, верхній слот</string>
+    <string name="appearance_top_left_lower_slot">Верхній лівий, нижній слот</string>
+    <string name="appearance_top_left_upper_slot">Верхній лівий, верхній слот</string>
+    <string name="appearance_top_right_lower_slot">Верхній правий, нижній слот</string>
+    <string name="appearance_top_right_upper_slot">Верхній правий, верхній слот</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Годинник</string>
-    <string name="appearance_clock_format_title">Clock format</string>
+    <string name="appearance_clock_format_title">Формат годинника</string>
 
     <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
     <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
@@ -251,16 +251,16 @@
     <string name="appearance_clock_size_title">Відрегулюйте розмір тексту годинника</string>
 
     <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Date</string>
-    <string name="category_custom_format">Custom format</string>
+    <string name="category_date">Дата</string>
+    <string name="category_custom_format">Свій формат</string>
 
-    <string name="appearance_date_format_title">Date format</string>
-    <string name="appearance_date_custom_title">Specify a custom date format</string>
-    <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+    <string name="appearance_date_format_title">Формат дати</string>
+    <string name="appearance_date_custom_title">Укажіть свій формат дати</string>
+    <string name="appearance_date_notice_summary">Щоб отримати додаткові відомості про формати дати, знайдіть \'Android SimpleDateFormat\'</string>
+    <string name="appearance_date_size_title">Налаштуйте розмір тексту дати</string>
 
-    <string name="appearance_date_custom_error">Invalid custom date format!</string>
-    <string name="appearance_date_custom_example">e.g.</string> // For example
+    <string name="appearance_date_custom_error">Недійсний спеціальний формат дати!</string>
+    <string name="appearance_date_custom_example">напр.</string>
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
@@ -273,23 +273,23 @@
     <string name="appearance_location_size_title">Відрегулюйте розмір тексту розташування</string>
 
     <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Message</string>
+    <string name="category_message">Повідомлення</string>
 
-    <string name="appearance_message_style_title">Show custom message</string>
+    <string name="appearance_message_style_title">Показувати повідомлення користувача</string>
 
-    <string name="appearance_message_line1_title">Line 1</string>
-    <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
-    <string name="appearance_message_line2_title">Line 2</string>
+    <string name="appearance_message_line1_title">Рядок 1</string>
+    <string name="appearance_message_line1_summary">Введіть текст для відображення, включаючи емодзі</string>
+    <string name="appearance_message_line2_title">Рядок 2</string>
 
-    <string name="appearance_message_size_title">Adjust the size of the text</string>
+    <string name="appearance_message_size_title">Відрегулюйте розмір тексту</string>
 
     <!-- Main / Settings / Appearance / Typography -->
 
-    <string name="category_typography">Typography</string>
+    <string name="category_typography">Оформлення</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_typeface_title">Шрифт</string>
 
-    <string name="appearance_weight_title">Weight</string>
+    <string name="appearance_weight_title">Накреслення шрифту</string>
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Плейлист</string>
@@ -317,8 +317,8 @@
     
     <string name="playlist_allow_playback_speed_change_title">Дозволити зміну швидкості під час відтворення</string>
     <string name="playlist_allow_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
-
-    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+ 
+    <string name="playlist_playback_speed_changed">Швидкість відтворення змінено на: %1$s</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Можливості</string>
@@ -329,6 +329,22 @@
     <string name="capabilities_decoders_title">Відео декодери</string>
     <string name="capabilities_resolution_title">Роздільна здатність екрану</string>
     
+    <string name="capabilities_model">Модель: %1$s</string>
+    <string name="capabilities_android">Android: %1$s</string>
+    <string name="capabilities_yes">Так</string>
+    <string name="capabilities_no">Ні</string>
+
+    <string name="capabilities_ui_resolution">Роздільна здатність інтерфейсу: %1$s</string>
+    <string name="capabilities_max_video_resolution">Макс. роздільна здатність відео: %1$s</string>
+
+    <string name="capabilities_supports_hdr10">Підтримка HDR10: %1$s</string>
+    <string name="capabilities_supports_dolby_vision">Підтримка Dolby Vision: %1$s</string>
+    <string name="capabilities_found">Знайдено</string>
+    <string name="capabilities_not_found">Не знайдено</string>
+    <string name="capabilities_avc">AVC: %1$s</string>
+    <string name="capabilities_hevc">HEVC: %1$s</string>
+    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+
     <!-- Main / Settings / Advanced -->
     <string name="category_video_render_options">Параметри відео та рендеринга</string>
     <string name="category_samba_options">Samba/SMB налаштування</string>
@@ -347,7 +363,7 @@
     <string name="samba_videos_enable_encryption_title">Увімкнути шифрування</string>
     <string name="samba_videos_enable_encryption_summary">"Включає шифрування для SMB-з'єднань, може знизити загальну швидкість передачі"</string>
     
-    <string name="samba_videos_smb_dialects_title">Виберіть діалекти SMB</string>
+    <string name="samba_videos_smb_dialects_title">Виберіть версію SMB</string>
     <string name="samba_videos_smb_dialects_summary">Виберіть, яку версію SMB протоколу використовувати</string>
     
     <string name="advanced_locale_menu_title">Мова меню</string>

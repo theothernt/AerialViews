@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Apple Video Options -->
     <string-array name="apple_videos_quality_entries" translatable="false">
         <item>1080p H.264</item>
@@ -99,14 +99,18 @@
         <item>Clock</item>
         <item>Location</item>
         <item>Date</item>
+        <item>Message Line 1</item>
+        <item>Message Line 2</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>LOCATION</item>
         <item>DATE</item>
+        <item>MESSAGE1</item>
+        <item>MESSAGE2</item>
     </string-array>
-    <string name="slot_default" translatable="false" tools:keep="@string/slot_default">EMPTY</string>
+    <string name="slot_default" translatable="false">EMPTY</string>
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries">
@@ -168,7 +172,7 @@
         <item>18</item>
         <item>16</item>
     </string-array>
-    <string name="text_size_default" translatable="false">20</string>
+    <string name="text_size_default" translatable="false">18</string>
 
     <!-- Max. video length -->
     <string-array name="playback_max_video_length_entries">
