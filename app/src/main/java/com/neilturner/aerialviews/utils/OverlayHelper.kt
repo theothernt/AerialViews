@@ -10,13 +10,13 @@ import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 
-class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: InterfacePrefs) {
+class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: GeneralPrefs) {
 
     var overlays = mutableListOf<View?>()
 

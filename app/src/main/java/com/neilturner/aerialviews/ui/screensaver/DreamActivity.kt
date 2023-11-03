@@ -6,7 +6,6 @@ import android.service.dreams.DreamService
 import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
@@ -24,10 +23,10 @@ class DreamActivity : DreamService() {
         isInteractive = true
 
         // Start playback, etc
-        videoController = if (!InterfacePrefs.localeScreensaver.startsWith("default")) {
-            val locale = LocaleHelper.localeFromString(InterfacePrefs.localeScreensaver)
+        videoController = if (!GeneralPrefs.localeScreensaver.startsWith("default")) {
+            val locale = LocaleHelper.localeFromString(GeneralPrefs.localeScreensaver)
 
-            if (InterfacePrefs.clockForceLatinDigits) {
+            if (GeneralPrefs.clockForceLatinDigits) {
                 Locale.setDefault(Locale.UK)
             } else {
                 Locale.setDefault(locale)
@@ -36,7 +35,7 @@ class DreamActivity : DreamService() {
             val config = Configuration(this.resources.configuration)
             config.setLocale(locale)
             val context = createConfigurationContext(config)
-            Log.i(TAG, "Locale: ${InterfacePrefs.localeScreensaver}")
+            Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
             VideoController(context)
         } else {
             VideoController(this)

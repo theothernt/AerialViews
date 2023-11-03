@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.InterfacePrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.overlays.TextLocation
@@ -31,7 +30,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private var typeface: Typeface? = null
     private val resources = context.resources!!
 
-    private var shouldAlternateOverlays = InterfacePrefs.alternateTextPosition
+    private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private var alternate = false
     private var previousVideo = false
     private var canSkip = false
@@ -65,7 +64,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText.typeface = typeface
 
         // Init overlays and set initial positions
-        overlayHelper = OverlayHelper(context, typeface, InterfacePrefs)
+        overlayHelper = OverlayHelper(context, typeface, GeneralPrefs)
         val overlayIds = overlayHelper.buildOverlaysAndIds(videoView)
         this.bottomLeftIds = overlayIds.bottomLeftIds
         this.bottomRightIds = overlayIds.bottomRightIds
@@ -98,7 +97,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
-            it.updateLocationData(video.location, video.poi, InterfacePrefs.locationStyle, player)
+            it.updateLocationData(video.location, video.poi, GeneralPrefs.locationStyle, player)
         }
 
         // Set overlay positions
