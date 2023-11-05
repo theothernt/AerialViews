@@ -91,10 +91,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private fun loadVideo(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
-        overlayHelper.findOverlay<TextLocation>().forEach {
-            it.isFadingOutVideo
-        }
-
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
             it.updateLocationData(video.location, video.poi, GeneralPrefs.locationStyle, player)

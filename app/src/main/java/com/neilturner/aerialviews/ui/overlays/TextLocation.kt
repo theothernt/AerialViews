@@ -31,6 +31,9 @@ class TextLocation : AppCompatTextView {
     }
 
     fun updateLocationData(location: String, poi: Map<Int, String>, locationType: LocationType, player: ExoPlayerView) {
+        isFadingOutVideo = false
+        this.visibility = View.VISIBLE
+
         // If POI, set POI text, if empty use location, or else use location
         this.text = if (locationType == LocationType.POI) {
             poi[0]?.replace("\n", " ") ?: location
@@ -54,7 +57,6 @@ class TextLocation : AppCompatTextView {
 
     private fun updatePointsOfInterest(poi: Map<Int, String>, player: ExoPlayerView) {
         val poiTimes = poi.keys.sorted() // sort ahead of time?
-        val isFadingOutVideo = false
         var lastPoi = 0
 
         currentPositionProgressHandler = {
