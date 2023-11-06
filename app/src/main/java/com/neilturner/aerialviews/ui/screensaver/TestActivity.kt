@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.KeyEvent
+import android.view.WindowManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
@@ -19,12 +20,19 @@ class TestActivity : Activity() {
         super.onCreate(savedInstanceState)
         Log.i(TAG, "onCreate")
         // Setup
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
     }
 
     override fun onResume() {
         super.onResume()
+        window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         LoggingHelper.logScreenView("Test Screensaver", TAG)
+    }
+
+    override fun onPause() {
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        super.onPause()
     }
 
     override fun onAttachedToWindow() {
@@ -136,6 +144,7 @@ class TestActivity : Activity() {
         super.onStop()
         Log.i(TAG, "onStop")
         // Stop playback, animations, etc
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (this::videoController.isInitialized) {
             videoController.stop()
         }
