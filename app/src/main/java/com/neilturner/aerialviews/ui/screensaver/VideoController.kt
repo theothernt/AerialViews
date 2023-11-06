@@ -139,11 +139,11 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             return
         }
 
-        var fadeDuration = ExoPlayerView.FADE_DURATION
+        var startDelay: Long = 0
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
             fadeOutLoading()
-            fadeDuration += 1500 // Fade in after 1st load should be a little longer
+            startDelay = 1000
         }
 
         // Fade out LoadingView
@@ -151,7 +151,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingView
             .animate()
             .alpha(0f)
-            .setDuration(fadeDuration)
+            .setStartDelay(startDelay)
+            .setDuration(ExoPlayerView.FADE_DURATION)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
