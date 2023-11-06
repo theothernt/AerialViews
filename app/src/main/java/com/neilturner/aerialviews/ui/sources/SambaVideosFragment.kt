@@ -205,7 +205,7 @@ class SambaVideosFragment :
         val canReadFiles = storagePermissions.hasAccess(
             action = StoragePermissions.Action.READ,
             types = listOf(StoragePermissions.FileType.Document),
-            createdBy = StoragePermissions.CreatedBy.Self
+            createdBy = StoragePermissions.CreatedBy.AllApps
         )
 
         if (!canReadFiles) {
