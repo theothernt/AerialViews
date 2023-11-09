@@ -10,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 
 class AppearanceDateFragment : PreferenceFragmentCompat() {
 
@@ -18,6 +19,11 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
 
         limitTextInput()
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Date", TAG)
     }
 
     private fun updateSummary() {
@@ -56,6 +62,6 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
-        private const val TAG = "AppearanceDateFragment"
+        private const val TAG = "DateFragment"
     }
 }

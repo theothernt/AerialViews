@@ -23,7 +23,7 @@ object GeneralPrefs : KotprefModel() {
     var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
 
     var alternateTextPosition by booleanPref(false, "alt_text_position")
-    
+
     // Clock
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")
     var clockSize by stringPref("18", "clock_size")

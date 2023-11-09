@@ -6,6 +6,7 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class AppearanceRowBottomFragment :
@@ -17,6 +18,11 @@ class AppearanceRowBottomFragment :
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         updateDropDownAndSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Bottom Row", TAG)
     }
 
     override fun onDestroy() {
@@ -50,5 +56,9 @@ class AppearanceRowBottomFragment :
         SlotHelper.buildOverlayList(bottomLeft2, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight2, overlayData.first, overlayData.second, slotPrefs)
+    }
+
+    companion object {
+        private const val TAG = "RowBottomFragment"
     }
 }

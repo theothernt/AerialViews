@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
 
@@ -21,6 +22,11 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
         resources = context?.resources!!
 
         updateCapabilities()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Capabilities", TAG)
     }
 
     private fun updateCapabilities() {
@@ -132,5 +138,9 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
                 it.contains(type, true)
         }
         return videoCodecs.isNotEmpty()
+    }
+
+    companion object {
+        private const val TAG = "CapabilitiesFragment"
     }
 }

@@ -5,6 +5,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.LoggingHelper
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -14,6 +15,11 @@ class AboutFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_about, rootKey)
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("About", TAG)
     }
 
     private fun updateSummary() {
@@ -32,5 +38,9 @@ class AboutFragment : PreferenceFragmentCompat() {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy 'at' HH:mm", Locale.getDefault())
         val date = Date(BuildConfig.BUILD_TIME.toLong())
         return dateFormat.format(date)
+    }
+
+    companion object {
+        private const val TAG = "AboutFragment"
     }
 }

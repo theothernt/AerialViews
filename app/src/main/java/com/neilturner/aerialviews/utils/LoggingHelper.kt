@@ -7,10 +7,9 @@ import com.google.firebase.ktx.Firebase
 
 object LoggingHelper {
 
-    private val firebaseAnalytics  = Firebase.analytics
+    private val firebaseAnalytics = Firebase.analytics
     fun logScreenView(screenName: String, activityName: String) {
-
-        val parameters = bundleOf (
+        val parameters = bundleOf(
             Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
             Pair(FirebaseAnalytics.Param.SCREEN_CLASS, activityName)
         )
