@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class AppearanceMessageFragment :
@@ -17,6 +18,11 @@ class AppearanceMessageFragment :
 
         limitTextInput()
         updateSummary()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Message", TAG)
     }
 
     override fun onDestroy() {
@@ -49,5 +55,9 @@ class AppearanceMessageFragment :
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
+    }
+
+    companion object {
+        private const val TAG = "MessageFragment"
     }
 }
