@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Read videos, read/write SMB settings file -->
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
@@ -55,6 +57,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Allow activity to be called externally via 3rd party app, etc -->
         <activity
             android:exported="true"
             android:name=".ui.screensaver.TestActivity"
@@ -91,6 +94,7 @@
                 android:value="false" />
         </service>
 
+        <!-- Called when app is updated so migration code can run -->
         <receiver android:name=".utils.PackageReplacedReceiver"
             android:exported="true">
             <intent-filter>
