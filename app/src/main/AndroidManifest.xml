@@ -32,7 +32,7 @@
     <application
         android:name=".ui.App"
         android:allowBackup="true"
-        android:banner="@drawable/ic_banner"
+        android:banner="@mipmap/ic_banner"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:installLocation="auto"
