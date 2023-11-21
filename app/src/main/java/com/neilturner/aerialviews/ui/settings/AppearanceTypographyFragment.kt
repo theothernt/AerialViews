@@ -13,7 +13,7 @@ class AppearanceTypographyFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Tyopgraphy", TAG)
+        LoggingHelper.logScreenView("Typography", TAG)
     }
 
     companion object {

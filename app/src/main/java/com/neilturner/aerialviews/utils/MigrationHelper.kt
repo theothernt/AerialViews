@@ -10,6 +10,7 @@ class MigrationHelper(val context: Context) {
     private val prefsPackageName = "${context.packageName}_preferences"
     private val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
 
+    @Suppress("KotlinConstantConditions")
     fun upgradeSettings() {
         val latestVersion = BuildConfig.VERSION_CODE
         val lastKnownVersion = getLastKnownVersion()
