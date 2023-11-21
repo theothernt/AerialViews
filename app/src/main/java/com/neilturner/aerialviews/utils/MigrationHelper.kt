@@ -164,6 +164,7 @@ class MigrationHelper(val context: Context) {
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
             } else {
                 Log.i(TAG, "No change to location as default is used")
+                prefs.edit().putString("slot_bottom_right1", "LOCATION").apply()
             }
         }
 
@@ -176,6 +177,7 @@ class MigrationHelper(val context: Context) {
                 prefs.edit().putString("slot_bottom_left1", "EMPTY").apply()
             } else {
                 Log.i(TAG, "Set new clock prefs")
+                prefs.edit().putString("slot_bottom_left1", "CLOCK").apply()
                 val textSize = prefs.getString("clock_size", "18")
                 if (textSize == "36") {
                     Log.i(TAG, "Clock text size at old default, updating to new size")
