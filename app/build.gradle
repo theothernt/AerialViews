@@ -15,7 +15,7 @@ android {
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 33
         versionCode 17
-        versionName "1.5.3"
+        versionName "1.6.0"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
