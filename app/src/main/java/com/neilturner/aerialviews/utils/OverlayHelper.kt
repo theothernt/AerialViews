@@ -68,19 +68,19 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
 
         val bottomRow = buildReferenceIds(
             root.emptyView1,
-            overlays[0],
             overlays[1],
+            overlays[0],
             root.emptyView2,
-            overlays[2],
-            overlays[3]
+            overlays[3],
+            overlays[2]
         )
 
         val topRow = buildReferenceIds(
-            overlays[4],
             overlays[5],
+            overlays[4],
             root.emptyView3,
-            overlays[6],
             overlays[7],
+            overlays[6],
             root.emptyView4
         )
 
