@@ -38,6 +38,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 15) release15()
         // if (lastKnownVersion < 16) release16()
         if (lastKnownVersion < 17) release17()
+        if (lastKnownVersion < 18) release18()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -159,7 +160,7 @@ class MigrationHelper(val context: Context) {
         val locationUsed = prefs.contains("location_style")
         if (locationUsed) {
             val locationStyle = prefs.getString("location_style", "POI").toStringOrEmpty()
-            if (locationStyle.contains("DISABLED")) {
+            if (locationStyle.contains("OFF")) {
                 Log.i(TAG, "Location disabled so removing overlay from default slot")
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
@@ -186,6 +187,21 @@ class MigrationHelper(val context: Context) {
                 } else {
                     Log.i(TAG, "Clock text size is custom, leaving alone")
                 }
+            }
+        }
+    }
+
+    private fun release18() {
+        Log.i(TAG, "Migrating settings for release 18")
+
+        // Location
+        val locationUsed = prefs.contains("location_style")
+        if (locationUsed) {
+            val locationStyle = prefs.getString("location_style", "POI").toStringOrEmpty()
+            if (locationStyle.contains("DISABLED")) {
+                Log.i(TAG, "Setting location style to default/POI and setting slot to empty")
+                prefs.edit().putString("location_style", "POI").apply()
+                prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
             }
         }
     }
