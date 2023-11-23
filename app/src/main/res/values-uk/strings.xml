@@ -192,10 +192,10 @@
     <string name="category_slots">Слоти</string>
 
     <string name="appearance_top_row_title">Верхній ряд</string>
-    <string name="appearance_top_row_summary">Виберіть накладання для верхнього лівого кута &amp; праворуч від екрана</string>
+    <string name="appearance_top_row_summary">Виберіть накладання для верхнього лівого та правого кутів екрана</string>
 
     <string name="appearance_bottom_row_title">Нижній ряд</string>
-    <string name="appearance_bottom_row_summary">Виберіть накладання для нижнього лівого кута &amp; праворуч від екрана</string>
+    <string name="appearance_bottom_row_summary">Виберіть накладання для нижнього лівого та правого кутів екрана</string>
 
     <string name="appearance_clock_title">Годинник</string>
     <string name="appearance_clock_summary">Відображення поточного часу</string>

@@ -192,10 +192,10 @@
     <string name="category_slots">Слоты</string>
 
     <string name="appearance_top_row_title">Верхний ряд</string>
-    <string name="appearance_top_row_summary">Выберите наложения для верхнего левого угла &amp; справа от экрана</string>
+    <string name="appearance_top_row_summary">Выберите наложения для верхнего левого и правого углов экрана</string>
 
     <string name="appearance_bottom_row_title">Нижний ряд</string>
-    <string name="appearance_bottom_row_summary">Выберите наложения для нижнего левого угла &amp; справа от экрана</string>
+    <string name="appearance_bottom_row_summary">Выберите наложения для нижнего левого и правого углов экрана</string>
 
     <string name="appearance_clock_title">Часы</string>
     <string name="appearance_clock_summary">Отображение текущего времени</string>
