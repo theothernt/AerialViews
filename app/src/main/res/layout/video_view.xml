@@ -40,8 +40,8 @@
 
         <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
             android:id="@+id/player"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
