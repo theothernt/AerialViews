@@ -66,6 +66,8 @@ object SlotHelper {
     }
 
     fun entriesAndValues(context: Context): Pair<Array<String>, Array<String>> {
+        // Should be Map<T>
+        // Create generic func to return res?
         val res = context.resources!!
         val entries = res.getStringArray(R.array.slot_entries) // Empty, Clock, etc
         val values = res.getStringArray(R.array.slot_values) // EMPTY, CLOCK, etc

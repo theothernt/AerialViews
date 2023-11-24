@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
+import android.content.Context
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -12,11 +13,15 @@ import com.neilturner.aerialviews.utils.LoggingHelper
 
 class AppearanceDateFragment : PreferenceFragmentCompat() {
 
+    private lateinit var entriesAndValues: Map<String, String>
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
 
         limitTextInput()
         updateSummary()
+
+        entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
     }
 
     override fun onResume() {
@@ -50,13 +55,24 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
 
     private fun dateFormatting(type: DateType, format: String?): String {
         val forExample = requireContext().resources.getString(R.string.appearance_date_custom_example)
+        val typeEntry = entriesAndValues[type.toString()]
         return if (type == DateType.CUSTOM && format == null) {
-            "CUSTOM"
+            "$typeEntry"
         } else if (type == DateType.CUSTOM) {
             "$format ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
         } else {
-            "$type ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
+            "$typeEntry ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
         }
+    }
+
+    private fun findEntriesAndValues(context: Context, valuesId: Int, entriesId: Int): Map<String, String> {
+        // values -> entries
+        // key -> value
+        // MESSAGE1 -> Message Line 1
+        val res = context.resources
+        val values = res.getStringArray(valuesId) // EMPTY, CLOCK, etc
+        val entries = res.getStringArray(entriesId) // Empty, Clock, etc
+        return values.zip(entries).toMap()
     }
 
     companion object {
