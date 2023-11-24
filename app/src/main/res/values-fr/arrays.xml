@@ -18,6 +18,16 @@
         <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
     </string-array>
 
+    <!-- Slots -->
+    <string-array name="slot_entries">
+        <item>Empty</item>
+        <item>Clock</item>
+        <item>Location</item>
+        <item>Date</item>
+        <item>Message Line 1</item>
+        <item>Message Line 2</item>
+    </string-array>
+
     <!-- Local Video Options -->
     <string-array name="local_videos_search_type_entries">
         <item>Media scanner</item>
