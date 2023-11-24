@@ -18,10 +18,10 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
 
+        entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
+
         limitTextInput()
         updateSummary()
-
-        entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
     }
 
     override fun onResume() {
