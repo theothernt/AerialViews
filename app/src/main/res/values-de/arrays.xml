@@ -20,12 +20,12 @@
 
     <!-- Slots -->
     <string-array name="slot_entries">
-        <item>Empty</item>
-        <item>Clock</item>
-        <item>Location</item>
-        <item>Date</item>
-        <item>Message Line 1</item>
-        <item>Message Line 2</item>
+        <item>Leer</item>
+        <item>Uhrzeit</item>
+        <item>Ort</item>
+        <item>Datum</item>
+        <item>Nachricht Zeile 1</item>
+        <item>Nachricht Zeile 2</item>
     </string-array>
 
     <!-- Local Video Options -->
