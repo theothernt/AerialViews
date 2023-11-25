@@ -193,11 +193,11 @@ class MigrationHelper(val context: Context) {
     private fun release18() {
         Log.i(TAG, "Migrating settings for release 18")
 
-        // Location
+        // Remove bad key if found
         val locationUsed = prefs.contains("location_style")
         if (locationUsed) {
             val locationStyle = prefs.getString("location_style", "POI").toStringOrEmpty()
-            if (locationStyle.contains("DISABLED")) {
+            if (locationStyle.contains("OFF")) {
                 Log.i(TAG, "Setting location style to default/POI and setting slot to empty")
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
