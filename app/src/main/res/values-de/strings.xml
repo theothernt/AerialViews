@@ -202,7 +202,7 @@
     <string name="appearance_location_title">Ort</string>
     <string name="appearance_location_summary">Zeige Ort oder Sehenswürdigkeiten an</string>
 
-    <string name="appearance_date_title">Date</string>
+    <string name="appearance_date_title">Datum</string>
     <string name="appearance_date_summary">Zeige das aktuelle Datum</string>
 
     <string name="appearance_weather_title">Wetter</string>
@@ -286,7 +286,7 @@
 
     <string name="category_typography">Typografie</string>
 
-    <string name="appearance_typeface_title">Typeface</string>
+    <string name="appearance_typeface_title">Schriftart</string>
 
     <string name="appearance_weight_title">Schriftstärke</string>
 
