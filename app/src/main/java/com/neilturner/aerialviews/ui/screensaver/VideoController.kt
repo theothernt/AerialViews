@@ -12,6 +12,8 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
@@ -93,7 +95,15 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
-            it.updateLocationData(video.location, video.poi, GeneralPrefs.locationStyle, player)
+            val locationType = try {
+                GeneralPrefs.locationStyle
+            } catch (ex: Exception) {
+                // Fixing possible crash from pref migration bug
+                GeneralPrefs.slotBottomRight1 = OverlayType.EMPTY
+                GeneralPrefs.locationStyle = LocationType.POI
+                LocationType.POI
+            }
+            it.updateLocationData(video.location, video.poi, locationType, player)
         }
 
         // Set overlay positions
