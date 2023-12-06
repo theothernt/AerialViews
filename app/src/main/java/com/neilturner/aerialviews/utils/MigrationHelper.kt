@@ -37,7 +37,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 15) release15()
         // if (lastKnownVersion < 16) release16()
         if (lastKnownVersion < 17) release17()
-        //if (lastKnownVersion < 18) release18()
+        // if (lastKnownVersion < 18) release18()
         if (lastKnownVersion < 19) release19()
 
         // After all migrations, set version to latest
@@ -199,7 +199,8 @@ class MigrationHelper(val context: Context) {
         if (locationUsed) {
             val locationStyle = prefs.getString("location_style", "POI").toStringOrEmpty()
             if (!locationStyle.contains("POI") &&
-                !locationStyle.contains("TITLE")) {
+                !locationStyle.contains("TITLE")
+            ) {
                 Log.i(TAG, "Setting location style to default/POI and setting slot to empty")
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
