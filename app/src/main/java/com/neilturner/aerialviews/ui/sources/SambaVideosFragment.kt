@@ -118,7 +118,7 @@ class SambaVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         updateSummary()
     }
 

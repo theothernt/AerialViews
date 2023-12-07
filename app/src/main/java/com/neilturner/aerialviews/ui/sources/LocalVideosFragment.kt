@@ -81,7 +81,7 @@ class LocalVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (key == "local_videos_enabled" &&
             requiresPermission()
         ) {

@@ -8,12 +8,12 @@ apply plugin: 'de.mannodermaus.android-junit5'
 
 android {
     namespace 'com.neilturner.aerialviews'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 19
         versionName "1.6.2"
 
@@ -33,6 +33,7 @@ android {
 
     buildFeatures {
         dataBinding true
+        buildConfig true
     }
 
     // App bundle (not APK) should contain all languages so 'locale switch'
@@ -133,11 +134,11 @@ dependencies {
     implementation('com.google.modernstorage:modernstorage-storage:1.0.0-alpha06')
 
     // Android X
-    implementation('androidx.core:core-ktx:1.10.1')
+    implementation('androidx.core:core-ktx:1.12.0')
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation('androidx.preference:preference-ktx:1.2.1')
-    implementation('androidx.activity:activity-ktx:1.7.2')
+    implementation('androidx.activity:activity-ktx:1.8.1')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
     implementation('androidx.appcompat:appcompat:1.6.1')
 
@@ -150,7 +151,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.10.1')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.1.1')
+    implementation('androidx.media3:media3-exoplayer:1.2.0')
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")

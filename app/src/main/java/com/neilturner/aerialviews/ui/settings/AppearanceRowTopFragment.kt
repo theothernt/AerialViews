@@ -30,8 +30,8 @@ class AppearanceRowTopFragment :
         super.onDestroy()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        if (key.contains("slot_", false)) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+        if (key != null && key.contains("slot_", false)) {
             SlotHelper.removeDuplicateOverlays(preferenceScreen, key)
             updateDropDownAndSummary()
         }

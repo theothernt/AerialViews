@@ -30,7 +30,7 @@ class AppearanceMessageFragment :
         super.onDestroy()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         updateSummary()
     }
 
