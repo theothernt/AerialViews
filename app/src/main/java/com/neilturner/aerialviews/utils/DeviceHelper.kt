@@ -39,15 +39,8 @@ object DeviceHelper {
     }
 
     fun canAccessScreensaverSettings(): Boolean {
-        if (isFireTV()) {
-            return false
-        }
-
-        if (isGoogleTV()) {
-            return false
-        }
-
-        return true
+        return !(isFireTV() ||
+                isGoogleTV())
     }
 
     // https://stackoverflow.com/a/55355049/247257
