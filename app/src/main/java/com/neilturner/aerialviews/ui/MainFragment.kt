@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.neilturner.aerialviews.ui
 
 import android.content.Intent
