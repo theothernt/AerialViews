@@ -162,7 +162,7 @@ dependencies {
     implementation('com.hierynomus:smbj:0.11.5')
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.12')
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.13')
 
     // Unit testing
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.1')
