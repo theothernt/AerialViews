@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clock format -->
+    <string-array name="clock_format_entries">
+        <item>Predeterminado</item>
+        <item>12 Horas</item>
+        <item>24 Horas</item>
+    </string-array>
+
+    <!-- Date format -->
+    <string-array name="date_format_entries">
+        <item>Compacto</item>
+        <item>Completo</item>
+        <item>Personalizado</item>
+    </string-array>
+
+    <!-- Video title or POI -->
+    <string-array name="location_type_entries">
+        <item>Ubicación o título</item>
+        <item>Puntos de interés (disponibles en muchos idiomas)</item>
+    </string-array>
+
+    <!-- Use filename as location -->
+    <string-array name="filename_as_location_entries">
+        <item>Desactivado</item>
+        <item>Usar formato</item>
+        <item>Usar el nombre de archivo como está</item>
+    </string-array>
+    <string-array name="filename_as_location_summary_entries">
+        <item>Desactivado</item>
+        <item>Usar formato. Por ejemplo \'japon-monte_fuji.mp4\' se muestra como \'Japón - Monte Fuji\'</item>
+        <item>Usar el nombre de archivo como está. Por ejemplo \'Volando hacia el Monte Pilatus.mp4\' se muestra como \'Volando hacia el Monte Pilatus\'</item>
+    </string-array>
+
+    <!-- Slots -->
+    <string-array name="slot_entries">
+        <item>Vacío</item>
+        <item>Reloj</item>
+        <item>Ubicación</item>
+        <item>Fecha</item>
+        <item>Línea de mensaje 1</item>
+        <item>Línea de mensaje 1</item>
+    </string-array>
+
+    <!-- Playback speed -->
+    <string-array name="playback_speed_entries">
+        <item>0.25x</item>
+        <item>0.5x</item>
+        <item>0.75x</item>
+        <item>1x (Predeterminado)</item>
+        <item>1.25x</item>
+        <item>1.5x</item>
+        <item>1.75x</item>
+        <item>2x</item>
+        <item>2.5x</item>
+        <item>3x</item>
+        <item>3.5x</item>
+        <item>4x</item>
+        <item>5x</item>
+    </string-array>
+
+    <!-- Text sizes -->
+    <string-array name="text_size_entries">
+        <item>36sp</item>
+        <item>34sp</item>
+        <item>32sp</item>
+        <item>30sp</item>
+        <item>28sp</item>
+        <item>26sp</item>
+        <item>24sp</item>
+        <item>22sp</item>
+        <item>20sp</item>
+        <item>18sp (Predeterminado)</item>
+        <item>16sp</item>
+    </string-array>
+
+    <!-- Max. video length -->
+    <string-array name="playback_max_video_length_entries">
+        <item>Sin límite (Predeterminado)</item>
+        <item>10 segundos</item>
+        <item>20 segundos</item>
+        <item>30 segundos</item>
+        <item>1 minuto</item>
+        <item>2 minutos</item>
+        <item>3 minutos</item>
+        <item>4 minutos</item>
+        <item>5 minutos</item>
+        <item>6 minutos</item>
+        <item>7 minutos</item>
+        <item>8 minutos</item>
+        <item>9 minutos</item>
+        <item>10 minutos</item>
+    </string-array>
+
+    <!-- Font selection -->
+    <string-array name="appearance_font_entries">
+        <item>Open Sans (Predeterminado)</item>
+        <item>Roboto</item>
+    </string-array>
+
+    <string-array name="appearance_font_weight_entries">
+        <item>100/Delgada</item>
+        <item>200/Extra Fina</item>
+        <item>300/Fina (Predeterminado)</item>
+        <item>400/Normal</item>
+        <item>500/Mediana</item>
+        <item>600/Semi Negrita</item>
+        <item>700/Negrita</item>
+        <item>800/Extra Negrita</item>
+        <item>900/Intensa</item>
+    </string-array>
+
+    <!-- Local Video Options -->
+    <string-array name="local_videos_search_type_entries">
+        <item>Escaneo de medios</item>
+        <item>Acceso a carpetas (obsoleto)</item>
+    </string-array>
+</resources>
