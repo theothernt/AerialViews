@@ -42,6 +42,9 @@ class TextDate : AppCompatTextView {
                 refreshDateHandler?.let { it() }
             }, 1000)
         }
+        this.postDelayed({
+            refreshDateHandler?.let { it() }
+        }, 1000)
     }
 
     companion object {
