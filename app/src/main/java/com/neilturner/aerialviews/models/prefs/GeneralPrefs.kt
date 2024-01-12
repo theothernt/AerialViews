@@ -51,6 +51,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Fonts
     var fontTypeface by stringPref("open-sans", "font_typeface")
+    var fontWeight by stringPref("300", "font_weight")
 
     // Locale
     var localeMenu by stringPref("default", "locale_menu")

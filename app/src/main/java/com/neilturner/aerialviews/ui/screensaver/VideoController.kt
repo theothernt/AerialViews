@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,6 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
-    private var typeface: Typeface? = null
     private val resources = context.resources!!
 
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
@@ -60,13 +58,10 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         player = videoView.player
         player.setOnPlayerListener(this)
 
-        // Should try/catch etc
-        // Take pref as param
-        typeface = FontHelper.getTypeface(context)
-        loadingText.typeface = typeface
+        loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
 
         // Init overlays and set initial positions
-        overlayHelper = OverlayHelper(context, typeface, GeneralPrefs)
+        overlayHelper = OverlayHelper(context, GeneralPrefs)
         val overlayIds = overlayHelper.buildOverlaysAndIds(videoView)
         this.bottomLeftIds = overlayIds.bottomLeftIds
         this.bottomRightIds = overlayIds.bottomRightIds

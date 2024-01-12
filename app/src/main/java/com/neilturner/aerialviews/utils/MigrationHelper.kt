@@ -39,6 +39,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 17) release17()
         // if (lastKnownVersion < 18) release18()
         if (lastKnownVersion < 19) release19()
+        if (lastKnownVersion < 20) release20()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -205,6 +206,24 @@ class MigrationHelper(val context: Context) {
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
             }
+        }
+    }
+
+    private fun release20() {
+        Log.i(TAG, "Migrating settings for release 20")
+
+        val fontWeightUsed = prefs.contains("font_weight")
+        if (fontWeightUsed) {
+            val fontWeight = prefs.getString("font_weight", "300").toStringOrEmpty()
+            if (fontWeight != "300" && fontWeight.toDoubleOrNull() != null) {
+                Log.i(TAG, "Setting new font weight to all overlays")
+                prefs.edit().putString("clock_weight", fontWeight).apply()
+                prefs.edit().putString("date_weight", fontWeight).apply()
+                prefs.edit().putString("location_weight", fontWeight).apply()
+                prefs.edit().putString("message_weight", fontWeight).apply()
+            }
+            // Might need to rename or move this?
+            // prefs.edit().remove("font_weight").apply()
         }
     }
 

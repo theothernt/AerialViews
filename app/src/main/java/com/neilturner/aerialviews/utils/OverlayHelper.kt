@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import android.graphics.Typeface
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
@@ -16,7 +15,7 @@ import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 
-class OverlayHelper(private val context: Context, private val font: Typeface?, private val prefs: GeneralPrefs) {
+class OverlayHelper(private val context: Context, private val prefs: GeneralPrefs) {
 
     var overlays = mutableListOf<View?>()
 
@@ -99,20 +98,20 @@ class OverlayHelper(private val context: Context, private val font: Typeface?, p
         return when (type) {
             OverlayType.CLOCK -> AltTextClock(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                typeface = font
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
             }
             OverlayType.LOCATION -> TextLocation(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
-                typeface = font
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.locationWeight)
             }
             OverlayType.DATE -> TextDate(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                typeface = font
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
             }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2 -> TextMessage(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                typeface = font
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
                 this.type = type
             }
             else -> return null
