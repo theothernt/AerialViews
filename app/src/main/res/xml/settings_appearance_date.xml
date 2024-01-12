@@ -32,9 +32,7 @@
                     app:key="date_size"
                     app:title="@string/appearance_date_size_title"
                     app:useSimpleSummaryProvider="true" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_typography">
                 <ListPreference
                     app:defaultValue="@string/appearance_font_weight_default"
                     app:entries="@array/appearance_font_weight_entries"
