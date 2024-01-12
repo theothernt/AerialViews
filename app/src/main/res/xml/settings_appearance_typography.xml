@@ -3,21 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_typography">
-
                 <ListPreference
                     app:defaultValue="@string/appearance_font_default"
                     app:entries="@array/appearance_font_entries"
                     app:entryValues="@array/appearance_font_values"
                     app:key="font_typeface"
                     app:title="@string/appearance_typeface_title"
-                    app:useSimpleSummaryProvider="true" />
-
-                <ListPreference
-                    app:defaultValue="@string/appearance_font_weight_default"
-                    app:entries="@array/appearance_font_weight_entries"
-                    app:entryValues="@array/appearance_font_weight_values"
-                    app:key="font_weight"
-                    app:title="@string/appearance_weight_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

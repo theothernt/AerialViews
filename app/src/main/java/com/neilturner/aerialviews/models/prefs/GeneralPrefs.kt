@@ -22,31 +22,35 @@ object GeneralPrefs : KotprefModel() {
     var slotTopRight1 by enumValuePref(OverlayType.EMPTY, "slot_top_right1")
     var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
 
-    var alternateTextPosition by booleanPref(false, "alt_text_position")
-
     // Clock
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")
     var clockSize by stringPref("18", "clock_size")
+    var clockWeight by stringPref("300", "clock_weight")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     // Date
     var dateFormat by enumValuePref(DateType.COMPACT, "date_format")
     var dateCustom by stringPref("yyyy-MM-dd", "date_custom")
+    var dateWeight by stringPref("300", "date_weight")
     var dateSize by stringPref("18", "date_size")
 
     // Location
     var locationStyle by enumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
+    var locationWeight by stringPref("300", "location_weight")
     var filenameAsLocation by enumValuePref(FilenameAsLocation.DISABLED, "filename_as_location") // location_use_filename ?
 
     // Message
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
     var messageSize by stringPref("18", "message_size")
+    var messageWeight by stringPref("300", "message_weight")
+
+    // Other
+    var alternateTextPosition by booleanPref(false, "alt_text_position")
 
     // Fonts
     var fontTypeface by stringPref("open-sans", "font_typeface")
-    var fontWeight by stringPref("300", "font_weight")
 
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
