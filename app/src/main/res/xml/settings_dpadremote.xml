@@ -13,5 +13,11 @@
                     app:key="enable_playback_speed_change"
                     app:summary="@string/playlist_allow_playback_speed_change_summary"
                     app:title="@string/playlist_allow_playback_speed_change_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="enable_media_button_passthrough"
+                    app:summary="@string/playlist_allow_media_button_passthrough_summary"
+                    app:title="@string/playlist_allow_media_button_passthrough_title" />
         </PreferenceCategory>
 </PreferenceScreen>
