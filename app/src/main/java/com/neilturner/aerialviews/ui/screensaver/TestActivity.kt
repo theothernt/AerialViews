@@ -74,7 +74,15 @@ class TestActivity : Activity() {
                 KeyEvent.KEYCODE_MEDIA_PAUSE,
                 KeyEvent.KEYCODE_MEDIA_NEXT,
                 KeyEvent.KEYCODE_MEDIA_PREVIOUS,
-                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> return super.dispatchKeyEvent(event)
+                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                    // Should play/pause/rewind keys be passed
+                    // to the background app or not
+                    return if (GeneralPrefs.enableMediaButtonPassthrough) {
+                        super.dispatchKeyEvent(event)
+                    } else {
+                        true
+                    }
+                }
 
                 KeyEvent.KEYCODE_DPAD_CENTER -> {
                     // Only disable OK button if left/right/up/down keys are in use
