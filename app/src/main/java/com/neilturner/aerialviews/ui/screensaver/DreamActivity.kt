@@ -3,11 +3,9 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.service.dreams.DreamService
-import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
@@ -17,7 +15,7 @@ class DreamActivity : DreamService() {
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        Log.i(TAG, "onAttachedToWindow")
+        // Log.i(TAG, "onAttachedToWindow")
         // Setup
         isFullscreen = true
         isInteractive = true
@@ -35,7 +33,7 @@ class DreamActivity : DreamService() {
             val config = Configuration(this.resources.configuration)
             config.setLocale(locale)
             val context = createConfigurationContext(config)
-            Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
+            // Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
             VideoController(context)
         } else {
             VideoController(this)
@@ -45,7 +43,7 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
-        LoggingHelper.logScreenView("Screensaver", TAG)
+        // LoggingHelper.logScreenView("Screensaver", TAG)
         // Start playback, etc
     }
 
@@ -131,7 +129,7 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
-        Log.i(TAG, "onDreamingStopped")
+        // Log.i(TAG, "onDreamingStopped")
         // Stop playback, animations, etc
         if (this::videoController.isInitialized) {
             videoController.stop()
@@ -140,7 +138,7 @@ class DreamActivity : DreamService() {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        Log.i(TAG, "onDetachedFromWindow")
+        // Log.i(TAG, "onDetachedFromWindow")
         // Remove resources
     }
 
