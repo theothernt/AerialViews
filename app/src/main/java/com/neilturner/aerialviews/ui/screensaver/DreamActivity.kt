@@ -69,6 +69,7 @@ class DreamActivity : DreamService() {
                     return if (GeneralPrefs.enableMediaButtonPassthrough) {
                         super.dispatchKeyEvent(event)
                     } else {
+                        wakeUp()
                         true
                     }
                 }
