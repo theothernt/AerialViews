@@ -321,7 +321,7 @@
     <string name="playlist_playback_speed_changed">Скорость воспроизведения изменена на: %1$s</string>
 
     <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music ap) without exiting the screensaver</string>
+    <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Возможности</string>

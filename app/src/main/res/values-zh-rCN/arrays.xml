@@ -1,19 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (默认)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string-array name="appearance_font_entries">
+    <item>Open Sans (Default)</item>
+    <item>Roboto</item>
+  </string-array>
+  <string-array name="appearance_font_weight_entries">
+    <item>100/淡体</item>
+    <item>200/特细</item>
+    <item>300/细体</item>
+    <item>400/标准</item>
+    <item>500/适中</item>
+    <item>600/次粗</item>
+    <item>700/粗体</item>
+    <item>800/特粗</item>
+    <item>900/浓体</item>
+  </string-array>
+  <string-array name="clock_format_entries">
+    <item>系统默认</item>
+    <item>12 小时</item>
+    <item>24 小时</item>
+  </string-array>
+  <string-array name="date_format_entries">
+    <item>紧凑</item>
+    <item>全部</item>
+    <item>定制</item>
+  </string-array>
+  <string-array name="filename_as_location_entries">
+    <item>禁用</item>
+    <item>格式化命名</item>
+    <item>原始文件名</item>
+  </string-array>
+  <string-array name="filename_as_location_summary_entries">
+    <item>禁用</item>
+    <item>使用格式化命名，例如“japan-mount_fuji.mp4”变为“Japan - Mount Fuji”</item>
+    <item>使用原始文件名，例如“Flying toward Mount Pilatus.mp4”变为“Flying toward Mount Pilatus”</item>
+  </string-array>
+  <string-array name="local_videos_search_type_entries">
+    <item>媒体扫描仪</item>
+    <item>Folder access (legacy)</item>
+  </string-array>
+  <string-array name="location_type_entries">
+    <item>地点或标题</item>
+    <item>景点（有多种语言版本）</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>无限制 (默认)</item>
@@ -31,33 +59,20 @@
     <item>9 分钟</item>
     <item>10 分钟</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>媒体扫描仪</item>
-    <item>Folder access (legacy)</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>系统默认</item>
-    <item>12 小时</item>
-    <item>24 小时</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>紧凑</item>
-    <item>全部</item>
-    <item>定制</item>
-  </string-array>
-  <string-array name="location_type_entries">
-    <item>地点或标题</item>
-    <item>景点（有多种语言版本）</item>
-  </string-array>
-  <string-array name="filename_as_location_entries">
-    <item>禁用</item>
-    <item>格式化命名</item>
-    <item>原始文件名</item>
-  </string-array>
-  <string-array name="filename_as_location_summary_entries">
-    <item>禁用</item>
-    <item>使用格式化命名，例如“japan-mount_fuji.mp4”变为“Japan - Mount Fuji”</item>
-    <item>使用原始文件名，例如“Flying toward Mount Pilatus.mp4”变为“Flying toward Mount Pilatus”</item>
+  <string-array name="playback_speed_entries">
+    <item>0.25x</item>
+    <item>0.5x</item>
+    <item>0.75x</item>
+    <item>1x (默认)</item>
+    <item>1.25x</item>
+    <item>1.5x</item>
+    <item>1.75x</item>
+    <item>2x</item>
+    <item>2.5x</item>
+    <item>3x</item>
+    <item>3.5x</item>
+    <item>4x</item>
+    <item>5x</item>
   </string-array>
   <string-array name="slot_entries">
     <item>留空</item>
@@ -79,20 +94,5 @@
     <item>20sp</item>
     <item>18sp (默认)</item>
     <item>16sp</item>
-  </string-array>
-  <string-array name="appearance_font_entries">
-    <item>Open Sans (Default)</item>
-    <item>Roboto</item>
-  </string-array>
-  <string-array name="appearance_font_weight_entries">
-    <item>100/淡体</item>
-    <item>200/特细</item>
-    <item>300/细体</item>
-    <item>400/标准</item>
-    <item>500/适中</item>
-    <item>600/次粗</item>
-    <item>700/粗体</item>
-    <item>800/特粗</item>
-    <item>900/浓体</item>
   </string-array>
 </resources>
