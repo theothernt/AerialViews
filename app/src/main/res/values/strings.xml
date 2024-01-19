@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="en" tools:ignore="MissingTranslation">
     <!-- General -->
     <string name="app_name" translatable="false">Aerial Views</string>
     <string name="loading_title">Loading…</string>
