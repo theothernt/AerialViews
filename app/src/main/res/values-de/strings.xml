@@ -148,7 +148,7 @@
     <string name="samba_videos_unable_to_save">Kann importierte Einstellungen nicht speichern</string>
     <string name="samba_videos_file_not_found">Keine SMB-Einstellungsdatei %1$s im Ordner Downloads</string>
     <string name="samba_videos_error_parsing">Fehler beim Lesen und Parsen der Datei. Bitte Datei erneut auf Missgeschicke oder ungültige Zeichen prüfen.</string>
-    <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
+    <string name="samba_videos_import_save_success">SMB-Einstellungen erfolgreich importiert aus: %1$s</string>
 
     <string name="samba_videos_export_failed">Export fehlgeschlagen</string>
     <string name="samba_videos_export_success">Export erfolgreich</string>
@@ -319,8 +319,8 @@
 
     <string name="playlist_playback_speed_changed">Wiedergabegeschwindigkeit geändert in: %1$s</string>
 
-    <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
+    <string name="playlist_allow_media_button_passthrough_title">Durchleitung von Medien-Tasten erlauben</string>
+    <string name="playlist_allow_media_button_passthrough_summary">Play, Pause, Spulen usw. an die im Hintergrund laufende App weiterleiten ohne den Bildschirmschoner zu beenden (für Musik)</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">TV-Funktionen</string>
