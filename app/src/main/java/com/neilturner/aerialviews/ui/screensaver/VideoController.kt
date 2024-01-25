@@ -176,6 +176,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingView
             .animate()
             .alpha(1f)
+            .setStartDelay(0)
             .setDuration(ExoPlayerView.FADE_DURATION)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
