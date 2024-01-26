@@ -320,8 +320,8 @@
  
     <string name="playlist_playback_speed_changed">Швидкість відтворення змінено на: %1$s</string>
 
-    <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
+    <string name="playlist_allow_media_button_passthrough_title">Дозволити наскрізну передачу мультимедійних кнопок</string>
+    <string name="playlist_allow_media_button_passthrough_summary">Передає натискання кнопок відтворення, паузи, перемотування назад тощо у фонову програму (наприклад, музичну програму) без виходу із заставки.</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="category_capabilities">Можливості</string>
