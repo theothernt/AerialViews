@@ -5,6 +5,12 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
+# Might fix some rare/random reported exceptions
+-keepclassmembers class * implements android.os.Parcelable {
+     static ** CREATOR;
+}
+
+# Mostly data class and json types
 -keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
 -keep class com.neilturner.aerialviews.utils.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
