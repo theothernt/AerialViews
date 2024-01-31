@@ -58,6 +58,13 @@ object FileHelper {
             filename.endsWith(".ts", true)
     }
 
+    fun isSupportedImageType(filename: String): Boolean {
+        return filename.endsWith(".jpg", true) ||
+                filename.endsWith(".jpeg", true) ||
+                filename.endsWith(".hiec", true) ||
+                filename.endsWith(".png", true)
+    }
+
     fun shouldFilter(uri: Uri, folder: String): Boolean {
         if (folder.isEmpty() || folder.isBlank()) {
             return false
