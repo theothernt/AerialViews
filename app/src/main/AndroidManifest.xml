@@ -4,8 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Read videos, read/write SMB settings file -->
+    <!-- Read videos+images, read/write SMB settings file -->
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission
