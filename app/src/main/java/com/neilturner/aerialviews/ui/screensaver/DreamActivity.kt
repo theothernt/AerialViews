@@ -1,5 +1,10 @@
-@file:Suppress("unused", "RedundantOverride", "RedundantOverride", "EmptyMethod",
-    "RedundantSuppression", "RedundantSuppression"
+@file:Suppress(
+    "unused",
+    "RedundantOverride",
+    "RedundantOverride",
+    "EmptyMethod",
+    "RedundantSuppression",
+    "RedundantSuppression"
 )
 
 package com.neilturner.aerialviews.ui.screensaver

@@ -8,34 +8,55 @@ import java.io.File
 
 object FileHelper {
 
-    fun findAllMedia(context: Context): List<String?> {
+    fun findLocalVideos(context: Context): List<String?> {
         val videos = mutableListOf<String>()
+        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        val column = MediaStore.MediaColumns.DATA
+        val projection = arrayOf(column)
         try {
-            val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            val column = "_data"
-            val projection = arrayOf(column)
-            val cursor = context.contentResolver.query(uri, projection, null, null, null)
+            val cursor = context
+                .contentResolver
+                .query(uri, projection, null, null, null)
+                ?: return videos
             try {
-                cursor!!.moveToFirst()
-                do {
+                while (cursor.moveToNext()) {
                     videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
-                } while (cursor.moveToNext())
+                }
                 cursor.close()
             } catch (e: Exception) {
-                Log.e(TAG, "Exception in findAllMedia cursor: ${e.message}")
-                // e.printStackTrace()
+                Log.e(TAG, "Exception in contentResolver cursor: ${e.message}")
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Exception in findAllMedia: ${e.message}")
+            Log.e(TAG, "Exception in contentResolver query: ${e.message}")
         }
-        Log.i(TAG, "findAllMedia found ${videos.size} files")
+        Log.i(TAG, "ContentResolver found ${videos.size} files")
         return videos
     }
 
-//    fun isLocalVideo(uri: Uri): Boolean {
-//        return !uri.toString().contains("http://", true) &&
-//            !uri.toString().contains("https://", true)
-//    }
+    fun findLocalImages(context: Context): List<String?> {
+        val videos = mutableListOf<String>()
+        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        val column = MediaStore.MediaColumns.DATA
+        val projection = arrayOf(column)
+        try {
+            val cursor = context
+                .contentResolver
+                .query(uri, projection, null, null, null)
+                ?: return videos
+            try {
+                while (cursor.moveToNext()) {
+                    videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
+                }
+                cursor.close()
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception in contentResolver cursor: ${e.message}")
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Exception in contentResolver query: ${e.message}")
+        }
+        Log.i(TAG, "ContentResolver found ${videos.size} files")
+        return videos
+    }
 
     fun isSambaVideo(uri: Uri): Boolean {
         return uri.toString().contains("smb://", true)
@@ -60,9 +81,9 @@ object FileHelper {
 
     fun isSupportedImageType(filename: String): Boolean {
         return filename.endsWith(".jpg", true) ||
-                filename.endsWith(".jpeg", true) ||
-                filename.endsWith(".hiec", true) ||
-                filename.endsWith(".png", true)
+            filename.endsWith(".jpeg", true) ||
+            filename.endsWith(".hiec", true) ||
+            filename.endsWith(".png", true)
     }
 
     fun shouldFilter(uri: Uri, folder: String): Boolean {

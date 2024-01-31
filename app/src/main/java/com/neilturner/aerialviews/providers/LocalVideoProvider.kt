@@ -112,7 +112,7 @@ class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) :
     private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
         val res = context.resources!!
         val videos = mutableListOf<AerialVideo>()
-        val localVideos = FileHelper.findAllMedia(context)
+        val localVideos = FileHelper.findLocalVideos(context)
         var excluded = 0
         var filtered = 0
 
