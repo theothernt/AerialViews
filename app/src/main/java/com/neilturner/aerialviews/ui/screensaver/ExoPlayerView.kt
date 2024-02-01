@@ -82,6 +82,13 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
             player.setMediaItem(mediaItem)
         }
         player.prepare()
+        if (muteVideo) {
+            player.trackSelectionParameters =
+                player.trackSelectionParameters
+                    .buildUpon()
+                    .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
+                    .build()
+        }
     }
 
     override fun onDetachedFromWindow() {
