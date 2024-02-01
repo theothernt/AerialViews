@@ -82,7 +82,8 @@ object FileHelper {
     fun isSupportedImageType(filename: String): Boolean {
         return filename.endsWith(".jpg", true) ||
             filename.endsWith(".jpeg", true) ||
-            filename.endsWith(".hiec", true) ||
+            filename.endsWith(".webp", true) ||
+            filename.endsWith(".hiec", true) || // HEIF format
             filename.endsWith(".png", true)
     }
 
