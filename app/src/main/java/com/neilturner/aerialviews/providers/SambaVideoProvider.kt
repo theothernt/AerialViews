@@ -145,31 +145,30 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
             Log.e(TAG, e.message.toString())
             return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
-
-//        val folderQueue = ArrayDeque(listOf(path))
-//        while (folderQueue.isNotEmpty()) {
-//            val filesAndFolders = listFilesAndFolders(share, folderQueue.removeFirst())
-//
-//            files.addAll(filesAndFolders.first)
-//
-//            if (prefs.searchSubfolders) {
-//                folderQueue.addAll(filesAndFolders.second)
-//            }
-//        }
         files.addAll(listFilesAndFoldersRecursive(share, path))
         smbClient.close()
 
+        val useVideos = true
+        val useImages = true
+        val filteredFiles = mutableListOf<String>()
+
         // Filter out non-video, dot files, etc
-        val filteredFiles = files.filter { item ->
-            FileHelper.isSupportedVideoType(item)
+        if (useVideos) {
+            filteredFiles.addAll(files.filter { item ->
+                FileHelper.isSupportedVideoType(item)
+            })
+        }
+        if (useImages) {
+            filteredFiles.addAll(files.filter { item ->
+                FileHelper.isSupportedImageType(item)
+            })
         }
 
         // Show user normal auth vs anonymous vs guest?
-
         val excluded = files.size - filteredFiles.size
-        var message = "Videos found on samba share: ${files.size + excluded}\n"
-        message += "Videos with unsupported file extensions: $excluded\n"
-        message += "Videos selected for playback: ${files.size}"
+        var message = "Videos/Images found on samba share: ${files.size + excluded}\n"
+        message += "Videos/Images with unsupported file extensions: $excluded\n"
+        message += "Videos/Images selected for playback: ${files.size}"
         return Pair(filteredFiles, message)
     }
 
