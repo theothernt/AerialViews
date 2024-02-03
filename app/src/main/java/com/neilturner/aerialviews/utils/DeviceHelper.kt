@@ -71,4 +71,6 @@ object DeviceHelper {
     fun isGoogleTV(): Boolean = deviceName().contains("Google Chromecast", true)
 
     fun hasHevcSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && !isEmulator())
+
+    fun hasAvifSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S))
 }
