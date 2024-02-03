@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
+import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
+import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.enums.LocationType
@@ -38,9 +40,11 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
     private var canSkip = false
 
     private val videoView: VideoViewBinding
+    private val imageView: ImageViewBinding
     private val loadingView: View
     private var loadingText: TextView
     private var videoPlayer: VideoPlayerView
+    private var imagePlayer: ImagePlayerView
     val view: View
 
     private val topLeftIds: List<Int>
@@ -57,8 +61,10 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
         loadingText = binding.loadingView.loadingText
 
         videoView = binding.videoView
+        imageView = binding.imageView
         videoPlayer = videoView.player
         videoPlayer.setOnPlayerListener(this)
+        imagePlayer = imageView.player
 
         loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
 
@@ -240,7 +246,7 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
         val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
-a
+
     override fun onVideoError() {
         if (loadingView.visibility == View.VISIBLE) {
             loadVideo(playlist.nextVideo())
