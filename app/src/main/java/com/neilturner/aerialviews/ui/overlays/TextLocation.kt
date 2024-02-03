@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.LocationType
-import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
+import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView
 
 class TextLocation : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
@@ -30,7 +30,7 @@ class TextLocation : AppCompatTextView {
         currentPositionProgressHandler = null
     }
 
-    fun updateLocationData(location: String, poi: Map<Int, String>, locationType: LocationType, player: ExoPlayerView) {
+    fun updateLocationData(location: String, poi: Map<Int, String>, locationType: LocationType, player: VideoPlayerView) {
         isFadingOutVideo = false
         this.visibility = View.VISIBLE
 
@@ -55,7 +55,7 @@ class TextLocation : AppCompatTextView {
         }
     }
 
-    private fun updatePointsOfInterest(poi: Map<Int, String>, player: ExoPlayerView) {
+    private fun updatePointsOfInterest(poi: Map<Int, String>, player: VideoPlayerView) {
         val poiTimes = poi.keys.sorted() // sort ahead of time?
         var lastPoi = 0
 

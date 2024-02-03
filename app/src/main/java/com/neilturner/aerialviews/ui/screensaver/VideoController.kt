@@ -17,14 +17,16 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.screensaver.ExoPlayerView.OnPlayerEventListener
+import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
+import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(private val context: Context) : OnPlayerEventListener {
+class VideoController(private val context: Context) : OnVideoPlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
@@ -38,7 +40,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     private val videoView: VideoViewBinding
     private val loadingView: View
     private var loadingText: TextView
-    private var player: ExoPlayerView
+    private var videoPlayer: VideoPlayerView
     val view: View
 
     private val topLeftIds: List<Int>
@@ -55,8 +57,8 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
         loadingText = binding.loadingView.loadingText
 
         videoView = binding.videoView
-        player = videoView.player
-        player.setOnPlayerListener(this)
+        videoPlayer = videoView.player
+        videoPlayer.setOnPlayerListener(this)
 
         loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
 
@@ -98,7 +100,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
                 GeneralPrefs.locationStyle = LocationType.POI
                 LocationType.POI
             }
-            it.updateLocationData(video.location, video.poi, locationType, player)
+            it.updateLocationData(video.location, video.poi, locationType, videoPlayer)
         }
 
         // Set overlay positions
@@ -122,8 +124,17 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             alternate = !alternate
         }
 
-        player.setUri(video.uri)
-        player.start()
+        // Videos
+        if (FileHelper.isSupportedVideoType(video.uri.filename)) {
+            videoPlayer.setUri(video.uri)
+        }
+
+        // Images
+        if (FileHelper.isSupportedImageType(video.uri.filename)) {
+            //player.setUri(video.uri)
+        }
+
+        videoPlayer.start()
     }
 
     private fun fadeOutLoading() {
@@ -157,7 +168,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             .animate()
             .alpha(0f)
             .setStartDelay(startDelay)
-            .setDuration(ExoPlayerView.FADE_DURATION)
+            .setDuration(VideoPlayerView.FADE_DURATION)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
@@ -177,7 +188,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(ExoPlayerView.FADE_DURATION)
+            .setDuration(VideoPlayerView.FADE_DURATION)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
             }
@@ -199,7 +210,7 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     fun stop() {
-        player.release()
+        videoPlayer.release()
     }
 
     fun skipVideo(previous: Boolean = false) {
@@ -208,29 +219,29 @@ class VideoController(private val context: Context) : OnPlayerEventListener {
     }
 
     fun increaseSpeed() {
-        player.increaseSpeed()
+        videoPlayer.increaseSpeed()
     }
 
     fun decreaseSpeed() {
-        player.decreaseSpeed()
+        videoPlayer.decreaseSpeed()
     }
 
-    override fun onPrepared() {
+    override fun onVideoPrepared() {
         // Player has buffered video and has started playback
         fadeInNextVideo()
     }
 
-    override fun onAlmostFinished() {
+    override fun onVideoAlmostFinished() {
         // Player indicates video is nearly over
         fadeOutCurrentVideo()
     }
 
-    override fun onPlaybackSpeedChanged() {
+    override fun onVideoPlaybackSpeedChanged() {
         val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
-
-    override fun onError() {
+a
+    override fun onVideoError() {
         if (loadingView.visibility == View.VISIBLE) {
             loadVideo(playlist.nextVideo())
         } else {

@@ -27,17 +27,17 @@ import com.neilturner.aerialviews.utils.WindowHelper
 import kotlin.math.roundToLong
 
 @SuppressLint("UnsafeOptInUsageError")
-class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private var almostFinishedRunnable = Runnable { listener?.onAlmostFinished() }
+class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
+    private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
     private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
-    private var onErrorRunnable = Runnable { listener?.onError() }
+    private var onErrorRunnable = Runnable { listener?.onVideoError() }
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
     private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
     private val maxVideoLength = GeneralPrefs.maxVideoLength
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
-    private var listener: OnPlayerEventListener? = null
+    private var listener: OnVideoPlayerEventListener? = null
     private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
@@ -106,7 +106,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
     }
 
-    fun setOnPlayerListener(listener: OnPlayerEventListener?) {
+    fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
         this.listener = listener
     }
 
@@ -167,7 +167,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
 
         if (!prepared && playbackState == Player.STATE_READY) {
             prepared = true
-            listener?.onPrepared()
+            listener?.onVideoPrepared()
         }
 
         if (player.playWhenReady && playbackState == Player.STATE_READY) {
@@ -244,7 +244,7 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         player.setPlaybackSpeed(newSpeed.toFloat())
 
         setupAlmostFinishedRunnable()
-        listener?.onPlaybackSpeedChanged()
+        listener?.onVideoPlaybackSpeedChanged()
     }
 
     private fun setupAlmostFinishedRunnable() {
@@ -319,15 +319,15 @@ class ExoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView
         return player
     }
 
-    interface OnPlayerEventListener {
-        fun onAlmostFinished()
-        fun onError()
-        fun onPrepared()
-        fun onPlaybackSpeedChanged()
+    interface OnVideoPlayerEventListener {
+        fun onVideoAlmostFinished()
+        fun onVideoError()
+        fun onVideoPrepared()
+        fun onVideoPlaybackSpeedChanged()
     }
 
     companion object {
-        private const val TAG = "ExoPlayerView"
+        private const val TAG = "VideoPlayerView"
         const val FADE_DURATION: Long = 1200
     }
 }

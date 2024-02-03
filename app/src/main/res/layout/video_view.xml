@@ -38,7 +38,7 @@
             android:visibility="invisible"
             />
 
-        <com.neilturner.aerialviews.ui.screensaver.ExoPlayerView
+        <com.neilturner.aerialviews.ui.screensaver.VideoPlayerView
             android:id="@+id/player"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
