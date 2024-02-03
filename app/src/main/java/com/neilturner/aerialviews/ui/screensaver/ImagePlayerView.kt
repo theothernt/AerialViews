@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 
 class ImagePlayerView: AppCompatImageView {
+    private var listener: OnImagePlayerEventListener? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -24,6 +25,10 @@ class ImagePlayerView: AppCompatImageView {
 
     override fun setImageBitmap(bm: Bitmap?) {
         super.setImageBitmap(bm)
+    }
+
+    fun setOnPlayerListener(listener: VideoController) {
+        this.listener = listener
     }
 
     companion object {

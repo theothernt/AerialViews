@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.content.Context
-import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +19,7 @@ import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.ui.screensaver.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -28,7 +28,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(private val context: Context) : OnVideoPlayerEventListener {
+class VideoController(private val context: Context) :
+    OnVideoPlayerEventListener,
+    OnImagePlayerEventListener
+{
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
@@ -61,10 +64,12 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
         loadingText = binding.loadingView.loadingText
 
         videoView = binding.videoView
-        imageView = binding.imageView
         videoPlayer = videoView.player
         videoPlayer.setOnPlayerListener(this)
+
+        imageView = binding.imageView
         imagePlayer = imageView.player
+        imagePlayer.setOnPlayerListener(this)
 
         loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
 
@@ -137,7 +142,7 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
 
         // Images
         if (FileHelper.isSupportedImageType(video.uri.filename)) {
-            //player.setUri(video.uri)
+            imagePlayer.setUri(video.uri)
         }
 
         videoPlayer.start()
@@ -253,6 +258,16 @@ class VideoController(private val context: Context) : OnVideoPlayerEventListener
         } else {
             fadeOutCurrentVideo()
         }
+    }
+
+    override fun onImageFinished() {
+
+    }
+    override fun onImageError() {
+
+    }
+    override fun onImagePrepared() {
+
     }
 
     companion object {

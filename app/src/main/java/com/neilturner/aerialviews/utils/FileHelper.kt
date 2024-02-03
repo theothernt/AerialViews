@@ -89,7 +89,7 @@ object FileHelper {
         return filename.endsWith(".jpg", true) ||
             filename.endsWith(".jpeg", true) ||
             filename.endsWith(".webp", true) ||
-            filename.endsWith(".hiec", true) || // HEIF format
+            filename.endsWith(".heic", true) || // HEIF format
             filename.endsWith(".png", true)
     }
 
