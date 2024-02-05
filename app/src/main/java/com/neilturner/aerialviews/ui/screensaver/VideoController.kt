@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
+import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.enums.LocationType
@@ -43,6 +44,7 @@ class VideoController(private val context: Context) :
 
     private val videoView: VideoViewBinding
     private val imageView: ImageViewBinding
+    private val overlayView: OverlayViewBinding
     private val loadingView: View
     private var loadingText: TextView
     private var videoPlayer: VideoPlayerView
@@ -61,6 +63,7 @@ class VideoController(private val context: Context) :
         view = binding.root
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
+        overlayView = binding.overlayView
 
         videoView = binding.videoView
         videoPlayer = videoView.player
@@ -74,7 +77,7 @@ class VideoController(private val context: Context) :
 
         // Init overlays and set initial positions
         overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(videoView)
+        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayView)
         this.bottomLeftIds = overlayIds.bottomLeftIds
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
@@ -115,16 +118,16 @@ class VideoController(private val context: Context) :
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
-            videoView.flowBottomLeft,
-            videoView.flowBottomRight,
+            overlayView.flowBottomLeft,
+            overlayView.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
             alternate
         )
 
         overlayHelper.assignOverlaysAndIds(
-            videoView.flowTopLeft,
-            videoView.flowTopRight,
+            overlayView.flowTopLeft,
+            overlayView.flowTopRight,
             topLeftIds,
             topRightIds,
             alternate

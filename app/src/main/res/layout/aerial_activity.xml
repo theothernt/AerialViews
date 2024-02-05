@@ -15,6 +15,10 @@
             layout="@layout/image_view" />
 
         <include
+            android:id="@+id/overlay_view"
+            layout="@layout/overlay_view" />
+
+        <include
             android:id="@+id/loading_view"
             layout="@layout/loading_view" />
     </FrameLayout>

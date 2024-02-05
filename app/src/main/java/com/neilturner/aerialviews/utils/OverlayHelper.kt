@@ -5,7 +5,7 @@ import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
 import androidx.core.view.ViewCompat
-import com.neilturner.aerialviews.databinding.VideoViewBinding
+import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
@@ -37,7 +37,7 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
     }
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
-    fun buildOverlaysAndIds(root: VideoViewBinding): OverlayIds {
+    fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayIds {
         val slots = SlotHelper.slotPrefs(context)
         for (type in SlotType.entries) {
             val slot = slots.find { it.type == type }

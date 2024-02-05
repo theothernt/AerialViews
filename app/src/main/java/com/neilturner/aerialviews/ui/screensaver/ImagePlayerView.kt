@@ -11,7 +11,6 @@ import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
-import com.hierynomus.smbj.share.File
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -19,7 +18,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.InputStream
 import java.util.EnumSet
 
 class ImagePlayerView : AppCompatImageView {
@@ -90,7 +88,7 @@ class ImagePlayerView : AppCompatImageView {
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
 
-        val delay: Long = 1000 * 5
+        val delay: Long = 1000 * 8
         postDelayed(finishedRunnable, delay)
     }
 
