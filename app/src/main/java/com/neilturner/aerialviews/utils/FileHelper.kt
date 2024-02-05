@@ -80,9 +80,9 @@ object FileHelper {
     }
 
     fun isSupportedImageType(filename: String): Boolean {
-
         if (filename.endsWith(".avif", true) &&
-            DeviceHelper.hasAvifSupport()) { // AVIF - AV1 image format
+            DeviceHelper.hasAvifSupport()
+        ) { // AVIF - AV1 image format
             return true
         }
 

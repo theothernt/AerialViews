@@ -18,8 +18,8 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.screensaver.ImagePlayerView.OnImagePlayerEventListener
+import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -30,8 +30,7 @@ import kotlinx.coroutines.launch
 
 class VideoController(private val context: Context) :
     OnVideoPlayerEventListener,
-    OnImagePlayerEventListener
-{
+    OnImagePlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
@@ -138,11 +137,13 @@ class VideoController(private val context: Context) :
         // Videos
         if (FileHelper.isSupportedVideoType(video.uri.filename)) {
             videoPlayer.setUri(video.uri)
+            videoView.root.visibility = View.VISIBLE
         }
 
         // Images
         if (FileHelper.isSupportedImageType(video.uri.filename)) {
             imagePlayer.setUri(video.uri)
+            imageView.root.visibility = View.VISIBLE
         }
 
         videoPlayer.start()
@@ -204,6 +205,12 @@ class VideoController(private val context: Context) :
                 loadingView.visibility = View.VISIBLE
             }
             .withEndAction {
+
+                // Hide content views after faded out
+                videoView.root.visibility = View.INVISIBLE
+                imageView.root.visibility = View.INVISIBLE
+                videoView.player.stop()
+
                 // Pick next/previous video
                 val video = if (!previousVideo) {
                     playlist.nextVideo()
@@ -261,13 +268,12 @@ class VideoController(private val context: Context) :
     }
 
     override fun onImageFinished() {
-
+        fadeOutCurrentVideo()
     }
     override fun onImageError() {
-
     }
     override fun onImagePrepared() {
-
+        fadeInNextVideo()
     }
 
     companion object {

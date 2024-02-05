@@ -151,6 +151,11 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         return player.duration > 0
     }
 
+    fun stop() {
+        player.stop()
+        player.seekTo(0)
+    }
+
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int {
         return player.audioSessionId

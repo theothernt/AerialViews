@@ -154,21 +154,25 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
         // Filter out non-video, dot files, etc
         if (useVideos) {
-            filteredFiles.addAll(files.filter { item ->
-                FileHelper.isSupportedVideoType(item)
-            })
+            filteredFiles.addAll(
+                files.filter { item ->
+                    FileHelper.isSupportedVideoType(item)
+                }
+            )
         }
         if (useImages) {
-            filteredFiles.addAll(files.filter { item ->
-                FileHelper.isSupportedImageType(item)
-            })
+            filteredFiles.addAll(
+                files.filter { item ->
+                    FileHelper.isSupportedImageType(item)
+                }
+            )
         }
 
         // Show user normal auth vs anonymous vs guest?
         val excluded = files.size - filteredFiles.size
         var message = "Videos/Images found on samba share: ${files.size + excluded}\n"
         message += "Videos/Images with unsupported file extensions: $excluded\n"
-        message += "Videos/Images selected for playback: ${files.size}"
+        message += "Videos/Images selected for playback: ${filteredFiles.size}"
         return Pair(filteredFiles, message)
     }
 
