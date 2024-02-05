@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.InputStream
 import java.util.EnumSet
 
 class ImagePlayerView : AppCompatImageView {
@@ -49,8 +50,7 @@ class ImagePlayerView : AppCompatImageView {
         }
 
         coroutineScope.launch {
-            val inputStream = openSambaFile(uri).inputStream
-            val byteArray = inputStream.readBytes()
+            val byteArray = getSambaByteArray(uri)
             val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
             super.setImageBitmap(bitmap)
 
@@ -60,7 +60,7 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
-    private suspend fun openSambaFile(uri: Uri): File = withContext(Dispatchers.IO) {
+    private suspend fun getSambaByteArray(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
@@ -75,7 +75,7 @@ class ImagePlayerView : AppCompatImageView {
         val shareAccess = hashSetOf<SMB2ShareAccess>()
         shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
 
-        return@withContext share.openFile(
+        val file = share.openFile(
             path,
             EnumSet.of(AccessMask.GENERIC_READ),
             null,
@@ -83,6 +83,8 @@ class ImagePlayerView : AppCompatImageView {
             SMB2CreateDisposition.FILE_OPEN,
             null
         )
+
+        return@withContext file.inputStream.readBytes()
     }
 
     private fun setupFinishedRunnable() {
