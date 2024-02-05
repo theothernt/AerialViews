@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
-import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
@@ -32,7 +31,7 @@ class ImagePlayerView : AppCompatImageView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        this.scaleType = ScaleType.FIT_XY;
+        this.scaleType = ScaleType.FIT_XY
     }
 
     override fun onDetachedFromWindow() {

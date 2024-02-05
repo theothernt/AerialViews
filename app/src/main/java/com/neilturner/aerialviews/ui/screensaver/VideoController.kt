@@ -205,7 +205,6 @@ class VideoController(private val context: Context) :
                 loadingView.visibility = View.VISIBLE
             }
             .withEndAction {
-
                 // Hide content views after faded out
                 videoView.root.visibility = View.INVISIBLE
                 imageView.root.visibility = View.INVISIBLE
