@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.screensaver
+package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -107,7 +107,7 @@ class ImagePlayerView : AppCompatImageView {
         postDelayed(errorRunnable, 2000)
     }
 
-    fun setOnPlayerListener(listener: VideoController) {
+    fun setOnPlayerListener(listener: ScreenController) {
         this.listener = listener
     }
 

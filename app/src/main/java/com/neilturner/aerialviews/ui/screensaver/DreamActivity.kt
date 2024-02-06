@@ -14,12 +14,13 @@ import android.content.res.Configuration
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
 class DreamActivity : DreamService() {
-    private lateinit var videoController: VideoController
+    private lateinit var videoController: ScreenController
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -43,9 +44,9 @@ class DreamActivity : DreamService() {
             config.setLocale(locale)
             val context = createConfigurationContext(config)
             // Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
-            VideoController(context)
+            ScreenController(context)
         } else {
-            VideoController(this)
+            ScreenController(this)
         }
         setContentView(videoController.view)
     }
@@ -118,7 +119,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.skipVideo(true)
+                    videoController.skipItem(true)
                     return true
                 }
 
@@ -127,7 +128,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.skipVideo()
+                    videoController.skipItem()
                     return true
                 }
 

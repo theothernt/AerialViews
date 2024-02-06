@@ -9,7 +9,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.LocationType
-import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView
+import com.neilturner.aerialviews.ui.core.VideoPlayerView
 
 class TextLocation : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf

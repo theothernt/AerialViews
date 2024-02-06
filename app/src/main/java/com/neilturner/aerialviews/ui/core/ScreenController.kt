@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.screensaver
+package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.Log
@@ -18,9 +18,9 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.services.VideoService
+import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
+import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.screensaver.ImagePlayerView.OnImagePlayerEventListener
-import com.neilturner.aerialviews.ui.screensaver.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -29,7 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class VideoController(private val context: Context) :
+class ScreenController(private val context: Context) :
     OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
@@ -87,7 +87,7 @@ class VideoController(private val context: Context) :
             playlist = VideoService(context).fetchVideos()
             if (playlist.size > 0) {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
-                loadVideo(playlist.nextVideo())
+                loadItem(playlist.nextVideo())
             } else {
                 showLoadingError()
             }
@@ -100,7 +100,7 @@ class VideoController(private val context: Context) :
         // 5. goto 2
     }
 
-    private fun loadVideo(video: AerialVideo) {
+    private fun loadItem(video: AerialVideo) {
         Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
 
         // Set overlay data for current video
@@ -163,7 +163,7 @@ class VideoController(private val context: Context) :
             }.start()
     }
 
-    private fun fadeInNextVideo() {
+    private fun fadeInNextItem() {
         // LoadingView should always be hidden/gone
         // Remove?
         if (loadingView.visibility == View.GONE) {
@@ -190,7 +190,7 @@ class VideoController(private val context: Context) :
             }.start()
     }
 
-    private fun fadeOutCurrentVideo() {
+    private fun fadeOutCurrentItem() {
         if (!canSkip) return
         canSkip = false
 
@@ -221,7 +221,7 @@ class VideoController(private val context: Context) :
                 }
                 previousVideo = false
 
-                loadVideo(video)
+                loadItem(video)
             }.start()
     }
 
@@ -234,24 +234,20 @@ class VideoController(private val context: Context) :
         imagePlayer.release()
     }
 
-    fun skipVideo(previous: Boolean = false) {
+    fun skipItem(previous: Boolean = false) {
         previousVideo = previous
-        fadeOutCurrentVideo()
+        fadeOutCurrentItem()
     }
 
-    fun increaseSpeed() {
-        videoPlayer.increaseSpeed()
-    }
+    fun increaseSpeed() = videoPlayer.increaseSpeed()
 
-    fun decreaseSpeed() {
-        videoPlayer.decreaseSpeed()
-    }
+    fun decreaseSpeed() = videoPlayer.decreaseSpeed()
 
     private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {
-            loadVideo(playlist.nextVideo())
+            loadItem(playlist.nextVideo())
         } else {
-            fadeOutCurrentVideo()
+            fadeOutCurrentItem()
         }
     }
 
@@ -261,12 +257,12 @@ class VideoController(private val context: Context) :
     }
 
     override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()
-    override fun onVideoAlmostFinished() = fadeOutCurrentVideo()
-    override fun onVideoPrepared() = fadeInNextVideo()
+    override fun onVideoAlmostFinished() = fadeOutCurrentItem()
+    override fun onVideoPrepared() = fadeInNextItem()
     override fun onVideoError() = handleError()
-    override fun onImageFinished() = fadeOutCurrentVideo()
+    override fun onImageFinished() = fadeOutCurrentItem()
     override fun onImageError() = handleError()
-    override fun onImagePrepared() = fadeInNextVideo()
+    override fun onImagePrepared() = fadeInNextItem()
 
     companion object {
         private const val TAG = "VideoController"

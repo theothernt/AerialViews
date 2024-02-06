@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.screensaver
+package com.neilturner.aerialviews.ui.core
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -119,37 +119,14 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player.playWhenReady = false
     }
 
-    override fun getDuration(): Int {
-        return player.duration.toInt()
-    }
-
-    override fun getCurrentPosition(): Int {
-        return player.currentPosition.toInt()
-    }
-
-    override fun seekTo(pos: Int) {
-        player.seekTo(pos.toLong())
-    }
-
-    override fun isPlaying(): Boolean {
-        return player.playWhenReady
-    }
-
-    override fun getBufferPercentage(): Int {
-        return player.bufferedPercentage
-    }
-
-    override fun canPause(): Boolean {
-        return player.duration > 0
-    }
-
-    override fun canSeekBackward(): Boolean {
-        return player.duration > 0
-    }
-
-    override fun canSeekForward(): Boolean {
-        return player.duration > 0
-    }
+    override fun getDuration(): Int = player.duration.toInt()
+    override fun getCurrentPosition(): Int = player.currentPosition.toInt()
+    override fun seekTo(pos: Int) = player.seekTo(pos.toLong())
+    override fun isPlaying(): Boolean = player.playWhenReady
+    override fun getBufferPercentage(): Int = player.bufferedPercentage
+    override fun canPause(): Boolean = player.duration > 0
+    override fun canSeekBackward(): Boolean = player.duration > 0
+    override fun canSeekForward(): Boolean = player.duration > 0
 
     fun stop() {
         player.stop()
@@ -157,9 +134,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     @SuppressLint("UnsafeOptInUsageError")
-    override fun getAudioSessionId(): Int {
-        return player.audioSessionId
-    }
+    override fun getAudioSessionId(): Int = player.audioSessionId
 
     /* EventListener */
     override fun onPlaybackStateChanged(playbackState: Int) {
@@ -199,13 +174,8 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         }
     }
 
-    fun increaseSpeed() {
-        changeSpeed(true)
-    }
-
-    fun decreaseSpeed() {
-        changeSpeed(false)
-    }
+    fun increaseSpeed() = changeSpeed(true)
+    fun decreaseSpeed() = changeSpeed(false)
 
     private fun changeSpeed(increase: Boolean) {
         if (!canChangePlaybackSpeed) {
@@ -275,14 +245,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
-        // error.printStackTrace()
         removeCallbacks(almostFinishedRunnable)
         postDelayed(onErrorRunnable, 2000)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        // error.printStackTrace()
         error?.message?.let { Log.e(TAG, it) }
     }
 

@@ -9,12 +9,13 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import java.util.Locale
 
 class TestActivity : Activity() {
-    private lateinit var videoController: VideoController
+    private lateinit var videoController: ScreenController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +54,9 @@ class TestActivity : Activity() {
             config.setLocale(locale)
             val context = createConfigurationContext(config)
             // Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
-            VideoController(context)
+            ScreenController(context)
         } else {
-            VideoController(this)
+            ScreenController(this)
         }
         setContentView(videoController.view)
     }
@@ -121,7 +122,7 @@ class TestActivity : Activity() {
                         finish()
                         return true
                     }
-                    videoController.skipVideo(true)
+                    videoController.skipItem(true)
                     return true
                 }
 
@@ -130,7 +131,7 @@ class TestActivity : Activity() {
                         finish()
                         return true
                     }
-                    videoController.skipVideo()
+                    videoController.skipItem()
                     return true
                 }
 
