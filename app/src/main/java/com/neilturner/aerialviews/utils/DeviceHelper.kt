@@ -72,5 +72,5 @@ object DeviceHelper {
 
     fun hasHevcSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && !isEmulator())
 
-    fun hasAvifSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S))
+    fun hasAvifSupport(): Boolean = ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) && !isEmulator())
 }
