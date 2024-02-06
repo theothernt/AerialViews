@@ -210,8 +210,10 @@ class ScreenController(private val context: Context) :
             .withEndAction {
                 // Hide content views after faded out
                 videoView.root.visibility = View.INVISIBLE
-                imageView.root.visibility = View.INVISIBLE
                 videoView.player.stop()
+
+                imageView.root.visibility = View.INVISIBLE
+                imageView.player.stop()
 
                 // Pick next/previous video
                 val video = if (!previousVideo) {

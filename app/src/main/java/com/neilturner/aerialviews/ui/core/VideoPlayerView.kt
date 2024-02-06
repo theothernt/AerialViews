@@ -68,7 +68,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (uri == null) {
             return
         }
-        player.stop()
         prepared = false
         val mediaItem = MediaItem.fromUri(uri)
         if (philipsDolbyVisionFix) {
@@ -119,6 +118,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player.playWhenReady = false
     }
 
+    fun stop() {
+        removeCallbacks(almostFinishedRunnable)
+        player.stop()
+        player.seekTo(0)
+    }
+
     override fun getDuration(): Int = player.duration.toInt()
     override fun getCurrentPosition(): Int = player.currentPosition.toInt()
     override fun seekTo(pos: Int) = player.seekTo(pos.toLong())
@@ -127,11 +132,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     override fun canPause(): Boolean = player.duration > 0
     override fun canSeekBackward(): Boolean = player.duration > 0
     override fun canSeekForward(): Boolean = player.duration > 0
-
-    fun stop() {
-        player.stop()
-        player.seekTo(0)
-    }
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int = player.audioSessionId

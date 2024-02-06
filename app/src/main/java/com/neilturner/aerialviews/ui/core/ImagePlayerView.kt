@@ -68,6 +68,10 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
+    fun stop() {
+        removeCallbacks(finishedRunnable)
+    }
+
     private suspend fun getSambaByteArray(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
