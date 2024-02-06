@@ -231,6 +231,7 @@ class VideoController(private val context: Context) :
 
     fun stop() {
         videoPlayer.release()
+        imagePlayer.release()
     }
 
     fun skipVideo(previous: Boolean = false) {
@@ -246,22 +247,7 @@ class VideoController(private val context: Context) :
         videoPlayer.decreaseSpeed()
     }
 
-    override fun onVideoPrepared() {
-        // Player has buffered video and has started playback
-        fadeInNextVideo()
-    }
-
-    override fun onVideoAlmostFinished() {
-        // Player indicates video is nearly over
-        fadeOutCurrentVideo()
-    }
-
-    override fun onVideoPlaybackSpeedChanged() {
-        val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onVideoError() {
+    private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {
             loadVideo(playlist.nextVideo())
         } else {
@@ -269,14 +255,18 @@ class VideoController(private val context: Context) :
         }
     }
 
-    override fun onImageFinished() {
-        fadeOutCurrentVideo()
+    private fun handlePlaybackSpeedChanged() {
+        val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
-    override fun onImageError() {
-    }
-    override fun onImagePrepared() {
-        fadeInNextVideo()
-    }
+
+    override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()
+    override fun onVideoAlmostFinished() = fadeOutCurrentVideo()
+    override fun onVideoPrepared() = fadeInNextVideo()
+    override fun onVideoError() = handleError()
+    override fun onImageFinished() = fadeOutCurrentVideo()
+    override fun onImageError() = handleError()
+    override fun onImagePrepared() = fadeInNextVideo()
 
     companion object {
         private const val TAG = "VideoController"

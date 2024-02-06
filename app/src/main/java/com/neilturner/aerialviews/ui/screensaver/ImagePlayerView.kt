@@ -23,6 +23,7 @@ import java.util.EnumSet
 class ImagePlayerView : AppCompatImageView {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
+    private var errorRunnable = Runnable { listener?.onImageError() }
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
@@ -37,24 +38,33 @@ class ImagePlayerView : AppCompatImageView {
         super.onDetachedFromWindow()
     }
 
+    fun release() {
+        removeCallbacks(finishedRunnable)
+        removeCallbacks(errorRunnable)
+        listener = null
+    }
+
     fun setUri(uri: Uri?) {
         if (uri == null) {
             return
         }
 
-        // Only SMB for the moment
-        if (!FileHelper.isSambaVideo(uri)) {
-            return
-        }
-
         coroutineScope.launch {
-            val byteArray = getSambaByteArray(uri)
-            val bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            super.setImageBitmap(bitmap)
-
+            try {
+                val bitmap = if (FileHelper.isSambaVideo(uri)) {
+                    val byteArray = getSambaByteArray(uri)
+                    BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+                } else {
+                    BitmapFactory.decodeFile(uri.path)
+                }
+                super.setImageBitmap(bitmap)
+            } catch (ex: Exception) {
+                Log.e(TAG, "Exception while loading image: ${ex.message}")
+                onPlayerError()
+                return@launch
+            }
             listener?.onImagePrepared()
             setupFinishedRunnable()
-            Log.i(TAG, "Image loaded, listeners setup...")
         }
     }
 
@@ -90,6 +100,11 @@ class ImagePlayerView : AppCompatImageView {
 
         val delay: Long = 1000 * 8
         postDelayed(finishedRunnable, delay)
+    }
+
+    private fun onPlayerError() {
+        removeCallbacks(finishedRunnable)
+        postDelayed(errorRunnable, 2000)
     }
 
     fun setOnPlayerListener(listener: VideoController) {

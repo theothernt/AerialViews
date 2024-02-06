@@ -277,7 +277,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         super.onPlayerError(error)
         // error.printStackTrace()
         removeCallbacks(almostFinishedRunnable)
-        postDelayed(onErrorRunnable, 3000)
+        postDelayed(onErrorRunnable, 2000)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
