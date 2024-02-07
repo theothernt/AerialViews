@@ -161,6 +161,9 @@ dependencies {
     // SMB
     implementation('com.hierynomus:smbj:0.11.5')
 
+    // Coil
+    implementation("io.coil-kt:coil:2.5.0")
+
     // Memory leaks
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.13')
 

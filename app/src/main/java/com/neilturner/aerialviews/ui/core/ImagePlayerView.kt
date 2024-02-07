@@ -1,11 +1,11 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
+import coil.load
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -21,6 +21,7 @@ import kotlinx.coroutines.withContext
 import java.util.EnumSet
 
 class ImagePlayerView : AppCompatImageView {
+    // private val imageLoader = context.imageLoader
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
@@ -32,10 +33,8 @@ class ImagePlayerView : AppCompatImageView {
 
     init {
         this.scaleType = ScaleType.FIT_XY
-    }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
+        // imageLoader.newBuilder().eventListener()
     }
 
     fun release() {
@@ -43,21 +42,19 @@ class ImagePlayerView : AppCompatImageView {
         removeCallbacks(errorRunnable)
         listener = null
     }
-
     fun setUri(uri: Uri?) {
         if (uri == null) {
             return
         }
 
+//        listener(
+//            onError = { /** Show toast. */ },
+//            onSuccess = { /** Show toast. */ }
+//        )
+
         coroutineScope.launch {
             try {
-                val bitmap = if (FileHelper.isSambaVideo(uri)) {
-                    val byteArray = getSambaByteArray(uri)
-                    BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-                } else {
-                    BitmapFactory.decodeFile(uri.path)
-                }
-                super.setImageBitmap(bitmap)
+                loadImage(uri)
             } catch (ex: Exception) {
                 Log.e(TAG, "Exception while loading image: ${ex.message}")
                 onPlayerError()
@@ -68,11 +65,20 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
+    private suspend fun loadImage(uri: Uri) {
+        if (FileHelper.isSambaVideo(uri)) {
+            val byteArray = byteArrayFromSambaFile(uri)
+            load(byteArray)
+        } else {
+            load(uri)
+        }
+    }
+
     fun stop() {
         removeCallbacks(finishedRunnable)
     }
 
-    private suspend fun getSambaByteArray(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
+    private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
