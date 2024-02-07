@@ -69,7 +69,7 @@ class ScreenController(private val context: Context) :
         videoView = binding.videoView
         videoPlayer = videoView.player
         videoPlayer.setOnPlayerListener(this)
-        //videoView.root.setBackgroundColor(Color.BLACK)
+        // videoView.root.setBackgroundColor(Color.BLACK)
 
         imageView = binding.imageView
         imagePlayer = imageView.player
