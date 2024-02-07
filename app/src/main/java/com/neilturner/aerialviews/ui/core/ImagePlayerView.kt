@@ -5,7 +5,12 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
-import coil.load
+import coil.EventListener
+import coil.ImageLoader
+import coil.request.ErrorResult
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import coil.size.Scale
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -21,7 +26,7 @@ import kotlinx.coroutines.withContext
 import java.util.EnumSet
 
 class ImagePlayerView : AppCompatImageView {
-    // private val imageLoader = context.imageLoader
+    private var imageLoader: ImageLoader
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
@@ -32,9 +37,18 @@ class ImagePlayerView : AppCompatImageView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        this.scaleType = ScaleType.FIT_XY
+        imageLoader = ImageLoader.Builder(context)
+            .eventListener(object : EventListener {
+                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                    setupFinishedRunnable()
+                }
 
-        // imageLoader.newBuilder().eventListener()
+                override fun onError(request: ImageRequest, result: ErrorResult) {
+                    Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
+                    onPlayerError()
+                }
+            }).build()
+        this.scaleType = ScaleType.CENTER_CROP
     }
 
     fun release() {
@@ -47,35 +61,27 @@ class ImagePlayerView : AppCompatImageView {
             return
         }
 
-//        listener(
-//            onError = { /** Show toast. */ },
-//            onSuccess = { /** Show toast. */ }
-//        )
-
         coroutineScope.launch {
-            try {
-                loadImage(uri)
-            } catch (ex: Exception) {
-                Log.e(TAG, "Exception while loading image: ${ex.message}")
-                onPlayerError()
-                return@launch
-            }
-            listener?.onImagePrepared()
-            setupFinishedRunnable()
+            loadImage(uri)
         }
     }
 
     private suspend fun loadImage(uri: Uri) {
+        val request = ImageRequest.Builder(context)
+            .target(this)
+
         if (FileHelper.isSambaVideo(uri)) {
             val byteArray = byteArrayFromSambaFile(uri)
-            load(byteArray)
+            request.data(byteArray)
         } else {
-            load(uri)
+            request.data(uri)
         }
+        imageLoader.execute(request.build())
     }
 
     fun stop() {
         removeCallbacks(finishedRunnable)
+        setImageBitmap(null)
     }
 
     private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
@@ -107,7 +113,7 @@ class ImagePlayerView : AppCompatImageView {
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
-
+        listener?.onImagePrepared()
         val delay: Long = 1000 * 8
         postDelayed(finishedRunnable, delay)
     }
