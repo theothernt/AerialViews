@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -68,10 +69,12 @@ class ScreenController(private val context: Context) :
         videoView = binding.videoView
         videoPlayer = videoView.player
         videoPlayer.setOnPlayerListener(this)
+        videoView.root.setBackgroundColor(Color.BLACK)
 
         imageView = binding.imageView
         imagePlayer = imageView.player
         imagePlayer.setOnPlayerListener(this)
+        imageView.root.setBackgroundColor(Color.BLACK)
 
         loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
 
@@ -141,12 +144,14 @@ class ScreenController(private val context: Context) :
         if (FileHelper.isSupportedVideoType(video.uri.filename)) {
             videoPlayer.setUri(video.uri)
             videoView.root.visibility = View.VISIBLE
+            imageView.root.visibility = View.INVISIBLE
         }
 
         // Images
         if (FileHelper.isSupportedImageType(video.uri.filename)) {
             imagePlayer.setUri(video.uri)
             imageView.root.visibility = View.VISIBLE
+            videoView.root.visibility = View.INVISIBLE
         }
 
         videoPlayer.start()
