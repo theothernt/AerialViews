@@ -255,6 +255,19 @@
     </string-array>
     <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
 
+    <!-- Media type -->
+    <string-array name="media_type_entries">
+        <item>Videos</item>
+        <item>Images</item>
+        <item>Videos &amp; Images</item>
+    </string-array>
+    <string-array name="media_type_values" translatable="false">
+        <item>VIDEOS</item>
+        <item>IMAGES</item>
+        <item>VIDEOS_IMAGES</item>
+    </string-array>
+    <string name="media_type_default" translatable="false">VIDEOS</string>
+
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">
         <item>v3.1.1</item>
@@ -322,4 +335,26 @@
         <item>ru-RU</item>
     </string-array>
     <string name="locale_screensaver_default" translatable="false">default</string>
+
+    <!-- Slideshow speed -->
+    <string-array name="slideshow_speed_entries">
+        <item>5 seconds</item>
+        <item>10 seconds</item>
+        <item>30 seconds</item>
+        <item>1 minute</item>
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+    </string-array>
+    <string-array name="slideshow_speed_values" translatable="false">
+        <item>5</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+        <item>600</item>
+    </string-array>
+    <string name="slideshow_speed_default" translatable="false">30</string>
+
 </resources>

@@ -10,6 +10,7 @@ import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
+import com.neilturner.aerialviews.models.enums.MediaType
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -52,8 +53,8 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         }
 
         //  Check share name
-        var shareName = ""
-        var path = ""
+        val shareName: String
+        val path: String
         try {
             // /Videos/Aerial/Community -> Videos + /Aerial/Community
             val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
@@ -132,7 +133,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         val session: Session?
         try {
             val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-            session = connection?.authenticate(authContext)
+            session = connection.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
             return Pair(files, "Authentication failed. Please check the username and password, or server settings if using anonymous login")
@@ -148,19 +149,21 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
         files.addAll(listFilesAndFoldersRecursive(share, path))
         smbClient.close()
 
-        val useVideos = true
-        val useImages = true
         val filteredFiles = mutableListOf<String>()
 
         // Filter out non-video, dot files, etc
-        if (useVideos) {
+        if (SambaVideoPrefs.mediaType == MediaType.VIDEOS ||
+            SambaVideoPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
             filteredFiles.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedVideoType(item)
                 }
             )
         }
-        if (useImages) {
+        if (SambaVideoPrefs.mediaType == MediaType.IMAGES ||
+            SambaVideoPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
             filteredFiles.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedImageType(item)
@@ -170,7 +173,7 @@ class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
         // Show user normal auth vs anonymous vs guest?
         val excluded = files.size - filteredFiles.size
-        var message = "Videos/Images found on samba share: ${files.size + excluded}\n"
+        var message = "Files found on samba share: ${files.size + excluded}\n"
         message += "Videos/Images with unsupported file extensions: $excluded\n"
         message += "Videos/Images selected for playback: ${filteredFiles.size}"
         return Pair(filteredFiles, message)

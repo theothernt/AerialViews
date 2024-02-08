@@ -64,6 +64,7 @@ object GeneralPrefs : KotprefModel() {
     var playbackSpeed by stringPref("1", "playback_speed")
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
+    var slideshowSpeed by stringPref("30", "slideshow_speed")
 
     // D-pad
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
