@@ -307,7 +307,7 @@
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
-    <string name="playlist_shuffle_title">Shuffle videos &amp; image</string>
+    <string name="playlist_shuffle_title">Shuffle videos &amp; images</string>
     <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; images</string>
 
     <string name="playlist_max_video_length_title">Limit video length</string>

@@ -296,8 +296,8 @@
     <string name="playlist_mute_videos_title">Stummschaltung der Videos</string>
     <string name="playlist_mute_videos_summary">Videos ohne Ton wiedergegeben</string>
 
-    <string name="playlist_shuffle_videos_title">Reihenfolge der Videos mischen</string>
-    <string name="playlist_shuffle_videos_summary">Videos in zufälliger Reihenfolge wiedergeben</string>
+    <string name="playlist_shuffle_title">Reihenfolge der Videos mischen</string>
+    <string name="playlist_shuffle_summary">Videos in zufälliger Reihenfolge wiedergeben</string>
 
     <string name="playlist_playback_speed_title">Wiedergabegeschwindigkeit</string>
     <string name="playlist_playback_speed_summary">Wähle eine Wiedergabegeschwindigkeit</string>

@@ -169,8 +169,8 @@
   <string name="playlist_playback_speed_title">Velocidad de reproducción</string>
   <string name="playlist_remove_duplicates_summary">Eliminar vídeos duplicados de la lista de reproducción basándose únicamente en el nombre del archivo</string>
   <string name="playlist_remove_duplicates_title">Eliminar vídeos duplicados</string>
-  <string name="playlist_shuffle_videos_summary">Orden aleatorio para los vídeos</string>
-  <string name="playlist_shuffle_videos_title">Vídeos aleatorios</string>
+  <string name="playlist_shuffle_summary">Orden aleatorio para los vídeos</string>
+  <string name="playlist_shuffle_title">Vídeos aleatorios</string>
   <string name="samba_videos_domainname_summary">El nombre de dominio o grupo de trabajo del servidor. Opcional</string>
   <string name="samba_videos_domainname_title">Nombre de Dominio</string>
   <string name="samba_videos_enable_encryption_summary">Permite el cifrado para conexiones SMB, puede reducir la velocidad promedio de transferencia</string>

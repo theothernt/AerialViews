@@ -169,8 +169,8 @@
   <string name="playlist_playback_speed_title">播放速度</string>
   <string name="playlist_remove_duplicates_summary">仅根据文件名删除播放列表中的重复视频</string>
   <string name="playlist_remove_duplicates_title">删除重复视频</string>
-  <string name="playlist_shuffle_videos_summary">随机调整视频顺序</string>
-  <string name="playlist_shuffle_videos_title">随机播放视频</string>
+  <string name="playlist_shuffle_summary">随机调整视频顺序</string>
+  <string name="playlist_shuffle_title">随机播放视频</string>
   <string name="samba_videos_domainname_summary">服务器的域名或工作组</string>
   <string name="samba_videos_domainname_title">域名（可选）</string>
   <string name="samba_videos_enable_encryption_summary">启用 SMB 加密连接，会降低整体传输速度</string>

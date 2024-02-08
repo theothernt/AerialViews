@@ -297,8 +297,8 @@
     <string name="playlist_mute_videos_title">Без звука</string>
     <string name="playlist_mute_videos_summary">Отключить звук во всех видео</string>
 
-    <string name="playlist_shuffle_videos_title">Перемешать видео</string>
-    <string name="playlist_shuffle_videos_summary">Проигрывание видео в случайном порядок</string>
+    <string name="playlist_shuffle_title">Перемешать видео</string>
+    <string name="playlist_shuffle_summary">Проигрывание видео в случайном порядок</string>
 
     <string name="playlist_playback_speed_title">Скорость воспроизведения</string>
     <string name="playlist_playback_speed_summary">Выберите скорость воспроизведения</string>

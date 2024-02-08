@@ -296,8 +296,8 @@
     <string name="playlist_mute_videos_title">Silence</string>
     <string name="playlist_mute_videos_summary">Lecture des vidéos sans le son</string>
 
-    <string name="playlist_shuffle_videos_title">Lecture aléatoire</string>
-    <string name="playlist_shuffle_videos_summary">Lecture des vidéos dans un ordre aléatoire</string>
+    <string name="playlist_shuffle_title">Lecture aléatoire</string>
+    <string name="playlist_shuffle_summary">Lecture des vidéos dans un ordre aléatoire</string>
 
     <string name="playlist_playback_speed_title">Vitesse de lecture</string>
     <string name="playlist_playback_speed_summary">Choisissez une vitesse de lecture</string>
