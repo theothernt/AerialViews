@@ -359,12 +359,12 @@
 
     <!-- Image scale/fill options -->
     <string-array name="image_scale_entries">
-        <item>Cover (Default)</item>
+        <item>Fill (Default)</item>
         <item>Center</item>
     </string-array>
     <string-array name="image_scale_values" translatable="false">
         <item>CENTER_CROP</item>
-        <item>CENTER</item>
+        <item>FIT_CENTER</item>
     </string-array>
     <string name="image_scale_default" translatable="false">CENTER_CROP</string>
 
