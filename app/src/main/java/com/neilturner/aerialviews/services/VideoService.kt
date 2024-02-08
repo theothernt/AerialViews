@@ -29,7 +29,6 @@ class VideoService(val context: Context) {
     init {
         providers.add(LocalMediaProvider(context, LocalVideoPrefs))
         providers.add(SambaMediaProvider(context, SambaVideoPrefs))
-
         // Prefer local videos first
         // Remote videos added last so they'll be filtered out if duplicates are found
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
@@ -54,7 +53,7 @@ class VideoService(val context: Context) {
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = videos.size
-            videos = videos.distinctBy { it.uri.filename.lowercase() } as MutableList<AerialVideo>
+            videos = videos.distinctBy { it.uri.filename.lowercase() }.toMutableList()
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
         }
 
@@ -64,39 +63,9 @@ class VideoService(val context: Context) {
 
         // Add unmatched videos
         if (!GeneralPrefs.ignoreNonManifestVideos) {
-            // Add filename as video location
-            if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
-                result.second.forEach { video ->
-                    if (video.location.isBlank()) {
-                        video.location = FileHelper.filenameToTitleCase(video.uri)
-                    }
-                }
-            }
-            if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
-                result.second.forEach { video ->
-                    if (video.location.isBlank()) {
-                        video.location = FileHelper.filenameToString(video.uri)
-                    }
-                }
-            }
+            addFilenameAsLocation(result.second)
             videos.addAll(result.second)
         }
-
-        // Removed unneeded location data
-//        when (GeneralPrefs.locationStyle) {
-//            LocationType.POI -> videos.forEach { video ->
-//                video.location = ""
-//            }
-//
-//            LocationType.TITLE -> videos.forEach { video ->
-//                video.poi = emptyMap()
-//            }
-//
-//            else -> videos.forEach { video ->
-//                video.location = ""
-//                video.poi = emptyMap()
-//            }
-//        }
 
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
@@ -105,6 +74,24 @@ class VideoService(val context: Context) {
 
         Log.i(TAG, "Total vids: ${videos.size}")
         VideoPlaylist(videos)
+    }
+
+    private fun addFilenameAsLocation(videos: List<AerialVideo>) {
+        // Add filename as video location
+        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
+            videos.forEach { video ->
+                if (video.location.isBlank()) {
+                    video.location = FileHelper.filenameToTitleCase(video.uri)
+                }
+            }
+        }
+        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
+            videos.forEach { video ->
+                if (video.location.isBlank()) {
+                    video.location = FileHelper.filenameToString(video.uri)
+                }
+            }
+        }
     }
 
     private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<MediaProvider>): Pair<List<AerialVideo>, List<AerialVideo>> {
