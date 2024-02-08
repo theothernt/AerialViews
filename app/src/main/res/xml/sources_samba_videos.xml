@@ -8,6 +8,14 @@
                     app:key="samba_videos_enabled"
                     app:title="@string/samba_videos_enabled_title" />
 
+                <ListPreference
+                    app:defaultValue="@string/media_type_default"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="samba_media_type"
+                    app:title="@string/samba_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
                 <Preference
                     app:dependency="samba_videos_enabled"
                     app:disableDependentsState="false"

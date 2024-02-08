@@ -121,6 +121,8 @@
 
     <string name="samba_videos_enabled_title">Use SMB/Samba share videos</string>
 
+    <string name="samba_media_type_title">Choose media type</string>
+
     <string name="samba_videos_test_connection">Test connection settings</string>
 
     <string name="samba_videos_hostname_title">Hostname</string>
@@ -299,23 +301,30 @@
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>
+    <string name="category_videos">Videos</string>
+    <string name="category_images">Images</string>
 
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
-    <string name="playlist_shuffle_videos_title">Shuffle videos</string>
-    <string name="playlist_shuffle_videos_summary">Randomises the order of the videos</string>
+    <string name="playlist_shuffle_title">Shuffle videos &amp; image</string>
+    <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; images</string>
 
     <string name="playlist_max_video_length_title">Limit video length</string>
 
     <string name="playlist_playback_speed_title">Playback speed</string>
     <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-    <string name="playlist_remove_duplicates_title">Remove duplicate videos</string>
-    <string name="playlist_remove_duplicates_summary">Remove duplicate videos from the playlist based on filename only</string>
+    <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; images</string>
+    <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; images from the playlist based on filename only</string>
 
-    <string name="playlist_ignore_unmatched_videos_title">Ignore unrecognised/non-Apple videos</string>
-    <string name="playlist_ignore_unmatched_videos_summary">Skip videos not listed in any Apple video manifest</string>
+    <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
+    <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
+
+    <string name="playlist_slideshow_speed_title">Slideshow speed</string>
+    <string name="playlist_slideshow_speed_summary">Choose a duration</string>
+
+    <string name="playlist_image_scale_title">Image scaling</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>

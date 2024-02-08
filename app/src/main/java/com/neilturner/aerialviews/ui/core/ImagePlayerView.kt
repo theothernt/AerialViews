@@ -15,6 +15,10 @@ import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
+import com.neilturner.aerialviews.models.enums.ImageScale
+import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -47,7 +51,14 @@ class ImagePlayerView : AppCompatImageView {
                     onPlayerError()
                 }
             }).build()
-        this.scaleType = ScaleType.CENTER_CROP
+
+        val scaleType = try {
+            ScaleType.valueOf(GeneralPrefs.imageScale.toString())
+        } catch (ex: Exception) {
+            GeneralPrefs.imageScale = ImageScale.CENTER_CROP
+            ScaleType.valueOf(ImageScale.CENTER_CROP.toString())
+        }
+        this.scaleType = scaleType
     }
 
     fun release() {
@@ -113,7 +124,8 @@ class ImagePlayerView : AppCompatImageView {
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
         listener?.onImagePrepared()
-        val delay: Long = 1000 * 8
+        // Add fade in/out times?
+        val delay = GeneralPrefs.slideshowSpeed.toLong() * 1000
         postDelayed(finishedRunnable, delay)
     }
 

@@ -340,7 +340,7 @@
     <string-array name="slideshow_speed_entries">
         <item>5 seconds</item>
         <item>10 seconds</item>
-        <item>30 seconds</item>
+        <item>30 seconds (Default)</item>
         <item>1 minute</item>
         <item>3 minutes</item>
         <item>5 minutes</item>
@@ -356,5 +356,16 @@
         <item>600</item>
     </string-array>
     <string name="slideshow_speed_default" translatable="false">30</string>
+
+    <!-- Image scale/fill options -->
+    <string-array name="image_scale_entries">
+        <item>Cover (Default)</item>
+        <item>Center</item>
+    </string-array>
+    <string-array name="image_scale_values" translatable="false">
+        <item>CENTER_CROP</item>
+        <item>CENTER</item>
+    </string-array>
+    <string name="image_scale_default" translatable="false">CENTER_CROP</string>
 
 </resources>

@@ -5,21 +5,23 @@
         <PreferenceCategory app:title="@string/category_playlist">
                 <CheckBoxPreference
                     app:defaultValue="true"
-                    app:key="mute_videos"
-                    app:summary="@string/playlist_mute_videos_summary"
-                    app:title="@string/playlist_mute_videos_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="true"
                     app:key="shuffle_videos"
-                    app:summary="@string/playlist_shuffle_videos_summary"
-                    app:title="@string/playlist_shuffle_videos_title" />
+                    app:summary="@string/playlist_shuffle_summary"
+                    app:title="@string/playlist_shuffle_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="remove_duplicates"
                     app:summary="@string/playlist_remove_duplicates_summary"
                     app:title="@string/playlist_remove_duplicates_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_videos">
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="mute_videos"
+                    app:summary="@string/playlist_mute_videos_summary"
+                    app:title="@string/playlist_mute_videos_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"
@@ -44,7 +46,26 @@
                     app:title="@string/playlist_max_video_length_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_max_video_length_title" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_images">
+
+                <ListPreference
+                    app:defaultValue="@string/slideshow_speed_default"
+                    app:entries="@array/slideshow_speed_entries"
+                    app:entryValues="@array/slideshow_speed_values"
+                    app:key="slideshow_speed"
+                    app:title="@string/playlist_slideshow_speed_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_slideshow_speed_summary" />
+
+                <ListPreference
+                    app:defaultValue="@string/image_scale_default"
+                    app:entries="@array/image_scale_entries"
+                    app:entryValues="@array/image_scale_values"
+                    app:key="image_scale"
+                    app:title="@string/playlist_image_scale_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
 </PreferenceScreen>
