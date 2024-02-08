@@ -10,7 +10,7 @@ import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
-class AppleVideoProvider(context: Context, private val prefs: AppleVideoPrefs) : VideoProvider(context) {
+class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled

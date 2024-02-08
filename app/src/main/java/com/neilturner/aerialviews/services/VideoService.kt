@@ -12,29 +12,29 @@ import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
-import com.neilturner.aerialviews.providers.AppleVideoProvider
-import com.neilturner.aerialviews.providers.Comm1VideoProvider
-import com.neilturner.aerialviews.providers.Comm2VideoProvider
-import com.neilturner.aerialviews.providers.LocalVideoProvider
-import com.neilturner.aerialviews.providers.SambaVideoProvider
-import com.neilturner.aerialviews.providers.VideoProvider
+import com.neilturner.aerialviews.providers.AppleMediaProvider
+import com.neilturner.aerialviews.providers.Comm1MediaProvider
+import com.neilturner.aerialviews.providers.Comm2MediaProvider
+import com.neilturner.aerialviews.providers.LocalMediaProvider
+import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class VideoService(val context: Context) {
-    private val providers = mutableListOf<VideoProvider>()
+    private val providers = mutableListOf<MediaProvider>()
 
     init {
-        providers.add(LocalVideoProvider(context, LocalVideoPrefs))
-        providers.add(SambaVideoProvider(context, SambaVideoPrefs))
+        providers.add(LocalMediaProvider(context, LocalVideoPrefs))
+        providers.add(SambaMediaProvider(context, SambaVideoPrefs))
 
         // Prefer local videos first
         // Remote videos added last so they'll be filtered out if duplicates are found
-        providers.add(Comm1VideoProvider(context, Comm1VideoPrefs))
-        providers.add(Comm2VideoProvider(context, Comm2VideoPrefs))
-        providers.add(AppleVideoProvider(context, AppleVideoPrefs))
+        providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
+        providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+        providers.add(AppleMediaProvider(context, AppleVideoPrefs))
     }
 
     suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
@@ -107,7 +107,7 @@ class VideoService(val context: Context) {
         VideoPlaylist(videos)
     }
 
-    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<VideoProvider>): Pair<List<AerialVideo>, List<AerialVideo>> {
+    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<MediaProvider>): Pair<List<AerialVideo>, List<AerialVideo>> {
         val metadata = mutableListOf<VideoMetadata>()
         val matched = mutableListOf<AerialVideo>()
         val unmatched = mutableListOf<AerialVideo>()

@@ -18,7 +18,7 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
-class SambaVideoProvider(context: Context, private val prefs: SambaVideoPrefs) : VideoProvider(context) {
+class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled

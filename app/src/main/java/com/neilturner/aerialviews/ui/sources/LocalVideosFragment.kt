@@ -21,7 +21,7 @@ import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.providers.LocalVideoProvider
+import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
@@ -148,7 +148,7 @@ class LocalVideosFragment :
     }
 
     private suspend fun testLocalVideosFilter() {
-        val provider = LocalVideoProvider(requireContext(), LocalVideoPrefs)
+        val provider = LocalMediaProvider(requireContext(), LocalVideoPrefs)
         val result = provider.fetchTest()
         showDialog(resources.getString(R.string.local_videos_test_results), result)
     }

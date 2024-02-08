@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
-class LocalVideoProvider(context: Context, private val prefs: LocalVideoPrefs) : VideoProvider(context) {
+class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled

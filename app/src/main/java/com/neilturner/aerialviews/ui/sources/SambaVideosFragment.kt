@@ -27,7 +27,7 @@ import com.google.modernstorage.storage.toOkioPath
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
-import com.neilturner.aerialviews.providers.SambaVideoProvider
+import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.enumContains
@@ -360,7 +360,7 @@ class SambaVideosFragment :
     }
 
     private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
-        val provider = SambaVideoProvider(requireContext(), SambaVideoPrefs)
+        val provider = SambaMediaProvider(requireContext(), SambaVideoPrefs)
         val result = provider.fetchTest()
         showDialog(resources.getString(R.string.samba_videos_test_results), result)
     }

@@ -4,7 +4,7 @@ import android.content.Context
 import com.neilturner.aerialviews.models.videos.AerialVideo
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 
-abstract class VideoProvider(val context: Context) {
+abstract class MediaProvider(val context: Context) {
 
     abstract val enabled: Boolean
 
