@@ -129,7 +129,7 @@ class ImagePlayerView : AppCompatImageView {
 
     private fun onPlayerError() {
         removeCallbacks(finishedRunnable)
-        postDelayed(errorRunnable, 2000)
+        postDelayed(errorRunnable, ScreenController.ERROR_DELAY)
     }
 
     fun setOnPlayerListener(listener: ScreenController) {

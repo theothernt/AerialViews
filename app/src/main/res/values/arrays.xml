@@ -257,8 +257,8 @@
 
     <!-- Media type -->
     <string-array name="media_type_entries">
-        <item>Videos</item>
-        <item>Images</item>
+        <item>Videos only</item>
+        <item>Images only</item>
         <item>Videos &amp; Images</item>
     </string-array>
     <string-array name="media_type_values" translatable="false">

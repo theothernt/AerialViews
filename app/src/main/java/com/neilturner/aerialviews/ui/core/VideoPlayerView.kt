@@ -195,7 +195,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         }
 
         canChangePlaybackSpeed = false
-        postDelayed(canChangePlaybackSpeedRunnable, 2000)
+        postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
         val currentSpeed = playbackSpeed
         val speedValues = resources.getStringArray(R.array.playback_speed_values)
@@ -236,7 +236,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - FADE_DURATION)
+        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
         if (delay < 0) {
             delay = 0
         }
@@ -246,7 +246,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
         removeCallbacks(almostFinishedRunnable)
-        postDelayed(onErrorRunnable, 2000)
+        postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
     }
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
@@ -255,7 +255,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
-        aspectRatio = if (height == 0) 0F else width * videoSize.pixelWidthHeightRatio / height
+        aspectRatio = if (height == 0) 0f else width * videoSize.pixelWidthHeightRatio / height
         requestLayout()
     }
 
@@ -301,6 +301,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     companion object {
         private const val TAG = "VideoPlayerView"
-        const val FADE_DURATION: Long = 1200
+        const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
     }
 }

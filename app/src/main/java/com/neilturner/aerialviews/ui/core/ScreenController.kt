@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 class ScreenController(private val context: Context) :
     OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
+
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: VideoPlaylist
     private var overlayHelper: OverlayHelper
@@ -69,7 +70,6 @@ class ScreenController(private val context: Context) :
         videoView = binding.videoView
         videoPlayer = videoView.player
         videoPlayer.setOnPlayerListener(this)
-        // videoView.root.setBackgroundColor(Color.BLACK)
 
         imageView = binding.imageView
         imagePlayer = imageView.player
@@ -162,7 +162,7 @@ class ScreenController(private val context: Context) :
         loadingText
             .animate()
             .alpha(0f)
-            .setDuration(500)
+            .setDuration(LOADING_FADE_OUT)
             .withEndAction {
                 loadingText.visibility = TextView.GONE
             }.start()
@@ -179,7 +179,7 @@ class ScreenController(private val context: Context) :
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
             fadeOutLoading()
-            startDelay = 1000
+            startDelay = LOADING_DELAY
         }
 
         // Fade out LoadingView
@@ -188,7 +188,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(0f)
             .setStartDelay(startDelay)
-            .setDuration(VideoPlayerView.FADE_DURATION)
+            .setDuration(ITEM_FADE_IN)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
@@ -208,7 +208,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(VideoPlayerView.FADE_DURATION)
+            .setDuration(ITEM_FADE_OUT)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
             }
@@ -273,5 +273,10 @@ class ScreenController(private val context: Context) :
 
     companion object {
         private const val TAG = "VideoController"
+        const val LOADING_FADE_OUT: Long = 300
+        const val LOADING_DELAY: Long = 400
+        const val ITEM_FADE_IN: Long = 800
+        const val ITEM_FADE_OUT: Long = 1000
+        const val ERROR_DELAY: Long = 2000
     }
 }
