@@ -5,7 +5,7 @@ import com.chibatching.kotpref.enumpref.enumValuePref
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MediaType
 
-object SambaVideoPrefs : KotprefModel() {
+object SambaMediaPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "samba_videos_enabled")

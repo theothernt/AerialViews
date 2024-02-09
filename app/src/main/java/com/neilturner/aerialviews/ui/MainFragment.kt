@@ -17,7 +17,7 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import java.lang.Exception
 
@@ -66,7 +66,7 @@ class MainFragment :
 
     private fun resetLocalPermissionIfNeeded() {
         val storagePermissions = StoragePermissions(requireContext())
-        val permissionEnabled = LocalVideoPrefs.enabled
+        val permissionEnabled = LocalMediaPrefs.enabled
 
         val canReadVideos = storagePermissions.hasAccess(
             action = Action.READ,
@@ -77,7 +77,7 @@ class MainFragment :
         if (permissionEnabled &&
             !canReadVideos
         ) {
-            LocalVideoPrefs.enabled = false
+            LocalMediaPrefs.enabled = false
         }
     }
 

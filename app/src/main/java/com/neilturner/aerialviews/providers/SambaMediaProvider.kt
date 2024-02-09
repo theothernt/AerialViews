@@ -11,37 +11,37 @@ import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.MediaType
-import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import java.net.URLEncoder
 
-class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) : MediaProvider(context) {
+class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchVideos(): List<AerialVideo> {
-        return fetchSambaVideos().first
+    override fun fetchMedia(): List<AerialMedia> {
+        return fetchSambaMedia().first
     }
 
     override fun fetchTest(): String {
-        return fetchSambaVideos().second
+        return fetchSambaMedia().second
     }
 
     override fun fetchMetadata(): List<VideoMetadata> {
         return emptyList()
     }
 
-    private fun fetchSambaVideos(): Pair<List<AerialVideo>, String> {
-        val videos = mutableListOf<AerialVideo>()
+    private fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
+        val media = mutableListOf<AerialMedia>()
 
         // Check hostname
         // Validate IP address or hostname?
         if (prefs.hostName.isEmpty()) {
-            return Pair(videos, "Hostname not specified")
+            return Pair(media, "Hostname not specified")
         }
 
         // Check domain name - can be empty?
@@ -49,7 +49,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
 
         // Check share name
         if (prefs.shareName.isEmpty()) {
-            return Pair(videos, "Share name not specified")
+            return Pair(media, "Share name not specified")
         }
 
         //  Check share name
@@ -62,10 +62,10 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
             path = shareNameAndPath.second
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(videos, "Failed to parse share name")
+            return Pair(media, "Failed to parse share name")
         }
 
-        val sambaVideos = try {
+        val sambaMedia = try {
             findSambaMedia(
                 prefs.userName,
                 prefs.password,
@@ -79,7 +79,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
             Pair(emptyList(), e.message.toString())
         }
 
-        sambaVideos.first.forEach { filename ->
+        sambaMedia.first.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
@@ -93,11 +93,11 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/$shareName/$filename")
-            videos.add(AerialVideo(uri, ""))
+            media.add(AerialMedia(uri, ""))
         }
 
-        Log.i(TAG, "Videos found: ${videos.size}")
-        return Pair(videos, sambaVideos.second)
+        Log.i(TAG, "Videos found: ${media.size}")
+        return Pair(media, sambaMedia.second)
     }
 
     private fun findSambaMedia(
@@ -152,8 +152,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
         val filteredFiles = mutableListOf<String>()
 
         // Filter out non-video, dot files, etc
-        if (SambaVideoPrefs.mediaType == MediaType.VIDEOS ||
-            SambaVideoPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        if (SambaMediaPrefs.mediaType == MediaType.VIDEOS ||
+            SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
         ) {
             filteredFiles.addAll(
                 files.filter { item ->
@@ -161,8 +161,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
                 }
             )
         }
-        if (SambaVideoPrefs.mediaType == MediaType.IMAGES ||
-            SambaVideoPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        if (SambaMediaPrefs.mediaType == MediaType.IMAGES ||
+            SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
         ) {
             filteredFiles.addAll(
                 files.filter { item ->
@@ -201,6 +201,6 @@ class SambaMediaProvider(context: Context, private val prefs: SambaVideoPrefs) :
     }
 
     companion object {
-        private const val TAG = "SambaVideoProvider"
+        private const val TAG = "SambaMediaProvider"
     }
 }

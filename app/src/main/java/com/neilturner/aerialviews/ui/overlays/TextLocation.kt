@@ -15,7 +15,7 @@ class TextLocation : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val textAlpha = 1f // start + end values?
-    var isFadingOutVideo = false // Stops POI change + fade as video is ending
+    var isFadingOutMedia = false // Stops POI change + fade as video is ending
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -31,7 +31,7 @@ class TextLocation : AppCompatTextView {
     }
 
     fun updateLocationData(location: String, poi: Map<Int, String>, locationType: LocationType, player: VideoPlayerView) {
-        isFadingOutVideo = false
+        isFadingOutMedia = false
         this.visibility = View.VISIBLE
 
         // If POI, set POI text, if empty use location, or else use location
@@ -66,7 +66,7 @@ class TextLocation : AppCompatTextView {
             val shouldUpdate = newPoi != lastPoi
 
             // If new string and not fading in/out + loading new video
-            if (shouldUpdate && !isFadingOutVideo) {
+            if (shouldUpdate && !isFadingOutMedia) {
                 // Set new string and fade in
                 lastPoi = newPoi
                 this.animate().alpha(0f).setDuration(1000).withEndAction {

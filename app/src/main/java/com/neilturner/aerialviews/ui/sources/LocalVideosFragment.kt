@@ -20,7 +20,7 @@ import com.google.modernstorage.permissions.StoragePermissions.Action
 import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
+import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
@@ -103,10 +103,10 @@ class LocalVideosFragment :
         if (key == "local_videos_legacy_volume" ||
             key == "local_videos_legacy_folder"
         ) {
-            LocalVideoPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalVideoPrefs.legacy_folder)
+            LocalMediaPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalMediaPrefs.legacy_folder)
 
             val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
-            LocalVideoPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
+            LocalMediaPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
 
             updateVolumeAndFolderSummary()
         }
@@ -115,8 +115,8 @@ class LocalVideosFragment :
     }
 
     private fun updateEnabledOptions() {
-        if (LocalVideoPrefs.enabled) {
-            enabledOptions(LocalVideoPrefs.searchType)
+        if (LocalMediaPrefs.enabled) {
+            enabledOptions(LocalMediaPrefs.searchType)
         } else {
             enabledOptions(null)
         }
@@ -148,13 +148,13 @@ class LocalVideosFragment :
     }
 
     private suspend fun testLocalVideosFilter() {
-        val provider = LocalMediaProvider(requireContext(), LocalVideoPrefs)
+        val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
         val result = provider.fetchTest()
         showDialog(resources.getString(R.string.local_videos_test_results), result)
     }
 
     private fun requiresPermission(): Boolean {
-        return LocalVideoPrefs.enabled
+        return LocalMediaPrefs.enabled
     }
 
     private fun resetPreference() {
@@ -176,16 +176,16 @@ class LocalVideosFragment :
         val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
         val folder = preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
 
-        if (LocalVideoPrefs.legacy_volume.isEmpty()) {
+        if (LocalMediaPrefs.legacy_volume.isEmpty()) {
             volume?.summary = resources.getString(R.string.local_videos_legacy_volume_summary)
         } else {
-            volume?.summary = LocalVideoPrefs.legacy_volume_label
+            volume?.summary = LocalMediaPrefs.legacy_volume_label
         }
 
-        if (LocalVideoPrefs.legacy_folder.isEmpty()) {
+        if (LocalMediaPrefs.legacy_folder.isEmpty()) {
             folder?.summary = resources.getString(R.string.local_videos_legacy_folder_summary)
         } else {
-            folder?.summary = LocalVideoPrefs.legacy_folder
+            folder?.summary = LocalMediaPrefs.legacy_folder
         }
     }
 

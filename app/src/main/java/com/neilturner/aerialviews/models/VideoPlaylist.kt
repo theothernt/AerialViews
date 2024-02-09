@@ -1,18 +1,18 @@
 package com.neilturner.aerialviews.models
 
-import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.AerialMedia
 
-class VideoPlaylist(private val _videos: List<AerialVideo>) {
+class VideoPlaylist(private val _videos: List<AerialMedia>) {
     private var position = -1
 
     val size: Int = _videos.size
 
-    fun nextVideo(): AerialVideo {
+    fun nextItem(): AerialMedia {
         position = calculateNext(++position)
         return _videos[position]
     }
 
-    fun previousVideo(): AerialVideo {
+    fun previousItem(): AerialMedia {
         position = calculateNext(--position)
         return _videos[position]
     }

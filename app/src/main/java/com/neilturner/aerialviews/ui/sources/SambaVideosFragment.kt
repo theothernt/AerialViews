@@ -26,7 +26,7 @@ import com.google.modernstorage.storage.AndroidFileSystem
 import com.google.modernstorage.storage.toOkioPath
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -145,8 +145,8 @@ class SambaVideosFragment :
         // Share name
         val sharename = findPreference<EditTextPreference>("samba_videos_sharename")
         if (sharename?.text.toStringOrEmpty().isNotEmpty()) {
-            val fixedShareName = SambaHelper.fixShareName(SambaVideoPrefs.shareName)
-            SambaVideoPrefs.shareName = fixedShareName
+            val fixedShareName = SambaHelper.fixShareName(SambaMediaPrefs.shareName)
+            SambaMediaPrefs.shareName = fixedShareName
             sharename?.summary = fixedShareName
             sharename?.text = fixedShareName
         } else {
@@ -164,18 +164,18 @@ class SambaVideosFragment :
         // Password
         val password = findPreference<EditTextPreference>("samba_videos_password")
         if (password?.text.toStringOrEmpty().isNotEmpty()) {
-            password?.summary = "*".repeat(SambaVideoPrefs.password.length)
+            password?.summary = "*".repeat(SambaMediaPrefs.password.length)
         } else {
             password?.summary = getString(R.string.samba_videos_password_summary)
         }
 
         // Subfolders
         val subfolders = findPreference<CheckBoxPreference>("samba_videos_search_subfolders")
-        subfolders?.isChecked = SambaVideoPrefs.searchSubfolders
+        subfolders?.isChecked = SambaMediaPrefs.searchSubfolders
 
         // Encryption
         val encryption = findPreference<CheckBoxPreference>("samba_videos_enable_encryption")
-        encryption?.isChecked = SambaVideoPrefs.enableEncryption
+        encryption?.isChecked = SambaMediaPrefs.enableEncryption
     }
 
     private fun limitTextInput() {
@@ -250,19 +250,19 @@ class SambaVideosFragment :
         }
 
         try {
-            SambaVideoPrefs.hostName = properties["hostname"] as String
-            SambaVideoPrefs.domainName = properties["domainname"] as String
-            SambaVideoPrefs.shareName = properties["sharename"] as String
-            SambaVideoPrefs.userName = properties["username"] as String
-            SambaVideoPrefs.password = properties["password"] as String
+            SambaMediaPrefs.hostName = properties["hostname"] as String
+            SambaMediaPrefs.domainName = properties["domainname"] as String
+            SambaMediaPrefs.shareName = properties["sharename"] as String
+            SambaMediaPrefs.userName = properties["username"] as String
+            SambaMediaPrefs.password = properties["password"] as String
 
             val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
             val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
-            SambaVideoPrefs.smbDialects.clear()
-            SambaVideoPrefs.smbDialects.addAll(validDialects)
+            SambaMediaPrefs.smbDialects.clear()
+            SambaMediaPrefs.smbDialects.addAll(validDialects)
 
-            SambaVideoPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
-            SambaVideoPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
+            SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
+            SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_unable_to_save))
             Log.e(TAG, "Import failed", ex)
@@ -271,19 +271,19 @@ class SambaVideosFragment :
         }
 
         withContext(Dispatchers.Main) {
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaVideoPrefs.hostName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaVideoPrefs.domainName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaVideoPrefs.shareName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaVideoPrefs.userName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaVideoPrefs.password
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaMediaPrefs.hostName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaMediaPrefs.domainName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaMediaPrefs.shareName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaMediaPrefs.userName
+            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaMediaPrefs.password
 
             preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
-            SambaVideoPrefs.searchSubfolders
+            SambaMediaPrefs.searchSubfolders
             preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
-            SambaVideoPrefs.enableEncryption
+            SambaMediaPrefs.enableEncryption
 
             preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
-                SambaVideoPrefs.smbDialects.toSet()
+                SambaMediaPrefs.smbDialects.toSet()
 
             updateSummary()
         }
@@ -313,16 +313,16 @@ class SambaVideosFragment :
 
         // Build SMB config list
         val smbSettings = mutableMapOf<String, String>()
-        smbSettings["hostname"] = SambaVideoPrefs.hostName
-        smbSettings["domainname"] = SambaVideoPrefs.domainName
-        smbSettings["sharename"] = SambaVideoPrefs.shareName
-        smbSettings["username"] = SambaVideoPrefs.userName
-        smbSettings["password"] = SambaVideoPrefs.password
+        smbSettings["hostname"] = SambaMediaPrefs.hostName
+        smbSettings["domainname"] = SambaMediaPrefs.domainName
+        smbSettings["sharename"] = SambaMediaPrefs.shareName
+        smbSettings["username"] = SambaMediaPrefs.userName
+        smbSettings["password"] = SambaMediaPrefs.password
 
-        smbSettings["smb_dialects"] = SambaVideoPrefs.smbDialects.joinToString(",").replace(" ", "")
+        smbSettings["smb_dialects"] = SambaMediaPrefs.smbDialects.joinToString(",").replace(" ", "")
 
-        smbSettings["search_subfolders"] = SambaVideoPrefs.searchSubfolders.toString()
-        smbSettings["enable_encryption"] = SambaVideoPrefs.enableEncryption.toString()
+        smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
+        smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
 
         val uri: Uri
         try {
@@ -360,7 +360,7 @@ class SambaVideosFragment :
     }
 
     private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
-        val provider = SambaMediaProvider(requireContext(), SambaVideoPrefs)
+        val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
         val result = provider.fetchTest()
         showDialog(resources.getString(R.string.samba_videos_test_results), result)
     }

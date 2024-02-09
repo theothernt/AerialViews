@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
@@ -15,7 +15,7 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchVideos(): List<AerialVideo> {
+    override fun fetchMedia(): List<AerialMedia> {
         return fetchAppleVideos().first
     }
 
@@ -40,13 +40,13 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
         return metadata
     }
 
-    private fun fetchAppleVideos(): Pair<List<AerialVideo>, String> {
-        val videos = mutableListOf<AerialVideo>()
+    private fun fetchAppleVideos(): Pair<List<AerialMedia>, String> {
+        val videos = mutableListOf<AerialMedia>()
         val quality = prefs.quality
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
-                AerialVideo(
+                AerialMedia(
                     it.uriAtQuality(quality)
                 )
             )

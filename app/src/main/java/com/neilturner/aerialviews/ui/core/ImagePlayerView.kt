@@ -17,7 +17,7 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.ImageScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.CoroutineScope
@@ -99,8 +99,8 @@ class ImagePlayerView : AppCompatImageView {
 
         val config = SambaHelper.buildSmbConfig()
         val smbClient = SMBClient(config)
-        val connection = smbClient.connect(SambaVideoPrefs.hostName)
-        val authContext = SambaHelper.buildAuthContext(SambaVideoPrefs.userName, SambaVideoPrefs.password, SambaVideoPrefs.domainName)
+        val connection = smbClient.connect(SambaMediaPrefs.hostName)
+        val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
 

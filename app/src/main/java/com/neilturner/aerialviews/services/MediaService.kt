@@ -8,9 +8,9 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.prefs.SambaVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -23,12 +23,12 @@ import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class VideoService(val context: Context) {
+class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
 
     init {
-        providers.add(LocalMediaProvider(context, LocalVideoPrefs))
-        providers.add(SambaMediaProvider(context, SambaVideoPrefs))
+        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
+        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         // Prefer local videos first
         // Remote videos added last so they'll be filtered out if duplicates are found
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
@@ -36,14 +36,14 @@ class VideoService(val context: Context) {
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
     }
 
-    suspend fun fetchVideos(): VideoPlaylist = withContext(Dispatchers.IO) {
-        var videos = mutableListOf<AerialVideo>()
+    suspend fun fetchMedia(): VideoPlaylist = withContext(Dispatchers.IO) {
+        var media = mutableListOf<AerialMedia>()
 
         // Find all videos from all providers/sources
         providers.forEach {
             try {
                 if (it.enabled) {
-                    videos.addAll(it.fetchVideos())
+                    media.addAll(it.fetchMedia())
                 }
             } catch (ex: Exception) {
                 Log.e(TAG, "Exception while fetching videos", ex)
@@ -52,41 +52,41 @@ class VideoService(val context: Context) {
 
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
-            val numVideos = videos.size
-            videos = videos.distinctBy { it.uri.filename.lowercase() }.toMutableList()
-            Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - videos.size}")
+            val numVideos = media.size
+            media = media.distinctBy { it.uri.filename.lowercase() }.toMutableList()
+            Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
         // Add metadata to videos for filtering matched and unmatched
-        val result = addMetadataToVideos(videos, providers)
-        videos = result.first.toMutableList()
+        val result = addMetadataToVideos(media, providers)
+        media = result.first.toMutableList()
 
         // Add unmatched videos
         if (!GeneralPrefs.ignoreNonManifestVideos) {
             addFilenameAsLocation(result.second)
-            videos.addAll(result.second)
+            media.addAll(result.second)
         }
 
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
-            videos.shuffle()
+            media.shuffle()
         }
 
-        Log.i(TAG, "Total vids: ${videos.size}")
-        VideoPlaylist(videos)
+        Log.i(TAG, "Total vids: ${media.size}")
+        VideoPlaylist(media)
     }
 
-    private fun addFilenameAsLocation(videos: List<AerialVideo>) {
+    private fun addFilenameAsLocation(media: List<AerialMedia>) {
         // Add filename as video location
         if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
-            videos.forEach { video ->
+            media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToTitleCase(video.uri)
                 }
             }
         }
         if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
-            videos.forEach { video ->
+            media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToString(video.uri)
                 }
@@ -94,10 +94,10 @@ class VideoService(val context: Context) {
         }
     }
 
-    private fun addMetadataToVideos(videos: List<AerialVideo>, providers: List<MediaProvider>): Pair<List<AerialVideo>, List<AerialVideo>> {
+    private fun addMetadataToVideos(media: List<AerialMedia>, providers: List<MediaProvider>): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = mutableListOf<VideoMetadata>()
-        val matched = mutableListOf<AerialVideo>()
-        val unmatched = mutableListOf<AerialVideo>()
+        val matched = mutableListOf<AerialMedia>()
+        val unmatched = mutableListOf<AerialMedia>()
 
         providers.forEach {
             try {
@@ -108,7 +108,7 @@ class VideoService(val context: Context) {
         }
 
         // Find video id in metadata list
-        videos.forEach video@{ video ->
+        media.forEach video@{ video ->
             metadata.forEach { metadata ->
                 if (metadata.urls.any { it.contains(video.uri.filename, true) }) {
                     video.location = metadata.location

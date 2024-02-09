@@ -6,20 +6,20 @@ import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
-import com.neilturner.aerialviews.models.prefs.LocalVideoPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
+import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
-class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) : MediaProvider(context) {
+class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchVideos(): List<AerialVideo> {
+    override fun fetchMedia(): List<AerialMedia> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().first
         } else {
@@ -39,9 +39,9 @@ class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) :
         return emptyList()
     }
 
-    private fun folderAccessFetch(): Pair<List<AerialVideo>, String> {
+    private fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
-        val videos = mutableListOf<AerialVideo>()
+        val videos = mutableListOf<AerialMedia>()
         val allFiles = mutableListOf<File>()
         var foldersFound = 0
         var filesFound = 0
@@ -99,7 +99,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(AerialVideo(Uri.fromFile(file)))
+            videos.add(AerialMedia(Uri.fromFile(file)))
         }
 
         var message = String.format(res.getString(R.string.local_videos_legacy_test_summary1), videos.size + excluded) + "\n"
@@ -109,9 +109,9 @@ class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) :
         return Pair(videos, message)
     }
 
-    private fun mediaStoreFetch(): Pair<List<AerialVideo>, String> {
+    private fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
-        val videos = mutableListOf<AerialVideo>()
+        val videos = mutableListOf<AerialMedia>()
         val localVideos = FileHelper.findLocalVideos(context)
         var excluded = 0
         var filtered = 0
@@ -141,7 +141,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) :
                 continue
             }
 
-            videos.add(AerialVideo(uri))
+            videos.add(AerialMedia(uri))
         }
 
         var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), localVideos.size) + "\n"
@@ -153,6 +153,6 @@ class LocalMediaProvider(context: Context, private val prefs: LocalVideoPrefs) :
     }
 
     companion object {
-        private const val TAG = "LocalVideoProvider"
+        private const val TAG = "LocalMediaProvider"
     }
 }

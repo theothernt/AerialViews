@@ -17,8 +17,8 @@ import com.neilturner.aerialviews.models.VideoPlaylist
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.videos.AerialVideo
-import com.neilturner.aerialviews.services.VideoService
+import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
@@ -41,7 +41,7 @@ class ScreenController(private val context: Context) :
 
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private var alternate = false
-    private var previousVideo = false
+    private var previousItem = false
     private var canSkip = false
 
     private val videoView: VideoViewBinding
@@ -87,10 +87,10 @@ class ScreenController(private val context: Context) :
         this.topRightIds = overlayIds.topRightIds
 
         coroutineScope.launch {
-            playlist = VideoService(context).fetchVideos()
+            playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
-                loadItem(playlist.nextVideo())
+                loadItem(playlist.nextItem())
             } else {
                 showLoadingError()
             }
@@ -103,8 +103,8 @@ class ScreenController(private val context: Context) :
         // 5. goto 2
     }
 
-    private fun loadItem(video: AerialVideo) {
-        Log.i(TAG, "Playing: ${video.location} - ${video.uri} (${video.poi})")
+    private fun loadItem(media: AerialMedia) {
+        Log.i(TAG, "Playing: ${media.location} - ${media.uri} (${media.poi})")
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
@@ -116,7 +116,7 @@ class ScreenController(private val context: Context) :
                 GeneralPrefs.locationStyle = LocationType.POI
                 LocationType.POI
             }
-            it.updateLocationData(video.location, video.poi, locationType, videoPlayer)
+            it.updateLocationData(media.location, media.poi, locationType, videoPlayer)
         }
 
         // Set overlay positions
@@ -141,15 +141,15 @@ class ScreenController(private val context: Context) :
         }
 
         // Videos
-        if (FileHelper.isSupportedVideoType(video.uri.filename)) {
-            videoPlayer.setUri(video.uri)
+        if (FileHelper.isSupportedVideoType(media.uri.filename)) {
+            videoPlayer.setUri(media.uri)
             videoView.root.visibility = View.VISIBLE
             imageView.root.visibility = View.INVISIBLE
         }
 
         // Images
-        if (FileHelper.isSupportedImageType(video.uri.filename)) {
-            imagePlayer.setUri(video.uri)
+        if (FileHelper.isSupportedImageType(media.uri.filename)) {
+            imagePlayer.setUri(media.uri)
             imageView.root.visibility = View.VISIBLE
             videoView.root.visibility = View.INVISIBLE
         }
@@ -200,7 +200,7 @@ class ScreenController(private val context: Context) :
         canSkip = false
 
         overlayHelper.findOverlay<TextLocation>().forEach {
-            it.isFadingOutVideo = true
+            it.isFadingOutMedia = true
         }
 
         // Fade in LoadView (ie. black screen)
@@ -221,14 +221,14 @@ class ScreenController(private val context: Context) :
                 imageView.player.stop()
 
                 // Pick next/previous video
-                val video = if (!previousVideo) {
-                    playlist.nextVideo()
+                val media = if (!previousItem) {
+                    playlist.nextItem()
                 } else {
-                    playlist.previousVideo()
+                    playlist.previousItem()
                 }
-                previousVideo = false
+                previousItem = false
 
-                loadItem(video)
+                loadItem(media)
             }.start()
     }
 
@@ -242,7 +242,7 @@ class ScreenController(private val context: Context) :
     }
 
     fun skipItem(previous: Boolean = false) {
-        previousVideo = previous
+        previousItem = previous
         fadeOutCurrentItem()
     }
 
@@ -252,7 +252,7 @@ class ScreenController(private val context: Context) :
 
     private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {
-            loadItem(playlist.nextVideo())
+            loadItem(playlist.nextItem())
         } else {
             fadeOutCurrentItem()
         }
