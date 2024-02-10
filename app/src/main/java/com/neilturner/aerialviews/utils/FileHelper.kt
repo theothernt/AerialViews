@@ -34,18 +34,18 @@ object FileHelper {
     }
 
     fun findLocalImages(context: Context): List<String?> {
-        val videos = mutableListOf<String>()
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        val images = mutableListOf<String>()
+        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val column = MediaStore.MediaColumns.DATA
         val projection = arrayOf(column)
         try {
             val cursor = context
                 .contentResolver
                 .query(uri, projection, null, null, null)
-                ?: return videos
+                ?: return images
             try {
                 while (cursor.moveToNext()) {
-                    videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
+                    images.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
                 }
                 cursor.close()
             } catch (e: Exception) {
@@ -54,8 +54,8 @@ object FileHelper {
         } catch (e: Exception) {
             Log.e(TAG, "Exception in contentResolver query: ${e.message}")
         }
-        Log.i(TAG, "ContentResolver found ${videos.size} files")
-        return videos
+        Log.i(TAG, "ContentResolver found ${images.size} files")
+        return images
     }
 
     fun isSambaVideo(uri: Uri): Boolean {
