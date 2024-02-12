@@ -74,6 +74,8 @@
 
     <string name="local_videos_enabled_title">Use Local or USB storage videos</string>
 
+    <string name="local_media_type_title">Choose media type</string>
+
     <string name="local_videos_search_type_title">Choose how videos are found</string>
     <string name="local_videos_search_test">Test local search settings</string>
 

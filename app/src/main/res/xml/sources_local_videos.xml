@@ -9,6 +9,14 @@
                     app:title="@string/local_videos_enabled_title" />
 
                 <ListPreference
+                    app:defaultValue="@string/media_type_default"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="local_media_type"
+                    app:title="@string/local_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="@string/local_videos_search_type_default"
