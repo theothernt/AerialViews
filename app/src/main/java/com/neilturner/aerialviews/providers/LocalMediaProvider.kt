@@ -5,13 +5,13 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.MediaType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
-import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.File
 
 class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
@@ -41,21 +41,62 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
     private fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
-        val videos = mutableListOf<AerialMedia>()
-        val allFiles = mutableListOf<File>()
-        var foldersFound = 0
-        var filesFound = 0
-        var excluded = 0
+        val selected = mutableListOf<String>()
+        val media = mutableListOf<AerialMedia>()
+        val excluded: Int
 
         if (prefs.legacy_volume.isEmpty()) {
-            return Pair(videos, res.getString(R.string.local_videos_legacy_no_volume))
+            return Pair(media, res.getString(R.string.local_videos_legacy_no_volume))
         }
 
         if (prefs.legacy_folder.isEmpty()) {
-            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder))
+            return Pair(media, res.getString(R.string.local_videos_legacy_no_folder))
         }
 
+        val files = folderAccessVideosAndImages()
+
+        if (files.isEmpty()) {
+            return Pair(media, res.getString(R.string.local_videos_legacy_no_files_found))
+        }
+
+        // Filter out non-video, non-image files
+        if (LocalMediaPrefs.mediaType == MediaType.VIDEOS ||
+            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
+            selected.addAll(
+                files.filter { file ->
+                    FileHelper.isSupportedVideoType(file)
+                }
+            )
+        }
+
+        if (LocalMediaPrefs.mediaType == MediaType.IMAGES ||
+            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
+            selected.addAll(
+                files.filter { file ->
+                    FileHelper.isSupportedImageType(file)
+                }
+            )
+        }
+        excluded = files.size - selected.size
+
+        for (file in files) {
+            val uri = Uri.parse(file)
+            media.add(AerialMedia(uri))
+        }
+
+        var message = String.format(res.getString(R.string.local_videos_legacy_test_summary1), files.size) + "\n"
+        message += String.format(res.getString(R.string.local_videos_legacy_test_summary2), excluded) + "\n"
+        message += String.format(res.getString(R.string.local_videos_legacy_test_summary3), media.size)
+
+        return Pair(media, message)
+    }
+
+    private fun folderAccessVideosAndImages(): List<String> {
         val folders = mutableListOf<String>()
+        val found = mutableListOf<File>()
+
         if (prefs.legacy_volume.contains("/all", false)) {
             val vols = StorageHelper.getStoragePaths(context)
             val values = vols.map { it.key }.toTypedArray()
@@ -71,85 +112,81 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             if (!directory.exists() || !directory.isDirectory) {
                 continue
             }
-            foldersFound++
             val files = directory.listFiles()
             if (!files.isNullOrEmpty()
             ) {
-                filesFound = +files.size
-                allFiles.addAll(files)
+                found.addAll(
+                    files.filter { file ->
+                        val filename = file.name.split("/").last()
+                        !FileHelper.isDotOrHiddenFile(filename)
+                    }
+                )
             }
         }
-
-        if (foldersFound == 0) {
-            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder_found))
-        }
-
-        if (filesFound == 0) {
-            return Pair(videos, res.getString(R.string.local_videos_legacy_no_folder_found))
-        }
-
-        for (file in allFiles) {
-            // x/y/file.mp4
-            if (FileHelper.isDotOrHiddenFile(file.name.split("/").last())) {
-                continue
-            }
-
-            if (!FileHelper.isSupportedVideoType(file.name)) {
-                excluded++
-                continue
-            }
-
-            videos.add(AerialMedia(Uri.fromFile(file)))
-        }
-
-        var message = String.format(res.getString(R.string.local_videos_legacy_test_summary1), videos.size + excluded) + "\n"
-        message += String.format(res.getString(R.string.local_videos_legacy_test_summary2), excluded) + "\n"
-        message += String.format(res.getString(R.string.local_videos_legacy_test_summary3), videos.size)
-
-        return Pair(videos, message)
+        return found.map { item -> item.name }
     }
 
     private fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
-        val videos = mutableListOf<AerialMedia>()
-        val localVideos = FileHelper.findLocalVideos(context)
-        var excluded = 0
-        var filtered = 0
+        val selected = mutableListOf<String>()
+        val media = mutableListOf<AerialMedia>()
+        val excluded: Int
+        val filtered: Int
 
         if (prefs.filter_folder.isEmpty() &&
             prefs.filter_enabled
         ) {
-            return Pair(videos, res.getString(R.string.local_videos_media_store_no_folder))
+            return Pair(media, res.getString(R.string.local_videos_media_store_no_folder))
         }
 
-        for (video in localVideos) {
-            val uri = Uri.parse(video)
-            val filename = uri.lastPathSegment.toStringOrEmpty()
+        val files = mediaStoreVideosAndImages()
 
-            // file.mp4
-            if (FileHelper.isDotOrHiddenFile(filename)) {
-                continue
-            }
+        // Filter out non-video, non-image files
+        if (LocalMediaPrefs.mediaType == MediaType.VIDEOS ||
+            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
+            selected.addAll(
+                files.filter { file ->
+                    FileHelper.isSupportedVideoType(file)
+                }
+            )
+        }
 
-            if (!FileHelper.isSupportedVideoType(filename)) {
-                excluded++
-                continue
-            }
+        if (LocalMediaPrefs.mediaType == MediaType.IMAGES ||
+            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
+        ) {
+            selected.addAll(
+                files.filter { file ->
+                    FileHelper.isSupportedImageType(file)
+                }
+            )
+        }
+        excluded = files.size - selected.size
 
+        for (file in files) {
+            val uri = Uri.parse(file)
             if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder)) {
-                filtered++
                 continue
             }
-
-            videos.add(AerialMedia(uri))
+            media.add(AerialMedia(uri))
         }
+        filtered = selected.size - media.size
 
-        var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), localVideos.size) + "\n"
+        var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.local_videos_media_store_test_summary2), excluded) + "\n"
         message += String.format(res.getString(R.string.local_videos_media_store_test_summary3), filtered) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary4), videos.size)
+        message += String.format(res.getString(R.string.local_videos_media_store_test_summary4), media.size)
 
-        return Pair(videos, message)
+        return Pair(media, message)
+    }
+
+    private fun mediaStoreVideosAndImages(): List<String> {
+        val files = FileHelper.findLocalVideos(context) +
+            FileHelper.findLocalImages(context)
+
+        return files.filter { item ->
+            !FileHelper.isDotOrHiddenFile(item)
+        }
     }
 
     companion object {

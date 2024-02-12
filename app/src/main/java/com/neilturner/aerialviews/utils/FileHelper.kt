@@ -8,7 +8,7 @@ import java.io.File
 
 object FileHelper {
 
-    fun findLocalVideos(context: Context): List<String?> {
+    fun findLocalVideos(context: Context): List<String> {
         val videos = mutableListOf<String>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val column = MediaStore.MediaColumns.DATA
@@ -33,7 +33,7 @@ object FileHelper {
         return videos
     }
 
-    fun findLocalImages(context: Context): List<String?> {
+    fun findLocalImages(context: Context): List<String> {
         val images = mutableListOf<String>()
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val column = MediaStore.MediaColumns.DATA

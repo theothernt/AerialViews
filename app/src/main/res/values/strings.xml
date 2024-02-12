@@ -103,15 +103,15 @@
     <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
     <string name="local_videos_legacy_no_files_found">No files found</string>
 
-    <string name="local_videos_legacy_test_summary1">Videos found in folder: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Videos selected for playback: %1$s</string>
+    <string name="local_videos_legacy_test_summary1">Videos/Images found in folder: %1$s</string>
+    <string name="local_videos_legacy_test_summary2">Videos/Images with unsupported file extensions: %1$s</string>
+    <string name="local_videos_legacy_test_summary3">Videos/Images selected for playback: %1$s</string>
 
     <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
-    <string name="local_videos_media_store_test_summary1">Videos found by media scanner: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Videos with unsupported file extensions: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Videos removed by filter: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Videos selected for playback: %1$s</string>
+    <string name="local_videos_media_store_test_summary1">Videos/Images found by media scanner: %1$s</string>
+    <string name="local_videos_media_store_test_summary2">Videos/Images with unsupported file extensions: %1$s</string>
+    <string name="local_videos_media_store_test_summary3">Videos/Images removed by filter: %1$s</string>
+    <string name="local_videos_media_store_test_summary4">Videos/Images selected for playback: %1$s</string>
 
     <string name="local_videos_permission_denied">Permission Denied</string>
     <string name="local_videos_test_results">Test results</string>

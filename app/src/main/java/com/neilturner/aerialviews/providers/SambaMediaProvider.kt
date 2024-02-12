@@ -109,6 +109,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         path: String
     ): Pair<List<String>, String> {
         val files = mutableListOf<String>()
+        val validFiles = mutableListOf<String>()
 
         // SMB Config
         val config: SmbConfig
@@ -149,13 +150,11 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         files.addAll(listFilesAndFoldersRecursive(share, path))
         smbClient.close()
 
-        val filteredFiles = mutableListOf<String>()
-
-        // Filter out non-video, dot files, etc
+        // Filter out non-video, non-image files
         if (SambaMediaPrefs.mediaType == MediaType.VIDEOS ||
             SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
         ) {
-            filteredFiles.addAll(
+            validFiles.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedVideoType(item)
                 }
@@ -164,7 +163,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         if (SambaMediaPrefs.mediaType == MediaType.IMAGES ||
             SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
         ) {
-            filteredFiles.addAll(
+            validFiles.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedImageType(item)
                 }
@@ -172,11 +171,11 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         }
 
         // Show user normal auth vs anonymous vs guest?
-        val excluded = files.size - filteredFiles.size
+        val excluded = files.size - validFiles.size
         var message = "Files found on samba share: ${files.size + excluded}\n"
         message += "Videos/Images with unsupported file extensions: $excluded\n"
-        message += "Videos/Images selected for playback: ${filteredFiles.size}"
-        return Pair(filteredFiles, message)
+        message += "Videos/Images selected for playback: ${validFiles.size}"
+        return Pair(validFiles, message)
     }
 
     private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {
