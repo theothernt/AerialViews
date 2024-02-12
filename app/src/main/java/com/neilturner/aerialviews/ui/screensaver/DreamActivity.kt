@@ -13,12 +13,13 @@ import android.annotation.SuppressLint
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class DreamActivity : DreamService() {
-    private lateinit var videoController: VideoController
+    private lateinit var screenController: ScreenController
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -28,13 +29,13 @@ class DreamActivity : DreamService() {
         isInteractive = true
 
         // Start playback, etc
-        videoController = if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-            VideoController(this)
+        screenController = if (GeneralPrefs.localeScreensaver.startsWith("default")) {
+            ScreenController(this)
         } else {
             val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-            VideoController(altContext)
+            ScreenController(altContext)
         }
-        setContentView(videoController.view)
+        setContentView(screenController.view)
     }
 
     override fun onDreamingStarted() {
@@ -44,7 +45,7 @@ class DreamActivity : DreamService() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (event.action == KeyEvent.ACTION_UP && this::videoController.isInitialized) {
+        if (event.action == KeyEvent.ACTION_UP && this::screenController.isInitialized) {
             // Log.i(TAG, "${event.keyCode}")
 
             when (event.keyCode) {
@@ -87,7 +88,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.increaseSpeed()
+                    screenController.increaseSpeed()
                     return true
                 }
 
@@ -96,7 +97,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.decreaseSpeed()
+                    screenController.decreaseSpeed()
                     return true
                 }
 
@@ -105,7 +106,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.skipVideo(true)
+                    screenController.skipItem(true)
                     return true
                 }
 
@@ -114,7 +115,7 @@ class DreamActivity : DreamService() {
                         wakeUp()
                         return true
                     }
-                    videoController.skipVideo()
+                    screenController.skipItem()
                     return true
                 }
 
@@ -127,16 +128,16 @@ class DreamActivity : DreamService() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::videoController.isInitialized) {
-            WindowHelper.hideSystemUI(window, videoController.view)
+        if (hasFocus && this::screenController.isInitialized) {
+            WindowHelper.hideSystemUI(window, screenController.view)
         }
     }
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
         // Stop playback, animations, etc
-        if (this::videoController.isInitialized) {
-            videoController.stop()
+        if (this::screenController.isInitialized) {
+            screenController.stop()
         }
     }
 
