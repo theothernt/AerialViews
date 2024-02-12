@@ -3,22 +3,20 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
-import java.util.Locale
 
 class TestActivity : Activity() {
     private lateinit var videoController: VideoController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Log.i(TAG, "onCreate")
         // Setup
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
@@ -27,7 +25,7 @@ class TestActivity : Activity() {
     override fun onResume() {
         super.onResume()
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        // LoggingHelper.logScreenView("Test Screensaver", TAG)
+        LoggingHelper.logScreenView("Test Screensaver", TAG)
     }
 
     override fun onPause() {
@@ -37,25 +35,12 @@ class TestActivity : Activity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        // Log.i(TAG, "onAttachedToWindow")
-
         // Start playback, etc
-        videoController = if (!GeneralPrefs.localeScreensaver.startsWith("default")) {
-            val locale = LocaleHelper.localeFromString(GeneralPrefs.localeScreensaver)
-
-            if (GeneralPrefs.clockForceLatinDigits) {
-                Locale.setDefault(Locale.UK)
-            } else {
-                Locale.setDefault(locale)
-            }
-
-            val config = Configuration(this.resources.configuration)
-            config.setLocale(locale)
-            val context = createConfigurationContext(config)
-            // Log.i(TAG, "Locale: ${GeneralPrefs.localeScreensaver}")
-            VideoController(context)
-        } else {
+        videoController = if (GeneralPrefs.localeScreensaver.startsWith("default")) {
             VideoController(this)
+        } else {
+            val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
+            VideoController(altContext)
         }
         setContentView(videoController.view)
     }
@@ -150,7 +135,6 @@ class TestActivity : Activity() {
 
     override fun onStop() {
         super.onStop()
-        // Log.i(TAG, "onStop")
         // Stop playback, animations, etc
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (this::videoController.isInitialized) {
@@ -160,7 +144,6 @@ class TestActivity : Activity() {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        // Log.i(TAG, "onDetachedFromWindow")
         // Remove resources
     }
 
