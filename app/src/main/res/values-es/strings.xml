@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="about_date_title">Fecha de compilación</string>
   <string name="about_version_title">Versión</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
@@ -8,7 +8,7 @@
   <string name="advanced_locale_restart_app_summary">La aplicación debe ser reiniciada para cambiar la configuración regional de los menús</string>
   <string name="advanced_locale_restart_app_title">Reiniciar Aplicación</string>
   <string name="advanced_locale_screensaver_title">Configuración regional del texto del protector de pantalla (reloj, ubicación)</string>
-  <string name="advanced_philips_dolby_vision_fix_summary">Corrige la reproducción de Dolby Vision en algunos televisores Philips viejos</string>
+  <string name="advanced_philips_dolby_vision_fix_summary" tools:ignore="Typos">Corrige la reproducción de Dolby Vision en algunos televisores Philips viejos</string>
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
@@ -76,7 +76,7 @@
   <string name="capabilities_decoders_title">Decodificadores de vídeo</string>
   <string name="capabilities_device_title">Dispositivo</string>
   <string name="capabilities_display_title">TV/Pantalla</string>
-  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+  <string name="capabilities_dolby_vision" tools:ignore="Typos">Dolby Vision: %1$s</string>
   <string name="capabilities_found">Se encuentra</string>
   <string name="capabilities_hevc">HEVC: %1$s</string>
   <string name="capabilities_max_video_resolution">Resolución de vídeo máxima: %1$s</string>
@@ -84,7 +84,7 @@
   <string name="capabilities_no">No</string>
   <string name="capabilities_not_found">No se encuentra</string>
   <string name="capabilities_resolution_title">Resolución</string>
-  <string name="capabilities_supports_dolby_vision">Soporta Dolby Vision: %1$s</string>
+  <string name="capabilities_supports_dolby_vision" tools:ignore="Typos">Soporta Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Soporta HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Resolución de interfaz: %1$s</string>
   <string name="capabilities_yes">Sí</string>

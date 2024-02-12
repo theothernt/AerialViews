@@ -51,6 +51,7 @@ class DreamActivity : DreamService() {
         setContentView(videoController.view)
     }
 
+    @Suppress("EmptyMethod")
     override fun onDreamingStarted() {
         super.onDreamingStarted()
         // LoggingHelper.logScreenView("Screensaver", TAG)
@@ -155,6 +156,7 @@ class DreamActivity : DreamService() {
         }
     }
 
+    @Suppress("EmptyMethod")
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         // Log.i(TAG, "onDetachedFromWindow")

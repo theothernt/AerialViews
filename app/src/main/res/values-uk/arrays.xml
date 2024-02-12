@@ -109,16 +109,4 @@
         <item>800/Extra Bold</item>
         <item>900/Heavy</item>
     </string-array>
-    <string-array name="appearance_font_weight_values" translatable="false">
-        <item>100</item>
-        <item>200</item>
-        <item>300</item>
-        <item>400</item>
-        <item>500</item>
-        <item>600</item>
-        <item>700</item>
-        <item>800</item>
-        <item>900</item>
-    </string-array>
-    <string name="appearance_font_weight_default" translatable="false">300</string>
 </resources>

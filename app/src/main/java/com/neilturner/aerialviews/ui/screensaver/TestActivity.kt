@@ -1,5 +1,3 @@
-@file:Suppress("unused", "unused", "RedundantOverride", "RedundantOverride", "RedundantOverride")
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity

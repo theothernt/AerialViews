@@ -122,6 +122,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         return found.map { item -> item.name }
     }
 
+    @Suppress("JoinDeclarationAndAssignment")
     private fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
         val selected = mutableListOf<String>()

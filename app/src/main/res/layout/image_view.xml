@@ -6,7 +6,7 @@
         android:layout_height="match_parent">
 
         <com.neilturner.aerialviews.ui.core.ImagePlayerView
-            android:id="@+id/player"
+            android:id="@+id/image_player"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 

@@ -68,11 +68,11 @@ class ScreenController(private val context: Context) :
         overlayView = binding.overlayView
 
         videoView = binding.videoView
-        videoPlayer = videoView.player
+        videoPlayer = videoView.videoPlayer
         videoPlayer.setOnPlayerListener(this)
 
         imageView = binding.imageView
-        imagePlayer = imageView.player
+        imagePlayer = imageView.imagePlayer
         imagePlayer.setOnPlayerListener(this)
         imageView.root.setBackgroundColor(Color.BLACK)
 
@@ -215,10 +215,10 @@ class ScreenController(private val context: Context) :
             .withEndAction {
                 // Hide content views after faded out
                 videoView.root.visibility = View.INVISIBLE
-                videoView.player.stop()
+                videoView.videoPlayer.stop()
 
                 imageView.root.visibility = View.INVISIBLE
-                imageView.player.stop()
+                imageView.imagePlayer.stop()
 
                 // Pick next/previous video
                 val media = if (!previousItem) {
