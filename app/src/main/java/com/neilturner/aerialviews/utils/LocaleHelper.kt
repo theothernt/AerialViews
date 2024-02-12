@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.RawRes
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import java.io.InputStream
 import java.text.Bidi
 import java.util.Locale
@@ -48,5 +49,19 @@ object LocaleHelper {
 
     fun isLtrText(text: String): Boolean {
         return Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isLeftToRight
+    }
+
+    fun alternateLocale(context: Context, locale: String): Context {
+        val altLocale = localeFromString(locale)
+
+        if (GeneralPrefs.clockForceLatinDigits) {
+            Locale.setDefault(Locale.UK)
+        } else {
+            Locale.setDefault(altLocale)
+        }
+
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(altLocale)
+        return context.createConfigurationContext(config)
     }
 }
