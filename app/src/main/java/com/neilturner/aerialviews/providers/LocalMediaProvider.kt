@@ -60,9 +60,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
 
         // Filter out non-video, non-image files
-        if (LocalMediaPrefs.mediaType == MediaType.VIDEOS ||
-            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
+        if (LocalMediaPrefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -70,9 +68,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             )
         }
 
-        if (LocalMediaPrefs.mediaType == MediaType.IMAGES ||
-            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
+        if (LocalMediaPrefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -81,7 +77,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
         excluded = files.size - selected.size
 
-        for (file in files) {
+        for (file in selected) {
             val uri = Uri.parse(file)
             media.add(AerialMedia(uri))
         }
@@ -142,9 +138,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val files = mediaStoreVideosAndImages()
 
         // Filter out non-video, non-image files
-        if (LocalMediaPrefs.mediaType == MediaType.VIDEOS ||
-            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
+        if (LocalMediaPrefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -152,9 +146,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             )
         }
 
-        if (LocalMediaPrefs.mediaType == MediaType.IMAGES ||
-            LocalMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
+        if (LocalMediaPrefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -163,7 +155,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
         excluded = files.size - selected.size
 
-        for (file in files) {
+        for (file in selected) {
             val uri = Uri.parse(file)
             if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder)) {
                 continue
