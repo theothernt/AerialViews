@@ -17,6 +17,12 @@
             app:title="@string/sources_comm2_title"
             app:summary="@string/sources_comm2_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
+
+        <Preference
+            app:isPreferenceVisible="false"
+            app:title="@string/sources_webdav_title"
+            app:summary="@string/sources_webdav_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.WebdavVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_local">

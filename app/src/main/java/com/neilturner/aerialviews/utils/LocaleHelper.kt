@@ -33,7 +33,7 @@ object LocaleHelper {
         return context.createConfigurationContext(config).resources.openRawResource(res)
     }
 
-    fun localeFromString(locale: String): Locale {
+    private fun localeFromString(locale: String): Locale {
         val parts = locale.split("-")
         if (parts.size == 1) {
             return Locale(parts[0])

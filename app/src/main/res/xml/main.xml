@@ -4,8 +4,8 @@
 
     <PreferenceCategory app:title="@string/app_name">
         <Preference
-            app:title="@string/settings_video_sources_title"
-            app:summary="@string/settings_video_sources_summary"
+            app:title="@string/settings_media_sources_title"
+            app:summary="@string/settings_media_sources_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.SourcesFragment"/>
 
         <Preference
