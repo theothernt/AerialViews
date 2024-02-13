@@ -264,7 +264,7 @@
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
-    <string name="category_all_other_videos">Все остальные видео</string>
+    <string name="category_all_other_media">All other videos and images</string>
 
     <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
 

@@ -273,8 +273,8 @@
     <string name="appearance_date_custom_example">e.g.</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos</string>
-    <string name="category_all_other_videos">All other videos</string>
+    <string name="category_apple_and_community_videos">Apple and Community videos only</string>
+    <string name="category_all_other_media">All other videos and images</string>
 
     <string name="appearance_show_location_title">Show location or points of interest</string>
 

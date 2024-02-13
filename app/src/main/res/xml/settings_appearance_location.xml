@@ -13,7 +13,7 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_all_other_videos">
+        <PreferenceCategory app:title="@string/category_all_other_media">
                 <ListPreference
                     app:defaultValue="@string/filename_as_location_default"
                     app:entries="@array/filename_as_location_entries"

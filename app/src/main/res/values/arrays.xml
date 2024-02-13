@@ -90,7 +90,7 @@
     <string-array name="filename_as_location_summary_entries">
         <item>Disabled</item>
         <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-        <item>Use filename as-is eg. \'Flying toward Mount Pilatus.mp4\' becomes \'Flying toward Mount Pilatus\'</item>
+        <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
     </string-array>
 
     <!-- Slots -->

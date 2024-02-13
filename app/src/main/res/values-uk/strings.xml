@@ -264,7 +264,7 @@
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
-    <string name="category_all_other_videos">Всі інші відео</string>
+    <string name="category_all_other_media">All other videos and images</string>
 
     <string name="appearance_show_location_title">"Показувати місце розташування відео, назву або пам'ятки"</string>
 

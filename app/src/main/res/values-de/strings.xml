@@ -263,7 +263,7 @@
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple und Community-Videos</string>
-    <string name="category_all_other_videos">Alle anderen Videos</string>
+    <string name="category_all_other_media">All other videos and images</string>
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
