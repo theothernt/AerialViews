@@ -225,8 +225,8 @@
   <string name="settings_system_options_error">无法打开设备的屏保选项</string>
   <string name="settings_system_options_removed">该功能已被制造商删除
 请访问 Aerial Views 网站了解更多详情</string>
-  <string name="settings_video_sources_summary">播放来自互联网、USB 存储和局域网的视频</string>
-  <string name="settings_video_sources_title">视频来源</string>
+  <string name="settings_media_sources_title">Media Sources</string>
+  <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
   <string name="sources_apple_summary">使用互联网在线播放苹果官方视频</string>
   <string name="sources_apple_title">Apple 官方视频</string>
   <string name="sources_comm1_summary">使用互联网在线播放这些社区视频</string>

@@ -20,8 +20,8 @@
     <string name="videos_quality_summary">Sélectionnez la qualité de la vidéo</string>
 
     <!-- Main -->
-    <string name="settings_video_sources_title">Source Vidéo</string>
-    <string name="settings_video_sources_summary">Play videos from internet, USB storage, and network sources</string>
+    <string name="settings_media_sources_title">Media Sources</string>
+    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
 
     <string name="settings_settings_title">Réglages</string>
     <string name="settings_settings_summary">Change performance, playlist, and appearance options</string>

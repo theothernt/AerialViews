@@ -21,8 +21,8 @@
     <string name="videos_quality_summary">Выберите качество видео</string>
 
     <!-- Main -->
-    <string name="settings_video_sources_title">Источники видео</string>
-    <string name="settings_video_sources_summary">Воспроизведение видео из Интернета, USB-накопителей и сетевых источников</string>
+    <string name="settings_media_sources_title">Media Sources</string>
+    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
 
     <string name="settings_settings_title">Настройки</string>
     <string name="settings_settings_summary">Изменить параметры производительности, плейлиста и внешнего вида</string>

@@ -224,8 +224,8 @@
   <string name="settings_system_options">Abrir opciones de sistema de protector de pantalla</string>
   <string name="settings_system_options_error">No es posible abrir las opciones de protector de pantalla de tu dispositivo</string>
   <string name="settings_system_options_removed">Esta característica fue eliminada por el fabricante. Por favor visite el sitio web de Aerial Views para más detalles</string>
-  <string name="settings_video_sources_summary">Reproducir vídeos desde Internet, USB o Red</string>
-  <string name="settings_video_sources_title">Fuentes de los Vídeos</string>
+  <string name="settings_media_sources_title">Media Sources</string>
+  <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
   <string name="sources_apple_summary">Reproduce vídeos de Apple usando tu conexión a Internet</string>
   <string name="sources_apple_title">Vídeos de Apple</string>
   <string name="sources_comm1_summary">Reproduce estos vídeos de la comunidad usando tu conexión a Internet</string>
