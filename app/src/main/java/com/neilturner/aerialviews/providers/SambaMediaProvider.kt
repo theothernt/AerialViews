@@ -10,6 +10,7 @@ import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MediaType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -108,8 +109,11 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         shareName: String,
         path: String
     ): Pair<List<String>, String> {
-        val files = mutableListOf<String>()
-        val validFiles = mutableListOf<String>()
+        val res = context.resources!!
+        val selected = mutableListOf<String>()
+        val excluded: Int
+        val videos: Int
+        val images: Int
 
         // SMB Config
         val config: SmbConfig
@@ -117,7 +121,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             config = SambaHelper.buildSmbConfig()
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(files, "Failed to create SMB config")
+            return Pair(selected, "Failed to create SMB config")
         }
 
         // SMB Client
@@ -127,7 +131,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             connection = smbClient.connect(hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(files, "Failed to connect, hostname error")
+            return Pair(selected, "Failed to connect, hostname error")
         }
 
         // SMB Auth + session
@@ -137,7 +141,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             session = connection.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(files, "Authentication failed. Please check the username and password, or server settings if using anonymous login")
+            return Pair(selected, "Authentication failed. Please check the username and password, or server settings if using anonymous login")
         }
 
         val share: DiskShare
@@ -145,37 +149,42 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             share = session?.connectShare(shareName) as DiskShare
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(files, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
+            return Pair(selected, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
-        files.addAll(listFilesAndFoldersRecursive(share, path))
+        val files = listFilesAndFoldersRecursive(share, path)
         smbClient.close()
 
-        // Filter out non-video, non-image files
-        if (SambaMediaPrefs.mediaType == MediaType.VIDEOS ||
-            SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
-            validFiles.addAll(
+        // Add videos
+        if (prefs.mediaType != MediaType.IMAGES) {
+            selected.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedVideoType(item)
                 }
             )
         }
-        if (SambaMediaPrefs.mediaType == MediaType.IMAGES ||
-            SambaMediaPrefs.mediaType == MediaType.VIDEOS_IMAGES
-        ) {
-            validFiles.addAll(
+        videos = selected.size
+
+        // Add images
+        if (prefs.mediaType != MediaType.VIDEOS) {
+            selected.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedImageType(item)
                 }
             )
         }
+        images = selected.size - videos
+        excluded = files.size - selected.size
 
-        // Show user normal auth vs anonymous vs guest?
-        val excluded = files.size - validFiles.size
-        var message = "Files found on samba share: ${files.size + excluded}\n"
-        message += "Videos/Images with unsupported file extensions: $excluded\n"
-        message += "Videos/Images selected for playback: ${validFiles.size}"
-        return Pair(validFiles, message)
+        var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
+        message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
+        if (prefs.mediaType != MediaType.IMAGES) {
+            message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
+        }
+        if (prefs.mediaType != MediaType.VIDEOS) {
+            message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
+        }
+        message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)
+        return Pair(selected, message)
     }
 
     private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {

@@ -89,6 +89,7 @@
 
     <string name="local_videos_media_store_filter_folder_title">Specify a folder name</string>
     <string name="local_videos_media_store_filter_folder_summary">If you store media in e.g. /Videos/Aerial/ using \'Aerial\' will filter out media from other folders</string>
+    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
 
     <string name="local_videos_legacy_summary">Specify a single folder where videos and images are stored</string>
 
@@ -105,15 +106,12 @@
     <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
     <string name="local_videos_legacy_no_files_found">No files found</string>
 
-    <string name="local_videos_legacy_test_summary1">Videos/Images found in folder: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Videos/Images with unsupported file extensions: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Videos/Images selected for playback: %1$s</string>
-
-    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
-    <string name="local_videos_media_store_test_summary1">Videos/Images found by media scanner: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Videos/Images with unsupported file extensions: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Videos/Images removed by filter: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Videos/Images selected for playback: %1$s</string>
+    <string name="local_media_test_summary1">Files found: %1$s</string>
+    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="local_media_test_summary3">Videos found: %1$s</string>
+    <string name="local_media_test_summary4">Images found: %1$s</string>
+    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
 
     <string name="local_videos_permission_denied">Permission Denied</string>
     <string name="local_videos_test_results">Test results</string>
@@ -153,6 +151,12 @@
 
     <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
     <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
+
+    <string name="samba_media_test_summary1">Files found: %1$s</string>
+    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="samba_media_test_summary3">Videos found: %1$s</string>
+    <string name="samba_media_test_summary4">Images found: %1$s</string>
+    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
 
     <string name="samba_videos_import_failed">Import failed</string>
     <string name="samba_videos_import_success">Import successful</string>

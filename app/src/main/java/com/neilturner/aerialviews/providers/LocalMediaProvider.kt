@@ -44,6 +44,8 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val selected = mutableListOf<String>()
         val media = mutableListOf<AerialMedia>()
         val excluded: Int
+        val images: Int
+        val videos: Int
 
         if (prefs.legacy_volume.isEmpty()) {
             return Pair(media, res.getString(R.string.local_videos_legacy_no_volume))
@@ -60,21 +62,23 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
 
         // Filter out non-video, non-image files
-        if (LocalMediaPrefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
                 }
             )
         }
+        videos = selected.size
 
-        if (LocalMediaPrefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
                 }
             )
         }
+        images = selected.size - videos
         excluded = files.size - selected.size
 
         for (file in selected) {
@@ -82,10 +86,15 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             media.add(AerialMedia(uri))
         }
 
-        var message = String.format(res.getString(R.string.local_videos_legacy_test_summary1), files.size) + "\n"
-        message += String.format(res.getString(R.string.local_videos_legacy_test_summary2), excluded) + "\n"
-        message += String.format(res.getString(R.string.local_videos_legacy_test_summary3), media.size)
-
+        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
+        if (prefs.mediaType != MediaType.IMAGES) {
+            message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
+        }
+        if (prefs.mediaType != MediaType.VIDEOS) {
+            message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
+        }
+        message += String.format(res.getString(R.string.local_media_test_summary6), media.size)
         return Pair(media, message)
     }
 
@@ -129,6 +138,8 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val media = mutableListOf<AerialMedia>()
         val excluded: Int
         val filtered: Int
+        val images: Int
+        val videos: Int
 
         if (prefs.filter_folder.isEmpty() &&
             prefs.filter_enabled
@@ -138,24 +149,28 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
         val files = mediaStoreVideosAndImages()
 
-        // Filter out non-video, non-image files
-        if (LocalMediaPrefs.mediaType != MediaType.IMAGES) {
+        // Add video
+        if (prefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
                 }
             )
         }
+        videos = selected.size
 
-        if (LocalMediaPrefs.mediaType != MediaType.VIDEOS) {
+        // Add images
+        if (prefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
                 }
             )
         }
+        images = selected.size - videos
         excluded = files.size - selected.size
 
+        // Apply folder filter
         for (file in selected) {
             val uri = Uri.parse(file)
             if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder)) {
@@ -165,11 +180,16 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
         filtered = selected.size - media.size
 
-        var message = String.format(res.getString(R.string.local_videos_media_store_test_summary1), files.size) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary2), excluded) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary3), filtered) + "\n"
-        message += String.format(res.getString(R.string.local_videos_media_store_test_summary4), media.size)
-
+        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
+        if (prefs.mediaType != MediaType.IMAGES) {
+            message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
+        }
+        if (prefs.mediaType != MediaType.VIDEOS) {
+            message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
+        }
+        message += String.format(res.getString(R.string.local_media_test_summary5), filtered) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary6), media.size)
         return Pair(media, message)
     }
 
