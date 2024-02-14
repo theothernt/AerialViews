@@ -102,16 +102,13 @@
     <string name="local_videos_legacy_no_folder_found">Ordner existiert nicht</string>
     <string name="local_videos_legacy_no_files_found">Keine Dateien gefunden</string>
 
-    <string name="local_videos_legacy_test_summary1">Videos gefunden im Ordner: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Videos mit nicht unterstützen Dateierweiterungen: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Videos zum Abspielen ausgewählt: %1$s</string>
-
     <string name="local_videos_media_store_no_folder">Kein Ordner für den Filter angegeben</string>
-    <string name="local_videos_media_store_test_summary1">Videos vom Medienscanner gefunden: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Videos mit nicht unterstützten Dateierweiterungen: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Videos vom Filter entfernt: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Videos zum Abspielen ausgewählt: %1$s</string>
-
+    <string name="local_media_test_summary1">Files found: %1$s</string>
+    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="local_media_test_summary3">Videos found: %1$s</string>
+    <string name="local_media_test_summary4">Images found: %1$s</string>
+    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
     <string name="local_videos_permission_denied">Erlaubnis verweigert</string>
     <string name="local_videos_test_results">Testresultate</string>
 
@@ -142,6 +139,12 @@
     <string name="samba_videos_import_export_settings_summary">SMB-Zugangsdaten im Downloadordner Sichern oder daraus Wiederherstellen</string>
 
     <string name="samba_videos_test_connection">Teste Verbindungseinstellungen</string>
+
+    <string name="samba_media_test_summary1">Files found: %1$s</string>
+    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="samba_media_test_summary3">Videos found: %1$s</string>
+    <string name="samba_media_test_summary4">Images found: %1$s</string>
+    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
 
     <string name="samba_videos_import_failed">Import fehlgeschlagen</string>
     <string name="samba_videos_import_success">Import erfolgreich</string>

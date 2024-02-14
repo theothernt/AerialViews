@@ -103,15 +103,14 @@
     <string name="local_videos_legacy_no_folder_found">Папка не существует</string>
     <string name="local_videos_legacy_no_files_found">Файлы не найдены</string>
 
-    <string name="local_videos_legacy_test_summary1">Видео найдены в папке: %1$s</string>
-    <string name="local_videos_legacy_test_summary2">Видео с неподдерживаемыми расширениями файлов: %1$s</string>
-    <string name="local_videos_legacy_test_summary3">Видео выбраны для воспроизведения: %1$s</string>
+    <string name="local_media_test_summary1">Files found: %1$s</string>
+    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="local_media_test_summary3">Videos found: %1$s</string>
+    <string name="local_media_test_summary4">Images found: %1$s</string>
+    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
 
     <string name="local_videos_media_store_no_folder">Для фильтра не указана папка</string>
-    <string name="local_videos_media_store_test_summary1">Видео найденые медиасканером: %1$s</string>
-    <string name="local_videos_media_store_test_summary2">Видео с неподдерживаемыми расширениями файлов: %1$s</string>
-    <string name="local_videos_media_store_test_summary3">Видео удалены фильтром: %1$s</string>
-    <string name="local_videos_media_store_test_summary4">Видео выбраные для воспроизведения: %1$s</string>
 
     <string name="local_videos_permission_denied">Доступ запрещен</string>
     <string name="local_videos_test_results">Результаты теста</string>
@@ -143,6 +142,12 @@
     <string name="samba_videos_import_export_settings_summary">Импортирует или экспортирует ваши учетные данные SMB в папку Загрузки</string>
 
     <string name="samba_videos_test_connection">Протестировать настройки подключения</string>
+
+    <string name="samba_media_test_summary1">Files found: %1$s</string>
+    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="samba_media_test_summary3">Videos found: %1$s</string>
+    <string name="samba_media_test_summary4">Images found: %1$s</string>
+    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
 
     <string name="samba_videos_import_failed">Импорт не удался</string>
     <string name="samba_videos_import_success">Импорт выполнен успешно</string>

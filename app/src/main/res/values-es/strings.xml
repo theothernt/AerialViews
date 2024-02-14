@@ -132,10 +132,12 @@
   <string name="local_videos_legacy_no_folder_found">La carpeta no existe</string>
   <string name="local_videos_legacy_no_volume">Volumen no especificado</string>
   <string name="local_videos_legacy_summary">Especifique una sola carpeta dónde se almacenen los vídeos</string>
-  <string name="local_videos_legacy_test_summary1">No se encontraron vídeos en la carpeta: %1$s</string>
-  <string name="local_videos_legacy_test_summary2">Vídeos con extensiones de archivo no compatibles: %1$s</string>
-  <string name="local_videos_legacy_test_summary3">Vídeos seleccionados para reproducción: %1$s</string>
-  <string name="local_videos_legacy_volume_summary">Ningún volumen seleccionado</string>
+  <string name="local_media_test_summary1">Files found: %1$s</string>
+  <string name="local_media_test_summary2">Unsupported files: %1$s</string>
+  <string name="local_media_test_summary3">Videos found: %1$s</string>
+  <string name="local_media_test_summary4">Images found: %1$s</string>
+  <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+  <string name="local_media_test_summary6">Selected for playback: %1$s</string><string name="local_videos_legacy_volume_summary">Ningún volumen seleccionado</string>
   <string name="local_videos_legacy_volume_title">Seleccione un volumen</string>
   <string name="local_videos_media_store_filter_enabled_summary">Sólo reproducir vídeos de una carpeta específica o carpetas en dispositivo, USB, etc</string>
   <string name="local_videos_media_store_filter_enabled_title">Usar filtro de carpeta</string>
@@ -143,10 +145,6 @@
   <string name="local_videos_media_store_filter_folder_title">Especifica un nombre de carpeta</string>
   <string name="local_videos_media_store_no_folder">No se ha especificado ninguna carpeta para filtrar</string>
   <string name="local_videos_media_store_summary">Android escanea todos los almacenamientos locales, dispositivos USB, etc por vídeos</string>
-  <string name="local_videos_media_store_test_summary1">Vídeos encontrados por el escáner de medios: %1$s</string>
-  <string name="local_videos_media_store_test_summary2">Vídeos con extensiones de archivo no compatibles: %1$s</string>
-  <string name="local_videos_media_store_test_summary3">Vídeos eliminados por el filtro: %1$s</string>
-  <string name="local_videos_media_store_test_summary4">Vídeos seleccionados para reproducción: %1$s</string>
   <string name="local_videos_permission_denied">Permiso denegado</string>
   <string name="local_videos_search_test">Prueba los ajustes de búsqueda local</string>
   <string name="local_videos_search_type_title">Elige como los vídeos se buscan</string>
@@ -184,6 +182,11 @@
   <string name="samba_videos_file_not_found">No puede encontrar el archivo de configuración SMB en la carpeta de descargas: %1$s</string>
   <string name="samba_videos_hostname_summary">Dirección IP del servidor</string>
   <string name="samba_videos_hostname_title">Nombre de equipo</string>
+  <string name="samba_media_test_summary1">Files found: %1$s</string>
+  <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+  <string name="samba_media_test_summary3">Videos found: %1$s</string>
+  <string name="samba_media_test_summary4">Images found: %1$s</string>
+  <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
   <string name="samba_videos_import_export_settings_summary">Importa o exporta sus credenciales SMB a la carpeta de descargas</string>
   <string name="samba_videos_import_export_settings_title">Ajustes de importación/exportación</string>
   <string name="samba_videos_import_failed">Importación fallida</string>

@@ -132,10 +132,12 @@
   <string name="local_videos_legacy_no_folder_found">文件夹不存在</string>
   <string name="local_videos_legacy_no_volume">未指定存储卷</string>
   <string name="local_videos_legacy_summary">指定存储视频的单个文件夹（Android 12 或更低版本）</string>
-  <string name="local_videos_legacy_test_summary1">在文件夹中找到视频： %1$s</string>
-  <string name="local_videos_legacy_test_summary2">不支持的视频文件扩展名：%1$s</string>
-  <string name="local_videos_legacy_test_summary3">选择播放的视频： %1$s</string>
-  <string name="local_videos_legacy_volume_summary">未选择存储卷</string>
+  <string name="local_media_test_summary1">Files found: %1$s</string>
+  <string name="local_media_test_summary2">Unsupported files: %1$s</string>
+  <string name="local_media_test_summary3">Videos found: %1$s</string>
+  <string name="local_media_test_summary4">Images found: %1$s</string>
+  <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
+  <string name="local_media_test_summary6">Selected for playback: %1$s</string>  <string name="local_videos_legacy_volume_summary">未选择存储卷</string>
   <string name="local_videos_legacy_volume_title">选择存储卷</string>
   <string name="local_videos_media_store_filter_enabled_summary">仅播放本地、USB 等设备上的一个或多个特定文件夹中的视频</string>
   <string name="local_videos_media_store_filter_enabled_title">使用文件夹过滤器</string>
@@ -143,10 +145,6 @@
   <string name="local_videos_media_store_filter_folder_title">指定文件夹名称</string>
   <string name="local_videos_media_store_no_folder">未为筛选器指定文件夹</string>
   <string name="local_videos_media_store_summary">Android 系统会扫描所有本地、USB 等设备以查找视频</string>
-  <string name="local_videos_media_store_test_summary1">媒体扫描仪找到的视频： %1$s</string>
-  <string name="local_videos_media_store_test_summary2">不支持的视频文件扩展名：%1$s</string>
-  <string name="local_videos_media_store_test_summary3">被过滤器移除的视频：%1$s</string>
-  <string name="local_videos_media_store_test_summary4">选择播放的视频： %1$s</string>
   <string name="local_videos_permission_denied">权限被拒绝</string>
   <string name="local_videos_search_test">测试本地搜索设置</string>
   <string name="local_videos_search_type_title">选择查找视频的方式</string>
@@ -184,6 +182,11 @@
   <string name="samba_videos_file_not_found">在下载文件夹中找不到 SMB 设置文件： %1$s</string>
   <string name="samba_videos_hostname_summary">服务器的 IP 地址</string>
   <string name="samba_videos_hostname_title">主机名</string>
+  <string name="samba_media_test_summary1">Files found: %1$s</string>
+  <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
+  <string name="samba_media_test_summary3">Videos found: %1$s</string>
+  <string name="samba_media_test_summary4">Images found: %1$s</string>
+  <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
   <string name="samba_videos_import_export_settings_summary">将 SMB 凭据导入或导出到下载文件夹</string>
   <string name="samba_videos_import_export_settings_title">导入/导出设置</string>
   <string name="samba_videos_import_failed">导入失败</string>
