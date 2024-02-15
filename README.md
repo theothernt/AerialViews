@@ -21,6 +21,12 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 * Skip videos, change speed with the d-pad
 * Refresh rate switching
 
+## Support the project
+
+If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.com/theothernt).
+
+[![Ko-fi badge](docs/images/kofi_badge.png)](https://ko-fi.com/theothernt)
+
 ## How to get Aerial Views...
 
 [![Google Play Store badge](https://play.google.com/intl/en_us/badges/images/badge_new.png)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews) &nbsp;&nbsp;
@@ -28,9 +34,17 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
+## Translations
+
+If Aerial Views is not available in your language but you have some free time to help translate menu text and video descriptions, please get in touch!
+
+We use the [Lokalise](https://lokalise.com/) platform to coordinate translations for Aerial Views and thank them for their support of this open-source project.
+
+[![Lokalise logo](docs/images/lokalise_logo.png)](https://lokalise.com/)
+
 ## Where to download videos for offline/local playback
 
-Please visit this web page to download the videos from...
+Follow these links to download the videos from...
 
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
@@ -96,3 +110,16 @@ To restore the default screensaver, use the following ADB command...
 ```sh
 adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
 ```
+
+## Weather data
+Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
+
+[![OpenWeather logo](docs/images/openweather_logo.png)](https://openweathermap.org/)
+
+## About
+
+Aerial Views is based on [Aerial Dream](https://github.com/cachapa/AerialDream), which was created by Daniel Cachapa in late 2015.
+
+Aerial Views started in early 2020 as a fork with a couple of fixes and features to improve the experience on an old Sony Android TV. Around this time, Aerial Dream was not in active development anymore.
+
+Shortly after putting the code on GitHub, others found the fork and started requesting new builds with fixes and additional features. This led to the eventual release of Aerial Views on the Google Play Store in 2022, and later, the Amazon Appstore.
