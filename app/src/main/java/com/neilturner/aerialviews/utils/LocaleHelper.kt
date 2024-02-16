@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.RawRes
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import java.io.InputStream
 import java.text.Bidi
@@ -52,7 +53,11 @@ object LocaleHelper {
     }
 
     fun alternateLocale(context: Context, locale: String): Context {
-        val altLocale = localeFromString(locale)
+        val altLocale = if (locale.startsWith("random")) {
+            localeFromString(randomLocale(context))
+        } else {
+            localeFromString(locale)
+        }
 
         if (GeneralPrefs.clockForceLatinDigits) {
             Locale.setDefault(Locale.UK)
@@ -63,5 +68,16 @@ object LocaleHelper {
         val config = Configuration(context.resources.configuration)
         config.setLocale(altLocale)
         return context.createConfigurationContext(config)
+    }
+
+    private fun randomLocale(context: Context): String {
+        val res = context.resources
+        val locales = res.getStringArray(R.array.locale_screensaver_values).toMutableList()
+
+        // Remove 'default' and 'random' values leaving only valid locales
+        locales.removeFirst()
+        locales.removeLast()
+
+        return locales.random()
     }
 }
