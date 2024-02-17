@@ -79,8 +79,14 @@ class ImagePlayerView : AppCompatImageView {
             .target(this)
 
         if (FileHelper.isSambaVideo(uri)) {
-            val byteArray = byteArrayFromSambaFile(uri)
-            request.data(byteArray)
+            try {
+                val byteArray = byteArrayFromSambaFile(uri)
+                request.data(byteArray)
+            } catch (ex: Exception) {
+                Log.e(TAG, "Exception while getting byte array from SMB share: ${ex.message}")
+                listener?.onImageError()
+                return
+            }
         } else {
             request.data(uri)
         }
