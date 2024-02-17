@@ -20,8 +20,8 @@
     <string name="videos_quality_summary">Videoqualität auswählen</string>
 
     <!-- Main -->
-    <string name="settings_media_sources_title">Media Sources</string>
-    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
+    <string name="settings_media_sources_title">Medienquellen</string>
+    <string name="settings_media_sources_summary">Videos und Bilder aus Internet, von USB-Speichern und Netzwerkquellen abspielen</string>
 
     <string name="settings_settings_title">Einstellungen</string>
     <string name="settings_settings_summary">Leistung, Wiedergabeliste und Aussehen anpassen</string>
@@ -103,12 +103,12 @@
     <string name="local_videos_legacy_no_files_found">Keine Dateien gefunden</string>
 
     <string name="local_videos_media_store_no_folder">Kein Ordner für den Filter angegeben</string>
-    <string name="local_media_test_summary1">Files found: %1$s</string>
-    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="local_media_test_summary3">Videos found: %1$s</string>
-    <string name="local_media_test_summary4">Images found: %1$s</string>
-    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
-    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
+    <string name="local_media_test_summary1">Gefundene Dateien: %1$s</string>
+    <string name="local_media_test_summary2">Nicht unterstützte Dateien: %1$s</string>
+    <string name="local_media_test_summary3">Gefundene Videos: %1$s</string>
+    <string name="local_media_test_summary4">Gefundene Bilder: %1$s</string>
+    <string name="local_media_test_summary5">Entfernt durch Filter: %1$s</string>
+    <string name="local_media_test_summary6">Ausgewählt zum Abspielen: %1$s</string>
     <string name="local_videos_permission_denied">Erlaubnis verweigert</string>
     <string name="local_videos_test_results">Testresultate</string>
 
@@ -140,11 +140,11 @@
 
     <string name="samba_videos_test_connection">Teste Verbindungseinstellungen</string>
 
-    <string name="samba_media_test_summary1">Files found: %1$s</string>
-    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="samba_media_test_summary3">Videos found: %1$s</string>
-    <string name="samba_media_test_summary4">Images found: %1$s</string>
-    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
+    <string name="samba_media_test_summary1">Gefundene Dateien: %1$s</string>
+    <string name="samba_media_test_summary2">Nicht unterstützte Dateien: %1$s</string>
+    <string name="samba_media_test_summary3">Gefundene Videos: %1$s</string>
+    <string name="samba_media_test_summary4">Gefundene Bilder: %1$s</string>
+    <string name="samba_media_test_summary5">Ausgewählt zum Abspielen: %1$s</string>
 
     <string name="samba_videos_import_failed">Import fehlgeschlagen</string>
     <string name="samba_videos_import_success">Import erfolgreich</string>
@@ -266,7 +266,7 @@
 
     <!-- Main / Settings / Appearance / Location -->
     <string name="category_apple_and_community_videos">Apple und Community-Videos</string>
-    <string name="category_all_other_media">All other videos and images</string>
+    <string name="category_all_other_media">Alle anderen Videos und Bilder</string>
 
     <string name="appearance_show_location_title">Zeige Aufnahmeort, Titel oder Sehenswürdigkeiten</string>
 
