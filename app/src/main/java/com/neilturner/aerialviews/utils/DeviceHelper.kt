@@ -2,7 +2,10 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
+import android.util.TypedValue
 import java.util.Locale
 
 object DeviceHelper {
@@ -63,6 +66,23 @@ object DeviceHelper {
         Build.PRODUCT.contains("vbox86p") ||
         Build.PRODUCT.contains("emulator") ||
         Build.PRODUCT.contains("simulator")
+
+    fun isPhone(context: Context): Boolean {
+        val metrics = context.resources.displayMetrics
+        val smallestSize = Math.min(metrics.widthPixels, metrics.heightPixels)
+        val tabletSize =
+            TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                600f,
+                context.resources.displayMetrics
+            )
+                .toInt()
+        return smallestSize < tabletSize
+    }
+
+    fun isTV(context: Context): Boolean {
+        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+    }
 
     fun isFireTV(): Boolean = deviceName().contains("AFT", true)
 
