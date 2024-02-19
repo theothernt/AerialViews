@@ -152,6 +152,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return Pair(selected, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
         }
         val files = listFilesAndFoldersRecursive(share, path)
+        connection.close()
         smbClient.close()
 
         // Add videos

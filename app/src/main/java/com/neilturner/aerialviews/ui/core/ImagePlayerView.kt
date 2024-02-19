@@ -105,24 +105,23 @@ class ImagePlayerView : AppCompatImageView {
 
         val config = SambaHelper.buildSmbConfig()
         val smbClient = SMBClient(config)
-        val connection = smbClient.connect(SambaMediaPrefs.hostName)
         val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
-        val session = connection?.authenticate(authContext)
-        val share = session?.connectShare(shareName) as DiskShare
 
-        val shareAccess = hashSetOf<SMB2ShareAccess>()
-        shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-
-        val file = share.openFile(
-            path,
-            EnumSet.of(AccessMask.GENERIC_READ),
-            null,
-            shareAccess,
-            SMB2CreateDisposition.FILE_OPEN,
-            null
-        )
-
-        return@withContext file.inputStream.readBytes()
+        smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
+            val session = connection?.authenticate(authContext)
+            val share = session?.connectShare(shareName) as DiskShare
+            val shareAccess = hashSetOf<SMB2ShareAccess>()
+            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+            val file = share.openFile(
+                path,
+                EnumSet.of(AccessMask.GENERIC_READ),
+                null,
+                shareAccess,
+                SMB2CreateDisposition.FILE_OPEN,
+                null
+            )
+            return@withContext file.inputStream.readBytes()
+        }
     }
 
     private fun setupFinishedRunnable() {
