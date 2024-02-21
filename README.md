@@ -69,49 +69,189 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
-## Chromecast with Google TV users
+## How to set Aerial Views as the default screensaver
 
-Unfortunately, as of July 2022, an update to Google TV removed user-interface option to set Aerial Views (or any other 3rd party screensaver) as default, or change the screensaver timeout.
+Overview of the steps…
 
-The only way to achieve this is...
+1. Enable Developer mode on your device and find its IP address
+2. Use a Mac, iPhone, PC or Android phone with the required software or app
+3. Connect to your Android/Google/Fire TV device
+4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
 
-1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
-2. Enable developer mode on your Android TV device
-3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  
-  ```sh
-  adb shell settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
-  ```
+<details>
+<summary>Enable Developer Mode on your Android TV</summary>
 
-To restore the default Ambient screensaver, use the following ADB command...
+Navigate to the Settings menu on your device, then to the About screen. Depending on the device…
+
+* _Settings > System > About_
+* _Settings > Device Preferences > About_
+* _Settings > About_
+
+Scroll down to Build and select Build several times until you get the message "You are now a developer!"
+
+Return to Settings and look for the newly enabled Developer options page…
+
+* _Settings > System > Developer options_
+* _Settings > Device Preferences > Developer options_
+* _Settings > Developer options_
+
+On the Developer options page, look for the “USB debugging” option and enable it.
+
+Next, find the IP address of your device. One way is to check the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
+</details>
+
+<details>
+<summary>Using an iPhone</summary>
+
+Find an iPhone app that is capable of running ADB commands, such as iSH Shell, which is free.
+
+Once installed, run the app and install the Android Tools with the following command…
+
+```sh
+apk add android-tools
+```
+
+To check if the ADB command is working, try typing…
+
+```sh
+adb version 
+```
+
+After pressing return, you should see something like this
+
+```sh
+Android Debug Bridge version 1.0.41
+Version  31.0.0p1-android-tools
+```
+
+Now you can execute ADB commands.
+</details>
+
+<details>
+<summary>Using an Android phone</summary>
+
+Find an iPhone app that is capable of running ADB commands, such as Remote ADB Shell, which is free.
+
+Once installed, run the app and connect to your device using its IP address.
+
+To confirm the connection, try a command like “ls” which should show a list of files and folder.
+
+Now you can execute ADB commands.
+</details>
+
+<details>
+<summary>Using a Mac</summary>
+
+Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac.
+
+To check if the ADB command is working, try typing…
+
+```sh
+adb version
+```
+
+After pressing return, you should see something like this
+
+```sh
+Android Debug Bridge version 1.0.41
+Version  35.0.0-11411520
+```
+
+Now you can execute ADB commands.
+</details>
+
+<details>
+<summary>Using a PC + Windows</summary>
+
+Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Windows.
+
+An alternate option is [Tiny ADB and Fastboot Tool (Portable version)](https://androidmtk.com/tiny-adb-and-fastboot-tool)but they both work in the same way.
+
+Extract the files to a folder. Then open a Terminal or Command Prompt and navigate to the folder.
+
+To check if the ADB command is working, try typing…
+
+```sh
+adb version
+```
+
+After pressing return, you should see something like this
+
+```sh
+Android Debug Bridge version 1.0.41
+Version  35.0.0-11411520
+```
+
+</details>
+
+<details>
+<summary>ADB command - set Aerial Views as the default screensaver</summary>
+
+Connect to your Android TV device and start a command shell…
+
+(If you’re using an Android phone, skip these two commands)
+
+```sh
+adb connect ip_address
+```
+
+```sh
+adb shell
+```
+
+Next, set Aerial Views as the default screensaver…
+
+```sh
+settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+```
+
+</details>
+
+<details>
+<summary>ADB command - change the screensaver timeout</summary>
+
+To change the default timeout use this command with a value in milliseconds. So, 5 minutes is 30000, 10 minutes is 60000 and so on.
+
+```sh
+settings put system screen_off_timeout 60000
+```
+
+</details>
+
+<details>
+<summary>How to revert back to the default screensaver</summary>
+
+For whatever reason, if you would like to stop using Aerial Views and revert back to the original screensaver, there are two options…
+
+* Reset your device. Doing so will also reset the screensaver preference
+* Use an ADB commands to enable the default screensaver, depending on your device
+
+To restore the default Google TV ambient screensaver...
 
 ```sh
 adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
 ```
 
-## Amazon Fire TV users
-
-Install the app from either the Amazon Appstore or sideload the APK.
-
-On a Fire TV device there is no user-interface option to set Aerial Views (or any other 3rd party screensaver) as default.
-
-The only way to achieve this is...
-
-1. Download and install the Android [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac, Windows or Linux
-2. Enable developer mode on your Android TV device
-3. Using ADB, connect to your device and run the following ADB command to set Aerial Views as the default screensaver:
-  
-  ```sh
-  adb shell settings put secure screensaver_components com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
-  ```
-
-To restore the default screensaver, use the following ADB command...
+To restore the default Fire TV screensaver...
 
 ```sh
 adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
 ```
 
+</details>
+
+<details>
+<summary>Why is this necessary?</summary>
+
+Google TV - In July 2022 Google released an update which removed the user-interface to change the screensaver timeout.
+
+Fire TV - Fire OS devices never had the user-interface to change to a 3rd party screensaver.
+
+ONN - The 2023 model (not 2021 model) ships with Android TV 12, and like the Google TV, it has removed the user-interface to change the screensaver or timeout
+</details>
+
 ## Weather data
+
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
 
 [![OpenWeather logo](docs/images/openweather_logo.png)](https://openweathermap.org/)
