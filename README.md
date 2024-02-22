@@ -16,8 +16,8 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Option to avoid burn-in on QD/OLED TVs
 * Play videos from your device, USB storage or network share
+* Option to avoid burn-in on QD/OLED TVs
 * Skip videos, change speed with the d-pad
 * Refresh rate switching
 
@@ -85,23 +85,37 @@ Here is an overview of the steps required to change to a 3rd party screensaver o
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
 
 <details>
-<summary>Enable Developer Mode on your Android TV</summary>
+<summary>Enable Developer Mode on your Android/Google TV</summary>
 
 Navigate to the Settings menu on your device, then to the About screen. Depending on the device…
 
 * _Settings > System > About_
 * _Settings > Device Preferences > About_
 
-Scroll down to Build and select Build several times until you get the message "You are now a developer!"
+Scroll down to __Build__ and select __Build__ several times until you get the message "You are now a developer!"
 
-Return to Settings and look for the newly enabled Developer options page…
+Return to __Settings__ and look for the newly enabled __Developer options__ page…
 
 * _Settings > System > Developer options_
 * _Settings > Device Preferences > Developer options_
 
-On the Developer options page, look for the “USB debugging” option and enable it.
+On the __Developer options__ page, look for the __USB debugging__ option and enable it.
 
 Next, find the IP address of your device. Try looking in the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
+</details>
+
+<details>
+<summary>Enable Developer Mode on Fire Stick/TV</summary>
+
+Open __Settings__, then navigate to __My Fire TV__ then the __About__ screen.
+
+Highlight the first option on the list, which is usually your device's name, and press the action button on your remote seven times.
+
+You'll now see a message confirming "You are now a developer", and it'll unlock the __Developer Options__ in the previous menu.
+
+Navigate to the __Developer Options__ page, look for the __ADB debugging__ option and enable it.
+
+Next, find the IP address of your device. Navigate to the __About__ then __Network__ screen, which will show your current IP address eg. 192.168.1.120
 </details>
 
 <details>
