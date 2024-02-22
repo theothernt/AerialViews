@@ -71,7 +71,13 @@ media automatically`
 
 ## How to set Aerial Views as the default screensaver
 
-Overview of the steps…
+The following devices have no user-interface to change the screensaver to a 3rd party one...
+
+* Chromecast with Google TV
+* onn. Google TV 4K Streaming Box 2023 (not 2021) model
+* Fire TV
+
+Here is an overview of the steps required to change to a 3rd party screensaver on those devices...
 
 1. Enable Developer mode on your device and find its IP address
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
@@ -85,7 +91,6 @@ Navigate to the Settings menu on your device, then to the About screen. Dependin
 
 * _Settings > System > About_
 * _Settings > Device Preferences > About_
-* _Settings > About_
 
 Scroll down to Build and select Build several times until you get the message "You are now a developer!"
 
@@ -93,17 +98,16 @@ Return to Settings and look for the newly enabled Developer options page…
 
 * _Settings > System > Developer options_
 * _Settings > Device Preferences > Developer options_
-* _Settings > Developer options_
 
 On the Developer options page, look for the “USB debugging” option and enable it.
 
-Next, find the IP address of your device. One way is to check the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
+Next, find the IP address of your device. Try looking in the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
 </details>
 
 <details>
-<summary>Using an iPhone</summary>
+<summary>Connect using an iPhone</summary>
 
-Find an iPhone app that is capable of running ADB commands, such as iSH Shell, which is free.
+Find an iPhone app that is capable of running ADB commands, [such as iSH Shell](https://ish.app/), which is free.
 
 Once installed, run the app and install the Android Tools with the following command…
 
@@ -128,21 +132,23 @@ Now you can execute ADB commands.
 </details>
 
 <details>
-<summary>Using an Android phone</summary>
+<summary>Connect using an Android phone</summary>
 
-Find an iPhone app that is capable of running ADB commands, such as Remote ADB Shell, which is free.
+Find an Android app that is capable of running ADB commands, [such as Remote ADB Shell](https://play.google.com/store/apps/details?id=com.cgutman.androidremotedebugger), which is free.
 
 Once installed, run the app and connect to your device using its IP address.
 
-To confirm the connection, try a command like “ls” which should show a list of files and folder.
+To confirm the connection, try a command like `ls` which should show a list of files and folder.
 
 Now you can execute ADB commands.
 </details>
 
 <details>
-<summary>Using a Mac</summary>
+<summary>Connect using a Mac</summary>
 
 Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac.
+
+Extract the files from the ZIP archive to a folder. Then open a Terminal or Command Prompt and navigate to the folder.
 
 To check if the ADB command is working, try typing…
 
@@ -161,13 +167,13 @@ Now you can execute ADB commands.
 </details>
 
 <details>
-<summary>Using a PC + Windows</summary>
+<summary>Connect using a PC with Windows</summary>
 
 Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Windows.
 
-An alternate option is [Tiny ADB and Fastboot Tool (Portable version)](https://androidmtk.com/tiny-adb-and-fastboot-tool)but they both work in the same way.
+An alternate option is [Tiny ADB and Fastboot Tool (Portable version)](https://androidmtk.com/tiny-adb-and-fastboot-tool) but they both work in the same way.
 
-Extract the files to a folder. Then open a Terminal or Command Prompt and navigate to the folder.
+Extract the files from the ZIP archive to a folder. Then open a Terminal or Command Prompt and navigate to the folder.
 
 To check if the ADB command is working, try typing…
 
@@ -238,16 +244,6 @@ To restore the default Fire TV screensaver...
 adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
 ```
 
-</details>
-
-<details>
-<summary>Why is this necessary?</summary>
-
-Google TV - In July 2022 Google released an update which removed the user-interface to change the screensaver timeout.
-
-Fire TV - Fire OS devices never had the user-interface to change to a 3rd party screensaver.
-
-ONN - The 2023 model (not 2021 model) ships with Android TV 12, and like the Google TV, it has removed the user-interface to change the screensaver or timeout
 </details>
 
 ## Weather data
