@@ -77,7 +77,7 @@ The following devices have no user-interface to change the screensaver to a 3rd 
 * onn. Google TV 4K Streaming Box 2023 (not 2021) model
 * Fire TV
 
-Here is an overview of the steps required to change to a 3rd party screensaver on those devices...
+But it can be done manually. Here is an overview of the steps...
 
 1. Enable Developer mode on your device and find its IP address
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
