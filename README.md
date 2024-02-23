@@ -10,7 +10,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#chromecast-with-google-tv-users) or [Amazon Fire TV](#amazon-fire-tv-users)*
+*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default), [onn. Google TV 4K Streaming Box](#change-default) or [Amazon Fire TV](#change-default)*
 
 ## Features include...
 
@@ -69,13 +69,13 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
-## How to set Aerial Views as the default screensaver
+## How to set Aerial Views as the default screensaver<a id="change-default"></a>
 
 The following devices have no user-interface to change the screensaver to a 3rd party one...
 
-* Chromecast with Google TV
-* onn. Google TV 4K Streaming Box 2023 (not 2021) model
-* Fire TV
+* __Chromecast with Google TV__
+* __onn. Google TV 4K Streaming Box 2023 (not 2021) model__
+* __Fire TV__
 
 But it can be done manually. Here is an overview of the steps...
 
@@ -89,15 +89,12 @@ But it can be done manually. Here is an overview of the steps...
 
 Navigate to the Settings menu on your device, then to the About screen. Depending on the device…
 
-* _Settings > System > About_
-* _Settings > Device Preferences > About_
+`Settings > System > About` or
+`Settings > Device Preferences > About`
 
 Scroll down to __Build__ and select __Build__ several times until you get the message "You are now a developer!"
 
-Return to __Settings__ and look for the newly enabled __Developer options__ page…
-
-* _Settings > System > Developer options_
-* _Settings > Device Preferences > Developer options_
+Return to __Settings__ and look for the newly enabled __Developer options__ page.
 
 On the __Developer options__ page, look for the __USB debugging__ option and enable it.
 
