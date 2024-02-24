@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.util.Log
-import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -36,7 +36,7 @@ class MediaService(val context: Context) {
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
     }
 
-    suspend fun fetchMedia(): VideoPlaylist = withContext(Dispatchers.IO) {
+    suspend fun fetchMedia(): MediaPlaylist = withContext(Dispatchers.IO) {
         var media = mutableListOf<AerialMedia>()
 
         // Find all videos from all providers/sources
@@ -73,7 +73,7 @@ class MediaService(val context: Context) {
         }
 
         Log.i(TAG, "Total vids: ${media.size}")
-        VideoPlaylist(media)
+        MediaPlaylist(media)
     }
 
     private fun addFilenameAsLocation(media: List<AerialMedia>) {

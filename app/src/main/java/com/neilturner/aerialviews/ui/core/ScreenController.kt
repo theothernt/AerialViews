@@ -13,7 +13,7 @@ import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
-import com.neilturner.aerialviews.models.VideoPlaylist
+import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -35,7 +35,7 @@ class ScreenController(private val context: Context) :
     OnImagePlayerEventListener {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var playlist: VideoPlaylist
+    private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
 

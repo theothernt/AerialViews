@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.models
 
 import com.neilturner.aerialviews.models.videos.AerialMedia
 
-class VideoPlaylist(private val _videos: List<AerialMedia>) {
+class MediaPlaylist(private val _videos: List<AerialMedia>) {
     private var position = -1
 
     val size: Int = _videos.size
