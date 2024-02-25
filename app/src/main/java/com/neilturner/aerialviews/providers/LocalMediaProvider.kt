@@ -5,6 +5,7 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.enums.MediaType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
@@ -83,7 +84,11 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
         for (file in selected) {
             val uri = Uri.parse(file)
-            media.add(AerialMedia(uri))
+            val item = AerialMedia(uri)
+            if (FileHelper.isSupportedImageType(file)) {
+                item.type = MediaItemType.IMAGE
+            }
+            media.add(item)
         }
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.FilenameAsLocation
+import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
@@ -110,7 +111,9 @@ class MediaService(val context: Context) {
         // Find video id in metadata list
         media.forEach video@{ video ->
             metadata.forEach { metadata ->
-                if (metadata.urls.any { it.contains(video.uri.filename, true) }) {
+                if (video.type != MediaItemType.IMAGE &&
+                    metadata.urls.any { it.contains(video.uri.filename, true) }
+                ) {
                     video.location = metadata.location
                     video.poi = metadata.poi
                     matched.add(video)

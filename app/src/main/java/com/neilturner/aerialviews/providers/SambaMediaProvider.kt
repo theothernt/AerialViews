@@ -11,6 +11,7 @@ import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.enums.MediaType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -94,7 +95,11 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/$shareName/$filename")
-            media.add(AerialMedia(uri, ""))
+            val item = AerialMedia(uri)
+            if (FileHelper.isSupportedImageType(filename)) {
+                item.type = MediaItemType.IMAGE
+            }
+            media.add(item)
         }
 
         Log.i(TAG, "Videos found: ${media.size}")
