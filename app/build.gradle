@@ -111,7 +111,7 @@ android {
         }
         register("beta") {
             dimension = "version"
-            versionNameSuffix = "-beta2"
+            versionNameSuffix = "-beta3"
         }
         register("googleplay") {
             dimension = "version"
