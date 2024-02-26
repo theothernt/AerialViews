@@ -13,6 +13,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
@@ -20,7 +22,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchMedia(): List<AerialMedia> {
+    override suspend fun fetchMedia(): List<AerialMedia> {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().first
         } else {
@@ -28,7 +30,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
     }
 
-    override fun fetchTest(): String {
+    override suspend fun fetchTest(): String {
         return if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().second
         } else {
@@ -36,11 +38,11 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
     }
 
-    override fun fetchMetadata(): List<VideoMetadata> {
+    override suspend fun fetchMetadata(): List<VideoMetadata> {
         return emptyList()
     }
 
-    private fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
+    private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
         val selected = mutableListOf<String>()
         val media = mutableListOf<AerialMedia>()
@@ -103,7 +105,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         return Pair(media, message)
     }
 
-    private fun folderAccessVideosAndImages(): List<String> {
+    private suspend fun folderAccessVideosAndImages(): List<String> = withContext(Dispatchers.IO) {
         val folders = mutableListOf<String>()
         val found = mutableListOf<File>()
 
@@ -133,11 +135,11 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
                 )
             }
         }
-        return found.map { item -> item.name }
+        return@withContext found.map { item -> item.name }
     }
 
     @Suppress("JoinDeclarationAndAssignment")
-    private fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
+    private suspend fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources!!
         val selected = mutableListOf<String>()
         val media = mutableListOf<AerialMedia>()
@@ -198,11 +200,11 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         return Pair(media, message)
     }
 
-    private fun mediaStoreVideosAndImages(): List<String> {
+    private suspend fun mediaStoreVideosAndImages(): List<String> = withContext(Dispatchers.IO) {
         val files = FileHelper.findLocalVideos(context) +
             FileHelper.findLocalImages(context)
 
-        return files.filter { item ->
+        return@withContext files.filter { item ->
             !FileHelper.isDotOrHiddenFile(item)
         }
     }

@@ -21,8 +21,6 @@ import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filename
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
@@ -37,7 +35,7 @@ class MediaService(val context: Context) {
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
     }
 
-    suspend fun fetchMedia(): MediaPlaylist = withContext(Dispatchers.IO) {
+    suspend fun fetchMedia(): MediaPlaylist {
         var media = mutableListOf<AerialMedia>()
 
         // Find all videos from all providers/sources
@@ -74,7 +72,7 @@ class MediaService(val context: Context) {
         }
 
         Log.i(TAG, "Total vids: ${media.size}")
-        MediaPlaylist(media)
+        return MediaPlaylist(media)
     }
 
     private fun addFilenameAsLocation(media: List<AerialMedia>) {
@@ -95,7 +93,7 @@ class MediaService(val context: Context) {
         }
     }
 
-    private fun addMetadataToVideos(media: List<AerialMedia>, providers: List<MediaProvider>): Pair<List<AerialMedia>, List<AerialMedia>> {
+    private suspend fun addMetadataToVideos(media: List<AerialMedia>, providers: List<MediaProvider>): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = mutableListOf<VideoMetadata>()
         val matched = mutableListOf<AerialMedia>()
         val unmatched = mutableListOf<AerialMedia>()

@@ -18,6 +18,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
 class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
@@ -25,19 +27,19 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchMedia(): List<AerialMedia> {
+    override suspend fun fetchMedia(): List<AerialMedia> {
         return fetchSambaMedia().first
     }
 
-    override fun fetchTest(): String {
+    override suspend fun fetchTest(): String {
         return fetchSambaMedia().second
     }
 
-    override fun fetchMetadata(): List<VideoMetadata> {
+    override suspend fun fetchMetadata(): List<VideoMetadata> {
         return emptyList()
     }
 
-    private fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
+    private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
 
         // Check hostname
@@ -106,14 +108,14 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         return Pair(media, sambaMedia.second)
     }
 
-    private fun findSambaMedia(
+    private suspend fun findSambaMedia(
         userName: String,
         password: String,
         domainName: String,
         hostName: String,
         shareName: String,
         path: String
-    ): Pair<List<String>, String> {
+    ): Pair<List<String>, String> = withContext(Dispatchers.IO) {
         val res = context.resources!!
         val selected = mutableListOf<String>()
         val excluded: Int
@@ -126,7 +128,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             config = SambaHelper.buildSmbConfig()
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(selected, "Failed to create SMB config")
+            return@withContext Pair(selected, "Failed to create SMB config")
         }
 
         // SMB Client
@@ -136,7 +138,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             connection = smbClient.connect(hostName)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(selected, "Failed to connect, hostname error")
+            return@withContext Pair(selected, "Failed to connect, hostname error")
         }
 
         // SMB Auth + session
@@ -146,7 +148,10 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             session = connection.authenticate(authContext)
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(selected, "Authentication failed. Please check the username and password, or server settings if using anonymous login")
+            return@withContext Pair(
+                selected,
+                "Authentication failed. Please check the username and password, or server settings if using anonymous login"
+            )
         }
 
         val share: DiskShare
@@ -154,7 +159,10 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             share = session?.connectShare(shareName) as DiskShare
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            return Pair(selected, "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions")
+            return@withContext Pair(
+                selected,
+                "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions"
+            )
         }
         val files = listFilesAndFoldersRecursive(share, path)
         connection.close()
@@ -190,7 +198,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
         }
         message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)
-        return Pair(selected, message)
+        return@withContext Pair(selected, message)
     }
 
     private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {

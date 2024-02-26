@@ -9,21 +9,23 @@ import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) : MediaProvider(context) {
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override fun fetchMedia(): List<AerialMedia> {
+    override suspend fun fetchMedia(): List<AerialMedia> {
         return fetchAppleVideos().first
     }
 
-    override fun fetchTest(): String {
+    override suspend fun fetchTest(): String {
         return fetchAppleVideos().second
     }
 
-    override fun fetchMetadata(): List<VideoMetadata> {
+    override suspend fun fetchMetadata(): List<VideoMetadata> = withContext(Dispatchers.IO) {
         val metadata = mutableListOf<VideoMetadata>()
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
@@ -37,10 +39,10 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
             )
             metadata.add(video)
         }
-        return metadata
+        return@withContext metadata
     }
 
-    private fun fetchAppleVideos(): Pair<List<AerialMedia>, String> {
+    private suspend fun fetchAppleVideos(): Pair<List<AerialMedia>, String> = withContext(Dispatchers.IO) {
         val videos = mutableListOf<AerialMedia>()
         val quality = prefs.quality
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
@@ -53,7 +55,7 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
         }
 
         Log.i(TAG, "${videos.count()} $quality videos found")
-        return Pair(videos, "")
+        return@withContext Pair(videos, "")
     }
 
     companion object {

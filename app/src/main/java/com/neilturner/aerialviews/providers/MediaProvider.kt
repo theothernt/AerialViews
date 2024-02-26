@@ -8,11 +8,11 @@ abstract class MediaProvider(val context: Context) {
 
     abstract val enabled: Boolean
 
-    abstract fun fetchMedia(): List<AerialMedia>
+    abstract suspend fun fetchMedia(): List<AerialMedia>
 
-    abstract fun fetchTest(): String
+    abstract suspend fun fetchTest(): String
 
-    abstract fun fetchMetadata(): List<VideoMetadata>
+    abstract suspend fun fetchMetadata(): List<VideoMetadata>
 
     // type
     // VideoType.LOCAL, REMOTE
