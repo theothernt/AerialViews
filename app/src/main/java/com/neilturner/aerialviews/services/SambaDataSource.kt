@@ -38,20 +38,11 @@ class SambaDataSource : BaseDataSource(true) {
     private var bytesRead: Long = 0
     private var bytesToRead: Long = 0
 
-    init {
-        Log.i(TAG, "Init")
-    }
-
-    protected fun finalize() {
-        Log.i(TAG, "Finalize")
-    }
-
     @SuppressLint("UnsafeOptInUsageError")
     override fun open(dataSpec: DataSpec): Long {
         transferInitializing(dataSpec)
 
         this.dataSpec = dataSpec
-        Log.i(TAG, "Trying to open SMB file:  ${dataSpec.uri.pathSegments.last()}...")
         parseCredentials(dataSpec)
         bytesRead = dataSpec.position
 
@@ -70,14 +61,13 @@ class SambaDataSource : BaseDataSource(true) {
             throw EOFException()
         }
 
-        bytesToRead = remoteFile.fileInformation.standardInformation.allocationSize
+        bytesToRead = remoteFile.fileInformation.standardInformation.endOfFile
         transferStarted(dataSpec)
         return bytesToRead
     }
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
-        // Log.i(TAG, "Read $offset-${offset+readLength}")
         return readInternal(buffer, offset, readLength)
     }
 
@@ -86,7 +76,6 @@ class SambaDataSource : BaseDataSource(true) {
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun close() {
-        Log.i(TAG, "Closing connection.")
         try {
             inputStream?.close()
             smbClient?.close()
