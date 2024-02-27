@@ -9,8 +9,6 @@ import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) : MediaProvider(context) {
 
@@ -25,7 +23,7 @@ class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) :
         return fetchCommunityVideos().second
     }
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = withContext(Dispatchers.IO) {
+    override suspend fun fetchMetadata(): List<VideoMetadata> {
         val metadata = mutableListOf<VideoMetadata>()
         val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
@@ -39,10 +37,10 @@ class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) :
             )
             metadata.add(video)
         }
-        return@withContext metadata
+        return metadata
     }
 
-    private suspend fun fetchCommunityVideos(): Pair<List<AerialMedia>, String> = withContext(Dispatchers.IO) {
+    private suspend fun fetchCommunityVideos(): Pair<List<AerialMedia>, String> {
         val videos = mutableListOf<AerialMedia>()
         val quality = prefs.quality
         val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
@@ -55,7 +53,7 @@ class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) :
         }
 
         Log.i(TAG, "${videos.count()} $quality videos found")
-        return@withContext Pair(videos, "")
+        return Pair(videos, "")
     }
 
     companion object {

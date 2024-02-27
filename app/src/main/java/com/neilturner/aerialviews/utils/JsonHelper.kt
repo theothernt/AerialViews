@@ -7,22 +7,26 @@ import com.google.gson.reflect.TypeToken
 import com.neilturner.aerialviews.models.videos.Apple2018Video
 import com.neilturner.aerialviews.models.videos.Comm1Video
 import com.neilturner.aerialviews.models.videos.Comm2Video
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Scanner
 
 object JsonHelper {
 
     private val jsonParser = Gson()
 
-    fun <T> parseJson(context: Context, @RawRes res: Int, tClass: Class<T>?): T {
+    suspend fun <T> parseJson(context: Context, @RawRes res: Int, tClass: Class<T>?): T = withContext(
+        Dispatchers.IO
+    ) {
         val stream = context.resources.openRawResource(res)
         val json = Scanner(stream).useDelimiter("\\A").next()
-        return jsonParser.fromJson(json, tClass)
+        return@withContext jsonParser.fromJson(json, tClass)
     }
 
-    fun parseJsonMap(context: Context, @RawRes res: Int): Map<String, String> {
+    suspend fun parseJsonMap(context: Context, @RawRes res: Int): Map<String, String> = withContext(Dispatchers.IO) {
         val stream = context.resources.openRawResource(res)
         val json = Scanner(stream).useDelimiter("\\A").next()
-        return jsonParser.fromJson(json, object : TypeToken<Map<String, String>>() {}.type)
+        return@withContext jsonParser.fromJson(json, object : TypeToken<Map<String, String>>() {}.type)
     }
 
     class Apple2018Videos {
