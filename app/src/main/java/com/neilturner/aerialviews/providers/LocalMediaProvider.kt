@@ -135,7 +135,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
                 )
             }
         }
-        return@withContext found.map { item -> item.name }
+        return@withContext found.map { item -> item.absolutePath }
     }
 
     @Suppress("JoinDeclarationAndAssignment")
