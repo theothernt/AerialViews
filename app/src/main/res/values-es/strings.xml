@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <string name="about_date_title">Fecha de compilación</string>
   <string name="about_version_title">Versión</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
@@ -8,7 +8,7 @@
   <string name="advanced_locale_restart_app_summary">La aplicación debe ser reiniciada para cambiar la configuración regional de los menús</string>
   <string name="advanced_locale_restart_app_title">Reiniciar Aplicación</string>
   <string name="advanced_locale_screensaver_title">Configuración regional del texto del protector de pantalla (reloj, ubicación)</string>
-  <string name="advanced_philips_dolby_vision_fix_summary" tools:ignore="Typos">Corrige la reproducción de Dolby Vision en algunos televisores Philips viejos</string>
+  <string name="advanced_philips_dolby_vision_fix_summary">Corrige la reproducción de Dolby Vision en algunos televisores Philips viejos</string>
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
@@ -76,7 +76,7 @@
   <string name="capabilities_decoders_title">Decodificadores de vídeo</string>
   <string name="capabilities_device_title">Dispositivo</string>
   <string name="capabilities_display_title">TV/Pantalla</string>
-  <string name="capabilities_dolby_vision" tools:ignore="Typos">Dolby Vision: %1$s</string>
+  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
   <string name="capabilities_found">Se encuentra</string>
   <string name="capabilities_hevc">HEVC: %1$s</string>
   <string name="capabilities_max_video_resolution">Resolución de vídeo máxima: %1$s</string>
@@ -84,14 +84,14 @@
   <string name="capabilities_no">No</string>
   <string name="capabilities_not_found">No se encuentra</string>
   <string name="capabilities_resolution_title">Resolución</string>
-  <string name="capabilities_supports_dolby_vision" tools:ignore="Typos">Soporta Dolby Vision: %1$s</string>
+  <string name="capabilities_supports_dolby_vision">Soporta Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Soporta HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Resolución de interfaz: %1$s</string>
   <string name="capabilities_yes">Sí</string>
   <string name="category_about">Acerca de</string>
   <string name="category_actions">Acciones</string>
   <string name="category_advanced">Avanzado</string>
-  <string name="category_all_other_media">All other videos and images</string>
+  <string name="category_all_other_media">Todos los demás vídeos e imágenes</string>
   <string name="category_appearance">Apariencia</string>
   <string name="category_apple_and_community_videos">Apple y vídeos de la comunidad</string>
   <string name="category_bottom_row_left">Abajo a la izquierda</string>
@@ -102,6 +102,7 @@
   <string name="category_date">Fecha</string>
   <string name="category_dpad">Pad Direccional/Control Remoto</string>
   <string name="category_folder_access_options">Opciones de acceso a carpetas</string>
+  <string name="category_images">Imágenes</string>
   <string name="category_local">Local</string>
   <string name="category_media_scanner_options">Opciones de escaneo de medios</string>
   <string name="category_message">Mensaje</string>
@@ -119,10 +120,18 @@
   <string name="category_typography">Tipografía</string>
   <string name="category_video_render_options">Vídeo &amp; opciones de renderizado</string>
   <string name="category_video_source">Fuente del Vídeo</string>
+  <string name="category_videos">Vídeos</string>
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="loading_error">No se encontraron vídeos, por favor revisa tus ajustes</string>
   <string name="loading_title">Cargando…</string>
+  <string name="local_media_test_summary1">Archivos encontrados: %1$s</string>
+  <string name="local_media_test_summary2">Archivos no compatibles: %1$s</string>
+  <string name="local_media_test_summary3">Vídeos encontrados: %1$s</string>
+  <string name="local_media_test_summary4">Imágenes encontradas: %1$s</string>
+  <string name="local_media_test_summary5">Excluido por filtro: %1$s</string>
+  <string name="local_media_test_summary6">Seleccionado para reproducción: %1$s</string>
+  <string name="local_media_type_title">Elija el tipo de medio</string>
   <string name="local_videos_enabled_title">Usar vídeos almacenados localmente o por USB</string>
   <string name="local_videos_legacy_all_entry">Todos los volúmenes</string>
   <string name="local_videos_legacy_folder_summary">Ninguna carpeta seleccionada</string>
@@ -132,12 +141,7 @@
   <string name="local_videos_legacy_no_folder_found">La carpeta no existe</string>
   <string name="local_videos_legacy_no_volume">Volumen no especificado</string>
   <string name="local_videos_legacy_summary">Especifique una sola carpeta dónde se almacenen los vídeos</string>
-  <string name="local_media_test_summary1">Files found: %1$s</string>
-  <string name="local_media_test_summary2">Unsupported files: %1$s</string>
-  <string name="local_media_test_summary3">Videos found: %1$s</string>
-  <string name="local_media_test_summary4">Images found: %1$s</string>
-  <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
-  <string name="local_media_test_summary6">Selected for playback: %1$s</string><string name="local_videos_legacy_volume_summary">Ningún volumen seleccionado</string>
+  <string name="local_videos_legacy_volume_summary">Ningún volumen seleccionado</string>
   <string name="local_videos_legacy_volume_title">Seleccione un volumen</string>
   <string name="local_videos_media_store_filter_enabled_summary">Sólo reproducir vídeos de una carpeta específica o carpetas en dispositivo, USB, etc</string>
   <string name="local_videos_media_store_filter_enabled_title">Usar filtro de carpeta</string>
@@ -159,6 +163,7 @@
   <string name="playlist_allow_video_skipping_title">Permitir saltar al vídeo siguiente/anterior</string>
   <string name="playlist_ignore_unmatched_videos_summary">Omitir vídeos que no figuran en ninguna lista de vídeos de Apple</string>
   <string name="playlist_ignore_unmatched_videos_title">Ignorar vídeos no reconocidos o que no sean de Apple</string>
+  <string name="playlist_image_scale_title">Escalado de imagen</string>
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
@@ -167,8 +172,16 @@
   <string name="playlist_playback_speed_title">Velocidad de reproducción</string>
   <string name="playlist_remove_duplicates_summary">Eliminar vídeos duplicados de la lista de reproducción basándose únicamente en el nombre del archivo</string>
   <string name="playlist_remove_duplicates_title">Eliminar vídeos duplicados</string>
-  <string name="playlist_shuffle_summary">Orden aleatorio para los vídeos</string>
-  <string name="playlist_shuffle_title">Vídeos aleatorios</string>
+  <string name="playlist_shuffle_summary">Orden aleatorio de los vídeos e imágenes</string>
+  <string name="playlist_shuffle_title">Mezclar vídeos e imágenes de forma aleatoria</string>
+  <string name="playlist_slideshow_speed_summary">Elige una duración</string>
+  <string name="playlist_slideshow_speed_title">Velocidad de presentación</string>
+  <string name="samba_media_test_summary1">Archivos encontrados: %1$s</string>
+  <string name="samba_media_test_summary2">Archivos no compatibles: %1$s</string>
+  <string name="samba_media_test_summary3">Vídeos encontrados: %1$s</string>
+  <string name="samba_media_test_summary4">Imágenes encontradas: %1$s</string>
+  <string name="samba_media_test_summary5">Seleccionado para reproducción: %1$s</string>
+  <string name="samba_media_type_title">Elija el tipo de medio</string>
   <string name="samba_videos_domainname_summary">El nombre de dominio o grupo de trabajo del servidor. Opcional</string>
   <string name="samba_videos_domainname_title">Nombre de Dominio</string>
   <string name="samba_videos_enable_encryption_summary">Permite el cifrado para conexiones SMB, puede reducir la velocidad promedio de transferencia</string>
@@ -182,11 +195,6 @@
   <string name="samba_videos_file_not_found">No puede encontrar el archivo de configuración SMB en la carpeta de descargas: %1$s</string>
   <string name="samba_videos_hostname_summary">Dirección IP del servidor</string>
   <string name="samba_videos_hostname_title">Nombre de equipo</string>
-  <string name="samba_media_test_summary1">Files found: %1$s</string>
-  <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
-  <string name="samba_media_test_summary3">Videos found: %1$s</string>
-  <string name="samba_media_test_summary4">Images found: %1$s</string>
-  <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
   <string name="samba_videos_import_export_settings_summary">Importa o exporta sus credenciales SMB a la carpeta de descargas</string>
   <string name="samba_videos_import_export_settings_title">Ajustes de importación/exportación</string>
   <string name="samba_videos_import_failed">Importación fallida</string>
@@ -219,6 +227,8 @@
   <string name="settings_dpad_title">Pad Direccional/Control Remoto</string>
   <string name="settings_import_export_settings_summary">Importa o exporta configuraciones a la carpeta de descargas</string>
   <string name="settings_import_export_settings_title">Ajustes de Importación/Exportación</string>
+  <string name="settings_media_sources_summary">Reproduzca vídeos e imágenes desde Internet, almacenamiento USB y fuentes de red</string>
+  <string name="settings_media_sources_title">Fuentes de medios</string>
   <string name="settings_playlist_summary">Silenciar vídeos, orden aleatorio, etc</string>
   <string name="settings_playlist_title">Lista de reproducción</string>
   <string name="settings_preview_screensaver">Probar ajustes de protector de pantalla</string>
@@ -227,8 +237,6 @@
   <string name="settings_system_options">Abrir opciones de sistema de protector de pantalla</string>
   <string name="settings_system_options_error">No es posible abrir las opciones de protector de pantalla de tu dispositivo</string>
   <string name="settings_system_options_removed">Esta característica fue eliminada por el fabricante. Por favor visite el sitio web de Aerial Views para más detalles</string>
-  <string name="settings_media_sources_title">Media Sources</string>
-  <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
   <string name="sources_apple_summary">Reproduce vídeos de Apple usando tu conexión a Internet</string>
   <string name="sources_apple_title">Vídeos de Apple</string>
   <string name="sources_comm1_summary">Reproduce estos vídeos de la comunidad usando tu conexión a Internet</string>

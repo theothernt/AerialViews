@@ -35,6 +35,10 @@
     <item>使用格式化命名，例如“japan-mount_fuji.mp4”变为“Japan - Mount Fuji”</item>
     <item>使用原始文件名，例如“Flying toward Mount Pilatus.mp4”变为“Flying toward Mount Pilatus”</item>
   </string-array>
+  <string-array name="image_scale_entries">
+    <item>Fill (Default)</item>
+    <item>Center</item>
+  </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
     <item>Folder access (legacy)</item>
@@ -42,6 +46,11 @@
   <string-array name="location_type_entries">
     <item>地点或标题</item>
     <item>景点（有多种语言版本）</item>
+  </string-array>
+  <string-array name="media_type_entries">
+    <item>Videos only</item>
+    <item>Images only</item>
+    <item>Videos &amp; Images</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>无限制 (默认)</item>
@@ -73,6 +82,15 @@
     <item>3.5x</item>
     <item>4x</item>
     <item>5x</item>
+  </string-array>
+  <string-array name="slideshow_speed_entries">
+    <item>5 seconds</item>
+    <item>10 秒</item>
+    <item>30 seconds (Default)</item>
+    <item>1 分钟</item>
+    <item>3 分钟</item>
+    <item>5 分钟</item>
+    <item>10 分钟</item>
   </string-array>
   <string-array name="slot_entries">
     <item>留空</item>
