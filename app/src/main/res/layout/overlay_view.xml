@@ -38,8 +38,6 @@
             android:visibility="invisible"
             />
 
-
-
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/flowTopLeft"
             android:layout_width="0dp"
@@ -101,4 +99,5 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
