@@ -14,8 +14,8 @@ android {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 34
-        versionCode 21
-        versionName "1.7.0"
+        versionCode 22
+        versionName "1.7.1"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -111,7 +111,7 @@ android {
         }
         register("beta") {
             dimension = "version"
-            versionNameSuffix = "-beta3"
+            versionNameSuffix = "-beta1"
         }
         register("googleplay") {
             dimension = "version"
