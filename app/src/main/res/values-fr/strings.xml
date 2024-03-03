@@ -1,387 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <!-- General -->
-    <string name="loading_title">Chargement…</string>
-    <string name="loading_error">No videos found, please check your settings.</string>
-
-    <!-- Common Buttons -->
-    <string name="button_ok">OK</string>
-    <string name="button_cancel">Cancel</string>
-    <string name="button_import">Import</string>
-    <string name="button_export">Export</string>
-
-    <!-- Common Categories -->
-    <string name="category_actions">Actions</string>
-    <string name="category_advanced">Advanced</string>
-    <string name="category_video_source">Source Vidéo</string>
-    <string name="category_options">Options</string>
-
-    <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Video quality</string>
-    <string name="videos_quality_summary">Sélectionnez la qualité de la vidéo</string>
-
-    <!-- Main -->
-    <string name="settings_media_sources_title">Media Sources</string>
-    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
-
-    <string name="settings_settings_title">Réglages</string>
-    <string name="settings_settings_summary">Change performance, playlist, and appearance options</string>
-
-    <string name="settings_preview_screensaver">Tester l\'économiseur d\'écran</string>
-    <string name="settings_system_options">"Ouvrir les paramètres système "</string>
-
-    <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
-    <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
-
-    <!-- Main / Video Sources -->
-    <string name="category_remote">Remote</string>
-    <string name="category_local">Local</string>
-    <string name="category_network">Network</string>
-
-    <string name="sources_apple_title">Videos by Apple</string>
-    <string name="sources_apple_summary">Stream Apple videos using your internet connection</string>
-
-    <string name="sources_comm1_title">Videos by Jetson Creative</string>
-    <string name="sources_comm1_summary">Stream these community videos using your internet connection</string>
-
-    <string name="sources_comm2_title">Videos by Robin Fourcade</string>
-    <string name="sources_comm2_summary">Stream these community videos using your internet connection</string>
-
-    <string name="sources_local_title">Local or USB storage</string>
-    <string name="sources_local_summary">Play videos directly from your device or attached USB storage</string>
-
-    <string name="sources_samba_title">SMB/Samba share</string>
-    <string name="sources_samba_summary">Play videos from a local network share on a PC or NAS device</string>
-
-    <string name="sources_webdav_title">WebDAV server</string>
-    <string name="sources_webdav_summary">Play videos stored on a WebDAV server locally or remotely</string>
-
-    <!-- Main / Video Sources / Apple videos -->
-    <string name="apple_videos_enabled">Utiliser les vidéos Apple</string>
-
-    <string name="apple_videos_data_usage_title">Consommation de données</string>
-    <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
-
-    <!-- Main / Video Sources / Comm1 videos -->
-    <string name="comm1_videos_enabled">Use community videos</string>
-
-    <!-- Main / Video Sources / Comm2 videos -->
-    <string name="comm2_videos_enabled">Use community videos</string>
-
-    <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Media scanner options</string>
-    <string name="category_folder_access_options">Folder access options</string>
-
-    <string name="local_videos_enabled_title">Use Local or USB storage videos</string>
-
-    <string name="local_videos_search_type_title">Choose how videos are found</string>
-    <string name="local_videos_search_test">Test local search settings</string>
-
-    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos</string>
-
-    <string name="local_videos_shield_notice_title">Nvidia Shield users, make sure the following option is enabled…</string>
-    <string name="local_videos_shield_notice_summary">Settings > Device Preferences > Storage > Scan for media automatically</string>
-
-    <string name="local_videos_media_store_filter_enabled_title">Filtrer les dossiers</string>
-    <string name="local_videos_media_store_filter_enabled_summary">Jouer seulement les vidéos de certains dossiers (appareil / USB / réseau)</string>
-
-    <string name="local_videos_media_store_filter_folder_title">Définir les noms des répertoires</string>
-    <string name="local_videos_media_store_filter_folder_summary">Exemple: «Aerial» ne joue que des vidéos du répertoire / téléchargements / Aerial / ab &amp; ignore d\'autres dossiers</string>
-
-    <string name="local_videos_legacy_summary">Specify a single folder where videos are stored</string>
-
-    <string name="local_videos_legacy_volume_title">Choose a volume</string>
-    <string name="local_videos_legacy_volume_summary">No volume chosen</string>
-
-    <string name="local_videos_legacy_all_entry">All volumes</string>
-
-    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
-    <string name="local_videos_legacy_folder_summary">No folder specified</string>
-
-    <string name="local_videos_legacy_no_volume">Volume not specified</string>
-    <string name="local_videos_legacy_no_folder">Folder not specified</string>
-    <string name="local_videos_legacy_no_folder_found">Folder does not exist</string>
-    <string name="local_videos_legacy_no_files_found">No files found</string>
-
-    <string name="local_media_test_summary1">Files found: %1$s</string>
-    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="local_media_test_summary3">Videos found: %1$s</string>
-    <string name="local_media_test_summary4">Images found: %1$s</string>
-    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
-    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
-
-    <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
-
-    <string name="local_videos_permission_denied">Permission Denied</string>
-    <string name="local_videos_test_results">Test results</string>
-
-    <!-- Main / Video Sources / Samba videos -->
-    <string name="category_server_details">Server details and credentials</string>
-
-    <string name="samba_videos_enabled_title">Use SMB/Samba share videos</string>
-
-    <string name="samba_videos_hostname_title">Nom d\'hôte</string>
-    <string name="samba_videos_hostname_summary">Adresse IP du serveur</string>
-
-    <string name="samba_videos_domainname_title">Domain name (Optional)</string>
-    <string name="samba_videos_domainname_summary">The domain name or workgroup of the server</string>
-
-    <string name="samba_videos_sharename_title">Nom du partage réseau</string>
-    <string name="samba_videos_sharename_summary">Exemple: /video/aérien/</string>
-
-    <string name="samba_videos_username_title">Nom d\'utilisateur</string>
-    <string name="samba_videos_username_summary">Facultatif</string>
-
-    <string name="samba_videos_password_title">Mot de passe</string>
-    <string name="samba_videos_password_summary">Facultatif</string>
-
-    <string name="samba_videos_search_subfolders_title">Search subfolders</string>
-    <string name="samba_videos_search_subfolders_summary">Search all subfolders for videos</string>
-
-    <string name="samba_videos_import_export_settings_title">Importer/exporter les réglages</string>
-    <string name="samba_videos_import_export_settings_summary">Importer ou exporter les identifiants SMB vers le dossier de téléchargement</string>
-
-    <string name="samba_videos_test_connection">Tester les paramètres de connexion</string>
-
-    <string name="samba_media_test_summary1">Files found: %1$s</string>
-    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="samba_media_test_summary3">Videos found: %1$s</string>
-    <string name="samba_media_test_summary4">Images found: %1$s</string>
-    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
-
-    <string name="samba_videos_import_failed">Import failed</string>
-    <string name="samba_videos_import_success">Import successful</string>
-    <string name="samba_videos_unable_to_save">Unable to save imported settings</string>
-    <string name="samba_videos_file_not_found">Can\'t find SMB settings file in Downloads folder: %1$s</string>
-    <string name="samba_videos_error_parsing">Error while reading and parsing file. Please check the file again for mistakes or invalid characters.</string>
-    <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
-
-    <string name="samba_videos_export_failed">Export failed</string>
-    <string name="samba_videos_export_success">Export successful</string>
-    <string name="samba_videos_file_already_exists">The SMB settings file %1$s already exists in the Downloads folder</string>
-    <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
-    <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
-
-    <string name="samba_videos_permission_denied">Permission Denied</string>
-    <string name="samba_videos_test_results">Test results</string>
-
-    <!-- Main / Video Sources / WebDAV videos -->
-
-    <!-- Main / Settings -->
-    <string name="category_settings">Reglages</string>
-
-    <string name="settings_appearance_title">Appearance</string>
-    <string name="settings_appearance_summary">Customise how things look while videos are playing</string>
-
-    <string name="settings_playlist_title">Playlist</string>
-    <string name="settings_playlist_summary">Mute videos, randomise the order, etc</string>
-
-    <string name="settings_dpad_title">D-Pad/Remote</string>
-    <string name="settings_dpad_summary">Customise d-pad actions on your remote</string>
-
-    <string name="settings_capabilities_title">Device capabilities</string>
-    <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
-
-    <string name="settings_advanced_title">Advanced</string>
-    <string name="settings_advanced_summary">Performance &amp; debug options for troubleshooting</string>
-
-    <string name="settings_about_title">About</string>
-    <string name="settings_about_summary">Version, build info, etc</string>
-
-    <string name="settings_import_export_settings_title">Import/Export settings</string>
-    <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
-
-    <!-- Main / Settings / Appearance -->
-    <string name="category_appearance">Appearance</string>
-    <string name="category_overlays">Overlays</string>
-    <string name="category_slots">Slots</string>
-
-    <string name="appearance_top_row_title">Top Row</string>
-    <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
-
-    <string name="appearance_bottom_row_title">Bottom Row</string>
-    <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
-
-    <string name="appearance_clock_title">Clock</string>
-    <string name="appearance_clock_summary">Display the current time</string>
-
-    <string name="appearance_location_title">Location</string>
-    <string name="appearance_location_summary">Display location or points of interest</string>
-
-    <string name="appearance_date_title">Date</string>
-    <string name="appearance_date_summary">Display the current date</string>
-
-    <string name="appearance_weather_title">Weather</string>
-    <string name="appearance_weather_summary">Display the current weather conditions</string>
-
-    <string name="appearance_music_title">Music</string>
-    <string name="appearance_music_summary">Display the currently playing song</string>
-
-    <string name="appearance_message_title">Message</string>
-    <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
-
-    <string name="appearance_typography_title">Typeface</string>
-    <string name="appearance_typography_summary">Change the font used to display all screensaver text</string>
-
-    <string name="appearance_alt_text_position_title">Alterner la position du texte</string>
-    <string name="appearance_alt_text_position_summary">Modifiez la position de l\'horloge et de l\'emplacement après chaque vidéo pour éviter les brûlures d\'écran (OLED)</string>
-
-    <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Top Left</string>
-    <string name="category_top_row_right">Top Right</string>
-
-    <string name="category_bottom_row_left">Bottom Left</string>
-    <string name="category_bottom_row_right">Bottom Right</string>
-
-    <string name="appearance_slot1_title">Lower Slot</string>
-    <string name="appearance_slot2_title">Upper Slot</string>
-    <string name="appearance_slot_summary">Empty</string>
-
-    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
-    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
-    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
-    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
-    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
-    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
-    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
-    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
-
-    <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Clock</string>
-    <string name="appearance_clock_format_title">Clock format</string>
-
-    <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-    <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
-
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
-
-    <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Date</string>
-    <string name="category_custom_format">Custom format</string>
-
-    <string name="appearance_date_format_title">Date format</string>
-    <string name="appearance_date_custom_title">Specify a custom date format</string>
-    <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Adjust the size of the date text</string>
-
-    <string name="appearance_date_custom_error">Invalid custom date format!</string>
-    <string name="appearance_date_custom_example">e.g.</string>
-
-    <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos</string>
-    <string name="category_all_other_media">All other videos and images</string>
-
-    <string name="appearance_show_location_title">Show video location, title or points of interest</string>
-
-    <string name="appearance_filename_as_location_title">Utiliser les noms de fichiers comme emplacement</string>
-
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
-
-    <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Message</string>
-
-    <string name="appearance_message_style_title">Show custom message</string>
-
-    <string name="appearance_message_line1_title">Line 1</string>
-    <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
-    <string name="appearance_message_line2_title">Line 2</string>
-
-    <string name="appearance_message_size_title">Adjust the size of the text</string>
-
-    <!-- Main / Settings / Appearance / Typography -->
-
-    <string name="category_typography">Typography</string>
-
-    <string name="appearance_typeface_title">Typeface</string>
-
-    <string name="appearance_weight_title">Weight</string>
-
-    <!-- Main / Settings / Playlist -->
-    <string name="category_playlist">Playlist</string>
-
-    <string name="playlist_mute_videos_title">Silence</string>
-    <string name="playlist_mute_videos_summary">Lecture des vidéos sans le son</string>
-
-    <string name="playlist_shuffle_title">Lecture aléatoire</string>
-    <string name="playlist_shuffle_summary">Lecture des vidéos dans un ordre aléatoire</string>
-
-    <string name="playlist_playback_speed_title">Vitesse de lecture</string>
-    <string name="playlist_playback_speed_summary">Choisissez une vitesse de lecture</string>
-
-    <string name="playlist_remove_duplicates_title">Supprimer les vidéos dupliquées</string>
-    <string name="playlist_remove_duplicates_summary">Supprimer les vidéos avec le même nom de fichier de la playlist</string>
-
-    <string name="playlist_ignore_unmatched_videos_title">Ignorer les vidéos non Apple sur le stockage local et le réseau</string>
-    <string name="playlist_ignore_unmatched_videos_summary">Ignorer les vidéos qui ne sont pas listées dans les manifestes vidéo Apple</string>
-
-    <!-- Main / Settings / D-Pad/Remote -->
-    <string name="category_dpad">D-Pad/Remote</string>
-
-    <string name="playlist_allow_video_skipping_title">Vidéo suivante / précédente</string>
-    <string name="playlist_allow_video_skipping_summary">Sauter une vidéo avec la télécommande (droite / gauche à D-Pad)</string>
-
-    <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
-    <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
-
-    <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
-
-    <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
-
-    <!-- Main / Settings / Device capabilities -->
-    <string name="category_capabilities">Fonctions TV</string>
-
-    <string name="capabilities_device_title">Device</string>
-    <string name="capabilities_display_title">TV / Affichage</string>
-    <string name="capabilities_codecs_title">Prise en charge des codecs</string>
-    <string name="capabilities_decoders_title">Décodeurs disponibles</string>
-    <string name="capabilities_resolution_title">"Résolution d'écran"</string>
-
-    <string name="capabilities_model">Model: %1$s</string>
-    <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Yes</string>
-    <string name="capabilities_no">No</string>
-
-    <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
-    <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
-
-    <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Found</string>
-    <string name="capabilities_not_found">Not Found</string>
-    <string name="capabilities_avc">AVC: %1$s</string>
-    <string name="capabilities_hevc">HEVC: %1$s</string>
-    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
-
-    <!-- Main / Settings / Advanced -->
-    <string name="category_video_render_options">Video &amp; render options</string>
-    <string name="category_samba_options">Samba/SMB options</string>
-
-    <string name="playlist_max_video_length_title">Limit video length</string>
-
-    <string name="advanced_refresh_rate_switching_title">Auto refresh rate switching</string>
-    <string name="advanced_refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
-
-    <string name="advanced_enable_tunneling_title">Activer le tunneling</string>
-    <string name="advanced_enable_tunneling_summary">Utilisez une accélération matérielle (important pour le streaming 4K / HD)</string>
-
-    <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
-    <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
-
-    <string name="samba_videos_enable_encryption_title">Activer le cryptage</string>
-    <string name="samba_videos_enable_encryption_summary">Activer le chiffrement des connexions SMB (peut potentiellement réduire la vitesse de transfert)</string>
-
-    <string name="samba_videos_smb_dialects_title">Sélectionnez le dialecte du protocole SMB</string>
-    <string name="samba_videos_smb_dialects_summary">Sélectionnez la version du protocole SMB</string>
-
-    <string name="advanced_locale_menu_title">Menu text locale</string>
-    <string name="advanced_locale_screensaver_title">Screensaver text (clock, location) locale</string>
-
-    <string name="advanced_locale_restart_app_title">Restart App</string>
-    <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
-
-    <!-- Main / Settings / About -->
-    <string name="category_about">About</string>
-
-    <string name="about_version_title">Version</string>
-    <string name="about_date_title">Build Date</string>
+  <string name="about_date_title">Date de construction</string>
+  <string name="about_version_title">Version</string>
+  <string name="advanced_enable_tunneling_summary">Utiliser l\'accélération matérielle, plus importante pour le 4K/HDR</string>
+  <string name="advanced_enable_tunneling_title">Activer le tunneling</string>
+  <string name="advanced_locale_menu_title">Localité du texte du menu</string>
+  <string name="advanced_locale_restart_app_summary">L\'application doit être redémarrée pour changer la localisation du menu.</string>
+  <string name="advanced_locale_restart_app_title">Redémarrer l\'application</string>
+  <string name="advanced_locale_screensaver_title">Texte de l\'économiseur d\'écran (horloge, lieu) locale</string>
+  <string name="advanced_philips_dolby_vision_fix_summary">Correction de la lecture Dolby Vision sur certains anciens téléviseurs Philips</string>
+  <string name="advanced_philips_dolby_vision_fix_title">Utiliser une autre analyse MediaCodec</string>
+  <string name="advanced_refresh_rate_switching_summary">Modifier la fréquence de rafraîchissement de l\'écran pour qu\'elle corresponde à la fréquence d\'images vidéo</string>
+  <string name="advanced_refresh_rate_switching_title">Commutation automatique de la fréquence de rafraîchissement</string>
+  <string name="appearance_alt_text_position_summary">La position de l\'horloge et l\'emplacement changent à chaque vidéo pour éviter que l\'OLED ne brûle.</string>
+  <string name="appearance_alt_text_position_title">Position du texte alternatif</string>
+  <string name="appearance_bottom_left_lower_slot">En bas à gauche, fente inférieure</string>
+  <string name="appearance_bottom_left_upper_slot">En bas à gauche, fente supérieure</string>
+  <string name="appearance_bottom_right_lower_slot">En bas à droite, fente inférieure</string>
+  <string name="appearance_bottom_right_upper_slot">En bas à droite, fente supérieure</string>
+  <string name="appearance_bottom_row_summary">Choisissez des superpositions pour les parties inférieures gauche et droite de l\'écran.</string>
+  <string name="appearance_bottom_row_title">Rangée du bas</string>
+  <string name="appearance_clock_format_title">Format de l\'horloge</string>
+  <string name="appearance_clock_size_title">Ajuster la taille du texte de l\'horloge</string>
+  <string name="appearance_clock_summary">Afficher l\'heure actuelle</string>
+  <string name="appearance_clock_title">Horloge</string>
+  <string name="appearance_date_custom_error">Format de date personnalisé non valide !</string>
+  <string name="appearance_date_custom_example">p. ex.</string>
+  <string name="appearance_date_custom_title">Spécifier un format de date personnalisé</string>
+  <string name="appearance_date_format_title">Format de la date</string>
+  <string name="appearance_date_notice_summary">Pour plus d\'informations sur les formats de date, recherchez \"Android SimpleDateFormat\".</string>
+  <string name="appearance_date_size_title">Ajuster la taille du texte de la date</string>
+  <string name="appearance_date_summary">Afficher la date du jour</string>
+  <string name="appearance_date_title">Date</string>
+  <string name="appearance_filename_as_location_title">Utiliser le nom du fichier comme emplacement</string>
+  <string name="appearance_location_size_title">Ajuster la taille du texte de localisation</string>
+  <string name="appearance_location_summary">Affichage de la localisation ou des points d\'intérêt</string>
+  <string name="appearance_location_title">Localisation</string>
+  <string name="appearance_message_line1_summary">Saisir le texte à afficher, y compris les emoji</string>
+  <string name="appearance_message_line1_title">Ligne 1</string>
+  <string name="appearance_message_line2_title">Ligne 2</string>
+  <string name="appearance_message_size_title">Ajuster la taille du texte du message</string>
+  <string name="appearance_message_style_title">Afficher un message personnalisé</string>
+  <string name="appearance_message_summary">Affichez jusqu\'à 2 lignes de texte personnalisé</string>
+  <string name="appearance_message_title">Message</string>
+  <string name="appearance_music_summary">Affichage de la chanson en cours de lecture</string>
+  <string name="appearance_music_title">Musique</string>
+  <string name="appearance_show_force_latin_digits_summary">Toujours afficher les chiffres occidentaux, quels que soient les paramètres linguistiques du système</string>
+  <string name="appearance_show_force_latin_digits_title">Forcer les chiffres latins</string>
+  <string name="appearance_show_location_title">Afficher l\'emplacement ou les points d\'intérêt</string>
+  <string name="appearance_slot1_title">Fente inférieure</string>
+  <string name="appearance_slot2_title">Fente supérieure</string>
+  <string name="appearance_slot_summary">Vide</string>
+  <string name="appearance_top_left_lower_slot">En haut à gauche, fente inférieure</string>
+  <string name="appearance_top_left_upper_slot">En haut à gauche, fente supérieure</string>
+  <string name="appearance_top_right_lower_slot">En haut à droite, fente inférieure</string>
+  <string name="appearance_top_right_upper_slot">En haut à droite, fente supérieure</string>
+  <string name="appearance_top_row_summary">Choisissez des incrustations en haut à gauche et à droite de l\'écran</string>
+  <string name="appearance_top_row_title">Première rangée</string>
+  <string name="appearance_typeface_title">Police de caractères</string>
+  <string name="appearance_typography_summary">Modifier la police et les autres propriétés du texte utilisé par l\'économiseur d\'écran</string>
+  <string name="appearance_typography_title">Typographie</string>
+  <string name="appearance_weather_summary">Afficher les conditions météorologiques actuelles</string>
+  <string name="appearance_weather_title">Météo</string>
+  <string name="appearance_weight_title">Poids</string>
+  <string name="apple_videos_data_estimate_summary">Environ %1$s par heure</string>
+  <string name="apple_videos_data_usage_title">Consommation de données</string>
+  <string name="apple_videos_enabled">Utiliser les vidéos Apple</string>
+  <string name="button_cancel">Annuler</string>
+  <string name="button_export">Exportation</string>
+  <string name="button_import">Importation</string>
+  <string name="button_ok">OK</string>
+  <string name="capabilities_android">Android: %1$s</string>
+  <string name="capabilities_avc">AVC: %1$s</string>
+  <string name="capabilities_codecs_title">Résumé du codec</string>
+  <string name="capabilities_decoders_title">Décodeurs vidéo</string>
+  <string name="capabilities_device_title">Dispositif</string>
+  <string name="capabilities_display_title">TV / Affichage</string>
+  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+  <string name="capabilities_found">Trouvé</string>
+  <string name="capabilities_hevc">HEVC: %1$s</string>
+  <string name="capabilities_max_video_resolution">Résolution vidéo maximale : %1$s</string>
+  <string name="capabilities_model">Modèle : %1$s</string>
+  <string name="capabilities_no">Non</string>
+  <string name="capabilities_not_found">Non trouvé</string>
+  <string name="capabilities_resolution_title">Résolution</string>
+  <string name="capabilities_supports_dolby_vision">Prend en charge Dolby Vision : %1$s</string>
+  <string name="capabilities_supports_hdr10">Prend en charge le HDR10 : %1$s</string>
+  <string name="capabilities_ui_resolution">Résolution de UI: %1$s</string>
+  <string name="capabilities_yes">Oui</string>
+  <string name="category_about">A propos de</string>
+  <string name="category_actions">Actions</string>
+  <string name="category_advanced">Avancé</string>
+  <string name="category_all_other_media">Toutes les autres vidéos et images</string>
+  <string name="category_appearance">Apparence</string>
+  <string name="category_apple_and_community_videos">Vidéos Apple et communautaires uniquement</string>
+  <string name="category_bottom_row_left">En bas à gauche</string>
+  <string name="category_bottom_row_right">En bas à droite</string>
+  <string name="category_capabilities">Capacités</string>
+  <string name="category_clock">Horloge</string>
+  <string name="category_custom_format">Format personnalisé</string>
+  <string name="category_date">Date</string>
+  <string name="category_dpad">D-Pad/Télécommande</string>
+  <string name="category_folder_access_options">Options d\'accès aux dossiers</string>
+  <string name="category_images">Images</string>
+  <string name="category_local">Local</string>
+  <string name="category_media_scanner_options">Options du scanner de médias</string>
+  <string name="category_message">Message</string>
+  <string name="category_network">Réseau</string>
+  <string name="category_options">Options</string>
+  <string name="category_overlays">Superpositions</string>
+  <string name="category_playlist">Liste de lecture</string>
+  <string name="category_remote">A distance</string>
+  <string name="category_samba_options">Options Samba/SMB</string>
+  <string name="category_server_details">Détails du serveur et informations d\'identification</string>
+  <string name="category_settings">Paramètres</string>
+  <string name="category_slots">Slots</string>
+  <string name="category_top_row_left">Top Left</string>
+  <string name="category_top_row_right">En haut à droite</string>
+  <string name="category_typography">Typographie</string>
+  <string name="category_video_render_options">Options de vidéo et de rendu</string>
+  <string name="category_video_source">Source vidéo</string>
+  <string name="category_videos">Vidéos</string>
+  <string name="comm1_videos_enabled">Utiliser les vidéos de la communauté</string>
+  <string name="comm2_videos_enabled">Utiliser les vidéos de la communauté</string>
+  <string name="loading_error">Aucune vidéo n\'a été trouvée, veuillez vérifier vos paramètres</string>
+  <string name="loading_title">Chargement…</string>
+  <string name="local_media_test_summary1">Fichiers trouvés : %1$s</string>
+  <string name="local_media_test_summary2">Fichiers non pris en charge : %1$s</string>
+  <string name="local_media_test_summary3">Vidéos trouvées : %1$s</string>
+  <string name="local_media_test_summary4">Images trouvées : %1$s</string>
+  <string name="local_media_test_summary5">Exclus par le filtre : %1$s</string>
+  <string name="local_media_test_summary6">Sélectionné pour la lecture : %1$s</string>
+  <string name="local_media_type_title">Choisir le type de support</string>
+  <string name="local_videos_enabled_title">Utiliser un support de stockage local ou USB</string>
+  <string name="local_videos_legacy_all_entry">Tous les volumes</string>
+  <string name="local_videos_legacy_folder_summary">Aucun dossier spécifié</string>
+  <string name="local_videos_legacy_folder_title">Spécifier un dossier (ex. /vidéos)</string>
+  <string name="local_videos_legacy_no_files_found">Aucun fichier trouvé</string>
+  <string name="local_videos_legacy_no_folder">Dossier non spécifié</string>
+  <string name="local_videos_legacy_no_folder_found">Le dossier n\'existe pas</string>
+  <string name="local_videos_legacy_no_volume">Volume non spécifié</string>
+  <string name="local_videos_legacy_summary">Spécifier un dossier unique dans lequel les vidéos et les images sont stockées</string>
+  <string name="local_videos_legacy_volume_summary">Pas de volume choisi</string>
+  <string name="local_videos_legacy_volume_title">Choisir un volume</string>
+  <string name="local_videos_media_store_filter_enabled_summary">N\'utiliser que des supports provenant d\'un ou de plusieurs dossiers spécifiques de l\'appareil, d\'une clé USB, etc.</string>
+  <string name="local_videos_media_store_filter_enabled_title">Filtrer les dossiers</string>
+  <string name="local_videos_media_store_filter_folder_summary">Si vous stockez des médias dans le dossier /Videos/Aerial/ par exemple, l\'utilisation de \"Aerial\" filtrera les médias provenant d\'autres dossiers.</string>
+  <string name="local_videos_media_store_filter_folder_title">Définir les noms des répertoires</string>
+  <string name="local_videos_media_store_no_folder">Aucun dossier spécifié pour le filtre</string>
+  <string name="local_videos_media_store_summary">Android analyse l\'ensemble du stockage local, les périphériques USB, etc. à la recherche de vidéos et d\'images.</string>
+  <string name="local_videos_permission_denied">Permission refusée</string>
+  <string name="local_videos_search_test">Tester les paramètres de recherche locale</string>
+  <string name="local_videos_search_type_title">Choisir le mode de recherche des vidéos et des images</string>
+  <string name="local_videos_shield_notice_summary">Paramètres &gt; Préférences de l\'appareil &gt; Stockage &gt; Recherche automatique de supports</string>
+  <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée...</string>
+  <string name="local_videos_test_results">Résultats des tests</string>
+  <string name="playlist_allow_media_button_passthrough_summary">Transmet les pressions sur les boutons de lecture, de pause, de retour en arrière, etc. à l\'application d\'arrière-plan (par exemple, l\'application musicale) sans quitter l\'économiseur d\'écran.</string>
+  <string name="playlist_allow_media_button_passthrough_title">Autoriser le passage des boutons de média</string>
+  <string name="playlist_allow_playback_speed_change_summary">Modifiez la vitesse de la vidéo en appuyant sur le haut ou le bas du d-pad de votre télécommande.</string>
+  <string name="playlist_allow_playback_speed_change_title">Permettre le changement de vitesse pendant la lecture</string>
+  <string name="playlist_allow_video_skipping_summary">Sauter une vidéo avec la télécommande (droite / gauche à D-Pad)</string>
+  <string name="playlist_allow_video_skipping_title">Vidéo suivante / précédente</string>
+  <string name="playlist_ignore_unmatched_videos_summary">Ignorer les vidéos qui ne sont pas listées dans les manifestes vidéo Apple</string>
+  <string name="playlist_ignore_unmatched_videos_title">Ignorer les vidéos non Apple sur le stockage local et le réseau</string>
+  <string name="playlist_image_scale_title">Mise à l\'échelle de l\'image</string>
+  <string name="playlist_max_video_length_title">Limiter la durée de la vidéo</string>
+  <string name="playlist_mute_videos_summary">Couper le son de toutes les vidéos</string>
+  <string name="playlist_mute_videos_title">Vidéos muettes</string>
+  <string name="playlist_playback_speed_changed">La vitesse de lecture est passée à : %1$s</string>
+  <string name="playlist_playback_speed_summary">Choisissez une vitesse de lecture</string>
+  <string name="playlist_playback_speed_title">Vitesse de lecture</string>
+  <string name="playlist_remove_duplicates_summary">Supprimer les vidéos avec le même nom de fichier de la playlist</string>
+  <string name="playlist_remove_duplicates_title">Supprimer les vidéos dupliquées</string>
+  <string name="playlist_shuffle_summary">L\'ordre des vidéos et des images est aléatoire.</string>
+  <string name="playlist_shuffle_title">Lecture aléatoire des vidéos et des images</string>
+  <string name="playlist_slideshow_speed_summary">Choisir une durée</string>
+  <string name="playlist_slideshow_speed_title">Vitesse du diaporama</string>
+  <string name="samba_media_test_summary1">Fichiers trouvés : %1$s</string>
+  <string name="samba_media_test_summary2">Fichiers non pris en charge : %1$s</string>
+  <string name="samba_media_test_summary3">Vidéos trouvées : %1$s</string>
+  <string name="samba_media_test_summary4">Images trouvées : %1$s</string>
+  <string name="samba_media_test_summary5">Sélectionné pour la lecture : %1$s</string>
+  <string name="samba_media_type_title">Choisir le type de support</string>
+  <string name="samba_videos_domainname_summary">Le nom de domaine ou le groupe de travail du serveur. Facultatif</string>
+  <string name="samba_videos_domainname_title">Nom de domaine</string>
+  <string name="samba_videos_enable_encryption_summary">Permet le cryptage des connexions SMB, ce qui peut réduire la vitesse de transfert globale.</string>
+  <string name="samba_videos_enable_encryption_title">Activer le cryptage</string>
+  <string name="samba_videos_enabled_title">Utiliser des supports de partage SMB/Samba</string>
+  <string name="samba_videos_error_parsing">Erreur lors de la lecture et de l\'analyse du fichier. Veuillez vérifier à nouveau le fichier pour voir s\'il contient des erreurs ou des caractères non valides.</string>
+  <string name="samba_videos_export_failed">Échec de l\'exportation</string>
+  <string name="samba_videos_export_success">Exportation réussie</string>
+  <string name="samba_videos_export_write_success">Exportation réussie des paramètres SMB vers %1$s dans le dossier Downloads</string>
+  <string name="samba_videos_file_already_exists">Le fichier de paramètres SMB %1$s existe déjà dans le dossier Downloads</string>
+  <string name="samba_videos_file_not_found">Impossible de trouver le fichier des paramètres SMB dans le dossier Téléchargements : %1$s</string>
+  <string name="samba_videos_hostname_summary">Adresse IP du serveur</string>
+  <string name="samba_videos_hostname_title">Nom d\'hôte</string>
+  <string name="samba_videos_import_export_settings_summary">Importer ou exporter les identifiants SMB vers le dossier de téléchargement</string>
+  <string name="samba_videos_import_export_settings_title">Importer/exporter les réglages</string>
+  <string name="samba_videos_import_failed">Échec de l\'importation</string>
+  <string name="samba_videos_import_save_success">Les paramètres SMB ont été importés avec succès à partir de : %1$s</string>
+  <string name="samba_videos_import_success">Importation réussie</string>
+  <string name="samba_videos_password_summary">Facultatif</string>
+  <string name="samba_videos_password_title">Mot de passe</string>
+  <string name="samba_videos_permission_denied">Permission refusée</string>
+  <string name="samba_videos_search_subfolders_summary">Recherche de vidéos dans tous les sous-dossiers</string>
+  <string name="samba_videos_search_subfolders_title">Recherche dans les sous-dossiers</string>
+  <string name="samba_videos_sharename_summary">Le nom du partage et du dossier contenant les vidéos, par exemple /video/aerial</string>
+  <string name="samba_videos_sharename_title">Nom du partage réseau</string>
+  <string name="samba_videos_smb_dialects_summary">Choisir les versions du protocole SMB à utiliser</string>
+  <string name="samba_videos_smb_dialects_title">Sélectionner les dialectes du SMB</string>
+  <string name="samba_videos_test_connection">Tester les paramètres de connexion</string>
+  <string name="samba_videos_test_results">Résultats des tests</string>
+  <string name="samba_videos_unable_to_save">Impossible d\'enregistrer les paramètres importés</string>
+  <string name="samba_videos_unable_to_write">Erreur lors de l\'écriture des paramètres SMB sur %1$s dans le dossier Downloads</string>
+  <string name="samba_videos_username_summary">Non défini. Optionnel</string>
+  <string name="samba_videos_username_title">Nom d\'utilisateur</string>
+  <string name="settings_about_summary">Version, informations sur la construction, etc.</string>
+  <string name="settings_about_title">A propos de</string>
+  <string name="settings_advanced_summary">Options de performance et de débogage pour le dépannage</string>
+  <string name="settings_advanced_title">Avancé</string>
+  <string name="settings_appearance_summary">Personnalisation de l\'apparence des vidéos et des images en cours de lecture</string>
+  <string name="settings_appearance_title">Apparence</string>
+  <string name="settings_capabilities_summary">Afficher les codecs vidéo, la résolution prise en charge et d\'autres fonctionnalités</string>
+  <string name="settings_capabilities_title">Capacités de l\'appareil</string>
+  <string name="settings_dpad_summary">Personnalisez les actions du d-pad sur votre télécommande</string>
+  <string name="settings_dpad_title">D-Pad/Télécommande</string>
+  <string name="settings_import_export_settings_summary">Importe ou exporte des paramètres dans le dossier Téléchargements</string>
+  <string name="settings_import_export_settings_title">Paramètres d\'importation/exportation</string>
+  <string name="settings_media_sources_summary">Lecture de vidéos et d\'images provenant d\'Internet, d\'une clé USB et de sources réseau</string>
+  <string name="settings_media_sources_title">Sources médiatiques</string>
+  <string name="settings_playlist_summary">Couper le son des vidéos, randomiser l\'ordre, etc.</string>
+  <string name="settings_playlist_title">Liste de lecture</string>
+  <string name="settings_preview_screensaver">Tester l\'économiseur d\'écran</string>
+  <string name="settings_settings_summary">Modifier les options de performance, de liste de lecture et d\'apparence</string>
+  <string name="settings_settings_title">Réglages</string>
+  <string name="settings_system_options">Ouvrir les paramètres système</string>
+  <string name="settings_system_options_error">Impossible d\'ouvrir les options de l\'économiseur d\'écran de votre appareil</string>
+  <string name="settings_system_options_removed">Cette fonction a été supprimée par le fabricant
+Pour plus d\'informations, veuillez consulter le site web Aerial Views.</string>
+  <string name="sources_apple_summary">Diffusion en continu de vidéos Apple à l\'aide de votre connexion Internet</string>
+  <string name="sources_apple_title">Vidéos d\'Apple</string>
+  <string name="sources_comm1_summary">Diffusez ces vidéos communautaires à l\'aide de votre connexion internet</string>
+  <string name="sources_comm1_title">Vidéos de Jetson Creative</string>
+  <string name="sources_comm2_summary">Diffusez ces vidéos communautaires à l\'aide de votre connexion internet</string>
+  <string name="sources_comm2_title">Vidéos de Robin Fourcade</string>
+  <string name="sources_local_summary">Lecture de vidéos et d\'images directement à partir de votre appareil ou d\'une clé USB connectée</string>
+  <string name="sources_local_title">Stockage local ou USB</string>
+  <string name="sources_samba_summary">Lire des vidéos et des images à partir d\'un réseau local partagé sur un PC ou un périphérique NAS</string>
+  <string name="sources_samba_title">Partage SMB/Samba</string>
+  <string name="sources_webdav_summary">Lecture de vidéos et d\'images stockées sur un serveur WebDAV, localement ou à distance</string>
+  <string name="sources_webdav_title">Serveur WebDAV</string>
+  <string name="videos_quality_summary">Sélectionnez la qualité de la vidéo</string>
+  <string name="videos_quality_title">Qualité de la vidéo</string>
 </resources>

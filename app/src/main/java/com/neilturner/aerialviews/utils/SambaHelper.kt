@@ -83,7 +83,7 @@ object SambaHelper {
         val dialectStrings = SambaMediaPrefs.smbDialects
         val config = SmbConfig.builder()
             .withEncryptData(SambaMediaPrefs.enableEncryption)
-            .withReadBufferSize(1024 * 512)
+            .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {
             Log.i(TAG, "Using SMB dialects: ${dialectStrings.joinToString(",")}")
             val dialects = dialectStrings.map { SMB2Dialect.valueOf(it) }

@@ -6,26 +6,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-    <View
-        android:id="@+id/loading_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#000" />
+        <View
+            android:id="@+id/loading_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000" />
 
-    <TextView
-        android:alpha="1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:layout_marginStart="@dimen/screen_border_padding"
-        android:layout_marginEnd="@dimen/screen_border_padding"
-        android:layout_marginBottom="@dimen/screen_border_padding_bottom"
-        android:gravity="bottom"
-        android:textAlignment="viewStart"
-        android:id="@+id/loading_text"
-        style="@style/LoadingText"
-        android:text="@string/loading_title"
-        tools:ignore="RtlCompat" />
+        <TextView
+            android:alpha="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/screen_border_padding"
+            android:layout_marginEnd="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
+            android:gravity="bottom"
+            android:textAlignment="viewStart"
+            android:id="@+id/loading_text"
+            style="@style/LoadingText"
+            android:text="@string/loading_title"
+            tools:ignore="RtlCompat" />
 
     </FrameLayout>
 </layout>

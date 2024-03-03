@@ -1,388 +1,255 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <!-- General -->
-    <string name="loading_title">Загрузка…</string>
-    <string name="loading_error">Видео не найдено, проверьте настройки.</string>
-
-    <!-- Common Buttons -->
-    <string name="button_ok">OK</string>
-    <string name="button_cancel">Отмена</string>
-    <string name="button_import">Импортировать</string>
-    <string name="button_export">Экспортировать</string>
-
-    <!-- Common Categories -->
-    <string name="category_actions">Действия</string>
-    <string name="category_advanced">Расширенные</string>
-    <string name="category_video_source">Источник видео</string>
-    <string name="category_options">Опции</string>
-
-    <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Качество видео</string>
-    <string name="videos_quality_summary">Выберите качество видео</string>
-
-    <!-- Main -->
-    <string name="settings_media_sources_title">Media Sources</string>
-    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
-
-    <string name="settings_settings_title">Настройки</string>
-    <string name="settings_settings_summary">Изменить параметры производительности, плейлиста и внешнего вида</string>
-
-    <string name="settings_preview_screensaver">Протестировать настройки заставки</string>
-    <string name="settings_system_options">Открыть системные настройки заставки</string>
-
-    <string name="settings_system_options_error">Невозможно открыть параметры заставки вашего устройства</string>
-    <string name="settings_system_options_removed">Эта функция удалена производителем\nПожалуйста, посетите веб-сайт Aerial Views для получения более подробной информации.</string>
-
-    <!-- Main / Video Sources -->
-    <string name="category_remote">Потоковые видео</string>
-    <string name="category_local">Локальное хранилище</string>
-    <string name="category_network">Сеть</string>
-
-    <string name="sources_apple_title">Видео Apple</string>
-    <string name="sources_apple_summary">Потоковое видео Apple, используя подключение к Интернету</string>
-
-    <string name="sources_comm1_title">Видео от Jetson Creative</string>
-    <string name="sources_comm1_summary">Потоковое видео сообщества, используя подключение к Интернету</string>
-
-    <string name="sources_comm2_title">Видео от Robin Fourcade</string>
-    <string name="sources_comm2_summary">Потоковое видео сообщества, используя подключение к Интернету</string>
-
-    <string name="sources_local_title">Локальное или USB-хранилище</string>
-    <string name="sources_local_summary">Воспроизведение видео прямо с вашего устройства или подключенного USB-накопителя</string>
-
-    <string name="sources_samba_title">SMB/Samba share</string>
-    <string name="sources_samba_summary">Воспроизведение видео из локальной сетевой папки на ПК или устройстве NAS</string>
-
-    <string name="sources_webdav_title">WebDAV сервер</string>
-    <string name="sources_webdav_summary">Воспроизведение видео, хранящихся на сервере WebDAV, локально или удаленно.</string>
-
-    <!-- Main / Video Sources / Apple videos -->
-    <string name="apple_videos_enabled">Использовать видео Apple</string>
-
-    <string name="apple_videos_data_usage_title">Использование данных</string>
-    <string name="apple_videos_data_estimate_summary">Приблизительно %1$s в час</string>
-
-    <!-- Main / Video Sources / Comm1 videos -->
-    <string name="comm1_videos_enabled">Использовать видео сообщества</string>
-
-    <!-- Main / Video Sources / Comm2 videos -->
-    <string name="comm2_videos_enabled">Использовать видео сообщества</string>
-
-    <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Опции сканера мультимедиа</string>
-    <string name="category_folder_access_options">Параметры доступа к папкам</string>
-
-    <string name="local_videos_enabled_title">Использовать видео с локального или USB-накопителя</string>
-
-    <string name="local_videos_search_type_title">Выберите способ поиска видео</string>
-    <string name="local_videos_search_test">Протестируйте настройки локального поиска</string>
-
-    <string name="local_videos_media_store_summary">Android сканирует все локальные хранилища, USB-устройства и т.д. на наличие видео</string>
-
-    <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
-    <string name="local_videos_shield_notice_summary">Настройки > Настройки устройства > Хранилище > Автоматическое сканирование медиафайлов</string>
-
-    <string name="local_videos_media_store_filter_enabled_title">Фильтр папок</string>
-    <string name="local_videos_media_store_filter_enabled_summary">Воспроизведение видео только из определенной папки или папок на устройстве, USB и т. д.</string>
-
-    <string name="local_videos_media_store_filter_folder_title">Укажите название папки</string>
-    <string name="local_videos_media_store_filter_folder_summary">"Если вы храните видео, например, в /Videos/Aerial/, использование 'Aerial' будет отфильтровывать видео из других папок"</string>
-
-    <string name="local_videos_legacy_summary">Укажите одну папку, в которой хранятся видео</string>
-
-    <string name="local_videos_legacy_volume_title">Выберите объем</string>
-    <string name="local_videos_legacy_volume_summary">Том не выбран</string>
-
-    <string name="local_videos_legacy_all_entry">Все тома</string>
-
-    <string name="local_videos_legacy_folder_title">Укажите папку (например, videos)</string>
-    <string name="local_videos_legacy_folder_summary">Папка не указана</string>
-
-    <string name="local_videos_legacy_no_volume">Объем не указан</string>
-    <string name="local_videos_legacy_no_folder">Папка не указана</string>
-    <string name="local_videos_legacy_no_folder_found">Папка не существует</string>
-    <string name="local_videos_legacy_no_files_found">Файлы не найдены</string>
-
-    <string name="local_media_test_summary1">Files found: %1$s</string>
-    <string name="local_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="local_media_test_summary3">Videos found: %1$s</string>
-    <string name="local_media_test_summary4">Images found: %1$s</string>
-    <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
-    <string name="local_media_test_summary6">Selected for playback: %1$s</string>
-
-    <string name="local_videos_media_store_no_folder">Для фильтра не указана папка</string>
-
-    <string name="local_videos_permission_denied">Доступ запрещен</string>
-    <string name="local_videos_test_results">Результаты теста</string>
-
-    <!-- Main / Video Sources / Samba videos -->
-    <string name="category_server_details">Сведения о сервере и учетные данные</string>
-
-    <string name="samba_videos_enabled_title">Использовать SMB/Samba для обмена видео</string>
-
-    <string name="samba_videos_hostname_title">Имя хоста</string>
-    <string name="samba_videos_hostname_summary">IP-адрес сервера</string>
-
-    <string name="samba_videos_domainname_title">Доменное имя (необязательно)</string>
-    <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера</string>
-
-    <string name="samba_videos_sharename_title">Имя общего доступа</string>
-    <string name="samba_videos_sharename_summary">например /Video/Aerial</string>
-
-    <string name="samba_videos_username_title">Имя пользователя</string>
-    <string name="samba_videos_username_summary">Необязательно</string>
-
-    <string name="samba_videos_password_title">Пароль</string>
-    <string name="samba_videos_password_summary">Необязательно</string>
-
-    <string name="samba_videos_search_subfolders_title">Поиск в подпапках</string>
-    <string name="samba_videos_search_subfolders_summary">Искать видео во всех подпапках</string>
-
-    <string name="samba_videos_import_export_settings_title">Импорт/экспорт настроек</string>
-    <string name="samba_videos_import_export_settings_summary">Импортирует или экспортирует ваши учетные данные SMB в папку Загрузки</string>
-
-    <string name="samba_videos_test_connection">Протестировать настройки подключения</string>
-
-    <string name="samba_media_test_summary1">Files found: %1$s</string>
-    <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
-    <string name="samba_media_test_summary3">Videos found: %1$s</string>
-    <string name="samba_media_test_summary4">Images found: %1$s</string>
-    <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
-
-    <string name="samba_videos_import_failed">Импорт не удался</string>
-    <string name="samba_videos_import_success">Импорт выполнен успешно</string>
-    <string name="samba_videos_unable_to_save">Не удалось сохранить импортированные настройки</string>
-    <string name="samba_videos_file_not_found">Не могу найти файл настроек SMB в папке «Загрузки».: %1$s</string>
-    <string name="samba_videos_error_parsing">Ошибка при чтении и анализе файла. Пожалуйста, проверьте файл еще раз на наличие ошибок или недопустимых символов.</string>
-    <string name="samba_videos_import_save_success">Настройки SMB успешно импортированы из: %1$s</string>
-
-    <string name="samba_videos_export_failed">Экспорт не удался</string>
-    <string name="samba_videos_export_success">Экспорт выполнен успешно</string>
-    <string name="samba_videos_file_already_exists">Файл настроек SMB %1$s уже существует в папке «Загрузки»</string>
-    <string name="samba_videos_unable_to_write">Ошибка при попытке записать настройки SMB в %1$s в папке «Загрузки»</string>
-    <string name="samba_videos_export_write_success">Настройки SMB успешно экспортированы в %1$s в папке «Загрузки»</string>
-
-    <string name="samba_videos_permission_denied">Доступ запрещен</string>
-    <string name="samba_videos_test_results">Результаты теста</string>
-
-    <!-- Main / Video Sources / WebDAV videos -->
-
-    <!-- Main / Settings -->
-    <string name="category_settings">Настройки</string>
-
-    <string name="settings_appearance_title">Вид</string>
-    <string name="settings_appearance_summary">Настройте внешний вид при воспроизведении видео</string>
-
-    <string name="settings_playlist_title">Плейлист</string>
-    <string name="settings_playlist_summary">Отключение звука видео, рандомизация и т. д.</string>
-
-    <string name="settings_dpad_title">Крестовина пульта управления</string>
-    <string name="settings_dpad_summary">Настройте действия крестовины на пульте дистанционного управления</string>
-
-    <string name="settings_capabilities_title">Возможности устройства</string>
-    <string name="settings_capabilities_summary">Просмотр видеокодеков, поддержки разрешений и другие возможности</string>
-
-    <string name="settings_advanced_title">Дополнительно</string>
-    <string name="settings_advanced_summary">Параметры производительности и отладки для устранения неполадок</string>
-
-    <string name="settings_about_title">О приложении</string>
-    <string name="settings_about_summary">Версия, информация о сборке и т.д.</string>
-
-    <string name="settings_import_export_settings_title">Импорт/экспорт настроек</string>
-    <string name="settings_import_export_settings_summary">Импортирует или экспортирует настройки в папку Загрузки</string>
-
-    <!-- Main / Settings / Appearance -->
-    <string name="category_appearance">Вид</string>
-    <string name="category_overlays">Наложение</string>
-    <string name="category_slots">Слоты</string>
-
-    <string name="appearance_top_row_title">Верхний ряд</string>
-    <string name="appearance_top_row_summary">Выберите наложения для верхнего левого и правого углов экрана</string>
-
-    <string name="appearance_bottom_row_title">Нижний ряд</string>
-    <string name="appearance_bottom_row_summary">Выберите наложения для нижнего левого и правого углов экрана</string>
-
-    <string name="appearance_clock_title">Часы</string>
-    <string name="appearance_clock_summary">Отображение текущего времени</string>
-
-    <string name="appearance_location_title">Местоположение</string>
-    <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
-
-    <string name="appearance_date_title">Дата</string>
-    <string name="appearance_date_summary">Отобразить текущую дату</string>
-
-    <string name="appearance_weather_title">Погода</string>
-    <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
-
-    <string name="appearance_music_title">Музыка</string>
-    <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
-
-    <string name="appearance_message_title">Сообщение</string>
-    <string name="appearance_message_summary">Отображать до 2 строк пользовательского текста</string>
-
-    <string name="appearance_typography_title">Шрифт</string>
-    <string name="appearance_typography_summary">Измените шрифт, используемый для отображения всего текста заставки</string>
-
-    <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
-    <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
-
-    <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Верхний левый</string>
-    <string name="category_top_row_right">Верний правый</string>
-
-    <string name="category_bottom_row_left">Внизу слева</string>
-    <string name="category_bottom_row_right">Внизу справа</string>
-
-    <string name="appearance_slot1_title">Нижний слот</string>
-    <string name="appearance_slot2_title">Верхний слот</string>
-    <string name="appearance_slot_summary">Пустой</string>
-
-    <string name="appearance_bottom_left_lower_slot">Внизу слева, нижний слот</string>
-    <string name="appearance_bottom_left_upper_slot">Внизу слева, верхний слот</string>
-    <string name="appearance_bottom_right_lower_slot">Внизу справа, нижний слот</string>
-    <string name="appearance_bottom_right_upper_slot">Внизу справа, верхний слот</string>
-    <string name="appearance_top_left_lower_slot">Вверху слева, нижний слот</string>
-    <string name="appearance_top_left_upper_slot">Верхний левый, верхний слот</string>
-    <string name="appearance_top_right_lower_slot">Вверху справа, нижний слот</string>
-    <string name="appearance_top_right_upper_slot">Вверху справа, верхний слот</string>
-
-    <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Часы</string>
-    <string name="appearance_clock_format_title">Формат часов</string>
-
-    <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
-    <string name="appearance_show_force_latin_digits_summary">Всегда показывайть западные цифры, независимо от настроек языкового стандарта системы</string>
-
-    <string name="appearance_clock_size_title">Отрегулируйте размер текста часов</string>
-
-    <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Дата</string>
-    <string name="category_custom_format">Свой формат</string>
-
-    <string name="appearance_date_format_title">Формат даты</string>
-    <string name="appearance_date_custom_title">Укажите собственный формат даты</string>
-    <string name="appearance_date_notice_summary">Для получения дополнительной информации о форматах даты найдите \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Отрегулируйте размер текста даты</string>
-
-    <string name="appearance_date_custom_error">Неверный пользовательский формат даты!</string>
-    <string name="appearance_date_custom_example">напр.</string>
-
-    <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
-    <string name="category_all_other_media">All other videos and images</string>
-
-    <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
-
-    <string name="appearance_filename_as_location_title">Имя файла в качестве местоположения</string>
-
-    <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
-
-    <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Сообщение</string>
-
-    <string name="appearance_message_style_title">Показывать пользовательское сообщение</string>
-
-    <string name="appearance_message_line1_title">Строка 1</string>
-    <string name="appearance_message_line1_summary">Введите текст для отображения, включая эмодзи</string>
-    <string name="appearance_message_line2_title">Строка 2</string>
-
-    <string name="appearance_message_size_title">Отрегулируйте размер текста</string>
-
-    <!-- Main / Settings / Appearance / Typography -->
-
-    <string name="category_typography">Оформление</string>
-
-    <string name="appearance_typeface_title">Шрифт</string>
-
-    <string name="appearance_weight_title">Начертание шрифта</string>
-
-    <!-- Main / Settings / Playlist -->
-    <string name="category_playlist">Плейлист</string>
-
-    <string name="playlist_mute_videos_title">Без звука</string>
-    <string name="playlist_mute_videos_summary">Отключить звук во всех видео</string>
-
-    <string name="playlist_shuffle_title">Перемешать видео</string>
-    <string name="playlist_shuffle_summary">Проигрывание видео в случайном порядок</string>
-
-    <string name="playlist_playback_speed_title">Скорость воспроизведения</string>
-    <string name="playlist_playback_speed_summary">Выберите скорость воспроизведения</string>
-
-    <string name="playlist_remove_duplicates_title">Удалить дубликаты видео</string>
-    <string name="playlist_remove_duplicates_summary">Удалить дубликаты видео из плейлиста только по имени файла</string>
-
-    <string name="playlist_ignore_unmatched_videos_title">Игнорировать видео не Apple в локальном хранилище или в локальной сети</string>
-    <string name="playlist_ignore_unmatched_videos_summary">Пропускать видео, не указанные ни в одном видеоманифесте Apple</string>
-
-    <!-- Main / Settings / D-Pad/Remote -->
-    <string name="category_dpad">Крестовине пульта управления</string>
-
-    <string name="playlist_allow_video_skipping_title">Разрешить переход к следующему/предыдущему видео</string>
-    <string name="playlist_allow_video_skipping_summary">Переключать видео, нажатием влево или вправо на крестовине пульта управления</string>
-
-    <string name="playlist_allow_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
-    <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
-
-    <string name="playlist_playback_speed_changed">Скорость воспроизведения изменена на: %1$s</string>
-
-    <string name="playlist_allow_media_button_passthrough_title">Разрешить сквозную передачу кнопок мультимедиа</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Передаёт нажатия кнопок воспроизведения, паузы, перемотки назад и т. д. в фоновое приложение (например, музыкальное приложение) без выхода из заставки.</string>
-
-    <!-- Main / Settings / Device capabilities -->
-    <string name="category_capabilities">Возможности</string>
-
-    <string name="capabilities_device_title">Устройство</string>
-    <string name="capabilities_display_title">ТВ/Дисплей</string>
-    <string name="capabilities_codecs_title">Кодеки</string>
-    <string name="capabilities_decoders_title">Видео декодеры</string>
-    <string name="capabilities_resolution_title">Разрешение</string>
-
-    <string name="capabilities_model">Модель: %1$s</string>
-    <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Да</string>
-    <string name="capabilities_no">Нет</string>
-
-    <string name="capabilities_ui_resolution">Разрешение пользовательского интерфейса: %1$s</string>
-    <string name="capabilities_max_video_resolution">Макс. разрешение видео: %1$s</string>
-
-    <string name="capabilities_supports_hdr10">Поддержка HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Поддержка Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Найдено</string>
-    <string name="capabilities_not_found">Не найдено</string>
-    <string name="capabilities_avc">AVC: %1$s</string>
-    <string name="capabilities_hevc">HEVC: %1$s</string>
-    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
-
-    <!-- Main / Settings / Advanced -->
-    <string name="category_video_render_options">Параметры видео и рендеринга</string>
-    <string name="category_samba_options">Samba/SMB настройки</string>
-
-    <string name="playlist_max_video_length_title">Ограничить длину видео</string>
-
-    <string name="advanced_refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
-    <string name="advanced_refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
-
-    <string name="advanced_enable_tunneling_title">Включить туннелирование</string>
-    <string name="advanced_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>
-
-    <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ MediaCodec</string>
-    <string name="advanced_philips_dolby_vision_fix_summary">Исправляет воспроизведение в Dolby Vision на некоторых старых телевизорах Philips</string>
-
-    <string name="samba_videos_enable_encryption_title">Включить шифрование</string>
-    <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи</string>
-
-    <string name="samba_videos_smb_dialects_title">Выберите версию SMB</string>
-    <string name="samba_videos_smb_dialects_summary">Выберите, какую версию SMB протокола использовать</string>
-
-    <string name="advanced_locale_menu_title">Язык текста меню</string>
-    <string name="advanced_locale_screensaver_title">Язык текста заставки (часы, местоположение)</string>
-
-    <string name="advanced_locale_restart_app_title">Перезапустить приложение</string>
-    <string name="advanced_locale_restart_app_summary">Для изменения языка, приложение необходимо перезапустить</string>
-
-    <!-- Main / Settings / About -->
-    <string name="category_about">О приложении</string>
-
-    <string name="about_version_title">Версия</string>
-    <string name="about_date_title">Дата сборки</string>
+  <string name="about_date_title">Дата сборки</string>
+  <string name="about_version_title">Версия</string>
+  <string name="advanced_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>
+  <string name="advanced_enable_tunneling_title">Включить туннелирование</string>
+  <string name="advanced_locale_menu_title">Язык текста меню</string>
+  <string name="advanced_locale_restart_app_summary">Для изменения языка, приложение необходимо перезапустить</string>
+  <string name="advanced_locale_restart_app_title">Перезапустить приложение</string>
+  <string name="advanced_locale_screensaver_title">Язык текста заставки (часы, местоположение)</string>
+  <string name="advanced_philips_dolby_vision_fix_summary">Исправляет воспроизведение в Dolby Vision на некоторых старых телевизорах Philips</string>
+  <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ медиакодека</string>
+  <string name="advanced_refresh_rate_switching_summary">Измените частоту обновления дисплея в соответствии с частотой кадров видео</string>
+  <string name="advanced_refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
+  <string name="appearance_alt_text_position_summary">Положение часов и местоположение меняются в каждом видео, чтобы предотвратить выгорание OLED-дисплеев</string>
+  <string name="appearance_alt_text_position_title">Альтернативная позиция текста</string>
+  <string name="appearance_bottom_left_lower_slot">Внизу слева, нижний слот</string>
+  <string name="appearance_bottom_left_upper_slot">Внизу слева, верхний слот</string>
+  <string name="appearance_bottom_right_lower_slot">Внизу справа, нижний слот</string>
+  <string name="appearance_bottom_right_upper_slot">Внизу справа, верхний слот</string>
+  <string name="appearance_bottom_row_summary">Выберите наложения для нижнего левого и правого углов экрана</string>
+  <string name="appearance_bottom_row_title">Нижний ряд</string>
+  <string name="appearance_clock_format_title">Формат часов</string>
+  <string name="appearance_clock_size_title">Отрегулируйте размер текста часов</string>
+  <string name="appearance_clock_summary">Отображение текущего времени</string>
+  <string name="appearance_clock_title">Часы</string>
+  <string name="appearance_date_custom_error">Неверный пользовательский формат даты!</string>
+  <string name="appearance_date_custom_example">напр.</string>
+  <string name="appearance_date_custom_title">Укажите собственный формат даты</string>
+  <string name="appearance_date_format_title">Формат даты</string>
+  <string name="appearance_date_notice_summary">Для получения дополнительной информации о форматах даты найдите \'Android SimpleDateFormat\'</string>
+  <string name="appearance_date_size_title">Отрегулируйте размер текста даты</string>
+  <string name="appearance_date_summary">Отобразить текущую дату</string>
+  <string name="appearance_date_title">Дата</string>
+  <string name="appearance_filename_as_location_title">Имя файла в качестве местоположения</string>
+  <string name="appearance_location_size_title">Отрегулируйте размер текста местоположения</string>
+  <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
+  <string name="appearance_location_title">Местоположение</string>
+  <string name="appearance_message_line1_summary">Введите текст для отображения, включая эмодзи</string>
+  <string name="appearance_message_line1_title">Строка 1</string>
+  <string name="appearance_message_line2_title">Строка 2</string>
+  <string name="appearance_message_size_title">Отрегулируйте размер текста</string>
+  <string name="appearance_message_style_title">Показывать пользовательское сообщение</string>
+  <string name="appearance_message_summary">Отображать до 2 строк пользовательского текста</string>
+  <string name="appearance_message_title">Сообщение</string>
+  <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
+  <string name="appearance_music_title">Музыка</string>
+  <string name="appearance_show_force_latin_digits_summary">Всегда показывать западные цифры, независимо от настроек языкового стандарта системы</string>
+  <string name="appearance_show_force_latin_digits_title">Принудительно латинские цифры</string>
+  <string name="appearance_show_location_title">Показывать местоположение, название или точки интереса</string>
+  <string name="appearance_slot1_title">Нижний слот</string>
+  <string name="appearance_slot2_title">Верхний слот</string>
+  <string name="appearance_slot_summary">Пустой</string>
+  <string name="appearance_top_left_lower_slot">Вверху слева, нижний слот</string>
+  <string name="appearance_top_left_upper_slot">Вверху слева, верхний слот</string>
+  <string name="appearance_top_right_lower_slot">Вверху справа, нижний слот</string>
+  <string name="appearance_top_right_upper_slot">Вверху справа, верхний слот</string>
+  <string name="appearance_top_row_summary">Выберите наложения для верхнего левого и правого углов экрана</string>
+  <string name="appearance_top_row_title">Верхний ряд</string>
+  <string name="appearance_typeface_title">Шрифт</string>
+  <string name="appearance_typography_summary">Измените шрифт, используемый для отображения всего текста заставки</string>
+  <string name="appearance_typography_title">Шрифт</string>
+  <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
+  <string name="appearance_weather_title">Погода</string>
+  <string name="appearance_weight_title">Начертание шрифта</string>
+  <string name="apple_videos_data_estimate_summary">Приблизительно %1$s в час</string>
+  <string name="apple_videos_data_usage_title">Использование данных</string>
+  <string name="apple_videos_enabled">Использовать видео Apple</string>
+  <string name="button_cancel">Отмена</string>
+  <string name="button_export">Экспортировать</string>
+  <string name="button_import">Импортировать</string>
+  <string name="button_ok">OK</string>
+  <string name="capabilities_android">Android: %1$s</string>
+  <string name="capabilities_avc">AVC: %1$s</string>
+  <string name="capabilities_codecs_title">Кодеки</string>
+  <string name="capabilities_decoders_title">Видео декодеры</string>
+  <string name="capabilities_device_title">Устройство</string>
+  <string name="capabilities_display_title">ТВ/Дисплей</string>
+  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+  <string name="capabilities_found">Найдено</string>
+  <string name="capabilities_hevc">HEVC: %1$s</string>
+  <string name="capabilities_max_video_resolution">Максимальное разрешение видео: %1$s</string>
+  <string name="capabilities_model">Модель: %1$s</string>
+  <string name="capabilities_no">Нет</string>
+  <string name="capabilities_not_found">Не найдено</string>
+  <string name="capabilities_resolution_title">Разрешение</string>
+  <string name="capabilities_supports_dolby_vision">Поддержка Dolby Vision: %1$s</string>
+  <string name="capabilities_supports_hdr10">Поддержка HDR10: %1$s</string>
+  <string name="capabilities_ui_resolution">Разрешение пользовательского интерфейса: %1$s</string>
+  <string name="capabilities_yes">Да</string>
+  <string name="category_about">О приложении</string>
+  <string name="category_actions">Действия</string>
+  <string name="category_advanced">Расширенные</string>
+  <string name="category_all_other_media">Все остальные видео и изображения</string>
+  <string name="category_appearance">Вид</string>
+  <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
+  <string name="category_bottom_row_left">Внизу слева</string>
+  <string name="category_bottom_row_right">Внизу справа</string>
+  <string name="category_capabilities">Возможности</string>
+  <string name="category_clock">Часы</string>
+  <string name="category_custom_format">Свой формат</string>
+  <string name="category_date">Дата</string>
+  <string name="category_dpad">Крестовине пульта управления</string>
+  <string name="category_folder_access_options">Параметры доступа к папкам</string>
+  <string name="category_images">Изображения</string>
+  <string name="category_local">Локальное хранилище</string>
+  <string name="category_media_scanner_options">Опции сканера мультимедиа</string>
+  <string name="category_message">Сообщение</string>
+  <string name="category_network">Сеть</string>
+  <string name="category_options">Опции</string>
+  <string name="category_overlays">Наложение</string>
+  <string name="category_playlist">Плейлист</string>
+  <string name="category_remote">Потоковые видео</string>
+  <string name="category_samba_options">Samba/SMB настройки</string>
+  <string name="category_server_details">Сведения о сервере и учетные данные</string>
+  <string name="category_settings">Настройки</string>
+  <string name="category_slots">Слоты</string>
+  <string name="category_top_row_left">Верхний левый</string>
+  <string name="category_top_row_right">Верхний правый</string>
+  <string name="category_typography">Оформление</string>
+  <string name="category_video_render_options">Параметры видео и рендеринга</string>
+  <string name="category_video_source">Источник видео</string>
+  <string name="category_videos">Видео</string>
+  <string name="comm1_videos_enabled">Использовать видео сообщества</string>
+  <string name="comm2_videos_enabled">Использовать видео сообщества</string>
+  <string name="loading_error">Видео не найдено, проверьте настройки.</string>
+  <string name="loading_title">Загрузка…</string>
+  <string name="local_media_test_summary1">Найдено файлов: %1$s</string>
+  <string name="local_media_test_summary2">Неподдерживаемые файлы: %1$s</string>
+  <string name="local_media_test_summary3">Найдено видео: %1$s</string>
+  <string name="local_media_test_summary4">Найдено изображений: %1$s</string>
+  <string name="local_media_test_summary5">Исключено фильтром: %1$s</string>
+  <string name="local_media_test_summary6">Выбрано для воспроизведения: %1$s</string>
+  <string name="local_media_type_title">Выберите тип носителя</string>
+  <string name="local_videos_enabled_title">Использовать видео с локального или USB-накопителя</string>
+  <string name="local_videos_legacy_all_entry">Все тома</string>
+  <string name="local_videos_legacy_folder_summary">Папка не указана</string>
+  <string name="local_videos_legacy_folder_title">Укажите папку (например, videos)</string>
+  <string name="local_videos_legacy_no_files_found">Файлы не найдены</string>
+  <string name="local_videos_legacy_no_folder">Папка не указана</string>
+  <string name="local_videos_legacy_no_folder_found">Папка не существует</string>
+  <string name="local_videos_legacy_no_volume">Объем не указан</string>
+  <string name="local_videos_legacy_summary">Укажите одну папку, в которой хранятся видео</string>
+  <string name="local_videos_legacy_volume_summary">Том не выбран</string>
+  <string name="local_videos_legacy_volume_title">Выберите объем</string>
+  <string name="local_videos_media_store_filter_enabled_summary">Воспроизведение видео только из определенной папки или папок на устройстве, USB и т. д.</string>
+  <string name="local_videos_media_store_filter_enabled_title">Фильтр папок</string>
+  <string name="local_videos_media_store_filter_folder_summary">"Если вы храните видео, например, в /Videos/Aerial/, использование \'Aerial\' будет отфильтровывать видео из других папок"</string>
+  <string name="local_videos_media_store_filter_folder_title">Укажите название папки</string>
+  <string name="local_videos_media_store_no_folder">Для фильтра не указана папка</string>
+  <string name="local_videos_media_store_summary">Android сканирует все локальные хранилища, USB-устройства и т.д. на наличие видео</string>
+  <string name="local_videos_permission_denied">Доступ запрещен</string>
+  <string name="local_videos_search_test">Протестируйте настройки локального поиска</string>
+  <string name="local_videos_search_type_title">Выберите способ поиска видео</string>
+  <string name="local_videos_shield_notice_summary">Настройки &gt; Настройки устройства &gt; Хранилище &gt; Автоматическое сканирование медиафайлов</string>
+  <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
+  <string name="local_videos_test_results">Результаты теста</string>
+  <string name="playlist_allow_media_button_passthrough_summary">Передаёт нажатия кнопок воспроизведения, паузы, перемотки назад и т.д. в фоновое приложение (например, музыкальное приложение) без выхода из заставки.</string>
+  <string name="playlist_allow_media_button_passthrough_title">Разрешить сквозную передачу кнопок мультимедиа</string>
+  <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>
+  <string name="playlist_allow_playback_speed_change_title">Разрешить изменение скорости во время воспроизведения</string>
+  <string name="playlist_allow_video_skipping_summary">Переключать видео, нажатием влево или вправо на крестовине пульта управления</string>
+  <string name="playlist_allow_video_skipping_title">Разрешить переход к следующему/предыдущему видео</string>
+  <string name="playlist_ignore_unmatched_videos_summary">Пропускать видео, не указанные ни в одном видеоманифесте Apple</string>
+  <string name="playlist_ignore_unmatched_videos_title">Игнорировать видео не Apple в локальном хранилище или в локальной сети</string>
+  <string name="playlist_image_scale_title">Масштабирование изображения</string>
+  <string name="playlist_max_video_length_title">Ограничить длину видео</string>
+  <string name="playlist_mute_videos_summary">Отключить звук во всех видео</string>
+  <string name="playlist_mute_videos_title">Без звука</string>
+  <string name="playlist_playback_speed_changed">Скорость воспроизведения изменена на: %1$s</string>
+  <string name="playlist_playback_speed_summary">Выберите скорость воспроизведения</string>
+  <string name="playlist_playback_speed_title">Скорость воспроизведения</string>
+  <string name="playlist_remove_duplicates_summary">Удалить дубликаты видео из плейлиста только по имени файла</string>
+  <string name="playlist_remove_duplicates_title">Удалить дубликаты видео</string>
+  <string name="playlist_shuffle_summary">Случайный порядок видео и изображений</string>
+  <string name="playlist_shuffle_title">Перемешать видео и изображения</string>
+  <string name="playlist_slideshow_speed_summary">Выберите продолжительность</string>
+  <string name="playlist_slideshow_speed_title">Скорость показа слайдов</string>
+  <string name="samba_media_test_summary1">Найдено файлов: %1$s</string>
+  <string name="samba_media_test_summary2">Неподдерживаемые файлы: %1$s</string>
+  <string name="samba_media_test_summary3">Найдено видео: %1$s</string>
+  <string name="samba_media_test_summary4">Найдено изображений: %1$s</string>
+  <string name="samba_media_test_summary5">Выбрано для воспроизведения: %1$s</string>
+  <string name="samba_media_type_title">Выберите тип носителя</string>
+  <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера</string>
+  <string name="samba_videos_domainname_title">Доменное имя (необязательно)</string>
+  <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи</string>
+  <string name="samba_videos_enable_encryption_title">Включить шифрование</string>
+  <string name="samba_videos_enabled_title">Использовать SMB/Samba для обмена видео</string>
+  <string name="samba_videos_error_parsing">Ошибка при чтении и анализе файла. Пожалуйста, проверьте файл еще раз на наличие ошибок или недопустимых символов.</string>
+  <string name="samba_videos_export_failed">Экспорт не удался</string>
+  <string name="samba_videos_export_success">Экспорт выполнен успешно</string>
+  <string name="samba_videos_export_write_success">Настройки SMB успешно экспортированы в %1$s в папке «Загрузки»</string>
+  <string name="samba_videos_file_already_exists">Файл настроек SMB %1$s уже существует в папке «Загрузки»</string>
+  <string name="samba_videos_file_not_found">Не могу найти файл настроек SMB в папке «Загрузки».: %1$s</string>
+  <string name="samba_videos_hostname_summary">IP-адрес сервера</string>
+  <string name="samba_videos_hostname_title">Имя хоста</string>
+  <string name="samba_videos_import_export_settings_summary">Импортирует или экспортирует ваши учетные данные SMB в папку Загрузки</string>
+  <string name="samba_videos_import_export_settings_title">Импорт/экспорт настроек</string>
+  <string name="samba_videos_import_failed">Импорт не удался</string>
+  <string name="samba_videos_import_save_success">Настройки SMB успешно импортированы из: %1$s</string>
+  <string name="samba_videos_import_success">Импорт выполнен успешно</string>
+  <string name="samba_videos_password_summary">Необязательно</string>
+  <string name="samba_videos_password_title">Пароль</string>
+  <string name="samba_videos_permission_denied">Доступ запрещен</string>
+  <string name="samba_videos_search_subfolders_summary">Искать видео во всех подпапках</string>
+  <string name="samba_videos_search_subfolders_title">Поиск в подпапках</string>
+  <string name="samba_videos_sharename_summary">например /Video/Aerial</string>
+  <string name="samba_videos_sharename_title">Имя общего доступа</string>
+  <string name="samba_videos_smb_dialects_summary">Выберите, какую версию SMB протокола использовать</string>
+  <string name="samba_videos_smb_dialects_title">Выберите версию SMB</string>
+  <string name="samba_videos_test_connection">Протестировать настройки подключения</string>
+  <string name="samba_videos_test_results">Результаты теста</string>
+  <string name="samba_videos_unable_to_save">Не удалось сохранить импортированные настройки</string>
+  <string name="samba_videos_unable_to_write">Ошибка при попытке записать настройки SMB в %1$s в папке «Загрузки»</string>
+  <string name="samba_videos_username_summary">Необязательно</string>
+  <string name="samba_videos_username_title">Имя пользователя</string>
+  <string name="settings_about_summary">Версия, информация о сборке и т.д.</string>
+  <string name="settings_about_title">О приложении</string>
+  <string name="settings_advanced_summary">Параметры производительности и отладки для устранения неполадок</string>
+  <string name="settings_advanced_title">Дополнительно</string>
+  <string name="settings_appearance_summary">Настройте внешний вид при воспроизведении видео</string>
+  <string name="settings_appearance_title">Вид</string>
+  <string name="settings_capabilities_summary">Просмотр видеокодеков, поддержки разрешений и другие возможности</string>
+  <string name="settings_capabilities_title">Возможности устройства</string>
+  <string name="settings_dpad_summary">Настройте действия крестовины на пульте дистанционного управления</string>
+  <string name="settings_dpad_title">Крестовина пульта управления</string>
+  <string name="settings_import_export_settings_summary">Импортирует или экспортирует настройки в папку Загрузки</string>
+  <string name="settings_import_export_settings_title">Импорт/экспорт настроек</string>
+  <string name="settings_media_sources_summary">Воспроизведение видео и изображений из Интернета, USB-накопителей и сетевых источников.</string>
+  <string name="settings_media_sources_title">Медиа-источники</string>
+  <string name="settings_playlist_summary">Отключение звука видео, рандомизация и т. д.</string>
+  <string name="settings_playlist_title">Плейлист</string>
+  <string name="settings_preview_screensaver">Протестировать настройки заставки</string>
+  <string name="settings_settings_summary">Изменить параметры производительности, плейлиста и внешнего вида</string>
+  <string name="settings_settings_title">Настройки</string>
+  <string name="settings_system_options">Открыть системные настройки заставки</string>
+  <string name="settings_system_options_error">Невозможно открыть параметры заставки вашего устройства</string>
+  <string name="settings_system_options_removed">Эта функция удалена производителем.
+Пожалуйста, посетите веб-сайт Aerial Views для получения более подробной информации.</string>
+  <string name="sources_apple_summary">Потоковое видео Apple, используя подключение к Интернету</string>
+  <string name="sources_apple_title">Видео Apple</string>
+  <string name="sources_comm1_summary">Потоковое видео сообщества, используя подключение к Интернету</string>
+  <string name="sources_comm1_title">Видео от Jetson Creative</string>
+  <string name="sources_comm2_summary">Потоковое видео сообщества, используя подключение к Интернету</string>
+  <string name="sources_comm2_title">Видео от Robin Fourcade</string>
+  <string name="sources_local_summary">Воспроизведение видео прямо с вашего устройства или подключенного USB-накопителя</string>
+  <string name="sources_local_title">Локальное или USB-хранилище</string>
+  <string name="sources_samba_summary">Воспроизведение видео из локальной сетевой папки на ПК или устройстве NAS</string>
+  <string name="sources_samba_title">SMB/Samba share</string>
+  <string name="sources_webdav_summary">Воспроизведение видео, хранящихся на сервере WebDAV, локально или удаленно.</string>
+  <string name="sources_webdav_title">WebDAV сервер</string>
+  <string name="videos_quality_summary">Выберите качество видео</string>
+  <string name="videos_quality_title">Качество видео</string>
 </resources>

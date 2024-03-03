@@ -35,6 +35,10 @@
     <item>Usar formato. Por ejemplo \'japon-monte_fuji.mp4\' se muestra como \'Japón - Monte Fuji\'</item>
     <item>Usar el nombre de archivo como está. Por ejemplo \'Volando hacia el Monte Pilatus.mp4\' se muestra como \'Volando hacia el Monte Pilatus\'</item>
   </string-array>
+  <string-array name="image_scale_entries">
+    <item>Rellenar (Predeterminado)</item>
+    <item>Centro</item>
+  </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Escaneo de medios</item>
     <item>Acceso a carpetas (obsoleto)</item>
@@ -42,6 +46,11 @@
   <string-array name="location_type_entries">
     <item>Ubicación o título</item>
     <item>Puntos de interés (disponibles en muchos idiomas)</item>
+  </string-array>
+  <string-array name="media_type_entries">
+    <item>Sólo vídeos</item>
+    <item>Sólo imágenes</item>
+    <item>Vídeos &amp; Imágenes</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Sin límite (Predeterminado)</item>
@@ -73,6 +82,15 @@
     <item>3.5x</item>
     <item>4x</item>
     <item>5x</item>
+  </string-array>
+  <string-array name="slideshow_speed_entries">
+    <item>5 segundos</item>
+    <item>10 segundos</item>
+    <item>30 segundos (Predeterminado)</item>
+    <item>1 minuto</item>
+    <item>3 minutos</item>
+    <item>5 minutos</item>
+    <item>10 minutos</item>
   </string-array>
   <string-array name="slot_entries">
     <item>Vacío</item>
