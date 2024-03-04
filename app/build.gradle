@@ -159,7 +159,7 @@ dependencies {
     implementation("com.chibatching.kotpref:enum-support:2.13.2")
 
     // SMB
-    implementation('com.hierynomus:smbj:0.11.5')
+    implementation('com.hierynomus:smbj:0.13.0')
 
     // Coil
     implementation('io.coil-kt:coil:2.6.0')
