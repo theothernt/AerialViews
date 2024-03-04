@@ -10,9 +10,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default-screensaver), [onn. Google TV 4K Streaming Box](#change-default-screensaver) or [Amazon Fire TV](#change-default-screensaver)*
-
-&nbsp;
+*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#how-to-set-aerial-views-as-the-default-screensaver), [onn. Google TV 4K Streaming Box](#how-to-set-aerial-views-as-the-default-screensaver) or [Amazon Fire TV](#how-to-set-aerial-views-as-the-default-screensaver)*
 
 ## Features include...
 
@@ -23,15 +21,11 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 * Skip videos, change speed with the d-pad
 * Refresh rate switching
 
-&nbsp;
-
 ## Support the project
 
 If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.com/theothernt).
 
 [![Ko-fi badge](docs/images/kofi_badge.png)](https://ko-fi.com/theothernt)
-
-&nbsp;
 
 ## How to get Aerial Views...
 
@@ -39,8 +33,6 @@ If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.c
 [<img alt="Amazon Appstore badge" src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" width="153">](http://www.amazon.com/gp/mas/dl/android?p=com.neilturner.aerialviews)
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
-
-&nbsp;
 
 ## Translations
 
@@ -50,8 +42,6 @@ We use the [Lokalise](https://lokalise.com/) platform to coordinate translations
 
 [![Lokalise logo](docs/images/lokalise_logo.png)](https://lokalise.com/)
 
-&nbsp;
-
 ## Where to download videos for offline/local playback
 
 Follow these links to download the videos from...
@@ -59,8 +49,6 @@ Follow these links to download the videos from...
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
 * [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (18 community videos)
-
-&nbsp;
 
 ## HDR videos don't seem to play, I only see black screen...
 
@@ -74,8 +62,6 @@ Here are some things to try...
 
 * Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, or Amazon Prime Video
 
-&nbsp;
-
 ## Nvidia Shield users
 
 If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled:
@@ -83,9 +69,7 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
-&nbsp;
-
-## How to set Aerial Views as the default screensaver<a id="change-default-screensaver"></a>
+## How to set Aerial Views as the default screensaver
 
 The following devices have no user-interface to change the screensaver to a 3rd party one...
 
@@ -241,7 +225,7 @@ adb shell
 
 :information_source: *The first time you connect to your Android TV device, you will need to "allow" the connection on the device itself.*
 
-Next, set Aerial Views as the default screensaver…
+Next, set Aerial Views as the default screensaver with this command…
 
 ```sh
 settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
@@ -284,15 +268,11 @@ adb shell settings put secure screensaver_components com.amazon.bueller.photos/.
 
 </details>
 
-&nbsp;
-
 ## Weather data
 
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
 
 [![OpenWeather logo](docs/images/openweather_logo.png)](https://openweathermap.org/)
-
-&nbsp;
 
 ## About
 
