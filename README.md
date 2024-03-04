@@ -10,7 +10,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default), [onn. Google TV 4K Streaming Box](#change-default) or [Amazon Fire TV](#change-default)*
+*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default-screensaver), [onn. Google TV 4K Streaming Box](#change-default-screensaver) or [Amazon Fire TV](#change-default-screensaver)*
 
 ## Features include...
 
@@ -69,7 +69,7 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
-## How to set Aerial Views as the default screensaver<a id="change-default"></a>
+## How to set Aerial Views as the default screensaver<a id="change-default-screensaver"></a>
 
 The following devices have no user-interface to change the screensaver to a 3rd party one...
 
@@ -147,7 +147,7 @@ Now you can execute ADB commands.
 
 Find an Android app that is capable of running ADB commands, [such as Remote ADB Shell](https://play.google.com/store/apps/details?id=com.cgutman.androidremotedebugger), which is free.
 
-Once installed, run the app and connect to your device using its IP address.
+Once installed, run the app and connect to your device using its IP address (eg. 192.168.1.102)
 
 To confirm the connection, try a command like `ls` which should show a list of files and folder.
 
@@ -204,9 +204,10 @@ Version  35.0.0-11411520
 <details>
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 
-Connect to your Android TV device and start a command shell…
+> [!WARNING]
+> If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell.
 
-(If you’re using an Android phone, skip these two commands)
+Connect to your Android TV device and start a command shell...
 
 ```sh
 adb connect ip_address
@@ -215,6 +216,9 @@ adb connect ip_address
 ```sh
 adb shell
 ```
+
+> [!NOTE]
+> The first time you connect to your Android TV device, you will need to "allow" the connection.
 
 Next, set Aerial Views as the default screensaver…
 
