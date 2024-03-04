@@ -204,7 +204,7 @@ Version  35.0.0-11411520
 <details>
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 
-> :warning: If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell.
+:warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell.*
 
 Connect to your Android TV device and start a command shell...
 
@@ -216,7 +216,7 @@ adb connect ip_address
 adb shell
 ```
 
-> :information_source: The first time you connect to your Android TV device, you will need to "allow" the connection.
+:information_source: *The first time you connect to your Android TV device, you will need to "allow" the connection on the device itself.*
 
 Next, set Aerial Views as the default screensaver…
 
