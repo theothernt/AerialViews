@@ -12,6 +12,7 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 *Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default-screensaver), [onn. Google TV 4K Streaming Box](#change-default-screensaver) or [Amazon Fire TV](#change-default-screensaver)*
 
+&nbsp;
 
 ## Features include...
 
