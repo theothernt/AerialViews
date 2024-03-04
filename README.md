@@ -12,7 +12,6 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 *Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default-screensaver), [onn. Google TV 4K Streaming Box](#change-default-screensaver) or [Amazon Fire TV](#change-default-screensaver)*
 
-&nbsp;
 
 ## Features include...
 
@@ -73,6 +72,8 @@ Here are some things to try...
 * If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
 
 * Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, or Amazon Prime Video
+
+&nbsp;
 
 ## Nvidia Shield users
 
@@ -281,6 +282,8 @@ adb shell settings put secure screensaver_components com.amazon.bueller.photos/.
 ```
 
 </details>
+
+&nbsp;
 
 ## Weather data
 
