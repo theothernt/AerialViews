@@ -12,6 +12,8 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 *Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#change-default-screensaver), [onn. Google TV 4K Streaming Box](#change-default-screensaver) or [Amazon Fire TV](#change-default-screensaver)*
 
+&nbsp;
+
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
@@ -21,11 +23,15 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 * Skip videos, change speed with the d-pad
 * Refresh rate switching
 
+&nbsp;
+
 ## Support the project
 
 If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.com/theothernt).
 
 [![Ko-fi badge](docs/images/kofi_badge.png)](https://ko-fi.com/theothernt)
+
+&nbsp;
 
 ## How to get Aerial Views...
 
@@ -33,6 +39,8 @@ If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.c
 [<img alt="Amazon Appstore badge" src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" width="153">](http://www.amazon.com/gp/mas/dl/android?p=com.neilturner.aerialviews)
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
+
+&nbsp;
 
 ## Translations
 
@@ -42,6 +50,8 @@ We use the [Lokalise](https://lokalise.com/) platform to coordinate translations
 
 [![Lokalise logo](docs/images/lokalise_logo.png)](https://lokalise.com/)
 
+&nbsp;
+
 ## Where to download videos for offline/local playback
 
 Follow these links to download the videos from...
@@ -49,6 +59,8 @@ Follow these links to download the videos from...
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
 * [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (18 community videos)
+
+&nbsp;
 
 ## HDR videos don't seem to play, I only see black screen...
 
@@ -69,6 +81,8 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
+&nbsp;
+
 ## How to set Aerial Views as the default screensaver<a id="change-default-screensaver"></a>
 
 The following devices have no user-interface to change the screensaver to a 3rd party one...
@@ -86,6 +100,7 @@ But it can be done manually. Here is an overview of the steps...
 
 <details>
 <summary>Enable Developer Mode on your Android/Google TV</summary>
+&nbsp;
 
 Navigate to the Settings menu on your device, then to the About screen. Depending on the device…
 
@@ -103,6 +118,7 @@ Next, find the IP address of your device. Try looking in the Network & Internet 
 
 <details>
 <summary>Enable Developer Mode on Fire Stick/TV</summary>
+&nbsp;
 
 Open __Settings__, then navigate to __My Fire TV__ then the __About__ screen.
 
@@ -117,6 +133,7 @@ Next, find the IP address of your device. Navigate to the __About__ then __Netwo
 
 <details>
 <summary>Connect using an iPhone</summary>
+&nbsp;
 
 Find an iPhone app that is capable of running ADB commands, [such as iSH Shell](https://ish.app/), which is free.
 
@@ -144,6 +161,7 @@ Now you can execute ADB commands.
 
 <details>
 <summary>Connect using an Android phone</summary>
+&nbsp;
 
 Find an Android app that is capable of running ADB commands, [such as Remote ADB Shell](https://play.google.com/store/apps/details?id=com.cgutman.androidremotedebugger), which is free.
 
@@ -156,6 +174,7 @@ Now you can execute ADB commands.
 
 <details>
 <summary>Connect using a Mac</summary>
+&nbsp;
 
 Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Mac.
 
@@ -179,6 +198,7 @@ Now you can execute ADB commands.
 
 <details>
 <summary>Connect using a PC with Windows</summary>
+&nbsp;
 
 Download the official [SDK Platform Tools](https://developer.android.com/studio/releases/platform-tools) for Windows.
 
@@ -203,6 +223,7 @@ Version  35.0.0-11411520
 
 <details>
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
+&nbsp;
 
 :warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell.*
 
@@ -228,6 +249,7 @@ settings put secure screensaver_components com.neilturner.aerialviews/.ui.screen
 
 <details>
 <summary>ADB command - change the screensaver timeout</summary>
+&nbsp;
 
 To change the default timeout use this command with a value in milliseconds. So, 5 minutes is 30000, 10 minutes is 60000 and so on.
 
@@ -239,6 +261,7 @@ settings put system screen_off_timeout 60000
 
 <details>
 <summary>How to revert back to the default screensaver</summary>
+&nbsp;
 
 For whatever reason, if you would like to stop using Aerial Views and revert back to the original screensaver, there are two options…
 
@@ -264,6 +287,8 @@ adb shell settings put secure screensaver_components com.amazon.bueller.photos/.
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
 
 [![OpenWeather logo](docs/images/openweather_logo.png)](https://openweathermap.org/)
+
+&nbsp;
 
 ## About
 
