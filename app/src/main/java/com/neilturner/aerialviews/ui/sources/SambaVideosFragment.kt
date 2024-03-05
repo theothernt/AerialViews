@@ -1,13 +1,10 @@
 package com.neilturner.aerialviews.ui.sources
 
-import android.Manifest
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,9 +18,6 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
-import com.google.modernstorage.permissions.StoragePermissions
-import com.google.modernstorage.storage.AndroidFileSystem
-import com.google.modernstorage.storage.toOkioPath
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
@@ -37,16 +31,12 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okio.buffer
-import java.io.ByteArrayInputStream
 import java.util.Properties
 
 class SambaVideosFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
-    private lateinit var fileSystem: AndroidFileSystem
-    private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestReadPermission: ActivityResultLauncher<String>
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
     private lateinit var resources: Resources
@@ -56,8 +46,6 @@ class SambaVideosFragment :
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         resources = context?.resources!!
-        fileSystem = AndroidFileSystem(requireContext())
-        storagePermissions = StoragePermissions(requireContext())
 
         // Import/read permission request
         requestReadPermission = registerForActivityResult(
@@ -202,19 +190,13 @@ class SambaVideosFragment :
     }
 
     private fun checkImportPermissions() {
-        val canReadFiles = storagePermissions.hasAccess(
-            action = StoragePermissions.Action.READ,
-            types = listOf(StoragePermissions.FileType.Document),
-            createdBy = StoragePermissions.CreatedBy.AllApps
-        )
-
-        if (!canReadFiles) {
+        if (true) {
             Log.i(TAG, "Asking for permission")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                requestReadPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
-            } else {
-                requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                requestReadPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
+//            } else {
+//                requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+//            }
         } else {
             lifecycleScope.launch {
                 importSettings()
@@ -227,7 +209,7 @@ class SambaVideosFragment :
 
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         val uri = Uri.parse("$directory/$SMB_SETTINGS_FILENAME")
-        val path = uri.toOkioPath()
+        // val path = uri.toOkioPath()
         val properties = Properties()
 
         if (!FileHelper.fileExists(uri)) {
@@ -236,12 +218,13 @@ class SambaVideosFragment :
         }
 
         try {
-            fileSystem.source(path).use { file ->
-                file.buffer().use { buffer ->
-                    val byteArray = buffer.readByteArray()
-                    properties.load(ByteArrayInputStream(byteArray))
-                }
-            }
+            // read file into stream
+//            fileSystem.source(path).use { file ->
+//                file.buffer().use { buffer ->
+//                    val byteArray = buffer.readByteArray()
+//                    properties.load(ByteArrayInputStream(byteArray))
+//                }
+//            }
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_error_parsing))
             Log.e(TAG, "Import failed", ex)
@@ -292,15 +275,9 @@ class SambaVideosFragment :
     }
 
     private fun checkExportPermissions() {
-        val canWriteFiles = storagePermissions.hasAccess(
-            action = StoragePermissions.Action.READ_AND_WRITE,
-            types = listOf(StoragePermissions.FileType.Document),
-            createdBy = StoragePermissions.CreatedBy.Self
-        )
-
-        if (!canWriteFiles) {
+        if (false) {
             Log.i(TAG, "Asking for permission")
-            requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            // requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         } else {
             lifecycleScope.launch {
                 exportSettings()
@@ -327,11 +304,11 @@ class SambaVideosFragment :
         val uri: Uri
         try {
             // Prep file handle
-            uri = fileSystem.createMediaStoreUri(
-                filename = SMB_SETTINGS_FILENAME,
-                collection = MediaStore.Files.getContentUri("external"),
-                directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-            )!!
+//            uri = fileSystem.createMediaStoreUri(
+//                filename = SMB_SETTINGS_FILENAME,
+//                collection = MediaStore.Files.getContentUri("external"),
+//                directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+//            )!!
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_file_already_exists), SMB_SETTINGS_FILENAME))
             Log.e(TAG, "Export failed", ex)
@@ -340,15 +317,15 @@ class SambaVideosFragment :
 
         try {
             // Write to file
-            val path = uri.toOkioPath()
-            fileSystem.write(path, false) {
-                for ((key, value) in smbSettings) {
-                    writeUtf8(key)
-                    writeUtf8("=")
-                    writeUtf8(value)
-                    writeUtf8("\n")
-                }
-            }
+            // val path = uri.toOkioPath()
+//            fileSystem.write(path, false) {
+//                for ((key, value) in smbSettings) {
+//                    writeUtf8(key)
+//                    writeUtf8("=")
+//                    writeUtf8(value)
+//                    writeUtf8("\n")
+//                }
+//            }
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME))
             Log.e(TAG, "Export failed", ex)

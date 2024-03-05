@@ -1,9 +1,7 @@
 package com.neilturner.aerialviews.ui.sources
 
-import android.Manifest
 import android.content.SharedPreferences
 import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,9 +13,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
-import com.google.modernstorage.permissions.StoragePermissions
-import com.google.modernstorage.permissions.StoragePermissions.Action
-import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
@@ -35,7 +30,6 @@ class LocalVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
-    private lateinit var storagePermissions: StoragePermissions
     private lateinit var requestPermission: ActivityResultLauncher<String>
     private lateinit var resources: Resources
 
@@ -44,7 +38,6 @@ class LocalVideosFragment :
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         resources = context?.resources!!
-        storagePermissions = StoragePermissions(requireContext())
         requestPermission = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
@@ -85,18 +78,12 @@ class LocalVideosFragment :
         if (key == "local_videos_enabled" &&
             requiresPermission()
         ) {
-            val canReadVideos = storagePermissions.hasAccess(
-                action = Action.READ,
-                types = listOf(FileType.Video),
-                createdBy = StoragePermissions.CreatedBy.AllApps
-            )
-
-            if (!canReadVideos) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    requestPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
-                } else {
-                    requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-                }
+            if (false) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                    requestPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
+//                } else {
+//                    requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+//                }
             }
         }
 

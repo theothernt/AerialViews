@@ -12,12 +12,8 @@ import androidx.core.os.LocaleListCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import com.google.modernstorage.permissions.StoragePermissions
-import com.google.modernstorage.permissions.StoragePermissions.Action
-import com.google.modernstorage.permissions.StoragePermissions.FileType
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import java.lang.Exception
 
@@ -65,20 +61,13 @@ class MainFragment :
     }
 
     private fun resetLocalPermissionIfNeeded() {
-        val storagePermissions = StoragePermissions(requireContext())
-        val permissionEnabled = LocalMediaPrefs.enabled
+        // Check if we still have permission on startup as they can be revoked outside the app
 
-        val canReadVideos = storagePermissions.hasAccess(
-            action = Action.READ,
-            types = listOf(FileType.Video),
-            createdBy = StoragePermissions.CreatedBy.AllApps
-        )
-
-        if (permissionEnabled &&
-            !canReadVideos
-        ) {
-            LocalMediaPrefs.enabled = false
-        }
+//        if (permissionEnabled &&
+//            !canReadVideos
+//        ) {
+//            LocalMediaPrefs.enabled = false
+//        }
     }
 
     private fun testScreensaverSettings() {
