@@ -2,11 +2,9 @@ package com.neilturner.aerialviews.ui
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.preference.Preference
@@ -15,26 +13,17 @@ import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import java.lang.Exception
 
 class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
 
-    private lateinit var resources: Resources
-
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
-
-        val appLocale = if (!GeneralPrefs.localeMenu.startsWith("default")) {
-            LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
-        } else {
-            LocaleListCompat.getEmptyLocaleList()
-        }
-        AppCompatDelegate.setApplicationLocales(appLocale)
-
-        resources = requireContext().resources
+        setMenuLocale()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -44,7 +33,10 @@ class MainFragment :
 
         if (preference.key.contains("system_options")) {
             if (!DeviceHelper.canAccessScreensaverSettings()) {
-                showUserWarning()
+                ToastHelper.show(
+                    requireContext(),
+                    requireContext().getString(R.string.settings_system_options_removed)
+                )
                 // Show warning but try to invoke screensaver settings anyway
                 // just in case device detection is wrong in future, etc
             }
@@ -58,6 +50,15 @@ class MainFragment :
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun setMenuLocale() {
+        val appLocale = if (!GeneralPrefs.localeMenu.startsWith("default")) {
+            LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
+        } else {
+            LocaleListCompat.getEmptyLocaleList()
+        }
+        AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
     private fun resetLocalPermissionIfNeeded() {
@@ -97,18 +98,11 @@ class MainFragment :
             }
         }
 
-        Toast.makeText(
+        ToastHelper.show(
             requireContext(),
-            resources.getString(R.string.settings_system_options_error),
-            Toast.LENGTH_LONG
-        ).show()
+            requireContext().getString(R.string.settings_system_options_error)
+        )
     }
-
-    private fun showUserWarning() = Toast.makeText(
-        activity,
-        resources.getString(R.string.settings_system_options_removed),
-        Toast.LENGTH_LONG
-    ).show()
 
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager
