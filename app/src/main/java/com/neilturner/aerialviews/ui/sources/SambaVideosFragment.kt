@@ -182,16 +182,16 @@ class SambaVideosFragment :
             setNeutralButton(R.string.button_cancel, null)
             setNegativeButton(R.string.button_import) { _, _ ->
                 if (PermissionHelper.hasDocumentReadPermission(requireContext())) {
-                        lifecycleScope.launch { importSettings() }
-                    } else {
-                        requestReadPermission.launch(PermissionHelper.getReadDocumentPermission())
+                    lifecycleScope.launch { importSettings() }
+                } else {
+                    requestReadPermission.launch(PermissionHelper.getReadDocumentPermission())
                 }
             }
             setPositiveButton(R.string.button_export) { _, _ ->
                 if (PermissionHelper.hasDocumentWritePermission(requireContext())) {
                     lifecycleScope.launch { exportSettings() }
                 } else {
-                    requestReadPermission.launch(PermissionHelper.getWriteDocumentPermission())
+                    requestWritePermission.launch(PermissionHelper.getWriteDocumentPermission())
                 }
             }
             create().show()
@@ -201,7 +201,7 @@ class SambaVideosFragment :
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing SMB settings from Downloads folder")
 
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
         val file = File(directory, SMB_SETTINGS_FILENAME)
         val properties = Properties()
 
@@ -280,7 +280,7 @@ class SambaVideosFragment :
         smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
         smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
 
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
         val file = File(directory, SMB_SETTINGS_FILENAME)
 
         //file.exists()
