@@ -12,7 +12,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import java.lang.Exception
 
@@ -64,12 +66,12 @@ class MainFragment :
 
     private fun resetLocalPermissionIfNeeded() {
         // Check if we still have permission on startup as they can be revoked outside the app
-
-//        if (permissionEnabled &&
-//            !canReadVideos
-//        ) {
-//            LocalMediaPrefs.enabled = false
-//        }
+        val canReadImagesVideos = PermissionHelper.checkMediaReadPermission(requireContext())
+        if (LocalMediaPrefs.enabled &&
+            !canReadImagesVideos
+        ) {
+            LocalMediaPrefs.enabled = false
+        }
     }
 
     private fun openSystemScreensaverSettings() {
