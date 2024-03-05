@@ -35,4 +35,24 @@ object PermissionHelper {
             ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
     }
+
+    fun getReadMediaPermissions(): Array<String> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                Manifest.permission.READ_MEDIA_VIDEO,
+                Manifest.permission.READ_MEDIA_IMAGES
+            )
+        } else {
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            results.getValue(Manifest.permission.READ_MEDIA_VIDEO) &&
+                results.getValue(Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            results.getValue(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
 }

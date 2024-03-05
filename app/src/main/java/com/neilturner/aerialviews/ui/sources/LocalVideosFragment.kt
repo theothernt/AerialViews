@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +18,7 @@ import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
@@ -30,25 +30,22 @@ class LocalVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
-    private lateinit var requestPermission: ActivityResultLauncher<String>
-    private lateinit var resources: Resources
+    private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        resources = context?.resources!!
-        requestPermission = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (!isGranted) {
-                resetPreference()
+        requestMultiplePermissions = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            if (!PermissionHelper.isReadMediaPermissionGranted(permissions)) {
+                disableLocalMediaPreference()
             }
         }
 
         limitTextInput()
-        showNoticeIfNeeded()
-
+        showNvidiaShieldNoticeIfNeeded()
         updateEnabledOptions()
         updateVolumeAndFolderSummary()
         findVolumeList()
@@ -76,25 +73,17 @@ class LocalVideosFragment :
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (key == "local_videos_enabled" &&
-            requiresPermission()
+            LocalMediaPrefs.enabled
         ) {
-            if (false) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                    requestPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
-//                } else {
-//                    requestPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-//                }
-            }
+            checkForMediaPermission()
         }
 
         if (key == "local_videos_legacy_volume" ||
             key == "local_videos_legacy_folder"
         ) {
             LocalMediaPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalMediaPrefs.legacy_folder)
-
             val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
             LocalMediaPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
-
             updateVolumeAndFolderSummary()
         }
 
@@ -140,11 +129,17 @@ class LocalVideosFragment :
         showDialog(resources.getString(R.string.local_videos_test_results), result)
     }
 
-    private fun requiresPermission(): Boolean {
-        return LocalMediaPrefs.enabled
+    private fun checkForMediaPermission() {
+        // If we already have permission, exit
+        if (PermissionHelper.checkMediaReadPermission(requireContext())) {
+            return
+        }
+
+        val permissions = PermissionHelper.getReadMediaPermissions()
+        requestMultiplePermissions.launch(permissions)
     }
 
-    private fun resetPreference() {
+    private fun disableLocalMediaPreference() {
         val pref = findPreference<SwitchPreference>("local_videos_enabled")
         pref?.isChecked = false
     }
@@ -190,7 +185,7 @@ class LocalVideosFragment :
         listPref?.entryValues = values.toTypedArray()
     }
 
-    private fun showNoticeIfNeeded() {
+    private fun showNvidiaShieldNoticeIfNeeded() {
         if (!DeviceHelper.isNvidiaShield()) {
             return
         }
