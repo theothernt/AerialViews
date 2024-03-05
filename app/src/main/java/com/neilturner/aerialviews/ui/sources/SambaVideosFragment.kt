@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.ui.sources
 
+import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.enumContains
 import com.neilturner.aerialviews.utils.setSummaryFromValues
@@ -31,6 +32,11 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.InputStreamReader
 import java.util.Properties
 
 class SambaVideosFragment :
@@ -39,13 +45,10 @@ class SambaVideosFragment :
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var requestReadPermission: ActivityResultLauncher<String>
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
-    private lateinit var resources: Resources
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
-        resources = context?.resources!!
 
         // Import/read permission request
         requestReadPermission = registerForActivityResult(
@@ -92,9 +95,7 @@ class SambaVideosFragment :
         }
 
         if (preference.key.contains("samba_videos_test_connection")) {
-            lifecycleScope.launch {
-                testSambaConnection()
-            }
+            lifecycleScope.launch { testSambaConnection() }
             return true
         }
 
@@ -180,27 +181,20 @@ class SambaVideosFragment :
             setMessage(R.string.samba_videos_import_export_settings_summary)
             setNeutralButton(R.string.button_cancel, null)
             setNegativeButton(R.string.button_import) { _, _ ->
-                checkImportPermissions()
+                if (PermissionHelper.hasDocumentReadPermission(requireContext())) {
+                        lifecycleScope.launch { importSettings() }
+                    } else {
+                        requestReadPermission.launch(PermissionHelper.getReadDocumentPermission())
+                }
             }
             setPositiveButton(R.string.button_export) { _, _ ->
-                checkExportPermissions()
+                if (PermissionHelper.hasDocumentWritePermission(requireContext())) {
+                    lifecycleScope.launch { exportSettings() }
+                } else {
+                    requestReadPermission.launch(PermissionHelper.getWriteDocumentPermission())
+                }
             }
             create().show()
-        }
-    }
-
-    private fun checkImportPermissions() {
-        if (true) {
-            Log.i(TAG, "Asking for permission")
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                requestReadPermission.launch(Manifest.permission.READ_MEDIA_VIDEO)
-//            } else {
-//                requestReadPermission.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-//            }
-        } else {
-            lifecycleScope.launch {
-                importSettings()
-            }
         }
     }
 
@@ -208,23 +202,21 @@ class SambaVideosFragment :
         Log.i(TAG, "Importing SMB settings from Downloads folder")
 
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        val uri = Uri.parse("$directory/$SMB_SETTINGS_FILENAME")
-        // val path = uri.toOkioPath()
+        val file = File(directory, SMB_SETTINGS_FILENAME)
         val properties = Properties()
 
-        if (!FileHelper.fileExists(uri)) {
+        if (!file.exists()) {
             showDialog(resources.getString(R.string.samba_videos_import_failed), String.format(resources.getString(R.string.samba_videos_file_not_found), SMB_SETTINGS_FILENAME))
             return@withContext
         }
 
+        //file.canRead()
+
         try {
-            // read file into stream
-//            fileSystem.source(path).use { file ->
-//                file.buffer().use { buffer ->
-//                    val byteArray = buffer.readByteArray()
-//                    properties.load(ByteArrayInputStream(byteArray))
-//                }
-//            }
+            val stream = FileInputStream(file)
+            stream.use {
+                properties.load(stream)
+            }
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_error_parsing))
             Log.e(TAG, "Import failed", ex)
@@ -232,100 +224,74 @@ class SambaVideosFragment :
             return@withContext
         }
 
-        try {
-            SambaMediaPrefs.hostName = properties["hostname"] as String
-            SambaMediaPrefs.domainName = properties["domainname"] as String
-            SambaMediaPrefs.shareName = properties["sharename"] as String
-            SambaMediaPrefs.userName = properties["username"] as String
-            SambaMediaPrefs.password = properties["password"] as String
-
-            val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
-            val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
-            SambaMediaPrefs.smbDialects.clear()
-            SambaMediaPrefs.smbDialects.addAll(validDialects)
-
-            SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
-            SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
-        } catch (ex: Exception) {
-            showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_unable_to_save))
-            Log.e(TAG, "Import failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
-            return@withContext
-        }
-
-        withContext(Dispatchers.Main) {
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaMediaPrefs.hostName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaMediaPrefs.domainName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaMediaPrefs.shareName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaMediaPrefs.userName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaMediaPrefs.password
-
-            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
-            SambaMediaPrefs.searchSubfolders
-            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
-            SambaMediaPrefs.enableEncryption
-
-            preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
-                SambaMediaPrefs.smbDialects.toSet()
-
-            updateSummary()
-        }
-
+//        try {
+//            SambaMediaPrefs.hostName = properties["hostname"] as String
+//            SambaMediaPrefs.domainName = properties["domainname"] as String
+//            SambaMediaPrefs.shareName = properties["sharename"] as String
+//            SambaMediaPrefs.userName = properties["username"] as String
+//            SambaMediaPrefs.password = properties["password"] as String
+//
+//            val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
+//            val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
+//            SambaMediaPrefs.smbDialects.clear()
+//            SambaMediaPrefs.smbDialects.addAll(validDialects)
+//
+//            SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
+//            SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
+//        } catch (ex: Exception) {
+//            showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_unable_to_save))
+//            Log.e(TAG, "Import failed", ex)
+//            ex.cause?.let { Firebase.crashlytics.recordException(it) }
+//            return@withContext
+//        }
+//
+//        withContext(Dispatchers.Main) {
+//            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaMediaPrefs.hostName
+//            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaMediaPrefs.domainName
+//            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaMediaPrefs.shareName
+//            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaMediaPrefs.userName
+//            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaMediaPrefs.password
+//
+//            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
+//            SambaMediaPrefs.searchSubfolders
+//            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
+//            SambaMediaPrefs.enableEncryption
+//
+//            preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
+//                SambaMediaPrefs.smbDialects.toSet()
+//
+//            updateSummary()
+//        }
+//
         showDialog(resources.getString(R.string.samba_videos_import_success), String.format(resources.getString(R.string.samba_videos_import_save_success), SMB_SETTINGS_FILENAME))
-    }
-
-    private fun checkExportPermissions() {
-        if (false) {
-            Log.i(TAG, "Asking for permission")
-            // requestWritePermission.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        } else {
-            lifecycleScope.launch {
-                exportSettings()
-            }
-        }
     }
 
     private suspend fun exportSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Exporting SMB settings to Downloads folder")
 
         // Build SMB config list
-        val smbSettings = mutableMapOf<String, String>()
+        val smbSettings = Properties()
         smbSettings["hostname"] = SambaMediaPrefs.hostName
         smbSettings["domainname"] = SambaMediaPrefs.domainName
         smbSettings["sharename"] = SambaMediaPrefs.shareName
         smbSettings["username"] = SambaMediaPrefs.userName
         smbSettings["password"] = SambaMediaPrefs.password
-
         smbSettings["smb_dialects"] = SambaMediaPrefs.smbDialects.joinToString(",").replace(" ", "")
-
         smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
         smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
 
-        val uri: Uri
-        try {
-            // Prep file handle
-//            uri = fileSystem.createMediaStoreUri(
-//                filename = SMB_SETTINGS_FILENAME,
-//                collection = MediaStore.Files.getContentUri("external"),
-//                directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-//            )!!
-        } catch (ex: Exception) {
-            showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_file_already_exists), SMB_SETTINGS_FILENAME))
-            Log.e(TAG, "Export failed", ex)
-            return@withContext
-        }
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+        val file = File(directory, SMB_SETTINGS_FILENAME)
+
+        //file.exists()
+        //file.canWrite()
 
         try {
-            // Write to file
-            // val path = uri.toOkioPath()
-//            fileSystem.write(path, false) {
-//                for ((key, value) in smbSettings) {
-//                    writeUtf8(key)
-//                    writeUtf8("=")
-//                    writeUtf8(value)
-//                    writeUtf8("\n")
-//                }
-//            }
+            val stream = FileOutputStream(file, false)
+            stream.use {
+                smbSettings.store(stream, "Aerial Views SMB Settings")
+            }
+
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME))
             Log.e(TAG, "Export failed", ex)

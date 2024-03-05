@@ -11,7 +11,7 @@ object PermissionHelper {
     // Images + Videos = Read permission
     // Text/Document = Read/Write permission
 
-    fun checkMediaReadPermission(context: Context): Boolean {
+    fun hasMediaReadPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
@@ -20,7 +20,7 @@ object PermissionHelper {
         }
     }
 
-    fun checkDocumentReadPermission(context: Context): Boolean {
+    fun hasDocumentReadPermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             true
         } else {
@@ -28,7 +28,7 @@ object PermissionHelper {
         }
     }
 
-    fun checkDocumentWritePermission(context: Context): Boolean {
+    fun hasDocumentWritePermission(context: Context): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             true
         } else {
@@ -54,5 +54,13 @@ object PermissionHelper {
         } else {
             results.getValue(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+    }
+
+    fun getWriteDocumentPermission(): String {
+        return Manifest.permission.READ_EXTERNAL_STORAGE
+    }
+
+    fun getReadDocumentPermission(): String {
+        return Manifest.permission.WRITE_EXTERNAL_STORAGE
     }
 }

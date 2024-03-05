@@ -66,7 +66,7 @@ class MainFragment :
 
     private fun resetLocalPermissionIfNeeded() {
         // Check if we still have permission on startup as they can be revoked outside the app
-        val canReadImagesVideos = PermissionHelper.checkMediaReadPermission(requireContext())
+        val canReadImagesVideos = PermissionHelper.hasMediaReadPermission(requireContext())
         if (LocalMediaPrefs.enabled &&
             !canReadImagesVideos
         ) {

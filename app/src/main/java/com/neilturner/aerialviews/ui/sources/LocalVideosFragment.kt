@@ -131,7 +131,7 @@ class LocalVideosFragment :
 
     private fun checkForMediaPermission() {
         // If we already have permission, exit
-        if (PermissionHelper.checkMediaReadPermission(requireContext())) {
+        if (PermissionHelper.hasMediaReadPermission(requireContext())) {
             return
         }
 
