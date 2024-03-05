@@ -32,14 +32,6 @@ class MainFragment :
         }
 
         if (preference.key.contains("system_options")) {
-            if (!DeviceHelper.canAccessScreensaverSettings()) {
-                ToastHelper.show(
-                    requireContext(),
-                    requireContext().getString(R.string.settings_system_options_removed)
-                )
-                // Show warning but try to invoke screensaver settings anyway
-                // just in case device detection is wrong in future, etc
-            }
             openSystemScreensaverSettings()
             return true
         }
@@ -50,6 +42,15 @@ class MainFragment :
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun testScreensaverSettings() {
+        try {
+            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
+            startActivity(intent)
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+        }
     }
 
     private fun setMenuLocale() {
@@ -71,16 +72,16 @@ class MainFragment :
 //        }
     }
 
-    private fun testScreensaverSettings() {
-        try {
-            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
-            startActivity(intent)
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
-        }
-    }
-
     private fun openSystemScreensaverSettings() {
+        // Show warning but try to invoke screensaver settings anyway
+        // just in case device detection is wrong in future, etc
+        if (!DeviceHelper.canAccessScreensaverSettings()) {
+            ToastHelper.show(
+                requireContext(),
+                requireContext().getString(R.string.settings_system_options_removed)
+            )
+        }
+
         val intents = mutableListOf<Intent>()
         intents += Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
         intents += Intent(SCREENSAVER_SETTINGS)
