@@ -199,7 +199,7 @@ class SambaVideosFragment :
     }
 
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Importing SMB settings from Downloads folder")
+        Log.i(TAG, "Importing SMB settings from Document folder")
 
         val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
         val file = File(directory, SMB_SETTINGS_FILENAME)
@@ -267,7 +267,7 @@ class SambaVideosFragment :
     }
 
     private suspend fun exportSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Exporting SMB settings to Downloads folder")
+        Log.i(TAG, "Exporting SMB settings to Documents folder")
 
         // Build SMB config list
         val smbSettings = Properties()
