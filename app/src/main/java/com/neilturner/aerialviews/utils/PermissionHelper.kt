@@ -12,6 +12,7 @@ object PermissionHelper {
     // Text/Document = Read/Write permission
 
     fun hasMediaReadPermission(context: Context): Boolean {
+        // Android 13 / 33 and above
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
@@ -21,6 +22,7 @@ object PermissionHelper {
     }
 
     fun hasDocumentReadPermission(context: Context): Boolean {
+        // Android 13 / 33 and above
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             true
         } else {
@@ -29,6 +31,7 @@ object PermissionHelper {
     }
 
     fun hasDocumentWritePermission(context: Context): Boolean {
+        // Android 13 / 33 and above
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             true
         } else {
@@ -37,6 +40,7 @@ object PermissionHelper {
     }
 
     fun getReadMediaPermissions(): Array<String> {
+        // Android 13 / 33 and above
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
                 Manifest.permission.READ_MEDIA_VIDEO,
@@ -48,6 +52,7 @@ object PermissionHelper {
     }
 
     fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean {
+        // Android 13 / 33 and above
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             results.getValue(Manifest.permission.READ_MEDIA_VIDEO) &&
                 results.getValue(Manifest.permission.READ_MEDIA_IMAGES)
@@ -57,10 +62,17 @@ object PermissionHelper {
     }
 
     fun getWriteDocumentPermission(): String {
-        return Manifest.permission.READ_EXTERNAL_STORAGE
+        // Android 10 / 22 and below
+        return if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        } else {
+            // WRITE_EXTERNAL_STORAGE is useless above Android 10
+            // So request existing permission anyway
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
     }
 
     fun getReadDocumentPermission(): String {
-        return Manifest.permission.WRITE_EXTERNAL_STORAGE
+        return Manifest.permission.READ_EXTERNAL_STORAGE
     }
 }

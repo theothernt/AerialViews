@@ -201,7 +201,7 @@ class SambaVideosFragment :
     private suspend fun importSettings() = withContext(Dispatchers.IO) {
         Log.i(TAG, "Importing SMB settings from Document folder")
 
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         val file = File(directory, SMB_SETTINGS_FILENAME)
         val properties = Properties()
 
@@ -220,7 +220,7 @@ class SambaVideosFragment :
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_error_parsing))
             Log.e(TAG, "Import failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
+            //ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
@@ -280,11 +280,13 @@ class SambaVideosFragment :
         smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
         smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
 
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).absolutePath
+        //val test = Environment.isExternalStorageManager()
+        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
         val file = File(directory, SMB_SETTINGS_FILENAME)
 
-        //file.exists()
-        //file.canWrite()
+        Log.i(TAG, "Exists: ${file.exists()}")
+
+        Log.i(TAG, "CanWrite: ${file.canWrite()}")
 
         try {
             val stream = FileOutputStream(file, false)
@@ -295,7 +297,7 @@ class SambaVideosFragment :
         } catch (ex: Exception) {
             showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME))
             Log.e(TAG, "Export failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
+            //ex.cause?.let { Firebase.crashlytics.recordException(it) }
             return@withContext
         }
 
