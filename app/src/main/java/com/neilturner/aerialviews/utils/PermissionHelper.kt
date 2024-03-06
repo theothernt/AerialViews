@@ -22,8 +22,8 @@ object PermissionHelper {
     }
 
     fun hasDocumentReadPermission(context: Context): Boolean {
-        // Android 13 / 33 and above
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        // Android 11 / 30 and above
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             true
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -31,8 +31,8 @@ object PermissionHelper {
     }
 
     fun hasDocumentWritePermission(context: Context): Boolean {
-        // Android 13 / 33 and above
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        // Android 11 / 30 and above
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             true
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
@@ -62,13 +62,13 @@ object PermissionHelper {
     }
 
     fun getWriteDocumentPermission(): String {
-        // Android 10 / 22 and below
-        return if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        } else {
+        // Android 11 / 30 and above
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // WRITE_EXTERNAL_STORAGE is useless above Android 10
             // So request existing permission anyway
             Manifest.permission.READ_EXTERNAL_STORAGE
+        } else {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         }
     }
 
