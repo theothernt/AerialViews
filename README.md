@@ -79,7 +79,7 @@ The following devices have no user-interface to change the screensaver to a 3rd 
 
 But it can be done manually. Here is an overview of the steps...
 
-1. Enable Developer mode on your device and find its IP address
+1. Enable Developer mode and find the IP address of your device
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
 3. Connect to your Android/Google/Fire TV device
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
@@ -99,7 +99,7 @@ Return to __Settings__ and look for the newly enabled __Developer options__ page
 
 On the __Developer options__ page, look for the __USB debugging__ option and enable it.
 
-Next, find the IP address of your device. Try looking in the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
+Next, find the __IP address__ of your device. Try looking in the Network & Internet settings of the device, check the properties of the current LAN or WIFI connection - that should list the current IP address eg. 192.168.1.105
 </details>
 
 <details>
@@ -114,7 +114,7 @@ You'll now see a message confirming "You are now a developer", and it'll unlock 
 
 Navigate to the __Developer Options__ page, look for the __ADB debugging__ option and enable it.
 
-Next, find the IP address of your device. Navigate to the __About__ then __Network__ screen, which will show your current IP address eg. 192.168.1.120
+Next, find the IP address of your device and make a note of it. Navigate to the __About__ then __Network__ screen, which will show your current IP address eg. 192.168.1.120
 </details>
 
 <details>
@@ -211,19 +211,21 @@ Version  35.0.0-11411520
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 &nbsp;
 
-:warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell.*
+:warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell*
 
 Connect to your Android TV device and start a command shell...
 
 ```sh
-adb connect ip_address
+adb connect <ip_address>
 ```
+
+:information_source: *Use the IP address of your device from earlier steps, it should be something like 192.168.1.98*
 
 ```sh
 adb shell
 ```
 
-:information_source: *The first time you connect to your Android TV device, you will need to "allow" the connection on the device itself.*
+:information_source: *The first time you connect to your Android TV device, you will probably see a confirmation dialogue asking to "allow" the connection*
 
 Next, set Aerial Views as the default screensaver with this command…
 
