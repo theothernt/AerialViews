@@ -141,11 +141,6 @@ class DreamActivity : DreamService() {
         }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        // Remove resources
-    }
-
     companion object {
         private const val TAG = "DreamActivity"
     }

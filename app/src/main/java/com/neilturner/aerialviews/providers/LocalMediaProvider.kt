@@ -48,7 +48,6 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val media = mutableListOf<AerialMedia>()
         val excluded: Int
         val images: Int
-        val videos: Int
 
         if (prefs.legacy_volume.isEmpty()) {
             return Pair(media, res.getString(R.string.local_videos_legacy_no_volume))
@@ -72,7 +71,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
                 }
             )
         }
-        videos = selected.size
+        val videos: Int = selected.size
 
         if (prefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(

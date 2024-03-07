@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.TypedValue
 import java.util.Locale
+import kotlin.math.min
 
 object DeviceHelper {
 
@@ -69,7 +70,7 @@ object DeviceHelper {
 
     fun isPhone(context: Context): Boolean {
         val metrics = context.resources.displayMetrics
-        val smallestSize = Math.min(metrics.widthPixels, metrics.heightPixels)
+        val smallestSize = min(metrics.widthPixels, metrics.heightPixels)
         val tabletSize =
             TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,

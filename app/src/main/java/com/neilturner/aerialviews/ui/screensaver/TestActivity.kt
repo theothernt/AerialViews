@@ -1,5 +1,3 @@
-@file:Suppress("unused", "unused", "RedundantOverride", "RedundantOverride", "RedundantOverride")
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity
@@ -141,11 +139,6 @@ class TestActivity : Activity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        // Remove resources
     }
 
     companion object {

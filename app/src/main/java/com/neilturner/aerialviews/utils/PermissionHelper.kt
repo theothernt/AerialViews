@@ -71,6 +71,7 @@ object PermissionHelper {
         }
     }
 
+    @Suppress("SameReturnValue")
     fun getReadDocumentPermission(): String {
         return Manifest.permission.READ_EXTERNAL_STORAGE
     }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import java.io.File
 
 object FileHelper {
 
@@ -60,10 +59,6 @@ object FileHelper {
 
     fun isSambaVideo(uri: Uri): Boolean {
         return uri.toString().contains("smb://", true)
-    }
-
-    fun fileExists(uri: Uri): Boolean {
-        return File(uri.toString()).exists()
     }
 
     fun isDotOrHiddenFile(filename: String): Boolean {

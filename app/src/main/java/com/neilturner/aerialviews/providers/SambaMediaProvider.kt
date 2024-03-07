@@ -119,7 +119,6 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         val res = context.resources!!
         val selected = mutableListOf<String>()
         val excluded: Int
-        val videos: Int
         val images: Int
 
         // SMB Config
@@ -176,7 +175,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
                 }
             )
         }
-        videos = selected.size
+        val videos: Int = selected.size
 
         // Add images
         if (prefs.mediaType != MediaType.VIDEOS) {
