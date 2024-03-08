@@ -56,7 +56,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
-            buildConfigField("String", "OPENWEATHERKEY", "\"${System.getenv("openweather.debug.key")}\"")
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${System.getenv("openweather.debug.key")}\"")
 
             applicationIdSuffix '.debug'
             debuggable true
@@ -70,7 +70,7 @@ android {
         }
         release {
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
-            buildConfigField("String", "OPENWEATHERKEY", "\"${System.getenv("openweather.key")}\"")
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${System.getenv("openweather.key")}\"")
 
             minifyEnabled true
             shrinkResources true
