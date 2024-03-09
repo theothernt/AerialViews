@@ -55,8 +55,10 @@ android {
 
     buildTypes {
         debug {
+            def localProperties = new Properties()
+            localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${localProperties.getProperty("openweather.debug.key")}\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${System.getenv("openweather.debug.key")}\"")
 
             applicationIdSuffix '.debug'
             debuggable true
@@ -69,8 +71,10 @@ android {
             // 'proguard-rules.pro'
         }
         release {
+            def localProperties = new Properties()
+            localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${localProperties.getProperty("openweather.key")}\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${System.getenv("openweather.key")}\"")
 
             minifyEnabled true
             shrinkResources true
@@ -147,7 +151,7 @@ dependencies {
 
     // Retrofit
     implementation('com.squareup.retrofit2:retrofit:2.9.0')
-    implementation('com.squareup.retrofit2:converter-moshi:2.9.0')
+    implementation('com.squareup.retrofit2:converter-gson:2.9.0')
 
     // GSON
     implementation('com.google.code.gson:gson:2.10.1')
