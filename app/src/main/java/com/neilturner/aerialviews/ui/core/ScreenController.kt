@@ -19,6 +19,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
@@ -87,6 +88,11 @@ class ScreenController(private val context: Context) :
         this.topRightIds = overlayIds.topRightIds
 
         coroutineScope.launch {
+            val weatherOverlayEnabled = true
+            if (weatherOverlayEnabled) {
+                WeatherService(context).update()
+            }
+
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
