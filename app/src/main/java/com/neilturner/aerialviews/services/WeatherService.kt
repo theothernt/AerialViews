@@ -14,7 +14,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.awaitResponse
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -102,7 +102,7 @@ class OpenWeather(private val context: Context) {
     val client by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient())
             .build()
             .create<OpenWeatherApi>()

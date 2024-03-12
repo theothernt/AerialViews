@@ -1,120 +1,131 @@
 package com.neilturner.aerialviews.models.openweather
 
-import com.google.gson.annotations.SerializedName
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class FiveDayForecast(
-    @SerializedName("city")
+    @Json(name = "city")
     val city: City,
-    @SerializedName("cnt")
+    @Json(name = "cnt")
     val cnt: Int,
-    @SerializedName("cod")
+    @Json(name = "cod")
     val cod: String,
-    @SerializedName("list")
+    @Json(name = "list")
     val list: List<Forecast>,
-    @SerializedName("message")
+    @Json(name = "message")
     val message: Int
 ) {
+    @JsonClass(generateAdapter = true)
     data class City(
-        @SerializedName("coord")
+        @Json(name = "coord")
         val coord: Coord,
-        @SerializedName("country")
+        @Json(name = "country")
         val country: String,
-        @SerializedName("id")
+        @Json(name = "id")
         val id: Int,
-        @SerializedName("name")
+        @Json(name = "name")
         val name: String,
-        @SerializedName("population")
+        @Json(name = "population")
         val population: Int,
-        @SerializedName("sunrise")
+        @Json(name = "sunrise")
         val sunrise: Int,
-        @SerializedName("sunset")
+        @Json(name = "sunset")
         val sunset: Int,
-        @SerializedName("timezone")
+        @Json(name = "timezone")
         val timezone: Int
     ) {
+        @JsonClass(generateAdapter = true)
         data class Coord(
-            @SerializedName("lat")
+            @Json(name = "lat")
             val lat: Double,
-            @SerializedName("lon")
+            @Json(name = "lon")
             val lon: Double
         )
     }
 
+    @JsonClass(generateAdapter = true)
     data class Forecast(
-        @SerializedName("clouds")
+        @Json(name = "clouds")
         val clouds: Clouds,
-        @SerializedName("dt")
+        @Json(name = "dt")
         val dt: Int,
-        @SerializedName("dt_txt")
+        @Json(name = "dt_txt")
         val dtTxt: String,
-        @SerializedName("main")
+        @Json(name = "main")
         val main: Main,
-        @SerializedName("pop")
+        @Json(name = "pop")
         val pop: Double,
-        @SerializedName("rain")
-        val rain: Rain,
-        @SerializedName("sys")
+        @Json(name = "rain")
+        val rain: Rain?,
+        @Json(name = "sys")
         val sys: Sys,
-        @SerializedName("visibility")
+        @Json(name = "visibility")
         val visibility: Int,
-        @SerializedName("weather")
+        @Json(name = "weather")
         val weather: List<Weather>,
-        @SerializedName("wind")
+        @Json(name = "wind")
         val wind: Wind
     ) {
+        @JsonClass(generateAdapter = true)
         data class Clouds(
-            @SerializedName("all")
+            @Json(name = "all")
             val all: Int
         )
 
+        @JsonClass(generateAdapter = true)
         data class Main(
-            @SerializedName("feels_like")
+            @Json(name = "feels_like")
             val feelsLike: Double,
-            @SerializedName("grnd_level")
+            @Json(name = "grnd_level")
             val grndLevel: Int,
-            @SerializedName("humidity")
+            @Json(name = "humidity")
             val humidity: Int,
-            @SerializedName("pressure")
+            @Json(name = "pressure")
             val pressure: Int,
-            @SerializedName("sea_level")
+            @Json(name = "sea_level")
             val seaLevel: Int,
-            @SerializedName("temp")
+            @Json(name = "temp")
             val temp: Double,
-            @SerializedName("temp_kf")
+            @Json(name = "temp_kf")
             val tempKf: Double,
-            @SerializedName("temp_max")
+            @Json(name = "temp_max")
             val tempMax: Double,
-            @SerializedName("temp_min")
+            @Json(name = "temp_min")
             val tempMin: Double
         )
 
+        @JsonClass(generateAdapter = true)
         data class Rain(
-            @SerializedName("3h")
+            @Json(name = "3h")
             val h: Double
         )
 
+        @JsonClass(generateAdapter = true)
         data class Sys(
-            @SerializedName("pod")
+            @Json(name = "pod")
             val pod: String
         )
 
+        @JsonClass(generateAdapter = true)
         data class Weather(
-            @SerializedName("description")
+            @Json(name = "description")
             val description: String,
-            @SerializedName("icon")
+            @Json(name = "icon")
             val icon: String,
-            @SerializedName("id")
+            @Json(name = "id")
             val id: Int,
-            @SerializedName("main")
+            @Json(name = "main")
             val main: String
         )
 
+        @JsonClass(generateAdapter = true)
         data class Wind(
-            @SerializedName("deg")
+            @Json(name = "deg")
             val deg: Int,
-            @SerializedName("gust")
+            @Json(name = "gust")
             val gust: Double,
-            @SerializedName("speed")
+            @Json(name = "speed")
             val speed: Double
         )
     }
