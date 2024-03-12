@@ -55,9 +55,9 @@ android {
 
     buildTypes {
         debug {
-            def localProperties = new Properties()
-            localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${localProperties.getProperty("openweather.debug.key")}\"")
+            def secrets = new Properties()
+            secrets.load(project.rootProject.file("secrets.properties").newDataInputStream())
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${secrets.getProperty("openWeatherDebugKey")}\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
 
             applicationIdSuffix '.debug'
@@ -71,9 +71,9 @@ android {
             // 'proguard-rules.pro'
         }
         release {
-            def localProperties = new Properties()
-            localProperties.load(project.rootProject.file("local.properties").newDataInputStream())
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${localProperties.getProperty("openweather.key")}\"")
+            def secrets = new Properties()
+            secrets.load(project.rootProject.file("secrets.properties").newDataInputStream())
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"${secrets.getProperty("openWeatherKey")}\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis().toString()}\"")
 
             minifyEnabled true
