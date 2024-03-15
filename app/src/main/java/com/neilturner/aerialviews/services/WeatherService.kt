@@ -32,7 +32,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val city = prefs.weatherCity
         val appId = BuildConfig.OPEN_WEATHER_KEY
         val count = 10
-        val lang = "EN" // if short-local is not on list, send EN locale
+        val lang = supportedLocale()
 
         try {
             val client = OpenWeather(context).client
@@ -41,7 +41,8 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
                 val cached = if (response.raw().networkResponse != null) "" else "cached"
                 val temp = response.body()?.list?.first()?.main?.temp?.roundToInt()
                 val feelsLike = response.body()?.list?.first()?.main?.temp?.roundToInt()
-                ToastHelper.show(context, "Temp: ${temp}c (Feels like ${feelsLike}c) $cached")
+                val cityName = response.body()?.city?.name
+                ToastHelper.show(context, "$cityName: ${temp}c (Feels like ${feelsLike}c) $cached")
             } else {
                 ToastHelper.show(context, response.message())
             }
@@ -49,6 +50,17 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             ToastHelper.show(context, ex.message.orEmpty())
             Log.i("", ex.message.orEmpty())
         }
+    }
+
+    private fun supportedLocale(): String {
+        val currentLocale = Locale.getDefault().country.lowercase()
+        val supportedLocales  = listOf(
+            "af", "al", "ar", "az", "bg", "ca", "cz", "da", "de", "el", "en", "eu", "fa", "fi",
+            "fr", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "kr", "la", "lt", "mk", "no",
+            "nl", "pl", "pt", "pt_br", "ro", "ru", "sv, se", "sk", "sl", "sp, es", "sr", "th",
+            "tr", "ua, uk", "vi", "zh_cn", "zh_tw", "zu"
+        )
+        return if (supportedLocales.contains(currentLocale)) currentLocale else "en"
     }
 }
 
