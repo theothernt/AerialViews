@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.openweather.FiveDayForecast
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.NetworkHelper.isInternetAvailable
 import com.neilturner.aerialviews.utils.ToastHelper
 import okhttp3.Cache
@@ -19,17 +20,19 @@ import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.io.File
+import java.net.URLEncoder
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
-class WeatherService(val context: Context) {
+class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
 
     suspend fun update() {
-        val city = "Dublin, Ireland"
+        val units = prefs.weatherUnits.toString()
+        val city = prefs.weatherCity
         val appId = BuildConfig.OPEN_WEATHER_KEY
-        val units = "metric"
         val count = 10
-        val lang = "EN"
+        val lang = "EN" // if short-local is not on list, send EN locale
 
         try {
             val client = OpenWeather(context).client

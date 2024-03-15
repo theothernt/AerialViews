@@ -8,6 +8,8 @@ import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.enums.ImageScale
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.enums.TemperatureType
+import com.neilturner.aerialviews.models.enums.WindSpeedType
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -22,6 +24,13 @@ object GeneralPrefs : KotprefModel() {
     var slotTopLeft2 by enumValuePref(OverlayType.EMPTY, "slot_top_left2")
     var slotTopRight1 by enumValuePref(OverlayType.EMPTY, "slot_top_right1")
     var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
+
+    // Weather
+    var weatherSize by stringPref("18", "weather_size")
+    var weatherWeight by stringPref("300", "weather_weight")
+    var weatherCity by stringPref("Dublin, IE", "weather_city")
+    var weatherUnits by enumValuePref(TemperatureType.METRIC, "weather_units")
+    var weatherWindUnits by enumValuePref(WindSpeedType.METRIC, "weather_wind_units")
 
     // Clock
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")
