@@ -20,7 +20,6 @@ import retrofit2.create
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.io.File
-import java.net.URLEncoder
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
@@ -54,7 +53,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
     private fun supportedLocale(): String {
         val currentLocale = Locale.getDefault().country.lowercase()
-        val supportedLocales  = listOf(
+        val supportedLocales = listOf(
             "af", "al", "ar", "az", "bg", "ca", "cz", "da", "de", "el", "en", "eu", "fa", "fi",
             "fr", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "kr", "la", "lt", "mk", "no",
             "nl", "pl", "pt", "pt_br", "ro", "ru", "sv, se", "sk", "sl", "sp, es", "sr", "th",

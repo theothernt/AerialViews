@@ -19,11 +19,11 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
 
     var overlays = mutableListOf<View?>()
 
-    inline fun <reified T: View> findOverlay(): List<T> {
+    inline fun <reified T : View> findOverlay(): List<T> {
         return overlays.filterIsInstance<T>()
     }
 
-    inline fun <reified T: View> isOverlayEnabled(): Boolean {
+    inline fun <reified T : View> isOverlayEnabled(): Boolean {
         return findOverlay<T>().isNotEmpty()
     }
 
