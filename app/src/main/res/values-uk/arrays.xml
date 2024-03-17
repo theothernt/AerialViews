@@ -99,6 +99,8 @@
     <item>Дата</item>
     <item>Повідомлення - Рядок 1</item>
     <item>Повідомлення - Рядок 2</item>
+    <item>Weather 1</item>
+    <item>Weather 2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
