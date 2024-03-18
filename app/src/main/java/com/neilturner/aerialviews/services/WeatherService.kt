@@ -22,32 +22,32 @@ import retrofit2.http.Query
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
+
+    private var data: FiveDayForecast? = null
+
+    init {
+
+    }
 
     suspend fun update() {
         val units = prefs.weatherUnits.toString()
         val city = prefs.weatherCity
         val appId = BuildConfig.OPEN_WEATHER_KEY
-        val count = 10
+        val count = 40
         val lang = supportedLocale()
 
         try {
             val client = OpenWeather(context).client
             val response = client.fiveDayForecast(city, appId, units, count, lang).awaitResponse()
             if (response.isSuccessful) {
-                val cached = if (response.raw().networkResponse != null) "" else "cached"
-                val temp = response.body()?.list?.first()?.main?.temp?.roundToInt()
-                val feelsLike = response.body()?.list?.first()?.main?.temp?.roundToInt()
-                val cityName = response.body()?.city?.name
-                ToastHelper.show(context, "$cityName: ${temp}c (Feels like ${feelsLike}c) $cached")
+               data = response.body()
             } else {
-                ToastHelper.show(context, response.message())
+                // Error logic
             }
         } catch (ex: Exception) {
-            ToastHelper.show(context, ex.message.orEmpty())
-            Log.i("", ex.message.orEmpty())
+            Log.e(TAG, ex.message.toString())
         }
     }
 
@@ -60,6 +60,10 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             "tr", "ua, uk", "vi", "zh_cn", "zh_tw", "zu"
         )
         return if (supportedLocales.contains(currentLocale)) currentLocale else "en"
+    }
+
+    companion object {
+        private const val TAG = "WeatherService"
     }
 }
 
