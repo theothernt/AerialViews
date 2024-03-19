@@ -239,10 +239,10 @@ settings put secure screensaver_components com.neilturner.aerialviews/.ui.screen
 <summary>ADB command - change the screensaver timeout</summary>
 &nbsp;
 
-To change the default timeout use this command with a value in milliseconds. So, 5 minutes is 30000, 10 minutes is 60000 and so on.
+To change the default timeout use this command with a value in milliseconds. So, 5 minutes is 300000, 10 minutes is 600000 and so on.
 
 ```sh
-settings put system screen_off_timeout 60000
+settings put system screen_off_timeout 600000
 ```
 
 </details>
