@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models.enums
 
-enum class TemperatureType {
+enum class TemperatureUnit {
     METRIC,
     IMPERIAL
 }

@@ -8,8 +8,8 @@ import com.neilturner.aerialviews.models.enums.FilenameAsLocation
 import com.neilturner.aerialviews.models.enums.ImageScale
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.TemperatureType
-import com.neilturner.aerialviews.models.enums.WindSpeedType
+import com.neilturner.aerialviews.models.enums.TemperatureUnit
+import com.neilturner.aerialviews.models.enums.WindSpeedUnit
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -29,8 +29,13 @@ object GeneralPrefs : KotprefModel() {
     var weatherSize by stringPref("18", "weather_size")
     var weatherWeight by stringPref("300", "weather_weight")
     var weatherCity by stringPref("Dublin, IE", "weather_city")
-    var weatherUnits by enumValuePref(TemperatureType.METRIC, "weather_units")
-    var weatherWindUnits by enumValuePref(WindSpeedType.METRIC, "weather_wind_units")
+    var weatherUnits by enumValuePref(TemperatureUnit.METRIC, "weather_units")
+    var weatherWindUnits by enumValuePref(WindSpeedUnit.METRIC, "weather_wind_units")
+    var weatherShowIcon by booleanPref(true, "weather_show_icon")
+    var weatherShowCity by booleanPref(false, "weather_show_city")
+    var weatherShowTemp by booleanPref(true, "weather_show_temp")
+    var weatherShowWind by booleanPref(false, "weather_show_wind")
+    var weatherShowHumidity by booleanPref(false, "weather_show_humidity")
 
     // Clock
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")

@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models.enums
 
-enum class WindSpeedType {
+enum class WindSpeedUnit {
     METRIC,
     IMPERIAL,
     KPH
