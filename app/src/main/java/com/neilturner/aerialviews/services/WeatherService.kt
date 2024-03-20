@@ -13,7 +13,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -29,19 +33,27 @@ import retrofit2.http.Query
 import java.io.File
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
 
+    private val _weatherFlow = MutableSharedFlow<WeatherResult>()
+    val weatherFlow = _weatherFlow.asSharedFlow()
+
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
-    private var data: FiveDayForecast? = null
-    private lateinit var fetchJob: Job
+    private var weatherData: FiveDayForecast? = null
+    private var emitJob: Job? = null
 
     init {
         coroutineScope.launch {
-            fetchJob = async { fetchData() }
+            fetchData()
+            emitJob = async { emitData() }
         }
     }
+
+    fun stop() {
+        emitJob?.cancel()
+    }
+
 
     private suspend fun fetchData() {
         val units = prefs.weatherUnits.toString()
@@ -54,39 +66,41 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             val client = OpenWeather(context).client
             val response = client.fiveDayForecast(city, appId, units, count, lang).awaitResponse()
             if (response.isSuccessful) {
-                data = response.body()
+                weatherData = response.body()
             } else {
-                // Error logic
+                Log.e(TAG, "Response error: ${response.code()}")
             }
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
         }
     }
 
-    fun weather(): WeatherResult? {
-        if (fetchJob.isActive ||
-            data == null
-        ) {
-            return null
+    private suspend fun emitData() = withContext(Dispatchers.Main) {
+        repeat(10) {
+            _weatherFlow.emit(weather())
+            delay(2000)
         }
+    }
 
+    private fun weather(): WeatherResult {
         // validate weather data first
 
         val icon = if (prefs.weatherShowIcon) {
-            data?.list?.first()?.weather?.first()?.main.toStringOrEmpty()
+            weatherData?.list?.first()?.weather?.first()?.main.toStringOrEmpty()
         } else {
             ""
         }
 
         val city = if (prefs.weatherShowCity) {
-            data?.city?.name.toStringOrEmpty()
+            weatherData?.city?.name.toStringOrEmpty()
         } else {
             ""
         }
 
         val tempNow = if (prefs.weatherShowTemp) {
-            val temp = data?.list?.first()?.main?.temp
-            temp?.roundToInt().toString()
+            // val temp = data?.list?.first()?.main?.temp
+            // temp?.roundToInt().toString()
+            (0..30).random().toString()
         } else {
             ""
         }
@@ -94,15 +108,15 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         var windSpeed = ""
         var windDirection = ""
         if (prefs.weatherShowWind) {
-            windSpeed = data?.list?.first()?.wind?.speed.toString()
+            windSpeed = weatherData?.list?.first()?.wind?.speed.toString()
             // convert to k/mh
 
-            val degree = data?.list?.first()?.wind?.deg
+            val degree = weatherData?.list?.first()?.wind?.deg
             windDirection = if (degree == null) "" else degreesToCardinal(degree)
         }
 
         val humidity = if (prefs.weatherShowHumidity) {
-            data?.list?.first()?.main?.humidity.toStringOrEmpty()
+            weatherData?.list?.first()?.main?.humidity.toStringOrEmpty()
         } else {
             ""
         }
@@ -119,7 +133,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         )
     }
 
-    fun degreesToCardinal(degrees: Int): String {
+    private fun degreesToCardinal(degrees: Int): String {
         val cardinalDirections = arrayOf("↑ N", "↗ NE", "→ E", "↘ SE", "↓ S", "↙ SW", "← W", "↖ NW")
         val value = ((degrees / 45) % cardinalDirections.size)
         return cardinalDirections[value]

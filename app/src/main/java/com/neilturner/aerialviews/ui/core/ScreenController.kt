@@ -37,6 +37,7 @@ class ScreenController(private val context: Context) :
     OnImagePlayerEventListener {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private lateinit var weatherService: WeatherService
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
@@ -88,13 +89,13 @@ class ScreenController(private val context: Context) :
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
 
+        if (overlayHelper.isOverlayEnabled<TextWeather>()) {
+            weatherService = WeatherService(context, GeneralPrefs)
+        }
+
         coroutineScope.launch {
-            if (overlayHelper.isOverlayEnabled<TextWeather>()) {
-                val service = WeatherService(context, GeneralPrefs)
-                overlayHelper.findOverlay<TextWeather>().forEach {
-                    it.service = service
-                    it.update()
-                }
+            overlayHelper.findOverlay<TextWeather>().forEach {
+                it.flow = weatherService.weatherFlow
             }
 
             playlist = MediaService(context).fetchMedia()
@@ -249,6 +250,7 @@ class ScreenController(private val context: Context) :
     fun stop() {
         videoPlayer.release()
         imagePlayer.release()
+        weatherService.stop()
     }
 
     fun skipItem(previous: Boolean = false) {
