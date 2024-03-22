@@ -9,17 +9,16 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.services.WeatherResult
+import com.neilturner.aerialviews.models.openweather.WeatherResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TextWeather : AppCompatTextView {
 
-    var type = OverlayType.WEATHER1 // 1=Summary, 2=Forecast?
-    var flow: SharedFlow<WeatherResult>? = MutableSharedFlow()
+    var type = OverlayType.WEATHER1 // 1=Summary, 2=Forecast, 3=Rainfall?
+    var weatherFlow: StateFlow<WeatherResult>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
@@ -35,7 +34,7 @@ class TextWeather : AppCompatTextView {
 
         Log.i(TAG, "Waiting for items...")
         coroutineScope.launch {
-            flow?.collect { weather ->
+            weatherFlow?.collect { weather ->
                 text = weather.tempNow
                 Log.i(TAG, "Item: ${weather.tempNow}")
             }
@@ -44,7 +43,7 @@ class TextWeather : AppCompatTextView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        flow = null
+        weatherFlow = null
     }
 
     companion object {

@@ -4,7 +4,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class FiveDayForecast(
+data class HourlyFourDayForecast(
     @Json(name = "city")
     val city: City,
     @Json(name = "cnt")
@@ -57,7 +57,7 @@ data class FiveDayForecast(
         @Json(name = "pop")
         val pop: Double,
         @Json(name = "rain")
-        val rain: Rain?,
+        val rain: Rain,
         @Json(name = "sys")
         val sys: Sys,
         @Json(name = "visibility")
@@ -97,7 +97,7 @@ data class FiveDayForecast(
 
         @JsonClass(generateAdapter = true)
         data class Rain(
-            @Json(name = "3h")
+            @Json(name = "1h")
             val h: Double
         )
 

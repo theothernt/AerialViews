@@ -35,6 +35,10 @@ class MediaService(val context: Context) {
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
     }
 
+    fun finalize() {
+        Log.i(TAG, "MediaService de-alloc")
+    }
+
     suspend fun fetchMedia(): MediaPlaylist {
         var media = mutableListOf<AerialMedia>()
 
