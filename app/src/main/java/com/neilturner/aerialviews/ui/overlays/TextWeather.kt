@@ -34,9 +34,11 @@ class TextWeather : AppCompatTextView {
 
         Log.i(TAG, "Waiting for items...")
         coroutineScope.launch {
-            weatherFlow?.collect { weather ->
-                text = weather.tempNow
-                Log.i(TAG, "Item: ${weather.tempNow}")
+            weatherFlow?.collect { data ->
+                if (data.tempNow.isEmpty()) return@collect
+                val weather = "${data.description}, ${data.tempNow}, ${data.windSpeed} ${data.windDirection}"
+                text = weather
+                Log.i(TAG, "Setting weather to: $weather")
             }
         }
     }

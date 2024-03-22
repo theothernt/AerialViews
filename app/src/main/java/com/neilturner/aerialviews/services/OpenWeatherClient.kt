@@ -28,11 +28,10 @@ class OpenWeatherClient(private val context: Context) {
     private val offlineInterceptor = Interceptor { chain ->
         var request = chain.request()
         val cache = CacheControl.Builder()
-
         if (!NetworkHelper.isInternetAvailable(context)) {
             cache.onlyIfCached()
             if (BuildConfig.DEBUG) {
-                cache.maxStale(5, TimeUnit.MINUTES)
+                cache.maxStale(1, TimeUnit.MINUTES)
             } else {
                 cache.maxStale(2, TimeUnit.DAYS)
             }
@@ -77,5 +76,6 @@ class OpenWeatherClient(private val context: Context) {
     companion object {
         private const val BASE_URL = "https://api.openweathermap.org/"
         private const val HEADER_CACHE_CONTROL = "Cache-Control"
+        private const val TAG = "OpenWeatherClient"
     }
 }

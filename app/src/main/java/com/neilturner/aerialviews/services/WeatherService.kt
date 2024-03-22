@@ -6,7 +6,9 @@ import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.openweather.ThreeHourFiveDayForecast
 import com.neilturner.aerialviews.models.openweather.WeatherResult
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.degreesToCardinal
+import com.neilturner.aerialviews.utils.WeatherHelper.nearestTimestamp
 import com.neilturner.aerialviews.utils.WeatherHelper.supportedLocale
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
+import java.util.Locale
+import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
 
@@ -34,7 +38,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
                 fetchData()
                 Log.i(TAG, "Running...")
                 _weatherFlow.emit(weather())
-                delay(5 * 1000)
+                delay(10 * 1000)
             }
         }
     }
@@ -56,8 +60,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             if (response.isSuccessful) {
                 if (response.raw().networkResponse?.isSuccessful == true) {
                     Log.i(TAG, "Network response")
-                }
-                if (response.raw().cacheResponse?.isSuccessful == true) {
+                } else if (response.raw().cacheResponse?.isSuccessful == true) {
                     Log.i(TAG, "Cache response")
                 }
                 weatherData = response.body()
@@ -77,17 +80,31 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
     }
 
     private fun weather(): WeatherResult {
-        // Time in UTC!
-//        val times = weatherData?.list?.map { it.dt.toLong() }
-//        val nearestTime = getNearestTimestamp(times!!)
-//
-//        val currentWeather = weatherData?.list?.first { it.dt.toLong() == nearestTime }
-//        if (currentWeather != null) {
-//            Log.i(TAG, currentWeather.dtTxt)
-//        }
+        if (weatherData == null) {
+            return WeatherResult()
+        }
+
+        // Pick the forecast closest to the current time
+        val times = weatherData?.list?.map { it.dt.toLong() } ?: return WeatherResult()
+        val nearestTime = nearestTimestamp(times)
+        val current = weatherData?.list?.first { it.dt.toLong() == nearestTime } ?: return WeatherResult()
 
         val icon = if (prefs.weatherShowIcon) {
-            weatherData?.list?.first()?.weather?.first()?.main.toStringOrEmpty()
+            current.main.toStringOrEmpty()
+        } else {
+            ""
+        }
+
+        val description = if (true) {
+            current.weather.first().description.replaceFirstChar {
+                if (it.isLowerCase()) {
+                    it.titlecase(
+                        Locale.getDefault()
+                    )
+                } else {
+                    it.toString()
+                }
+            }
         } else {
             ""
         }
@@ -99,21 +116,21 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         }
 
         val tempNow = if (prefs.weatherShowTemp) {
-            // val temp = data?.list?.first()?.main?.temp
-            // temp?.roundToInt().toString()
-            (0..30).random().toString()
+            val temp = current.main.temp
+            temp.roundToInt().toString() + " °C"
+            // (0..30).random().toString()
         } else {
             ""
         }
 
         var windSpeed = ""
         var windDirection = ""
-        if (prefs.weatherShowWind) {
-            windSpeed = weatherData?.list?.first()?.wind?.speed.toString()
-            // convert to k/mh
+        if (true) {
+            // TO FIX
+            windSpeed = convertMeterToKilometer(current.wind.speed) + " km/h"
 
-            val degree = weatherData?.list?.first()?.wind?.deg
-            windDirection = if (degree == null) "" else degreesToCardinal(degree)
+            val degree = current.wind.deg
+            windDirection = degreesToCardinal(degree)
         }
 
         val humidity = if (prefs.weatherShowHumidity) {
@@ -125,12 +142,14 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         return WeatherResult(
             icon,
             city,
+            description,
             tempNow,
             prefs.weatherUnits,
             windSpeed,
             windDirection,
             prefs.weatherWindUnits,
-            humidity
+            humidity,
+            current.dtTxt
         )
     }
 
