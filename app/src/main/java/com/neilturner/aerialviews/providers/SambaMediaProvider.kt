@@ -80,7 +80,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             )
         } catch (e: Exception) {
             Log.e(TAG, e.message.toString())
-            Pair(emptyList(), e.message.toString())
+            return Pair(emptyList(), e.message.toString())
         }
 
         sambaMedia.first.forEach { filename ->
