@@ -8,6 +8,7 @@ data class WeatherResult(
     val city: String = "",
     val description: String = "",
     val tempNow: String = "",
+    val tempFeelsLike: String = "",
     val tempUnit: TemperatureUnit = TemperatureUnit.METRIC,
     val windSpeed: String = "",
     val windDirection: String = "",

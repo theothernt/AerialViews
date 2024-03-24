@@ -12,13 +12,13 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.openweather.WeatherResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class TextWeather : AppCompatTextView {
 
     var type = OverlayType.WEATHER1 // 1=Summary, 2=Forecast, 3=Rainfall?
-    var weatherFlow: StateFlow<WeatherResult>? = null
+    var weather: SharedFlow<WeatherResult>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
@@ -31,12 +31,10 @@ class TextWeather : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
-        Log.i(TAG, "Waiting for items...")
         coroutineScope.launch {
-            weatherFlow?.collect { data ->
-                if (data.tempNow.isEmpty()) return@collect
-                val weather = "${data.description}, ${data.tempNow}, ${data.windSpeed} ${data.windDirection}"
+            weather?.collect { data ->
+                // ${data.windSpeed} ${data.windDirection}
+                val weather = "${data.description}, ${data.tempNow} (feels like ${data.tempFeelsLike})"
                 text = weather
                 Log.i(TAG, "Setting weather to: $weather")
             }
@@ -45,7 +43,7 @@ class TextWeather : AppCompatTextView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        weatherFlow = null
+        weather = null
     }
 
     companion object {

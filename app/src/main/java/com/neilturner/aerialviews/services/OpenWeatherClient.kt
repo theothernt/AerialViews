@@ -31,13 +31,13 @@ class OpenWeatherClient(private val context: Context) {
         if (!NetworkHelper.isInternetAvailable(context)) {
             cache.onlyIfCached()
             if (BuildConfig.DEBUG) {
-                cache.maxStale(1, TimeUnit.MINUTES)
+                cache.maxStale(10, TimeUnit.MINUTES)
             } else {
-                cache.maxStale(2, TimeUnit.DAYS)
+                cache.maxStale(1, TimeUnit.DAYS)
             }
         } else {
             if (BuildConfig.DEBUG) {
-                cache.maxStale(1, TimeUnit.MINUTES)
+                cache.maxStale(2, TimeUnit.MINUTES)
             } else {
                 cache.maxStale(12, TimeUnit.HOURS)
             }

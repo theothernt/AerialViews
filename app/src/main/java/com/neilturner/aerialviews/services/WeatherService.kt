@@ -15,36 +15,41 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.awaitResponse
 import java.util.Locale
 import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
 
-    private val _weatherFlow = MutableStateFlow(WeatherResult())
-    val weatherFlow = _weatherFlow.asStateFlow()
+    private val _weather = MutableSharedFlow<WeatherResult>(replay = 0)
+    val weather
+        get() = _weather.asSharedFlow()
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private var weatherData: ThreeHourFiveDayForecast? = null
-    private var emitJob: Job? = null
+    private var job: Job? = null
 
     init {
-        coroutineScope.launch {
-            while (true) {
-                fetchData()
+        job = coroutineScope.launch {
+            while (isActive) {
                 Log.i(TAG, "Running...")
-                _weatherFlow.emit(weather())
-                delay(10 * 1000)
+                fetchData()
+                emitData()
             }
         }
     }
 
+    private suspend fun emitData() {
+        _weather.emit(weather())
+        delay(10 * 1000)
+    }
+
     fun stop() {
-        emitJob?.cancel()
+        job?.cancel()
     }
 
     private suspend fun fetchData() {
@@ -69,13 +74,6 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             }
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
-        }
-    }
-
-    private suspend fun emitData() = withContext(Dispatchers.Main) {
-        repeat(10) {
-            _weatherFlow.emit(weather())
-            delay(2000)
         }
     }
 
@@ -118,7 +116,13 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val tempNow = if (prefs.weatherShowTemp) {
             val temp = current.main.temp
             temp.roundToInt().toString() + " °C"
-            // (0..30).random().toString()
+        } else {
+            ""
+        }
+
+        val tempFeelsLike = if (prefs.weatherShowTemp) {
+            val temp = current.main.feelsLike
+            temp.roundToInt().toString() + " °C"
         } else {
             ""
         }
@@ -144,6 +148,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             city,
             description,
             tempNow,
+            tempFeelsLike,
             prefs.weatherUnits,
             windSpeed,
             windDirection,
