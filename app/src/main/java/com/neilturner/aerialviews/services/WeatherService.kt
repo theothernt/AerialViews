@@ -37,7 +37,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         job = coroutineScope.launch {
             while (isActive) {
                 Log.i(TAG, "Running...")
-                fetchData()
+                fetchData()?.let {
+                    weatherData = it
+                }
                 emitData()
             }
         }
@@ -52,7 +54,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         job?.cancel()
     }
 
-    private suspend fun fetchData() {
+    private suspend fun fetchData(): ThreeHourFiveDayForecast? {
         val units = prefs.weatherUnits.toString()
         val city = prefs.weatherCity
         val appId = BuildConfig.OPEN_WEATHER_KEY
@@ -62,19 +64,21 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         try {
             val client = OpenWeatherClient(context).client
             val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
-            if (response.isSuccessful) {
+            return if (response.isSuccessful) {
                 if (response.raw().networkResponse?.isSuccessful == true) {
                     Log.i(TAG, "Network response")
                 } else if (response.raw().cacheResponse?.isSuccessful == true) {
                     Log.i(TAG, "Cache response")
                 }
-                weatherData = response.body()
+                response.body()
             } else {
                 Log.e(TAG, "Response error: ${response.code()}")
+                null
             }
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
         }
+        return null
     }
 
     private fun weather(): WeatherResult {

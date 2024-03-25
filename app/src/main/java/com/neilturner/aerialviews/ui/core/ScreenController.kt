@@ -95,7 +95,9 @@ class ScreenController(private val context: Context) :
             }
 
             overlayHelper.findOverlay<TextWeather>().forEach {
-                it.weather = weatherService?.weather
+                if (it.type == OverlayType.WEATHER1) {
+                    it.weather = weatherService?.weather
+                }
             }
 
             playlist = MediaService(context).fetchMedia()
