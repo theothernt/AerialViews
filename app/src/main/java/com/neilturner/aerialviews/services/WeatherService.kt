@@ -47,7 +47,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
     private suspend fun emitData() {
         _weather.emit(weather())
-        delay(10 * 1000)
+        delay(30 * 1000)
     }
 
     fun stop() {

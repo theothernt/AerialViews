@@ -33,13 +33,13 @@ class OpenWeatherClient(private val context: Context) {
             if (BuildConfig.DEBUG) {
                 cache.maxStale(10, TimeUnit.MINUTES)
             } else {
-                cache.maxStale(1, TimeUnit.DAYS)
+                cache.maxStale(12, TimeUnit.HOURS)
             }
         } else {
             if (BuildConfig.DEBUG) {
                 cache.maxStale(2, TimeUnit.MINUTES)
             } else {
-                cache.maxStale(12, TimeUnit.HOURS)
+                cache.maxStale(6, TimeUnit.HOURS)
             }
         }
         request = request.newBuilder()
