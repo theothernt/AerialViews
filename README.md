@@ -74,6 +74,7 @@ media automatically`
 The following devices have no user-interface to change the screensaver to a 3rd party one...
 
 * __Chromecast with Google TV__
+* __Recent MECOOL devices__
 * __onn. Google TV 4K Streaming Box 2023 (not 2021) model__
 * __Fire TV__
 
