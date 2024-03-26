@@ -123,9 +123,10 @@ Next, find the IP address of your device and make a note of it. Navigate to the 
 
 Find an iPhone app that is capable of running ADB commands, [such as iSH Shell](https://ish.app/), which is free.
 
-Once installed, run the app and install the Android Tools with the following command…
+Once installed, run the app and install the Android Tools with the following commands…
 
 ```sh
+apk update
 apk add android-tools
 ```
 
@@ -149,13 +150,30 @@ Now you can execute ADB commands.
 <summary>Connect using an Android phone</summary>
 &nbsp;
 
-Find an Android app that is capable of running ADB commands, [such as Remote ADB Shell](https://play.google.com/store/apps/details?id=com.cgutman.androidremotedebugger), which is free.
+Find an Android app that is capable of running ADB commands, [such as Remote Termux](https://play.google.com/store/apps/details?id=com.termux), which is free.
 
-Once installed, run the app and connect to your device using its IP address (eg. 192.168.1.102)
+Once installed, run the app and install the Android Tools with the following commands…
 
-To confirm the connection, try a command like `ls` which should show a list of files and folder.
+```sh
+pkg update
+pkg install android-tools
+```
+
+To check if the ADB command is working, try typing…
+
+```sh
+adb version 
+```
+
+After pressing return, you should see something like this
+
+```sh
+Android Debug Bridge version 1.0.41
+Version  34.0.0p1-android-tools
+```
 
 Now you can execute ADB commands.
+
 </details>
 
 <details>
@@ -210,8 +228,6 @@ Version  35.0.0-11411520
 <details>
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 &nbsp;
-
-:warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell*
 
 Connect to your Android TV device and start a command shell...
 
