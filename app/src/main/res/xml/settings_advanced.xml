@@ -14,6 +14,18 @@
                     app:summary="@string/advanced_enable_tunneling_summary"
                     app:title="@string/advanced_enable_tunneling_title" />
 
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="allow_fallback_decoders"
+                    app:summary="@string/allow_fallback_decoders_summary"
+                    app:title="@string/allow_fallback_decoders_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="enable_playback_logging"
+                    app:summary="@string/enable_playback_logging_summary"
+                    app:title="@string/enable_playback_logging_title" />
+
 <!--                <ListPreference-->
 <!--                    app:key="performance_buffering_strategy"-->
 <!--                    app:defaultValue="@string/performance_buffering_strategy_default"-->
