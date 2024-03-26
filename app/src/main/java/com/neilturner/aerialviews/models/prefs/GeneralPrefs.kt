@@ -90,6 +90,8 @@ object GeneralPrefs : KotprefModel() {
     // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
+    var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
+    var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
     // Old devices

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string name="allow_fallback_decoders_title">Allow fallback decoders</string>
+  <string name="allow_fallback_decoders_summary">Enables support for software-based or alternate codecs on some devices</string>
+  <string name="enable_playback_logging_title">Enable playback logging</string>
+  <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
   <string name="about_date_title">Дата сборки</string>
   <string name="about_version_title">Версия</string>
   <string name="advanced_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>

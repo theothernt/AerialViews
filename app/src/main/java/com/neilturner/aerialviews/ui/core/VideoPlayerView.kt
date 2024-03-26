@@ -17,6 +17,7 @@ import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.CustomRendererFactory
@@ -34,6 +35,8 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private val enableTunneling = GeneralPrefs.enableTunneling
     private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
     private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
+    private var fallbackDecoders = GeneralPrefs.allowFallbackDecoders
+    private var extraLogging = GeneralPrefs.enablePlaybackLogging
     private val maxVideoLength = GeneralPrefs.maxVideoLength
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
@@ -272,6 +275,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         trackSelector.parameters = parametersBuilder.build()
 
         var rendererFactory = DefaultRenderersFactory(context)
+        if (fallbackDecoders) {
+            rendererFactory.setEnableDecoderFallback(true)
+        }
         if (philipsDolbyVisionFix) {
             rendererFactory = CustomRendererFactory(context)
         }
@@ -281,7 +287,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
             .setRenderersFactory(rendererFactory)
             .build()
 
-        // player.addAnalyticsListener(com.google.android.exoplayer2.util.EventLogger(trackSelector))
+        if (extraLogging) {
+            player.addAnalyticsListener(EventLogger())
+        }
 
         if (muteVideo) {
             player.volume = 0f

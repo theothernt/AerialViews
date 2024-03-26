@@ -381,6 +381,12 @@
     <string name="advanced_enable_tunneling_title">Enable tunneling</string>
     <string name="advanced_enable_tunneling_summary">Use hardware acceleration, more important for 4K/HDR</string>
 
+    <string name="allow_fallback_decoders_title">Allow fallback decoders</string>
+    <string name="allow_fallback_decoders_summary">Enables support for software-based or alternate codecs on some devices</string>
+
+    <string name="enable_playback_logging_title">Enable playback logging</string>
+    <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
+
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
