@@ -61,22 +61,18 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val count = 4
         val lang = supportedLocale()
 
-        try {
-            val client = OpenWeatherClient(context).client
-            val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
-            return if (response.isSuccessful) {
-                if (response.raw().networkResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Network response")
-                } else if (response.raw().cacheResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Cache response")
-                }
-                response.body()
-            } else {
-                Log.e(TAG, "Response error: ${response.code()}")
-                null
+        val client = OpenWeatherClient(context).client
+        val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
+        return if (response.isSuccessful) {
+            if (response.raw().networkResponse?.isSuccessful == true) {
+                Log.i(TAG, "Network response")
+            } else if (response.raw().cacheResponse?.isSuccessful == true) {
+                Log.i(TAG, "Cache response")
             }
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            response.body()
+        } else {
+            Log.e(TAG, "Response error: ${response.code()}")
+            null
         }
         return null
     }
