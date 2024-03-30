@@ -250,6 +250,18 @@ Next, set Aerial Views as the default screensaver with this command…
 settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
 ```
 
+Optional: Confirm that the command was run successfully, as there is no confirmation when the command above is run.
+
+```sh
+settings get secure screensaver_components
+```
+
+If set correctly, you should see... 
+
+```sh
+com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
+```
+
 </details>
 
 <details>
@@ -276,16 +288,22 @@ For whatever reason, if you would like to stop using Aerial Views and revert bac
 1. Follow the instructions above to connect to your Android/Google TV device using an iPhone, Android phone, Mac, PC, etc
 2. Run one of the following commands...
 
-### To restore the default Google TV ambient screensaver:
+### To restore the default Google TV ambient screensaver
 
 ```sh
 settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
 ```
 
-### To restore the default Fire TV screensaver:
+### To restore the default Fire TV screensaver
 
 ```sh
 settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
+```
+
+### To restore the default (older) Android TV backdrop screensaver
+
+```sh
+settings put secure screensaver_components com.google.android.backdrop/.Backdrop
 ```
 
 </details>
