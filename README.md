@@ -273,16 +273,19 @@ For whatever reason, if you would like to stop using Aerial Views and revert bac
 * Reset your device. Doing so will also reset the screensaver preference
 * Use an ADB commands to enable the default screensaver, depending on your device
 
-To restore the default Google TV ambient screensaver...
+1. Follow the instructions above to connect to your Android/Google TV device using an iPhone, Android phone, Mac, PC, etc
+2. Run one of the following commands...
+
+### To restore the default Google TV ambient screensaver:
 
 ```sh
-adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
+settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
 ```
 
-To restore the default Fire TV screensaver...
+### To restore the default Fire TV screensaver:
 
 ```sh
-adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
+settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
 ```
 
 </details>
