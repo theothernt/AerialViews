@@ -34,6 +34,15 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
     private var job: Job? = null
 
     init {
+        // Try fetch then emit
+        // or retry-backoff
+
+        // Grab 12hr of data, allow refresh after 6hrs
+
+        // Emit every 10 mins?
+
+        // Don't send empty weather data class
+
         job = coroutineScope.launch {
             while (isActive) {
                 Log.i(TAG, "Running...")
@@ -61,6 +70,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val count = 4
         val lang = supportedLocale()
 
+        // Don't try if KEY is blank
+        // Check response code for no key, too many requests, etc
+
         val client = OpenWeatherClient(context).client
         val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
         return if (response.isSuccessful) {
@@ -74,7 +86,6 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             Log.e(TAG, "Response error: ${response.code()}")
             null
         }
-        return null
     }
 
     private fun weather(): WeatherResult {
