@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.util.Log
 import java.util.Locale
 import kotlin.math.abs
 
@@ -21,7 +22,7 @@ object WeatherHelper {
 
     // Check if current locale is supported by OpenWeather API, or default to English
     fun supportedLocale(): String {
-        val currentLocale = Locale.getDefault().country.lowercase()
+        val currentLocale = Locale.getDefault().language
         val supportedLocales = listOf(
             "af", "al", "ar", "az", "bg", "ca", "cz", "da", "de", "el", "en", "eu", "fa", "fi",
             "fr", "gl", "he", "hi", "hr", "hu", "id", "it", "ja", "kr", "la", "lt", "mk", "no",
