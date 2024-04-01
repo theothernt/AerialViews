@@ -2,10 +2,12 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.openweather.ThreeHourFiveDayForecast
 import com.neilturner.aerialviews.models.openweather.WeatherResult
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.degreesToCardinal
 import com.neilturner.aerialviews.utils.WeatherHelper.nearestTimestamp
@@ -77,13 +79,14 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
         return if (response.isSuccessful) {
             if (response.raw().networkResponse?.isSuccessful == true) {
-                Log.i(TAG, "Network response")
+                ToastHelper.show(context, "Network response", Toast.LENGTH_SHORT)
             } else if (response.raw().cacheResponse?.isSuccessful == true) {
-                Log.i(TAG, "Cache response")
+                ToastHelper.show(context, "Cache response", Toast.LENGTH_SHORT)
             }
             response.body()
         } else {
-            Log.e(TAG, "Response error: ${response.code()}")
+            val code = response.code()
+            Log.e(TAG, "Response error: $code")
             null
         }
     }
