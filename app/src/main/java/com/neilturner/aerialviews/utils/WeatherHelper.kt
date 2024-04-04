@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.utils
 
-import android.util.Log
 import java.util.Locale
 import kotlin.math.abs
 
