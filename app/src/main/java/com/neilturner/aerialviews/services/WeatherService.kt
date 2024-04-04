@@ -79,9 +79,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
         return if (response.isSuccessful) {
             if (response.raw().networkResponse?.isSuccessful == true) {
-                ToastHelper.show(context, "Network response", Toast.LENGTH_SHORT)
+                //ToastHelper.show(context, "Network response", Toast.LENGTH_SHORT)
             } else if (response.raw().cacheResponse?.isSuccessful == true) {
-                ToastHelper.show(context, "Cache response", Toast.LENGTH_SHORT)
+                //ToastHelper.show(context, "Cache response", Toast.LENGTH_SHORT)
             }
             response.body()
         } else {

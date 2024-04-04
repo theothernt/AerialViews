@@ -34,7 +34,7 @@ class TextWeather : AppCompatTextView {
         coroutineScope.launch {
             weather?.collect { data ->
                 // ${data.windSpeed} ${data.windDirection}
-                val weather = "${data.description}, ${data.tempNow} (feels like ${data.tempFeelsLike})"
+                val weather = "${data.description}, ${data.tempNow}" // (feels like ${data.tempFeelsLike})"
                 text = weather
                 Log.i(TAG, "Setting weather to: $weather")
             }
