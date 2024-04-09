@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.openweather.WeatherResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
@@ -43,7 +44,6 @@ class TextWeather : AppCompatTextView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        weather = null
     }
 
     companion object {
