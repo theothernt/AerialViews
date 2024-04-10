@@ -3,7 +3,7 @@
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
 [![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=50k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
-[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=2k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
+[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=4k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
 [![License](https://img.shields.io/:license-gpl%20v3-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
@@ -74,6 +74,7 @@ media automatically`
 The following devices have no user-interface to change the screensaver to a 3rd party one...
 
 * __Chromecast with Google TV__
+* __Recent MECOOL devices__
 * __onn. Google TV 4K Streaming Box 2023 (not 2021) model__
 * __Fire TV__
 
@@ -123,9 +124,10 @@ Next, find the IP address of your device and make a note of it. Navigate to the 
 
 Find an iPhone app that is capable of running ADB commands, [such as iSH Shell](https://ish.app/), which is free.
 
-Once installed, run the app and install the Android Tools with the following command…
+Once installed, run the app and install the Android Tools with the following commands…
 
 ```sh
+apk update
 apk add android-tools
 ```
 
@@ -149,13 +151,30 @@ Now you can execute ADB commands.
 <summary>Connect using an Android phone</summary>
 &nbsp;
 
-Find an Android app that is capable of running ADB commands, [such as Remote ADB Shell](https://play.google.com/store/apps/details?id=com.cgutman.androidremotedebugger), which is free.
+Find an Android app that is capable of running ADB commands, [such as Remote Termux](https://play.google.com/store/apps/details?id=com.termux), which is free.
 
-Once installed, run the app and connect to your device using its IP address (eg. 192.168.1.102)
+Once installed, run the app and install the Android Tools with the following commands…
 
-To confirm the connection, try a command like `ls` which should show a list of files and folder.
+```sh
+pkg update
+pkg install android-tools
+```
+
+To check if the ADB command is working, try typing…
+
+```sh
+adb version 
+```
+
+After pressing return, you should see something like this
+
+```sh
+Android Debug Bridge version 1.0.41
+Version  34.0.0p1-android-tools
+```
 
 Now you can execute ADB commands.
+
 </details>
 
 <details>
@@ -211,8 +230,6 @@ Version  35.0.0-11411520
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 &nbsp;
 
-:warning: *If you are using an ADB app on Android phone, please skip these two commands as you are already connected to an ADB Shell*
-
 Connect to your Android TV device and start a command shell...
 
 ```sh
@@ -231,6 +248,18 @@ Next, set Aerial Views as the default screensaver with this command…
 
 ```sh
 settings put secure screensaver_components com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+```
+
+Optional: Confirm that the command was run successfully, as there is no confirmation when the command above is run.
+
+```sh
+settings get secure screensaver_components
+```
+
+If set correctly, you should see... 
+
+```sh
+com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
 ```
 
 </details>
@@ -256,16 +285,25 @@ For whatever reason, if you would like to stop using Aerial Views and revert bac
 * Reset your device. Doing so will also reset the screensaver preference
 * Use an ADB commands to enable the default screensaver, depending on your device
 
-To restore the default Google TV ambient screensaver...
+1. Follow the instructions above to connect to your Android/Google TV device using an iPhone, Android phone, Mac, PC, etc
+2. Run one of the following commands...
+
+### To restore the default Google TV ambient screensaver
 
 ```sh
-adb shell settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
+settings put secure screensaver_components com.google.android.apps.tv.dreamx/.service.Backdrop
 ```
 
-To restore the default Fire TV screensaver...
+### To restore the default Fire TV screensaver
 
 ```sh
-adb shell settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
+settings put secure screensaver_components com.amazon.bueller.photos/.daydream.ScreenSaverService
+```
+
+### To restore the default (older) Android TV backdrop screensaver
+
+```sh
+settings put secure screensaver_components com.google.android.backdrop/.Backdrop
 ```
 
 </details>
