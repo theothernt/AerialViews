@@ -99,10 +99,10 @@
         <item>Clock</item>
         <item>Location</item>
         <item>Date</item>
-        <item>Message Line 1</item>
-        <item>Message Line 2</item>
-        <item>Weather 1</item>
-        <item>Weather 2</item>
+        <item>Message #1</item>
+        <item>Message #2</item>
+        <item>Weather</item>
+        <item>Music - Now Playing</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
@@ -112,7 +112,7 @@
         <item>MESSAGE1</item>
         <item>MESSAGE2</item>
         <item>WEATHER1</item>
-        <item>WEATHER2</item>
+        <item>MUSIC</item>
     </string-array>
     <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
 

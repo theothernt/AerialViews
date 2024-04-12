@@ -113,16 +113,18 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
             }
+            OverlayType.MUSIC -> TextDate(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
+            }
+            OverlayType.WEATHER1 -> TextWeather(context).apply {
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.weatherWeight)
+            }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2 -> TextMessage(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-                this.type = type
-            }
-            OverlayType.WEATHER1,
-            OverlayType.WEATHER2 -> TextWeather(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.weatherWeight)
                 this.type = type
             }
             else -> return null

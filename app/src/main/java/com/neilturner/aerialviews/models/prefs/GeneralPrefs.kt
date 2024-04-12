@@ -43,6 +43,10 @@ object GeneralPrefs : KotprefModel() {
     var clockWeight by stringPref("300", "clock_weight")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
+    // Music
+    var musicSize by stringPref("18", "music_size")
+    var musicWeight by stringPref("300", "music_weight")
+
     // Date
     var dateFormat by enumValuePref(DateType.COMPACT, "date_format")
     var dateCustom by stringPref("yyyy-MM-dd", "date_custom")

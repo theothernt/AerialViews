@@ -8,17 +8,14 @@ import android.util.Log
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.openweather.WeatherResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-class TextWeather : AppCompatTextView {
+class TextNowPlaying : AppCompatTextView {
 
-    var type = OverlayType.WEATHER1 // 1=Summary, 2=Forecast, 3=Rainfall?
-    var weather: SharedFlow<WeatherResult>? = null
+    var nowPlaying: SharedFlow<String>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
@@ -32,11 +29,9 @@ class TextWeather : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         coroutineScope.launch {
-            weather?.collect { data ->
-                // ${data.windSpeed} ${data.windDirection}
-                val weather = "${data.description}, ${data.tempNow}" // (feels like ${data.tempFeelsLike})"
-                text = weather
-                Log.i(TAG, "Setting weather to: $weather")
+            nowPlaying?.collect {
+                text = it
+                Log.i(TAG, "Setting Now Playing to: $it")
             }
         }
     }
@@ -46,6 +41,6 @@ class TextWeather : AppCompatTextView {
     }
 
     companion object {
-        private const val TAG = "TextWeather"
+        private const val TAG = "TextNowPlaying"
     }
 }
