@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 object PermissionHelper {
@@ -69,6 +70,10 @@ object PermissionHelper {
         } else {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         }
+    }
+
+    fun hasNotificationListenerPermission(context: Context): Boolean {
+        return NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
     }
 
     @Suppress("SameReturnValue")

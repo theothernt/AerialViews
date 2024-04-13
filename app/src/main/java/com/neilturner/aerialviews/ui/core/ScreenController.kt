@@ -19,10 +19,12 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.ui.overlays.TextWeather
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
@@ -37,10 +39,12 @@ class ScreenController(private val context: Context) :
     OnImagePlayerEventListener {
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private var weatherService: WeatherService? = null
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
+
+    private var weatherService: WeatherService? = null
+    private var nowPlayingService: NowPlayingService? = null
 
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private var alternate = false
@@ -93,6 +97,10 @@ class ScreenController(private val context: Context) :
             if (overlayHelper.isOverlayEnabled<TextWeather>()) {
                 weatherService = WeatherService(context, GeneralPrefs)
             }
+
+            //if (overlayHelper.isOverlayEnabled<TextNowPlaying>()) {
+                nowPlayingService = NowPlayingService(context, GeneralPrefs)
+            //}
 
             overlayHelper.findOverlay<TextWeather>().forEach {
                 if (it.type == OverlayType.WEATHER1) {
@@ -253,6 +261,7 @@ class ScreenController(private val context: Context) :
         videoPlayer.release()
         imagePlayer.release()
         weatherService?.stop()
+        nowPlayingService?.stop()
     }
 
     fun skipItem(previous: Boolean = false) {
