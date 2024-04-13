@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.openweather.WeatherResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class TextWeather : AppCompatTextView {
@@ -32,7 +33,9 @@ class TextWeather : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         coroutineScope.launch {
-            weather?.collect { data ->
+            weather
+                ?.distinctUntilChanged()
+                ?.collect { data ->
                 // ${data.windSpeed} ${data.windDirection}
                 val weather = "${data.description}, ${data.tempNow}" // (feels like ${data.tempFeelsLike})"
                 text = weather

@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 class TextNowPlaying : AppCompatTextView {
@@ -29,9 +30,10 @@ class TextNowPlaying : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         coroutineScope.launch {
-            nowPlaying?.collect {
+            nowPlaying
+                ?.distinctUntilChanged()
+                ?.collect {
                 text = it
-                Log.i(TAG, "Setting Now Playing to: $it")
             }
         }
     }

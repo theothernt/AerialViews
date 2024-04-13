@@ -14,11 +14,13 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import retrofit2.awaitResponse
 import java.util.Locale
 import kotlin.math.roundToInt
@@ -29,9 +31,8 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
     val weather
         get() = _weather.asSharedFlow()
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val coroutineScope = CoroutineScope(Dispatchers.IO) + Job()
     private var weatherData: ThreeHourFiveDayForecast? = null
-    private var job: Job? = null
 
     init {
         // Try fetch then emit
@@ -43,7 +44,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
         // Don't send empty weather data class
 
-        job = coroutineScope.launch {
+        coroutineScope.launch {
             while (isActive) {
                 Log.i(TAG, "Running...")
                 fetchData()?.let {
@@ -60,7 +61,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
     }
 
     fun stop() {
-        job?.cancel()
+        coroutineScope.cancel()
     }
 
     private suspend fun fetchData(): ThreeHourFiveDayForecast? {

@@ -98,10 +98,13 @@ class ScreenController(private val context: Context) :
                 weatherService = WeatherService(context, GeneralPrefs)
             }
 
-            //if (overlayHelper.isOverlayEnabled<TextNowPlaying>()) {
+            if (overlayHelper.isOverlayEnabled<TextNowPlaying>()) {
                 nowPlayingService = NowPlayingService(context, GeneralPrefs)
-            //}
+            }
 
+            overlayHelper.findOverlay<TextNowPlaying>().forEach {
+                it.nowPlaying = nowPlayingService?.nowPlaying
+            }
             overlayHelper.findOverlay<TextWeather>().forEach {
                 if (it.type == OverlayType.WEATHER1) {
                     it.weather = weatherService?.weather

@@ -10,10 +10,27 @@ import android.util.Log
 import androidx.core.content.getSystemService
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener {
 
+    private val _nowPlaying = MutableSharedFlow<String>(replay = 0)
+    val nowPlaying
+        get() = _nowPlaying.asSharedFlow()
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main) + Job()
+    private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var mediaController: MediaController? = null
@@ -31,34 +48,71 @@ class NowPlayingService(private val context: Context, private val prefs: General
     }
 
     init {
-        if (hasPermission) {
-            setupSession()
-        } else {
-            Log.i(TAG, "No permission given to access media sessions")
+        coroutineScope.launch {
+            if (hasPermission) {
+                setupSession()
+                while (isActive) {
+                    updateNowPlaying()
+                }
+            } else {
+                Log.i(TAG, "No permission given to access media sessions")
+            }
         }
     }
 
-    private fun setupSession() {
-        val sessionManager = context.getSystemService<MediaSessionManager>()
-        val notificationListener = ComponentName(context, NotificationService::class.java)
+    private suspend fun updateNowPlaying() {
+        val sessions = sessionManager?.getActiveSessions(notificationListener)
+//        sessions?.forEach { controller ->
+//            val playing = if (controller.playbackState?.state == PlaybackState.STATE_PLAYING) "playing" else "not playing"
+//            val packageName = controller.packageName
+//            Log.i(TAG, "$packageName:$playing")
+//        }
 
-        Log.i(TAG, "Listening for media sessions...")
-        onActiveSessionsChanged(sessionManager?.getActiveSessions(notificationListener))
-        sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
+        if (!sessions.isNullOrEmpty()) {
+            val controller = sessions.first()
+            val packageName = controller.packageName
+            val isPlaying = controller.playbackState?.state == PlaybackState.STATE_PLAYING
+
+            val song = controller.metadata?.getString(MediaMetadata.METADATA_KEY_TITLE)
+            val artist = controller.metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)
+            val nowPlaying = "$song - $artist"
+
+            if (isPlaying) {
+                _nowPlaying.emit(nowPlaying)
+            } else {
+                _nowPlaying.distinctUntilChanged()
+                _nowPlaying.emit("")
+            }
+        }
+        delay(1500)
+    }
+
+    private fun setupSession() {
+        sessionManager = context.getSystemService<MediaSessionManager>()
+//        Log.i(TAG, "Listening for media sessions...")
+//        onActiveSessionsChanged(sessionManager?.getActiveSessions(notificationListener))
+//        sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         if (!controllers.isNullOrEmpty()) {
-            // If multiple sessions, no way to know which is active
-            // Might have to use a loop over 1/2 seconds to check playstate
             Log.i(TAG, "Controllers: ${controllers.count()}")
-            controllers.forEachIndexed { index, controller ->
+            controllers.forEach { controller ->
                 val playing = (controller.playbackState?.state == PlaybackState.STATE_PLAYING)
-                Log.i(TAG, "Controller:$index:$playing")
+                val name = controller.packageName
+                Log.i(TAG, "$name:$playing")
             }
-            updateActiveMediaController(controllers[0])
+
+            // updateActiveMediaController(controllers[0])
         } else {
-            mediaController?.unregisterCallback(metadataListener)
+            // mediaController?.unregisterCallback(metadataListener)
+        }
+
+        val sessions = sessionManager?.getActiveSessions(notificationListener)
+        sessions?.forEach { controller ->
+            val playing = if (controller.playbackState?.state == PlaybackState.STATE_PLAYING) "playing" else "not playing"
+            val packageName = controller.packageName
+            Log.i(TAG, "$packageName:$playing")
         }
     }
 
@@ -69,7 +123,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
             mediaController = activeController
         }
 
-        //Log.i(TAG, "Initial metadata from controller...")
+        // Log.i(TAG, "Initial metadata from controller...")
         activeController.metadata?.let { showSong(it) }
         activeController.playbackState?.let { showState(it.state) }
     }
@@ -81,22 +135,22 @@ class NowPlayingService(private val context: Context, private val prefs: General
         val song = data.getString(MediaMetadata.METADATA_KEY_TITLE)
         val artist = data.getString(MediaMetadata.METADATA_KEY_ARTIST)
         val message = "$song - $artist"
+        Log.i(TAG, "Song: $message")
         if (message != this.message) {
             this.message = message
-            Log.i(TAG, "Song: $message")
         }
     }
 
     private fun showState(state: Int) {
         val playing = if (state == PlaybackState.STATE_PLAYING) "true" else "false"
+        Log.i(TAG, "Playing: $playing")
         if (playing != this.playing) {
-            Log.i(TAG, "Playing: $playing")
             this.playing = playing
         }
-
     }
 
     fun stop() {
+        coroutineScope.cancel()
         sessionManager?.removeOnActiveSessionsChangedListener(this)
         sessionManager = null
         mediaController?.unregisterCallback(metadataListener)
