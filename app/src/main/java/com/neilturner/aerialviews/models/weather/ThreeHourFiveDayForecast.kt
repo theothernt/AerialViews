@@ -1,10 +1,10 @@
-package com.neilturner.aerialviews.models.openweather
+package com.neilturner.aerialviews.models.weather
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class HourlyFourDayForecast(
+data class ThreeHourFiveDayForecast(
     @Json(name = "city")
     val city: City,
     @Json(name = "cnt")
@@ -56,12 +56,12 @@ data class HourlyFourDayForecast(
         val main: Main,
         @Json(name = "pop")
         val pop: Double,
-        @Json(name = "rain")
-        val rain: Rain,
+//        @Json(name = "rain")
+//        val rain: Rain?,
         @Json(name = "sys")
         val sys: Sys,
-        @Json(name = "visibility")
-        val visibility: Int,
+//        @Json(name = "visibility")
+//        val visibility: Int?,
         @Json(name = "weather")
         val weather: List<Weather>,
         @Json(name = "wind")
@@ -97,7 +97,7 @@ data class HourlyFourDayForecast(
 
         @JsonClass(generateAdapter = true)
         data class Rain(
-            @Json(name = "1h")
+            @Json(name = "3h")
             val h: Double
         )
 

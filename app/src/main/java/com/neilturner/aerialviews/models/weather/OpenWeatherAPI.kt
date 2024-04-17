@@ -1,11 +1,10 @@
-package com.neilturner.aerialviews.models.openweather
+package com.neilturner.aerialviews.models.weather
 
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OpenWeatherAPI {
-
 
     // 5 day / 3 hour / City name
     @GET("/data/2.5/forecast")

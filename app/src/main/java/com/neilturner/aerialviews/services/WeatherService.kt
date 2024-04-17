@@ -3,9 +3,9 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
-import com.neilturner.aerialviews.models.openweather.ThreeHourFiveDayForecast
-import com.neilturner.aerialviews.models.openweather.WeatherResult
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.weather.ThreeHourFiveDayForecast
+import com.neilturner.aerialviews.models.weather.WeatherResult
 import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.degreesToCardinal
 import com.neilturner.aerialviews.utils.WeatherHelper.nearestTimestamp

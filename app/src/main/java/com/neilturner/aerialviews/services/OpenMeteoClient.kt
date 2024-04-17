@@ -1,12 +1,12 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import com.neilturner.aerialviews.models.weather.OpenWeatherAPI
+import com.neilturner.aerialviews.models.weather.OpenMeteoAPI
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 
-class OpenWeatherClient(context: Context) : WeatherClient(context) {
+class OpenMeteoClient(context: Context) : WeatherClient(context) {
 
     val client by lazy {
         Retrofit.Builder()
@@ -14,11 +14,11 @@ class OpenWeatherClient(context: Context) : WeatherClient(context) {
             .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient())
             .build()
-            .create<OpenWeatherAPI>()
+            .create<OpenMeteoAPI>()
     }
 
     companion object {
-        private const val BASE_URL = "https://api.openweathermap.org/"
-        private const val TAG = "OpenWeatherClient"
+        private const val BASE_URL = "https://api.open-meteo.com/"
+        private const val TAG = "OpenMeteoClient"
     }
 }

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.models.openweather
+package com.neilturner.aerialviews.models.weather
 
 import com.neilturner.aerialviews.models.enums.TemperatureUnit
 import com.neilturner.aerialviews.models.enums.WindSpeedUnit
