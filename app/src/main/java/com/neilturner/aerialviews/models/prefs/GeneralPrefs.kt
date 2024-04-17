@@ -14,28 +14,25 @@ import com.neilturner.aerialviews.models.enums.WindSpeedUnit
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
-    // Overlays
-    var slotBottomLeft1 by enumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
-    var slotBottomLeft2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-    var slotBottomRight1 by enumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
-    var slotBottomRight2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
-
+    // Overlays - Tops
     var slotTopLeft1 by enumValuePref(OverlayType.EMPTY, "slot_top_left1")
     var slotTopLeft2 by enumValuePref(OverlayType.EMPTY, "slot_top_left2")
     var slotTopRight1 by enumValuePref(OverlayType.EMPTY, "slot_top_right1")
     var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
 
+    // Overlays - Bottom
+    var slotBottomLeft1 by enumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
+    var slotBottomLeft2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
+    var slotBottomRight1 by enumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
+    var slotBottomRight2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
+
     // Weather
     var weatherSize by stringPref("18", "weather_size")
     var weatherWeight by stringPref("300", "weather_weight")
-    var weatherCity by stringPref("Dublin, IE", "weather_city")
+    var weatherCityName by stringPref("Dublin, IE", "weather_city_name")
+    var weatherCityLatLng by stringPref("Dublin, IE", "weather_city_latlng")
     var weatherUnits by enumValuePref(TemperatureUnit.METRIC, "weather_units")
     var weatherWindUnits by enumValuePref(WindSpeedUnit.METRIC, "weather_wind_units")
-    var weatherShowIcon by booleanPref(true, "weather_show_icon")
-    var weatherShowCity by booleanPref(false, "weather_show_city")
-    var weatherShowTemp by booleanPref(true, "weather_show_temp")
-    var weatherShowWind by booleanPref(false, "weather_show_wind")
-    var weatherShowHumidity by booleanPref(false, "weather_show_humidity")
 
     // Clock
     var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")

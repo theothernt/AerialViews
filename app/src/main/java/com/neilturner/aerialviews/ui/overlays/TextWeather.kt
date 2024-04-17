@@ -36,7 +36,6 @@ class TextWeather : AppCompatTextView {
             weather
                 ?.distinctUntilChanged()
                 ?.collect { data ->
-                    // ${data.windSpeed} ${data.windDirection}
                     val weather = "${data.description}, ${data.tempNow}" // (feels like ${data.tempFeelsLike})"
                     text = weather
                     Log.i(TAG, "Setting weather to: $weather")

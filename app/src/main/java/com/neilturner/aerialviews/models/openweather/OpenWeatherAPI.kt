@@ -5,6 +5,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OpenWeatherAPI {
+
+
     // 5 day / 3 hour / City name
     @GET("/data/2.5/forecast")
     fun threeHourFiveDayForecast(

@@ -49,7 +49,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
         if (!sessions.isNullOrEmpty()) {
             val controller = sessions.first()
             val isPlaying = controller.playbackState?.state == PlaybackState.STATE_PLAYING ||
-                    controller.playbackState?.state == PlaybackState.STATE_BUFFERING
+                controller.playbackState?.state == PlaybackState.STATE_BUFFERING
             var song = controller.metadata?.getString(MediaMetadata.METADATA_KEY_TITLE)?.take(40)
             var artist = controller.metadata?.getString(MediaMetadata.METADATA_KEY_ARTIST)?.take(40)
 

@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.degreesToCardinal
 import com.neilturner.aerialviews.utils.WeatherHelper.nearestTimestamp
 import com.neilturner.aerialviews.utils.WeatherHelper.supportedLocale
-import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -66,7 +65,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
     private suspend fun fetchData(): ThreeHourFiveDayForecast? {
         val units = prefs.weatherUnits.toString()
-        val city = prefs.weatherCity
+        val city = prefs.weatherCityName
         val appId = BuildConfig.OPEN_WEATHER_KEY
         val count = 4
         val lang = supportedLocale()
@@ -100,11 +99,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val nearestTime = nearestTimestamp(times)
         val current = weatherData?.list?.first { it.dt.toLong() == nearestTime } ?: return WeatherResult()
 
-        val icon = if (prefs.weatherShowIcon) {
-            current.main.toStringOrEmpty()
-        } else {
-            ""
-        }
+        val icon = ""
 
         val description = if (true) {
             current.weather.first().description.replaceFirstChar {
@@ -120,20 +115,14 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             ""
         }
 
-        val city = if (prefs.weatherShowCity) {
-            weatherData?.city?.name.toStringOrEmpty()
-        } else {
-            ""
-        }
-
-        val tempNow = if (prefs.weatherShowTemp) {
+        val tempNow = if (true) {
             val temp = current.main.temp
             temp.roundToInt().toString() + " °C"
         } else {
             ""
         }
 
-        val tempFeelsLike = if (prefs.weatherShowTemp) {
+        val tempFeelsLike = if (true) {
             val temp = current.main.feelsLike
             temp.roundToInt().toString() + " °C"
         } else {
@@ -150,24 +139,15 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
             windDirection = degreesToCardinal(degree)
         }
 
-        val humidity = if (prefs.weatherShowHumidity) {
-            weatherData?.list?.first()?.main?.humidity.toStringOrEmpty()
-        } else {
-            ""
-        }
-
         return WeatherResult(
             icon,
-            city,
             description,
             tempNow,
             tempFeelsLike,
             prefs.weatherUnits,
             windSpeed,
             windDirection,
-            prefs.weatherWindUnits,
-            humidity,
-            current.dtTxt
+            prefs.weatherWindUnits
         )
     }
 

@@ -119,7 +119,7 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
             }
             OverlayType.WEATHER1 -> TextWeather(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.weatherSize.toFloat())
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.weatherWeight)
             }
             OverlayType.MESSAGE1,
