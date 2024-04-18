@@ -130,11 +130,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
     // Android X
-    implementation('androidx.core:core-ktx:1.12.0')
+    implementation('androidx.core:core-ktx:1.13.0')
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation('androidx.preference:preference-ktx:1.2.1')
-    implementation('androidx.activity:activity-ktx:1.8.2')
+    implementation('androidx.activity:activity-ktx:1.9.0')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
     implementation('androidx.appcompat:appcompat:1.6.1')
 
@@ -161,7 +161,7 @@ dependencies {
     implementation('io.coil-kt:coil:2.6.0')
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.13')
+    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.14')
 
     // Unit testing
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.2')
