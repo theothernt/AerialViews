@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
@@ -41,10 +39,6 @@ class TextWeather : AppCompatTextView {
                     Log.i(TAG, "Setting weather to: $weather")
                 }
         }
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
     }
 
     companion object {

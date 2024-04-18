@@ -37,10 +37,6 @@ class TextNowPlaying : AppCompatTextView {
         }
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-    }
-
     companion object {
         private const val TAG = "TextNowPlaying"
     }
