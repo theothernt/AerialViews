@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import androidx.preference.MultiSelectListPreference
+import java.util.Locale
 
 // https://stackoverflow.com/a/36795003/247257
 fun Any?.toStringOrEmpty() = this?.toString() ?: ""
@@ -36,3 +37,14 @@ inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
 // inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
 //    return enumValues<T>().find { it.name == name }
 // }
+
+// https://stackoverflow.com/a/67843987/247257
+fun String.capitalise(): String {
+    return this.replaceFirstChar {
+        if (it.isLowerCase()) {
+            it.titlecase(Locale.getDefault())
+        } else {
+            it.toString()
+        }
+    }
+}

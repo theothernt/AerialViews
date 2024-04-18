@@ -7,8 +7,6 @@ import com.squareup.moshi.JsonClass
 data class HourlyOneDayForecast(
     @Json(name = "elevation")
     val elevation: Double,
-    @Json(name = "generationtime_ms")
-    val generationtimeMs: Double,
     @Json(name = "hourly")
     val hourly: Hourly,
     @Json(name = "hourly_units")
@@ -35,7 +33,9 @@ data class HourlyOneDayForecast(
         @Json(name = "weather_code")
         val weatherCode: List<Int>,
         @Json(name = "wind_speed_10m")
-        val windSpeed10m: List<Double>
+        val windSpeed10m: List<Double>,
+        @Json(name = "wind_direction_10m")
+        val windDirection10m: List<Int>
     )
 
     @JsonClass(generateAdapter = true)
@@ -49,6 +49,8 @@ data class HourlyOneDayForecast(
         @Json(name = "weather_code")
         val weatherCode: String,
         @Json(name = "wind_speed_10m")
-        val windSpeed10m: String
+        val windSpeed10m: String,
+        @Json(name = "wind_direction_10m")
+        val windDirection10m: String
     )
 }
