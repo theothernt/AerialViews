@@ -4,11 +4,12 @@ import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.weather.HourlyOneDayForecast
 import com.neilturner.aerialviews.models.weather.ThreeHourFiveDayForecast
 import com.neilturner.aerialviews.models.weather.WeatherResult
+import com.neilturner.aerialviews.utils.WeatherHelper
 import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.degreesToCardinal
-import com.neilturner.aerialviews.utils.WeatherHelper.nearestTimestamp
 import com.neilturner.aerialviews.utils.WeatherHelper.supportedLocale
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import retrofit2.awaitResponse
 import java.util.Locale
+import java.util.TimeZone
 import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
@@ -49,6 +51,10 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
                 fetchData()?.let {
                     weatherData = it
                 }
+                fetchData2()?.let {
+                    //Log.i(TAG, it.toString())
+                    processOpenMeteoResponse(it)
+                }
                 emitData()
             }
         }
@@ -65,7 +71,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
     private suspend fun fetchData(): ThreeHourFiveDayForecast? {
         val units = prefs.weatherUnits.toString()
-        val city = prefs.weatherCityName
+        // val city = prefs.weatherCityName
+        val lat = "53.29"
+        val lon = "-6.194"
         val appId = BuildConfig.OPEN_WEATHER_KEY
         val count = 4
         val lang = supportedLocale()
@@ -74,7 +82,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         // Check response code for no key, too many requests, etc
 
         val client = OpenWeatherClient(context).client
-        val response = client.threeHourFiveDayForecast(city, appId, units, count, lang).awaitResponse()
+        val response = client.threeHourFiveDayForecast(lat, lon, appId, units, count, lang).awaitResponse()
         return if (response.isSuccessful) {
             if (response.raw().networkResponse?.isSuccessful == true) {
                 // ToastHelper.show(context, "Network response", Toast.LENGTH_SHORT)
@@ -89,6 +97,45 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         }
     }
 
+    private suspend fun fetchData2(): HourlyOneDayForecast? {
+        // val units = prefs.weatherUnits.toString()
+        //val city = prefs.weatherCityLatLng
+        val lat = "53.29"
+        val lon = "-6.194"
+        val timezone = TimeZone.getDefault().id
+        Log.i(TAG, timezone)
+
+        return try {
+            val client = OpenMeteoClient(context).client
+            val response = client.hourlyOneDayForecast(lat, lon, timezone).awaitResponse()
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                val code = response.code()
+                Log.e(TAG, "Response error: $code")
+                null
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+            null
+        }
+    }
+
+    private fun processOpenMeteoResponse(data: HourlyOneDayForecast?): WeatherResult {
+        if (data == null) {
+            return WeatherResult()
+        }
+
+        // Pick the forecast closest to the current time
+        val times = data.hourly.time.map { it.toLong() }
+        val nearestTime = WeatherHelper.nearestTimestamp(times)
+        val index = data.hourly.time.indexOf(nearestTime.toString())
+
+        Log.i(TAG, "Time list: ${times.count()}, picking: $index ($nearestTime)")
+
+        return WeatherResult()
+    }
+
     private fun weather(): WeatherResult {
         if (weatherData == null) {
             return WeatherResult()
@@ -96,7 +143,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
         // Pick the forecast closest to the current time
         val times = weatherData?.list?.map { it.dt.toLong() } ?: return WeatherResult()
-        val nearestTime = nearestTimestamp(times)
+        val nearestTime = WeatherHelper.nearestTimestamp(times)
         val current = weatherData?.list?.first { it.dt.toLong() == nearestTime } ?: return WeatherResult()
 
         val icon = ""

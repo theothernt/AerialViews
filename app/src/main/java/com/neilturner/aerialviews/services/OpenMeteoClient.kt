@@ -18,7 +18,7 @@ class OpenMeteoClient(context: Context) : WeatherClient(context) {
     }
 
     companion object {
-        private const val BASE_URL = "https://api.open-meteo.com/"
+        private const val BASE_URL = "http://api.open-meteo.com/"
         private const val TAG = "OpenMeteoClient"
     }
 }

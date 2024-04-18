@@ -28,10 +28,6 @@ data class HourlyOneDayForecast(
     data class Hourly(
         @Json(name = "apparent_temperature")
         val apparentTemperature: List<Double>,
-        @Json(name = "precipitation")
-        val precipitation: List<Double>,
-        @Json(name = "relative_humidity_2m")
-        val relativeHumidity2m: List<Int>,
         @Json(name = "temperature_2m")
         val temperature2m: List<Double>,
         @Json(name = "time")
@@ -46,10 +42,6 @@ data class HourlyOneDayForecast(
     data class HourlyUnits(
         @Json(name = "apparent_temperature")
         val apparentTemperature: String,
-        @Json(name = "precipitation")
-        val precipitation: String,
-        @Json(name = "relative_humidity_2m")
-        val relativeHumidity2m: String,
         @Json(name = "temperature_2m")
         val temperature2m: String,
         @Json(name = "time")
