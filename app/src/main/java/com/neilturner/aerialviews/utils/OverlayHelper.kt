@@ -48,7 +48,7 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
         for (type in SlotType.entries) {
             val slot = slots.find { it.type == type }
             val view = getOverlay(slot!!.pref)
-            view?.id = ViewCompat.generateViewId()
+            view?.id = View.generateViewId()
             overlays.add(view)
             if (view != null) {
                 root.layout.addView(view)
