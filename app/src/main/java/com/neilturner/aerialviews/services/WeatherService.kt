@@ -46,14 +46,14 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         coroutineScope.launch {
             while (isActive) {
                 Log.i(TAG, "Running...")
-//                fetchOpenWeather()?.let {
-//                    val forecast = processOpenWeatherResponse(it)
-//                    //_weather.emit(forecast)
-//                }
-                fetchOpenMeteo()?.let {
-                    val forecast = processOpenMeteoResponse(it)
-                    _weather.emit(forecast)
+                fetchOpenWeather()?.let {
+                    val forecast = processOpenWeatherResponse(it)
+                    //_weather.emit(forecast)
                 }
+//                fetchOpenMeteo()?.let {
+//                    val forecast = processOpenMeteoResponse(it)
+//                    _weather.emit(forecast)
+//                }
                 delay(30 * 1000)
             }
         }
@@ -161,7 +161,8 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val times = data.list.map { it.dt.toLong() }
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val current = data.list.first { it.dt.toLong() == nearestTime }
-        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $current")
+        var index = data.list.indexOf(current)
+        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $index")
 
         val icon = ""
         val description = current.weather.first().description.capitalise()

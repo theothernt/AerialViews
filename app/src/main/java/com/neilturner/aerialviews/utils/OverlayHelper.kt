@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.helper.widget.Flow
-import androidx.core.view.ViewCompat
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
