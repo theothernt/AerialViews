@@ -134,6 +134,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val times = data.hourly.time.map { it.toLong() }
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val index = data.hourly.time.indexOf(nearestTime.toString())
+        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $index")
 
         val icon = ""
         val description = WeatherHelper.weatherCodeToDescription(data.hourly.weatherCode[index])
@@ -160,6 +161,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val times = data.list.map { it.dt.toLong() }
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val current = data.list.first { it.dt.toLong() == nearestTime }
+        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $current")
 
         val icon = ""
         val description = current.weather.first().description.capitalise()
