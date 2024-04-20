@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.weather.WeatherResult
 import com.neilturner.aerialviews.utils.WeatherHelper
 import com.neilturner.aerialviews.utils.WeatherHelper.convertMeterToKilometer
 import com.neilturner.aerialviews.utils.WeatherHelper.supportedLocale
+import com.neilturner.aerialviews.utils.WeatherHelper.timestampToLocalTime
 import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,12 +49,12 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
                 Log.i(TAG, "Running...")
                 fetchOpenWeather()?.let {
                     val forecast = processOpenWeatherResponse(it)
+                    // _weather.emit(forecast)
+                }
+                fetchOpenMeteo()?.let {
+                    val forecast = processOpenMeteoResponse(it)
                     _weather.emit(forecast)
                 }
-//                fetchOpenMeteo()?.let {
-//                    val forecast = processOpenMeteoResponse(it)
-//                    _weather.emit(forecast)
-//                }
                 delay(30 * 1000)
             }
         }
@@ -134,7 +135,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val times = data.hourly.time.map { it.toLong() }
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val index = data.hourly.time.indexOf(nearestTime.toString())
-        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $index")
+
+        val timeDate = timestampToLocalTime(nearestTime)
+        Log.i(TAG, "Times: ${times.count()}, $index, $timeDate ($nearestTime)")
 
         val icon = ""
         val description = WeatherHelper.weatherCodeToDescription(data.hourly.weatherCode[index])
@@ -162,7 +165,9 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val current = data.list.first { it.dt.toLong() == nearestTime }
         val index = data.list.indexOf(current)
-        Log.i(TAG, "Times: ${times.count()}, $nearestTime, $index")
+
+        val timeDate = timestampToLocalTime(nearestTime)
+        Log.i(TAG, "Times: ${times.count()}, $index, $timeDate ($nearestTime)")
 
         val icon = ""
         val description = current.weather.first().description.capitalise()

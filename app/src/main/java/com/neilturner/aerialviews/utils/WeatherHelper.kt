@@ -1,15 +1,23 @@
 package com.neilturner.aerialviews.utils
 
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
 object WeatherHelper {
 
+    fun timestampToLocalTime(epochTime: Long): String {
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val date = Date(epochTime * 1000)
+        return formatter.format(date)
+    }
+
     // Given a list of timestamps, pick the nearest to the current time
     fun nearestTimestamp(timestamps: List<Long>): Long {
         val currentTime = System.currentTimeMillis().toString().substring(0, 10).toLong()
         val nearestTimestamp = timestamps.minByOrNull { abs(it - currentTime) }
-        return nearestTimestamp ?: timestamps.first()
+        return nearestTimestamp ?: timestamps.last()
     }
 
     // Translate degress to human-readable directions
