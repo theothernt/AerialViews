@@ -48,7 +48,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
                 Log.i(TAG, "Running...")
                 fetchOpenWeather()?.let {
                     val forecast = processOpenWeatherResponse(it)
-                    //_weather.emit(forecast)
+                    _weather.emit(forecast)
                 }
 //                fetchOpenMeteo()?.let {
 //                    val forecast = processOpenMeteoResponse(it)
@@ -161,7 +161,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val times = data.list.map { it.dt.toLong() }
         val nearestTime = WeatherHelper.nearestTimestamp(times)
         val current = data.list.first { it.dt.toLong() == nearestTime }
-        var index = data.list.indexOf(current)
+        val index = data.list.indexOf(current)
         Log.i(TAG, "Times: ${times.count()}, $nearestTime, $index")
 
         val icon = ""
