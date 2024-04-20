@@ -69,7 +69,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         // val city = prefs.weatherCityName
         val lat = "53.29"
         val lon = "-6.194"
-        val appId = BuildConfig.OPEN_WEATHER_KEY
+        val appId =  BuildConfig.OPEN_WEATHER_KEY
         val count = 8
         val lang = supportedLocale()
 
@@ -79,12 +79,12 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         return try {
             val client = OpenWeatherClient(context).client
             val response = client.threeHourFiveDayForecast(lat, lon, appId, units, count, lang).awaitResponse()
+            if (response.raw().networkResponse?.isSuccessful == true) {
+                Log.i(TAG, "Network response")
+            } else if (response.raw().cacheResponse?.isSuccessful == true) {
+                Log.i(TAG, "Cache response")
+            }
             if (response.isSuccessful) {
-                if (response.raw().networkResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Network response")
-                } else if (response.raw().cacheResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Cache response")
-                }
                 response.body()
             } else {
                 val code = response.code()
@@ -110,12 +110,12 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         return try {
             val client = OpenMeteoClient(context).client
             val response = client.hourlyOneDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
+            if (response.raw().networkResponse?.isSuccessful == true) {
+                Log.i(TAG, "Network response")
+            } else if (response.raw().cacheResponse?.isSuccessful == true) {
+                Log.i(TAG, "Cache response")
+            }
             if (response.isSuccessful) {
-                if (response.raw().networkResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Network response")
-                } else if (response.raw().cacheResponse?.isSuccessful == true) {
-                    Log.i(TAG, "Cache response")
-                }
                 response.body()
             } else {
                 val code = response.code()
