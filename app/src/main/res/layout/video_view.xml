@@ -15,6 +15,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- TEST TEST TEST TEST -->
+
+                <LinearLayout
+                    android:id="@+id/Left1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:textColor="#000"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/Right1"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        style="@style/OverlayText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Left 1111 1111 1111 111 11"
+                        android:textColor="#000" />
+
+                    <TextView
+                        style="@style/OverlayText"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Left 2"
+                        android:textColor="#000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Right1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintWidth_percent="0.75"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/Left1"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <TextView
+                        style="@style/OverlayText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000"
+                        android:text="Right 111 1111 1111 111 111 111 111" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            style="@style/OverlayText"
+                            android:textColor="#000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Right 2" />
+
+                        <TextView
+                            style="@style/OverlayText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#000"
+                            android:text="Right Extra" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
