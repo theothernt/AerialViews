@@ -220,6 +220,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
         playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
+        GeneralPrefs.playbackSpeed = playbackSpeed
 
         setupAlmostFinishedRunnable()
         listener?.onVideoPlaybackSpeedChanged()
