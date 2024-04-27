@@ -3,10 +3,11 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.util.TypedValue
 import android.view.View
-import androidx.constraintlayout.helper.widget.Flow
-import androidx.core.view.ViewCompat
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
-import com.neilturner.aerialviews.models.OverlayIds
+import com.neilturner.aerialviews.models.OverlayViews
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -24,28 +25,51 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
-    fun assignOverlaysAndIds(leftFlow: Flow, rightFlow: Flow, leftIds: List<Int>, rightIds: List<Int>, alternateOverlays: Boolean) {
+    fun assignOverlaysAndIds(leftLayout: LinearLayout, rightLayout: LinearLayout, leftViews: List<View?>, rightViews: List<View?>, alternateOverlays: Boolean) {
         if (!alternateOverlays) {
-            leftFlow.referencedIds = leftIds.toIntArray()
-            rightFlow.referencedIds = rightIds.toIntArray()
+            leftLayout.removeAllViews()
+            leftViews.forEach { view ->
+                if (view == null) {
+                    return@forEach
+                }
+                leftLayout.addView(view)
+            }
+            rightLayout.removeAllViews()
+            rightViews.forEach { view ->
+                if (view == null) {
+                    return@forEach
+                }
+                rightLayout.addView(view)
+            }
         } else {
-            leftFlow.referencedIds = rightIds.toIntArray()
-            rightFlow.referencedIds = leftIds.toIntArray()
+            leftLayout.removeAllViews()
+            leftViews.forEach { view ->
+                if (view == null) {
+                    return@forEach
+                }
+                rightLayout.addView(view)
+            }
+            rightLayout.removeAllViews()
+            rightViews.forEach { view ->
+                if (view == null) {
+                    return@forEach
+                }
+                leftLayout.addView(view)
+            }
         }
-        leftFlow.requestLayout()
-        rightFlow.requestLayout()
+        leftLayout.requestLayout()
+        rightLayout.requestLayout()
     }
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
-    fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayIds {
+    fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayViews {
         val slots = SlotHelper.slotPrefs(context)
         for (type in SlotType.entries) {
             val slot = slots.find { it.type == type }
             val view = getOverlay(slot!!.pref)
-            view?.id = ViewCompat.generateViewId()
             overlays.add(view)
             if (view != null) {
-                root.layout.addView(view)
+                //root.layout.addView(view)
             }
         }
 
@@ -66,10 +90,10 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
         }
 
         val bottomRow = buildReferenceIds(
-            root.emptyView1,
+            //root.emptyView1,
             overlays[1],
             overlays[0],
-            root.emptyView2,
+            //root.emptyView2,
             overlays[3],
             overlays[2]
         )
@@ -77,20 +101,22 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
         val topRow = buildReferenceIds(
             overlays[5],
             overlays[4],
-            root.emptyView3,
+            //root.emptyView3,
             overlays[7],
             overlays[6],
-            root.emptyView4
+            //root.emptyView4
         )
 
-        return OverlayIds(bottomRow.first, bottomRow.second, topRow.first, topRow.second)
+        return OverlayViews(bottomRow.first, bottomRow.second, topRow.first, topRow.second)
     }
 
     // Figure out which IDs go where, add an empty view if needed
-    private fun buildReferenceIds(view1: View?, view2: View?, view3: View?, view4: View?, view5: View?, view6: View?): Pair<List<Int>, List<Int>> {
+    private fun buildReferenceIds(view1: View?, view2: View?, /* view3: View?,*/ view4: View?, view5: View?, /*view6: View?*/): Pair<List<View?>, List<View?>> {
         // Reverse order of views due to how the Flow control display order
-        val leftIds = listOfNotNull(view1?.id, view2?.id, view3?.id)
-        val rightIds = listOfNotNull(view4?.id, view5?.id, view6?.id)
+        val leftIds = listOf(view1, view2)
+        val rightIds = listOf(view4, view5)
+        //val leftIds = listOfNotNull(view1?.id, view2?.id, view3?.id)
+        //val rightIds = listOfNotNull(view4?.id, view5?.id, view6?.id)
         return Pair(leftIds, rightIds)
     }
 

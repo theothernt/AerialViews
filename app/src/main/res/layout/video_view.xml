@@ -23,6 +23,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:textColor="#000"
+                    android:gravity="start"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/Right1"
                     app:layout_constraintStart_toStartOf="parent">
@@ -49,6 +50,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
+                    android:gravity="end"
                     app:layout_constraintWidth_percent="0.75"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/Left1"

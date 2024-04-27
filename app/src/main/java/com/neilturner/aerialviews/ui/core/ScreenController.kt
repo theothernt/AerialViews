@@ -53,10 +53,10 @@ class ScreenController(private val context: Context) :
     private var imagePlayer: ImagePlayerView
     val view: View
 
-    private val topLeftIds: List<Int>
-    private val topRightIds: List<Int>
-    private val bottomLeftIds: List<Int>
-    private val bottomRightIds: List<Int>
+    private val topLeftIds: List<View?>
+    private val topRightIds: List<View?>
+    private val bottomLeftIds: List<View?>
+    private val bottomRightIds: List<View?>
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -121,16 +121,16 @@ class ScreenController(private val context: Context) :
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
-            overlayView.flowBottomLeft,
-            overlayView.flowBottomRight,
+            overlayView.layoutBottomLeft,
+            overlayView.layoutBottomRight,
             bottomLeftIds,
             bottomRightIds,
             alternate
         )
 
         overlayHelper.assignOverlaysAndIds(
-            overlayView.flowTopLeft,
-            overlayView.flowTopRight,
+            overlayView.layoutTopLeft,
+            overlayView.layoutTopRight,
             topLeftIds,
             topRightIds,
             alternate

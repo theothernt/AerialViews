@@ -38,64 +38,54 @@
             android:visibility="invisible"
             />
 
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flowTopLeft"
+        <LinearLayout
+            android:id="@+id/layoutTopLeft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="start"
             android:layout_marginStart="@dimen/screen_border_padding"
             android:layout_marginTop="@dimen/screen_border_padding_bottom"
-            android:orientation="vertical"
-            app:flow_horizontalAlign="start"
-            app:flow_verticalAlign="bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
-            app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flowTopRight"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/screen_border_padding_bottom"
-            android:layout_marginEnd="@dimen/screen_border_padding"
-            android:orientation="vertical"
-            app:flow_horizontalAlign="end"
-            app:flow_verticalAlign="bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
-            app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flowBottomLeft"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/screen_border_padding"
-            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
-            android:orientation="vertical"
-            app:flow_horizontalAlign="start"
-            app:flow_verticalAlign="bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
-            app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/layoutTopRight"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.constraintlayout.helper.widget.Flow
-            android:id="@+id/flowBottomRight"
+        <LinearLayout
+            android:id="@+id/layoutTopRight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
+            android:layout_marginTop="@dimen/screen_border_padding_bottom"
+            android:layout_marginEnd="@dimen/screen_border_padding"
+            app:layout_constraintWidth_percent="0.50"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/layoutTopLeft"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutBottomLeft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="start"
+            android:layout_marginStart="@dimen/screen_border_padding"
+            android:layout_marginBottom="@dimen/screen_border_padding_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/layoutBottomRight"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutBottomRight"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="end"
             android:layout_marginEnd="@dimen/screen_border_padding"
             android:layout_marginBottom="@dimen/screen_border_padding_bottom"
-            android:orientation="vertical"
-            app:flow_horizontalAlign="end"
-            app:flow_verticalAlign="bottom"
-            app:flow_verticalGap="@dimen/text_block_padding"
-            app:flow_verticalStyle="packed"
-            app:flow_wrapMode="none"
+            app:layout_constraintWidth_percent="0.50"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/layoutBottomLeft"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
