@@ -5,7 +5,6 @@ import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.models.OverlayViews
 import com.neilturner.aerialviews.models.enums.OverlayType
@@ -39,6 +38,9 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 if (view == null) {
                     return@forEach
                 }
+                // Internal elements (ie. the overlays) need to wrap to align properly. I think.
+                view.layoutParams =
+                    ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 rightLayout.addView(view)
             }
         } else {
@@ -111,7 +113,12 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
     }
 
     // Figure out which IDs go where, add an empty view if needed
-    private fun buildReferenceIds(view1: View?, view2: View?, /* view3: View?,*/ view4: View?, view5: View?, /*view6: View?*/): Pair<List<View?>, List<View?>> {
+    private fun buildReferenceIds(
+        view1: View?,
+        view2: View?, /* view3: View?,*/
+        view4: View?,
+        view5: View? /*view6: View?*/
+    ): Pair<List<View?>, List<View?>> {
         // Reverse order of views due to how the Flow control display order
         val leftIds = listOf(view1, view2)
         val rightIds = listOf(view4, view5)
