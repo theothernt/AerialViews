@@ -93,6 +93,15 @@ class ScreenController(private val context: Context) :
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
 
+        // Gradients
+        if (GeneralPrefs.showTopGradient) {
+            overlayView.gradientTop.visibility = View.VISIBLE
+        }
+
+        if (GeneralPrefs.showBottomGradient) {
+            overlayView.gradientBottom.visibility  = View.VISIBLE
+        }
+
         coroutineScope.launch {
             if (overlayHelper.isOverlayEnabled<TextWeather>()) {
                 weatherService = WeatherService(context, GeneralPrefs)

@@ -235,6 +235,12 @@
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
+    <string name="appearance_gradient_top_title">Show top gradient</string>
+    <string name="appearance_gradient_top_summary">Display a dark gradient at the top of the screen, which makes overlays easier to see</string>
+
+    <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
+    <string name="appearance_gradient_bottom_summary">Display a dark gradient at the bottom of the screen, which makes overlays easier to see</string>
+
     <!-- Main / Settings / Appearance / Rows -->
     <string name="category_top_row_left">Top Left</string>
     <string name="category_top_row_right">Top Right</string>

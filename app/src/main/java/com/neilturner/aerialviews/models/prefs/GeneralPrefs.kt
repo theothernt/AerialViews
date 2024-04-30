@@ -65,6 +65,10 @@ object GeneralPrefs : KotprefModel() {
     // Other
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 
+    // Gradients
+    var showTopGradient by booleanPref(false, "gradient_top_show")
+    var showBottomGradient by booleanPref(false, "gradient_bottom_show")
+
     // Fonts
     var fontTypeface by stringPref("open-sans", "font_typeface")
     var fontWeight by stringPref("300", "font_weight")

@@ -54,6 +54,18 @@
                     app:summary="@string/appearance_alt_text_position_summary"
                     app:title="@string/appearance_alt_text_position_title" />
 
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="gradient_top_show"
+                    app:summary="@string/appearance_gradient_top_summary"
+                    app:title="@string/appearance_gradient_top_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="gradient_bottom_show"
+                    app:summary="@string/appearance_gradient_bottom_summary"
+                    app:title="@string/appearance_gradient_bottom_title" />
+
                 <Preference
                     app:title="@string/appearance_typography_title"
                     app:summary="@string/appearance_typography_summary"
