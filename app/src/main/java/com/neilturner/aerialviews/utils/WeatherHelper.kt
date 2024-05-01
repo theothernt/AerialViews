@@ -14,10 +14,10 @@ object WeatherHelper {
     }
 
     // Given a list of timestamps, pick the nearest to the current time
-    fun nearestTimestamp(timestamps: List<Long>): Long {
+    fun nearestTimestamp(timestamps: List<Long>): Long? {
         val currentTime = System.currentTimeMillis().toString().substring(0, 10).toLong()
         val nearestTimestamp = timestamps.minByOrNull { abs(it - currentTime) }
-        return nearestTimestamp ?: timestamps.last()
+        return nearestTimestamp
     }
 
     // Translate degress to human-readable directions

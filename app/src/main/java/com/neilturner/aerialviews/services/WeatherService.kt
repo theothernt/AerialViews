@@ -5,6 +5,7 @@ import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.weather.HourlyOneDayForecast
+import com.neilturner.aerialviews.models.weather.QuarterHourTwoDayForecast
 import com.neilturner.aerialviews.models.weather.ThreeHourFiveDayForecast
 import com.neilturner.aerialviews.models.weather.WeatherResult
 import com.neilturner.aerialviews.utils.WeatherHelper
@@ -35,22 +36,13 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         get() = _weather.asSharedFlow()
 
     init {
-        // Try fetch then emit
-        // or retry-backoff
-
-        // Grab 12hr of data, allow refresh after 6hrs
-
-        // Emit every 10 mins?
-
-        // Don't send empty weather data class
-
         coroutineScope.launch {
             while (isActive) {
                 Log.i(TAG, "Running...")
-                fetchOpenWeather()?.let {
-                    val forecast = processOpenWeatherResponse(it)
-                    // _weather.emit(forecast)
-                }
+//                fetchOpenWeather()?.let {
+//                    val forecast = processOpenWeatherResponse(it)
+//                    // _weather.emit(forecast)
+//                }
                 fetchOpenMeteo()?.let {
                     val forecast = processOpenMeteoResponse(it)
                     _weather.emit(forecast)
@@ -99,17 +91,18 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         }
     }
 
-    private suspend fun fetchOpenMeteo(): HourlyOneDayForecast? {
+    private suspend fun fetchOpenMeteo(): QuarterHourTwoDayForecast? {
         // val units = prefs.weatherUnits.toString()
         // val city = prefs.weatherCityLatLng
         val lat = "53.29"
         val lon = "-6.194"
         val timezone = TimeZone.getDefault().id
-        val days = 1
+        val days = 2
 
         return try {
             val client = OpenMeteoClient(context).client
-            val response = client.hourlyOneDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
+            //val response = client.hourlyOneDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
+            val response = client.quarterHourTwoDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
             if (response.raw().networkResponse?.isSuccessful == true) {
                 Log.i(TAG, "Network response")
             } else if (response.raw().cacheResponse?.isSuccessful == true) {
@@ -130,21 +123,21 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         }
     }
 
-    private fun processOpenMeteoResponse(data: HourlyOneDayForecast): WeatherResult {
+    private fun processOpenMeteoResponse(data: QuarterHourTwoDayForecast): WeatherResult {
         // Find nearest timestamp to current, get index
-        val times = data.hourly.time.map { it.toLong() }
-        val nearestTime = WeatherHelper.nearestTimestamp(times)
-        val index = data.hourly.time.indexOf(nearestTime.toString())
-
+        val times = data.minutely15.time.map { it.toLong() }
+        val nearestTime = WeatherHelper.nearestTimestamp(times) ?: return WeatherResult()
+        val index = data.minutely15.time.indexOf(nearestTime.toString())
         val timeDate = timestampToLocalTime(nearestTime)
+
         Log.i(TAG, "Times: ${times.count()}, $index, $timeDate ($nearestTime)")
 
         val icon = ""
-        val description = WeatherHelper.weatherCodeToDescription(data.hourly.weatherCode[index])
-        val tempNow = data.hourly.temperature2m[index].roundToInt().toString() + " °C"
-        val tempFeelsLike = data.hourly.apparentTemperature[index].roundToInt().toString() + " °C"
-        val windSpeed = data.hourly.windSpeed10m[index].roundToInt().toString() + " km/h"
-        val windDirection = data.hourly.windDirection10m[index].toString()
+        val description = WeatherHelper.weatherCodeToDescription(data.minutely15.weatherCode[index])
+        val tempNow = data.minutely15.temperature2m[index].roundToInt().toString() + " °C"
+        val tempFeelsLike = data.minutely15.apparentTemperature[index].roundToInt().toString() + " °C"
+        val windSpeed = data.minutely15.windSpeed10m[index].roundToInt().toString() + " km/h"
+        val windDirection = data.minutely15.windDirection10m[index].toString()
 
         Log.i(TAG, "OpenMeteo: $description, $tempNow, $windSpeed")
         return WeatherResult(
@@ -162,7 +155,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
     private fun processOpenWeatherResponse(data: ThreeHourFiveDayForecast): WeatherResult {
         // Find nearest timestamp to current, pick forecast (group of data) with timestamp
         val times = data.list.map { it.dt.toLong() }
-        val nearestTime = WeatherHelper.nearestTimestamp(times)
+        val nearestTime = WeatherHelper.nearestTimestamp(times) ?: return WeatherResult()
         val current = data.list.first { it.dt.toLong() == nearestTime }
         val index = data.list.indexOf(current)
 
