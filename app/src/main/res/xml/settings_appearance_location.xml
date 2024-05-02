@@ -23,7 +23,7 @@
                     app:dialogTitle="@string/appearance_filename_as_location_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_options">
+        <PreferenceCategory app:title="@string/category_typography">
                 <ListPreference
                     app:defaultValue="@string/text_size_default"
                     app:entries="@array/text_size_entries"

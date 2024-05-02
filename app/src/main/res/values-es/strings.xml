@@ -157,7 +157,7 @@
   <string name="local_videos_search_test">Prueba los ajustes de búsqueda local</string>
   <string name="local_videos_search_type_title">Elige como los vídeos se buscan</string>
   <string name="local_videos_shield_notice_summary">Ajustes &gt; Preferencias de Dispositivo &gt; Almacenamiento &gt; Escanear por multimedia automáticamente</string>
-  <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada...</string>
+  <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada…</string>
   <string name="local_videos_test_results">Resultados de la prueba</string>
   <string name="playlist_allow_media_button_passthrough_summary">Pass-through del botón reproducir, pausa, rebobinar, etc a la aplicación en segundo plano (Por ejemplo: Aplicación de música) sin salir del protector de pantalla</string>
   <string name="playlist_allow_media_button_passthrough_title">Permitir pass-through del botón multimedia</string>

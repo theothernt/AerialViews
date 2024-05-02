@@ -82,7 +82,14 @@ class ScreenController(private val context: Context) :
         imagePlayer.setOnPlayerListener(this)
         imageView.root.setBackgroundColor(Color.BLACK)
 
-        loadingText.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.fontWeight)
+        if (GeneralPrefs.showLoadingText) {
+            loadingText.apply {
+                textSize = GeneralPrefs.loadingTextSize.toFloat()
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
+            }
+        } else {
+            loadingText.visibility = View.INVISIBLE
+        }
 
         // Init overlays and set initial positions
         overlayHelper = OverlayHelper(context, GeneralPrefs)

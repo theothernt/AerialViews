@@ -137,7 +137,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
     // Android X
-    implementation('androidx.core:core-ktx:1.13.0')
+    implementation('androidx.core:core-ktx:1.13.1')
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation('androidx.preference:preference-ktx:1.2.1')

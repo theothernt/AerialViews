@@ -157,7 +157,7 @@
   <string name="local_videos_search_test">Tester les paramètres de recherche locale</string>
   <string name="local_videos_search_type_title">Choisir le mode de recherche des vidéos et des images</string>
   <string name="local_videos_shield_notice_summary">Paramètres &gt; Préférences de l\'appareil &gt; Stockage &gt; Recherche automatique de supports</string>
-  <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée...</string>
+  <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée…</string>
   <string name="local_videos_test_results">Résultats des tests</string>
   <string name="playlist_allow_media_button_passthrough_summary">Transmet les pressions sur les boutons de lecture, de pause, de retour en arrière, etc. à l\'application d\'arrière-plan (par exemple, l\'application musicale) sans quitter l\'économiseur d\'écran.</string>
   <string name="playlist_allow_media_button_passthrough_title">Autoriser le passage des boutons de média</string>

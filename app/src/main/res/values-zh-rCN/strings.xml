@@ -157,7 +157,7 @@
   <string name="local_videos_search_test">测试本地搜索设置</string>
   <string name="local_videos_search_type_title">选择查找视频的方式</string>
   <string name="local_videos_shield_notice_summary">设置 &gt; 设备首选项 &gt; 存储 &gt; 自动扫描媒体</string>
-  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项...</string>
+  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项…</string>
   <string name="local_videos_test_results">测试结果</string>
   <string name="playlist_allow_media_button_passthrough_summary">在不退出屏保的情况下，将按下的播放、暂停、倒带等按钮传递给后台程序（如音乐程序</string>
   <string name="playlist_allow_media_button_passthrough_title">允许媒体按钮直通</string>

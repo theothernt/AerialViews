@@ -204,6 +204,8 @@
     <string name="category_appearance">Appearance</string>
     <string name="category_overlays">Overlays</string>
     <string name="category_slots">Slots</string>
+    <string name="category_gradient">Gradient</string>
+    <string name="category_startup">Startup</string>
 
     <string name="appearance_top_row_title">Top Row</string>
     <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
@@ -235,11 +237,11 @@
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
-    <string name="appearance_gradient_top_title">Show top gradient</string>
-    <string name="appearance_gradient_top_summary">Display a dark gradient at the top of the screen, which makes overlays easier to see</string>
+    <string name="appearance_gradient_title">Gradients</string>
+    <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
-    <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
-    <string name="appearance_gradient_bottom_summary">Display a dark gradient at the bottom of the screen, which makes overlays easier to see</string>
+    <string name="appearance_startup_title">Startup</string>
+    <string name="appearance_startup_summary">Change what you see while the app is loading</string>
 
     <!-- Main / Settings / Appearance / Rows -->
     <string name="category_top_row_left">Top Left</string>
@@ -261,6 +263,20 @@
     <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
     <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
 
+    <!-- Main / Settings / Appearance / Startup + Shutdown -->
+    <string name="appearance_loading_show_title">Show loading text</string>
+    <string name="appearance_loading_show_summary">Displays the "Loading…" text while the app is loading</string>
+
+    <string name="appearance_loading_size_title">Size</string>
+    <string name="appearance_loading_weight_title">Wight</string>
+
+    <!-- Main / Settings / Appearance / Gradient -->
+    <string name="appearance_gradient_top_title">Show top gradient</string>
+    <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
+
+    <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
+    <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
+
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>
     <string name="appearance_clock_format_title">Clock format</string>
@@ -268,7 +284,7 @@
     <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
     <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
 
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+    <string name="appearance_clock_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Date -->
     <string name="category_date">Date</string>
@@ -277,7 +293,7 @@
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+    <string name="appearance_date_size_title">Size</string>
 
     <string name="appearance_date_custom_error">Invalid custom date format!</string>
     <string name="appearance_date_custom_example">e.g.</string>
@@ -290,7 +306,7 @@
 
     <string name="appearance_filename_as_location_title">Use filename as location</string>
 
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+    <string name="appearance_location_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Message -->
     <string name="category_message">Message</string>
@@ -301,7 +317,7 @@
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
     <string name="appearance_message_line2_title">Line 2</string>
 
-    <string name="appearance_message_size_title">Adjust the size of the message text</string>
+    <string name="appearance_message_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Typography -->
 
