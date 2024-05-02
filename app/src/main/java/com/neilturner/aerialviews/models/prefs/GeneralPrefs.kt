@@ -52,16 +52,15 @@ object GeneralPrefs : KotprefModel() {
 
     // Startup + Shutdown
     var showLoadingText by booleanPref(false, "startup_show_loading")
-    var startupSize by stringPref("18", "startup_size")
-    var startupWeight by stringPref("300", "startup_weight")
+    var loadingTextSize by stringPref("18", "startup_size")
+    var loadingTextWeight by stringPref("300", "startup_weight")
 
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
     var showBottomGradient by booleanPref(false, "gradient_bottom_show")
 
-    // Fonts
+    // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")
-    var fontWeight by stringPref("300", "font_weight")
 
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
