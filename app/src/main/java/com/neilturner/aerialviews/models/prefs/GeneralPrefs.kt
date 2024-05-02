@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
-import com.chibatching.kotpref.enumpref.enumValuePref
+import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.FilenameAsLocation
@@ -13,33 +13,33 @@ object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     // Overlays
-    var slotBottomLeft1 by enumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
-    var slotBottomLeft2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-    var slotBottomRight1 by enumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
-    var slotBottomRight2 by enumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
+    var slotBottomLeft1 by nullableEnumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
+    var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
+    var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
+    var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
 
-    var slotTopLeft1 by enumValuePref(OverlayType.EMPTY, "slot_top_left1")
-    var slotTopLeft2 by enumValuePref(OverlayType.EMPTY, "slot_top_left2")
-    var slotTopRight1 by enumValuePref(OverlayType.EMPTY, "slot_top_right1")
-    var slotTopRight2 by enumValuePref(OverlayType.EMPTY, "slot_top_right2")
+    var slotTopLeft1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left1")
+    var slotTopLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left2")
+    var slotTopRight1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_right1")
+    var slotTopRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_right2")
 
     // Clock
-    var clockFormat by enumValuePref(ClockType.DEFAULT, "clock_format")
+    var clockFormat by nullableEnumValuePref(ClockType.DEFAULT, "clock_format")
     var clockSize by stringPref("18", "clock_size")
     var clockWeight by stringPref("300", "clock_weight")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     // Date
-    var dateFormat by enumValuePref(DateType.COMPACT, "date_format")
+    var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
     var dateCustom by stringPref("yyyy-MM-dd", "date_custom")
     var dateWeight by stringPref("300", "date_weight")
     var dateSize by stringPref("18", "date_size")
 
     // Location
-    var locationStyle by enumValuePref(LocationType.POI, "location_style")
+    var locationStyle by nullableEnumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
     var locationWeight by stringPref("300", "location_weight")
-    var filenameAsLocation by enumValuePref(FilenameAsLocation.DISABLED, "filename_as_location") // location_use_filename ?
+    var filenameAsLocation by nullableEnumValuePref(FilenameAsLocation.DISABLED, "filename_as_location") // location_use_filename ?
 
     // Message
     var messageLine1 by stringPref("", "message_line1")
@@ -70,7 +70,7 @@ object GeneralPrefs : KotprefModel() {
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
     var slideshowSpeed by stringPref("30", "slideshow_speed")
-    var imageScale by enumValuePref(ImageScale.CENTER_CROP, "image_scale")
+    var imageScale by nullableEnumValuePref(ImageScale.CENTER_CROP, "image_scale")
 
     // D-pad
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
