@@ -204,6 +204,8 @@
     <string name="category_appearance">Appearance</string>
     <string name="category_overlays">Overlays</string>
     <string name="category_slots">Slots</string>
+    <string name="category_gradient">Gradient</string>
+    <string name="category_startup">Startup</string>
 
     <string name="appearance_top_row_title">Top Row</string>
     <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
@@ -235,11 +237,11 @@
     <string name="appearance_alt_text_position_title">Alternate text position</string>
     <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
 
-    <string name="appearance_gradient_top_title">Show top gradient</string>
-    <string name="appearance_gradient_top_summary">Display a dark gradient at the top of the screen, which makes overlays easier to see</string>
+    <string name="appearance_gradient_title">Gradients</string>
+    <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
-    <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
-    <string name="appearance_gradient_bottom_summary">Display a dark gradient at the bottom of the screen, which makes overlays easier to see</string>
+    <string name="appearance_startup_title">Startup</string>
+    <string name="appearance_startup_summary">Change what you see while the app is loading</string>
 
     <!-- Main / Settings / Appearance / Rows -->
     <string name="category_top_row_left">Top Left</string>
@@ -260,6 +262,20 @@
     <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
     <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
     <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+
+    <!-- Main / Settings / Appearance / Startup + Shutdown -->
+    <string name="appearance_loading_show_title">Show loading text</string>
+    <string name="appearance_loading_show_summary">Displays the "Loading…" text while the app is loading</string>
+
+    <string name="appearance_loading_size_title">Size</string>
+    <string name="appearance_loading_weight_title">Wight</string>
+
+    <!-- Main / Settings / Appearance / Gradient -->
+    <string name="appearance_gradient_top_title">Show top gradient</string>
+    <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
+
+    <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
+    <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>

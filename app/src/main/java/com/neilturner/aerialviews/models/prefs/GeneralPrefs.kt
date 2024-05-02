@@ -50,6 +50,11 @@ object GeneralPrefs : KotprefModel() {
     // Other
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 
+    // Startup + Shutdown
+    var showLoadingText by booleanPref(false, "startup_show_loading")
+    var startupSize by stringPref("18", "startup_size")
+    var startupWeight by stringPref("300", "startup_weight")
+
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
     var showBottomGradient by booleanPref(false, "gradient_bottom_show")
