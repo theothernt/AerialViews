@@ -29,9 +29,14 @@ class TextDate : AppCompatTextView {
         refreshDateHandler = null
     }
 
-    fun updateFormat(type: DateType, custom: String) {
-        this.type = type
-        this.custom = custom
+    fun updateFormat(type: DateType?, custom: String) {
+        if (type == null) {
+            this.type = DateType.entries.first()
+            this.custom = custom
+        } else {
+            this.type = type
+            this.custom = custom
+        }
         refreshDate()
     }
 

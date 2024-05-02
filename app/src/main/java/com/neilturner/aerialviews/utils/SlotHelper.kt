@@ -77,14 +77,14 @@ object SlotHelper {
     fun slotPrefs(context: Context): List<SlotPref> {
         val slotPrefs = mutableListOf<SlotPref>()
         val res = context.resources!!
-        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft1, SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft2, SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight1, SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight2, SlotType.SLOT_BOTTOM_RIGHT2, res.getString(R.string.appearance_bottom_right_upper_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft1, SlotType.SLOT_TOP_LEFT1, res.getString(R.string.appearance_top_left_lower_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft2, SlotType.SLOT_TOP_LEFT2, res.getString(R.string.appearance_top_left_upper_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight1, SlotType.SLOT_TOP_RIGHT1, res.getString(R.string.appearance_top_right_lower_slot)))
-        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight2, SlotType.SLOT_TOP_RIGHT2, res.getString(R.string.appearance_top_right_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft1 ?: OverlayType.entries.first(), SlotType.SLOT_BOTTOM_LEFT1, res.getString(R.string.appearance_bottom_left_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomLeft2 ?: OverlayType.entries.first(), SlotType.SLOT_BOTTOM_LEFT2, res.getString(R.string.appearance_bottom_left_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight1 ?: OverlayType.entries.first(), SlotType.SLOT_BOTTOM_RIGHT1, res.getString(R.string.appearance_bottom_right_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotBottomRight2 ?: OverlayType.entries.first(), SlotType.SLOT_BOTTOM_RIGHT2, res.getString(R.string.appearance_bottom_right_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft1 ?: OverlayType.entries.first(), SlotType.SLOT_TOP_LEFT1, res.getString(R.string.appearance_top_left_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopLeft2 ?: OverlayType.entries.first(), SlotType.SLOT_TOP_LEFT2, res.getString(R.string.appearance_top_left_upper_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight1 ?: OverlayType.entries.first(), SlotType.SLOT_TOP_RIGHT1, res.getString(R.string.appearance_top_right_lower_slot)))
+        slotPrefs.add(SlotPref(GeneralPrefs.slotTopRight2 ?: OverlayType.entries.first(), SlotType.SLOT_TOP_RIGHT2, res.getString(R.string.appearance_top_right_upper_slot)))
         return slotPrefs
     }
 }

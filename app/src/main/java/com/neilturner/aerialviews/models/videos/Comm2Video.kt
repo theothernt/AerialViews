@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.utils.filename
 
 class Comm2Video : AbstractVideo() {
 
-    override fun uriAtQuality(quality: VideoQuality): Uri {
+    override fun uriAtQuality(quality: VideoQuality?): Uri {
         val url = when (quality) {
             VideoQuality.VIDEO_1080_SDR -> video1080hdr // Map HDR to SDR as 10bit colour space alone is not HDR
             VideoQuality.VIDEO_4K_SDR -> video4ksdr
