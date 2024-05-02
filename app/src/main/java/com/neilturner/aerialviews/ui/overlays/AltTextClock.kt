@@ -18,16 +18,17 @@ class AltTextClock : TextClock {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
     }
 
-    fun updateFormat(format: ClockType) {
-        if (format == ClockType.HOUR_12) {
-            this.format12Hour = "h:mm a"
-            this.format24Hour = "h:mm a"
-            this.text.toString().lowercase()
-        }
-
-        if (format == ClockType.HOUR_24) {
-            this.format12Hour = "HH:mm"
-            this.format24Hour = "HH:mm"
+    fun updateFormat(format: ClockType?) {
+        when (format) {
+            ClockType.HOUR_24 -> {
+                this.format12Hour = "HH:mm"
+                this.format24Hour = "HH:mm"
+            }
+            else -> {
+                this.format12Hour = "h:mm a"
+                this.format24Hour = "h:mm a"
+                this.text.toString().lowercase() // maybe add pref? 1:30pm vs 1:30PM
+            }
         }
     }
 

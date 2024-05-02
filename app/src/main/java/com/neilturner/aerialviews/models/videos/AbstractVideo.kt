@@ -30,7 +30,7 @@ abstract class AbstractVideo {
     val location: String
         get() = accessibilityLabel.toStringOrEmpty()
 
-    abstract fun uriAtQuality(quality: VideoQuality): Uri
+    abstract fun uriAtQuality(quality: VideoQuality?): Uri
 
     abstract fun allUrls(): List<String>
 }

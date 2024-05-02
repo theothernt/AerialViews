@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.SlotHelper
@@ -45,10 +46,10 @@ class AppearanceRowTopFragment :
 
         val overlayData = SlotHelper.entriesAndValues(requireContext())
 
-        SlotHelper.updateSummary(topLeft1, overlayData.first, GeneralPrefs.slotTopLeft1)
-        SlotHelper.updateSummary(topLeft2, overlayData.first, GeneralPrefs.slotTopLeft2)
-        SlotHelper.updateSummary(topRight1, overlayData.first, GeneralPrefs.slotTopRight1)
-        SlotHelper.updateSummary(topRight2, overlayData.first, GeneralPrefs.slotTopRight2)
+        SlotHelper.updateSummary(topLeft1, overlayData.first, GeneralPrefs.slotTopLeft1 ?: OverlayType.entries.first())
+        SlotHelper.updateSummary(topLeft2, overlayData.first, GeneralPrefs.slotTopLeft2 ?: OverlayType.entries.first())
+        SlotHelper.updateSummary(topRight1, overlayData.first, GeneralPrefs.slotTopRight1 ?: OverlayType.entries.first())
+        SlotHelper.updateSummary(topRight2, overlayData.first, GeneralPrefs.slotTopRight2 ?: OverlayType.entries.first())
 
         val slotPrefs = SlotHelper.slotPrefs(requireContext())
 
