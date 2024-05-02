@@ -3,8 +3,9 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.enums.TemperatureUnit
+import com.neilturner.aerialviews.models.enums.WindSpeedUnit
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.weather.HourlyOneDayForecast
 import com.neilturner.aerialviews.models.weather.QuarterHourTwoDayForecast
 import com.neilturner.aerialviews.models.weather.ThreeHourFiveDayForecast
 import com.neilturner.aerialviews.models.weather.WeatherResult
@@ -61,7 +62,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         // val city = prefs.weatherCityName
         val lat = "53.29"
         val lon = "-6.194"
-        val appId =  BuildConfig.OPEN_WEATHER_KEY
+        val appId = BuildConfig.OPEN_WEATHER_KEY
         val count = 8
         val lang = supportedLocale()
 
@@ -101,7 +102,7 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
 
         return try {
             val client = OpenMeteoClient(context).client
-            //val response = client.hourlyOneDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
+            // val response = client.hourlyOneDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
             val response = client.quarterHourTwoDayForecast(lat, lon, timezone, forecastDays = days).awaitResponse()
             if (response.raw().networkResponse?.isSuccessful == true) {
                 Log.i(TAG, "Network response")
@@ -139,16 +140,19 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val windSpeed = data.minutely15.windSpeed10m[index].roundToInt().toString() + " km/h"
         val windDirection = data.minutely15.windDirection10m[index].toString()
 
+        val weatherUnits = prefs.weatherUnits ?: TemperatureUnit.entries.first()
+        val weatherWindUnits = prefs.weatherWindUnits ?: WindSpeedUnit.entries.first()
+
         Log.i(TAG, "OpenMeteo: $description, $tempNow, $windSpeed")
         return WeatherResult(
             icon,
             description,
             tempNow,
             tempFeelsLike,
-            prefs.weatherUnits,
+            weatherUnits,
             windSpeed,
             windDirection,
-            prefs.weatherWindUnits
+            weatherWindUnits
         )
     }
 
@@ -169,16 +173,19 @@ class WeatherService(private val context: Context, private val prefs: GeneralPre
         val windSpeed = convertMeterToKilometer(current.wind.speed) + " km/h"
         val windDirection = current.wind.deg.toString() // degreesToCardinal
 
+        val weatherUnits = prefs.weatherUnits ?: TemperatureUnit.entries.first()
+        val weatherWindUnits = prefs.weatherWindUnits ?: WindSpeedUnit.entries.first()
+
         Log.i(TAG, "OpenWeather: $description, $tempNow, $windSpeed")
         return WeatherResult(
             icon,
             description,
             tempNow,
             tempFeelsLike,
-            prefs.weatherUnits,
+            weatherUnits,
             windSpeed,
             windDirection,
-            prefs.weatherWindUnits
+            weatherWindUnits
         )
     }
 

@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -99,7 +98,7 @@ class ScreenController(private val context: Context) :
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            overlayView.gradientBottom.visibility  = View.VISIBLE
+            overlayView.gradientBottom.visibility = View.VISIBLE
         }
 
         coroutineScope.launch {
