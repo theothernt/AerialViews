@@ -284,7 +284,7 @@
     <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
     <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
 
-    <string name="appearance_clock_size_title">Adjust the size of the clock text</string>
+    <string name="appearance_clock_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Date -->
     <string name="category_date">Date</string>
@@ -293,7 +293,7 @@
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-    <string name="appearance_date_size_title">Adjust the size of the date text</string>
+    <string name="appearance_date_size_title">Size</string>
 
     <string name="appearance_date_custom_error">Invalid custom date format!</string>
     <string name="appearance_date_custom_example">e.g.</string>
@@ -306,7 +306,7 @@
 
     <string name="appearance_filename_as_location_title">Use filename as location</string>
 
-    <string name="appearance_location_size_title">Adjust the size of the location text</string>
+    <string name="appearance_location_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Message -->
     <string name="category_message">Message</string>
@@ -317,7 +317,7 @@
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
     <string name="appearance_message_line2_title">Line 2</string>
 
-    <string name="appearance_message_size_title">Adjust the size of the message text</string>
+    <string name="appearance_message_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Typography -->
 
