@@ -24,10 +24,12 @@ class AltTextClock : TextClock {
                 this.format12Hour = "HH:mm"
                 this.format24Hour = "HH:mm"
             }
-            else -> {
+            ClockType.HOUR_12 -> {
                 this.format12Hour = "h:mm a"
                 this.format24Hour = "h:mm a"
-                this.text.toString().lowercase() // maybe add pref? 1:30pm vs 1:30PM
+            }
+            else -> {
+                //this.text.toString().lowercase() // maybe add pref? 1:30pm vs 1:30PM
             }
         }
     }
