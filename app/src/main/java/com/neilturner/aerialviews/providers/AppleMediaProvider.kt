@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -47,7 +48,8 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
         wrapper.assets?.forEach {
             videos.add(
                 AerialMedia(
-                    it.uriAtQuality(quality)
+                    it.uriAtQuality(quality),
+                    type = MediaItemType.VIDEO
                 )
             )
         }
