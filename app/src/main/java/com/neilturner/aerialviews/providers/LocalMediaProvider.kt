@@ -7,6 +7,7 @@ import android.net.Uri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.enums.MediaType
+import com.neilturner.aerialviews.models.enums.ProviderType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -18,6 +19,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
+
+    override val type = ProviderType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled

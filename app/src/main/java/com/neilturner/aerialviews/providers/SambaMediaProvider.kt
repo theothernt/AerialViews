@@ -13,6 +13,7 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.enums.MediaType
+import com.neilturner.aerialviews.models.enums.ProviderType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -23,6 +24,8 @@ import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
 class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
+
+    override val type = ProviderType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled

@@ -1,10 +1,13 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
+import com.neilturner.aerialviews.models.enums.ProviderType
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 
 abstract class MediaProvider(val context: Context) {
+
+    abstract val type: ProviderType
 
     abstract val enabled: Boolean
 
