@@ -43,7 +43,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
     }
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
-        val res = context.resources!!
+        val res = context.resources
         val selected = mutableListOf<String>()
         val media = mutableListOf<AerialMedia>()
         val excluded: Int
@@ -63,7 +63,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             return Pair(media, res.getString(R.string.local_videos_legacy_no_files_found))
         }
 
-        // Filter out non-video, non-image files
+        // Only pick videos
         if (prefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
@@ -71,8 +71,9 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
                 }
             )
         }
-        val videos: Int = selected.size
+        val videos = selected.size
 
+        // Only pick images
         if (prefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
@@ -83,10 +84,13 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         images = selected.size - videos
         excluded = files.size - selected.size
 
+        // Create media list, adding media type
         for (file in selected) {
             val uri = Uri.parse(file)
             val item = AerialMedia(uri)
-            if (FileHelper.isSupportedImageType(file)) {
+            if (FileHelper.isSupportedVideoType(file)) {
+                item.type = MediaItemType.VIDEO
+            } else if (FileHelper.isSupportedImageType(file)) {
                 item.type = MediaItemType.IMAGE
             }
             media.add(item)

@@ -83,6 +83,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return Pair(emptyList(), e.message.toString())
         }
 
+
+        // Create samba URL, add to media list, adding media type
         sambaMedia.first.forEach { filename ->
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
@@ -96,9 +98,13 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             }
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
+
             val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/$shareName/$filename")
             val item = AerialMedia(uri)
-            if (FileHelper.isSupportedImageType(filename)) {
+
+            if (FileHelper.isSupportedVideoType(filename)) {
+                item.type = MediaItemType.VIDEO
+            } else if (FileHelper.isSupportedImageType(filename)) {
                 item.type = MediaItemType.IMAGE
             }
             media.add(item)
@@ -116,7 +122,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         shareName: String,
         path: String
     ): Pair<List<String>, String> = withContext(Dispatchers.IO) {
-        val res = context.resources!!
+        val res = context.resources
         val selected = mutableListOf<String>()
         val excluded: Int
         val images: Int
@@ -167,7 +173,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         connection.close()
         smbClient.close()
 
-        // Add videos
+        // Only pick videos
         if (prefs.mediaType != MediaType.IMAGES) {
             selected.addAll(
                 files.filter { item ->
@@ -175,9 +181,9 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
                 }
             )
         }
-        val videos: Int = selected.size
+        val videos = selected.size
 
-        // Add images
+        // Only pick images
         if (prefs.mediaType != MediaType.VIDEOS) {
             selected.addAll(
                 files.filter { item ->
