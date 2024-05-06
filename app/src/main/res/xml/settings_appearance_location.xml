@@ -2,25 +2,48 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_apple_and_community_videos">
+        <PreferenceCategory app:title="@string/category_videos">
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/appearance_location_videos_poi_summary"/>
+
                 <ListPreference
                     app:defaultValue="@string/location_style_default"
                     app:entries="@array/location_type_entries"
                     app:entryValues="@array/location_style_values"
                     app:key="location_style"
-                    app:title="@string/appearance_show_location_title"
-                    app:dialogTitle="@string/appearance_show_location_title"
+                    app:title="@string/appearance_location_videos_poi_title"
+                    app:dialogTitle="@string/appearance_location_videos_poi_title"
                     app:useSimpleSummaryProvider="true" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_all_other_media">
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/appearance_location_videos_filename_summary"/>
+
                 <ListPreference
                     app:defaultValue="@string/filename_as_location_default"
                     app:entries="@array/filename_as_location_entries"
                     app:entryValues="@array/filename_as_location_values"
                     app:key="filename_as_location"
-                    app:title="@string/appearance_filename_as_location_title"
-                    app:dialogTitle="@string/appearance_filename_as_location_title" />
+                    app:title="@string/appearance_location_videos_filename_title"
+                    app:dialogTitle="@string/appearance_location_videos_filename_title" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_photos">
+
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/appearance_location_photos_filename_summary"/>
+
+                <ListPreference
+                    app:defaultValue="@string/filename_as_location_default"
+                    app:entries="@array/filename_as_location_entries"
+                    app:entryValues="@array/filename_as_location_values"
+                    app:key="filename_as_location"
+                    app:title="@string/appearance_location_photos_filename_title"
+                    app:dialogTitle="@string/appearance_location_photos_filename_title" />
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">
