@@ -86,7 +86,6 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return Pair(emptyList(), e.message.toString())
         }
 
-
         // Create samba URL, add to media list, adding media type
         sambaMedia.first.forEach { filename ->
             var usernamePassword = ""
