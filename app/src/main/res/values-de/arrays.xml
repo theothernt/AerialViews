@@ -27,13 +27,17 @@
   </string-array>
   <string-array name="filename_as_location_entries">
     <item>Deaktiviert</item>
-    <item>Formatierung benutzen</item>
-    <item>Kompletten Dateinamen benutzen</item>
+    <item>Use formatted filename</item>
+    <item>Use filename as-is</item>
+    <item>Folder &amp; filename</item>
+    <item>Folder name only</item>
   </string-array>
   <string-array name="filename_as_location_summary_entries">
     <item>Deaktiviert</item>
     <item>Nutze Formatierung z.B. \'japan-mount_fuji.mp4\' wird \'Japan - Mount Fuji\'</item>
     <item>Nutze kompletten Dateinamen z.B. \'Flug in Richtung Mount Pilatus.mp4\' bleibt \'Flug in Richtung Mount Pilatus\'</item>
+    <item>Use folder and filename as-is eg. \'Pictures/Grand Canyon/Sunet.jpg\' becomes \'Grand Canyon / Sunet\'</item>
+    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
   </string-array>
   <string-array name="image_scale_entries">
     <item>Füllen (Standard)</item>

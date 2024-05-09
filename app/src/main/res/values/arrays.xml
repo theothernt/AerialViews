@@ -78,7 +78,7 @@
     <!-- Use filename as location -->
     <string-array name="filename_as_location_entries">
         <item>Disabled</item>
-        <item>Use formatting</item>
+        <item>Use formatted filename</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>

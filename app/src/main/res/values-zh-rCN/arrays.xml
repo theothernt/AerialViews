@@ -27,13 +27,17 @@
   </string-array>
   <string-array name="filename_as_location_entries">
     <item>禁用</item>
-    <item>格式化命名</item>
-    <item>原始文件名</item>
+    <item>Use formatted filename</item>
+    <item>Use filename as-is</item>
+    <item>Folder &amp; filename</item>
+    <item>Folder name only</item>
   </string-array>
   <string-array name="filename_as_location_summary_entries">
     <item>禁用</item>
     <item>使用格式化命名，例如“japan-mount_fuji.mp4”变为“Japan - Mount Fuji”</item>
     <item>使用原始文件名，例如“Flying toward Mount Pilatus.mp4”变为“Flying toward Mount Pilatus”</item>
+    <item>Use folder and filename as-is eg. \'Pictures/Grand Canyon/Sunet.jpg\' becomes \'Grand Canyon / Sunet\'</item>
+    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
   </string-array>
   <string-array name="image_scale_entries">
     <item>Fill (Default)</item>
