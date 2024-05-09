@@ -80,17 +80,23 @@
         <item>Disabled</item>
         <item>Use formatting</item>
         <item>Use filename as-is</item>
+        <item>Folder &amp; filename</item>
+        <item>Folder name only</item>
     </string-array>
     <string-array name="filename_as_location_values" translatable="false">
         <item>DISABLED</item>
         <item>FORMATTED</item>
-        <item>SIMPLE</item>
+        <item>FILENAME</item>
+        <item>LAST_FOLDER_FILENAME</item>
+        <item>LAST_FOLDERNAME</item>
     </string-array>
     <string name="filename_as_location_default" translatable="false">DISABLED</string>
     <string-array name="filename_as_location_summary_entries">
         <item>Disabled</item>
-        <item>Use formatting eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
+        <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
         <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
+        <item>Use folder and filename as-is eg. \'Pictures/Grand Canyon/Sunet.jpg\' becomes \'Grand Canyon / Sunet\'</item>
+        <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
     </string-array>
 
     <!-- Slots -->

@@ -4,7 +4,7 @@ import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.models.enums.FilenameAsLocation
+import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
 import com.neilturner.aerialviews.models.enums.ImageScale
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
@@ -39,7 +39,10 @@ object GeneralPrefs : KotprefModel() {
     var locationStyle by nullableEnumValuePref(LocationType.POI, "location_style")
     var locationSize by stringPref("18", "location_size")
     var locationWeight by stringPref("300", "location_weight")
-    var filenameAsLocation by nullableEnumValuePref(FilenameAsLocation.DISABLED, "filename_as_location") // location_use_filename ?
+    var filenameAsDescriptionType by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "filename_as_location") // location_use_filename ?
+
+    // location_videos_manifest, location_videos_filename
+    // location_photos_unsplash, location_photos_filename, location_photos_exif
 
     // Message
     var messageLine1 by stringPref("", "message_line1")

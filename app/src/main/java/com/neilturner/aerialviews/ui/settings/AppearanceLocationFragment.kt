@@ -32,7 +32,8 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
         val res = context?.resources!!
         val pref = findPreference<Preference>("filename_as_location")
         val summaryList = res.getStringArray(R.array.filename_as_location_summary_entries)
-        val summary = summaryList[index]
+        val newIndex = if (index < 0 || index >= summaryList.size) 0 else index
+        val summary = summaryList[newIndex]
         pref?.summary = summary
     }
 

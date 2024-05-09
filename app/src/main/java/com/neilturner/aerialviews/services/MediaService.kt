@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.FilenameAsLocation
+import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
 import com.neilturner.aerialviews.models.enums.MediaItemType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -77,14 +77,14 @@ class MediaService(val context: Context) {
 
     private fun addFilenameAsLocation(media: List<AerialMedia>) {
         // Add filename as video location
-        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
+        if (GeneralPrefs.filenameAsDescriptionType == FilenameAsDescriptionType.FORMATTED) {
             media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToTitleCase(video.uri)
                 }
             }
         }
-        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
+        if (GeneralPrefs.filenameAsDescriptionType == FilenameAsDescriptionType.FILENAME) {
             media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToString(video.uri)
