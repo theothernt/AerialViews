@@ -75,7 +75,7 @@ The following devices have no user-interface to change the screensaver to a 3rd 
 
 * __Chromecast with Google TV__
 * __Recent MECOOL devices__
-* __onn. Google TV 4K Streaming Box 2023 (not 2021) model__
+* __onn. Google TV devices (excluding the 2021 model)__
 * __Fire TV__
 
 But it can be done manually. Here is an overview of the steps...
