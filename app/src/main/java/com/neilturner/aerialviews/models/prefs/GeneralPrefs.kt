@@ -36,13 +36,14 @@ object GeneralPrefs : KotprefModel() {
     var dateSize by stringPref("18", "date_size")
 
     // Location
-    var locationStyle by nullableEnumValuePref(LocationType.POI, "location_style")
-    var locationSize by stringPref("18", "location_size")
-    var locationWeight by stringPref("300", "location_weight")
-    var filenameAsDescriptionType by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "filename_as_location") // location_use_filename ?
+    var descriptionVideoManifestStyle by nullableEnumValuePref(LocationType.POI, "description_video_manifest_style") // Title or POI
+    var descriptionVideoFilenameStyle by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "description_video_filename_style") // Filename - Videos
+    var descriptionPhotoFilenameStyle by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "description_photo_filename_style") // Filename - Photos
+    var descriptionSize by stringPref("18", "description_size")
+    var descriptionWeight by stringPref("300", "description_weight")
 
-    // location_videos_manifest, location_videos_filename
-    // location_photos_unsplash, location_photos_filename, location_photos_exif
+    // description_videos_manifest, description_videos_filename
+    // description_photos_unsplash, description_photos_filename, description_photos_exif
 
     // Message
     var messageLine1 by stringPref("", "message_line1")

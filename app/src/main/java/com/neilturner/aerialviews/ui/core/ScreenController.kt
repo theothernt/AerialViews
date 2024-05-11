@@ -122,7 +122,7 @@ class ScreenController(private val context: Context) :
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
-            val locationType = GeneralPrefs.locationStyle
+            val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
                 it.updateLocationData(media.location, media.poi, locationType, videoPlayer)
             }

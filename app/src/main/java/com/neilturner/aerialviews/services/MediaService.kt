@@ -77,14 +77,14 @@ class MediaService(val context: Context) {
 
     private fun addFilenameAsLocation(media: List<AerialMedia>) {
         // Add filename as video location
-        if (GeneralPrefs.filenameAsDescriptionType == FilenameAsDescriptionType.FORMATTED) {
+        if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FORMATTED) {
             media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToTitleCase(video.uri)
                 }
             }
         }
-        if (GeneralPrefs.filenameAsDescriptionType == FilenameAsDescriptionType.FILENAME) {
+        if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FILENAME) {
             media.forEach { video ->
                 if (video.location.isBlank()) {
                     video.location = FileHelper.filenameToString(video.uri)

@@ -11,7 +11,7 @@
                     app:defaultValue="@string/location_style_default"
                     app:entries="@array/location_type_entries"
                     app:entryValues="@array/location_style_values"
-                    app:key="location_style"
+                    app:key="description_video_manifest_style"
                     app:title="@string/appearance_location_videos_poi_title"
                     app:dialogTitle="@string/appearance_location_videos_poi_title"
                     app:useSimpleSummaryProvider="true" />
@@ -24,7 +24,7 @@
                     app:defaultValue="@string/filename_as_location_default"
                     app:entries="@array/filename_as_location_entries"
                     app:entryValues="@array/filename_as_location_values"
-                    app:key="filename_as_location"
+                    app:key="description_video_filename_style"
                     app:title="@string/appearance_location_videos_filename_title"
                     app:dialogTitle="@string/appearance_location_videos_filename_title" />
 
@@ -40,7 +40,7 @@
                     app:defaultValue="@string/filename_as_location_default"
                     app:entries="@array/filename_as_location_entries"
                     app:entryValues="@array/filename_as_location_values"
-                    app:key="filename_as_location"
+                    app:key="description_photo_filename_style"
                     app:title="@string/appearance_location_photos_filename_title"
                     app:dialogTitle="@string/appearance_location_photos_filename_title" />
 

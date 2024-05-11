@@ -100,8 +100,8 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
             }
             OverlayType.LOCATION -> TextLocation(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.locationSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.locationWeight)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
             }
             OverlayType.DATE -> TextDate(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
