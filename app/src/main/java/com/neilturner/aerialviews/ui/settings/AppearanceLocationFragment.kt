@@ -15,26 +15,9 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
     }
 
     private fun updateAllSummaries() {
-        val manifestPref = findPreference<ListPreference>(VIDEO_MANIFEST_STYLE)
-        manifestPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            manifestPref?.findIndexOfValue(newValue as String)?.let { updateSummary(VIDEO_MANIFEST_STYLE, R.array.description_video_manifest_entries, it) }
-            true
-        }
-        manifestPref?.findIndexOfValue(manifestPref.value)?.let { updateSummary(VIDEO_MANIFEST_STYLE, R.array.description_video_manifest_entries, it) }
-
-        val videoPref = findPreference<ListPreference>(VIDEO_FILENAME_STYLE)
-        videoPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            videoPref?.findIndexOfValue(newValue as String)?.let { updateSummary(VIDEO_FILENAME_STYLE, R.array.description_video_filename_entries, it) }
-            true
-        }
-        videoPref?.findIndexOfValue(videoPref.value)?.let { updateSummary(VIDEO_FILENAME_STYLE, R.array.description_video_filename_entries, it) }
-
-        val photoPref = findPreference<ListPreference>(PHOTO_FILENAME_STYLE)
-        photoPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            photoPref?.findIndexOfValue(newValue as String)?.let { updateSummary(PHOTO_FILENAME_STYLE, R.array.description_photo_filename_entries, it) }
-            true
-        }
-        photoPref?.findIndexOfValue(photoPref.value)?.let { updateSummary(PHOTO_FILENAME_STYLE, R.array.description_photo_filename_entries, it) }
+        setupSummaryUpdater("description_video_manifest_style", R.array.description_video_manifest_entries)
+        setupSummaryUpdater("description_video_filename_style", R.array.description_video_filename_entries)
+        setupSummaryUpdater("description_photo_filename_style", R.array.description_photo_filename_entries)
     }
 
     override fun onResume() {
@@ -42,19 +25,24 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
         LoggingHelper.logScreenView("Location", TAG)
     }
 
+    private fun setupSummaryUpdater(control: String, entries: Int) {
+        val pref = findPreference<ListPreference>(control)
+        pref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
+            true
+        }
+        pref?.findIndexOfValue(pref.value)?.let { updateSummary(control, entries, it) }
+    }
+
     private fun updateSummary(control: String, entries: Int, index: Int) {
-        val res = context?.resources!!
+        val res = requireContext().resources
         val pref = findPreference<Preference>(control)
-        val summaryList = res.getStringArray(entries)
-        val newIndex = if (index < 0 || index >= summaryList.size) 0 else index
-        val summary = summaryList[newIndex]
+        val summaries = res?.getStringArray(entries)
+        val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
     }
 
     companion object {
-        private const val VIDEO_MANIFEST_STYLE = "description_video_manifest_style"
-        private const val VIDEO_FILENAME_STYLE = "description_video_filename_style"
-        private const val PHOTO_FILENAME_STYLE = "description_photo_filename_style"
         private const val TAG = "LocationFragment"
     }
 }

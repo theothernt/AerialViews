@@ -299,12 +299,15 @@
     <string name="appearance_date_custom_example">e.g.</string>
 
     <!-- Main / Settings / Appearance / Location -->
+
+    <!-- Pexels? -->
+
     <string name="category_apple_and_community_videos">Apple and Community videos only</string>
     <string name="category_all_other_media">All other videos and images</string>
     <string name="category_photos">Photos</string>
 
     <string name="appearance_location_videos_poi_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
-    <string name="appearance_location_videos_poi_title">Show location or points of interest</string>
+    <string name="appearance_location_videos_poi_title">Show description or points of interest</string>
 
     <string name="appearance_location_videos_filename_summary">Your videos from local storage or a network share</string>
     <string name="appearance_location_videos_filename_title">Use filename/folder for description</string>

@@ -78,7 +78,7 @@
     <string name="description_video_default" translatable="false">POI</string>
     <string-array name="description_video_manifest_entries">
         <item>Disabled</item>
-        <item>A short video description or location</item>
+        <item>A short description or location</item>
         <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
     </string-array>
 
