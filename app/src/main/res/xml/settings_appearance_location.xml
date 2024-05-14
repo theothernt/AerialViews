@@ -8,22 +8,21 @@
                     app:summary="@string/appearance_location_videos_poi_summary"/>
 
                 <ListPreference
-                    app:defaultValue="@string/location_style_default"
-                    app:entries="@array/location_type_entries"
-                    app:entryValues="@array/location_style_values"
+                    app:defaultValue="@string/description_video_default"
+                    app:entries="@array/description_video_entries"
+                    app:entryValues="@array/description_video_values"
                     app:key="description_video_manifest_style"
                     app:title="@string/appearance_location_videos_poi_title"
-                    app:dialogTitle="@string/appearance_location_videos_poi_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:dialogTitle="@string/appearance_location_videos_poi_title" />
 
                 <Preference
                     app:selectable="false"
                     app:summary="@string/appearance_location_videos_filename_summary"/>
 
                 <ListPreference
-                    app:defaultValue="@string/filename_as_location_default"
-                    app:entries="@array/filename_as_location_entries"
-                    app:entryValues="@array/filename_as_location_values"
+                    app:defaultValue="@string/description_filename_default"
+                    app:entries="@array/description_filename_entries"
+                    app:entryValues="@array/description_filename_values"
                     app:key="description_video_filename_style"
                     app:title="@string/appearance_location_videos_filename_title"
                     app:dialogTitle="@string/appearance_location_videos_filename_title" />
@@ -37,9 +36,9 @@
                     app:summary="@string/appearance_location_photos_filename_summary"/>
 
                 <ListPreference
-                    app:defaultValue="@string/filename_as_location_default"
-                    app:entries="@array/filename_as_location_entries"
-                    app:entryValues="@array/filename_as_location_values"
+                    app:defaultValue="@string/description_filename_default"
+                    app:entries="@array/description_filename_entries"
+                    app:entryValues="@array/description_filename_values"
                     app:key="description_photo_filename_style"
                     app:title="@string/appearance_location_photos_filename_title"
                     app:dialogTitle="@string/appearance_location_photos_filename_title" />

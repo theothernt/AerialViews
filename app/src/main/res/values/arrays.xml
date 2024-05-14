@@ -64,37 +64,51 @@
     <string name="date_format_default" translatable="false">COMPACT</string>
     <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
 
-    <!-- Video title or POI -->
-    <string-array name="location_type_entries">
-        <item>Location or title</item>
-        <item>Points of interest (available in many languages)</item>
+    <!-- Use POI/Title as description -->
+    <string-array name="description_video_entries">
+        <item>Disabled</item>
+        <item>Short description</item>
+        <item>Dynamic points of interest</item>
     </string-array>
-    <string-array name="location_style_values" translatable="false">
+    <string-array name="description_video_values" translatable="false">
+        <item>DISABLED</item>
         <item>TITLE</item>
         <item>POI</item>
     </string-array>
-    <string name="location_style_default" translatable="false">POI</string>
+    <string name="description_video_default" translatable="false">POI</string>
+    <string-array name="description_video_manifest_entries">
+        <item>Disabled</item>
+        <item>A short video description or location</item>
+        <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
+    </string-array>
 
-    <!-- Use filename as location -->
-    <string-array name="filename_as_location_entries">
+    <!-- Use filename as description -->
+    <string-array name="description_filename_entries">
         <item>Disabled</item>
         <item>Use formatted filename</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>
     </string-array>
-    <string-array name="filename_as_location_values" translatable="false">
+    <string-array name="description_filename_values" translatable="false">
         <item>DISABLED</item>
         <item>FORMATTED</item>
         <item>FILENAME</item>
         <item>LAST_FOLDER_FILENAME</item>
-        <item>LAST_FOLDERNAME</item>
+        <item>LAST_FOLDER_NAME</item>
     </string-array>
-    <string name="filename_as_location_default" translatable="false">DISABLED</string>
-    <string-array name="filename_as_location_summary_entries">
+    <string name="description_filename_default" translatable="false">DISABLED</string>
+    <string-array name="description_video_filename_entries">
         <item>Disabled</item>
         <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
         <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
+        <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
+        <item>Use folder name only eg. \'Videos/Dublin/Temple Bar.mp4\' becomes \'Dublin\'</item>
+    </string-array>
+    <string-array name="description_photo_filename_entries">
+        <item>Disabled</item>
+        <item>Use formatted filename eg. \'japan-mount_fuji.jpg\' becomes \'Japan - Mount Fuji\'</item>
+        <item>Use filename as-is eg. \'Flying towards Mount Pilatus.jpg\' becomes \'Flying towards Mount Pilatus\'</item>
         <item>Use folder and filename as-is eg. \'Pictures/Grand Canyon/Sunet.jpg\' becomes \'Grand Canyon / Sunet\'</item>
         <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
     </string-array>
