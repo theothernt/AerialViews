@@ -15,7 +15,7 @@ import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
-import com.neilturner.aerialviews.models.enums.ImageScale
+import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.utils.FileHelper
@@ -51,10 +51,10 @@ class ImagePlayerView : AppCompatImageView {
             }).build()
 
         val scaleType = try {
-            ScaleType.valueOf(GeneralPrefs.imageScale.toString())
+            ScaleType.valueOf(GeneralPrefs.photoScale.toString())
         } catch (ex: Exception) {
-            GeneralPrefs.imageScale = ImageScale.CENTER_CROP
-            ScaleType.valueOf(ImageScale.CENTER_CROP.toString())
+            GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
+            ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
         }
         this.scaleType = scaleType
     }

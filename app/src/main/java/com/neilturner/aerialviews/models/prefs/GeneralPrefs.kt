@@ -5,7 +5,7 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
-import com.neilturner.aerialviews.models.enums.ImageScale
+import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
 
@@ -42,6 +42,7 @@ object GeneralPrefs : KotprefModel() {
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight")
 
+    // Migrate ALL
     // description_videos_manifest, description_videos_filename
     // description_photos_unsplash, description_photos_filename, description_photos_exif
 
@@ -78,7 +79,7 @@ object GeneralPrefs : KotprefModel() {
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
     var slideshowSpeed by stringPref("30", "slideshow_speed")
-    var imageScale by nullableEnumValuePref(ImageScale.CENTER_CROP, "image_scale")
+    var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale") // Migrate
 
     // D-pad
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")

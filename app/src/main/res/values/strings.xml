@@ -22,7 +22,7 @@
 
     <!-- Main -->
     <string name="settings_media_sources_title">Media Sources</string>
-    <string name="settings_media_sources_summary">Play videos and images from the internet, USB storage, and network sources</string>
+    <string name="settings_media_sources_summary">Play videos and photos from the internet, USB storage, and network sources</string>
 
     <string name="settings_settings_title">Settings</string>
     <string name="settings_settings_summary">Change performance, playlist, and appearance options</string>
@@ -48,13 +48,13 @@
     <string name="sources_comm2_summary">Stream these community videos using your internet connection</string>
 
     <string name="sources_local_title">Local or USB storage</string>
-    <string name="sources_local_summary">Play videos and images directly from your device or attached USB storage</string>
+    <string name="sources_local_summary">Play videos and photos directly from your device or attached USB storage</string>
 
     <string name="sources_samba_title">SMB/Samba share</string>
-    <string name="sources_samba_summary">Play videos and images from a local network share on a PC or NAS device</string>
+    <string name="sources_samba_summary">Play videos and photos from a local network share on a PC or NAS device</string>
 
     <string name="sources_webdav_title">WebDAV server</string>
-    <string name="sources_webdav_summary">Play videos and images stored on a WebDAV server locally or remotely</string>
+    <string name="sources_webdav_summary">Play videos and photos stored on a WebDAV server locally or remotely</string>
 
     <!-- Main / Video Sources / Apple videos -->
     <string name="apple_videos_enabled">Use Apple videos</string>
@@ -76,10 +76,10 @@
 
     <string name="local_media_type_title">Choose media type</string>
 
-    <string name="local_videos_search_type_title">Choose how videos and images are found</string>
+    <string name="local_videos_search_type_title">Choose how videos and photos are found</string>
     <string name="local_videos_search_test">Test local search settings</string>
 
-    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos and images</string>
+    <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos and photos</string>
 
     <string name="local_videos_shield_notice_title">Nvidia Shield users, make sure the following option is enabled…</string>
     <string name="local_videos_shield_notice_summary">Settings > Device Preferences > Storage > Scan for media automatically</string>
@@ -91,7 +91,7 @@
     <string name="local_videos_media_store_filter_folder_summary">If you store media in e.g. /Videos/Aerial/ using \'Aerial\' will filter out media from other folders</string>
     <string name="local_videos_media_store_no_folder">No folder specified for filter</string>
 
-    <string name="local_videos_legacy_summary">Specify a single folder where videos and images are stored</string>
+    <string name="local_videos_legacy_summary">Specify a single folder where videos and photos are stored</string>
 
     <string name="local_videos_legacy_volume_title">Choose a volume</string>
     <string name="local_videos_legacy_volume_summary">No volume chosen</string>
@@ -109,7 +109,7 @@
     <string name="local_media_test_summary1">Files found: %1$s</string>
     <string name="local_media_test_summary2">Unsupported files: %1$s</string>
     <string name="local_media_test_summary3">Videos found: %1$s</string>
-    <string name="local_media_test_summary4">Images found: %1$s</string>
+    <string name="local_media_test_summary4">Photos found: %1$s</string>
     <string name="local_media_test_summary5">Excluded by filter: %1$s</string>
     <string name="local_media_test_summary6">Selected for playback: %1$s</string>
 
@@ -155,7 +155,7 @@
     <string name="samba_media_test_summary1">Files found: %1$s</string>
     <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
     <string name="samba_media_test_summary3">Videos found: %1$s</string>
-    <string name="samba_media_test_summary4">Images found: %1$s</string>
+    <string name="samba_media_test_summary4">Photos found: %1$s</string>
     <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
 
     <string name="samba_videos_import_failed">Import failed</string>
@@ -180,7 +180,7 @@
     <string name="category_settings">Settings</string>
 
     <string name="settings_appearance_title">Appearance</string>
-    <string name="settings_appearance_summary">Customise how things look while videos and images are playing</string>
+    <string name="settings_appearance_summary">Customise how things look while videos and photos are playing</string>
 
     <string name="settings_playlist_title">Playlist</string>
     <string name="settings_playlist_summary">Mute videos, randomise the order, etc</string>
@@ -206,6 +206,8 @@
     <string name="category_slots">Slots</string>
     <string name="category_gradient">Gradient</string>
     <string name="category_startup">Startup</string>
+    <string name="category_videos">Videos</string>
+    <string name="category_photos">Photos</string>
 
     <string name="appearance_top_row_title">Top Row</string>
     <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
@@ -234,8 +236,8 @@
     <string name="appearance_typography_title">Typography</string>
     <string name="appearance_typography_summary">Change the font used by all the overlays</string>
 
-    <string name="appearance_alt_text_position_title">Alternate text position</string>
-    <string name="appearance_alt_text_position_summary">Position of clock and location change every video to help prevent OLED burn-in</string>
+    <string name="appearance_alt_text_position_title">Alternate overlay position</string>
+    <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
 
     <string name="appearance_gradient_title">Gradients</string>
     <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
@@ -303,8 +305,7 @@
     <!-- Pexels? -->
 
     <string name="category_apple_and_community_videos">Apple and Community videos only</string>
-    <string name="category_all_other_media">All other videos and images</string>
-    <string name="category_photos">Photos</string>
+    <string name="category_all_other_media">All other videos and photos</string>
 
     <string name="appearance_location_videos_poi_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
     <string name="appearance_location_videos_poi_title">Show description or points of interest</string>
@@ -342,22 +343,20 @@
 
     <!-- Main / Settings / Playlist -->
     <string name="category_playlist">Playlist</string>
-    <string name="category_videos">Videos</string>
-    <string name="category_images">Images</string>
 
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
-    <string name="playlist_shuffle_title">Shuffle videos &amp; images</string>
-    <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; images</string>
+    <string name="playlist_shuffle_title">Shuffle videos &amp; photos</string>
+    <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; photos</string>
 
     <string name="playlist_max_video_length_title">Limit video length</string>
 
     <string name="playlist_playback_speed_title">Playback speed</string>
     <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-    <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; images</string>
-    <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; images from the playlist based on filename only</string>
+    <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
+    <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; photos from the playlist based on filename only</string>
 
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
@@ -365,13 +364,13 @@
     <string name="playlist_slideshow_speed_title">Slideshow speed</string>
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
-    <string name="playlist_image_scale_title">Image scaling</string>
+    <string name="playlist_photo_scale_title">Photo scaling</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
 
-    <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or image</string>
-    <string name="playlist_allow_video_skipping_summary">Skip a video or image by pressing left or right on the d-pad of your remote</string>
+    <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or photo</string>
+    <string name="playlist_allow_video_skipping_summary">Skip a video or photo by pressing left or right on the d-pad of your remote</string>
 
     <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
     <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
@@ -426,7 +425,7 @@
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
     <string name="advanced_locale_menu_title">Menu text locale</string>
-    <string name="advanced_locale_screensaver_title">Screensaver text (clock, location) locale</string>
+    <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
     <string name="advanced_locale_restart_app_title">Restart App</string>
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>

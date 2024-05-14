@@ -278,13 +278,13 @@
     <!-- Media type -->
     <string-array name="media_type_entries">
         <item>Videos only</item>
-        <item>Images only</item>
-        <item>Videos &amp; Images</item>
+        <item>Photos only</item>
+        <item>Videos &amp; Photos</item>
     </string-array>
     <string-array name="media_type_values" translatable="false">
         <item>VIDEOS</item>
-        <item>IMAGES</item>
-        <item>VIDEOS_IMAGES</item>
+        <item>PHOTOS</item>
+        <item>VIDEOS_PHOTOS</item>
     </string-array>
     <string name="media_type_default" translatable="false">VIDEOS</string>
 
@@ -379,15 +379,15 @@
     </string-array>
     <string name="slideshow_speed_default" translatable="false">30</string>
 
-    <!-- Image scale/fill options -->
-    <string-array name="image_scale_entries">
+    <!-- Photo scale/fill options -->
+    <string-array name="photo_scale_entries">
         <item>Fill (Default)</item>
         <item>Center</item>
     </string-array>
-    <string-array name="image_scale_values" translatable="false">
+    <string-array name="photo_scale_values" translatable="false">
         <item>CENTER_CROP</item>
         <item>FIT_CENTER</item>
     </string-array>
-    <string name="image_scale_default" translatable="false">CENTER_CROP</string>
+    <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
 </resources>
