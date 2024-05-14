@@ -302,25 +302,23 @@
 
     <!-- Main / Settings / Appearance / Location -->
 
-    <!-- Pexels? -->
-
     <string name="category_apple_and_community_videos">Apple and Community videos only</string>
     <string name="category_all_other_media">All other videos and photos</string>
 
-    <string name="appearance_location_videos_poi_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
-    <string name="appearance_location_videos_poi_title">Show description or points of interest</string>
+    <string name="appearance_description_videos_manifest_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
+    <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
 
-    <string name="appearance_location_videos_filename_summary">Your videos from local storage or a network share</string>
-    <string name="appearance_location_videos_filename_title">Use filename/folder for description</string>
+    <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
+    <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
+
+    <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
+    <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
     <!-- Unsplash -->
-
-    <string name="appearance_location_photos_filename_summary">Your photos from local storage or a network share</string>
-    <string name="appearance_location_photos_filename_title">Use filename/folder for description</string>
-
+    <!-- Pexels? -->
     <!-- Exif -->
 
-    <string name="appearance_location_size_title">Size</string>
+    <string name="appearance_description_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Message -->
     <string name="category_message">Message</string>
