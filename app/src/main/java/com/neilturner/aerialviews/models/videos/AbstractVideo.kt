@@ -27,7 +27,7 @@ abstract class AbstractVideo {
     @SerializedName("pointsOfInterest")
     val pointsOfInterest: Map<Int, String> = emptyMap()
 
-    val location: String
+    val description: String
         get() = accessibilityLabel.toStringOrEmpty()
 
     abstract fun uriAtQuality(quality: VideoQuality?): Uri

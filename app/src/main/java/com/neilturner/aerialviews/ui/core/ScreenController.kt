@@ -118,13 +118,13 @@ class ScreenController(private val context: Context) :
     }
 
     private fun loadItem(media: AerialMedia) {
-        Log.i(TAG, "Playing: ${media.location} - ${media.uri} (${media.poi})")
+        Log.i(TAG, "Playing: ${media.description} - ${media.uri} (${media.poi})")
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
             val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
-                it.updateLocationData(media.location, media.poi, locationType, videoPlayer)
+                it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
             }
         }
 

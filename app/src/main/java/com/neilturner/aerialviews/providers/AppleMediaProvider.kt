@@ -34,9 +34,9 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
         wrapper.assets?.forEach {
             val video = VideoMetadata(
                 it.allUrls(),
-                it.location,
+                it.description,
                 it.pointsOfInterest.mapValues { poi ->
-                    strings[poi.value] ?: it.location
+                    strings[poi.value] ?: it.description
                 }
             )
             metadata.add(video)

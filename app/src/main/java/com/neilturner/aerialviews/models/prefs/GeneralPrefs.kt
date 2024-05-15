@@ -5,9 +5,9 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
-import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.enums.PhotoScale
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"

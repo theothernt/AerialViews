@@ -79,15 +79,15 @@ class MediaService(val context: Context) {
         // Add filename as video location
         if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FORMATTED) {
             media.forEach { video ->
-                if (video.location.isBlank()) {
-                    video.location = FileHelper.filenameToTitleCase(video.uri)
+                if (video.description.isBlank()) {
+                    video.description = FileHelper.filenameToTitleCase(video.uri)
                 }
             }
         }
         if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FILENAME) {
             media.forEach { video ->
-                if (video.location.isBlank()) {
-                    video.location = FileHelper.filenameToString(video.uri)
+                if (video.description.isBlank()) {
+                    video.description = FileHelper.filenameToString(video.uri)
                 }
             }
         }
@@ -112,7 +112,7 @@ class MediaService(val context: Context) {
                 if (video.type != MediaItemType.IMAGE &&
                     metadata.urls.any { it.contains(video.uri.filename, true) }
                 ) {
-                    video.location = metadata.location
+                    video.description = metadata.description
                     video.poi = metadata.poi
                     matched.add(video)
                     return@video
