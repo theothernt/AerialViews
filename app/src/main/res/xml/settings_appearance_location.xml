@@ -17,6 +17,7 @@
 
                 <Preference
                     app:selectable="false"
+                    app:allowDividerAbove="true"
                     app:summary="@string/appearance_description_videos_filename_summary"/>
 
                 <ListPreference
