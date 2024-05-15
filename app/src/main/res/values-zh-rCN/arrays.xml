@@ -25,31 +25,44 @@
     <item>全部</item>
     <item>定制</item>
   </string-array>
-  <string-array name="filename_as_location_entries">
-    <item>禁用</item>
+  <string-array name="description_video_entries">
+    <item>Disabled</item>
+    <item>Short description</item>
+    <item>Dynamic points of interest</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>Disabled</item>
+    <item>A short description or location</item>
+    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
+  </string-array>
+  <string-array name="description_filename_entries">
+    <item>Disabled</item>
     <item>Use formatted filename</item>
     <item>Use filename as-is</item>
     <item>Folder &amp; filename</item>
     <item>Folder name only</item>
   </string-array>
-  <string-array name="filename_as_location_summary_entries">
-    <item>禁用</item>
-    <item>使用格式化命名，例如“japan-mount_fuji.mp4”变为“Japan - Mount Fuji”</item>
-    <item>使用原始文件名，例如“Flying toward Mount Pilatus.mp4”变为“Flying toward Mount Pilatus”</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Grand Canyon/Sunet.jpg\' becomes \'Grand Canyon / Sunet\'</item>
+  <string-array name="description_video_filename_entries">
+    <item>Disabled</item>
+    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
+    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
+    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
+    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+  </string-array>
+  <string-array name="description_photo_filename_entries">
+    <item>Disabled</item>
+    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
+    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
     <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
   </string-array>
-  <string-array name="image_scale_entries">
+  <string-array name="photo_scale_entries">
     <item>Fill (Default)</item>
     <item>Center</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
     <item>Folder access (legacy)</item>
-  </string-array>
-  <string-array name="location_type_entries">
-    <item>地点或标题</item>
-    <item>景点（有多种语言版本）</item>
   </string-array>
   <string-array name="media_type_entries">
     <item>Videos only</item>
