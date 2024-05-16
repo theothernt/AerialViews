@@ -270,7 +270,7 @@
     <string name="appearance_loading_show_summary">Displays the "Loading…" text while the app is loading</string>
 
     <string name="appearance_loading_size_title">Size</string>
-    <string name="appearance_loading_weight_title">Wight</string>
+    <string name="appearance_loading_weight_title">Weight</string>
 
     <!-- Main / Settings / Appearance / Gradient -->
     <string name="appearance_gradient_top_title">Show top gradient</string>
