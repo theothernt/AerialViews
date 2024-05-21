@@ -59,7 +59,6 @@ class MediaService(val context: Context) {
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
-        // TODO add metadata to videos, ignore file extension
         // TODO add filename as desc. to videos if needed
         // TODO add filename as desc. to images if needed
 
@@ -117,7 +116,7 @@ class MediaService(val context: Context) {
         media.forEach video@{ video ->
             metadata.forEach { metadata ->
                 if (video.type != MediaItemType.IMAGE &&
-                    metadata.urls.any { it.contains(video.uri.filename, true) }
+                    metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
                 ) {
                     video.description = metadata.description
                     video.poi = metadata.poi
