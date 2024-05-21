@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
@@ -22,6 +23,7 @@ import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
 
 class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
@@ -32,6 +34,7 @@ class MediaService(val context: Context) {
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
+        // Sort by local first so duplicates removed are remote
         providers.sortBy { it.type == ProviderType.REMOTE }
     }
 
@@ -52,11 +55,13 @@ class MediaService(val context: Context) {
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
-            media = media.distinctBy { it.uri.filename.lowercase() }.toMutableList()
+            media = media.distinctBy { it.uri.filenameWithoutExtension.lowercase() }.toMutableList()
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
-        
+        // TODO add metadata to videos, ignore file extension
+        // TODO add filename as desc. to videos if needed
+        // TODO add filename as desc. to images if needed
 
         // Add metadata to videos for filtering matched and unmatched
         val result = addMetadataToVideos(media, providers)
