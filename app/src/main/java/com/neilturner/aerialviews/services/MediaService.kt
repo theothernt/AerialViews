@@ -5,6 +5,7 @@ import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
 import com.neilturner.aerialviews.models.enums.MediaItemType
+import com.neilturner.aerialviews.models.enums.ProviderType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
@@ -26,13 +27,12 @@ class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
 
     init {
-        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
-        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
-        // Prefer local videos first
-        // Remote videos added last so they'll be filtered out if duplicates are found
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
+        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
+        providers.sortBy { it.type == ProviderType.REMOTE }
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
@@ -55,6 +55,8 @@ class MediaService(val context: Context) {
             media = media.distinctBy { it.uri.filename.lowercase() }.toMutableList()
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
+
+        
 
         // Add metadata to videos for filtering matched and unmatched
         val result = addMetadataToVideos(media, providers)
