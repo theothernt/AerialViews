@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
@@ -22,7 +21,6 @@ import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.filename
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 
 class MediaService(val context: Context) {
