@@ -122,9 +122,9 @@ class ScreenController(private val context: Context) :
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Log.i(TAG, "Playing: ${media.location} - $url (${media.poi})")
+            Log.i(TAG, "Playing: ${media.description} - $url (${media.poi})")
         } else {
-            Log.i(TAG, "Playing: ${media.location} - ${media.uri} (${media.poi})")
+            Log.i(TAG, "Playing: ${media.description} - ${media.uri} (${media.poi})")
         }
 
         // Set overlay data for current video
