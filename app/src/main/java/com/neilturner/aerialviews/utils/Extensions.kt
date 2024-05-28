@@ -14,7 +14,7 @@ val Uri.filename: String
 
 val Uri.filenameWithoutExtension: String
     get() {
-        val filename = this.lastPathSegment.toString()
+        val filename = this.lastPathSegment.toStringOrEmpty()
         val index = filename.lastIndexOf(".")
         return if (index > 0) {
             filename.substring(0, index)

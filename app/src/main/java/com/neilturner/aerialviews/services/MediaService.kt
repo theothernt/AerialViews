@@ -57,8 +57,23 @@ class MediaService(val context: Context) {
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
-        // TODO add filename as desc. to videos if needed
-        // TODO add filename as desc. to images if needed
+        //  Add metadata to (Manifest) Apple, Community videos only
+        // split videos into matched and unmatched
+
+        val matched = emptyList<AerialMedia>()
+        val unmatched = emptyList<AerialMedia>()
+
+        var (videos, photos) = unmatched.partition { it.type == MediaItemType.VIDEO }
+
+        // Add description to user videos
+        val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: FilenameAsDescriptionType.DISABLED
+        videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
+
+        // Add description to user images
+        val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: FilenameAsDescriptionType.DISABLED
+        photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
+
+
 
         // Add metadata to videos for filtering matched and unmatched
         val result = addMetadataToVideos(media, providers)
@@ -79,6 +94,29 @@ class MediaService(val context: Context) {
         return MediaPlaylist(media)
     }
 
+    private fun addMetadataToManifestVideos(media: List<AerialMedia>, providers: List<MediaProvider>): Pair<List<AerialMedia>, List<AerialMedia>> {
+        return Pair(emptyList(), emptyList())
+    }
+
+    private fun addFilenameAsDescriptionToMedia(media: List<AerialMedia>, description: FilenameAsDescriptionType): List<AerialMedia> {
+        when (description) {
+            FilenameAsDescriptionType.FILENAME -> {
+                media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+            }
+            FilenameAsDescriptionType.FORMATTED -> {
+                media.forEach { item -> item.description = FileHelper.filenameToTitleCase(item.uri) }
+            }
+            FilenameAsDescriptionType.LAST_FOLDER_FILENAME -> {
+                media.forEach { item -> item.description = "Last folder + filename" }
+            }
+            FilenameAsDescriptionType.LAST_FOLDERNAME -> {
+                media.forEach { item -> item.description = "Last folder name" }
+            }
+            else -> { /* Do nothing */ }
+        }
+        return media
+    }
+
     private fun addFilenameAsLocation(media: List<AerialMedia>) {
         // Add filename as video location
         if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FORMATTED) {
@@ -91,7 +129,7 @@ class MediaService(val context: Context) {
         if (GeneralPrefs.descriptionVideoFilenameStyle == FilenameAsDescriptionType.FILENAME) {
             media.forEach { video ->
                 if (video.description.isBlank()) {
-                    video.description = FileHelper.filenameToString(video.uri)
+                    //video.description = FileHelper.filenameToString(video.uri)
                 }
             }
         }
