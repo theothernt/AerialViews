@@ -8,7 +8,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
 
 class TextLocation : AppCompatTextView {
@@ -30,12 +30,12 @@ class TextLocation : AppCompatTextView {
         currentPositionProgressHandler = null
     }
 
-    fun updateLocationData(location: String, poi: Map<Int, String>, locationType: LocationType, player: VideoPlayerView) {
+    fun updateLocationData(location: String, poi: Map<Int, String>, descriptionManifestType: DescriptionManifestType, player: VideoPlayerView) {
         isFadingOutMedia = false
         this.visibility = View.VISIBLE
 
         // If POI, set POI text, if empty use location, or else use location
-        this.text = if (locationType == LocationType.POI) {
+        this.text = if (descriptionManifestType == DescriptionManifestType.POI) {
             poi[0]?.replace("\n", " ") ?: location
         } else {
             location
@@ -47,7 +47,7 @@ class TextLocation : AppCompatTextView {
         }
 
         // If set to POI, set timer to update text when interval is reached
-        if (locationType == LocationType.POI && poi.size > 1) { // everything else is static anyways
+        if (descriptionManifestType == DescriptionManifestType.POI && poi.size > 1) { // everything else is static anyways
             updatePointsOfInterest(poi, player)
         } else {
             // POI is off or empty, so disable handler

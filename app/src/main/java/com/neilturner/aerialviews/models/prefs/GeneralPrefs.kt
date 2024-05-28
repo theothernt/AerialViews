@@ -4,8 +4,8 @@ import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.models.enums.FilenameAsDescriptionType
-import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
+import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 
@@ -36,9 +36,9 @@ object GeneralPrefs : KotprefModel() {
     var dateSize by stringPref("18", "date_size")
 
     // Location
-    var descriptionVideoManifestStyle by nullableEnumValuePref(LocationType.POI, "description_video_manifest_style") // Title or POI
-    var descriptionVideoFilenameStyle by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "description_video_filename_style") // Filename - Videos
-    var descriptionPhotoFilenameStyle by nullableEnumValuePref(FilenameAsDescriptionType.DISABLED, "description_photo_filename_style") // Filename - Photos
+    var descriptionVideoManifestStyle by nullableEnumValuePref(DescriptionManifestType.POI, "description_video_manifest_style") // Title or POI
+    var descriptionVideoFilenameStyle by nullableEnumValuePref(DescriptionFilenameType.DISABLED, "description_video_filename_style") // Filename - Videos
+    var descriptionPhotoFilenameStyle by nullableEnumValuePref(DescriptionFilenameType.DISABLED, "description_photo_filename_style") // Filename - Photos
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight")
 

@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models.enums
 
-enum class FilenameAsDescriptionType {
+enum class DescriptionFilenameType {
     DISABLED,
     FORMATTED, // use built-in formatting
     FILENAME, // as-is, leave alone
