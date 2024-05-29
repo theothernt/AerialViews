@@ -118,6 +118,15 @@ object FileHelper {
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
+    fun folderAndFilenameFromUri(uri: Uri, includeFilename: Boolean = false): String {
+        val path = uri.lastPathSegment.toStringOrEmpty()
+        return if (includeFilename) {
+            "$path / ${uri.filenameWithoutExtension}"
+        } else {
+            path
+        }
+    }
+
     @Suppress("NAME_SHADOWING")
     fun fixLegacyFolder(folder: String): String {
         var folder = folder

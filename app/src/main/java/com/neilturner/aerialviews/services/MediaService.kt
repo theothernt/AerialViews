@@ -38,9 +38,8 @@ class MediaService(val context: Context) {
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-        var media = mutableListOf<AerialMedia>()
-
         // Find all videos from all providers/sources
+        var media = mutableListOf<AerialMedia>()
         providers.forEach {
             try {
                 if (it.enabled) {
@@ -61,12 +60,15 @@ class MediaService(val context: Context) {
         // Add metadata to (Manifest) Apple, Community videos only
         val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
+        Log.i(TAG, "Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
 
         var (videos, photos) = unmatched.partition { it.type == MediaItemType.VIDEO }
+        Log.i(TAG, "Unmatched: videos ${videos.size}, photos ${photos.size}")
 
+        // Remove if not Apple or Community videos
         if (!GeneralPrefs.ignoreNonManifestVideos) {
-            //addFilenameAsLocation(result.second)
-            //media.addAll(result.second)
+            videos = listOf()
+            Log.i(TAG, "Removing non-manifest videos")
         }
 
         // Add description to user videos
@@ -78,14 +80,16 @@ class MediaService(val context: Context) {
         photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
 
         // Combine all videos and photos
+        var filteredMedia = matched + videos + photos
 
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
-            //media.shuffle()
+            filteredMedia = filteredMedia.shuffled()
+            Log.i(TAG, "Shuffling media items")
         }
 
-        Log.i(TAG, "Total vids: ${media.size}")
-        return MediaPlaylist(media)
+        Log.i(TAG, "Total media items: ${filteredMedia.size}")
+        return MediaPlaylist(filteredMedia)
     }
 
     private suspend fun addMetadataToManifestVideos(media: List<AerialMedia>, providers: List<MediaProvider>, description: DescriptionManifestType): Pair<List<AerialMedia>, List<AerialMedia>> {
@@ -118,7 +122,7 @@ class MediaService(val context: Context) {
             unmatched.add(video)
         }
 
-        return Pair(emptyList(), emptyList())
+        return Pair(matched, unmatched)
     }
 
     private fun addFilenameAsDescriptionToMedia(media: List<AerialMedia>, description: DescriptionFilenameType): List<AerialMedia> {
@@ -130,10 +134,10 @@ class MediaService(val context: Context) {
                 media.forEach { item -> item.description = FileHelper.filenameToTitleCase(item.uri) }
             }
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.forEach { item -> item.description = "Last folder + filename" }
+                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
             }
             DescriptionFilenameType.LAST_FOLDERNAME -> {
-                media.forEach { item -> item.description = "Last folder name" }
+                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
             }
             else -> { /* Do nothing */ }
         }
