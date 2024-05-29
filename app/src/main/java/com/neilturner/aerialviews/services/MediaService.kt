@@ -140,7 +140,7 @@ class MediaService(val context: Context) {
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
                 media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
             }
-            DescriptionFilenameType.LAST_FOLDERNAME -> {
+            DescriptionFilenameType.LAST_FOLDER_NAME -> {
                 media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
             }
             else -> { /* Do nothing */ }
