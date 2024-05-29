@@ -143,13 +143,20 @@ class ScreenController(private val context: Context) :
     }
 
     private fun loadItem(media: AerialMedia) {
-        Log.i(TAG, "Playing: ${media.location} - ${media.uri} (${media.poi})")
+        if (media.uri.toString().contains("smb://")) {
+            val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
+            val replacement = "$1****:****@****/"
+            val url = pattern.replace(media.uri.toString(), replacement)
+            Log.i(TAG, "Playing: ${media.description} - $url (${media.poi})")
+        } else {
+            Log.i(TAG, "Playing: ${media.description} - ${media.uri} (${media.poi})")
+        }
 
         // Set overlay data for current video
         overlayHelper.findOverlay<TextLocation>().forEach {
-            val locationType = GeneralPrefs.locationStyle
+            val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
-                it.updateLocationData(media.location, media.poi, locationType, videoPlayer)
+                it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
             }
         }
 

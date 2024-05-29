@@ -3,8 +3,10 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.FilenameAsLocation
+import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
+import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.MediaItemType
+import com.neilturner.aerialviews.models.enums.ProviderType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
@@ -20,19 +22,19 @@ import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
 
 class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
 
     init {
-        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
-        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
-        // Prefer local videos first
-        // Remote videos added last so they'll be filtered out if duplicates are found
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
+        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
+        // Sort by local first so duplicates removed are remote
+        providers.sortBy { it.type == ProviderType.REMOTE }
     }
 
     fun finalize() {
@@ -40,9 +42,8 @@ class MediaService(val context: Context) {
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-        var media = mutableListOf<AerialMedia>()
-
         // Find all videos from all providers/sources
+        var media = mutableListOf<AerialMedia>()
         providers.forEach {
             try {
                 if (it.enabled) {
@@ -56,48 +57,46 @@ class MediaService(val context: Context) {
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
-            media = media.distinctBy { it.uri.filename.lowercase() }.toMutableList()
+            media = media.distinctBy { it.uri.filenameWithoutExtension.lowercase() }.toMutableList()
             Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
-        // Add metadata to videos for filtering matched and unmatched
-        val result = addMetadataToVideos(media, providers)
-        media = result.first.toMutableList()
+        // Add metadata to (Manifest) Apple, Community videos only
+        val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
+        val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
+        Log.i(TAG, "Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
 
-        // Add unmatched videos
+        var (videos, photos) = unmatched.partition { it.type == MediaItemType.VIDEO }
+        Log.i(TAG, "Unmatched: videos ${videos.size}, photos ${photos.size}")
+
+        // Remove if not Apple or Community videos
         if (!GeneralPrefs.ignoreNonManifestVideos) {
-            addFilenameAsLocation(result.second)
-            media.addAll(result.second)
+            videos = listOf()
+            Log.i(TAG, "Removing non-manifest videos")
         }
+
+        // Add description to user videos
+        val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
+        videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
+
+        // Add description to user images
+        val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
+        photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
+
+        // Combine all videos and photos
+        var filteredMedia = matched + videos + photos
 
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
-            media.shuffle()
+            filteredMedia = filteredMedia.shuffled()
+            Log.i(TAG, "Shuffling media items")
         }
 
-        Log.i(TAG, "Total vids: ${media.size}")
-        return MediaPlaylist(media)
+        Log.i(TAG, "Total media items: ${filteredMedia.size}")
+        return MediaPlaylist(filteredMedia)
     }
 
-    private fun addFilenameAsLocation(media: List<AerialMedia>) {
-        // Add filename as video location
-        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.FORMATTED) {
-            media.forEach { video ->
-                if (video.location.isBlank()) {
-                    video.location = FileHelper.filenameToTitleCase(video.uri)
-                }
-            }
-        }
-        if (GeneralPrefs.filenameAsLocation == FilenameAsLocation.SIMPLE) {
-            media.forEach { video ->
-                if (video.location.isBlank()) {
-                    video.location = FileHelper.filenameToString(video.uri)
-                }
-            }
-        }
-    }
-
-    private suspend fun addMetadataToVideos(media: List<AerialMedia>, providers: List<MediaProvider>): Pair<List<AerialMedia>, List<AerialMedia>> {
+    private suspend fun addMetadataToManifestVideos(media: List<AerialMedia>, providers: List<MediaProvider>, description: DescriptionManifestType): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = mutableListOf<VideoMetadata>()
         val matched = mutableListOf<AerialMedia>()
         val unmatched = mutableListOf<AerialMedia>()
@@ -113,18 +112,40 @@ class MediaService(val context: Context) {
         // Find video id in metadata list
         media.forEach video@{ video ->
             metadata.forEach { metadata ->
-                if (video.type != MediaItemType.IMAGE &&
-                    metadata.urls.any { it.contains(video.uri.filename, true) }
+                if (video.type == MediaItemType.VIDEO &&
+                    metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
                 ) {
-                    video.location = metadata.location
-                    video.poi = metadata.poi
+                    if (description != DescriptionManifestType.DISABLED) {
+                        video.description = metadata.description
+                        video.poi = metadata.poi
+                    }
                     matched.add(video)
                     return@video
                 }
             }
             unmatched.add(video)
         }
+
         return Pair(matched, unmatched)
+    }
+
+    private fun addFilenameAsDescriptionToMedia(media: List<AerialMedia>, description: DescriptionFilenameType): List<AerialMedia> {
+        when (description) {
+            DescriptionFilenameType.FILENAME -> {
+                media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+            }
+            DescriptionFilenameType.FORMATTED -> {
+                media.forEach { item -> item.description = FileHelper.filenameToTitleCase(item.uri) }
+            }
+            DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
+                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+            }
+            DescriptionFilenameType.LAST_FOLDERNAME -> {
+                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+            }
+            else -> { /* Do nothing */ }
+        }
+        return media
     }
 
     companion object {

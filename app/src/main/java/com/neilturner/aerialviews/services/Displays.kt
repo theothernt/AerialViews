@@ -50,6 +50,7 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
     }
 }
 
+@Suppress("DEPRECATION")
 @SuppressLint("UnsafeOptInUsageError")
 class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
     val name: String = source.name
@@ -126,11 +127,20 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
 
         // Check HDR Capabilities if available on device
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            //source.mode.supportedHdrTypes
             val capabilities = source.hdrCapabilities
-            supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) source.isHdr else capabilities != null
+
+            supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                source.isHdr
+            } else capabilities != null
+
+            hdrFormats = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
+                } else source.mode.supportedHdrTypes.map { hdrTypeToFormat(it) }
+
             minimumLuminance = capabilities?.desiredMinLuminance
             maximumLuminance = capabilities?.desiredMaxLuminance
-            hdrFormats = capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
+
         } else {
             supportsHDR = false
             minimumLuminance = null

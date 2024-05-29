@@ -13,6 +13,17 @@ fun Any?.toStringOrEmpty() = this?.toString() ?: ""
 val Uri.filename: String
     get() = this.lastPathSegment.toString()
 
+val Uri.filenameWithoutExtension: String
+    get() {
+        val filename = this.lastPathSegment.toStringOrEmpty()
+        val index = filename.lastIndexOf(".")
+        return if (index > 0) {
+            filename.substring(0, index)
+        } else {
+            filename
+        }
+    }
+
 // https://stackoverflow.com/a/74741495/247257
 fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

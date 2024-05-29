@@ -36,8 +36,6 @@
   <string name="appearance_date_size_title">Ajustar el tamaño del texto de la fecha</string>
   <string name="appearance_date_summary">Mostrar la fecha actual</string>
   <string name="appearance_date_title">Fecha</string>
-  <string name="appearance_filename_as_location_title">Usar nombre de archivo como ubicación</string>
-  <string name="appearance_location_size_title">Ajustar el tamaño del texto de la ubicación</string>
   <string name="appearance_location_summary">Mostrar ubicación o puntos de interés</string>
   <string name="appearance_location_title">Ubicación</string>
   <string name="appearance_message_line1_summary">Ingrese el texto para mostrar, incluido emojis</string>
@@ -51,7 +49,6 @@
   <string name="appearance_music_title">Música</string>
   <string name="appearance_show_force_latin_digits_summary">Mostrar siempre dígitos occidentales independientemente de la configuración regional del sistema</string>
   <string name="appearance_show_force_latin_digits_title">Forzar dígitos latinos</string>
-  <string name="appearance_show_location_title">Mostrar ubicación o puntos de interés</string>
   <string name="appearance_slot1_title">Espacio inferior</string>
   <string name="appearance_slot2_title">Espacio superior</string>
   <string name="appearance_slot_summary">Vacío</string>
@@ -106,7 +103,6 @@
   <string name="category_date">Fecha</string>
   <string name="category_dpad">Pad Direccional/Control Remoto</string>
   <string name="category_folder_access_options">Opciones de acceso a carpetas</string>
-  <string name="category_images">Imágenes</string>
   <string name="category_local">Local</string>
   <string name="category_media_scanner_options">Opciones de escaneo de medios</string>
   <string name="category_message">Mensaje</string>
@@ -167,7 +163,6 @@
   <string name="playlist_allow_video_skipping_title">Permitir saltar al vídeo siguiente/anterior</string>
   <string name="playlist_ignore_unmatched_videos_summary">Omitir vídeos que no figuran en ninguna lista de vídeos de Apple</string>
   <string name="playlist_ignore_unmatched_videos_title">Ignorar vídeos no reconocidos o que no sean de Apple</string>
-  <string name="playlist_image_scale_title">Escalado de imagen</string>
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
@@ -255,4 +250,27 @@
   <string name="sources_webdav_title">Servidor WebDAV</string>
   <string name="videos_quality_summary">Seleccione la calidad del vídeo</string>
   <string name="videos_quality_title">Calidad de Vídeo</string>
+  <string name="category_gradient">Gradient</string>
+  <string name="category_startup">Startup</string>
+  <string name="category_photos">Photos</string>
+  <string name="appearance_gradient_title">Gradients</string>
+  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
+  <string name="appearance_startup_title">Startup</string>
+  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
+  <string name="appearance_loading_show_title">Show loading text</string>
+  <string name="appearance_loading_show_summary">Displays the Loading… text while the app is loading</string>
+  <string name="appearance_loading_size_title">Size</string>
+  <string name="appearance_loading_weight_title">Wight</string>
+  <string name="appearance_gradient_top_title">Show top gradient</string>
+  <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
+  <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
+  <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
+  <string name="appearance_description_videos_manifest_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
+  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
+  <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
+  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
+  <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
+  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
+  <string name="appearance_description_size_title">Size</string>
+  <string name="playlist_photo_scale_title">Photo scaling</string>
 </resources>

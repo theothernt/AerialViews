@@ -25,27 +25,44 @@
     <item>Completo</item>
     <item>Personalizado</item>
   </string-array>
-  <string-array name="filename_as_location_entries">
-    <item>Desactivado</item>
-    <item>Usar formato</item>
-    <item>Usar el nombre de archivo como está</item>
+  <string-array name="description_video_entries">
+    <item>Disabled</item>
+    <item>Short description</item>
+    <item>Dynamic points of interest</item>
   </string-array>
-  <string-array name="filename_as_location_summary_entries">
-    <item>Desactivado</item>
-    <item>Usar formato. Por ejemplo \'japon-monte_fuji.mp4\' se muestra como \'Japón - Monte Fuji\'</item>
-    <item>Usar el nombre de archivo como está. Por ejemplo \'Volando hacia el Monte Pilatus.mp4\' se muestra como \'Volando hacia el Monte Pilatus\'</item>
+  <string-array name="description_video_manifest_entries">
+    <item>Disabled</item>
+    <item>A short description or location</item>
+    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
   </string-array>
-  <string-array name="image_scale_entries">
-    <item>Rellenar (Predeterminado)</item>
-    <item>Centro</item>
+  <string-array name="description_filename_entries">
+    <item>Disabled</item>
+    <item>Use formatted filename</item>
+    <item>Use filename as-is</item>
+    <item>Folder &amp; filename</item>
+    <item>Folder name only</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>Disabled</item>
+    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
+    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
+    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
+    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+  </string-array>
+  <string-array name="description_photo_filename_entries">
+    <item>Disabled</item>
+    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
+    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
+    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Fill (Default)</item>
+    <item>Center</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Escaneo de medios</item>
     <item>Acceso a carpetas (obsoleto)</item>
-  </string-array>
-  <string-array name="location_type_entries">
-    <item>Ubicación o título</item>
-    <item>Puntos de interés (disponibles en muchos idiomas)</item>
   </string-array>
   <string-array name="media_type_entries">
     <item>Sólo vídeos</item>

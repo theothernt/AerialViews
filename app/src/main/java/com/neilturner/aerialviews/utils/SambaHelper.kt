@@ -44,6 +44,11 @@ object SambaHelper {
         var userName = ""
         var password = ""
 
+        // TODO fix this
+        // .userInfo seems to return user+pass string but it is decoded differently than expected
+        // "hello+world" is return as "hello+world" and not "hello world"
+        // encoding url vs encoding url parameters ?!
+
         // If none (ie. anonymous) return early
         val userInfo = uri.userInfo ?: return Pair(userName, password)
 

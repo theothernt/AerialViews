@@ -36,8 +36,6 @@
   <string name="appearance_date_size_title">调整日期文字大小</string>
   <string name="appearance_date_summary">显示当前日期</string>
   <string name="appearance_date_title">日期</string>
-  <string name="appearance_filename_as_location_title">使用文件名作为地点</string>
-  <string name="appearance_location_size_title">调整地点文字大小</string>
   <string name="appearance_location_summary">显示地点或景点</string>
   <string name="appearance_location_title">地点</string>
   <string name="appearance_message_line1_summary">输入要显示的文本，包括表情符号</string>
@@ -51,7 +49,6 @@
   <string name="appearance_music_title">音乐</string>
   <string name="appearance_show_force_latin_digits_summary">无论系统语言设置如何，始终显示西方数字</string>
   <string name="appearance_show_force_latin_digits_title">强制使用拉丁数字</string>
-  <string name="appearance_show_location_title">显示地点或景点</string>
   <string name="appearance_slot1_title">较低插槽</string>
   <string name="appearance_slot2_title">较高插槽</string>
   <string name="appearance_slot_summary">留空</string>
@@ -106,7 +103,6 @@
   <string name="category_date">日期</string>
   <string name="category_dpad">D-Pad/遥控器</string>
   <string name="category_folder_access_options">文件夹访问选项</string>
-  <string name="category_images">Images</string>
   <string name="category_local">本地</string>
   <string name="category_media_scanner_options">媒体扫描仪选项</string>
   <string name="category_message">信息</string>
@@ -167,7 +163,6 @@
   <string name="playlist_allow_video_skipping_title">允许跳转下一个/上一个视频</string>
   <string name="playlist_ignore_unmatched_videos_summary">跳过任何 Apple 视频清单中未列出的视频</string>
   <string name="playlist_ignore_unmatched_videos_title">忽略无法识别/非 Apple 视频</string>
-  <string name="playlist_image_scale_title">Image scaling</string>
   <string name="playlist_max_video_length_title">限制视频长度</string>
   <string name="playlist_mute_videos_summary">将所有视频静音</string>
   <string name="playlist_mute_videos_title">静音播放视频</string>
@@ -256,4 +251,27 @@
   <string name="sources_webdav_title">WebDAV 服务器</string>
   <string name="videos_quality_summary">选择视频质量</string>
   <string name="videos_quality_title">视频质量</string>
+  <string name="category_gradient">Gradient</string>
+  <string name="category_startup">Startup</string>
+  <string name="category_photos">Photos</string>
+  <string name="appearance_gradient_title">Gradients</string>
+  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
+  <string name="appearance_startup_title">Startup</string>
+  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
+  <string name="appearance_loading_show_title">Show loading text</string>
+  <string name="appearance_loading_show_summary">Displays the Loading… text while the app is loading</string>
+  <string name="appearance_loading_size_title">Size</string>
+  <string name="appearance_loading_weight_title">Wight</string>
+  <string name="appearance_gradient_top_title">Show top gradient</string>
+  <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
+  <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
+  <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
+  <string name="appearance_description_videos_manifest_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
+  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
+  <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
+  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
+  <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
+  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
+  <string name="appearance_description_size_title">Size</string>
+  <string name="playlist_photo_scale_title">Photo scaling</string>
 </resources>

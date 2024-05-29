@@ -11,16 +11,13 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_appearance_location, rootKey)
-        updateSummary()
+        updateAllSummaries()
     }
 
-    private fun updateSummary() {
-        val control = findPreference<ListPreference>("filename_as_location")
-        control?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            control?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
-            true
-        }
-        control?.findIndexOfValue(control.value)?.let { updateDataUsageSummary(it) }
+    private fun updateAllSummaries() {
+        setupSummaryUpdater("description_video_manifest_style", R.array.description_video_manifest_entries)
+        setupSummaryUpdater("description_video_filename_style", R.array.description_video_filename_entries)
+        setupSummaryUpdater("description_photo_filename_style", R.array.description_photo_filename_entries)
     }
 
     override fun onResume() {
@@ -28,11 +25,20 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
         LoggingHelper.logScreenView("Location", TAG)
     }
 
-    private fun updateDataUsageSummary(index: Int) {
-        val res = context?.resources!!
-        val pref = findPreference<Preference>("filename_as_location")
-        val summaryList = res.getStringArray(R.array.filename_as_location_summary_entries)
-        val summary = summaryList[index]
+    private fun setupSummaryUpdater(control: String, entries: Int) {
+        val pref = findPreference<ListPreference>(control)
+        pref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
+            true
+        }
+        pref?.findIndexOfValue(pref.value)?.let { updateSummary(control, entries, it) }
+    }
+
+    private fun updateSummary(control: String, entries: Int, index: Int) {
+        val res = requireContext().resources
+        val pref = findPreference<Preference>(control)
+        val summaries = res?.getStringArray(entries)
+        val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
     }
 

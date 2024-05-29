@@ -29,7 +29,7 @@ class AltTextClock : TextClock {
                 this.format24Hour = "h:mm a"
             }
             else -> {
-                //this.text.toString().lowercase() // maybe add pref? 1:30pm vs 1:30PM
+                // this.text.toString().lowercase() // maybe add pref? 1:30pm vs 1:30PM
             }
         }
     }

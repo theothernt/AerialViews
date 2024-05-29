@@ -68,6 +68,7 @@ object DeviceHelper {
         Build.PRODUCT.contains("emulator") ||
         Build.PRODUCT.contains("simulator")
 
+    @Suppress("unused")
     fun isPhone(context: Context): Boolean {
         val metrics = context.resources.displayMetrics
         val smallestSize = min(metrics.widthPixels, metrics.heightPixels)
@@ -81,6 +82,7 @@ object DeviceHelper {
         return smallestSize < tabletSize
     }
 
+    @Suppress("unused")
     fun isTV(context: Context): Boolean {
         return context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
     }

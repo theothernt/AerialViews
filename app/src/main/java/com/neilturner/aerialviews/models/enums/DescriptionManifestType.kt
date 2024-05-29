@@ -2,7 +2,8 @@
 
 package com.neilturner.aerialviews.models.enums
 
-enum class LocationType {
+enum class DescriptionManifestType {
+    DISABLED,
     TITLE,
     POI
 }
