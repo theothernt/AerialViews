@@ -70,7 +70,7 @@ class MediaService(val context: Context) {
         Log.i(TAG, "Unmatched: videos ${videos.size}, photos ${photos.size}")
 
         // Remove if not Apple or Community videos
-        if (!GeneralPrefs.ignoreNonManifestVideos) {
+        if (GeneralPrefs.ignoreNonManifestVideos) {
             videos = listOf()
             Log.i(TAG, "Removing non-manifest videos")
         }
