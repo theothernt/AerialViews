@@ -12,12 +12,15 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
 import java.lang.Exception
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.EnumSet
 import kotlin.math.min
 
@@ -93,9 +96,9 @@ class SambaDataSource : BaseDataSource(true) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
 
-        val userInfo = SambaHelper.parseUserInfo(uri)
-        userName = userInfo.first
-        password = userInfo.second
+        //val userInfo = SambaHelper.parseUserInfo(uri)
+        userName = SambaMediaPrefs.userName
+        password = SambaMediaPrefs.password
 
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         shareName = shareNameAndPath.first
