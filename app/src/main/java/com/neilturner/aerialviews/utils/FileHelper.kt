@@ -119,7 +119,12 @@ object FileHelper {
     }
 
     fun folderAndFilenameFromUri(uri: Uri, includeFilename: Boolean = false): String {
-        val path = uri.lastPathSegment.toStringOrEmpty()
+        val path = if (uri.pathSegments.size < 2) {
+            ""
+        } else {
+            val count = uri.pathSegments.size
+            uri.pathSegments[count - 2] ?: ""
+        }
         return if (includeFilename) {
             "$path / ${uri.filenameWithoutExtension}"
         } else {
