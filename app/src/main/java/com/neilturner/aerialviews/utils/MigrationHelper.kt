@@ -31,16 +31,12 @@ class MigrationHelper(val context: Context) {
 
         if (lastKnownVersion < 10) release10()
         if (lastKnownVersion < 11) release11()
-        // if (lastKnownVersion < 12) release12()
         if (lastKnownVersion < 13) release13()
         if (lastKnownVersion < 14) release14()
         if (lastKnownVersion < 15) release15()
-        // if (lastKnownVersion < 16) release16()
         if (lastKnownVersion < 17) release17()
-        // if (lastKnownVersion < 18) release18()
         if (lastKnownVersion < 19) release19()
         if (lastKnownVersion < 20) release20()
-
         if (lastKnownVersion < 22) release22()
 
         // After all migrations, set version to latest
@@ -242,7 +238,7 @@ class MigrationHelper(val context: Context) {
 
         val filenameAsLocationUsed = prefs.contains("filename_as_location")
         if (filenameAsLocationUsed) {
-            val filenameAsLocation = prefs.getString("filename_as_location", "DISABLED").toStringOrEmpty()
+            val filenameAsLocation = prefs.getString("filename_as_location", "DISABLED")
             if (filenameAsLocation != "DISABLED") {
                 Log.i(TAG, "Updating description video/photo style to FILENAME")
                 prefs.edit().putString("description_video_filename_style", "FILENAME").apply()
