@@ -42,10 +42,6 @@ object GeneralPrefs : KotprefModel() {
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight")
 
-    // Migrate ALL
-    // description_videos_manifest, description_videos_filename
-    // description_photos_unsplash, description_photos_filename, description_photos_exif
-
     // Message
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
