@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Disabilitato</item>
-    <item>Usa nome file formattato</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
     <item>Solo nome cartella</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabilitato</item>
-    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
     <item>Usa il nome del file, ad es. \'Japan - Deep snow in Hokkaido.jpg\' diventa \'Japan - Deep snow in Hokkaido\'</item>
     <item>Usa la cartella e il nome del file, ad es. \'Pictures/Italy/Dolomites.jpg\' diventa \'Italy / Dolomites\'</item>
     <item>Utilizza solo il nome della cartella, ad es. \'Pictures/Dublin/Temple Bar.png\' diventa \'Dublin\'</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Disabilitato</item>
-    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
     <item>Usa il nome del file così com\'è, ad es. \'Flying towards Mount Pilatus.mp4\' diventa \'Flying towards Mount Pilatus\'</item>
     <item>Usa la cartella e il nome del file, ad es. \'Videos/Grand Canyon/Sunet.mp4\' diventa \'Grand Canyon / Sunet\'</item>
     <item>Utilizza solo il nome della cartella, ad es. \'Videos/Ireland/Cliffs of Moher.mp4\' diventa \'Ireland\'</item>

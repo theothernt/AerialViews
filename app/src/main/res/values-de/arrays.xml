@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Deaktiviert</item>
-    <item>Formatierten Dateinamen verwenden</item>
     <item>Kompletten Dateinamen benutzen</item>
     <item>Ordner- &amp; Dateiname</item>
     <item>Nur Ordnername</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Deaktiviert</item>
-    <item>Formatierten Dateinamen verwenden, z.B. \'schweiz-zuerich_bahnhof.jpg\' wird zu \'Schweiz - Zürich Bahnhof\'.</item>
     <item>Dateiname unverändert verwenden, z. B. \'Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
     <item>Ordner und Dateiname unverändert verwenden, z. B. \'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
     <item>Nur Ordnernamen verwenden, z. B. \'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Deaktiviert</item>
-    <item>Formatierten Dateinamen verwenden, z. B. \'japan-mount_fuji.mp4\' wird zu \'Japan - Mount Fuji\'</item>
     <item>Nutze kompletten Dateinamen z.B. \'Flug in Richtung Mount Pilatus.mp4\' bleibt \'Flug in Richtung Mount Pilatus\'</item>
     <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Videos/Grand Canyon/Sonnenuntergang.mp4\' wird zu \'Grand Canyon / Sonnenuntergang\'</item>
     <item>Nur Ordnernamen verwenden, z. B. \'Videos/Irland/Cliffs of Moher.mp4\' wird zu \'Irland\'</item>

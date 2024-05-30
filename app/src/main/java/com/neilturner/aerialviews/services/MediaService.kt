@@ -134,9 +134,6 @@ class MediaService(val context: Context) {
             DescriptionFilenameType.FILENAME -> {
                 media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
             }
-            DescriptionFilenameType.FORMATTED -> {
-                media.forEach { item -> item.description = FileHelper.filenameToTitleCase(item.uri) }
-            }
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
                 media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
             }

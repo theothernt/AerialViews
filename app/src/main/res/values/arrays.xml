@@ -85,14 +85,12 @@
     <!-- Use filename as description -->
     <string-array name="description_filename_entries">
         <item>Disabled</item>
-        <item>Use formatted filename</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>
     </string-array>
     <string-array name="description_filename_values" translatable="false">
         <item>DISABLED</item>
-        <item>FORMATTED</item>
         <item>FILENAME</item>
         <item>LAST_FOLDER_FILENAME</item>
         <item>LAST_FOLDER_NAME</item>
@@ -100,14 +98,12 @@
     <string name="description_filename_default" translatable="false">DISABLED</string>
     <string-array name="description_video_filename_entries">
         <item>Disabled</item>
-        <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
         <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
         <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
         <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
     </string-array>
     <string-array name="description_photo_filename_entries">
         <item>Disabled</item>
-        <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
         <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
         <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
         <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>

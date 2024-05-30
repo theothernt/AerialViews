@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Вимкнено</item>
-    <item>"Використовуйте відформатоване ім\'я файлу"</item>
     <item>Використовувати ім\'я файлу як є</item>
     <item>"Ім\'я папки та файлу"</item>
     <item>"Тільки ім\'я папки"</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Вимкнено</item>
-    <item>Використовуйте форматоване ім\'я файлу, наприклад: \'switzerland-zürich_train_station.jpg\' стає \'Switzerland - Zürich Train Station\'</item>
     <item>Використовуйте ім\'я файлу як є, наприклад: \'Japan - Deep snow in Hokkaido.jpg\' стає \'Japan - Deep snow in Hokkaido\'</item>
     <item>Використовуйте папку та ім\'я файлу як є, наприклад: \'Pictures/Italy/Dolomites.jpg\' стає \'Italy / Dolomites\'</item>
     <item>Використовуйте лише назву папки, наприклад: \'Pictures/Dublin/Temple Bar.png\' стає \'Dublin\'</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Вимкнено</item>
-    <item>"Використовуйте форматоване ім\'я файлу, наприклад: \'japan-mount_fuji.mp4\' стає \'Japan - Mount Fuji\'"</item>
     <item>"Використовуйте ім\'я файлу як є, наприклад: \'Flying towards Mount Pilatus.mp4\' стає \'Flying towards Mount Pilatus\'"</item>
     <item>"Використовуйте папку та ім\'я файлу як є, наприклад: \'Videos/Grand Canyon/Sunet.mp4\' стає \'Grand Canyon / Sunet\'"</item>
     <item>Використовуйте лише назву папки, наприклад: \'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'</item>

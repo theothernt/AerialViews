@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Выключено</item>
-    <item>Используйте отформатированное имя файла</item>
     <item>Использовать имя файла как есть</item>
     <item>Имя папки и файла</item>
     <item>Только имя папки</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Выключено</item>
-    <item>Используйте форматированное имя файла, например: \'switzerland-zürich_train_station.jpg\' становится \'Switzerland - Zürich Train Station\'</item>
     <item>Используйте имя файла как есть, например: \'Japan - Deep snow in Hokkaido.jpg\' становится \'Japan - Deep snow in Hokkaido\'</item>
     <item>Используйте папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
     <item>Используйте только название папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Выключено</item>
-    <item>Используйте форматированное имя файла, например: \'japan-mount_fuji.mp4\' становится \'Japan - Mount Fuji\'</item>
     <item>Используйте имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
     <item>Используйте папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunet.mp4\' становится \'Grand Canyon / Sunet\'</item>
     <item>Используйте только имя папки, например: \'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
