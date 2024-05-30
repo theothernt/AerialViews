@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.models.enums
 
 enum class DescriptionFilenameType {
     DISABLED,
-    FORMATTED, // use built-in formatting
     FILENAME, // as-is, leave alone
     LAST_FOLDER_FILENAME, // eg. Summer Photos / Family & Friends (.jpg)
     LAST_FOLDER_NAME // eg. Summer Photos

@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Handicapés</item>
-    <item>Utiliser un nom de fichier formaté</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
     <item>Nom du dossier uniquement</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Handicapés</item>
-    <item>Utilisez un nom de fichier formaté, par exemple \"switzerland-zürich_train_station.jpg\" devient \"Suisse - Gare de Zürich\".</item>
     <item>Utiliser le nom de fichier tel quel, par exemple \"Japon - Neige épaisse à Hokkaido.jpg\" devient \"Japon - Neige épaisse à Hokkaido\".</item>
     <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Pictures/Italy/Dolomites.jpg\" devient \"Italy / Dolomites\".</item>
     <item>Utilisez uniquement le nom du dossier, par exemple \"Pictures/Dublin/Temple Bar.png\" devient \"Dublin\".</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Handicapés</item>
-    <item>Utiliser un nom de fichier formaté, par exemple \"japan-mount_fuji.mp4\" devient \"Japon - Mont Fuji\".</item>
     <item>Utiliser le nom de fichier tel quel, par exemple \"Flying towards Mount Pilatus.mp4\" devient \"Flying towards Mount Pilatus\".</item>
     <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Videos/Grand Canyon/Sunet.mp4\" devient \"Grand Canyon / Sunet\".</item>
     <item>Utilisez uniquement le nom du dossier, par exemple \"Videos/Ireland/Cliffs of Moher.mp4\" devient \"Ireland\".</item>

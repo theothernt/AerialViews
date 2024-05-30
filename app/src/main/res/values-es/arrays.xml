@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Desactivado</item>
-    <item>Usar nombre de archivo formateado</item>
     <item>Usar el nombre de archivo como está</item>
     <item>Carpeta y nombre de archivo</item>
     <item>Solo el nombre de la carpeta</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Desactivado</item>
-    <item>Utilice un nombre de archivo formateado, por ejemplo. \'switzerland-zürich_train_station.jpg\' se convierte en \'Switzerland - Zürich Train Station\'</item>
     <item>Use el nombre de archivo tal cual, por ejemplo. \'Japan - Deep snow in Hokkaido.jpg\' se convierte en \'Japan - Deep snow in Hokkaido\'</item>
     <item>Use la carpeta y el nombre de archivo tal cual, por ejemplo. \'Pictures/Italy/Dolomites.jpg\' se convierte en \'Italy/Dolomites\'</item>
     <item>Use solo el nombre de la carpeta, por ejemplo. \'Pictures/Dublin/Temple Bar.png\' se convierte en \'Dublin\'</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Desactivado</item>
-    <item>Utilice un nombre de archivo formateado, por ejemplo. \'japan-mount_fuji.mp4\' se convierte en \'Japan - Mount Fuji\'</item>
     <item>Use el nombre de archivo tal cual, por ejemplo. \'Flying towards Mount Pilatus.mp4\' se convierte en \'Flying towards Mount Pilatus\'</item>
     <item>Use la carpeta y el nombre de archivo tal cual, por ejemplo. \'Videos/Grand Canyon/Sunet.mp4\' se convierte en \'Grand Canyon / Sunet\'</item>
     <item>Use solo el nombre de la carpeta, por ejemplo. \'Videos/Ireland/Cliffs of Moher.mp4\' se convierte en \'Ireland\'</item>
