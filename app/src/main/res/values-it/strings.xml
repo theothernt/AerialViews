@@ -1,414 +1,277 @@
-<resources >
-    <!-- General -->
-    <string name="loading_title">Caricamento…</string>
-    <string name="loading_error">Nessun video trovato, controllare le impostazioni</string>
-
-    <!-- Common Buttons -->
-    <string name="button_ok">OK</string>
-    <string name="button_cancel">Annulla</string>
-    <string name="button_import">Importa</string>
-    <string name="button_export">Esporta</string>
-
-    <!-- Common Categories -->
-    <string name="category_actions">Azioni</string>
-    <string name="category_advanced">Avanzato</string>
-    <string name="category_video_source">Sorgente Video</string>
-    <string name="category_options">Opzioni</string>
-
-    <!-- Common Prefs/Options -->
-    <string name="videos_quality_title">Qualità video</string>
-    <string name="videos_quality_summary">Seleziona la qualità video</string>
-
-    <!-- Main -->
-    <string name="settings_media_sources_title">Sorgenti Video</string>
-    <string name="settings_media_sources_summary">Riproduci video e immagini da Internet, memoria USB e sorgenti di rete.</string>
-
-    <string name="settings_settings_title">Impostazioni</string>
-    <string name="settings_settings_summary">Modifica le prestazioni, le playlist e le opzioni di aspetto</string>
-
-    <string name="settings_preview_screensaver">Verifica delle impostazioni dello screensaver</string>
-    <string name="settings_system_options">Apri le opzioni dello screensaver del sistema</string>
-
-    <string name="settings_system_options_error">Impossibile aprire le opzioni dello screensaver del dispositivo</string>
-    <string name="settings_system_options_removed">Questa funzione è stata rimossa dal produttore.\nPer ulteriori informazioni, visitare il sito Web di Aerial Views.</string>
-
-    <!-- Main / Video Sources -->
-    <string name="category_remote">Remote</string>
-    <string name="category_local">Locali</string>
-    <string name="category_network">Rete</string>
-
-    <string name="sources_apple_title">Video Apple</string>
-    <string name="sources_apple_summary">Streaming video Apple via Internet</string>
-
-    <string name="sources_comm1_title">Videos Jetson Creative</string>
-    <string name="sources_comm1_summary">Streaming video della comunità via Internet</string>
-
-    <string name="sources_comm2_title">Videos by Robin Fourcade</string>
-    <string name="sources_comm2_summary">Streaming video della comunità via Internet</string>
-
-    <string name="sources_local_title">Archivio locale o USB</string>
-    <string name="sources_local_summary">Riproduci video e immagini direttamente dal dispositivo o da un dispositivo USB collegato</string>
-
-    <string name="sources_samba_title">Condivisione SMB/Samba</string>
-    <string name="sources_samba_summary">Riproduci video e immagini da una condivisione di rete su un PC o un NAS</string>
-
-    <string name="sources_webdav_title">Server WebDAV</string>
-    <string name="sources_webdav_summary">Riproduci video e immagini da un server WebDAV locale o remoto.</string>
-
-    <!-- Main / Video Sources / Apple videos -->
-    <string name="apple_videos_enabled">Utilizza i video Apple</string>
-
-    <string name="apple_videos_data_usage_title">Utilizzo dei dati</string>
-    <string name="apple_videos_data_estimate_summary">Circa %1$s all\'ora</string>
-
-    <!-- Main / Video Sources / Comm1 videos -->
-    <string name="comm1_videos_enabled">Utilizza i video della comunità</string>
-
-    <!-- Main / Video Sources / Comm2 videos -->
-    <string name="comm2_videos_enabled">Utilizza i video della comunità</string>
-
-    <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Opzioni di scansione dei media</string>
-    <string name="category_folder_access_options">Opzioni di accesso alle cartelle</string>
-
-    <string name="local_videos_enabled_title">Usa supporti di archiviazione locali o USB</string>
-
-    <string name="local_media_type_title">Scegli il tipo di supporto</string>
-
-    <string name="local_videos_search_type_title">Scegli come cercare i video e le immagini</string>
-    <string name="local_videos_search_test">Prova le impostazioni di ricerca locale</string>
-
-    <string name="local_videos_media_store_summary">Android esegue la scansione di tutta l\'archiviazione locale, dei dispositivi USB, ecc. alla ricerca di video e immagini.</string>
-
-    <string name="local_videos_shield_notice_title">Utenti di Nvidia Shield, assicuratevi che la seguente opzione sia attivata…</string>
-    <string name="local_videos_shield_notice_summary">Impostazioni > Preferenze del dispositivo > Archiviazione > Scansione media automatica</string>
-
-    <string name="local_videos_media_store_filter_enabled_title">Usa filtro cartella</string>
-    <string name="local_videos_media_store_filter_enabled_summary">Utilizza solo i supporti di una cartella o di cartelle specifiche su dispositivo, USB, ecc.</string>
-
-    <string name="local_videos_media_store_filter_folder_title">Specifica il nome della cartella</string>
-    <string name="local_videos_media_store_filter_folder_summary">Se i media sono archiviati, ad esempio, in /Videos/Aerial/, l\'uso di ´Aerial´ escluderà i media provenienti da altre cartelle.</string>
-    <string name="local_videos_media_store_no_folder">Nessuna cartella specificata per il filtro</string>
-
-    <string name="local_videos_legacy_summary">Specifica una singola cartella in cui sono memorizzati video e immagini</string>
-
-    <string name="local_videos_legacy_volume_title">Scegli un volume</string>
-    <string name="local_videos_legacy_volume_summary">Nessun volume scelto</string>
-
-    <string name="local_videos_legacy_all_entry">Tutti i volumi</string>
-
-    <string name="local_videos_legacy_folder_title">Specifica una cartella (es. /videos)</string>
-    <string name="local_videos_legacy_folder_summary">Nessuna cartella specificata</string>
-
-    <string name="local_videos_legacy_no_volume">Volume non specificato</string>
-    <string name="local_videos_legacy_no_folder">Cartella non specificata</string>
-    <string name="local_videos_legacy_no_folder_found">La cartella non esiste</string>
-    <string name="local_videos_legacy_no_files_found">Nessun file trovato</string>
-
-    <string name="local_media_test_summary1">File trovati: %1$s</string>
-    <string name="local_media_test_summary2">File non supportati: %1$s</string>
-    <string name="local_media_test_summary3">Video trovati: %1$s</string>
-    <string name="local_media_test_summary4">Immagini trovate: %1$s</string>
-    <string name="local_media_test_summary5">Esclusi dal filtro: %1$s</string>
-    <string name="local_media_test_summary6">Selezionati per la riproduzione: %1$s</string>
-
-    <string name="local_videos_permission_denied">Permesso negato</string>
-    <string name="local_videos_test_results">Risultati del test</string>
-
-    <!-- Main / Video Sources / Samba videos -->
-    <string name="category_server_details">Dettagli e credenziali del server</string>
-
-    <string name="samba_videos_enabled_title">Usa supporti di condivisione SMB/Samba</string>
-
-    <string name="samba_media_type_title">Scegli il tipo di supporto</string>
-
-    <string name="samba_videos_test_connection">Test della connessione</string>
-
-    <string name="samba_videos_hostname_title">Nome host</string>
-    <string name="samba_videos_hostname_summary">Indirizzo IP</string>
-
-    <string name="samba_videos_domainname_title">Nome di dominio</string>
-    <string name="samba_videos_domainname_summary">Il nome del dominio o del gruppo di lavoro del server. Opzionale</string>
-
-    <string name="samba_videos_sharename_title">Nome della condivisione</string>
-    <string name="samba_videos_sharename_summary">Il nome della condivisione e della cartella contenente i video, ad esempio /video/aerial.</string>
-
-    <string name="samba_videos_username_title">Nome utente</string>
-    <string name="samba_videos_username_summary">Non impostato. Opzionale</string>
-
-    <string name="samba_videos_password_title">Password</string>
-    <string name="samba_videos_password_summary">Non impostata. Opzionale</string>
-
-    <string name="samba_videos_search_subfolders_title">Ricerca nelle sottocartelle</string>
-    <string name="samba_videos_search_subfolders_summary">Cerca i video in tutte le sottocartelle</string>
-
-    <string name="samba_videos_enable_encryption_title">Abilita crittografia</string>
-    <string name="samba_videos_enable_encryption_summary">Abilita la crittografia per le connessioni SMB, può ridurre la velocità di trasferimento complessiva.</string>
-
-    <string name="samba_videos_smb_dialects_title">Seleziona la versione SMB</string>
-    <string name="samba_videos_smb_dialects_summary">Scegliere le versioni del protocollo SMB da utilizzare.</string>
-
-    <string name="samba_videos_import_export_settings_title">Importa/Esporta impostazioni</string>
-    <string name="samba_videos_import_export_settings_summary">Importa o esporta le credenziali SMB nella cartella Download.</string>
-
-    <string name="samba_media_test_summary1">File trovati: %1$s</string>
-    <string name="samba_media_test_summary2">File non supportati: %1$s</string>
-    <string name="samba_media_test_summary3">Video trovati: %1$s</string>
-    <string name="samba_media_test_summary4">Immagini trovate: %1$s</string>
-    <string name="samba_media_test_summary5">Selezionati per la riproduzione: %1$s</string>
-
-    <string name="samba_videos_import_failed">Importazione fallita</string>
-    <string name="samba_videos_import_success">Importazione riuscita</string>
-    <string name="samba_videos_unable_to_save">Impossibile salvare le impostazioni importate</string>
-    <string name="samba_videos_file_not_found">Impossibile trovare il file delle impostazioni SMB nella cartella Download: %1$s</string>
-    <string name="samba_videos_error_parsing">Errore durante la l\'importazione del file. Ricontrollare il file per verificare la presenza di errori o caratteri non validi.</string>
-    <string name="samba_videos_import_save_success">Impostazioni SMB importate con successo da: %1$s</string>
-
-    <string name="samba_videos_export_failed">Esportazione non riuscita</string>
-    <string name="samba_videos_export_success">Esportazione riuscita</string>
-    <string name="samba_videos_file_already_exists">Il file delle impostazioni SMB %1$s esiste già nella cartella Download.</string>
-    <string name="samba_videos_unable_to_write">Errore durante la scrittura delle impostazioni SMB su %1$s nella cartella Downloads</string>
-    <string name="samba_videos_export_write_success">Esportazione riuscita delle impostazioni SMB in %1$s nella cartella Download</string>
-
-    <string name="samba_videos_permission_denied">Permesso negato</string>
-    <string name="samba_videos_test_results">Risultato del test</string>
-
-    <!-- Main / Video Sources / WebDAV videos -->
-
-    <!-- Main / Settings -->
-    <string name="category_settings">Impostazioni</string>
-
-    <string name="settings_appearance_title">Aspetto</string>
-    <string name="settings_appearance_summary">Personalizza l\'aspetto durante la riproduzione di video e immagini</string>
-
-    <string name="settings_playlist_title">Playlist</string>
-    <string name="settings_playlist_summary">Rimuovi l\'audio, riproduci casualmente, etc</string>
-
-    <string name="settings_dpad_title">D-Pad/Telecomando</string>
-    <string name="settings_dpad_summary">Personalizza le azioni del d-pad sul telecomando</string>
-
-    <string name="settings_capabilities_title">Funzionalità del dispositivo</string>
-    <string name="settings_capabilities_summary">Codec video, risoluzione supportata e altre funzionalità.</string>
-
-    <string name="settings_advanced_title">Avanzate</string>
-    <string name="settings_advanced_summary">Prestazioni e opzioni di debug per la risoluzione dei problemi</string>
-
-    <string name="settings_about_title">Informazioni</string>
-    <string name="settings_about_summary">Versione, informazioni sulla compilazione, ecc.</string>
-
-    <string name="settings_import_export_settings_title">Importa/esporta impostazioni</string>
-    <string name="settings_import_export_settings_summary">Importa o esporta le impostazioni nella cartella dei download.</string>
-
-    <!-- Main / Settings / Appearance -->
-    <string name="category_appearance">Aspetto</string>
-    <string name="category_overlays">Overlay</string>
-    <string name="category_slots">Campi</string>
-    <string name="category_gradient">Gradiente</string>
-    <string name="category_startup">Avvio</string>
-
-    <string name="appearance_top_row_title">Riga superiore</string>
-    <string name="appearance_top_row_summary">Scegliere gli overlay per la parte superiore dello schermo</string>
-
-    <string name="appearance_bottom_row_title">Riga inferiore</string>
-    <string name="appearance_bottom_row_summary">Scegliere gli overlay per la parte inferiore dello schermo</string>
-
-    <string name="appearance_clock_title">Orologio</string>
-    <string name="appearance_clock_summary">Visualizza l\'ora corrente</string>
-
-    <string name="appearance_location_title">Posizione</string>
-    <string name="appearance_location_summary">Visualizza la posizione o i punti di interesse</string>
-
-    <string name="appearance_date_title">Data</string>
-    <string name="appearance_date_summary">Visualizza la data corrente</string>
-
-    <string name="appearance_weather_title">Meteo</string>
-    <string name="appearance_weather_summary">Visualizza le condizioni meteo attuali</string>
-
-    <string name="appearance_music_title">Musica</string>
-    <string name="appearance_music_summary">Visualizza il brano in riproduzione</string>
-
-    <string name="appearance_message_title">Messaggio</string>
-    <string name="appearance_message_summary">Visualizza fino a 2 righe di testo personalizzato</string>
-
-    <string name="appearance_typography_title">Carattere</string>
-    <string name="appearance_typography_summary">Modifica il carattere utilizzato da tutti gli overlay</string>
-
-    <string name="appearance_alt_text_position_title">Alterna la posizione del testo</string>
-    <string name="appearance_alt_text_position_summary">L\'orologio e la posizione cambiano a ogni video per aiutare a prevenire il burn-in dell\'OLED</string>
-
-    <string name="appearance_gradient_title">Gradiente</string>
-    <string name="appearance_gradient_summary">Visualizza un gradiente dietro gli overlay, rendendoli più facili da vedere.</string>
-
-    <string name="appearance_startup_title">Avvio</string>
-    <string name="appearance_startup_summary">Cambia ciò che si vede durante il caricamento dell\'applicazione</string>
-
-    <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">In alto a sinistra</string>
-    <string name="category_top_row_right">In alto a destra</string>
-
-    <string name="category_bottom_row_left">In basso a sinistra</string>
-    <string name="category_bottom_row_right">In basso a destra</string>
-
-    <string name="appearance_slot1_title">Slot inferiore</string>
-    <string name="appearance_slot2_title">Slot superiore</string>
-    <string name="appearance_slot_summary">Vuoto</string>
-
-    <string name="appearance_bottom_left_lower_slot">In basso a sinistra, slot inferiore</string>
-    <string name="appearance_bottom_left_upper_slot">In basso a sinistra, slot superiore</string>
-    <string name="appearance_bottom_right_lower_slot">In basso a destra, slot inferiore</string>
-    <string name="appearance_bottom_right_upper_slot">In basso a destra, slot superiore</string>
-    <string name="appearance_top_left_lower_slot">In alto a sinistra, slot inferiore</string>
-    <string name="appearance_top_left_upper_slot">In alto a sinistra, slot superiore</string>
-    <string name="appearance_top_right_lower_slot">In alto a destra, slot inferiore</string>
-    <string name="appearance_top_right_upper_slot">In alto a destra, slot superiore</string>
-
-    <!-- Main / Settings / Appearance / Startup + Shutdown -->
-    <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
-    <string name="appearance_loading_show_summary">Visualizza il testo “Caricamento…” durante l\'avvio dell\'applicazione.</string>
-
-    <string name="appearance_loading_size_title">Dimensione</string>
-    <string name="appearance_loading_weight_title">Spessore</string>
-
-    <!-- Main / Settings / Appearance / Gradient -->
-    <string name="appearance_gradient_top_title">Mostra gradiente superiore</string>
-    <string name="appearance_gradient_top_summary">Visualizza un gradiente dietro gli overlay nella parte superiore dello schermo, rendendoli più facili da vedere.</string>
-
-    <string name="appearance_gradient_bottom_title">Mostra gradiente inferiore</string>
-    <string name="appearance_gradient_bottom_summary">Visualizza un gradiente dietro le sovrapposizioni nella parte inferiore dello schermo, rendendole più facili da vedere.</string>
-
-    <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Orologio</string>
-    <string name="appearance_clock_format_title">Formato orologio</string>
-
-    <string name="appearance_show_force_latin_digits_title">Forza caratteri occidentali</string>
-    <string name="appearance_show_force_latin_digits_summary">Mostra sempre i caratteri occidentali, indipendentemente dalle impostazioni della lingua di sistema.</string>
-
-    <string name="appearance_clock_size_title">Dimensione</string>
-
-    <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Data</string>
-    <string name="category_custom_format">Formato personalizzato</string>
-
-    <string name="appearance_date_format_title">Formato data</string>
-    <string name="appearance_date_custom_title">Specifica il formato della data</string>
-    <string name="appearance_date_notice_summary">Per ulteriori informazioni sui formati di data, cercare “Android SimpleDateFormat”.</string>
-    <string name="appearance_date_size_title">Dimensione</string>
-
-    <string name="appearance_date_custom_error">Formato data non valido!</string>
-    <string name="appearance_date_custom_example">es.</string>
-
-    <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Solo video Apple e della community</string>
-    <string name="category_all_other_media">Tutti gli altri video e immagini</string>
-
-    <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Messaggio</string>
-
-    <string name="appearance_message_style_title">Mostra un messaggio personalizzato</string>
-
-    <string name="appearance_message_line1_title">Linea 1</string>
-    <string name="appearance_message_line1_summary">Immeti il testo da mostrare, include emoji</string>
-    <string name="appearance_message_line2_title">Linea 2</string>
-
-    <string name="appearance_message_size_title">Dimensione</string>
-
-    <!-- Main / Settings / Appearance / Typography -->
-
-    <string name="category_typography">Carattere</string>
-
-    <string name="appearance_typeface_title">Tipo carattere</string>
-
-    <string name="appearance_weight_title">Spessore</string>
-
-    <!-- Main / Settings / Playlist -->
-    <string name="category_playlist">Playlist</string>
-    <string name="category_videos">Video</string>
-
-    <string name="playlist_mute_videos_title">Muta i video</string>
-    <string name="playlist_mute_videos_summary">Muta il suono di tutti i video</string>
-
-    <string name="playlist_shuffle_title">Selezione casuale videos e immagini</string>
-    <string name="playlist_shuffle_summary">Seleziona casualmente videos e immagini</string>
-
-    <string name="playlist_max_video_length_title">Limita la lunghezza dei video</string>
-
-    <string name="playlist_playback_speed_title">Velocità di riproduzione</string>
-    <string name="playlist_playback_speed_summary">Scegli la velocità di riproduzione</string>
-
-    <string name="playlist_remove_duplicates_title">Rimuovi videos e immagini duplicati</string>
-    <string name="playlist_remove_duplicates_summary">Rimuovi videos e immagini duplicati dalla playlist conytrollando il nome del file</string>
-
-    <string name="playlist_ignore_unmatched_videos_title">Ignora i video che non sono di Apple o della community</string>
-    <string name="playlist_ignore_unmatched_videos_summary">Salta i video non riconosciuti come Apple o della community</string>
-
-    <string name="playlist_slideshow_speed_title">Velocità slideshow</string>
-    <string name="playlist_slideshow_speed_summary">Scegli una durata</string>
-
-    <!-- Main / Settings / D-Pad/Remote -->
-    <string name="category_dpad">D-Pad/Telecomando</string>
-
-    <string name="playlist_allow_video_skipping_title">Consenti di saltare al video o all\'immagine successiva/precedente</string>
-    <string name="playlist_allow_video_skipping_summary">Salta un video o un\'immagine premendo a sinistra o a destra sul d-pad del telecomando</string>
-
-    <string name="playlist_allow_playback_speed_change_title">Consenti di cambiare la velocità durante la riproduzione</string>
-    <string name="playlist_allow_playback_speed_change_summary">Modifica la velocità del video premendo il d-pad del telecomando verso l\'alto o verso il basso.</string>
-    <string name="playlist_playback_speed_changed">Velocit di riproduzione cambiata a: %1$s</string>
-    <string name="playlist_allow_media_button_passthrough_title">Consenti il pass-through dei tasti multimediali</string>
-    <string name="playlist_allow_media_button_passthrough_summary">Passa la pressione dei pulsanti di riproduzione, pausa, riavvolgimento, ecc. all\'applicazione in background (ad esempio, l\'applicazione musicale) senza uscire dallo screensaver.</string>
-
-    <!-- Main / Settings / Device capabilities -->
-    <string name="category_capabilities">Caratteristiche</string>
-
-    <string name="capabilities_device_title">Dispositivo</string>
-    <string name="capabilities_display_title">TV/Monitor</string>
-    <string name="capabilities_codecs_title">Riepilogo codec</string>
-    <string name="capabilities_decoders_title">Decoder video</string>
-    <string name="capabilities_resolution_title">Risoluzione</string>
-
-    <string name="capabilities_model">Modello: %1$s</string>
-    <string name="capabilities_android">Android: %1$s</string>
-    <string name="capabilities_yes">Sì</string>
-    <string name="capabilities_no">No</string>
-
-    <string name="capabilities_ui_resolution">Risoluzione UI: %1$s</string>
-    <string name="capabilities_max_video_resolution">Massima risoluzione video: %1$s</string>
-
-    <string name="capabilities_supports_hdr10">Supporto HDR10: %1$s</string>
-    <string name="capabilities_supports_dolby_vision">Supporto Dolby Vision: %1$s</string>
-    <string name="capabilities_found">Trovato</string>
-    <string name="capabilities_not_found">Non trovato</string>
-    <string name="capabilities_avc">AVC: %1$s</string>
-    <string name="capabilities_hevc">HEVC: %1$s</string>
-    <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
-
-    <!-- Main / Settings / Advanced -->
-    <string name="category_video_render_options">Ozioni video e rendering</string>
-    <string name="category_samba_options">Opzioni Samba/SMB</string>
-
-    <string name="advanced_refresh_rate_switching_title">Switch automatico refresh rate</string>
-    <string name="advanced_refresh_rate_switching_summary">Cambia la frequenza di aggiornamento del display per adattarla alla frequenza dei fotogrammi del video.</string>
-
-    <string name="advanced_enable_tunneling_title">Abilita il tunneling</string>
-    <string name="advanced_enable_tunneling_summary">Usa l\'accelerazione hardware, più importante per 4K/HDR</string>
-
-    <string name="allow_fallback_decoders_title">Consenti il fallback dei decodificatori</string>
-    <string name="allow_fallback_decoders_summary">bilita il supporto di codec alternativi o basati su software su alcuni dispositivi.</string>
-
-    <string name="enable_playback_logging_title">Abilita il log della riproduzione</string>
-    <string name="enable_playback_logging_summary">Mostra informazioni aggiuntive sulla riproduzione nei log. Utile per la risoluzione dei problemi.</string>
-
-    <string name="advanced_philips_dolby_vision_fix_title">Usa analisi alternativa dei MediaCodec</string>
-    <string name="advanced_philips_dolby_vision_fix_summary">Corregge la riproduzione di Dolby Vision su alcuni vecchi televisori Philips.</string>
-
-    <string name="advanced_locale_menu_title">Lingua del testo del menu</string>
-    <string name="advanced_locale_screensaver_title">Lingua del testo del salvaschermo (orologio, posizione)</string>
-
-    <string name="advanced_locale_restart_app_title">Riavvia l\'applicazione</string>
-    <string name="advanced_locale_restart_app_summary">L\'applicazione deve essere riavviata per cambiare la lingua del menu.</string>
-
-    <!-- Main / Settings / About -->
-    <string name="category_about">Informazioni</string>
-
-    <string name="about_version_title">Versione</string>
-    <string name="about_date_title">Date di compilazione</string>
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string name="about_date_title">Date di compilazione</string>
+  <string name="about_version_title">Versione</string>
+  <string name="advanced_enable_tunneling_summary">Usa l\'accelerazione hardware, più importante per 4K/HDR</string>
+  <string name="advanced_enable_tunneling_title">Abilita il tunneling</string>
+  <string name="advanced_locale_menu_title">Lingua del testo del menu</string>
+  <string name="advanced_locale_restart_app_summary">L\'applicazione deve essere riavviata per cambiare la lingua del menu.</string>
+  <string name="advanced_locale_restart_app_title">Riavvia l\'applicazione</string>
+  <string name="advanced_locale_screensaver_title">Lingua del testo del salvaschermo (orologio, posizione)</string>
+  <string name="advanced_philips_dolby_vision_fix_summary">Corregge la riproduzione di Dolby Vision su alcuni vecchi televisori Philips.</string>
+  <string name="advanced_philips_dolby_vision_fix_title">Usa analisi alternativa dei MediaCodec</string>
+  <string name="advanced_refresh_rate_switching_summary">Cambia la frequenza di aggiornamento del display per adattarla alla frequenza dei fotogrammi del video.</string>
+  <string name="advanced_refresh_rate_switching_title">Switch automatico della frequenza di aggiornamento</string>
+  <string name="allow_fallback_decoders_summary">Abilita il supporto di codec alternativi o basati su software su alcuni dispositivi.</string>
+  <string name="allow_fallback_decoders_title">Consenti il fallback dei decodificatori</string>
+  <string name="appearance_alt_text_position_summary">L\'orologio e la posizione cambiano a ogni video per aiutare a prevenire il burn-in dell\'OLED</string>
+  <string name="appearance_alt_text_position_title">Alterna la posizione del testo</string>
+  <string name="appearance_bottom_left_lower_slot">In basso a sinistra, slot inferiore</string>
+  <string name="appearance_bottom_left_upper_slot">In basso a sinistra, slot superiore</string>
+  <string name="appearance_bottom_right_lower_slot">In basso a destra, slot inferiore</string>
+  <string name="appearance_bottom_right_upper_slot">In basso a destra, slot superiore</string>
+  <string name="appearance_bottom_row_summary">Scegliere gli overlay per la parte inferiore dello schermo</string>
+  <string name="appearance_bottom_row_title">Riga inferiore</string>
+  <string name="appearance_clock_format_title">Formato orologio</string>
+  <string name="appearance_clock_size_title">Dimensione</string>
+  <string name="appearance_clock_summary">Visualizza l\'ora corrente</string>
+  <string name="appearance_clock_title">Orologio</string>
+  <string name="appearance_date_custom_error">Formato data non valido!</string>
+  <string name="appearance_date_custom_example">es.</string>
+  <string name="appearance_date_custom_title">Specifica il formato della data</string>
+  <string name="appearance_date_format_title">Formato data</string>
+  <string name="appearance_date_notice_summary">Per ulteriori informazioni sui formati di data, cercare “Android SimpleDateFormat”.</string>
+  <string name="appearance_date_size_title">Dimensione</string>
+  <string name="appearance_date_summary">Visualizza la data corrente</string>
+  <string name="appearance_date_title">Data</string>
+  <string name="appearance_description_photos_filename_summary">Le tue foto dalla memoria locale o da una condivisione di rete</string>
+  <string name="appearance_description_photos_filename_title">Usa il nome del file/cartella per la descrizione</string>
+  <string name="appearance_description_size_title">Dimensione</string>
+  <string name="appearance_description_videos_filename_summary">I tuoi video dalla memoria locale o da una condivisione di rete</string>
+  <string name="appearance_description_videos_filename_title">Usa il nome del file/cartella per la descrizione</string>
+  <string name="appearance_description_videos_manifest_summary">Video Apple e della community in streaming, archiviati localmente o condivisi in rete</string>
+  <string name="appearance_description_videos_manifest_title">Mostra la descrizione o i punti di interesse</string>
+  <string name="appearance_gradient_bottom_summary">Visualizza un gradiente dietro le sovrapposizioni nella parte inferiore dello schermo, rendendole più facili da vedere.</string>
+  <string name="appearance_gradient_bottom_title">Mostra gradiente inferiore</string>
+  <string name="appearance_gradient_summary">Visualizza un gradiente dietro gli overlay, rendendoli più facili da vedere.</string>
+  <string name="appearance_gradient_title">Gradiente</string>
+  <string name="appearance_gradient_top_summary">Visualizza un gradiente dietro gli overlay nella parte superiore dello schermo, rendendoli più facili da vedere.</string>
+  <string name="appearance_gradient_top_title">Mostra gradiente superiore</string>
+  <string name="appearance_loading_show_summary">Visualizza il testo “Caricamento…” durante l\'avvio dell\'applicazione.</string>
+  <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
+  <string name="appearance_loading_size_title">Dimensione</string>
+  <string name="appearance_loading_weight_title">Spessore</string>
+  <string name="appearance_location_summary">Visualizza la posizione o i punti di interesse</string>
+  <string name="appearance_location_title">Posizione</string>
+  <string name="appearance_message_line1_summary">Immeti il testo da mostrare, include emoji</string>
+  <string name="appearance_message_line1_title">Linea 1</string>
+  <string name="appearance_message_line2_title">Linea 2</string>
+  <string name="appearance_message_size_title">Dimensione</string>
+  <string name="appearance_message_style_title">Mostra un messaggio personalizzato</string>
+  <string name="appearance_message_summary">Visualizza fino a 2 righe di testo personalizzato</string>
+  <string name="appearance_message_title">Messaggio</string>
+  <string name="appearance_music_summary">Visualizza il brano in riproduzione</string>
+  <string name="appearance_music_title">Musica</string>
+  <string name="appearance_show_force_latin_digits_summary">Mostra sempre i caratteri occidentali, indipendentemente dalle impostazioni della lingua di sistema.</string>
+  <string name="appearance_show_force_latin_digits_title">Forza caratteri occidentali</string>
+  <string name="appearance_slot1_title">Slot inferiore</string>
+  <string name="appearance_slot2_title">Slot superiore</string>
+  <string name="appearance_slot_summary">Vuoto</string>
+  <string name="appearance_startup_summary">Cambia ciò che si vede durante il caricamento dell\'applicazione</string>
+  <string name="appearance_startup_title">Avvio</string>
+  <string name="appearance_top_left_lower_slot">In alto a sinistra, slot inferiore</string>
+  <string name="appearance_top_left_upper_slot">In alto a sinistra, slot superiore</string>
+  <string name="appearance_top_right_lower_slot">In alto a destra, slot inferiore</string>
+  <string name="appearance_top_right_upper_slot">In alto a destra, slot superiore</string>
+  <string name="appearance_top_row_summary">Scegliere gli overlay per la parte superiore dello schermo</string>
+  <string name="appearance_top_row_title">Riga superiore</string>
+  <string name="appearance_typeface_title">Tipo carattere</string>
+  <string name="appearance_typography_summary">Modifica il carattere utilizzato da tutti gli overlay</string>
+  <string name="appearance_typography_title">Carattere</string>
+  <string name="appearance_weather_summary">Visualizza le condizioni meteo attuali</string>
+  <string name="appearance_weather_title">Meteo</string>
+  <string name="appearance_weight_title">Spessore</string>
+  <string name="apple_videos_data_estimate_summary">Circa %1$s all\'ora</string>
+  <string name="apple_videos_data_usage_title">Utilizzo dei dati</string>
+  <string name="apple_videos_enabled">Utilizza i video Apple</string>
+  <string name="button_cancel">Annulla</string>
+  <string name="button_export">Esporta</string>
+  <string name="button_import">Importa</string>
+  <string name="button_ok">OK</string>
+  <string name="capabilities_android">Android: %1$s</string>
+  <string name="capabilities_avc">AVC: %1$s</string>
+  <string name="capabilities_codecs_title">Riepilogo codec</string>
+  <string name="capabilities_decoders_title">Decoder video</string>
+  <string name="capabilities_device_title">Dispositivo</string>
+  <string name="capabilities_display_title">TV/Monitor</string>
+  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+  <string name="capabilities_found">Trovato</string>
+  <string name="capabilities_hevc">HEVC: %1$s</string>
+  <string name="capabilities_max_video_resolution">Massima risoluzione video: %1$s</string>
+  <string name="capabilities_model">Modello: %1$s</string>
+  <string name="capabilities_no">No</string>
+  <string name="capabilities_not_found">Non trovato</string>
+  <string name="capabilities_resolution_title">Risoluzione</string>
+  <string name="capabilities_supports_dolby_vision">Supporto Dolby Vision: %1$s</string>
+  <string name="capabilities_supports_hdr10">Supporto HDR10: %1$s</string>
+  <string name="capabilities_ui_resolution">Risoluzione UI: %1$s</string>
+  <string name="capabilities_yes">Sì</string>
+  <string name="category_about">Informazioni</string>
+  <string name="category_actions">Azioni</string>
+  <string name="category_advanced">Avanzato</string>
+  <string name="category_all_other_media">Tutti gli altri video e immagini</string>
+  <string name="category_appearance">Aspetto</string>
+  <string name="category_apple_and_community_videos">Solo video Apple e della community</string>
+  <string name="category_bottom_row_left">In basso a sinistra</string>
+  <string name="category_bottom_row_right">In basso a destra</string>
+  <string name="category_capabilities">Caratteristiche</string>
+  <string name="category_clock">Orologio</string>
+  <string name="category_custom_format">Formato personalizzato</string>
+  <string name="category_date">Data</string>
+  <string name="category_dpad">D-Pad/Telecomando</string>
+  <string name="category_folder_access_options">Opzioni di accesso alle cartelle</string>
+  <string name="category_gradient">Gradiente</string>
+  <string name="category_local">Locali</string>
+  <string name="category_media_scanner_options">Opzioni di scansione dei media</string>
+  <string name="category_message">Messaggio</string>
+  <string name="category_network">Rete</string>
+  <string name="category_options">Opzioni</string>
+  <string name="category_overlays">Overlay</string>
+  <string name="category_photos">Foto</string>
+  <string name="category_playlist">Playlist</string>
+  <string name="category_remote">Remote</string>
+  <string name="category_samba_options">Opzioni Samba/SMB</string>
+  <string name="category_server_details">Dettagli e credenziali del server</string>
+  <string name="category_settings">Impostazioni</string>
+  <string name="category_slots">Campi</string>
+  <string name="category_startup">Avvio</string>
+  <string name="category_top_row_left">In alto a sinistra</string>
+  <string name="category_top_row_right">In alto a destra</string>
+  <string name="category_typography">Carattere</string>
+  <string name="category_video_render_options">Opzioni video e rendering</string>
+  <string name="category_video_source">Sorgente Video</string>
+  <string name="category_videos">Video</string>
+  <string name="comm1_videos_enabled">Utilizza i video della comunità</string>
+  <string name="comm2_videos_enabled">Utilizza i video della comunità</string>
+  <string name="enable_playback_logging_summary">Mostra informazioni aggiuntive sulla riproduzione nei log. Utile per la risoluzione dei problemi.</string>
+  <string name="enable_playback_logging_title">Abilita il log della riproduzione</string>
+  <string name="loading_error">Nessun video trovato, controllare le impostazioni</string>
+  <string name="loading_title">Caricamento…</string>
+  <string name="local_media_test_summary1">File trovati: %1$s</string>
+  <string name="local_media_test_summary2">File non supportati: %1$s</string>
+  <string name="local_media_test_summary3">Video trovati: %1$s</string>
+  <string name="local_media_test_summary4">Immagini trovate: %1$s</string>
+  <string name="local_media_test_summary5">Esclusi dal filtro: %1$s</string>
+  <string name="local_media_test_summary6">Selezionati per la riproduzione: %1$s</string>
+  <string name="local_media_type_title">Scegli il tipo di supporto</string>
+  <string name="local_videos_enabled_title">Usa supporti di archiviazione locali o USB</string>
+  <string name="local_videos_legacy_all_entry">Tutti i volumi</string>
+  <string name="local_videos_legacy_folder_summary">Nessuna cartella specificata</string>
+  <string name="local_videos_legacy_folder_title">Specifica una cartella (es. /videos)</string>
+  <string name="local_videos_legacy_no_files_found">Nessun file trovato</string>
+  <string name="local_videos_legacy_no_folder">Cartella non specificata</string>
+  <string name="local_videos_legacy_no_folder_found">La cartella non esiste</string>
+  <string name="local_videos_legacy_no_volume">Volume non specificato</string>
+  <string name="local_videos_legacy_summary">Specifica una singola cartella in cui sono memorizzati video e immagini</string>
+  <string name="local_videos_legacy_volume_summary">Nessun volume scelto</string>
+  <string name="local_videos_legacy_volume_title">Scegli un volume</string>
+  <string name="local_videos_media_store_filter_enabled_summary">Utilizza solo i supporti di una cartella o di cartelle specifiche su dispositivo, USB, ecc.</string>
+  <string name="local_videos_media_store_filter_enabled_title">Usa filtro cartella</string>
+  <string name="local_videos_media_store_filter_folder_summary">Se i media sono archiviati, ad esempio, in /Videos/Aerial/, l\'uso di ´Aerial´ escluderà i media provenienti da altre cartelle.</string>
+  <string name="local_videos_media_store_filter_folder_title">Specifica il nome della cartella</string>
+  <string name="local_videos_media_store_no_folder">Nessuna cartella specificata per il filtro</string>
+  <string name="local_videos_media_store_summary">Android esegue la scansione di tutta l\'archiviazione locale, dei dispositivi USB, ecc. alla ricerca di video e immagini.</string>
+  <string name="local_videos_permission_denied">Permesso negato</string>
+  <string name="local_videos_search_test">Prova le impostazioni di ricerca locale</string>
+  <string name="local_videos_search_type_title">Scegli come cercare i video e le immagini</string>
+  <string name="local_videos_shield_notice_summary">Impostazioni &gt; Preferenze del dispositivo &gt; Archiviazione &gt; Scansione media automatica</string>
+  <string name="local_videos_shield_notice_title">Utenti di Nvidia Shield, assicuratevi che la seguente opzione sia attivata…</string>
+  <string name="local_videos_test_results">Risultati del test</string>
+  <string name="playlist_allow_media_button_passthrough_summary">Passa la pressione dei pulsanti di riproduzione, pausa, riavvolgimento, ecc. all\'applicazione in background (ad esempio, l\'applicazione musicale) senza uscire dallo screensaver.</string>
+  <string name="playlist_allow_media_button_passthrough_title">Consenti il pass-through dei tasti multimediali</string>
+  <string name="playlist_allow_playback_speed_change_summary">Modifica la velocità del video premendo il d-pad del telecomando verso l\'alto o verso il basso.</string>
+  <string name="playlist_allow_playback_speed_change_title">Consenti di cambiare la velocità durante la riproduzione</string>
+  <string name="playlist_allow_video_skipping_summary">Salta un video o un\'immagine premendo a sinistra o a destra sul d-pad del telecomando</string>
+  <string name="playlist_allow_video_skipping_title">Consenti di saltare al video o all\'immagine successiva/precedente</string>
+  <string name="playlist_ignore_unmatched_videos_summary">Salta i video non riconosciuti come Apple o della community</string>
+  <string name="playlist_ignore_unmatched_videos_title">Ignora i video che non sono di Apple o della community</string>
+  <string name="playlist_max_video_length_title">Limita la lunghezza dei video</string>
+  <string name="playlist_mute_videos_summary">Silenzia il suono di tutti i video</string>
+  <string name="playlist_mute_videos_title">Silenzia i video</string>
+  <string name="playlist_photo_scale_title">Ridimensionamento delle foto</string>
+  <string name="playlist_playback_speed_changed">Velocità di riproduzione cambiata a: %1$s</string>
+  <string name="playlist_playback_speed_summary">Scegli la velocità di riproduzione</string>
+  <string name="playlist_playback_speed_title">Velocità di riproduzione</string>
+  <string name="playlist_remove_duplicates_summary">Rimuovi videos e immagini duplicati dalla playlist conytrollando il nome del file</string>
+  <string name="playlist_remove_duplicates_title">Rimuovi videos e immagini duplicati</string>
+  <string name="playlist_shuffle_summary">Seleziona casualmente video e immagini</string>
+  <string name="playlist_shuffle_title">Selezione casuale video e immagini</string>
+  <string name="playlist_slideshow_speed_summary">Scegli una durata</string>
+  <string name="playlist_slideshow_speed_title">Velocità slideshow</string>
+  <string name="samba_media_test_summary1">File trovati: %1$s</string>
+  <string name="samba_media_test_summary2">File non supportati: %1$s</string>
+  <string name="samba_media_test_summary3">Video trovati: %1$s</string>
+  <string name="samba_media_test_summary4">Immagini trovate: %1$s</string>
+  <string name="samba_media_test_summary5">Selezionati per la riproduzione: %1$s</string>
+  <string name="samba_media_type_title">Scegli il tipo di supporto</string>
+  <string name="samba_videos_domainname_summary">Il nome del dominio o del gruppo di lavoro del server. Opzionale</string>
+  <string name="samba_videos_domainname_title">Nome di dominio</string>
+  <string name="samba_videos_enable_encryption_summary">Abilita la crittografia per le connessioni SMB, può ridurre la velocità di trasferimento complessiva.</string>
+  <string name="samba_videos_enable_encryption_title">Abilita crittografia</string>
+  <string name="samba_videos_enabled_title">Usa supporti di condivisione SMB/Samba</string>
+  <string name="samba_videos_error_parsing">Errore durante la l\'importazione del file. Ricontrollare il file per verificare la presenza di errori o caratteri non validi.</string>
+  <string name="samba_videos_export_failed">Esportazione non riuscita</string>
+  <string name="samba_videos_export_success">Esportazione riuscita</string>
+  <string name="samba_videos_export_write_success">Esportazione riuscita delle impostazioni SMB in %1$s nella cartella Download</string>
+  <string name="samba_videos_file_already_exists">Il file delle impostazioni SMB %1$s esiste già nella cartella Download.</string>
+  <string name="samba_videos_file_not_found">Impossibile trovare il file delle impostazioni SMB nella cartella Download: %1$s</string>
+  <string name="samba_videos_hostname_summary">Indirizzo IP</string>
+  <string name="samba_videos_hostname_title">Nome host</string>
+  <string name="samba_videos_import_export_settings_summary">Importa o esporta le credenziali SMB nella cartella Download.</string>
+  <string name="samba_videos_import_export_settings_title">Importa/Esporta impostazioni</string>
+  <string name="samba_videos_import_failed">Importazione fallita</string>
+  <string name="samba_videos_import_save_success">Impostazioni SMB importate con successo da: %1$s</string>
+  <string name="samba_videos_import_success">Importazione riuscita</string>
+  <string name="samba_videos_password_summary">Non impostata. Opzionale</string>
+  <string name="samba_videos_password_title">Password</string>
+  <string name="samba_videos_permission_denied">Permesso negato</string>
+  <string name="samba_videos_search_subfolders_summary">Cerca i video in tutte le sottocartelle</string>
+  <string name="samba_videos_search_subfolders_title">Ricerca nelle sottocartelle</string>
+  <string name="samba_videos_sharename_summary">Il nome della condivisione e della cartella contenente i video, ad esempio /video/aerial.</string>
+  <string name="samba_videos_sharename_title">Nome della condivisione</string>
+  <string name="samba_videos_smb_dialects_summary">Scegliere le versioni del protocollo SMB da utilizzare.</string>
+  <string name="samba_videos_smb_dialects_title">Seleziona la versione SMB</string>
+  <string name="samba_videos_test_connection">Test della connessione</string>
+  <string name="samba_videos_test_results">Risultato del test</string>
+  <string name="samba_videos_unable_to_save">Impossibile salvare le impostazioni importate</string>
+  <string name="samba_videos_unable_to_write">Errore durante la scrittura delle impostazioni SMB su %1$s nella cartella Download</string>
+  <string name="samba_videos_username_summary">Non impostato. Opzionale</string>
+  <string name="samba_videos_username_title">Nome utente</string>
+  <string name="settings_about_summary">Versione, informazioni sulla compilazione, ecc.</string>
+  <string name="settings_about_title">Informazioni</string>
+  <string name="settings_advanced_summary">Prestazioni e opzioni di debug per la risoluzione dei problemi</string>
+  <string name="settings_advanced_title">Avanzate</string>
+  <string name="settings_appearance_summary">Personalizza l\'aspetto durante la riproduzione di video e immagini</string>
+  <string name="settings_appearance_title">Aspetto</string>
+  <string name="settings_capabilities_summary">Codec video, risoluzione supportata e altre funzionalità.</string>
+  <string name="settings_capabilities_title">Funzionalità del dispositivo</string>
+  <string name="settings_dpad_summary">Personalizza le azioni del d-pad sul telecomando</string>
+  <string name="settings_dpad_title">D-Pad/Telecomando</string>
+  <string name="settings_import_export_settings_summary">Importa o esporta le impostazioni nella cartella dei download.</string>
+  <string name="settings_import_export_settings_title">Importa/esporta impostazioni</string>
+  <string name="settings_media_sources_summary">Riproduci video e immagini da Internet, memoria USB e sorgenti di rete.</string>
+  <string name="settings_media_sources_title">Sorgenti Video</string>
+  <string name="settings_playlist_summary">Rimuovi l\'audio, riproduci casualmente, etc</string>
+  <string name="settings_playlist_title">Playlist</string>
+  <string name="settings_preview_screensaver">Verifica delle impostazioni dello screensaver</string>
+  <string name="settings_settings_summary">Modifica le prestazioni, le playlist e le opzioni di aspetto</string>
+  <string name="settings_settings_title">Impostazioni</string>
+  <string name="settings_system_options">Apri le opzioni dello screensaver del sistema</string>
+  <string name="settings_system_options_error">Impossibile aprire le opzioni dello screensaver del dispositivo</string>
+  <string name="settings_system_options_removed">Questa funzione è stata rimossa dal produttore.
+Per ulteriori informazioni, visitare il sito Web di Aerial Views.</string>
+  <string name="sources_apple_summary">Streaming video Apple via Internet</string>
+  <string name="sources_apple_title">Video Apple</string>
+  <string name="sources_comm1_summary">Streaming video della comunità via Internet</string>
+  <string name="sources_comm1_title">Video di Jetson Creative</string>
+  <string name="sources_comm2_summary">Streaming video della comunità via Internet</string>
+  <string name="sources_comm2_title">Video di Robin Fourcade</string>
+  <string name="sources_local_summary">Riproduci video e immagini direttamente dal dispositivo o da un dispositivo USB collegato</string>
+  <string name="sources_local_title">Archivio locale o USB</string>
+  <string name="sources_samba_summary">Riproduci video e immagini da una condivisione di rete su un PC o un NAS</string>
+  <string name="sources_samba_title">Condivisione SMB/Samba</string>
+  <string name="sources_webdav_summary">Riproduci video e immagini da un server WebDAV locale o remoto.</string>
+  <string name="sources_webdav_title">Server WebDAV</string>
+  <string name="videos_quality_summary">Seleziona la qualità video</string>
+  <string name="videos_quality_title">Qualità video</string>
 </resources>
