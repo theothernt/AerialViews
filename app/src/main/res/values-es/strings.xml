@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="allow_fallback_decoders_title">Allow fallback decoders</string>
-  <string name="allow_fallback_decoders_summary">Enables support for software-based or alternate codecs on some devices</string>
-  <string name="enable_playback_logging_title">Enable playback logging</string>
-  <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
   <string name="about_date_title">Fecha de compilación</string>
   <string name="about_version_title">Versión</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
@@ -16,6 +12,8 @@
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
+  <string name="allow_fallback_decoders_summary">Habilita el soporte de decodificación por software o códecs alternativos en algunos dispositivos</string>
+  <string name="allow_fallback_decoders_title">Permitir decodificadores alternativos</string>
   <string name="appearance_alt_text_position_summary">La posición del reloj y la ubicación cambian en cada vídeo para ayudar a prevenir el desgaste de OLED</string>
   <string name="appearance_alt_text_position_title">Posición alternativa del texto</string>
   <string name="appearance_bottom_left_lower_slot">Abajo a la izquierda, espacio inferior</string>
@@ -36,6 +34,23 @@
   <string name="appearance_date_size_title">Ajustar el tamaño del texto de la fecha</string>
   <string name="appearance_date_summary">Mostrar la fecha actual</string>
   <string name="appearance_date_title">Fecha</string>
+  <string name="appearance_description_photos_filename_summary">Tus fotos desde el almacenamiento local o red</string>
+  <string name="appearance_description_photos_filename_title">Utilice el nombre de archivo/carpeta para la descripción</string>
+  <string name="appearance_description_size_title">Tamaño</string>
+  <string name="appearance_description_videos_filename_summary">Tus vídeos desde el almacenamiento local o red</string>
+  <string name="appearance_description_videos_filename_title">Utilice el nombre de archivo/carpeta para la descripción</string>
+  <string name="appearance_description_videos_manifest_summary">Vídeos de Apple y de la comunidad, ya sea transmitidos, almacenados localmente o compartidos en red</string>
+  <string name="appearance_description_videos_manifest_title">Mostrar descripción o puntos de interés</string>
+  <string name="appearance_gradient_bottom_summary">Muestre un gradiente detrás de las superposiciones en la parte inferior de la pantalla para que sean más fáciles de ver.</string>
+  <string name="appearance_gradient_bottom_title">Mostrar gradiente inferior</string>
+  <string name="appearance_gradient_summary">Muestra gradientes detrás de las superposiciones para que sean más fáciles de ver.</string>
+  <string name="appearance_gradient_title">Gradientes</string>
+  <string name="appearance_gradient_top_summary">Muestre un gradiente detrás de las superposiciones en la parte superior de la pantalla para que sean más fáciles de ver.</string>
+  <string name="appearance_gradient_top_title">Mostrar gradiente superior</string>
+  <string name="appearance_loading_show_summary">Muestra el texto \"Cargando...\" mientras se carga la aplicación.</string>
+  <string name="appearance_loading_show_title">Mostrar texto de \"Cargando\"</string>
+  <string name="appearance_loading_size_title">Tamaño</string>
+  <string name="appearance_loading_weight_title">Grosor</string>
   <string name="appearance_location_summary">Mostrar ubicación o puntos de interés</string>
   <string name="appearance_location_title">Ubicación</string>
   <string name="appearance_message_line1_summary">Ingrese el texto para mostrar, incluido emojis</string>
@@ -52,6 +67,8 @@
   <string name="appearance_slot1_title">Espacio inferior</string>
   <string name="appearance_slot2_title">Espacio superior</string>
   <string name="appearance_slot_summary">Vacío</string>
+  <string name="appearance_startup_summary">Cambia lo que ves mientras se carga la aplicación</string>
+  <string name="appearance_startup_title">Arranque</string>
   <string name="appearance_top_left_lower_slot">Arriba a la izquierda, espacio inferior</string>
   <string name="appearance_top_left_upper_slot">Arriba a la izquierda, espacio superior</string>
   <string name="appearance_top_right_lower_slot">Arriba a la derecha, espacio inferior</string>
@@ -103,18 +120,21 @@
   <string name="category_date">Fecha</string>
   <string name="category_dpad">Pad Direccional/Control Remoto</string>
   <string name="category_folder_access_options">Opciones de acceso a carpetas</string>
+  <string name="category_gradient">Gradiente</string>
   <string name="category_local">Local</string>
   <string name="category_media_scanner_options">Opciones de escaneo de medios</string>
   <string name="category_message">Mensaje</string>
   <string name="category_network">Red</string>
   <string name="category_options">Opciones</string>
   <string name="category_overlays">Superposiciones</string>
+  <string name="category_photos">Fotos</string>
   <string name="category_playlist">Lista de reproducción</string>
   <string name="category_remote">Remoto</string>
   <string name="category_samba_options">Opciones de Samba/SMB</string>
   <string name="category_server_details">Detalles y credenciales del servidor</string>
   <string name="category_settings">Ajustes</string>
   <string name="category_slots">Espacios</string>
+  <string name="category_startup">Arranque</string>
   <string name="category_top_row_left">Arriba a la izquierda</string>
   <string name="category_top_row_right">Arriba a la derecha</string>
   <string name="category_typography">Tipografía</string>
@@ -123,6 +143,8 @@
   <string name="category_videos">Vídeos</string>
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
+  <string name="enable_playback_logging_summary">Muestra información de reproducción adicional en los registros. Útil para solucionar problemas.</string>
+  <string name="enable_playback_logging_title">Habilitar el registro de reproducción</string>
   <string name="loading_error">No se encontraron vídeos, por favor revisa tus ajustes</string>
   <string name="loading_title">Cargando…</string>
   <string name="local_media_test_summary1">Archivos encontrados: %1$s</string>
@@ -153,7 +175,7 @@
   <string name="local_videos_search_test">Prueba los ajustes de búsqueda local</string>
   <string name="local_videos_search_type_title">Elige como los vídeos se buscan</string>
   <string name="local_videos_shield_notice_summary">Ajustes &gt; Preferencias de Dispositivo &gt; Almacenamiento &gt; Escanear por multimedia automáticamente</string>
-  <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada…</string>
+  <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada...</string>
   <string name="local_videos_test_results">Resultados de la prueba</string>
   <string name="playlist_allow_media_button_passthrough_summary">Pass-through del botón reproducir, pausa, rebobinar, etc a la aplicación en segundo plano (Por ejemplo: Aplicación de música) sin salir del protector de pantalla</string>
   <string name="playlist_allow_media_button_passthrough_title">Permitir pass-through del botón multimedia</string>
@@ -166,6 +188,7 @@
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
+  <string name="playlist_photo_scale_title">Escalado de fotos</string>
   <string name="playlist_playback_speed_changed">La velocidad de reproducción cambió a: %1$s</string>
   <string name="playlist_playback_speed_summary">Elige una velocidad de reproducción</string>
   <string name="playlist_playback_speed_title">Velocidad de reproducción</string>
@@ -178,7 +201,7 @@
   <string name="samba_media_test_summary1">Archivos encontrados: %1$s</string>
   <string name="samba_media_test_summary2">Archivos no compatibles: %1$s</string>
   <string name="samba_media_test_summary3">Vídeos encontrados: %1$s</string>
-  <string name="samba_media_test_summary4">Imágenes encontradas: %1$s</string>
+  <string name="samba_media_test_summary4">Fotos encontradas: %1$s</string>
   <string name="samba_media_test_summary5">Seleccionado para reproducción: %1$s</string>
   <string name="samba_media_type_title">Elija el tipo de medio</string>
   <string name="samba_videos_domainname_summary">El nombre de dominio o grupo de trabajo del servidor. Opcional</string>
@@ -250,27 +273,4 @@
   <string name="sources_webdav_title">Servidor WebDAV</string>
   <string name="videos_quality_summary">Seleccione la calidad del vídeo</string>
   <string name="videos_quality_title">Calidad de Vídeo</string>
-  <string name="category_gradient">Gradient</string>
-  <string name="category_startup">Startup</string>
-  <string name="category_photos">Photos</string>
-  <string name="appearance_gradient_title">Gradients</string>
-  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
-  <string name="appearance_startup_title">Startup</string>
-  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
-  <string name="appearance_loading_show_title">Show loading text</string>
-  <string name="appearance_loading_show_summary">Displays the Loading… text while the app is loading</string>
-  <string name="appearance_loading_size_title">Size</string>
-  <string name="appearance_loading_weight_title">Wight</string>
-  <string name="appearance_gradient_top_title">Show top gradient</string>
-  <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
-  <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
-  <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
-  <string name="appearance_description_videos_manifest_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
-  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
-  <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
-  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
-  <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
-  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
-  <string name="appearance_description_size_title">Size</string>
-  <string name="playlist_photo_scale_title">Photo scaling</string>
 </resources>

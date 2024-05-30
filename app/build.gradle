@@ -143,12 +143,12 @@ dependencies {
     implementation('androidx.preference:preference-ktx:1.2.1')
     implementation('androidx.activity:activity-ktx:1.9.0')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
-    implementation('androidx.appcompat:appcompat:1.6.1')
+    implementation('androidx.appcompat:appcompat:1.7.0')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:22.0.0')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.0')
-    implementation('com.google.firebase:firebase-perf-ktx:21.0.0')
+    implementation('com.google.firebase:firebase-analytics-ktx:22.0.1')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.1')
+    implementation('com.google.firebase:firebase-perf-ktx:21.0.1')
 
     // Retrofit, OkHttp, and Moshi
     implementation('com.squareup.retrofit2:retrofit:2.11.0')

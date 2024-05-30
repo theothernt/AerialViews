@@ -11,7 +11,7 @@
     <item>400/Нормальное</item>
     <item>500/Среднее</item>
     <item>600/Полужирное</item>
-    <item>600/Жирное</item>
+    <item>700/Жирное</item>
     <item>800/Сверхжирное</item>
     <item>900/Тяжелое</item>
   </string-array>
@@ -25,40 +25,36 @@
     <item>Полный</item>
     <item>Свой</item>
   </string-array>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
-  </string-array>
   <string-array name="description_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename</item>
-    <item>Use filename as-is</item>
-    <item>Folder &amp; filename</item>
-    <item>Folder name only</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+    <item>Выключено</item>
+    <item>Используйте отформатированное имя файла</item>
+    <item>Использовать имя файла как есть</item>
+    <item>Имя папки и файла</item>
+    <item>Только имя папки</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>Выключено</item>
+    <item>Используйте форматированное имя файла, например: \'switzerland-zürich_train_station.jpg\' становится \'Switzerland - Zürich Train Station\'</item>
+    <item>Используйте имя файла как есть, например: \'Japan - Deep snow in Hokkaido.jpg\' становится \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Используйте папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
+    <item>Используйте только название папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
+  </string-array>
+  <string-array name="description_video_entries">
+    <item>Выключено</item>
+    <item>Краткое описание</item>
+    <item>Динамичные достопримечательности</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>Выключено</item>
+    <item>Используйте форматированное имя файла, например: \'japan-mount_fuji.mp4\' становится \'Japan - Mount Fuji\'</item>
+    <item>Используйте имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
+    <item>Используйте папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunet.mp4\' становится \'Grand Canyon / Sunet\'</item>
+    <item>Используйте только имя папки, например: \'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>Выключено</item>
+    <item>Краткое описание или местоположение</item>
+    <item>Динамичные достопримечательности, доступные на многих языках, которые меняются по мере воспроизведения видео</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Медиа-сканер</item>
@@ -68,6 +64,10 @@
     <item>Только видео</item>
     <item>Только изображения</item>
     <item>Видео и изображения</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Заполнение (по умолчанию)</item>
+    <item>Центр</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Без ограничений (по умолчанию)</item>

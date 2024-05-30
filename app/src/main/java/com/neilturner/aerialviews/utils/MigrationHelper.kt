@@ -31,15 +31,13 @@ class MigrationHelper(val context: Context) {
 
         if (lastKnownVersion < 10) release10()
         if (lastKnownVersion < 11) release11()
-        // if (lastKnownVersion < 12) release12()
         if (lastKnownVersion < 13) release13()
         if (lastKnownVersion < 14) release14()
         if (lastKnownVersion < 15) release15()
-        // if (lastKnownVersion < 16) release16()
         if (lastKnownVersion < 17) release17()
-        // if (lastKnownVersion < 18) release18()
         if (lastKnownVersion < 19) release19()
         if (lastKnownVersion < 20) release20()
+        if (lastKnownVersion < 22) release22()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -222,8 +220,47 @@ class MigrationHelper(val context: Context) {
                 prefs.edit().putString("location_weight", fontWeight).apply()
                 prefs.edit().putString("message_weight", fontWeight).apply()
             }
-            // Might need to rename or move this?
-            // prefs.edit().remove("font_weight").apply()
+        }
+    }
+
+    private fun release22() {
+        Log.i(TAG, "Migrating settings for release 22")
+
+        val locationStyleUsed = prefs.contains("location_style")
+        if (locationStyleUsed) {
+            val locationStyle = prefs.getString("location_style", "POI")
+            if (locationStyle == "TITLE") {
+                Log.i(TAG, "Updating description manifest style to TITLE")
+                prefs.edit().putString("description_video_manifest_style", "TITLE").apply()
+            }
+            prefs.edit().remove("location_style").apply()
+        }
+
+        val filenameAsLocationUsed = prefs.contains("filename_as_location")
+        if (filenameAsLocationUsed) {
+            val filenameAsLocation = prefs.getString("filename_as_location", "DISABLED")
+            if (filenameAsLocation != "DISABLED") {
+                Log.i(TAG, "Updating description video/photo style to FILENAME")
+                prefs.edit().putString("description_video_filename_style", "FILENAME").apply()
+                prefs.edit().putString("description_photo_filename_style", "FILENAME").apply()
+            }
+            prefs.edit().remove("filename_as_location").apply()
+        }
+
+        val locationSizeUsed = prefs.contains("location_size")
+        if (locationSizeUsed) {
+            Log.i(TAG, "Updating description size")
+            val locationSize = prefs.getString("location_size", "18")
+            prefs.edit().putString("description_size", locationSize).apply()
+            prefs.edit().remove("location_size").apply()
+        }
+
+        val locationWeightUsed = prefs.contains("location_weight")
+        if (locationWeightUsed) {
+            Log.i(TAG, "Updating description weight")
+            val locationWeight = prefs.getString("location_weight", "18")
+            prefs.edit().putString("description_weight", locationWeight).apply()
+            prefs.edit().remove("location_weight").apply()
         }
     }
 

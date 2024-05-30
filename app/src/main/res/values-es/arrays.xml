@@ -25,40 +25,36 @@
     <item>Completo</item>
     <item>Personalizado</item>
   </string-array>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
-  </string-array>
   <string-array name="description_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename</item>
-    <item>Use filename as-is</item>
-    <item>Folder &amp; filename</item>
-    <item>Folder name only</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+    <item>Desactivado</item>
+    <item>Usar nombre de archivo formateado</item>
+    <item>Usar el nombre de archivo como está</item>
+    <item>Carpeta y nombre de archivo</item>
+    <item>Solo el nombre de la carpeta</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>Desactivado</item>
+    <item>Utilice un nombre de archivo formateado, por ejemplo. \'switzerland-zürich_train_station.jpg\' se convierte en \'Switzerland - Zürich Train Station\'</item>
+    <item>Use el nombre de archivo tal cual, por ejemplo. \'Japan - Deep snow in Hokkaido.jpg\' se convierte en \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Use la carpeta y el nombre de archivo tal cual, por ejemplo. \'Pictures/Italy/Dolomites.jpg\' se convierte en \'Italy/Dolomites\'</item>
+    <item>Use solo el nombre de la carpeta, por ejemplo. \'Pictures/Dublin/Temple Bar.png\' se convierte en \'Dublin\'</item>
   </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+  <string-array name="description_video_entries">
+    <item>Desactivado</item>
+    <item>Breve descripción</item>
+    <item>Puntos de interés dinámicos</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>Desactivado</item>
+    <item>Utilice un nombre de archivo formateado, por ejemplo. \'japan-mount_fuji.mp4\' se convierte en \'Japan - Mount Fuji\'</item>
+    <item>Use el nombre de archivo tal cual, por ejemplo. \'Flying towards Mount Pilatus.mp4\' se convierte en \'Flying towards Mount Pilatus\'</item>
+    <item>Use la carpeta y el nombre de archivo tal cual, por ejemplo. \'Videos/Grand Canyon/Sunet.mp4\' se convierte en \'Grand Canyon / Sunet\'</item>
+    <item>Use solo el nombre de la carpeta, por ejemplo. \'Videos/Ireland/Cliffs of Moher.mp4\' se convierte en \'Ireland\'</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>Desactivado</item>
+    <item>Una breve descripción o ubicación</item>
+    <item>Puntos de interés dinámicos, disponibles en muchos idiomas, que cambian a medida que se reproduce el vídeo</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Escaneo de medios</item>
@@ -68,6 +64,10 @@
     <item>Sólo vídeos</item>
     <item>Sólo imágenes</item>
     <item>Vídeos &amp; Imágenes</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Rellenar (Predeterminado)</item>
+    <item>Centro</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Sin límite (Predeterminado)</item>

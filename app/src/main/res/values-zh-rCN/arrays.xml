@@ -25,40 +25,36 @@
     <item>全部</item>
     <item>定制</item>
   </string-array>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
-  </string-array>
   <string-array name="description_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename</item>
-    <item>Use filename as-is</item>
-    <item>Folder &amp; filename</item>
-    <item>Folder name only</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+    <item>禁用</item>
+    <item>使用格式化文件名</item>
+    <item>原始文件名</item>
+    <item>文件夹和文件名</item>
+    <item>仅文件夹名称</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>禁用</item>
+    <item>使用格式化文件名，例如，\"switzerland-zürich_train_station.jpg \"变为 \"瑞士 - 苏黎世火车站\"。</item>
+    <item>按原样使用文件名，例如，\"Japan - Deep snow in Hokkaido.jpg \"变为 \"Japan - Deep snow in Hokkaido\"。</item>
+    <item>按原样使用文件夹和文件名，例如，\"Pictures/Italy/Dolomites.jpg \"变为 \"Italy/Dolomites\"。</item>
+    <item>仅使用文件夹名称，例如，\"Pictures/Dublin/Temple Bar.png \"变为 \"Dublin\"。</item>
   </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+  <string-array name="description_video_entries">
+    <item>禁用</item>
+    <item>简要说明</item>
+    <item>动态兴趣点</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>禁用</item>
+    <item>使用格式化文件名，例如，\"japan-mount_fuji.mp4 \"变为 \"Japan - Mount Fuji</item>
+    <item>按原样使用文件名，例如，\"飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山\"。</item>
+    <item>按原样使用文件夹和文件名，例如，\"Videos/Grand Canyon/Sunet.mp4 \"变为 \"Grand Canyon / Sunet\"。</item>
+    <item>仅使用文件夹名称，例如，\"Videos/Ireland/Cliffs of Moher.mp4 \"变为 \"Ireland\"。</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>禁用</item>
+    <item>简短描述或地点</item>
+    <item>动态兴趣点，有多种语言版本，随着视频播放而变化</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
@@ -68,6 +64,10 @@
     <item>Videos only</item>
     <item>Images only</item>
     <item>Videos &amp; Images</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Fill (Default)</item>
+    <item>Center</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>无限制 (默认)</item>

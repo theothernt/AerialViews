@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="allow_fallback_decoders_title">Allow fallback decoders</string>
-  <string name="allow_fallback_decoders_summary">Enables support for software-based or alternate codecs on some devices</string>
-  <string name="enable_playback_logging_title">Enable playback logging</string>
-  <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
   <string name="about_date_title">构建日期</string>
   <string name="about_version_title">版本号</string>
   <string name="advanced_enable_tunneling_summary">使用硬件加速，对 4K/HDR 更为重要</string>
@@ -16,6 +12,8 @@
   <string name="advanced_philips_dolby_vision_fix_title">使用备用 MediaCodec 解析</string>
   <string name="advanced_refresh_rate_switching_summary">更改显示器的刷新率以匹配视频帧速率</string>
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
+  <string name="allow_fallback_decoders_summary">支持某些设备上基于软件的编解码器或替代编解码器</string>
+  <string name="allow_fallback_decoders_title">允许后备解码器</string>
   <string name="appearance_alt_text_position_summary">为了防止 OLED 烧屏，每个视频的时钟和地点都会改变</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_bottom_left_lower_slot">左下角，较低插槽</string>
@@ -36,6 +34,23 @@
   <string name="appearance_date_size_title">调整日期文字大小</string>
   <string name="appearance_date_summary">显示当前日期</string>
   <string name="appearance_date_title">日期</string>
+  <string name="appearance_description_photos_filename_summary">本地存储或网络共享中的照片</string>
+  <string name="appearance_description_photos_filename_title">使用文件名/文件夹进行描述</string>
+  <string name="appearance_description_size_title">尺寸</string>
+  <string name="appearance_description_videos_filename_summary">本地存储或网络共享中的视频</string>
+  <string name="appearance_description_videos_filename_title">使用文件名/文件夹进行描述</string>
+  <string name="appearance_description_videos_manifest_summary">苹果和社区视频 - 流媒体、本地存储或网络共享</string>
+  <string name="appearance_description_videos_manifest_title">显示说明或兴趣点</string>
+  <string name="appearance_gradient_bottom_summary">在屏幕底部的叠加层后面显示渐变，使叠加层更容易看清</string>
+  <string name="appearance_gradient_bottom_title">显示底部渐变</string>
+  <string name="appearance_gradient_summary">在覆盖层后面显示渐变，使其更易于查看</string>
+  <string name="appearance_gradient_title">梯度</string>
+  <string name="appearance_gradient_top_summary">在屏幕顶部的覆盖层后面显示渐变，使其更容易看清</string>
+  <string name="appearance_gradient_top_title">显示顶部渐变</string>
+  <string name="appearance_loading_show_summary">在加载应用程序时显示 \"正在加载... \"文本</string>
+  <string name="appearance_loading_show_title">显示加载文本</string>
+  <string name="appearance_loading_size_title">尺寸</string>
+  <string name="appearance_loading_weight_title">重量</string>
   <string name="appearance_location_summary">显示地点或景点</string>
   <string name="appearance_location_title">地点</string>
   <string name="appearance_message_line1_summary">输入要显示的文本，包括表情符号</string>
@@ -52,6 +67,8 @@
   <string name="appearance_slot1_title">较低插槽</string>
   <string name="appearance_slot2_title">较高插槽</string>
   <string name="appearance_slot_summary">留空</string>
+  <string name="appearance_startup_summary">更改应用程序加载时的显示内容</string>
+  <string name="appearance_startup_title">启动</string>
   <string name="appearance_top_left_lower_slot">左上角，较低插槽</string>
   <string name="appearance_top_left_upper_slot">左上角，较高插槽</string>
   <string name="appearance_top_right_lower_slot">右上角，较低插槽</string>
@@ -103,18 +120,21 @@
   <string name="category_date">日期</string>
   <string name="category_dpad">D-Pad/遥控器</string>
   <string name="category_folder_access_options">文件夹访问选项</string>
+  <string name="category_gradient">梯度</string>
   <string name="category_local">本地</string>
   <string name="category_media_scanner_options">媒体扫描仪选项</string>
   <string name="category_message">信息</string>
   <string name="category_network">局域网</string>
   <string name="category_options">选项</string>
   <string name="category_overlays">叠加层</string>
+  <string name="category_photos">照片</string>
   <string name="category_playlist">播放列表</string>
   <string name="category_remote">互联网</string>
   <string name="category_samba_options">Samba/SMB 选项</string>
   <string name="category_server_details">服务器详细信息和凭据</string>
   <string name="category_settings">设置</string>
   <string name="category_slots">插槽</string>
+  <string name="category_startup">启动</string>
   <string name="category_top_row_left">左上角</string>
   <string name="category_top_row_right">右上角</string>
   <string name="category_typography">排版</string>
@@ -123,6 +143,8 @@
   <string name="category_videos">Videos</string>
   <string name="comm1_videos_enabled">使用社区视频</string>
   <string name="comm2_videos_enabled">使用社区视频</string>
+  <string name="enable_playback_logging_summary">在日志中显示额外的播放信息。有助于排除故障。</string>
+  <string name="enable_playback_logging_title">启用回放记录</string>
   <string name="loading_error">未找到视频，请检查您的设置</string>
   <string name="loading_title">加载中…</string>
   <string name="local_media_test_summary1">Files found: %1$s</string>
@@ -153,7 +175,7 @@
   <string name="local_videos_search_test">测试本地搜索设置</string>
   <string name="local_videos_search_type_title">选择查找视频的方式</string>
   <string name="local_videos_shield_notice_summary">设置 &gt; 设备首选项 &gt; 存储 &gt; 自动扫描媒体</string>
-  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项…</string>
+  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项...</string>
   <string name="local_videos_test_results">测试结果</string>
   <string name="playlist_allow_media_button_passthrough_summary">在不退出屏保的情况下，将按下的播放、暂停、倒带等按钮传递给后台程序（如音乐程序</string>
   <string name="playlist_allow_media_button_passthrough_title">允许媒体按钮直通</string>
@@ -166,6 +188,7 @@
   <string name="playlist_max_video_length_title">限制视频长度</string>
   <string name="playlist_mute_videos_summary">将所有视频静音</string>
   <string name="playlist_mute_videos_title">静音播放视频</string>
+  <string name="playlist_photo_scale_title">照片缩放</string>
   <string name="playlist_playback_speed_changed">播放速度改为：%1$s</string>
   <string name="playlist_playback_speed_summary">选择播放速度</string>
   <string name="playlist_playback_speed_title">播放速度</string>
@@ -251,27 +274,4 @@
   <string name="sources_webdav_title">WebDAV 服务器</string>
   <string name="videos_quality_summary">选择视频质量</string>
   <string name="videos_quality_title">视频质量</string>
-  <string name="category_gradient">Gradient</string>
-  <string name="category_startup">Startup</string>
-  <string name="category_photos">Photos</string>
-  <string name="appearance_gradient_title">Gradients</string>
-  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
-  <string name="appearance_startup_title">Startup</string>
-  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
-  <string name="appearance_loading_show_title">Show loading text</string>
-  <string name="appearance_loading_show_summary">Displays the Loading… text while the app is loading</string>
-  <string name="appearance_loading_size_title">Size</string>
-  <string name="appearance_loading_weight_title">Wight</string>
-  <string name="appearance_gradient_top_title">Show top gradient</string>
-  <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
-  <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
-  <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
-  <string name="appearance_description_videos_manifest_summary">Apple and Community videos - either streamed, stored locally or a network share</string>
-  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
-  <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
-  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
-  <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
-  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
-  <string name="appearance_description_size_title">Size</string>
-  <string name="playlist_photo_scale_title">Photo scaling</string>
 </resources>

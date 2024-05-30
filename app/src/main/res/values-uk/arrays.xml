@@ -25,40 +25,36 @@
     <item>Повний</item>
     <item>Свій</item>
   </string-array>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
-  </string-array>
   <string-array name="description_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename</item>
-    <item>Use filename as-is</item>
-    <item>Folder &amp; filename</item>
-    <item>Folder name only</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+    <item>Вимкнено</item>
+    <item>"Використовуйте відформатоване ім\'я файлу"</item>
+    <item>Використовувати ім\'я файлу як є</item>
+    <item>"Ім\'я папки та файлу"</item>
+    <item>"Тільки ім\'я папки"</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>Вимкнено</item>
+    <item>Використовуйте форматоване ім\'я файлу, наприклад: \'switzerland-zürich_train_station.jpg\' стає \'Switzerland - Zürich Train Station\'</item>
+    <item>Використовуйте ім\'я файлу як є, наприклад: \'Japan - Deep snow in Hokkaido.jpg\' стає \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Використовуйте папку та ім\'я файлу як є, наприклад: \'Pictures/Italy/Dolomites.jpg\' стає \'Italy / Dolomites\'</item>
+    <item>Використовуйте лише назву папки, наприклад: \'Pictures/Dublin/Temple Bar.png\' стає \'Dublin\'</item>
   </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+  <string-array name="description_video_entries">
+    <item>Вимкнено</item>
+    <item>Короткий опис</item>
+    <item>"Динамічні пам\'ятки"</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>Вимкнено</item>
+    <item>"Використовуйте форматоване ім\'я файлу, наприклад: \'japan-mount_fuji.mp4\' стає \'Japan - Mount Fuji\'"</item>
+    <item>"Використовуйте ім\'я файлу як є, наприклад: \'Flying towards Mount Pilatus.mp4\' стає \'Flying towards Mount Pilatus\'"</item>
+    <item>"Використовуйте папку та ім\'я файлу як є, наприклад: \'Videos/Grand Canyon/Sunet.mp4\' стає \'Grand Canyon / Sunet\'"</item>
+    <item>Використовуйте лише назву папки, наприклад: \'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>Вимкнено</item>
+    <item>Короткий опис або місцезнаходження</item>
+    <item>"Динамічні пам\'ятки, доступні багатьма мовами, які змінюються під час відтворення відео"</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Медіа-сканер</item>
@@ -68,6 +64,10 @@
     <item>Лише відео</item>
     <item>Лише зображення</item>
     <item>Відео та зображення</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Заповнення (за замовчуванням)</item>
+    <item>Центр</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Без обмеження (за замовчуванням)</item>

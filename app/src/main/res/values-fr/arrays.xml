@@ -25,40 +25,36 @@
     <item>Complet</item>
     <item>Sur mesure</item>
   </string-array>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
-  </string-array>
   <string-array name="description_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename</item>
-    <item>Use filename as-is</item>
-    <item>Folder &amp; filename</item>
-    <item>Folder name only</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'japan-mount_fuji.mp4\' becomes \'Japan - Mount Fuji\'</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+    <item>Handicapés</item>
+    <item>Utiliser un nom de fichier formaté</item>
+    <item>Utiliser le nom de fichier tel quel</item>
+    <item>Dossier et nom de fichier</item>
+    <item>Nom du dossier uniquement</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use formatted filename eg. \'switzerland-zürich_train_station.jpg\' becomes \'Switzerland - Zürich Train Station\'</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>Handicapés</item>
+    <item>Utilisez un nom de fichier formaté, par exemple \"switzerland-zürich_train_station.jpg\" devient \"Suisse - Gare de Zürich\".</item>
+    <item>Utiliser le nom de fichier tel quel, par exemple \"Japon - Neige épaisse à Hokkaido.jpg\" devient \"Japon - Neige épaisse à Hokkaido\".</item>
+    <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Pictures/Italy/Dolomites.jpg\" devient \"Italy / Dolomites\".</item>
+    <item>Utilisez uniquement le nom du dossier, par exemple \"Pictures/Dublin/Temple Bar.png\" devient \"Dublin\".</item>
+  </string-array>
+  <string-array name="description_video_entries">
+    <item>Handicapés</item>
+    <item>Brève description</item>
+    <item>Points d\'intérêt dynamiques</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>Handicapés</item>
+    <item>Utiliser un nom de fichier formaté, par exemple \"japan-mount_fuji.mp4\" devient \"Japon - Mont Fuji\".</item>
+    <item>Utiliser le nom de fichier tel quel, par exemple \"Flying towards Mount Pilatus.mp4\" devient \"Flying towards Mount Pilatus\".</item>
+    <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Videos/Grand Canyon/Sunet.mp4\" devient \"Grand Canyon / Sunet\".</item>
+    <item>Utilisez uniquement le nom du dossier, par exemple \"Videos/Ireland/Cliffs of Moher.mp4\" devient \"Ireland\".</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>Handicapés</item>
+    <item>Une brève description ou localisation</item>
+    <item>Points d\'intérêt dynamiques, disponibles dans de nombreuses langues, qui changent au fur et à mesure de la lecture de la vidéo</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Scanner des médias</item>
@@ -68,6 +64,10 @@
     <item>Vidéos uniquement</item>
     <item>Images seulement</item>
     <item>Vidéos et images</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>Remplissage (par défaut)</item>
+    <item>Centre</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Aucune limite (par défaut)</item>
