@@ -27,14 +27,12 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>禁用</item>
-    <item>使用格式化文件名</item>
     <item>原始文件名</item>
     <item>文件夹和文件名</item>
     <item>仅文件夹名称</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>禁用</item>
-    <item>使用格式化文件名，例如，\"switzerland-zürich_train_station.jpg \"变为 \"瑞士 - 苏黎世火车站\"。</item>
     <item>按原样使用文件名，例如，\"Japan - Deep snow in Hokkaido.jpg \"变为 \"Japan - Deep snow in Hokkaido\"。</item>
     <item>按原样使用文件夹和文件名，例如，\"Pictures/Italy/Dolomites.jpg \"变为 \"Italy/Dolomites\"。</item>
     <item>仅使用文件夹名称，例如，\"Pictures/Dublin/Temple Bar.png \"变为 \"Dublin\"。</item>
@@ -46,7 +44,6 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>禁用</item>
-    <item>使用格式化文件名，例如，\"japan-mount_fuji.mp4 \"变为 \"Japan - Mount Fuji</item>
     <item>按原样使用文件名，例如，\"飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山\"。</item>
     <item>按原样使用文件夹和文件名，例如，\"Videos/Grand Canyon/Sunet.mp4 \"变为 \"Grand Canyon / Sunet\"。</item>
     <item>仅使用文件夹名称，例如，\"Videos/Ireland/Cliffs of Moher.mp4 \"变为 \"Ireland\"。</item>
