@@ -5,9 +5,9 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.net.Uri
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.MediaItemType
-import com.neilturner.aerialviews.models.enums.MediaType
-import com.neilturner.aerialviews.models.enums.ProviderType
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -20,7 +20,7 @@ import java.io.File
 
 class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
 
-    override val type = ProviderType.LOCAL
+    override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -67,7 +67,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
 
         // Only pick videos
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -77,7 +77,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val videos = selected.size
 
         // Only pick images
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -92,19 +92,19 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             val uri = Uri.parse(file)
             val item = AerialMedia(uri)
             if (FileHelper.isSupportedVideoType(file)) {
-                item.type = MediaItemType.VIDEO
+                item.type = AerialMediaType.VIDEO
             } else if (FileHelper.isSupportedImageType(file)) {
-                item.type = MediaItemType.IMAGE
+                item.type = AerialMediaType.IMAGE
             }
             media.add(item)
         }
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
         }
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary6), media.size)
@@ -163,7 +163,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val files = mediaStoreVideosAndImages()
 
         // Add video
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -173,7 +173,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         videos = selected.size
 
         // Add images
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -195,10 +195,10 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
         }
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary5), filtered) + "\n"

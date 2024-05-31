@@ -11,9 +11,9 @@ import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.MediaItemType
-import com.neilturner.aerialviews.models.enums.MediaType
-import com.neilturner.aerialviews.models.enums.ProviderType
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -25,7 +25,7 @@ import java.net.URLEncoder
 
 class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
 
-    override val type = ProviderType.LOCAL
+    override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -105,9 +105,9 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             val item = AerialMedia(uri)
 
             if (FileHelper.isSupportedVideoType(filename)) {
-                item.type = MediaItemType.VIDEO
+                item.type = AerialMediaType.VIDEO
             } else if (FileHelper.isSupportedImageType(filename)) {
-                item.type = MediaItemType.IMAGE
+                item.type = AerialMediaType.IMAGE
             }
             media.add(item)
         }
@@ -176,7 +176,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         smbClient.close()
 
         // Only pick videos
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             selected.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedVideoType(item)
@@ -186,7 +186,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         val videos = selected.size
 
         // Only pick images
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             selected.addAll(
                 files.filter { item ->
                     FileHelper.isSupportedImageType(item)
@@ -198,10 +198,10 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
 
         var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != MediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.IMAGES) {
             message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
         }
-        if (prefs.mediaType != MediaType.VIDEOS) {
+        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
         }
         message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)

@@ -3,8 +3,8 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.MediaItemType
-import com.neilturner.aerialviews.models.enums.ProviderType
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) : MediaProvider(context) {
 
-    override val type = ProviderType.REMOTE
+    override val type = ProviderSourceType.REMOTE
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -52,7 +52,7 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
             videos.add(
                 AerialMedia(
                     it.uriAtQuality(quality),
-                    type = MediaItemType.VIDEO
+                    type = AerialMediaType.VIDEO
                 )
             )
         }
