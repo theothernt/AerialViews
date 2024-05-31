@@ -5,8 +5,8 @@ import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
-import com.neilturner.aerialviews.models.enums.MediaItemType
-import com.neilturner.aerialviews.models.enums.ProviderType
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
@@ -34,7 +34,7 @@ class MediaService(val context: Context) {
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         // Sort by local first so duplicates removed are remote
-        providers.sortBy { it.type == ProviderType.REMOTE }
+        providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
@@ -62,7 +62,7 @@ class MediaService(val context: Context) {
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
         Log.i(TAG, "Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
 
-        var (videos, photos) = unmatched.partition { it.type == MediaItemType.VIDEO }
+        var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
         Log.i(TAG, "Unmatched: videos ${videos.size}, photos ${photos.size}")
 
         // Remove if not Apple or Community videos
@@ -108,7 +108,7 @@ class MediaService(val context: Context) {
         // Find video id in metadata list
         media.forEach video@{ video ->
             metadata.forEach { metadata ->
-                if (video.type == MediaItemType.VIDEO &&
+                if (video.type == AerialMediaType.VIDEO &&
                     metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
                 ) {
                     if (description != DescriptionManifestType.DISABLED) {

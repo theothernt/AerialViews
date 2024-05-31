@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.models.enums
 
 @Suppress("unused")
-enum class MediaType {
+enum class ProviderMediaType {
     VIDEOS,
     IMAGES,
     VIDEOS_IMAGES

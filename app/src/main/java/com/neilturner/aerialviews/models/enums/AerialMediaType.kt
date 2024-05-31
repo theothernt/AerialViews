@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.models.enums
 
-enum class MediaItemType {
+enum class AerialMediaType {
     VIDEO,
     IMAGE
 }

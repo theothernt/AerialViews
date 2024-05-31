@@ -3,13 +3,13 @@ package com.neilturner.aerialviews.models.prefs
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.MediaType
+import com.neilturner.aerialviews.models.enums.ProviderMediaType
 
 object SambaMediaPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "samba_videos_enabled")
-    var mediaType by nullableEnumValuePref(MediaType.VIDEOS, "samba_media_type")
+    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "samba_media_type")
     var hostName by stringPref("", "samba_videos_hostname")
     var domainName by stringPref("WORKGROUP", "samba_videos_domainname")
     var shareName by stringPref("", "samba_videos_sharename")
