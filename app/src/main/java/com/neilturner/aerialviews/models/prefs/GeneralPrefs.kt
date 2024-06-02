@@ -67,7 +67,7 @@ object GeneralPrefs : KotprefModel() {
     var alternateTextPosition by booleanPref(false, "alt_text_position")
 
     // Startup + Shutdown
-    var showLoadingText by booleanPref(false, "startup_show_loading")
+    var showLoadingText by booleanPref(true, "startup_show_loading")
     var loadingTextSize by stringPref("18", "startup_size")
     var loadingTextWeight by stringPref("300", "startup_weight")
 
