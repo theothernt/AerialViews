@@ -27,6 +27,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
     val nowPlaying
         get() = _nowPlaying.asSharedFlow()
 
+    private var artistAndSong = ""
     private val coroutineScope = CoroutineScope(Dispatchers.Main) + Job()
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
@@ -46,13 +47,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
                 return
             }
 
-            val newState = state.state
-            val active = (newState != PlaybackState.STATE_STOPPED
-                    && newState != PlaybackState.STATE_PAUSED
-                    && newState != PlaybackState.STATE_ERROR
-                    && newState != PlaybackState.STATE_BUFFERING
-                    && newState != PlaybackState.STATE_NONE)
-
+            val active = isActive(state.state)
             updateNowPlaying(null, active)
         }
     }
@@ -69,26 +64,36 @@ class NowPlayingService(private val context: Context, private val prefs: General
 
     private fun setupSession() {
         sessionManager = context.getSystemService<MediaSessionManager>()
+
+        // Set metadata for active sessions
         onActiveSessionsChanged(sessionManager?.getActiveSessions(notificationListener))
+        if (controllers.isNotEmpty()) {
+            val activeController = controllers.first()
+            val active = isActive(activeController.playbackState?.state)
+            updateNowPlaying(activeController.metadata, active)
+        }
+        // Listen for future changes to active sessions
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
     }
 
     private fun updateNowPlaying(metadata: MediaMetadata?, active: Boolean?) {
-        if (active != null) {
-            Log.i(TAG, "Active: $active")
-        }
-
         if (metadata != null) {
             val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)?.take(40)
             val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)?.take(40)
             Log.i(TAG, "Metadata: $song - $artist")
+            artistAndSong = "$song · $artist"
         }
 
-//        if (isPlaying) {
-//            _nowPlaying.emit(nowPlaying)
-//        } else {
-//            _nowPlaying.emit("")
-//        }
+        active.let {
+            Log.i(TAG, "Active: $active")
+            var update = ""
+            if (active == true) {
+                update = artistAndSong
+            }
+            coroutineScope.launch {
+                _nowPlaying.emit(update)
+            }
+        }
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
@@ -115,8 +120,17 @@ class NowPlayingService(private val context: Context, private val prefs: General
 
     fun stop() {
         unregisterAll()
-        sessionManager = null
-        coroutineScope.cancel()
+        sessionManager?.removeOnActiveSessionsChangedListener(this)
+        //sessionManager = null
+        //coroutineScope.cancel()
+    }
+
+    private fun isActive(state: Int?): Boolean {
+        return (state != PlaybackState.STATE_STOPPED
+                && state != PlaybackState.STATE_PAUSED
+                && state != PlaybackState.STATE_ERROR
+                && state != PlaybackState.STATE_BUFFERING
+                && state != PlaybackState.STATE_NONE)
     }
 
     companion object {
