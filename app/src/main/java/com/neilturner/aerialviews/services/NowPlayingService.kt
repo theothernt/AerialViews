@@ -80,12 +80,10 @@ class NowPlayingService(private val context: Context, private val prefs: General
         if (metadata != null) {
             val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)?.take(40)
             val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)?.take(40)
-            Log.i(TAG, "Metadata: $song - $artist")
             artistAndSong = "$song · $artist"
         }
 
         active.let {
-            Log.i(TAG, "Active: $active")
             var update = ""
             if (active == true) {
                 update = artistAndSong
@@ -97,22 +95,18 @@ class NowPlayingService(private val context: Context, private val prefs: General
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-        Log.i(TAG, "onActiveSessionsChanged")
         unregisterAll()
         initControllers(controllers)
     }
 
     private fun initControllers(newControllers: List<MediaController>?) {
         controllers = if (!newControllers.isNullOrEmpty()) newControllers else emptyList()
-
-        Log.i(TAG, "Registering controllers: ${controllers.size}")
         controllers.forEach { controller ->
             controller.registerCallback(metadataListener)
         }
     }
 
     private fun unregisterAll() {
-        Log.i(TAG, "Unregistering controllers: ${controllers.size}")
         controllers.forEach { controller ->
             controller.unregisterCallback(metadataListener)
         }
@@ -121,8 +115,6 @@ class NowPlayingService(private val context: Context, private val prefs: General
     fun stop() {
         unregisterAll()
         sessionManager?.removeOnActiveSessionsChangedListener(this)
-        //sessionManager = null
-        //coroutineScope.cancel()
     }
 
     private fun isActive(state: Int?): Boolean {

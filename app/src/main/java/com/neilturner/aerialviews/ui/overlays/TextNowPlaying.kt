@@ -4,13 +4,18 @@ package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class TextNowPlaying : AppCompatTextView {
@@ -29,11 +34,18 @@ class TextNowPlaying : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         coroutineScope.launch {
-            nowPlaying
-                ?.distinctUntilChanged()
-                ?.collect {
-                    text = it
-                }
+            updateNowPlaying()
+        }
+    }
+
+    private suspend fun updateNowPlaying() {
+        nowPlaying
+            ?.distinctUntilChanged()
+            ?.collectLatest {
+                animate().alpha(0f).setDuration(300)
+                delay(300)
+                text = it
+                animate().alpha(1f).setDuration(300)
         }
     }
 
