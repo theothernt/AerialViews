@@ -10,12 +10,14 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
 class TextNowPlaying : AppCompatTextView {
@@ -38,9 +40,11 @@ class TextNowPlaying : AppCompatTextView {
         }
     }
 
+    @OptIn(FlowPreview::class)
     private suspend fun updateNowPlaying() {
         nowPlaying
             ?.distinctUntilChanged()
+            ?.sample(700)
             ?.collectLatest {
                 animate().alpha(0f).setDuration(300)
                 delay(300)

@@ -23,7 +23,7 @@ import kotlinx.coroutines.plus
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener
 {
-    private val _nowPlaying = MutableSharedFlow<String>(replay = 0)
+    private val _nowPlaying = MutableSharedFlow<String>(replay = 1)
     val nowPlaying
         get() = _nowPlaying.asSharedFlow()
 
