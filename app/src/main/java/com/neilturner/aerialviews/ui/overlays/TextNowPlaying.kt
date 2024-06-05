@@ -41,7 +41,7 @@ class TextNowPlaying : AppCompatTextView {
     private suspend fun updateNowPlaying() {
         nowPlaying
             ?.distinctUntilChanged()
-            ?.sample(700)
+            ?.sample(600)
             ?.collectLatest {
                 animate().alpha(0f).setDuration(300)
                 delay(300)
