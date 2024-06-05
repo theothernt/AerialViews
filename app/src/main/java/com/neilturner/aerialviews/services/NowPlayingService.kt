@@ -12,12 +12,10 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 
 
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
@@ -27,12 +25,12 @@ class NowPlayingService(private val context: Context, private val prefs: General
     val nowPlaying
         get() = _nowPlaying.asSharedFlow()
 
-    private var artistAndSong = ""
-    private val coroutineScope = CoroutineScope(Dispatchers.Main) + Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
+    private var artistAndSong = ""
 
     private val metadataListener = object : MediaController.Callback() {
         override fun onMetadataChanged(metadata: MediaMetadata?) {

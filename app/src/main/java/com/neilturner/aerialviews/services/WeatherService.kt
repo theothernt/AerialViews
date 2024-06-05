@@ -16,14 +16,12 @@ import com.neilturner.aerialviews.utils.WeatherHelper.timestampToLocalTime
 import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import retrofit2.awaitResponse
 import java.util.TimeZone
 import kotlin.coroutines.cancellation.CancellationException
@@ -31,7 +29,7 @@ import kotlin.math.roundToInt
 
 class WeatherService(private val context: Context, private val prefs: GeneralPrefs) {
 
-    private val coroutineScope = CoroutineScope(Dispatchers.IO) + Job()
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
     private val _weather = MutableSharedFlow<WeatherResult>(replay = 0)
     val weather
         get() = _weather.asSharedFlow()
