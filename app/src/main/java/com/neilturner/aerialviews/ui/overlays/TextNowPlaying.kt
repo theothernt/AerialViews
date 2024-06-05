@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -35,6 +36,11 @@ class TextNowPlaying : AppCompatTextView {
         coroutineScope.launch {
             updateNowPlaying()
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        coroutineScope.cancel()
     }
 
     @OptIn(FlowPreview::class)

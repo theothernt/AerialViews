@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -114,6 +115,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
     fun stop() {
         unregisterAll()
         sessionManager?.removeOnActiveSessionsChangedListener(this)
+        coroutineScope.cancel()
     }
 
     private fun isActive(state: Int?): Boolean {
