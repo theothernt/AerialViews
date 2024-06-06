@@ -11,7 +11,6 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
 
 class TextDate : AppCompatTextView {
-
     private var refreshDateHandler: (() -> Unit)? = null
     private var type = DateType.COMPACT
     private var custom = ""
@@ -29,7 +28,10 @@ class TextDate : AppCompatTextView {
         refreshDateHandler = null
     }
 
-    fun updateFormat(type: DateType?, custom: String) {
+    fun updateFormat(
+        type: DateType?,
+        custom: String,
+    ) {
         if (type == null) {
             this.type = DateType.entries.first()
             this.custom = custom

@@ -18,11 +18,12 @@ class MediaPlaylist(private val _videos: List<AerialMedia>) {
     }
 
     private fun calculateNext(number: Int): Int {
-        val next = if (number < 0) {
-            _videos.size + number
-        } else {
-            (number).rem(_videos.size)
-        }
+        val next =
+            if (number < 0) {
+                _videos.size + number
+            } else {
+                (number).rem(_videos.size)
+            }
         return next
     }
 }

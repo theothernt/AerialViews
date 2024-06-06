@@ -24,7 +24,6 @@ import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
 class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
-
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
@@ -72,19 +71,20 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return Pair(media, "Failed to parse share name")
         }
 
-        val sambaMedia = try {
-            findSambaMedia(
-                prefs.userName,
-                prefs.password,
-                prefs.domainName,
-                prefs.hostName,
-                shareName,
-                path
-            )
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return Pair(emptyList(), e.message.toString())
-        }
+        val sambaMedia =
+            try {
+                findSambaMedia(
+                    prefs.userName,
+                    prefs.password,
+                    prefs.domainName,
+                    prefs.hostName,
+                    shareName,
+                    path,
+                )
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+                return Pair(emptyList(), e.message.toString())
+            }
 
         // Create samba URL, add to media list, adding media type
         sambaMedia.first.forEach { filename ->
@@ -122,99 +122,104 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
         domainName: String,
         hostName: String,
         shareName: String,
-        path: String
-    ): Pair<List<String>, String> = withContext(Dispatchers.IO) {
-        val res = context.resources
-        val selected = mutableListOf<String>()
-        val excluded: Int
-        val images: Int
+        path: String,
+    ): Pair<List<String>, String> =
+        withContext(Dispatchers.IO) {
+            val res = context.resources
+            val selected = mutableListOf<String>()
+            val excluded: Int
+            val images: Int
 
-        // SMB Config
-        val config: SmbConfig
-        try {
-            config = SambaHelper.buildSmbConfig()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return@withContext Pair(selected, "Failed to create SMB config")
+            // SMB Config
+            val config: SmbConfig
+            try {
+                config = SambaHelper.buildSmbConfig()
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+                return@withContext Pair(selected, "Failed to create SMB config")
+            }
+
+            // SMB Client
+            val smbClient = SMBClient(config)
+            val connection: Connection
+            try {
+                connection = smbClient.connect(hostName)
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+                return@withContext Pair(selected, "Failed to connect, hostname error")
+            }
+
+            // SMB Auth + session
+            val session: Session?
+            try {
+                val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
+                session = connection.authenticate(authContext)
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+                return@withContext Pair(
+                    selected,
+                    "Authentication failed. Please check the username and password, or server settings if using anonymous login",
+                )
+            }
+
+            val share: DiskShare
+            try {
+                share = session?.connectShare(shareName) as DiskShare
+            } catch (e: Exception) {
+                Log.e(TAG, e.message.toString())
+                return@withContext Pair(
+                    selected,
+                    "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
+                )
+            }
+            val files = listFilesAndFoldersRecursive(share, path)
+            connection.close()
+            smbClient.close()
+
+            // Only pick videos
+            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+                selected.addAll(
+                    files.filter { item ->
+                        FileHelper.isSupportedVideoType(item)
+                    },
+                )
+            }
+            val videos = selected.size
+
+            // Only pick images
+            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+                selected.addAll(
+                    files.filter { item ->
+                        FileHelper.isSupportedImageType(item)
+                    },
+                )
+            }
+            images = selected.size - videos
+            excluded = files.size - selected.size
+
+            var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
+            message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
+            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+                message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
+            }
+            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+                message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
+            }
+            message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)
+            return@withContext Pair(selected, message)
         }
 
-        // SMB Client
-        val smbClient = SMBClient(config)
-        val connection: Connection
-        try {
-            connection = smbClient.connect(hostName)
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return@withContext Pair(selected, "Failed to connect, hostname error")
-        }
-
-        // SMB Auth + session
-        val session: Session?
-        try {
-            val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-            session = connection.authenticate(authContext)
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return@withContext Pair(
-                selected,
-                "Authentication failed. Please check the username and password, or server settings if using anonymous login"
-            )
-        }
-
-        val share: DiskShare
-        try {
-            share = session?.connectShare(shareName) as DiskShare
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return@withContext Pair(
-                selected,
-                "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions"
-            )
-        }
-        val files = listFilesAndFoldersRecursive(share, path)
-        connection.close()
-        smbClient.close()
-
-        // Only pick videos
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
-            selected.addAll(
-                files.filter { item ->
-                    FileHelper.isSupportedVideoType(item)
-                }
-            )
-        }
-        val videos = selected.size
-
-        // Only pick images
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            selected.addAll(
-                files.filter { item ->
-                    FileHelper.isSupportedImageType(item)
-                }
-            )
-        }
-        images = selected.size - videos
-        excluded = files.size - selected.size
-
-        var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
-        message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
-            message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
-        }
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
-        }
-        message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)
-        return@withContext Pair(selected, message)
-    }
-
-    private fun listFilesAndFoldersRecursive(share: DiskShare, path: String): List<String> {
+    private fun listFilesAndFoldersRecursive(
+        share: DiskShare,
+        path: String,
+    ): List<String> {
         val files = mutableListOf<String>()
         share.list(path).forEach { item ->
-            val isFolder = EnumWithValue.EnumUtils.isSet(
-                item.fileAttributes,
-                FileAttributes.FILE_ATTRIBUTE_DIRECTORY
-            )
+            val isFolder =
+                EnumWithValue.EnumUtils.isSet(
+                    item.fileAttributes,
+                    FileAttributes.FILE_ATTRIBUTE_DIRECTORY,
+                )
 
             if (FileHelper.isDotOrHiddenFile(item.fileName)) {
                 return@forEach

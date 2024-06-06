@@ -5,8 +5,10 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
 class Comm2VideosFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.sources_comm2_videos, rootKey)
     }
 }

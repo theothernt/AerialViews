@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 
 class App : Application() {
-
     override fun onCreate() {
         super.onCreate()
 

@@ -4,5 +4,5 @@ package com.neilturner.aerialviews.models.enums
 enum class ProviderMediaType {
     VIDEOS,
     IMAGES,
-    VIDEOS_IMAGES
+    VIDEOS_IMAGES,
 }

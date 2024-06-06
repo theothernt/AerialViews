@@ -6,7 +6,6 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 
 abstract class MediaProvider(val context: Context) {
-
     abstract val type: ProviderSourceType
 
     abstract val enabled: Boolean

@@ -19,7 +19,6 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
-
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
@@ -71,7 +70,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
-                }
+                },
             )
         }
         val videos = selected.size
@@ -81,7 +80,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
-                }
+                },
             )
         }
         images = selected.size - videos
@@ -111,38 +110,39 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         return Pair(media, message)
     }
 
-    private suspend fun folderAccessVideosAndImages(): List<String> = withContext(Dispatchers.IO) {
-        val folders = mutableListOf<String>()
-        val found = mutableListOf<File>()
+    private suspend fun folderAccessVideosAndImages(): List<String> =
+        withContext(Dispatchers.IO) {
+            val folders = mutableListOf<String>()
+            val found = mutableListOf<File>()
 
-        if (prefs.legacy_volume.contains("/all", false)) {
-            val vols = StorageHelper.getStoragePaths(context)
-            val values = vols.map { it.key }.toTypedArray()
-            for (entry in values) {
-                folders.add("$entry${prefs.legacy_folder}")
+            if (prefs.legacy_volume.contains("/all", false)) {
+                val vols = StorageHelper.getStoragePaths(context)
+                val values = vols.map { it.key }.toTypedArray()
+                for (entry in values) {
+                    folders.add("$entry${prefs.legacy_folder}")
+                }
+            } else {
+                folders.add("${prefs.legacy_volume}${prefs.legacy_folder}")
             }
-        } else {
-            folders.add("${prefs.legacy_volume}${prefs.legacy_folder}")
-        }
 
-        for (folder in folders) {
-            val directory = File(folder)
-            if (!directory.exists() || !directory.isDirectory) {
-                continue
+            for (folder in folders) {
+                val directory = File(folder)
+                if (!directory.exists() || !directory.isDirectory) {
+                    continue
+                }
+                val files = directory.listFiles()
+                if (!files.isNullOrEmpty()
+                ) {
+                    found.addAll(
+                        files.filter { file ->
+                            val filename = file.name.split("/").last()
+                            !FileHelper.isDotOrHiddenFile(filename)
+                        },
+                    )
+                }
             }
-            val files = directory.listFiles()
-            if (!files.isNullOrEmpty()
-            ) {
-                found.addAll(
-                    files.filter { file ->
-                        val filename = file.name.split("/").last()
-                        !FileHelper.isDotOrHiddenFile(filename)
-                    }
-                )
-            }
+            return@withContext found.map { item -> item.absolutePath }
         }
-        return@withContext found.map { item -> item.absolutePath }
-    }
 
     @Suppress("JoinDeclarationAndAssignment")
     private suspend fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
@@ -167,7 +167,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
-                }
+                },
             )
         }
         videos = selected.size
@@ -177,7 +177,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
-                }
+                },
             )
         }
         images = selected.size - videos
@@ -206,14 +206,16 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         return Pair(media, message)
     }
 
-    private suspend fun mediaStoreVideosAndImages(): List<String> = withContext(Dispatchers.IO) {
-        val files = FileHelper.findLocalVideos(context) +
-            FileHelper.findLocalImages(context)
+    private suspend fun mediaStoreVideosAndImages(): List<String> =
+        withContext(Dispatchers.IO) {
+            val files =
+                FileHelper.findLocalVideos(context) +
+                    FileHelper.findLocalImages(context)
 
-        return@withContext files.filter { item ->
-            !FileHelper.isDotOrHiddenFile(item)
+            return@withContext files.filter { item ->
+                !FileHelper.isDotOrHiddenFile(item)
+            }
         }
-    }
 
     companion object {
         private const val TAG = "LocalMediaProvider"

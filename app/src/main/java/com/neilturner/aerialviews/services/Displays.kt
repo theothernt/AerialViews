@@ -15,7 +15,11 @@ import android.view.Display as NativeDisplay
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
 enum class HDRFormat {
-    DOLBY_VISION, HDR10, HDR10_PLUS, HLG, UNKNOWN
+    DOLBY_VISION,
+    HDR10,
+    HDR10_PLUS,
+    HLG,
+    UNKNOWN,
 }
 
 fun hdrTypeToFormat(value: Int): HDRFormat {
@@ -29,7 +33,12 @@ fun hdrTypeToFormat(value: Int): HDRFormat {
 }
 
 enum class PowerState {
-    OFF, ON, DOZE, DOZE_SUSPEND, ON_SUSPEND, UNKNOWN
+    OFF,
+    ON,
+    DOZE,
+    DOZE_SUSPEND,
+    ON_SUSPEND,
+    UNKNOWN,
 }
 
 fun displayStateToPowerState(value: Int): PowerState {
@@ -88,22 +97,24 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         isSecure = (flags and NativeDisplay.FLAG_SECURE) == NativeDisplay.FLAG_SECURE
         supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
 
-        isRound = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            (flags and NativeDisplay.FLAG_ROUND) == NativeDisplay.FLAG_ROUND
-        } else {
-            false
-        }
+        isRound =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                (flags and NativeDisplay.FLAG_ROUND) == NativeDisplay.FLAG_ROUND
+            } else {
+                false
+            }
 
         // Get render sizes
-        renderOutput = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val metrics = windowManager.currentWindowMetrics
-            OutputDescription(-1, metrics.bounds.width(), metrics.bounds.height(), source.refreshRate)
-        } else {
-            val renderPoint = Point()
-            @Suppress("DEPRECATION")
-            source.getSize(renderPoint)
-            OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
-        }
+        renderOutput =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val metrics = windowManager.currentWindowMetrics
+                OutputDescription(-1, metrics.bounds.width(), metrics.bounds.height(), source.refreshRate)
+            } else {
+                val renderPoint = Point()
+                @Suppress("DEPRECATION")
+                source.getSize(renderPoint)
+                OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
+            }
 
         // If available on device get display mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -112,14 +123,15 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
             val displaySize = Util.getCurrentDisplayModeSize(context, source)
             physicalOutput =
                 OutputDescription(mode.modeId, displaySize.x, displaySize.y, mode.refreshRate)
-            supportedModes = source.supportedModes.map {
-                OutputDescription(
-                    it.modeId,
-                    it.physicalWidth,
-                    it.physicalHeight,
-                    it.refreshRate
-                )
-            }
+            supportedModes =
+                source.supportedModes.map {
+                    OutputDescription(
+                        it.modeId,
+                        it.physicalWidth,
+                        it.physicalHeight,
+                        it.refreshRate,
+                    )
+                }
         } else {
             physicalOutput = null
             supportedModes = listOf()
@@ -127,20 +139,25 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
 
         // Check HDR Capabilities if available on device
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            //source.mode.supportedHdrTypes
+            // source.mode.supportedHdrTypes
             val capabilities = source.hdrCapabilities
 
-            supportsHDR = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                source.isHdr
-            } else capabilities != null
+            supportsHDR =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    source.isHdr
+                } else {
+                    capabilities != null
+                }
 
-            hdrFormats = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
-                } else source.mode.supportedHdrTypes.map { hdrTypeToFormat(it) }
+            hdrFormats =
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    capabilities?.supportedHdrTypes?.map { hdrTypeToFormat(it) } ?: listOf()
+                } else {
+                    source.mode.supportedHdrTypes.map { hdrTypeToFormat(it) }
+                }
 
             minimumLuminance = capabilities?.desiredMinLuminance
             maximumLuminance = capabilities?.desiredMaxLuminance
-
         } else {
             supportsHDR = false
             minimumLuminance = null
@@ -152,11 +169,12 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             supportsWideColorGamut = source.isWideColorGamut
 
-            wideColorGamut = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                source.preferredWideGamutColorSpace?.name
-            } else {
-                null
-            }
+            wideColorGamut =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    source.preferredWideGamutColorSpace?.name
+                } else {
+                    null
+                }
         } else {
             supportsWideColorGamut = false
             wideColorGamut = null

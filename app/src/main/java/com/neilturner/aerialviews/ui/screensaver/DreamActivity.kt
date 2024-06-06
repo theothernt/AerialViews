@@ -4,7 +4,7 @@
     "RedundantOverride",
     "EmptyMethod",
     "RedundantSuppression",
-    "RedundantSuppression"
+    "RedundantSuppression",
 )
 
 package com.neilturner.aerialviews.ui.screensaver
@@ -29,12 +29,13 @@ class DreamActivity : DreamService() {
         isInteractive = true
 
         // Start playback, etc
-        screenController = if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-            ScreenController(this)
-        } else {
-            val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-            ScreenController(altContext)
-        }
+        screenController =
+            if (GeneralPrefs.localeScreensaver.startsWith("default")) {
+                ScreenController(this)
+            } else {
+                val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
+                ScreenController(altContext)
+            }
         setContentView(screenController.view)
     }
 
@@ -52,7 +53,8 @@ class DreamActivity : DreamService() {
                 KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
                 KeyEvent.KEYCODE_DPAD_UP_LEFT,
                 KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
-                KeyEvent.KEYCODE_DPAD_UP_RIGHT -> return true
+                KeyEvent.KEYCODE_DPAD_UP_RIGHT,
+                -> return true
 
                 KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
                 KeyEvent.KEYCODE_MEDIA_REWIND,
@@ -60,7 +62,8 @@ class DreamActivity : DreamService() {
                 KeyEvent.KEYCODE_MEDIA_PAUSE,
                 KeyEvent.KEYCODE_MEDIA_NEXT,
                 KeyEvent.KEYCODE_MEDIA_PREVIOUS,
-                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE,
+                -> {
                     // Should play/pause/rewind keys be passed
                     // to the background app or not
                     return if (GeneralPrefs.enableMediaButtonPassthrough) {

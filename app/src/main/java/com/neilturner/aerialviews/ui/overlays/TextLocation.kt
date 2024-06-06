@@ -30,16 +30,22 @@ class TextLocation : AppCompatTextView {
         currentPositionProgressHandler = null
     }
 
-    fun updateLocationData(location: String, poi: Map<Int, String>, descriptionManifestType: DescriptionManifestType, player: VideoPlayerView) {
+    fun updateLocationData(
+        location: String,
+        poi: Map<Int, String>,
+        descriptionManifestType: DescriptionManifestType,
+        player: VideoPlayerView,
+    ) {
         isFadingOutMedia = false
         this.visibility = View.VISIBLE
 
         // If POI, set POI text, if empty use location, or else use location
-        this.text = if (descriptionManifestType == DescriptionManifestType.POI) {
-            poi[0]?.replace("\n", " ") ?: location
-        } else {
-            location
-        }
+        this.text =
+            if (descriptionManifestType == DescriptionManifestType.POI) {
+                poi[0]?.replace("\n", " ") ?: location
+            } else {
+                location
+            }
 
         // Hide TextView if POI/location text is blank
         if (this.text.isBlank()) {
@@ -55,7 +61,10 @@ class TextLocation : AppCompatTextView {
         }
     }
 
-    private fun updatePointsOfInterest(poi: Map<Int, String>, player: VideoPlayerView) {
+    private fun updatePointsOfInterest(
+        poi: Map<Int, String>,
+        player: VideoPlayerView,
+    ) {
         val poiTimes = poi.keys.sorted() // sort ahead of time?
         var lastPoi = 0
 

@@ -6,13 +6,17 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 
 object LoggingHelper {
-
     private val firebaseAnalytics = Firebase.analytics
-    fun logScreenView(screenName: String, activityName: String) {
-        val parameters = bundleOf(
-            Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
-            Pair(FirebaseAnalytics.Param.SCREEN_CLASS, activityName)
-        )
+
+    fun logScreenView(
+        screenName: String,
+        activityName: String,
+    ) {
+        val parameters =
+            bundleOf(
+                Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
+                Pair(FirebaseAnalytics.Param.SCREEN_CLASS, activityName),
+            )
 
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }

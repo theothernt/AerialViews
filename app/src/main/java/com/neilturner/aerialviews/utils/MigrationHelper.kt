@@ -6,7 +6,6 @@ import com.neilturner.aerialviews.BuildConfig
 
 @Suppress("SameParameterValue")
 class MigrationHelper(val context: Context) {
-
     private val prefsPackageName = "${context.packageName}_preferences"
     private val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
 
@@ -47,8 +46,9 @@ class MigrationHelper(val context: Context) {
         Log.i(TAG, "Migrating settings for release 10")
 
         // Covers case when Apple videos are disabled but Community videos are not
-        val communityVideosEnabled = prefs.contains("comm1_videos_enabled") ||
-            prefs.contains("comm2_videos_enabled")
+        val communityVideosEnabled =
+            prefs.contains("comm1_videos_enabled") ||
+                prefs.contains("comm2_videos_enabled")
         val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
 
         if (!appleVideosEnabled && !communityVideosEnabled) {

@@ -8,7 +8,6 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 object PermissionHelper {
-
     // TIRAMISU / 33 / 13
     // R / 30 / 11
 
@@ -27,7 +26,7 @@ object PermissionHelper {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
                 Manifest.permission.READ_MEDIA_VIDEO,
-                Manifest.permission.READ_MEDIA_IMAGES
+                Manifest.permission.READ_MEDIA_IMAGES,
             )
         } else {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)

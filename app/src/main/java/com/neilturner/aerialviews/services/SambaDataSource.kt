@@ -24,7 +24,6 @@ import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
 class SambaDataSource : BaseDataSource(true) {
-
     private lateinit var dataSpec: DataSpec
     private var userName = ""
     private var password = ""
@@ -68,7 +67,11 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     @SuppressLint("UnsafeOptInUsageError")
-    override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
+    override fun read(
+        buffer: ByteArray,
+        offset: Int,
+        readLength: Int,
+    ): Int {
         return readInternal(buffer, offset, readLength)
     }
 
@@ -94,7 +97,7 @@ class SambaDataSource : BaseDataSource(true) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
 
-        //val userInfo = SambaHelper.parseUserInfo(uri)
+        // val userInfo = SambaHelper.parseUserInfo(uri)
         userName = SambaMediaPrefs.userName
         password = SambaMediaPrefs.password
 
@@ -120,13 +123,17 @@ class SambaDataSource : BaseDataSource(true) {
             null,
             shareAccess,
             SMB2CreateDisposition.FILE_OPEN,
-            null
+            null,
         )
     }
 
     @SuppressLint("UnsafeOptInUsageError")
     @Throws(IOException::class)
-    private fun readInternal(buffer: ByteArray, offset: Int, readLength: Int): Int {
+    private fun readInternal(
+        buffer: ByteArray,
+        offset: Int,
+        readLength: Int,
+    ): Int {
         var newReadLength = readLength
         if (newReadLength == 0) {
             return 0
@@ -159,7 +166,6 @@ class SambaDataSource : BaseDataSource(true) {
 }
 
 class SambaDataSourceFactory : DataSource.Factory {
-
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource {
         return SambaDataSource()

@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) : MediaProvider(context) {
-
     override val type = ProviderSourceType.REMOTE
 
     override val enabled: Boolean
@@ -32,13 +31,14 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
-            val video = VideoMetadata(
-                it.allUrls(),
-                it.description,
-                it.pointsOfInterest.mapValues { poi ->
-                    strings[poi.value] ?: it.description
-                }
-            )
+            val video =
+                VideoMetadata(
+                    it.allUrls(),
+                    it.description,
+                    it.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: it.description
+                    },
+                )
             metadata.add(video)
         }
         return metadata
@@ -52,8 +52,8 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
             videos.add(
                 AerialMedia(
                     it.uriAtQuality(quality),
-                    type = AerialMediaType.VIDEO
-                )
+                    type = AerialMediaType.VIDEO,
+                ),
             )
         }
 

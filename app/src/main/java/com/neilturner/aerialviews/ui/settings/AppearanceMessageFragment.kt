@@ -11,8 +11,10 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 class AppearanceMessageFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_appearance_message, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
@@ -30,7 +32,10 @@ class AppearanceMessageFragment :
         super.onDestroy()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
         updateSummary()
     }
 

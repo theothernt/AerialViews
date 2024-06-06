@@ -77,8 +77,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
         if (FileHelper.isSambaVideo(uri)) {
-            val mediaSource = ProgressiveMediaSource.Factory(SambaDataSourceFactory())
-                .createMediaSource(mediaItem)
+            val mediaSource =
+                ProgressiveMediaSource.Factory(SambaDataSourceFactory())
+                    .createMediaSource(mediaItem)
             player.setMediaSource(mediaSource)
         } else {
             player.setMediaItem(mediaItem)
@@ -98,7 +99,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         super.onDetachedFromWindow()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         var newWidthMeasureSpec = widthMeasureSpec
         if (aspectRatio > 0) {
             val newHeight = MeasureSpec.getSize(heightMeasureSpec)
@@ -112,7 +116,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         this.listener = listener
     }
 
-    /* MediaPlayerControl */
+    // MediaPlayerControl
     override fun start() {
         player.playWhenReady = true
     }
@@ -128,18 +132,25 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     override fun getDuration(): Int = player.duration.toInt()
+
     override fun getCurrentPosition(): Int = player.currentPosition.toInt()
+
     override fun seekTo(pos: Int) = player.seekTo(pos.toLong())
+
     override fun isPlaying(): Boolean = player.playWhenReady
+
     override fun getBufferPercentage(): Int = player.bufferedPercentage
+
     override fun canPause(): Boolean = player.duration > 0
+
     override fun canSeekBackward(): Boolean = player.duration > 0
+
     override fun canSeekForward(): Boolean = player.duration > 0
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int = player.audioSessionId
 
-    /* EventListener */
+    // EventListener
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
             Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
@@ -178,6 +189,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     fun increaseSpeed() = changeSpeed(true)
+
     fun decreaseSpeed() = changeSpeed(false)
 
     private fun changeSpeed(increase: Boolean) {
@@ -212,11 +224,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
             return // we are at maximum speed already
         }
 
-        val newSpeed = if (increase) {
-            speedValues[currentSpeedIdx + 1]
-        } else {
-            speedValues[currentSpeedIdx - 1]
-        }
+        val newSpeed =
+            if (increase) {
+                speedValues[currentSpeedIdx + 1]
+            } else {
+                speedValues[currentSpeedIdx - 1]
+            }
 
         playbackSpeed = newSpeed
         player.setPlaybackSpeed(newSpeed.toFloat())
@@ -283,10 +296,11 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
             rendererFactory = CustomRendererFactory(context)
         }
 
-        val player = ExoPlayer.Builder(context)
-            .setTrackSelector(trackSelector)
-            .setRenderersFactory(rendererFactory)
-            .build()
+        val player =
+            ExoPlayer.Builder(context)
+                .setTrackSelector(trackSelector)
+                .setRenderersFactory(rendererFactory)
+                .build()
 
         if (extraLogging) {
             player.addAnalyticsListener(EventLogger())
@@ -303,8 +317,11 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     interface OnVideoPlayerEventListener {
         fun onVideoAlmostFinished()
+
         fun onVideoError()
+
         fun onVideoPrepared()
+
         fun onVideoPlaybackSpeedChanged()
     }
 

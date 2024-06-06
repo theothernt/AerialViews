@@ -10,8 +10,10 @@ import com.neilturner.aerialviews.utils.LoggingHelper
 class SettingsFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings, rootKey)
     }
 

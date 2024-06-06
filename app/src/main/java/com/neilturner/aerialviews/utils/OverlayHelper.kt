@@ -17,7 +17,6 @@ import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.ui.overlays.TextWeather
 
 class OverlayHelper(private val context: Context, private val prefs: GeneralPrefs) {
-
     var overlays = mutableListOf<View?>()
 
     inline fun <reified T : View> findOverlay(): List<T> {
@@ -29,7 +28,13 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
-    fun assignOverlaysAndIds(leftFlow: Flow, rightFlow: Flow, leftIds: List<Int>, rightIds: List<Int>, alternateOverlays: Boolean) {
+    fun assignOverlaysAndIds(
+        leftFlow: Flow,
+        rightFlow: Flow,
+        leftIds: List<Int>,
+        rightIds: List<Int>,
+        alternateOverlays: Boolean,
+    ) {
         if (!alternateOverlays) {
             leftFlow.referencedIds = leftIds.toIntArray()
             rightFlow.referencedIds = rightIds.toIntArray()
@@ -70,29 +75,38 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
             }
         }
 
-        val bottomRow = buildReferenceIds(
-            root.emptyView1,
-            overlays[1],
-            overlays[0],
-            root.emptyView2,
-            overlays[3],
-            overlays[2]
-        )
+        val bottomRow =
+            buildReferenceIds(
+                root.emptyView1,
+                overlays[1],
+                overlays[0],
+                root.emptyView2,
+                overlays[3],
+                overlays[2],
+            )
 
-        val topRow = buildReferenceIds(
-            overlays[5],
-            overlays[4],
-            root.emptyView3,
-            overlays[7],
-            overlays[6],
-            root.emptyView4
-        )
+        val topRow =
+            buildReferenceIds(
+                overlays[5],
+                overlays[4],
+                root.emptyView3,
+                overlays[7],
+                overlays[6],
+                root.emptyView4,
+            )
 
         return OverlayIds(bottomRow.first, bottomRow.second, topRow.first, topRow.second)
     }
 
     // Figure out which IDs go where, add an empty view if needed
-    private fun buildReferenceIds(view1: View?, view2: View?, view3: View?, view4: View?, view5: View?, view6: View?): Pair<List<Int>, List<Int>> {
+    private fun buildReferenceIds(
+        view1: View?,
+        view2: View?,
+        view3: View?,
+        view4: View?,
+        view5: View?,
+        view6: View?,
+    ): Pair<List<Int>, List<Int>> {
         // Reverse order of views due to how the Flow control display order
         val leftIds = listOfNotNull(view1?.id, view2?.id, view3?.id)
         val rightIds = listOfNotNull(view4?.id, view5?.id, view6?.id)
@@ -122,11 +136,13 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.weatherWeight)
             }
             OverlayType.MESSAGE1,
-            OverlayType.MESSAGE2 -> TextMessage(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-                this.type = type
-            }
+            OverlayType.MESSAGE2,
+            ->
+                TextMessage(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                    this.type = type
+                }
             else -> return null
         }
     }

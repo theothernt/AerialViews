@@ -7,18 +7,21 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 
 class AppleVideosFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
         updateSummary()
     }
 
     private fun updateSummary() {
         val quality = findPreference<ListPreference>("apple_videos_quality")
-        quality?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            quality?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
-            true
-        }
+        quality?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                quality?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
+                true
+            }
         quality?.findIndexOfValue(quality.value)?.let { updateDataUsageSummary(it) }
     }
 

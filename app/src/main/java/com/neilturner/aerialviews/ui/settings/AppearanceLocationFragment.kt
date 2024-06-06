@@ -8,8 +8,10 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.LoggingHelper
 
 class AppearanceLocationFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_appearance_location, rootKey)
         updateAllSummaries()
     }
@@ -25,16 +27,24 @@ class AppearanceLocationFragment : PreferenceFragmentCompat() {
         LoggingHelper.logScreenView("Location", TAG)
     }
 
-    private fun setupSummaryUpdater(control: String, entries: Int) {
+    private fun setupSummaryUpdater(
+        control: String,
+        entries: Int,
+    ) {
         val pref = findPreference<ListPreference>(control)
-        pref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
-            true
-        }
+        pref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
+                true
+            }
         pref?.findIndexOfValue(pref.value)?.let { updateSummary(control, entries, it) }
     }
 
-    private fun updateSummary(control: String, entries: Int, index: Int) {
+    private fun updateSummary(
+        control: String,
+        entries: Int,
+        index: Int,
+    ) {
         val res = requireContext().resources
         val pref = findPreference<Preference>(control)
         val summaries = res?.getStringArray(entries)
