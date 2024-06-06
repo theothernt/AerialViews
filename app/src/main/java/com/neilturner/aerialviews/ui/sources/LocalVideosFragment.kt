@@ -32,17 +32,21 @@ class LocalVideosFragment :
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.sources_local_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        requestMultiplePermissions = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            if (!PermissionHelper.isReadMediaPermissionGranted(permissions)) {
-                disableLocalMediaPreference()
+        requestMultiplePermissions =
+            registerForActivityResult(
+                ActivityResultContracts.RequestMultiplePermissions(),
+            ) { permissions ->
+                if (!PermissionHelper.isReadMediaPermissionGranted(permissions)) {
+                    disableLocalMediaPreference()
+                }
             }
-        }
 
         limitTextInput()
         showNvidiaShieldNoticeIfNeeded()
@@ -71,7 +75,10 @@ class LocalVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
         if (key == "local_videos_enabled" &&
             LocalMediaPrefs.enabled
         ) {
@@ -119,7 +126,9 @@ class LocalVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_filter_folder")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_filter_folder")?.setOnBindEditTextListener {
+            it.setSingleLine()
+        }
         preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
@@ -145,7 +154,10 @@ class LocalVideosFragment :
     }
 
     @Suppress("SameParameterValue")
-    private suspend fun showDialog(title: String, message: String) = withContext(Dispatchers.Main) {
+    private suspend fun showDialog(
+        title: String,
+        message: String,
+    ) = withContext(Dispatchers.Main) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)

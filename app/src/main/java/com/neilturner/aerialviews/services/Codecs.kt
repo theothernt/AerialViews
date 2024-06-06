@@ -9,7 +9,8 @@ import android.os.Build
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Codecs.kt
 
 enum class CodecType {
-    ENCODER, DECODER
+    ENCODER,
+    DECODER,
 }
 
 class Codec(source: MediaCodecInfo) {

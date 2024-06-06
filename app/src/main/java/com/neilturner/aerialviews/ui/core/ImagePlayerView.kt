@@ -38,24 +38,34 @@ class ImagePlayerView : AppCompatImageView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     init {
-        imageLoader = ImageLoader.Builder(context)
-            .eventListener(object : EventListener {
-                override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                    setupFinishedRunnable()
-                }
+        imageLoader =
+            ImageLoader.Builder(context)
+                .eventListener(
+                    object : EventListener {
+                        override fun onSuccess(
+                            request: ImageRequest,
+                            result: SuccessResult,
+                        ) {
+                            setupFinishedRunnable()
+                        }
 
-                override fun onError(request: ImageRequest, result: ErrorResult) {
-                    Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
-                    onPlayerError()
-                }
-            }).build()
+                        override fun onError(
+                            request: ImageRequest,
+                            result: ErrorResult,
+                        ) {
+                            Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
+                            onPlayerError()
+                        }
+                    },
+                ).build()
 
-        val scaleType = try {
-            ScaleType.valueOf(GeneralPrefs.photoScale.toString())
-        } catch (ex: Exception) {
-            GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
-            ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
-        }
+        val scaleType =
+            try {
+                ScaleType.valueOf(GeneralPrefs.photoScale.toString())
+            } catch (ex: Exception) {
+                GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
+                ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+            }
         this.scaleType = scaleType
     }
 
@@ -64,6 +74,7 @@ class ImagePlayerView : AppCompatImageView {
         removeCallbacks(errorRunnable)
         listener = null
     }
+
     fun setUri(uri: Uri?) {
         if (uri == null) {
             return
@@ -75,8 +86,9 @@ class ImagePlayerView : AppCompatImageView {
     }
 
     private suspend fun loadImage(uri: Uri) {
-        val request = ImageRequest.Builder(context)
-            .target(this)
+        val request =
+            ImageRequest.Builder(context)
+                .target(this)
 
         if (FileHelper.isSambaVideo(uri)) {
             try {
@@ -98,31 +110,33 @@ class ImagePlayerView : AppCompatImageView {
         setImageBitmap(null)
     }
 
-    private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray = withContext(Dispatchers.IO) {
-        val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
-        val shareName = shareNameAndPath.first
-        val path = shareNameAndPath.second
+    private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray =
+        withContext(Dispatchers.IO) {
+            val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
+            val shareName = shareNameAndPath.first
+            val path = shareNameAndPath.second
 
-        val config = SambaHelper.buildSmbConfig()
-        val smbClient = SMBClient(config)
-        val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
+            val config = SambaHelper.buildSmbConfig()
+            val smbClient = SMBClient(config)
+            val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
 
-        smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
-            val session = connection?.authenticate(authContext)
-            val share = session?.connectShare(shareName) as DiskShare
-            val shareAccess = hashSetOf<SMB2ShareAccess>()
-            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-            val file = share.openFile(
-                path,
-                EnumSet.of(AccessMask.GENERIC_READ),
-                null,
-                shareAccess,
-                SMB2CreateDisposition.FILE_OPEN,
-                null
-            )
-            return@withContext file.inputStream.readBytes()
+            smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
+                val session = connection?.authenticate(authContext)
+                val share = session?.connectShare(shareName) as DiskShare
+                val shareAccess = hashSetOf<SMB2ShareAccess>()
+                shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+                val file =
+                    share.openFile(
+                        path,
+                        EnumSet.of(AccessMask.GENERIC_READ),
+                        null,
+                        shareAccess,
+                        SMB2CreateDisposition.FILE_OPEN,
+                        null,
+                    )
+                return@withContext file.inputStream.readBytes()
+            }
         }
-    }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
@@ -147,7 +161,9 @@ class ImagePlayerView : AppCompatImageView {
 
     interface OnImagePlayerEventListener {
         fun onImageFinished()
+
         fun onImageError()
+
         fun onImagePrepared()
     }
 }

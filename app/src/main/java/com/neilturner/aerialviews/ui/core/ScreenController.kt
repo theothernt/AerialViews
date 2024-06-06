@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
 class ScreenController(private val context: Context) :
     OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
@@ -141,7 +140,7 @@ class ScreenController(private val context: Context) :
             overlayView.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
-            alternate
+            alternate,
         )
 
         overlayHelper.assignOverlaysAndIds(
@@ -149,7 +148,7 @@ class ScreenController(private val context: Context) :
             overlayView.flowTopRight,
             topLeftIds,
             topRightIds,
-            alternate
+            alternate,
         )
 
         if (shouldAlternateOverlays) {
@@ -237,11 +236,12 @@ class ScreenController(private val context: Context) :
                 imageView.imagePlayer.stop()
 
                 // Pick next/previous video
-                val media = if (!previousItem) {
-                    playlist.nextItem()
-                } else {
-                    playlist.previousItem()
-                }
+                val media =
+                    if (!previousItem) {
+                        playlist.nextItem()
+                    } else {
+                        playlist.previousItem()
+                    }
                 previousItem = false
 
                 loadItem(media)
@@ -280,11 +280,17 @@ class ScreenController(private val context: Context) :
     }
 
     override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()
+
     override fun onVideoAlmostFinished() = fadeOutCurrentItem()
+
     override fun onVideoPrepared() = fadeInNextItem()
+
     override fun onVideoError() = handleError()
+
     override fun onImageFinished() = fadeOutCurrentItem()
+
     override fun onImageError() = handleError()
+
     override fun onImagePrepared() = fadeInNextItem()
 
     companion object {

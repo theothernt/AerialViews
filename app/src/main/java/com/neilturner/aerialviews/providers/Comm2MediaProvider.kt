@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 
 class Comm2MediaProvider(context: Context, private val prefs: Comm2VideoPrefs) : MediaProvider(context) {
-
     override val type = ProviderSourceType.REMOTE
 
     override val enabled: Boolean
@@ -32,13 +31,14 @@ class Comm2MediaProvider(context: Context, private val prefs: Comm2VideoPrefs) :
         val strings = parseJsonMap(context, R.raw.comm2_strings)
         val wrapper = parseJson(context, R.raw.comm2, JsonHelper.Comm2Videos::class.java)
         wrapper.assets?.forEach {
-            val video = VideoMetadata(
-                it.allUrls(),
-                it.description,
-                it.pointsOfInterest.mapValues { poi ->
-                    strings[poi.value] ?: it.description
-                }
-            )
+            val video =
+                VideoMetadata(
+                    it.allUrls(),
+                    it.description,
+                    it.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: it.description
+                    },
+                )
             metadata.add(video)
         }
         return metadata
@@ -52,8 +52,8 @@ class Comm2MediaProvider(context: Context, private val prefs: Comm2VideoPrefs) :
             videos.add(
                 AerialMedia(
                     it.uriAtQuality(quality),
-                    type = AerialMediaType.VIDEO
-                )
+                    type = AerialMediaType.VIDEO,
+                ),
             )
         }
 

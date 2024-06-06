@@ -41,39 +41,50 @@ class SambaVideosFragment :
     private lateinit var requestReadPermission: ActivityResultLauncher<String>
     private lateinit var requestWritePermission: ActivityResultLauncher<String>
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         // Import/read permission request
-        requestReadPermission = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (!isGranted) {
-                lifecycleScope.launch {
-                    showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_permission_denied))
-                }
-            } else {
-                lifecycleScope.launch {
-                    importSettings()
+        requestReadPermission =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission(),
+            ) { isGranted: Boolean ->
+                if (!isGranted) {
+                    lifecycleScope.launch {
+                        showDialog(
+                            resources.getString(R.string.samba_videos_import_failed),
+                            resources.getString(R.string.samba_videos_permission_denied),
+                        )
+                    }
+                } else {
+                    lifecycleScope.launch {
+                        importSettings()
+                    }
                 }
             }
-        }
 
         // Export/write permission request
-        requestWritePermission = registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (!isGranted) {
-                lifecycleScope.launch {
-                    showDialog(resources.getString(R.string.samba_videos_export_failed), resources.getString(R.string.samba_videos_permission_denied))
-                }
-            } else {
-                lifecycleScope.launch {
-                    exportSettings()
+        requestWritePermission =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission(),
+            ) { isGranted: Boolean ->
+                if (!isGranted) {
+                    lifecycleScope.launch {
+                        showDialog(
+                            resources.getString(R.string.samba_videos_export_failed),
+                            resources.getString(R.string.samba_videos_permission_denied),
+                        )
+                    }
+                } else {
+                    lifecycleScope.launch {
+                        exportSettings()
+                    }
                 }
             }
-        }
 
         limitTextInput()
         updateSummary()
@@ -102,7 +113,10 @@ class SambaVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
         updateSummary()
     }
 
@@ -193,111 +207,135 @@ class SambaVideosFragment :
         }
     }
 
-    private suspend fun importSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Importing SMB settings from Document folder")
+    private suspend fun importSettings() =
+        withContext(Dispatchers.IO) {
+            Log.i(TAG, "Importing SMB settings from Document folder")
 
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        val file = File(directory, SMB_SETTINGS_FILENAME)
-        val properties = Properties()
+            val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+            val file = File(directory, SMB_SETTINGS_FILENAME)
+            val properties = Properties()
 
-        if (!file.exists()) {
-            showDialog(resources.getString(R.string.samba_videos_import_failed), String.format(resources.getString(R.string.samba_videos_file_not_found), SMB_SETTINGS_FILENAME))
-            return@withContext
-        }
-
-        try {
-            val stream = FileInputStream(file)
-            stream.use {
-                properties.load(stream)
+            if (!file.exists()) {
+                showDialog(
+                    resources.getString(R.string.samba_videos_import_failed),
+                    String.format(resources.getString(R.string.samba_videos_file_not_found), SMB_SETTINGS_FILENAME),
+                )
+                return@withContext
             }
-        } catch (ex: Exception) {
-            showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_error_parsing))
-            Log.e(TAG, "Import failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
-            return@withContext
-        }
 
-        try {
-            SambaMediaPrefs.hostName = properties["hostname"] as String
-            SambaMediaPrefs.domainName = properties["domainname"] as String
-            SambaMediaPrefs.shareName = properties["sharename"] as String
-            SambaMediaPrefs.userName = properties["username"] as String
-            SambaMediaPrefs.password = properties["password"] as String
-
-            val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
-            val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
-            SambaMediaPrefs.smbDialects.clear()
-            SambaMediaPrefs.smbDialects.addAll(validDialects)
-
-            SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
-            SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
-        } catch (ex: Exception) {
-            showDialog(resources.getString(R.string.samba_videos_import_failed), resources.getString(R.string.samba_videos_unable_to_save))
-            Log.e(TAG, "Import failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
-            return@withContext
-        }
-
-        withContext(Dispatchers.Main) {
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaMediaPrefs.hostName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaMediaPrefs.domainName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaMediaPrefs.shareName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaMediaPrefs.userName
-            preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaMediaPrefs.password
-
-            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
-            SambaMediaPrefs.searchSubfolders
-            preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
-            SambaMediaPrefs.enableEncryption
-
-            preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
-                SambaMediaPrefs.smbDialects.toSet()
-
-            updateSummary()
-        }
-
-        showDialog(resources.getString(R.string.samba_videos_import_success), String.format(resources.getString(R.string.samba_videos_import_save_success), SMB_SETTINGS_FILENAME))
-    }
-
-    private suspend fun exportSettings() = withContext(Dispatchers.IO) {
-        Log.i(TAG, "Exporting SMB settings to Documents folder")
-
-        // Build SMB config list
-        val smbSettings = Properties()
-        smbSettings["hostname"] = SambaMediaPrefs.hostName
-        smbSettings["domainname"] = SambaMediaPrefs.domainName
-        smbSettings["sharename"] = SambaMediaPrefs.shareName
-        smbSettings["username"] = SambaMediaPrefs.userName
-        smbSettings["password"] = SambaMediaPrefs.password
-        smbSettings["smb_dialects"] = SambaMediaPrefs.smbDialects.joinToString(",").replace(" ", "")
-        smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
-        smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
-
-        val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
-        val file = File(directory, SMB_SETTINGS_FILENAME)
-
-        try {
-            val stream = FileOutputStream(file, false)
-            stream.use {
-                smbSettings.store(stream, "Aerial Views SMB Settings")
+            try {
+                val stream = FileInputStream(file)
+                stream.use {
+                    properties.load(stream)
+                }
+            } catch (ex: Exception) {
+                showDialog(
+                    resources.getString(R.string.samba_videos_import_failed),
+                    resources.getString(R.string.samba_videos_error_parsing),
+                )
+                Log.e(TAG, "Import failed", ex)
+                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                return@withContext
             }
-        } catch (ex: Exception) {
-            showDialog(resources.getString(R.string.samba_videos_export_failed), String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME))
-            Log.e(TAG, "Export failed", ex)
-            ex.cause?.let { Firebase.crashlytics.recordException(it) }
-            return@withContext
+
+            try {
+                SambaMediaPrefs.hostName = properties["hostname"] as String
+                SambaMediaPrefs.domainName = properties["domainname"] as String
+                SambaMediaPrefs.shareName = properties["sharename"] as String
+                SambaMediaPrefs.userName = properties["username"] as String
+                SambaMediaPrefs.password = properties["password"] as String
+
+                val dialects = properties["smb_dialects"].toStringOrEmpty().split(",")
+                val validDialects = dialects.filter { enumContains<SMB2Dialect>(it.trim()) }
+                SambaMediaPrefs.smbDialects.clear()
+                SambaMediaPrefs.smbDialects.addAll(validDialects)
+
+                SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
+                SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
+            } catch (ex: Exception) {
+                showDialog(
+                    resources.getString(R.string.samba_videos_import_failed),
+                    resources.getString(R.string.samba_videos_unable_to_save),
+                )
+                Log.e(TAG, "Import failed", ex)
+                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                return@withContext
+            }
+
+            withContext(Dispatchers.Main) {
+                preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.text = SambaMediaPrefs.hostName
+                preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.text = SambaMediaPrefs.domainName
+                preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.text = SambaMediaPrefs.shareName
+                preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.text = SambaMediaPrefs.userName
+                preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.text = SambaMediaPrefs.password
+
+                preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_search_subfolders")?.isChecked
+                SambaMediaPrefs.searchSubfolders
+                preferenceScreen.findPreference<CheckBoxPreference>("samba_videos_enable_encryption")?.isChecked
+                SambaMediaPrefs.enableEncryption
+
+                preferenceScreen.findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")?.values =
+                    SambaMediaPrefs.smbDialects.toSet()
+
+                updateSummary()
+            }
+
+            showDialog(
+                resources.getString(R.string.samba_videos_import_success),
+                String.format(resources.getString(R.string.samba_videos_import_save_success), SMB_SETTINGS_FILENAME),
+            )
         }
 
-        showDialog(resources.getString(R.string.samba_videos_export_success), String.format(resources.getString(R.string.samba_videos_export_write_success), SMB_SETTINGS_FILENAME))
-    }
+    private suspend fun exportSettings() =
+        withContext(Dispatchers.IO) {
+            Log.i(TAG, "Exporting SMB settings to Documents folder")
 
-    private suspend fun testSambaConnection() = withContext(Dispatchers.IO) {
-        val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
-        val result = provider.fetchTest()
-        showDialog(resources.getString(R.string.samba_videos_test_results), result)
-    }
+            // Build SMB config list
+            val smbSettings = Properties()
+            smbSettings["hostname"] = SambaMediaPrefs.hostName
+            smbSettings["domainname"] = SambaMediaPrefs.domainName
+            smbSettings["sharename"] = SambaMediaPrefs.shareName
+            smbSettings["username"] = SambaMediaPrefs.userName
+            smbSettings["password"] = SambaMediaPrefs.password
+            smbSettings["smb_dialects"] = SambaMediaPrefs.smbDialects.joinToString(",").replace(" ", "")
+            smbSettings["search_subfolders"] = SambaMediaPrefs.searchSubfolders.toString()
+            smbSettings["enable_encryption"] = SambaMediaPrefs.enableEncryption.toString()
 
-    private suspend fun showDialog(title: String = "", message: String) = withContext(Dispatchers.Main) {
+            val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
+            val file = File(directory, SMB_SETTINGS_FILENAME)
+
+            try {
+                val stream = FileOutputStream(file, false)
+                stream.use {
+                    smbSettings.store(stream, "Aerial Views SMB Settings")
+                }
+            } catch (ex: Exception) {
+                showDialog(
+                    resources.getString(R.string.samba_videos_export_failed),
+                    String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME),
+                )
+                Log.e(TAG, "Export failed", ex)
+                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                return@withContext
+            }
+
+            showDialog(
+                resources.getString(R.string.samba_videos_export_success),
+                String.format(resources.getString(R.string.samba_videos_export_write_success), SMB_SETTINGS_FILENAME),
+            )
+        }
+
+    private suspend fun testSambaConnection() =
+        withContext(Dispatchers.IO) {
+            val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
+            val result = provider.fetchTest()
+            showDialog(resources.getString(R.string.samba_videos_test_results), result)
+        }
+
+    private suspend fun showDialog(
+        title: String = "",
+        message: String,
+    ) = withContext(Dispatchers.Main) {
         AlertDialog.Builder(requireContext()).apply {
             setTitle(title)
             setMessage(message)

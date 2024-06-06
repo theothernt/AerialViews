@@ -24,7 +24,10 @@ val Uri.filenameWithoutExtension: String
     }
 
 // https://stackoverflow.com/a/74741495/247257
-fun PackageManager.getPackageInfoCompat(packageName: String, flags: Int = 0): PackageInfo =
+fun PackageManager.getPackageInfoCompat(
+    packageName: String,
+    flags: Int = 0,
+): PackageInfo =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(flags.toLong()))
     } else {

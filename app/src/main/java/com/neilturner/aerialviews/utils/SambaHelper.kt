@@ -8,7 +8,6 @@ import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 
 object SambaHelper {
-
     @Suppress("NAME_SHADOWING")
     fun fixShareName(shareName: String): String {
         var shareName = shareName
@@ -71,7 +70,11 @@ object SambaHelper {
         return Pair(shareName, path)
     }
 
-    fun buildAuthContext(userName: String, password: String, domainName: String): AuthenticationContext {
+    fun buildAuthContext(
+        userName: String,
+        password: String,
+        domainName: String,
+    ): AuthenticationContext {
         if (userName.isEmpty() && password.isEmpty()) {
             Log.i(TAG, "Using anonymous login auth")
             return AuthenticationContext.anonymous()
@@ -86,9 +89,10 @@ object SambaHelper {
 
     fun buildSmbConfig(): SmbConfig {
         val dialectStrings = SambaMediaPrefs.smbDialects
-        val config = SmbConfig.builder()
-            .withEncryptData(SambaMediaPrefs.enableEncryption)
-            .withNegotiatedBufferSize()
+        val config =
+            SmbConfig.builder()
+                .withEncryptData(SambaMediaPrefs.enableEncryption)
+                .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {
             Log.i(TAG, "Using SMB dialects: ${dialectStrings.joinToString(",")}")
             val dialects = dialectStrings.map { SMB2Dialect.valueOf(it) }

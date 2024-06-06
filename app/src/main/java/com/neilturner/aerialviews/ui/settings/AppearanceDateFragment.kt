@@ -12,10 +12,12 @@ import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.LoggingHelper
 
 class AppearanceDateFragment : PreferenceFragmentCompat() {
-
     private lateinit var entriesAndValues: Map<String, String>
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
 
         entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
@@ -31,19 +33,21 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
 
     private fun updateSummary() {
         val editPref = findPreference<EditTextPreference>("date_custom")
-        editPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            editPref?.summary = dateFormatting(DateType.CUSTOM, newValue as String)
-            true
-        }
+        editPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                editPref?.summary = dateFormatting(DateType.CUSTOM, newValue as String)
+                true
+            }
         editPref?.summary = dateFormatting(DateType.CUSTOM, editPref?.text)
 
         val textPref = findPreference<ListPreference>("date_format")
-        textPref?.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
-            val dateType = DateType.valueOf(newValue as String)
-            textPref?.summary = dateFormatting(dateType, null)
-            editPref?.isEnabled = dateType == DateType.CUSTOM
-            true
-        }
+        textPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                val dateType = DateType.valueOf(newValue as String)
+                textPref?.summary = dateFormatting(dateType, null)
+                editPref?.isEnabled = dateType == DateType.CUSTOM
+                true
+            }
         val dateType = DateType.valueOf(textPref?.value!!)
         textPref.summary = dateFormatting(dateType, null)
         editPref?.isEnabled = dateType == DateType.CUSTOM
@@ -53,7 +57,10 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
         preferenceScreen.findPreference<EditTextPreference>("date_custom")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private fun dateFormatting(type: DateType, format: String?): String {
+    private fun dateFormatting(
+        type: DateType,
+        format: String?,
+    ): String {
         val forExample = requireContext().resources.getString(R.string.appearance_date_custom_example)
         val typeEntry = entriesAndValues[type.toString()]
         return if (type == DateType.CUSTOM && format == null) {
@@ -65,7 +72,11 @@ class AppearanceDateFragment : PreferenceFragmentCompat() {
         }
     }
 
-    private fun findEntriesAndValues(context: Context, valuesId: Int, entriesId: Int): Map<String, String> {
+    private fun findEntriesAndValues(
+        context: Context,
+        valuesId: Int,
+        entriesId: Int,
+    ): Map<String, String> {
         // values -> entries
         // key -> value
         // MESSAGE1 -> Message Line 1

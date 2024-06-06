@@ -3,9 +3,9 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -92,7 +92,11 @@ class MediaService(val context: Context) {
         return MediaPlaylist(filteredMedia)
     }
 
-    private suspend fun addMetadataToManifestVideos(media: List<AerialMedia>, providers: List<MediaProvider>, description: DescriptionManifestType): Pair<List<AerialMedia>, List<AerialMedia>> {
+    private suspend fun addMetadataToManifestVideos(
+        media: List<AerialMedia>,
+        providers: List<MediaProvider>,
+        description: DescriptionManifestType,
+    ): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = mutableListOf<VideoMetadata>()
         val matched = mutableListOf<AerialMedia>()
         val unmatched = mutableListOf<AerialMedia>()
@@ -125,7 +129,10 @@ class MediaService(val context: Context) {
         return Pair(matched, unmatched)
     }
 
-    private fun addFilenameAsDescriptionToMedia(media: List<AerialMedia>, description: DescriptionFilenameType): List<AerialMedia> {
+    private fun addFilenameAsDescriptionToMedia(
+        media: List<AerialMedia>,
+        description: DescriptionFilenameType,
+    ): List<AerialMedia> {
         when (description) {
             DescriptionFilenameType.FILENAME -> {
                 media.forEach { item -> item.description = item.uri.filenameWithoutExtension }

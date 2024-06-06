@@ -13,8 +13,10 @@ import com.neilturner.aerialviews.utils.SlotHelper
 class AppearanceRowBottomFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_appearance_row_bottom, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
@@ -31,7 +33,10 @@ class AppearanceRowBottomFragment :
         super.onDestroy()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
         if (key != null && key.contains("slot_", false)) {
             SlotHelper.removeDuplicateOverlays(preferenceScreen, key)
             updateDropDownAndSummary()

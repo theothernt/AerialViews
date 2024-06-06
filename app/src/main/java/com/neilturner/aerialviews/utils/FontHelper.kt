@@ -8,18 +8,22 @@ import androidx.core.graphics.TypefaceCompat
 import com.neilturner.aerialviews.R
 
 object FontHelper {
-
-    fun getTypeface(context: Context, typeface: String, weight: String): Typeface {
-        val font = try {
-            if (typeface == "open-sans") {
-                ResourcesCompat.getFont(context, R.font.opensans)
-            } else {
+    fun getTypeface(
+        context: Context,
+        typeface: String,
+        weight: String,
+    ): Typeface {
+        val font =
+            try {
+                if (typeface == "open-sans") {
+                    ResourcesCompat.getFont(context, R.font.opensans)
+                } else {
+                    Typeface.create("san-serif", Typeface.NORMAL)
+                }
+            } catch (ex: Exception) {
+                Log.e(TAG, ex.message.toString())
                 Typeface.create("san-serif", Typeface.NORMAL)
             }
-        } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
-            Typeface.create("san-serif", Typeface.NORMAL)
-        }
         return TypefaceCompat.create(context, font, weight.toInt(), false)
     }
 

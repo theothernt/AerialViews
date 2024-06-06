@@ -11,8 +11,10 @@ import java.util.Date
 import java.util.Locale
 
 class AboutFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_about, rootKey)
         updateSummary()
     }

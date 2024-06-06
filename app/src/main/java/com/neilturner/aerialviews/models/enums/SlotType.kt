@@ -8,5 +8,5 @@ enum class SlotType {
     SLOT_TOP_LEFT1,
     SLOT_TOP_LEFT2,
     SLOT_TOP_RIGHT1,
-    SLOT_TOP_RIGHT2
+    SLOT_TOP_RIGHT2,
 }

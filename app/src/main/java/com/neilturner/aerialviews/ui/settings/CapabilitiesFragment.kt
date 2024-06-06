@@ -14,10 +14,12 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.LoggingHelper
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
-
     private lateinit var resources: Resources
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_capabilities, rootKey)
         resources = context?.resources!!
 
@@ -108,9 +110,10 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     private fun buildDecoderSummary(): String {
         var summary = ""
 
-        val allCodecs = getCodecs().filter {
-            it.codingFunction == CodecType.DECODER && isVideoCodec(it.mimeTypes)
-        }
+        val allCodecs =
+            getCodecs().filter {
+                it.codingFunction == CodecType.DECODER && isVideoCodec(it.mimeTypes)
+            }
 
         if (allCodecs.isNotEmpty()) {
             summary = allCodecs.joinToString(", ", "", "", -1, "") { it.name }
@@ -121,22 +124,27 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
     }
 
     private fun isVideoCodec(codecs: Array<String>): Boolean {
-        val videoCodecs = codecs.filter {
-            it.contains("video", true) &&
-                (
-                    it.contains("avc", true) ||
-                        it.contains("hevc", true) ||
-                        it.contains("dolby", true)
+        val videoCodecs =
+            codecs.filter {
+                it.contains("video", true) &&
+                    (
+                        it.contains("avc", true) ||
+                            it.contains("hevc", true) ||
+                            it.contains("dolby", true)
                     )
-        }
+            }
         return videoCodecs.isNotEmpty()
     }
 
-    private fun isCodecOfType(codecs: Array<String>, type: String): Boolean {
-        val videoCodecs = codecs.filter {
-            it.contains("video", true) &&
-                it.contains(type, true)
-        }
+    private fun isCodecOfType(
+        codecs: Array<String>,
+        type: String,
+    ): Boolean {
+        val videoCodecs =
+            codecs.filter {
+                it.contains("video", true) &&
+                    it.contains(type, true)
+            }
         return videoCodecs.isNotEmpty()
     }
 

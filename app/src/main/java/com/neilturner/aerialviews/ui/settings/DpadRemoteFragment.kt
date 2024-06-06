@@ -6,8 +6,10 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.LoggingHelper
 
 class DpadRemoteFragment : PreferenceFragmentCompat() {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.settings_dpadremote, rootKey)
     }
 

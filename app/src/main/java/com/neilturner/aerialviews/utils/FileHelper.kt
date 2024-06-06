@@ -6,17 +6,17 @@ import android.provider.MediaStore
 import android.util.Log
 
 object FileHelper {
-
     fun findLocalVideos(context: Context): List<String> {
         val videos = mutableListOf<String>()
         val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
         val column = MediaStore.MediaColumns.DATA
         val projection = arrayOf(column)
         try {
-            val cursor = context
-                .contentResolver
-                .query(uri, projection, null, null, null)
-                ?: return videos
+            val cursor =
+                context
+                    .contentResolver
+                    .query(uri, projection, null, null, null)
+                    ?: return videos
             try {
                 while (cursor.moveToNext()) {
                     videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
@@ -38,10 +38,11 @@ object FileHelper {
         val column = MediaStore.MediaColumns.DATA
         val projection = arrayOf(column)
         try {
-            val cursor = context
-                .contentResolver
-                .query(uri, projection, null, null, null)
-                ?: return images
+            val cursor =
+                context
+                    .contentResolver
+                    .query(uri, projection, null, null, null)
+                    ?: return images
             try {
                 while (cursor.moveToNext()) {
                     images.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
@@ -88,7 +89,10 @@ object FileHelper {
             filename.endsWith(".png", true)
     }
 
-    fun shouldFilter(uri: Uri, folder: String): Boolean {
+    fun shouldFilter(
+        uri: Uri,
+        folder: String,
+    ): Boolean {
         if (folder.isEmpty() || folder.isBlank()) {
             return false
         }
@@ -118,13 +122,17 @@ object FileHelper {
         return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
     }
 
-    fun folderAndFilenameFromUri(uri: Uri, includeFilename: Boolean = false): String {
-        val path = if (uri.pathSegments.size < 2) {
-            ""
-        } else {
-            val count = uri.pathSegments.size
-            uri.pathSegments[count - 2] ?: ""
-        }
+    fun folderAndFilenameFromUri(
+        uri: Uri,
+        includeFilename: Boolean = false,
+    ): String {
+        val path =
+            if (uri.pathSegments.size < 2) {
+                ""
+            } else {
+                val count = uri.pathSegments.size
+                uri.pathSegments[count - 2] ?: ""
+            }
         return if (includeFilename) {
             "$path / ${uri.filenameWithoutExtension}"
         } else {

@@ -20,7 +20,10 @@ import com.neilturner.aerialviews.BuildConfig
 import kotlin.math.roundToInt
 
 object WindowHelper {
-    fun hideSystemUI(window: Window, view: View) {
+    fun hideSystemUI(
+        window: Window,
+        view: View,
+    ) {
         // https://stackoverflow.com/a/64828067/247257
         WindowCompat.setDecorFitsSystemWindows(window, false)
         WindowInsetsControllerCompat(window, view).let { controller ->
@@ -29,13 +32,21 @@ object WindowHelper {
         }
     }
 
-    fun showSystemUI(window: Window, view: View) {
+    fun showSystemUI(
+        window: Window,
+        view: View,
+    ) {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         WindowInsetsControllerCompat(window, view).show(WindowInsetsCompat.Type.systemBars())
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    fun setRefreshRate(context: Context, surface: Surface, display: Display, newRefreshRate: Float) {
+    fun setRefreshRate(
+        context: Context,
+        surface: Surface,
+        display: Display,
+        newRefreshRate: Float,
+    ) {
         // https://gist.github.com/pflammertsma/5a453e24938722b4218528a3e5a60259#file-mainactivity-kt
 
         val refreshRates = display.mode?.alternativeRefreshRates?.toList()
@@ -45,7 +56,7 @@ object WindowHelper {
             surface.setFrameRate(
                 newRefreshRate,
                 Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
-                Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS
+                Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS,
             )
         } else {
             Log.i(TAG, "Seamless not supported, trying legacy...")
@@ -54,7 +65,10 @@ object WindowHelper {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun setLegacyRefreshRate(context: Context, newRefreshRate: Float) {
+    fun setLegacyRefreshRate(
+        context: Context,
+        newRefreshRate: Float,
+    ) {
         // https://github.com/moneytoo/Player/blob/6d3dc72734d7d9d2df2267eaf35cc473ac1dd3b4/app/src/main/java/com/brouken/player/Utils.java
 
         val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -104,22 +118,27 @@ object WindowHelper {
             Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
         }
 
-        val refreshRates = suitableModes.map {
-            it.refreshRate.toString().take(5)
-        }
+        val refreshRates =
+            suitableModes.map {
+                it.refreshRate.toString().take(5)
+            }
 
         if (BuildConfig.DEBUG) {
             Toast.makeText(
                 activity,
                 "Available: ${refreshRates.joinToString(", ")}\n" +
                     "Selected: ${newMode.refreshRate.toString().take(5)} (${newRefreshRate.toString().take(5)} fps)",
-                Toast.LENGTH_LONG
+                Toast.LENGTH_LONG,
             ).show()
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getModesForResolution(supportedModes: List<Display.Mode>, activeMode: Display.Mode, newRefreshRate: Float): List<Display.Mode> {
+    fun getModesForResolution(
+        supportedModes: List<Display.Mode>,
+        activeMode: Display.Mode,
+        newRefreshRate: Float,
+    ): List<Display.Mode> {
         val filteredModes = mutableListOf<Display.Mode>()
 
         for (mode in supportedModes) {

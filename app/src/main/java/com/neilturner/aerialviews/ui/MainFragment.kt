@@ -21,8 +21,10 @@ import java.lang.Exception
 class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
-
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
         setMenuLocale()
@@ -56,11 +58,12 @@ class MainFragment :
     }
 
     private fun setMenuLocale() {
-        val appLocale = if (!GeneralPrefs.localeMenu.startsWith("default")) {
-            LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
-        } else {
-            LocaleListCompat.getEmptyLocaleList()
-        }
+        val appLocale =
+            if (!GeneralPrefs.localeMenu.startsWith("default")) {
+                LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
+            } else {
+                LocaleListCompat.getEmptyLocaleList()
+            }
         AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
@@ -80,12 +83,15 @@ class MainFragment :
         if (!DeviceHelper.canAccessScreensaverSettings()) {
             ToastHelper.show(
                 requireContext(),
-                requireContext().getString(R.string.settings_system_options_removed)
+                requireContext().getString(R.string.settings_system_options_removed),
             )
         }
 
         val intents = mutableListOf<Intent>()
-        intents += Intent(Intent.ACTION_MAIN).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
+        intents +=
+            Intent(
+                Intent.ACTION_MAIN,
+            ).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
         intents += Intent(SCREENSAVER_SETTINGS)
         intents += Intent(SETTINGS)
 
@@ -103,22 +109,23 @@ class MainFragment :
 
         ToastHelper.show(
             requireContext(),
-            requireContext().getString(R.string.settings_system_options_error)
+            requireContext().getString(R.string.settings_system_options_error),
         )
     }
 
     private fun intentAvailable(intent: Intent): Boolean {
         val manager = requireActivity().packageManager
-        val intents = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            manager.queryIntentActivities(
-                intent,
-                PackageManager.ResolveInfoFlags.of(
-                    PackageManager.MATCH_DEFAULT_ONLY.toLong()
+        val intents =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                manager.queryIntentActivities(
+                    intent,
+                    PackageManager.ResolveInfoFlags.of(
+                        PackageManager.MATCH_DEFAULT_ONLY.toLong(),
+                    ),
                 )
-            )
-        } else {
-            manager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-        }
+            } else {
+                manager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            }
 
         if (intents.isEmpty()) {
             Log.i(TAG, "Intent not available... $intent")

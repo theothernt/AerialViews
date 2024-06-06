@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 
 class TextMessage : AppCompatTextView {
-
     var type = OverlayType.MESSAGE1
 
     constructor(context: Context) : super(context)
