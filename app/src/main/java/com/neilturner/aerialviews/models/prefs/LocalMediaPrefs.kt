@@ -12,10 +12,10 @@ object LocalMediaPrefs : KotprefModel() {
     var searchType by nullableEnumValuePref(SearchType.MEDIA_STORE, "local_videos_search_type")
     var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "local_media_type")
 
-    var filter_enabled by booleanPref(false, "local_videos_media_store_filter_enabled")
-    var filter_folder by stringPref("", "local_videos_media_store_filter_folder")
+    var filterEnabled by booleanPref(false, "local_videos_media_store_filter_enabled")
+    var filterFolder by stringPref("", "local_videos_media_store_filter_folder")
 
-    var legacy_volume_label by stringPref("", "local_videos_legacy_volume_label")
-    var legacy_volume by stringPref("", "local_videos_legacy_volume")
-    var legacy_folder by stringPref("", "local_videos_legacy_folder")
+    var legacyVolumeLabel by stringPref("", "local_videos_legacy_volume_label")
+    var legacyVolume by stringPref("", "local_videos_legacy_volume")
+    var legacyFolder by stringPref("", "local_videos_legacy_folder")
 }

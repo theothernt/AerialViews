@@ -51,11 +51,11 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val excluded: Int
         val images: Int
 
-        if (prefs.legacy_volume.isEmpty()) {
+        if (prefs.legacyVolume.isEmpty()) {
             return Pair(media, res.getString(R.string.local_videos_legacy_no_volume))
         }
 
-        if (prefs.legacy_folder.isEmpty()) {
+        if (prefs.legacyFolder.isEmpty()) {
             return Pair(media, res.getString(R.string.local_videos_legacy_no_folder))
         }
 
@@ -115,14 +115,14 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             val folders = mutableListOf<String>()
             val found = mutableListOf<File>()
 
-            if (prefs.legacy_volume.contains("/all", false)) {
+            if (prefs.legacyVolume.contains("/all", false)) {
                 val vols = StorageHelper.getStoragePaths(context)
                 val values = vols.map { it.key }.toTypedArray()
                 for (entry in values) {
-                    folders.add("$entry${prefs.legacy_folder}")
+                    folders.add("$entry${prefs.legacyFolder}")
                 }
             } else {
-                folders.add("${prefs.legacy_volume}${prefs.legacy_folder}")
+                folders.add("${prefs.legacyVolume}${prefs.legacyFolder}")
             }
 
             for (folder in folders) {
@@ -154,8 +154,8 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val images: Int
         val videos: Int
 
-        if (prefs.filter_folder.isEmpty() &&
-            prefs.filter_enabled
+        if (prefs.filterFolder.isEmpty() &&
+            prefs.filterEnabled
         ) {
             return Pair(media, res.getString(R.string.local_videos_media_store_no_folder))
         }
@@ -186,7 +186,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         // Apply folder filter
         for (file in selected) {
             val uri = Uri.parse(file)
-            if (prefs.filter_enabled && FileHelper.shouldFilter(uri, prefs.filter_folder)) {
+            if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
                 continue
             }
             media.add(AerialMedia(uri))

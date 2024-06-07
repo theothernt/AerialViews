@@ -88,9 +88,9 @@ class LocalVideosFragment :
         if (key == "local_videos_legacy_volume" ||
             key == "local_videos_legacy_folder"
         ) {
-            LocalMediaPrefs.legacy_folder = FileHelper.fixLegacyFolder(LocalMediaPrefs.legacy_folder)
+            LocalMediaPrefs.legacyFolder = FileHelper.fixLegacyFolder(LocalMediaPrefs.legacyFolder)
             val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
-            LocalMediaPrefs.legacy_volume_label = volume?.entry.toStringOrEmpty()
+            LocalMediaPrefs.legacyVolumeLabel = volume?.entry.toStringOrEmpty()
             updateVolumeAndFolderSummary()
         }
 
@@ -170,16 +170,16 @@ class LocalVideosFragment :
         val volume = preferenceScreen.findPreference<ListPreference>("local_videos_legacy_volume")
         val folder = preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
 
-        if (LocalMediaPrefs.legacy_volume.isEmpty()) {
+        if (LocalMediaPrefs.legacyVolume.isEmpty()) {
             volume?.summary = resources.getString(R.string.local_videos_legacy_volume_summary)
         } else {
-            volume?.summary = LocalMediaPrefs.legacy_volume_label
+            volume?.summary = LocalMediaPrefs.legacyVolumeLabel
         }
 
-        if (LocalMediaPrefs.legacy_folder.isEmpty()) {
+        if (LocalMediaPrefs.legacyFolder.isEmpty()) {
             folder?.summary = resources.getString(R.string.local_videos_legacy_folder_summary)
         } else {
-            folder?.summary = LocalMediaPrefs.legacy_folder
+            folder?.summary = LocalMediaPrefs.legacyFolder
         }
     }
 
