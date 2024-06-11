@@ -51,9 +51,18 @@ object GeneralPrefs : KotprefModel() {
     var dateSize by stringPref("18", "date_size")
 
     // Location
-    var descriptionVideoManifestStyle by nullableEnumValuePref(DescriptionManifestType.POI, "description_video_manifest_style") // Title or POI
-    var descriptionVideoFilenameStyle by nullableEnumValuePref(DescriptionFilenameType.DISABLED, "description_video_filename_style") // Filename - Videos
-    var descriptionPhotoFilenameStyle by nullableEnumValuePref(DescriptionFilenameType.DISABLED, "description_photo_filename_style") // Filename - Photos
+    var descriptionVideoManifestStyle by nullableEnumValuePref(
+        DescriptionManifestType.POI,
+        "description_video_manifest_style",
+    ) // Title or POI
+    var descriptionVideoFilenameStyle by nullableEnumValuePref(
+        DescriptionFilenameType.DISABLED,
+        "description_video_filename_style",
+    ) // Filename - Videos
+    var descriptionPhotoFilenameStyle by nullableEnumValuePref(
+        DescriptionFilenameType.DISABLED,
+        "description_photo_filename_style",
+    ) // Filename - Photos
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight")
 

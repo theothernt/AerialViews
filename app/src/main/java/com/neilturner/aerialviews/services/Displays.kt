@@ -95,7 +95,8 @@ class Display(source: NativeDisplay, windowManager: WindowManager, context: Cont
         isPresentation = (flags and NativeDisplay.FLAG_PRESENTATION) == NativeDisplay.FLAG_PRESENTATION
         isPrivate = (flags and NativeDisplay.FLAG_PRIVATE) == NativeDisplay.FLAG_PRIVATE
         isSecure = (flags and NativeDisplay.FLAG_SECURE) == NativeDisplay.FLAG_SECURE
-        supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) == NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
+        supportsProtectedBuffers = (flags and NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS) ==
+            NativeDisplay.FLAG_SUPPORTS_PROTECTED_BUFFERS
 
         isRound =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
