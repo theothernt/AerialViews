@@ -19,7 +19,7 @@ object SlotHelper {
         // should show - Location
         // and not LOCATION or Location (Slot name) etc
         val index = OverlayType.valueOf(slot.toString()).ordinal
-        val summary = summaryList[index]
+        val summary = summaryList.getOrNull(index) ?: summaryList.first()
         list?.summary = summary
     }
 
