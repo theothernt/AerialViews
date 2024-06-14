@@ -81,6 +81,8 @@ class NowPlayingService(private val context: Context, private val prefs: General
             artistAndSong = "$song · $artist"
         }
 
+        Log.i(TAG, "$artistAndSong ($active)")
+
         active.let {
             var update = ""
             if (active == true) {
@@ -94,7 +96,11 @@ class NowPlayingService(private val context: Context, private val prefs: General
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         unregisterAll()
-        initControllers(controllers)
+        if (!controllers.isNullOrEmpty()) {
+            initControllers(controllers)
+        } else {
+            updateNowPlaying(null, false)
+        }
     }
 
     private fun initControllers(newControllers: List<MediaController>?) {
