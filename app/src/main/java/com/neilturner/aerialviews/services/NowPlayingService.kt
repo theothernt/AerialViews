@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-
+// Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener
 {
