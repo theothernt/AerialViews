@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+  <string-array name="appearance_font_entries">
+    <item>Open Sans (ברירת מחדל)</item>
+    <item>Roboto</item>
+  </string-array>
+  <string-array name="appearance_font_weight_entries">
+    <item>100/דק</item>
+    <item>200/קליל במיוחד</item>
+    <item>300/קליל (ברירת מחדל)</item>
+    <item>400/רגיל</item>
+    <item>500/בינוני</item>
+    <item>600/חצי מודגש</item>
+    <item>700/מודגש</item>
+    <item>800/מודגש במיוחד</item>
+    <item>900/כבד</item>
+  </string-array>
+  <string-array name="clock_format_entries">
+    <item>ברירת מחדל מערכת</item>
+    <item>12 שעות</item>
+    <item>24 שעות</item>
+  </string-array>
+  <string-array name="date_format_entries">
+    <item>קומפקטי</item>
+    <item>מלא</item>
+    <item>התאמה אישית</item>
+  </string-array>
+  <string-array name="description_filename_entries">
+    <item>מבוטל</item>
+    <item>השתמש בשם הקובץ כמו שהוא</item>
+    <item>התיקייה והקובץ</item>
+    <item>שם התיקיה בלבד</item>
+  </string-array>
+  <string-array name="description_photo_filename_entries">
+    <item>מבוטל</item>
+    <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.png׳ יהיה ׳הכותל המערבי׳</item>
+    <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.png׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
+    <item>השתמש בשם התיקייה בלבד, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.png׳ יהיה ׳ירושלים׳</item>
+  </string-array>
+  <string-array name="description_video_entries">
+    <item>מבוטל</item>
+    <item>תיאור קצר</item>
+    <item>נקודות עניין דינמיות</item>
+  </string-array>
+  <string-array name="description_video_filename_entries">
+    <item>מבוטל</item>
+    <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.mp4׳ יהיה ׳הכותל המערבי׳</item>
+    <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.mp4׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
+    <item>השתמש בשם התיקייה בלבד, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.mp4׳ יהיה ׳ירושלים׳</item>
+  </string-array>
+  <string-array name="description_video_manifest_entries">
+    <item>מבוטל</item>
+    <item>תיאור קצר או מיקום</item>
+    <item>נקודות עניין דינמיות, זמינות בהרבה שפות, שמתעדכנות בזמן ניגון הוידאו</item>
+  </string-array>
+  <string-array name="local_videos_search_type_entries">
+    <item>סורק מדיה</item>
+    <item>גישה לתיקייה (מדור קודם)</item>
+  </string-array>
+  <string-array name="media_type_entries">
+    <item>סרטונים בלבד</item>
+    <item>תמונות בלבד</item>
+    <item>סרטונים ותמונות</item>
+  </string-array>
+  <string-array name="photo_scale_entries">
+    <item>מלא (ברירת מחדל)</item>
+    <item>מרכז</item>
+  </string-array>
+  <string-array name="playback_max_video_length_entries">
+    <item>ללא הגבלה (ברירת מחדל)</item>
+    <item>10 שניות</item>
+    <item>20 שניות</item>
+    <item>30 שניות</item>
+    <item>דקה אחת</item>
+    <item>2 דקות</item>
+    <item>3 דקות</item>
+    <item>4 דקות</item>
+    <item>5 דקות</item>
+    <item>6 דקות</item>
+    <item>7 דקות</item>
+    <item>8 דקות</item>
+    <item>9 דקות</item>
+    <item>10 דקות</item>
+  </string-array>
+  <string-array name="playback_speed_entries">
+    <item>פי 0.25</item>
+    <item>פי 0.5</item>
+    <item>פי 0.75</item>
+    <item>פי 1 (ברירת מחדל)</item>
+    <item>פי 1.25</item>
+    <item>פי 1.5</item>
+    <item>פי 1.75</item>
+    <item>פי 2</item>
+    <item>פי 2.5</item>
+    <item>פי 3</item>
+    <item>פי 3.5</item>
+    <item>פי 4</item>
+    <item>פי 5</item>
+  </string-array>
+  <string-array name="slideshow_speed_entries">
+    <item>5 שניות</item>
+    <item>10 שניות</item>
+    <item>30 שניות (ברירת מחדל)</item>
+    <item>דקה אחת</item>
+    <item>3 דקות</item>
+    <item>5 דקות</item>
+    <item>10 דקות</item>
+  </string-array>
+  <string-array name="slot_entries">
+    <item>ריק</item>
+    <item>שעון</item>
+    <item>מיקום</item>
+    <item>תאריך</item>
+    <item>שורת הודעה 1</item>
+    <item>שורת הודעה 2</item>
+  </string-array>
+  <string-array name="text_size_entries">
+    <item>36 נק\'</item>
+    <item>34 נק\'</item>
+    <item>32 נק\'</item>
+    <item>30 נק\'</item>
+    <item>28 נק\'</item>
+    <item>26 נק\'</item>
+    <item>24 נק\'</item>
+    <item>22 נק\'</item>
+    <item>20 נק\'</item>
+    <item>18 נק׳ (ברירת מחדל)</item>
+    <item>16 נק\'</item>
+  </string-array>
+</resources>

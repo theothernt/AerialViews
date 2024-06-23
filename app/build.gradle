@@ -15,8 +15,8 @@ android {
         applicationId "com.neilturner.aerialviews"
         minSdkVersion 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdkVersion 34
-        versionCode 22
-        versionName "1.7.1"
+        versionCode 23
+        versionName "1.7.2"
 
         manifestPlaceholders.analyticsCollectionEnabled = false
         manifestPlaceholders.crashlyticsCollectionEnabled = false
@@ -146,8 +146,8 @@ dependencies {
     implementation('androidx.appcompat:appcompat:1.7.0')
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:22.0.1')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.1')
+    implementation('com.google.firebase:firebase-analytics-ktx:22.0.2')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.2')
     implementation('com.google.firebase:firebase-perf-ktx:21.0.1')
 
     // Retrofit, OkHttp, and Moshi
