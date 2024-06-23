@@ -34,10 +34,14 @@ object PermissionHelper {
 
     fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            results.getValue(Manifest.permission.READ_MEDIA_VIDEO) &&
-                results.getValue(Manifest.permission.READ_MEDIA_IMAGES)
+            results.getOrDefault(Manifest.permission.READ_MEDIA_VIDEO, false) &&
+                results.getOrDefault(Manifest.permission.READ_MEDIA_IMAGES, false)
         } else {
-            results.getValue(Manifest.permission.READ_EXTERNAL_STORAGE)
+            try {
+                results.getValue(Manifest.permission.READ_EXTERNAL_STORAGE)
+            } catch (ex: NoSuchElementException) {
+                false
+            }
         }
     }
 
