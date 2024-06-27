@@ -157,6 +157,9 @@ dependencies {
     // SMB
     implementation('com.hierynomus:smbj:0.13.0')
 
+    // WebDAV
+    implementation('com.github.thegrizzlylabs:sardine-android:0.9')
+
     // Coil
     implementation('io.coil-kt:coil:2.6.0')
 
