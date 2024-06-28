@@ -176,6 +176,13 @@
 
     <!-- Main / Video Sources / WebDAV videos -->
 
+    <string name="webdav_media_enabled_title">Use WebDAV share media</string>
+    <string name="webdav_media_type_title">Choose media type</string>
+    <string name="webdav_media_test_connection">Test connection settings</string>
+
+    <string name="webdav_media_test_results">Test results</string>
+
+
     <!-- Main / Settings -->
     <string name="category_settings">Settings</string>
 

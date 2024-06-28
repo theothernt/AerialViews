@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
         <PreferenceCategory app:title="@string/category_video_source">
                 <SwitchPreference
                     app:defaultValue="false"
-                    app:key="webdav_videos_enabled"
-                    app:title="Use WebDAV videos" />
+                    app:key="webdav_media_enabled"
+                    app:title="@string/webdav_media_enabled_title" />
+
+                <ListPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/media_type_default"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="webdav_media_type"
+                    app:title="@string/webdav_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    android:title="@string/webdav_media_test_connection"
+                    android:key="webdav_media_test_connection" />
         </PreferenceCategory>
 
 </PreferenceScreen>
