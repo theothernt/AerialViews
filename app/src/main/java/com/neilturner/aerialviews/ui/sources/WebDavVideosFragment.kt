@@ -9,9 +9,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.providers.SambaMediaProvider
+import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
@@ -43,7 +42,7 @@ class WebDavVideosFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("samba_videos_test_connection")) {
+        if (preference.key.contains("webdav_media_test_connection")) {
             lifecycleScope.launch { testWebDavConnection() }
             return true
         }
@@ -104,7 +103,7 @@ class WebDavVideosFragment :
 
     private suspend fun testWebDavConnection() =
         withContext(Dispatchers.IO) {
-            val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
+            val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
             val result = provider.fetchTest()
             showDialog(resources.getString(R.string.webdav_media_test_results), result)
         }
