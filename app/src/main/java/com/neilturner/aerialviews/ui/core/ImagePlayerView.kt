@@ -15,12 +15,14 @@ import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,8 +79,16 @@ class ImagePlayerView : AppCompatImageView {
     }
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
-            loadImage(media.uri)
+        when (media.source) {
+            AerialMediaSource.SAMBA -> {
+                coroutineScope.launch { loadSambaImage(media.uri) }
+            }
+            AerialMediaSource.WEBDAV -> {
+                coroutineScope.launch { loadWebDavImage(media.uri) }
+            }
+            else -> {
+                coroutineScope.launch { loadImage(media.uri) }
+            }
         }
     }
 
@@ -86,19 +96,43 @@ class ImagePlayerView : AppCompatImageView {
         val request =
             ImageRequest.Builder(context)
                 .target(this)
+        request.data(uri)
+        imageLoader.execute(request.build())
+    }
 
-        if (FileHelper.isSambaVideo(uri)) {
-            try {
-                val byteArray = byteArrayFromSambaFile(uri)
-                request.data(byteArray)
-            } catch (ex: Exception) {
-                Log.e(TAG, "Exception while getting byte array from SMB share: ${ex.message}")
-                listener?.onImageError()
-                return
-            }
-        } else {
-            request.data(uri)
+    private suspend fun loadSambaImage(uri: Uri) {
+        val request =
+            ImageRequest
+                .Builder(context)
+                .target(this)
+
+        try {
+            val byteArray = byteArrayFromSambaFile(uri)
+            request.data(byteArray)
+        } catch (ex: Exception) {
+            Log.e(TAG, "Exception while getting byte array from SMB share: ${ex.message}")
+            listener?.onImageError()
+            return
         }
+
+        imageLoader.execute(request.build())
+    }
+
+    private suspend fun loadWebDavImage(uri: Uri) {
+        val request =
+            ImageRequest
+                .Builder(context)
+                .target(this)
+
+        try {
+            val byteArray = byteArrayFromWebDavFile(uri)
+            request.data(byteArray)
+        } catch (ex: Exception) {
+            Log.e(TAG, "Exception while getting byte array from WebDAV resource: ${ex.message}")
+            listener?.onImageError()
+            return
+        }
+
         imageLoader.execute(request.build())
     }
 
@@ -106,6 +140,13 @@ class ImagePlayerView : AppCompatImageView {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
     }
+
+    private suspend fun byteArrayFromWebDavFile(uri: Uri): ByteArray =
+        withContext(Dispatchers.IO) {
+            val client = OkHttpSardine()
+            client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
+            return@withContext client.get(uri.toString()).readBytes()
+        }
 
     private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray =
         withContext(Dispatchers.IO) {
