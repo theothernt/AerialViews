@@ -59,7 +59,6 @@ class WebDavVideosFragment :
     }
 
     private fun updateSummary() {
-
         // Host name
         val hostname = findPreference<EditTextPreference>("webdav_media_hostname")
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {

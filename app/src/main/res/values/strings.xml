@@ -190,6 +190,12 @@
     <string name="webdav_media_password_title">Password</string>
     <string name="webdav_media_password_summary">Not set. Optional</string>
 
+    <string name="webdav_media_test_summary1">Files found: %1$s</string>
+    <string name="webdav_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="webdav_media_test_summary3">Videos found: %1$s</string>
+    <string name="webdav_media_test_summary4">Photos found: %1$s</string>
+    <string name="webdav_media_test_summary5">Selected for playback: %1$s</string>
+
     <string name="webdav_media_test_results">Test results</string>
 
 
