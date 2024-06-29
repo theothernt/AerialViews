@@ -131,8 +131,8 @@
     <string name="samba_videos_domainname_title">Domain name</string>
     <string name="samba_videos_domainname_summary">The domain name or workgroup of the server. Optional</string>
 
-    <string name="samba_videos_sharename_title">Share Name</string>
-    <string name="samba_videos_sharename_summary">The name of the share and folder containing videos e.g. /video/aerial</string>
+    <string name="samba_videos_sharename_title">Share name</string>
+    <string name="samba_videos_sharename_summary">The name of the share and folder containing videos and photose.g. /media/aerial</string>
 
     <string name="samba_videos_username_title">Username</string>
     <string name="samba_videos_username_summary">Not set. Optional</string>
@@ -179,6 +179,16 @@
     <string name="webdav_media_enabled_title">Use WebDAV share media</string>
     <string name="webdav_media_type_title">Choose media type</string>
     <string name="webdav_media_test_connection">Test connection settings</string>
+
+    <string name="webdav_media_scheme_title">Scheme</string>
+    <string name="webdav_media_hostname_title">Hostname &amp; port</string>
+    <string name="webdav_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:5005</string>
+    <string name="webdav_media_pathname_title">Path name</string>
+    <string name="webdav_media_pathname_summary">The name of the folder containing videos and photos e.g. /media/aerial</string>
+    <string name="webdav_media_username_title">Username</string>
+    <string name="webdav_media_username_summary">Not set. Optional</string>
+    <string name="webdav_media_password_title">Password</string>
+    <string name="webdav_media_password_summary">Not set. Optional</string>
 
     <string name="webdav_media_test_results">Test results</string>
 

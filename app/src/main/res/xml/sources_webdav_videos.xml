@@ -25,4 +25,46 @@
                     android:key="webdav_media_test_connection" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_server_details">
+                <ListPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/webdav_scheme_default"
+                    app:entries="@array/webdav_scheme_entries"
+                    app:entryValues="@array/webdav_scheme_values"
+                    app:key="webdav_media_scheme"
+                    app:title="@string/webdav_media_scheme_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <EditTextPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    android:selectAllOnFocus="true"
+                    android:summary="@string/webdav_media_hostname_summary"
+                    android:key="webdav_media_hostname"
+                    android:title="@string/webdav_media_hostname_title" />
+
+                <EditTextPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    android:selectAllOnFocus="true"
+                    android:summary="@string/webdav_media_pathname_summary"
+                    android:key="webdav_media_pathname"
+                    android:title="@string/webdav_media_pathname_title" />
+
+                <EditTextPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    android:summary="@string/webdav_media_username_summary"
+                    android:key="webdav_media_username"
+                    android:title="@string/webdav_media_username_title" />
+
+                <EditTextPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    android:summary="@string/webdav_media_password_summary"
+                    android:key="webdav_media_password"
+                    android:title="@string/webdav_media_password_title" />
+        </PreferenceCategory>
+
 </PreferenceScreen>
