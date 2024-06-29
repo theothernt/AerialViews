@@ -31,14 +31,7 @@ class WebDavDataSource : BaseDataSource(true) {
 
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
-
-        inputStream =
-            try {
-                openWebDavFile()
-            } catch (ex: Exception) {
-                Log.e(TAG, ex.message.toString())
-                return 0
-            }
+        inputStream = openWebDavFile()
 
         val skipped = inputStream?.skip(bytesRead) ?: 0
         if (skipped < dataSpec.position) {
@@ -59,7 +52,6 @@ class WebDavDataSource : BaseDataSource(true) {
         return readInternal(buffer, offset, readLength)
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -76,8 +68,13 @@ class WebDavDataSource : BaseDataSource(true) {
     }
 
     private fun openWebDavFile(): InputStream? {
-        webDavClient?.setCredentials(userName, password)
-        return webDavClient?.get(dataSpec.uri.toString())
+        return try {
+            webDavClient?.setCredentials(userName, password)
+            webDavClient?.get(dataSpec.uri.toString())
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+            null
+        }
     }
 
     @SuppressLint("UnsafeOptInUsageError")
