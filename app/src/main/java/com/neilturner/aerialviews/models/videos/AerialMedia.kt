@@ -9,5 +9,5 @@ data class AerialMedia(
     var description: String = "",
     var poi: Map<Int, String> = emptyMap(),
     var type: AerialMediaType = AerialMediaType.VIDEO,
-    var source: AerialMediaSource = AerialMediaSource.DEFAULT
+    var source: AerialMediaSource = AerialMediaSource.DEFAULT,
 )

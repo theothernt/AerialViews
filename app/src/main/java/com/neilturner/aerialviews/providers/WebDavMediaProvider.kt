@@ -16,7 +16,6 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.net.URLEncoder
 
 class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
@@ -57,7 +56,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                     prefs.hostName,
                     prefs.pathName,
                     prefs.userName,
-                    prefs.password
+                    prefs.password,
                 )
             } catch (e: Exception) {
                 Log.e(TAG, e.message.toString())
@@ -67,7 +66,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
         // Create WebDAV URL, add to media list, adding media type
         webDavMedia.first.forEach { filename ->
             val scheme = prefs.scheme.toStringOrEmpty().lowercase()
-            val baseUrl =  scheme + "://" + prefs.hostName + prefs.pathName + "/"
+            val baseUrl = scheme + "://" + prefs.hostName + prefs.pathName + "/"
             val uri = Uri.parse(baseUrl + filename)
             val item = AerialMedia(uri)
 
