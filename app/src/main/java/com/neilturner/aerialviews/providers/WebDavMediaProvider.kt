@@ -1,8 +1,10 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
@@ -13,6 +15,7 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.net.URLEncoder
 
 class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
@@ -60,6 +63,21 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 return Pair(emptyList(), e.message.toString())
             }
 
+        // Create WebDAV URL, add to media list, adding media type
+        webDavMedia.first.forEach { filename ->
+            val scheme = prefs.scheme.toStringOrEmpty().lowercase()
+            val baseUrl =  scheme + "://" + prefs.hostName + prefs.pathName + "/"
+            val uri = Uri.parse(baseUrl + filename)
+            val item = AerialMedia(uri)
+
+            if (FileHelper.isSupportedVideoType(filename)) {
+                item.type = AerialMediaType.VIDEO
+            } else if (FileHelper.isSupportedImageType(filename)) {
+                item.type = AerialMediaType.IMAGE
+            }
+            media.add(item)
+        }
+
         Log.i(TAG, "Media found: ${media.size}")
         return Pair(media, webDavMedia.second)
     }
@@ -95,7 +113,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             val files = resources.map { it.name }
 
             // Only pick videos
-            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedVideoType(item)
@@ -117,7 +135,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
 
             var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size) + "\n"
             message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded) + "\n"
-            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                 message += String.format(res.getString(R.string.webdav_media_test_summary3), videos) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {

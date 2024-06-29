@@ -66,7 +66,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
 
         // Only pick videos
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -100,7 +100,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
         }
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
@@ -163,7 +163,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         val files = mediaStoreVideosAndImages()
 
         // Add video
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -195,7 +195,7 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
-        if (prefs.mediaType != ProviderMediaType.IMAGES) {
+        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
         }
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
