@@ -18,9 +18,11 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
-import java.lang.Exception
 import java.util.EnumSet
 import kotlin.math.min
+
+// Based on
+// https://juliensalvi.medium.com/building-custom-datasource-for-exoplayer-87fd16c71950
 
 @SuppressLint("UnsafeOptInUsageError")
 class SambaDataSource : BaseDataSource(true) {
