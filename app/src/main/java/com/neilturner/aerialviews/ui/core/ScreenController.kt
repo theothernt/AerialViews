@@ -157,14 +157,14 @@ class ScreenController(private val context: Context) :
 
         // Videos
         if (FileHelper.isSupportedVideoType(media.uri.filename)) {
-            videoPlayer.setUri(media.uri)
+            videoPlayer.setVideo(media)
             videoView.root.visibility = View.VISIBLE
             imageView.root.visibility = View.INVISIBLE
         }
 
         // Images
         if (FileHelper.isSupportedImageType(media.uri.filename)) {
-            imagePlayer.setUri(media.uri)
+            imagePlayer.setImage(media)
             imageView.root.visibility = View.VISIBLE
             videoView.root.visibility = View.INVISIBLE
         }

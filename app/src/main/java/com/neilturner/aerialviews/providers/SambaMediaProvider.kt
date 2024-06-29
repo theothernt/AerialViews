@@ -11,6 +11,7 @@ import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -109,6 +110,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             } else if (FileHelper.isSupportedImageType(filename)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.SAMBA
             media.add(item)
         }
 

@@ -18,6 +18,7 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.CoroutineScope
@@ -75,13 +76,9 @@ class ImagePlayerView : AppCompatImageView {
         listener = null
     }
 
-    fun setUri(uri: Uri?) {
-        if (uri == null) {
-            return
-        }
-
+    fun setImage(media: AerialMedia) {
         coroutineScope.launch {
-            loadImage(uri)
+            loadImage(media.uri)
         }
     }
 

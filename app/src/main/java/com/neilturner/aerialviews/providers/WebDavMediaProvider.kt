@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -75,6 +76,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             } else if (FileHelper.isSupportedImageType(filename)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.WEBDAV
             media.add(item)
         }
 
