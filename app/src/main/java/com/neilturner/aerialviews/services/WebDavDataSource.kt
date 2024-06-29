@@ -16,10 +16,8 @@ import kotlin.math.min
 @SuppressLint("UnsafeOptInUsageError")
 class WebDavDataSource : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
-    private var userName = WebDavMediaPrefs.userName
-    private var password = WebDavMediaPrefs.password
 
-    private var webDavClient: OkHttpSardine? = null
+    private var client: OkHttpSardine? = null
     private var inputStream: InputStream? = null
 
     private var bytesRead: Long = 0
@@ -28,17 +26,18 @@ class WebDavDataSource : BaseDataSource(true) {
     @SuppressLint("UnsafeOptInUsageError")
     override fun open(dataSpec: DataSpec): Long {
         transferInitializing(dataSpec)
-
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
-        inputStream = openWebDavFile()
+
+        val (file, size) = openWebDavFile()
+        inputStream = file
 
         val skipped = inputStream?.skip(bytesRead) ?: 0
         if (skipped < dataSpec.position) {
             throw EOFException()
         }
 
-        bytesToRead = inputStream?.available()?.toLong() ?: 0
+        bytesToRead = size
         transferStarted(dataSpec)
         return bytesToRead
     }
@@ -63,17 +62,25 @@ class WebDavDataSource : BaseDataSource(true) {
         } finally {
             transferEnded()
             inputStream = null
-            webDavClient = null
+            client = null
         }
     }
 
-    private fun openWebDavFile(): InputStream? {
+    private fun openWebDavFile(): Pair<InputStream?, Long> {
         return try {
-            webDavClient?.setCredentials(userName, password)
-            webDavClient?.get(dataSpec.uri.toString())
+            var size = 0L
+            val url = dataSpec.uri.toString()
+            client = OkHttpSardine()
+            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
+            val resource = client?.list(url)
+            if (resource?.isNotEmpty() == true) {
+                size = resource[0].contentLength
+            }
+            val file = client?.get(url)
+            return Pair(file, size)
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
-            null
+            Pair(null, 0)
         }
     }
 
@@ -111,7 +118,7 @@ class WebDavDataSource : BaseDataSource(true) {
     }
 
     companion object {
-        private const val TAG = "WebDevDataSource"
+        private const val TAG = "WebDavDataSource"
     }
 }
 
