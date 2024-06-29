@@ -389,9 +389,9 @@
         <item>HTTPS</item>
     </string-array>
     <string-array name="webdav_scheme_values" translatable="false">
-        <item>http</item>
-        <item>https</item>
+        <item>HTTP</item>
+        <item>HTTPS</item>
     </string-array>
-    <string name="webdav_scheme_default" translatable="false">http</string>
+    <string name="webdav_scheme_default" translatable="false">HTTP</string>
 
 </resources>

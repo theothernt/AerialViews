@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -48,10 +49,11 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
         val webDavMedia =
             try {
                 findWebDavMedia(
-                    prefs.userName,
-                    prefs.password,
+                    prefs.scheme.toStringOrEmpty(),
                     prefs.hostName,
                     prefs.pathName,
+                    prefs.userName,
+                    prefs.password
                 )
             } catch (e: Exception) {
                 Log.e(TAG, e.message.toString())
@@ -63,10 +65,11 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
     }
 
     private suspend fun findWebDavMedia(
-        userName: String,
-        password: String,
+        scheme: String,
         hostName: String,
         pathName: String,
+        userName: String,
+        password: String,
     ): Pair<List<String>, String> =
         withContext(Dispatchers.IO) {
             val res = context.resources
@@ -87,7 +90,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 )
             }
 
-            val resources = client.list(hostName + pathName)
+            val url = scheme.lowercase() + "://" + hostName + pathName
+            val resources = client.list(url)
             val files = resources.map { it.name }
 
             // Only pick videos
