@@ -117,8 +117,8 @@
         <item>Date</item>
         <item>Message #1</item>
         <item>Message #2</item>
-<!--        <item>Weather</item>-->
-        <item>Music - Now Playing</item>
+        <item>Now Playing #1</item>
+        <item>Now Playing #2</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
@@ -127,8 +127,8 @@
         <item>DATE</item>
         <item>MESSAGE1</item>
         <item>MESSAGE2</item>
-<!--        <item>WEATHER1</item>-->
-        <item>MUSIC</item>
+        <item>MUSIC1</item>
+        <item>MUSIC2</item>
     </string-array>
     <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
 
@@ -387,4 +387,21 @@
     </string-array>
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
+    <!-- Now Playing -->
+    <string-array name="nowplaying_format_entries">
+        <item>Disabled</item>
+        <item>Song · Artist</item>
+        <item>Artist · Song</item>
+        <item>Artist</item>
+        <item>Song</item>
+    </string-array>
+    <string-array name="nowplaying_format_values" translatable="false">
+        <item>DISABLED</item>
+        <item>SONG_ARTIST</item>
+        <item>ARTIST_ARTIST</item>
+        <item>ARTIST</item>
+        <item>SONG</item>
+    </string-array>
+    <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
+    <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
 </resources>

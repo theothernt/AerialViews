@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.OverlayType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
@@ -19,6 +20,8 @@ import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
 class TextNowPlaying : AppCompatTextView {
+    var type = OverlayType.MUSIC1
+
     var nowPlaying: SharedFlow<String>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 

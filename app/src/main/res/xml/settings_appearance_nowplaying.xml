@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_now_playing">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="nowplaying_enabled"
+                    app:title="@string/nowplaying_enabled_title"
+                    app:summary="@string/nowplaying_enabled_summary" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_now_playing">
+                <ListPreference
+                    app:defaultValue="@string/nowplaying_format_default"
+                    app:entries="@array/nowplaying_format_entries"
+                    app:entryValues="@array/nowplaying_format_values"
+                    app:key="nowplaying_line1"
+                    app:title="@string/nowplaying_line1_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/nowplaying_format_default2"
+                    app:entries="@array/nowplaying_format_entries"
+                    app:entryValues="@array/nowplaying_format_values"
+                    app:key="nowplaying_line2"
+                    app:title="@string/nowplaying_line2_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_typography">
+                <ListPreference
+                    app:defaultValue="@string/text_size_default"
+                    app:entries="@array/text_size_entries"
+                    app:entryValues="@array/text_size_values"
+                    app:key="nowplaying_size"
+                    app:title="@string/appearance_message_size_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/appearance_font_weight_default"
+                    app:entries="@array/appearance_font_weight_entries"
+                    app:entryValues="@array/appearance_font_weight_values"
+                    app:key="nowplaying_weight"
+                    app:title="@string/appearance_weight_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+</PreferenceScreen>

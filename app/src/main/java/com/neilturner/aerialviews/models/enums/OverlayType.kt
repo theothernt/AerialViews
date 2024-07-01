@@ -7,5 +7,6 @@ enum class OverlayType {
     DATE,
     MESSAGE1,
     MESSAGE2,
-    MUSIC,
+    MUSIC1,
+    MUSIC2
 }

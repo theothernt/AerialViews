@@ -30,6 +30,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceDateFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_music_title"
+                    app:summary="@string/appearance_music_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceNowPlayingFragment"/>
+
+                <Preference
                     app:title="@string/appearance_message_title"
                     app:summary="@string/appearance_message_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>
@@ -39,12 +44,6 @@
                     app:title="@string/appearance_weather_title"
                     app:summary="@string/appearance_weather_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceWeatherFragment"/>
-
-                <Preference
-                    app:isPreferenceVisible="false"
-                    app:title="@string/appearance_music_title"
-                    app:summary="@string/appearance_music_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMusicFragment"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">

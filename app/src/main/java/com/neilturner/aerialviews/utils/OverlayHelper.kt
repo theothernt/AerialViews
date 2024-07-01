@@ -129,10 +129,13 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
                 }
-            OverlayType.MUSIC ->
+            OverlayType.MUSIC1,
+            OverlayType.MUSIC2
+            ->
                 TextNowPlaying(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
+                    this.type = type
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
