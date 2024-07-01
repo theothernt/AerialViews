@@ -7,8 +7,6 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.TemperatureUnit
-import com.neilturner.aerialviews.models.enums.WindSpeedUnit
 import com.neilturner.aerialviews.models.enums.PhotoScale
 
 object GeneralPrefs : KotprefModel() {
@@ -25,14 +23,6 @@ object GeneralPrefs : KotprefModel() {
     var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
     var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
     var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
-
-    // Weather
-    var weatherSize by stringPref("18", "weather_size")
-    var weatherWeight by stringPref("300", "weather_weight")
-    var weatherCityName by stringPref("Dublin, IE", "weather_city_name")
-    var weatherCityLatLng by stringPref("Dublin, IE", "weather_city_latlng")
-    var weatherUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_units")
-    var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METRIC, "weather_wind_units")
 
     // Clock
     var clockFormat by nullableEnumValuePref(ClockType.DEFAULT, "clock_format")

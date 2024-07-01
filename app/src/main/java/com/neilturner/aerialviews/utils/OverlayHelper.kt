@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
-import com.neilturner.aerialviews.ui.overlays.TextWeather
 
 class OverlayHelper(private val context: Context, private val prefs: GeneralPrefs) {
     var overlays = mutableListOf<View?>()
@@ -130,10 +129,6 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
             OverlayType.MUSIC -> TextNowPlaying(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
-            }
-            OverlayType.WEATHER1 -> TextWeather(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.weatherSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.weatherWeight)
             }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
