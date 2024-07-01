@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 
 class TextNowPlaying : AppCompatTextView {
-
     var nowPlaying: SharedFlow<String>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
@@ -53,7 +52,7 @@ class TextNowPlaying : AppCompatTextView {
                 delay(300)
                 text = it
                 animate().alpha(1f).setDuration(300)
-        }
+            }
     }
 
     companion object {

@@ -114,22 +114,26 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
 
     private fun getOverlay(type: OverlayType): View? {
         return when (type) {
-            OverlayType.CLOCK -> AltTextClock(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
-            }
-            OverlayType.LOCATION -> TextLocation(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
-            }
-            OverlayType.DATE -> TextDate(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
-            }
-            OverlayType.MUSIC -> TextNowPlaying(context).apply {
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
-            }
+            OverlayType.CLOCK ->
+                AltTextClock(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
+                }
+            OverlayType.LOCATION ->
+                TextLocation(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
+                }
+            OverlayType.DATE ->
+                TextDate(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
+                }
+            OverlayType.MUSIC ->
+                TextNowPlaying(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
+                }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
             ->

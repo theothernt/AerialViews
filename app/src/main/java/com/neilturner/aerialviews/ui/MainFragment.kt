@@ -86,7 +86,7 @@ class MainFragment :
             lifecycleScope.launch {
                 ToastHelper.show(
                     requireContext(),
-                    requireContext().getString(R.string.settings_system_options_removed)
+                    requireContext().getString(R.string.settings_system_options_removed),
                 )
             }
         }
@@ -114,7 +114,7 @@ class MainFragment :
         lifecycleScope.launch {
             ToastHelper.show(
                 requireContext(),
-                requireContext().getString(R.string.settings_system_options_error)
+                requireContext().getString(R.string.settings_system_options_error),
             )
         }
     }

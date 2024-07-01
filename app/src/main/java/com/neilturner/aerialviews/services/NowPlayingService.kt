@@ -19,8 +19,7 @@ import kotlinx.coroutines.launch
 
 // Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
-    MediaSessionManager.OnActiveSessionsChangedListener
-{
+    MediaSessionManager.OnActiveSessionsChangedListener {
     private val _nowPlaying = MutableSharedFlow<String>(replay = 1)
     val nowPlaying
         get() = _nowPlaying.asSharedFlow()
@@ -32,23 +31,24 @@ class NowPlayingService(private val context: Context, private val prefs: General
     private var controllers = listOf<MediaController>()
     private var artistAndSong = ""
 
-    private val metadataListener = object : MediaController.Callback() {
-        override fun onMetadataChanged(metadata: MediaMetadata?) {
-            super.onMetadataChanged(metadata)
-            updateNowPlaying(metadata, null)
-        }
-
-        override fun onPlaybackStateChanged(state: PlaybackState?) {
-            super.onPlaybackStateChanged(state)
-
-            if (state == null) {
-                return
+    private val metadataListener =
+        object : MediaController.Callback() {
+            override fun onMetadataChanged(metadata: MediaMetadata?) {
+                super.onMetadataChanged(metadata)
+                updateNowPlaying(metadata, null)
             }
 
-            val active = isActive(state.state)
-            updateNowPlaying(null, active)
+            override fun onPlaybackStateChanged(state: PlaybackState?) {
+                super.onPlaybackStateChanged(state)
+
+                if (state == null) {
+                    return
+                }
+
+                val active = isActive(state.state)
+                updateNowPlaying(null, active)
+            }
         }
-    }
 
     init {
         coroutineScope.launch {
@@ -74,7 +74,10 @@ class NowPlayingService(private val context: Context, private val prefs: General
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
     }
 
-    private fun updateNowPlaying(metadata: MediaMetadata?, active: Boolean?) {
+    private fun updateNowPlaying(
+        metadata: MediaMetadata?,
+        active: Boolean?,
+    ) {
         if (metadata != null) {
             val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)?.take(40)
             val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)?.take(40)
@@ -123,11 +126,13 @@ class NowPlayingService(private val context: Context, private val prefs: General
     }
 
     private fun isActive(state: Int?): Boolean {
-        return (state != PlaybackState.STATE_STOPPED
-                && state != PlaybackState.STATE_PAUSED
-                && state != PlaybackState.STATE_ERROR
-                && state != PlaybackState.STATE_BUFFERING
-                && state != PlaybackState.STATE_NONE)
+        return (
+            state != PlaybackState.STATE_STOPPED &&
+                state != PlaybackState.STATE_PAUSED &&
+                state != PlaybackState.STATE_ERROR &&
+                state != PlaybackState.STATE_BUFFERING &&
+                state != PlaybackState.STATE_NONE
+        )
     }
 
     companion object {
