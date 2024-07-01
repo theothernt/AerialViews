@@ -5,5 +5,5 @@ enum class NowPlayingFormat {
     SONG_ARTIST,
     ARTIST_SONG,
     ARTIST,
-    SONG
+    SONG,
 }
