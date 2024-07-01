@@ -311,6 +311,8 @@
         <item>German</item>
         <item>French</item>
         <item>Arabic</item>
+        <item>Hebrew (he)</item>
+        <item>Hebrew (iw)</item>
         <item>Japanese</item>
         <item>Chinese</item>
         <item>Russian</item>
@@ -321,6 +323,8 @@
         <item>de-DE</item>
         <item>fr-FR</item>
         <item>ar</item>
+        <item>he</item>
+        <item>iw</item>
         <item>ja-JP</item>
         <item>zh-CN</item>
         <item>ru-RU</item>
@@ -333,6 +337,8 @@
         <item>German</item>
         <item>French</item>
         <item>Arabic</item>
+        <item>Hebrew (he)</item>
+        <item>Hebrew (iw)</item>
         <item>Japanese</item>
         <item>Chinese</item>
         <item>Russian</item>
@@ -344,6 +350,8 @@
         <item>de-DE</item>
         <item>fr-FR</item>
         <item>ar</item>
+        <item>he</item>
+        <item>iw</item>
         <item>ja-JP</item>
         <item>zh-CN</item>
         <item>ru-RU</item>
