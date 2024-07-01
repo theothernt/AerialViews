@@ -71,7 +71,7 @@ class WebDavDataSource : BaseDataSource(true) {
             var size = 0L
             val url = dataSpec.uri.toString()
             client = OkHttpSardine()
-            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
+            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
             val resource = client?.list(url)
             if (resource?.isNotEmpty() == true) {
                 size = resource[0].contentLength

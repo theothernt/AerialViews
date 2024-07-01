@@ -100,7 +100,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             val client: OkHttpSardine
             try {
                 client = OkHttpSardine()
-                client.setCredentials(userName, password)
+                client.setCredentials(userName, password, true)
             } catch (e: Exception) {
                 Log.e(TAG, e.message.toString())
                 return@withContext Pair(
