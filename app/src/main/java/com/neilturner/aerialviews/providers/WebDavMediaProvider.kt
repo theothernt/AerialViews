@@ -146,7 +146,11 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             return@withContext Pair(selected, message)
         }
 
-    private fun listFilesAndFoldersRecursively(client: Sardine, baseUrl: String, path: String = ""): List<String> {
+    private fun listFilesAndFoldersRecursively(
+        client: Sardine,
+        baseUrl: String,
+        path: String = "",
+    ): List<String> {
         val files = mutableListOf<String>()
         val fullUrl = baseUrl + path
         try {
