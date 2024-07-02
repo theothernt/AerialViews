@@ -67,4 +67,14 @@
                     android:title="@string/webdav_media_password_title" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_advanced">
+                <CheckBoxPreference
+                    app:dependency="webdav_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="false"
+                    app:key="webdav_media_search_subfolders"
+                    app:title="@string/webdav_media_search_subfolders_title"
+                    app:summary="@string/webdav_media_search_subfolders_summary" />
+        </PreferenceCategory>
+
 </PreferenceScreen>

@@ -15,5 +15,5 @@ object WebDavMediaPrefs : KotprefModel() {
     var pathName by stringPref("", "webdav_media_pathname")
     var userName by stringPref("", "webdav_media_username")
     var password by stringPref("", "webdav_media_password")
-    // var searchSubfolders by booleanPref(false, "webdav_media_search_subfolders")
+    var searchSubfolders by booleanPref(false, "webdav_media_search_subfolders")
 }

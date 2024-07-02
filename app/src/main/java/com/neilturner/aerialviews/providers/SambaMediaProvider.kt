@@ -174,7 +174,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
                 )
             }
-            val files = listFilesAndFoldersRecursive(share, path)
+            val files = listFilesAndFoldersRecursively(share, path)
             connection.close()
             smbClient.close()
 
@@ -211,7 +211,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return@withContext Pair(selected, message)
         }
 
-    private fun listFilesAndFoldersRecursive(
+    private fun listFilesAndFoldersRecursively(
         share: DiskShare,
         path: String,
     ): List<String> {
@@ -228,7 +228,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             }
 
             if (isFolder && prefs.searchSubfolders) {
-                files.addAll(listFilesAndFoldersRecursive(share, "$path/${item.fileName}"))
+                files.addAll(listFilesAndFoldersRecursively(share, "$path/${item.fileName}"))
             } else if (!isFolder) {
                 files.add("$path/${item.fileName}")
             }

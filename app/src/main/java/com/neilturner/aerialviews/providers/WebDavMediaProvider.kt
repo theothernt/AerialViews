@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
+import com.thegrizzlylabs.sardineandroid.Sardine
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -66,7 +67,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
         // Create WebDAV URL, add to media list, adding media type
         webDavMedia.first.forEach { filename ->
             val scheme = prefs.scheme.toStringOrEmpty().lowercase()
-            val baseUrl = scheme + "://" + prefs.hostName + prefs.pathName + "/"
+            val baseUrl = scheme + "://" + prefs.hostName
             val uri = Uri.parse(baseUrl + filename)
             val item = AerialMedia(uri)
 
@@ -109,9 +110,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 )
             }
 
-            val url = scheme.lowercase() + "://" + hostName + pathName
-            val resources = client.list(url)
-            val files = resources.map { it.name }.drop(1)
+            val baseUrl = scheme.lowercase() + "://" + hostName + pathName + "/"
+            val files = listFilesAndFoldersRecursively(client, baseUrl)
 
             // Only pick videos
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
@@ -145,6 +145,28 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size)
             return@withContext Pair(selected, message)
         }
+
+    private fun listFilesAndFoldersRecursively(client: Sardine, baseUrl: String, path: String = ""): List<String> {
+        val files = mutableListOf<String>()
+        val fullUrl = baseUrl + path
+        try {
+            val resources = client.list(fullUrl).drop(1)
+            for (resource in resources) {
+                if (FileHelper.isDotOrHiddenFile(resource.name)) {
+                    continue
+                }
+
+                if (resource.isDirectory && prefs.searchSubfolders) {
+                    files.addAll(listFilesAndFoldersRecursively(client, baseUrl, resource.name))
+                } else if (!resource.isDirectory) {
+                    files.add(resource.path)
+                }
+            }
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+        }
+        return files
+    }
 
     companion object {
         private const val TAG = "WebDavMediaProvider"

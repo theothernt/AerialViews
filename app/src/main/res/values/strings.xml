@@ -196,6 +196,9 @@
     <string name="webdav_media_test_summary4">Photos found: %1$s</string>
     <string name="webdav_media_test_summary5">Selected for playback: %1$s</string>
 
+    <string name="webdav_media_search_subfolders_title">Search subfolders</string>
+    <string name="webdav_media_search_subfolders_summary">Search all subfolders for photos and videos</string>
+
     <string name="webdav_media_test_results">Test results</string>
 
 
