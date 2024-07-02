@@ -111,7 +111,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
 
             val url = scheme.lowercase() + "://" + hostName + pathName
             val resources = client.list(url)
-            val files = resources.map { it.name }
+            val files = resources.map { it.name }.drop(1)
 
             // Only pick videos
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
