@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
@@ -19,11 +18,13 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
-import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlin.math.roundToLong
 
@@ -66,24 +67,34 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         listener = null
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
-    fun setUri(uri: Uri?) {
-        if (uri == null) {
-            return
-        }
+    fun setVideo(media: AerialMedia) {
         prepared = false
+
+        val uri = media.uri
         val mediaItem = MediaItem.fromUri(uri)
+
         if (philipsDolbyVisionFix) {
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
-        if (FileHelper.isSambaVideo(uri)) {
-            val mediaSource =
-                ProgressiveMediaSource.Factory(SambaDataSourceFactory())
-                    .createMediaSource(mediaItem)
-            player.setMediaSource(mediaSource)
-        } else {
-            player.setMediaItem(mediaItem)
+
+        when (media.source) {
+            AerialMediaSource.SAMBA -> {
+                val mediaSource =
+                    ProgressiveMediaSource.Factory(SambaDataSourceFactory())
+                        .createMediaSource(mediaItem)
+                player.setMediaSource(mediaSource)
+            }
+            AerialMediaSource.WEBDAV -> {
+                val mediaSource =
+                    ProgressiveMediaSource.Factory(WebDavDataSourceFactory())
+                        .createMediaSource(mediaItem)
+                player.setMediaSource(mediaSource)
+            }
+            else -> {
+                player.setMediaItem(mediaItem)
+            }
         }
+
         player.prepare()
         if (muteVideo) {
             player.trackSelectionParameters =

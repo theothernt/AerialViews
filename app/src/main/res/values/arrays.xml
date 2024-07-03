@@ -391,4 +391,15 @@
     </string-array>
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
+    <!-- WebDav schemes -->
+    <string-array name="webdav_scheme_entries">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <string-array name="webdav_scheme_values" translatable="false">
+        <item>HTTP</item>
+        <item>HTTPS</item>
+    </string-array>
+    <string name="webdav_scheme_default" translatable="false">HTTP</string>
+
 </resources>

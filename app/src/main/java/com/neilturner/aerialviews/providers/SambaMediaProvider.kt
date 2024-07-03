@@ -11,6 +11,7 @@ import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -109,6 +110,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             } else if (FileHelper.isSupportedImageType(filename)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.SAMBA
             media.add(item)
         }
 
@@ -172,12 +174,12 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
                 )
             }
-            val files = listFilesAndFoldersRecursive(share, path)
+            val files = listFilesAndFoldersRecursively(share, path)
             connection.close()
             smbClient.close()
 
             // Only pick videos
-            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedVideoType(item)
@@ -199,7 +201,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
 
             var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
             message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
-            if (prefs.mediaType != ProviderMediaType.IMAGES) {
+            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                 message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
@@ -209,7 +211,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             return@withContext Pair(selected, message)
         }
 
-    private fun listFilesAndFoldersRecursive(
+    private fun listFilesAndFoldersRecursively(
         share: DiskShare,
         path: String,
     ): List<String> {
@@ -226,7 +228,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             }
 
             if (isFolder && prefs.searchSubfolders) {
-                files.addAll(listFilesAndFoldersRecursive(share, "$path/${item.fileName}"))
+                files.addAll(listFilesAndFoldersRecursively(share, "$path/${item.fileName}"))
             } else if (!isFolder) {
                 files.add("$path/${item.fileName}")
             }

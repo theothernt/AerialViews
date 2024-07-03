@@ -15,6 +15,11 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
+# Sardine Android / XmlPullParser
+# -dontwarn org.xmlpull.v1.**
+-keep class org.xmlpull.v1.** { *; }
+-dontwarn android.content.res.XmlResourceParser
+
 # Added to suppress build warnings
 -dontwarn javax.el.BeanELResolver**
 -dontwarn javax.el.ELContext**

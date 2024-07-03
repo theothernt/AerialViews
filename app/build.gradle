@@ -157,6 +157,9 @@ dependencies {
     // SMB
     implementation('com.hierynomus:smbj:0.13.0')
 
+    // WebDAV
+    implementation('com.github.nova-video-player:sardine-android:0.0.3')
+
     // Coil
     implementation('io.coil-kt:coil:2.6.0')
 
