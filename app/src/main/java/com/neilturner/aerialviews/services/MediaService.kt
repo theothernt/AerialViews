@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.providers.AppleMediaProvider
@@ -21,6 +22,7 @@ import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
+import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 
@@ -32,6 +34,7 @@ class MediaService(val context: Context) {
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
+        providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         // Sort by local first so duplicates removed are remote
         providers.sortBy { it.type == ProviderSourceType.REMOTE }

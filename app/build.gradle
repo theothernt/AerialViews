@@ -171,6 +171,9 @@ dependencies {
     // SMB
     implementation('com.hierynomus:smbj:0.13.0')
 
+    // WebDAV
+    implementation('com.github.nova-video-player:sardine-android:0.0.3')
+
     // Coil
     implementation('io.coil-kt:coil:2.6.0')
 
@@ -178,8 +181,8 @@ dependencies {
     debugImplementation('com.squareup.leakcanary:leakcanary-android:2.14')
 
     // Unit testing
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.2')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.2')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.3')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.3')
 }
 
 tasks.withType(Test).configureEach {

@@ -47,6 +47,7 @@
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_sharename_summary"
                     android:key="samba_videos_sharename"
+                    android:selectAllOnFocus="true"
                     android:title="@string/samba_videos_sharename_title" />
 
                 <EditTextPreference

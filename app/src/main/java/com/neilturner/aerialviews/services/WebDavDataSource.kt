@@ -6,35 +6,18 @@ import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
-import com.hierynomus.msdtyp.AccessMask
-import com.hierynomus.mssmb2.SMB2CreateDisposition
-import com.hierynomus.mssmb2.SMB2ShareAccess
-import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.share.DiskShare
-import com.hierynomus.smbj.share.File
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.utils.SambaHelper
-import com.neilturner.aerialviews.utils.toStringOrEmpty
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
-import java.util.EnumSet
 import kotlin.math.min
 
-// Based on
-// https://juliensalvi.medium.com/building-custom-datasource-for-exoplayer-87fd16c71950
-
 @SuppressLint("UnsafeOptInUsageError")
-class SambaDataSource : BaseDataSource(true) {
+class WebDavDataSource : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
-    private var userName = ""
-    private var password = ""
-    private var hostName = ""
-    private var shareName = ""
-    private val domainName = "WORKGROUP"
-    private var path = ""
 
-    private var smbClient: SMBClient? = null
+    private var client: OkHttpSardine? = null
     private var inputStream: InputStream? = null
 
     private var bytesRead: Long = 0
@@ -43,27 +26,18 @@ class SambaDataSource : BaseDataSource(true) {
     @SuppressLint("UnsafeOptInUsageError")
     override fun open(dataSpec: DataSpec): Long {
         transferInitializing(dataSpec)
-
         this.dataSpec = dataSpec
-        parseCredentials(dataSpec)
         bytesRead = dataSpec.position
 
-        val remoteFile: File
-        try {
-            remoteFile = openSambaFile()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
-            return 0
-        }
-
-        inputStream = remoteFile.inputStream
+        val (file, size) = openWebDavFile()
+        inputStream = file
 
         val skipped = inputStream?.skip(bytesRead) ?: 0
         if (skipped < dataSpec.position) {
             throw EOFException()
         }
 
-        bytesToRead = remoteFile.fileInformation.standardInformation.endOfFile
+        bytesToRead = size
         transferStarted(dataSpec)
         return bytesToRead
     }
@@ -77,56 +51,37 @@ class SambaDataSource : BaseDataSource(true) {
         return readInternal(buffer, offset, readLength)
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun close() {
         try {
             inputStream?.close()
-            smbClient?.close()
         } catch (e: IOException) {
             throw IOException(e)
         } finally {
             transferEnded()
             inputStream = null
-            smbClient = null
+            client = null
         }
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
-    private fun parseCredentials(dataSpec: DataSpec) {
-        val uri = dataSpec.uri
-        hostName = uri.host.toStringOrEmpty()
-
-        // val userInfo = SambaHelper.parseUserInfo(uri)
-        userName = SambaMediaPrefs.userName
-        password = SambaMediaPrefs.password
-
-        val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
-        shareName = shareNameAndPath.first
-        path = shareNameAndPath.second
-    }
-
-    private fun openSambaFile(): File {
-        val config = SambaHelper.buildSmbConfig()
-        smbClient = SMBClient(config)
-        val connection = smbClient?.connect(hostName)
-        val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
-        val session = connection?.authenticate(authContext)
-        val share = session?.connectShare(shareName) as DiskShare
-
-        val shareAccess = hashSetOf<SMB2ShareAccess>()
-        shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-
-        return share.openFile(
-            path,
-            EnumSet.of(AccessMask.GENERIC_READ),
-            null,
-            shareAccess,
-            SMB2CreateDisposition.FILE_OPEN,
-            null,
-        )
+    private fun openWebDavFile(): Pair<InputStream?, Long> {
+        return try {
+            var size = 0L
+            val url = dataSpec.uri.toString()
+            client = OkHttpSardine()
+            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
+            val resource = client?.list(url)
+            if (resource?.isNotEmpty() == true) {
+                size = resource[0].contentLength
+            }
+            val file = client?.get(url)
+            return Pair(file, size)
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+            Pair(null, 0)
+        }
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -163,13 +118,13 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     companion object {
-        private const val TAG = "SambaDataSource"
+        private const val TAG = "WebDavDataSource"
     }
 }
 
-class SambaDataSourceFactory : DataSource.Factory {
+class WebDavDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource {
-        return SambaDataSource()
+        return WebDavDataSource()
     }
 }
