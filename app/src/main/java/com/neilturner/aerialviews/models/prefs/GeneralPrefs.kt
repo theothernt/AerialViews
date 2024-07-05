@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 
@@ -31,8 +32,10 @@ object GeneralPrefs : KotprefModel() {
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     // Music
-    var musicSize by stringPref("18", "music_size")
-    var musicWeight by stringPref("300", "music_weight")
+    var nowPlayingLine1 by nullableEnumValuePref(NowPlayingFormat.SONG_ARTIST, "nowplaying_line1")
+    var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISALBED, "nowplaying_line2")
+    var nowPlayingSize by stringPref("18", "nowplaying_size")
+    var nowPlayingWeight by stringPref("300", "nowplaying_weight")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")

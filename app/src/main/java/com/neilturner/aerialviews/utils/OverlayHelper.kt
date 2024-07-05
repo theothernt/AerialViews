@@ -74,6 +74,14 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
             }
         }
 
+        findOverlay<TextNowPlaying>().forEach {
+            if (it.type == OverlayType.MUSIC1) {
+                it.updateFormat(prefs.nowPlayingLine1)
+            } else {
+                it.updateFormat(prefs.nowPlayingLine2)
+            }
+        }
+
         val bottomRow =
             buildReferenceIds(
                 root.emptyView1,
@@ -133,8 +141,8 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
             OverlayType.MUSIC2,
             ->
                 TextNowPlaying(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.musicSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.musicWeight)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
                     this.type = type
                 }
             OverlayType.MESSAGE1,
