@@ -81,7 +81,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
         if (metadata != null) {
             val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
             val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
-            trackInfo = Pair(song, artist)
+            trackInfo = Pair(artist, song)
         }
 
         active.let {
