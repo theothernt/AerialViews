@@ -17,9 +17,11 @@ import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -35,6 +37,8 @@ class ScreenController(private val context: Context) :
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
+
+    private var nowPlayingService: NowPlayingService? = null
 
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private var alternate = false
@@ -100,6 +104,15 @@ class ScreenController(private val context: Context) :
         }
 
         coroutineScope.launch {
+
+            if (overlayHelper.isOverlayEnabled<TextNowPlaying>()) {
+                nowPlayingService = NowPlayingService(context, GeneralPrefs)
+            }
+
+            overlayHelper.findOverlay<TextNowPlaying>().forEach {
+                it.nowPlaying = nowPlayingService?.nowPlaying
+            }
+
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
@@ -255,6 +268,7 @@ class ScreenController(private val context: Context) :
     fun stop() {
         videoPlayer.release()
         imagePlayer.release()
+        nowPlayingService?.stop()
     }
 
     fun skipItem(previous: Boolean = false) {

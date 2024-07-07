@@ -6,28 +6,36 @@ import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
-    // Overlays
-    var slotBottomLeft1 by nullableEnumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
-    var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-    var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
-    var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
-
+    // Overlays - Tops
     var slotTopLeft1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left1")
     var slotTopLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left2")
     var slotTopRight1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_right1")
     var slotTopRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_right2")
+
+    // Overlays - Bottom
+    var slotBottomLeft1 by nullableEnumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
+    var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
+    var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
+    var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
 
     // Clock
     var clockFormat by nullableEnumValuePref(ClockType.DEFAULT, "clock_format")
     var clockSize by stringPref("18", "clock_size")
     var clockWeight by stringPref("300", "clock_weight")
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
+
+    // Music
+    var nowPlayingLine1 by nullableEnumValuePref(NowPlayingFormat.SONG_ARTIST, "nowplaying_line1")
+    var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISALBED, "nowplaying_line2")
+    var nowPlayingSize by stringPref("18", "nowplaying_size")
+    var nowPlayingWeight by stringPref("300", "nowplaying_weight")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")

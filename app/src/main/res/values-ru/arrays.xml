@@ -113,6 +113,8 @@
     <item>Дата</item>
     <item>Сообщение - Строка 1</item>
     <item>Сообщение - Строка 2</item>
+    <item>Weather</item>
+    <item>Music - Now Playing</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>

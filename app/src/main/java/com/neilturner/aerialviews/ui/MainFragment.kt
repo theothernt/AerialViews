@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -16,6 +17,7 @@ import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.ToastHelper
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MainFragment :
@@ -81,10 +83,12 @@ class MainFragment :
         // Show warning but try to invoke screensaver settings anyway
         // just in case device detection is wrong in future, etc
         if (!DeviceHelper.canAccessScreensaverSettings()) {
-            ToastHelper.show(
-                requireContext(),
-                requireContext().getString(R.string.settings_system_options_removed),
-            )
+            lifecycleScope.launch {
+                ToastHelper.show(
+                    requireContext(),
+                    requireContext().getString(R.string.settings_system_options_removed),
+                )
+            }
         }
 
         val intents = mutableListOf<Intent>()
@@ -107,10 +111,12 @@ class MainFragment :
             }
         }
 
-        ToastHelper.show(
-            requireContext(),
-            requireContext().getString(R.string.settings_system_options_error),
-        )
+        lifecycleScope.launch {
+            ToastHelper.show(
+                requireContext(),
+                requireContext().getString(R.string.settings_system_options_error),
+            )
+        }
     }
 
     private fun intentAvailable(intent: Intent): Boolean {

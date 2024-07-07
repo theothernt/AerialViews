@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Environment
 import android.os.storage.StorageManager
-import android.util.Log
 import androidx.annotation.RequiresApi
 import java.lang.reflect.Array
 import java.lang.reflect.InvocationTargetException
@@ -65,13 +64,9 @@ object StorageHelper {
             val getPath = storageVolumeClazz.getMethod("getPath")
             val result = getVolumeList.invoke(storageManager) as Any
             val length: Int = Array.getLength(result)
-            Log.d("X", "---length--$length")
             for (i in 0 until length) {
                 val storageVolumeElement: Any = Array.get(result, i) as Any
-                Log.d("X", "  ---Object--" + storageVolumeElement + "i==" + i)
                 val path = getPath.invoke(storageVolumeElement) as String
-                Log.d("X", "  ---path_total--$path")
-                Log.d("X", "    ---path--$path")
                 paths[path] = formatPathAsLabel(path)
             }
         } catch (e: ClassNotFoundException) {

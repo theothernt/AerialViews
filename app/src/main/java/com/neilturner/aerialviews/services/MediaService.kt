@@ -40,6 +40,10 @@ class MediaService(val context: Context) {
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
+    fun finalize() {
+        Log.i(TAG, "MediaService de-alloc")
+    }
+
     suspend fun fetchMedia(): MediaPlaylist {
         // Find all videos from all providers/sources
         var media = mutableListOf<AerialMedia>()

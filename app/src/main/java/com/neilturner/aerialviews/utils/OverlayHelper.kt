@@ -13,12 +13,17 @@ import com.neilturner.aerialviews.ui.overlays.AltTextClock
 import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
+import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 
 class OverlayHelper(private val context: Context, private val prefs: GeneralPrefs) {
     var overlays = mutableListOf<View?>()
 
     inline fun <reified T : View> findOverlay(): List<T> {
         return overlays.filterIsInstance<T>()
+    }
+
+    inline fun <reified T : View> isOverlayEnabled(): Boolean {
+        return findOverlay<T>().isNotEmpty()
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
@@ -66,6 +71,14 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 it.updateMessage(prefs.messageLine1)
             } else {
                 it.updateMessage(prefs.messageLine2)
+            }
+        }
+
+        findOverlay<TextNowPlaying>().forEach {
+            if (it.type == OverlayType.MUSIC1) {
+                it.updateFormat(prefs.nowPlayingLine1)
+            } else {
+                it.updateFormat(prefs.nowPlayingLine2)
             }
         }
 
@@ -123,6 +136,14 @@ class OverlayHelper(private val context: Context, private val prefs: GeneralPref
                 TextDate(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
+                }
+            OverlayType.MUSIC1,
+            OverlayType.MUSIC2,
+            ->
+                TextNowPlaying(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
+                    this.type = type
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,

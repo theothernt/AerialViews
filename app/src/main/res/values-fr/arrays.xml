@@ -113,6 +113,8 @@
     <item>Date</item>
     <item>Ligne de message 1</item>
     <item>Ligne de message 2</item>
+    <item>Weather</item>
+    <item>Music - Now Playing</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>

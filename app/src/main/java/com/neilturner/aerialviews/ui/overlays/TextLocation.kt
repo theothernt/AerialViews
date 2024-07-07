@@ -86,16 +86,12 @@ class TextLocation : AppCompatTextView {
 
             // Set new interval for POI string update
             // Longer is a new string has just been set
-            val interval = if (shouldUpdate) 3000 else 1000 // Small change to make ktlint happy
-            this.postDelayed({
-                currentPositionProgressHandler?.let { it() }
-            }, interval.toLong())
+            val interval = if (shouldUpdate) 3000 else 1000
+            this.postDelayed({ currentPositionProgressHandler?.let { it() } }, interval.toLong())
         }
 
-        // Setup handler for initial run of this video
-        this.postDelayed({
-            currentPositionProgressHandler?.let { it() }
-        }, 1000)
+        // Set initial delay for this method
+        this.postDelayed({ currentPositionProgressHandler?.let { it() } }, 1000)
     }
 
     companion object {

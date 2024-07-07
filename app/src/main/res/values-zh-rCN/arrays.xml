@@ -113,6 +113,8 @@
     <item>日期</item>
     <item>第 1 行信息</item>
     <item>第 2 行信息</item>
+    <item>Weather</item>
+    <item>Music - Now Playing</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
