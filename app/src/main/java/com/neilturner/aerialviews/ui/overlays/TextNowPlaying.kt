@@ -24,7 +24,7 @@ class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
     var format = NowPlayingFormat.DISALBED
 
-    var nowPlaying: SharedFlow<String>? = null
+    var nowPlaying: SharedFlow<Pair<String, String>>? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
@@ -59,9 +59,20 @@ class TextNowPlaying : AppCompatTextView {
             ?.collectLatest {
                 animate().alpha(0f).setDuration(300)
                 delay(300)
-                text = it
+                text = formatNowPlaying(it)
                 animate().alpha(1f).setDuration(300)
             }
+    }
+
+    private fun formatNowPlaying(trackInfo: Pair<String, String>): String {
+        val (artist, song) = trackInfo
+        return when (format) {
+            NowPlayingFormat.SONG_ARTIST -> "$song · $artist"
+            NowPlayingFormat.ARTIST_SONG -> "$artist · $song"
+            NowPlayingFormat.ARTIST -> artist
+            NowPlayingFormat.SONG -> song
+            else -> ""
+        }
     }
 
     companion object {

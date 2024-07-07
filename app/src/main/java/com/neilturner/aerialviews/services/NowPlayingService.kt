@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 // Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener {
-    private val _nowPlaying = MutableSharedFlow<String>(replay = 1)
+    private val _nowPlaying = MutableSharedFlow<Pair<String, String>>(replay = 1)
     val nowPlaying
         get() = _nowPlaying.asSharedFlow()
 
@@ -29,7 +29,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
-    private var artistAndSong = ""
+    private var trackInfo = Pair("", "")
 
     private val metadataListener =
         object : MediaController.Callback() {
@@ -79,17 +79,15 @@ class NowPlayingService(private val context: Context, private val prefs: General
         active: Boolean?,
     ) {
         if (metadata != null) {
-            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)?.take(40)
-            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)?.take(40)
-            artistAndSong = "$song · $artist"
+            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
+            trackInfo = Pair(song, artist)
         }
 
-        Log.i(TAG, "$artistAndSong ($active)")
-
         active.let {
-            var update = ""
+            var update = Pair("", "")
             if (active == true) {
-                update = artistAndSong
+                update = trackInfo
             }
             coroutineScope.launch {
                 _nowPlaying.emit(update)
