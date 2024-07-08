@@ -40,10 +40,6 @@ class MediaService(val context: Context) {
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    fun finalize() {
-        Log.i(TAG, "MediaService de-alloc")
-    }
-
     suspend fun fetchMedia(): MediaPlaylist {
         // Find all videos from all providers/sources
         var media = mutableListOf<AerialMedia>()
@@ -132,7 +128,6 @@ class MediaService(val context: Context) {
             }
             unmatched.add(video)
         }
-
         return Pair(matched, unmatched)
     }
 
@@ -156,6 +151,6 @@ class MediaService(val context: Context) {
     }
 
     companion object {
-        private const val TAG = "VideoService"
+        private const val TAG = "MediaService"
     }
 }

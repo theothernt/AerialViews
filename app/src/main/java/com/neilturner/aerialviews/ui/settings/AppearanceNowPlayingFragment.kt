@@ -9,9 +9,9 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 
-class AppearanceNowPlayingFragment : PreferenceFragmentCompat(),
+class AppearanceNowPlayingFragment :
+    PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
