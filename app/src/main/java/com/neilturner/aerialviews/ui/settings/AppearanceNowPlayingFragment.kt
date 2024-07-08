@@ -3,7 +3,10 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LoggingHelper
@@ -42,8 +45,29 @@ class AppearanceNowPlayingFragment :
             return
         }
 
-        val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-        startActivity(intent)
+        try {
+            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            startActivity(intent)
+        } catch (ex: Exception) {
+            Log.e(TAG, ex.message.toString())
+            featureUnsupported()
+        }
+    }
+
+    private fun featureUnsupported() {
+        AlertDialog.Builder(requireContext()).apply {
+            setTitle(R.string.nowplaying_unsupported_title)
+            setMessage(R.string.nowplaying_unsupported_summary)
+            setPositiveButton(R.string.button_ok) { _, _ ->
+                resetPreference()
+            }
+            create().show()
+        }
+    }
+
+    private fun resetPreference() {
+        val toggle = findPreference<SwitchPreference>("nowplaying_enabled")
+        toggle?.isChecked = false
     }
 
     override fun onResume() {

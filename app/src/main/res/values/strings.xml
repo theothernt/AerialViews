@@ -345,6 +345,9 @@
     <string name="category_music">Music</string>
     <string name="category_now_playing">Now Playing</string>
 
+    <string name="nowplaying_unsupported_title">Feature unsupported</string>
+    <string name="nowplaying_unsupported_summary">The menu for this permission does not exist on this version of Android TV. Please visit the Aerial Views website for instructions.</string>
+
     <string name="nowplaying_enabled_title">Enable system notification access</string>
     <string name="nowplaying_enabled_summary">Permission is required so that this app can listen for music notifications from the system</string>
 

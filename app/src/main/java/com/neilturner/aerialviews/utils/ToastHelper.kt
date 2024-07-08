@@ -17,4 +17,12 @@ object ToastHelper {
             toastLength,
         ).show()
     }
+
+    suspend fun show(
+        context: Context,
+        resourceId: Int,
+        toastLength: Int = Toast.LENGTH_LONG,
+    ) = withContext(Dispatchers.Main) {
+        show(context, context.getString(resourceId), toastLength)
+    }
 }
