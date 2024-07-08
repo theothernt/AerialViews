@@ -73,6 +73,13 @@ class AppearanceNowPlayingFragment :
     override fun onResume() {
         super.onResume()
         LoggingHelper.logScreenView("Now Playing", TAG)
+
+        val canUseNotificationListener = PermissionHelper.hasNotificationListenerPermission(requireContext())
+        if (GeneralPrefs.nowPlayingEnabled &&
+            !canUseNotificationListener
+        ) {
+            resetPreference()
+        }
     }
 
     companion object {

@@ -105,7 +105,8 @@ class ScreenController(private val context: Context) :
 
         coroutineScope.launch {
 
-            if (overlayHelper.isOverlayEnabled<TextNowPlaying>()) {
+            if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
+                GeneralPrefs.nowPlayingEnabled) {
                 nowPlayingService = NowPlayingService(context, GeneralPrefs)
             }
 
