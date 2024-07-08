@@ -18,7 +18,6 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class MainFragment :
     PreferenceFragmentCompat(),
@@ -76,6 +75,13 @@ class MainFragment :
             !canReadImagesVideos
         ) {
             LocalMediaPrefs.enabled = false
+        }
+
+        val canUseNotificationListener = PermissionHelper.hasNotificationListenerPermission(requireContext())
+        if (GeneralPrefs.nowPlayingEnabled &&
+            !canUseNotificationListener
+        ) {
+            GeneralPrefs.nowPlayingEnabled = false
         }
     }
 

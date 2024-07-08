@@ -32,6 +32,7 @@ object GeneralPrefs : KotprefModel() {
     var clockForceLatinDigits by booleanPref(false, "clock_force_latin_digits")
 
     // Music
+    var nowPlayingEnabled by booleanPref(false, "nowplaying_enabled")
     var nowPlayingLine1 by nullableEnumValuePref(NowPlayingFormat.SONG_ARTIST, "nowplaying_line1")
     var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISALBED, "nowplaying_line2")
     var nowPlayingSize by stringPref("18", "nowplaying_size")
