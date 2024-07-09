@@ -65,15 +65,13 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             }
 
         // Create WebDAV URL, add to media list, adding media type
-        webDavMedia.first.forEach { filename ->
-            val scheme = prefs.scheme.toStringOrEmpty().lowercase()
-            val baseUrl = scheme + "://" + prefs.hostName
-            val uri = Uri.parse(baseUrl + filename)
+        webDavMedia.first.forEach { url ->
+            val uri = Uri.parse(url)
             val item = AerialMedia(uri)
 
-            if (FileHelper.isSupportedVideoType(filename)) {
+            if (FileHelper.isSupportedVideoType(url)) {
                 item.type = AerialMediaType.VIDEO
-            } else if (FileHelper.isSupportedImageType(filename)) {
+            } else if (FileHelper.isSupportedImageType(url)) {
                 item.type = AerialMediaType.IMAGE
             }
             item.source = AerialMediaSource.WEBDAV
@@ -110,7 +108,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 )
             }
 
-            val baseUrl = scheme.lowercase() + "://" + hostName + pathName + "/"
+            val baseUrl = scheme.lowercase() + "://" + hostName + pathName
             val files = listFilesAndFoldersRecursively(client, baseUrl)
 
             // Only pick videos
@@ -148,22 +146,20 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
 
     private fun listFilesAndFoldersRecursively(
         client: Sardine,
-        baseUrl: String,
-        path: String = "",
+        url: String = "",
     ): List<String> {
         val files = mutableListOf<String>()
-        val fullUrl = baseUrl + path
         try {
-            val resources = client.list(fullUrl).drop(1)
+            val resources = client.list(url).drop(1)
             for (resource in resources) {
                 if (FileHelper.isDotOrHiddenFile(resource.name)) {
                     continue
                 }
 
                 if (resource.isDirectory && prefs.searchSubfolders) {
-                    files.addAll(listFilesAndFoldersRecursively(client, baseUrl, resource.name))
+                    files.addAll(listFilesAndFoldersRecursively(client, "$url/${resource.name}"))
                 } else if (!resource.isDirectory) {
-                    files.add(resource.path)
+                    files.add("$url/${resource.name}")
                 }
             }
         } catch (ex: Exception) {
