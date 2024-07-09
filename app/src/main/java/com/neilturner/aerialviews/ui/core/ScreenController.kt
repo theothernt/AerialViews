@@ -25,6 +25,7 @@ import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -106,7 +107,7 @@ class ScreenController(private val context: Context) :
         coroutineScope.launch {
 
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
-                GeneralPrefs.nowPlayingEnabled) {
+                PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context, GeneralPrefs)
             }
 

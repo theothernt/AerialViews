@@ -1,85 +1,82 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.content.Intent
-import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 
 class AppearanceNowPlayingFragment :
     PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+    PreferenceManager.OnPreferenceTreeClickListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_appearance_nowplaying, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        checkPermission()
     }
 
-    override fun onDestroy() {
-        preferenceManager.sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
-        super.onDestroy()
-    }
-
-    override fun onSharedPreferenceChanged(
-        sharedPreferences: SharedPreferences,
-        key: String?,
-    ) {
-        if (key == "nowplaying_enabled" &&
-            GeneralPrefs.nowPlayingEnabled
-        ) {
-            checkForMediaPermission()
-        }
-    }
-
-    private fun checkForMediaPermission() {
-        // If we already have permission, exit
-        if (PermissionHelper.hasNotificationListenerPermission(requireContext())) {
-            return
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference.key.isNullOrEmpty()) {
+            return super.onPreferenceTreeClick(preference)
         }
 
+        if (preference.key.contains("nowplaying_permission")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                openNotificationSettings()
+            }
+        }
+
+        return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun openNotificationSettings() {
         try {
             val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
             startActivity(intent)
         } catch (ex: Exception) {
             Log.e(TAG, ex.message.toString())
-            featureUnsupported()
         }
     }
 
-    private fun featureUnsupported() {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(R.string.nowplaying_unsupported_title)
-            setMessage(R.string.nowplaying_unsupported_summary)
-            setPositiveButton(R.string.button_ok) { _, _ ->
-                resetPreference()
-            }
-            create().show()
-        }
-    }
+    private fun checkPermission() {
+        val toggle = preferenceScreen.findPreference<SwitchPreference>("nowplaying_permission")
+        val hasPermission = PermissionHelper.hasNotificationListenerPermission(requireContext())
 
-    private fun resetPreference() {
-        val toggle = findPreference<SwitchPreference>("nowplaying_enabled")
-        toggle?.isChecked = false
+        if (hasPermission) {
+            toggle?.isChecked = true
+            return
+        } else {
+            toggle?.isChecked = false
+        }
+
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
+            val notice = preferenceScreen.findPreference<Preference>("nowplaying_permission_legacy_notice")
+            notice?.isVisible = true
+        }
+
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P ||
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+            val notice = preferenceScreen.findPreference<Preference>("nowplaying_permission_notice")
+            notice?.isVisible = true
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            toggle?.isEnabled = true
+        }
     }
 
     override fun onResume() {
         super.onResume()
         LoggingHelper.logScreenView("Now Playing", TAG)
-
-        val canUseNotificationListener = PermissionHelper.hasNotificationListenerPermission(requireContext())
-        if (GeneralPrefs.nowPlayingEnabled &&
-            !canUseNotificationListener
-        ) {
-            resetPreference()
-        }
+        checkPermission()
     }
 
     companion object {

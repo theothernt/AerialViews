@@ -76,13 +76,6 @@ class MainFragment :
         ) {
             LocalMediaPrefs.enabled = false
         }
-
-        val canUseNotificationListener = PermissionHelper.hasNotificationListenerPermission(requireContext())
-        if (GeneralPrefs.nowPlayingEnabled &&
-            !canUseNotificationListener
-        ) {
-            GeneralPrefs.nowPlayingEnabled = false
-        }
     }
 
     private fun openSystemScreensaverSettings() {

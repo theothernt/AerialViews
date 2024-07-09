@@ -2,12 +2,26 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_now_playing">
+        <PreferenceCategory app:title="@string/category_permission">
                 <SwitchPreference
                     app:defaultValue="false"
-                    app:key="nowplaying_enabled"
-                    app:title="@string/nowplaying_enabled_title"
-                    app:summary="@string/nowplaying_enabled_summary" />
+                    app:enabled="false"
+                    app:key="nowplaying_permission"
+                    app:title="@string/nowplaying_permission_title"
+                    app:summary="@string/nowplaying_permission_summary" />
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:key="nowplaying_permission_legacy_notice"
+                    app:selectable="false"
+                    app:summary="@string/nowplaying_permission_legacy_notice_summary"/>
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:key="nowplaying_permission_notice"
+                    app:selectable="false"
+                    app:summary="@string/nowplaying_permission_notice_summary"/>
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_now_playing">
