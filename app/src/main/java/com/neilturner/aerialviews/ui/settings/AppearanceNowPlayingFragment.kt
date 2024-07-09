@@ -50,6 +50,10 @@ class AppearanceNowPlayingFragment :
         val toggle = preferenceScreen.findPreference<SwitchPreference>("nowplaying_permission")
         val hasPermission = PermissionHelper.hasNotificationListenerPermission(requireContext())
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            toggle?.isEnabled = true
+        }
+
         if (hasPermission) {
             toggle?.isChecked = true
             return
@@ -63,13 +67,10 @@ class AppearanceNowPlayingFragment :
         }
 
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.P ||
-            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q) {
+            Build.VERSION.SDK_INT == Build.VERSION_CODES.Q
+        ) {
             val notice = preferenceScreen.findPreference<Preference>("nowplaying_permission_notice")
             notice?.isVisible = true
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            toggle?.isEnabled = true
         }
     }
 

@@ -107,7 +107,8 @@ class ScreenController(private val context: Context) :
         coroutineScope.launch {
 
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
-                PermissionHelper.hasNotificationListenerPermission(context)) {
+                PermissionHelper.hasNotificationListenerPermission(context)
+            ) {
                 nowPlayingService = NowPlayingService(context, GeneralPrefs)
             }
 

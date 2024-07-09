@@ -349,7 +349,7 @@
     <string name="nowplaying_permission_title">Enable system notification access</string>
     <string name="nowplaying_permission_summary">Permission is required so that this app can listen for music notifications from the system</string>
 
-    <string name="nowplaying_permission_legacy_notice_summary">To enable Notification access, please search for \'aerial views notification access\' on a PC or mobile</string>
+    <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
     <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
 
     <string name="nowplaying_line1_title">Now Playing - Line 1</string>
