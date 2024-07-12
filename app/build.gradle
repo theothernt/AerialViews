@@ -147,7 +147,7 @@ dependencies {
 
     // Firebase
     implementation('com.google.firebase:firebase-analytics-ktx:22.0.2')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.2')
+    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.3')
     implementation('com.google.firebase:firebase-perf-ktx:21.0.1')
 
     // Retrofit, OkHttp, and Moshi
