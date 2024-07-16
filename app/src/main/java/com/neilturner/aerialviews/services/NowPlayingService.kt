@@ -20,6 +20,7 @@ import me.kosert.flowbus.GlobalBus
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private var music = MusicEvent()
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
@@ -72,14 +73,17 @@ class NowPlayingService(private val context: Context, private val prefs: General
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
-        if (active != true || metadata == null) {
-            return
+        metadata?.let {
+            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
+            music = MusicEvent(artist, song)
         }
 
-        val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
-        val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
-        val event = MusicEvent(artist, song)
-        GlobalBus.post(event)
+        if (active == true) {
+            GlobalBus.post(music)
+        } else {
+            GlobalBus.post(MusicEvent())
+        }
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
