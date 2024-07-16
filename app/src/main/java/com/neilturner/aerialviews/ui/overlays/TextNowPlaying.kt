@@ -37,14 +37,8 @@ class TextNowPlaying : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
-        coroutineScope.launch {
-            receiver.subscribe<MusicEvent> {
-                animate().alpha(0f).setDuration(300)
-                delay(300)
-                text = formatNowPlaying(it)
-                animate().alpha(1f).setDuration(300)
-            }
+        receiver.subscribe<MusicEvent> {
+            updateNowPlaying(it)
         }
     }
 
@@ -52,6 +46,13 @@ class TextNowPlaying : AppCompatTextView {
         super.onDetachedFromWindow()
         receiver.unsubscribe()
         coroutineScope.cancel()
+    }
+
+    private fun updateNowPlaying(trackInfo: MusicEvent) = coroutineScope.launch {
+        animate().alpha(0f).setDuration(300)
+        delay(300)
+        text = formatNowPlaying(trackInfo)
+        animate().alpha(1f).setDuration(300)
     }
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
