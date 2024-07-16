@@ -163,6 +163,10 @@ dependencies {
     // ExoPlayer
     implementation('androidx.media3:media3-exoplayer:1.3.1')
 
+    // FlowBus
+    implementation 'com.github.Kosert.FlowBus:FlowBus:1.1'
+    implementation 'com.github.Kosert.FlowBus:FlowBus-android:1.1'
+
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
     implementation("com.chibatching.kotpref:initializer:2.13.2")

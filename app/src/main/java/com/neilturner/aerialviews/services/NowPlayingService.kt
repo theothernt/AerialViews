@@ -13,23 +13,17 @@ import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import me.kosert.flowbus.GlobalBus
 
 // Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
     MediaSessionManager.OnActiveSessionsChangedListener {
-    private val _nowPlaying = MutableSharedFlow<Pair<String, String>>(replay = 1)
-    val nowPlaying
-        get() = _nowPlaying.asSharedFlow()
-
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
-    private var trackInfo = Pair("", "")
 
     private val metadataListener =
         object : MediaController.Callback() {
@@ -78,21 +72,14 @@ class NowPlayingService(private val context: Context, private val prefs: General
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
-        if (metadata != null) {
-            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
-            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
-            trackInfo = Pair(artist, song)
+        if (active != true || metadata == null) {
+            return
         }
 
-        active.let {
-            var update = Pair("", "")
-            if (active == true) {
-                update = trackInfo
-            }
-            coroutineScope.launch {
-                _nowPlaying.emit(update)
-            }
-        }
+        val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
+        val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
+        val event = MusicEvent(artist, song)
+        GlobalBus.post(event)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
@@ -137,3 +124,8 @@ class NowPlayingService(private val context: Context, private val prefs: General
         private const val TAG = "NowPlayingService"
     }
 }
+
+data class MusicEvent(
+    val artist: String = "",
+    val song: String = "",
+)

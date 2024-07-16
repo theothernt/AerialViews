@@ -112,10 +112,6 @@ class ScreenController(private val context: Context) :
                 nowPlayingService = NowPlayingService(context, GeneralPrefs)
             }
 
-            overlayHelper.findOverlay<TextNowPlaying>().forEach {
-                it.nowPlaying = nowPlayingService?.nowPlaying
-            }
-
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
                 Log.i(TAG, "Playlist items: ${playlist.size}")
