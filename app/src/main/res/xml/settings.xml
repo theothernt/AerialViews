@@ -3,6 +3,11 @@
 
     <PreferenceCategory app:title="@string/category_settings">
         <Preference
+            app:title="@string/settings_overlays_title"
+            app:summary="@string/settings_overlays_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysFragment"/>
+
+        <Preference
             app:title="@string/settings_appearance_title"
             app:summary="@string/settings_appearance_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceFragment"/>

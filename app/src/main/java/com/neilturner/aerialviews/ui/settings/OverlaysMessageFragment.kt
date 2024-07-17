@@ -8,14 +8,14 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
-class AppearanceMessageFragment :
+class OverlaysMessageFragment :
     PreferenceFragmentCompat(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_appearance_message, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_message, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         limitTextInput()

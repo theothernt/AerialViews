@@ -7,12 +7,12 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.LoggingHelper
 
-class AppearanceLocationFragment : PreferenceFragmentCompat() {
+class OverlaysLocationFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_appearance_location, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_location, rootKey)
         updateAllSummaries()
     }
 

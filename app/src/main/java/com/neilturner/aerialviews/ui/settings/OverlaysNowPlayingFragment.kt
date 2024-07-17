@@ -12,14 +12,14 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 
-class AppearanceNowPlayingFragment :
+class OverlaysNowPlayingFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_appearance_nowplaying, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_nowplaying, rootKey)
         checkPermission()
     }
 

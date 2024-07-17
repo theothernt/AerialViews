@@ -11,14 +11,14 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.LoggingHelper
 
-class AppearanceDateFragment : PreferenceFragmentCompat() {
+class OverlaysDateFragment : PreferenceFragmentCompat() {
     private lateinit var entriesAndValues: Map<String, String>
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_appearance_date, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_date, rootKey)
 
         entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
 

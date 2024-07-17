@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_slots">
-                <Preference
-                    app:title="@string/appearance_top_row_title"
-                    app:summary="@string/appearance_top_row_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceRowTopFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_bottom_row_title"
-                    app:summary="@string/appearance_bottom_row_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceRowBottomFragment"/>
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_overlays">
-                <Preference
-                    app:title="@string/appearance_location_title"
-                    app:summary="@string/appearance_location_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceLocationFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_clock_title"
-                    app:summary="@string/appearance_clock_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceClockFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_date_title"
-                    app:summary="@string/appearance_date_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceDateFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_music_title"
-                    app:summary="@string/appearance_music_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceNowPlayingFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_message_title"
-                    app:summary="@string/appearance_message_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceMessageFragment"/>
-
-                <Preference
-                    app:isPreferenceVisible="false"
-                    app:title="@string/appearance_weather_title"
-                    app:summary="@string/appearance_weather_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceWeatherFragment"/>
-        </PreferenceCategory>
-
         <PreferenceCategory app:title="@string/category_options">
                 <CheckBoxPreference
                     app:defaultValue="false"
