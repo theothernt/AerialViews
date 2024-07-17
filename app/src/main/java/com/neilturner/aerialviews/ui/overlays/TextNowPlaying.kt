@@ -10,11 +10,14 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MusicEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
+import me.kosert.flowbus.GlobalBus
 
 class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
@@ -35,10 +38,17 @@ class TextNowPlaying : AppCompatTextView {
         this.format = format ?: NowPlayingFormat.DISALBED
     }
 
+    @OptIn(FlowPreview::class)
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        receiver.subscribe<MusicEvent> {
-            updateNowPlaying(it)
+        coroutineScope.launch {
+            GlobalBus
+                .getFlow(MusicEvent::class.java)
+                .distinctUntilChanged()
+                .sample(600)
+                .collect {
+                    updateNowPlaying(it)
+                }
         }
     }
 
@@ -48,7 +58,7 @@ class TextNowPlaying : AppCompatTextView {
         coroutineScope.cancel()
     }
 
-    private fun updateNowPlaying(trackInfo: MusicEvent) = coroutineScope.launch {
+    private suspend fun updateNowPlaying(trackInfo: MusicEvent) {
         animate().alpha(0f).setDuration(300)
         delay(300)
         text = formatNowPlaying(trackInfo)
