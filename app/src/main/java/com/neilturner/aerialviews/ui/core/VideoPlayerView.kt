@@ -264,7 +264,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
         // compensate the duration based on the playback speed
         // take into account the current player position in case of speed changes during playback
-        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
+        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - GeneralPrefs.fadeOutDuration.toLong())
         if (delay < 0) {
             delay = 0
         }

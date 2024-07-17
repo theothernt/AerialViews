@@ -215,7 +215,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(0f)
             .setStartDelay(startDelay)
-            .setDuration(ITEM_FADE_IN)
+            .setDuration(GeneralPrefs.fadeInDuration.toLong())
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
@@ -235,7 +235,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(ITEM_FADE_OUT)
+            .setDuration(GeneralPrefs.fadeInDuration.toLong())
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
             }
@@ -310,8 +310,6 @@ class ScreenController(private val context: Context) :
         private const val TAG = "VideoController"
         const val LOADING_FADE_OUT: Long = 300
         const val LOADING_DELAY: Long = 400
-        const val ITEM_FADE_IN: Long = 800
-        const val ITEM_FADE_OUT: Long = 1000
         const val ERROR_DELAY: Long = 2000
     }
 }
