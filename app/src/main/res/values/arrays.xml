@@ -424,4 +424,34 @@
     </string-array>
     <string name="webdav_scheme_default" translatable="false">HTTP</string>
 
+    <!-- Duration timings -->
+    <string-array name="duration_entries">
+        <item>Disabled</item>
+        <item>200ms</item>
+        <item>400ms</item>
+        <item>600ms</item>
+        <item>800ms</item>
+        <item>1000ms</item>
+        <item>1200ms</item>
+        <item>1400ms</item>
+        <item>1600ms</item>
+        <item>1800ms</item>
+        <item>2000ms</item>
+    </string-array>
+    <string-array name="duration_values" translatable="false">
+        <item>0</item>
+        <item>200</item>
+        <item>400</item>
+        <item>600</item>
+        <item>800</item>
+        <item>1000</item>
+        <item>1200</item>
+        <item>1400</item>
+        <item>1600</item>
+        <item>1800</item>
+        <item>2000</item>
+    </string-array>
+    <string name="duration_fade_in_default" translatable="false">600</string>
+    <string name="duration_fade_out_default" translatable="false">800</string>
+
 </resources>

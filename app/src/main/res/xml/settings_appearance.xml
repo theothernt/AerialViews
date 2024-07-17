@@ -59,6 +59,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_transitions_title"
+                    app:summary="@string/appearance_transitions_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTransitionsFragment"/>
+
+                <Preference
                     app:title="@string/appearance_startup_title"
                     app:summary="@string/appearance_startup_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>

@@ -77,6 +77,10 @@ object GeneralPrefs : KotprefModel() {
     var showTopGradient by booleanPref(false, "gradient_top_show")
     var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
+    // Transitions
+    var fadeInDuration by stringPref("600", "fade_in_duration")
+    var fadeOutDuration by stringPref("800", "fade_out_duration")
+
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")
 

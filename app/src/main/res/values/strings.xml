@@ -268,6 +268,9 @@
     <string name="appearance_gradient_title">Gradients</string>
     <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
+    <string name="appearance_transitions_title">Transitions</string>
+    <string name="appearance_transitions_summary">Configure the transitions between videos &amp; photos</string>
+
     <string name="appearance_startup_title">Startup</string>
     <string name="appearance_startup_summary">Change what you see while the app is loading</string>
 
@@ -304,6 +307,13 @@
 
     <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
     <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
+
+    <!-- Main / Settings / Appearance / Transitions -->
+    <string name="category_transitions">Transitions</string>
+
+    <string name="appearance_fade_in_title">Video/Photo Fade In</string>
+    <string name="appearance_fade_out_title">Video/Photo Fade Out</string>
+
 
     <!-- Main / Settings / Appearance / Clock -->
     <string name="category_clock">Clock</string>

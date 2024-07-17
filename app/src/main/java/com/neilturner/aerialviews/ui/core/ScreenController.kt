@@ -310,8 +310,8 @@ class ScreenController(private val context: Context) :
         private const val TAG = "VideoController"
         const val LOADING_FADE_OUT: Long = 300
         const val LOADING_DELAY: Long = 400
-        const val ITEM_FADE_IN: Long = 800
-        const val ITEM_FADE_OUT: Long = 1000
         const val ERROR_DELAY: Long = 2000
+        val ITEM_FADE_IN = GeneralPrefs.fadeInDuration.toLong()
+        val ITEM_FADE_OUT = GeneralPrefs.fadeOutDuration.toLong()
     }
 }
