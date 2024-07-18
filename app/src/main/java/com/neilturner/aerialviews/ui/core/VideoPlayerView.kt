@@ -26,7 +26,9 @@ import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
+import kotlin.math.ceil
 import kotlin.math.roundToLong
+import kotlin.time.Duration.Companion.milliseconds
 
 @SuppressLint("UnsafeOptInUsageError")
 class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
@@ -38,7 +40,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
     private var fallbackDecoders = GeneralPrefs.allowFallbackDecoders
     private var extraLogging = GeneralPrefs.enablePlaybackLogging
-    private val maxVideoLength = GeneralPrefs.maxVideoLength
+    private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
     private var listener: OnVideoPlayerEventListener? = null
@@ -51,6 +53,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
+        player.repeatMode = Player.REPEAT_MODE_ALL
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
@@ -253,13 +256,29 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
 
-        // Check if we need to limit the duration of the video
+        // Set initial duration to actual length of video
         var targetDuration = duration
-        val limit = maxVideoLength.toInt() * 1000
+
+        // Check if we need to loop the video
+        val loopShortVideos = true
+        if (loopShortVideos &&
+            maxVideoLength != 0 &&
+            duration < maxVideoLength) {
+            val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
+            Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, looping $loopCount times")
+            targetDuration = duration * loopCount
+        }
+
+        // Check if we need to limit the duration of the video
         val tenSeconds = 10 * 1000
-        if (limit in tenSeconds until duration
+        if (maxVideoLength in tenSeconds until duration
         ) {
-            targetDuration = limit
+            Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, limiting duration")
+            targetDuration = maxVideoLength
+        }
+
+        if (duration == targetDuration) {
+            Log.i(TAG, "As-is")
         }
 
         // compensate the duration based on the playback speed
