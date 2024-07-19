@@ -42,6 +42,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private var extraLogging = GeneralPrefs.enablePlaybackLogging
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
     private var playbackSpeed = GeneralPrefs.playbackSpeed
+    private var loopShortVideos = GeneralPrefs.loopShortVideos
     private val muteVideo = GeneralPrefs.muteVideos
     private var listener: OnVideoPlayerEventListener? = null
     private var canChangePlaybackSpeed = true
@@ -260,10 +261,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         var targetDuration = duration
 
         // Check if we need to loop the video
-        val loopShortVideos = true
         if (loopShortVideos &&
             maxVideoLength != 0 &&
-            duration < maxVideoLength) {
+            duration < maxVideoLength
+        ) {
             val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
             Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, looping $loopCount times")
             targetDuration = duration * loopCount

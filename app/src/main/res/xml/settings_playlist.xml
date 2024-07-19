@@ -46,10 +46,18 @@
                     app:title="@string/playlist_max_video_length_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_max_video_length_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="loop_short_videos"
+                    app:summary="@string/playlist_loop_short_videos_summary"
+                    app:title="@string/playlist_loop_short_videos_title" />
+
+                // play_random_segment
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_photos">
-
                 <ListPreference
                     app:defaultValue="@string/slideshow_speed_default"
                     app:entries="@array/slideshow_speed_entries"
@@ -67,5 +75,4 @@
                     app:title="@string/playlist_photo_scale_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
-
 </PreferenceScreen>
