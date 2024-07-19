@@ -192,6 +192,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
             duration > maxVideoLength
         ) {
             val segments = duration / maxVideoLength
+
+            if (segments < 2) {
+                return
+            }
             val length = duration.floorDiv(segments).milliseconds.inWholeSeconds
             val random = (1..segments).random()
             Log.i(TAG, "Video is ${duration.milliseconds}, Segments: $segments, Picking: $random")
