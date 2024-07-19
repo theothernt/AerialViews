@@ -43,6 +43,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private var loopShortVideos = GeneralPrefs.loopShortVideos
+    private var segmentLongVideos = GeneralPrefs.segmentLongVideos
     private val muteVideo = GeneralPrefs.muteVideos
     private var listener: OnVideoPlayerEventListener? = null
     private var canChangePlaybackSpeed = true
@@ -100,6 +101,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         }
 
         player.prepare()
+
         if (muteVideo) {
             player.trackSelectionParameters =
                 player.trackSelectionParameters
@@ -184,6 +186,19 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                 setRefreshRate()
             }
             setupAlmostFinishedRunnable()
+        }
+
+        if (segmentLongVideos &&
+            duration > maxVideoLength
+        ) {
+            val segments = duration / maxVideoLength
+            val length = duration.floorDiv(segments).milliseconds.inWholeSeconds
+            val random = (1..segments).random()
+            Log.i(TAG, "Video is ${duration.milliseconds}, Segments: $segments, Picking: $random")
+
+            val segmentStart = (random - 1) * length
+            val segmentEnd = random * length
+            Log.i(TAG, "Random segments: $segmentStart - $segmentEnd")
         }
     }
 

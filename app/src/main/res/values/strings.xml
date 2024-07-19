@@ -406,7 +406,10 @@
     <string name="playlist_max_video_length_title">Limit video length</string>
 
     <string name="playlist_loop_short_videos_title">Loop short videos</string>
-    <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set (eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
+    <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set\n(eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
+
+    <string name="playlist_segment_long_videos_title">Play random segments of videos</string>
+    <string name="playlist_segment_long_videos_summary">If a video is longer than the set limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</string>
 
     <string name="playlist_slideshow_speed_title">Slideshow speed</string>
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
