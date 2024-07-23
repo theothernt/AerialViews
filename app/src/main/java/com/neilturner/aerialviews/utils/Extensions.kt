@@ -4,7 +4,15 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.view.View
+import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.preference.MultiSelectListPreference
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 // https://stackoverflow.com/a/36795003/247257
@@ -62,3 +70,16 @@ fun String.capitalise(): String {
         }
     }
 }
+
+// https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
+fun View.delayOnLifecycle(
+    durationInMillis: Long,
+    dispatcher: CoroutineDispatcher = Dispatchers.Main,
+    block: () -> Unit,
+): Job? =
+    findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
+        lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
+            delay(durationInMillis)
+            block()
+        }
+    }
