@@ -11,7 +11,6 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Timeline
 import androidx.media3.common.VideoSize
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -65,7 +64,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player.addListener(this)
 
         player.repeatMode = Player.REPEAT_MODE_ALL
-        //player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
+        // player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
@@ -179,10 +178,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     override fun getAudioSessionId(): Int = player.audioSessionId
 
     // EventListener
-    override fun onTimelineChanged(timeline: Timeline, reason: Int) {
-        super.onTimelineChanged(timeline, reason)
-    }
-
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
             Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
@@ -200,7 +195,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                     this.segmentEnd = segmentEnd
                 }
 
-                if (isSegmentedVideo && player.currentPosition !in segmentStart-500..segmentEnd+500) {
+                if (isSegmentedVideo && player.currentPosition !in segmentStart - 500..segmentEnd + 500) {
                     Log.i(TAG, "Seeking to segment at $segmentStart")
                     player.seekTo(segmentStart)
                     return
@@ -336,23 +331,26 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (maxVideoLength < tenSeconds) {
             return Triple(false, 0L, 0L)
         }
-
         val segments = duration / maxVideoLength
         if (segments < 2) {
             Log.i(TAG, "Video is not long enough for segments")
             return Triple(false, 0L, 0L)
         }
         val length = duration.floorDiv(segments).toLong()
-        //val random = (1..segments).random()
-        val random = segments
+        val random = (1..segments).random()
         val segmentStart = (random - 1) * length
         val segmentEnd = random * length
-
-        Log.i(TAG, "Video is ${duration.milliseconds}, Segments: $segments, Picking: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}")
+        Log.i(
+            TAG,
+            "Video is ${duration.milliseconds}, Segments: $segments, Picking: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}",
+        )
         return Triple(true, segmentStart, segmentEnd)
     }
 
-    private fun calculateEndOfVideo(duration: Long, position: Long): Long {
+    private fun calculateEndOfVideo(
+        duration: Long,
+        position: Long,
+    ): Long {
         // Adjust the duration based on the playback speed
         // Take into account the current player position in case of speed changes during playback
         val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
