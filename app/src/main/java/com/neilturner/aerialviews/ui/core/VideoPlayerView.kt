@@ -32,24 +32,31 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @SuppressLint("UnsafeOptInUsageError")
 class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
-    private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
-    private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
-    private var onErrorRunnable = Runnable { listener?.onVideoError() }
-    private val enableTunneling = GeneralPrefs.enableTunneling
-    private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
-    private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
-    private var fallbackDecoders = GeneralPrefs.allowFallbackDecoders
-    private var extraLogging = GeneralPrefs.enablePlaybackLogging
-    private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
-    private var playbackSpeed = GeneralPrefs.playbackSpeed
-    private var loopShortVideos = GeneralPrefs.loopShortVideos
-    private var segmentLongVideos = GeneralPrefs.segmentLongVideos
-    private val muteVideo = GeneralPrefs.muteVideos
-    private var listener: OnVideoPlayerEventListener? = null
-    private var canChangePlaybackSpeed = true
     private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
+
+    private var listener: OnVideoPlayerEventListener? = null
+    private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
+    private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
+    private var onErrorRunnable = Runnable { listener?.onVideoError() }
+
+    private val enableTunneling = GeneralPrefs.enableTunneling
+    private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
+    private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
+    private val fallbackDecoders = GeneralPrefs.allowFallbackDecoders
+    private val extraLogging = GeneralPrefs.enablePlaybackLogging
+    private var playbackSpeed = GeneralPrefs.playbackSpeed
+    private val muteVideo = GeneralPrefs.muteVideos
+    private var canChangePlaybackSpeed = true
+
+    private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
+    private val loopShortVideos = GeneralPrefs.loopShortVideos
+    private val segmentLongVideos = GeneralPrefs.segmentLongVideos
+    private val allowLongerVideos = GeneralPrefs.allowLongerVideos
+    private var segmentStart = 0L
+    private var segmentEnd = 0L
+    private var isSegmentedVideo = false
 
     init {
         player = buildPlayer(context)
@@ -148,9 +155,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player.seekTo(0)
     }
 
-    override fun getDuration(): Int = player.duration.toInt()
+    override fun getDuration() = player.duration.toInt()
 
-    override fun getCurrentPosition(): Int = player.currentPosition.toInt()
+    override fun getCurrentPosition() = player.currentPosition.toInt()
 
     override fun seekTo(pos: Int) = player.seekTo(pos.toLong())
 
@@ -158,11 +165,11 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     override fun getBufferPercentage(): Int = player.bufferedPercentage
 
-    override fun canPause(): Boolean = player.duration > 0
+    override fun canPause(): Boolean = duration > 0
 
-    override fun canSeekBackward(): Boolean = player.duration > 0
+    override fun canSeekBackward(): Boolean = duration > 0
 
-    override fun canSeekForward(): Boolean = player.duration > 0
+    override fun canSeekForward(): Boolean = duration > 0
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int = player.audioSessionId
@@ -171,12 +178,27 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
             Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
-            Player.STATE_BUFFERING -> Log.i(TAG, "Buffering...") // 2
-            Player.STATE_READY -> Log.i(TAG, "Playing...") // 3
+            Player.STATE_BUFFERING -> Log.i(TAG, "Buffering...") // 2a
+            Player.STATE_READY -> Log.i(TAG, "Read to play...") // 3
             Player.STATE_ENDED -> Log.i(TAG, "Playback ended...") // 4
         }
 
         if (!prepared && playbackState == Player.STATE_READY) {
+            if (segmentLongVideos) {
+                if (!isSegmentedVideo) {
+                    val (isSegmented, segmentStart, segmentEnd) = calculateSegments()
+                    this.isSegmentedVideo = isSegmented
+                    this.segmentStart = segmentStart
+                    this.segmentEnd = segmentEnd
+                }
+
+                if (isSegmentedVideo && player.currentPosition in (segmentStart-100)..(segmentEnd+100)) {
+                    Log.i(TAG, "Seeking to segment at ${segmentStart.milliseconds}")
+                    player.seekTo(segmentStart)
+                    return
+                }
+                Log.i(TAG, "Already at segment ${segmentStart.milliseconds} (${player.currentPosition}), continuing...")
+            }
             prepared = true
             listener?.onVideoPrepared()
         }
@@ -186,30 +208,13 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                 setRefreshRate()
             }
             setupAlmostFinishedRunnable()
-        }
-
-        if (segmentLongVideos &&
-            duration > maxVideoLength
-        ) {
-            val segments = duration / maxVideoLength
-
-            if (segments < 2) {
-                return
-            }
-            val length = duration.floorDiv(segments).milliseconds.inWholeSeconds
-            val random = (1..segments).random()
-            Log.i(TAG, "Video is ${duration.milliseconds}, Segments: $segments, Picking: $random")
-
-            val segmentStart = (random - 1) * length
-            val segmentEnd = random * length
-            Log.i(TAG, "Random segments: $segmentStart - $segmentEnd")
+            Log.i(TAG, "Playing...")
         }
     }
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun setRefreshRate() {
         val frameRate = player.videoFormat?.frameRate
-        // val surface = this.holder.surface
 
         if (frameRate == null || frameRate == 0f) {
             Log.i(TAG, "Unable to get video frame rate...")
@@ -275,39 +280,73 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
+        val delay = calculateDelay()
+        postDelayed(almostFinishedRunnable, delay)
+    }
 
-        // Set initial duration to actual length of video
-        var targetDuration = duration
+    private fun calculateDelay(): Long {
+        // 10 seconds is the min. video length
+        val tenSeconds = 10 * 1000
+
+        if (isSegmentedVideo) {
+            return calculateEndOfVideo(segmentEnd - segmentStart, player.currentPosition - segmentStart)
+        }
+
+        // If max length disabled, play full video
+        if (maxVideoLength < tenSeconds) {
+            return calculateEndOfVideo(player.duration, player.currentPosition)
+        }
 
         // Check if we need to loop the video
         if (loopShortVideos &&
-            maxVideoLength != 0 &&
             duration < maxVideoLength
         ) {
-            val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
-            Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, looping $loopCount times")
-            targetDuration = duration * loopCount
+            // player position will be incorrect is speed is changed
+            // eg. clip loops 4 times, current position is of 1 clip ?!
+            Log.i(TAG, "Media index: ${player.currentMediaItemIndex}")
+            val targetDuration = calculateLoopingVideo()
+            return calculateEndOfVideo(targetDuration, player.currentPosition)
         }
 
-        // Check if we need to limit the duration of the video
-        val tenSeconds = 10 * 1000
-        if (maxVideoLength in tenSeconds until duration
+        // Limit the duration of the video, or not
+        if (maxVideoLength in tenSeconds until duration &&
+            !allowLongerVideos
         ) {
             Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, limiting duration")
-            targetDuration = maxVideoLength
+            return calculateEndOfVideo(maxVideoLength.toLong(), player.currentPosition)
         }
+        Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, ignoring limit")
+        return calculateEndOfVideo(player.duration, player.currentPosition)
+    }
 
-        if (duration == targetDuration) {
-            Log.i(TAG, "As-is")
+    private fun calculateSegments(): Triple<Boolean, Long, Long> {
+        val segments = duration / maxVideoLength
+        if (segments < 2) {
+            Log.i(TAG, "Video is not long enough for segments")
+            return Triple(false, 0L, 0L)
         }
+        val length = duration.floorDiv(segments).toLong()
+        val random = (1..segments).random()
+        val segmentStart = (random - 1) * length
+        val segmentEnd = random * length
 
-        // compensate the duration based on the playback speed
-        // take into account the current player position in case of speed changes during playback
-        var delay = (((targetDuration - player.currentPosition) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
-        if (delay < 0) {
-            delay = 0
-        }
-        postDelayed(almostFinishedRunnable, delay)
+        Log.i(TAG, "Video is ${duration.milliseconds}, Segments: $segments, Picking: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}")
+        return Triple(true, segmentStart, segmentEnd)
+    }
+
+    private fun calculateEndOfVideo(duration: Long, position: Long): Long {
+        // Adjust the duration based on the playback speed
+        // Take into account the current player position in case of speed changes during playback
+        val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
+        Log.i(TAG, "Duration: ${duration.milliseconds}, Position: ${position.milliseconds}, Delay: ${delay.milliseconds}")
+        return if (delay < 0) 0 else delay
+    }
+
+    private fun calculateLoopingVideo(): Long {
+        val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
+        val targetDuration = duration * loopCount
+        Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, looping $loopCount times")
+        return targetDuration.toLong()
     }
 
     override fun onPlayerError(error: PlaybackException) {
