@@ -14,6 +14,7 @@ import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.SeekParameters
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
@@ -62,7 +63,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
+
         player.repeatMode = Player.REPEAT_MODE_ALL
+        player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
@@ -81,6 +84,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     fun setVideo(media: AerialMedia) {
         prepared = false
+        isSegmentedVideo = false
 
         val uri = media.uri
         val mediaItem = MediaItem.fromUri(uri)
@@ -192,12 +196,14 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                     this.segmentEnd = segmentEnd
                 }
 
-                if (isSegmentedVideo && player.currentPosition in (segmentStart-100)..(segmentEnd+100)) {
+                if (isSegmentedVideo && player.currentPosition == segmentStart) {
                     Log.i(TAG, "Seeking to segment at ${segmentStart.milliseconds}")
                     player.seekTo(segmentStart)
                     return
                 }
-                Log.i(TAG, "Already at segment ${segmentStart.milliseconds} (${player.currentPosition}), continuing...")
+                if (isSegmentedVideo) {
+                    Log.i(TAG, "Already at segment ${segmentStart.milliseconds} (${player.currentPosition}), continuing...")
+                }
             }
             prepared = true
             listener?.onVideoPrepared()
@@ -288,13 +294,14 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         // 10 seconds is the min. video length
         val tenSeconds = 10 * 1000
 
-        if (isSegmentedVideo) {
-            return calculateEndOfVideo(segmentEnd - segmentStart, player.currentPosition - segmentStart)
-        }
-
         // If max length disabled, play full video
         if (maxVideoLength < tenSeconds) {
             return calculateEndOfVideo(player.duration, player.currentPosition)
+        }
+
+        // Play a part/segment of a video only
+        if (isSegmentedVideo) {
+            return calculateEndOfVideo(segmentEnd - segmentStart, player.currentPosition - segmentStart)
         }
 
         // Check if we need to loop the video
@@ -303,7 +310,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         ) {
             // player position will be incorrect is speed is changed
             // eg. clip loops 4 times, current position is of 1 clip ?!
-            Log.i(TAG, "Media index: ${player.currentMediaItemIndex}")
             val targetDuration = calculateLoopingVideo()
             return calculateEndOfVideo(targetDuration, player.currentPosition)
         }
@@ -320,6 +326,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     private fun calculateSegments(): Triple<Boolean, Long, Long> {
+        // 10 seconds is the min. video length
+        val tenSeconds = 10 * 1000
+        if (maxVideoLength < tenSeconds) {
+            return Triple(false, 0L, 0L)
+        }
+
         val segments = duration / maxVideoLength
         if (segments < 2) {
             Log.i(TAG, "Video is not long enough for segments")
