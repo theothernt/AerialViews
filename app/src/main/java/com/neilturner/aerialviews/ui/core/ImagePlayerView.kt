@@ -2,11 +2,14 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
 import coil.EventListener
 import coil.ImageLoader
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -29,7 +32,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.EnumSet
 
-class ImagePlayerView : AppCompatImageView {
+class ImagePlayerView : AppCompatImageView,
+    EventListener {
     private var imageLoader: ImageLoader
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
@@ -42,25 +46,17 @@ class ImagePlayerView : AppCompatImageView {
 
     init {
         imageLoader =
-            ImageLoader.Builder(context)
-                .eventListener(
-                    object : EventListener {
-                        override fun onSuccess(
-                            request: ImageRequest,
-                            result: SuccessResult,
-                        ) {
-                            setupFinishedRunnable()
-                        }
-
-                        override fun onError(
-                            request: ImageRequest,
-                            result: ErrorResult,
-                        ) {
-                            Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
-                            onPlayerError()
-                        }
-                    },
-                ).build()
+            ImageLoader
+                .Builder(context)
+                .eventListener(this)
+                .components {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
+                    }
+                }
+                .build()
 
         val scaleType =
             try {
@@ -76,6 +72,21 @@ class ImagePlayerView : AppCompatImageView {
         removeCallbacks(finishedRunnable)
         removeCallbacks(errorRunnable)
         listener = null
+    }
+
+    override fun onSuccess(
+        request: ImageRequest,
+        result: SuccessResult,
+    ) {
+        setupFinishedRunnable()
+    }
+
+    override fun onError(
+        request: ImageRequest,
+        result: ErrorResult,
+    ) {
+        Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
+        onPlayerError()
     }
 
     fun setImage(media: AerialMedia) {

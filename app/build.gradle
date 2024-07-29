@@ -137,35 +137,35 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
 
     // Android X
-    implementation('androidx.core:core-ktx:1.13.1')
+    implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
-    implementation('androidx.preference:preference-ktx:1.2.1')
-    implementation('androidx.activity:activity-ktx:1.9.1')
-    implementation('androidx.constraintlayout:constraintlayout:2.1.4')
-    implementation('androidx.appcompat:appcompat:1.7.0')
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.activity:activity-ktx:1.9.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:22.0.2')
-    implementation('com.google.firebase:firebase-crashlytics-ktx:19.0.3')
-    implementation('com.google.firebase:firebase-perf-ktx:21.0.1')
+    implementation("com.google.firebase:firebase-analytics-ktx:22.0.2")
+    implementation("com.google.firebase:firebase-crashlytics-ktx:19.0.3")
+    implementation("com.google.firebase:firebase-perf-ktx:21.0.1")
 
     // Retrofit, OkHttp, and Moshi
-    implementation('com.squareup.retrofit2:retrofit:2.11.0')
-    implementation('com.squareup.retrofit2:converter-moshi:2.11.0')
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation('com.squareup.moshi:moshi-kotlin:1.15.1')
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.1")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
 
     // GSON
-    implementation('com.google.code.gson:gson:2.11.0')
+    implementation("com.google.code.gson:gson:2.11.0")
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.4.0')
+    implementation("androidx.media3:media3-exoplayer:1.4.0")
 
     // FlowBus
-    implementation 'com.github.Kosert.FlowBus:FlowBus:1.1'
-    implementation 'com.github.Kosert.FlowBus:FlowBus-android:1.1'
+    implementation("com.github.Kosert.FlowBus:FlowBus:1.1")
+    implementation("com.github.Kosert.FlowBus:FlowBus-android:1.1")
 
     // Kotpref
     implementation("com.chibatching.kotpref:kotpref:2.13.2")
@@ -173,20 +173,21 @@ dependencies {
     implementation("com.chibatching.kotpref:enum-support:2.13.2")
 
     // SMB
-    implementation('com.hierynomus:smbj:0.13.0')
+    implementation("com.hierynomus:smbj:0.13.0")
 
     // WebDAV
-    implementation('com.github.nova-video-player:sardine-android:0.0.2')
+    implementation("com.github.nova-video-player:sardine-android:0.0.2")
 
     // Coil
-    implementation('io.coil-kt:coil:2.7.0')
+    implementation("io.coil-kt:coil:2.7.0")
+    implementation("io.coil-kt:coil-gif:2.7.0")
 
     // Memory leaks
-    debugImplementation('com.squareup.leakcanary:leakcanary-android:2.14')
+    debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
 
     // Unit testing
-    testImplementation('org.junit.jupiter:junit-jupiter-api:5.10.3')
-    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.10.3')
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.3")
 }
 
 tasks.withType(Test).configureEach {
