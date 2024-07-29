@@ -40,7 +40,6 @@ class ScreenController(private val context: Context) :
     private val resources = context.resources!!
 
     private var nowPlayingService: NowPlayingService? = null
-
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private var alternate = false
     private var previousItem = false
@@ -105,7 +104,6 @@ class ScreenController(private val context: Context) :
         }
 
         coroutineScope.launch {
-
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
                 PermissionHelper.hasNotificationListenerPermission(context)
             ) {

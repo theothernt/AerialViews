@@ -18,32 +18,14 @@ import me.kosert.flowbus.GlobalBus
 
 // Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
-    MediaSessionManager.OnActiveSessionsChangedListener {
+    MediaSessionManager.OnActiveSessionsChangedListener,
+    MediaController.Callback() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
-    private var music = MusicEvent()
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
-
-    private val metadataListener =
-        object : MediaController.Callback() {
-            override fun onMetadataChanged(metadata: MediaMetadata?) {
-                super.onMetadataChanged(metadata)
-                updateNowPlaying(metadata, null)
-            }
-
-            override fun onPlaybackStateChanged(state: PlaybackState?) {
-                super.onPlaybackStateChanged(state)
-
-                if (state == null) {
-                    return
-                }
-
-                val active = isActive(state.state)
-                updateNowPlaying(null, active)
-            }
-        }
+    private var music = MusicEvent()
 
     init {
         coroutineScope.launch {
@@ -55,6 +37,22 @@ class NowPlayingService(private val context: Context, private val prefs: General
         }
     }
 
+    override fun onMetadataChanged(metadata: MediaMetadata?) {
+        super.onMetadataChanged(metadata)
+        updateNowPlaying(metadata, null)
+    }
+
+    override fun onPlaybackStateChanged(state: PlaybackState?) {
+        super.onPlaybackStateChanged(state)
+
+        if (state == null) {
+            return
+        }
+
+        val active = isActive(state.state)
+        updateNowPlaying(null, active)
+    }
+
     private fun setupSession() {
         sessionManager = context.getSystemService<MediaSessionManager>()
 
@@ -63,7 +61,11 @@ class NowPlayingService(private val context: Context, private val prefs: General
         if (controllers.isNotEmpty()) {
             val activeController = controllers.first()
             val active = isActive(activeController.playbackState?.state)
-            updateNowPlaying(activeController.metadata, active)
+            try {
+                updateNowPlaying(activeController.metadata, active)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error setting initial Now Playing info", e)
+            }
         }
         // Listen for future changes to active sessions
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
@@ -98,13 +100,13 @@ class NowPlayingService(private val context: Context, private val prefs: General
     private fun initControllers(newControllers: List<MediaController>?) {
         controllers = if (!newControllers.isNullOrEmpty()) newControllers else emptyList()
         controllers.forEach { controller ->
-            controller.registerCallback(metadataListener)
+            controller.registerCallback(this)
         }
     }
 
     private fun unregisterAll() {
         controllers.forEach { controller ->
-            controller.unregisterCallback(metadataListener)
+            controller.unregisterCallback(this)
         }
     }
 
