@@ -141,7 +141,7 @@ dependencies {
     implementation("androidx.leanback:leanback:1.0.0")
     implementation("androidx.leanback:leanback-preference:1.0.0")
     implementation('androidx.preference:preference-ktx:1.2.1')
-    implementation('androidx.activity:activity-ktx:1.9.0')
+    implementation('androidx.activity:activity-ktx:1.9.1')
     implementation('androidx.constraintlayout:constraintlayout:2.1.4')
     implementation('androidx.appcompat:appcompat:1.7.0')
 
@@ -161,7 +161,7 @@ dependencies {
     implementation('com.google.code.gson:gson:2.11.0')
 
     // ExoPlayer
-    implementation('androidx.media3:media3-exoplayer:1.3.1')
+    implementation('androidx.media3:media3-exoplayer:1.4.0')
 
     // FlowBus
     implementation 'com.github.Kosert.FlowBus:FlowBus:1.1'
