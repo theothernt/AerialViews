@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.launch
@@ -46,7 +47,7 @@ class TextNowPlaying : AppCompatTextView {
                 .getFlow(MusicEvent::class.java)
                 .distinctUntilChanged()
                 .sample(600)
-                .collect {
+                .collectLatest {
                     updateNowPlaying(it)
                 }
         }

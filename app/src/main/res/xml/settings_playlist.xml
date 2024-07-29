@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_playlist">
                 <CheckBoxPreference
@@ -37,19 +36,9 @@
                     app:title="@string/playlist_playback_speed_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_playback_speed_summary" />
-
-                <ListPreference
-                    app:key="playback_max_video_length"
-                    app:defaultValue="@string/playback_max_video_length_default"
-                    app:entries="@array/playback_max_video_length_entries"
-                    app:entryValues="@array/playback_max_video_length_values"
-                    app:title="@string/playlist_max_video_length_title"
-                    app:useSimpleSummaryProvider="true"
-                    app:dialogTitle="@string/playlist_max_video_length_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_photos">
-
                 <ListPreference
                     app:defaultValue="@string/slideshow_speed_default"
                     app:entries="@array/slideshow_speed_entries"
@@ -68,4 +57,28 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_advanced">
+                <ListPreference
+                    app:key="playback_max_video_length"
+                    app:defaultValue="@string/playback_max_video_length_default"
+                    app:entries="@array/playback_max_video_length_entries"
+                    app:entryValues="@array/playback_max_video_length_values"
+                    app:title="@string/playlist_max_video_length_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_max_video_length_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="loop_short_videos"
+                    app:summary="@string/playlist_loop_short_videos_summary"
+                    app:title="@string/playlist_loop_short_videos_title" />
+
+                <ListPreference
+                    app:defaultValue="@string/limit_Longer_videos_default"
+                    app:entries="@array/limit_Longer_videos_entries"
+                    app:entryValues="@array/limit_Longer_videos_values"
+                    app:key="limit_longer_videos"
+                    app:title="@string/playlist_limit_longer_videos_title" />
+
+        </PreferenceCategory>
 </PreferenceScreen>

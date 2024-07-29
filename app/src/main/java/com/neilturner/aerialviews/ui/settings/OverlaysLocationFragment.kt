@@ -16,15 +16,15 @@ class OverlaysLocationFragment : PreferenceFragmentCompat() {
         updateAllSummaries()
     }
 
+    override fun onResume() {
+        super.onResume()
+        LoggingHelper.logScreenView("Location", TAG)
+    }
+
     private fun updateAllSummaries() {
         setupSummaryUpdater("description_video_manifest_style", R.array.description_video_manifest_entries)
         setupSummaryUpdater("description_video_filename_style", R.array.description_video_filename_entries)
         setupSummaryUpdater("description_photo_filename_style", R.array.description_photo_filename_entries)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        LoggingHelper.logScreenView("Location", TAG)
     }
 
     private fun setupSummaryUpdater(

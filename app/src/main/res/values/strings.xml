@@ -394,8 +394,6 @@
     <string name="playlist_shuffle_title">Shuffle videos &amp; photos</string>
     <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; photos</string>
 
-    <string name="playlist_max_video_length_title">Limit video length</string>
-
     <string name="playlist_playback_speed_title">Playback speed</string>
     <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
@@ -404,6 +402,13 @@
 
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
+
+    <string name="playlist_max_video_length_title">Limit video length</string>
+
+    <string name="playlist_loop_short_videos_title">Short videos</string>
+    <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set\n(eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
+
+    <string name="playlist_limit_longer_videos_title">Longer videos</string>
 
     <string name="playlist_slideshow_speed_title">Slideshow speed</string>
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
