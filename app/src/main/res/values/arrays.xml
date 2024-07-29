@@ -454,4 +454,21 @@
     <string name="duration_fade_in_default" translatable="false">600</string>
     <string name="duration_fade_out_default" translatable="false">800</string>
 
+    <!-- Longer videos limit -->
+    <string-array name="limit_Longer_videos_entries">
+        <item>Skip when limit is reached</item>
+        <item>Allow longer videos to finish</item>
+        <item>Play random segments of long videos</item>
+    </string-array>
+    <string-array name="limit_Longer_videos_values" translatable="false">
+        <item>LIMIT</item>
+        <item>IGNORE</item>
+        <item>SEGMENT</item>
+    </string-array>
+    <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
+    <string-array name="limit_Longer_videos_summaries">
+        <item>Obey limit - skip to the next video when the limit is reached</item>
+        <item>Ignore limit - if a video is longer than the set limit, it will be played until the end</item>
+        <item>Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</item>
+    </string-array>
 </resources>

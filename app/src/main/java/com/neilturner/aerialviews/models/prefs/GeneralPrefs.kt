@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -94,8 +95,7 @@ object GeneralPrefs : KotprefModel() {
     var playbackSpeed by stringPref("1", "playback_speed")
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
-    var segmentLongVideos by booleanPref(false, "segment_long_videos")
-    var allowLongerVideos by booleanPref(false, "allow_longer_videos")
+    var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
 
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?

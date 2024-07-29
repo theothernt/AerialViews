@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
@@ -52,8 +53,8 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
     private val loopShortVideos = GeneralPrefs.loopShortVideos
-    private val segmentLongVideos = GeneralPrefs.segmentLongVideos
-    private val allowLongerVideos = GeneralPrefs.allowLongerVideos
+    private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
+    private val allowLongerVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.IGNORE
     private var segmentStart = 0L
     private var segmentEnd = 0L
     private var isSegmentedVideo = false
