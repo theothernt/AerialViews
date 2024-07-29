@@ -32,7 +32,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.EnumSet
 
-class ImagePlayerView : AppCompatImageView,
+class ImagePlayerView :
+    AppCompatImageView,
     EventListener {
     private var imageLoader: ImageLoader
     private var listener: OnImagePlayerEventListener? = null

@@ -84,7 +84,7 @@ object FileHelper {
 
         return filename.endsWith(".jpg", true) ||
             filename.endsWith(".jpeg", true) ||
-                filename.endsWith(".gif", true) ||
+            filename.endsWith(".gif", true) ||
             filename.endsWith(".webp", true) ||
             filename.endsWith(".heic", true) || // HEIF format
             filename.endsWith(".png", true)
