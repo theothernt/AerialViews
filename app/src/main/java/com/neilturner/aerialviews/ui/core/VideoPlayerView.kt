@@ -55,17 +55,15 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private val loopShortVideos = GeneralPrefs.loopShortVideos
     private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
     private val allowLongerVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.IGNORE
+    private var isSegmentedVideo = false
     private var segmentStart = 0L
     private var segmentEnd = 0L
-    private var isSegmentedVideo = false
     private var loopCount = 0
 
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
-
-        // player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
@@ -84,9 +82,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     fun setVideo(media: AerialMedia) {
         prepared = false
+
+        player.repeatMode = Player.REPEAT_MODE_OFF
         isSegmentedVideo = false
         loopCount = 0
-        player.repeatMode = Player.REPEAT_MODE_ALL
 
         val uri = media.uri
         val mediaItem = MediaItem.fromUri(uri)
@@ -158,7 +157,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     fun stop() {
         removeCallbacks(almostFinishedRunnable)
         player.stop()
-        player.seekTo(0)
     }
 
     override fun getDuration() = player.duration.toInt()
@@ -180,7 +178,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int = player.audioSessionId
 
-    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+    override fun onMediaItemTransition(
+        mediaItem: MediaItem?,
+        reason: Int,
+    ) {
         if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
             loopCount++
             Log.i(TAG, "Looping video...")
@@ -193,7 +194,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         when (playbackState) {
             Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
             Player.STATE_BUFFERING -> Log.i(TAG, "Buffering...") // 2a
-            Player.STATE_READY -> Log.i(TAG, "Read to play...") // 3
+            Player.STATE_READY -> Log.i(TAG, "Ready to play...") // 3
             Player.STATE_ENDED -> Log.i(TAG, "Playback ended...") // 4
         }
 
@@ -320,10 +321,9 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (loopShortVideos &&
             duration < maxVideoLength
         ) {
-            // player position will be incorrect is speed is changed
-            // eg. clip loops 4 times, current position is of 1 clip ?!
-            val targetDuration = calculateLoopingVideo()
-            return calculateEndOfVideo(targetDuration, player.currentPosition)
+            val duration = calculateLoopingVideo()
+            val position = (loopCount * player.duration) + player.currentPosition
+            return calculateEndOfVideo(duration, position)
         }
 
         // Limit the duration of the video, or not
