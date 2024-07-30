@@ -58,13 +58,13 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     private var segmentStart = 0L
     private var segmentEnd = 0L
     private var isSegmentedVideo = false
+    private var loopCount = 0
 
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
         player.addListener(this)
 
-        player.repeatMode = Player.REPEAT_MODE_ALL
         // player.setSeekParameters(SeekParameters.CLOSEST_SYNC)
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
@@ -85,6 +85,8 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     fun setVideo(media: AerialMedia) {
         prepared = false
         isSegmentedVideo = false
+        loopCount = 0
+        player.repeatMode = Player.REPEAT_MODE_ALL
 
         val uri = media.uri
         val mediaItem = MediaItem.fromUri(uri)
@@ -178,6 +180,14 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     @SuppressLint("UnsafeOptInUsageError")
     override fun getAudioSessionId(): Int = player.audioSessionId
 
+    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
+            loopCount++
+            Log.i(TAG, "Looping video...")
+        }
+        super.onMediaItemTransition(mediaItem, reason)
+    }
+
     // EventListener
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
@@ -198,6 +208,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
                 if (isSegmentedVideo && player.currentPosition !in segmentStart - 500..segmentEnd + 500) {
                     Log.i(TAG, "Seeking to segment at $segmentStart")
+                    player.repeatMode = Player.REPEAT_MODE_ALL
                     player.seekTo(segmentStart)
                     return
                 }
