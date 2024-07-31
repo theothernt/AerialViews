@@ -208,13 +208,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                 }
 
                 if (isSegmentedVideo && player.currentPosition !in segmentStart - 500..segmentEnd + 500) {
-                    Log.i(TAG, "Seeking to segment at $segmentStart")
-                    player.repeatMode = Player.REPEAT_MODE_ALL
+                    Log.i(TAG, "Seeking to segment ${segmentStart}ms")
                     player.seekTo(segmentStart)
                     return
                 }
                 if (isSegmentedVideo) {
-                    Log.i(TAG, "At segment ${player.currentPosition} (target $segmentStart), continuing...")
+                    Log.i(TAG, "At segment ${player.currentPosition}ms (target ${segmentStart}ms), continuing...")
                 }
             }
             prepared = true
@@ -321,7 +320,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (loopShortVideos &&
             duration < maxVideoLength
         ) {
-            val duration = calculateLoopingVideo()
+            val (isLooping, duration) = calculateLoopingVideo()
+            if (isLooping) {
+                player.repeatMode = Player.REPEAT_MODE_ALL
+            }
             val position = (loopCount * player.duration) + player.currentPosition
             return calculateEndOfVideo(duration, position)
         }
@@ -330,10 +332,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (maxVideoLength in tenSeconds until duration &&
             !allowLongerVideos
         ) {
-            Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, limiting duration")
+            Log.i(TAG, "Limiting duration (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
             return calculateEndOfVideo(maxVideoLength.toLong(), player.currentPosition)
         }
-        Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, ignoring limit")
+        Log.i(TAG, "Ignoring limit (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
         return calculateEndOfVideo(player.duration, player.currentPosition)
     }
 
@@ -345,7 +347,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         }
         val segments = duration / maxVideoLength
         if (segments < 2) {
-            Log.i(TAG, "Video is not long enough for segments")
             return Triple(false, 0L, 0L)
         }
         val length = duration.floorDiv(segments).toLong()
@@ -354,7 +355,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         val segmentEnd = random * length
         Log.i(
             TAG,
-            "Video is ${duration.milliseconds}, Segments: $segments, Picking: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}",
+            "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds} (video is ${duration.milliseconds}, Segments: $segments)"
         )
         return Triple(true, segmentStart, segmentEnd)
     }
@@ -367,15 +368,15 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         // Take into account the current player position in case of speed changes during playback
         val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
         val actualPosition = if (isSegmentedVideo) position + segmentStart else position
-        Log.i(TAG, "Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds}, Delay: ${delay.milliseconds}")
+        Log.i(TAG, "Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
         return if (delay < 0) 0 else delay
     }
 
-    private fun calculateLoopingVideo(): Long {
+    private fun calculateLoopingVideo(): Pair<Boolean, Long> {
         val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount
-        Log.i(TAG, "Video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds}, looping $loopCount times")
-        return targetDuration.toLong()
+        Log.i(TAG, "Looping $loopCount times (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        return Pair(loopCount > 1, targetDuration.toLong())
     }
 
     override fun onPlayerError(error: PlaybackException) {
