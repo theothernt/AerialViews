@@ -41,14 +41,16 @@ class ScreenController(private val context: Context) :
 
     private var nowPlayingService: NowPlayingService? = null
     private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
+    private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
     private var canSkip = false
 
-    private val videoView: VideoViewBinding
-    private val imageView: ImageViewBinding
-    private val overlayView: OverlayViewBinding
+    private val videoViewBinding: VideoViewBinding
+    private val imageViewBinding: ImageViewBinding
+    private val overlayViewBinding: OverlayViewBinding
     private val loadingView: View
+    private val overlayView: View
     private var loadingText: TextView
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
@@ -66,16 +68,18 @@ class ScreenController(private val context: Context) :
         view = binding.root
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
-        overlayView = binding.overlayView
 
-        videoView = binding.videoView
-        videoPlayer = videoView.videoPlayer
+        overlayViewBinding = binding.overlayView
+        overlayView = overlayViewBinding.root
+
+        videoViewBinding = binding.videoView
+        videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
 
-        imageView = binding.imageView
-        imagePlayer = imageView.imagePlayer
+        imageViewBinding = binding.imageView
+        imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
-        imageView.root.setBackgroundColor(Color.BLACK)
+        imageViewBinding.root.setBackgroundColor(Color.BLACK)
 
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
@@ -88,7 +92,7 @@ class ScreenController(private val context: Context) :
 
         // Init overlays and set initial positions
         overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayView)
+        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
         this.bottomLeftIds = overlayIds.bottomLeftIds
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
@@ -96,11 +100,11 @@ class ScreenController(private val context: Context) :
 
         // Gradients
         if (GeneralPrefs.showTopGradient) {
-            overlayView.gradientTop.visibility = View.VISIBLE
+            overlayViewBinding.gradientTop.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            overlayView.gradientBottom.visibility = View.VISIBLE
+            overlayViewBinding.gradientBottom.visibility = View.VISIBLE
         }
 
         coroutineScope.launch {
@@ -146,16 +150,16 @@ class ScreenController(private val context: Context) :
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
-            overlayView.flowBottomLeft,
-            overlayView.flowBottomRight,
+            overlayViewBinding.flowBottomLeft,
+            overlayViewBinding.flowBottomRight,
             bottomLeftIds,
             bottomRightIds,
             alternate,
         )
 
         overlayHelper.assignOverlaysAndIds(
-            overlayView.flowTopLeft,
-            overlayView.flowTopRight,
+            overlayViewBinding.flowTopLeft,
+            overlayViewBinding.flowTopRight,
             topLeftIds,
             topRightIds,
             alternate,
@@ -168,21 +172,21 @@ class ScreenController(private val context: Context) :
         // Videos
         if (FileHelper.isSupportedVideoType(media.uri.filename)) {
             videoPlayer.setVideo(media)
-            videoView.root.visibility = View.VISIBLE
-            imageView.root.visibility = View.INVISIBLE
+            videoViewBinding.root.visibility = View.VISIBLE
+            imageViewBinding.root.visibility = View.INVISIBLE
         }
 
         // Images
         if (FileHelper.isSupportedImageType(media.uri.filename)) {
             imagePlayer.setImage(media)
-            imageView.root.visibility = View.VISIBLE
-            videoView.root.visibility = View.INVISIBLE
+            imageViewBinding.root.visibility = View.VISIBLE
+            videoViewBinding.root.visibility = View.INVISIBLE
         }
 
         videoPlayer.start()
     }
 
-    private fun fadeOutLoading() {
+    private fun fadeOutLoadingText() {
         // Fade out TextView
         loadingText
             .animate()
@@ -194,17 +198,38 @@ class ScreenController(private val context: Context) :
     }
 
     private fun fadeInNextItem() {
-        // LoadingView should always be hidden/gone
-        // Remove?
-        if (loadingView.visibility == View.GONE) {
-            return
-        }
+        val autoHideOverlay = 4 // -1, 0, 2, 4, 6
 
         var startDelay: Long = 0
+        val overlayDelay: Long = (autoHideOverlay.toLong() * 1000) + ITEM_FADE_IN
+
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
-            fadeOutLoading()
+            fadeOutLoadingText()
             startDelay = LOADING_DELAY
+        }
+
+        // Reset any overlay animations
+        if (autoHideOverlay >= 0) {
+            overlayView.animate()?.cancel()
+            overlayView.clearAnimation()
+        }
+
+        if (autoHideOverlay == 0) {
+            overlayView.alpha = 0f
+            canShowOverlays = true
+        }
+
+        if (autoHideOverlay > 0) {
+            overlayView.alpha = 1f
+            overlayView
+                .animate()
+                .alpha(0f)
+                .setStartDelay(overlayDelay)
+                .setDuration(OVERLAY_FADE_OUT)
+                .withEndAction {
+                    canShowOverlays = true
+                }.start()
         }
 
         // Fade out LoadingView
@@ -239,11 +264,11 @@ class ScreenController(private val context: Context) :
             }
             .withEndAction {
                 // Hide content views after faded out
-                videoView.root.visibility = View.INVISIBLE
-                videoView.videoPlayer.stop()
+                videoViewBinding.root.visibility = View.INVISIBLE
+                videoViewBinding.videoPlayer.stop()
 
-                imageView.root.visibility = View.INVISIBLE
-                imageView.imagePlayer.stop()
+                imageViewBinding.root.visibility = View.INVISIBLE
+                imageViewBinding.imagePlayer.stop()
 
                 // Pick next/previous video
                 val media =
@@ -309,6 +334,8 @@ class ScreenController(private val context: Context) :
         const val LOADING_FADE_OUT: Long = 300
         const val LOADING_DELAY: Long = 400
         const val ERROR_DELAY: Long = 2000
+        const val OVERLAY_FADE_OUT: Long = 500
+        const val OVERLAY_FADE_IN: Long = 500
         val ITEM_FADE_IN = GeneralPrefs.fadeInDuration.toLong()
         val ITEM_FADE_OUT = GeneralPrefs.fadeOutDuration.toLong()
     }

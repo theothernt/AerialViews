@@ -355,7 +355,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         val segmentEnd = random * length
         Log.i(
             TAG,
-            "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds} (video is ${duration.milliseconds}, Segments: $segments)"
+            "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds} (video is ${duration.milliseconds}, Segments: $segments)",
         )
         return Triple(true, segmentStart, segmentEnd)
     }
