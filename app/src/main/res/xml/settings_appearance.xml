@@ -14,6 +14,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_auto_hide_title"
+                    app:summary="@string/appearance_auto_hide_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceAutoHideFragment"/>
+
+                <Preference
                     app:title="@string/appearance_transitions_title"
                     app:summary="@string/appearance_transitions_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceTransitionsFragment"/>

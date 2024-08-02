@@ -269,6 +269,9 @@
     <string name="appearance_gradient_title">Gradients</string>
     <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
+    <string name="appearance_auto_hide_title">Auto hide overlays</string>
+    <string name="appearance_auto_hide_summary">Hide all overlays after a short period of time</string>
+
     <string name="appearance_transitions_title">Transitions</string>
     <string name="appearance_transitions_summary">Configure the transitions between videos &amp; photos</string>
 
@@ -308,6 +311,9 @@
 
     <string name="appearance_gradient_bottom_title">Show bottom gradient</string>
     <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
+
+    <!-- Main / Settings / Appearance / Auto hide overlays -->
+    <string name="appearance_auto_hide_title2">Auto hide overlays</string>
 
     <!-- Main / Settings / Appearance / Transitions -->
     <string name="category_transitions">Transitions</string>

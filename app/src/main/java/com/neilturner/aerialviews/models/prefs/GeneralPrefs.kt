@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.enums.PhotoScale
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
-    // Overlays - Tops
+    // Overlays - Top
     var slotTopLeft1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left1")
     var slotTopLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_left2")
     var slotTopRight1 by nullableEnumValuePref(OverlayType.EMPTY, "slot_top_right1")
@@ -74,13 +74,16 @@ object GeneralPrefs : KotprefModel() {
     var loadingTextSize by stringPref("18", "startup_size")
     var loadingTextWeight by stringPref("300", "startup_weight")
 
-    // Gradients
-    var showTopGradient by booleanPref(false, "gradient_top_show")
-    var showBottomGradient by booleanPref(true, "gradient_bottom_show")
-
     // Transitions
     var fadeInDuration by stringPref("600", "fade_in_duration")
     var fadeOutDuration by stringPref("800", "fade_out_duration")
+
+    // Overlay Auto hide
+    var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+
+    // Gradients
+    var showTopGradient by booleanPref(false, "gradient_top_show")
+    var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")

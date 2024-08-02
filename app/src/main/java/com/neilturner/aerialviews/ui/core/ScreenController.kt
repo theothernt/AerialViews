@@ -40,7 +40,8 @@ class ScreenController(private val context: Context) :
     private val resources = context.resources!!
 
     private var nowPlayingService: NowPlayingService? = null
-    private var shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
+    private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
+    private val autoHideOverlay = GeneralPrefs.overlayAutoHide.toLong()
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -198,10 +199,8 @@ class ScreenController(private val context: Context) :
     }
 
     private fun fadeInNextItem() {
-        val autoHideOverlay = 4 // -1, 0, 2, 4, 6
-
         var startDelay: Long = 0
-        val overlayDelay: Long = (autoHideOverlay.toLong() * 1000) + ITEM_FADE_IN
+        val overlayDelay = (autoHideOverlay * 1000) + ITEM_FADE_IN
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
@@ -215,11 +214,13 @@ class ScreenController(private val context: Context) :
             overlayView.clearAnimation()
         }
 
-        if (autoHideOverlay == 0) {
+        // Hide overlays immediately
+        if (autoHideOverlay.toInt() == 0) {
             overlayView.alpha = 0f
             canShowOverlays = true
         }
 
+        // Hide overlays after a delay
         if (autoHideOverlay > 0) {
             overlayView.alpha = 1f
             overlayView
