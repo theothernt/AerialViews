@@ -2,18 +2,17 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <PreferenceCategory app:title="@string/category_dpad">
-                <CheckBoxPreference
-                    app:defaultValue="true"
-                    app:key="enable_skip_videos"
-                    app:summary="@string/playlist_allow_video_skipping_summary"
-                    app:title="@string/playlist_allow_video_skipping_title" />
+                <Preference
+                    app:title="@string/category_dpad_press"
+                    app:summary="@string/dpad_button_press_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemotePressFragment"/>
 
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="enable_playback_speed_change"
-                    app:summary="@string/playlist_allow_playback_speed_change_summary"
-                    app:title="@string/playlist_allow_playback_speed_change_title" />
-
+                <Preference
+                    app:title="@string/category_dpad_press_and_hold"
+                    app:summary="@string/dpad_button_press_and_hold_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemotePressHoldFragment"/>
+        </PreferenceCategory>
+        <PreferenceCategory app:title="@string/category_options">
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_media_button_passthrough"

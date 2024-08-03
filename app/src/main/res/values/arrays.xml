@@ -492,4 +492,27 @@
         <item>10</item>
     </string-array>
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
+
+    <!-- Dpad/button actions -->
+    <string-array name="button_action_entries">
+        <item>Disable</item>
+        <item>Passthrough</item>
+        <item>Exit</item>
+        <item>Skip next</item>
+        <item>Skip previous</item>
+        <item>Speed increase</item>
+        <item>Speed decrease</item>
+        <item>Show overlays</item>
+    </string-array>
+    <string-array name="button_action_values" translatable="false">
+        <item>DISABLED</item>
+        <item>PASSTHROUGH</item>
+        <item>EXIT</item>
+        <item>SKIP_NEXT</item>
+        <item>SKIP_PREVIOUS</item>
+        <item>SPEED_UP</item>
+        <item>SPEED_DOWN</item>
+        <item>SHOW_OVERLAY</item>
+    </string-array>
+    <string name="button_action_default" translatable="false">IGNORE</string>
 </resources>

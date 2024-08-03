@@ -423,6 +423,20 @@
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
+    <string name="category_dpad_press">D-pad or button press</string>
+    <string name="category_dpad_press_and_hold">D-pad or button press &amp; hold</string>
+
+    <string name="dpad_button_press_title">D-pad or button press</string>
+    <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
+
+    <string name="dpad_button_press_and_hold_title">D-pad or button press &amp; hold</string>
+    <string name="dpad_button_press_and_hold_summary">Configure d-pad or button press and hold actions</string>
+
+    <string name="dpad_button_left_title">Left direction</string>
+    <string name="dpad_button_right_title">Right direction</string>
+    <string name="dpad_button_up_title">Up direction</string>
+    <string name="dpad_button_down_title">Down direction</string>
+    <string name="dpad_button_ok_title">OK button</string>
 
     <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or photo</string>
     <string name="playlist_allow_video_skipping_summary">Skip a video or photo by pressing left or right on the d-pad of your remote</string>

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
+import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
@@ -107,6 +108,18 @@ object GeneralPrefs : KotprefModel() {
     var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale") // Migrate
 
     // D-pad
+    var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")
+    var buttonRightPress by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_press")
+    var buttonUpPress by nullableEnumValuePref(ButtonType.DISABLED, "button_up_press")
+    var buttonDownPress by nullableEnumValuePref(ButtonType.DISABLED, "button_down_press")
+    var buttonOkPress by nullableEnumValuePref(ButtonType.DISABLED, "button_ok_press")
+
+    var buttonLeftHold by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_hold")
+    var buttonRightHold by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_hold")
+    var buttonUpHold by nullableEnumValuePref(ButtonType.DISABLED, "button_up_hold")
+    var buttonDownHold by nullableEnumValuePref(ButtonType.DISABLED, "button_down_hold")
+    var buttonOkHold by nullableEnumValuePref(ButtonType.DISABLED, "button_ok_hold")
+
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
     var enablePlaybackSpeedChange by booleanPref(false, "enable_playback_speed_change")
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")

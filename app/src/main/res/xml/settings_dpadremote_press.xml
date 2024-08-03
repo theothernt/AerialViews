@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <PreferenceCategory app:title="@string/category_dpad_press">
+                <ListPreference
+                    app:key="button_left_press"
+                    app:title="@string/dpad_button_left_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:key="button_right_press"
+                    app:title="@string/dpad_button_right_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:key="button_up_press"
+                    app:title="@string/dpad_button_up_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:key="button_down_press"
+                    app:title="@string/dpad_button_down_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:key="button_ok_press"
+                    app:title="@string/dpad_button_ok_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+</PreferenceScreen>
