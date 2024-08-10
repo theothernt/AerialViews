@@ -110,15 +110,15 @@ object GeneralPrefs : KotprefModel() {
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")
     var buttonRightPress by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_press")
-    var buttonUpPress by nullableEnumValuePref(ButtonType.DISABLED, "button_up_press")
-    var buttonDownPress by nullableEnumValuePref(ButtonType.DISABLED, "button_down_press")
-    var buttonOkPress by nullableEnumValuePref(ButtonType.DISABLED, "button_ok_press")
+    var buttonUpPress by nullableEnumValuePref(ButtonType.IGNORE, "button_up_press")
+    var buttonDownPress by nullableEnumValuePref(ButtonType.IGNORE, "button_down_press")
+    var buttonOkPress by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_press")
 
     var buttonLeftHold by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_hold")
     var buttonRightHold by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_hold")
-    var buttonUpHold by nullableEnumValuePref(ButtonType.DISABLED, "button_up_hold")
-    var buttonDownHold by nullableEnumValuePref(ButtonType.DISABLED, "button_down_hold")
-    var buttonOkHold by nullableEnumValuePref(ButtonType.DISABLED, "button_ok_hold")
+    var buttonUpHold by nullableEnumValuePref(ButtonType.IGNORE, "button_up_hold")
+    var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
+    var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
     var enableSkipVideos by booleanPref(true, "enable_skip_videos")
     var enablePlaybackSpeedChange by booleanPref(false, "enable_playback_speed_change")

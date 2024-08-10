@@ -1,8 +1,7 @@
 package com.neilturner.aerialviews.models.enums
 
 enum class ButtonType {
-    DISABLED, // Trap button press, do nothing
-    PASSTHROUGH, // Passthrough but don't exit
+    IGNORE, // Trap button press, do nothing
     EXIT, // Exit screensaver
     SKIP_NEXT,
     SKIP_PREVIOUS,
