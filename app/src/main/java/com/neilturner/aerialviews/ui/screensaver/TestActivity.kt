@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.screensaver
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
 import com.neilturner.aerialviews.R
@@ -13,6 +14,7 @@ import com.neilturner.aerialviews.utils.WindowHelper
 
 class TestActivity : Activity() {
     private lateinit var screenController: ScreenController
+    private var previousEvent: KeyEvent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,23 @@ class TestActivity : Activity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (event.action == KeyEvent.ACTION_UP &&
+            (
+                    previousEvent == null ||
+                            previousEvent?.repeatCount == 0
+                    )
+        ) {
+            Log.i(TAG, "Key Up")
+        }
+
+        if (event.action == KeyEvent.ACTION_DOWN &&
+            event.isLongPress
+        ) {
+            Log.i(TAG, "Long Press")
+        }
+        previousEvent = event
+
+
         if (event.action == KeyEvent.ACTION_UP && this::screenController.isInitialized) {
             // Log.i(TAG, "${event.keyCode}")
 
