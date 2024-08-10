@@ -423,8 +423,8 @@
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="category_dpad">D-Pad/Remote</string>
-    <string name="category_dpad_press">D-pad or button press</string>
-    <string name="category_dpad_press_and_hold">D-pad or button press &amp; hold</string>
+    <string name="category_dpad_press">Press</string>
+    <string name="category_dpad_press_and_hold">Press &amp; hold</string>
 
     <string name="dpad_button_press_title">D-pad or button press</string>
     <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>

@@ -3,28 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <PreferenceCategory app:title="@string/category_dpad_press_and_hold">
                 <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
                     app:key="button_left_hold"
-                    app:title="@string/dpad_button_left_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_button_left_title" />
 
                 <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
                     app:key="button_right_hold"
-                    app:title="@string/dpad_button_right_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_button_right_title" />
 
                 <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
                     app:key="button_up_hold"
-                    app:title="@string/dpad_button_up_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_button_up_title" />
 
                 <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
                     app:key="button_down_hold"
-                    app:title="@string/dpad_button_down_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_button_down_title" />
 
                 <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
                     app:key="button_ok_hold"
-                    app:title="@string/dpad_button_ok_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_button_ok_title" />
         </PreferenceCategory>
 </PreferenceScreen>
