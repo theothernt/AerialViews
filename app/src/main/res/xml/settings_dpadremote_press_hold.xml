@@ -6,17 +6,17 @@
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
                     app:defaultValue="@string/button_action_default"
-                    app:key="button_left_hold"
+                    app:key="button_right_hold"
                     app:useSimpleSummaryProvider="true"
-                    app:title="@string/dpad_button_left_title" />
+                    app:title="@string/dpad_button_right_title" />
 
                 <ListPreference
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
                     app:defaultValue="@string/button_action_default"
-                    app:key="button_right_hold"
+                    app:key="button_left_hold"
                     app:useSimpleSummaryProvider="true"
-                    app:title="@string/dpad_button_right_title" />
+                    app:title="@string/dpad_button_left_title" />
 
                 <ListPreference
                     app:entries="@array/button_action_entries"
