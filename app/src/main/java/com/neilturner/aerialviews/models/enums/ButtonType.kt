@@ -5,7 +5,7 @@ enum class ButtonType {
     EXIT, // Exit screensaver
     SKIP_NEXT,
     SKIP_PREVIOUS,
-    SPEED_UP,
-    SPEED_DOWN,
+    SPEED_INCREAESE,
+    SPEED_DECREASE,
     SHOW_OVERLAY,
 }

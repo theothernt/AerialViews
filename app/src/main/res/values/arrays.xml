@@ -508,8 +508,8 @@
         <item>EXIT</item>
         <item>SKIP_NEXT</item>
         <item>SKIP_PREVIOUS</item>
-        <item>SPEED_UP</item>
-        <item>SPEED_DOWN</item>
+        <item>SPEED_INCREASE</item>
+        <item>SPEED_DECREASE</item>
         <item>SHOW_OVERLAY</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>

@@ -353,10 +353,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         val random = (1..segments).random()
         val segmentStart = (random - 1) * length
         val segmentEnd = random * length
-        Log.i(
-            TAG,
-            "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds} (video is ${duration.milliseconds}, Segments: $segments)",
-        )
+
+        val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
+        val message2 = "(video is ${duration.milliseconds}, Segments: $segments)"
+        Log.i(TAG, message1 + message2)
         return Triple(true, segmentStart, segmentEnd)
     }
 
