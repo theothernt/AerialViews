@@ -288,6 +288,11 @@ class ScreenController(private val context: Context) :
         loadingText.text = resources.getString(R.string.loading_error)
     }
 
+
+    fun showOverlays() {
+
+    }
+
     fun stop() {
         videoPlayer.release()
         imagePlayer.release()

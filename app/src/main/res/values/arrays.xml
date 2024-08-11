@@ -510,7 +510,7 @@
         <item>SKIP_PREVIOUS</item>
         <item>SPEED_INCREASE</item>
         <item>SPEED_DECREASE</item>
-        <item>SHOW_OVERLAY</item>
+        <item>SHOW_OVERLAYS</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
 </resources>

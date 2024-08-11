@@ -140,8 +140,9 @@ object InputHelper {
             ButtonType.IGNORE -> return false
             ButtonType.SKIP_NEXT -> controller?.skipItem()
             ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-            ButtonType.SPEED_INCREAESE -> controller?.increaseSpeed()
+            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
             ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+            ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
             else -> exit()
         }
         return true
