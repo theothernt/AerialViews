@@ -41,7 +41,7 @@ class ScreenController(private val context: Context) :
 
     private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
-    private val autoHideOverlay = GeneralPrefs.overlayAutoHide.toLong()
+    private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -199,8 +199,9 @@ class ScreenController(private val context: Context) :
     }
 
     private fun fadeInNextItem() {
+        canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlay * 1000) + ITEM_FADE_IN
+        val overlayDelay = (autoHideOverlayDelay * 1000) + ITEM_FADE_IN
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
@@ -209,28 +210,21 @@ class ScreenController(private val context: Context) :
         }
 
         // Reset any overlay animations
-        if (autoHideOverlay >= 0) {
+        if (autoHideOverlayDelay >= 0) {
             overlayView.animate()?.cancel()
             overlayView.clearAnimation()
         }
 
         // Hide overlays immediately
-        if (autoHideOverlay.toInt() == 0) {
+        if (autoHideOverlayDelay.toInt() == 0) {
             overlayView.alpha = 0f
             canShowOverlays = true
         }
 
         // Hide overlays after a delay
-        if (autoHideOverlay > 0) {
+        if (autoHideOverlayDelay > 0) {
             overlayView.alpha = 1f
-            overlayView
-                .animate()
-                .alpha(0f)
-                .setStartDelay(overlayDelay)
-                .setDuration(OVERLAY_FADE_OUT)
-                .withEndAction {
-                    canShowOverlays = true
-                }.start()
+            hideOverlays(overlayDelay)
         }
 
         // Fade out LoadingView
@@ -288,9 +282,35 @@ class ScreenController(private val context: Context) :
         loadingText.text = resources.getString(R.string.loading_error)
     }
 
+    private fun hideOverlays(delay: Long = 0L) {
+        overlayView
+            .animate()
+            .alpha(0f)
+            .setStartDelay(delay)
+            .setDuration(OVERLAY_FADE_OUT)
+            .withEndAction {
+                canShowOverlays = true
+            }.start()
+    }
 
     fun showOverlays() {
+        // If media fading in/out
+        if (!canSkip) return
 
+        // Are overlays already visible
+        if (!canShowOverlays) return
+        canShowOverlays = false
+
+        Log.i(TAG, "Show overlays")
+
+        overlayView
+            .animate()
+            .alpha(1f)
+            .setStartDelay(0)
+            .setDuration(OVERLAY_FADE_IN)
+            .withEndAction {
+                hideOverlays(4 * 1000)
+            }.start()
     }
 
     fun stop() {
@@ -336,13 +356,13 @@ class ScreenController(private val context: Context) :
     override fun onImagePrepared() = fadeInNextItem()
 
     companion object {
-        private const val TAG = "VideoController"
-        const val LOADING_FADE_OUT: Long = 300
-        const val LOADING_DELAY: Long = 400
-        const val ERROR_DELAY: Long = 2000
-        const val OVERLAY_FADE_OUT: Long = 500
-        const val OVERLAY_FADE_IN: Long = 500
-        val ITEM_FADE_IN = GeneralPrefs.fadeInDuration.toLong()
-        val ITEM_FADE_OUT = GeneralPrefs.fadeOutDuration.toLong()
+        private const val TAG = "ScreenController"
+        const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
+        const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
+        const val ERROR_DELAY: Long = 2000 // Delay before loading next item
+        const val OVERLAY_FADE_OUT: Long = 500 // Fade out overlays
+        const val OVERLAY_FADE_IN: Long = 500 // Fade in overlays
+        val ITEM_FADE_IN = GeneralPrefs.fadeInDuration.toLong() // Fade out loading view
+        val ITEM_FADE_OUT = GeneralPrefs.fadeOutDuration.toLong() // Fade in loading view
     }
 }
