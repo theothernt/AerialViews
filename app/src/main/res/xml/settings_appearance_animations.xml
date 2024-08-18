@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_overlays">
+                <ListPreference
+                    app:defaultValue="@string/overlay_auto_hide_default"
+                    app:entries="@array/overlay_auto_hide_entries"
+                    app:entryValues="@array/overlay_auto_hide_values"
+                    app:key="overlay_auto_hide"
+                    app:title="@string/appearance_auto_hide_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/overlay_auto_hide_default"
+                    app:entries="@array/overlay_auto_hide_entries"
+                    app:entryValues="@array/overlay_auto_hide_values"
+                    app:key="overlay_reveal_for"
+                    app:title="@string/appearance_reveal_for_title"
+                    app:useSimpleSummaryProvider="true" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_overlay_animations">
+                <ListPreference
+                    app:defaultValue="@string/duration_fade_in_default"
+                    app:entries="@array/duration_entries"
+                    app:entryValues="@array/duration_values"
+                    app:key="overlay_fade_in_duration"
+                    app:title="@string/appearance_fade_in_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/duration_fade_out_default"
+                    app:entries="@array/duration_entries"
+                    app:entryValues="@array/duration_values"
+                    app:key="overlay_fade_out_duration"
+                    app:title="@string/appearance_fade_out_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_vide_and_photo_animations">
+                <ListPreference
+                    app:defaultValue="@string/duration_fade_in_default"
+                    app:entries="@array/duration_entries"
+                    app:entryValues="@array/duration_values"
+                    app:key="fade_in_duration"
+                    app:title="@string/appearance_fade_in_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/duration_fade_out_default"
+                    app:entries="@array/duration_entries"
+                    app:entryValues="@array/duration_values"
+                    app:key="fade_out_duration"
+                    app:title="@string/appearance_fade_out_title"
+                    app:useSimpleSummaryProvider="true" />
+
+        </PreferenceCategory>
+</PreferenceScreen>
