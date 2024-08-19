@@ -366,7 +366,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     ): Long {
         // Adjust the duration based on the playback speed
         // Take into account the current player position in case of speed changes during playback
-        val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - ScreenController.ITEM_FADE_OUT)
+        val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - ScreenController.MEDIA_FADE_OUT)
         val actualPosition = if (isSegmentedVideo) position + segmentStart else position
         Log.i(TAG, "Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
         return if (delay < 0) 0 else delay

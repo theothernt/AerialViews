@@ -3,6 +3,7 @@
     <string name="app_name" translatable="false">Aerial Views</string>
     <string name="loading_title">Loading…</string>
     <string name="loading_error">No videos or photos found, please check your settings</string>
+    <string name="common_default">(default)</string>
 
     <!-- Common Buttons -->
     <string name="button_ok">OK</string>
@@ -269,7 +270,7 @@
     <string name="appearance_gradient_title">Gradients</string>
     <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
-    <string name="appearance_animations_title">Overlay and media animations</string>
+    <string name="appearance_animations_title">Animations</string>
     <string name="appearance_animations_summary">Configure the animations used for overlays and between videos &amp; photos</string>
 
     <string name="appearance_startup_title">Startup</string>

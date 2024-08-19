@@ -453,6 +453,7 @@
     </string-array>
     <string name="duration_fade_in_default" translatable="false">600</string>
     <string name="duration_fade_out_default" translatable="false">800</string>
+    <string name="duration_overlay_fade_default" translatable="false">600</string>
 
     <!-- Longer videos limit -->
     <string-array name="limit_Longer_videos_entries">
@@ -472,10 +473,10 @@
         <item>Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</item>
     </string-array>
 
-    <!-- Auto hide overlay -->
+    <!-- Overlay auto hide -->
     <string-array name="overlay_auto_hide_entries">
-        <item>Disabled</item>
-        <item>Immediately</item>
+        <item>Never hide (default)</item>
+        <item>Always hidden</item>
         <item>2 seconds</item>
         <item>4 seconds</item>
         <item>6 seconds</item>
@@ -492,6 +493,23 @@
         <item>10</item>
     </string-array>
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
+
+    <!-- Overlay reveal timeout -->
+    <string-array name="overlay_reveal_timeout_entries">
+        <item>2 seconds</item>
+        <item>4 seconds (default)</item>
+        <item>6 seconds</item>
+        <item>8 seconds</item>
+        <item>10 seconds</item>
+    </string-array>
+    <string-array name="overlay_reveal_timeout_values" translatable="false">
+        <item>2</item>
+        <item>4</item>
+        <item>6</item>
+        <item>8</item>
+        <item>10</item>
+    </string-array>
+    <string name="overlay_reveal_timeout_default" translatable="false">4</string>
 
     <!-- Dpad/button actions -->
     <string-array name="button_action_entries">

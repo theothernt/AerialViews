@@ -75,9 +75,11 @@ object GeneralPrefs : KotprefModel() {
     var loadingTextSize by stringPref("18", "startup_size")
     var loadingTextWeight by stringPref("300", "startup_weight")
 
-    // Transitions
-    var fadeInDuration by stringPref("600", "fade_in_duration")
-    var fadeOutDuration by stringPref("800", "fade_out_duration")
+    // Animation
+    var mediaFadeInDuration by stringPref("600", "media_fade_in_duration")
+    var mediaFadeOutDuration by stringPref("800", "media_fade_out_duration")
+    var overlayFadeInDuration by stringPref("500", "overlay_fade_in_duration")
+    var overlayFadeOutDuration by stringPref("500", "overlay_fade_out_duration")
 
     // Overlay Auto hide
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")

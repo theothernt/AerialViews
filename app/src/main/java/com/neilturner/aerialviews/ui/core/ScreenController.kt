@@ -201,7 +201,7 @@ class ScreenController(private val context: Context) :
     private fun fadeInNextItem() {
         canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlayDelay * 1000) + ITEM_FADE_IN
+        val overlayDelay = (autoHideOverlayDelay * 1000) + MEDIA_FADE_IN
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
@@ -233,7 +233,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(0f)
             .setStartDelay(startDelay)
-            .setDuration(ITEM_FADE_IN)
+            .setDuration(MEDIA_FADE_IN)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
@@ -253,7 +253,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(ITEM_FADE_OUT)
+            .setDuration(MEDIA_FADE_OUT)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
             }
@@ -294,6 +294,9 @@ class ScreenController(private val context: Context) :
     }
 
     fun showOverlays() {
+        // Overlay auto hide pref must be enabled
+        if (autoHideOverlayDelay < 0) return
+
         // If media fading in/out
         if (!canSkip) return
 
@@ -359,10 +362,10 @@ class ScreenController(private val context: Context) :
         private const val TAG = "ScreenController"
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
-        const val ERROR_DELAY: Long = 2000 // Delay before loading next item
-        const val OVERLAY_FADE_OUT: Long = 500 // Fade out overlays
-        const val OVERLAY_FADE_IN: Long = 500 // Fade in overlays
-        val ITEM_FADE_IN = GeneralPrefs.fadeInDuration.toLong() // Fade out loading view
-        val ITEM_FADE_OUT = GeneralPrefs.fadeOutDuration.toLong() // Fade in loading view
+        const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
+        val OVERLAY_FADE_OUT: Long = GeneralPrefs.overlayFadeOutDuration.toLong() // Fade out overlays
+        val OVERLAY_FADE_IN: Long = GeneralPrefs.overlayFadeInDuration.toLong() // Fade in overlays
+        val MEDIA_FADE_IN = GeneralPrefs.mediaFadeInDuration.toLong() // Fade out loading view
+        val MEDIA_FADE_OUT = GeneralPrefs.mediaFadeOutDuration.toLong() // Fade in loading view
     }
 }

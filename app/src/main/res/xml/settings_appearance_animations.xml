@@ -12,9 +12,9 @@
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
-                    app:defaultValue="@string/overlay_auto_hide_default"
-                    app:entries="@array/overlay_auto_hide_entries"
-                    app:entryValues="@array/overlay_auto_hide_values"
+                    app:defaultValue="@string/overlay_reveal_timeout_default"
+                    app:entries="@array/overlay_reveal_timeout_entries"
+                    app:entryValues="@array/overlay_reveal_timeout_values"
                     app:key="overlay_reveal_for"
                     app:title="@string/appearance_reveal_for_title"
                     app:useSimpleSummaryProvider="true" />
@@ -23,7 +23,7 @@
 
         <PreferenceCategory app:title="@string/category_overlay_animations">
                 <ListPreference
-                    app:defaultValue="@string/duration_fade_in_default"
+                    app:defaultValue="@string/duration_overlay_fade_default"
                     app:entries="@array/duration_entries"
                     app:entryValues="@array/duration_values"
                     app:key="overlay_fade_in_duration"
@@ -31,7 +31,7 @@
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
-                    app:defaultValue="@string/duration_fade_out_default"
+                    app:defaultValue="@string/duration_overlay_fade_default"
                     app:entries="@array/duration_entries"
                     app:entryValues="@array/duration_values"
                     app:key="overlay_fade_out_duration"
@@ -44,7 +44,7 @@
                     app:defaultValue="@string/duration_fade_in_default"
                     app:entries="@array/duration_entries"
                     app:entryValues="@array/duration_values"
-                    app:key="fade_in_duration"
+                    app:key="media_fade_in_duration"
                     app:title="@string/appearance_fade_in_title"
                     app:useSimpleSummaryProvider="true" />
 
@@ -52,7 +52,7 @@
                     app:defaultValue="@string/duration_fade_out_default"
                     app:entries="@array/duration_entries"
                     app:entryValues="@array/duration_values"
-                    app:key="fade_out_duration"
+                    app:key="media_fade_out_duration"
                     app:title="@string/appearance_fade_out_title"
                     app:useSimpleSummaryProvider="true" />
 
