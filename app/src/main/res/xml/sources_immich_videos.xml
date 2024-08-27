@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="immich_media_enabled"
+                    app:title="@string/immich_media_enabled_title" />
+
+                <ListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/media_type_default"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="immich_media_type"
+                    app:title="@string/immich_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    android:title="@string/immich_media_test_connection"
+                    android:key="immich_media_test_connection" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_server_details">
+                <ListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/immich_scheme_default"
+                    app:entries="@array/immich_scheme_entries"
+                    app:entryValues="@array/immich_scheme_values"
+                    app:key="immich_media_scheme"
+                    app:title="@string/immich_media_scheme_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <EditTextPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    android:selectAllOnFocus="true"
+                    android:summary="@string/immich_media_hostname_summary"
+                    android:key="immich_media_hostname"
+                    android:title="@string/immich_media_hostname_title" />
+
+                <EditTextPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    android:selectAllOnFocus="true"
+                    android:summary="@string/immich_media_pathname_summary"
+                    android:key="immich_media_pathname"
+                    android:title="@string/immich_media_pathname_title" />
+
+                <EditTextPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    android:summary="@string/immich_media_password_summary"
+                    android:key="immich_media_password"
+                    android:title="@string/immich_media_password_title" />
+        </PreferenceCategory>
+
+</PreferenceScreen>

@@ -57,6 +57,9 @@
     <string name="sources_webdav_title">WebDAV server</string>
     <string name="sources_webdav_summary">Play videos &amp; photos stored on a WebDAV server locally or remotely</string>
 
+    <string name="sources_immich_title">Immich server</string>
+    <string name="sources_immich_summary">Play videos &amp; photos from an Immich server</string>
+
     <!-- Main / Video Sources / Apple videos -->
     <string name="apple_videos_enabled">Use Apple videos</string>
 
@@ -200,6 +203,31 @@
     <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
 
     <string name="webdav_media_test_results">Test results</string>
+
+
+    <!-- Main / Video Sources / Immich videos -->
+    <string name="immich_media_enabled_title">Use Immich share media</string>
+    <string name="immich_media_type_title">Choose media type</string>
+    <string name="immich_media_test_connection">Test connection settings</string>
+
+    <string name="immich_media_scheme_title">Scheme</string>
+    <string name="immich_media_hostname_title">Hostname &amp; port</string>
+    <string name="immich_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:2283</string>
+    <string name="immich_media_pathname_title">Path name (case sensitive)</string>
+    <string name="immich_media_pathname_summary">The path of the shared album e.g. /share/qJejEpX_h_…TAypgOxmIZC</string>
+    <string name="immich_media_password_title">Password</string>
+    <string name="immich_media_password_summary">Not set. Optional</string>
+
+    <string name="immich_media_test_summary1">Files found: %1$s</string>
+    <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
+    <string name="immich_media_test_summary3">Videos found: %1$s</string>
+    <string name="immich_media_test_summary4">Photos found: %1$s</string>
+    <string name="immich_media_test_summary5">Selected for playback: %1$s</string>
+
+    <string name="immich_media_search_subfolders_title">Search subfolders</string>
+    <string name="immich_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
+
+    <string name="immich_media_test_results">Test results</string>
 
     <!-- Main / Settings -->
     <string name="category_settings">Settings</string>

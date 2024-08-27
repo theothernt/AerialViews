@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
@@ -22,11 +23,9 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventList
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
-import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
-import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -171,14 +170,14 @@ class ScreenController(private val context: Context) :
         }
 
         // Videos
-        if (FileHelper.isSupportedVideoType(media.uri.filename)) {
+        if (media.type == AerialMediaType.VIDEO) {
             videoPlayer.setVideo(media)
             videoViewBinding.root.visibility = View.VISIBLE
             imageViewBinding.root.visibility = View.INVISIBLE
         }
 
         // Images
-        if (FileHelper.isSupportedImageType(media.uri.filename)) {
+        if (media.type == AerialMediaType.IMAGE) {
             imagePlayer.setImage(media)
             imageViewBinding.root.visibility = View.VISIBLE
             videoViewBinding.root.visibility = View.INVISIBLE
