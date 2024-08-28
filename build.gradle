@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '2.0.10'
+    ext.kotlin_version = '2.0.20'
     repositories {
         mavenCentral()
         google()
@@ -18,9 +18,9 @@ buildscript {
 }
 
 plugins {
-    id 'com.google.devtools.ksp' version '2.0.10-1.0.24'
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0'
-    id "org.jetbrains.kotlin.kapt" version "2.0.0"
+    id 'com.google.devtools.ksp' version '2.0.20-1.0.24'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.20'
+    id "org.jetbrains.kotlin.kapt" version "2.0.20"
     id "org.jmailen.kotlinter" version "4.3.0"
 }
 

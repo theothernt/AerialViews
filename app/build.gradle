@@ -146,7 +146,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
 
     // Firebase
-    implementation("com.google.firebase:firebase-analytics-ktx:22.0.2")
+    implementation('com.google.firebase:firebase-analytics-ktx:22.1.0')
     implementation("com.google.firebase:firebase-crashlytics-ktx:19.0.3")
     implementation("com.google.firebase:firebase-perf-ktx:21.0.1")
 
@@ -161,7 +161,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
 
     // ExoPlayer
-    implementation("androidx.media3:media3-exoplayer:1.4.0")
+    implementation('androidx.media3:media3-exoplayer:1.4.1')
 
     // FlowBus
     implementation("com.github.Kosert.FlowBus:FlowBus:1.1")
