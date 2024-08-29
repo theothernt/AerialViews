@@ -115,16 +115,24 @@ android {
     productFlavors {
         register("github") {
             dimension = "version"
+            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("beta") {
             dimension = "version"
             versionNameSuffix = "-beta3"
+            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("googleplay") {
             dimension = "version"
+            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("amazon") {
             dimension = "version"
+            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
+        }
+        register("fdroid") {
+            dimension = "version"
+            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'false'
         }
     }
 }
@@ -145,10 +153,17 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.appcompat:appcompat:1.7.0")
 
-    // Firebase
-    implementation('com.google.firebase:firebase-analytics-ktx:22.1.0')
-    implementation("com.google.firebase:firebase-crashlytics-ktx:19.0.3")
-    implementation("com.google.firebase:firebase-perf-ktx:21.0.1")
+    // Firebase (flavor-based conditional implementation)
+    def firebase = [
+            "com.google.firebase:firebase-analytics-ktx:22.1.0",
+            "com.google.firebase:firebase-crashlytics-ktx:19.0.3",
+            "com.google.firebase:firebase-perf-ktx:21.0.1",
+    ]
+    githubImplementation(firebase)
+    betaImplementation(firebase)
+    googleplayImplementation(firebase)
+    amazonImplementation(firebase)
+    // fdroidImplementation() <- no firebase in F-Droid :)
 
     // Retrofit, OkHttp, and Moshi
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

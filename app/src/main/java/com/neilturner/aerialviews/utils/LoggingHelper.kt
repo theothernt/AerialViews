@@ -1,9 +1,9 @@
 package com.neilturner.aerialviews.utils
 
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.ktx.Firebase
+import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.firebase.Firebase
+import com.neilturner.aerialviews.firebase.FirebaseAnalytics
 
 object LoggingHelper {
     private val firebaseAnalytics = Firebase.analytics
@@ -12,12 +12,14 @@ object LoggingHelper {
         screenName: String,
         activityName: String,
     ) {
-        val parameters =
-            bundleOf(
-                Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
-                Pair(FirebaseAnalytics.Param.SCREEN_CLASS, activityName),
-            )
+        if (BuildConfig.FIREBASE_AVAILABLE) {
+            val parameters =
+                bundleOf(
+                    Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
+                    Pair(FirebaseAnalytics.Param.SCREEN_CLASS, activityName),
+                )
 
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
+        }
     }
 }
