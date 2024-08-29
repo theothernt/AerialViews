@@ -31,7 +31,9 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
 
     init {
         parsePrefs()
-        getApiInterface()
+        if (enabled) {
+            getApiInterface()
+        }
     }
 
     private object RetrofitInstance {
@@ -60,8 +62,12 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
 
     private fun getApiInterface() {
         Log.d(TAG, "Connecting to $server")
-        apiInterface =
-            RetrofitInstance.getInstance(server).create(ImmichService::class.java)
+        try {
+            apiInterface =
+                RetrofitInstance.getInstance(server).create(ImmichService::class.java)
+        } catch (e: Exception) {
+            Log.e(TAG, e.message.toString())
+        }
     }
 
     override suspend fun fetchMedia(): List<AerialMedia> {
