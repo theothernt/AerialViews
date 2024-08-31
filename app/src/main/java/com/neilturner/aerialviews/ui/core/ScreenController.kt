@@ -42,6 +42,7 @@ class ScreenController(private val context: Context) :
     private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
+    private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -304,15 +305,13 @@ class ScreenController(private val context: Context) :
         if (!canShowOverlays) return
         canShowOverlays = false
 
-        Log.i(TAG, "Show overlays")
-
         overlayView
             .animate()
             .alpha(1f)
             .setStartDelay(0)
             .setDuration(OVERLAY_FADE_IN)
             .withEndAction {
-                hideOverlays(4 * 1000)
+                hideOverlays(overlayRevealTimeout * 1000)
             }.start()
     }
 

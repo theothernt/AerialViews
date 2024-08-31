@@ -81,8 +81,9 @@ object GeneralPrefs : KotprefModel() {
     var overlayFadeInDuration by stringPref("500", "overlay_fade_in_duration")
     var overlayFadeOutDuration by stringPref("500", "overlay_fade_out_duration")
 
-    // Overlay Auto hide
+    // Overlay Auto hide/reveal
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+    var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
