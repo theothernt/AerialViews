@@ -531,4 +531,6 @@
         <item>SHOW_OVERLAYS</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
+    <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
+    <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 </resources>

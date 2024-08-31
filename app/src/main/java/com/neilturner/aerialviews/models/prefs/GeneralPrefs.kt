@@ -116,8 +116,8 @@ object GeneralPrefs : KotprefModel() {
     var buttonDownPress by nullableEnumValuePref(ButtonType.IGNORE, "button_down_press")
     var buttonOkPress by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_press")
 
-    var buttonLeftHold by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_hold")
-    var buttonRightHold by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_hold")
+    var buttonLeftHold by nullableEnumValuePref(ButtonType.IGNORE, "button_left_hold")
+    var buttonRightHold by nullableEnumValuePref(ButtonType.IGNORE, "button_right_hold")
     var buttonUpHold by nullableEnumValuePref(ButtonType.IGNORE, "button_up_hold")
     var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")

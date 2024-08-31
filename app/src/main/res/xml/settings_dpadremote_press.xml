@@ -5,7 +5,7 @@
                 <ListPreference
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default"
+                    app:defaultValue="@string/button_action_default2"
                     app:key="button_right_press"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_button_right_title" />
@@ -13,7 +13,7 @@
                 <ListPreference
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default"
+                    app:defaultValue="@string/button_action_default3"
                     app:key="button_left_press"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_button_left_title" />
