@@ -122,8 +122,6 @@ object GeneralPrefs : KotprefModel() {
     var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
-    var enableSkipVideos by booleanPref(true, "enable_skip_videos")
-    var enablePlaybackSpeedChange by booleanPref(false, "enable_playback_speed_change")
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
 
     // Advanced

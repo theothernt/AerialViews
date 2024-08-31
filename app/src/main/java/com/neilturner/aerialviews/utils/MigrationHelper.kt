@@ -37,6 +37,7 @@ class MigrationHelper(val context: Context) {
         if (lastKnownVersion < 19) release19()
         if (lastKnownVersion < 20) release20()
         if (lastKnownVersion < 22) release22()
+        if (lastKnownVersion < 23) release23()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -261,6 +262,26 @@ class MigrationHelper(val context: Context) {
             val locationWeight = prefs.getString("location_weight", "18")
             prefs.edit().putString("description_weight", locationWeight).apply()
             prefs.edit().remove("location_weight").apply()
+        }
+    }
+
+    private fun release23() {
+        Log.i(TAG, "Migrating settings for release 23")
+
+        val skipVideosUsed = prefs.contains("enable_skip_videos")
+        if (skipVideosUsed) {
+            Log.i(TAG, "Updating dpad skip videos")
+            prefs.edit().putString("button_left_press", "SKIP_PREVIOUS").apply()
+            prefs.edit().putString("button_right_press", "SKIP_NEXT").apply()
+            prefs.edit().remove("enable_skip_videos").apply()
+        }
+
+        val playbackSpeedChangeUsed = prefs.contains("enable_playback_speed_change")
+        if (playbackSpeedChangeUsed) {
+            Log.i(TAG, "Updating dpad speed change")
+            prefs.edit().putString("button_up_press", "SPEED_INCREASE").apply()
+            prefs.edit().putString("button_down_press", "SPEED_DECREASE").apply()
+            prefs.edit().remove("enable_playback_speed_change").apply()
         }
     }
 
