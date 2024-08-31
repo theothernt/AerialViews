@@ -118,8 +118,9 @@ android {
             buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("beta") {
+            getIsDefault().set(true)
             dimension = "version"
-            versionNameSuffix = "-beta3"
+            versionNameSuffix = "-beta4"
             buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("googleplay") {
