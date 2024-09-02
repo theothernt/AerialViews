@@ -68,7 +68,7 @@ object GeneralPrefs : KotprefModel() {
     var messageWeight by stringPref("300", "message_weight")
 
     // Other
-    var alternateTextPosition by booleanPref(false, "alt_text_position")
+    var alternateTextPosition by booleanPref(true, "alt_text_position")
 
     // Startup + Shutdown
     var showLoadingText by booleanPref(true, "startup_show_loading")
