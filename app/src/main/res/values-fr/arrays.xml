@@ -15,6 +15,15 @@
     <item>800/Extra Gras</item>
     <item>900/Lourd</item>
   </string-array>
+  <string-array name="button_action_entries">
+    <item>Ignorer l\'action</item>
+    <item>Quitter l\'économiseur d\'écran</item>
+    <item>Passer à la vidéo/photo suivante</item>
+    <item>Passer à la vidéo/photo précédente</item>
+    <item>Augmenter la vitesse de lecture des vidéos</item>
+    <item>Diminuer la vitesse de lecture de la vidéo</item>
+    <item>Afficher les recouvrements (s\'ils sont cachés)</item>
+  </string-array>
   <string-array name="clock_format_entries">
     <item>Défaut du système</item>
     <item>12 heures</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Handicapés</item>
+    <item>Utiliser un nom de fichier formaté</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
-    <item>Nom du dossier uniquement</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Handicapés</item>
+    <item>Utilisez un nom de fichier formaté, par exemple \"switzerland-zürich_train_station.jpg\" devient \"Suisse - Gare de Zürich\".</item>
     <item>Utiliser le nom de fichier tel quel, par exemple \"Japon - Neige épaisse à Hokkaido.jpg\" devient \"Japon - Neige épaisse à Hokkaido\".</item>
     <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Pictures/Italy/Dolomites.jpg\" devient \"Italy / Dolomites\".</item>
-    <item>Utilisez uniquement le nom du dossier, par exemple \"Pictures/Dublin/Temple Bar.png\" devient \"Dublin\".</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Handicapés</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Handicapés</item>
+    <item>Utiliser un nom de fichier formaté, par exemple \"japan-mount_fuji.mp4\" devient \"Japon - Mont Fuji\".</item>
     <item>Utiliser le nom de fichier tel quel, par exemple \"Flying towards Mount Pilatus.mp4\" devient \"Flying towards Mount Pilatus\".</item>
     <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Videos/Grand Canyon/Sunet.mp4\" devient \"Grand Canyon / Sunet\".</item>
-    <item>Utilisez uniquement le nom du dossier, par exemple \"Videos/Ireland/Cliffs of Moher.mp4\" devient \"Ireland\".</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Handicapés</item>
     <item>Une brève description ou localisation</item>
     <item>Points d\'intérêt dynamiques, disponibles dans de nombreuses langues, qui changent au fur et à mesure de la lecture de la vidéo</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>Handicapés</item>
+    <item>200ms</item>
+    <item>400ms</item>
+    <item>600 ms</item>
+    <item>800 ms</item>
+    <item>1000ms</item>
+    <item>1200ms</item>
+    <item>1400ms</item>
+    <item>1600ms</item>
+    <item>1800ms</item>
+    <item>2000ms</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>Sauter lorsque la limite est atteinte</item>
+    <item>Laisser les vidéos plus longues se terminer</item>
+    <item>Lire des segments aléatoires de vidéos longues</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>Respecter la limite - passer à la vidéo suivante lorsque la limite est atteinte</item>
+    <item>Ignorer la limite - si une vidéo est plus longue que la limite fixée, elle sera lue jusqu\'à la fin.</item>
+    <item>Segment aléatoire - si une vidéo est plus longue que la limite, une partie aléatoire de la vidéo sera lue.
+(par exemple, avec une limite de 2 minutes, une vidéo de 6 minutes peut avoir 3 segments - l\'un d\'entre eux sera joué de manière aléatoire).</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Scanner des médias</item>
@@ -61,6 +94,29 @@
     <item>Vidéos uniquement</item>
     <item>Images seulement</item>
     <item>Vidéos et images</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>Handicapés</item>
+    <item>Chanson - Artiste</item>
+    <item>Artiste - Chanson</item>
+    <item>Artiste</item>
+    <item>Chanson</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>Ne jamais cacher (par défaut)</item>
+    <item>Toujours caché</item>
+    <item>2 secondes</item>
+    <item>4 secondes</item>
+    <item>6 secondes</item>
+    <item>8 secondes</item>
+    <item>10 secondes</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 secondes</item>
+    <item>4 secondes (par défaut)</item>
+    <item>6 secondes</item>
+    <item>8 secondes</item>
+    <item>10 secondes</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>Remplissage (par défaut)</item>
@@ -113,8 +169,8 @@
     <item>Date</item>
     <item>Ligne de message 1</item>
     <item>Ligne de message 2</item>
-    <item>Weather</item>
-    <item>Music - Now Playing</item>
+    <item>En cours de lecture #1</item>
+    <item>En cours de lecture #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -128,5 +184,9 @@
     <item>20sp</item>
     <item>18sp (par défaut)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>

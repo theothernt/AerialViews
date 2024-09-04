@@ -15,6 +15,15 @@
     <item>800/Extra Bold</item>
     <item>900/Heavy</item>
   </string-array>
+  <string-array name="button_action_entries">
+    <item>Ignora azione</item>
+    <item>Esci dallo screensaver</item>
+    <item>Passa al video/foto successivo</item>
+    <item>Passa al video/foto precedente</item>
+    <item>Aumenta la velocità di riproduzione video</item>
+    <item>Riduci la velocità di riproduzione video</item>
+    <item>Mostra overlay (se nascosti)</item>
+  </string-array>
   <string-array name="clock_format_entries">
     <item>Predefinito</item>
     <item>12-Ore</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Disabilitato</item>
+    <item>Usa nome file formattato</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
-    <item>Solo nome cartella</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabilitato</item>
+    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
     <item>Usa il nome del file, ad es. \'Japan - Deep snow in Hokkaido.jpg\' diventa \'Japan - Deep snow in Hokkaido\'</item>
     <item>Usa la cartella e il nome del file, ad es. \'Pictures/Italy/Dolomites.jpg\' diventa \'Italy / Dolomites\'</item>
-    <item>Utilizza solo il nome della cartella, ad es. \'Pictures/Dublin/Temple Bar.png\' diventa \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Disabilitato</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Disabilitato</item>
+    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
     <item>Usa il nome del file così com\'è, ad es. \'Flying towards Mount Pilatus.mp4\' diventa \'Flying towards Mount Pilatus\'</item>
     <item>Usa la cartella e il nome del file, ad es. \'Videos/Grand Canyon/Sunet.mp4\' diventa \'Grand Canyon / Sunet\'</item>
-    <item>Utilizza solo il nome della cartella, ad es. \'Videos/Ireland/Cliffs of Moher.mp4\' diventa \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Disabilitato</item>
     <item>Una breve descrizione o località</item>
     <item>Punti di interesse dinamici, disponibili in molte lingue, che cambiano durante la riproduzione del video</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>Disabilitato</item>
+    <item>200ms</item>
+    <item>400ms</item>
+    <item>600ms</item>
+    <item>800ms</item>
+    <item>1000ms</item>
+    <item>1200ms</item>
+    <item>1400ms</item>
+    <item>1600ms</item>
+    <item>1800ms</item>
+    <item>2000ms</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>Salta quando viene raggiunto il limite</item>
+    <item>Consenti il completamento dei video più lunghi</item>
+    <item>Riproduci segmenti casuali dei video lunghi</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>Rispetta il limite - passa al video successivo quando il limite è raggiunto</item>
+    <item>Ignora limite - se un video è più lungo del limite impostato, verrà riprodotto fino alla fine</item>
+    <item>Segmento casuale - se un video è più lungo del limite, verrà riprodotta una parte casuale del video.
+(ad esempio, con un limite di 2 minuti, un video di 6 minuti può avere 3 segmenti - uno sarà riprodotto in modo casuale)</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Media scanner</item>
@@ -61,6 +94,29 @@
     <item>Solo video</item>
     <item>Solo immagini</item>
     <item>Video e immagini</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>Disabilitato</item>
+    <item>Canzone · Artista</item>
+    <item>Artista · Canzone</item>
+    <item>Artista</item>
+    <item>Canzone</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>Non nascondere mai (predefinito)</item>
+    <item>Sempre nascosto</item>
+    <item>2 secondi</item>
+    <item>4 secondi</item>
+    <item>6 secondi</item>
+    <item>8 secondi</item>
+    <item>10 secondi</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 secondi</item>
+    <item>4 secondi (predefinito)</item>
+    <item>6 secondi</item>
+    <item>8 secondi</item>
+    <item>10 secondi</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>Riempi (Predefinito)</item>
@@ -113,6 +169,8 @@
     <item>Data</item>
     <item>Linea messaggio 1</item>
     <item>Linea messaggio 2</item>
+    <item>In riproduzione #1</item>
+    <item>In riproduzione #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -126,5 +184,9 @@
     <item>20sp</item>
     <item>18sp (Predefinito)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>

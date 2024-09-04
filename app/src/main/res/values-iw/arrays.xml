@@ -15,6 +15,15 @@
     <item>800/מודגש במיוחד</item>
     <item>900/כבד</item>
   </string-array>
+  <string-array name="button_action_entries">
+    <item>התעלם מפעולה</item>
+    <item>צא משומר מסך</item>
+    <item>דלג לסרטון/תמונה הבאה</item>
+    <item>דלג לסרטון/תמונה קודמים</item>
+    <item>הגדל את מהירות הפעלת הווידאו</item>
+    <item>הפחת את מהירות הפעלת הווידאו</item>
+    <item>הצג שכבות-על (אם מוסתרות)</item>
+  </string-array>
   <string-array name="clock_format_entries">
     <item>ברירת מחדל מערכת</item>
     <item>12 שעות</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>מבוטל</item>
+    <item>השתמש בשם הקובץ בתבנית מותאמת</item>
     <item>השתמש בשם הקובץ כמו שהוא</item>
     <item>התיקייה והקובץ</item>
-    <item>שם התיקיה בלבד</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>מבוטל</item>
+    <item>השתמש בשם הקובץ בתבנית מותאמת, לדוגמה: ׳הכותל-המערבי_תפילת_ערב.png׳ יהיה ׳הכותל - המערבי תפילת ערב׳</item>
     <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.png׳ יהיה ׳הכותל המערבי׳</item>
     <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.png׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
-    <item>השתמש בשם התיקייה בלבד, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.png׳ יהיה ׳ירושלים׳</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>מבוטל</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>מבוטל</item>
+    <item>השתמש בשם הקובץ בתבנית מותאמת, לדוגמה: ׳הכותל-המערבי_תפילת_ערב.mp4׳ יהיה ׳הכותל - המערבי תפילת ערב׳</item>
     <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.mp4׳ יהיה ׳הכותל המערבי׳</item>
     <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.mp4׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
-    <item>השתמש בשם התיקייה בלבד, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.mp4׳ יהיה ׳ירושלים׳</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>מבוטל</item>
     <item>תיאור קצר או מיקום</item>
     <item>נקודות עניין דינמיות, זמינות בהרבה שפות, שמתעדכנות בזמן ניגון הוידאו</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>מבוטל</item>
+    <item>200 אלפיות השנייה</item>
+    <item>400 אלפיות השנייה</item>
+    <item>600 אלפיות השנייה</item>
+    <item>800 אלפיות השנייה</item>
+    <item>1000 אלפיות השנייה</item>
+    <item>1200ms</item>
+    <item>1400 אלפיות השנייה</item>
+    <item>1600 אלפיות השנייה</item>
+    <item>1800 אלפיות השנייה</item>
+    <item>2000 אלפיות השנייה</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>דלג כשמגיעים למגבלה</item>
+    <item>אפשר לסרטונים ארוכים יותר להסתיים</item>
+    <item>הפעל קטעים אקראיים של סרטונים ארוכים</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>ציית למגבלה - דלג לסרטון הבא כאשר מגיעים למגבלה</item>
+    <item>התעלם ממגבלה - אם סרטון ארוך מהמגבלה שהוגדרה, הוא יופעל עד סופו</item>
+    <item>קטע אקראי - אם הסרטון ארוך מהמגבלה, יופעל חלק אקראי מהסרטון
+(למשל, עם מגבלה של 2 דקות, סרטון של 6 דקות יכול להכיל 3 קטעים - אחד יושמע באופן אקראי)</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>סורק מדיה</item>
@@ -61,6 +94,29 @@
     <item>סרטונים בלבד</item>
     <item>תמונות בלבד</item>
     <item>סרטונים ותמונות</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>מבוטל</item>
+    <item>שיר · אמן</item>
+    <item>אמן · שיר</item>
+    <item>אמן</item>
+    <item>שיר</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>לעולם אל תסתיר (ברירת מחדל)</item>
+    <item>תמיד מוסתר</item>
+    <item>2 שניות</item>
+    <item>4 שניות</item>
+    <item>6 שניות</item>
+    <item>8 שניות</item>
+    <item>10 שניות</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 שניות</item>
+    <item>4 שניות (ברירת מחדל)</item>
+    <item>6 שניות</item>
+    <item>8 שניות</item>
+    <item>10 שניות</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>מלא (ברירת מחדל)</item>
@@ -113,6 +169,8 @@
     <item>תאריך</item>
     <item>שורת הודעה 1</item>
     <item>שורת הודעה 2</item>
+    <item>מנגן כעת מס\' 1</item>
+    <item>מנגן כעת מס\' 2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36 נק\'</item>
@@ -126,5 +184,9 @@
     <item>20 נק\'</item>
     <item>18 נק׳ (ברירת מחדל)</item>
     <item>16 נק\'</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>
