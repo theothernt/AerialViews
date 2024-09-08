@@ -5,7 +5,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -21,7 +21,7 @@ class AboutFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("About", TAG)
+        FirebaseHelper.logScreenView("About", TAG)
     }
 
     private fun updateSummary() {

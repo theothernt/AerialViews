@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 
 class OverlaysNowPlayingFragment :
@@ -76,7 +76,7 @@ class OverlaysNowPlayingFragment :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Now Playing", TAG)
+        FirebaseHelper.logScreenView("Now Playing", TAG)
         checkPermission()
     }
 

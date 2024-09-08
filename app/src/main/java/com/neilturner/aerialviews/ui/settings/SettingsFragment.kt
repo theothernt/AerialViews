@@ -5,7 +5,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
@@ -19,7 +19,7 @@ class SettingsFragment :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Settings", TAG)
+        FirebaseHelper.logScreenView("Settings", TAG)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

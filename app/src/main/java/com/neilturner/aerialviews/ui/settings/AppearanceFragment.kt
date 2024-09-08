@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class AppearanceFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(
@@ -15,7 +15,7 @@ class AppearanceFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Appearance", TAG)
+        FirebaseHelper.logScreenView("Appearance", TAG)
     }
 
     companion object {

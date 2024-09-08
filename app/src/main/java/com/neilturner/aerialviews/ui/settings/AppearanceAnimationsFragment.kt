@@ -5,7 +5,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class AppearanceAnimationsFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(
@@ -18,7 +18,7 @@ class AppearanceAnimationsFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Animations", TAG)
+        FirebaseHelper.logScreenView("Animations", TAG)
     }
 
     private fun updateAllSummaries() {

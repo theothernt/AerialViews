@@ -16,9 +16,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.firebase.Firebase
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
+import com.neilturner.aerialviews.utils.FirebaseHelper.logException
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.enumContains
@@ -233,7 +233,7 @@ class SambaVideosFragment :
                     resources.getString(R.string.samba_videos_error_parsing),
                 )
                 Log.e(TAG, "Import failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 
@@ -257,7 +257,7 @@ class SambaVideosFragment :
                     resources.getString(R.string.samba_videos_unable_to_save),
                 )
                 Log.e(TAG, "Import failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 
@@ -314,7 +314,7 @@ class SambaVideosFragment :
                     String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME),
                 )
                 Log.e(TAG, "Export failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 

@@ -7,7 +7,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class OverlaysRowBottomFragment :
@@ -25,7 +25,7 @@ class OverlaysRowBottomFragment :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Bottom Row", TAG)
+        FirebaseHelper.logScreenView("Bottom Row", TAG)
     }
 
     override fun onDestroy() {

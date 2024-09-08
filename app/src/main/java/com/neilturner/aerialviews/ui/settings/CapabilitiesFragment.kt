@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
     private lateinit var resources: Resources
@@ -28,7 +28,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Capabilities", TAG)
+        FirebaseHelper.logScreenView("Capabilities", TAG)
     }
 
     private fun updateCapabilities() {
