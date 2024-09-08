@@ -36,7 +36,7 @@ class AltTextClock : TextClock {
         // Fixes a commonly reported crash with this control ?!
         try {
             super.onDetachedFromWindow()
-        } catch (e: Exception) {
+        } catch (ex: Exception) {
             // Doesn't matter
         }
     }

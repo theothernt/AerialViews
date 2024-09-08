@@ -387,7 +387,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        error?.let { Timber.e(it, it.message.toString()) }
+        error?.let { Timber.e(it, it.message) }
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
