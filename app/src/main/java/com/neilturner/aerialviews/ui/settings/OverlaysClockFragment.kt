@@ -15,10 +15,6 @@ class OverlaysClockFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Clock", TAG)
-    }
-
-    companion object {
-        private const val TAG = "ClockFragment"
+        FirebaseHelper.logScreenView("Clock", this)
     }
 }

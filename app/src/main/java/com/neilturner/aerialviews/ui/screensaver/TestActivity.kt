@@ -25,7 +25,7 @@ class TestActivity : Activity() {
     override fun onResume() {
         super.onResume()
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        FirebaseHelper.logScreenView("Test Screensaver", TAG)
+        FirebaseHelper.logScreenView("Test Screensaver", this)
     }
 
     override fun onPause() {
@@ -68,9 +68,5 @@ class TestActivity : Activity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
-    }
-
-    companion object {
-        private const val TAG = "TestActivity"
     }
 }

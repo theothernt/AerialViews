@@ -25,7 +25,7 @@ class OverlaysRowBottomFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Bottom Row", TAG)
+        FirebaseHelper.logScreenView("Bottom Row", this)
     }
 
     override fun onDestroy() {
@@ -62,9 +62,5 @@ class OverlaysRowBottomFragment :
         SlotHelper.buildOverlayList(bottomLeft2, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight2, overlayData.first, overlayData.second, slotPrefs)
-    }
-
-    companion object {
-        private const val TAG = "RowBottomFragment"
     }
 }

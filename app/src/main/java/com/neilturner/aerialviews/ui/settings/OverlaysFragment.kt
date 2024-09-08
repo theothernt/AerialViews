@@ -15,10 +15,6 @@ class OverlaysFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Overlays", TAG)
-    }
-
-    companion object {
-        private const val TAG = "OverlaysFragment"
+        FirebaseHelper.logScreenView("Overlays", this)
     }
 }

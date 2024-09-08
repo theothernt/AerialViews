@@ -15,10 +15,6 @@ class AppearanceGradientFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Gradient", TAG)
-    }
-
-    companion object {
-        private const val TAG = "GradientFragment"
+        FirebaseHelper.logScreenView("Gradient", this)
     }
 }

@@ -23,8 +23,4 @@ class TextMessage : AppCompatTextView {
     fun updateMessage(message: String) {
         this.text = message
     }
-
-    companion object {
-        private const val TAG = "TextMessage"
-    }
 }

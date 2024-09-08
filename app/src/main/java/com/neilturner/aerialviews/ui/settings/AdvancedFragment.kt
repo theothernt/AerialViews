@@ -20,7 +20,7 @@ class AdvancedFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Advanced", TAG)
+        FirebaseHelper.logScreenView("Advanced", this)
     }
 
     private fun restartOnLanguageChange() {
@@ -43,9 +43,5 @@ class AdvancedFragment : PreferenceFragmentCompat() {
             }
             create().show()
         }
-    }
-
-    companion object {
-        private const val TAG = "AdvancedFragment"
     }
 }

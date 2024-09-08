@@ -42,7 +42,7 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
-        FirebaseHelper.logScreenView("Screensaver", TAG)
+        FirebaseHelper.logScreenView("Screensaver", this)
         // Start playback, etc
     }
 
@@ -67,9 +67,5 @@ class DreamActivity : DreamService() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
-    }
-
-    companion object {
-        private const val TAG = "DreamActivity"
     }
 }

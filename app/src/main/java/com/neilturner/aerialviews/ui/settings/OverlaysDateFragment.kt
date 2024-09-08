@@ -28,7 +28,7 @@ class OverlaysDateFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Date", TAG)
+        FirebaseHelper.logScreenView("Date", this)
     }
 
     private fun updateSummary() {
@@ -84,9 +84,5 @@ class OverlaysDateFragment : PreferenceFragmentCompat() {
         val values = res.getStringArray(valuesId) // EMPTY, CLOCK, etc
         val entries = res.getStringArray(entriesId) // Empty, Clock, etc
         return values.zip(entries).toMap()
-    }
-
-    companion object {
-        private const val TAG = "DateFragment"
     }
 }

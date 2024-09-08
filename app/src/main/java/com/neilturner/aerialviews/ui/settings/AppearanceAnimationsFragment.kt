@@ -18,7 +18,7 @@ class AppearanceAnimationsFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Animations", TAG)
+        FirebaseHelper.logScreenView("Animations", this)
     }
 
     private fun updateAllSummaries() {
@@ -34,9 +34,5 @@ class AppearanceAnimationsFragment : PreferenceFragmentCompat() {
     private fun toggleRevealTimeout(value: String) {
         val revealTimeoutPref = findPreference<ListPreference>("overlay_reveal_timeout")
         revealTimeoutPref?.isEnabled = value != "-1"
-    }
-
-    companion object {
-        private const val TAG = "AnimationsFragment"
     }
 }

@@ -24,7 +24,7 @@ class OverlaysMessageFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Message", TAG)
+        FirebaseHelper.logScreenView("Message", this)
     }
 
     override fun onDestroy() {
@@ -60,9 +60,5 @@ class OverlaysMessageFragment :
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
-    }
-
-    companion object {
-        private const val TAG = "MessageFragment"
     }
 }

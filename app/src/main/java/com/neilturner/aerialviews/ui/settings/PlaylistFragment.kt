@@ -19,7 +19,7 @@ class PlaylistFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Playlist", TAG)
+        FirebaseHelper.logScreenView("Playlist", this)
     }
 
     private fun updateAllSummaries() {
@@ -70,9 +70,5 @@ class PlaylistFragment : PreferenceFragmentCompat() {
         val summaries = res?.getStringArray(entries)
         val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
-    }
-
-    companion object {
-        private const val TAG = "PlaylistFragment"
     }
 }

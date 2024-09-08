@@ -18,7 +18,7 @@ class OverlaysLocationFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Location", TAG)
+        FirebaseHelper.logScreenView("Location", this)
     }
 
     private fun updateAllSummaries() {
@@ -50,9 +50,5 @@ class OverlaysLocationFragment : PreferenceFragmentCompat() {
         val summaries = res?.getStringArray(entries)
         val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
-    }
-
-    companion object {
-        private const val TAG = "LocationFragment"
     }
 }

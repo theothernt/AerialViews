@@ -15,10 +15,6 @@ class AppearanceFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Appearance", TAG)
-    }
-
-    companion object {
-        private const val TAG = "AppearanceFragment"
+        FirebaseHelper.logScreenView("Appearance", this)
     }
 }

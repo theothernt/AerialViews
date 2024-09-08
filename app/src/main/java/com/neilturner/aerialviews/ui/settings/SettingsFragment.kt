@@ -19,7 +19,7 @@ class SettingsFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Settings", TAG)
+        FirebaseHelper.logScreenView("Settings", this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -28,9 +28,5 @@ class SettingsFragment :
         }
 
         return super.onPreferenceTreeClick(preference)
-    }
-
-    companion object {
-        private const val TAG = "SettingsFragment"
     }
 }

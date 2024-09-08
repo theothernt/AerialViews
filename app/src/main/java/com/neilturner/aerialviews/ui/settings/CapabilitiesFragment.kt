@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
@@ -12,6 +11,7 @@ import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import timber.log.Timber
 
 class CapabilitiesFragment : PreferenceFragmentCompat() {
     private lateinit var resources: Resources
@@ -28,7 +28,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Capabilities", TAG)
+        FirebaseHelper.logScreenView("Capabilities", this)
     }
 
     private fun updateCapabilities() {
@@ -119,7 +119,7 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
             summary = allCodecs.joinToString(", ", "", "", -1, "") { it.name }
         }
 
-        Log.i("", "Decoders found: ${allCodecs.count()}")
+        Timber.i("Decoders found: ${allCodecs.count()}")
         return summary
     }
 
@@ -146,9 +146,5 @@ class CapabilitiesFragment : PreferenceFragmentCompat() {
                     it.contains(type, true)
             }
         return videoCodecs.isNotEmpty()
-    }
-
-    companion object {
-        private const val TAG = "CapabilitiesFragment"
     }
 }

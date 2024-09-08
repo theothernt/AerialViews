@@ -15,10 +15,6 @@ class DpadRemotePressHoldFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", TAG)
-    }
-
-    companion object {
-        private const val TAG = "DpadRemotePressHoldFragment"
+        FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", this)
     }
 }
