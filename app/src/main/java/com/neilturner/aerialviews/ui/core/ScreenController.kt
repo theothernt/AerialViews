@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -30,6 +29,7 @@ import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class ScreenController(private val context: Context) :
     OnVideoPlayerEventListener,
@@ -122,7 +122,7 @@ class ScreenController(private val context: Context) :
 
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
-                Log.i(TAG, "Playlist items: ${playlist.size}")
+                Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
             } else {
                 showLoadingError()
@@ -141,9 +141,9 @@ class ScreenController(private val context: Context) :
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Log.i(TAG, "Playing: ${media.description} - $url (${media.poi})")
+            Timber.i("Loading: ${media.description} - $url (${media.poi})")
         } else {
-            Log.i(TAG, "Playing: ${media.description} - ${media.uri} (${media.poi})")
+            Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
         }
 
         // Set overlay data for current video
@@ -362,7 +362,6 @@ class ScreenController(private val context: Context) :
     override fun onImagePrepared() = fadeInNextItem()
 
     companion object {
-        private const val TAG = "ScreenController"
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error

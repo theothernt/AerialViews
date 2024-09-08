@@ -166,6 +166,9 @@ dependencies {
     amazonImplementation(firebase)
     // fdroidImplementation() <- no firebase in F-Droid :)
 
+    // Logging
+    implementation("com.jakewharton.timber:timber:5.0.1")
+
     // Retrofit, OkHttp, and Moshi
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.11.0")

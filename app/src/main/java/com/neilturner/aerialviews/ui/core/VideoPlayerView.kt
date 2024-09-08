@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.SurfaceView
 import android.widget.MediaController.MediaPlayerControl
 import androidx.media3.common.C
@@ -27,6 +26,7 @@ import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
+import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.milliseconds
@@ -67,7 +67,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
-            Log.i(TAG, "Android 12, handle frame rate switching in app")
+            Timber.i("Android 12, enabling refresh rate switching")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
     }
@@ -184,7 +184,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     ) {
         if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
             loopCount++
-            Log.i(TAG, "Looping video...")
+            Timber.i("Looping video, count: $loopCount")
         }
         super.onMediaItemTransition(mediaItem, reason)
     }
@@ -192,10 +192,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     // EventListener
     override fun onPlaybackStateChanged(playbackState: Int) {
         when (playbackState) {
-            Player.STATE_IDLE -> Log.i(TAG, "Idle...") // 1
-            Player.STATE_BUFFERING -> Log.i(TAG, "Buffering...") // 2a
-            Player.STATE_READY -> Log.i(TAG, "Ready to play...") // 3
-            Player.STATE_ENDED -> Log.i(TAG, "Playback ended...") // 4
+            Player.STATE_IDLE -> Timber.i("Idle...") // 1
+            Player.STATE_BUFFERING -> Timber.i("Buffering...") // 2a
+            Player.STATE_READY -> Timber.i("Ready to play...") // 3
+            Player.STATE_ENDED -> Timber.i("Playback ended...") // 4
         }
 
         if (!prepared && playbackState == Player.STATE_READY) {
@@ -208,12 +208,12 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                 }
 
                 if (isSegmentedVideo && player.currentPosition !in segmentStart - 500..segmentEnd + 500) {
-                    Log.i(TAG, "Seeking to segment ${segmentStart}ms")
+                    Timber.i("Seeking to segment ${segmentStart}ms")
                     player.seekTo(segmentStart)
                     return
                 }
                 if (isSegmentedVideo) {
-                    Log.i(TAG, "At segment ${player.currentPosition}ms (target ${segmentStart}ms), continuing...")
+                    Timber.i("At segment ${player.currentPosition}ms (target ${segmentStart}ms), continuing...")
                 }
             }
             prepared = true
@@ -225,7 +225,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
                 setRefreshRate()
             }
             setupAlmostFinishedRunnable()
-            Log.i(TAG, "Playing...")
+            Timber.i("Playing...")
         }
     }
 
@@ -234,11 +234,11 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         val frameRate = player.videoFormat?.frameRate
 
         if (frameRate == null || frameRate == 0f) {
-            Log.i(TAG, "Unable to get video frame rate...")
+            Timber.i("Unable to get video frame rate...")
             return
         }
 
-        Log.i(TAG, "${frameRate}fps video, setting refresh rate if needed...")
+        Timber.i("${frameRate}fps video, setting refresh rate if needed...")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             WindowHelper.setLegacyRefreshRate(context, frameRate)
         }
@@ -332,10 +332,10 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         if (maxVideoLength in tenSeconds until duration &&
             !allowLongerVideos
         ) {
-            Log.i(TAG, "Limiting duration (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+            Timber.i("Limiting duration (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
             return calculateEndOfVideo(maxVideoLength.toLong(), player.currentPosition)
         }
-        Log.i(TAG, "Ignoring limit (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        Timber.i("Ignoring limit (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
         return calculateEndOfVideo(player.duration, player.currentPosition)
     }
 
@@ -356,7 +356,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
         val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
         val message2 = "(video is ${duration.milliseconds}, Segments: $segments)"
-        Log.i(TAG, message1 + message2)
+        Timber.i(message1 + message2)
         return Triple(true, segmentStart, segmentEnd)
     }
 
@@ -368,14 +368,14 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         // Take into account the current player position in case of speed changes during playback
         val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - GeneralPrefs.mediaFadeOutDuration.toLong())
         val actualPosition = if (isSegmentedVideo) position + segmentStart else position
-        Log.i(TAG, "Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
+        Timber.i("Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
         return if (delay < 0) 0 else delay
     }
 
     private fun calculateLoopingVideo(): Pair<Boolean, Long> {
         val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount
-        Log.i(TAG, "Looping $loopCount times (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
         return Pair(loopCount > 1, targetDuration.toLong())
     }
 
@@ -387,7 +387,7 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        error?.message?.let { Log.e(TAG, it) }
+        error?.let { Timber.e(it, it.message.toString()) }
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
@@ -445,7 +445,6 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
     }
 
     companion object {
-        private const val TAG = "VideoPlayerView"
         const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
     }
 }

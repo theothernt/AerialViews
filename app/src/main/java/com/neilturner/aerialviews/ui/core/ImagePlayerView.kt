@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
 import coil.EventListener
 import coil.ImageLoader
@@ -30,12 +29,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.EnumSet
 
 class ImagePlayerView :
     AppCompatImageView,
     EventListener {
-    private var imageLoader: ImageLoader
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
@@ -45,20 +44,20 @@ class ImagePlayerView :
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    init {
-        imageLoader =
-            ImageLoader
-                .Builder(context)
-                .eventListener(this)
-                .components {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        add(ImageDecoderDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
+    private var imageLoader: ImageLoader =
+        ImageLoader
+            .Builder(context)
+            .eventListener(this)
+            .components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
                 }
-                .build()
+            }
+            .build()
 
+    init {
         val scaleType =
             try {
                 ScaleType.valueOf(GeneralPrefs.photoScale.toString())
@@ -86,7 +85,7 @@ class ImagePlayerView :
         request: ImageRequest,
         result: ErrorResult,
     ) {
-        Log.e(TAG, "Exception while loading image: ${result.throwable.message}")
+        Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
         onPlayerError()
     }
 
@@ -122,7 +121,7 @@ class ImagePlayerView :
             val byteArray = byteArrayFromSambaFile(uri)
             request.data(byteArray)
         } catch (ex: Exception) {
-            Log.e(TAG, "Exception while getting byte array from SMB share: ${ex.message}")
+            Timber.e(ex, "Exception while getting byte array from SMB share: ${ex.message}")
             listener?.onImageError()
             return
         }
@@ -140,7 +139,7 @@ class ImagePlayerView :
             val byteArray = byteArrayFromWebDavFile(uri)
             request.data(byteArray)
         } catch (ex: Exception) {
-            Log.e(TAG, "Exception while getting byte array from WebDAV resource: ${ex.message}")
+            Timber.e(ex, "Exception while getting byte array from WebDAV resource: ${ex.message}")
             listener?.onImageError()
             return
         }
@@ -203,10 +202,6 @@ class ImagePlayerView :
 
     fun setOnPlayerListener(listener: ScreenController) {
         this.listener = listener
-    }
-
-    companion object {
-        private const val TAG = "ImagePlayerView"
     }
 
     interface OnImagePlayerEventListener {

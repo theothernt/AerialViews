@@ -14,10 +14,10 @@ object FirebaseHelper {
 
     fun logScreenView(
         screenName: String,
-        activityName: String,
+        screenClass: Any,
     ) {
         if (BuildConfig.FIREBASE_AVAILABLE) {
-            logFirebaseScreenView(screenName, activityName)
+            logFirebaseScreenView(screenName, screenClass::javaClass.name)
         }
     }
 

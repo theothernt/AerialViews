@@ -35,7 +35,7 @@ class MainActivity :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Main", TAG)
+        FirebaseHelper.logScreenView("Main", this)
     }
 
     @SuppressLint("MissingSuperCall")
@@ -64,7 +64,6 @@ class MainActivity :
                 pref.fragment.toString(),
             ).apply {
                 arguments = args
-                // setTargetFragment(caller, 0)
             }
         // Replace the existing Fragment with the new Fragment
         supportFragmentManager.beginTransaction()
@@ -73,9 +72,5 @@ class MainActivity :
             .commitAllowingStateLoss()
         title = pref.title
         return true
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
     }
 }
