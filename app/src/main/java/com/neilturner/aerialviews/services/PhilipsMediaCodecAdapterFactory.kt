@@ -42,7 +42,6 @@ class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
     }
 
     companion object {
-        private const val TAG = "PhilipsMediaCodecAdapter"
         var mediaUrl: String? = null
     }
 }

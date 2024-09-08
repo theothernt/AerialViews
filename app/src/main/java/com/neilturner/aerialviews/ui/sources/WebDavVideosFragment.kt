@@ -119,8 +119,4 @@ class WebDavVideosFragment :
             create().show()
         }
     }
-
-    companion object {
-        private const val TAG = "WebDavVideosFragment"
-    }
 }

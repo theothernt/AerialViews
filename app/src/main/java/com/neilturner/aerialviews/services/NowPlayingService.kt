@@ -6,7 +6,6 @@ import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
-import android.util.Log
 import androidx.core.content.getSystemService
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
@@ -15,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
+import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
 class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
@@ -32,7 +32,7 @@ class NowPlayingService(private val context: Context, private val prefs: General
             if (hasPermission) {
                 setupSession()
             } else {
-                Log.i(TAG, "No permission given to access media sessions")
+                Timber.i("No permission given to access media sessions")
             }
         }
     }
@@ -63,8 +63,8 @@ class NowPlayingService(private val context: Context, private val prefs: General
             val active = isActive(activeController.playbackState?.state)
             try {
                 updateNowPlaying(activeController.metadata, active)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error setting initial Now Playing info", e)
+            } catch (ex: Exception) {
+                Timber.e(ex, "Error setting initial Now Playing info")
             }
         }
         // Listen for future changes to active sessions
@@ -124,10 +124,6 @@ class NowPlayingService(private val context: Context, private val prefs: General
                 state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
-    }
-
-    companion object {
-        private const val TAG = "NowPlayingService"
     }
 }
 

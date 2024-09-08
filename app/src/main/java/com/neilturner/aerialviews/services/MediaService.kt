@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import android.util.Log
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
@@ -25,6 +24,7 @@ import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import timber.log.Timber
 
 class MediaService(val context: Context) {
     private val providers = mutableListOf<MediaProvider>()
@@ -49,7 +49,7 @@ class MediaService(val context: Context) {
                     media.addAll(it.fetchMedia())
                 }
             } catch (ex: Exception) {
-                Log.e(TAG, "Exception while fetching videos", ex)
+                Timber.e(ex, "Exception while fetching videos")
             }
         }
 
@@ -57,21 +57,21 @@ class MediaService(val context: Context) {
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
             media = media.distinctBy { it.uri.filenameWithoutExtension.lowercase() }.toMutableList()
-            Log.i(TAG, "Duplicate videos removed based on filename: ${numVideos - media.size}")
+            Timber.i("Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
         // Add metadata to (Manifest) Apple, Community videos only
         val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
-        Log.i(TAG, "Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
+        Timber.i("Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
 
         var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
-        Log.i(TAG, "Unmatched: videos ${videos.size}, photos ${photos.size}")
+        Timber.i("Unmatched: videos ${videos.size}, photos ${photos.size}")
 
         // Remove if not Apple or Community videos
         if (GeneralPrefs.ignoreNonManifestVideos) {
             videos = listOf()
-            Log.i(TAG, "Removing non-manifest videos")
+            Timber.i("Removing non-manifest videos")
         }
 
         // Add description to user videos
@@ -88,10 +88,10 @@ class MediaService(val context: Context) {
         // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
             filteredMedia = filteredMedia.shuffled()
-            Log.i(TAG, "Shuffling media items")
+            Timber.i("Shuffling media items")
         }
 
-        Log.i(TAG, "Total media items: ${filteredMedia.size}")
+        Timber.i("Total media items: ${filteredMedia.size}")
         return MediaPlaylist(filteredMedia)
     }
 
@@ -108,7 +108,7 @@ class MediaService(val context: Context) {
             try {
                 metadata.addAll((it.fetchMetadata()))
             } catch (ex: Exception) {
-                Log.e(TAG, "Exception while fetching metadata", ex)
+                Timber.e(ex, "Exception while fetching metadata")
             }
         }
 
@@ -148,9 +148,5 @@ class MediaService(val context: Context) {
             else -> { /* Do nothing */ }
         }
         return media
-    }
-
-    companion object {
-        private const val TAG = "MediaService"
     }
 }
