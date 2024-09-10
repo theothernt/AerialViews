@@ -121,20 +121,24 @@ android {
             getIsDefault().set(true)
             dimension = "version"
             versionNameSuffix = "-beta4"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("googleplay") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("amazon") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("fdroid") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'false'
         }
+    }
+    // Using this method https://stackoverflow.com/a/30548238/247257
+    sourceSets {
+        github.java.srcDir('src/common/java')
+        beta.java.srcDir('src/common/java')
+        googleplay.java.srcDir('src/common/java')
+        amazon.java.srcDir('src/common/java')
+        fdroid.java.srcDir('src/froid/java')
     }
 }
 
