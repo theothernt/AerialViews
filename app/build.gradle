@@ -115,7 +115,6 @@ android {
     productFlavors {
         register("github") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("beta") {
             getIsDefault().set(true)
