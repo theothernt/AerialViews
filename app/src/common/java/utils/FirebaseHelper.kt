@@ -18,7 +18,7 @@ object FirebaseHelper {
         val parameters =
             bundleOf(
                 Pair(FirebaseAnalytics.Param.SCREEN_NAME, screenName),
-                Pair(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass),
+                Pair(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName),
             )
 
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
