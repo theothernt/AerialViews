@@ -26,6 +26,7 @@ import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toBoolean
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -328,6 +329,7 @@ class SambaVideosFragment :
         withContext(Dispatchers.IO) {
             val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
             val result = provider.fetchTest()
+            ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
             showDialog(resources.getString(R.string.samba_videos_test_results), result)
         }
 
