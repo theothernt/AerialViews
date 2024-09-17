@@ -53,8 +53,4 @@ class TextDate : AppCompatTextView {
             refreshDateHandler?.let { it() }
         }, 1000)
     }
-
-    companion object {
-        private const val TAG = "TextDate"
-    }
 }

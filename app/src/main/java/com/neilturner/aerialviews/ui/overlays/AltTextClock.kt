@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.widget.TextClock
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
@@ -37,12 +36,8 @@ class AltTextClock : TextClock {
         // Fixes a commonly reported crash with this control ?!
         try {
             super.onDetachedFromWindow()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message, e.cause)
+        } catch (ex: Exception) {
+            // Doesn't matter
         }
-    }
-
-    companion object {
-        private const val TAG = "AltTextClock"
     }
 }

@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -17,6 +16,7 @@ import com.thegrizzlylabs.sardineandroid.Sardine
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
@@ -59,9 +59,9 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                     prefs.userName,
                     prefs.password,
                 )
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
-                return Pair(emptyList(), e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
+                return Pair(emptyList(), ex.message.toString())
             }
 
         // Create WebDAV URL, add to media list, adding media type
@@ -78,7 +78,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             media.add(item)
         }
 
-        Log.i(TAG, "Media found: ${media.size}")
+        Timber.i("Media found: ${media.size}")
         return Pair(media, webDavMedia.second)
     }
 
@@ -100,8 +100,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             try {
                 client = OkHttpSardine()
                 client.setCredentials(userName, password, true)
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(
                     selected,
                     "Failed to create WebDAV client",
@@ -163,12 +163,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 }
             }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Timber.e(ex, ex.message)
         }
         return files
-    }
-
-    companion object {
-        private const val TAG = "WebDavMediaProvider"
     }
 }

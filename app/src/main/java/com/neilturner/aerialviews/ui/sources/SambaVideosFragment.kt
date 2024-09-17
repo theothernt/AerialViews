@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.ui.sources
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -16,9 +15,9 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.firebase.Firebase
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
+import com.neilturner.aerialviews.utils.FirebaseHelper.logException
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.enumContains
@@ -28,6 +27,7 @@ import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -208,7 +208,7 @@ class SambaVideosFragment :
 
     private suspend fun importSettings() =
         withContext(Dispatchers.IO) {
-            Log.i(TAG, "Importing SMB settings from Document folder")
+            Timber.i("Importing SMB settings from Document folder")
 
             val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).absolutePath
             val file = File(directory, SMB_SETTINGS_FILENAME)
@@ -232,8 +232,8 @@ class SambaVideosFragment :
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_error_parsing),
                 )
-                Log.e(TAG, "Import failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                Timber.e(ex, "Import failed")
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 
@@ -256,8 +256,8 @@ class SambaVideosFragment :
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_unable_to_save),
                 )
-                Log.e(TAG, "Import failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                Timber.e(ex, "Import failed")
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 
@@ -287,7 +287,7 @@ class SambaVideosFragment :
 
     private suspend fun exportSettings() =
         withContext(Dispatchers.IO) {
-            Log.i(TAG, "Exporting SMB settings to Documents folder")
+            Timber.i("Exporting SMB settings to Documents folder")
 
             // Build SMB config list
             val smbSettings = Properties()
@@ -313,8 +313,8 @@ class SambaVideosFragment :
                     resources.getString(R.string.samba_videos_export_failed),
                     String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME),
                 )
-                Log.e(TAG, "Export failed", ex)
-                ex.cause?.let { Firebase.crashlytics.recordException(it) }
+                Timber.e(ex, "Export failed")
+                ex.cause?.let { logException(it) }
                 return@withContext
             }
 
@@ -344,7 +344,6 @@ class SambaVideosFragment :
     }
 
     companion object {
-        private const val TAG = "SambaVideosFragment"
         private const val SMB_SETTINGS_FILENAME = "aerial-views-smb-settings.txt"
     }
 }

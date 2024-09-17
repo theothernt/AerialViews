@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.os.Build
-import android.util.Log
 import android.view.Display
 import android.view.Surface
 import android.view.View
@@ -17,6 +16,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.neilturner.aerialviews.BuildConfig
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 object WindowHelper {
@@ -52,14 +52,14 @@ object WindowHelper {
         val refreshRates = display.mode?.alternativeRefreshRates?.toList()
         val willBeSeamless = refreshRates?.contains(newRefreshRate)
         if (willBeSeamless == true) {
-            Log.i(TAG, "Trying seamless...")
+            Timber.i("Trying seamless...")
             surface.setFrameRate(
                 newRefreshRate,
                 Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
                 Surface.CHANGE_FRAME_RATE_ONLY_IF_SEAMLESS,
             )
         } else {
-            Log.i(TAG, "Seamless not supported, trying legacy...")
+            Timber.i("Seamless not supported, trying legacy...")
             setLegacyRefreshRate(context, newRefreshRate)
         }
     }
@@ -78,14 +78,14 @@ object WindowHelper {
 
         // No additional modes supported, exit early
         if (supportedModes.size == 1) {
-            Log.i(TAG, "Only 1 mode found, exiting")
+            Timber.i("Only 1 mode found, exiting")
             return
         }
 
         // Only use same resolution as current
         val suitableModes = getModesForResolution(supportedModes, activeMode, newRefreshRate)
         if (suitableModes.isEmpty()) {
-            Log.i(TAG, "No suitable frame rates found at this resolution, exiting")
+            Timber.i("No suitable frame rates found at this resolution, exiting")
             return
         }
 
@@ -99,23 +99,23 @@ object WindowHelper {
         }
 
         if (newMode == null) {
-            Log.i(TAG, "No new mode chosen")
+            Timber.i("No new mode chosen")
             return
         }
 
         val activity = context as? Activity
         if (activity == null) {
-            Log.i(TAG, "Unable to get current Activity")
+            Timber.i("Unable to get current Activity")
             return
         }
 
         val window = activity.window
         val switchingModes = newMode.modeId != activeMode?.modeId
         if (switchingModes) {
-            Log.i(TAG, "Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
+            Timber.i("Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
             window.attributes.preferredDisplayModeId = newMode.modeId
         } else {
-            Log.i(TAG, "Already in mode ${activeMode?.modeId}, no need to change.")
+            Timber.i("Already in mode ${activeMode?.modeId}, no need to change.")
         }
 
         val refreshRates =
@@ -153,6 +153,4 @@ object WindowHelper {
 
         return filteredModes
     }
-
-    private const val TAG = "WindowHelper"
 }

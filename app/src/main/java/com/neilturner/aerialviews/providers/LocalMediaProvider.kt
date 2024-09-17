@@ -216,8 +216,4 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
                 !FileHelper.isDotOrHiddenFile(item)
             }
         }
-
-    companion object {
-        private const val TAG = "LocalMediaProvider"
-    }
 }

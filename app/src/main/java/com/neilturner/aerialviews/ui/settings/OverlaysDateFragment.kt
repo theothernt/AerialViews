@@ -9,7 +9,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class OverlaysDateFragment : PreferenceFragmentCompat() {
     private lateinit var entriesAndValues: Map<String, String>
@@ -28,7 +28,7 @@ class OverlaysDateFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Date", TAG)
+        FirebaseHelper.logScreenView("Date", this)
     }
 
     private fun updateSummary() {
@@ -84,9 +84,5 @@ class OverlaysDateFragment : PreferenceFragmentCompat() {
         val values = res.getStringArray(valuesId) // EMPTY, CLOCK, etc
         val entries = res.getStringArray(entriesId) // Empty, Clock, etc
         return values.zip(entries).toMap()
-    }
-
-    companion object {
-        private const val TAG = "DateFragment"
     }
 }

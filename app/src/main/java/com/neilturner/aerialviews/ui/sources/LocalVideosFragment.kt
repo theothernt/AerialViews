@@ -204,8 +204,4 @@ class LocalVideosFragment :
         val notice = findPreference<Preference>("local_videos_shield_notice")
         notice?.isVisible = true
     }
-
-    companion object {
-        private const val TAG = "LocalVideosFragment"
-    }
 }

@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -11,6 +10,7 @@ import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
+import timber.log.Timber
 
 class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
@@ -57,11 +57,7 @@ class Comm1MediaProvider(context: Context, private val prefs: Comm1VideoPrefs) :
             )
         }
 
-        Log.i(TAG, "${videos.count()} $quality videos found")
+        Timber.i("${videos.count()} $quality videos found")
         return Pair(videos, "")
-    }
-
-    companion object {
-        private const val TAG = "Comm1VideoProvider"
     }
 }

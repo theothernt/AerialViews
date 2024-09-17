@@ -115,26 +115,29 @@ android {
     productFlavors {
         register("github") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("beta") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
             versionNameSuffix = "-beta1"
             getIsDefault().set(true)
         }
         register("googleplay") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("amazon") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'true'
         }
         register("fdroid") {
             dimension = "version"
-            buildConfigField 'boolean', 'FIREBASE_AVAILABLE', 'false'
         }
+    }
+    // Using this method https://stackoverflow.com/a/30548238/247257
+    sourceSets {
+        github.java.srcDir('src/common/java')
+        beta.java.srcDir('src/common/java')
+        googleplay.java.srcDir('src/common/java')
+        amazon.java.srcDir('src/common/java')
+        fdroid.java.srcDir('src/froid/java')
     }
 }
 
@@ -165,6 +168,9 @@ dependencies {
     googleplayImplementation(firebase)
     amazonImplementation(firebase)
     // fdroidImplementation() <- no firebase in F-Droid :)
+
+    // Logging
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
     // Retrofit, OkHttp, and Moshi
     implementation("com.squareup.retrofit2:retrofit:2.11.0")

@@ -2,10 +2,10 @@ package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.graphics.Typeface
-import android.util.Log
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.TypefaceCompat
 import com.neilturner.aerialviews.R
+import timber.log.Timber
 
 object FontHelper {
     fun getTypeface(
@@ -21,11 +21,9 @@ object FontHelper {
                     Typeface.create("san-serif", Typeface.NORMAL)
                 }
             } catch (ex: Exception) {
-                Log.e(TAG, ex.message.toString())
+                Timber.e(ex, ex.message)
                 Typeface.create("san-serif", Typeface.NORMAL)
             }
         return TypefaceCompat.create(context, font, weight.toInt(), false)
     }
-
-    private const val TAG = "FontHelper"
 }

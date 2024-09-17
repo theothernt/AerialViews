@@ -1,11 +1,11 @@
 package com.neilturner.aerialviews.utils
 
 import android.net.Uri
-import android.util.Log
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import timber.log.Timber
 
 object SambaHelper {
     @Suppress("NAME_SHADOWING")
@@ -19,22 +19,22 @@ object SambaHelper {
         if (shareName.contains("\\", true)) {
             shareName = shareName.replace('\\', '/')
             shareName = shareName.replace("//", "/", true)
-            Log.i(TAG, "Fixing ShareName - replacing back slashes with forward slashes in sharename")
+            Timber.i("Fixing ShareName - replacing back slashes with forward slashes in sharename")
         }
 
         if (shareName.contains("smb:/", true)) {
             shareName = shareName.replace("smb:/", "", true)
-            Log.i(TAG, "Fixing ShareName - removing smb:/ from sharename")
+            Timber.i("Fixing ShareName - removing smb:/ from sharename")
         }
 
         if (shareName.first() != '/') {
             shareName = "/$shareName"
-            Log.i(TAG, "Fixing ShareName - adding leading slash")
+            Timber.i("Fixing ShareName - adding leading slash")
         }
 
         if (shareName.last() == '/') {
             shareName = shareName.dropLast(1)
-            Log.i(TAG, "Fixing ShareName - removing trailing slash")
+            Timber.i("Fixing ShareName - removing trailing slash")
         }
         return shareName
     }
@@ -76,12 +76,12 @@ object SambaHelper {
         domainName: String,
     ): AuthenticationContext {
         if (userName.isEmpty() && password.isEmpty()) {
-            Log.i(TAG, "Using anonymous login auth")
+            Timber.i("Using anonymous login auth")
             return AuthenticationContext.anonymous()
         }
 
         if (userName.equals("guest", true)) {
-            Log.i(TAG, "Using guest login auth")
+            Timber.i("Using guest login auth")
             return AuthenticationContext.guest()
         }
         return AuthenticationContext(userName, password.toCharArray(), domainName)
@@ -94,12 +94,10 @@ object SambaHelper {
                 .withEncryptData(SambaMediaPrefs.enableEncryption)
                 .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {
-            Log.i(TAG, "Using SMB dialects: ${dialectStrings.joinToString(",")}")
+            Timber.i("Using SMB dialects: ${dialectStrings.joinToString(",")}")
             val dialects = dialectStrings.map { SMB2Dialect.valueOf(it) }
             config.withDialects(dialects)
         }
         return config.build()
     }
-
-    private const val TAG = "SambaHelper"
 }

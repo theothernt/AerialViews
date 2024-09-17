@@ -93,8 +93,4 @@ class TextLocation : AppCompatTextView {
         // Set initial delay for this method
         this.postDelayed({ currentPositionProgressHandler?.let { it() } }, 1000)
     }
-
-    companion object {
-        private const val TAG = "TextLocation"
-    }
 }

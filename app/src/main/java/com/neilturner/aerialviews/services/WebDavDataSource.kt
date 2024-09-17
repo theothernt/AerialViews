@@ -1,13 +1,13 @@
 package com.neilturner.aerialviews.services
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
@@ -79,7 +79,7 @@ class WebDavDataSource : BaseDataSource(true) {
             val file = client?.get(url)
             return Pair(file, size)
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Timber.e(ex, ex.message)
             Pair(null, 0)
         }
     }
@@ -115,10 +115,6 @@ class WebDavDataSource : BaseDataSource(true) {
         bytesRead += read.toLong()
         bytesTransferred(read)
         return read
-    }
-
-    companion object {
-        private const val TAG = "WebDavDataSource"
     }
 }
 

@@ -7,7 +7,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class AdvancedFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(
@@ -20,7 +20,7 @@ class AdvancedFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Advanced", TAG)
+        FirebaseHelper.logScreenView("Advanced", this)
     }
 
     private fun restartOnLanguageChange() {
@@ -43,9 +43,5 @@ class AdvancedFragment : PreferenceFragmentCompat() {
             }
             create().show()
         }
-    }
-
-    companion object {
-        private const val TAG = "AdvancedFragment"
     }
 }

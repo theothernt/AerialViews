@@ -1,8 +1,8 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import android.util.Log
 import com.neilturner.aerialviews.BuildConfig
+import timber.log.Timber
 
 @Suppress("SameParameterValue")
 class MigrationHelper(val context: Context) {
@@ -13,18 +13,18 @@ class MigrationHelper(val context: Context) {
         val latestVersion = BuildConfig.VERSION_CODE
         val lastKnownVersion = getLastKnownVersion()
 
-        Log.i(TAG, "Build code $latestVersion, Last known version $lastKnownVersion")
+        Timber.i("Build code $latestVersion, Last known version $lastKnownVersion")
 
         // If package not updated, exit early
         if (!PackageHelper.isPackageUpdate(context)) {
-            Log.i(TAG, "Package not updated, no migration needed")
+            Timber.i("Package not updated, no migration needed")
             return
         } else {
-            Log.i(TAG, "Package updated, checking if migration is needed")
+            Timber.i("Package updated, checking if migration is needed")
         }
 
         if (lastKnownVersion == latestVersion) {
-            Log.i(TAG, "Package updated but already migrated")
+            Timber.i("Package updated but already migrated")
             return
         }
 
@@ -44,7 +44,7 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release10() {
-        Log.i(TAG, "Migrating settings for release 10")
+        Timber.i("Migrating settings for release 10")
 
         // Covers case when Apple videos are disabled but Community videos are not
         val communityVideosEnabled =
@@ -53,60 +53,60 @@ class MigrationHelper(val context: Context) {
         val appleVideosEnabled = prefs.getBoolean("apple_videos_enabled", false)
 
         if (!appleVideosEnabled && !communityVideosEnabled) {
-            Log.i(TAG, "Disabling new community videos")
+            Timber.i("Disabling new community videos")
             prefs.edit().putBoolean("comm1_videos_enabled", false).apply()
             prefs.edit().putBoolean("comm2_videos_enabled", false).apply()
             return
         } else {
-            Log.i(TAG, "Leaving community videos enabled")
+            Timber.i("Leaving community videos enabled")
         }
 
         val videoQuality = prefs.getString("apple_videos_quality", "").toStringOrEmpty()
         if (videoQuality.contains("4K", true) &&
             appleVideosEnabled
         ) {
-            Log.i(TAG, "Setting community videos to 4K")
+            Timber.i("Setting community videos to 4K")
             prefs.edit().putString("comm1_videos_quality", "VIDEO_4K_SDR").apply()
             prefs.edit().putString("comm2_videos_quality", "VIDEO_4K_SDR").apply()
         } else {
-            Log.i(TAG, "Not setting community videos to 4K")
+            Timber.i("Not setting community videos to 4K")
         }
     }
 
     private fun release11() {
-        Log.i(TAG, "Migrating settings for release 11")
+        Timber.i("Migrating settings for release 11")
 
         // Setting key will exist if changed or if user has visited that settings fragment/ui
         val oldLocationSetting = prefs.contains("show_location")
         if (!oldLocationSetting) {
-            Log.i(TAG, "Old location setting does not exist, no need to migrate")
+            Timber.i("Old location setting does not exist, no need to migrate")
             return
         }
 
         val locationEnabled = prefs.getBoolean("show_location", true)
         val locationType = prefs.getString("show_location_style", "VERBOSE").toStringOrEmpty()
 
-        Log.i(TAG, "Remove old video location pref and set new POI default")
+        Timber.i("Remove old video location pref and set new POI default")
         prefs.edit().remove("show_location").apply()
         prefs.edit().putString("location_style", "POI").apply()
 
         if (locationEnabled) {
             if (locationType.contains("SHORT")) {
-                Log.i(TAG, "Set video location to title")
+                Timber.i("Set video location to title")
                 prefs.edit().putString("location_style", "TITLE").apply()
             }
         } else {
-            Log.i(TAG, "Set video location to off")
+            Timber.i("Set video location to off")
             prefs.edit().putString("location_style", "OFF").apply()
         }
     }
 
     private fun release13() {
-        Log.i(TAG, "Migrating settings for release 13")
+        Timber.i("Migrating settings for release 13")
 
         val sambaUsed = prefs.contains("network_videos_enabled")
         if (sambaUsed) {
-            Log.i(TAG, "Migrating samba settings/keys")
+            Timber.i("Migrating samba settings/keys")
             prefs.edit().putBoolean("samba_videos_enabled", prefs.getBoolean("network_videos_enabled", false)).apply()
             prefs.edit().putBoolean("samba_videos_enable_encryption", prefs.getBoolean("network_videos_enable_encryption", false)).apply()
             prefs.edit().putString("samba_videos_username", prefs.getString("network_videos_username", "")).apply()
@@ -116,7 +116,7 @@ class MigrationHelper(val context: Context) {
             prefs.edit().putString("samba_videos_domainname", prefs.getString("network_videos_domainname", "WORKGROUP")).apply()
             prefs.edit().putStringSet("samba_videos_smb_dialects", prefs.getStringSet("network_videos_smb_dialects", emptySet())).apply()
 
-            Log.i(TAG, "Deleting old network settings/keys")
+            Timber.i("Deleting old network settings/keys")
             prefs.edit().remove("network_videos_enable_encryption").apply()
             prefs.edit().remove("network_videos_username").apply()
             prefs.edit().remove("network_videos_password").apply()
@@ -129,24 +129,24 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release14() {
-        Log.i(TAG, "Migrating settings for release 14")
+        Timber.i("Migrating settings for release 14")
 
         val filterFolderUsed = prefs.contains("local_videos_filter_folder_name")
         if (filterFolderUsed) {
-            Log.i(TAG, "Migrating samba settings/keys")
+            Timber.i("Migrating samba settings/keys")
             prefs.edit().putString("local_videos_media_store_filter_folder", prefs.getString("local_videos_filter_folder_name", "")).apply()
             prefs.edit().remove("local_videos_filter_folder_name").apply()
         }
     }
 
     private fun release15() {
-        Log.i(TAG, "Migrating settings for release 15")
+        Timber.i("Migrating settings for release 15")
 
         val filenameAsLocationUsed = prefs.contains("any_videos_filename_location")
         if (filenameAsLocationUsed) {
             val filenameAsLocationEnabled = prefs.getBoolean("any_videos_filename_location", false)
             if (filenameAsLocationEnabled) {
-                Log.i(TAG, "Migrating filename as location setting/key")
+                Timber.i("Migrating filename as location setting/key")
                 prefs.edit().putString("filename_as_location", "FORMATTED").apply()
             }
             prefs.edit().remove("any_videos_filename_location").apply()
@@ -154,18 +154,18 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release17() {
-        Log.i(TAG, "Migrating settings for release 17")
+        Timber.i("Migrating settings for release 17")
 
         // Location
         val locationUsed = prefs.contains("location_style")
         if (locationUsed) {
             val locationStyle = prefs.getString("location_style", "POI").toStringOrEmpty()
             if (locationStyle.contains("OFF")) {
-                Log.i(TAG, "Location disabled so removing overlay from default slot")
+                Timber.i("Location disabled so removing overlay from default slot")
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
             } else {
-                Log.i(TAG, "No change to location as default is used")
+                Timber.i("No change to location as default is used")
                 prefs.edit().putString("slot_bottom_right1", "LOCATION").apply()
             }
         }
@@ -175,24 +175,24 @@ class MigrationHelper(val context: Context) {
         if (clockUsed) {
             val clockEnabled = prefs.getBoolean("show_clock", false)
             if (!clockEnabled) {
-                Log.i(TAG, "Clock disabled so removing overlay from default slot")
+                Timber.i("Clock disabled so removing overlay from default slot")
                 prefs.edit().putString("slot_bottom_left1", "EMPTY").apply()
             } else {
-                Log.i(TAG, "Set new clock prefs")
+                Timber.i("Set new clock prefs")
                 prefs.edit().putString("slot_bottom_left1", "CLOCK").apply()
                 val textSize = prefs.getString("clock_size", "18")
                 if (textSize == "36") {
-                    Log.i(TAG, "Clock text size at old default, updating to new size")
+                    Timber.i("Clock text size at old default, updating to new size")
                     prefs.edit().putString("clock_size", "18").apply()
                 } else {
-                    Log.i(TAG, "Clock text size is custom, leaving alone")
+                    Timber.i("Clock text size is custom, leaving alone")
                 }
             }
         }
     }
 
     private fun release19() {
-        Log.i(TAG, "Migrating settings for release 19")
+        Timber.i("Migrating settings for release 19")
 
         // Remove bad key if found
         val locationUsed = prefs.contains("location_style")
@@ -201,7 +201,7 @@ class MigrationHelper(val context: Context) {
             if (!locationStyle.contains("POI") &&
                 !locationStyle.contains("TITLE")
             ) {
-                Log.i(TAG, "Setting location style to default/POI and setting slot to empty")
+                Timber.i("Setting location style to default/POI and setting slot to empty")
                 prefs.edit().putString("location_style", "POI").apply()
                 prefs.edit().putString("slot_bottom_right1", "EMPTY").apply()
             }
@@ -209,13 +209,13 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release20() {
-        Log.i(TAG, "Migrating settings for release 20")
+        Timber.i("Migrating settings for release 20")
 
         val fontWeightUsed = prefs.contains("font_weight")
         if (fontWeightUsed) {
             val fontWeight = prefs.getString("font_weight", "300").toStringOrEmpty()
             if (fontWeight != "300" && fontWeight.toDoubleOrNull() != null) {
-                Log.i(TAG, "Setting new font weight to all overlays")
+                Timber.i("Setting new font weight to all overlays")
                 prefs.edit().putString("clock_weight", fontWeight).apply()
                 prefs.edit().putString("date_weight", fontWeight).apply()
                 prefs.edit().putString("location_weight", fontWeight).apply()
@@ -225,13 +225,13 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release22() {
-        Log.i(TAG, "Migrating settings for release 22")
+        Timber.i("Migrating settings for release 22")
 
         val locationStyleUsed = prefs.contains("location_style")
         if (locationStyleUsed) {
             val locationStyle = prefs.getString("location_style", "POI")
             if (locationStyle == "TITLE") {
-                Log.i(TAG, "Updating description manifest style to TITLE")
+                Timber.i("Updating description manifest style to TITLE")
                 prefs.edit().putString("description_video_manifest_style", "TITLE").apply()
             }
             prefs.edit().remove("location_style").apply()
@@ -241,7 +241,7 @@ class MigrationHelper(val context: Context) {
         if (filenameAsLocationUsed) {
             val filenameAsLocation = prefs.getString("filename_as_location", "DISABLED")
             if (filenameAsLocation != "DISABLED") {
-                Log.i(TAG, "Updating description video/photo style to FILENAME")
+                Timber.i("Updating description video/photo style to FILENAME")
                 prefs.edit().putString("description_video_filename_style", "FILENAME").apply()
                 prefs.edit().putString("description_photo_filename_style", "FILENAME").apply()
             }
@@ -250,7 +250,7 @@ class MigrationHelper(val context: Context) {
 
         val locationSizeUsed = prefs.contains("location_size")
         if (locationSizeUsed) {
-            Log.i(TAG, "Updating description size")
+            Timber.i("Updating description size")
             val locationSize = prefs.getString("location_size", "18")
             prefs.edit().putString("description_size", locationSize).apply()
             prefs.edit().remove("location_size").apply()
@@ -258,7 +258,7 @@ class MigrationHelper(val context: Context) {
 
         val locationWeightUsed = prefs.contains("location_weight")
         if (locationWeightUsed) {
-            Log.i(TAG, "Updating description weight")
+            Timber.i("Updating description weight")
             val locationWeight = prefs.getString("location_weight", "18")
             prefs.edit().putString("description_weight", locationWeight).apply()
             prefs.edit().remove("location_weight").apply()
@@ -266,11 +266,11 @@ class MigrationHelper(val context: Context) {
     }
 
     private fun release23() {
-        Log.i(TAG, "Migrating settings for release 23")
+        Timber.i("Migrating settings for release 23")
 
         val skipVideosUsed = prefs.contains("enable_skip_videos")
         if (skipVideosUsed) {
-            Log.i(TAG, "Updating dpad skip videos")
+            Timber.i("Updating dpad skip videos")
             prefs.edit().putString("button_left_press", "SKIP_PREVIOUS").apply()
             prefs.edit().putString("button_right_press", "SKIP_NEXT").apply()
             prefs.edit().remove("enable_skip_videos").apply()
@@ -278,7 +278,7 @@ class MigrationHelper(val context: Context) {
 
         val playbackSpeedChangeUsed = prefs.contains("enable_playback_speed_change")
         if (playbackSpeedChangeUsed) {
-            Log.i(TAG, "Updating dpad speed change")
+            Timber.i("Updating dpad speed change")
             prefs.edit().putString("button_up_press", "SPEED_INCREASE").apply()
             prefs.edit().putString("button_down_press", "SPEED_DECREASE").apply()
             prefs.edit().remove("enable_playback_speed_change").apply()
@@ -292,7 +292,7 @@ class MigrationHelper(val context: Context) {
 
     // Update saved revision code or return 0
     private fun updateKnownVersion(versionCode: Int) {
-        Log.i(TAG, "Updating last known version to $versionCode")
+        Timber.i("Updating last known version to $versionCode")
         prefs.edit().putInt("last_known_version", versionCode).apply()
     }
 

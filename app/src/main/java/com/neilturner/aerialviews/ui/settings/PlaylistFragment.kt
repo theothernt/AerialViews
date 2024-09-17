@@ -6,7 +6,7 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class PlaylistFragment : PreferenceFragmentCompat() {
     override fun onCreatePreferences(
@@ -19,7 +19,7 @@ class PlaylistFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Playlist", TAG)
+        FirebaseHelper.logScreenView("Playlist", this)
     }
 
     private fun updateAllSummaries() {
@@ -70,9 +70,5 @@ class PlaylistFragment : PreferenceFragmentCompat() {
         val summaries = res?.getStringArray(entries)
         val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
-    }
-
-    companion object {
-        private const val TAG = "PlaylistFragment"
     }
 }

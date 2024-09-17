@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class OverlaysMessageFragment :
@@ -24,7 +24,7 @@ class OverlaysMessageFragment :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Message", TAG)
+        FirebaseHelper.logScreenView("Message", this)
     }
 
     override fun onDestroy() {
@@ -60,9 +60,5 @@ class OverlaysMessageFragment :
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
-    }
-
-    companion object {
-        private const val TAG = "MessageFragment"
     }
 }

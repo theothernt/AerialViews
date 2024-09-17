@@ -1,33 +1,22 @@
 package com.neilturner.aerialviews.ui
 
 import android.app.Application
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
+import timber.log.Timber
 
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Highlight possible ANR (long pause) issues
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(
-//                StrictMode.ThreadPolicy.Builder()
-//                    .detectNetwork()
-//                    .detectDiskReads()
-//                    .detectDiskWrites()
-//                    .penaltyLog()
-//                    .build()
-//            )
-//        }
-
-        // Disable clock on phone due to space limit + layout issue
-//        if (DeviceHelper.isPhone(this)) {
-//            GeneralPrefs.slotBottomLeft1 = OverlayType.EMPTY
-//        }
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
 
         // FireTV Gen 1 and emulator can't play HEVC/H.265
         // Set video quality to H.264
