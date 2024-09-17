@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -105,6 +106,7 @@ class WebDavVideosFragment :
         withContext(Dispatchers.IO) {
             val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
             val result = provider.fetchTest()
+            ensureActive()
             showDialog(resources.getString(R.string.webdav_media_test_results), result)
         }
 
