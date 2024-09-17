@@ -117,7 +117,7 @@ class ScreenController(private val context: Context) :
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
                 PermissionHelper.hasNotificationListenerPermission(context)
             ) {
-                nowPlayingService = NowPlayingService(context, GeneralPrefs)
+                nowPlayingService = NowPlayingService(context)
             }
 
             playlist = MediaService(context).fetchMedia()

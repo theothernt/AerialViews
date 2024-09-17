@@ -84,7 +84,7 @@
     <item>遵守限制 - 达到限制时跳至下一个视频</item>
     <item>忽略限制 - 如果视频长度超过设定限制，则会一直播放到结束</item>
     <item>随机片段 - 如果视频长度超过限制，将随机播放视频的一部分
-(例如，在 2 分钟的限制下，一段 6 分钟的视频可以有 3 个片段--其中一段将随机播放）</item>
+(例如，在 2 分钟的限制下，一段 6 分钟的视频可以有 3 个片段—其中一段将随机播放）</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>

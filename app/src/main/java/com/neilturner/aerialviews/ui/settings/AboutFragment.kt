@@ -1,3 +1,5 @@
+@file:Suppress("SameReturnValue")
+
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle

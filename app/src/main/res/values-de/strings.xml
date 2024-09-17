@@ -52,7 +52,7 @@
   <string name="appearance_gradient_title">Farbverläufe</string>
   <string name="appearance_gradient_top_summary">Zeige einen Farbverlauf hinter Overlays am oberen Bildschirmrand an, damit diese leichter zu erkennen sind</string>
   <string name="appearance_gradient_top_title">Oberen Farbverlauf anzeigen</string>
-  <string name="appearance_loading_show_summary">Den Text \"Wird Geladen...\" anzeigen während die App geladen wird</string>
+  <string name="appearance_loading_show_summary">Den Text \"Wird Geladen…\" anzeigen während die App geladen wird</string>
   <string name="appearance_loading_show_title">Ladetext anzeigen</string>
   <string name="appearance_loading_size_title">Größe</string>
   <string name="appearance_loading_weight_title">Schriftstärke</string>

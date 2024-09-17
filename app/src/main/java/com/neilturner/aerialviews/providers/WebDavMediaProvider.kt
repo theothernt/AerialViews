@@ -132,15 +132,15 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             images = selected.size - videos
             excluded = files.size - selected.size
 
-            var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size) + "\n"
-            message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded) + "\n"
+            var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size.toString()) + "\n"
+            message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded.toString()) + "\n"
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary3), videos) + "\n"
+                message += String.format(res.getString(R.string.webdav_media_test_summary3), videos.toString()) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary4), images) + "\n"
+                message += String.format(res.getString(R.string.webdav_media_test_summary4), images.toString()) + "\n"
             }
-            message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size)
+            message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size.toString())
             return@withContext Pair(selected, message)
         }
 

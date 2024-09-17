@@ -7,7 +7,6 @@ import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import androidx.core.content.getSystemService
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +16,7 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
-class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
+class NowPlayingService(private val context: Context) :
     MediaSessionManager.OnActiveSessionsChangedListener,
     MediaController.Callback() {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)

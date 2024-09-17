@@ -33,8 +33,4 @@ class App : Application() {
         Comm1VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
         Comm2VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
     }
-
-    companion object {
-        const val TAG = "App"
-    }
 }

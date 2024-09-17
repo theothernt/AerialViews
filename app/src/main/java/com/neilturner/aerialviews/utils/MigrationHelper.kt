@@ -295,8 +295,4 @@ class MigrationHelper(val context: Context) {
         Timber.i("Updating last known version to $versionCode")
         prefs.edit().putInt("last_known_version", versionCode).apply()
     }
-
-    companion object {
-        private const val TAG = "MigrationHelper"
-    }
 }

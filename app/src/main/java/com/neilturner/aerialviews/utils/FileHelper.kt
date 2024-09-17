@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
@@ -56,10 +58,6 @@ object FileHelper {
         }
         Timber.i("ContentResolver found ${images.size} files")
         return images
-    }
-
-    fun isSambaVideo(uri: Uri): Boolean {
-        return uri.toString().contains("smb://", true)
     }
 
     fun isDotOrHiddenFile(filename: String): Boolean {

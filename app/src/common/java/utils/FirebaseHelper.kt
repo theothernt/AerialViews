@@ -1,3 +1,5 @@
+@file:Suppress("PackageDirectoryMismatch")
+
 package com.neilturner.aerialviews.utils
 
 import androidx.core.os.bundleOf

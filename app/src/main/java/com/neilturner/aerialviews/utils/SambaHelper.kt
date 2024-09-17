@@ -7,6 +7,7 @@ import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import timber.log.Timber
 
+@Suppress("unused")
 object SambaHelper {
     @Suppress("NAME_SHADOWING")
     fun fixShareName(shareName: String): String {

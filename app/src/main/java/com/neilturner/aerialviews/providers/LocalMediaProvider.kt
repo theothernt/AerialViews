@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
@@ -98,15 +96,15 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
             media.add(item)
         }
 
-        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
-        message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
+        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
         if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-            message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
+            message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
+            message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
-        message += String.format(res.getString(R.string.local_media_test_summary6), media.size)
+        message += String.format(res.getString(R.string.local_media_test_summary6), media.size.toString())
         return Pair(media, message)
     }
 
@@ -193,16 +191,16 @@ class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) :
         }
         filtered = selected.size - media.size
 
-        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size) + "\n"
-        message += String.format(res.getString(R.string.local_media_test_summary2), excluded) + "\n"
+        var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
         if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-            message += String.format(res.getString(R.string.local_media_test_summary3), videos) + "\n"
+            message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            message += String.format(res.getString(R.string.local_media_test_summary4), images) + "\n"
+            message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
-        message += String.format(res.getString(R.string.local_media_test_summary5), filtered) + "\n"
-        message += String.format(res.getString(R.string.local_media_test_summary6), media.size)
+        message += String.format(res.getString(R.string.local_media_test_summary5), filtered.toString()) + "\n"
+        message += String.format(res.getString(R.string.local_media_test_summary6), media.size.toString())
         return Pair(media, message)
     }
 
