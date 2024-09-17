@@ -5,15 +5,15 @@
     <item>Roboto</item>
   </string-array>
   <string-array name="appearance_font_weight_entries">
-    <item>100/Тонке</item>
-    <item>200/Надсвітле</item>
-    <item>300/Світле (за замовчуванням)</item>
-    <item>400/Нормальне</item>
-    <item>500/Середнє</item>
-    <item>600/Напівжирне</item>
-    <item>700/Жирне</item>
-    <item>800/Наджирне</item>
-    <item>900/Важке</item>
+    <item>100/Тонка</item>
+    <item>200/Надсвітла</item>
+    <item>300/Світла (за замовчуванням)</item>
+    <item>400/Нормальна</item>
+    <item>500/Середня</item>
+    <item>600/Напівжирна</item>
+    <item>700/Жирна</item>
+    <item>800/Наджирна</item>
+    <item>900/Важка</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>Ігнорувати дію</item>

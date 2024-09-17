@@ -52,10 +52,10 @@
   <string name="appearance_gradient_title">Градиенты</string>
   <string name="appearance_gradient_top_summary">Отобразите градиент за оверлеями в верхней части экрана, чтобы их было легче увидеть</string>
   <string name="appearance_gradient_top_title">Показать верхний градиент</string>
-  <string name="appearance_loading_show_summary">Отображает текст \"Загрузка...\" во время загрузки приложения</string>
+  <string name="appearance_loading_show_summary">Отображает текст \"Загрузка…\" во время загрузки приложения</string>
   <string name="appearance_loading_show_title">Показывать текст загрузки</string>
   <string name="appearance_loading_size_title">Размер</string>
-  <string name="appearance_loading_weight_title">Вес</string>
+  <string name="appearance_loading_weight_title">Насыщенность</string>
   <string name="appearance_location_summary">Отображение местоположения или точек интереса</string>
   <string name="appearance_location_title">Местоположение</string>
   <string name="appearance_message_line1_summary">Введите текст для отображения, включая эмодзи</string>
@@ -86,7 +86,7 @@
   <string name="appearance_typography_title">Шрифт</string>
   <string name="appearance_weather_summary">Отображение текущих погодных условий</string>
   <string name="appearance_weather_title">Погода</string>
-  <string name="appearance_weight_title">Начертание шрифта</string>
+  <string name="appearance_weight_title">Насыщенность шрифта</string>
   <string name="apple_videos_data_estimate_summary">Приблизительно %1$s в час</string>
   <string name="apple_videos_data_usage_title">Использование данных</string>
   <string name="apple_videos_enabled">Использовать видео Apple</string>

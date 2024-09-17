@@ -3,6 +3,8 @@
     <string name="app_name" translatable="false">Aerial Views</string>
     <string name="loading_title">Loading…</string>
     <string name="loading_error">No videos or photos found, please check your settings</string>
+
+    <!-- Common -->
     <string name="common_default">(default)</string>
 
     <!-- Common Buttons -->
@@ -11,15 +13,55 @@
     <string name="button_import">Import</string>
     <string name="button_export">Export</string>
 
-    <!-- Common Categories -->
+    <!-- All Categories -->
     <string name="category_actions">Actions</string>
     <string name="category_advanced">Advanced</string>
     <string name="category_video_source">Video Source</string>
     <string name="category_options">Options</string>
+    <string name="category_remote">Remote</string>
+    <string name="category_local">Local</string>
+    <string name="category_network">Network</string>
+    <string name="category_media_scanner_options">Media scanner options</string>
+    <string name="category_folder_access_options">Folder access options</string>
+    <string name="category_server_details">Server details and credentials</string>
+    <string name="category_about">About</string>
+    <string name="category_capabilities">Capabilities</string>
+    <string name="category_settings">Settings</string>
+    <string name="category_video_render_options">Video &amp; render options</string>
+    <string name="category_samba_options">Samba/SMB options</string>
+    <string name="category_dpad">D-Pad/Remote</string>
+    <string name="category_dpad_press">Press</string>
+    <string name="category_dpad_press_and_hold">Press &amp; hold</string>
+    <string name="category_appearance">Appearance</string>
+    <string name="category_overlays">Overlays</string>
+    <string name="category_slots">Slots</string>
+    <string name="category_gradient">Gradient</string>
+    <string name="category_startup">Startup</string>
+    <string name="category_videos">Videos</string>
+    <string name="category_photos">Photos</string>
+    <string name="category_playlist">Playlist</string>
+    <string name="category_message">Message</string>
+    <string name="category_typography">Typography</string>
+    <string name="category_music">Music</string>
+    <string name="category_now_playing">Now Playing</string>
+    <string name="category_permission">Permission</string>
+    <string name="category_apple_and_community_videos">Apple and Community videos only</string>
+    <string name="category_all_other_media">All other videos &amp; photos</string>
+    <string name="category_top_row_left">Top Left</string>
+    <string name="category_top_row_right">Top Right</string>
+    <string name="category_bottom_row_left">Bottom Left</string>
+    <string name="category_bottom_row_right">Bottom Right</string>
+    <string name="category_overlay_animations">Overlay animations</string>
+    <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
+    <string name="category_clock">Clock</string>
+    <string name="category_date">Date</string>
+    <string name="category_custom_format">Custom format</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Video quality</string>
     <string name="videos_quality_summary">Select a video quality</string>
+
+    <string name="appearance_description_size_title">Size</string>
 
     <!-- Main -->
     <string name="settings_media_sources_title">Media Sources</string>
@@ -35,10 +77,6 @@
     <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
 
     <!-- Main / Video Sources -->
-    <string name="category_remote">Remote</string>
-    <string name="category_local">Local</string>
-    <string name="category_network">Network</string>
-
     <string name="sources_apple_title">Videos by Apple</string>
     <string name="sources_apple_summary">Stream Apple videos using your internet connection</string>
 
@@ -70,9 +108,6 @@
     <string name="comm2_videos_enabled">Use community videos</string>
 
     <!-- Main / Video Sources / Local+USB videos -->
-    <string name="category_media_scanner_options">Media scanner options</string>
-    <string name="category_folder_access_options">Folder access options</string>
-
     <string name="local_videos_enabled_title">Use Local or USB storage media</string>
 
     <string name="local_media_type_title">Choose media type</string>
@@ -118,8 +153,6 @@
     <string name="local_videos_test_results">Test results</string>
 
     <!-- Main / Video Sources / Samba videos -->
-    <string name="category_server_details">Server details and credentials</string>
-
     <string name="samba_videos_enabled_title">Use SMB/Samba share media</string>
 
     <string name="samba_media_type_title">Choose media type</string>
@@ -202,8 +235,6 @@
     <string name="webdav_media_test_results">Test results</string>
 
     <!-- Main / Settings -->
-    <string name="category_settings">Settings</string>
-
     <string name="settings_overlays_title">Overlays</string>
     <string name="settings_overlays_summary">Choose what overlays are displayed in different corners of the screen</string>
 
@@ -229,14 +260,6 @@
     <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
 
     <!-- Main / Settings / Appearance -->
-    <string name="category_appearance">Appearance</string>
-    <string name="category_overlays">Overlays</string>
-    <string name="category_slots">Slots</string>
-    <string name="category_gradient">Gradient</string>
-    <string name="category_startup">Startup</string>
-    <string name="category_videos">Videos</string>
-    <string name="category_photos">Photos</string>
-
     <string name="appearance_top_row_title">Top Row</string>
     <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
 
@@ -277,12 +300,6 @@
     <string name="appearance_startup_summary">Change what you see while the app is loading</string>
 
     <!-- Main / Settings / Appearance / Rows -->
-    <string name="category_top_row_left">Top Left</string>
-    <string name="category_top_row_right">Top Right</string>
-
-    <string name="category_bottom_row_left">Bottom Left</string>
-    <string name="category_bottom_row_right">Bottom Right</string>
-
     <string name="appearance_slot1_title">Lower Slot</string>
     <string name="appearance_slot2_title">Upper Slot</string>
     <string name="appearance_slot_summary">Empty</string>
@@ -311,9 +328,6 @@
     <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
 
     <!-- Main / Settings / Appearance / Animations -->
-    <string name="category_overlay_animations">Overlay animations</string>
-    <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
-
     <string name="appearance_auto_hide_title">Auto hide overlays</string>
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
 
@@ -321,7 +335,6 @@
     <string name="appearance_fade_out_title">Fade out</string>
 
     <!-- Main / Settings / Appearance / Clock -->
-    <string name="category_clock">Clock</string>
     <string name="appearance_clock_format_title">Clock format</string>
 
     <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
@@ -330,9 +343,6 @@
     <string name="appearance_clock_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Date -->
-    <string name="category_date">Date</string>
-    <string name="category_custom_format">Custom format</string>
-
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
@@ -342,9 +352,6 @@
     <string name="appearance_date_custom_example">e.g.</string>
 
     <!-- Main / Settings / Appearance / Location -->
-    <string name="category_apple_and_community_videos">Apple and Community videos only</string>
-    <string name="category_all_other_media">All other videos &amp; photos</string>
-
     <string name="appearance_description_videos_manifest_summary">Apple and Community videos - streamed, stored locally or from a network share</string>
     <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
 
@@ -355,10 +362,6 @@
     <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
     <!-- Main / Settings / Appearance / Now Playing -->
-    <string name="category_music">Music</string>
-    <string name="category_now_playing">Now Playing</string>
-    <string name="category_permission">Permission</string>
-
     <string name="nowplaying_permission_title">Enable system notification access</string>
     <string name="nowplaying_permission_summary">Permission is required so that this app can listen for music notifications from the system</string>
 
@@ -372,11 +375,7 @@
     <!-- Pexels? -->
     <!-- Exif -->
 
-    <string name="appearance_description_size_title">Size</string>
-
     <!-- Main / Settings / Appearance / Message -->
-    <string name="category_message">Message</string>
-
     <string name="appearance_message_style_title">Show custom message</string>
 
     <string name="appearance_message_line1_title">Line 1</string>
@@ -386,13 +385,10 @@
     <string name="appearance_message_size_title">Size</string>
 
     <!-- Main / Settings / Appearance / Typography -->
-    <string name="category_typography">Typography</string>
     <string name="appearance_typeface_title">Typeface</string>
     <string name="appearance_weight_title">Weight</string>
 
     <!-- Main / Settings / Playlist -->
-    <string name="category_playlist">Playlist</string>
-
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
@@ -421,10 +417,6 @@
     <string name="playlist_photo_scale_title">Photo scaling</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
-    <string name="category_dpad">D-Pad/Remote</string>
-    <string name="category_dpad_press">Press</string>
-    <string name="category_dpad_press_and_hold">Press &amp; hold</string>
-
     <string name="dpad_button_press_title">D-pad or button press</string>
     <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
 
@@ -449,8 +441,6 @@
     <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
     <!-- Main / Settings / Device capabilities -->
-    <string name="category_capabilities">Capabilities</string>
-
     <string name="capabilities_device_title">Device</string>
     <string name="capabilities_display_title">TV/Display</string>
     <string name="capabilities_codecs_title">Codec Summary</string>
@@ -474,9 +464,6 @@
     <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
     <!-- Main / Settings / Advanced -->
-    <string name="category_video_render_options">Video &amp; render options</string>
-    <string name="category_samba_options">Samba/SMB options</string>
-
     <string name="advanced_refresh_rate_switching_title">Auto refresh rate switching</string>
     <string name="advanced_refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 
@@ -499,7 +486,6 @@
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 
     <!-- Main / Settings / About -->
-    <string name="category_about">About</string>
     <string name="about_version_title">Version</string>
     <string name="about_date_title">Build Date</string>
 </resources>

@@ -52,7 +52,7 @@
   <string name="appearance_gradient_title">Dégradés</string>
   <string name="appearance_gradient_top_summary">Affichage d\'un dégradé derrière les superpositions en haut de l\'écran pour les rendre plus faciles à voir</string>
   <string name="appearance_gradient_top_title">Afficher le dégradé supérieur</string>
-  <string name="appearance_loading_show_summary">Affiche le texte \"Loading...\" pendant le chargement de l\'application</string>
+  <string name="appearance_loading_show_summary">Affiche le texte \"Loading…\" pendant le chargement de l\'application</string>
   <string name="appearance_loading_show_title">Afficher le texte de chargement</string>
   <string name="appearance_loading_size_title">Taille</string>
   <string name="appearance_loading_weight_title">Poids</string>
@@ -198,7 +198,7 @@
   <string name="local_videos_search_test">Tester les paramètres de recherche locale</string>
   <string name="local_videos_search_type_title">Choisir le mode de recherche des vidéos et des images</string>
   <string name="local_videos_shield_notice_summary">Paramètres &gt; Préférences de l\'appareil &gt; Stockage &gt; Recherche automatique de supports</string>
-  <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée...</string>
+  <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée…</string>
   <string name="local_videos_test_results">Résultats des tests</string>
   <string name="nowplaying_line1_title">En cours de lecture - Ligne 1</string>
   <string name="nowplaying_line2_title">En cours de lecture - Ligne 2</string>

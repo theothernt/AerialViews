@@ -52,7 +52,7 @@
   <string name="appearance_gradient_title">梯度</string>
   <string name="appearance_gradient_top_summary">在屏幕顶部的覆盖层后面显示渐变，使其更容易看清</string>
   <string name="appearance_gradient_top_title">显示顶部渐变</string>
-  <string name="appearance_loading_show_summary">在加载应用程序时显示 \"正在加载... \"文本</string>
+  <string name="appearance_loading_show_summary">在加载应用程序时显示 \"正在加载… \"文本</string>
   <string name="appearance_loading_show_title">显示加载文本</string>
   <string name="appearance_loading_size_title">尺寸</string>
   <string name="appearance_loading_weight_title">重量</string>
@@ -198,7 +198,7 @@
   <string name="local_videos_search_test">测试本地搜索设置</string>
   <string name="local_videos_search_type_title">选择查找视频的方式</string>
   <string name="local_videos_shield_notice_summary">设置 &gt; 设备首选项 &gt; 存储 &gt; 自动扫描媒体</string>
-  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项...</string>
+  <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项…</string>
   <string name="local_videos_test_results">测试结果</string>
   <string name="nowplaying_line1_title">正在播放 - 1 号线</string>
   <string name="nowplaying_line2_title">正在播放 - 2 号线</string>
@@ -324,7 +324,7 @@
   <string name="webdav_media_test_summary1">Files found: %1$s</string>
   <string name="webdav_media_test_summary2">Unsupported files: %1$s</string>
   <string name="webdav_media_test_summary3">Videos found: %1$s</string>
-  <string name="webdav_media_test_summary4">找到的照片%1$s</string>
+  <string name="webdav_media_test_summary4">找到的照片 %1$s</string>
   <string name="webdav_media_test_summary5">Selected for playback: %1$s</string>
   <string name="webdav_media_type_title">Choose media type</string>
   <string name="webdav_media_username_summary">未设置。可选</string>

@@ -52,7 +52,7 @@
   <string name="appearance_gradient_title">מדרונות צבעים</string>
   <string name="appearance_gradient_top_summary">הצג מדרון צבעים מאחורי תצוגת העל בחלק העליון של המסך על מנת להקל את תצוגתם</string>
   <string name="appearance_gradient_top_title">הצג מדרון צבעים בחלק העליון של המסך</string>
-  <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען...״ בזמן טעינת האפליקציה</string>
+  <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען…״ בזמן טעינת האפליקציה</string>
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
   <string name="appearance_loading_size_title">גודל</string>
   <string name="appearance_loading_weight_title">משקל</string>
@@ -198,7 +198,7 @@
   <string name="local_videos_search_test">בדוק את הגדרות החיפוש המקומי</string>
   <string name="local_videos_search_type_title">בחר כיצד סרטונים ותמונות יימצאו</string>
   <string name="local_videos_shield_notice_summary">הגדרות &gt; העדפות המכשיר &gt; אחסון &gt; סריקה אוטומטית לאיתור מדיה</string>
-  <string name="local_videos_shield_notice_title">משתמשי Nvidia Shield, ודא שהאפשרות הבאה מופעלת...</string>
+  <string name="local_videos_shield_notice_title">משתמשי Nvidia Shield, ודא שהאפשרות הבאה מופעלת…</string>
   <string name="local_videos_test_results">תוצאות מבחן</string>
   <string name="nowplaying_line1_title">מנגן כעת - שורה 1</string>
   <string name="nowplaying_line2_title">מנגן כעת - שורה 2</string>

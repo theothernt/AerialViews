@@ -52,10 +52,10 @@
   <string name="appearance_gradient_title">Градієнти</string>
   <string name="appearance_gradient_top_summary">Показати градієнт за накладками у верхній частині екрана, щоб їх було легше побачити</string>
   <string name="appearance_gradient_top_title">Показати верхній градієнт</string>
-  <string name="appearance_loading_show_summary">Відображає текст \" Завантаження...\" під час завантаження програми</string>
+  <string name="appearance_loading_show_summary">Відображає текст \" Завантаження…\" під час завантаження програми</string>
   <string name="appearance_loading_show_title">Показувати текст завантаження</string>
   <string name="appearance_loading_size_title">Розмір</string>
-  <string name="appearance_loading_weight_title">Вага</string>
+  <string name="appearance_loading_weight_title">Насиченість</string>
   <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
   <string name="appearance_location_title">Місце розташування</string>
   <string name="appearance_message_line1_summary">Введіть текст для відображення, включаючи емодзі</string>
@@ -86,7 +86,7 @@
   <string name="appearance_typography_title">Шрифт</string>
   <string name="appearance_weather_summary">Відображення поточних погодних умов</string>
   <string name="appearance_weather_title">Погода</string>
-  <string name="appearance_weight_title">Накреслення шрифту</string>
+  <string name="appearance_weight_title">Насиченість шрифту</string>
   <string name="apple_videos_data_estimate_summary">Приблизно %1$s на годину</string>
   <string name="apple_videos_data_usage_title">Використання даних</string>
   <string name="apple_videos_enabled">Використовуйте відео Apple</string>
