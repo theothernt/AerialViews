@@ -39,7 +39,11 @@ class NowPlayingService(private val context: Context, private val prefs: General
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
         super.onMetadataChanged(metadata)
-        updateNowPlaying(metadata, null)
+        try {
+            updateNowPlaying(metadata, null)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Error setting Now Playing info")
+        }
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
@@ -49,8 +53,12 @@ class NowPlayingService(private val context: Context, private val prefs: General
             return
         }
 
-        val active = isActive(state.state)
-        updateNowPlaying(null, active)
+        try {
+            val active = isActive(state.state)
+            updateNowPlaying(null, active)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Error setting Now Playing info")
+        }
     }
 
     private fun setupSession() {
