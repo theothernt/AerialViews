@@ -47,11 +47,12 @@ class TestActivity : Activity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return if (InputHelper.handleKeyEvent(event, screenController, ::finish)) {
-            true
-        } else {
-            super.dispatchKeyEvent(event)
+        if (this::screenController.isInitialized &&
+            InputHelper.handleKeyEvent(event, screenController, ::finish)
+        ) {
+            return true
         }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {

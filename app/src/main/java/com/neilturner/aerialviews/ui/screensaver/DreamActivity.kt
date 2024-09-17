@@ -47,11 +47,12 @@ class DreamActivity : DreamService() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return if (InputHelper.handleKeyEvent(event, screenController, ::wakeUp)) {
-            true
-        } else {
-            super.dispatchKeyEvent(event)
+        if (this::screenController.isInitialized &&
+            InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
+        ) {
+            return true
         }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
