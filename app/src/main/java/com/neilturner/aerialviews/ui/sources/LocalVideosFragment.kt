@@ -138,7 +138,7 @@ class LocalVideosFragment :
             val result = provider.fetchTest()
             ensureActive()
             showDialog(resources.getString(R.string.local_videos_test_results), result)
-    }
+        }
 
     private fun checkForMediaPermission() {
         // If we already have permission, exit

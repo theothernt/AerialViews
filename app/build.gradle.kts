@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 val kotlinVersion: String by rootProject.extra
 
 plugins {
@@ -9,6 +12,15 @@ plugins {
     id("de.mannodermaus.android-junit5")
     id("com.google.devtools.ksp")
     id("org.jmailen.kotlinter")
+}
+
+fun loadProperties(fileName: String): Properties {
+    val properties = Properties()
+    val propertiesFile = rootProject.file("signing/$fileName")
+    if (propertiesFile.exists()) {
+        properties.load(FileInputStream(propertiesFile))
+    }
+    return properties
 }
 
 android {
@@ -82,23 +94,45 @@ android {
         }
     }
 
+    signingConfigs {
+        create("release") {
+            val releaseProps = loadProperties("release.properties")
+            storeFile = releaseProps["storeFile"]?.let { file(it) }
+            storePassword = releaseProps["storePassword"] as String?
+            keyAlias = releaseProps["keyAlias"] as String?
+            keyPassword = releaseProps["keyPassword"] as String?
+        }
+        create("legacy") {
+            val releaseProps = loadProperties("legacy.properties")
+            storeFile = releaseProps["storeFile"]?.let { file(it) }
+            storePassword = releaseProps["storePassword"] as String?
+            keyAlias = releaseProps["keyAlias"] as String?
+            keyPassword = releaseProps["keyPassword"] as String?
+        }
+    }
+
     flavorDimensions += "version"
     productFlavors {
         create("github") {
+            signingConfig = signingConfigs.getByName("legacy")
             dimension = "version"
         }
         create("beta") {
+            signingConfig = signingConfigs.getByName("legacy")
             dimension = "version"
             isDefault = true
             versionNameSuffix = "-beta1"
         }
         create("googleplay") {
+            signingConfig = signingConfigs.getByName("release")
             dimension = "version"
         }
         create("amazon") {
+            signingConfig = signingConfigs.getByName("release")
             dimension = "version"
         }
         create("fdroid") {
+            signingConfig = signingConfigs.getByName("release")
             dimension = "version"
         }
     }
