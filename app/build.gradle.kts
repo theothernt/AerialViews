@@ -6,10 +6,11 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     alias(libs.plugins.ksp)
-    id("com.google.firebase.crashlytics")
-    id("org.jmailen.kotlinter")
-    id("com.google.gms.google-services")
-    id("de.mannodermaus.android-junit5")
+    alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.android.junit5)
+    //alias(libs.plugins.google.services)
+    //id("com.google.firebase.crashlytics")
+
 }
 
 fun loadProperties(fileName: String): Properties {

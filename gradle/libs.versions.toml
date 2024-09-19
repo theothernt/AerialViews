@@ -4,9 +4,9 @@ gradle = "8.6.1"
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.2"
 firebase-perf-plugin = "1.4.2"
-android-junit5 = "1.8.2.0"
+android-junit5 = "1.11.0.0"
 gradle-doctor = "0.9.1"
-kotlinter = "4.3.0"
+kotlinter-gradle = "4.4.1"
 ksp = "2.0.20-1.0.24"
 
 # Kotlin + Coroutines
@@ -100,11 +100,11 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 
 [plugins]
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-#kotlin-gradle = { id = "org.jetbrains.kotlin",  version.ref = "kotlin" }
-#android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
-#google-services = { id = "com.google.gms", version.ref = "google-services" }
+kotlin-gradle = { id = "org.jetbrains.kotlin",  version.ref = "kotlin" }
+android-gradle = { id = "com.android.tools.build", version.ref = "gradle" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
-#android-junit5 = { id = "de.mannodermaus.gradle.plugins", version.ref = "android-junit5" }
-#gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
-#kotlinter = { group = "org.jmailen.kotlinter", name = "kotlinter", version.ref = "kotlinter" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
+gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
