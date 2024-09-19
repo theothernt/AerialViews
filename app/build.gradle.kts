@@ -2,15 +2,15 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     kotlin("android")
     kotlin("kapt")
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlinter.gradle)
     alias(libs.plugins.android.junit5)
-    //alias(libs.plugins.google.services)
-    //id("com.google.firebase.crashlytics")
-
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
 }
 
 fun loadProperties(fileName: String): Properties {
@@ -156,7 +156,6 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
-
     implementation(libs.core.ktx)
     implementation(libs.leanback)
     implementation(libs.leanback.preference)
@@ -164,38 +163,27 @@ dependencies {
     implementation(libs.activity.ktx)
     implementation(libs.constraintlayout)
     implementation(libs.appcompat)
-
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
     implementation(libs.logging.interceptor)
     implementation(libs.moshi.kotlin)
     ksp(libs.moshi.codegen)
     implementation(libs.gson)
-
     implementation(libs.media3.exoplayer)
-
     implementation(libs.flowbus)
     implementation(libs.flowbus.android)
-
     implementation(libs.kotpref)
     implementation(libs.kotpref.initializer)
     implementation(libs.kotpref.enum.support)
-
     implementation(libs.smbj)
-
     implementation(libs.sardine.android)
-
     implementation(libs.coil)
     implementation(libs.coil.gif)
-
     implementation(libs.timber)
-
     debugImplementation(libs.leakcanary)
-
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
 }
-
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
