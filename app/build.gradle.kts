@@ -1,17 +1,15 @@
 import java.io.FileInputStream
 import java.util.Properties
 
-val kotlinVersion: String by rootProject.extra
-
 plugins {
+    id("com.android.application")
     kotlin("android")
     kotlin("kapt")
-    id("com.android.application")
-    id("com.google.gms.google-services")
+    alias(libs.plugins.ksp)
     id("com.google.firebase.crashlytics")
-    id("de.mannodermaus.android-junit5")
-    id("com.google.devtools.ksp")
     id("org.jmailen.kotlinter")
+    id("com.google.gms.google-services")
+    id("de.mannodermaus.android-junit5")
 }
 
 fun loadProperties(fileName: String): Properties {
