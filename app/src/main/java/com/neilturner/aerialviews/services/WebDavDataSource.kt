@@ -47,9 +47,7 @@ class WebDavDataSource : BaseDataSource(true) {
         buffer: ByteArray,
         offset: Int,
         readLength: Int,
-    ): Int {
-        return readInternal(buffer, offset, readLength)
-    }
+    ): Int = readInternal(buffer, offset, readLength)
 
     override fun getUri() = dataSpec.uri
 
@@ -120,7 +118,5 @@ class WebDavDataSource : BaseDataSource(true) {
 
 class WebDavDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
-    override fun createDataSource(): DataSource {
-        return WebDavDataSource()
-    }
+    override fun createDataSource(): DataSource = WebDavDataSource()
 }

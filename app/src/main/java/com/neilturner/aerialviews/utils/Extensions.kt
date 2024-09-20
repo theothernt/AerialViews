@@ -54,24 +54,21 @@ fun MultiSelectListPreference.setSummaryFromValues(values: Set<String>) {
 fun Any?.toBoolean() = this?.toString().equals("true", ignoreCase = true)
 
 // https://stackoverflow.com/a/41855007/247257
-inline fun <reified T : Enum<T>> enumContains(name: String): Boolean {
-    return enumValues<T>().any { it.name == name }
-}
+inline fun <reified T : Enum<T>> enumContains(name: String): Boolean = enumValues<T>().any { it.name == name }
 
 // inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
 //    return enumValues<T>().find { it.name == name }
 // }
 
 // https://stackoverflow.com/a/67843987/247257
-fun String.capitalise(): String {
-    return this.replaceFirstChar {
+fun String.capitalise(): String =
+    this.replaceFirstChar {
         if (it.isLowerCase()) {
             it.titlecase(Locale.getDefault())
         } else {
             it.toString()
         }
     }
-}
 
 // https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
 fun View.delayOnLifecycle(

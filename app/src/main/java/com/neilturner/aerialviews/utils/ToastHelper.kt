@@ -11,11 +11,12 @@ object ToastHelper {
         message: String,
         toastLength: Int = Toast.LENGTH_LONG,
     ) = withContext(Dispatchers.Main) {
-        Toast.makeText(
-            context,
-            message,
-            toastLength,
-        ).show()
+        Toast
+            .makeText(
+                context,
+                message,
+                toastLength,
+            ).show()
     }
 
     suspend fun show(

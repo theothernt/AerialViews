@@ -16,31 +16,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class LocalMediaProvider(context: Context, private val prefs: LocalMediaPrefs) : MediaProvider(context) {
+class LocalMediaProvider(
+    context: Context,
+    private val prefs: LocalMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return if (prefs.searchType == SearchType.MEDIA_STORE) {
+    override suspend fun fetchMedia(): List<AerialMedia> =
+        if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().first
         } else {
             folderAccessFetch().first
         }
-    }
 
-    override suspend fun fetchTest(): String {
-        return if (prefs.searchType == SearchType.MEDIA_STORE) {
+    override suspend fun fetchTest(): String =
+        if (prefs.searchType == SearchType.MEDIA_STORE) {
             mediaStoreFetch().second
         } else {
             folderAccessFetch().second
         }
-    }
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources

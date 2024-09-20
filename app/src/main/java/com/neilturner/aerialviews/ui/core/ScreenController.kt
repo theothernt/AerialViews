@@ -31,8 +31,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class ScreenController(private val context: Context) :
-    OnVideoPlayerEventListener,
+class ScreenController(
+    private val context: Context,
+) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
@@ -261,8 +262,7 @@ class ScreenController(private val context: Context) :
             .setDuration(mediaFadeOut)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
-            }
-            .withEndAction {
+            }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
                 videoViewBinding.videoPlayer.stop()

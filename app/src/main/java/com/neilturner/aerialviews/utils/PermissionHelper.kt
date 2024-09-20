@@ -13,17 +13,16 @@ object PermissionHelper {
 
     // Images + Videos = Read permission
 
-    fun hasMediaReadPermission(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    fun hasMediaReadPermission(context: Context): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
-    }
 
-    fun getReadMediaPermissions(): Array<String> {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    fun getReadMediaPermissions(): Array<String> =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
                 Manifest.permission.READ_MEDIA_VIDEO,
                 Manifest.permission.READ_MEDIA_IMAGES,
@@ -31,10 +30,9 @@ object PermissionHelper {
         } else {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-    }
 
-    fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             results.getOrDefault(Manifest.permission.READ_MEDIA_VIDEO, false) &&
                 results.getOrDefault(Manifest.permission.READ_MEDIA_IMAGES, false)
         } else {
@@ -44,7 +42,6 @@ object PermissionHelper {
                 false
             }
         }
-    }
 
     // Text/Document = Read/Write permission
 
@@ -57,30 +54,25 @@ object PermissionHelper {
         }
     }
 
-    fun hasDocumentWritePermission(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    fun hasDocumentWritePermission(context: Context): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             true
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
-    }
 
-    fun getWriteDocumentPermission(): String {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+    fun getWriteDocumentPermission(): String =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             // WRITE_EXTERNAL_STORAGE is useless above Android 10
             // So request existing permission anyway
             Manifest.permission.READ_EXTERNAL_STORAGE
         } else {
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         }
-    }
 
-    fun hasNotificationListenerPermission(context: Context): Boolean {
-        return NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
-    }
+    fun hasNotificationListenerPermission(context: Context): Boolean =
+        NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     @Suppress("SameReturnValue")
-    fun getReadDocumentPermission(): String {
-        return Manifest.permission.READ_EXTERNAL_STORAGE
-    }
+    fun getReadDocumentPermission(): String = Manifest.permission.READ_EXTERNAL_STORAGE
 }

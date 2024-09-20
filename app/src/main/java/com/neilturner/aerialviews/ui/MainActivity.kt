@@ -59,14 +59,16 @@ class MainActivity :
         // Instantiate the new Fragment
         val args = pref.extras
         val fragment =
-            supportFragmentManager.fragmentFactory.instantiate(
-                classLoader,
-                pref.fragment.toString(),
-            ).apply {
-                arguments = args
-            }
+            supportFragmentManager.fragmentFactory
+                .instantiate(
+                    classLoader,
+                    pref.fragment.toString(),
+                ).apply {
+                    arguments = args
+                }
         // Replace the existing Fragment with the new Fragment
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+            .beginTransaction()
             .replace(R.id.settings, fragment)
             .addToBackStack(null)
             .commitAllowingStateLoss()

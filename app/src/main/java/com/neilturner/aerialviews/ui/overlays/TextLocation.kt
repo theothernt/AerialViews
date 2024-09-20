@@ -76,10 +76,18 @@ class TextLocation : AppCompatTextView {
             if (shouldUpdate && !isFadingOutMedia) {
                 // Set new string and fade in
                 lastPoi = newPoi
-                this.animate().alpha(0f).setDuration(1000).withEndAction {
-                    this.text = poi[newPoi]?.replace("\n", " ")
-                    this.animate().alpha(textAlpha).setDuration(1000).start()
-                }.start()
+                this
+                    .animate()
+                    .alpha(0f)
+                    .setDuration(1000)
+                    .withEndAction {
+                        this.text = poi[newPoi]?.replace("\n", " ")
+                        this
+                            .animate()
+                            .alpha(textAlpha)
+                            .setDuration(1000)
+                            .start()
+                    }.start()
             }
 
             // Set new interval for POI string update

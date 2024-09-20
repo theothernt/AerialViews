@@ -13,7 +13,9 @@ enum class CodecType {
     DECODER,
 }
 
-class Codec(source: MediaCodecInfo) {
+class Codec(
+    source: MediaCodecInfo,
+) {
     val name: String = source.name
     val codingFunction: CodecType = if (source.isEncoder) CodecType.ENCODER else CodecType.DECODER
     val mimeTypes: Array<String> = source.supportedTypes

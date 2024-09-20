@@ -24,23 +24,20 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.net.URLEncoder
 
-class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
+class SambaMediaProvider(
+    context: Context,
+    private val prefs: SambaMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchSambaMedia().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchSambaMedia().first
 
-    override suspend fun fetchTest(): String {
-        return fetchSambaMedia().second
-    }
+    override suspend fun fetchTest(): String = fetchSambaMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

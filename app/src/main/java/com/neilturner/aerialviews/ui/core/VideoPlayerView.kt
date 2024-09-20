@@ -32,7 +32,12 @@ import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.milliseconds
 
 @SuppressLint("UnsafeOptInUsageError")
-class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceView(context, attrs), MediaPlayerControl, Player.Listener {
+class VideoPlayerView(
+    context: Context,
+    attrs: AttributeSet? = null,
+) : SurfaceView(context, attrs),
+    MediaPlayerControl,
+    Player.Listener {
     private val player: ExoPlayer
     private var aspectRatio = 0f
     private var prepared = false
@@ -97,13 +102,15 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         when (media.source) {
             AerialMediaSource.SAMBA -> {
                 val mediaSource =
-                    ProgressiveMediaSource.Factory(SambaDataSourceFactory())
+                    ProgressiveMediaSource
+                        .Factory(SambaDataSourceFactory())
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
             AerialMediaSource.WEBDAV -> {
                 val mediaSource =
-                    ProgressiveMediaSource.Factory(WebDavDataSourceFactory())
+                    ProgressiveMediaSource
+                        .Factory(WebDavDataSourceFactory())
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
@@ -416,7 +423,8 @@ class VideoPlayerView(context: Context, attrs: AttributeSet? = null) : SurfaceVi
         }
 
         val player =
-            ExoPlayer.Builder(context)
+            ExoPlayer
+                .Builder(context)
                 .setTrackSelector(trackSelector)
                 .setRenderersFactory(rendererFactory)
                 .build()

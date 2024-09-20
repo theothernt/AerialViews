@@ -15,16 +15,15 @@ import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 
-class OverlayHelper(private val context: Context, private val prefs: GeneralPrefs) {
+class OverlayHelper(
+    private val context: Context,
+    private val prefs: GeneralPrefs,
+) {
     var overlays = mutableListOf<View?>()
 
-    inline fun <reified T : View> findOverlay(): List<T> {
-        return overlays.filterIsInstance<T>()
-    }
+    inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
-    inline fun <reified T : View> isOverlayEnabled(): Boolean {
-        return findOverlay<T>().isNotEmpty()
-    }
+    inline fun <reified T : View> isOverlayEnabled(): Boolean = findOverlay<T>().isNotEmpty()
 
     // Assign IDs/Overlays to correct Flow - or alternate
     fun assignOverlaysAndIds(

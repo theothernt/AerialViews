@@ -26,7 +26,9 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import timber.log.Timber
 
-class MediaService(val context: Context) {
+class MediaService(
+    val context: Context,
+) {
     private val providers = mutableListOf<MediaProvider>()
 
     init {

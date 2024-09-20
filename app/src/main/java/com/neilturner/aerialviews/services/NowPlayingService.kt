@@ -16,9 +16,10 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
-class NowPlayingService(private val context: Context) :
-    MediaSessionManager.OnActiveSessionsChangedListener,
-    MediaController.Callback() {
+class NowPlayingService(
+    private val context: Context,
+) : MediaController.Callback(),
+    MediaSessionManager.OnActiveSessionsChangedListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
@@ -123,15 +124,14 @@ class NowPlayingService(private val context: Context) :
         coroutineScope.cancel()
     }
 
-    private fun isActive(state: Int?): Boolean {
-        return (
+    private fun isActive(state: Int?): Boolean =
+        (
             state != PlaybackState.STATE_STOPPED &&
                 state != PlaybackState.STATE_PAUSED &&
                 state != PlaybackState.STATE_ERROR &&
                 state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
-    }
 }
 
 data class MusicEvent(

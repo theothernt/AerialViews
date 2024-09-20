@@ -15,8 +15,8 @@ object DateHelper {
         context: Context,
         type: DateType,
         custom: String?,
-    ): String {
-        return when (type) {
+    ): String =
+        when (type) {
             DateType.FULL -> {
                 DateFormat.getDateInstance(DateFormat.FULL).format(Date())
             }
@@ -34,5 +34,4 @@ object DateHelper {
                 }
             }
         }
-    }
 }

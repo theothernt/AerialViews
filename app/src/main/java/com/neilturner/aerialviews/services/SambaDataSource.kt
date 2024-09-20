@@ -73,9 +73,7 @@ class SambaDataSource : BaseDataSource(true) {
         buffer: ByteArray,
         offset: Int,
         readLength: Int,
-    ): Int {
-        return readInternal(buffer, offset, readLength)
-    }
+    ): Int = readInternal(buffer, offset, readLength)
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri
@@ -164,7 +162,5 @@ class SambaDataSource : BaseDataSource(true) {
 
 class SambaDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
-    override fun createDataSource(): DataSource {
-        return SambaDataSource()
-    }
+    override fun createDataSource(): DataSource = SambaDataSource()
 }

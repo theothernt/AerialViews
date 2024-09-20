@@ -22,15 +22,14 @@ enum class HDRFormat {
     UNKNOWN,
 }
 
-fun hdrTypeToFormat(value: Int): HDRFormat {
-    return when (value) {
+fun hdrTypeToFormat(value: Int): HDRFormat =
+    when (value) {
         NativeDisplay.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> HDRFormat.DOLBY_VISION
         NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10 -> HDRFormat.HDR10
         NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10_PLUS -> HDRFormat.HDR10_PLUS
         NativeDisplay.HdrCapabilities.HDR_TYPE_HLG -> HDRFormat.HLG
         else -> HDRFormat.UNKNOWN
     }
-}
 
 enum class PowerState {
     OFF,
@@ -41,8 +40,8 @@ enum class PowerState {
     UNKNOWN,
 }
 
-fun displayStateToPowerState(value: Int): PowerState {
-    return when (value) {
+fun displayStateToPowerState(value: Int): PowerState =
+    when (value) {
         NativeDisplay.STATE_OFF -> PowerState.OFF
         NativeDisplay.STATE_ON -> PowerState.ON
         NativeDisplay.STATE_DOZE -> PowerState.DOZE
@@ -50,9 +49,13 @@ fun displayStateToPowerState(value: Int): PowerState {
         NativeDisplay.STATE_ON_SUSPEND -> PowerState.ON_SUSPEND
         else -> PowerState.UNKNOWN
     }
-}
 
-class OutputDescription(val id: Int, val width: Int, val height: Int, val refreshRate: Float) {
+class OutputDescription(
+    val id: Int,
+    val width: Int,
+    val height: Int,
+    val refreshRate: Float,
+) {
     override fun toString(): String {
         val formattedRefreshRate = "%.2f".format(refreshRate.toDouble())
         return "${width}x$height @ ${formattedRefreshRate}hz"
@@ -61,7 +64,11 @@ class OutputDescription(val id: Int, val width: Int, val height: Int, val refres
 
 @Suppress("DEPRECATION")
 @SuppressLint("UnsafeOptInUsageError")
-class Display(source: NativeDisplay, windowManager: WindowManager, context: Context) {
+class Display(
+    source: NativeDisplay,
+    windowManager: WindowManager,
+    context: Context,
+) {
     val name: String = source.name
     val id: Int = source.displayId
 

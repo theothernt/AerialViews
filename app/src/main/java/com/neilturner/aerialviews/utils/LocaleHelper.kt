@@ -47,9 +47,7 @@ object LocaleHelper {
         return Locale.ENGLISH
     }
 
-    fun isLtrText(text: String): Boolean {
-        return Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isLeftToRight
-    }
+    fun isLtrText(text: String): Boolean = Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isLeftToRight
 
     fun alternateLocale(
         context: Context,

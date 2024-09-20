@@ -34,9 +34,7 @@ class AboutFragment : PreferenceFragmentCompat() {
         date?.summary = buildDateSummary()
     }
 
-    private fun buildVersionSummary(): String {
-        return "Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})"
-    }
+    private fun buildVersionSummary(): String = "Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})"
 
     private fun buildDateSummary(): String {
         val dateFormat = SimpleDateFormat("dd/MM/yyyy 'at' HH:mm", Locale.getDefault())

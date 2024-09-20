@@ -18,23 +18,20 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs) : MediaProvider(context) {
+class WebDavMediaProvider(
+    context: Context,
+    private val prefs: WebDavMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchWebDavMedia().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchWebDavMedia().first
 
-    override suspend fun fetchTest(): String {
-        return fetchWebDavMedia().second
-    }
+    override suspend fun fetchTest(): String = fetchWebDavMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

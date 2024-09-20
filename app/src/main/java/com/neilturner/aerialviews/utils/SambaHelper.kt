@@ -91,7 +91,8 @@ object SambaHelper {
     fun buildSmbConfig(): SmbConfig {
         val dialectStrings = SambaMediaPrefs.smbDialects
         val config =
-            SmbConfig.builder()
+            SmbConfig
+                .builder()
                 .withEncryptData(SambaMediaPrefs.enableEncryption)
                 .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {

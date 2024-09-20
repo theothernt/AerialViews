@@ -5,7 +5,9 @@ import com.neilturner.aerialviews.BuildConfig
 import timber.log.Timber
 
 @Suppress("SameParameterValue")
-class MigrationHelper(val context: Context) {
+class MigrationHelper(
+    val context: Context,
+) {
     private val prefsPackageName = "${context.packageName}_preferences"
     private val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)
 
@@ -286,9 +288,7 @@ class MigrationHelper(val context: Context) {
     }
 
     // Get saved revision code or return 0
-    private fun getLastKnownVersion(): Int {
-        return prefs.getInt("last_known_version", 0)
-    }
+    private fun getLastKnownVersion(): Int = prefs.getInt("last_known_version", 0)
 
     // Update saved revision code or return 0
     private fun updateKnownVersion(versionCode: Int) {

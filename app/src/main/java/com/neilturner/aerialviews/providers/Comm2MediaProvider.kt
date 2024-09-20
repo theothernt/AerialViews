@@ -12,19 +12,18 @@ import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
 
-class Comm2MediaProvider(context: Context, private val prefs: Comm2VideoPrefs) : MediaProvider(context) {
+class Comm2MediaProvider(
+    context: Context,
+    private val prefs: Comm2VideoPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchCommunityVideos().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchCommunityVideos().first
 
-    override suspend fun fetchTest(): String {
-        return fetchCommunityVideos().second
-    }
+    override suspend fun fetchTest(): String = fetchCommunityVideos().second
 
     override suspend fun fetchMetadata(): List<VideoMetadata> {
         val metadata = mutableListOf<VideoMetadata>()

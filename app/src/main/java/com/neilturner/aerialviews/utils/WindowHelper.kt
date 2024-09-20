@@ -124,12 +124,13 @@ object WindowHelper {
             }
 
         if (BuildConfig.DEBUG) {
-            Toast.makeText(
-                activity,
-                "Available: ${refreshRates.joinToString(", ")}\n" +
-                    "Selected: ${newMode.refreshRate.toString().take(5)} (${newRefreshRate.toString().take(5)} fps)",
-                Toast.LENGTH_LONG,
-            ).show()
+            Toast
+                .makeText(
+                    activity,
+                    "Available: ${refreshRates.joinToString(", ")}\n" +
+                        "Selected: ${newMode.refreshRate.toString().take(5)} (${newRefreshRate.toString().take(5)} fps)",
+                    Toast.LENGTH_LONG,
+                ).show()
         }
     }
 

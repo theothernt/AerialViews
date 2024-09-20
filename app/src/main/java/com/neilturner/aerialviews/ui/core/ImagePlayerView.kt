@@ -54,8 +54,7 @@ class ImagePlayerView :
                 } else {
                     add(GifDecoder.Factory())
                 }
-            }
-            .build()
+            }.build()
 
     init {
         val scaleType =
@@ -105,7 +104,8 @@ class ImagePlayerView :
 
     private suspend fun loadImage(uri: Uri) {
         val request =
-            ImageRequest.Builder(context)
+            ImageRequest
+                .Builder(context)
                 .target(this)
         request.data(uri)
         imageLoader.execute(request.build())

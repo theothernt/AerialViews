@@ -60,18 +60,15 @@ object FileHelper {
         return images
     }
 
-    fun isDotOrHiddenFile(filename: String): Boolean {
-        return filename.startsWith(".")
-    }
+    fun isDotOrHiddenFile(filename: String): Boolean = filename.startsWith(".")
 
-    fun isSupportedVideoType(filename: String): Boolean {
-        return filename.endsWith(".mov", true) ||
+    fun isSupportedVideoType(filename: String): Boolean =
+        filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
             filename.endsWith(".m4v", true) ||
             filename.endsWith(".webm", true) ||
             filename.endsWith(".mkv", true) ||
             filename.endsWith(".ts", true)
-    }
 
     fun isSupportedImageType(filename: String): Boolean {
         if (filename.endsWith(".avif", true) &&
@@ -84,7 +81,8 @@ object FileHelper {
             filename.endsWith(".jpeg", true) ||
             filename.endsWith(".gif", true) ||
             filename.endsWith(".webp", true) ||
-            filename.endsWith(".heic", true) || // HEIF format
+            filename.endsWith(".heic", true) ||
+            // HEIF format
             filename.endsWith(".png", true)
     }
 

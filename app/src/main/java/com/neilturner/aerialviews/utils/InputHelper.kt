@@ -115,8 +115,8 @@ object InputHelper {
         return false
     }
 
-    private fun anyDpadActionsEnabled(): Boolean {
-        return GeneralPrefs.buttonUpPress != ButtonType.IGNORE ||
+    private fun anyDpadActionsEnabled(): Boolean =
+        GeneralPrefs.buttonUpPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonDownPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonLeftPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonRightPress != ButtonType.IGNORE ||
@@ -124,12 +124,10 @@ object InputHelper {
             GeneralPrefs.buttonDownHold != ButtonType.IGNORE ||
             GeneralPrefs.buttonLeftHold != ButtonType.IGNORE ||
             GeneralPrefs.buttonRightHold != ButtonType.IGNORE
-    }
 
-    private fun anyOkButtonActionsEnabled(): Boolean {
-        return GeneralPrefs.buttonOkPress != ButtonType.IGNORE ||
+    private fun anyOkButtonActionsEnabled(): Boolean =
+        GeneralPrefs.buttonOkPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonOkHold != ButtonType.IGNORE
-    }
 
     private fun executeAction(
         type: ButtonType?,
