@@ -74,22 +74,19 @@ android {
             applicationIdSuffix = ".debug"
             isDebuggable = true
             isMinifyEnabled = false
-
             // isPseudoLocalesEnabled = true
-            // isMinifyEnabled = true
         }
         getByName("release") {
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true
             isShrinkResources = true
+            // isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["performanceCollectionEnabled"] = true
-
-            // isDebuggable = true
         }
     }
 
@@ -153,33 +150,20 @@ dependencies {
     "googleplayImplementation"(libs.bundles.firebase)
     "amazonImplementation"(libs.bundles.firebase)
 
-    implementation(libs.kotlin.stdlib)
-    implementation(libs.coroutines.core)
-    implementation(libs.coroutines.android)
-    implementation(libs.core.ktx)
-    implementation(libs.leanback)
-    implementation(libs.leanback.preference)
-    implementation(libs.preference.ktx)
-    implementation(libs.activity.ktx)
-    implementation(libs.constraintlayout)
-    implementation(libs.appcompat)
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.logging.interceptor)
-    implementation(libs.moshi.kotlin)
+    implementation(libs.bundles.kotlin)
+    implementation(libs.bundles.androidx)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.flowbus)
+    implementation(libs.bundles.kotpref)
+    implementation(libs.bundles.coil)
+
     ksp(libs.moshi.codegen)
-    implementation(libs.gson)
     implementation(libs.media3.exoplayer)
-    implementation(libs.flowbus)
-    implementation(libs.flowbus.android)
-    implementation(libs.kotpref)
-    implementation(libs.kotpref.initializer)
-    implementation(libs.kotpref.enum.support)
-    implementation(libs.smbj)
     implementation(libs.sardine.android)
-    implementation(libs.coil)
-    implementation(libs.coil.gif)
+    implementation(libs.gson)
+    implementation(libs.smbj)
     implementation(libs.timber)
+
     debugImplementation(libs.leakcanary)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
