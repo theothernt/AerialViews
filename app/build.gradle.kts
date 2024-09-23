@@ -57,6 +57,7 @@ android {
     // https://stackoverflow.com/a/54862243/247257
     bundle {
         language {
+            @Suppress("UnstableApiUsage")
             enableSplit = false
         }
     }
