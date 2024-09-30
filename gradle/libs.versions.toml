@@ -58,7 +58,7 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Unit Testing
-junit-jupiter = "5.11.0"
+junit-jupiter = "5.11.1"
 
 [libraries]
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
