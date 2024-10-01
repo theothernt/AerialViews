@@ -200,8 +200,8 @@
   <string name="local_videos_shield_notice_summary">Настройки &gt; Настройки устройства &gt; Хранилище &gt; Автоматическое сканирование медиафайлов</string>
   <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
   <string name="local_videos_test_results">Результаты теста</string>
-  <string name="nowplaying_line1_title">Сейчас играем - Линия 1</string>
-  <string name="nowplaying_line2_title">Сейчас играем - Линия 2</string>
+  <string name="nowplaying_line1_title">Сейчас играет - Линия 1</string>
+  <string name="nowplaying_line2_title">Сейчас играет - Линия 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Эта функция недоступна в старых версиях Android TV</string>
   <string name="nowplaying_permission_notice_summary">Чтобы включить доступ к уведомлениям, перейдите в Настройки &gt; Приложения &gt; Пользовательский доступ &gt; Доступ к уведомлениям</string>
   <string name="nowplaying_permission_summary">Требуется разрешение, чтобы это приложение могло прослушивать музыкальные уведомления из системы</string>
