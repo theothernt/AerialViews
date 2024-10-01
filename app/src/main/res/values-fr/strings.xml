@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Pour activer l\'accès aux notifications, veuillez consulter la rubrique Paramètres &gt; Apps &gt; Special Access &gt; Notification access</string>
   <string name="nowplaying_permission_summary">Cette autorisation est nécessaire pour que l\'application puisse écouter les notifications musicales du système.</string>
   <string name="nowplaying_permission_title">Activer l\'accès à la notification du système</string>
+  <string name="nowplaying_toast_text">Accédez à \"Accès spéciaux des applis\" > \"Accès aux notifications\" et activez Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Transmet les pressions sur les boutons de lecture, de pause, de retour en arrière, etc. à l\'application d\'arrière-plan (par exemple, l\'application musicale) sans quitter l\'économiseur d\'écran.</string>
   <string name="playlist_allow_media_button_passthrough_title">Autoriser le passage des boutons de média</string>
   <string name="playlist_allow_playback_speed_change_summary">Modifiez la vitesse de la vidéo en appuyant sur le haut ou le bas du d-pad de votre télécommande.</string>

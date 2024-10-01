@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -39,10 +40,19 @@ class OverlaysNowPlayingFragment :
 
     private fun openNotificationSettings() {
         try {
-            val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+            val intent = Intent(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
             startActivity(intent)
         } catch (ex: Exception) {
             Timber.e(ex, "Unable to open notification settings: ${ex.message}")
+            try {
+                val intent = Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS)
+                startActivity(intent)
+
+                val toast = Toast.makeText(requireContext(), R.string.nowplaying_toast_text, Toast.LENGTH_LONG)
+                toast.show()
+            } catch (ex2: Exception) {
+                Timber.e(ex2, "Unable to open manage application settings: ${ex2.message}")
+            }
         }
     }
 

@@ -35,7 +35,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Music
     var nowPlayingLine1 by nullableEnumValuePref(NowPlayingFormat.SONG_ARTIST, "nowplaying_line1")
-    var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISALBED, "nowplaying_line2")
+    var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISABLED, "nowplaying_line2")
     var nowPlayingSize by stringPref("18", "nowplaying_size")
     var nowPlayingWeight by stringPref("300", "nowplaying_weight")
 

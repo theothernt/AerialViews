@@ -22,7 +22,7 @@ import me.kosert.flowbus.GlobalBus
 
 class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
-    var format = NowPlayingFormat.DISALBED
+    var format = NowPlayingFormat.DISABLED
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val receiver = EventsReceiver()
@@ -36,7 +36,7 @@ class TextNowPlaying : AppCompatTextView {
     }
 
     fun updateFormat(format: NowPlayingFormat?) {
-        this.format = format ?: NowPlayingFormat.DISALBED
+        this.format = format ?: NowPlayingFormat.DISABLED
     }
 
     @OptIn(FlowPreview::class)
@@ -69,8 +69,12 @@ class TextNowPlaying : AppCompatTextView {
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
         val (artist, song) = trackInfo
         return when (format) {
-            NowPlayingFormat.SONG_ARTIST -> "$song · $artist"
-            NowPlayingFormat.ARTIST_SONG -> "$artist · $song"
+            NowPlayingFormat.SONG_ARTIST ->
+                if (song.isNotBlank() && artist.isNotBlank()) "$song · $artist"
+                else song.takeIf { it.isNotBlank() } ?: artist
+            NowPlayingFormat.ARTIST_SONG ->
+                if (artist.isNotBlank() && song.isNotBlank()) "$artist · $song"
+                else artist.takeIf { it.isNotBlank() } ?: song
             NowPlayingFormat.ARTIST -> artist
             NowPlayingFormat.SONG -> song
             else -> ""

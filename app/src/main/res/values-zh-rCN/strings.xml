@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">要启用通知访问，请在设置&gt; 应用程序&gt; 特殊访问&gt; 通知访问</string>
   <string name="nowplaying_permission_summary">必须获得许可，此应用程序才能监听来自系统的音乐通知</string>
   <string name="nowplaying_permission_title">启用系统通知访问</string>
+  <string name="nowplaying_toast_text">转到特殊应用权限>通知访问，然后打开 Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">在不退出屏保的情况下，将按下的播放、暂停、倒带等按钮传递给后台程序（如音乐程序</string>
   <string name="playlist_allow_media_button_passthrough_title">允许媒体按钮直通</string>
   <string name="playlist_allow_playback_speed_change_summary">按遥控器方向键的向上或向下更改视频速度</string>

@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Чтобы включить доступ к уведомлениям, перейдите в Настройки &gt; Приложения &gt; Пользовательский доступ &gt; Доступ к уведомлениям</string>
   <string name="nowplaying_permission_summary">Требуется разрешение, чтобы это приложение могло прослушивать музыкальные уведомления из системы</string>
   <string name="nowplaying_permission_title">Включить доступ к системным уведомлениям</string>
+  <string name="nowplaying_toast_text">Перейдите в \"Специальный доступ\" > \"Доступ к уведомлениям\" и включите Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Передаёт нажатия кнопок воспроизведения, паузы, перемотки назад и т.д. в фоновое приложение (например, музыкальное приложение) без выхода из заставки.</string>
   <string name="playlist_allow_media_button_passthrough_title">Разрешить сквозную передачу кнопок мультимедиа</string>
   <string name="playlist_allow_playback_speed_change_summary">Изменяйте скорость видео, нажимая вверх или вниз на крестовине пульта управления</string>

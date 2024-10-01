@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Per abilitare l\'accesso alle notifiche, cerca in Impostazioni &gt; App &gt; Accesso speciale &gt; Accesso alle notifiche</string>
   <string name="nowplaying_permission_summary">È richiesta l\'autorizzazione affinché questa app possa ascoltare le notifiche musicali dal sistema</string>
   <string name="nowplaying_permission_title">Abilita l\'accesso alle notifiche di sistema</string>
+  <string name="nowplaying_toast_text">Vai su \"Accesso speciale per le app\" > \"Accesso alle notifiche\" e attiva Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Passa la pressione dei pulsanti di riproduzione, pausa, riavvolgimento, ecc. all\'applicazione in background (ad esempio, l\'applicazione musicale) senza uscire dallo screensaver.</string>
   <string name="playlist_allow_media_button_passthrough_title">Consenti il pass-through dei tasti multimediali</string>
   <string name="playlist_allow_playback_speed_change_summary">Modifica la velocità del video premendo il d-pad del telecomando verso l\'alto o verso il basso.</string>

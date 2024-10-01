@@ -399,6 +399,8 @@
     <string name="nowplaying_line1_title">Now Playing - Line 1</string>
     <string name="nowplaying_line2_title">Now Playing - Line 2</string>
 
+    <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
+
     <!-- Unsplash -->
     <!-- Pexels? -->
     <!-- Exif -->
