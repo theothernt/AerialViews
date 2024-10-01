@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Um den Benachrichtigungszugriff zu aktivieren unter Einstellungen &gt; Apps &gt; Spezieller Zugriff &gt; Benachrichtigungszugriff nachsehen</string>
   <string name="nowplaying_permission_summary">Damit diese App Musikbenachrichtigungen vom System anzeigen kann ist eine Berechtigung erforderlich</string>
   <string name="nowplaying_permission_title">Zugriff auf Systembenachrichtigungen aktivieren</string>
+  <string name="nowplaying_toast_text">Gehen zu \"Spezieller App-Zugriff\" > \"Benachrichtigungszugriff\" und aktiviere Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Play, Pause, Spulen usw. an die im Hintergrund laufende App weiterleiten, ohne den Bildschirmschoner zu beenden (für Musik)</string>
   <string name="playlist_allow_media_button_passthrough_title">Durchleitung von Medien-Tasten erlauben</string>
   <string name="playlist_allow_playback_speed_change_summary">Ändere die Wiedergabegeschwindigkeit (Hoch / Runter auf dem D-Pad der Fernbedienung)</string>

@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">כדי להפעיל גישה להתראות, חפש בהגדרות &gt; אפליקציות &gt; גישה מיוחדת &gt; גישת התראות</string>
   <string name="nowplaying_permission_summary">נדרשת הרשאה כדי שאפליקציה זו תוכל להאזין להודעות מוזיקה מהמערכת</string>
   <string name="nowplaying_permission_title">אפשר גישה להתראות מערכת</string>
+  <string name="nowplaying_toast_text">עבור ל-"גישה מיוחדת לאפליקציה" > "גישה להתראות" והפעל Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">מעביר לחיצות לחצן של הפעלה, עצירה, החזר אחורה, וכו׳ לאפליקציית הרקע (לדוגמה״ אפליקציית המוסיקה) ללא יציאה משומר המסך</string>
   <string name="playlist_allow_media_button_passthrough_title">הרשה העברה של לחצני מדיה</string>
   <string name="playlist_allow_playback_speed_change_summary">שנה את מהירות הווידאו על ידי לחיצה למעלה או למטה בשלט</string>

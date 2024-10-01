@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Para habilitar el acceso a notificaciones, consulte Configuración &gt; Aplicaciones &gt; Acceso especial &gt; Acceso a notificaciones</string>
   <string name="nowplaying_permission_summary">Se requiere permiso para que esta aplicación pueda escuchar notificaciones de música del sistema</string>
   <string name="nowplaying_permission_title">Habilitar el acceso a las notificaciones del sistema</string>
+  <string name="nowplaying_toast_text">Ve a \"Aplicaciones con accesos especiales\" > \"Acceso a notificaciones\" y activa Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Pass-through del botón reproducir, pausa, rebobinar, etc a la aplicación en segundo plano (Por ejemplo: Aplicación de música) sin salir del protector de pantalla</string>
   <string name="playlist_allow_media_button_passthrough_title">Permitir pass-through del botón multimedia</string>
   <string name="playlist_allow_playback_speed_change_summary">Cambie la velocidad del video presionando hacia arriba o hacia abajo en el pad direccional de su control remoto</string>

@@ -206,6 +206,7 @@
   <string name="nowplaying_permission_notice_summary">Щоб увімкнути доступ до сповіщень, перейдіть до Налаштування &gt; Програми &gt; Спеціальний доступ &gt; Доступ до сповіщень</string>
   <string name="nowplaying_permission_summary">Потрібен дозвіл, щоб ця програма могла слухати музичні сповіщення з системи</string>
   <string name="nowplaying_permission_title">Увімкнути доступ до системних повідомлень</string>
+  <string name="nowplaying_toast_text">Перейдіть до \"Спеціальний доступ додатка\" > \"Доступ до сповіщень\" та увімкніть Aerial Views</string>
   <string name="playlist_allow_media_button_passthrough_summary">Передає натискання кнопок відтворення, паузи, перемотування назад тощо у фонову програму (наприклад, музичну програму) без виходу із заставки.</string>
   <string name="playlist_allow_media_button_passthrough_title">Дозволити наскрізну передачу мультимедійних кнопок</string>
   <string name="playlist_allow_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
