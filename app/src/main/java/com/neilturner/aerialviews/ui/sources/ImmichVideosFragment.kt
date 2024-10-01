@@ -86,13 +86,17 @@ class ImmichVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("immich_media_hostname")
+        preferenceScreen
+            .findPreference<EditTextPreference>("immich_media_hostname")
             ?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("immich_media_path")
+        preferenceScreen
+            .findPreference<EditTextPreference>("immich_media_path")
             ?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("immich_media_username")
+        preferenceScreen
+            .findPreference<EditTextPreference>("immich_media_username")
             ?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("immich_media_password")
+        preferenceScreen
+            .findPreference<EditTextPreference>("immich_media_password")
             ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 

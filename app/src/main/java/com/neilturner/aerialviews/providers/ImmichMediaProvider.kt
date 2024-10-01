@@ -19,8 +19,10 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import timber.log.Timber
 
-class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs) :
-    MediaProvider(context) {
+class ImmichMediaProvider(
+    context: Context,
+    private val prefs: ImmichMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
     override val enabled: Boolean
         get() = prefs.enabled
@@ -37,18 +39,19 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
     }
 
     private object RetrofitInstance {
-        fun getInstance(host: String): Retrofit {
-            return Retrofit.Builder().baseUrl(host)
+        fun getInstance(host: String): Retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl(host)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
-        }
     }
 
     private interface ImmichService {
         @GET("/api/shared-links/me")
         suspend fun getAlbum(
             @Query("key") key: String,
-            @Query("password") password: String?
+            @Query("password") password: String?,
         ): Response<Album>
     }
 
@@ -61,7 +64,7 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
     }
 
     private fun getApiInterface() {
-        Timber.i( "Connecting to $server")
+        Timber.i("Connecting to $server")
         try {
             apiInterface =
                 RetrofitInstance.getInstance(server).create(ImmichService::class.java)
@@ -70,17 +73,11 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
         }
     }
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchImmichMedia().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
 
-    override suspend fun fetchTest(): String {
-        return fetchImmichMedia().second
-    }
+    override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -112,20 +109,21 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
         immichMedia.assets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val filename = Uri.parse(asset.originalPath)
-            val poi = mutableMapOf<Int,String>()
+            val poi = mutableMapOf<Int, String>()
 
             val description = asset.exifInfo?.description.toString()
             if (!asset.exifInfo?.country.isNullOrEmpty()) {
-                Timber.i( "fetchImmichMedia: ${asset.id} country = ${asset.exifInfo?.country}")
-                val location = listOf(
-                    asset.exifInfo?.country,
-                    asset.exifInfo?.state,
-                    asset.exifInfo?.city
-                ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
-                poi[poi.size]=location
+                Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo?.country}")
+                val location =
+                    listOf(
+                        asset.exifInfo?.country,
+                        asset.exifInfo?.state,
+                        asset.exifInfo?.city,
+                    ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
+                poi[poi.size] = location
             }
             if (description.isNotEmpty()) {
-                poi[poi.size]=description
+                poi[poi.size] = description
             }
 
             val item = AerialMedia(uri, filename, description, poi)
@@ -169,7 +167,5 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
         return album
     }
 
-    private fun getAssetUri(id: String): Uri {
-        return Uri.parse(server + "/api/assets/${id}/original?key=${key}&password=${prefs.password}")
-    }
+    private fun getAssetUri(id: String): Uri = Uri.parse(server + "/api/assets/$id/original?key=$key&password=${prefs.password}")
 }

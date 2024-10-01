@@ -61,7 +61,6 @@ class MediaService(
 
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
-
             // Populate the filename field so that we can remove duplicates for providers for which
             // the asset filename is not at the end of the URI.
             media.forEach {

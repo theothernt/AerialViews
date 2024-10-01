@@ -70,11 +70,17 @@ class TextNowPlaying : AppCompatTextView {
         val (artist, song) = trackInfo
         return when (format) {
             NowPlayingFormat.SONG_ARTIST ->
-                if (song.isNotBlank() && artist.isNotBlank()) "$song · $artist"
-                else song.takeIf { it.isNotBlank() } ?: artist
+                if (song.isNotBlank() && artist.isNotBlank()) {
+                    "$song · $artist"
+                } else {
+                    song.takeIf { it.isNotBlank() } ?: artist
+                }
             NowPlayingFormat.ARTIST_SONG ->
-                if (artist.isNotBlank() && song.isNotBlank()) "$artist · $song"
-                else artist.takeIf { it.isNotBlank() } ?: song
+                if (artist.isNotBlank() && song.isNotBlank()) {
+                    "$artist · $song"
+                } else {
+                    artist.takeIf { it.isNotBlank() } ?: song
+                }
             NowPlayingFormat.ARTIST -> artist
             NowPlayingFormat.SONG -> song
             else -> ""
