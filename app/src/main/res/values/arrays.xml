@@ -99,7 +99,7 @@
     <string-array name="description_video_filename_entries">
         <item>Disabled</item>
         <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-        <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunet.mp4\' becomes \'Grand Canyon / Sunet\'</item>
+        <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</item>
         <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
     </string-array>
     <string-array name="description_photo_filename_entries">
@@ -542,4 +542,6 @@
         <item>SHOW_OVERLAYS</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
+    <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
+    <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 </resources>

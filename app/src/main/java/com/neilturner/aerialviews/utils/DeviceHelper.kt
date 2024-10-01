@@ -13,14 +13,13 @@ object DeviceHelper {
     // Based on
     // https://stackoverflow.com/a/27836910/247257
 
-    fun androidVersion(): String {
-        return "v${Build.VERSION.RELEASE}"
-    }
+    fun androidVersion(): String = "v${Build.VERSION.RELEASE}"
 
     fun deviceName(): String {
         val manufacturer = Build.MANUFACTURER
         val model = Build.MODEL
-        return if (model.lowercase(Locale.getDefault())
+        return if (model
+                .lowercase(Locale.getDefault())
                 .startsWith(manufacturer.lowercase(Locale.getDefault()))
         ) {
             capitalize(model)
@@ -41,12 +40,11 @@ object DeviceHelper {
         }
     }
 
-    fun canAccessScreensaverSettings(): Boolean {
-        return !(
+    fun canAccessScreensaverSettings(): Boolean =
+        !(
             isFireTV() ||
                 isGoogleTV()
         )
-    }
 
     // https://stackoverflow.com/a/55355049/247257
     fun isEmulator(): Boolean =
@@ -73,19 +71,17 @@ object DeviceHelper {
         val metrics = context.resources.displayMetrics
         val smallestSize = min(metrics.widthPixels, metrics.heightPixels)
         val tabletSize =
-            TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                600f,
-                context.resources.displayMetrics,
-            )
-                .toInt()
+            TypedValue
+                .applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    600f,
+                    context.resources.displayMetrics,
+                ).toInt()
         return smallestSize < tabletSize
     }
 
     @Suppress("unused")
-    fun isTV(context: Context): Boolean {
-        return context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-    }
+    fun isTV(context: Context): Boolean = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
 
     fun isFireTV(): Boolean = deviceName().contains("AFT", true)
 

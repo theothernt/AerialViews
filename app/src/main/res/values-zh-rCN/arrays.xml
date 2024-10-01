@@ -15,6 +15,15 @@
     <item>800/特粗</item>
     <item>900/浓体</item>
   </string-array>
+  <string-array name="button_action_entries">
+    <item>忽略行动</item>
+    <item>退出屏幕保护程序</item>
+    <item>跳转到下一个视频/照片</item>
+    <item>跳转到上一个视频/照片</item>
+    <item>提高视频播放速度</item>
+    <item>降低视频播放速度</item>
+    <item>显示叠加（如果隐藏）</item>
+  </string-array>
   <string-array name="clock_format_entries">
     <item>系统默认</item>
     <item>12 小时</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>禁用</item>
+    <item>使用格式化文件名</item>
     <item>原始文件名</item>
     <item>文件夹和文件名</item>
-    <item>仅文件夹名称</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>禁用</item>
+    <item>使用格式化文件名，例如，\"switzerland-zürich_train_station.jpg \"变为 \"瑞士 - 苏黎世火车站\"。</item>
     <item>按原样使用文件名，例如，\"Japan - Deep snow in Hokkaido.jpg \"变为 \"Japan - Deep snow in Hokkaido\"。</item>
     <item>按原样使用文件夹和文件名，例如，\"Pictures/Italy/Dolomites.jpg \"变为 \"Italy/Dolomites\"。</item>
-    <item>仅使用文件夹名称，例如，\"Pictures/Dublin/Temple Bar.png \"变为 \"Dublin\"。</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>禁用</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>禁用</item>
+    <item>使用格式化文件名，例如，\"japan-mount_fuji.mp4 \"变为 \"Japan - Mount Fuji</item>
     <item>按原样使用文件名，例如，\"飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山\"。</item>
     <item>按原样使用文件夹和文件名，例如，\"Videos/Grand Canyon/Sunet.mp4 \"变为 \"Grand Canyon / Sunet\"。</item>
-    <item>仅使用文件夹名称，例如，\"Videos/Ireland/Cliffs of Moher.mp4 \"变为 \"Ireland\"。</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>禁用</item>
     <item>简短描述或地点</item>
     <item>动态兴趣点，有多种语言版本，随着视频播放而变化</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>禁用</item>
+    <item>200 毫秒</item>
+    <item>400 毫秒</item>
+    <item>600 毫秒</item>
+    <item>800 毫秒</item>
+    <item>1000 毫秒</item>
+    <item>1200 毫秒</item>
+    <item>1400 毫秒</item>
+    <item>1600 毫秒</item>
+    <item>1800 毫秒</item>
+    <item>2000 毫秒</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>达到上限时跳过</item>
+    <item>让较长的视频播放完毕</item>
+    <item>随机播放长视频片段</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>遵守限制 - 达到限制时跳至下一个视频</item>
+    <item>忽略限制 - 如果视频长度超过设定限制，则会一直播放到结束</item>
+    <item>随机片段 - 如果视频长度超过限制，将随机播放视频的一部分
+(例如，在 2 分钟的限制下，一段 6 分钟的视频可以有 3 个片段—其中一段将随机播放）</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
@@ -61,6 +94,29 @@
     <item>Videos only</item>
     <item>Images only</item>
     <item>Videos &amp; Images</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>禁用</item>
+    <item>歌曲 - 艺术家</item>
+    <item>艺术家 - 歌曲</item>
+    <item>艺术家</item>
+    <item>歌曲</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>从不隐藏（默认）</item>
+    <item>始终隐藏</item>
+    <item>2 秒钟</item>
+    <item>4 秒钟</item>
+    <item>6 秒钟</item>
+    <item>8 秒钟</item>
+    <item>10 秒</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 秒钟</item>
+    <item>4 秒（默认值）</item>
+    <item>6 秒钟</item>
+    <item>8 秒钟</item>
+    <item>10 秒</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>Fill (Default)</item>
@@ -113,8 +169,8 @@
     <item>日期</item>
     <item>第 1 行信息</item>
     <item>第 2 行信息</item>
-    <item>Weather</item>
-    <item>Music - Now Playing</item>
+    <item>正在播放 #1</item>
+    <item>正在播放 #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -128,5 +184,9 @@
     <item>20sp</item>
     <item>18sp (默认)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>超文本传输协定</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>

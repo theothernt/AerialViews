@@ -67,7 +67,10 @@ object SlotHelper {
 
                 if (pref == null) {
                     // not on-screen, update pref only
-                    GeneralPrefs.preferences.edit().putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString()).apply()
+                    GeneralPrefs.preferences
+                        .edit()
+                        .putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString())
+                        .apply()
                 } else {
                     // on-screen, control + pref are updated
                     pref.value = OverlayType.EMPTY.toString()

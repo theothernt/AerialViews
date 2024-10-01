@@ -7,9 +7,9 @@ import android.view.WindowManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 
 class TestActivity : Activity() {
@@ -25,7 +25,7 @@ class TestActivity : Activity() {
     override fun onResume() {
         super.onResume()
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        LoggingHelper.logScreenView("Test Screensaver", TAG)
+        FirebaseHelper.logScreenView("Test Screensaver", this)
     }
 
     override fun onPause() {
@@ -47,11 +47,12 @@ class TestActivity : Activity() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return if (InputHelper.handleKeyEvent(event, screenController, ::finish)) {
-            true
-        } else {
-            super.dispatchKeyEvent(event)
+        if (this::screenController.isInitialized &&
+            InputHelper.handleKeyEvent(event, screenController, ::finish)
+        ) {
+            return true
         }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -68,9 +69,5 @@ class TestActivity : Activity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
-    }
-
-    companion object {
-        private const val TAG = "TestActivity"
     }
 }

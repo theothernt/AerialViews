@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
@@ -78,10 +76,18 @@ class TextLocation : AppCompatTextView {
             if (shouldUpdate && !isFadingOutMedia) {
                 // Set new string and fade in
                 lastPoi = newPoi
-                this.animate().alpha(0f).setDuration(1000).withEndAction {
-                    this.text = poi[newPoi]?.replace("\n", " ")
-                    this.animate().alpha(textAlpha).setDuration(1000).start()
-                }.start()
+                this
+                    .animate()
+                    .alpha(0f)
+                    .setDuration(1000)
+                    .withEndAction {
+                        this.text = poi[newPoi]?.replace("\n", " ")
+                        this
+                            .animate()
+                            .alpha(textAlpha)
+                            .setDuration(1000)
+                            .start()
+                    }.start()
             }
 
             // Set new interval for POI string update
@@ -92,9 +98,5 @@ class TextLocation : AppCompatTextView {
 
         // Set initial delay for this method
         this.postDelayed({ currentPositionProgressHandler?.let { it() } }, 1000)
-    }
-
-    companion object {
-        private const val TAG = "TextLocation"
     }
 }

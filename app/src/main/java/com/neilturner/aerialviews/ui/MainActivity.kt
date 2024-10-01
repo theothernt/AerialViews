@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class MainActivity :
     AppCompatActivity(),
@@ -35,7 +35,7 @@ class MainActivity :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Main", TAG)
+        FirebaseHelper.logScreenView("Main", this)
     }
 
     @SuppressLint("MissingSuperCall")
@@ -59,23 +59,20 @@ class MainActivity :
         // Instantiate the new Fragment
         val args = pref.extras
         val fragment =
-            supportFragmentManager.fragmentFactory.instantiate(
-                classLoader,
-                pref.fragment.toString(),
-            ).apply {
-                arguments = args
-                // setTargetFragment(caller, 0)
-            }
+            supportFragmentManager.fragmentFactory
+                .instantiate(
+                    classLoader,
+                    pref.fragment.toString(),
+                ).apply {
+                    arguments = args
+                }
         // Replace the existing Fragment with the new Fragment
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+            .beginTransaction()
             .replace(R.id.settings, fragment)
             .addToBackStack(null)
             .commitAllowingStateLoss()
         title = pref.title
         return true
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
     }
 }

@@ -5,15 +5,24 @@
     <item>Roboto</item>
   </string-array>
   <string-array name="appearance_font_weight_entries">
-    <item>100/Тонкое</item>
-    <item>200/Сверхсветлое</item>
-    <item>300/Светлое (по умолчанию)</item>
-    <item>400/Нормальное</item>
-    <item>500/Среднее</item>
-    <item>600/Полужирное</item>
-    <item>700/Жирное</item>
-    <item>800/Сверхжирное</item>
-    <item>900/Тяжелое</item>
+    <item>100/Тонкая</item>
+    <item>200/Сверхсветлая</item>
+    <item>300/Светлая (по умолчанию)</item>
+    <item>400/Нормальная</item>
+    <item>500/Средняя</item>
+    <item>600/Полужирная</item>
+    <item>700/Жирная</item>
+    <item>800/Сверхжирная</item>
+    <item>900/Тяжелая</item>
+  </string-array>
+  <string-array name="button_action_entries">
+    <item>Игнорировать действие</item>
+    <item>Экранная заставка выхода</item>
+    <item>Перейти к следующему видео/фотографии</item>
+    <item>Перейти к предыдущему видео/фото</item>
+    <item>Увеличьте скорость воспроизведения видео</item>
+    <item>Уменьшите скорость воспроизведения видео</item>
+    <item>Показывать наложения (если они скрыты)</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Системный</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Выключено</item>
+    <item>Используйте отформатированное имя файла</item>
     <item>Использовать имя файла как есть</item>
     <item>Имя папки и файла</item>
-    <item>Только имя папки</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Выключено</item>
+    <item>Используйте форматированное имя файла, например: \'switzerland-zürich_train_station.jpg\' становится \'Switzerland - Zürich Train Station\'</item>
     <item>Используйте имя файла как есть, например: \'Japan - Deep snow in Hokkaido.jpg\' становится \'Japan - Deep snow in Hokkaido\'</item>
     <item>Используйте папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
-    <item>Используйте только название папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Выключено</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Выключено</item>
+    <item>Используйте форматированное имя файла, например: \'japan-mount_fuji.mp4\' становится \'Japan - Mount Fuji\'</item>
     <item>Используйте имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
     <item>Используйте папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunet.mp4\' становится \'Grand Canyon / Sunet\'</item>
-    <item>Используйте только имя папки, например: \'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Выключено</item>
     <item>Краткое описание или местоположение</item>
     <item>Динамичные достопримечательности, доступные на многих языках, которые меняются по мере воспроизведения видео</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>Выключено</item>
+    <item>200 мс</item>
+    <item>400 мс</item>
+    <item>600 мс</item>
+    <item>800 мс</item>
+    <item>1000 мс</item>
+    <item>1200 мс</item>
+    <item>1400 мс</item>
+    <item>1600 мс</item>
+    <item>1800 мс</item>
+    <item>2000 мс</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>Пропустить при достижении лимита</item>
+    <item>Разрешите завершить более длинные видеоролики</item>
+    <item>Воспроизведение случайных фрагментов длинных видеороликов</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>Соблюдайте лимит - переходите к следующему видео, когда лимит будет достигнут</item>
+    <item>Игнорировать ограничение - если видео длиннее установленного ограничения, оно будет воспроизводиться до конца</item>
+    <item>Случайный сегмент - если видео длиннее установленного лимита, будет воспроизведена случайная часть видео
+(например, при ограничении в 2 минуты 6-минутное видео может состоять из 3 сегментов - один из них будет воспроизведен случайным образом).</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Медиа-сканер</item>
@@ -61,6 +94,29 @@
     <item>Только видео</item>
     <item>Только изображения</item>
     <item>Видео и изображения</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>Выключено</item>
+    <item>Песня · Исполнитель</item>
+    <item>Исполнитель · Песня</item>
+    <item>Исполнитель</item>
+    <item>Песня</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>Никогда не скрывать (по умолчанию)</item>
+    <item>Всегда скрытый</item>
+    <item>2 секунды</item>
+    <item>4 секунды</item>
+    <item>6 секунд</item>
+    <item>8 секунд</item>
+    <item>10 секунд</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 секунды</item>
+    <item>4 секунды (по умолчанию)</item>
+    <item>6 секунд</item>
+    <item>8 секунд</item>
+    <item>10 секунд</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>Заполнение (по умолчанию)</item>
@@ -113,8 +169,8 @@
     <item>Дата</item>
     <item>Сообщение - Строка 1</item>
     <item>Сообщение - Строка 2</item>
-    <item>Weather</item>
-    <item>Music - Now Playing</item>
+    <item>Теперь играем #1</item>
+    <item>Теперь играем #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -128,5 +184,9 @@
     <item>20sp</item>
     <item>18sp (по умолчанию)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>

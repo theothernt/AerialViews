@@ -6,20 +6,20 @@ import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
-import android.util.Log
 import androidx.core.content.getSystemService
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
+import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
-class NowPlayingService(private val context: Context, private val prefs: GeneralPrefs) :
-    MediaSessionManager.OnActiveSessionsChangedListener,
-    MediaController.Callback() {
+class NowPlayingService(
+    private val context: Context,
+) : MediaController.Callback(),
+    MediaSessionManager.OnActiveSessionsChangedListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
@@ -32,14 +32,18 @@ class NowPlayingService(private val context: Context, private val prefs: General
             if (hasPermission) {
                 setupSession()
             } else {
-                Log.i(TAG, "No permission given to access media sessions")
+                Timber.i("No permission given to access media sessions")
             }
         }
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
         super.onMetadataChanged(metadata)
-        updateNowPlaying(metadata, null)
+        try {
+            updateNowPlaying(metadata, null)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Error setting Now Playing info")
+        }
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
@@ -49,8 +53,12 @@ class NowPlayingService(private val context: Context, private val prefs: General
             return
         }
 
-        val active = isActive(state.state)
-        updateNowPlaying(null, active)
+        try {
+            val active = isActive(state.state)
+            updateNowPlaying(null, active)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Error setting Now Playing info")
+        }
     }
 
     private fun setupSession() {
@@ -63,8 +71,8 @@ class NowPlayingService(private val context: Context, private val prefs: General
             val active = isActive(activeController.playbackState?.state)
             try {
                 updateNowPlaying(activeController.metadata, active)
-            } catch (e: Exception) {
-                Log.e(TAG, "Error setting initial Now Playing info", e)
+            } catch (ex: Exception) {
+                Timber.e(ex, "Error setting initial Now Playing info")
             }
         }
         // Listen for future changes to active sessions
@@ -116,19 +124,14 @@ class NowPlayingService(private val context: Context, private val prefs: General
         coroutineScope.cancel()
     }
 
-    private fun isActive(state: Int?): Boolean {
-        return (
+    private fun isActive(state: Int?): Boolean =
+        (
             state != PlaybackState.STATE_STOPPED &&
                 state != PlaybackState.STATE_PAUSED &&
                 state != PlaybackState.STATE_ERROR &&
                 state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
-    }
-
-    companion object {
-        private const val TAG = "NowPlayingService"
-    }
 }
 
 data class MusicEvent(

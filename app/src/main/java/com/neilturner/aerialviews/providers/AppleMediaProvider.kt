@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -11,20 +10,20 @@ import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
+import timber.log.Timber
 
-class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) : MediaProvider(context) {
+class AppleMediaProvider(
+    context: Context,
+    private val prefs: AppleVideoPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchAppleVideos().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchAppleVideos().first
 
-    override suspend fun fetchTest(): String {
-        return fetchAppleVideos().second
-    }
+    override suspend fun fetchTest(): String = fetchAppleVideos().second
 
     override suspend fun fetchMetadata(): List<VideoMetadata> {
         val metadata = mutableListOf<VideoMetadata>()
@@ -57,11 +56,7 @@ class AppleMediaProvider(context: Context, private val prefs: AppleVideoPrefs) :
             )
         }
 
-        Log.i(TAG, "${videos.count()} $quality videos found")
+        Timber.i("${videos.count()} $quality videos found")
         return Pair(videos, "")
-    }
-
-    companion object {
-        private const val TAG = "AppleVideoProvider"
     }
 }

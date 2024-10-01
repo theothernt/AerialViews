@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -29,9 +28,11 @@ import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-class ScreenController(private val context: Context) :
-    OnVideoPlayerEventListener,
+class ScreenController(
+    private val context: Context,
+) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
@@ -41,6 +42,11 @@ class ScreenController(private val context: Context) :
     private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
+    private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
+    private val overlayFadeOut: Long = GeneralPrefs.overlayFadeOutDuration.toLong()
+    private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
+    private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
+    private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -111,12 +117,12 @@ class ScreenController(private val context: Context) :
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
                 PermissionHelper.hasNotificationListenerPermission(context)
             ) {
-                nowPlayingService = NowPlayingService(context, GeneralPrefs)
+                nowPlayingService = NowPlayingService(context)
             }
 
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
-                Log.i(TAG, "Playlist items: ${playlist.size}")
+                Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
             } else {
                 showLoadingError()
@@ -135,9 +141,9 @@ class ScreenController(private val context: Context) :
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Log.i(TAG, "Playing: ${media.description} - $url (${media.poi})")
+            Timber.i("Loading: ${media.description} - $url (${media.poi})")
         } else {
-            Log.i(TAG, "Playing: ${media.description} - ${media.uri} (${media.poi})")
+            Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
         }
 
         // Set overlay data for current video
@@ -200,7 +206,7 @@ class ScreenController(private val context: Context) :
     private fun fadeInNextItem() {
         canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlayDelay * 1000) + MEDIA_FADE_IN
+        val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
         if (loadingText.visibility == View.VISIBLE) {
@@ -232,7 +238,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(0f)
             .setStartDelay(startDelay)
-            .setDuration(MEDIA_FADE_IN)
+            .setDuration(mediaFadeIn)
             .withEndAction {
                 loadingView.visibility = View.GONE
                 canSkip = true
@@ -252,11 +258,10 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(MEDIA_FADE_OUT)
+            .setDuration(mediaFadeOut)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
-            }
-            .withEndAction {
+            }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
                 videoViewBinding.videoPlayer.stop()
@@ -286,7 +291,7 @@ class ScreenController(private val context: Context) :
             .animate()
             .alpha(0f)
             .setStartDelay(delay)
-            .setDuration(OVERLAY_FADE_OUT)
+            .setDuration(overlayFadeOut)
             .withEndAction {
                 canShowOverlays = true
             }.start()
@@ -303,15 +308,13 @@ class ScreenController(private val context: Context) :
         if (!canShowOverlays) return
         canShowOverlays = false
 
-        Log.i(TAG, "Show overlays")
-
         overlayView
             .animate()
             .alpha(1f)
             .setStartDelay(0)
-            .setDuration(OVERLAY_FADE_IN)
+            .setDuration(overlayFadeIn)
             .withEndAction {
-                hideOverlays(4 * 1000)
+                hideOverlays(overlayRevealTimeout * 1000)
             }.start()
     }
 
@@ -358,13 +361,8 @@ class ScreenController(private val context: Context) :
     override fun onImagePrepared() = fadeInNextItem()
 
     companion object {
-        private const val TAG = "ScreenController"
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
         const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
-        val OVERLAY_FADE_OUT: Long = GeneralPrefs.overlayFadeOutDuration.toLong() // Fade out overlays
-        val OVERLAY_FADE_IN: Long = GeneralPrefs.overlayFadeInDuration.toLong() // Fade in overlays
-        val MEDIA_FADE_IN = GeneralPrefs.mediaFadeInDuration.toLong() // Fade out loading view
-        val MEDIA_FADE_OUT = GeneralPrefs.mediaFadeOutDuration.toLong() // Fade in loading view
     }
 }

@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
@@ -22,25 +21,23 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.net.URLEncoder
 
-class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) : MediaProvider(context) {
+class SambaMediaProvider(
+    context: Context,
+    private val prefs: SambaMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchSambaMedia().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchSambaMedia().first
 
-    override suspend fun fetchTest(): String {
-        return fetchSambaMedia().second
-    }
+    override suspend fun fetchTest(): String = fetchSambaMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -67,8 +64,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+        } catch (ex: Exception) {
+            Timber.e(ex, ex.message)
             return Pair(media, "Failed to parse share name")
         }
 
@@ -82,9 +79,9 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
                     shareName,
                     path,
                 )
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
-                return Pair(emptyList(), e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
+                return Pair(emptyList(), ex.message.toString())
             }
 
         // Create samba URL, add to media list, adding media type
@@ -114,7 +111,7 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             media.add(item)
         }
 
-        Log.i(TAG, "Videos found: ${media.size}")
+        Timber.i("Videos found: ${media.size}")
         return Pair(media, sambaMedia.second)
     }
 
@@ -136,8 +133,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             val config: SmbConfig
             try {
                 config = SambaHelper.buildSmbConfig()
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(selected, "Failed to create SMB config")
             }
 
@@ -146,8 +143,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             val connection: Connection
             try {
                 connection = smbClient.connect(hostName)
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(selected, "Failed to connect, hostname error")
             }
 
@@ -156,8 +153,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             try {
                 val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
                 session = connection.authenticate(authContext)
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(
                     selected,
                     "Authentication failed. Please check the username and password, or server settings if using anonymous login",
@@ -167,8 +164,8 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             val share: DiskShare
             try {
                 share = session?.connectShare(shareName) as DiskShare
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
@@ -199,15 +196,15 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             images = selected.size - videos
             excluded = files.size - selected.size
 
-            var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size) + "\n"
-            message += String.format(res.getString(R.string.samba_media_test_summary2), excluded) + "\n"
+            var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size.toString()) + "\n"
+            message += String.format(res.getString(R.string.samba_media_test_summary2), excluded.toString()) + "\n"
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-                message += String.format(res.getString(R.string.samba_media_test_summary3), videos) + "\n"
+                message += String.format(res.getString(R.string.samba_media_test_summary3), videos.toString()) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-                message += String.format(res.getString(R.string.samba_media_test_summary4), images) + "\n"
+                message += String.format(res.getString(R.string.samba_media_test_summary4), images.toString()) + "\n"
             }
-            message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size)
+            message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size.toString())
             return@withContext Pair(selected, message)
         }
 
@@ -234,9 +231,5 @@ class SambaMediaProvider(context: Context, private val prefs: SambaMediaPrefs) :
             }
         }
         return files
-    }
-
-    companion object {
-        private const val TAG = "SambaMediaProvider"
     }
 }

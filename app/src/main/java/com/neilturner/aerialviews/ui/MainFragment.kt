@@ -4,7 +4,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +17,7 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainFragment :
     PreferenceFragmentCompat(),
@@ -54,7 +54,7 @@ class MainFragment :
             val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
             startActivity(intent)
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Timber.e(ex, ex.message)
         }
     }
 
@@ -101,11 +101,11 @@ class MainFragment :
         intents.forEach { intent ->
             if (intentAvailable(intent)) {
                 try {
-                    Log.i(TAG, "Trying... $intent")
+                    Timber.i("Trying... $intent")
                     startActivity(intent)
                     return
                 } catch (ex: Exception) {
-                    Log.e(TAG, ex.message.toString())
+                    Timber.e(ex, ex.message)
                 }
             }
         }
@@ -133,7 +133,7 @@ class MainFragment :
             }
 
         if (intents.isEmpty()) {
-            Log.i(TAG, "Intent not available... $intent")
+            Timber.i("Intent not available... $intent")
         }
         return intents.isNotEmpty()
     }
@@ -142,6 +142,5 @@ class MainFragment :
         const val SETTINGS = "android.settings.SETTINGS"
         const val SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS"
         const val TEST_SCREENSAVER = "com.neilturner.aerialviews.ui.screensaver.TestActivity"
-        const val TAG = "MainFragment"
     }
 }

@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -17,24 +16,22 @@ import com.thegrizzlylabs.sardineandroid.Sardine
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
-class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs) : MediaProvider(context) {
+class WebDavMediaProvider(
+    context: Context,
+    private val prefs: WebDavMediaPrefs,
+) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
-        return fetchWebDavMedia().first
-    }
+    override suspend fun fetchMedia(): List<AerialMedia> = fetchWebDavMedia().first
 
-    override suspend fun fetchTest(): String {
-        return fetchWebDavMedia().second
-    }
+    override suspend fun fetchTest(): String = fetchWebDavMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        return emptyList()
-    }
+    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -59,9 +56,9 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                     prefs.userName,
                     prefs.password,
                 )
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
-                return Pair(emptyList(), e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
+                return Pair(emptyList(), ex.message.toString())
             }
 
         // Create WebDAV URL, add to media list, adding media type
@@ -78,7 +75,7 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             media.add(item)
         }
 
-        Log.i(TAG, "Media found: ${media.size}")
+        Timber.i("Media found: ${media.size}")
         return Pair(media, webDavMedia.second)
     }
 
@@ -100,8 +97,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             try {
                 client = OkHttpSardine()
                 client.setCredentials(userName, password, true)
-            } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+            } catch (ex: Exception) {
+                Timber.e(ex, ex.message)
                 return@withContext Pair(
                     selected,
                     "Failed to create WebDAV client",
@@ -132,15 +129,15 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
             images = selected.size - videos
             excluded = files.size - selected.size
 
-            var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size) + "\n"
-            message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded) + "\n"
+            var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size.toString()) + "\n"
+            message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded.toString()) + "\n"
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary3), videos) + "\n"
+                message += String.format(res.getString(R.string.webdav_media_test_summary3), videos.toString()) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary4), images) + "\n"
+                message += String.format(res.getString(R.string.webdav_media_test_summary4), images.toString()) + "\n"
             }
-            message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size)
+            message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size.toString())
             return@withContext Pair(selected, message)
         }
 
@@ -163,12 +160,8 @@ class WebDavMediaProvider(context: Context, private val prefs: WebDavMediaPrefs)
                 }
             }
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Timber.e(ex, ex.message)
         }
         return files
-    }
-
-    companion object {
-        private const val TAG = "WebDavMediaProvider"
     }
 }

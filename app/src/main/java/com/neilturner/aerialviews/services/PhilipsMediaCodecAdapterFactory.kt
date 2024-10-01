@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.services
 
 import android.annotation.SuppressLint
@@ -42,7 +40,6 @@ class PhilipsMediaCodecAdapterFactory : MediaCodecAdapter.Factory {
     }
 
     companion object {
-        private const val TAG = "PhilipsMediaCodecAdapter"
         var mediaUrl: String? = null
     }
 }

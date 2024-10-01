@@ -1,9 +1,11 @@
+@file:Suppress("unused")
+
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
+import timber.log.Timber
 
 object FileHelper {
     fun findLocalVideos(context: Context): List<String> {
@@ -22,13 +24,13 @@ object FileHelper {
                     videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
                 }
                 cursor.close()
-            } catch (e: Exception) {
-                Log.e(TAG, "Exception in contentResolver cursor: ${e.message}")
+            } catch (ex: Exception) {
+                Timber.e(ex, "Exception in contentResolver cursor: ${ex.message}")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception in contentResolver query: ${e.message}")
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
         }
-        Log.i(TAG, "ContentResolver found ${videos.size} files")
+        Timber.i("ContentResolver found ${videos.size} files")
         return videos
     }
 
@@ -48,32 +50,25 @@ object FileHelper {
                     images.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
                 }
                 cursor.close()
-            } catch (e: Exception) {
-                Log.e(TAG, "Exception in contentResolver cursor: ${e.message}")
+            } catch (ex: Exception) {
+                Timber.e(ex, "Exception in contentResolver cursor: ${ex.message}")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception in contentResolver query: ${e.message}")
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
         }
-        Log.i(TAG, "ContentResolver found ${images.size} files")
+        Timber.i("ContentResolver found ${images.size} files")
         return images
     }
 
-    fun isSambaVideo(uri: Uri): Boolean {
-        return uri.toString().contains("smb://", true)
-    }
+    fun isDotOrHiddenFile(filename: String): Boolean = filename.startsWith(".")
 
-    fun isDotOrHiddenFile(filename: String): Boolean {
-        return filename.startsWith(".")
-    }
-
-    fun isSupportedVideoType(filename: String): Boolean {
-        return filename.endsWith(".mov", true) ||
+    fun isSupportedVideoType(filename: String): Boolean =
+        filename.endsWith(".mov", true) ||
             filename.endsWith(".mp4", true) ||
             filename.endsWith(".m4v", true) ||
             filename.endsWith(".webm", true) ||
             filename.endsWith(".mkv", true) ||
             filename.endsWith(".ts", true)
-    }
 
     fun isSupportedImageType(filename: String): Boolean {
         if (filename.endsWith(".avif", true) &&
@@ -86,7 +81,8 @@ object FileHelper {
             filename.endsWith(".jpeg", true) ||
             filename.endsWith(".gif", true) ||
             filename.endsWith(".webp", true) ||
-            filename.endsWith(".heic", true) || // HEIF format
+            filename.endsWith(".heic", true) ||
+            // HEIF format
             filename.endsWith(".png", true)
     }
 
@@ -101,7 +97,7 @@ object FileHelper {
         var newFolder = if (folder.first() != '/') "/$folder" else folder
         newFolder = if (newFolder.last() != '/') "$newFolder/" else newFolder
 
-        Log.i(TAG, "Looking for $newFolder in ${uri.path}")
+        Timber.i("Looking for $newFolder in ${uri.path}")
         return !uri.path.toStringOrEmpty().contains(newFolder, true)
     }
 
@@ -151,16 +147,14 @@ object FileHelper {
 
         if (folder.first() != '/') {
             folder = "/$folder"
-            Log.i(TAG, "Fixing folder - adding leading slash")
+            Timber.i("Fixing folder - adding leading slash")
         }
 
         if (folder.last() == '/') {
             folder = folder.dropLast(1)
-            Log.i(TAG, "Fixing folder - removing trailing slash")
+            Timber.i("Fixing folder - removing trailing slash")
         }
 
         return folder
     }
-
-    private const val TAG = "FileHelper"
 }

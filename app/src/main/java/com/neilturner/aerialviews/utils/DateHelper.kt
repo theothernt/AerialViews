@@ -1,10 +1,9 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
-import java.lang.Exception
+import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -16,8 +15,8 @@ object DateHelper {
         context: Context,
         type: DateType,
         custom: String?,
-    ): String {
-        return when (type) {
+    ): String =
+        when (type) {
             DateType.FULL -> {
                 DateFormat.getDateInstance(DateFormat.FULL).format(Date())
             }
@@ -30,12 +29,9 @@ object DateHelper {
                     val formatter = SimpleDateFormat(custom, Locale.getDefault())
                     formatter.format(today)
                 } catch (ex: Exception) {
-                    Log.i(TAG, "Exception while trying custom date formatting")
+                    Timber.i("Exception while trying custom date formatting")
                     context.resources.getString(R.string.appearance_date_custom_error)
                 }
             }
         }
-    }
-
-    private const val TAG = "DateHelper"
 }

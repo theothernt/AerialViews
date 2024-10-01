@@ -1,0 +1,123 @@
+[versions]
+# Plugins
+agp = "8.6.1"
+google-services = "4.4.2"
+firebase-crashlytics-plugin = "3.0.2"
+firebase-perf-plugin = "1.4.2"
+android-junit5 = "1.11.0.0"
+gradle-doctor = "0.9.1"
+kotlinter-gradle = "4.4.1"
+ksp = "2.0.20-1.0.24"
+
+# Kotlin + Coroutines
+kotlin = "2.0.20"
+coroutines = "1.9.0"
+
+# Firebase
+firebase-analytics = "22.1.0"
+firebase-crashlytics = "19.1.0"
+firebase-perf = "21.0.1"
+
+# AndroidX
+core-ktx = "1.13.1"
+leanback = "1.0.0"
+leanback-preference = "1.0.0"
+preference-ktx = "1.2.1"
+activity-ktx = "1.9.2"
+constraintlayout = "2.1.4"
+appcompat = "1.7.0"
+
+# Retrofit, OkHttp, and Moshi
+retrofit = "2.11.0"
+moshi = "1.15.1"
+logging-interceptor = "4.12.0"
+gson = "2.11.0"
+
+# ExoPlayer
+media3-exoplayer = "1.4.1"
+
+# FlowBus
+flowbus = "1.1"
+
+# KotPref
+kotpref = "2.13.2"
+
+# SMBJ
+smbj = "0.13.0"
+
+# WebDAV
+sardine-android = "0.0.2"
+
+# Coil
+coil = "2.7.0"
+
+# Logging
+timber = "5.0.1"
+
+# Memory Leaks
+leakcanary = "2.14"
+
+# Unit Testing
+junit-jupiter = "5.11.1"
+
+[libraries]
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebase-perf" }
+
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
+leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
+preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
+flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
+flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
+
+kotpref = { group = "com.chibatching.kotpref", name = "kotpref", version.ref = "kotpref" }
+kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer", version.ref = "kotpref" }
+kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support", version.ref = "kotpref" }
+
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" } # ksp
+
+coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-exoplayer" }
+smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
+sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+
+[bundles]
+coil = ["coil", "coil-gif"]
+kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
+firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
+flowbus = ["flowbus", "flowbus-android"]
+kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
+androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
+retrofit = ["retrofit", "converter-moshi", "moshi-kotlin", "logging-interceptor"]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
+kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }

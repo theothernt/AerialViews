@@ -1,10 +1,10 @@
 package com.neilturner.aerialviews.utils
 
-import android.util.Log
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import timber.log.Timber
 
 object InputHelper {
     private var previousEvent: KeyEvent? = null
@@ -21,14 +21,14 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            Log.i(TAG, "Key Up")
+            Timber.i("Key Up")
             result = eventToAction(event, controller, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            Log.i(TAG, "Long Press")
+            Timber.i("Long Press")
             result = eventToAction(event, controller, exit, true)
         }
         previousEvent = event
@@ -115,8 +115,8 @@ object InputHelper {
         return false
     }
 
-    private fun anyDpadActionsEnabled(): Boolean {
-        return GeneralPrefs.buttonUpPress != ButtonType.IGNORE ||
+    private fun anyDpadActionsEnabled(): Boolean =
+        GeneralPrefs.buttonUpPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonDownPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonLeftPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonRightPress != ButtonType.IGNORE ||
@@ -124,12 +124,10 @@ object InputHelper {
             GeneralPrefs.buttonDownHold != ButtonType.IGNORE ||
             GeneralPrefs.buttonLeftHold != ButtonType.IGNORE ||
             GeneralPrefs.buttonRightHold != ButtonType.IGNORE
-    }
 
-    private fun anyOkButtonActionsEnabled(): Boolean {
-        return GeneralPrefs.buttonOkPress != ButtonType.IGNORE ||
+    private fun anyOkButtonActionsEnabled(): Boolean =
+        GeneralPrefs.buttonOkPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonOkHold != ButtonType.IGNORE
-    }
 
     private fun executeAction(
         type: ButtonType?,
@@ -147,6 +145,4 @@ object InputHelper {
         }
         return true
     }
-
-    private const val TAG = "InputHelper"
 }

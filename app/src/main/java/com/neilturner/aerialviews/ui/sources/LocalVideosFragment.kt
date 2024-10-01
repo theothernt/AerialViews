@@ -22,10 +22,10 @@ import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-@Suppress("unused")
 class LocalVideosFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener,
@@ -132,11 +132,13 @@ class LocalVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private suspend fun testLocalVideosFilter() {
-        val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
-        val result = provider.fetchTest()
-        showDialog(resources.getString(R.string.local_videos_test_results), result)
-    }
+    private suspend fun testLocalVideosFilter() =
+        withContext(Dispatchers.IO) {
+            val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
+            val result = provider.fetchTest()
+            ensureActive()
+            showDialog(resources.getString(R.string.local_videos_test_results), result)
+        }
 
     private fun checkForMediaPermission() {
         // If we already have permission, exit
@@ -203,9 +205,5 @@ class LocalVideosFragment :
         }
         val notice = findPreference<Preference>("local_videos_shield_notice")
         notice?.isVisible = true
-    }
-
-    companion object {
-        private const val TAG = "LocalVideosFragment"
     }
 }

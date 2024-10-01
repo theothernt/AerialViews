@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
@@ -15,6 +14,7 @@ import com.hierynomus.smbj.share.File
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
+import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
@@ -51,8 +51,8 @@ class SambaDataSource : BaseDataSource(true) {
         val remoteFile: File
         try {
             remoteFile = openSambaFile()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+        } catch (ex: Exception) {
+            Timber.e(ex, ex.message)
             return 0
         }
 
@@ -73,9 +73,7 @@ class SambaDataSource : BaseDataSource(true) {
         buffer: ByteArray,
         offset: Int,
         readLength: Int,
-    ): Int {
-        return readInternal(buffer, offset, readLength)
-    }
+    ): Int = readInternal(buffer, offset, readLength)
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri
@@ -99,7 +97,6 @@ class SambaDataSource : BaseDataSource(true) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
 
-        // val userInfo = SambaHelper.parseUserInfo(uri)
         userName = SambaMediaPrefs.userName
         password = SambaMediaPrefs.password
 
@@ -161,15 +158,9 @@ class SambaDataSource : BaseDataSource(true) {
         bytesTransferred(read)
         return read
     }
-
-    companion object {
-        private const val TAG = "SambaDataSource"
-    }
 }
 
 class SambaDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
-    override fun createDataSource(): DataSource {
-        return SambaDataSource()
-    }
+    override fun createDataSource(): DataSource = SambaDataSource()
 }

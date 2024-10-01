@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
@@ -22,9 +20,5 @@ class TextMessage : AppCompatTextView {
 
     fun updateMessage(message: String) {
         this.text = message
-    }
-
-    companion object {
-        private const val TAG = "TextMessage"
     }
 }

@@ -15,10 +15,9 @@
                     app:defaultValue="@string/overlay_reveal_timeout_default"
                     app:entries="@array/overlay_reveal_timeout_entries"
                     app:entryValues="@array/overlay_reveal_timeout_values"
-                    app:key="overlay_reveal_for"
+                    app:key="overlay_reveal_timeout"
                     app:title="@string/appearance_reveal_for_title"
                     app:useSimpleSummaryProvider="true" />
-
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_overlay_animations">
@@ -55,6 +54,5 @@
                     app:key="media_fade_out_duration"
                     app:title="@string/appearance_fade_out_title"
                     app:useSimpleSummaryProvider="true" />
-
         </PreferenceCategory>
 </PreferenceScreen>

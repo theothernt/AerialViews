@@ -11,13 +11,12 @@ import java.lang.reflect.InvocationTargetException
 object StorageHelper {
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 
-    fun getStoragePaths(context: Context): LinkedHashMap<String, String> {
-        return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+    fun getStoragePaths(context: Context): LinkedHashMap<String, String> =
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             getStoragePathsLow(context)
         } else {
             getStoragePaths24(context)
         }
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private fun getStoragePaths24(context: Context): LinkedHashMap<String, String> {
@@ -85,7 +84,5 @@ object StorageHelper {
         return paths
     }
 
-    private fun formatPathAsLabel(path: String): String {
-        return "[ $path ]"
-    }
+    private fun formatPathAsLabel(path: String): String = "[ $path ]"
 }

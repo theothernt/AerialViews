@@ -14,10 +14,11 @@ import android.service.dreams.DreamService
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.LoggingHelper
 import com.neilturner.aerialviews.utils.WindowHelper
+import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -40,18 +41,27 @@ class DreamActivity : DreamService() {
         setContentView(screenController.view)
     }
 
+    override fun onWakeUp() {
+        try {
+            super.onWakeUp()
+        } catch (e: Exception) {
+            Timber.e(e, "onWakeUp() super class exception")
+        }
+    }
+
     override fun onDreamingStarted() {
         super.onDreamingStarted()
-        LoggingHelper.logScreenView("Screensaver", TAG)
+        FirebaseHelper.logScreenView("Screensaver", this)
         // Start playback, etc
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        return if (InputHelper.handleKeyEvent(event, screenController, ::wakeUp)) {
-            true
-        } else {
-            super.dispatchKeyEvent(event)
+        if (this::screenController.isInitialized &&
+            InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
+        ) {
+            return true
         }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
@@ -67,9 +77,5 @@ class DreamActivity : DreamService() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
-    }
-
-    companion object {
-        private const val TAG = "DreamActivity"
     }
 }

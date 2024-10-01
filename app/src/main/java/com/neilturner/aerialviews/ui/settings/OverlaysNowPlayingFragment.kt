@@ -3,14 +3,14 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.LoggingHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
+import timber.log.Timber
 
 class OverlaysNowPlayingFragment :
     PreferenceFragmentCompat(),
@@ -28,10 +28,10 @@ class OverlaysNowPlayingFragment :
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("nowplaying_permission")) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                openNotificationSettings()
-            }
+        if (preference.key.contains("nowplaying_permission") &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
+        ) {
+            openNotificationSettings()
         }
 
         return super.onPreferenceTreeClick(preference)
@@ -42,7 +42,7 @@ class OverlaysNowPlayingFragment :
             val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
             startActivity(intent)
         } catch (ex: Exception) {
-            Log.e(TAG, ex.message.toString())
+            Timber.e(ex, "Unable to open notification settings: ${ex.message}")
         }
     }
 
@@ -76,11 +76,7 @@ class OverlaysNowPlayingFragment :
 
     override fun onResume() {
         super.onResume()
-        LoggingHelper.logScreenView("Now Playing", TAG)
+        FirebaseHelper.logScreenView("Now Playing", this)
         checkPermission()
-    }
-
-    companion object {
-        private const val TAG = "NowPlayingFragment"
     }
 }

@@ -68,7 +68,7 @@ object GeneralPrefs : KotprefModel() {
     var messageWeight by stringPref("300", "message_weight")
 
     // Other
-    var alternateTextPosition by booleanPref(false, "alt_text_position")
+    var alternateTextPosition by booleanPref(true, "alt_text_position")
 
     // Startup + Shutdown
     var showLoadingText by booleanPref(true, "startup_show_loading")
@@ -76,13 +76,14 @@ object GeneralPrefs : KotprefModel() {
     var loadingTextWeight by stringPref("300", "startup_weight")
 
     // Animation
+    var overlayFadeInDuration by stringPref("600", "overlay_fade_in_duration")
+    var overlayFadeOutDuration by stringPref("600", "overlay_fade_out_duration")
     var mediaFadeInDuration by stringPref("600", "media_fade_in_duration")
     var mediaFadeOutDuration by stringPref("800", "media_fade_out_duration")
-    var overlayFadeInDuration by stringPref("500", "overlay_fade_in_duration")
-    var overlayFadeOutDuration by stringPref("500", "overlay_fade_out_duration")
 
-    // Overlay Auto hide
+    // Overlay Auto hide/reveal
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+    var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
@@ -116,14 +117,12 @@ object GeneralPrefs : KotprefModel() {
     var buttonDownPress by nullableEnumValuePref(ButtonType.IGNORE, "button_down_press")
     var buttonOkPress by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_press")
 
-    var buttonLeftHold by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_hold")
-    var buttonRightHold by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_hold")
+    var buttonLeftHold by nullableEnumValuePref(ButtonType.IGNORE, "button_left_hold")
+    var buttonRightHold by nullableEnumValuePref(ButtonType.IGNORE, "button_right_hold")
     var buttonUpHold by nullableEnumValuePref(ButtonType.IGNORE, "button_up_hold")
     var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
-    var enableSkipVideos by booleanPref(true, "enable_skip_videos")
-    var enablePlaybackSpeedChange by booleanPref(false, "enable_playback_speed_change")
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
 
     // Advanced

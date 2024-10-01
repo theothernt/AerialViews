@@ -5,15 +5,24 @@
     <item>Roboto</item>
   </string-array>
   <string-array name="appearance_font_weight_entries">
-    <item>100/Тонке</item>
-    <item>200/Надсвітле</item>
-    <item>300/Світле (за замовчуванням)</item>
-    <item>400/Нормальне</item>
-    <item>500/Середнє</item>
-    <item>600/Напівжирне</item>
-    <item>700/Жирне</item>
-    <item>800/Наджирне</item>
-    <item>900/Важке</item>
+    <item>100/Тонка</item>
+    <item>200/Надсвітла</item>
+    <item>300/Світла (за замовчуванням)</item>
+    <item>400/Нормальна</item>
+    <item>500/Середня</item>
+    <item>600/Напівжирна</item>
+    <item>700/Жирна</item>
+    <item>800/Наджирна</item>
+    <item>900/Важка</item>
+  </string-array>
+  <string-array name="button_action_entries">
+    <item>Ігнорувати дію</item>
+    <item>Екранна заставка виходу</item>
+    <item>Перейти до наступного відео/фотографії</item>
+    <item>Перейти до попереднього відео/фото</item>
+    <item>Збільште швидкість відтворення відео</item>
+    <item>Зменште швидкість відтворення відео</item>
+    <item>Показувати накладення (якщо вони приховані)</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Системний</item>
@@ -27,15 +36,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Вимкнено</item>
+    <item>"Використовуйте відформатоване ім\'я файлу"</item>
     <item>Використовувати ім\'я файлу як є</item>
     <item>"Ім\'я папки та файлу"</item>
-    <item>"Тільки ім\'я папки"</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Вимкнено</item>
+    <item>Використовуйте форматоване ім\'я файлу, наприклад: \'switzerland-zürich_train_station.jpg\' стає \'Switzerland - Zürich Train Station\'</item>
     <item>Використовуйте ім\'я файлу як є, наприклад: \'Japan - Deep snow in Hokkaido.jpg\' стає \'Japan - Deep snow in Hokkaido\'</item>
     <item>Використовуйте папку та ім\'я файлу як є, наприклад: \'Pictures/Italy/Dolomites.jpg\' стає \'Italy / Dolomites\'</item>
-    <item>Використовуйте лише назву папки, наприклад: \'Pictures/Dublin/Temple Bar.png\' стає \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Вимкнено</item>
@@ -44,14 +53,38 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Вимкнено</item>
+    <item>"Використовуйте форматоване ім\'я файлу, наприклад: \'japan-mount_fuji.mp4\' стає \'Japan - Mount Fuji\'"</item>
     <item>"Використовуйте ім\'я файлу як є, наприклад: \'Flying towards Mount Pilatus.mp4\' стає \'Flying towards Mount Pilatus\'"</item>
     <item>"Використовуйте папку та ім\'я файлу як є, наприклад: \'Videos/Grand Canyon/Sunet.mp4\' стає \'Grand Canyon / Sunet\'"</item>
-    <item>Використовуйте лише назву папки, наприклад: \'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Вимкнено</item>
     <item>Короткий опис або місцезнаходження</item>
     <item>"Динамічні пам\'ятки, доступні багатьма мовами, які змінюються під час відтворення відео"</item>
+  </string-array>
+  <string-array name="duration_entries">
+    <item>Вимкнено</item>
+    <item>200 мс</item>
+    <item>400 мс</item>
+    <item>600 мс</item>
+    <item>800 мс</item>
+    <item>1000 мс</item>
+    <item>1200 мс</item>
+    <item>1400 мс</item>
+    <item>1600 мс</item>
+    <item>1800 мс</item>
+    <item>2000 мс</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_entries">
+    <item>Пропустити при досягненні ліміту</item>
+    <item>Дозвольте завершити довші відео</item>
+    <item>Відтворення випадкових фрагментів довгих відеороликів</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>Дотримуйтесь ліміту - переходьте до наступного відео, коли ліміт буде досягнутий</item>
+    <item>Ігнорувати обмеження-якщо відео довше встановленого обмеження, воно буде відтворюватися до кінця</item>
+    <item>Випадковий сегмент - якщо відео довше встановленого ліміту, буде відтворена випадкова частина відео
+(наприклад, при обмеженні в 2 хвилини 6-хвилинне відео може складатися з 3 сегментів - один з них буде відтворений випадковим чином)</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Медіа-сканер</item>
@@ -61,6 +94,29 @@
     <item>Лише відео</item>
     <item>Лише зображення</item>
     <item>Відео та зображення</item>
+  </string-array>
+  <string-array name="nowplaying_format_entries">
+    <item>Вимкнено</item>
+    <item>Пісня · Виконавець</item>
+    <item>Виконавець · Пісня</item>
+    <item>Виконавець</item>
+    <item>Пісня</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_entries">
+    <item>Ніколи не приховувати (за замовчуванням)</item>
+    <item>Завжди прихований</item>
+    <item>2 секунди</item>
+    <item>4 секунди</item>
+    <item>6 секунд</item>
+    <item>8 секунд</item>
+    <item>10 секунд</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 секунди</item>
+    <item>4 секунди (за замовчуванням)</item>
+    <item>6 секунд</item>
+    <item>8 секунд</item>
+    <item>10 секунд</item>
   </string-array>
   <string-array name="photo_scale_entries">
     <item>Заповнення (за замовчуванням)</item>
@@ -113,8 +169,8 @@
     <item>Дата</item>
     <item>Повідомлення - Рядок 1</item>
     <item>Повідомлення - Рядок 2</item>
-    <item>Weather</item>
-    <item>Music - Now Playing</item>
+    <item>Тепер граємо #1</item>
+    <item>Тепер граємо #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -128,5 +184,9 @@
     <item>20sp</item>
     <item>18sp (за замовчуванням)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="webdav_scheme_entries">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
 </resources>

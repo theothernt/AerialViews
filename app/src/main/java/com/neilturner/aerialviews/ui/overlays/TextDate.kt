@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
@@ -52,9 +50,5 @@ class TextDate : AppCompatTextView {
         this.postDelayed({
             refreshDateHandler?.let { it() }
         }, 1000)
-    }
-
-    companion object {
-        private const val TAG = "TextDate"
     }
 }

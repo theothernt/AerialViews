@@ -76,8 +76,4 @@ class TextNowPlaying : AppCompatTextView {
             else -> ""
         }
     }
-
-    companion object {
-        private const val TAG = "TextNowPlaying"
-    }
 }
