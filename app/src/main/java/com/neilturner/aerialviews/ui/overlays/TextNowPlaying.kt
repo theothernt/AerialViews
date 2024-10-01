@@ -22,7 +22,7 @@ import me.kosert.flowbus.GlobalBus
 
 class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
-    var format = NowPlayingFormat.DISALBED
+    var format = NowPlayingFormat.DISABLED
 
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val receiver = EventsReceiver()
@@ -36,7 +36,7 @@ class TextNowPlaying : AppCompatTextView {
     }
 
     fun updateFormat(format: NowPlayingFormat?) {
-        this.format = format ?: NowPlayingFormat.DISALBED
+        this.format = format ?: NowPlayingFormat.DISABLED
     }
 
     @OptIn(FlowPreview::class)
