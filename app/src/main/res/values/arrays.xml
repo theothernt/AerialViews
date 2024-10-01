@@ -413,27 +413,16 @@
     <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
     <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
 
-    <!-- WebDav schemes -->
-    <string-array name="webdav_scheme_entries">
+    <!-- HTTP schemes -->
+    <string-array name="http_scheme_entries">
         <item>HTTP</item>
         <item>HTTPS</item>
     </string-array>
-    <string-array name="webdav_scheme_values" translatable="false">
+    <string-array name="http_scheme_values" translatable="false">
         <item>HTTP</item>
         <item>HTTPS</item>
     </string-array>
-    <string name="webdav_scheme_default" translatable="false">HTTP</string>
-
-    <!-- Immich schemes -->
-    <string-array name="immich_scheme_entries">
-        <item>HTTP</item>
-        <item>HTTPS</item>
-    </string-array>
-    <string-array name="immich_scheme_values" translatable="false">
-        <item>HTTP</item>
-        <item>HTTPS</item>
-    </string-array>
-    <string name="immich_scheme_default" translatable="false">HTTP</string>
+    <string name="http_scheme_default" translatable="false">HTTP</string>
 
     <!-- Duration timings -->
     <string-array name="duration_entries">

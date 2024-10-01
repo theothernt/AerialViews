@@ -29,9 +29,9 @@
                 <ListPreference
                     app:dependency="webdav_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/webdav_scheme_default"
-                    app:entries="@array/webdav_scheme_entries"
-                    app:entryValues="@array/webdav_scheme_values"
+                    app:defaultValue="@string/http_scheme_default"
+                    app:entries="@array/http_scheme_entries"
+                    app:entryValues="@array/http_scheme_values"
                     app:key="webdav_media_scheme"
                     app:title="@string/webdav_media_scheme_title"
                     app:useSimpleSummaryProvider="true" />

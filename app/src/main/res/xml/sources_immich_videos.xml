@@ -29,9 +29,9 @@
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/immich_scheme_default"
-                    app:entries="@array/immich_scheme_entries"
-                    app:entryValues="@array/immich_scheme_values"
+                    app:defaultValue="@string/http_scheme_default"
+                    app:entries="@array/http_scheme_entries"
+                    app:entryValues="@array/http_scheme_values"
                     app:key="immich_media_scheme"
                     app:title="@string/immich_media_scheme_title"
                     app:useSimpleSummaryProvider="true" />
