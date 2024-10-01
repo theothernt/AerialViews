@@ -36,6 +36,11 @@
             app:title="@string/sources_webdav_title"
             app:summary="@string/sources_webdav_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.WebDavVideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_immich_title"
+            app:summary="@string/sources_immich_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.ImmichVideosFragment"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

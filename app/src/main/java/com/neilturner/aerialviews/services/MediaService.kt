@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.net.Uri
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
@@ -10,6 +11,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
@@ -18,6 +20,7 @@ import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
+import com.neilturner.aerialviews.providers.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
@@ -37,6 +40,7 @@ class MediaService(
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
+        providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         // Sort by local first so duplicates removed are remote
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
@@ -57,6 +61,15 @@ class MediaService(
 
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
+
+            // Populate the filename field so that we can remove duplicates for providers for which
+            // the asset filename is not at the end of the URI.
+            media.forEach {
+                if (it.filename == Uri.EMPTY) {
+                    it.filename = it.uri
+                }
+            }
+
             val numVideos = media.size
             media = media.distinctBy { it.uri.filenameWithoutExtension.lowercase() }.toMutableList()
             Timber.i("Duplicate videos removed based on filename: ${numVideos - media.size}")
@@ -116,6 +129,10 @@ class MediaService(
 
         // Find video id in metadata list
         media.forEach video@{ video ->
+            if (video.description.isNotEmpty() || video.poi.isNotEmpty()) {
+                matched.add(video)
+                return@video
+            }
             metadata.forEach { metadata ->
                 if (video.type == AerialMediaType.VIDEO &&
                     metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
@@ -139,7 +156,13 @@ class MediaService(
     ): List<AerialMedia> {
         when (description) {
             DescriptionFilenameType.FILENAME -> {
-                media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+                media.forEach { item ->
+                    if (item.filename == Uri.EMPTY) {
+                        item.description = item.uri.filenameWithoutExtension
+                    } else {
+                        item.description = item.filename.toString()
+                    }
+                }
             }
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
                 media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
