@@ -406,7 +406,7 @@
     <string-array name="nowplaying_format_values" translatable="false">
         <item>DISABLED</item>
         <item>SONG_ARTIST</item>
-        <item>ARTIST_ARTIST</item>
+        <item>ARTIST_SONG</item>
         <item>ARTIST</item>
         <item>SONG</item>
     </string-array>
