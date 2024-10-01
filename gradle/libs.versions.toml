@@ -86,6 +86,7 @@ kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" } # ksp
@@ -110,7 +111,7 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
-retrofit = ["retrofit", "converter-moshi", "moshi-kotlin", "logging-interceptor"]
+retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

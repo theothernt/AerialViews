@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
@@ -18,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
+import timber.log.Timber
 
 class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs) :
     MediaProvider(context) {
@@ -61,12 +61,12 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
     }
 
     private fun getApiInterface() {
-        Log.d(TAG, "Connecting to $server")
+        Timber.i( "Connecting to $server")
         try {
             apiInterface =
                 RetrofitInstance.getInstance(server).create(ImmichService::class.java)
         } catch (e: Exception) {
-            Log.e(TAG, e.message.toString())
+            Timber.e(e, e.message.toString())
         }
     }
 
@@ -100,7 +100,7 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
             try {
                 getAlbumFromAPI()
             } catch (e: Exception) {
-                Log.e(TAG, e.message.toString())
+                Timber.e(e, e.message.toString())
                 return Pair(emptyList(), e.message.toString())
             }
 
@@ -116,7 +116,7 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
 
             val description = asset.exifInfo?.description.toString()
             if (!asset.exifInfo?.country.isNullOrEmpty()) {
-                Log.i(TAG, "fetchImmichMedia: ${asset.id} country = ${asset.exifInfo?.country}")
+                Timber.i( "fetchImmichMedia: ${asset.id} country = ${asset.exifInfo?.country}")
                 val location = listOf(
                     asset.exifInfo?.country,
                     asset.exifInfo?.state,
@@ -151,7 +151,7 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
             message += String.format(context.getString(R.string.immich_media_test_summary4), images.toString()) + "\n"
         }
 
-        Log.i(TAG, "Media found: ${media.size}")
+        Timber.i("Media found: ${media.size}")
         return Pair(media, message)
     }
 
@@ -164,16 +164,12 @@ class ImmichMediaProvider(context: Context, private val prefs: ImmichMediaPrefs)
                 album = body
             }
         } catch (exception: Exception) {
-            Log.i(TAG, exception.message.toString())
+            Timber.i(exception.message.toString())
         }
         return album
     }
 
     private fun getAssetUri(id: String): Uri {
         return Uri.parse(server + "/api/assets/${id}/original?key=${key}&password=${prefs.password}")
-    }
-
-    companion object {
-        private const val TAG = "ImmichVideoProvider"
     }
 }
