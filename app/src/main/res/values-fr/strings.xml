@@ -200,8 +200,8 @@
   <string name="local_videos_shield_notice_summary">Paramètres &gt; Préférences de l\'appareil &gt; Stockage &gt; Recherche automatique de supports</string>
   <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée…</string>
   <string name="local_videos_test_results">Résultats des tests</string>
-  <string name="nowplaying_line1_title">En cours de lecture - Ligne 1</string>
-  <string name="nowplaying_line2_title">En cours de lecture - Ligne 2</string>
+  <string name="nowplaying_line1_title">Ligne 1</string>
+  <string name="nowplaying_line2_title">Ligne 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Cette fonction n\'est pas disponible sur les anciennes versions d\'Android TV.</string>
   <string name="nowplaying_permission_notice_summary">Pour activer l\'accès aux notifications, veuillez consulter la rubrique Paramètres &gt; Apps &gt; Special Access &gt; Notification access</string>
   <string name="nowplaying_permission_summary">Cette autorisation est nécessaire pour que l\'application puisse écouter les notifications musicales du système.</string>

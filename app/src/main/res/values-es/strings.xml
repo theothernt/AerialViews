@@ -200,8 +200,8 @@
   <string name="local_videos_shield_notice_summary">Ajustes &gt; Preferencias de Dispositivo &gt; Almacenamiento &gt; Escanear por multimedia automáticamente</string>
   <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada…</string>
   <string name="local_videos_test_results">Resultados de la prueba</string>
-  <string name="nowplaying_line1_title">Reproduciendo ahora - Línea 1</string>
-  <string name="nowplaying_line2_title">Reproduciendo ahora - Línea 2</string>
+  <string name="nowplaying_line1_title">Línea 1</string>
+  <string name="nowplaying_line2_title">Línea 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Esta función no está disponible en versiones anteriores de Android TV</string>
   <string name="nowplaying_permission_notice_summary">Para habilitar el acceso a notificaciones, consulte Configuración &gt; Aplicaciones &gt; Acceso especial &gt; Acceso a notificaciones</string>
   <string name="nowplaying_permission_summary">Se requiere permiso para que esta aplicación pueda escuchar notificaciones de música del sistema</string>

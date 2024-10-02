@@ -169,8 +169,8 @@
     <item>Дата</item>
     <item>Сообщение - Строка 1</item>
     <item>Сообщение - Строка 2</item>
-    <item>Сейчас играет #1</item>
-    <item>Сейчас играет #2</item>
+    <item>Сейчас играет - Строка 1</item>
+    <item>Сейчас играет - Строка 2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>

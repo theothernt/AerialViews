@@ -200,8 +200,8 @@
   <string name="local_videos_shield_notice_summary">Einstellungen &gt; Geräteeinstellungen &gt; Speicher &gt; Automatisch nach Medien durchsuchen</string>
   <string name="local_videos_shield_notice_title">\"Nvidia Shield\"-Nutzer: Bitte folgende Option aktivieren…</string>
   <string name="local_videos_test_results">Testresultate</string>
-  <string name="nowplaying_line1_title">Jetzt läuft - Zeile 1</string>
-  <string name="nowplaying_line2_title">Jetzt läuft - Zeile 2</string>
+  <string name="nowplaying_line1_title">Zeile 1</string>
+  <string name="nowplaying_line2_title">Zeile 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Diese Funktion ist in älteren Versionen von Android TV nicht verfügbar</string>
   <string name="nowplaying_permission_notice_summary">Um den Benachrichtigungszugriff zu aktivieren unter Einstellungen &gt; Apps &gt; Spezieller Zugriff &gt; Benachrichtigungszugriff nachsehen</string>
   <string name="nowplaying_permission_summary">Damit diese App Musikbenachrichtigungen vom System anzeigen kann ist eine Berechtigung erforderlich</string>

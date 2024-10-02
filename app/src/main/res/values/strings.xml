@@ -396,8 +396,8 @@
     <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
     <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
 
-    <string name="nowplaying_line1_title">Now Playing - Line 1</string>
-    <string name="nowplaying_line2_title">Now Playing - Line 2</string>
+    <string name="nowplaying_line1_title">Line 1</string>
+    <string name="nowplaying_line2_title">Line 2</string>
 
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
