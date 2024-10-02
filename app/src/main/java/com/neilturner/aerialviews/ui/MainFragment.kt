@@ -54,7 +54,7 @@ class MainFragment :
             val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
             startActivity(intent)
         } catch (ex: Exception) {
-            Timber.e(ex, ex.message)
+            Timber.e(ex)
         }
     }
 
@@ -105,7 +105,7 @@ class MainFragment :
                     startActivity(intent)
                     return
                 } catch (ex: Exception) {
-                    Timber.e(ex, ex.message)
+                    Timber.e(ex)
                 }
             }
         }

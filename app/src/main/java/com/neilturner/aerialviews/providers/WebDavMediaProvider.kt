@@ -57,7 +57,7 @@ class WebDavMediaProvider(
                     prefs.password,
                 )
             } catch (ex: Exception) {
-                Timber.e(ex, ex.message)
+                Timber.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
@@ -98,7 +98,7 @@ class WebDavMediaProvider(
                 client = OkHttpSardine()
                 client.setCredentials(userName, password, true)
             } catch (ex: Exception) {
-                Timber.e(ex, ex.message)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Failed to create WebDAV client",
@@ -160,7 +160,7 @@ class WebDavMediaProvider(
                 }
             }
         } catch (ex: Exception) {
-            Timber.e(ex, ex.message)
+            Timber.e(ex)
         }
         return files
     }

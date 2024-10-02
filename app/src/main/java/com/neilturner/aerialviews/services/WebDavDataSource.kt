@@ -77,7 +77,7 @@ class WebDavDataSource : BaseDataSource(true) {
             val file = client?.get(url)
             return Pair(file, size)
         } catch (ex: Exception) {
-            Timber.e(ex, ex.message)
+            Timber.e(ex)
             Pair(null, 0)
         }
     }

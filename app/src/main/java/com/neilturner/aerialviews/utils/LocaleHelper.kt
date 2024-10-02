@@ -76,8 +76,8 @@ object LocaleHelper {
         val locales = res.getStringArray(R.array.locale_screensaver_values).toMutableList()
 
         // Remove 'default' and 'random' values leaving only valid locales
-        locales.removeFirst()
-        locales.removeLast()
+        locales.removeAt(0)
+        locales.removeAt(locales.lastIndex)
 
         return locales.random()
     }

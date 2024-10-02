@@ -118,8 +118,4 @@ class ImmichVideosFragment :
             create().show()
         }
     }
-
-    companion object {
-        private const val TAG = "ImmichVideosFragment"
-    }
 }

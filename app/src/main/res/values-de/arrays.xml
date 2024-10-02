@@ -184,8 +184,4 @@
     <item>18sp (Standard)</item>
     <item>16sp</item>
   </string-array>
-  <string-array name="webdav_scheme_entries">
-    <item>HTTP</item>
-    <item>HTTPS</item>
-  </string-array>
 </resources>

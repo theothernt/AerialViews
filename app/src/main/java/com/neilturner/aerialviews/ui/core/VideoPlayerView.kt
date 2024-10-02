@@ -363,7 +363,7 @@ class VideoPlayerView(
 
         val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
         val message2 = "(video is ${duration.milliseconds}, Segments: $segments)"
-        Timber.i(message1 + message2)
+        Timber.i("$message1 $message2")
         return Triple(true, segmentStart, segmentEnd)
     }
 
@@ -394,7 +394,7 @@ class VideoPlayerView(
 
     override fun onPlayerErrorChanged(error: PlaybackException?) {
         super.onPlayerErrorChanged(error)
-        error?.let { Timber.e(it, it.message) }
+        error?.let { Timber.e(it) }
     }
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {

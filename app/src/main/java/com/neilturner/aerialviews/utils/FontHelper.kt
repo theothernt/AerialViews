@@ -21,7 +21,7 @@ object FontHelper {
                     Typeface.create("san-serif", Typeface.NORMAL)
                 }
             } catch (ex: Exception) {
-                Timber.e(ex, ex.message)
+                Timber.e(ex)
                 Typeface.create("san-serif", Typeface.NORMAL)
             }
         return TypefaceCompat.create(context, font, weight.toInt(), false)

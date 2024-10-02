@@ -62,7 +62,7 @@ object SambaHelper {
 
     fun parseShareAndPathName(uri: Uri): Pair<String, String> {
         val segments = uri.pathSegments.toMutableList()
-        val shareName = segments.removeFirst()
+        val shareName = segments.removeAt(0)
 
         var path = ""
         if (segments.isNotEmpty()) {

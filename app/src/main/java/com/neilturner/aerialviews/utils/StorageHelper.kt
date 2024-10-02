@@ -47,7 +47,7 @@ object StorageHelper {
         } catch (e: java.lang.NullPointerException) {
             e.printStackTrace()
         }
-        if (paths.size == 0) {
+        if (paths.isEmpty()) {
             val path = Environment.getExternalStorageDirectory().absolutePath
             paths[path] = formatPathAsLabel(path)
         }
@@ -77,7 +77,7 @@ object StorageHelper {
         } catch (e: IllegalAccessException) {
             e.printStackTrace()
         }
-        if (paths.size == 0) {
+        if (paths.isEmpty()) {
             val path = Environment.getExternalStorageDirectory().absolutePath
             paths[path] = formatPathAsLabel(path)
         }

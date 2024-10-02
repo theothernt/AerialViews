@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
@@ -35,7 +34,7 @@ class TextLocation : AppCompatTextView {
         player: VideoPlayerView,
     ) {
         isFadingOutMedia = false
-        this.visibility = View.VISIBLE
+        this.visibility = VISIBLE
 
         // If POI, set POI text, if empty use location, or else use location
         this.text =
@@ -47,7 +46,7 @@ class TextLocation : AppCompatTextView {
 
         // Hide TextView if POI/location text is blank
         if (this.text.isBlank()) {
-            this.visibility = View.GONE
+            this.visibility = GONE
         }
 
         // If set to POI, set timer to update text when interval is reached

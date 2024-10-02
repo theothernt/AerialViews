@@ -52,7 +52,7 @@ class SambaDataSource : BaseDataSource(true) {
         try {
             remoteFile = openSambaFile()
         } catch (ex: Exception) {
-            Timber.e(ex, ex.message)
+            Timber.e(ex)
             return 0
         }
 
