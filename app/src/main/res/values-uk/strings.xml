@@ -200,8 +200,8 @@
   <string name="local_videos_shield_notice_summary">Налаштування &gt; Налаштування пристрою &gt; Сховище &gt; Автоматичне сканування медіафайлів</string>
   <string name="local_videos_shield_notice_title">Користувачі Nvidia Shield, переконайтеся, що включена наступна опція…</string>
   <string name="local_videos_test_results">Результати випробувань</string>
-  <string name="nowplaying_line1_title">Зараз граємо - Лінія 1</string>
-  <string name="nowplaying_line2_title">Зараз граємо - Лінія 2</string>
+  <string name="nowplaying_line1_title">Рядок 1</string>
+  <string name="nowplaying_line2_title">Рядок 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Ця функція недоступна у старих версіях Android TV</string>
   <string name="nowplaying_permission_notice_summary">Щоб увімкнути доступ до сповіщень, перейдіть до Налаштування &gt; Програми &gt; Спеціальний доступ &gt; Доступ до сповіщень</string>
   <string name="nowplaying_permission_summary">Потрібен дозвіл, щоб ця програма могла слухати музичні сповіщення з системи</string>
