@@ -414,7 +414,7 @@
     <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
 
     <!-- HTTP schemes -->
-    <string-array name="http_scheme_entries">
+    <string-array name="http_scheme_entries" translatable="false">
         <item>HTTP</item>
         <item>HTTPS</item>
     </string-array>

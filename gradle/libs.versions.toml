@@ -1,6 +1,6 @@
 [versions]
 # Plugins
-agp = "8.6.1"
+agp = "8.7.0"
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.2"
 firebase-perf-plugin = "1.4.2"
