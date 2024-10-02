@@ -60,7 +60,7 @@ class ImagePlayerView :
         val scaleType =
             try {
                 ScaleType.valueOf(GeneralPrefs.photoScale.toString())
-            } catch (ex: Exception) {
+            } catch (e: Exception) {
                 GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
                 ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
             }

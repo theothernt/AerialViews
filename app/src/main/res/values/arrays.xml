@@ -386,8 +386,8 @@
 
     <!-- Photo scale/fill options -->
     <string-array name="photo_scale_entries">
-        <item>Fill (Default)</item>
-        <item>Center</item>
+        <item>Fill with crop (Default)</item>
+        <item>Scale without crop</item>
     </string-array>
     <string-array name="photo_scale_values" translatable="false">
         <item>CENTER_CROP</item>
