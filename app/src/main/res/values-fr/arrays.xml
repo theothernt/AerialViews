@@ -167,8 +167,8 @@
     <item>Horloge</item>
     <item>Localisation</item>
     <item>Date</item>
-    <item>Ligne de message 1</item>
-    <item>Ligne de message 2</item>
+    <item>Message #1</item>
+    <item>Message #2</item>
     <item>En cours de lecture #1</item>
     <item>En cours de lecture #2</item>
   </string-array>
