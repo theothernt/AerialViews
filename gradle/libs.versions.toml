@@ -14,8 +14,8 @@ kotlin = "2.0.20"
 coroutines = "1.9.0"
 
 # Firebase
-firebase-analytics = "22.1.0"
-firebase-crashlytics = "19.1.0"
+firebase-analytics = "22.1.2"
+firebase-crashlytics = "19.2.0"
 firebase-perf = "21.0.1"
 
 # AndroidX
