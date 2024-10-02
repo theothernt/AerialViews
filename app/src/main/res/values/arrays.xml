@@ -395,6 +395,17 @@
     </string-array>
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
+    <!-- Video scale/fill options -->
+    <string-array name="video_scale_entries">
+        <item>Fill with crop (Default)</item>
+        <item>Scale without crop</item>
+    </string-array>
+    <string-array name="video_scale_values" translatable="false">
+        <item>SCALE_TO_FIT_WITH_CROPPING</item>
+        <item>SCALE_TO_FIT</item>
+    </string-array>
+    <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
+
     <!-- Now Playing -->
     <string-array name="nowplaying_format_entries">
         <item>Disabled</item>

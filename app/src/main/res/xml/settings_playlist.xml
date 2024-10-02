@@ -33,6 +33,14 @@
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_video_volume_summary" />
 
+                <ListPreference
+                    app:defaultValue="@string/video_scale_default"
+                    app:entries="@array/video_scale_entries"
+                    app:entryValues="@array/video_scale_values"
+                    app:key="video_scale"
+                    app:title="@string/playlist_video_scale_title"
+                    app:useSimpleSummaryProvider="true" />
+
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="any_videos_ignore_non_manifest_videos"

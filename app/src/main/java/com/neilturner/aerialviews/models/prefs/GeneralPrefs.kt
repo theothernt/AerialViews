@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.VideoScale
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -99,17 +100,16 @@ object GeneralPrefs : KotprefModel() {
     // Playlist
     var muteVideos by booleanPref(true, "mute_videos")
     var videoVolume by stringPref("100", "video_volume")
+    var videoScale by nullableEnumValuePref(VideoScale.SCALE_TO_FIT_WITH_CROPPING, "video_scale")
     var shuffleVideos by booleanPref(true, "shuffle_videos")
     var playbackSpeed by stringPref("1", "playback_speed")
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
     var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
-
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
-
     var slideshowSpeed by stringPref("30", "slideshow_speed")
-    var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale") // Migrate
+    var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")
 
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")

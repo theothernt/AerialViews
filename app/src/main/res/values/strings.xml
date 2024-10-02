@@ -425,6 +425,8 @@
     <string name="playlist_video_volume_title">Video volume</string>
     <string name="playlist_video_volume_summary">Choose a video volume level</string>
 
+    <string name="playlist_video_scale_title">Video scaling</string>
+
     <string name="playlist_shuffle_title">Shuffle videos &amp; photos</string>
     <string name="playlist_shuffle_summary">Randomises the order of the videos &amp; photos</string>
 

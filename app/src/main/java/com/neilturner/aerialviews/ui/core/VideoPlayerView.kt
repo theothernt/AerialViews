@@ -19,6 +19,7 @@ import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
@@ -55,6 +56,7 @@ class VideoPlayerView(
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
     private val videoVolume = GeneralPrefs.videoVolume.toFloat() / 100
+    private val videoScale = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT) 1 else 2
     private var canChangePlaybackSpeed = true
 
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
@@ -440,7 +442,7 @@ class VideoPlayerView(
             player.volume = 0f
         }
 
-        player.videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING
+        player.videoScalingMode = videoScale
         player.setPlaybackSpeed(playbackSpeed.toFloat())
         return player
     }
