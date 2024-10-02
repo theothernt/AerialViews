@@ -54,6 +54,7 @@ class VideoPlayerView(
     private val extraLogging = GeneralPrefs.enablePlaybackLogging
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
+    private val videoVolume = GeneralPrefs.videoVolume.toFloat() / 100
     private var canChangePlaybackSpeed = true
 
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
@@ -433,7 +434,9 @@ class VideoPlayerView(
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (muteVideo) {
+        if (!muteVideo) {
+            player.volume = videoVolume
+        } else {
             player.volume = 0f
         }
 

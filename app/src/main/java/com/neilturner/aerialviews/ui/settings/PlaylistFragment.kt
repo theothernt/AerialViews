@@ -56,7 +56,7 @@ class PlaylistFragment : PreferenceFragmentCompat() {
         val pref = findPreference<ListPreference>(control)
         pref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
+                updateSummary(control, entries, pref.findIndexOfValue(newValue as String))
                 true
             }
         pref?.findIndexOfValue(pref.value)?.let { updateSummary(control, entries, it) }

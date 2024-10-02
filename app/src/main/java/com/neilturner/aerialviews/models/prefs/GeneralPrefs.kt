@@ -98,6 +98,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Playlist
     var muteVideos by booleanPref(true, "mute_videos")
+    var videoVolume by stringPref("100", "video_volume")
     var shuffleVideos by booleanPref(true, "shuffle_videos")
     var playbackSpeed by stringPref("1", "playback_speed")
     var maxVideoLength by stringPref("0", "playback_max_video_length")

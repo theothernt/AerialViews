@@ -22,6 +22,17 @@
                     app:summary="@string/playlist_mute_videos_summary"
                     app:title="@string/playlist_mute_videos_title" />
 
+                <ListPreference
+                    app:dependency="mute_videos"
+                    app:disableDependentsState="true"
+                    app:defaultValue="@string/volume_default"
+                    app:entries="@array/volume_entries"
+                    app:entryValues="@array/volume_values"
+                    app:key="video_volume"
+                    app:title="@string/playlist_video_volume_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_video_volume_summary" />
+
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="any_videos_ignore_non_manifest_videos"
