@@ -126,7 +126,7 @@ class ImmichMediaProvider(
                 poi[poi.size] = description
             }
 
-            val item = AerialMedia(uri, filename, description, poi)
+            val item = AerialMedia(uri, description, poi)
             if (FileHelper.isSupportedVideoType(asset.originalPath.toString())) {
                 item.type = AerialMediaType.VIDEO
                 videos++
