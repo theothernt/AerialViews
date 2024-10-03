@@ -38,6 +38,7 @@
             app:fragment="com.neilturner.aerialviews.ui.sources.WebDavVideosFragment"/>
 
         <Preference
+            app:isPreferenceVisible="false"
             app:title="@string/sources_immich_title"
             app:summary="@string/sources_immich_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.ImmichVideosFragment"/>
