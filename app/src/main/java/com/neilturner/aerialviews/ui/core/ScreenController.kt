@@ -81,6 +81,7 @@ class ScreenController(
         videoViewBinding = binding.videoView
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
+        videoViewBinding.root.setBackgroundColor(Color.BLACK)
 
         imageViewBinding = binding.imageView
         imagePlayer = imageViewBinding.imagePlayer

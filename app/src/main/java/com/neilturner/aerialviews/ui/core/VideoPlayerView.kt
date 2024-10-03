@@ -68,6 +68,9 @@ class VideoPlayerView(
     private var segmentEnd = 0L
     private var loopCount = 0
 
+    private var videoWidth: Int = 0
+    private var videoHeight: Int = 0
+
     init {
         player = buildPlayer(context)
         player.setVideoSurfaceView(this)
@@ -138,17 +141,27 @@ class VideoPlayerView(
         super.onDetachedFromWindow()
     }
 
-    override fun onMeasure(
-        widthMeasureSpec: Int,
-        heightMeasureSpec: Int,
-    ) {
-        var newWidthMeasureSpec = widthMeasureSpec
-        if (aspectRatio > 0) {
-            val newHeight = MeasureSpec.getSize(heightMeasureSpec)
-            val newWidth = (newHeight * aspectRatio).toInt()
-            newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        var width = MeasureSpec.getSize(widthMeasureSpec)
+        var height = MeasureSpec.getSize(heightMeasureSpec)
+
+        if (videoWidth > 0 && videoHeight > 0) {
+            val widthRatio = width.toFloat() / videoWidth
+            val heightRatio = height.toFloat() / videoHeight
+
+            val aspectRatio = if (widthRatio > heightRatio) {
+                height.toFloat() / videoHeight
+            } else {
+                width.toFloat() / videoWidth
+            }
+
+            width = (videoWidth * aspectRatio).toInt()
+            height = (videoHeight * aspectRatio).toInt()
         }
-        super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
+
+        Timber.i("Measure size: $width x $height")
+
+        setMeasuredDimension(width, height)
     }
 
     fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
@@ -402,7 +415,11 @@ class VideoPlayerView(
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
         aspectRatio = if (height == 0) 0f else width * videoSize.pixelWidthHeightRatio / height
-        requestLayout()
+        if (videoSize.width != videoWidth || videoSize.height != videoHeight) {
+            videoWidth = videoSize.width
+            videoHeight = videoSize.height
+            requestLayout()
+        }
     }
 
     @SuppressLint("UnsafeOptInUsageError")
