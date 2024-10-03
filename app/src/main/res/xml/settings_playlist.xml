@@ -17,6 +17,7 @@
 
         <PreferenceCategory app:title="@string/category_videos">
                 <CheckBoxPreference
+                    app:disableDependentsState="true"
                     app:defaultValue="true"
                     app:key="mute_videos"
                     app:summary="@string/playlist_mute_videos_summary"
@@ -24,7 +25,6 @@
 
                 <ListPreference
                     app:dependency="mute_videos"
-                    app:disableDependentsState="true"
                     app:defaultValue="@string/volume_default"
                     app:entries="@array/volume_entries"
                     app:entryValues="@array/volume_values"
