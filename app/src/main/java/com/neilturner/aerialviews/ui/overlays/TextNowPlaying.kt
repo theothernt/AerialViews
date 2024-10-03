@@ -60,10 +60,10 @@ class TextNowPlaying : AppCompatTextView {
     }
 
     private suspend fun updateNowPlaying(trackInfo: MusicEvent) {
-        animate().alpha(0f).setDuration(300)
+        animate().alpha(0f).duration = 300
         delay(300)
         text = formatNowPlaying(trackInfo)
-        animate().alpha(1f).setDuration(300)
+        animate().alpha(1f).duration = 300
     }
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {

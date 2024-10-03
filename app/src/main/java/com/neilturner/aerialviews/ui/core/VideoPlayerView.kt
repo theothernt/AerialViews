@@ -141,7 +141,10 @@ class VideoPlayerView(
         super.onDetachedFromWindow()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
+    ) {
         var width = MeasureSpec.getSize(widthMeasureSpec)
         var height = MeasureSpec.getSize(heightMeasureSpec)
 
@@ -149,11 +152,12 @@ class VideoPlayerView(
             val widthRatio = width.toFloat() / videoWidth
             val heightRatio = height.toFloat() / videoHeight
 
-            val aspectRatio = if (widthRatio > heightRatio) {
-                height.toFloat() / videoHeight
-            } else {
-                width.toFloat() / videoWidth
-            }
+            val aspectRatio =
+                if (widthRatio > heightRatio) {
+                    height.toFloat() / videoHeight
+                } else {
+                    width.toFloat() / videoWidth
+                }
 
             width = (videoWidth * aspectRatio).toInt()
             height = (videoHeight * aspectRatio).toInt()
