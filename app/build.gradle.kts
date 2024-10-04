@@ -158,7 +158,8 @@ dependencies {
     implementation(libs.bundles.coil)
 
     ksp(libs.moshi.codegen)
-    implementation(libs.media3.exoplayer)
+    implementation(libs.exoplayer)
+    implementation(libs.exoplayer.ui)
     implementation(libs.sardine.android)
     implementation(libs.gson)
     implementation(libs.smbj)
