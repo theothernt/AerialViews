@@ -152,6 +152,7 @@ class VideoPlayerView(
                 val newHeight = MeasureSpec.getSize(heightMeasureSpec)
                 val newWidth = (newHeight * aspectRatio).toInt()
                 newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
+                Timber.i("onMeasure size: $newWidth x $newHeight")
             }
             super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
         } else  {
@@ -434,14 +435,12 @@ class VideoPlayerView(
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
         aspectRatio = if (height == 0) 0f else width * videoSize.pixelWidthHeightRatio / height
-        Timber.i("onVideoSizeChanged")
-        if (videoScale == 2) {
-            requestLayout()
-        } else if (videoSize.width != videoWidth || videoSize.height != videoHeight) {
+        if (videoSize.width != videoWidth || videoSize.height != videoHeight) {
             videoWidth = videoSize.width
             videoHeight = videoSize.height
-            requestLayout()
         }
+        Timber.i("onVideoSizeChanged ${videoWidth}x${videoHeight} ($aspectRatio)")
+        requestLayout()
     }
 
     @SuppressLint("UnsafeOptInUsageError")
