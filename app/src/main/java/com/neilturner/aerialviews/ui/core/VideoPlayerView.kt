@@ -2,10 +2,15 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.annotation.OptIn
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import timber.log.Timber
 
 class VideoPlayerView @JvmOverloads constructor(
     context: Context,
@@ -17,23 +22,32 @@ class VideoPlayerView @JvmOverloads constructor(
     private var listener: OnVideoPlayerEventListener? = null
 
     init {
-
+        Timber.i("VideoPlayerView init")
     }
 
+    @OptIn(UnstableApi::class)
     override fun onAttachedToWindow() {
+        Timber.i("VideoPlayerView onAttachedToWindow")
         player = ExoPlayer.Builder(context).build()
 
+        useController = false
+
         // Create a MediaItem
-        //val mediaItem = MediaItem.fromUri("your_video_url_or_path")
+        val mediaItem = MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-1/mkv/android-screens-lavf-56.36.100-aac-avc-main-1280x720.mkv")
+        Timber.i("VideoPlayerView ${mediaItem.localConfiguration?.uri}")
 
         // Set the media item to be played
-        //player?.setMediaItem(mediaItem)
+        player?.setMediaItem(mediaItem)
+
+        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
         // Prepare the player
-        //player?.prepare()
+        player?.prepare()
 
         // Start the playback
-        //player?.play()
+        player?.playWhenReady = true
+
+        listener?.onVideoPrepared()
 
         super.onAttachedToWindow()
     }
