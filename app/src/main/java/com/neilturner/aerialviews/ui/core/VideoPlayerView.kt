@@ -145,27 +145,42 @@ class VideoPlayerView(
         widthMeasureSpec: Int,
         heightMeasureSpec: Int,
     ) {
-        var width = MeasureSpec.getSize(widthMeasureSpec)
-        var height = MeasureSpec.getSize(heightMeasureSpec)
+        Timber.i("onMeasure")
+        if (videoScale == 2) {
+            var newWidthMeasureSpec = widthMeasureSpec
+            if (aspectRatio > 0) {
+                val newHeight = MeasureSpec.getSize(heightMeasureSpec)
+                val newWidth = (newHeight * aspectRatio).toInt()
+                newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
+            }
+            super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
+        } else  {
+            var width = MeasureSpec.getSize(widthMeasureSpec)
+            var height = MeasureSpec.getSize(heightMeasureSpec)
 
-        if (videoWidth > 0 && videoHeight > 0) {
-            val widthRatio = width.toFloat() / videoWidth
-            val heightRatio = height.toFloat() / videoHeight
+            if (videoWidth > 0 && videoHeight > 0) {
+                val widthRatio = width.toFloat() / videoWidth
+                val heightRatio = height.toFloat() / videoHeight
 
-            val aspectRatio =
-                if (widthRatio > heightRatio) {
-                    height.toFloat() / videoHeight
-                } else {
-                    width.toFloat() / videoWidth
-                }
+                val aspectRatio =
+                    if (widthRatio > heightRatio) {
+                        height.toFloat() / videoHeight
+                    } else {
+                        width.toFloat() / videoWidth
+                    }
 
-            width = (videoWidth * aspectRatio).toInt()
-            height = (videoHeight * aspectRatio).toInt()
+                width = (videoWidth * aspectRatio).toInt()
+                height = (videoHeight * aspectRatio).toInt()
+            }
+            Timber.i("onMeasure size: $width x $height")
+            setMeasuredDimension(width, height)
         }
+    }
 
-        Timber.i("Measure size: $width x $height")
-
-        setMeasuredDimension(width, height)
+    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
+        Timber.i("onSizeChanged, changing from ${oldWidth}x${oldHeight} to ${width}x${height}")
+        super.onSizeChanged(width, height, oldWidth, oldHeight)
+        requestLayout()
     }
 
     fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
@@ -419,7 +434,10 @@ class VideoPlayerView(
 
     override fun onVideoSizeChanged(videoSize: VideoSize) {
         aspectRatio = if (height == 0) 0f else width * videoSize.pixelWidthHeightRatio / height
-        if (videoSize.width != videoWidth || videoSize.height != videoHeight) {
+        Timber.i("onVideoSizeChanged")
+        if (videoScale == 2) {
+            requestLayout()
+        } else if (videoSize.width != videoWidth || videoSize.height != videoHeight) {
             videoWidth = videoSize.width
             videoHeight = videoSize.height
             requestLayout()
