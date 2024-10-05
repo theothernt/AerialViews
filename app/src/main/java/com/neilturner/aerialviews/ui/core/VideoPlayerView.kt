@@ -30,19 +30,21 @@ class VideoPlayerView @JvmOverloads constructor(
         Timber.i("VideoPlayerView onAttachedToWindow")
         player = ExoPlayer.Builder(context).build()
 
+        player
+
         useController = false
 
         // Create a MediaItem
-        val mediaItem = MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-1/mkv/android-screens-lavf-56.36.100-aac-avc-main-1280x720.mkv")
-        Timber.i("VideoPlayerView ${mediaItem.localConfiguration?.uri}")
+        //val mediaItem = MediaItem.fromUri("https://storage.googleapis.com/exoplayer-test-media-1/mkv/android-screens-lavf-56.36.100-aac-avc-main-1280x720.mkv")
+        //Timber.i("VideoPlayerView ${mediaItem.localConfiguration?.uri}")
 
         // Set the media item to be played
-        player?.setMediaItem(mediaItem)
+        //player?.setMediaItem(mediaItem)
 
         resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
         // Prepare the player
-        player?.prepare()
+        //player?.prepare()
 
         // Start the playback
         player?.playWhenReady = true
@@ -50,6 +52,12 @@ class VideoPlayerView @JvmOverloads constructor(
         listener?.onVideoPrepared()
 
         super.onAttachedToWindow()
+    }
+
+    fun setVideo(media: AerialMedia) {
+        val mediaItem = MediaItem.fromUri(media.uri.toString())
+        player?.setMediaItem(mediaItem)
+        player?.prepare()
     }
 
     fun increaseSpeed() {
@@ -61,10 +69,6 @@ class VideoPlayerView @JvmOverloads constructor(
     }
 
     val currentPosition: Int = player?.currentPosition?.toInt() ?: 0
-
-    fun setVideo(media: AerialMedia) {
-
-    }
 
     fun start() {
         player?.playWhenReady = true
