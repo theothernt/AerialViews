@@ -47,6 +47,7 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
+    private var blackOutMode = false
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -279,7 +280,9 @@ class ScreenController(
                     }
                 previousItem = false
 
-                loadItem(media)
+                if (!blackOutMode) {
+                    loadItem(media)
+                }
             }.start()
     }
 
@@ -330,9 +333,29 @@ class ScreenController(
         fadeOutCurrentItem()
     }
 
-    fun increaseSpeed() = videoPlayer.increaseSpeed()
+    fun toggleBlackOutMode() {
+        if (!blackOutMode) {
+            blackOutMode = true
+            fadeOutCurrentItem()
+        } else {
+            blackOutMode = false
+            loadItem(playlist.nextItem())
+        }
+    }
 
-    fun decreaseSpeed() = videoPlayer.decreaseSpeed()
+    fun increaseSpeed() {
+        if (blackOutMode) {
+            return
+        }
+        videoPlayer.increaseSpeed()
+    }
+
+    fun decreaseSpeed() {
+        if (blackOutMode) {
+            return
+        }
+        videoPlayer.decreaseSpeed()
+    }
 
     private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {

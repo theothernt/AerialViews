@@ -531,6 +531,7 @@
         <item>Increase video playback speed</item>
         <item>Decrease video playback speed</item>
         <item>Show overlays (if hidden)</item>
+        <item>Pause screensaver, only show black screen</item>
     </string-array>
     <string-array name="button_action_values" translatable="false">
         <item>IGNORE</item>
@@ -540,6 +541,7 @@
         <item>SPEED_INCREASE</item>
         <item>SPEED_DECREASE</item>
         <item>SHOW_OVERLAYS</item>
+        <item>BLACK_OUT_MODE</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
     <string name="button_action_default2" translatable="false">SKIP_NEXT</string>

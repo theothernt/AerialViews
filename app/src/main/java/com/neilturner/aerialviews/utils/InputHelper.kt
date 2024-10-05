@@ -141,6 +141,7 @@ object InputHelper {
             ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
             ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
             ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
+            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
             else -> exit()
         }
         return true
