@@ -65,17 +65,22 @@ jobs:
         echo "keyPassword=${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}" >> signing/legacy.properties
 
     - name: Run ${{ steps.flavorString.outputs.capitalized }} Build
-      run: |
-        ./gradlew assemble${{ steps.flavorString.outputs.capitalized }}Release --stacktrace
-        ./gradlew bundle${{ steps.flavorString.outputs.capitalized }}Release
+      if: matrix.flavor == 'github'
+      run: ./gradlew assemble${{ steps.flavorString.outputs.capitalized }}Release --stacktrace
+
+    - name: Run ${{ steps.flavorString.outputs.capitalized }} Build
+      if: matrix.flavor != 'github'
+      run: ./gradlew bundle${{ steps.flavorString.outputs.capitalized }}Release
 
     - name: Upload ${{ steps.flavorString.outputs.capitalized }} Release APK
+      if: matrix.flavor == 'github'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.flavor }}-release.apk
         path: ${{ env.APK_PATH }}${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release.apk
 
     - name: Upload ${{ steps.flavorString.outputs.capitalized }} Bundle
+      if: matrix.flavor != 'github'
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.flavor }}-release.aab
