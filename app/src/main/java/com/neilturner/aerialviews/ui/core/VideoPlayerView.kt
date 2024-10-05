@@ -145,17 +145,15 @@ class VideoPlayerView(
         widthMeasureSpec: Int,
         heightMeasureSpec: Int,
     ) {
-        Timber.i("onMeasure")
         if (videoScale == 2) {
             var newWidthMeasureSpec = widthMeasureSpec
             if (aspectRatio > 0) {
                 val newHeight = MeasureSpec.getSize(heightMeasureSpec)
                 val newWidth = (newHeight * aspectRatio).toInt()
                 newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY)
-                Timber.i("onMeasure size: $newWidth x $newHeight")
             }
             super.onMeasure(newWidthMeasureSpec, heightMeasureSpec)
-        } else  {
+        } else {
             var width = MeasureSpec.getSize(widthMeasureSpec)
             var height = MeasureSpec.getSize(heightMeasureSpec)
 
@@ -173,13 +171,16 @@ class VideoPlayerView(
                 width = (videoWidth * aspectRatio).toInt()
                 height = (videoHeight * aspectRatio).toInt()
             }
-            Timber.i("onMeasure size: $width x $height")
             setMeasuredDimension(width, height)
         }
     }
 
-    override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
-        Timber.i("onSizeChanged, changing from ${oldWidth}x${oldHeight} to ${width}x${height}")
+    override fun onSizeChanged(
+        width: Int,
+        height: Int,
+        oldWidth: Int,
+        oldHeight: Int,
+    ) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         requestLayout()
     }
@@ -439,7 +440,6 @@ class VideoPlayerView(
             videoWidth = videoSize.width
             videoHeight = videoSize.height
         }
-        Timber.i("onVideoSizeChanged ${videoWidth}x${videoHeight} ($aspectRatio)")
         requestLayout()
     }
 

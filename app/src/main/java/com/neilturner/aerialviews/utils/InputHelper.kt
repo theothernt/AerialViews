@@ -136,7 +136,8 @@ object InputHelper {
     ): Boolean {
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
-            controller?.blackOutMode == true) {
+            controller?.blackOutMode == true
+        ) {
             controller.toggleBlackOutMode()
             return true
         }
