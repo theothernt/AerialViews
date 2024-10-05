@@ -475,6 +475,9 @@
     <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
     <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
+    <string name="playlist_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
+    <string name="playlist_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
+
     <!-- Main / Settings / Device capabilities -->
     <string name="capabilities_device_title">Device</string>
     <string name="capabilities_display_title">TV/Display</string>

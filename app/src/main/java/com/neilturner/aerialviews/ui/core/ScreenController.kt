@@ -47,7 +47,7 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
-    private var blackOutMode = false
+
     private var canShowOverlays = false
     private var alternate = false
     private var previousItem = false
@@ -67,6 +67,9 @@ class ScreenController(
     private val topRightIds: List<Int>
     private val bottomLeftIds: List<Int>
     private val bottomRightIds: List<Int>
+
+    var blackOutMode = false
+        private set
 
     init {
         val inflater = LayoutInflater.from(context)

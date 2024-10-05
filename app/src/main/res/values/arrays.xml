@@ -530,8 +530,8 @@
         <item>Skip to previous video/photo</item>
         <item>Increase video playback speed</item>
         <item>Decrease video playback speed</item>
-        <item>Show overlays (if hidden)</item>
-        <item>Pause screensaver, only show black screen</item>
+        <item>Show overlays, if hidden</item>
+        <item>Black out screen - fade out media and overlays</item>
     </string-array>
     <string-array name="button_action_values" translatable="false">
         <item>IGNORE</item>
