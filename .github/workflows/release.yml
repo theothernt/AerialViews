@@ -64,7 +64,7 @@ jobs:
         echo "keyAlias=${{ secrets.RELEASE_SIGN_KEY_ALIAS }}" >> signing/legacy.properties
         echo "keyPassword=${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}" >> signing/legacy.properties
 
-    - name: Run Gradle Build
+    - name: Run ${{ steps.flavorString.outputs.capitalized }} Build
       run: |
         ./gradlew assemble${{ steps.flavorString.outputs.capitalized }}Release --stacktrace
         ./gradlew bundle${{ steps.flavorString.outputs.capitalized }}Release
@@ -75,13 +75,13 @@ jobs:
         name: ${{ matrix.flavor }}-release.apk
         path: ${{ env.APK_PATH }}${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release.apk
 
-    - name: Upload Github Bundle
+    - name: Upload ${{ steps.flavorString.outputs.capitalized }} Bundle
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.flavor }}-release.aab
         path: ${{ env.BUNDLE_PATH }}${{ matrix.flavor }}Release/app-${{ matrix.flavor }}-release.aab
 
-    - name: Upload files to GH release
+    - name: Upload ${{ steps.flavorString.outputs.capitalized }} apk to GH release
       if: matrix.flavor == 'github'
       uses: svenstaro/upload-release-action@v2
       with:
