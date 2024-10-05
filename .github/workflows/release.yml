@@ -17,7 +17,7 @@ jobs:
   build:
     strategy:
       matrix:
-        flavor: [ github, googleplay ]
+        flavor: [ github, googleplay, amazon ]
 
     name: Build APK
     runs-on: ubuntu-latest
