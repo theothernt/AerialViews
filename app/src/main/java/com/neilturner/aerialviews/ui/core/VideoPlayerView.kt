@@ -29,9 +29,6 @@ class VideoPlayerView @JvmOverloads constructor(
     override fun onAttachedToWindow() {
         Timber.i("VideoPlayerView onAttachedToWindow")
         player = ExoPlayer.Builder(context).build()
-
-        player
-
         useController = false
 
         // Create a MediaItem
@@ -43,11 +40,13 @@ class VideoPlayerView @JvmOverloads constructor(
 
         resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
 
+        player?.playWhenReady = true
+
         // Prepare the player
         //player?.prepare()
 
         // Start the playback
-        player?.playWhenReady = true
+        //player?.playWhenReady = true
 
         listener?.onVideoPrepared()
 
@@ -71,11 +70,12 @@ class VideoPlayerView @JvmOverloads constructor(
     val currentPosition: Int = player?.currentPosition?.toInt() ?: 0
 
     fun start() {
-        player?.playWhenReady = true
+        //player?.playWhenReady = true
+        //player?.play()
     }
 
     fun pause() {
-        player?.playWhenReady = false
+        //player?.playWhenReady = false
     }
 
     fun stop() {
