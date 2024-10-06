@@ -78,7 +78,7 @@ class VideoPlayerView @OptIn(UnstableApi::class)
 
         player = exoPlayer
         controllerAutoShow = false
-        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FILL
+        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
 
     fun release() {
