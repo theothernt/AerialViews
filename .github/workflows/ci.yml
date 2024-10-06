@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  ci:
     name: Application Test
     runs-on: ubuntu-latest
 
