@@ -137,7 +137,7 @@
 
     <string name="local_videos_legacy_all_entry">All volumes</string>
 
-    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /videos)</string>
+    <string name="local_videos_legacy_folder_title">Specify a folder (eg. /Movies, case sensitive)</string>
     <string name="local_videos_legacy_folder_summary">No folder specified</string>
 
     <string name="local_videos_legacy_no_volume">Volume not specified</string>
