@@ -530,7 +530,8 @@
         <item>Skip to previous video/photo</item>
         <item>Increase video playback speed</item>
         <item>Decrease video playback speed</item>
-        <item>Show overlays (if hidden)</item>
+        <item>Show overlays, if hidden</item>
+        <item>Black out screen, fade out media and overlays</item>
     </string-array>
     <string-array name="button_action_values" translatable="false">
         <item>IGNORE</item>
@@ -540,13 +541,14 @@
         <item>SPEED_INCREASE</item>
         <item>SPEED_DECREASE</item>
         <item>SHOW_OVERLAYS</item>
+        <item>BLACK_OUT_MODE</item>
     </string-array>
     <string name="button_action_default" translatable="false">IGNORE</string>
     <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
     <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 
     <!-- Video volume -->
-    <string-array name="volume_entries">
+    <string-array name="volume_entries" translatable="false">
         <item>5%</item>
         <item>10%</item>
         <item>15%</item>

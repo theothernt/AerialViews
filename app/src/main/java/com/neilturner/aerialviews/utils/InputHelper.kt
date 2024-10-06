@@ -134,6 +134,14 @@ object InputHelper {
         controller: ScreenController?,
         exit: () -> Unit,
     ): Boolean {
+        // Check if any direction/button press should wake from black out mode
+        if (GeneralPrefs.wakeOnAnyButtonPress &&
+            controller?.blackOutMode == true
+        ) {
+            controller.toggleBlackOutMode()
+            return true
+        }
+
         when (type) {
             ButtonType.IGNORE -> return false
             ButtonType.SKIP_NEXT -> controller?.skipItem()
@@ -141,6 +149,7 @@ object InputHelper {
             ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
             ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
             ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
+            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
             else -> exit()
         }
         return true

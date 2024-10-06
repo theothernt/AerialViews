@@ -10,4 +10,5 @@ enum class ButtonType {
     SPEED_INCREASE,
     SPEED_DECREASE,
     SHOW_OVERLAYS,
+    BLACK_OUT_MODE,
 }

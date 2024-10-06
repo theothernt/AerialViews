@@ -125,6 +125,7 @@ object GeneralPrefs : KotprefModel() {
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
+    var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
 
     // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
