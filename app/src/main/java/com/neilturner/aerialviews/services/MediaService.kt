@@ -61,7 +61,7 @@ class MediaService(
         // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
-            media = media.distinctBy { it.uri.filenameWithoutExtension.lowercase() }.toMutableList()
+            media = media.distinctBy { Pair(it.uri.filenameWithoutExtension.lowercase(), it.type) }.toMutableList()
             Timber.i("Duplicate videos removed based on filename: ${numVideos - media.size}")
         }
 
