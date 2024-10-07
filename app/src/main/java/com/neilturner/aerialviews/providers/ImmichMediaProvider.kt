@@ -156,17 +156,27 @@ class ImmichMediaProvider(
 
             val item = AerialMedia(uri, description, poi)
             item.source = AerialMediaSource.IMMICH
-            if (FileHelper.isSupportedVideoType(asset.originalPath.toString())) {
-                item.type = AerialMediaType.VIDEO
-                videos++
-            } else if (FileHelper.isSupportedImageType(asset.originalPath.toString())) {
-                item.type = AerialMediaType.IMAGE
-                images++
-            } else {
-                excluded++
-                return@lit
+
+            when {
+                FileHelper.isSupportedVideoType(asset.originalPath.toString()) -> {
+                    item.type = AerialMediaType.VIDEO
+                    videos++
+                    if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+                        media.add(item)
+                    }
+                }
+                FileHelper.isSupportedImageType(asset.originalPath.toString()) -> {
+                    item.type = AerialMediaType.IMAGE
+                    images++
+                    if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+                        media.add(item)
+                    }
+                }
+                else -> {
+                    excluded++
+                    return@lit
+                }
             }
-            media.add(item)
         }
 
         var message = String.format(
@@ -188,7 +198,6 @@ class ImmichMediaProvider(
                 context.getString(R.string.immich_media_test_summary4),
                 images.toString()
             ) + "\n"
-
         }
 
         Timber.i("Media found: ${media.size}")
