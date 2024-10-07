@@ -270,7 +270,7 @@
     <string name="category_authentication_information">Authentication Information</string>
     <string name="category_connection">Authentication Test</string>
     <string name="immich_media_select_album_summary">No album selected</string>
-    <string name="immich_media_selected_album">Selected album ID: %1$s</string>
+    <string name="immich_media_selected_album">Selected album: %1$s</string>
 
 
     <string-array name="immich_auth_type_entries">

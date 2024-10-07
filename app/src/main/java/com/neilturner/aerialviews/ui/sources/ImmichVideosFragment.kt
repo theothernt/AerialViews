@@ -117,7 +117,7 @@ class ImmichVideosFragment :
         selectAlbumPreference.summary = if (ImmichMediaPrefs.selectedAlbumId.isEmpty()) {
             getString(R.string.immich_media_select_album_summary)
         } else {
-            getString(R.string.immich_media_selected_album, ImmichMediaPrefs.selectedAlbumId)
+            getString(R.string.immich_media_selected_album, ImmichMediaPrefs.selectedAlbumName)
         }
     }
 
@@ -169,6 +169,7 @@ class ImmichVideosFragment :
             setTitle(R.string.immich_media_select_album)
             setSingleChoiceItems(albumNames, -1) { dialog, which ->
                 ImmichMediaPrefs.selectedAlbumId = albums[which].id
+                ImmichMediaPrefs.selectedAlbumName = albums[which].name
                 dialog.dismiss()
                 updateSummary()
             }

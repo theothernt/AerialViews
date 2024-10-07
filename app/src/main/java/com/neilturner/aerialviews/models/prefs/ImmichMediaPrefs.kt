@@ -18,4 +18,5 @@ object ImmichMediaPrefs : KotprefModel() {
     var authType by nullableEnumValuePref(ImmichAuthType.SHARED_LINK, "immich_media_auth_type")
     var apiKey by stringPref("", "immich_media_api_key")
     var selectedAlbumId by stringPref("", "immich_media_selected_album_id")
+    var selectedAlbumName by stringPref("", "immich_media_selected_album_name")
 }
