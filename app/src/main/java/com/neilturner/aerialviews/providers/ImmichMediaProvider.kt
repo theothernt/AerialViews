@@ -206,9 +206,9 @@ class ImmichMediaProvider(
 
     private suspend fun getSharedAlbumFromAPI(): Album {
         try {
-            Timber.d("Fetching shared album with key: ${prefs.pathName}")
-            val response =
-                apiInterface.getSharedAlbum(key = prefs.pathName, password = prefs.password)
+            val cleanedKey = cleanSharedLinkKey(prefs.pathName)
+            Timber.d("Fetching shared album with key: $cleanedKey")
+            val response = apiInterface.getSharedAlbum(key = cleanedKey, password = prefs.password)
             Timber.d("Shared album API response: ${response.raw().toString()}")
             if (response.isSuccessful) {
                 val album = response.body()
@@ -277,13 +277,17 @@ class ImmichMediaProvider(
         }
     }
 
-    private fun getAssetUri(id: String): Uri {
-        return when (prefs.authType) {
-            ImmichAuthType.SHARED_LINK -> Uri.parse("$server/api/assets/$id/original?key=${prefs.pathName}&password=${prefs.password}")
-            ImmichAuthType.API_KEY -> {
-                Uri.parse("$server/api/assets/$id/original")
-            }
+    private fun cleanSharedLinkKey(input: String): String {
+        return input.trim()
+            .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
+            .replace(Regex("^share/|^/share/"), "") // Remove "share/" or "/share/" from the beginning
+    }
 
+    private fun getAssetUri(id: String): Uri {
+        val cleanedKey = cleanSharedLinkKey(prefs.pathName)
+        return when (prefs.authType) {
+            ImmichAuthType.SHARED_LINK -> Uri.parse("$server/api/assets/$id/original?key=$cleanedKey&password=${prefs.password}")
+            ImmichAuthType.API_KEY -> Uri.parse("$server/api/assets/$id/original")
             null -> throw IllegalStateException("Invalid authentication type")
         }
     }
