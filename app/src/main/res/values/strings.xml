@@ -242,6 +242,10 @@
     <string name="immich_media_enabled_title">Use Immich share media</string>
     <string name="immich_media_type_title">Choose media type</string>
     <string name="immich_media_test_connection">Test connection settings</string>
+    <string name="immich_media_auth_type_title">Authentication Method</string>
+    <string name="immich_media_api_key_title">API Key</string>
+    <string name="immich_media_api_key_summary">Enter your Immich API key</string>
+    <string name="immich_media_select_album">Select Album</string>
 
     <string name="immich_media_scheme_title">Scheme</string>
     <string name="immich_media_hostname_title">Hostname &amp; port</string>
@@ -261,6 +265,22 @@
     <string name="immich_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
 
     <string name="immich_media_test_results">Test results</string>
+
+    <string name="category_authentication">Server Authentication Method</string>
+    <string name="category_authentication_information">Authentication Information</string>
+    <string name="category_connection">Authentication Test</string>
+    <string name="immich_media_select_album_summary">No album selected</string>
+    <string name="immich_media_selected_album">Selected album ID: %1$s</string>
+
+
+    <string-array name="immich_auth_type_entries">
+        <item>Shared Link</item>
+        <item>API Key</item>
+    </string-array>
+    <string-array name="immich_auth_type_values">
+        <item>SHARED_LINK</item>
+        <item>API_KEY</item>
+    </string-array>
 
     <!-- Main / Settings -->
     <string name="settings_overlays_title">Overlays</string>

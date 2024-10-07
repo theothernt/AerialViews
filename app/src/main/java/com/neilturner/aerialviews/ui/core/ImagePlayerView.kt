@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import coil.EventListener
@@ -18,8 +17,10 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -29,8 +30,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import timber.log.Timber
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
 import java.util.EnumSet
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class ImagePlayerView :
     AppCompatImageView,
@@ -44,17 +52,54 @@ class ImagePlayerView :
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var imageLoader: ImageLoader =
-        ImageLoader
-            .Builder(context)
+    private val imageLoader: ImageLoader by lazy {
+        ImageLoader.Builder(context)
             .eventListener(this)
             .components {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                     add(ImageDecoderDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())
                 }
-            }.build()
+            }
+            .okHttpClient {
+                // Create a trust manager that does not validate certificate chains
+                val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                    override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                    override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                })
+
+                // Install the all-trusting trust manager
+                val sslContext = SSLContext.getInstance("SSL")
+                sslContext.init(null, trustAllCerts, SecureRandom())
+
+                // Create an ssl socket factory with our all-trusting manager
+                val sslSocketFactory = sslContext.socketFactory
+
+                OkHttpClient.Builder()
+                    .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
+                    .hostnameVerifier { _, _ -> true }
+                    .addInterceptor(ApiKeyInterceptor())
+                    .build()
+            }
+            .build()
+    }
+
+    private class ApiKeyInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val originalRequest = chain.request()
+            val newRequest = when (ImmichMediaPrefs.authType) {
+                ImmichAuthType.API_KEY -> {
+                    originalRequest.newBuilder()
+                        .addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                        .build()
+                }
+                else -> originalRequest
+            }
+            return chain.proceed(newRequest)
+        }
+    }
 
     init {
         val scaleType =
@@ -100,15 +145,21 @@ class ImagePlayerView :
                 coroutineScope.launch { loadImage(media.uri) }
             }
         }
+
+        val request = ImageRequest.Builder(context)
+            .data(media.uri)
+            .target(this)
+            .build()
+
+        imageLoader.enqueue(request)
     }
 
     private suspend fun loadImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(this)
-        request.data(uri)
-        imageLoader.execute(request.build())
+        val request = ImageRequest.Builder(context)
+            .data(uri)
+            .target(this)
+            .build()
+        imageLoader.execute(request)
     }
 
     private suspend fun loadSambaImage(uri: Uri) {

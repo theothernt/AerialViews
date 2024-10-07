@@ -1,4 +1,5 @@
 package com.neilturner.aerialviews.models.immich
+import com.google.gson.annotations.SerializedName
 
 data class ExifInfo(
     val description: String? = null,
@@ -15,8 +16,21 @@ data class Asset(
 )
 
 data class Album(
+    @SerializedName("id")
     val id: String = "",
+
+    @SerializedName("albumName")
+    val name: String = "",
+
+    @SerializedName("description")
     val description: String? = null,
+
+    @SerializedName("shared")
     val type: String? = null,
-    val assets: List<Asset>,
+
+    @SerializedName("assets")
+    val assets: List<Asset> = emptyList(),
+
+    @SerializedName("assetCount")
+    val assetCount: Int = 0
 )

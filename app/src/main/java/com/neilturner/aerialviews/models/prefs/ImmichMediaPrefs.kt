@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
+import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.SchemeType
 
@@ -14,4 +15,7 @@ object ImmichMediaPrefs : KotprefModel() {
     var hostName by stringPref("", "immich_media_hostname")
     var pathName by stringPref("", "immich_media_pathname")
     var password by stringPref("", "immich_media_password")
+    var authType by nullableEnumValuePref(ImmichAuthType.SHARED_LINK, "immich_media_auth_type")
+    var apiKey by stringPref("", "immich_media_api_key")
+    var selectedAlbumId by stringPref("", "immich_media_selected_album_id")
 }
