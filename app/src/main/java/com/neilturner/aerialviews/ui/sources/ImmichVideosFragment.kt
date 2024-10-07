@@ -153,7 +153,7 @@ class ImmichVideosFragment :
     private suspend fun testImmichConnection() = withContext(Dispatchers.IO) {
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
         val result = provider.fetchTest()
-        showDialog(resources.getString(R.string.immich_media_test_results), result)
+        showDialog(getString(R.string.immich_media_test_results), result)
     }
 
     private suspend fun selectAlbum() {
@@ -202,7 +202,7 @@ class ImmichVideosFragment :
     }
 
     private suspend fun showDialog(
-        title: String = "",
+        title: String,
         message: String,
     ) = withContext(Dispatchers.Main) {
         AlertDialog.Builder(requireContext()).apply {

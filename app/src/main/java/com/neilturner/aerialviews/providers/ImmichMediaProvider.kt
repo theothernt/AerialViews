@@ -110,7 +110,43 @@ class ImmichMediaProvider(
     }
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
-    override suspend fun fetchTest(): String = fetchImmichMedia().second
+    override suspend fun fetchTest(): String {
+        if (prefs.hostName.isEmpty()) {
+            return "Hostname and port not specified"
+        }
+
+        return try {
+            when (prefs.authType) {
+                ImmichAuthType.SHARED_LINK -> {
+                    val cleanedKey = cleanSharedLinkKey(prefs.pathName)
+                    val response = apiInterface.getSharedAlbum(key = cleanedKey, password = prefs.password)
+                    handleResponse(response, "Shared link test successful")
+                }
+                ImmichAuthType.API_KEY -> {
+                    val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
+                    handleResponse(response, "API key test successful")
+                }
+                null -> "Invalid authentication type"
+            }
+        } catch (e: Exception) {
+            "Error: ${e.message}"
+        }
+    }
+
+    private fun handleResponse(response: Response<*>, successMessage: String): String {
+        return if (response.isSuccessful) {
+            successMessage
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorMessage = try {
+                Gson().fromJson(errorBody, ErrorResponse::class.java).message
+            } catch (e: Exception) {
+                response.message()
+            }
+            "Error ${response.code()} - $errorMessage"
+        }
+    }
+
     override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
