@@ -34,3 +34,10 @@ data class Album(
     @SerializedName("assetCount")
     val assetCount: Int = 0
 )
+
+data class ErrorResponse(
+    val message: String = "",
+    val error: String = "",
+    val statusCode: Int = 0,
+    @SerializedName("correlationId") val correlationId: String = ""
+)

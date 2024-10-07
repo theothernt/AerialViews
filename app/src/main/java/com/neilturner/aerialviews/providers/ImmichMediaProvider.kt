@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
-
 import android.content.Context
 import android.net.Uri
+import com.google.gson.Gson
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.immich.Album
+import com.neilturner.aerialviews.models.immich.ErrorResponse
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
@@ -256,24 +257,22 @@ class ImmichMediaProvider(
         }
     }
 
-    suspend fun fetchAlbums(): List<Album> {
-        try {
+    suspend fun fetchAlbums(): Result<List<Album>> {
+        return try {
             val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
             if (response.isSuccessful) {
-                val albums = response.body()
-                Timber.d("API Response: ${albums?.toString()}")
-                albums?.forEach { album ->
-                    Timber.d("Album: id=${album.id}, name=${album.name}, assetCount=${album.assetCount}, type=${album.type}")
-                }
-                return albums ?: emptyList()
+                Result.success(response.body() ?: emptyList())
             } else {
-                Timber.e("Error fetching albums: ${response.code()} - ${response.message()}")
-                Timber.e("Error body: ${response.errorBody()?.string()}")
-                throw Exception("Failed to fetch albums: ${response.code()}")
+                val errorBody = response.errorBody()?.string()
+                val errorMessage = try {
+                    Gson().fromJson(errorBody, ErrorResponse::class.java).message
+                } catch (e: Exception) {
+                    response.message()
+                }
+                Result.failure(Exception("${response.code()} - $errorMessage"))
             }
         } catch (e: Exception) {
-            Timber.e(e, "Exception while fetching albums")
-            throw e
+            Result.failure(e)
         }
     }
 

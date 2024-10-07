@@ -156,13 +156,28 @@ class ImmichVideosFragment :
         showDialog(resources.getString(R.string.immich_media_test_results), result)
     }
 
-    private suspend fun selectAlbum() = withContext(Dispatchers.IO) {
+    private suspend fun selectAlbum() {
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-        val albums = provider.fetchAlbums()
-        showAlbumSelectionDialog(albums)
+        provider.fetchAlbums().fold(
+            onSuccess = { albums ->
+                if (albums.isEmpty()) {
+                    showErrorDialog(getString(R.string.immich_media_no_albums), getString(R.string.immich_media_no_albums_message))
+                } else {
+                    showAlbumSelectionDialog(albums)
+                }
+            },
+            onFailure = { error ->
+                showErrorDialog(getString(R.string.immich_media_fetch_albums_error), error.message ?: getString(R.string.immich_media_unknown_error))
+            }
+        )
     }
 
     private suspend fun showAlbumSelectionDialog(albums: List<Album>) = withContext(Dispatchers.Main) {
+        if (albums.isEmpty()) {
+            showErrorDialog(getString(R.string.immich_media_no_albums), getString(R.string.immich_media_no_albums_message))
+            return@withContext
+        }
+
         Timber.d("Showing album selection dialog with ${albums.size} albums")
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         AlertDialog.Builder(requireContext()).apply {
@@ -176,6 +191,14 @@ class ImmichVideosFragment :
             setNegativeButton(R.string.button_cancel, null)
             create().show()
         }
+    }
+
+    private suspend fun showErrorDialog(title: String, message: String) = withContext(Dispatchers.Main) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.button_ok, null)
+            .show()
     }
 
     private suspend fun showDialog(

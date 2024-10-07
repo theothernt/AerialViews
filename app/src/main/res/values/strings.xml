@@ -271,6 +271,10 @@
     <string name="category_connection">Authentication Test</string>
     <string name="immich_media_select_album_summary">No album selected</string>
     <string name="immich_media_selected_album">Selected album: %1$s</string>
+    <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
+    <string name="immich_media_no_albums">No Albums Found</string>
+    <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
+    <string name="immich_media_unknown_error">An unknown error occurred</string>
 
 
     <string-array name="immich_auth_type_entries">
