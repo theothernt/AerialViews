@@ -334,6 +334,9 @@
     <string name="appearance_alt_text_position_title">Alternate overlay position</string>
     <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
 
+    <string name="appearance_progress_bar_title">Progress Bar</string>
+    <string name="appearance_progress_bar_summary">Show the progress of a video or photos at the top or bottom of the screen</string>
+
     <string name="appearance_gradient_title">Gradients</string>
     <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
