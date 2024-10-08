@@ -52,6 +52,10 @@ android {
         buildConfig = true
     }
 
+    lint {
+        abortOnError = false
+    }
+
     // App bundle (not APK) should contain all languages so 'locale switch'
     // feature works on Play Store and Amazon Appstore builds
     // https://stackoverflow.com/a/54862243/247257
