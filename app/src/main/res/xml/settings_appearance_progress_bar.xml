@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <PreferenceCategory app:title="@string/category_progress_bar">
+
+                <ListPreference
+                    app:defaultValue="@string/progress_bar_location_default"
+                    app:entries="@array/progress_bar_location_entries"
+                    app:entryValues="@array/progress_bar_location_values"
+                    app:key="progress_bar_location"
+                    app:title="@string/progress_bar_location_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/progress_bar_type_default"
+                    app:entries="@array/progress_bar_type_entries"
+                    app:entryValues="@array/progress_bar_type_values"
+                    app:key="progress_bar_type"
+                    app:title="@string/progress_bar_type_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/progress_bar_default"
+                    app:entries="@array/percentage_entries"
+                    app:entryValues="@array/percentage_values"
+                    app:key="progress_bar_opacity"
+                    app:title="@string/progress_bar_opacity_title"
+                    app:useSimpleSummaryProvider="true"
+                     />
+        </PreferenceCategory>
+</PreferenceScreen>

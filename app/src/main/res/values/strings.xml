@@ -30,6 +30,7 @@
     <string name="category_video_render_options">Video &amp; render options</string>
     <string name="category_samba_options">Samba/SMB options</string>
     <string name="category_dpad">D-Pad/Remote</string>
+    <string name="category_progress_bar">Progress Bar</string>
     <string name="category_dpad_press">Press</string>
     <string name="category_dpad_press_and_hold">Press &amp; hold</string>
     <string name="category_appearance">Appearance</string>
@@ -287,13 +288,28 @@
     <string name="settings_import_export_settings_title">Import/Export settings</string>
     <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
 
-    <!-- Main / Settings / Appearance -->
+    <!-- Main / Settings / Overlays -->
     <string name="appearance_top_row_title">Top Row</string>
     <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
 
     <string name="appearance_bottom_row_title">Bottom Row</string>
     <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
 
+    <!-- Main / Settings / Overlays / Rows -->
+    <string name="appearance_slot1_title">Lower Slot</string>
+    <string name="appearance_slot2_title">Upper Slot</string>
+    <string name="appearance_slot_summary">Empty</string>
+
+    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
+    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
+    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
+    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
+    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
+    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
+    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
+    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+
+    <!-- Main / Settings / Appearance -->
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Display the current time</string>
 
@@ -326,20 +342,6 @@
 
     <string name="appearance_startup_title">Startup</string>
     <string name="appearance_startup_summary">Change what you see while the app is loading</string>
-
-    <!-- Main / Settings / Appearance / Rows -->
-    <string name="appearance_slot1_title">Lower Slot</string>
-    <string name="appearance_slot2_title">Upper Slot</string>
-    <string name="appearance_slot_summary">Empty</string>
-
-    <string name="appearance_bottom_left_lower_slot">Bottom Left, Lower Slot</string>
-    <string name="appearance_bottom_left_upper_slot">Bottom Left, Upper Slot</string>
-    <string name="appearance_bottom_right_lower_slot">Bottom Right, Lower Slot</string>
-    <string name="appearance_bottom_right_upper_slot">Bottom Right, Upper Slot</string>
-    <string name="appearance_top_left_lower_slot">Top Left, Lower Slot</string>
-    <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
-    <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
-    <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
 
     <!-- Main / Settings / Appearance / Startup + Shutdown -->
     <string name="appearance_loading_show_title">Show loading text</string>
@@ -400,6 +402,11 @@
     <string name="nowplaying_line2_title">Line 2</string>
 
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
+
+    <!-- Main / Settings / Appearance / Progress Bar -->
+    <string name="progress_bar_location_title">Location</string>
+    <string name="progress_bar_type_title">Show on</string>
+    <string name="progress_bar_opacity_title">Opacity</string>
 
     <!-- Unsplash -->
     <!-- Pexels? -->

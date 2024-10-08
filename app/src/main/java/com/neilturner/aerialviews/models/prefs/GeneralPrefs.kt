@@ -11,6 +11,8 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
 
 object GeneralPrefs : KotprefModel() {
@@ -92,6 +94,11 @@ object GeneralPrefs : KotprefModel() {
 
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")
+
+    // Progress Bar
+    var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
+    var progressBarType by nullableEnumValuePref(ProgressBarType.BOTH, "progress_bar_type")
+    var progressBarOpacity by stringPref("100", "progress_bar_opacity")
 
     // Locale
     var localeMenu by stringPref("default", "locale_menu")

@@ -547,8 +547,8 @@
     <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
     <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 
-    <!-- Video volume -->
-    <string-array name="volume_entries" translatable="false">
+    <!-- Percentages -->
+    <string-array name="percentage_entries" translatable="false">
         <item>5%</item>
         <item>10%</item>
         <item>15%</item>
@@ -569,7 +569,7 @@
         <item>95%</item>
         <item>100%</item>
     </string-array>
-    <string-array name="volume_values" translatable="false">
+    <string-array name="percentage_values" translatable="false">
         <item>5</item>
         <item>10</item>
         <item>15</item>
@@ -590,5 +590,31 @@
         <item>95</item>
         <item>100</item>
     </string-array>
+    <string name="progress_bar_default" translatable="false">100</string>
     <string name="volume_default" translatable="false">100</string>
+
+    <!-- Progress Bar -->
+    <string-array name="progress_bar_location_entries">
+        <item>Disabled</item>
+        <item>Top of the screen</item>
+        <item>Bottom of the screen</item>
+    </string-array>
+    <string-array name="progress_bar_location_values" translatable="false">
+        <item>DISABLED</item>
+        <item>TOP</item>
+        <item>BOTTOM</item>
+    </string-array>
+    <string name="progress_bar_location_default" translatable="false">DISABLED</string>
+
+    <string-array name="progress_bar_type_entries">
+        <item>Videos &amp; Photos</item>
+        <item>Videos only</item>
+        <item>Photos only</item>
+    </string-array>
+    <string-array name="progress_bar_type_values" translatable="false">
+        <item>BOTH</item>
+        <item>VIDEOS</item>
+        <item>PHOTOS</item>
+    </string-array>
+    <string name="progress_bar_type_default" translatable="false">BOTH</string>
 </resources>
