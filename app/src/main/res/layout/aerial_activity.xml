@@ -18,6 +18,11 @@
             android:id="@+id/overlay_view"
             layout="@layout/overlay_view" />
 
+        <com.neilturner.aerialviews.ui.overlays.ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_gravity="bottom" />
+
         <include
             android:id="@+id/loading_view"
             layout="@layout/loading_view" />
