@@ -22,20 +22,19 @@ class ProgressBar @JvmOverloads constructor(context: Context?, attrs: AttributeS
         paint.color = COLOR
 
         coroutineScope.launch {
-            delay(1_000)
-            //animateWidth()
+            delay(2_000)
+            animateWidth()
         }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        animateWidth()
     }
 
     fun animateWidth() {
         val parentWidth = (this.parent as View).measuredWidth
         val widthAnimator = ValueAnimator.ofInt(0, parentWidth)
-        widthAnimator.duration = 10_000
+        widthAnimator.duration = 60_000
         widthAnimator.interpolator = LinearInterpolator()
         widthAnimator.addUpdateListener { animation ->
             layoutParams.width = (animation.animatedValue as Int)
