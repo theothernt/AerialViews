@@ -51,6 +51,7 @@ class ProgressBar : View {
                 }
                 else -> {
                     animator?.cancel()
+                    parentWidth = 0
                 }
             }
         }
@@ -62,13 +63,13 @@ class ProgressBar : View {
         animator?.cancel()
     }
 
-    fun animateWidth(position: Int, length: Int) {
+    fun animateWidth(position: Long, length: Long) {
         parentWidth = (this.parent as View).measuredWidth
         val newWidth = calculateWidth(position)
 
         animator =
-            ValueAnimator.ofInt(newWidth, parentWidth).apply {
-                duration = length.toLong()
+            ValueAnimator.ofInt(newWidth.toInt(), parentWidth).apply {
+                duration = length
                 interpolator = LinearInterpolator()
                 addUpdateListener { animation ->
                     layoutParams.width = (animation.animatedValue as Int)
@@ -78,7 +79,7 @@ class ProgressBar : View {
             }
     }
 
-    private fun calculateWidth(progress: Int): Int {
+    private fun calculateWidth(progress: Long): Long {
         val percentage = progress / parentWidth
         return (width - paddingLeft - paddingRight) * percentage + paddingLeft
     }
@@ -98,8 +99,8 @@ class ProgressBar : View {
 }
 
 data class ProgressBarEvent(
-    val position: Int = 0,
-    val duration: Int = 0,
+    val position: Long = 0,
+    val duration: Long = 0,
     val state: ProgressState = ProgressState.STOP
 )
 

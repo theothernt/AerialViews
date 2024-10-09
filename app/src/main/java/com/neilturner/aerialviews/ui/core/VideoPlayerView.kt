@@ -26,7 +26,10 @@ import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.WindowHelper
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToLong
@@ -44,7 +47,10 @@ class VideoPlayerView(
     private var prepared = false
 
     private var listener: OnVideoPlayerEventListener? = null
-    private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
+    private var almostFinishedRunnable = Runnable {
+        GlobalBus.post(ProgressBarEvent(0, 0, ProgressState.STOP))
+        listener?.onVideoAlmostFinished()
+    }
     private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
     private var onErrorRunnable = Runnable { listener?.onVideoError() }
 
@@ -269,6 +275,13 @@ class VideoPlayerView(
                 setRefreshRate()
             }
             setupAlmostFinishedRunnable()
+
+            GlobalBus.post(ProgressBarEvent(
+                player.currentPosition,
+                player.duration,
+                ProgressState.START
+            ))
+
             Timber.i("Playing...")
         }
     }
