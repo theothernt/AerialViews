@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.overlays
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
@@ -31,7 +32,7 @@ class ProgressBar : View {
 
     init {
         paint.style = Paint.Style.FILL
-        paint.color = COLOR
+        paint.color = Color.WHITE
 
         coroutineScope.launch {
             //delay(2_000)
@@ -91,10 +92,6 @@ class ProgressBar : View {
 
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
         postInvalidate()
-    }
-
-    companion object {
-        private const val COLOR = 0x66FFFFFF
     }
 }
 
