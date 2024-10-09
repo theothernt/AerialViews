@@ -7,32 +7,16 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class ProgressBar @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) :
     View(context, attrs) {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var progress: Float = 0F
-    private var newWidth = 0
 
     init {
         paint.style = Paint.Style.FILL
-        paint.setColor(COLOR)
+        paint.color = COLOR
 
-        coroutineScope.launch {
-//            1.until(100).forEach { index ->
-//                delay(1000)
-//                progress = index / 100f
-//                //postInvalidate()
-//            }
-
-            delay(3_000)
-            animateWidth()
-        }
+        animateWidth()
     }
 
     fun animateWidth() {

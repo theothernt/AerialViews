@@ -20,7 +20,7 @@
 
         <com.neilturner.aerialviews.ui.overlays.ProgressBar
             android:layout_width="0dp"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:layout_gravity="bottom" />
 
         <include
