@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.overlays
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
@@ -33,6 +32,8 @@ class ProgressBar : View {
     init {
         paint.style = Paint.Style.FILL
         paint.color = Color.WHITE
+
+        setBackgroundColor( Color.RED)
 
         coroutineScope.launch {
             //delay(2_000)
@@ -83,15 +84,6 @@ class ProgressBar : View {
     private fun calculateWidth(progress: Long): Long {
         val percentage = progress / parentWidth
         return (width - paddingLeft - paddingRight) * percentage + paddingLeft
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        if (animator == null) {
-            return
-        }
-
-        canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
-        postInvalidate()
     }
 }
 
