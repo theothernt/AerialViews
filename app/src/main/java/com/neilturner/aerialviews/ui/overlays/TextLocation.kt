@@ -67,7 +67,7 @@ class TextLocation : AppCompatTextView {
 
         currentPositionProgressHandler = {
             // Find POI string at current position/time
-            val time = player.currentPosition / 1000 // player current position
+            val time = player.position / 1000 // player current position
             val newPoi = poiTimes.findLast { it <= time } ?: 0
             val shouldUpdate = newPoi != lastPoi
 

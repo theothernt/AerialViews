@@ -1,4 +1,3 @@
 package com.neilturner.aerialviews.ui.core
 
-class ImagePlayerHelper {
-}
+class ImagePlayerHelper

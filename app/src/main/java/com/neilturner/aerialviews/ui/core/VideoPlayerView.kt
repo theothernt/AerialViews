@@ -2,10 +2,8 @@ package com.neilturner.aerialviews.ui.core
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import android.view.SurfaceView
-import android.widget.MediaController.MediaPlayerControl
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -25,7 +23,7 @@ import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper.buildPlayer
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper.calculateDelay
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper.calculateSegments
-import com.neilturner.aerialviews.utils.WindowHelper
+import com.neilturner.aerialviews.ui.core.VideoPlayerHelper.setRefreshRate
 import timber.log.Timber
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -33,7 +31,6 @@ class VideoPlayerView(
     context: Context,
     attrs: AttributeSet? = null,
 ) : SurfaceView(context, attrs),
-    MediaPlayerControl,
     Player.Listener {
     private val player: ExoPlayer
 
@@ -58,12 +55,10 @@ class VideoPlayerView(
     private val muteVideo = GeneralPrefs.muteVideos
     private val videoScale = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT) 1 else 2
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
-    private val loopShortVideos = GeneralPrefs.loopShortVideos
     private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
-    private val allowLongerVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.IGNORE
 
     init {
-        player = buildPlayer(context)
+        player = buildPlayer(context, GeneralPrefs)
         player.setVideoSurfaceView(this)
         player.addListener(this)
     }
@@ -176,12 +171,11 @@ class VideoPlayerView(
         this.listener = listener
     }
 
-    // MediaPlayerControl
-    override fun start() {
+    fun start() {
         player.playWhenReady = true
     }
 
-    override fun pause() {
+    fun pause() {
         player.playWhenReady = false
     }
 
@@ -190,24 +184,8 @@ class VideoPlayerView(
         player.stop()
     }
 
-    override fun getDuration() = player.duration.toInt()
-
-    override fun getCurrentPosition() = player.currentPosition.toInt()
-
-    override fun seekTo(pos: Int) = player.seekTo(pos.toLong())
-
-    override fun isPlaying(): Boolean = player.playWhenReady
-
-    override fun getBufferPercentage(): Int = player.bufferedPercentage
-
-    override fun canPause(): Boolean = duration > 0
-
-    override fun canSeekBackward(): Boolean = duration > 0
-
-    override fun canSeekForward(): Boolean = duration > 0
-
-    @SuppressLint("UnsafeOptInUsageError")
-    override fun getAudioSessionId(): Int = player.audioSessionId
+    val position: Int
+        get() = player.currentPosition.toInt()
 
     override fun onMediaItemTransition(
         mediaItem: MediaItem?,
@@ -253,25 +231,10 @@ class VideoPlayerView(
 
         if (player.playWhenReady && playbackState == Player.STATE_READY) {
             if (useRefreshRateSwitching) {
-                setRefreshRate()
+                setRefreshRate(player, context)
             }
             setupAlmostFinishedRunnable()
             Timber.i("Playing...")
-        }
-    }
-
-    @SuppressLint("UnsafeOptInUsageError")
-    private fun setRefreshRate() {
-        val frameRate = player.videoFormat?.frameRate
-
-        if (frameRate == null || frameRate == 0f) {
-            Timber.i("Unable to get video frame rate...")
-            return
-        }
-
-        Timber.i("${frameRate}fps video, setting refresh rate if needed...")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            WindowHelper.setLegacyRefreshRate(context, frameRate)
         }
     }
 
@@ -279,7 +242,10 @@ class VideoPlayerView(
 
     fun decreaseSpeed() = changeSpeed(player, false)
 
-    private fun changeSpeed(player: ExoPlayer, increase: Boolean) {
+    private fun changeSpeed(
+        player: ExoPlayer,
+        increase: Boolean,
+    ) {
         if (!canChangePlaybackSpeed) {
             return
         }
@@ -292,7 +258,7 @@ class VideoPlayerView(
             return // No speed change at the start of the video
         }
 
-        if (duration - player.currentPosition <= 3) {
+        if (player.duration - player.currentPosition <= 3) {
             return // No speed changes at the end of video
         }
 
@@ -328,18 +294,17 @@ class VideoPlayerView(
 
     private fun setupAlmostFinishedRunnable() {
         removeCallbacks(almostFinishedRunnable)
-        val delay = calculateDelay(player,
-            playbackSpeed,
-            maxVideoLength,
-            isSegmentedVideo,
-            allowLongerVideos,
-            segmentStart,
-            segmentEnd,
-            loopShortVideos,
-            loopCount)
+        val delay =
+            calculateDelay(
+                player,
+                GeneralPrefs,
+                isSegmentedVideo,
+                segmentStart,
+                segmentEnd,
+                loopCount,
+            )
         postDelayed(almostFinishedRunnable, delay)
     }
-
 
     override fun onPlayerError(error: PlaybackException) {
         super.onPlayerError(error)
@@ -360,7 +325,6 @@ class VideoPlayerView(
         }
         requestLayout()
     }
-
 
     interface OnVideoPlayerEventListener {
         fun onVideoAlmostFinished()

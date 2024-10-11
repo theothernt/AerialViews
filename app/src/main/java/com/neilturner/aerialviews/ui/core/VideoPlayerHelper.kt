@@ -3,37 +3,33 @@ package com.neilturner.aerialviews.ui.core
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
+import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.CustomRendererFactory
+import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.milliseconds
 
 object VideoPlayerHelper {
-
-    private val enableTunneling = GeneralPrefs.enableTunneling
-    private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
-    private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
-    private val fallbackDecoders = GeneralPrefs.allowFallbackDecoders
-    private val extraLogging = GeneralPrefs.enablePlaybackLogging
-    private val videoVolume = GeneralPrefs.videoVolume.toFloat() / 100
-    private val videoScale = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT) 1 else 2
-    private var playbackSpeed = GeneralPrefs.playbackSpeed
-    private val muteVideo = GeneralPrefs.muteVideos
-
     @SuppressLint("UnsafeOptInUsageError")
-    fun buildPlayer(context: Context): ExoPlayer {
+    fun buildPlayer(
+        context: Context,
+        prefs: GeneralPrefs,
+    ): ExoPlayer {
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
-        if (enableTunneling) {
+        if (prefs.enableTunneling) {
             parametersBuilder
                 .setTunnelingEnabled(true)
         }
@@ -42,10 +38,10 @@ object VideoPlayerHelper {
         trackSelector.parameters = parametersBuilder.build()
 
         var rendererFactory = DefaultRenderersFactory(context)
-        if (fallbackDecoders) {
+        if (prefs.allowFallbackDecoders) {
             rendererFactory.setEnableDecoderFallback(true)
         }
-        if (philipsDolbyVisionFix) {
+        if (prefs.philipsDolbyVisionFix) {
             rendererFactory = CustomRendererFactory(context)
         }
 
@@ -56,52 +52,55 @@ object VideoPlayerHelper {
                 .setRenderersFactory(rendererFactory)
                 .build()
 
-        if (extraLogging) {
+        if (prefs.enablePlaybackLogging) {
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (!muteVideo) {
-            player.volume = videoVolume
+        if (!prefs.muteVideos) {
+            player.volume = prefs.videoVolume.toFloat() / 100
         } else {
             player.volume = 0f
         }
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
             Timber.i("Android 12, enabling refresh rate switching")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
+        val videoScale = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT) 1 else 2
         player.videoScalingMode = videoScale
-        player.setPlaybackSpeed(playbackSpeed.toFloat())
+
+        player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
     }
 
-    fun calculateDelay(player: ExoPlayer,
-                            playbackSpeed: String,
-                               maxVideoLength: Int,
-                               isSegmentedVideo: Boolean,
-                               allowLongerVideos: Boolean,
-                               segmentStart: Long,
-                               segmentEnd: Long,
-                               loopShortVideos: Boolean,
-                               loopCount: Int): Long {
+    fun calculateDelay(
+        player: ExoPlayer,
+        prefs: GeneralPrefs,
+        isSegmentedVideo: Boolean,
+        segmentStart: Long,
+        segmentEnd: Long,
+        loopCount: Int,
+    ): Long {
         // 10 seconds is the min. video length
         val tenSeconds = 10 * 1000
+        val maxVideoLength = prefs.maxVideoLength.toInt() * 1000
+        val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
 
         // If max length disabled, play full video
         if (maxVideoLength < tenSeconds) {
-            return calculateEndOfVideo(player.duration, player.currentPosition, playbackSpeed, isSegmentedVideo, segmentStart)
+            return calculateEndOfVideo(player.duration, player.currentPosition, prefs.playbackSpeed, isSegmentedVideo, segmentStart)
         }
 
         // Play a part/segment of a video only
         if (isSegmentedVideo) {
             val position = if (player.currentPosition < segmentStart) 0 else player.currentPosition - segmentStart
-            return calculateEndOfVideo(segmentEnd - segmentStart, position, playbackSpeed, isSegmentedVideo, segmentStart)
+            return calculateEndOfVideo(segmentEnd - segmentStart, position, prefs.playbackSpeed, isSegmentedVideo, segmentStart)
         }
 
         // Check if we need to loop the video
-        if (loopShortVideos &&
+        if (prefs.loopShortVideos &&
             player.duration < maxVideoLength
         ) {
             val (isLooping, duration) = calculateLoopingVideo(maxVideoLength, player.duration.toInt())
@@ -109,7 +108,7 @@ object VideoPlayerHelper {
                 player.repeatMode = Player.REPEAT_MODE_ALL
             }
             val position = (loopCount * player.duration) + player.currentPosition
-            return calculateEndOfVideo(duration, position, playbackSpeed, isSegmentedVideo, segmentStart)
+            return calculateEndOfVideo(duration, position, prefs.playbackSpeed, isSegmentedVideo, segmentStart)
         }
 
         // Limit the duration of the video, or not
@@ -117,10 +116,10 @@ object VideoPlayerHelper {
             !allowLongerVideos
         ) {
             Timber.i("Limiting duration (video is ${player.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
-            return calculateEndOfVideo(maxVideoLength.toLong(), player.currentPosition, playbackSpeed, isSegmentedVideo, segmentStart)
+            return calculateEndOfVideo(maxVideoLength.toLong(), player.currentPosition, prefs.playbackSpeed, isSegmentedVideo, segmentStart)
         }
         Timber.i("Ignoring limit (video is ${player.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
-        return calculateEndOfVideo(player.duration, player.currentPosition, playbackSpeed, isSegmentedVideo, segmentStart)
+        return calculateEndOfVideo(player.duration, player.currentPosition, prefs.playbackSpeed, isSegmentedVideo, segmentStart)
     }
 
     private fun calculateEndOfVideo(
@@ -138,15 +137,20 @@ object VideoPlayerHelper {
         return if (delay < 0) 0 else delay
     }
 
-    private fun calculateLoopingVideo(maxVideoLength: Int,
-                                      duration: Int): Pair<Boolean, Long> {
+    private fun calculateLoopingVideo(
+        maxVideoLength: Int,
+        duration: Int,
+    ): Pair<Boolean, Long> {
         val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount
         Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
         return Pair(loopCount > 1, targetDuration.toLong())
     }
 
-    fun calculateSegments(maxVideoLength: Int, duration: Int): Triple<Boolean, Long, Long> {
+    fun calculateSegments(
+        maxVideoLength: Int,
+        duration: Int,
+    ): Triple<Boolean, Long, Long> {
         // 10 seconds is the min. video length
         val tenSeconds = 10 * 1000
         if (maxVideoLength < tenSeconds) {
@@ -165,5 +169,23 @@ object VideoPlayerHelper {
         val message2 = "(video is ${duration.milliseconds}, Segments: $segments)"
         Timber.i("$message1 $message2")
         return Triple(true, segmentStart, segmentEnd)
+    }
+
+    @OptIn(UnstableApi::class)
+    fun setRefreshRate(
+        player: ExoPlayer,
+        context: Context,
+    ) {
+        val frameRate = player.videoFormat?.frameRate
+
+        if (frameRate == null || frameRate == 0f) {
+            Timber.i("Unable to get video frame rate...")
+            return
+        }
+
+        Timber.i("${frameRate}fps video, setting refresh rate if needed...")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            WindowHelper.setLegacyRefreshRate(context, frameRate)
+        }
     }
 }
