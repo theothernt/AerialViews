@@ -7,10 +7,10 @@ firebase-perf-plugin = "1.4.2"
 android-junit5 = "1.11.0.0"
 gradle-doctor = "0.9.1"
 kotlinter-gradle = "4.4.1"
-ksp = "2.0.20-1.0.24"
+ksp = "2.0.21-1.0.25"
 
 # Kotlin + Coroutines
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 coroutines = "1.9.0"
 
 # Firebase
@@ -23,7 +23,7 @@ core-ktx = "1.13.1"
 leanback = "1.0.0"
 leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
-activity-ktx = "1.9.2"
+activity-ktx = "1.9.3"
 constraintlayout = "2.1.4"
 appcompat = "1.7.0"
 
