@@ -23,6 +23,7 @@
     <item>Збільште швидкість відтворення відео</item>
     <item>Зменште швидкість відтворення відео</item>
     <item>Показувати накладення (якщо вони приховані)</item>
+    <item>Затемнення екрану, загасання мультимедіа і накладень</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Системний</item>
@@ -137,6 +138,9 @@
     <item>8 хв</item>
     <item>9 хв</item>
     <item>10 хв</item>
+    <item>20 хвилин</item>
+    <item>30 хвилин</item>
+    <item>60 хвилин</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -169,8 +173,8 @@
     <item>Дата</item>
     <item>Повідомлення - Рядок 1</item>
     <item>Повідомлення - Рядок 2</item>
-    <item>Зараз грає- Рядок 1</item>
-    <item>Зараз грає - Рядок 2</item>
+    <item>Тепер граємо #1</item>
+    <item>Тепер граємо #2</item>
   </string-array>
   <string-array name="text_size_entries">
     <item>36sp</item>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (за замовчуванням)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Заповнення з кадруванням (за замовчуванням)</item>
+    <item>Заповнення без кадрування</item>
   </string-array>
 </resources>
