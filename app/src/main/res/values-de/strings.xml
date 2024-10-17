@@ -169,7 +169,7 @@
   <string name="enable_playback_logging_summary">Zeige zusätzliche Wiedergabeinformationen in den Protokollen an. Nützlich für die Fehlersuche.</string>
   <string name="enable_playback_logging_title">Wiedergabeprotokollierung aktivieren</string>
   <string name="immich_media_enabled_title">Immich-Medienfreigabe verwenden</string>
-  <string name="immich_media_hostname_summary">IP-Adresse und Serverport, z. B. 192.168.1.2-2283</string>
+  <string name="immich_media_hostname_summary">IP-Adresse und Serverport, z. B. 192.168.1.2:2283</string>
   <string name="immich_media_hostname_title">Hostname und Port</string>
   <string name="immich_media_password_summary">Nicht festgelegt. Optional</string>
   <string name="immich_media_password_title">Passwort</string>
