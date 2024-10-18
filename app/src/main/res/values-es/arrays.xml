@@ -23,6 +23,7 @@
     <item>Aumentar la velocidad de reproducción de vídeo</item>
     <item>Reducir la velocidad de reproducción de vídeo</item>
     <item>Mostrar superposiciones (si están ocultas)</item>
+    <item>Apagado de pantalla, desvanecimiento y superposiciones</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Predeterminado</item>
@@ -137,6 +138,9 @@
     <item>8 minutos</item>
     <item>9 minutos</item>
     <item>10 minutos</item>
+    <item>20 minutos</item>
+    <item>30 minutos</item>
+    <item>60 minutos</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -167,8 +171,8 @@
     <item>Reloj</item>
     <item>Ubicación</item>
     <item>Fecha</item>
-    <item>Mensaje #1</item>
-    <item>Mensaje #1</item>
+    <item>Línea de mensaje 1</item>
+    <item>Línea de mensaje 1</item>
     <item>Reproduciendo ahora #1</item>
     <item>Reproduciendo ahora #2</item>
   </string-array>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (Predeterminado)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Rellenar recortando (Predeterminado)</item>
+    <item>Escalar sin recortar</item>
   </string-array>
 </resources>

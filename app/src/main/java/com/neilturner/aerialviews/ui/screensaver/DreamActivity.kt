@@ -18,7 +18,6 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper
-import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -45,7 +44,7 @@ class DreamActivity : DreamService() {
         try {
             super.onWakeUp()
         } catch (e: Exception) {
-            Timber.e(e, "onWakeUp() super class exception")
+            // Doesn't matter
         }
     }
 

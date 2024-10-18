@@ -23,6 +23,7 @@
     <item>הגדל את מהירות הפעלת הווידאו</item>
     <item>הפחת את מהירות הפעלת הווידאו</item>
     <item>הצג שכבות-על (אם מוסתרות)</item>
+    <item>מסך שחור, עמעום מדיה ושכבות-על</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>ברירת מחדל מערכת</item>
@@ -137,6 +138,9 @@
     <item>8 דקות</item>
     <item>9 דקות</item>
     <item>10 דקות</item>
+    <item>20 דקות</item>
+    <item>30 דקות</item>
+    <item>60 דקות</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>פי 0.25</item>
@@ -184,5 +188,9 @@
     <item>20 נק\'</item>
     <item>18 נק׳ (ברירת מחדל)</item>
     <item>16 נק\'</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>מילוי עם חיתוך (ברירת מחדל)</item>
+    <item>שינוי קנה מידה ללא חיתוך</item>
   </string-array>
 </resources>

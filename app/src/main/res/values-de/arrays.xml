@@ -23,6 +23,7 @@
     <item>Geschwindigkeit der Videowiedergabe erhöhen</item>
     <item>Geschwindigkeit der Videowiedergabe reduzieren</item>
     <item>Overlays anzeigen (falls ausgeblendet)</item>
+    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Systemstandard</item>
@@ -136,6 +137,9 @@
     <item>8 Minuten</item>
     <item>9 Minuten</item>
     <item>10 Minuten</item>
+    <item>20 Minuten</item>
+    <item>30 Minuten</item>
+    <item>60 Minuten</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -183,5 +187,9 @@
     <item>20sp</item>
     <item>18sp (Standard)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Füllen mit Zuschneiden (Standard)</item>
+    <item>Skalieren ohne Zuschneiden</item>
   </string-array>
 </resources>

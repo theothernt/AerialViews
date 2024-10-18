@@ -23,6 +23,7 @@
     <item>提高视频播放速度</item>
     <item>降低视频播放速度</item>
     <item>显示叠加（如果隐藏）</item>
+    <item>黑屏、淡出媒体和叠加内容</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>系统默认</item>
@@ -137,6 +138,9 @@
     <item>8 分钟</item>
     <item>9 分钟</item>
     <item>10 分钟</item>
+    <item>20 分钟</item>
+    <item>30 分钟</item>
+    <item>60 分钟</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (默认)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>用裁剪填充（默认）</item>
+    <item>无作物比例尺</item>
   </string-array>
 </resources>

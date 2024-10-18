@@ -5,24 +5,25 @@
     <item>Roboto</item>
   </string-array>
   <string-array name="appearance_font_weight_entries">
-    <item>100/Тонкая</item>
-    <item>200/Сверхлегкая</item>
-    <item>300/Легкая (по умолчанию)</item>
-    <item>400/Нормальная</item>
-    <item>500/Средняя</item>
-    <item>600/Полужирная</item>
-    <item>700/Жирная</item>
-    <item>800/Сверхжирная</item>
-    <item>900/Тяжелая</item>
+    <item>100/Тонкое</item>
+    <item>200/Сверхсветлое</item>
+    <item>300/Светлое (по умолчанию)</item>
+    <item>400/Нормальное</item>
+    <item>500/Среднее</item>
+    <item>600/Полужирное</item>
+    <item>700/Жирное</item>
+    <item>800/Сверхжирное</item>
+    <item>900/Тяжелое</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>Игнорировать действие</item>
-    <item>Экранная заставка выхода</item>
-    <item>Перейти к следующему видео/фотографии</item>
-    <item>Перейти к предыдущему видео/фото</item>
-    <item>Увеличьте скорость воспроизведения видео</item>
-    <item>Уменьшите скорость воспроизведения видео</item>
-    <item>Показывать наложения (если они скрыты)</item>
+    <item>Выход из заставки</item>
+    <item>Переход к следующему видео/фото</item>
+    <item>Переход к предыдущему видео/фото</item>
+    <item>Увеличить скорость воспроизведения видео</item>
+    <item>Уменьшить скорость воспроизведения видео</item>
+    <item>Показать наложения (если скрыты)</item>
+    <item>Затемнение экрана, затухание мультимедиа и наложений</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Системный</item>
@@ -36,15 +37,15 @@
   </string-array>
   <string-array name="description_filename_entries">
     <item>Выключено</item>
-    <item>Используйте отформатированное имя файла</item>
     <item>Использовать имя файла как есть</item>
-    <item>Имя папки и файла</item>
+    <item>Папка и имя файла</item>
+    <item>Только имя папки</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Выключено</item>
-    <item>Используйте форматированное имя файла, например: \'switzerland-zürich_train_station.jpg\' становится \'Switzerland - Zürich Train Station\'</item>
-    <item>Используйте имя файла как есть, например: \'Japan - Deep snow in Hokkaido.jpg\' становится \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Используйте папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
+    <item>Использовать имя файла как есть, например: \"Japan - Deep snow in Hokkaido.jpg\" становится \"Japan - Deep snow in Hokkaido\"</item>
+    <item>Использовать папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
+    <item>Использовать только имя папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Выключено</item>
@@ -53,9 +54,9 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Выключено</item>
-    <item>Используйте форматированное имя файла, например: \'japan-mount_fuji.mp4\' становится \'Japan - Mount Fuji\'</item>
-    <item>Используйте имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
-    <item>Используйте папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunet.mp4\' становится \'Grand Canyon / Sunet\'</item>
+    <item>Использовать имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
+    <item>Использовать папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunset.mp4\' становится \'Grand Canyon / Sunset\'</item>
+    <item>Использовать только имя папки, например: \'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Выключено</item>
@@ -77,12 +78,12 @@
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустить при достижении лимита</item>
-    <item>Разрешите завершить более длинные видеоролики</item>
-    <item>Воспроизведение случайных фрагментов длинных видеороликов</item>
+    <item>Разрешить более длинным видео завершаться</item>
+    <item>Воспроизведение случайных фрагментов длинных видео</item>
   </string-array>
   <string-array name="limit_Longer_videos_summaries">
-    <item>Соблюдайте лимит - переходите к следующему видео, когда лимит будет достигнут</item>
-    <item>Игнорировать ограничение - если видео длиннее установленного ограничения, оно будет воспроизводиться до конца</item>
+    <item>Соблюдать лимит - переходить к следующему видео, когда лимит достигнут</item>
+    <item>Игнорировать лимит - если видео длиннее установленного лимита, оно будет воспроизводиться до конца</item>
     <item>Случайный сегмент - если видео длиннее установленного лимита, будет воспроизведена случайная часть видео
 (например, при ограничении в 2 минуты 6-минутное видео может состоять из 3 сегментов - один из них будет воспроизведен случайным образом).</item>
   </string-array>
@@ -119,8 +120,8 @@
     <item>10 секунд</item>
   </string-array>
   <string-array name="photo_scale_entries">
-    <item>Заполнение (по умолчанию)</item>
-    <item>Центр</item>
+    <item>Заполнение с кадрированием (по умолчанию)</item>
+    <item>Заполнение без кадрирования</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Без ограничений (по умолчанию)</item>
@@ -137,6 +138,9 @@
     <item>8 мин</item>
     <item>9 мин</item>
     <item>10 мин</item>
+    <item>20 минут</item>
+    <item>30 минут</item>
+    <item>60 минут</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (по умолчанию)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Заполнение с кадрированием (по умолчанию)</item>
+    <item>Заполнение без кадрирования</item>
   </string-array>
 </resources>
