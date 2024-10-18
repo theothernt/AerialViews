@@ -33,14 +33,14 @@ import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import timber.log.Timber
+import java.security.KeyStore
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import java.util.EnumSet
 import javax.net.ssl.SSLContext
-import javax.net.ssl.X509TrustManager
-import java.security.KeyStore
-import java.security.cert.CertificateException
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 
 class ImagePlayerView :
     AppCompatImageView,
