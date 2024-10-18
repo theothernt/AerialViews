@@ -24,11 +24,14 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import timber.log.Timber
-import java.security.SecureRandom
+import java.security.KeyStore
+import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
+import javax.net.ssl.SSLHandshakeException
+import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
+
 
 class ImmichMediaProvider(
     context: Context,
@@ -71,30 +74,35 @@ class ImmichMediaProvider(
     }
 
     private fun getApiInterface() {
-        val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
-            override fun checkClientTrusted(
-                chain: Array<out X509Certificate>?,
-                authType: String?
-            ) {
+        val standardTrustManager = getTrustManager(false)
+        val permissiveTrustManager = getTrustManager(true)
+
+        val standardSslSocketFactory = SSLContext.getInstance("TLS").apply {
+            init(null, arrayOf(standardTrustManager), null)
+        }.socketFactory
+
+        val permissiveSslSocketFactory = SSLContext.getInstance("TLS").apply {
+            init(null, arrayOf(permissiveTrustManager), null)
+        }.socketFactory
+
+        val okHttpClientBuilder = OkHttpClient.Builder()
+            .sslSocketFactory(standardSslSocketFactory, standardTrustManager)
+            .addInterceptor { chain ->
+                try {
+                    chain.proceed(chain.request())
+                } catch (e: SSLHandshakeException) {
+                    Timber.w("SSL Handshake failed with standard trust manager, attempting with permissive trust manager")
+
+                    val permissiveClientBuilder = OkHttpClient.Builder()
+                        .sslSocketFactory(permissiveSslSocketFactory, permissiveTrustManager)
+                        .hostnameVerifier { _, _ -> true }
+
+                    val permissiveClient = permissiveClientBuilder.build()
+                    permissiveClient.newCall(chain.request()).execute()
+                }
             }
 
-            override fun checkServerTrusted(
-                chain: Array<out X509Certificate>?,
-                authType: String?
-            ) {
-            }
-
-            override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-        })
-
-        val sslContext = SSLContext.getInstance("SSL").apply {
-            init(null, trustAllCerts, SecureRandom())
-        }
-
-        val okHttpClient = OkHttpClient.Builder()
-            .sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
-            .hostnameVerifier { _, _ -> true }
-            .build()
+        val okHttpClient = okHttpClientBuilder.build()
 
         Timber.i("Connecting to $server")
         try {
@@ -105,9 +113,36 @@ class ImmichMediaProvider(
                 .build()
                 .create(ImmichService::class.java)
         } catch (e: Exception) {
-            Timber.e(e, e.message.toString())
+            Timber.e(e, "Error creating Immich API interface: ${e.message}")
+            throw e
         }
     }
+
+    private fun getTrustManager(permissive: Boolean): X509TrustManager {
+        return if (permissive) {
+            object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                    try {
+                        chain?.get(0)?.checkValidity()
+                    } catch (e: Exception) {
+                        throw CertificateException("Certificate not valid.")
+                    }
+                }
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            }
+        } else {
+            try {
+                val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+                trustManagerFactory.init(null as KeyStore?)
+                trustManagerFactory.trustManagers.first { it is X509TrustManager } as X509TrustManager
+            } catch (e: Exception) {
+                Timber.e(e, "Error getting default trust manager")
+                throw e
+            }
+        }
+    }
+
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
     override suspend fun fetchTest(): String {
