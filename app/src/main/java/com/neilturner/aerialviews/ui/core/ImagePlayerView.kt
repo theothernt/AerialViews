@@ -33,12 +33,14 @@ import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import timber.log.Timber
-import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.EnumSet
 import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
+import java.security.KeyStore
+import java.security.cert.CertificateException
+import javax.net.ssl.SSLHandshakeException
+import javax.net.ssl.TrustManagerFactory
 
 class ImagePlayerView :
     AppCompatImageView,
@@ -63,27 +65,66 @@ class ImagePlayerView :
                 }
             }
             .okHttpClient {
-                // Create a trust manager that does not validate certificate chains
-                val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
-                    override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
-                    override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
-                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-                })
-
-                // Install the all-trusting trust manager
-                val sslContext = SSLContext.getInstance("SSL")
-                sslContext.init(null, trustAllCerts, SecureRandom())
-
-                // Create an ssl socket factory with our all-trusting manager
-                val sslSocketFactory = sslContext.socketFactory
-
-                OkHttpClient.Builder()
-                    .sslSocketFactory(sslSocketFactory, trustAllCerts[0] as X509TrustManager)
-                    .hostnameVerifier { _, _ -> true }
-                    .addInterceptor(ApiKeyInterceptor())
-                    .build()
+                buildOkHttpClient()
             }
             .build()
+    }
+
+    private fun buildOkHttpClient(): OkHttpClient {
+        val standardTrustManager = getTrustManager(false)
+        val permissiveTrustManager = getTrustManager(true)
+
+        val standardSslSocketFactory = SSLContext.getInstance("TLS").apply {
+            init(null, arrayOf(standardTrustManager), null)
+        }.socketFactory
+
+        val permissiveSslSocketFactory = SSLContext.getInstance("TLS").apply {
+            init(null, arrayOf(permissiveTrustManager), null)
+        }.socketFactory
+
+        return OkHttpClient.Builder()
+            .sslSocketFactory(standardSslSocketFactory, standardTrustManager)
+            .addInterceptor { chain ->
+                try {
+                    chain.proceed(chain.request())
+                } catch (e: SSLHandshakeException) {
+                    Timber.w("SSL Handshake failed with standard trust manager, attempting with permissive trust manager")
+
+                    val permissiveClientBuilder = OkHttpClient.Builder()
+                        .sslSocketFactory(permissiveSslSocketFactory, permissiveTrustManager)
+                        .hostnameVerifier { _, _ -> true }
+
+                    val permissiveClient = permissiveClientBuilder.build()
+                    permissiveClient.newCall(chain.request()).execute()
+                }
+            }
+            .addInterceptor(ApiKeyInterceptor())
+            .build()
+    }
+
+    private fun getTrustManager(permissive: Boolean): X509TrustManager {
+        return if (permissive) {
+            object : X509TrustManager {
+                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
+                    try {
+                        chain?.get(0)?.checkValidity()
+                    } catch (e: Exception) {
+                        throw CertificateException("Certificate not valid.")
+                    }
+                }
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            }
+        } else {
+            try {
+                val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+                trustManagerFactory.init(null as KeyStore?)
+                trustManagerFactory.trustManagers.first { it is X509TrustManager } as X509TrustManager
+            } catch (e: Exception) {
+                Timber.e(e, "Error getting default trust manager")
+                throw e
+            }
+        }
     }
 
     private class ApiKeyInterceptor : Interceptor {
