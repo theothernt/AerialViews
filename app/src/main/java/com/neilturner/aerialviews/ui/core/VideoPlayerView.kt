@@ -11,6 +11,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.VideoSize
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
@@ -23,6 +24,7 @@ import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
+import com.neilturner.aerialviews.services.ImmichDataSourceFactory
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
@@ -105,26 +107,30 @@ class VideoPlayerView(
             PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
         }
 
-        when (media.source) {
+        val mediaSource = when (media.source) {
             AerialMediaSource.SAMBA -> {
-                val mediaSource =
-                    ProgressiveMediaSource
-                        .Factory(SambaDataSourceFactory())
-                        .createMediaSource(mediaItem)
-                player.setMediaSource(mediaSource)
+                ProgressiveMediaSource
+                    .Factory(SambaDataSourceFactory())
+                    .createMediaSource(mediaItem)
             }
             AerialMediaSource.WEBDAV -> {
-                val mediaSource =
-                    ProgressiveMediaSource
-                        .Factory(WebDavDataSourceFactory())
-                        .createMediaSource(mediaItem)
-                player.setMediaSource(mediaSource)
+                ProgressiveMediaSource
+                    .Factory(WebDavDataSourceFactory())
+                    .createMediaSource(mediaItem)
+            }
+            AerialMediaSource.IMMICH -> {
+                ProgressiveMediaSource
+                    .Factory(ImmichDataSourceFactory())
+                    .createMediaSource(mediaItem)
             }
             else -> {
-                player.setMediaItem(mediaItem)
+                ProgressiveMediaSource
+                    .Factory(DefaultHttpDataSource.Factory())
+                    .createMediaSource(mediaItem)
             }
         }
 
+        player.setMediaSource(mediaSource)
         player.prepare()
 
         if (muteVideo) {
