@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/aboutFragment">
+
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AboutFragment"
+        android:label="AboutFragment" />
+
+    <fragment
+        android:id="@+id/advancedFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AdvancedFragment"
+        android:label="AdvancedFragment" />
+    <fragment
+        android:id="@+id/appearanceAnimationsFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AppearanceAnimationsFragment"
+        android:label="AppearanceAnimationsFragment" />
+    <fragment
+        android:id="@+id/appearanceFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AppearanceFragment"
+        android:label="AppearanceFragment" />
+    <fragment
+        android:id="@+id/appearanceGradientFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"
+        android:label="AppearanceGradientFragment" />
+    <fragment
+        android:id="@+id/appearanceStartupFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"
+        android:label="AppearanceStartupFragment" />
+    <fragment
+        android:id="@+id/appearanceTypographyFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.AppearanceTypographyFragment"
+        android:label="AppearanceTypographyFragment" />
+    <fragment
+        android:id="@+id/appleVideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.AppleVideosFragment"
+        android:label="AppleVideosFragment" />
+    <fragment
+        android:id="@+id/capabilitiesFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"
+        android:label="CapabilitiesFragment" />
+    <fragment
+        android:id="@+id/comm1VideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.Comm1VideosFragment"
+        android:label="Comm1VideosFragment" />
+    <fragment
+        android:id="@+id/comm2VideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"
+        android:label="Comm2VideosFragment" />
+    <fragment
+        android:id="@+id/dpadRemoteFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"
+        android:label="DpadRemoteFragment" />
+    <fragment
+        android:id="@+id/dpadRemotePressFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.DpadRemotePressFragment"
+        android:label="DpadRemotePressFragment" />
+    <fragment
+        android:id="@+id/dpadRemotePressHoldFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.DpadRemotePressHoldFragment"
+        android:label="DpadRemotePressHoldFragment" />
+    <fragment
+        android:id="@+id/immichVideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.ImmichVideosFragment"
+        android:label="ImmichVideosFragment" />
+    <fragment
+        android:id="@+id/localVideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.LocalVideosFragment"
+        android:label="LocalVideosFragment" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.neilturner.aerialviews.ui.MainFragment"
+        android:label="MainFragment" />
+    <fragment
+        android:id="@+id/overlaysClockFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysClockFragment"
+        android:label="OverlaysClockFragment" />
+    <fragment
+        android:id="@+id/overlaysDateFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysDateFragment"
+        android:label="OverlaysDateFragment" />
+    <fragment
+        android:id="@+id/overlaysFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysFragment"
+        android:label="OverlaysFragment" />
+    <fragment
+        android:id="@+id/overlaysLocationFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysLocationFragment"
+        android:label="OverlaysLocationFragment" />
+    <fragment
+        android:id="@+id/overlaysMessageFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysMessageFragment"
+        android:label="OverlaysMessageFragment" />
+    <fragment
+        android:id="@+id/overlaysNowPlayingFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysNowPlayingFragment"
+        android:label="OverlaysNowPlayingFragment" />
+    <fragment
+        android:id="@+id/overlaysRowBottomFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysRowBottomFragment"
+        android:label="OverlaysRowBottomFragment" />
+    <fragment
+        android:id="@+id/overlaysRowTopFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.OverlaysRowTopFragment"
+        android:label="OverlaysRowTopFragment" />
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.PlaylistFragment"
+        android:label="PlaylistFragment" />
+    <fragment
+        android:id="@+id/sambaVideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.SambaVideosFragment"
+        android:label="SambaVideosFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/sourcesFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.SourcesFragment"
+        android:label="SourcesFragment" />
+    <fragment
+        android:id="@+id/webDavVideosFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.WebDavVideosFragment"
+        android:label="WebDavVideosFragment" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.neilturner.aerialviews.ui.MainActivity"
+        android:label="MainActivity" />
+    <activity
+        android:id="@+id/testActivity"
+        android:name="com.neilturner.aerialviews.ui.screensaver.TestActivity"
+        android:label="TestActivity" />
+</navigation>
