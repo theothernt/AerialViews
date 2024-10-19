@@ -3,34 +3,38 @@ package com.neilturner.aerialviews.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.navigation.fragment.NavHostFragment
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class MainActivity :
-    AppCompatActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, MainFragment())
-                .commit()
-        } else {
-            title = savedInstanceState.getCharSequence("TITLE_TAG")
-        }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        //navHostFragment.navController.navigate(R.id.to_mainFragment)
 
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                setTitle(R.string.app_name)
-            }
-        }
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        NavigationUI.setupActionBarWithNavController(this, navController)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+//        if (savedInstanceState == null) {
+//            supportFragmentManager
+//                .beginTransaction()
+//                .replace(R.id.settings, MainFragment())
+//                .commit()
+//        } else {
+//            title = savedInstanceState.getCharSequence("TITLE_TAG")
+//        }
+
+//        supportFragmentManager.addOnBackStackChangedListener {
+//            if (supportFragmentManager.backStackEntryCount == 0) {
+//                setTitle(R.string.app_name)
+//            }
+//        }
+//
+//        supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onResume() {
@@ -45,34 +49,10 @@ class MainActivity :
         outState.putCharSequence("TITLE_TAG", title)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        if (supportFragmentManager.popBackStackImmediate()) {
-            return true
-        }
-        return super.onSupportNavigateUp()
-    }
-
-    override fun onPreferenceStartFragment(
-        caller: PreferenceFragmentCompat,
-        pref: Preference,
-    ): Boolean {
-        // Instantiate the new Fragment
-        val args = pref.extras
-        val fragment =
-            supportFragmentManager.fragmentFactory
-                .instantiate(
-                    classLoader,
-                    pref.fragment.toString(),
-                ).apply {
-                    arguments = args
-                }
-        // Replace the existing Fragment with the new Fragment
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings, fragment)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-        title = pref.title
-        return true
-    }
+//    override fun onSupportNavigateUp(): Boolean {
+//        if (supportFragmentManager.popBackStackImmediate()) {
+//            return true
+//        }
+//        return super.onSupportNavigateUp()
+//    }
 }

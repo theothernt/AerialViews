@@ -77,8 +77,10 @@ preference-ktx = { group = "androidx.preference", name = "preference-ktx", versi
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
 navigation = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
+navigation-features = { group = "androidx.navigation", name = "navigation-dynamic-features-fragment", version.ref = "navigation" }
 
 flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
 flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
@@ -113,7 +115,7 @@ kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
-androidx = ["core-ktx", "leanback", "navigation", "navigation-ui", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
+androidx = ["core-ktx", "leanback", "navigation", "navigation-ui", "navigation-features", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 
 [plugins]
@@ -121,6 +123,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+navigation-safe-args = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
