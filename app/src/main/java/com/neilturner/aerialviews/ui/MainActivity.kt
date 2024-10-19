@@ -71,7 +71,7 @@ class MainActivity :
             .beginTransaction()
             .replace(R.id.settings, fragment)
             .addToBackStack(null)
-            .commitAllowingStateLoss()
+            .commit()
         title = pref.title
         return true
     }

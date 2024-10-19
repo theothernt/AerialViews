@@ -41,7 +41,6 @@ class VideoPlayerView @OptIn(UnstableApi::class)
 ) : PlayerView (context, attrs, defStyleAttr),
     Player.Listener {
     private val exoPlayer: ExoPlayer
-    private var aspectRatio = 0f
     private var prepared = false
 
     private var listener: OnVideoPlayerEventListener? = null
@@ -57,7 +56,6 @@ class VideoPlayerView @OptIn(UnstableApi::class)
     private var playbackSpeed = GeneralPrefs.playbackSpeed
     private val muteVideo = GeneralPrefs.muteVideos
     private val videoVolume = GeneralPrefs.videoVolume.toFloat() / 100
-    private val videoScale = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT) 1 else 2
     private var canChangePlaybackSpeed = true
 
     private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
@@ -69,16 +67,14 @@ class VideoPlayerView @OptIn(UnstableApi::class)
     private var segmentEnd = 0L
     private var loopCount = 0
 
-    private var videoWidth: Int = 0
-    private var videoHeight: Int = 0
-
     init {
         exoPlayer = buildPlayer(context) // ExoPlayer.Builder(context).build()
         exoPlayer.addListener(this)
 
         player = exoPlayer
         controllerAutoShow = false
-        resizeMode = AspectRatioFrameLayout.RESIZE_MODE_FIT
+        useController = false
+        resizeMode = if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) AspectRatioFrameLayout.RESIZE_MODE_ZOOM else AspectRatioFrameLayout.RESIZE_MODE_FIT
     }
 
     fun release() {
