@@ -25,6 +25,7 @@ leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
 activity-ktx = "1.9.3"
 constraintlayout = "2.1.4"
+navigation = "2.8.3"
 appcompat = "1.7.0"
 
 # Retrofit, OkHttp, and Moshi
@@ -76,6 +77,8 @@ preference-ktx = { group = "androidx.preference", name = "preference-ktx", versi
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+navigation = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
+navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigation" }
 
 flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
 flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
@@ -110,7 +113,7 @@ kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
-androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
+androidx = ["core-ktx", "leanback", "navigation", "navigation-ui", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 
 [plugins]
