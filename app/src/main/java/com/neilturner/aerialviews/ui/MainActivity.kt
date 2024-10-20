@@ -14,6 +14,7 @@ class MainActivity :
         setContentView(R.layout.settings_activity)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        
         //navHostFragment.navController.navigate(R.id.to_mainFragment)
 
 //        val navController = findNavController(R.id.nav_host_fragment)

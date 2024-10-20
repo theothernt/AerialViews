@@ -29,8 +29,6 @@ class MainFragment :
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
         setMenuLocale()
-
-        //MainFragmentDirections.actionMainFragmentToTestActivity()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
