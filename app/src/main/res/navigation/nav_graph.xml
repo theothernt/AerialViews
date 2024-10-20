@@ -32,5 +32,19 @@
         <action
             android:id="@+id/action_mainFragment_to_testActivity"
             app:destination="@id/testActivity" />
+        <action
+            android:id="@+id/action_mainFragment_to_sourcesFragment"
+            app:destination="@id/sourcesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/sourcesFragment"
+        android:name="com.neilturner.aerialviews.ui.sources.SourcesFragment"
+        android:label="SourcesFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.neilturner.aerialviews.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

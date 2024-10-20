@@ -6,12 +6,12 @@
         <Preference
             app:title="@string/settings_media_sources_title"
             app:summary="@string/settings_media_sources_summary"
-            app:fragment="com.neilturner.aerialviews.ui.sources.SourcesFragment"/>
+            />
 
         <Preference
             app:title="@string/settings_settings_title"
             app:summary="@string/settings_settings_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.SettingsFragment"/>
+            />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_actions">
