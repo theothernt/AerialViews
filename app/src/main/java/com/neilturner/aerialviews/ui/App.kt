@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui
 
 import android.app.Application
+import android.os.Parcelable
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -11,6 +12,11 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import timber.log.Timber
 
 class App : Application() {
+
+    companion object {
+        var listState: Parcelable? = null
+    }
+
     override fun onCreate() {
         super.onCreate()
 

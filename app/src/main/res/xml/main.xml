@@ -4,11 +4,13 @@
 
     <PreferenceCategory app:title="@string/app_name">
         <Preference
+            app:key="media_sources"
             app:title="@string/settings_media_sources_title"
             app:summary="@string/settings_media_sources_summary"
             />
 
         <Preference
+            app:key="settings"
             app:title="@string/settings_settings_title"
             app:summary="@string/settings_settings_summary"
             />

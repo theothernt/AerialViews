@@ -3,24 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
-
-
-<!--    <action-->
-<!--        android:id="@+id/to_mainFragment"-->
-<!--        app:destination="@id/mainFragment"-->
-<!--        app:launchSingleTop="true"-->
-<!--        />-->
-
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.neilturner.aerialviews.ui.settings.AboutFragment"
         android:label="AboutFragment" />
-
-    <activity
-        android:id="@+id/mainActivity"
-        android:name="com.neilturner.aerialviews.ui.MainActivity"
-        android:label="MainActivity" />
-
     <activity
         android:id="@+id/testActivity"
         android:name="com.neilturner.aerialviews.ui.screensaver.TestActivity"

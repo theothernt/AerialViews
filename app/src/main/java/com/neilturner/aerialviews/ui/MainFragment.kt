@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
@@ -22,6 +23,9 @@ import timber.log.Timber
 class MainFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
+
+    //private var listState: Parcelable? = null
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -30,7 +34,53 @@ class MainFragment :
         resetLocalPermissionIfNeeded()
         setMenuLocale()
 
-        //MainFragmentDirections.actionMainFragmentToTestActivity()
+        findPreference<Preference>("media_sources")?.setOnPreferenceClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSourcesFragment())
+            true
+        }
+
+        findPreference<Preference>("settings")?.setOnPreferenceClickListener {
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToSettingsFragment())
+            true
+        }
+
+        //listView.setHasTransientState(false)
+        //listView.adapter
+    }
+
+//    override fun onSaveInstanceState(outState: Bundle) {
+//
+//        outState.putParcelable("LIST_STATE", listState)
+//
+//        Timber.i("onSaveInstanceState")
+//        super.onSaveInstanceState(outState)
+//    }
+//
+//    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+//        if (savedInstanceState != null) {
+//            Timber.i("onViewStateRestored")
+//            listState = savedInstanceState.getParcelable("LIST_STATE")
+//        }
+//
+//        super.onViewStateRestored(savedInstanceState)
+//    }
+
+    override fun onPause() {
+        Timber.i("onPause")
+        App.listState = listView.layoutManager?.onSaveInstanceState()
+
+
+        //Timber.i("Item: ${lay}")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Timber.i("onResume")
+        if (App.listState != null) {
+            Timber.i("onResume - restoring state")
+            listView.layoutManager?.onRestoreInstanceState(App.listState)
+        }
+        super.onResume()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -52,12 +102,14 @@ class MainFragment :
     }
 
     private fun testScreensaverSettings() {
-        try {
-            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
-            startActivity(intent)
-        } catch (ex: Exception) {
-            Timber.e(ex)
-        }
+
+        findNavController().navigate(MainFragmentDirections.actionMainFragmentToTestActivity())
+//        try {
+//            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
+//            startActivity(intent)
+//        } catch (ex: Exception) {
+//            Timber.e(ex)
+//        }
     }
 
     private fun setMenuLocale() {

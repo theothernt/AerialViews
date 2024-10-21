@@ -2,16 +2,16 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
     kotlin("android")
     kotlin("kapt")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlinter.gradle)
-    alias(libs.plugins.android.junit5)
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.navigation.safe.args)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
-    alias(libs.plugins.navigation.safe.args)
+    alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.android.junit5)
 }
 
 fun loadProperties(fileName: String): Properties {
