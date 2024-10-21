@@ -33,6 +33,9 @@ moshi = "1.15.1"
 logging-interceptor = "4.12.0"
 gson = "2.11.0"
 
+simple-stack = "2.9.0"
+simple-stack-extensions = "2.3.4"
+
 # ExoPlayer
 media3-exoplayer = "1.4.1"
 
@@ -77,6 +80,9 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
+simple-stack = { group = "com.github.Zhuinden", name = "simple-stack", version.ref = "simple-stack" }
+simple-stack-extensions = { group = "com.github.Zhuinden", name = "simple-stack-extensions", version.ref = "simple-stack-extensions" }
+
 flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
 flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
 
@@ -110,13 +116,14 @@ kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
-androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
+androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat", "simple-stack", "simple-stack-extensions"]
 retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+parcel = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin"}
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }

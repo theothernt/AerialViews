@@ -1,78 +1,71 @@
 package com.neilturner.aerialviews.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.LayoutInflater
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
+import androidx.fragment.app.Fragment
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.databinding.MainActivityBinding
+import com.neilturner.aerialviews.ui.settings.SettingsFragment
+import com.zhuinden.simplestack.BackHandlingModel
+import com.zhuinden.simplestack.Backstack
+import com.zhuinden.simplestack.History
+import com.zhuinden.simplestack.SimpleStateChanger
+import com.zhuinden.simplestack.StateChange
+import com.zhuinden.simplestack.navigator.Navigator
+import com.zhuinden.simplestackextensions.fragments.DefaultFragmentKey
+import com.zhuinden.simplestackextensions.fragments.DefaultFragmentStateChanger
+import com.zhuinden.simplestackextensions.lifecyclektx.observeAheadOfTimeWillHandleBackChanged
+import kotlinx.parcelize.Parcelize
 
 class MainActivity :
     AppCompatActivity(),
-    PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    SimpleStateChanger.NavigationHandler {
+
+    private lateinit var fragmentStateChanger: DefaultFragmentStateChanger
+    private lateinit var backstack: Backstack
+
+    private val backPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            backstack.goBack()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, MainFragment())
-                .commit()
-        } else {
-            title = savedInstanceState.getCharSequence("TITLE_TAG")
-        }
+        val inflater = LayoutInflater.from(this)
+        val binding = MainActivityBinding.inflate(inflater)
+        setContentView(binding.root)
 
-        supportFragmentManager.addOnBackStackChangedListener {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                setTitle(R.string.app_name)
-            }
-        }
+        onBackPressedDispatcher.addCallback(backPressedCallback)
+        fragmentStateChanger = DefaultFragmentStateChanger(supportFragmentManager, R.id.container)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        backstack = Navigator.configure()
+            .setBackHandlingModel(BackHandlingModel.AHEAD_OF_TIME)
+            .setStateChanger(SimpleStateChanger(this))
+            .install(this, binding.container, History.single(MainKey))
+
+        backPressedCallback.isEnabled = backstack.willHandleAheadOfTimeBack()
+        backstack.observeAheadOfTimeWillHandleBackChanged(this, backPressedCallback::isEnabled::set)
+    }
+
+    override fun onNavigationEvent(stateChange: StateChange) {
+        fragmentStateChanger.handleStateChange(stateChange)
     }
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Main", this)
     }
+}
 
-    @SuppressLint("MissingSuperCall")
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        // Save current activity title so we can set it again after a configuration change
-        outState.putCharSequence("TITLE_TAG", title)
-    }
+@Parcelize
+data object MainKey : DefaultFragmentKey() {
+    override fun instantiateFragment(): Fragment = MainFragment()
+}
 
-    override fun onSupportNavigateUp(): Boolean {
-        if (supportFragmentManager.popBackStackImmediate()) {
-            return true
-        }
-        return super.onSupportNavigateUp()
-    }
-
-    override fun onPreferenceStartFragment(
-        caller: PreferenceFragmentCompat,
-        pref: Preference,
-    ): Boolean {
-        // Instantiate the new Fragment
-        val args = pref.extras
-        val fragment =
-            supportFragmentManager.fragmentFactory
-                .instantiate(
-                    classLoader,
-                    pref.fragment.toString(),
-                ).apply {
-                    arguments = args
-                }
-        // Replace the existing Fragment with the new Fragment
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings, fragment)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-        title = pref.title
-        return true
-    }
+@Parcelize
+data object SettingsKey : DefaultFragmentKey() {
+    override fun instantiateFragment(): Fragment = SettingsFragment()
 }

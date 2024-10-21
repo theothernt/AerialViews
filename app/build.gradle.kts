@@ -6,6 +6,7 @@ plugins {
     kotlin("android")
     kotlin("kapt")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.parcel)
     alias(libs.plugins.kotlinter.gradle)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.services)
@@ -50,6 +51,7 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+        viewBinding = true
     }
 
     lint {
