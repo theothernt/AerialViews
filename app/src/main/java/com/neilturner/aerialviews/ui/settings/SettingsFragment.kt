@@ -6,6 +6,7 @@ import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import timber.log.Timber
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
@@ -20,6 +21,11 @@ class SettingsFragment :
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Settings", this)
+    }
+
+    override fun onPause() {
+        Timber.i("onPause")
+        super.onPause()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
