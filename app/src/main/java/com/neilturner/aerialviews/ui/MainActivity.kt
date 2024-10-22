@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class MainActivity :
     AppCompatActivity() {
-
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +23,17 @@ class MainActivity :
 
 
         //setupActionBarWithNavController(navController)
+    }
+
+    override fun onBackPressed() {
+        //val navController = findNavController(R.id.nav_host_fragment)
+        if (navController.currentDestination?.id == R.id.mainFragment) {
+            // Handle back navigation from the preference fragment
+            // For example, you can navigate back to the previous screen
+            navController.navigateUp()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     override fun onResume() {
