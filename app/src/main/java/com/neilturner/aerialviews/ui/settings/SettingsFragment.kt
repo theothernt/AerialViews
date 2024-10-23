@@ -1,21 +1,38 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
+import android.view.View
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class SettingsFragment :
     PreferenceFragmentCompat(),
     PreferenceManager.OnPreferenceTreeClickListener {
+
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings, rootKey)
+
+        coroutineScope.launch {
+            //delay(3000)
+            val pref = findPreference<Preference>("settings")!!
+            scrollToPreference(pref)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onPause() {
