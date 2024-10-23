@@ -27,7 +27,6 @@ class MainActivity :
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 replace(R.id.settings, MainFragment())
-                addToBackStack(null)
             }
         } else {
             title = savedInstanceState.getCharSequence("TITLE_TAG")
@@ -65,7 +64,6 @@ class MainActivity :
         caller: PreferenceFragmentCompat,
         pref: Preference,
     ): Boolean {
-
         val fragmentName = pref.fragment.toString()
         val fragment = fragments[fragmentName] ?: supportFragmentManager.fragmentFactory
             .instantiate(
