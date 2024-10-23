@@ -29,6 +29,34 @@ class MainFragment :
         setPreferencesFromResource(R.xml.main, rootKey)
         resetLocalPermissionIfNeeded()
         setMenuLocale()
+
+        if (savedInstanceState != null) {
+            Timber.i("onCreatePreferences - savedInstanceState")
+        }
+    }
+
+    override fun onPause() {
+        Timber.i("onPause")
+        super.onPause()
+    }
+
+    override fun onResume() {
+        Timber.i("onResume")
+        super.onResume()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.i("onSaveInstanceState")
+        super.onSaveInstanceState(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            Timber.i("onViewStateRestored - savedInstanceState")
+        } else {
+            Timber.i("onViewStateRestored")
+        }
+        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
