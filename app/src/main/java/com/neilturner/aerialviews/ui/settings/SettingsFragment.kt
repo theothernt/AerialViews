@@ -8,6 +8,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,9 +38,14 @@ class SettingsFragment :
     override fun onPause() {
         Timber.i("onPause")
 
+
         val view = listView.findFocus()
-        if (view != null) {
-            position = listView.layoutManager?.getPosition(view) ?: -1
+        if (view != null && DeviceHelper.isTV(requireContext())) {
+            try {
+                position = listView.layoutManager?.getPosition(view) ?: -1
+            } catch (e: Exception) {
+
+            }
             Timber.i("onPause - position: $position")
         }
 
