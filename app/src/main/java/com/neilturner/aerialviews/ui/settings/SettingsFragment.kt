@@ -62,6 +62,11 @@ class SettingsFragment :
         super.onResume()
     }
 
+    override fun onDestroy() {
+        Timber.i("onDestroy")
+        super.onDestroy()
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         Timber.i("onSaveInstanceState")
         super.onSaveInstanceState(outState)
