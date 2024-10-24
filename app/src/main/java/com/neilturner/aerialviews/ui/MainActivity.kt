@@ -3,6 +3,8 @@ package com.neilturner.aerialviews.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
@@ -11,9 +13,25 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+
+    private val fragmentStates = mutableMapOf<String, Bundle>()
+
+    private val lifecycleCallbacks = object : FragmentManager.FragmentLifecycleCallbacks() {
+        override fun onFragmentPaused(fm: FragmentManager, fragment: Fragment) {
+            //saveFragmentState(fragment)
+        }
+
+        override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+            // Restore state when fragment is created
+            restoreFragmentState(f)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(lifecycleCallbacks, false)
 
         if (savedInstanceState == null) {
             supportFragmentManager
@@ -31,6 +49,30 @@ class MainActivity :
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
+    private fun saveFragmentState(fragment: Fragment) {
+        val state = Bundle()
+
+        // Default state saving for regular fragments
+        fragment.onSaveInstanceState(state)
+
+        // Store the state with a unique key
+        fragmentStates[getFragmentKey(fragment)] = state
+    }
+
+    private fun restoreFragmentState(fragment: Fragment) {
+        val state = fragmentStates[getFragmentKey(fragment)]
+        if (state != null) {
+            fragment.arguments = fragment.arguments?.apply {
+                putAll(state)
+            } ?: state
+        }
+    }
+
+    private fun getFragmentKey(fragment: Fragment): String {
+        // Create a unique key based on fragment class and tag
+        return "${fragment.javaClass.name}_${fragment.tag ?: fragment.id}"
     }
 
     override fun onResume() {
