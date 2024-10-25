@@ -11,13 +11,13 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.utils.FirebaseHelper.logException
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.enumContains
@@ -35,7 +35,7 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 class SambaVideosFragment :
-    PreferenceFragmentCompat(),
+    MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
     private lateinit var requestReadPermission: ActivityResultLauncher<String>

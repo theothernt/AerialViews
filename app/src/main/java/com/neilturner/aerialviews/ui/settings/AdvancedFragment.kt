@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 
-class AdvancedFragment : PreferenceFragmentCompat() {
+class AdvancedFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,

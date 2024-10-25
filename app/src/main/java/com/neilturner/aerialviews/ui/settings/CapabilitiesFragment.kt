@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.services.CodecType
 import com.neilturner.aerialviews.services.HDRFormat
@@ -11,9 +10,10 @@ import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import timber.log.Timber
 
-class CapabilitiesFragment : PreferenceFragmentCompat() {
+class CapabilitiesFragment : MenuStateFragment() {
     private lateinit var resources: Resources
 
     override fun onCreatePreferences(

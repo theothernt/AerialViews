@@ -3,15 +3,15 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.ListPreference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SlotHelper
 
 class OverlaysRowTopFragment :
-    PreferenceFragmentCompat(),
+    MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,

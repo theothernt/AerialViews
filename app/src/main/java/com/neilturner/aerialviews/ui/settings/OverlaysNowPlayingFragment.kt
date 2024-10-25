@@ -5,16 +5,16 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import timber.log.Timber
 
 class OverlaysNowPlayingFragment :
-    PreferenceFragmentCompat(),
+    MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
