@@ -24,12 +24,12 @@ fun loadProperties(fileName: String): Properties {
 
 android {
     namespace = "com.neilturner.aerialviews"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 25
         versionName = "1.7.4"
 
