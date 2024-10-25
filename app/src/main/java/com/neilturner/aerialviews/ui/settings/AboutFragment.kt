@@ -4,15 +4,15 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AboutFragment : PreferenceFragmentCompat() {
+class AboutFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
