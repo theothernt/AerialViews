@@ -15,8 +15,8 @@ coroutines = "1.9.0"
 
 # Firebase
 firebase-analytics = "22.1.2"
-firebase-crashlytics = "19.2.0"
-firebase-perf = "21.0.1"
+firebase-crashlytics = "19.2.1"
+firebase-perf = "21.0.2"
 
 # AndroidX
 core-ktx = "1.13.1"
@@ -58,7 +58,7 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Unit Testing
-junit-jupiter = "5.11.2"
+junit-jupiter = "5.11.3"
 
 [libraries]
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
