@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
@@ -13,13 +14,12 @@ class MainActivity :
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_activity)
+        setContentView(R.layout.main_activity)
 
         if (savedInstanceState == null) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, MainFragment())
-                .commit()
+            supportFragmentManager.commit {
+                replace(R.id.container, MainFragment())
+            }
         } else {
             title = savedInstanceState.getCharSequence("TITLE_TAG")
         }
@@ -41,7 +41,6 @@ class MainActivity :
     @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        // Save current activity title so we can set it again after a configuration change
         outState.putCharSequence("TITLE_TAG", title)
     }
 
@@ -56,23 +55,29 @@ class MainActivity :
         caller: PreferenceFragmentCompat,
         pref: Preference,
     ): Boolean {
-        // Instantiate the new Fragment
-        val args = pref.extras
         val fragment =
             supportFragmentManager.fragmentFactory
                 .instantiate(
                     classLoader,
                     pref.fragment.toString(),
                 ).apply {
-                    arguments = args
+                    arguments = pref.extras
                 }
-        // Replace the existing Fragment with the new Fragment
+
         supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings, fragment)
-            .addToBackStack(null)
-            .commitAllowingStateLoss()
-        title = pref.title
+            .commit {
+                setCustomAnimations(
+                    R.anim.slide_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.slide_out,
+                )
+                replace(R.id.container, fragment)
+                    .addToBackStack(null)
+            }.apply {
+                title = pref.title
+            }
+
         return true
     }
 }

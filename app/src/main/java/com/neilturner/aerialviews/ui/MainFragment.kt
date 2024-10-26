@@ -22,7 +22,6 @@ import timber.log.Timber
 class MainFragment :
     MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
