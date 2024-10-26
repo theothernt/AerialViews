@@ -23,6 +23,7 @@
     <item>Aumenta la velocità di riproduzione video</item>
     <item>Riduci la velocità di riproduzione video</item>
     <item>Mostra overlay (se nascosti)</item>
+    <item>Imposta lo schermo nero, rimuovi video e overlay</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Predefinito</item>
@@ -137,6 +138,9 @@
     <item>8 minuti</item>
     <item>9 minuti</item>
     <item>10 minuti</item>
+    <item>20 minuti</item>
+    <item>30 minuti</item>
+    <item>60 minuti</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -167,8 +171,8 @@
     <item>Orologio</item>
     <item>Luogo</item>
     <item>Data</item>
-    <item>Messaggio #1</item>
-    <item>Messaggio #2</item>
+    <item>Linea messaggio 1</item>
+    <item>Linea messaggio 2</item>
     <item>In riproduzione #1</item>
     <item>In riproduzione #2</item>
   </string-array>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (Predefinito)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Riempimento con ritaglio (predefinito)</item>
+    <item>Scala senza coltura</item>
   </string-array>
 </resources>

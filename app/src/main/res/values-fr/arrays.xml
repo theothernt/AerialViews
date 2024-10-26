@@ -23,6 +23,7 @@
     <item>Augmenter la vitesse de lecture des vidéos</item>
     <item>Diminuer la vitesse de lecture de la vidéo</item>
     <item>Afficher les recouvrements (s\'ils sont cachés)</item>
+    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Défaut du système</item>
@@ -137,6 +138,9 @@
     <item>8 minutes</item>
     <item>9 minutes</item>
     <item>10 minutes</item>
+    <item>20 minutes</item>
+    <item>30 minutes</item>
+    <item>60 minutes</item>
   </string-array>
   <string-array name="playback_speed_entries">
     <item>0.25x</item>
@@ -167,8 +171,8 @@
     <item>Horloge</item>
     <item>Localisation</item>
     <item>Date</item>
-    <item>Message #1</item>
-    <item>Message #2</item>
+    <item>Ligne de message 1</item>
+    <item>Ligne de message 2</item>
     <item>En cours de lecture #1</item>
     <item>En cours de lecture #2</item>
   </string-array>
@@ -184,5 +188,9 @@
     <item>20sp</item>
     <item>18sp (par défaut)</item>
     <item>16sp</item>
+  </string-array>
+  <string-array name="video_scale_entries">
+    <item>Remplir avec du rognage (par défaut)</item>
+    <item>Échelle sans culture</item>
   </string-array>
 </resources>

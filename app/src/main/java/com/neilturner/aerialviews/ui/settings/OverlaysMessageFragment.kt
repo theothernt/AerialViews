@@ -3,13 +3,13 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.EditTextPreference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class OverlaysMessageFragment :
-    PreferenceFragmentCompat(),
+    MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,

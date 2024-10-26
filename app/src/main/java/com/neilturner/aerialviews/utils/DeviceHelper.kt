@@ -80,7 +80,6 @@ object DeviceHelper {
         return smallestSize < tabletSize
     }
 
-    @Suppress("unused")
     fun isTV(context: Context): Boolean = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
 
     fun isFireTV(): Boolean = deviceName().contains("AFT", true)

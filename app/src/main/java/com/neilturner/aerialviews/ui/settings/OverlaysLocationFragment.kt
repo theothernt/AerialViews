@@ -3,11 +3,11 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.MenuStateFragment
 
-class OverlaysLocationFragment : PreferenceFragmentCompat() {
+class OverlaysLocationFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,

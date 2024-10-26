@@ -3,10 +3,10 @@ package com.neilturner.aerialviews.ui.sources
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.MenuStateFragment
 
-class AppleVideosFragment : PreferenceFragmentCompat() {
+class AppleVideosFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,

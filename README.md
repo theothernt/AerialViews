@@ -71,16 +71,17 @@ media automatically`
 
 ## How to set Aerial Views as the default screensaver
 
-The following devices have no user-interface to change the screensaver to a 3rd party one...
+Since 2023, nearly all devices that ship with Google TV have no user-interface to change the screensaver to a 3rd party one...
 
-* __Chromecast with Google TV__
+* __Chromecast with Google TV, Google TV Streamer__
 * __Recent MECOOL devices__
+* __Recent TCL, Philips, and Sony TVs__
 * __onn. Google TV devices (excluding the 2021 model)__
 * __Fire TV__
 
 But it can be done manually. Here is an overview of the steps...
 
-1. Enable Developer mode and find the IP address of your device
+1. Enable Developer mode, enable USB debugging, then find the IP address of your device
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
 3. Connect to your Android/Google/Fire TV device
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
