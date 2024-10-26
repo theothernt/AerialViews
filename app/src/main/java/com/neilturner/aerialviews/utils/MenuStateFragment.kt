@@ -12,7 +12,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
     override fun onResume() {
         super.onResume()
 
-        if (DeviceHelper.isTV(requireContext())) {
+        if (!DeviceHelper.isTV(requireContext())) {
             return
         }
 
@@ -28,7 +28,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
     override fun onPause() {
         super.onPause()
 
-        if (DeviceHelper.isTV(requireContext())) {
+        if (!DeviceHelper.isTV(requireContext())) {
             return
         }
 
