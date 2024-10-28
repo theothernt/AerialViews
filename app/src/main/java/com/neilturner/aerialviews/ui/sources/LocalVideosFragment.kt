@@ -81,11 +81,12 @@ class LocalVideosFragment :
 
     private fun trySettingsExport() {
         val prefs = PreferenceHelper(requireContext())
-        var result = prefs.exportAll("prefs_export_test.txt")
+        var result = false
+        //result = prefs.exportAll("prefs_export_test.txt")
         Timber.d("Export result: $result")
 
         lifecycleScope.launch {
-            delay(2000)
+            delay(1000)
             result = prefs.importAll("prefs_export_test.txt")
             Timber.d("Import result: $result")
         }
