@@ -6,7 +6,7 @@ import timber.log.Timber
 
 @Suppress("SameParameterValue")
 class MigrationHelper(
-    val context: Context,
+    val context: Context
 ) {
     private val prefsPackageName = "${context.packageName}_preferences"
     private val prefs = context.getSharedPreferences(prefsPackageName, Context.MODE_PRIVATE)

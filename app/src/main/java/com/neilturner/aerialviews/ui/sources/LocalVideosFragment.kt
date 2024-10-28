@@ -19,12 +19,14 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.PreferenceHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 class LocalVideosFragment :
     MenuStateFragment(),
@@ -68,11 +70,18 @@ class LocalVideosFragment :
         if (preference.key.contains("local_videos_search_test")) {
             lifecycleScope.launch {
                 testLocalVideosFilter()
+                trySettingsExport()
             }
             return true
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun trySettingsExport() {
+        val prefs = PreferenceHelper(requireContext())
+        val result = prefs.exportAll("prefs_export_test.txt")
+        Timber.d("Export result: $result")
     }
 
     override fun onSharedPreferenceChanged(
@@ -146,8 +155,9 @@ class LocalVideosFragment :
             return
         }
 
-        val permissions = PermissionHelper.getReadMediaPermissions()
-        requestMultiplePermissions.launch(permissions)
+        val read = PermissionHelper.getReadMediaPermissions()
+        val write = PermissionHelper.getWriteDocumentPermission()
+        requestMultiplePermissions.launch(read + write)
     }
 
     private fun disableLocalMediaPreference() {
