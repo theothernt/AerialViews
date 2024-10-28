@@ -8,6 +8,7 @@ import timber.log.Timber
 
 object InputHelper {
     private var previousEvent: KeyEvent? = null
+    private var longPressEvent = false
 
     fun handleKeyEvent(
         event: KeyEvent,
@@ -15,6 +16,11 @@ object InputHelper {
         exit: () -> Unit,
     ): Boolean {
         var result = false
+
+        if(event.repeatCount == 0) {
+            longPressEvent = false
+        }
+
         if (event.action == KeyEvent.ACTION_UP &&
             (
                 previousEvent == null ||
@@ -29,6 +35,15 @@ object InputHelper {
             event.isLongPress
         ) {
             Timber.i("Long Press")
+            result = eventToAction(event, controller, exit, true)
+            longPressEvent = true
+        }
+
+        if (event.action == KeyEvent.ACTION_DOWN &&
+            event.repeatCount.rem(10) == 0 &&
+            longPressEvent
+        ) {
+            Timber.i("Another Long Press")
             result = eventToAction(event, controller, exit, true)
         }
         previousEvent = event

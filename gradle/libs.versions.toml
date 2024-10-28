@@ -1,29 +1,29 @@
 [versions]
 # Plugins
-agp = "8.7.0"
+agp = "8.7.1"
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.2"
 firebase-perf-plugin = "1.4.2"
 android-junit5 = "1.11.0.0"
 gradle-doctor = "0.9.1"
 kotlinter-gradle = "4.4.1"
-ksp = "2.0.20-1.0.24"
+ksp = "2.0.21-1.0.25"
 
 # Kotlin + Coroutines
-kotlin = "2.0.20"
+kotlin = "2.0.21"
 coroutines = "1.9.0"
 
 # Firebase
 firebase-analytics = "22.1.2"
-firebase-crashlytics = "19.2.0"
-firebase-perf = "21.0.1"
+firebase-crashlytics = "19.2.1"
+firebase-perf = "21.0.2"
 
 # AndroidX
 core-ktx = "1.13.1"
 leanback = "1.0.0"
 leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
-activity-ktx = "1.9.2"
+activity-ktx = "1.9.3"
 constraintlayout = "2.1.4"
 appcompat = "1.7.0"
 
@@ -58,7 +58,7 @@ timber = "5.0.1"
 leakcanary = "2.14"
 
 # Unit Testing
-junit-jupiter = "5.11.2"
+junit-jupiter = "5.11.3"
 
 [libraries]
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
