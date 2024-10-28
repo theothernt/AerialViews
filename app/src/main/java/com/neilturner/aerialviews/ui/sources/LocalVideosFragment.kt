@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.utils.PreferenceHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -80,8 +81,14 @@ class LocalVideosFragment :
 
     private fun trySettingsExport() {
         val prefs = PreferenceHelper(requireContext())
-        val result = prefs.exportAll("prefs_export_test.txt")
+        var result = prefs.exportAll("prefs_export_test.txt")
         Timber.d("Export result: $result")
+
+        lifecycleScope.launch {
+            delay(2000)
+            result = prefs.importAll("prefs_export_test.txt")
+            Timber.d("Import result: $result")
+        }
     }
 
     override fun onSharedPreferenceChanged(
