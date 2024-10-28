@@ -23,6 +23,7 @@
   <string name="category_remote">Remote</string>
   <string name="category_local">Local</string>
   <string name="category_network">Network</string>
+  <string name="category_progress_bar">Progress Bar</string>
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
   <string name="category_server_details">Server details and credentials</string>
@@ -317,6 +318,9 @@
   <string name="appearance_typography_title">Typography</string>
   <string name="appearance_typography_summary">Change the font used by all the overlays</string>
 
+  <string name="appearance_progress_bar_title">Progress Bar</string>
+  <string name="appearance_progress_bar_summary">Show the progress of a video or photos at the top or bottom of the screen</string>
+
   <string name="appearance_alt_text_position_title">Alternate overlay position</string>
   <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
 
@@ -390,6 +394,11 @@
 
   <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
   <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
+
+  <!-- Main / Settings / Appearance / Progress Bar -->
+  <string name="progress_bar_location_title">Location</string>
+  <string name="progress_bar_type_title">Show on</string>
+  <string name="progress_bar_opacity_title">Opacity</string>
 
   <!-- Main / Settings / Appearance / Now Playing -->
   <string name="nowplaying_permission_title">Enable system notification access</string>
