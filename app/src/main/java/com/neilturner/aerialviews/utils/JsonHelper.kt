@@ -12,6 +12,11 @@ import kotlinx.coroutines.withContext
 import java.util.Scanner
 
 object JsonHelper {
+    // Some OutOfMemory exceptions reported from here
+    // Likely on devices with less RAM
+    // My guess is that app startup is being cancelled by the user or OS
+    // Not sure why I even see an exception due to try/catch in calling methods
+
     private val jsonParser = Gson()
 
     suspend fun <T> parseJson(

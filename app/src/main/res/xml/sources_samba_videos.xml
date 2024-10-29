@@ -94,6 +94,7 @@
                     app:dialogTitle="@string/samba_videos_smb_dialects_title" />
 
                 <Preference
+                    app:isPreferenceVisible="false"
                     app:dependency="samba_videos_enabled"
                     app:disableDependentsState="false"
                     android:title="@string/samba_videos_import_export_settings_title"

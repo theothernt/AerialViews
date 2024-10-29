@@ -73,7 +73,14 @@ class SambaDataSource : BaseDataSource(true) {
         buffer: ByteArray,
         offset: Int,
         readLength: Int,
-    ): Int = readInternal(buffer, offset, readLength)
+    ): Int {
+        try {
+            return readInternal(buffer, offset, readLength)
+        } catch (e: Exception) {
+            Timber.e(e)
+            return 0
+        }
+    }
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getUri() = dataSpec.uri

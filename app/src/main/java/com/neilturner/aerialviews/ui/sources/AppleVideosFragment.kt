@@ -19,17 +19,17 @@ class AppleVideosFragment : MenuStateFragment() {
         val quality = findPreference<ListPreference>("apple_videos_quality")
         quality?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                quality?.findIndexOfValue(newValue as String)?.let { updateDataUsageSummary(it) }
+                updateDataUsageSummary(quality.findIndexOfValue(newValue as String))
                 true
             }
         quality?.findIndexOfValue(quality.value)?.let { updateDataUsageSummary(it) }
     }
 
     private fun updateDataUsageSummary(index: Int) {
-        val res = context?.resources!!
-        val dataUsage = findPreference<Preference>("apple_videos_data_usage")
+        val res = context?.resources ?: return
+        val dataUsage = findPreference<Preference>("apple_videos_data_usage") ?: return
         val bitrateList = res.getStringArray(R.array.apple_videos_data_usage_values)
         val bitrate = bitrateList[index]
-        dataUsage?.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
+        dataUsage.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 }
