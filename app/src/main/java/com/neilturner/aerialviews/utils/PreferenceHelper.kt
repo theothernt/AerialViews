@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Properties
 
@@ -26,12 +27,12 @@ class PreferenceHelper (
         return try {
             val properties = Properties()
 
-//            val documentsFolder = getDocumentsFolder()
-//            if (!documentsFolder.exists()) {
-//                documentsFolder.mkdirs()
-//            }
-//
-//            val outputFile = File(documentsFolder, filename)
+            val documentsFolder = getDocumentsFolder()
+            if (!documentsFolder.exists()) {
+                documentsFolder.mkdirs()
+            }
+
+            val outputFile = File(documentsFolder, filename)
 
             // Convert all preferences to Properties
             // We'll add a type prefix to each key to handle different data types
@@ -51,11 +52,11 @@ class PreferenceHelper (
             }
 
             // Write properties to file with a header comment
-//            FileOutputStream(outputFile).use { fos ->
-//                properties.store(fos, "App Preferences Backup")
-//            }
+            FileOutputStream(outputFile).use { fos ->
+                properties.store(fos, "App Preferences Backup")
+            }
 
-            saveFileToExternalStorage(filename, properties.toString())
+            //saveFileToExternalStorage(filename, properties.toString())
 
             true
         } catch (e: Exception) {

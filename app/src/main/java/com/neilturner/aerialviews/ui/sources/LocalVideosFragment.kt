@@ -1,9 +1,11 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -79,6 +81,7 @@ class LocalVideosFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun trySettingsExport() {
         val prefs = PreferenceHelper(requireContext())
         var result = false
