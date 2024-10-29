@@ -12,7 +12,6 @@ import kotlinx.coroutines.withContext
 import java.util.Scanner
 
 object JsonHelper {
-
     // Some OutOfMemory exceptions reported from here
     // Likely on devices with less RAM
     // My guess is that app startup is being cancelled by the user or OS

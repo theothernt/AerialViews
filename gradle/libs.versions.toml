@@ -1,5 +1,4 @@
 [versions]
-# Plugins
 agp = "8.7.1"
 google-services = "4.4.2"
 firebase-crashlytics-plugin = "3.0.2"
@@ -8,17 +7,11 @@ android-junit5 = "1.11.0.0"
 gradle-doctor = "0.9.1"
 kotlinter-gradle = "4.4.1"
 ksp = "2.0.21-1.0.25"
-
-# Kotlin + Coroutines
 kotlin = "2.0.21"
 coroutines = "1.9.0"
-
-# Firebase
 firebase-analytics = "22.1.2"
 firebase-crashlytics = "19.2.1"
 firebase-perf = "21.0.2"
-
-# AndroidX
 core-ktx = "1.13.1"
 leanback = "1.0.0"
 leanback-preference = "1.0.0"
@@ -26,38 +19,18 @@ preference-ktx = "1.2.1"
 activity-ktx = "1.9.3"
 constraintlayout = "2.1.4"
 appcompat = "1.7.0"
-
-# Retrofit, OkHttp, and Moshi
 retrofit = "2.11.0"
 moshi = "1.15.1"
 logging-interceptor = "4.12.0"
 gson = "2.11.0"
-
-# ExoPlayer
 media3-exoplayer = "1.4.1"
-
-# FlowBus
 flowbus = "1.1"
-
-# KotPref
 kotpref = "2.13.2"
-
-# SMBJ
 smbj = "0.13.0"
-
-# WebDAV
 sardine-android = "0.0.2"
-
-# Coil
 coil = "2.7.0"
-
-# Logging
 timber = "5.0.1"
-
-# Memory Leaks
 leakcanary = "2.14"
-
-# Unit Testing
 junit-jupiter = "5.11.3"
 
 [libraries]
@@ -91,24 +64,27 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" } # ksp
 
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-exoplayer" }
+media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-exoplayer" }
+
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
 
-junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
-junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
-
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-exoplayer" }
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
+
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 
 [bundles]
 coil = ["coil", "coil-gif"]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
+exoplayer = ["media3-exoplayer", "media3-ui"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
