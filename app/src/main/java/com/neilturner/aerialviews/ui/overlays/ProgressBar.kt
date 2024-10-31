@@ -9,9 +9,9 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
+import timber.log.Timber
 
 class ProgressBar : View {
     constructor(context: Context) : super(context)
@@ -32,13 +32,7 @@ class ProgressBar : View {
     init {
         paint.style = Paint.Style.FILL
         paint.color = Color.WHITE
-
-        setBackgroundColor( Color.RED)
-
-        coroutineScope.launch {
-            //delay(2_000)
-            //animateWidth()
-        }
+        setBackgroundColor( Color.WHITE)
     }
 
     override fun onAttachedToWindow() {
@@ -47,11 +41,14 @@ class ProgressBar : View {
             when (event.state) {
                 ProgressState.START -> {
                     animateWidth(event.position, event.duration)
+                    Timber.i("Starting progress bar animation: ${event.position}ms, ${event.duration}ms")
                 }
                 ProgressState.PAUSE -> {
                     animator?.pause()
+                    Timber.i("Pausing progress bar animation")
                 }
                 else -> {
+                    Timber.i("Stopping progress bar animation")
                     animator?.cancel()
                     parentWidth = 0
                 }
@@ -88,9 +85,9 @@ class ProgressBar : View {
 }
 
 data class ProgressBarEvent(
+    val state: ProgressState = ProgressState.STOP,
     val position: Long = 0,
     val duration: Long = 0,
-    val state: ProgressState = ProgressState.STOP
 )
 
 enum class ProgressState {

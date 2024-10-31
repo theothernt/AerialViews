@@ -27,7 +27,10 @@ import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.WindowHelper
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToLong
@@ -94,6 +97,7 @@ class VideoPlayerView
 
         @OptIn(UnstableApi::class)
         fun setVideo(media: AerialMedia) {
+            //stop()
             prepared = false
 
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
@@ -177,10 +181,20 @@ class VideoPlayerView
         // EventListener
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
-                Player.STATE_IDLE -> Timber.i("Idle...") // 1
-                Player.STATE_BUFFERING -> Timber.i("Buffering...") // 2a
-                Player.STATE_READY -> Timber.i("Ready to play...") // 3
-                Player.STATE_ENDED -> Timber.i("Playback ended...") // 4
+                Player.STATE_IDLE -> {
+                    Timber.i("Idle...")
+                }
+                Player.STATE_BUFFERING -> {
+                    Timber.i("Buffering...")
+                    GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+                }
+                Player.STATE_READY -> {
+                    Timber.i("Ready to play...")
+                }
+                Player.STATE_ENDED -> {
+                    Timber.i("Playback ended...")
+                    GlobalBus.post(ProgressBarEvent(ProgressState.STOP))
+                }
             }
 
             if (!prepared && playbackState == Player.STATE_READY) {
@@ -209,6 +223,7 @@ class VideoPlayerView
                 if (useRefreshRateSwitching) {
                     setRefreshRate()
                 }
+                GlobalBus.post(ProgressBarEvent(ProgressState.START, exoPlayer.currentPosition, exoPlayer.duration))
                 setupAlmostFinishedRunnable()
                 Timber.i("Playing...")
             }
