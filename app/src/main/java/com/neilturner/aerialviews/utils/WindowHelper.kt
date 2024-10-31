@@ -60,7 +60,11 @@ object WindowHelper {
             )
         } else {
             Timber.i("Seamless not supported, trying legacy...")
-            setLegacyRefreshRate(context, newRefreshRate)
+            try {
+                setLegacyRefreshRate(context, newRefreshRate)
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
         }
     }
 

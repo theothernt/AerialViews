@@ -17,7 +17,7 @@ object InputHelper {
     ): Boolean {
         var result = false
 
-        if(event.repeatCount == 0) {
+        if (event.repeatCount == 0) {
             longPressEvent = false
         }
 
