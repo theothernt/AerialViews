@@ -72,6 +72,10 @@ class VideoPlayerView
         private var segmentEnd = 0L
         private var loopCount = 0
 
+        // PlaybackInfo
+        // isSegmentedVideo, segmentStart, segmentEnd, loopCount
+        // position? duration?
+
         init {
             exoPlayer = buildPlayer(context)
             exoPlayer.addListener(this)
@@ -88,6 +92,7 @@ class VideoPlayerView
         }
 
         fun release() {
+            exoPlayer.removeListener(this)
             exoPlayer.release()
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)

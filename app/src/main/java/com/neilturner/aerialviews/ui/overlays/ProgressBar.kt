@@ -41,7 +41,7 @@ class ProgressBar : View {
             when (event.state) {
                 ProgressState.START -> {
                     animateWidth(event.position, event.duration)
-                    Timber.i("Starting progress bar animation: ${event.position}ms, ${event.duration}ms")
+                    Timber.i("Starting progress bar animation: ${event.position/1000}s, ${event.duration/1000}s")
                 }
                 ProgressState.PAUSE -> {
                     animator?.pause()
