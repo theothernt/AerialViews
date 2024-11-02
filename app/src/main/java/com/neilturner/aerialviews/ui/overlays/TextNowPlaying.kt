@@ -34,6 +34,7 @@ class TextNowPlaying : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
         receiver.subscribe { newTrackInfo: MusicEvent ->
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
@@ -52,10 +53,14 @@ class TextNowPlaying : AppCompatTextView {
     }
 
     private fun updateNowPlaying() {
+        isUpdating = true
+
         animate().alpha(0f).duration = 400
         shouldUpdate = false
         text = formatNowPlaying(trackInfo)
         animate().alpha(1f).duration = 400
+
+        isUpdating = false
 
         if (shouldUpdate) {
             updateNowPlaying()
