@@ -23,8 +23,8 @@
 
                 <ListPreference
                     app:defaultValue="@string/progress_bar_default"
-                    app:entries="@array/percentage_entries"
-                    app:entryValues="@array/percentage_values"
+                    app:entries="@array/percentage1_entries"
+                    app:entryValues="@array/percentage1_values"
                     app:key="progress_bar_opacity"
                     app:title="@string/progress_bar_opacity_title"
                     app:useSimpleSummaryProvider="true"
