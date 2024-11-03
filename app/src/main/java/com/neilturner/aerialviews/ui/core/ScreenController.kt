@@ -29,6 +29,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.abs
 
 class ScreenController(
     private val context: Context,
@@ -47,6 +48,8 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
+
+    private val loadingViewAlphaVisible = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -241,11 +244,11 @@ class ScreenController(
         // Video should be playing underneath
         loadingView
             .animate()
-            .alpha(0f)
+            .alpha(loadingViewAlphaVisible)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
             .withEndAction {
-                loadingView.visibility = View.GONE
+                // loadingView.visibility = View.GONE
                 canSkip = true
             }.start()
     }

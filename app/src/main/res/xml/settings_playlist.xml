@@ -26,8 +26,8 @@
                 <ListPreference
                     app:dependency="mute_videos"
                     app:defaultValue="@string/volume_default"
-                    app:entries="@array/volume_entries"
-                    app:entryValues="@array/volume_values"
+                    app:entries="@array/percentage1_entries"
+                    app:entryValues="@array/percentage1_values"
                     app:key="video_volume"
                     app:title="@string/playlist_video_volume_title"
                     app:useSimpleSummaryProvider="true"

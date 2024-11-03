@@ -64,13 +64,17 @@ class MainFragment :
     }
 
     private fun setMenuLocale() {
-        val appLocale =
-            if (!GeneralPrefs.localeMenu.startsWith("default")) {
-                LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
-            } else {
-                LocaleListCompat.getEmptyLocaleList()
-            }
-        AppCompatDelegate.setApplicationLocales(appLocale)
+        try {
+            val appLocale =
+                if (!GeneralPrefs.localeMenu.startsWith("default")) {
+                    LocaleListCompat.forLanguageTags(GeneralPrefs.localeMenu)
+                } else {
+                    LocaleListCompat.getEmptyLocaleList()
+                }
+            AppCompatDelegate.setApplicationLocales(appLocale)
+        } catch (e: Exception) {
+            Timber.e(e)
+        }
     }
 
     private fun resetLocalPermissionIfNeeded() {

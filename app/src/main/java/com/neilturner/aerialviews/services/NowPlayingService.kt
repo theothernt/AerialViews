@@ -30,7 +30,11 @@ class NowPlayingService(
     init {
         coroutineScope.launch {
             if (hasPermission) {
-                setupSession()
+                try {
+                    setupSession()
+                } catch (e: Exception) {
+                    Timber.e(e, "Error setting up session")
+                }
             } else {
                 Timber.i("No permission given to access media sessions")
             }

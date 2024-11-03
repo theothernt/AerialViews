@@ -26,6 +26,7 @@
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
   <string name="category_server_details">Server details and credentials</string>
+  <string name="category_brightness">Brightness</string>
   <string name="category_about">About</string>
   <string name="category_capabilities">Capabilities</string>
   <string name="category_settings">Settings</string>
@@ -310,7 +311,7 @@
   <string name="settings_import_export_settings_title">Import/Export settings</string>
   <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
 
-  <!-- Main / Settings / Appearance -->
+  <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
   <string name="appearance_top_row_summary">Choose overlays for the top left &amp; right of the screen</string>
 
@@ -335,22 +336,7 @@
   <string name="appearance_message_title">Message</string>
   <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
 
-  <string name="appearance_typography_title">Typography</string>
-  <string name="appearance_typography_summary">Change the font used by all the overlays</string>
-
-  <string name="appearance_alt_text_position_title">Alternate overlay position</string>
-  <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
-
-  <string name="appearance_gradient_title">Gradients</string>
-  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
-
-  <string name="appearance_animations_title">Animations</string>
-  <string name="appearance_animations_summary">Configure the animations used for overlays and between videos &amp; photos</string>
-
-  <string name="appearance_startup_title">Startup</string>
-  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
-
-  <!-- Main / Settings / Appearance / Rows -->
+  <!-- Main / Settings / Overlays / Rows -->
   <string name="appearance_slot1_title">Lower Slot</string>
   <string name="appearance_slot2_title">Upper Slot</string>
   <string name="appearance_slot_summary">Empty</string>
@@ -363,6 +349,28 @@
   <string name="appearance_top_left_upper_slot">Top Left, Upper Slot</string>
   <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
   <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
+
+  <!-- Main / Settings / Appearance -->
+  <string name="appearance_alt_text_position_title">Alternate overlay position</string>
+  <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
+
+  <string name="appearance_gradient_title">Gradients</string>
+  <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
+
+  <string name="appearance_brightness_title">Brightness</string>
+  <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
+
+  <string name="appearance_animations_title">Animations</string>
+  <string name="appearance_animations_summary">Configure the animations used for overlays and between videos &amp; photos</string>
+
+  <string name="appearance_startup_title">Startup</string>
+  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
+
+  <string name="appearance_typography_title">Typography</string>
+  <string name="appearance_typography_summary">Change the font used by all the overlays</string>
+
+  <!-- Main / Settings / Appearance / Brightness -->
+  <string name="appearance_brightness_level_title">Brightness level during media playback</string>
 
   <!-- Main / Settings / Appearance / Startup + Shutdown -->
   <string name="appearance_loading_show_title">Show loading text</string>

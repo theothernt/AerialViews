@@ -1,45 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="appearance_font_default" translatable="false">open-sans</string>
-  <string-array name="appearance_font_entries">
-    <item>Open Sans (Default)</item>
-    <item>Roboto</item>
-  </string-array>
-  <string-array name="appearance_font_values" translatable="false">
-    <item>open-sans</item>
-    <item>sans-serif</item>
-  </string-array>
-  <string name="appearance_font_weight_default" translatable="false">300</string>
-  <string-array name="appearance_font_weight_entries">
-    <item>100/Thin</item>
-    <item>200/Extra Light</item>
-    <item>300/Light (default)</item>
-    <item>400/Normal</item>
-    <item>500/Medium</item>
-    <item>600/Semi Bold</item>
-    <item>700/Bold</item>
-    <item>800/Extra Bold</item>
-    <item>900/Heavy</item>
-  </string-array>
-  <string-array name="appearance_font_weight_values" translatable="false">
-    <item>100</item>
-    <item>200</item>
-    <item>300</item>
-    <item>400</item>
-    <item>500</item>
-    <item>600</item>
-    <item>700</item>
-    <item>800</item>
-    <item>900</item>
-  </string-array>
-  <string-array name="apple_videos_data_usage_values" translatable="false">
-    <item>37GB</item>
-    <item>23GB</item>
-    <item>46GB</item>
-    <item>45GB</item>
-    <item>90GB</item>
-  </string-array>
-  <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+  <!-- Apple Video Options -->
   <string-array name="apple_videos_quality_entries" translatable="false">
     <item>1080p H.264</item>
     <item>1080p HEVC</item>
@@ -54,41 +15,16 @@
     <item>VIDEO_4K_SDR</item>
     <item>VIDEO_4K_HDR</item>
   </string-array>
-  <string name="button_action_default" translatable="false">IGNORE</string>
-  <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
-  <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
-  <string-array name="button_action_entries">
-    <item>Ignore action</item>
-    <item>Exit screensaver</item>
-    <item>Skip to next video/photo</item>
-    <item>Skip to previous video/photo</item>
-    <item>Increase video playback speed</item>
-    <item>Decrease video playback speed</item>
-    <item>Show overlays, if hidden</item>
-    <item>Black out screen, fade out media and overlays</item>
+  <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+  <string-array name="apple_videos_data_usage_values" translatable="false">
+    <item>37GB</item>
+    <item>23GB</item>
+    <item>46GB</item>
+    <item>45GB</item>
+    <item>90GB</item>
   </string-array>
-  <string-array name="button_action_values" translatable="false">
-    <item>IGNORE</item>
-    <item>EXIT</item>
-    <item>SKIP_NEXT</item>
-    <item>SKIP_PREVIOUS</item>
-    <item>SPEED_INCREASE</item>
-    <item>SPEED_DECREASE</item>
-    <item>SHOW_OVERLAYS</item>
-    <item>BLACK_OUT_MODE</item>
-  </string-array>
-  <string name="clock_format_default" translatable="false">DEFAULT</string>
-  <string-array name="clock_format_entries">
-    <item>System default</item>
-    <item>12-Hour</item>
-    <item>24-Hour</item>
-  </string-array>
-  <string-array name="clock_format_values" translatable="false">
-    <item>DEFAULT</item>
-    <item>HOUR_12</item>
-    <item>HOUR_24</item>
-  </string-array>
-  <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+  <!-- Community Videos -->
   <string-array name="comm1_videos_quality_entries" translatable="false">
     <item>1080p H.264</item>
     <item>1080p HEVC</item>
@@ -99,8 +35,22 @@
     <item>VIDEO_1080_SDR</item>
     <item>VIDEO_4K_SDR</item>
   </string-array>
-  <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
-  <string name="date_format_default" translatable="false">COMPACT</string>
+  <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+  <!-- Clock format -->
+  <string-array name="clock_format_entries">
+    <item>System default</item>
+    <item>12-Hour</item>
+    <item>24-Hour</item>
+  </string-array>
+  <string-array name="clock_format_values" translatable="false">
+    <item>DEFAULT</item>
+    <item>HOUR_12</item>
+    <item>HOUR_24</item>
+  </string-array>
+  <string name="clock_format_default" translatable="false">DEFAULT</string>
+
+  <!-- Date format -->
   <string-array name="date_format_entries">
     <item>Compact</item>
     <item>Full</item>
@@ -111,7 +61,28 @@
     <item>FULL</item>
     <item>CUSTOM</item>
   </string-array>
-  <string name="description_filename_default" translatable="false">DISABLED</string>
+  <string name="date_format_default" translatable="false">COMPACT</string>
+  <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
+
+  <!-- Use POI/Title as description -->
+  <string-array name="description_video_entries">
+    <item>Disabled</item>
+    <item>Short description</item>
+    <item>Dynamic points of interest</item>
+  </string-array>
+  <string-array name="description_video_values" translatable="false">
+    <item>DISABLED</item>
+    <item>TITLE</item>
+    <item>POI</item>
+  </string-array>
+  <string name="description_video_default" translatable="false">POI</string>
+  <string-array name="description_video_manifest_entries">
+    <item>Disabled</item>
+    <item>A short description or location</item>
+    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
+  </string-array>
+
+  <!-- Use filename as description -->
   <string-array name="description_filename_entries">
     <item>Disabled</item>
     <item>Use filename as-is</item>
@@ -124,221 +95,106 @@
     <item>LAST_FOLDER_FILENAME</item>
     <item>LAST_FOLDER_NAME</item>
   </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>Disabled</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
-  </string-array>
-  <string name="description_video_default" translatable="false">POI</string>
-  <string-array name="description_video_entries">
-    <item>Disabled</item>
-    <item>Short description</item>
-    <item>Dynamic points of interest</item>
-  </string-array>
+  <string name="description_filename_default" translatable="false">DISABLED</string>
   <string-array name="description_video_filename_entries">
     <item>Disabled</item>
     <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
     <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</item>
     <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
   </string-array>
-  <string-array name="description_video_manifest_entries">
+  <string-array name="description_photo_filename_entries">
     <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
+    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
+    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
+    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
   </string-array>
-  <string-array name="description_video_values" translatable="false">
-    <item>DISABLED</item>
-    <item>TITLE</item>
-    <item>POI</item>
+
+  <!-- Slots -->
+  <string-array name="slot_entries">
+    <item>Empty</item>
+    <item>Clock</item>
+    <item>Location</item>
+    <item>Date</item>
+    <item>Message #1</item>
+    <item>Message #2</item>
+    <item>Now Playing #1</item>
+    <item>Now Playing #2</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>Disabled</item>
-    <item>200ms</item>
-    <item>400ms</item>
-    <item>600ms</item>
-    <item>800ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
+  <string-array name="slot_values" translatable="false">
+    <item>EMPTY</item>
+    <item>CLOCK</item>
+    <item>LOCATION</item>
+    <item>DATE</item>
+    <item>MESSAGE1</item>
+    <item>MESSAGE2</item>
+    <item>MUSIC1</item>
+    <item>MUSIC2</item>
   </string-array>
-  <string name="duration_fade_in_default" translatable="false">600</string>
-  <string name="duration_fade_out_default" translatable="false">800</string>
-  <string name="duration_overlay_fade_default" translatable="false">600</string>
-  <string-array name="duration_values" translatable="false">
-    <item>0</item>
-    <item>200</item>
-    <item>400</item>
-    <item>600</item>
-    <item>800</item>
-    <item>1000</item>
-    <item>1200</item>
-    <item>1400</item>
-    <item>1600</item>
-    <item>1800</item>
-    <item>2000</item>
+  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
+
+  <!-- Playback speed -->
+  <string-array name="playback_speed_entries">
+    <item>0.25x</item>
+    <item>0.5x</item>
+    <item>0.75x</item>
+    <item>1x (default)</item>
+    <item>1.25x</item>
+    <item>1.5x</item>
+    <item>1.75x</item>
+    <item>2x</item>
+    <item>2.5x</item>
+    <item>3x</item>
+    <item>3.5x</item>
+    <item>4x</item>
+    <item>5x</item>
   </string-array>
-  <string name="http_scheme_default" translatable="false">HTTP</string>
-  <string-array name="http_scheme_entries" translatable="false">
-    <item>HTTP</item>
-    <item>HTTPS</item>
-  </string-array>
-  <string-array name="http_scheme_values" translatable="false">
-    <item>HTTP</item>
-    <item>HTTPS</item>
-  </string-array>
-  <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
-  <string-array name="limit_Longer_videos_entries">
-    <item>Skip when limit is reached</item>
-    <item>Allow longer videos to finish</item>
-    <item>Play random segments of long videos</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Obey limit - skip to the next video when the limit is reached</item>
-    <item>Ignore limit - if a video is longer than the set limit, it will be played until the end</item>
-    <item>Random segment - if a video is longer than the limit, a random part of the video will be played
-(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_values" translatable="false">
-    <item>LIMIT</item>
-    <item>IGNORE</item>
-    <item>SEGMENT</item>
-  </string-array>
-  <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
-  <string-array name="local_videos_search_type_entries">
-    <item>Media scanner</item>
-    <item>Folder access (legacy)</item>
-  </string-array>
-  <string-array name="local_videos_search_type_values" translatable="false">
-    <item>MEDIA_STORE</item>
-    <item>FOLDER_ACCESS</item>
-  </string-array>
-  <string name="locale_menu_default" translatable="false">default</string>
-  <string-array name="locale_menu_entries" translatable="false">
-    <item>System locale (default)</item>
-    <item>English</item>
-    <item>German</item>
-    <item>French</item>
-    <item>Arabic</item>
-    <item>Hebrew (he)</item>
-    <item>Hebrew (iw)</item>
-    <item>Japanese</item>
-    <item>Chinese</item>
-    <item>Russian</item>
-  </string-array>
-  <string-array name="locale_menu_values" translatable="false">
-    <item>default</item>
-    <item>en-IE</item>
-    <item>de-DE</item>
-    <item>fr-FR</item>
-    <item>ar</item>
-    <item>he</item>
-    <item>iw</item>
-    <item>ja-JP</item>
-    <item>zh-CN</item>
-    <item>ru-RU</item>
-  </string-array>
-  <string name="locale_screensaver_default" translatable="false">default</string>
-  <string-array name="locale_screensaver_entries" translatable="false">
-    <item>System locale (default)</item>
-    <item>English</item>
-    <item>German</item>
-    <item>French</item>
-    <item>Arabic</item>
-    <item>Hebrew (he)</item>
-    <item>Hebrew (iw)</item>
-    <item>Japanese</item>
-    <item>Chinese</item>
-    <item>Russian</item>
-    <item>Random</item>
-  </string-array>
-  <string-array name="locale_screensaver_values" translatable="false">
-    <item>default</item>
-    <item>en-IE</item>
-    <item>de-DE</item>
-    <item>fr-FR</item>
-    <item>ar</item>
-    <item>he</item>
-    <item>iw</item>
-    <item>ja-JP</item>
-    <item>zh-CN</item>
-    <item>ru-RU</item>
-    <item>random</item>
-  </string-array>
-  <string name="media_type_default" translatable="false">VIDEOS</string>
-  <string-array name="media_type_entries">
-    <item>Videos only</item>
-    <item>Photos only</item>
-    <item>Videos &amp; Photos</item>
-  </string-array>
-  <string-array name="media_type_values" translatable="false">
-    <item>VIDEOS</item>
-    <item>PHOTOS</item>
-    <item>VIDEOS_PHOTOS</item>
-  </string-array>
-  <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
-  <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
-  <string-array name="nowplaying_format_entries">
-    <item>Disabled</item>
-    <item>Song · Artist</item>
-    <item>Artist · Song</item>
-    <item>Artist</item>
-    <item>Song</item>
-  </string-array>
-  <string-array name="nowplaying_format_values" translatable="false">
-    <item>DISABLED</item>
-    <item>SONG_ARTIST</item>
-    <item>ARTIST_SONG</item>
-    <item>ARTIST</item>
-    <item>SONG</item>
-  </string-array>
-  <string name="overlay_auto_hide_default" translatable="false">-1</string>
-  <string-array name="overlay_auto_hide_entries">
-    <item>Never hide (default)</item>
-    <item>Always hidden</item>
-    <item>2 seconds</item>
-    <item>4 seconds</item>
-    <item>6 seconds</item>
-    <item>8 seconds</item>
-    <item>10 seconds</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_values" translatable="false">
-    <item>-1</item>
-    <item>0</item>
+  <string-array name="playback_speed_values" translatable="false">
+    <item>0.25</item>
+    <item>0.5</item>
+    <item>0.75</item>
+    <item>1</item>
+    <item>1.25</item>
+    <item>1.5</item>
+    <item>1.75</item>
     <item>2</item>
+    <item>2.5</item>
+    <item>3</item>
+    <item>3.5</item>
     <item>4</item>
-    <item>6</item>
-    <item>8</item>
-    <item>10</item>
+    <item>5</item>
   </string-array>
-  <string name="overlay_reveal_timeout_default" translatable="false">4</string>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 seconds</item>
-    <item>4 seconds (default)</item>
-    <item>6 seconds</item>
-    <item>8 seconds</item>
-    <item>10 seconds</item>
+  <string name="playback_speed_default" translatable="false">1</string>
+
+  <!-- Text sizes -->
+  <string-array name="text_size_entries">
+    <item>36sp</item>
+    <item>34sp</item>
+    <item>32sp</item>
+    <item>30sp</item>
+    <item>28sp</item>
+    <item>26sp</item>
+    <item>24sp</item>
+    <item>22sp</item>
+    <item>20sp</item>
+    <item>18sp (default)</item>
+    <item>16sp</item>
   </string-array>
-  <string-array name="overlay_reveal_timeout_values" translatable="false">
-    <item>2</item>
-    <item>4</item>
-    <item>6</item>
-    <item>8</item>
-    <item>10</item>
+  <string-array name="text_size_values" translatable="false">
+    <item>36</item>
+    <item>34</item>
+    <item>32</item>
+    <item>30</item>
+    <item>28</item>
+    <item>26</item>
+    <item>24</item>
+    <item>22</item>
+    <item>20</item>
+    <item>18</item>
+    <item>16</item>
   </string-array>
-  <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
-  <string-array name="photo_scale_entries">
-    <item>Fill with crop (Default)</item>
-    <item>Scale without crop</item>
-  </string-array>
-  <string-array name="photo_scale_values" translatable="false">
-    <item>CENTER_CROP</item>
-    <item>FIT_CENTER</item>
-  </string-array>
-  <string name="playback_max_video_length_default" translatable="false">0</string>
+  <string name="text_size_default" translatable="false">18</string>
+
+  <!-- Max. video length -->
   <string-array name="playback_max_video_length_entries">
     <item>No limit (default)</item>
     <item>10 seconds</item>
@@ -377,41 +233,68 @@
     <item>1800</item>
     <item>3600</item>
   </string-array>
-  <string name="playback_speed_default" translatable="false">1</string>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (default)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string name="playback_max_video_length_default" translatable="false">0</string>
+
+  <!-- Font selection -->
+  <string-array name="appearance_font_entries">
+    <item>Open Sans (Default)</item>
+    <item>Roboto</item>
   </string-array>
-  <string-array name="playback_speed_values" translatable="false">
-    <item>0.25</item>
-    <item>0.5</item>
-    <item>0.75</item>
-    <item>1</item>
-    <item>1.25</item>
-    <item>1.5</item>
-    <item>1.75</item>
-    <item>2</item>
-    <item>2.5</item>
-    <item>3</item>
-    <item>3.5</item>
-    <item>4</item>
-    <item>5</item>
+  <string-array name="appearance_font_values" translatable="false">
+    <item>open-sans</item>
+    <item>sans-serif</item>
   </string-array>
-  <string-array name="samba_videos_smb_dialects_default" translatable="false">
-    <item>SMB_2_1</item>
-    <item>SMB_2_0_2</item>
+  <string name="appearance_font_default" translatable="false">open-sans</string>
+
+  <string-array name="appearance_font_weight_entries">
+    <item>100/Thin</item>
+    <item>200/Extra Light</item>
+    <item>300/Light (default)</item>
+    <item>400/Normal</item>
+    <item>500/Medium</item>
+    <item>600/Semi Bold</item>
+    <item>700/Bold</item>
+    <item>800/Extra Bold</item>
+    <item>900/Heavy</item>
   </string-array>
+  <string-array name="appearance_font_weight_values" translatable="false">
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
+    <item>500</item>
+    <item>600</item>
+    <item>700</item>
+    <item>800</item>
+    <item>900</item>
+  </string-array>
+  <string name="appearance_font_weight_default" translatable="false">300</string>
+
+  <!-- Local Video Options -->
+  <string-array name="local_videos_search_type_entries">
+    <item>Media scanner</item>
+    <item>Folder access (legacy)</item>
+  </string-array>
+  <string-array name="local_videos_search_type_values" translatable="false">
+    <item>MEDIA_STORE</item>
+    <item>FOLDER_ACCESS</item>
+  </string-array>
+  <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
+
+  <!-- Media type -->
+  <string-array name="media_type_entries">
+    <item>Videos only</item>
+    <item>Photos only</item>
+    <item>Videos &amp; Photos</item>
+  </string-array>
+  <string-array name="media_type_values" translatable="false">
+    <item>VIDEOS</item>
+    <item>PHOTOS</item>
+    <item>VIDEOS_PHOTOS</item>
+  </string-array>
+  <string name="media_type_default" translatable="false">VIDEOS</string>
+
+  <!-- Samba Video Options -->
   <string-array name="samba_videos_smb_dialects_entries" translatable="false">
     <item>v3.1.1</item>
     <item>v3.0.2</item>
@@ -426,7 +309,67 @@
     <item>SMB_2_1</item>
     <item>SMB_2_0_2</item>
   </string-array>
-  <string name="slideshow_speed_default" translatable="false">30</string>
+  <string-array name="samba_videos_smb_dialects_default" translatable="false">
+    <item>SMB_2_1</item>
+    <item>SMB_2_0_2</item>
+  </string-array>
+
+  <!-- Locale options -->
+  <string-array name="locale_menu_entries" translatable="false">
+    <item>System locale (default)</item>
+    <item>English</item>
+    <item>German</item>
+    <item>French</item>
+    <item>Arabic</item>
+    <item>Hebrew (he)</item>
+    <item>Hebrew (iw)</item>
+    <item>Japanese</item>
+    <item>Chinese</item>
+    <item>Russian</item>
+  </string-array>
+  <string-array name="locale_menu_values" translatable="false">
+    <item>default</item>
+    <item>en-IE</item>
+    <item>de-DE</item>
+    <item>fr-FR</item>
+    <item>ar</item>
+    <item>he</item>
+    <item>iw</item>
+    <item>ja-JP</item>
+    <item>zh-CN</item>
+    <item>ru-RU</item>
+  </string-array>
+  <string name="locale_menu_default" translatable="false">default</string>
+
+  <string-array name="locale_screensaver_entries" translatable="false">
+    <item>System locale (default)</item>
+    <item>English</item>
+    <item>German</item>
+    <item>French</item>
+    <item>Arabic</item>
+    <item>Hebrew (he)</item>
+    <item>Hebrew (iw)</item>
+    <item>Japanese</item>
+    <item>Chinese</item>
+    <item>Russian</item>
+    <item>Random</item>
+  </string-array>
+  <string-array name="locale_screensaver_values" translatable="false">
+    <item>default</item>
+    <item>en-IE</item>
+    <item>de-DE</item>
+    <item>fr-FR</item>
+    <item>ar</item>
+    <item>he</item>
+    <item>iw</item>
+    <item>ja-JP</item>
+    <item>zh-CN</item>
+    <item>ru-RU</item>
+    <item>random</item>
+  </string-array>
+  <string name="locale_screensaver_default" translatable="false">default</string>
+
+  <!-- Slideshow speed -->
   <string-array name="slideshow_speed_entries">
     <item>5 seconds</item>
     <item>10 seconds</item>
@@ -445,55 +388,20 @@
     <item>300</item>
     <item>600</item>
   </string-array>
-  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
-  <string-array name="slot_entries">
-    <item>Empty</item>
-    <item>Clock</item>
-    <item>Location</item>
-    <item>Date</item>
-    <item>Message #1</item>
-    <item>Message #2</item>
-    <item>Now Playing #1</item>
-    <item>Now Playing #2</item>
+  <string name="slideshow_speed_default" translatable="false">30</string>
+
+  <!-- Photo scale/fill options -->
+  <string-array name="photo_scale_entries">
+    <item>Fill with crop (Default)</item>
+    <item>Scale without crop</item>
   </string-array>
-  <string-array name="slot_values" translatable="false">
-    <item>EMPTY</item>
-    <item>CLOCK</item>
-    <item>LOCATION</item>
-    <item>DATE</item>
-    <item>MESSAGE1</item>
-    <item>MESSAGE2</item>
-    <item>MUSIC1</item>
-    <item>MUSIC2</item>
+  <string-array name="photo_scale_values" translatable="false">
+    <item>CENTER_CROP</item>
+    <item>FIT_CENTER</item>
   </string-array>
-  <string name="text_size_default" translatable="false">18</string>
-  <string-array name="text_size_entries">
-    <item>36sp</item>
-    <item>34sp</item>
-    <item>32sp</item>
-    <item>30sp</item>
-    <item>28sp</item>
-    <item>26sp</item>
-    <item>24sp</item>
-    <item>22sp</item>
-    <item>20sp</item>
-    <item>18sp (default)</item>
-    <item>16sp</item>
-  </string-array>
-  <string-array name="text_size_values" translatable="false">
-    <item>36</item>
-    <item>34</item>
-    <item>32</item>
-    <item>30</item>
-    <item>28</item>
-    <item>26</item>
-    <item>24</item>
-    <item>22</item>
-    <item>20</item>
-    <item>18</item>
-    <item>16</item>
-  </string-array>
-  <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
+  <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
+
+  <!-- Video scale/fill options -->
   <string-array name="video_scale_entries">
     <item>Fill with crop (Default)</item>
     <item>Scale without crop</item>
@@ -502,8 +410,151 @@
     <item>SCALE_TO_FIT_WITH_CROPPING</item>
     <item>SCALE_TO_FIT</item>
   </string-array>
-  <string name="volume_default" translatable="false">100</string>
-  <string-array name="volume_entries" translatable="false">
+  <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
+
+  <!-- Now Playing -->
+  <string-array name="nowplaying_format_entries">
+    <item>Disabled</item>
+    <item>Song · Artist</item>
+    <item>Artist · Song</item>
+    <item>Artist</item>
+    <item>Song</item>
+  </string-array>
+  <string-array name="nowplaying_format_values" translatable="false">
+    <item>DISABLED</item>
+    <item>SONG_ARTIST</item>
+    <item>ARTIST_SONG</item>
+    <item>ARTIST</item>
+    <item>SONG</item>
+  </string-array>
+  <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
+  <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
+
+  <!-- HTTP schemes -->
+  <string-array name="http_scheme_entries" translatable="false">
+    <item>HTTP</item>
+    <item>HTTPS</item>
+  </string-array>
+  <string-array name="http_scheme_values" translatable="false">
+    <item>HTTP</item>
+    <item>HTTPS</item>
+  </string-array>
+  <string name="http_scheme_default" translatable="false">HTTP</string>
+
+  <!-- Duration timings -->
+  <string-array name="duration_entries">
+    <item>Disabled</item>
+    <item>200ms</item>
+    <item>400ms</item>
+    <item>600ms</item>
+    <item>800ms</item>
+    <item>1000ms</item>
+    <item>1200ms</item>
+    <item>1400ms</item>
+    <item>1600ms</item>
+    <item>1800ms</item>
+    <item>2000ms</item>
+  </string-array>
+  <string-array name="duration_values" translatable="false">
+    <item>0</item>
+    <item>200</item>
+    <item>400</item>
+    <item>600</item>
+    <item>800</item>
+    <item>1000</item>
+    <item>1200</item>
+    <item>1400</item>
+    <item>1600</item>
+    <item>1800</item>
+    <item>2000</item>
+  </string-array>
+  <string name="duration_fade_in_default" translatable="false">600</string>
+  <string name="duration_fade_out_default" translatable="false">800</string>
+  <string name="duration_overlay_fade_default" translatable="false">600</string>
+
+  <!-- Longer videos limit -->
+  <string-array name="limit_Longer_videos_entries">
+    <item>Skip when limit is reached</item>
+    <item>Allow longer videos to finish</item>
+    <item>Play random segments of long videos</item>
+  </string-array>
+  <string-array name="limit_Longer_videos_values" translatable="false">
+    <item>LIMIT</item>
+    <item>IGNORE</item>
+    <item>SEGMENT</item>
+  </string-array>
+  <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
+  <string-array name="limit_Longer_videos_summaries">
+    <item>Obey limit - skip to the next video when the limit is reached</item>
+    <item>Ignore limit - if a video is longer than the set limit, it will be played until the end</item>
+    <item>Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</item>
+  </string-array>
+
+  <!-- Overlay auto hide -->
+  <string-array name="overlay_auto_hide_entries">
+    <item>Never hide (default)</item>
+    <item>Always hidden</item>
+    <item>2 seconds</item>
+    <item>4 seconds</item>
+    <item>6 seconds</item>
+    <item>8 seconds</item>
+    <item>10 seconds</item>
+  </string-array>
+  <string-array name="overlay_auto_hide_values" translatable="false">
+    <item>-1</item>
+    <item>0</item>
+    <item>2</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+    <item>10</item>
+  </string-array>
+  <string name="overlay_auto_hide_default" translatable="false">-1</string>
+
+  <!-- Overlay reveal timeout -->
+  <string-array name="overlay_reveal_timeout_entries">
+    <item>2 seconds</item>
+    <item>4 seconds (default)</item>
+    <item>6 seconds</item>
+    <item>8 seconds</item>
+    <item>10 seconds</item>
+  </string-array>
+  <string-array name="overlay_reveal_timeout_values" translatable="false">
+    <item>2</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+    <item>10</item>
+  </string-array>
+  <string name="overlay_reveal_timeout_default" translatable="false">4</string>
+
+  <!-- Dpad/button actions -->
+  <string-array name="button_action_entries">
+    <item>Ignore action</item>
+    <item>Exit screensaver</item>
+    <item>Skip to next video/photo</item>
+    <item>Skip to previous video/photo</item>
+    <item>Increase video playback speed</item>
+    <item>Decrease video playback speed</item>
+    <item>Show overlays, if hidden</item>
+    <item>Black out screen, fade out media and overlays</item>
+  </string-array>
+  <string-array name="button_action_values" translatable="false">
+    <item>IGNORE</item>
+    <item>EXIT</item>
+    <item>SKIP_NEXT</item>
+    <item>SKIP_PREVIOUS</item>
+    <item>SPEED_INCREASE</item>
+    <item>SPEED_DECREASE</item>
+    <item>SHOW_OVERLAYS</item>
+    <item>BLACK_OUT_MODE</item>
+  </string-array>
+  <string name="button_action_default" translatable="false">IGNORE</string>
+  <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
+  <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
+
+  <!-- Percentage list 1 -->
+  <string-array name="percentage1_entries" translatable="false">
     <item>5%</item>
     <item>10%</item>
     <item>15%</item>
@@ -524,7 +575,7 @@
     <item>95%</item>
     <item>100%</item>
   </string-array>
-  <string-array name="volume_values" translatable="false">
+  <string-array name="percentage1_values" translatable="false">
     <item>5</item>
     <item>10</item>
     <item>15</item>
@@ -545,4 +596,6 @@
     <item>95</item>
     <item>100</item>
   </string-array>
+  <string name="brightness_default" translatable="false">100</string>
+  <string name="volume_default" translatable="false">100</string>
 </resources>
