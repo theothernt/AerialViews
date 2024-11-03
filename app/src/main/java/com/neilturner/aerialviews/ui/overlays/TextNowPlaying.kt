@@ -8,6 +8,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MusicEvent
+import kotlinx.coroutines.delay
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 
@@ -52,18 +53,50 @@ class TextNowPlaying : AppCompatTextView {
         receiver.unsubscribe()
     }
 
-    private fun updateNowPlaying() {
+    private suspend fun updateNowPlaying() {
         isUpdating = true
 
-        animate().alpha(0f).duration = 400
+        if (alpha != 0f) {
+            fadeOut()
+        }
+
         shouldUpdate = false
-        text = formatNowPlaying(trackInfo)
-        animate().alpha(1f).duration = 400
+        val shouldFadeIn = updateText()
+
+        if (shouldFadeIn) {
+            fadeIn()
+        }
 
         isUpdating = false
 
         if (shouldUpdate) {
             updateNowPlaying()
+        }
+    }
+
+    private suspend fun fadeOut() {
+        animate()
+            .alpha(0f)
+            .setDuration(300)
+            .start()
+        delay(300)
+    }
+
+    private suspend fun fadeIn() {
+        animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start()
+        delay(300)
+    }
+
+    private fun updateText(): Boolean {
+        val updatedText = formatNowPlaying(trackInfo)
+        if (updatedText.isNotBlank()) {
+            text = updatedText
+            return true
+        } else {
+            return false
         }
     }
 
