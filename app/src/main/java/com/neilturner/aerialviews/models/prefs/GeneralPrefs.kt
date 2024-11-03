@@ -88,6 +88,9 @@ object GeneralPrefs : KotprefModel() {
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
+    // Brightness / Dimness
+    var videoBrightness by stringPref("100", "video_brightness")
+
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
     var showBottomGradient by booleanPref(true, "gradient_bottom_show")

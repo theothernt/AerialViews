@@ -553,8 +553,9 @@
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
   <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 
-  <!-- Percentages -->
-  <string-array name="percentage_entries" translatable="false">
+
+  <!-- Percentage list 1 -->
+  <string-array name="percentage1_entries" translatable="false">
     <item>5%</item>
     <item>10%</item>
     <item>15%</item>
@@ -575,7 +576,7 @@
     <item>95%</item>
     <item>100%</item>
   </string-array>
-  <string-array name="percentage_values" translatable="false">
+  <string-array name="percentage1_values" translatable="false">
     <item>5</item>
     <item>10</item>
     <item>15</item>
@@ -597,6 +598,7 @@
     <item>100</item>
   </string-array>
   <string name="progress_bar_default" translatable="false">100</string>
+  <string name="brightness_default" translatable="false">100</string>
   <string name="volume_default" translatable="false">100</string>
 
   <!-- Progress Bar -->

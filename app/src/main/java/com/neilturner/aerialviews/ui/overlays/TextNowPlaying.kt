@@ -8,24 +8,18 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MusicEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.sample
-import kotlinx.coroutines.launch
 import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.GlobalBus
+import me.kosert.flowbus.subscribe
 
 class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
     var format = NowPlayingFormat.DISABLED
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val receiver = EventsReceiver()
+    private var trackInfo = MusicEvent()
+    private var shouldUpdate = false
+    private var isUpdating = false
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -39,31 +33,71 @@ class TextNowPlaying : AppCompatTextView {
         this.format = format ?: NowPlayingFormat.DISABLED
     }
 
-    @OptIn(FlowPreview::class)
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        coroutineScope.launch {
-            GlobalBus
-                .getFlow(MusicEvent::class.java)
-                .distinctUntilChanged()
-                .sample(600)
-                .collectLatest {
-                    updateNowPlaying(it)
+
+        receiver.subscribe { newTrackInfo: MusicEvent ->
+            if (trackInfo != newTrackInfo) {
+                trackInfo = newTrackInfo
+                if (!isUpdating) {
+                    updateNowPlaying()
+                } else {
+                    shouldUpdate = true
                 }
+            }
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         receiver.unsubscribe()
-        coroutineScope.cancel()
     }
 
-    private suspend fun updateNowPlaying(trackInfo: MusicEvent) {
-        animate().alpha(0f).duration = 300
+    private suspend fun updateNowPlaying() {
+        isUpdating = true
+
+        if (alpha != 0f) {
+            fadeOut()
+        }
+
+        shouldUpdate = false
+        val shouldFadeIn = updateText()
+
+        if (shouldFadeIn) {
+            fadeIn()
+        }
+
+        isUpdating = false
+
+        if (shouldUpdate) {
+            updateNowPlaying()
+        }
+    }
+
+    private suspend fun fadeOut() {
+        animate()
+            .alpha(0f)
+            .setDuration(300)
+            .start()
         delay(300)
-        text = formatNowPlaying(trackInfo)
-        animate().alpha(1f).duration = 300
+    }
+
+    private suspend fun fadeIn() {
+        animate()
+            .alpha(1f)
+            .setDuration(300)
+            .start()
+        delay(300)
+    }
+
+    private fun updateText(): Boolean {
+        val updatedText = formatNowPlaying(trackInfo)
+        if (updatedText.isNotBlank()) {
+            text = updatedText
+            return true
+        } else {
+            return false
+        }
     }
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
