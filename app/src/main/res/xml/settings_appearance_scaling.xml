@@ -8,7 +8,7 @@
                     app:entries="@array/video_scale_entries"
                     app:entryValues="@array/video_scale_values"
                     app:key="video_scale"
-                    app:title="@string/playlist_video_scale_title"
+                    app:title="@string/appearance_video_scale_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
@@ -16,7 +16,7 @@
                     app:entries="@array/photo_scale_entries"
                     app:entryValues="@array/photo_scale_values"
                     app:key="photo_scale"
-                    app:title="@string/playlist_photo_scale_title"
+                    app:title="@string/appearance_photo_scale_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>
