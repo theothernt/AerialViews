@@ -33,13 +33,7 @@
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_video_volume_summary" />
 
-                <ListPreference
-                    app:defaultValue="@string/video_scale_default"
-                    app:entries="@array/video_scale_entries"
-                    app:entryValues="@array/video_scale_values"
-                    app:key="video_scale"
-                    app:title="@string/playlist_video_scale_title"
-                    app:useSimpleSummaryProvider="true" />
+
 
                 <CheckBoxPreference
                     app:defaultValue="false"
@@ -67,13 +61,7 @@
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_slideshow_speed_summary" />
 
-                <ListPreference
-                    app:defaultValue="@string/photo_scale_default"
-                    app:entries="@array/photo_scale_entries"
-                    app:entryValues="@array/photo_scale_values"
-                    app:key="photo_scale"
-                    app:title="@string/playlist_photo_scale_title"
-                    app:useSimpleSummaryProvider="true" />
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_advanced">
