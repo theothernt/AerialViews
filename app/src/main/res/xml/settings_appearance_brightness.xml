@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_brightness">
+                <ListPreference
+                    app:defaultValue="@string/brightness_default"
+                    app:entries="@array/percentage1_entries"
+                    app:entryValues="@array/percentage1_values"
+                    app:key="video_brightness"
+                    app:title="@string/appearance_brightness_level_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
+</PreferenceScreen>
