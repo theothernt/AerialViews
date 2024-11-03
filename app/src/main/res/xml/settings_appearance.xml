@@ -29,6 +29,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBrightnessFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_scaling_title"
+                    app:summary="@string/appearance_scaling_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceScalingFragment"/>
+
+                <Preference
                     app:title="@string/appearance_startup_title"
                     app:summary="@string/appearance_startup_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
