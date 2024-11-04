@@ -97,7 +97,7 @@ object InputHelper {
             }
 
             KeyEvent.KEYCODE_DPAD_UP -> {
-                if (type == ButtonPressType.NORMAL) {
+                action = if (type == ButtonPressType.NORMAL) {
                     GeneralPrefs.buttonUpPress
                 } else {
                     GeneralPrefs.buttonUpHold
@@ -105,7 +105,7 @@ object InputHelper {
             }
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (type == ButtonPressType.NORMAL) {
+                action = if (type == ButtonPressType.NORMAL) {
                     GeneralPrefs.buttonDownPress
                 } else {
                     GeneralPrefs.buttonDownHold
@@ -113,7 +113,7 @@ object InputHelper {
             }
 
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                if (type == ButtonPressType.NORMAL) {
+                action = if (type == ButtonPressType.NORMAL) {
                     GeneralPrefs.buttonLeftPress
                 } else {
                     GeneralPrefs.buttonLeftHold
@@ -121,7 +121,7 @@ object InputHelper {
             }
 
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                if (type == ButtonPressType.NORMAL) {
+                action = if (type == ButtonPressType.NORMAL) {
                     GeneralPrefs.buttonRightPress
                 } else {
                     GeneralPrefs.buttonRightHold
