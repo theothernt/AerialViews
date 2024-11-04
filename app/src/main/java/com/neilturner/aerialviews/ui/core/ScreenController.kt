@@ -340,7 +340,12 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
+        if (playlist.size == 0) {
+            return
+        }
+
         if (!blackOutMode) {
+
             blackOutMode = true
             fadeOutCurrentItem()
         } else {
