@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.baselineprofile)
 }
 
 fun loadProperties(fileName: String): Properties {
@@ -148,6 +149,9 @@ android {
 }
 
 dependencies {
+    implementation(libs.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
+
     // Support all favors except F-Droid
     "githubImplementation"(libs.bundles.firebase)
     "betaImplementation"(libs.bundles.firebase)

@@ -32,6 +32,13 @@ coil = "2.7.0"
 timber = "5.0.1"
 leakcanary = "2.14"
 junit-jupiter = "5.11.3"
+junit = "1.2.1"
+espresso-core = "3.6.1"
+uiautomator = "2.3.0"
+benchmark-macro-junit4 = "1.3.3"
+kotlin-version = "2.0.21"
+baselineprofile = "1.3.3"
+profileinstaller = "1.4.1"
 
 [libraries]
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
@@ -78,6 +85,11 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
+profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [bundles]
 coil = ["coil", "coil-gif"]
@@ -98,3 +110,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
 kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
+android-test = { id = "com.android.test", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-version" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
