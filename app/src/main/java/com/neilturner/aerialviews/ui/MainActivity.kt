@@ -1,10 +1,8 @@
 package com.neilturner.aerialviews.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.preference.Preference
@@ -39,55 +37,39 @@ class MainActivity :
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        handleIntent3()
+        //handleIntent()
+
+        getUriForFile()
     }
 
-    private fun handleIntent3() {
-        if (intent?.data == null) {
-            return
-        }
-
-        val data: Uri? = intent?.data
-
-        // Figure out what to do based on the intent type
-        if (intent?.type?.startsWith("image/") == true) {
-            // Handle intents with image data
-        } else if (intent?.type == "text/plain") {
-            // Handle intents with text
-        }
-
-        Intent("com.neilturner.aerialviews.RESULT_ACTION", Uri.parse("content://hi")).also { result ->
-            setResult(RESULT_OK, result)
-        }
-        finish()
-        Timber.i("Finished handling intent3")
-    }
-
-    private fun hadleIntent2() {
-        when {
-            intent?.action == Intent.ACTION_SEND -> {
-                if ("text/plain" == intent.type) {
-                    intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
-                        Toast.makeText(this, "File content: $it", Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-            else -> {
-                // Handle other intents, such as being started from the home screen
-            }
-        }
-    }
 
     private fun handleIntent() {
-        intent?.data?.let { uri ->
-            try {
-                val fileContent = readTextFromUri(uri)
-                Toast.makeText(this, "File content: $fileContent", Toast.LENGTH_LONG).show()
-            } catch (e: IOException) {
-                Timber.e(e)
-                Toast.makeText(this, "Error reading file: ${e.message}", Toast.LENGTH_LONG).show()
-            }
+
+    }
+
+    private fun getUriForFile() {
+        val intent = intent
+        val action = intent.action
+        val type = intent.type
+
+        var uri = intent.data
+
+        if(uri != null){
+            var inputStream = contentResolver.openInputStream(uri)
+            var byteArray = inputStream!!.readBytes()
+
+            //do stuff with byteArray
+            Timber.i(byteArray.size.toString())
         }
+//        val uri: Uri? = intent?.data
+//
+//        if (Intent.ACTION_SEND == action && !type.isNullOrEmpty()) {
+//            intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)?.let { uri ->
+//                //Timber.e(uri.toString())
+//                return uri
+//            }
+//        }
+//        return null
     }
 
     @Throws(IOException::class)
