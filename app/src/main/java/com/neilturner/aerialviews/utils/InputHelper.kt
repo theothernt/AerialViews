@@ -44,7 +44,7 @@ object InputHelper {
             longPressEvent
         ) {
             Timber.i("Another Long Press")
-            result = eventToAction(event, controller, exit, true)
+            //result = eventToAction(event, controller, exit, true)
         }
         previousEvent = event
         return result
