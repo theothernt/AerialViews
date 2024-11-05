@@ -15,7 +15,10 @@ import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
 
 object VideoPlayerHelper {
-    fun setRefreshRate(context: Context, framerate: Float?) {
+    fun setRefreshRate(
+        context: Context,
+        framerate: Float?,
+    ) {
         if (framerate == null || framerate == 0f) {
             Timber.i("Unable to get video frame rate...")
             return

@@ -27,9 +27,9 @@ import kotlin.math.ceil
 import kotlin.math.roundToLong
 import kotlin.time.Duration.Companion.milliseconds
 
+@OptIn(UnstableApi::class)
 class VideoPlayerView
     @JvmOverloads
-    @OptIn(UnstableApi::class)
     constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -67,10 +67,10 @@ class VideoPlayerView
                 }
 
             // Test
-//            coroutineScope.launch {
-//                delay(7 * 1000)
-//                exoPlayer.seekTo(20 * 1000)
-//            }
+            //            coroutineScope.launch {
+            //                delay(7 * 1000)
+            //                exoPlayer.seekTo(20 * 1000)
+            //            }
         }
 
         fun release() {
@@ -81,7 +81,12 @@ class VideoPlayerView
             listener = null
         }
 
-        @OptIn(UnstableApi::class)
+        override fun onDetachedFromWindow() {
+            pause()
+            super.onDetachedFromWindow()
+        }
+
+        // region Public methods
         fun setVideo(media: AerialMedia) {
             video = VideoInfo()
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
@@ -118,10 +123,9 @@ class VideoPlayerView
             exoPlayer.prepare()
         }
 
-        override fun onDetachedFromWindow() {
-            pause()
-            super.onDetachedFromWindow()
-        }
+        fun increaseSpeed() = changeSpeed(true)
+
+        fun decreaseSpeed() = changeSpeed(false)
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener
@@ -142,20 +146,10 @@ class VideoPlayerView
 
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
+        // endregion
 
-        override fun onMediaItemTransition(
-            mediaItem: MediaItem?,
-            reason: Int,
-        ) {
-            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                video.loopCount++
-                Timber.i("Looping video, count: ${video.loopCount}")
-            }
-            super.onMediaItemTransition(mediaItem, reason)
-        }
-
-    @OptIn(UnstableApi::class)
-    override fun onPlaybackStateChanged(playbackState: Int) {
+        // region Player Listener
+        override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_BUFFERING -> Timber.i("Buffering...")
@@ -187,6 +181,9 @@ class VideoPlayerView
 
                 video.duration = calculateDurationForPlaybackSpeed(exoPlayer.duration, GeneralPrefs.playbackSpeed.toFloat())
 
+                // Calculate segments if needed
+                // Seek to segment if needed
+
                 video.prepared = true
                 listener?.onVideoPrepared()
             }
@@ -201,9 +198,28 @@ class VideoPlayerView
             }
         }
 
-        fun increaseSpeed() = changeSpeed(true)
+        override fun onMediaItemTransition(
+            mediaItem: MediaItem?,
+            reason: Int,
+        ) {
+            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
+                video.loopCount++
+                Timber.i("Looping video, count: ${video.loopCount}")
+            }
+            super.onMediaItemTransition(mediaItem, reason)
+        }
 
-        fun decreaseSpeed() = changeSpeed(false)
+        override fun onPlayerError(error: PlaybackException) {
+            super.onPlayerError(error)
+            removeCallbacks(almostFinishedRunnable)
+            postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
+        }
+
+        override fun onPlayerErrorChanged(error: PlaybackException?) {
+            super.onPlayerErrorChanged(error)
+            error?.let { Timber.e(it) }
+        }
+        // endregion
 
         private fun changeSpeed(increase: Boolean) {
             if (!canChangePlaybackSpeed) {
@@ -335,21 +351,10 @@ class VideoPlayerView
             return Pair(loopCount > 1, targetDuration.toLong())
         }
 
-        private fun calculateDurationForPlaybackSpeed(duration: Long, playbackSpeed: Float): Long {
-            return (duration / playbackSpeed).toLong()
-        }
-
-        override fun onPlayerError(error: PlaybackException) {
-            super.onPlayerError(error)
-            removeCallbacks(almostFinishedRunnable)
-            postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
-        }
-
-        override fun onPlayerErrorChanged(error: PlaybackException?) {
-            super.onPlayerErrorChanged(error)
-            error?.let { Timber.e(it) }
-        }
-
+        private fun calculateDurationForPlaybackSpeed(
+            duration: Long,
+            playbackSpeed: Float,
+        ): Long = (duration / playbackSpeed).toLong()
 
         interface OnVideoPlayerEventListener {
             fun onVideoAlmostFinished()
@@ -371,6 +376,7 @@ data class VideoInfo(
     var prepared: Boolean = false,
     var loopCount: Int = 0,
     var isSegmented: Boolean = false,
-    var segmentStart: Long = 0L,
-    var segmentEnd: Long = 0L,
+    var selectedSegment: Int = -1,
+    var segmentStart: Long = 0L, // start position
+    var segmentEnd: Long = 0L, // end position
 )

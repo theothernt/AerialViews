@@ -345,7 +345,6 @@ class ScreenController(
         }
 
         if (!blackOutMode) {
-
             blackOutMode = true
             fadeOutCurrentItem()
         } else {
