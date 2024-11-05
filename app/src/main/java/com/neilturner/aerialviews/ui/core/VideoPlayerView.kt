@@ -1,20 +1,14 @@
 package com.neilturner.aerialviews.ui.core
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.util.AttributeSet
 import androidx.annotation.OptIn
-import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
-import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
@@ -23,11 +17,11 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
-import com.neilturner.aerialviews.utils.WindowHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToLong
@@ -42,35 +36,24 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
+        private val coroutineScope = CoroutineScope(Dispatchers.Main)
         private val exoPlayer: ExoPlayer
-        private var prepared = false
+        private var video = VideoInfo()
 
         private var listener: OnVideoPlayerEventListener? = null
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
 
-        private val enableTunneling = GeneralPrefs.enableTunneling
-        private val useRefreshRateSwitching = GeneralPrefs.refreshRateSwitching
-        private val philipsDolbyVisionFix = GeneralPrefs.philipsDolbyVisionFix
-        private val fallbackDecoders = GeneralPrefs.allowFallbackDecoders
-        private val extraLogging = GeneralPrefs.enablePlaybackLogging
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val muteVideo = GeneralPrefs.muteVideos
-        private val videoVolume = GeneralPrefs.videoVolume.toFloat() / 100
-        private var canChangePlaybackSpeed = true
-
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toInt() * 1000
         private val loopShortVideos = GeneralPrefs.loopShortVideos
         private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
         private val allowLongerVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.IGNORE
-        private var isSegmentedVideo = false
-        private var segmentStart = 0L
-        private var segmentEnd = 0L
-        private var loopCount = 0
+        private var canChangePlaybackSpeed = true
 
         init {
-            exoPlayer = buildPlayer(context)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context)
             exoPlayer.addListener(this)
 
             player = exoPlayer
@@ -82,6 +65,12 @@ class VideoPlayerView
                 } else {
                     AspectRatioFrameLayout.RESIZE_MODE_FIT
                 }
+
+            // Test
+//            coroutineScope.launch {
+//                delay(7 * 1000)
+//                exoPlayer.seekTo(20 * 1000)
+//            }
         }
 
         fun release() {
@@ -94,19 +83,14 @@ class VideoPlayerView
 
         @OptIn(UnstableApi::class)
         fun setVideo(media: AerialMedia) {
-            prepared = false
-
+            video = VideoInfo()
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
-            isSegmentedVideo = false
-            loopCount = 0
 
-            val uri = media.uri
-            val mediaItem = MediaItem.fromUri(uri)
-
-            if (philipsDolbyVisionFix) {
-                PhilipsMediaCodecAdapterFactory.mediaUrl = uri.toString()
+            if (GeneralPrefs.philipsDolbyVisionFix) {
+                PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
+            val mediaItem = MediaItem.fromUri(media.uri)
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
                     val mediaSource =
@@ -127,15 +111,11 @@ class VideoPlayerView
                 }
             }
 
-            exoPlayer.prepare()
-
-            if (muteVideo) {
-                exoPlayer.trackSelectionParameters =
-                    exoPlayer.trackSelectionParameters
-                        .buildUpon()
-                        .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
-                        .build()
+            if (GeneralPrefs.muteVideos) {
+                VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
+
+            exoPlayer.prepare()
         }
 
         override fun onDetachedFromWindow() {
@@ -168,64 +148,56 @@ class VideoPlayerView
             reason: Int,
         ) {
             if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                loopCount++
-                Timber.i("Looping video, count: $loopCount")
+                video.loopCount++
+                Timber.i("Looping video, count: ${video.loopCount}")
             }
             super.onMediaItemTransition(mediaItem, reason)
         }
 
-        // EventListener
-        override fun onPlaybackStateChanged(playbackState: Int) {
+    @OptIn(UnstableApi::class)
+    override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
-                Player.STATE_IDLE -> Timber.i("Idle...") // 1
-                Player.STATE_BUFFERING -> Timber.i("Buffering...") // 2a
-                Player.STATE_READY -> Timber.i("Ready to play...") // 3
-                Player.STATE_ENDED -> Timber.i("Playback ended...") // 4
+                Player.STATE_IDLE -> Timber.i("Idle...")
+                Player.STATE_BUFFERING -> Timber.i("Buffering...")
+                Player.STATE_READY -> Timber.i("Ready to play...")
+                Player.STATE_ENDED -> Timber.i("Playback ended...")
             }
 
-            if (!prepared && playbackState == Player.STATE_READY) {
-                if (segmentLongVideos) {
-                    if (!isSegmentedVideo) {
-                        val (isSegmented, segmentStart, segmentEnd) = calculateSegments()
-                        this.isSegmentedVideo = isSegmented
-                        this.segmentStart = segmentStart
-                        this.segmentEnd = segmentEnd
-                    }
+            if (playbackState == Player.STATE_BUFFERING) {
+                // Pause progress bar
+            }
 
-                    if (isSegmentedVideo && exoPlayer.currentPosition !in segmentStart - 500..segmentEnd + 500) {
-                        Timber.i("Seeking to segment ${segmentStart}ms")
-                        exoPlayer.seekTo(segmentStart)
-                        return
-                    }
-                    if (isSegmentedVideo) {
-                        Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${segmentStart}ms), continuing...")
-                    }
-                }
-                prepared = true
+            if (!video.prepared && playbackState == Player.STATE_READY) {
+//                if (segmentLongVideos) {
+//                    if (!video.isSegmented) {
+//                        val (isSegmented, segmentStart, segmentEnd) = calculateSegments()
+//                        video.isSegmented = isSegmented
+//                        video.segmentStart = segmentStart
+//                        video.segmentEnd = segmentEnd
+//                    }
+//                    if (video.isSegmented && exoPlayer.currentPosition !in video.segmentStart - 500..video.segmentEnd + 500) {
+//                        Timber.i("Seeking to segment ${video.segmentStart}ms")
+//                        exoPlayer.seekTo(video.segmentStart)
+//                        return
+//                    }
+//                    if (video.isSegmented) {
+//                        Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${video.segmentStart}ms), continuing...")
+//                    }
+//                }
+
+                video.duration = calculateDurationForPlaybackSpeed(exoPlayer.duration, GeneralPrefs.playbackSpeed.toFloat())
+
+                video.prepared = true
                 listener?.onVideoPrepared()
             }
 
+            // Video is buffered, ready to play
             if (exoPlayer.playWhenReady && playbackState == Player.STATE_READY) {
-                if (useRefreshRateSwitching) {
-                    setRefreshRate()
+                if (GeneralPrefs.refreshRateSwitching) {
+                    VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
                 }
                 setupAlmostFinishedRunnable()
                 Timber.i("Playing...")
-            }
-        }
-
-        @SuppressLint("UnsafeOptInUsageError")
-        private fun setRefreshRate() {
-            val frameRate = exoPlayer.videoFormat?.frameRate
-
-            if (frameRate == null || frameRate == 0f) {
-                Timber.i("Unable to get video frame rate...")
-                return
-            }
-
-            Timber.i("${frameRate}fps video, setting refresh rate if needed...")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                WindowHelper.setLegacyRefreshRate(context, frameRate)
             }
         }
 
@@ -238,7 +210,7 @@ class VideoPlayerView
                 return
             }
 
-            if (!prepared || !exoPlayer.isPlaying) {
+            if (!video.prepared || !exoPlayer.isPlaying) {
                 return // Must be playing a video
             }
 
@@ -272,9 +244,8 @@ class VideoPlayerView
                     speedValues[currentSpeedIdx - 1]
                 }
 
-            playbackSpeed = newSpeed
             exoPlayer.setPlaybackSpeed(newSpeed.toFloat())
-            GeneralPrefs.playbackSpeed = playbackSpeed
+            GeneralPrefs.playbackSpeed = newSpeed
 
             setupAlmostFinishedRunnable()
             listener?.onVideoPlaybackSpeedChanged()
@@ -296,9 +267,9 @@ class VideoPlayerView
             }
 
             // Play a part/segment of a video only
-            if (isSegmentedVideo) {
-                val position = if (exoPlayer.currentPosition < segmentStart) 0 else exoPlayer.currentPosition - segmentStart
-                return calculateEndOfVideo(segmentEnd - segmentStart, position)
+            if (video.isSegmented) {
+                val position = if (exoPlayer.currentPosition < video.segmentStart) 0 else exoPlayer.currentPosition - video.segmentStart
+                return calculateEndOfVideo(video.segmentEnd - video.segmentStart, position)
             }
 
             // Check if we need to loop the video
@@ -309,7 +280,7 @@ class VideoPlayerView
                 if (isLooping) {
                     exoPlayer.repeatMode = Player.REPEAT_MODE_ALL
                 }
-                val position = (loopCount * exoPlayer.duration) + exoPlayer.currentPosition
+                val position = (video.loopCount * exoPlayer.duration) + exoPlayer.currentPosition
                 return calculateEndOfVideo(duration, position)
             }
 
@@ -352,7 +323,7 @@ class VideoPlayerView
             // Adjust the duration based on the playback speed
             // Take into account the current player position in case of speed changes during playback
             val delay = (((duration - position) / playbackSpeed.toFloat()).roundToLong() - GeneralPrefs.mediaFadeOutDuration.toLong())
-            val actualPosition = if (isSegmentedVideo) position + segmentStart else position
+            val actualPosition = if (video.isSegmented) position + video.segmentStart else position
             Timber.i("Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
             return if (delay < 0) 0 else delay
         }
@@ -362,6 +333,10 @@ class VideoPlayerView
             val targetDuration = exoPlayer.duration * loopCount
             Timber.i("Looping $loopCount times (video is ${exoPlayer.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
             return Pair(loopCount > 1, targetDuration.toLong())
+        }
+
+        private fun calculateDurationForPlaybackSpeed(duration: Long, playbackSpeed: Float): Long {
+            return (duration / playbackSpeed).toLong()
         }
 
         override fun onPlayerError(error: PlaybackException) {
@@ -375,52 +350,6 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
-        @SuppressLint("UnsafeOptInUsageError")
-        private fun buildPlayer(context: Context): ExoPlayer {
-            val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
-
-            if (enableTunneling) {
-                parametersBuilder
-                    .setTunnelingEnabled(true)
-            }
-
-            val trackSelector = DefaultTrackSelector(context)
-            trackSelector.parameters = parametersBuilder.build()
-
-            var rendererFactory = DefaultRenderersFactory(context)
-            if (fallbackDecoders) {
-                rendererFactory.setEnableDecoderFallback(true)
-            }
-            if (philipsDolbyVisionFix) {
-                rendererFactory = CustomRendererFactory(context)
-            }
-
-            val player =
-                ExoPlayer
-                    .Builder(context)
-                    .setTrackSelector(trackSelector)
-                    .setRenderersFactory(rendererFactory)
-                    .build()
-
-            if (extraLogging) {
-                player.addAnalyticsListener(EventLogger())
-            }
-
-            if (!muteVideo) {
-                player.volume = videoVolume
-            } else {
-                player.volume = 0f
-            }
-
-            // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && useRefreshRateSwitching) {
-                Timber.i("Android 12, enabling refresh rate switching")
-                exoPlayer.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
-            }
-
-            player.setPlaybackSpeed(playbackSpeed.toFloat())
-            return player
-        }
 
         interface OnVideoPlayerEventListener {
             fun onVideoAlmostFinished()
@@ -436,3 +365,12 @@ class VideoPlayerView
             const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
         }
     }
+
+data class VideoInfo(
+    var duration: Long = 0L,
+    var prepared: Boolean = false,
+    var loopCount: Int = 0,
+    var isSegmented: Boolean = false,
+    var segmentStart: Long = 0L,
+    var segmentEnd: Long = 0L,
+)
