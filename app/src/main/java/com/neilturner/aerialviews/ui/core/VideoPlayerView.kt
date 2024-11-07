@@ -38,6 +38,7 @@ class VideoPlayerView
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
+        private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context)
@@ -69,8 +70,8 @@ class VideoPlayerView
 
         // region Public methods
         fun setVideo(media: AerialMedia) {
-            video = VideoInfo()
-            video.maxLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+            video = VideoInfo() // Reset params for each video
+
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
@@ -220,7 +221,7 @@ class VideoPlayerView
 
         private fun handleSegmentedVideo() {
             if (!video.isSegmented) {
-                VideoPlayerHelper.calculateSegments(video)
+                VideoPlayerHelper.calculateSegments(exoPlayer.duration, maxVideoLength, video)
             }
             if (video.isSegmented && exoPlayer.currentPosition !in video.segmentStart - 500..video.segmentEnd + 500) {
                 Timber.i("Seeking to segment ${video.segmentStart}ms")
@@ -248,11 +249,9 @@ class VideoPlayerView
     }
 
 data class VideoInfo(
-    var duration: Long = 0L,
     var prepared: Boolean = false,
     var playbackSpeed: Float = 1.0f,
     var loopCount: Int = 0,
-    var maxLength: Long = 0L,
     var isSegmented: Boolean = false,
     var segmentStart: Long = 0L, // start position
     var segmentEnd: Long = 0L, // end position

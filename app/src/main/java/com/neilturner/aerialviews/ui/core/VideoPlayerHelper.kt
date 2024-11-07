@@ -118,10 +118,13 @@ object VideoPlayerHelper {
         }
     }
 
-    fun calculateSegments(video: VideoInfo) {
-        // 10 seconds is the min. video length
+    fun calculateSegments(duration: Long, maxLength: Long, video: VideoInfo) {
         val tenSeconds = 10 * 1000
-        if (video.maxLength < tenSeconds) {
+        val segments = duration / maxLength
+
+        // 10 seconds is the min. video length
+        if (maxLength < tenSeconds) {
+            Timber.i("Video too short for segments")
             video.isSegmented = false
             video.segmentStart = 0L
             video.segmentEnd = 0L
@@ -129,21 +132,21 @@ object VideoPlayerHelper {
         }
 
         // If less than 2 segments
-        val segments = video.duration / video.maxLength
         if (segments < 2) {
+            Timber.i("Video too short for 2 or more segments")
             video.isSegmented = false
             video.segmentStart = 0L
             video.segmentEnd = 0L
             return
         }
 
-        val length = video.duration.floorDiv(segments).toLong()
+        val length = duration.floorDiv(segments).toLong()
         val random = (1..segments).random()
         val segmentStart = (random - 1) * length
         val segmentEnd = random * length
 
         val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
-        val message2 = "(video is ${video.duration.milliseconds}, Segments: $segments)"
+        val message2 = "($random of $segments, Duration: ${duration.milliseconds}"
         Timber.i("$message1 $message2")
 
         video.isSegmented = true
@@ -158,67 +161,72 @@ object VideoPlayerHelper {
     ): Long {
         val loopShortVideos = prefs.loopShortVideos
         val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
-        video.duration = player.duration
+        val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+        val duration = player.duration
+        val position = player.currentPosition
 
         // 10 seconds is the min. video length
         val tenSeconds = 10 * 1000
 
         // If max length disabled, play full video
-        if (video.maxLength < tenSeconds) {
-            return calculateEndOfVideo(video, prefs, player.currentPosition)
+        if (maxVideoLength < tenSeconds) {
+            return calculateEndOfVideo(position, duration, video, prefs)
         }
 
         // Play a part/segment of a video only
         if (video.isSegmented) {
-            val position = if (player.currentPosition < video.segmentStart) 0 else player.currentPosition - video.segmentStart
-            video.duration = video.segmentEnd - video.segmentStart
-            return calculateEndOfVideo(video, prefs, position)
+            val segmentPosition = if (position < video.segmentStart) 0 else position - video.segmentStart
+            val segmentDuration = video.segmentEnd - video.segmentStart
+            return calculateEndOfVideo(segmentPosition, segmentDuration, video, prefs)
         }
 
         // Check if we need to loop the video
         if (loopShortVideos &&
-            video.duration < video.maxLength
+            duration < maxVideoLength
         ) {
-            val (isLooping, duration) = calculateLoopingVideo(video, player)
-            if (isLooping) {
+            val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
+            var targetDuration = if (isLooping) {
                 player.repeatMode = Player.REPEAT_MODE_ALL
-                video.duration = duration
+                loopingDuration
+            } else {
+                duration
             }
-            val position = (video.loopCount * video.duration) + player.currentPosition
-            return calculateEndOfVideo(video, prefs, position)
+            return calculateEndOfVideo(position, targetDuration, video, prefs)
         }
 
         // Limit the duration of the video, or not
-        if (video.maxLength in tenSeconds until video.duration &&
+        if (maxVideoLength in tenSeconds until duration &&
             !allowLongerVideos
         ) {
-            Timber.i("Limiting duration (video is ${video.duration.milliseconds}, limit is ${video.maxLength.milliseconds})")
-            return calculateEndOfVideo(video, prefs, player.currentPosition)
+            Timber.i("Limiting duration (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+            return calculateEndOfVideo(position, maxVideoLength, video, prefs)
         }
-        Timber.i("Ignoring limit (video is ${video.duration.milliseconds}, limit is ${video.maxLength.milliseconds})")
-        return calculateEndOfVideo(video, prefs, player.currentPosition)
+        Timber.i("Ignoring limit (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        return calculateEndOfVideo(position, duration, video, prefs)
     }
 
     private fun calculateEndOfVideo(
+        position: Long,
+        duration: Long,
         video: VideoInfo,
         prefs: GeneralPrefs,
-        position: Long,
+
     ): Long {
         // Adjust the duration based on the playback speed
         // Take into account the current player position in case of speed changes during playback
-        val delay = ((video.duration - position) / prefs.playbackSpeed.toDouble().toLong() - prefs.mediaFadeOutDuration.toLong())
+        val delay = ((duration - position) / prefs.playbackSpeed.toDouble().toLong() - prefs.mediaFadeOutDuration.toLong())
         val actualPosition = if (video.isSegmented) position + video.segmentStart else position
-        Timber.i("Delay: ${delay.milliseconds} (Duration: ${video.duration.milliseconds}, Position: ${actualPosition.milliseconds})")
+        Timber.i("Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
         return if (delay < 0) 0 else delay
     }
 
     private fun calculateLoopingVideo(
-        video: VideoInfo,
+        maxVideoLength: Long,
         player: ExoPlayer,
     ): Pair<Boolean, Long> {
-        val loopCount = ceil(video.maxLength / player.duration.toDouble()).toInt()
+        val loopCount = ceil(maxVideoLength / player.duration.toDouble()).toInt()
         val targetDuration = player.duration * loopCount
-        Timber.i("Looping $loopCount times (video is ${player.duration.milliseconds}, limit is ${video.maxLength.milliseconds})")
+        Timber.i("Looping $loopCount times (video is ${player.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
         return Pair(loopCount > 1, targetDuration.toLong())
     }
 }
