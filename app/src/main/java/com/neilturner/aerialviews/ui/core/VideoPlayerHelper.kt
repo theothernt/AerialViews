@@ -122,18 +122,10 @@ object VideoPlayerHelper {
         val tenSeconds = 10 * 1000
         val segments = duration / maxLength
 
-        // 10 seconds is the min. video length
-        if (maxLength < tenSeconds) {
+        // If too short or no segments
+        if (maxLength < tenSeconds ||
+            segments < 2) {
             Timber.i("Video too short for segments")
-            video.isSegmented = false
-            video.segmentStart = 0L
-            video.segmentEnd = 0L
-            return
-        }
-
-        // If less than 2 segments
-        if (segments < 2) {
-            Timber.i("Video too short for 2 or more segments")
             video.isSegmented = false
             video.segmentStart = 0L
             video.segmentEnd = 0L
@@ -146,7 +138,7 @@ object VideoPlayerHelper {
         val segmentEnd = random * length
 
         val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
-        val message2 = "($random of $segments, Duration: ${duration.milliseconds}"
+        val message2 = "($random of $segments, duration: ${duration.milliseconds}"
         Timber.i("$message1 $message2")
 
         video.isSegmented = true
@@ -216,7 +208,7 @@ object VideoPlayerHelper {
         // Take into account the current player position in case of speed changes during playback
         val delay = ((duration - position) / prefs.playbackSpeed.toDouble().toLong() - prefs.mediaFadeOutDuration.toLong())
         val actualPosition = if (video.isSegmented) position + video.segmentStart else position
-        Timber.i("Delay: ${delay.milliseconds} (Duration: ${duration.milliseconds}, Position: ${actualPosition.milliseconds})")
+        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds}, position: ${actualPosition.milliseconds})")
         return if (delay < 0) 0 else delay
     }
 
