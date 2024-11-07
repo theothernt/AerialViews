@@ -1,7 +1,9 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -120,6 +122,26 @@ class ScreenController(
         if (GeneralPrefs.showBottomGradient) {
             overlayViewBinding.gradientBottom.visibility = View.VISIBLE
         }
+
+        // Get duration scale from the global settings.
+        var durationScale = Settings.Global.getFloat(context.contentResolver,
+            Settings.Global.ANIMATOR_DURATION_SCALE, 0f)
+
+        // If global duration scale is not 1 (default), try to override it
+        // for the current application.
+        if (durationScale != 1f) {
+            try {
+                ValueAnimator::class.java.getMethod("setDurationScale", Float::class.java).invoke(null, 1f)
+                durationScale = 1f
+            } catch (t: Throwable) {
+                // It means something bad happened, and animations are still
+                // altered by the global settings. You should warn the user and
+                // exit application.
+            }
+        }
+
+        Timber.i("Duration scale: $durationScale")
+
 
         coroutineScope.launch {
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
