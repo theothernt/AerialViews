@@ -89,5 +89,4 @@
                     android:title="@string/immich_media_test_connection"
                     android:key="immich_media_test_connection" />
         </PreferenceCategory>
-
 </PreferenceScreen>

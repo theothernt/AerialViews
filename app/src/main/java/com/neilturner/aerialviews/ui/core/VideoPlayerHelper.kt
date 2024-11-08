@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
+import com.neilturner.aerialviews.services.ImmichDataSourceFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
@@ -104,6 +105,11 @@ object VideoPlayerHelper {
                         .Factory(SambaDataSourceFactory())
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
+            }
+            AerialMediaSource.IMMICH -> {
+                ProgressiveMediaSource
+                    .Factory(ImmichDataSourceFactory())
+                    .createMediaSource(mediaItem)
             }
             AerialMediaSource.WEBDAV -> {
                 val mediaSource =

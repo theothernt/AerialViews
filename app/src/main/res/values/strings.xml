@@ -274,15 +274,6 @@
   <string name="immich_media_test_summary4">Photos found: %1$s</string>
   <string name="immich_media_test_summary5">Selected for playback: %1$s</string>
 
-  <string-array name="immich_auth_type_entries">
-      <item>Shared Link</item>
-      <item>API Key</item>
-  </string-array>
-  <string-array name="immich_auth_type_values">
-      <item>SHARED_LINK</item>
-      <item>API_KEY</item>
-  </string-array>
-
   <string name="immich_media_search_subfolders_title">Search subfolders</string>
   <string name="immich_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
 
