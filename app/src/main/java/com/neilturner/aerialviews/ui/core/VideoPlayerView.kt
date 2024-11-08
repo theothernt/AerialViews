@@ -37,7 +37,7 @@ class VideoPlayerView
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT
+        private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
 
         init {

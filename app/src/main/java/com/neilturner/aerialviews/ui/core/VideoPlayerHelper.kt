@@ -123,6 +123,11 @@ object VideoPlayerHelper {
         maxLength: Long,
         video: VideoInfo,
     ) {
+        if (duration == 0L ||
+            maxLength == 0L) {
+            return
+        }
+
         val tenSeconds = 10 * 1000
         val segments = duration / maxLength
 
