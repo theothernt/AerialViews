@@ -21,12 +21,13 @@
   <string name="category_video_source">Video Source</string>
   <string name="category_options">Options</string>
   <string name="category_remote">Remote</string>
-    <string name="category_local">Local</string>
+  <string name="category_local">Local</string>
   <string name="category_network">Network</string>
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
   <string name="category_server_details">Server details and credentials</string>
   <string name="category_brightness">Brightness</string>
+  <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
@@ -532,6 +533,9 @@
 
   <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+
+  <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
+  <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
 
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>

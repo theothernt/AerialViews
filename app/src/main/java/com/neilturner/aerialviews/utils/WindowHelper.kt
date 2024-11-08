@@ -2,10 +2,12 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.os.Build
+import android.provider.Settings
 import android.view.Display
 import android.view.Surface
 import android.view.View
@@ -157,5 +159,30 @@ object WindowHelper {
         }
 
         return filteredModes
+    }
+
+    // https://stackoverflow.com/a/41238583/247257
+    fun resetSystemAnimationDuration(context: Context) {
+        // Get duration scale from the global settings.
+        var durationScale =
+            Settings.Global.getFloat(
+                context.contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                0f,
+            )
+
+        // If global duration scale is not 1 (default), try to override it
+        // for the current application.
+        if (durationScale != 1f) {
+            try {
+                ValueAnimator::class.java.getMethod("setDurationScale", Float::class.java).invoke(null, 1f)
+                durationScale = 1f
+            } catch (t: Throwable) {
+                // It means something bad happened, and animations are still
+                // altered by the global settings. You should warn the user and
+                // exit application.
+            }
+        }
+        Timber.i("Duration scale: $durationScale")
     }
 }

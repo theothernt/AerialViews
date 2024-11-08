@@ -83,49 +83,54 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_CENTER -> {
                 // Only disable OK button if left/right/up/down keys are in use
-                action = if (anyOkButtonActionsEnabled()) {
-                    if (type == ButtonPressType.NORMAL) {
-                        GeneralPrefs.buttonOkPress
+                action =
+                    if (anyOkButtonActionsEnabled()) {
+                        if (type == ButtonPressType.NORMAL) {
+                            GeneralPrefs.buttonOkPress
+                        } else {
+                            GeneralPrefs.buttonOkHold
+                        }
+                    } else if (anyDpadActionsEnabled()) {
+                        ButtonType.IGNORE
                     } else {
-                        GeneralPrefs.buttonOkHold
+                        return false
                     }
-                } else if (anyDpadActionsEnabled()) {
-                    ButtonType.IGNORE
-                } else {
-                    return false
-                }
             }
 
             KeyEvent.KEYCODE_DPAD_UP -> {
-                action = if (type == ButtonPressType.NORMAL) {
-                    GeneralPrefs.buttonUpPress
-                } else {
-                    GeneralPrefs.buttonUpHold
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonUpPress
+                    } else {
+                        GeneralPrefs.buttonUpHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
-                action = if (type == ButtonPressType.NORMAL) {
-                    GeneralPrefs.buttonDownPress
-                } else {
-                    GeneralPrefs.buttonDownHold
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonDownPress
+                    } else {
+                        GeneralPrefs.buttonDownHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                action = if (type == ButtonPressType.NORMAL) {
-                    GeneralPrefs.buttonLeftPress
-                } else {
-                    GeneralPrefs.buttonLeftHold
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonLeftPress
+                    } else {
+                        GeneralPrefs.buttonLeftHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                action = if (type == ButtonPressType.NORMAL) {
-                    GeneralPrefs.buttonRightPress
-                } else {
-                    GeneralPrefs.buttonRightHold
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonRightPress
+                    } else {
+                        GeneralPrefs.buttonRightHold
+                    }
             }
 
             // Any other button press will close the screensaver
@@ -157,7 +162,7 @@ object InputHelper {
         action: ButtonType?,
         controller: ScreenController?,
         exit: () -> Unit,
-        type: ButtonPressType
+        type: ButtonPressType,
     ): Boolean {
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
@@ -195,5 +200,5 @@ object InputHelper {
 enum class ButtonPressType {
     NORMAL,
     LONG_PRESS,
-    LONG_PRESS_HOLD
+    LONG_PRESS_HOLD,
 }
