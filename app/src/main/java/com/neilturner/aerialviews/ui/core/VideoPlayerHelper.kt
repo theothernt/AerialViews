@@ -118,13 +118,18 @@ object VideoPlayerHelper {
         }
     }
 
-    fun calculateSegments(duration: Long, maxLength: Long, video: VideoInfo) {
+    fun calculateSegments(
+        duration: Long,
+        maxLength: Long,
+        video: VideoInfo,
+    ) {
         val tenSeconds = 10 * 1000
         val segments = duration / maxLength
 
         // If too short or no segments
         if (maxLength < tenSeconds ||
-            segments < 2) {
+            segments < 2
+        ) {
             Timber.i("Video too short for segments")
             video.isSegmented = false
             video.segmentStart = 0L
@@ -177,12 +182,13 @@ object VideoPlayerHelper {
             duration < maxVideoLength
         ) {
             val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
-            var targetDuration = if (isLooping) {
-                player.repeatMode = Player.REPEAT_MODE_ALL
-                loopingDuration
-            } else {
-                duration
-            }
+            var targetDuration =
+                if (isLooping) {
+                    player.repeatMode = Player.REPEAT_MODE_ALL
+                    loopingDuration
+                } else {
+                    duration
+                }
             return calculateEndOfVideo(position, targetDuration, video, prefs)
         }
 
@@ -202,7 +208,6 @@ object VideoPlayerHelper {
         duration: Long,
         video: VideoInfo,
         prefs: GeneralPrefs,
-
     ): Long {
         // Adjust the duration based on the playback speed
         // Take into account the current player position in case of speed changes during playback
