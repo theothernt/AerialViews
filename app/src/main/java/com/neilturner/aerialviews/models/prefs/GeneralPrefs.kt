@@ -96,6 +96,9 @@ object GeneralPrefs : KotprefModel() {
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")
 
+    // Ignore system animation override
+    var ignoreAnimationScale by booleanPref(true, "ignore_animation_scale")
+
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
     var localeScreensaver by stringPref("default", "locale_screensaver")

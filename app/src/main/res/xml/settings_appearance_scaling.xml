@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_scaling">
+                <ListPreference
+                    app:defaultValue="@string/video_scale_default"
+                    app:entries="@array/video_scale_entries"
+                    app:entryValues="@array/video_scale_values"
+                    app:key="video_scale"
+                    app:title="@string/appearance_video_scale_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/photo_scale_default"
+                    app:entries="@array/photo_scale_entries"
+                    app:entryValues="@array/photo_scale_values"
+                    app:key="photo_scale"
+                    app:title="@string/appearance_photo_scale_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+</PreferenceScreen>

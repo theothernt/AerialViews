@@ -25,6 +25,7 @@ import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,6 +103,10 @@ class ScreenController(
             }
         } else {
             loadingText.visibility = View.INVISIBLE
+        }
+
+        if (GeneralPrefs.ignoreAnimationScale) {
+            WindowHelper.resetSystemAnimationDuration(context)
         }
 
         // Init overlays and set initial positions
@@ -340,6 +345,10 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
+        if (playlist.size == 0) {
+            return
+        }
+
         if (!blackOutMode) {
             blackOutMode = true
             fadeOutCurrentItem()

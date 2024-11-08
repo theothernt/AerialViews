@@ -35,7 +35,7 @@ object InputHelper {
             event.isLongPress
         ) {
             Timber.i("Long Press")
-            result = eventToAction(event, controller, exit, true)
+            result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
 
@@ -44,8 +44,9 @@ object InputHelper {
             longPressEvent
         ) {
             Timber.i("Another Long Press")
-            result = eventToAction(event, controller, exit, true)
+            result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
+
         previousEvent = event
         return result
     }
@@ -54,8 +55,10 @@ object InputHelper {
         event: KeyEvent,
         controller: ScreenController?,
         exit: () -> Unit,
-        longPress: Boolean = false,
+        type: ButtonPressType = ButtonPressType.NORMAL,
     ): Boolean {
+        var action: ButtonType? = null
+
         when (event.keyCode) {
             // Ignore diagonal direction presses
             KeyEvent.KEYCODE_DPAD_DOWN_LEFT,
@@ -80,54 +83,65 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_CENTER -> {
                 // Only disable OK button if left/right/up/down keys are in use
-                return if (anyOkButtonActionsEnabled()) {
-                    if (longPress) {
-                        executeAction(GeneralPrefs.buttonOkHold, controller, exit)
+                action =
+                    if (anyOkButtonActionsEnabled()) {
+                        if (type == ButtonPressType.NORMAL) {
+                            GeneralPrefs.buttonOkPress
+                        } else {
+                            GeneralPrefs.buttonOkHold
+                        }
+                    } else if (anyDpadActionsEnabled()) {
+                        ButtonType.IGNORE
                     } else {
-                        executeAction(GeneralPrefs.buttonOkPress, controller, exit)
+                        return false
                     }
-                } else if (anyDpadActionsEnabled()) {
-                    executeAction(ButtonType.IGNORE, controller, exit)
-                } else {
-                    false
-                }
             }
+
             KeyEvent.KEYCODE_DPAD_UP -> {
-                return if (longPress) {
-                    executeAction(GeneralPrefs.buttonUpHold, controller, exit)
-                } else {
-                    executeAction(GeneralPrefs.buttonUpPress, controller, exit)
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonUpPress
+                    } else {
+                        GeneralPrefs.buttonUpHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
-                return if (longPress) {
-                    executeAction(GeneralPrefs.buttonDownHold, controller, exit)
-                } else {
-                    executeAction(GeneralPrefs.buttonDownPress, controller, exit)
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonDownPress
+                    } else {
+                        GeneralPrefs.buttonDownHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_LEFT -> {
-                return if (longPress) {
-                    executeAction(GeneralPrefs.buttonLeftHold, controller, exit)
-                } else {
-                    executeAction(GeneralPrefs.buttonLeftPress, controller, exit)
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonLeftPress
+                    } else {
+                        GeneralPrefs.buttonLeftHold
+                    }
             }
 
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                return if (longPress) {
-                    executeAction(GeneralPrefs.buttonRightHold, controller, exit)
-                } else {
-                    executeAction(GeneralPrefs.buttonRightPress, controller, exit)
-                }
+                action =
+                    if (type == ButtonPressType.NORMAL) {
+                        GeneralPrefs.buttonRightPress
+                    } else {
+                        GeneralPrefs.buttonRightHold
+                    }
             }
 
             // Any other button press will close the screensaver
             else -> exit()
         }
-        return false
+
+        if (action == null) {
+            return false
+        }
+
+        return executeAction(action, controller, exit, type)
     }
 
     private fun anyDpadActionsEnabled(): Boolean =
@@ -145,28 +159,46 @@ object InputHelper {
             GeneralPrefs.buttonOkHold != ButtonType.IGNORE
 
     private fun executeAction(
-        type: ButtonType?,
+        action: ButtonType?,
         controller: ScreenController?,
         exit: () -> Unit,
+        type: ButtonPressType,
     ): Boolean {
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
-            controller?.blackOutMode == true
+            controller?.blackOutMode == true &&
+            type != ButtonPressType.LONG_PRESS_HOLD
         ) {
             controller.toggleBlackOutMode()
             return true
         }
 
-        when (type) {
-            ButtonType.IGNORE -> return false
-            ButtonType.SKIP_NEXT -> controller?.skipItem()
-            ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
-            ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
-            ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
-            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-            else -> exit()
+        if (action == ButtonType.IGNORE) {
+            return false
+        }
+
+        if (type == ButtonPressType.LONG_PRESS_HOLD) {
+            when (action) {
+                // Prepare for fast forward/rewind
+                else -> exit()
+            }
+        } else {
+            when (action) {
+                ButtonType.SKIP_NEXT -> controller?.skipItem()
+                ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
+                ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
+                ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+                ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
+                ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
+                else -> exit()
+            }
         }
         return true
     }
+}
+
+enum class ButtonPressType {
+    NORMAL,
+    LONG_PRESS,
+    LONG_PRESS_HOLD,
 }

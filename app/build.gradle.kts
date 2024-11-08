@@ -161,7 +161,7 @@ dependencies {
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
 
-    ksp(libs.moshi.codegen)
+    //ksp(libs.moshi.codegen)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.gson)

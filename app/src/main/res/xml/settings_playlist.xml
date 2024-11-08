@@ -15,6 +15,17 @@
                     app:title="@string/playlist_remove_duplicates_title" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_photos">
+                <ListPreference
+                    app:defaultValue="@string/slideshow_speed_default"
+                    app:entries="@array/slideshow_speed_entries"
+                    app:entryValues="@array/slideshow_speed_values"
+                    app:key="slideshow_speed"
+                    app:title="@string/playlist_slideshow_speed_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_slideshow_speed_summary" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_videos">
                 <CheckBoxPreference
                     app:disableDependentsState="true"
@@ -33,14 +44,6 @@
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_video_volume_summary" />
 
-                <ListPreference
-                    app:defaultValue="@string/video_scale_default"
-                    app:entries="@array/video_scale_entries"
-                    app:entryValues="@array/video_scale_values"
-                    app:key="video_scale"
-                    app:title="@string/playlist_video_scale_title"
-                    app:useSimpleSummaryProvider="true" />
-
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="any_videos_ignore_non_manifest_videos"
@@ -55,49 +58,10 @@
                     app:title="@string/playlist_playback_speed_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_playback_speed_summary" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_photos">
-                <ListPreference
-                    app:defaultValue="@string/slideshow_speed_default"
-                    app:entries="@array/slideshow_speed_entries"
-                    app:entryValues="@array/slideshow_speed_values"
-                    app:key="slideshow_speed"
-                    app:title="@string/playlist_slideshow_speed_title"
-                    app:useSimpleSummaryProvider="true"
-                    app:dialogTitle="@string/playlist_slideshow_speed_summary" />
-
-                <ListPreference
-                    app:defaultValue="@string/photo_scale_default"
-                    app:entries="@array/photo_scale_entries"
-                    app:entryValues="@array/photo_scale_values"
-                    app:key="photo_scale"
-                    app:title="@string/playlist_photo_scale_title"
-                    app:useSimpleSummaryProvider="true" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_advanced">
-                <ListPreference
-                    app:key="playback_max_video_length"
-                    app:defaultValue="@string/playback_max_video_length_default"
-                    app:entries="@array/playback_max_video_length_entries"
-                    app:entryValues="@array/playback_max_video_length_values"
-                    app:title="@string/playlist_max_video_length_title"
-                    app:useSimpleSummaryProvider="true"
-                    app:dialogTitle="@string/playlist_max_video_length_title" />
-
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="loop_short_videos"
-                    app:summary="@string/playlist_loop_short_videos_summary"
-                    app:title="@string/playlist_loop_short_videos_title" />
-
-                <ListPreference
-                    app:defaultValue="@string/limit_Longer_videos_default"
-                    app:entries="@array/limit_Longer_videos_entries"
-                    app:entryValues="@array/limit_Longer_videos_values"
-                    app:key="limit_longer_videos"
-                    app:title="@string/playlist_limit_longer_videos_title" />
-
+                <Preference
+                    app:title="@string/playlist_advanced_video_title"
+                    app:summary="@string/playlist_advanced_video_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistAdvancedVideoFragment"/>
         </PreferenceCategory>
 </PreferenceScreen>
