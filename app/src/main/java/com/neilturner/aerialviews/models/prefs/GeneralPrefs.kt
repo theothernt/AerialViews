@@ -104,16 +104,24 @@ object GeneralPrefs : KotprefModel() {
     var localeScreensaver by stringPref("default", "locale_screensaver")
 
     // Playlist
+    var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
+    var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
+
+    // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")
     var videoVolume by stringPref("100", "video_volume")
     var videoScale by nullableEnumValuePref(VideoScale.SCALE_TO_FIT_WITH_CROPPING, "video_scale")
-    var shuffleVideos by booleanPref(true, "shuffle_videos")
     var playbackSpeed by stringPref("1", "playback_speed")
+    var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
+
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
     var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
-    var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
-    var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
+
+    var randomStartPosition by booleanPref(false, "random_start_position")
+    var randomStartPositionRange by stringPref("50", "random_start_position_range")
+    
+    // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
     var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")
 

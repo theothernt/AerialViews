@@ -465,6 +465,11 @@
 
   <string name="playlist_limit_longer_videos_title">Longer videos</string>
 
+  <string name="playlist_random_start_position_title">Random start position</string>
+  <string name="playlist_random_start_position_summary">Start at a random position in the video, within a certain range</string>
+
+  <string name="playlist_random_start_position_range_title">Random start range</string>
+
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
