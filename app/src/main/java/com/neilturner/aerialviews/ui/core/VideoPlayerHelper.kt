@@ -7,21 +7,24 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
-import com.neilturner.aerialviews.services.ImmichDataSourceFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -107,9 +110,28 @@ object VideoPlayerHelper {
                 player.setMediaSource(mediaSource)
             }
             AerialMediaSource.IMMICH -> {
-                ProgressiveMediaSource
-                    .Factory(ImmichDataSourceFactory())
+                val dataSourceFactory = DefaultHttpDataSource.Factory()
+                    .setAllowCrossProtocolRedirects(true)
+                    .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                    .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+
+                // Add necessary headers for Immich
+                if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
+                    dataSourceFactory.setDefaultRequestProperties(
+                        mapOf("X-API-Key" to ImmichMediaPrefs.apiKey)
+                    )
+                }
+
+                // If SSL validation is disabled, we need to set the appropriate flags
+                if (!ImmichMediaPrefs.validateSsl) {
+                    System.setProperty("javax.net.ssl.trustAll", "true")
+                }
+
+                val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                     .createMediaSource(mediaItem)
+
+                player.setMediaSource(mediaSource)
+                Timber.d("Setting up Immich media source with URI: ${media.uri}")
             }
             AerialMediaSource.WEBDAV -> {
                 val mediaSource =

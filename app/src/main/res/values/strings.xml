@@ -279,6 +279,11 @@
 
   <string name="immich_media_test_results">Test results</string>
 
+  <string name="immich_media_url_title">Server URL</string>
+  <string name="immich_media_url_summary">Enter server URL (e.g., 192.168.1.100:8080)</string>
+  <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
+  <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+  <string name="immich_media_url_invalid">Invalid server URL</string>
   <!-- Main / Settings -->
   <string name="settings_overlays_title">Overlays</string>
   <string name="settings_overlays_summary">Choose what overlays are displayed in different corners of the screen</string>
