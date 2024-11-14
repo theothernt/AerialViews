@@ -124,7 +124,8 @@ object VideoPlayerHelper {
         video: VideoInfo,
     ) {
         if (duration == 0L ||
-            maxLength == 0L) {
+            maxLength == 0L
+        ) {
             return
         }
 

@@ -120,7 +120,7 @@ object GeneralPrefs : KotprefModel() {
 
     var randomStartPosition by booleanPref(false, "random_start_position")
     var randomStartPositionRange by stringPref("50", "random_start_position_range")
-    
+
     // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
     var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")

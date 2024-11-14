@@ -39,7 +39,8 @@ class VideoPlayerView
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
+        private val segmentLongVideos =
+            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
         private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
         private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
@@ -250,7 +251,6 @@ class VideoPlayerView
 
             val percent = (randomPosition.toFloat() / exoPlayer.duration.toFloat() * 100).toInt()
             Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%)")
-
         }
 
         interface OnVideoPlayerEventListener {

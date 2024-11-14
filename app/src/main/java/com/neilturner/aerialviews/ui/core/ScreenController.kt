@@ -129,8 +129,12 @@ class ScreenController(
         }
 
         // Get duration scale from the global settings.
-        var durationScale = Settings.Global.getFloat(context.contentResolver,
-            Settings.Global.ANIMATOR_DURATION_SCALE, 0f)
+        var durationScale =
+            Settings.Global.getFloat(
+                context.contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                0f,
+            )
 
         // If global duration scale is not 1 (default), try to override it
         // for the current application.
@@ -146,7 +150,6 @@ class ScreenController(
         }
 
         Timber.i("Duration scale: $durationScale")
-
 
         coroutineScope.launch {
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&

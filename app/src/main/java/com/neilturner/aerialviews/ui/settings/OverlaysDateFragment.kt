@@ -54,14 +54,13 @@ class OverlaysDateFragment : MenuStateFragment() {
         editPref?.isEnabled = dateType == DateType.CUSTOM
     }
 
-    private fun getDateValue(value: Any): DateType {
-        return try {
+    private fun getDateValue(value: Any): DateType =
+        try {
             DateType.valueOf(value as String)
         } catch (e: Exception) {
             Timber.e(e)
             DateType.COMPACT
         }
-    }
 
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("date_custom")?.setOnBindEditTextListener { it.setSingleLine() }
