@@ -449,7 +449,7 @@
   <string name="playlist_playback_speed_title">Playback speed</string>
   <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-  <string name="playlist_advanced_video_title">Advanced video options</string>
+  <string name="playlist_advanced_video_title">Advanced options</string>
   <string name="playlist_advanced_video_summary">Limit video length, loop short videos, start at a random position</string>
 
   <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
@@ -464,6 +464,11 @@
   <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set\n(eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
 
   <string name="playlist_limit_longer_videos_title">Longer videos</string>
+
+  <string name="playlist_random_start_position_title">Random start position</string>
+  <string name="playlist_random_start_position_summary">Start at a random position in the video, within a certain range</string>
+
+  <string name="playlist_random_start_position_range_title">Random start range</string>
 
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_slideshow_speed_summary">Choose a duration</string>

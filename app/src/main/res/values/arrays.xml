@@ -590,6 +590,50 @@
     <item>95</item>
     <item>100</item>
   </string-array>
+
+  <!-- Percentage list 2 -->
+  <string-array name="percentage2_entries" translatable="false">
+    <item>5%</item>
+    <item>10%</item>
+    <item>15%</item>
+    <item>20%</item>
+    <item>25%</item>
+    <item>30%</item>
+    <item>35%</item>
+    <item>40%</item>
+    <item>45%</item>
+    <item>50%</item>
+    <item>55%</item>
+    <item>60%</item>
+    <item>65%</item>
+    <item>70%</item>
+    <item>75%</item>
+    <item>80%</item>
+    <item>85%</item>
+    <item>95%</item>
+  </string-array>
+  <string-array name="percentage2_values" translatable="false">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+    <item>55</item>
+    <item>60</item>
+    <item>65</item>
+    <item>70</item>
+    <item>75</item>
+    <item>80</item>
+    <item>85</item>
+    <item>95</item>
+  </string-array>
+
   <string name="brightness_default" translatable="false">100</string>
   <string name="volume_default" translatable="false">100</string>
+  <string name="random_start_position_range_default" translatable="false">50</string>
 </resources>

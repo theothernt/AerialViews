@@ -17,6 +17,8 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import timber.log.Timber
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(UnstableApi::class)
 class VideoPlayerView
@@ -39,6 +41,8 @@ class VideoPlayerView
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+        private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
+        private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context)
@@ -128,6 +132,9 @@ class VideoPlayerView
                 Timber.i("Preparing...")
                 if (segmentLongVideos) {
                     handleSegmentedVideo()
+                }
+                if (randomStartPosition) {
+                    handleRandomStartPosition()
                 }
                 video.prepared = true
                 listener?.onVideoPrepared()
@@ -231,6 +238,19 @@ class VideoPlayerView
             if (video.isSegmented) {
                 Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${video.segmentStart}ms), continuing...")
             }
+        }
+
+        private fun handleRandomStartPosition() {
+            if (randomStartPositionRange < 5) {
+                return
+            }
+            val seekPosition = (exoPlayer.duration * randomStartPositionRange / 100.0).toLong()
+            val randomPosition = Random.nextLong(seekPosition)
+            exoPlayer.seekTo(randomPosition)
+
+            val percent = (randomPosition.toFloat() / exoPlayer.duration.toFloat() * 100).toInt()
+            Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%)")
+
         }
 
         interface OnVideoPlayerEventListener {
