@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import timber.log.Timber
 
 class OverlaysDateFragment : MenuStateFragment() {
     private lateinit var entriesAndValues: Map<String, String>
@@ -35,22 +36,31 @@ class OverlaysDateFragment : MenuStateFragment() {
         val editPref = findPreference<EditTextPreference>("date_custom")
         editPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                editPref?.summary = dateFormatting(DateType.CUSTOM, newValue as String)
+                editPref.summary = dateFormatting(DateType.CUSTOM, newValue as String)
                 true
             }
-        editPref?.summary = dateFormatting(DateType.CUSTOM, editPref?.text)
+        editPref?.summary = dateFormatting(DateType.CUSTOM, editPref.text)
 
         val textPref = findPreference<ListPreference>("date_format")
         textPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                val dateType = DateType.valueOf(newValue as String)
-                textPref?.summary = dateFormatting(dateType, null)
+                val dateType = getDateValue(newValue)
+                textPref.summary = dateFormatting(dateType, null)
                 editPref?.isEnabled = dateType == DateType.CUSTOM
                 true
             }
-        val dateType = DateType.valueOf(textPref?.value!!)
-        textPref.summary = dateFormatting(dateType, null)
+        val dateType = getDateValue(textPref?.value ?: "")
+        textPref?.summary = dateFormatting(dateType, null)
         editPref?.isEnabled = dateType == DateType.CUSTOM
+    }
+
+    private fun getDateValue(value: Any): DateType {
+        return try {
+            DateType.valueOf(value as String)
+        } catch (e: Exception) {
+            Timber.e(e)
+            DateType.COMPACT
+        }
     }
 
     private fun limitTextInput() {
