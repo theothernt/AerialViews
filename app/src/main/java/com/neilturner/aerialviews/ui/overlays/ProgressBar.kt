@@ -7,8 +7,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 import timber.log.Timber
@@ -21,12 +19,9 @@ class ProgressBar : View {
         attrs,
         defStyleAttr,
     )
-
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var parentWidth: Int = 0
     private var animator: ValueAnimator? = null
-
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val receiver = EventsReceiver()
 
     init {

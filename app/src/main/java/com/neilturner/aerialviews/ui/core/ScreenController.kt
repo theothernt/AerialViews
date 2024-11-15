@@ -4,8 +4,10 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.provider.Settings
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -16,6 +18,7 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
@@ -97,6 +100,12 @@ class ScreenController(
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
         imageViewBinding.root.setBackgroundColor(Color.BLACK)
+
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
+            (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
+            binding.progressBar.visibility = View.VISIBLE
+        }
 
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
@@ -215,6 +224,7 @@ class ScreenController(
 
         // Videos
         if (media.type == AerialMediaType.VIDEO) {
+
             videoPlayer.setVideo(media)
             videoViewBinding.root.visibility = View.VISIBLE
             imageViewBinding.root.visibility = View.INVISIBLE

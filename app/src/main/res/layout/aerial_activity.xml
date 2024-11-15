@@ -19,8 +19,10 @@
             layout="@layout/overlay_view" />
 
         <com.neilturner.aerialviews.ui.overlays.ProgressBar
+            android:id="@+id/progress_bar"
             android:layout_width="0dp"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:layout_gravity="bottom" />
 
         <include

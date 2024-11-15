@@ -65,6 +65,7 @@ class ImagePlayerView :
             try {
                 ScaleType.valueOf(GeneralPrefs.photoScale.toString())
             } catch (e: Exception) {
+                Timber.e(e)
                 GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
                 ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
             }
