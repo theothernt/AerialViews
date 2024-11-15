@@ -591,6 +591,7 @@
     <item>95</item>
     <item>100</item>
   </string-array>
+  <string name="progress_bar_default" translatable="false">100</string>
 
   <!-- Percentage list 2 -->
   <string-array name="percentage2_entries" translatable="false">
