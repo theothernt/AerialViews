@@ -49,10 +49,13 @@ object VideoPlayerHelper {
     }
 
     @OptIn(UnstableApi::class)
-    fun buildPlayer(context: Context): ExoPlayer {
+    fun buildPlayer(
+        context: Context,
+        prefs: GeneralPrefs,
+    ): ExoPlayer {
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
-        if (GeneralPrefs.enableTunneling) {
+        if (prefs.enableTunneling) {
             parametersBuilder
                 .setTunnelingEnabled(true)
         }
@@ -61,10 +64,10 @@ object VideoPlayerHelper {
         trackSelector.parameters = parametersBuilder.build()
 
         var rendererFactory = DefaultRenderersFactory(context)
-        if (GeneralPrefs.allowFallbackDecoders) {
+        if (prefs.allowFallbackDecoders) {
             rendererFactory.setEnableDecoderFallback(true)
         }
-        if (GeneralPrefs.philipsDolbyVisionFix) {
+        if (prefs.philipsDolbyVisionFix) {
             rendererFactory = CustomRendererFactory(context)
         }
 
@@ -75,19 +78,19 @@ object VideoPlayerHelper {
                 .setRenderersFactory(rendererFactory)
                 .build()
 
-        if (GeneralPrefs.enablePlaybackLogging) {
+        if (prefs.enablePlaybackLogging) {
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (!GeneralPrefs.muteVideos) player.volume = GeneralPrefs.videoVolume.toFloat() / 100 else player.volume = 0f
+        if (!prefs.muteVideos) player.volume = prefs.videoVolume.toFloat() / 100 else player.volume = 0f
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && GeneralPrefs.refreshRateSwitching) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
             Timber.i("Android 12+, enabling refresh rate switching")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
-        player.setPlaybackSpeed(GeneralPrefs.playbackSpeed.toFloat())
+        player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
     }
 
@@ -164,7 +167,7 @@ object VideoPlayerHelper {
     ): Long {
         val loopShortVideos = prefs.loopShortVideos
         val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
-        val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+        val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val duration = player.duration
         val position = player.currentPosition
 

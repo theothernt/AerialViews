@@ -19,6 +19,7 @@ class ProgressBar : View {
         attrs,
         defStyleAttr,
     )
+
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var parentWidth: Int = 0
     private var animator: ValueAnimator? = null
@@ -27,7 +28,7 @@ class ProgressBar : View {
     init {
         paint.style = Paint.Style.FILL
         paint.color = Color.WHITE
-        setBackgroundColor( Color.WHITE)
+        setBackgroundColor(Color.WHITE)
     }
 
     override fun onAttachedToWindow() {
@@ -36,16 +37,18 @@ class ProgressBar : View {
             when (event.state) {
                 ProgressState.START -> {
                     animateWidth(event.position, event.duration)
-                    Timber.i("Starting progress bar animation: ${event.position/1000}s, ${event.duration/1000}s")
+                    Timber.i("Starting progress bar animation: ${event.position / 1000}s, ${event.duration / 1000}s")
                 }
                 ProgressState.PAUSE -> {
-                    animator?.pause()
+                    if (animator?.isRunning == true) {
+                        animator?.pause()
+                    }
                     Timber.i("Pausing progress bar animation")
                 }
                 else -> {
                     Timber.i("Reset progress bar animation")
                     animator?.cancel()
-                    parentWidth = 0
+                    layoutParams.width = 0
                 }
             }
         }
@@ -57,7 +60,10 @@ class ProgressBar : View {
         animator?.cancel()
     }
 
-    fun animateWidth(position: Long, length: Long) {
+    fun animateWidth(
+        position: Long,
+        length: Long,
+    ) {
         parentWidth = (this.parent as View).measuredWidth
         val newWidth = calculateWidth(position)
 

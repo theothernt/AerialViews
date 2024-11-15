@@ -25,6 +25,8 @@ import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
@@ -34,6 +36,7 @@ import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -229,7 +232,6 @@ class ScreenController(
 
         // Videos
         if (media.type == AerialMediaType.VIDEO) {
-
             videoPlayer.setVideo(media)
             videoViewBinding.root.visibility = View.VISIBLE
             imageViewBinding.root.visibility = View.INVISIBLE
@@ -240,6 +242,11 @@ class ScreenController(
             imagePlayer.setImage(media)
             imageViewBinding.root.visibility = View.VISIBLE
             videoViewBinding.root.visibility = View.INVISIBLE
+        }
+
+        // Best to rest progress bar (if enabled) before media playback
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         }
 
         videoPlayer.start()

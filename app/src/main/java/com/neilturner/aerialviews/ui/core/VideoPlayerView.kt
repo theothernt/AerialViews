@@ -12,6 +12,8 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -47,9 +49,11 @@ class VideoPlayerView
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
         private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
         private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
+        private val progressBar =
+            GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
         init {
-            exoPlayer = VideoPlayerHelper.buildPlayer(context)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
             exoPlayer.addListener(this)
 
             player = exoPlayer
@@ -79,7 +83,6 @@ class VideoPlayerView
         // region Public methods
         fun setVideo(media: AerialMedia) {
             video = VideoInfo() // Reset params for each video
-            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
@@ -129,7 +132,7 @@ class VideoPlayerView
 
             if (playbackState == Player.STATE_BUFFERING) {
                 Timber.i("Buffering...")
-                GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
             }
 
             if (!video.prepared && playbackState == Player.STATE_READY) {
@@ -227,7 +230,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
             val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
-            GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
         }
 

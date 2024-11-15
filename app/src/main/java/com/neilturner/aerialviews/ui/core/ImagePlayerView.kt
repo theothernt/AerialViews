@@ -19,6 +19,8 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
@@ -39,14 +41,17 @@ import kotlin.time.Duration.Companion.milliseconds
 class ImagePlayerView :
     AppCompatImageView,
     EventListener {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    private val progressBar =
+        GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
     private var imageLoader: ImageLoader =
         ImageLoader
@@ -94,7 +99,6 @@ class ImagePlayerView :
     }
 
     fun setImage(media: AerialMedia) {
-        GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         when (media.source) {
             AerialMediaSource.SAMBA -> {
                 coroutineScope.launch { loadSambaImage(media.uri) }
@@ -199,7 +203,7 @@ class ImagePlayerView :
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
         val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
         postDelayed(finishedRunnable, delay)
-        GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+        if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
         Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
     }
 
