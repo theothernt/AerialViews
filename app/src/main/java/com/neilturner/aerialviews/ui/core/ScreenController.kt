@@ -104,6 +104,10 @@ class ScreenController(
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
+
+            val alpha = abs(GeneralPrefs.progressBarOpacity.toFloat() / 100)
+            binding.progressBar.alpha = alpha
+
             binding.progressBar.visibility = View.VISIBLE
         }
 
