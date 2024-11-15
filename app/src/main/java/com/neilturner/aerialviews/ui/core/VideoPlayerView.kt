@@ -16,6 +16,9 @@ import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
@@ -76,7 +79,7 @@ class VideoPlayerView
         // region Public methods
         fun setVideo(media: AerialMedia) {
             video = VideoInfo() // Reset params for each video
-
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
@@ -126,7 +129,7 @@ class VideoPlayerView
 
             if (playbackState == Player.STATE_BUFFERING) {
                 Timber.i("Buffering...")
-                // Pause progress bar
+                GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
             }
 
             if (!video.prepared && playbackState == Player.STATE_READY) {
@@ -224,6 +227,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
             val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
+            GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
         }
 

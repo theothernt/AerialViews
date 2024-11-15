@@ -23,14 +23,18 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.util.EnumSet
+import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView :
     AppCompatImageView,
@@ -89,6 +93,7 @@ class ImagePlayerView :
     }
 
     fun setImage(media: AerialMedia) {
+        GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         when (media.source) {
             AerialMediaSource.SAMBA -> {
                 coroutineScope.launch { loadSambaImage(media.uri) }
@@ -190,9 +195,11 @@ class ImagePlayerView :
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
         listener?.onImagePrepared()
-        // Add fade in/out times?
-        val delay = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
         postDelayed(finishedRunnable, delay)
+        GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
     }
 
     private fun onPlayerError() {
