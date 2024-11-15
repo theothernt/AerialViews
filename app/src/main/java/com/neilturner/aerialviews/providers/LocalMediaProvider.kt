@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
+import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -186,7 +187,15 @@ class LocalMediaProvider(
             if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
                 continue
             }
-            media.add(AerialMedia(uri))
+            // Set media type, should be refactored
+            // Also, check all providers
+            val item = AerialMedia(uri)
+            if (FileHelper.isSupportedVideoType(uri.filename)) {
+                item.type = AerialMediaType.VIDEO
+            } else if (FileHelper.isSupportedImageType(uri.filename)) {
+                item.type = AerialMediaType.IMAGE
+            }
+            media.add(item)
         }
         filtered = selected.size - media.size
 
