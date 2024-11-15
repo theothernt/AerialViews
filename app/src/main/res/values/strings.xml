@@ -21,13 +21,14 @@
   <string name="category_video_source">Video Source</string>
   <string name="category_options">Options</string>
   <string name="category_remote">Remote</string>
-    <string name="category_local">Local</string>
+  <string name="category_local">Local</string>
   <string name="category_network">Network</string>
   <string name="category_progress_bar">Progress Bar</string>
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
   <string name="category_server_details">Server details and credentials</string>
   <string name="category_brightness">Brightness</string>
+  <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
@@ -457,7 +458,7 @@
   <string name="playlist_playback_speed_title">Playback speed</string>
   <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-  <string name="playlist_advanced_video_title">Advanced video options</string>
+  <string name="playlist_advanced_video_title">Advanced options</string>
   <string name="playlist_advanced_video_summary">Limit video length, loop short videos, start at a random position</string>
 
   <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
@@ -472,6 +473,11 @@
   <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set\n(eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
 
   <string name="playlist_limit_longer_videos_title">Longer videos</string>
+
+  <string name="playlist_random_start_position_title">Random start position</string>
+  <string name="playlist_random_start_position_summary">Start at a random position in the video, within a certain range</string>
+
+  <string name="playlist_random_start_position_range_title">Random start range</string>
 
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_slideshow_speed_summary">Choose a duration</string>
@@ -541,6 +547,9 @@
 
   <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+
+  <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
+  <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
 
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>

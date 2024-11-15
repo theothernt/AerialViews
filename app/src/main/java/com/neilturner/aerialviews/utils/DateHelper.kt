@@ -28,8 +28,8 @@ object DateHelper {
                     val today = Calendar.getInstance().time
                     val formatter = SimpleDateFormat(custom, Locale.getDefault())
                     formatter.format(today)
-                } catch (ex: Exception) {
-                    Timber.i("Exception while trying custom date formatting")
+                } catch (e: Exception) {
+                    Timber.e(e)
                     context.resources.getString(R.string.appearance_date_custom_error)
                 }
             }

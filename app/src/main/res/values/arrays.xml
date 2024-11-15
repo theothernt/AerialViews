@@ -133,35 +133,29 @@
   <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
 
   <!-- Playback speed -->
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (default)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
+  <string-array name="playback_speed_entries" translatable="false">
+    <item>0.2x</item>
+    <item>0.4x</item>
+    <item>0.6x</item>
+    <item>0.8x</item>
+    <item>1x </item>
+    <item>1.2x</item>
+    <item>1.4x</item>
+    <item>1.6x</item>
+    <item>1.8x</item>
     <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
   </string-array>
   <string-array name="playback_speed_values" translatable="false">
-    <item>0.25</item>
-    <item>0.5</item>
-    <item>0.75</item>
+    <item>0.2</item>
+    <item>0.4</item>
+    <item>0.6</item>
+    <item>0.8</item>
     <item>1</item>
-    <item>1.25</item>
-    <item>1.5</item>
-    <item>1.75</item>
+    <item>1.2</item>
+    <item>1.4</item>
+    <item>1.6</item>
+    <item>1.8</item>
     <item>2</item>
-    <item>2.5</item>
-    <item>3</item>
-    <item>3.5</item>
-    <item>4</item>
-    <item>5</item>
   </string-array>
   <string name="playback_speed_default" translatable="false">1</string>
 
@@ -597,9 +591,51 @@
     <item>95</item>
     <item>100</item>
   </string-array>
-  <string name="progress_bar_default" translatable="false">100</string>
+
+  <!-- Percentage list 2 -->
+  <string-array name="percentage2_entries" translatable="false">
+    <item>5%</item>
+    <item>10%</item>
+    <item>15%</item>
+    <item>20%</item>
+    <item>25%</item>
+    <item>30%</item>
+    <item>35%</item>
+    <item>40%</item>
+    <item>45%</item>
+    <item>50%</item>
+    <item>55%</item>
+    <item>60%</item>
+    <item>65%</item>
+    <item>70%</item>
+    <item>75%</item>
+    <item>80%</item>
+    <item>85%</item>
+    <item>95%</item>
+  </string-array>
+  <string-array name="percentage2_values" translatable="false">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+    <item>55</item>
+    <item>60</item>
+    <item>65</item>
+    <item>70</item>
+    <item>75</item>
+    <item>80</item>
+    <item>85</item>
+    <item>95</item>
+  </string-array>
   <string name="brightness_default" translatable="false">100</string>
   <string name="volume_default" translatable="false">100</string>
+  <string name="random_start_position_range_default" translatable="false">50</string>
 
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">
@@ -625,4 +661,5 @@
     <item>PHOTOS</item>
   </string-array>
   <string name="progress_bar_type_default" translatable="false">BOTH</string>
+
 </resources>
