@@ -105,8 +105,9 @@ class ScreenController(
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
 
-            val alpha = abs(GeneralPrefs.progressBarOpacity.toFloat() / 100)
+            val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
             binding.progressBar.alpha = alpha
+            Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
 
             binding.progressBar.visibility = View.VISIBLE
         }
