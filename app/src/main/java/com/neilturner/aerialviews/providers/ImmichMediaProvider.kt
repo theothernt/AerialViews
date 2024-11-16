@@ -14,8 +14,9 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.toStringOrEmpty
-import okhttp3.OkHttpClient
+import com.neilturner.aerialviews.utils.ServerConfig
+import com.neilturner.aerialviews.utils.SslHelper
+import com.neilturner.aerialviews.utils.UrlParser
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,13 +25,6 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import timber.log.Timber
-import java.security.KeyStore
-import java.security.cert.CertificateException
-import java.security.cert.X509Certificate
-import javax.net.ssl.SSLContext
-import javax.net.ssl.SSLHandshakeException
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
 
 
 class ImmichMediaProvider(
@@ -46,9 +40,8 @@ class ImmichMediaProvider(
     private lateinit var apiInterface: ImmichService
 
     init {
-        parsePrefs()
         if (enabled) {
-            getApiInterface()
+            setupApiInterface()
         }
     }
 
@@ -69,43 +62,13 @@ class ImmichMediaProvider(
         ): Response<Album>
     }
 
-    private fun parsePrefs() {
-        server = prefs.scheme?.toStringOrEmpty()?.lowercase() + "://" + prefs.hostName
-    }
-
-    private fun getApiInterface() {
-        val standardTrustManager = getTrustManager(false)
-        val permissiveTrustManager = getTrustManager(true)
-
-        val standardSslSocketFactory = SSLContext.getInstance("TLS").apply {
-            init(null, arrayOf(standardTrustManager), null)
-        }.socketFactory
-
-        val permissiveSslSocketFactory = SSLContext.getInstance("TLS").apply {
-            init(null, arrayOf(permissiveTrustManager), null)
-        }.socketFactory
-
-        val okHttpClientBuilder = OkHttpClient.Builder()
-            .sslSocketFactory(standardSslSocketFactory, standardTrustManager)
-            .addInterceptor { chain ->
-                try {
-                    chain.proceed(chain.request())
-                } catch (e: SSLHandshakeException) {
-                    Timber.w("SSL Handshake failed with standard trust manager, attempting with permissive trust manager")
-
-                    val permissiveClientBuilder = OkHttpClient.Builder()
-                        .sslSocketFactory(permissiveSslSocketFactory, permissiveTrustManager)
-                        .hostnameVerifier { _, _ -> true }
-
-                    val permissiveClient = permissiveClientBuilder.build()
-                    permissiveClient.newCall(chain.request()).execute()
-                }
-            }
-
-        val okHttpClient = okHttpClientBuilder.build()
-
-        Timber.i("Connecting to $server")
+    private fun setupApiInterface() {
         try {
+            server = UrlParser.parseServerUrl(prefs.url)
+            val serverConfig = ServerConfig(server, prefs.validateSsl)
+            val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
+
+            Timber.i("Connecting to $server")
             apiInterface = Retrofit.Builder()
                 .baseUrl(server)
                 .client(okHttpClient)
@@ -118,36 +81,11 @@ class ImmichMediaProvider(
         }
     }
 
-    private fun getTrustManager(permissive: Boolean): X509TrustManager {
-        return if (permissive) {
-            object : X509TrustManager {
-                override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
-                override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-                    try {
-                        chain?.get(0)?.checkValidity()
-                    } catch (e: Exception) {
-                        throw CertificateException("Certificate not valid.")
-                    }
-                }
-                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            }
-        } else {
-            try {
-                val trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-                trustManagerFactory.init(null as KeyStore?)
-                trustManagerFactory.trustManagers.first { it is X509TrustManager } as X509TrustManager
-            } catch (e: Exception) {
-                Timber.e(e, "Error getting default trust manager")
-                throw e
-            }
-        }
-    }
-
-
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
+
     override suspend fun fetchTest(): String {
-        if (prefs.hostName.isEmpty()) {
-            return "Hostname and port not specified"
+        if (prefs.url.isEmpty()) {
+            return "Server URL not specified"
         }
 
         return try {
@@ -187,7 +125,7 @@ class ImmichMediaProvider(
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
 
-        if (prefs.hostName.isEmpty()) {
+        if (prefs.url.isEmpty()) {
             return Pair(media, "Hostname and port not specified")
         }
 
@@ -208,7 +146,6 @@ class ImmichMediaProvider(
 
         immichMedia.assets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
-            val filename = Uri.parse(asset.originalPath)
             val poi = mutableMapOf<Int, String>()
 
             val description = asset.exifInfo?.description.toString()

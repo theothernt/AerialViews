@@ -20,23 +20,20 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_authentication">
-                <ListPreference
-                    app:dependency="immich_media_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@string/http_scheme_default"
-                    app:entries="@array/http_scheme_entries"
-                    app:entryValues="@array/http_scheme_values"
-                    app:key="immich_media_scheme"
-                    app:title="@string/immich_media_scheme_title"
-                    app:useSimpleSummaryProvider="true" />
 
                 <EditTextPreference
                     app:dependency="immich_media_enabled"
-                    app:disableDependentsState="false"
-                    android:selectAllOnFocus="true"
-                    android:summary="@string/immich_media_hostname_summary"
-                    android:key="immich_media_hostname"
-                    android:title="@string/immich_media_hostname_title" />
+                    app:key="immich_media_url"
+                    app:title="@string/immich_media_url_title"
+                    app:summary="@string/immich_media_url_summary"
+                    android:selectAllOnFocus="true" />
+
+                <SwitchPreference
+                    app:dependency="immich_media_enabled"
+                    app:key="immich_media_validate_ssl"
+                    app:title="@string/immich_media_validate_ssl_title"
+                    app:summary="@string/immich_media_validate_ssl_summary"
+                    app:defaultValue="true" />
 
                 <ListPreference
                     app:dependency="immich_media_enabled"

@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.immich.Album
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.providers.ImmichMediaProvider
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -22,25 +23,25 @@ class ImmichVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private lateinit var urlPreference: EditTextPreference
     private lateinit var authTypePreference: ListPreference
-    private lateinit var hostnamePreference: EditTextPreference
-    private lateinit var schemePreference: ListPreference
-    private lateinit var pathnamePreference: EditTextPreference
+    private lateinit var validateSslPreference: Preference
     private lateinit var passwordPreference: EditTextPreference
     private lateinit var apiKeyPreference: EditTextPreference
     private lateinit var selectAlbumPreference: Preference
+    private lateinit var pathnamePreference: EditTextPreference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.sources_immich_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        urlPreference = findPreference("immich_media_url")!!
         authTypePreference = findPreference("immich_media_auth_type")!!
-        hostnamePreference = findPreference("immich_media_hostname")!!
-        schemePreference = findPreference("immich_media_scheme")!!
-        pathnamePreference = findPreference("immich_media_pathname")!!
+        validateSslPreference = findPreference("immich_media_validate_ssl")!!
         passwordPreference = findPreference("immich_media_password")!!
         apiKeyPreference = findPreference("immich_media_api_key")!!
         selectAlbumPreference = findPreference("immich_media_select_album")!!
+        pathnamePreference = findPreference("immich_media_pathname")!!
 
         limitTextInput()
         updateAuthTypeVisibility()
@@ -62,6 +63,19 @@ class ImmichVideosFragment :
     }
 
     private fun setupPreferenceClickListeners() {
+        urlPreference.setOnPreferenceChangeListener { _, newValue ->
+            try {
+                UrlParser.parseServerUrl(newValue.toString())
+                true
+            } catch (e: IllegalArgumentException) {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(getString(R.string.immich_media_url_invalid))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .show()
+                false
+            }
+        }
+
         findPreference<Preference>("immich_media_test_connection")?.setOnPreferenceClickListener {
             lifecycleScope.launch { testImmichConnection() }
             true
@@ -73,28 +87,17 @@ class ImmichVideosFragment :
         }
     }
 
+
     private fun updateSummary() {
-        updateHostnameSummary()
-        updatePathnameSummary()
+        urlPreference.summary = if (urlPreference.text.isNullOrEmpty()) {
+            getString(R.string.immich_media_url_summary)
+        } else {
+            urlPreference.text
+        }
+
         updatePasswordSummary()
         updateApiKeySummary()
         updateSelectedAlbumSummary()
-    }
-
-    private fun updateHostnameSummary() {
-        hostnamePreference.summary = if (hostnamePreference.text.isNullOrEmpty()) {
-            getString(R.string.immich_media_hostname_summary)
-        } else {
-            hostnamePreference.text
-        }
-    }
-
-    private fun updatePathnameSummary() {
-        pathnamePreference.summary = if (pathnamePreference.text.isNullOrEmpty()) {
-            getString(R.string.immich_media_pathname_summary)
-        } else {
-            pathnamePreference.text
-        }
     }
 
     private fun updatePasswordSummary() {
@@ -138,11 +141,9 @@ class ImmichVideosFragment :
             }
         }
     }
-
     private fun limitTextInput() {
         listOf(
-            "immich_media_hostname",
-            "immich_media_pathname",
+            "immich_media_url",
             "immich_media_password",
             "immich_media_api_key"
         ).forEach { key ->
@@ -161,20 +162,29 @@ class ImmichVideosFragment :
         provider.fetchAlbums().fold(
             onSuccess = { albums ->
                 if (albums.isEmpty()) {
-                    showErrorDialog(getString(R.string.immich_media_no_albums), getString(R.string.immich_media_no_albums_message))
+                    showErrorDialog(
+                        getString(R.string.immich_media_no_albums),
+                        getString(R.string.immich_media_no_albums_message)
+                    )
                 } else {
                     showAlbumSelectionDialog(albums)
                 }
             },
-            onFailure = { error ->
-                showErrorDialog(getString(R.string.immich_media_fetch_albums_error), error.message ?: getString(R.string.immich_media_unknown_error))
+            onFailure = { exception ->
+                showErrorDialog(
+                    getString(R.string.immich_media_fetch_albums_error),
+                    exception.message ?: getString(R.string.immich_media_unknown_error)
+                )
             }
         )
     }
 
     private suspend fun showAlbumSelectionDialog(albums: List<Album>) = withContext(Dispatchers.Main) {
         if (albums.isEmpty()) {
-            showErrorDialog(getString(R.string.immich_media_no_albums), getString(R.string.immich_media_no_albums_message))
+            showErrorDialog(
+                getString(R.string.immich_media_no_albums),
+                getString(R.string.immich_media_no_albums_message)
+            )
             return@withContext
         }
 
@@ -201,15 +211,12 @@ class ImmichVideosFragment :
             .show()
     }
 
-    private suspend fun showDialog(
-        title: String,
-        message: String,
-    ) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton(R.string.button_ok, null)
-            create().show()
-        }
+    private suspend fun showDialog(title: String, message: String) = withContext(Dispatchers.Main) {
+        AlertDialog.Builder(requireContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(R.string.button_ok, null)
+            .create()
+            .show()
     }
 }
