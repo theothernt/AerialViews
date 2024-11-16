@@ -90,6 +90,11 @@ class NowPlayingService(
         metadata?.let {
             val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
             val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
+
+            // Metadata bundle can little or no entries
+            if (song.isNullOrEmpty() || artist.isNullOrEmpty()) {
+                return
+            }
             music = MusicEvent(artist, song)
         }
 

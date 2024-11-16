@@ -19,11 +19,15 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +36,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.security.KeyStore
 import java.security.cert.CertificateException
@@ -41,18 +46,22 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.SSLHandshakeException
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
+import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView :
     AppCompatImageView,
     EventListener {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    private val progressBar =
+        GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
     private val imageLoader: ImageLoader by lazy {
         ImageLoader.Builder(context)
@@ -147,6 +156,7 @@ class ImagePlayerView :
             try {
                 ScaleType.valueOf(GeneralPrefs.photoScale.toString())
             } catch (e: Exception) {
+                Timber.e(e)
                 GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
                 ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
             }
@@ -282,9 +292,11 @@ class ImagePlayerView :
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
         listener?.onImagePrepared()
-        // Add fade in/out times?
-        val delay = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
         postDelayed(finishedRunnable, delay)
+        if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
     }
 
     private fun onPlayerError() {

@@ -1,9 +1,13 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.provider.Settings
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -14,12 +18,15 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
@@ -29,6 +36,7 @@ import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -96,6 +104,17 @@ class ScreenController(
         imagePlayer.setOnPlayerListener(this)
         imageViewBinding.root.setBackgroundColor(Color.BLACK)
 
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
+            (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
+
+            val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
+            binding.progressBar.alpha = alpha
+            Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
+
+            binding.progressBar.visibility = View.VISIBLE
+        }
+
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
                 textSize = GeneralPrefs.loadingTextSize.toFloat()
@@ -125,6 +144,29 @@ class ScreenController(
         if (GeneralPrefs.showBottomGradient) {
             overlayViewBinding.gradientBottom.visibility = View.VISIBLE
         }
+
+        // Get duration scale from the global settings.
+        var durationScale =
+            Settings.Global.getFloat(
+                context.contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                0f,
+            )
+
+        // If global duration scale is not 1 (default), try to override it
+        // for the current application.
+        if (durationScale != 1f) {
+            try {
+                ValueAnimator::class.java.getMethod("setDurationScale", Float::class.java).invoke(null, 1f)
+                durationScale = 1f
+            } catch (t: Throwable) {
+                // It means something bad happened, and animations are still
+                // altered by the global settings. You should warn the user and
+                // exit application.
+            }
+        }
+
+        Timber.i("Duration scale: $durationScale")
 
         coroutineScope.launch {
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
@@ -200,6 +242,11 @@ class ScreenController(
             imagePlayer.setImage(media)
             imageViewBinding.root.visibility = View.VISIBLE
             videoViewBinding.root.visibility = View.INVISIBLE
+        }
+
+        // Best to rest progress bar (if enabled) before media playback
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         }
 
         videoPlayer.start()
