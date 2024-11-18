@@ -24,5 +24,13 @@
                     app:key="wake_on_any_button_press"
                     app:summary="@string/playlist_wake_on_any_button_press_summary"
                     app:title="@string/playlist_wake_on_any_button_press_title" />
+
+                <ListPreference
+                    app:entries="@array/video_seek_interval_entries"
+                    app:entryValues="@array/video_seek_interval_values"
+                    app:defaultValue="@string/video_seek_interval_default"
+                    app:key="video_seek_interval"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_video_seek_interval_title" />
         </PreferenceCategory>
 </PreferenceScreen>

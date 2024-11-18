@@ -667,4 +667,19 @@
   </string-array>
   <string name="progress_bar_type_default" translatable="false">BOTH</string>
 
+  <!-- Video seeking -->
+  <string-array name="video_seek_interval_entries">
+    <item>10 seconds</item>
+    <item>20 seconds</item>
+    <item>30 seconds</item>
+    <item>1 minute</item>
+  </string-array>
+  <string-array name="video_seek_interval_values" translatable="false">
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>60</item>
+  </string-array>
+  <string name="video_seek_interval_default" translatable="false">10</string>
+
 </resources>

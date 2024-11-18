@@ -482,6 +482,14 @@
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
+  <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or photo</string>
+  <string name="playlist_allow_video_skipping_summary">Skip a video or photo by pressing left or right on the d-pad of your remote</string>
+
+  <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
+  <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
+
+  <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+
   <!-- Main / Settings / D-Pad/Remote -->
   <string name="dpad_button_press_title">D-pad or button press</string>
   <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
@@ -495,19 +503,15 @@
   <string name="dpad_button_down_title">Down direction</string>
   <string name="dpad_button_ok_title">OK button</string>
 
-  <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or photo</string>
-  <string name="playlist_allow_video_skipping_summary">Skip a video or photo by pressing left or right on the d-pad of your remote</string>
-
-  <string name="playlist_allow_playback_speed_change_title">Allow speed change during playback</string>
-  <string name="playlist_allow_playback_speed_change_summary">Change the speed of the video by pressing up or down on the d-pad of your remote</string>
-
-  <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
-
+  <!-- Should be dpad -->
   <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
   <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
+  <!-- Should be dpad -->
   <string name="playlist_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
   <string name="playlist_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
+
+  <string name="dpad_video_seek_interval_title">Choose an interval for seeking backwards and forwards in a video</string>
 
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>
