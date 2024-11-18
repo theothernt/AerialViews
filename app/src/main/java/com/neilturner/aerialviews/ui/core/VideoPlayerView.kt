@@ -192,9 +192,9 @@ class VideoPlayerView
             Timber.i("Seeking to $position/$interval (backward: $backward)")
 
             if (backward) {
-                //exoPlayer.seekTo(position - interval)
+                exoPlayer.seekTo(position - interval)
             } else {
-                //exoPlayer.seekTo(position + interval)
+                exoPlayer.seekTo(position + interval)
             }
         }
 
