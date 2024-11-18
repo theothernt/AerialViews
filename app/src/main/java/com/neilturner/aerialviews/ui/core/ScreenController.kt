@@ -359,6 +359,7 @@ class ScreenController(
             }.start()
     }
 
+    // region Actions
     fun showOverlays() {
         // Overlay auto hide pref must be enabled
         if (autoHideOverlayDelay < 0) return
@@ -418,6 +419,15 @@ class ScreenController(
         }
         videoPlayer.decreaseSpeed()
     }
+
+    fun seekVideo(backward: Boolean = false) {
+        if (backward) {
+            videoPlayer.seekBackward()
+        } else {
+            videoPlayer.seekForward()
+        }
+    }
+    // endregion
 
     private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {

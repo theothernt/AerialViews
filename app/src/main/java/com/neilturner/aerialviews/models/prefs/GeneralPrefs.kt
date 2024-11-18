@@ -147,7 +147,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
-    var videoSeekInterval by stringPref("10", "video_seek_interval")
+    var seekInterval by stringPref("10", "seek_interval")
 
     // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")

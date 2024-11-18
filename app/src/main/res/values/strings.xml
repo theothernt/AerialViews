@@ -511,7 +511,7 @@
   <string name="playlist_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
   <string name="playlist_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
 
-  <string name="dpad_video_seek_interval_title">Choose an interval for seeking backwards and forwards in a video</string>
+  <string name="dpad_seek_interval_title">Choose an interval for seeking backwards and forwards in a video</string>
 
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>

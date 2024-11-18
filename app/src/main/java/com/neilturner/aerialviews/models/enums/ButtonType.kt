@@ -9,6 +9,8 @@ enum class ButtonType {
     SKIP_PREVIOUS,
     SPEED_INCREASE,
     SPEED_DECREASE,
+    SEEK_FORWARD,
+    SEEK_BACKWARD,
     SHOW_OVERLAYS,
     BLACK_OUT_MODE,
 }

@@ -177,9 +177,12 @@ object InputHelper {
             return false
         }
 
+        // If black out mode is active, should ignore all other actions?
+
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
             when (action) {
-                // Prepare for fast forward/rewind
+                ButtonType.SEEK_FORWARD -> controller?.seekVideo()
+                ButtonType.SEEK_BACKWARD -> controller?.seekVideo(true)
                 else -> exit()
             }
         } else {
