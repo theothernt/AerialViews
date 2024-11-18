@@ -5,13 +5,12 @@ import android.net.Uri
 import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import coil.EventListener
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
-import coil.request.ErrorResult
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import coil3.ImageLoader
+import coil3.gif.AnimatedImageDecoder
+import coil3.gif.GifDecoder
+import coil3.request.ErrorResult
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -40,7 +39,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView :
     AppCompatImageView,
-    EventListener {
+    ImageRequest.Listener {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -56,10 +55,10 @@ class ImagePlayerView :
     private var imageLoader: ImageLoader =
         ImageLoader
             .Builder(context)
-            .eventListener(this)
+            //.eventListener(this)
             .components {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    add(ImageDecoderDecoder.Factory())
+                    add(AnimatedImageDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())
                 }
@@ -116,7 +115,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(this)
+                //.target(this)
         request.data(uri)
         imageLoader.execute(request.build())
     }
@@ -125,7 +124,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(this)
+                //.target(this)
 
         try {
             val byteArray = byteArrayFromSambaFile(uri)
@@ -143,7 +142,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(this)
+                //.target(this)
 
         try {
             val byteArray = byteArrayFromWebDavFile(uri)
