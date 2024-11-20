@@ -248,7 +248,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
             val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
-            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, exoPlayer.currentPosition, delay))
             postDelayed(almostFinishedRunnable, delay)
         }
 
