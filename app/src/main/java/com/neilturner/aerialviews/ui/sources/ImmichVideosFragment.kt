@@ -23,7 +23,6 @@ import timber.log.Timber
 class ImmichVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
     private lateinit var urlPreference: EditTextPreference
     private lateinit var authTypePreference: ListPreference
     private lateinit var validateSslPreference: Preference
@@ -32,7 +31,10 @@ class ImmichVideosFragment :
     private lateinit var selectAlbumPreference: Preference
     private lateinit var pathnamePreference: EditTextPreference
 
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+    override fun onCreatePreferences(
+        savedInstanceState: Bundle?,
+        rootKey: String?,
+    ) {
         setPreferencesFromResource(R.xml.sources_immich_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
@@ -56,7 +58,10 @@ class ImmichVideosFragment :
         super.onDestroy()
     }
 
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
         updateSummary()
         if (key == "immich_media_auth_type") {
             updateAuthTypeVisibility()
@@ -69,7 +74,8 @@ class ImmichVideosFragment :
                 UrlParser.parseServerUrl(newValue.toString())
                 true
             } catch (e: IllegalArgumentException) {
-                AlertDialog.Builder(requireContext())
+                AlertDialog
+                    .Builder(requireContext())
                     .setMessage(getString(R.string.immich_media_url_invalid))
                     .setPositiveButton(R.string.button_ok, null)
                     .show()
@@ -88,13 +94,13 @@ class ImmichVideosFragment :
         }
     }
 
-
     private fun updateSummary() {
-        urlPreference.summary = if (urlPreference.text.isNullOrEmpty()) {
-            getString(R.string.immich_media_url_summary)
-        } else {
-            urlPreference.text
-        }
+        urlPreference.summary =
+            if (urlPreference.text.isNullOrEmpty()) {
+                getString(R.string.immich_media_url_summary)
+            } else {
+                urlPreference.text
+            }
 
         updatePasswordSummary()
         updateApiKeySummary()
@@ -102,27 +108,30 @@ class ImmichVideosFragment :
     }
 
     private fun updatePasswordSummary() {
-        passwordPreference.summary = if (passwordPreference.text.isNullOrEmpty()) {
-            getString(R.string.immich_media_password_summary)
-        } else {
-            "*".repeat(passwordPreference.text!!.length)
-        }
+        passwordPreference.summary =
+            if (passwordPreference.text.isNullOrEmpty()) {
+                getString(R.string.immich_media_password_summary)
+            } else {
+                "*".repeat(passwordPreference.text!!.length)
+            }
     }
 
     private fun updateApiKeySummary() {
-        apiKeyPreference.summary = if (apiKeyPreference.text.isNullOrEmpty()) {
-            getString(R.string.immich_media_api_key_summary)
-        } else {
-            "*".repeat(apiKeyPreference.text!!.length)
-        }
+        apiKeyPreference.summary =
+            if (apiKeyPreference.text.isNullOrEmpty()) {
+                getString(R.string.immich_media_api_key_summary)
+            } else {
+                "*".repeat(apiKeyPreference.text!!.length)
+            }
     }
 
     private fun updateSelectedAlbumSummary() {
-        selectAlbumPreference.summary = if (ImmichMediaPrefs.selectedAlbumId.isEmpty()) {
-            getString(R.string.immich_media_select_album_summary)
-        } else {
-            getString(R.string.immich_media_selected_album, ImmichMediaPrefs.selectedAlbumName)
-        }
+        selectAlbumPreference.summary =
+            if (ImmichMediaPrefs.selectedAlbumId.isEmpty()) {
+                getString(R.string.immich_media_select_album_summary)
+            } else {
+                getString(R.string.immich_media_selected_album, ImmichMediaPrefs.selectedAlbumName)
+            }
     }
 
     private fun updateAuthTypeVisibility() {
@@ -142,66 +151,72 @@ class ImmichVideosFragment :
             }
         }
     }
+
     private fun limitTextInput() {
         listOf(
             "immich_media_url",
             "immich_media_password",
-            "immich_media_api_key"
+            "immich_media_api_key",
         ).forEach { key ->
             findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
         }
     }
 
-    private suspend fun testImmichConnection() = withContext(Dispatchers.IO) {
-        val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-        val result = provider.fetchTest()
+    private suspend fun testImmichConnection() =
+        withContext(Dispatchers.IO) {
+            val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
+            val result = provider.fetchTest()
 
-        DialogHelper.show(requireContext(), getString(R.string.immich_media_test_results), result)
-    }
+            DialogHelper.show(requireContext(), getString(R.string.immich_media_test_results), result)
+        }
 
     private suspend fun selectAlbum() {
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
         provider.fetchAlbums().fold(
             onSuccess = { albums ->
                 if (albums.isEmpty()) {
-                    DialogHelper.show(requireContext(),
+                    DialogHelper.show(
+                        requireContext(),
                         getString(R.string.immich_media_no_albums),
-                        getString(R.string.immich_media_no_albums_message)
+                        getString(R.string.immich_media_no_albums_message),
                     )
                 } else {
                     showAlbumSelectionDialog(albums)
                 }
             },
             onFailure = { exception ->
-                DialogHelper.show(requireContext(),
+                DialogHelper.show(
+                    requireContext(),
                     getString(R.string.immich_media_fetch_albums_error),
-                    exception.message ?: getString(R.string.immich_media_unknown_error)
+                    exception.message ?: getString(R.string.immich_media_unknown_error),
                 )
-            }
+            },
         )
     }
 
-    private suspend fun showAlbumSelectionDialog(albums: List<Album>) = withContext(Dispatchers.Main) {
-        if (albums.isEmpty()) {
-            DialogHelper.show(requireContext(),
-                getString(R.string.immich_media_no_albums),
-                getString(R.string.immich_media_no_albums_message)
-            )
-            return@withContext
-        }
-
-        Timber.d("Showing album selection dialog with ${albums.size} albums")
-        val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(R.string.immich_media_select_album)
-            setSingleChoiceItems(albumNames, -1) { dialog, which ->
-                ImmichMediaPrefs.selectedAlbumId = albums[which].id
-                ImmichMediaPrefs.selectedAlbumName = albums[which].name
-                dialog.dismiss()
-                updateSummary()
+    private suspend fun showAlbumSelectionDialog(albums: List<Album>) =
+        withContext(Dispatchers.Main) {
+            if (albums.isEmpty()) {
+                DialogHelper.show(
+                    requireContext(),
+                    getString(R.string.immich_media_no_albums),
+                    getString(R.string.immich_media_no_albums_message),
+                )
+                return@withContext
             }
-            setNegativeButton(R.string.button_cancel, null)
-            create().show()
+
+            Timber.d("Showing album selection dialog with ${albums.size} albums")
+            val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
+            AlertDialog.Builder(requireContext()).apply {
+                setTitle(R.string.immich_media_select_album)
+                setSingleChoiceItems(albumNames, -1) { dialog, which ->
+                    ImmichMediaPrefs.selectedAlbumId = albums[which].id
+                    ImmichMediaPrefs.selectedAlbumName = albums[which].name
+                    dialog.dismiss()
+                    updateSummary()
+                }
+                setNegativeButton(R.string.button_cancel, null)
+                create().show()
+            }
         }
-    }
 }

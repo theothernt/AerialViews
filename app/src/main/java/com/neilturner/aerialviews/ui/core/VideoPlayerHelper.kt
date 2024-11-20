@@ -113,15 +113,17 @@ object VideoPlayerHelper {
                 player.setMediaSource(mediaSource)
             }
             AerialMediaSource.IMMICH -> {
-                val dataSourceFactory = DefaultHttpDataSource.Factory()
-                    .setAllowCrossProtocolRedirects(true)
-                    .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-                    .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                val dataSourceFactory =
+                    DefaultHttpDataSource
+                        .Factory()
+                        .setAllowCrossProtocolRedirects(true)
+                        .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                        .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
 
                 // Add necessary headers for Immich
                 if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
                     dataSourceFactory.setDefaultRequestProperties(
-                        mapOf("X-API-Key" to ImmichMediaPrefs.apiKey)
+                        mapOf("X-API-Key" to ImmichMediaPrefs.apiKey),
                     )
                 }
 
@@ -130,8 +132,10 @@ object VideoPlayerHelper {
                     System.setProperty("javax.net.ssl.trustAll", "true")
                 }
 
-                val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(mediaItem)
+                val mediaSource =
+                    ProgressiveMediaSource
+                        .Factory(dataSourceFactory)
+                        .createMediaSource(mediaItem)
 
                 player.setMediaSource(mediaSource)
                 Timber.d("Setting up Immich media source with URI: ${media.uri}")

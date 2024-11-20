@@ -36,9 +36,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.kosert.flowbus.GlobalBus
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.util.EnumSet
 import kotlin.time.Duration.Companion.milliseconds
@@ -59,7 +59,8 @@ class ImagePlayerView :
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
     private val imageLoader: ImageLoader by lazy {
-        ImageLoader.Builder(context)
+        ImageLoader
+            .Builder(context)
             .eventListener(this)
             .components {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
@@ -67,17 +68,16 @@ class ImagePlayerView :
                 } else {
                     add(GifDecoder.Factory())
                 }
-            }
-            .okHttpClient {
+            }.okHttpClient {
                 buildOkHttpClient()
-            }
-            .build()
+            }.build()
     }
 
     private fun buildOkHttpClient(): OkHttpClient {
         val serverConfig = ServerConfig("", ImmichMediaPrefs.validateSsl)
         val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
-        return okHttpClient.newBuilder()
+        return okHttpClient
+            .newBuilder()
             .addInterceptor(ApiKeyInterceptor())
             .build()
     }
@@ -85,14 +85,16 @@ class ImagePlayerView :
     private class ApiKeyInterceptor : Interceptor {
         override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
             val originalRequest = chain.request()
-            val newRequest = when (ImmichMediaPrefs.authType) {
-                ImmichAuthType.API_KEY -> {
-                    originalRequest.newBuilder()
-                        .addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
-                        .build()
+            val newRequest =
+                when (ImmichMediaPrefs.authType) {
+                    ImmichAuthType.API_KEY -> {
+                        originalRequest
+                            .newBuilder()
+                            .addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                            .build()
+                    }
+                    else -> originalRequest
                 }
-                else -> originalRequest
-            }
             return chain.proceed(newRequest)
         }
     }
@@ -143,19 +145,23 @@ class ImagePlayerView :
             }
         }
 
-        val request = ImageRequest.Builder(context)
-            .data(media.uri)
-            .target(this)
-            .build()
+        val request =
+            ImageRequest
+                .Builder(context)
+                .data(media.uri)
+                .target(this)
+                .build()
 
         imageLoader.enqueue(request)
     }
 
     private suspend fun loadImage(uri: Uri) {
-        val request = ImageRequest.Builder(context)
-            .data(uri)
-            .target(this)
-            .build()
+        val request =
+            ImageRequest
+                .Builder(context)
+                .data(uri)
+                .target(this)
+                .build()
         imageLoader.execute(request)
     }
 

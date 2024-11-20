@@ -29,8 +29,9 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import timber.log.Timber
 
-class MediaService(val context: Context) {
-
+class MediaService(
+    val context: Context,
+) {
     private val providers = mutableListOf<MediaProvider>()
 
     init {
@@ -58,12 +59,14 @@ class MediaService(val context: Context) {
 
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
-            media = media.distinctBy {
-                when (it.source) {
-                    AerialMediaSource.IMMICH -> it.uri.toString()
-                    else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
-                }
-            }.toMutableList()
+            media =
+                media
+                    .distinctBy {
+                        when (it.source) {
+                            AerialMediaSource.IMMICH -> it.uri.toString()
+                            else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
+                        }
+                    }.toMutableList()
             Timber.i("Duplicate videos removed: ${numVideos - media.size}")
         }
 
@@ -99,7 +102,7 @@ class MediaService(val context: Context) {
     private suspend fun addMetadataToManifestVideos(
         media: List<AerialMedia>,
         providers: List<MediaProvider>,
-        description: DescriptionManifestType
+        description: DescriptionManifestType,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = mutableListOf<VideoMetadata>()
         val matched = mutableListOf<AerialMedia>()
@@ -133,7 +136,7 @@ class MediaService(val context: Context) {
 
     private fun addFilenameAsDescriptionToMedia(
         media: List<AerialMedia>,
-        description: DescriptionFilenameType
+        description: DescriptionFilenameType,
     ): List<AerialMedia> {
         when (description) {
             DescriptionFilenameType.FILENAME -> {

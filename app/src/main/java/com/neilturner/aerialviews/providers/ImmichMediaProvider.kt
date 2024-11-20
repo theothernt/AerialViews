@@ -1,4 +1,5 @@
 package com.neilturner.aerialviews.providers
+
 import android.content.Context
 import android.net.Uri
 import com.google.gson.Gson
@@ -26,12 +27,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import timber.log.Timber
 
-
 class ImmichMediaProvider(
     context: Context,
     private val prefs: ImmichMediaPrefs,
 ) : MediaProvider(context) {
-
     override val type = ProviderSourceType.REMOTE
     override val enabled: Boolean
         get() = prefs.enabled
@@ -46,9 +45,11 @@ class ImmichMediaProvider(
     }
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
+    // If auth_type, return result1 or result2
 
     override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
+    // If auth_type, return test1 or test2
     override suspend fun fetchTest(): String {
         if (prefs.url.isEmpty()) {
             return "Server URL not specified"
@@ -79,16 +80,17 @@ class ImmichMediaProvider(
             return Pair(media, "Hostname and port not specified")
         }
 
-        val immichMedia = try {
-            when (prefs.authType) {
-                ImmichAuthType.SHARED_LINK -> getSharedAlbumFromAPI()
-                ImmichAuthType.API_KEY -> getSelectedAlbumFromAPI()
-                null -> return Pair(emptyList(), "Invalid authentication type")
+        val immichMedia =
+            try {
+                when (prefs.authType) {
+                    ImmichAuthType.SHARED_LINK -> getSharedAlbumFromAPI()
+                    ImmichAuthType.API_KEY -> getSelectedAlbumFromAPI()
+                    null -> return Pair(emptyList(), "Invalid authentication type")
+                }
+            } catch (e: Exception) {
+                Timber.e(e, e.message.toString())
+                return Pair(emptyList(), e.message.toString())
             }
-        } catch (e: Exception) {
-            Timber.e(e, e.message.toString())
-            return Pair(emptyList(), e.message.toString())
-        }
 
         var excluded = 0
         var videos = 0
@@ -138,24 +140,25 @@ class ImmichMediaProvider(
             }
         }
 
-        var message = String.format(
-            context.getString(R.string.immich_media_test_summary1),
-            media.size.toString()
-        ) + "\n"
+        var message =
+            String.format(
+                context.getString(R.string.immich_media_test_summary1),
+                media.size.toString(),
+            ) + "\n"
         message += String.format(
             context.getString(R.string.immich_media_test_summary2),
-            excluded.toString()
+            excluded.toString(),
         ) + "\n"
         if (prefs.mediaType != ProviderMediaType.PHOTOS) {
             message += String.format(
                 context.getString(R.string.immich_media_test_summary3),
-                videos.toString()
+                videos.toString(),
             ) + "\n"
         }
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
             message += String.format(
                 context.getString(R.string.immich_media_test_summary4),
-                images.toString()
+                images.toString(),
             ) + "\n"
         }
 
@@ -163,26 +166,29 @@ class ImmichMediaProvider(
         return Pair(media, message)
     }
 
-    private fun handleResponse(response: Response<*>, successMessage: String): String {
-        return if (response.isSuccessful) {
+    private fun handleResponse(
+        response: Response<*>,
+        successMessage: String,
+    ): String =
+        if (response.isSuccessful) {
             successMessage
         } else {
             val errorBody = response.errorBody()?.string()
-            val errorMessage = try {
-                Gson().fromJson(errorBody, ErrorResponse::class.java).message
-            } catch (e: Exception) {
-                response.message()
-            }
+            val errorMessage =
+                try {
+                    Gson().fromJson(errorBody, ErrorResponse::class.java).message
+                } catch (e: Exception) {
+                    response.message()
+                }
             "Error ${response.code()} - $errorMessage"
         }
-    }
 
     private suspend fun getSharedAlbumFromAPI(): Album {
         try {
             val cleanedKey = cleanSharedLinkKey(prefs.pathName)
             Timber.d("Fetching shared album with key: $cleanedKey")
             val response = apiInterface.getSharedAlbum(key = cleanedKey, password = prefs.password)
-            Timber.d("Shared album API response: ${response.raw().toString()}")
+            Timber.d("Shared album API response: ${response.raw()}")
             if (response.isSuccessful) {
                 val album = response.body()
                 Timber.d("Shared album fetched successfully: ${album?.toString()}")
@@ -229,24 +235,24 @@ class ImmichMediaProvider(
         }
     }
 
-    suspend fun fetchAlbums(): Result<List<Album>> {
-        return try {
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        try {
             val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
             if (response.isSuccessful) {
                 Result.success(response.body() ?: emptyList())
             } else {
                 val errorBody = response.errorBody()?.string()
-                val errorMessage = try {
-                    Gson().fromJson(errorBody, ErrorResponse::class.java).message
-                } catch (e: Exception) {
-                    response.message()
-                }
+                val errorMessage =
+                    try {
+                        Gson().fromJson(errorBody, ErrorResponse::class.java).message
+                    } catch (e: Exception) {
+                        response.message()
+                    }
                 Result.failure(Exception("${response.code()} - $errorMessage"))
             }
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
 
     private fun setupApiInterface() {
         try {
@@ -255,12 +261,14 @@ class ImmichMediaProvider(
             val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
 
             Timber.i("Connecting to $server")
-            apiInterface = Retrofit.Builder()
-                .baseUrl(server)
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(ImmichService::class.java)
+            apiInterface =
+                Retrofit
+                    .Builder()
+                    .baseUrl(server)
+                    .client(okHttpClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
             throw e
@@ -268,7 +276,8 @@ class ImmichMediaProvider(
     }
 
     private fun cleanSharedLinkKey(input: String): String {
-        return input.trim()
+        return input
+            .trim()
             .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
             .replace(Regex("^share/|^/share/"), "") // Remove "share/" or "/share/" from the beginning
     }
@@ -290,12 +299,14 @@ class ImmichMediaProvider(
         ): Response<Album>
 
         @GET("/api/albums")
-        suspend fun getAlbums(@Header("x-api-key") apiKey: String): Response<List<Album>>
+        suspend fun getAlbums(
+            @Header("x-api-key") apiKey: String,
+        ): Response<List<Album>>
 
         @GET("/api/albums/{id}")
         suspend fun getAlbum(
             @Header("x-api-key") apiKey: String,
-            @Path("id") albumId: String
+            @Path("id") albumId: String,
         ): Response<Album>
     }
 }

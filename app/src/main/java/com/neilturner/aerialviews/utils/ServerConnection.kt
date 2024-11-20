@@ -11,7 +11,7 @@ import javax.net.ssl.X509TrustManager
 
 data class ServerConfig(
     val url: String,
-    val validateCertificates: Boolean = true
+    val validateCertificates: Boolean = true,
 )
 
 object UrlParser {
@@ -23,7 +23,8 @@ object UrlParser {
 
         // Check if the URL starts with a protocol
         if (!processedUrl.startsWith("http://", ignoreCase = true) &&
-            !processedUrl.startsWith("https://", ignoreCase = true)) {
+            !processedUrl.startsWith("https://", ignoreCase = true)
+        ) {
             // If no protocol is specified, prepend http://
             processedUrl = "http://$processedUrl"
         }
@@ -47,16 +48,28 @@ class SslHelper {
         val builder = OkHttpClient.Builder()
 
         if (!config.validateCertificates) {
-            val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
-                override fun checkClientTrusted(chain: Array<out X509Certificate>, authType: String) {}
-                override fun checkServerTrusted(chain: Array<out X509Certificate>, authType: String) {}
-                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
-            })
+            val trustAllCerts =
+                arrayOf<TrustManager>(
+                    object : X509TrustManager {
+                        override fun checkClientTrusted(
+                            chain: Array<out X509Certificate>,
+                            authType: String,
+                        ) {}
+
+                        override fun checkServerTrusted(
+                            chain: Array<out X509Certificate>,
+                            authType: String,
+                        ) {}
+
+                        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                    },
+                )
 
             try {
-                val sslContext = SSLContext.getInstance("TLS").apply {
-                    init(null, trustAllCerts, SecureRandom())
-                }
+                val sslContext =
+                    SSLContext.getInstance("TLS").apply {
+                        init(null, trustAllCerts, SecureRandom())
+                    }
 
                 builder.sslSocketFactory(sslContext.socketFactory, trustAllCerts[0] as X509TrustManager)
                 builder.hostnameVerifier { _, _ -> true }

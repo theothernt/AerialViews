@@ -56,7 +56,8 @@ class SambaVideosFragment :
             ) { isGranted: Boolean ->
                 if (!isGranted) {
                     lifecycleScope.launch {
-                        DialogHelper.show(requireContext(),
+                        DialogHelper.show(
+                            requireContext(),
                             resources.getString(R.string.samba_videos_import_failed),
                             resources.getString(R.string.samba_videos_permission_denied),
                         )
@@ -75,7 +76,8 @@ class SambaVideosFragment :
             ) { isGranted: Boolean ->
                 if (!isGranted) {
                     lifecycleScope.launch {
-                        DialogHelper.show(requireContext(),
+                        DialogHelper.show(
+                            requireContext(),
                             resources.getString(R.string.samba_videos_export_failed),
                             resources.getString(R.string.samba_videos_permission_denied),
                         )
@@ -217,7 +219,8 @@ class SambaVideosFragment :
             val properties = Properties()
 
             if (!file.exists()) {
-                DialogHelper.show(requireContext(),
+                DialogHelper.show(
+                    requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     String.format(resources.getString(R.string.samba_videos_file_not_found), SMB_SETTINGS_FILENAME),
                 )
@@ -230,7 +233,8 @@ class SambaVideosFragment :
                     properties.load(stream)
                 }
             } catch (ex: Exception) {
-                DialogHelper.show(requireContext(),
+                DialogHelper.show(
+                    requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_error_parsing),
                 )
@@ -254,7 +258,8 @@ class SambaVideosFragment :
                 SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
                 SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
             } catch (ex: Exception) {
-                DialogHelper.show(requireContext(),
+                DialogHelper.show(
+                    requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_unable_to_save),
                 )
@@ -281,7 +286,8 @@ class SambaVideosFragment :
                 updateSummary()
             }
 
-            DialogHelper.show(requireContext(),
+            DialogHelper.show(
+                requireContext(),
                 resources.getString(R.string.samba_videos_import_success),
                 String.format(resources.getString(R.string.samba_videos_import_save_success), SMB_SETTINGS_FILENAME),
             )
@@ -311,7 +317,8 @@ class SambaVideosFragment :
                     smbSettings.store(stream, "Aerial Views SMB Settings")
                 }
             } catch (ex: Exception) {
-                DialogHelper.show(requireContext(),
+                DialogHelper.show(
+                    requireContext(),
                     resources.getString(R.string.samba_videos_export_failed),
                     String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME),
                 )
@@ -320,7 +327,8 @@ class SambaVideosFragment :
                 return@withContext
             }
 
-            DialogHelper.show(requireContext(),
+            DialogHelper.show(
+                requireContext(),
                 resources.getString(R.string.samba_videos_export_success),
                 String.format(resources.getString(R.string.samba_videos_export_write_success), SMB_SETTINGS_FILENAME),
             )
@@ -331,7 +339,7 @@ class SambaVideosFragment :
             val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
             val result = provider.fetchTest()
             ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
-            DialogHelper.show(requireContext(),resources.getString(R.string.samba_videos_test_results), result)
+            DialogHelper.show(requireContext(), resources.getString(R.string.samba_videos_test_results), result)
         }
 
     companion object {

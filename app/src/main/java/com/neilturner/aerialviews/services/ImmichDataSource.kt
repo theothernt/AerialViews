@@ -33,21 +33,22 @@ class ImmichDataSource : BaseDataSource(true) {
 
         transferInitializing(dataSpec)
 
-        val request = Request.Builder()
-            .url(uri.toString())
-            .addHeader("Range", "bytes=${dataSpec.position}-")
-            .also { builder ->
-                when (ImmichMediaPrefs.authType) {
-                    ImmichAuthType.API_KEY -> builder.addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
-                    ImmichAuthType.SHARED_LINK -> {
-                        // Add any necessary headers for shared link authentication
+        val request =
+            Request
+                .Builder()
+                .url(uri.toString())
+                .addHeader("Range", "bytes=${dataSpec.position}-")
+                .also { builder ->
+                    when (ImmichMediaPrefs.authType) {
+                        ImmichAuthType.API_KEY -> builder.addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                        ImmichAuthType.SHARED_LINK -> {
+                            // Add any necessary headers for shared link authentication
+                        }
+                        null -> {
+                            // No authentication
+                        }
                     }
-                    null -> {
-                        // No authentication
-                    }
-                }
-            }
-            .build()
+                }.build()
 
         try {
             val response = okHttpClient.newCall(request).execute()
@@ -65,7 +66,11 @@ class ImmichDataSource : BaseDataSource(true) {
         return bytesRemaining
     }
 
-    override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
+    override fun read(
+        buffer: ByteArray,
+        offset: Int,
+        readLength: Int,
+    ): Int {
         if (readLength == 0) {
             return 0
         }
@@ -73,11 +78,12 @@ class ImmichDataSource : BaseDataSource(true) {
             return C.RESULT_END_OF_INPUT
         }
 
-        val bytesRead = try {
-            inputStream?.read(buffer, offset, min(readLength.toLong(), bytesRemaining).toInt()) ?: -1
-        } catch (e: IOException) {
-            throw IOException(e)
-        }
+        val bytesRead =
+            try {
+                inputStream?.read(buffer, offset, min(readLength.toLong(), bytesRemaining).toInt()) ?: -1
+            } catch (e: IOException) {
+                throw IOException(e)
+            }
 
         if (bytesRead == -1) {
             if (bytesRemaining != Long.MAX_VALUE) {
