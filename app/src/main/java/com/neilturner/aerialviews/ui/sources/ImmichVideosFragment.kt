@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.immich.Album
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.providers.ImmichMediaProvider
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.Dispatchers
@@ -154,7 +155,8 @@ class ImmichVideosFragment :
     private suspend fun testImmichConnection() = withContext(Dispatchers.IO) {
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
         val result = provider.fetchTest()
-        showDialog(getString(R.string.immich_media_test_results), result)
+
+        DialogHelper.show(requireContext(), getString(R.string.immich_media_test_results), result)
     }
 
     private suspend fun selectAlbum() {
@@ -162,7 +164,7 @@ class ImmichVideosFragment :
         provider.fetchAlbums().fold(
             onSuccess = { albums ->
                 if (albums.isEmpty()) {
-                    showErrorDialog(
+                    DialogHelper.show(requireContext(),
                         getString(R.string.immich_media_no_albums),
                         getString(R.string.immich_media_no_albums_message)
                     )
@@ -171,7 +173,7 @@ class ImmichVideosFragment :
                 }
             },
             onFailure = { exception ->
-                showErrorDialog(
+                DialogHelper.show(requireContext(),
                     getString(R.string.immich_media_fetch_albums_error),
                     exception.message ?: getString(R.string.immich_media_unknown_error)
                 )
@@ -181,7 +183,7 @@ class ImmichVideosFragment :
 
     private suspend fun showAlbumSelectionDialog(albums: List<Album>) = withContext(Dispatchers.Main) {
         if (albums.isEmpty()) {
-            showErrorDialog(
+            DialogHelper.show(requireContext(),
                 getString(R.string.immich_media_no_albums),
                 getString(R.string.immich_media_no_albums_message)
             )
@@ -201,22 +203,5 @@ class ImmichVideosFragment :
             setNegativeButton(R.string.button_cancel, null)
             create().show()
         }
-    }
-
-    private suspend fun showErrorDialog(title: String, message: String) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(R.string.button_ok, null)
-            .show()
-    }
-
-    private suspend fun showDialog(title: String, message: String) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext())
-            .setTitle(title)
-            .setMessage(message)
-            .setPositiveButton(R.string.button_ok, null)
-            .create()
-            .show()
     }
 }

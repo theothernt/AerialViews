@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -10,6 +9,7 @@ import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
@@ -107,18 +107,6 @@ class WebDavVideosFragment :
             val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
             val result = provider.fetchTest()
             ensureActive()
-            showDialog(resources.getString(R.string.webdav_media_test_results), result)
+            DialogHelper.show(requireContext(),resources.getString(R.string.webdav_media_test_results), result)
         }
-
-    private suspend fun showDialog(
-        title: String = "",
-        message: String,
-    ) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton(R.string.button_ok, null)
-            create().show()
-        }
-    }
 }

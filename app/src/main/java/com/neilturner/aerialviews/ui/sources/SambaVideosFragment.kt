@@ -16,6 +16,7 @@ import com.hierynomus.mssmb2.SMB2Dialect
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.SambaMediaProvider
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper.logException
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
@@ -55,7 +56,7 @@ class SambaVideosFragment :
             ) { isGranted: Boolean ->
                 if (!isGranted) {
                     lifecycleScope.launch {
-                        showDialog(
+                        DialogHelper.show(requireContext(),
                             resources.getString(R.string.samba_videos_import_failed),
                             resources.getString(R.string.samba_videos_permission_denied),
                         )
@@ -74,7 +75,7 @@ class SambaVideosFragment :
             ) { isGranted: Boolean ->
                 if (!isGranted) {
                     lifecycleScope.launch {
-                        showDialog(
+                        DialogHelper.show(requireContext(),
                             resources.getString(R.string.samba_videos_export_failed),
                             resources.getString(R.string.samba_videos_permission_denied),
                         )
@@ -127,7 +128,7 @@ class SambaVideosFragment :
         // Host name
         val hostname = findPreference<EditTextPreference>("samba_videos_hostname")
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {
-            hostname?.summary = hostname?.text
+            hostname?.summary = hostname.text
         } else {
             hostname?.summary = getString(R.string.samba_videos_hostname_summary)
         }
@@ -135,7 +136,7 @@ class SambaVideosFragment :
         // Domain name
         val domainname = findPreference<EditTextPreference>("samba_videos_domainname")
         if (domainname?.text.toStringOrEmpty().isNotEmpty()) {
-            domainname?.summary = domainname?.text
+            domainname?.summary = domainname.text
         } else {
             domainname?.summary = getString(R.string.samba_videos_domainname_summary)
         }
@@ -154,7 +155,7 @@ class SambaVideosFragment :
         // Username
         val username = findPreference<EditTextPreference>("samba_videos_username")
         if (username?.text.toStringOrEmpty().isNotEmpty()) {
-            username?.summary = username?.text
+            username?.summary = username.text
         } else {
             username?.summary = getString(R.string.samba_videos_username_summary)
         }
@@ -216,7 +217,7 @@ class SambaVideosFragment :
             val properties = Properties()
 
             if (!file.exists()) {
-                showDialog(
+                DialogHelper.show(requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     String.format(resources.getString(R.string.samba_videos_file_not_found), SMB_SETTINGS_FILENAME),
                 )
@@ -229,7 +230,7 @@ class SambaVideosFragment :
                     properties.load(stream)
                 }
             } catch (ex: Exception) {
-                showDialog(
+                DialogHelper.show(requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_error_parsing),
                 )
@@ -253,7 +254,7 @@ class SambaVideosFragment :
                 SambaMediaPrefs.searchSubfolders = properties["search_subfolders"].toBoolean()
                 SambaMediaPrefs.enableEncryption = properties["enable_encryption"].toBoolean()
             } catch (ex: Exception) {
-                showDialog(
+                DialogHelper.show(requireContext(),
                     resources.getString(R.string.samba_videos_import_failed),
                     resources.getString(R.string.samba_videos_unable_to_save),
                 )
@@ -280,7 +281,7 @@ class SambaVideosFragment :
                 updateSummary()
             }
 
-            showDialog(
+            DialogHelper.show(requireContext(),
                 resources.getString(R.string.samba_videos_import_success),
                 String.format(resources.getString(R.string.samba_videos_import_save_success), SMB_SETTINGS_FILENAME),
             )
@@ -310,7 +311,7 @@ class SambaVideosFragment :
                     smbSettings.store(stream, "Aerial Views SMB Settings")
                 }
             } catch (ex: Exception) {
-                showDialog(
+                DialogHelper.show(requireContext(),
                     resources.getString(R.string.samba_videos_export_failed),
                     String.format(resources.getString(R.string.samba_videos_unable_to_write), SMB_SETTINGS_FILENAME),
                 )
@@ -319,7 +320,7 @@ class SambaVideosFragment :
                 return@withContext
             }
 
-            showDialog(
+            DialogHelper.show(requireContext(),
                 resources.getString(R.string.samba_videos_export_success),
                 String.format(resources.getString(R.string.samba_videos_export_write_success), SMB_SETTINGS_FILENAME),
             )
@@ -330,20 +331,8 @@ class SambaVideosFragment :
             val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
             val result = provider.fetchTest()
             ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
-            showDialog(resources.getString(R.string.samba_videos_test_results), result)
+            DialogHelper.show(requireContext(),resources.getString(R.string.samba_videos_test_results), result)
         }
-
-    private suspend fun showDialog(
-        title: String = "",
-        message: String,
-    ) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton(R.string.button_ok, null)
-            create().show()
-        }
-    }
 
     companion object {
         private const val SMB_SETTINGS_FILENAME = "aerial-views-smb-settings.txt"
