@@ -87,7 +87,7 @@ object VideoPlayerHelper {
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
             Timber.i("Android 12+, enabling refresh rate switching")
-            player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
+            player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_ONLY_IF_SEAMLESS
         }
 
         player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())

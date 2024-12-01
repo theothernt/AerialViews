@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
@@ -150,8 +151,10 @@ class VideoPlayerView
             // Video is buffered, ready to play
             if (exoPlayer.playWhenReady && playbackState == Player.STATE_READY) {
                 Timber.i("Ready, Playing...")
-                if (GeneralPrefs.refreshRateSwitching) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && GeneralPrefs.refreshRateSwitching) {
                     VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                } else {
+                    // Do nothing for the moment as ExoPlayer should handle the refresh rate change?
                 }
                 setupAlmostFinishedRunnable()
             }
