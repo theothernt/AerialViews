@@ -34,67 +34,65 @@ class ImmichMediaProvider(
     override val type = ProviderSourceType.REMOTE
     override val enabled: Boolean
         get() = prefs.enabled
-
     private lateinit var server: String
     private lateinit var apiInterface: ImmichService
 
-    init {
-        if (enabled) {
-            setupApiInterface()
-        }
-    }
-
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
-    // If auth_type, return result1 or result2
+
+    override suspend fun fetchTest(): String = fetchImmichMedia().second
 
     override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
 
-    // If auth_type, return test1 or test2
-    override suspend fun fetchTest(): String {
-        if (prefs.url.isEmpty()) {
-            return "Server URL not specified"
-        }
-
-        return try {
-            when (prefs.authType) {
-                ImmichAuthType.SHARED_LINK -> {
-                    val cleanedKey = cleanSharedLinkKey(prefs.pathName)
-                    val response = apiInterface.getSharedAlbum(key = cleanedKey, password = prefs.password)
-                    handleResponse(response, "Shared link test successful")
-                }
-                ImmichAuthType.API_KEY -> {
-                    val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
-                    handleResponse(response, "API key test successful")
-                }
-                null -> "Invalid authentication type"
-            }
-        } catch (e: Exception) {
-            "Error: ${e.message}"
-        }
-    }
-
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
+        var excluded = 0
+        var videos = 0
+        var images = 0
 
         if (prefs.url.isEmpty()) {
             return Pair(media, "Hostname and port not specified")
         }
 
+        // validate SSL certs
+
+        if (prefs.authType == ImmichAuthType.SHARED_LINK) {
+
+            if (prefs.pathName.isEmpty()) {
+                return Pair(media, "Path name is empty")
+            }
+
+            if (prefs.password.isEmpty()) {
+                return Pair(media, "Password is empty")
+            }
+        } else {
+
+            if (prefs.apiKey.isEmpty()) {
+                return Pair(media, "API key is empty")
+            }
+
+            // Name needed?
+            if (prefs.selectedAlbumId.isEmpty()) {
+                return Pair(media, "Password is empty")
+            }
+        }
+
+        setupApiInterface()
+
         val immichMedia =
             try {
-                when (prefs.authType) {
-                    ImmichAuthType.SHARED_LINK -> getSharedAlbumFromAPI()
-                    ImmichAuthType.API_KEY -> getSelectedAlbumFromAPI()
-                    null -> return Pair(emptyList(), "Invalid authentication type")
+                if (prefs.authType == ImmichAuthType.SHARED_LINK) {
+                    getSharedAlbumFromAPI()
+                } else {
+                    getSelectedAlbumFromAPI()
                 }
             } catch (e: Exception) {
-                Timber.e(e, e.message.toString())
+                Timber.e(e)
                 return Pair(emptyList(), e.message.toString())
             }
 
-        var excluded = 0
-        var videos = 0
-        var images = 0
+        if (immichMedia.assets.isEmpty()) {
+            return Pair(media, "No files found")
+        }
 
         immichMedia.assets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
@@ -165,23 +163,6 @@ class ImmichMediaProvider(
         Timber.i("Media found: ${media.size}")
         return Pair(media, message)
     }
-
-    private fun handleResponse(
-        response: Response<*>,
-        successMessage: String,
-    ): String =
-        if (response.isSuccessful) {
-            successMessage
-        } else {
-            val errorBody = response.errorBody()?.string()
-            val errorMessage =
-                try {
-                    Gson().fromJson(errorBody, ErrorResponse::class.java).message
-                } catch (e: Exception) {
-                    response.message()
-                }
-            "Error ${response.code()} - $errorMessage"
-        }
 
     private suspend fun getSharedAlbumFromAPI(): Album {
         try {
