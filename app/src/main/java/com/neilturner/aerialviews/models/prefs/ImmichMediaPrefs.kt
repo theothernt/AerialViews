@@ -9,7 +9,7 @@ object ImmichMediaPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "immich_media_enabled")
-    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "immich_media_type")
+    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "immich_media_type")
     var pathName by stringPref("", "immich_media_pathname")
     var password by stringPref("", "immich_media_password")
     var url by stringPref("", "immich_media_url")
