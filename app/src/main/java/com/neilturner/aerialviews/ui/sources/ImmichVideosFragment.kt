@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -166,7 +167,7 @@ class ImmichVideosFragment :
         withContext(Dispatchers.IO) {
             val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
             val result = provider.fetchTest()
-
+            ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
             DialogHelper.show(requireContext(), getString(R.string.immich_media_test_results), result)
         }
 
