@@ -37,15 +37,6 @@ class ImmichMediaProvider(
     private lateinit var server: String
     private lateinit var apiInterface: ImmichService
 
-    init {
-
-        // make lazy
-        // fetchAlbums needs to be init
-        if (prefs.enabled) {
-            setupApiInterface()
-        }
-    }
-
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
@@ -85,7 +76,7 @@ class ImmichMediaProvider(
             }
         }
 
-        // setupApiInterface()
+        setupApiInterface()
 
         val immichMedia =
             try {
@@ -227,6 +218,7 @@ class ImmichMediaProvider(
 
     suspend fun fetchAlbums(): Result<List<Album>> =
         try {
+            setupApiInterface()
             val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
             if (response.isSuccessful) {
                 Result.success(response.body() ?: emptyList())
