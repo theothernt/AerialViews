@@ -4,4 +4,5 @@ enum class AerialMediaSource {
     DEFAULT,
     SAMBA,
     WEBDAV,
+    IMMICH,
 }
