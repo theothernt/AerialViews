@@ -133,6 +133,7 @@ class ImagePlayerView :
     }
 
     fun setImage(media: AerialMedia) {
+        Timber.i("Image URL: ${media.uri} (${media.source})")
         when (media.source) {
             AerialMediaSource.SAMBA -> {
                 coroutineScope.launch { loadSambaImage(media.uri) }
@@ -144,15 +145,6 @@ class ImagePlayerView :
                 coroutineScope.launch { loadImage(media.uri) }
             }
         }
-
-        val request =
-            ImageRequest
-                .Builder(context)
-                .data(media.uri)
-                .target(this)
-                .build()
-
-        imageLoader.enqueue(request)
     }
 
     private suspend fun loadImage(uri: Uri) {
