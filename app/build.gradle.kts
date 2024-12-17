@@ -30,7 +30,7 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
-        versionCode = 25
+        versionCode = 26
         versionName = "1.7.4"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
@@ -112,6 +112,7 @@ android {
     }
 
     flavorDimensions += "version"
+    var betaVersion = "-beta1"
     productFlavors {
         create("github") {
             signingConfig = signingConfigs.getByName("legacy")
@@ -121,11 +122,16 @@ android {
             signingConfig = signingConfigs.getByName("legacy")
             dimension = "version"
             isDefault = true
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = betaVersion
         }
         create("googleplay") {
             signingConfig = signingConfigs.getByName("release")
             dimension = "version"
+        }
+        create("googleplaybeta") {
+            signingConfig = signingConfigs.getByName("release")
+            dimension = "version"
+            versionNameSuffix = betaVersion
         }
         create("amazon") {
             signingConfig = signingConfigs.getByName("release")
@@ -142,6 +148,7 @@ android {
         getByName("github").java.srcDir("src/common/java")
         getByName("beta").java.srcDir("src/common/java")
         getByName("googleplay").java.srcDir("src/common/java")
+        getByName("googleplaybeta").java.srcDir("src/common/java")
         getByName("amazon").java.srcDir("src/common/java")
         getByName("fdroid").java.srcDir("src/froid/java")
     }
@@ -152,6 +159,7 @@ dependencies {
     "githubImplementation"(libs.bundles.firebase)
     "betaImplementation"(libs.bundles.firebase)
     "googleplayImplementation"(libs.bundles.firebase)
+    "googleplaybetaImplementation"(libs.bundles.firebase)
     "amazonImplementation"(libs.bundles.firebase)
 
     implementation(libs.bundles.kotlin)

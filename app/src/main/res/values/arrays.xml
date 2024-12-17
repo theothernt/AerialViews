@@ -547,7 +547,6 @@
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
   <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 
-
   <!-- Percentage list 1 -->
   <string-array name="percentage1_entries" translatable="false">
     <item>5%</item>
@@ -642,6 +641,16 @@
   <string name="volume_default" translatable="false">100</string>
   <string name="random_start_position_range_default" translatable="false">50</string>
 
+  <!-- Immich -->
+  <string-array name="immich_auth_type_entries">
+    <item>Shared Link</item>
+    <item>API Key</item>
+  </string-array>
+  <string-array name="immich_auth_type_values" translatable="false">
+    <item>SHARED_LINK</item>
+    <item>API_KEY</item>
+  </string-array>
+
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">
     <item>Disabled</item>
@@ -666,5 +675,4 @@
     <item>PHOTOS</item>
   </string-array>
   <string name="progress_bar_type_default" translatable="false">BOTH</string>
-
 </resources>
