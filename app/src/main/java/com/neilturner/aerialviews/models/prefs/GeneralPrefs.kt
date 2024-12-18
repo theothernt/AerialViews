@@ -11,6 +11,8 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
 
 object GeneralPrefs : KotprefModel() {
@@ -96,6 +98,11 @@ object GeneralPrefs : KotprefModel() {
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")
 
+    // Progress Bar
+    var progressBarLocation by nullableEnumValuePref(ProgressBarLocation.DISABLED, "progress_bar_location")
+    var progressBarType by nullableEnumValuePref(ProgressBarType.BOTH, "progress_bar_type")
+    var progressBarOpacity by stringPref("100", "progress_bar_opacity")
+
     // Ignore system animation override
     var ignoreAnimationScale by booleanPref(true, "ignore_animation_scale")
 
@@ -104,16 +111,24 @@ object GeneralPrefs : KotprefModel() {
     var localeScreensaver by stringPref("default", "locale_screensaver")
 
     // Playlist
+    var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
+    var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
+
+    // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")
     var videoVolume by stringPref("100", "video_volume")
     var videoScale by nullableEnumValuePref(VideoScale.SCALE_TO_FIT_WITH_CROPPING, "video_scale")
-    var shuffleVideos by booleanPref(true, "shuffle_videos")
     var playbackSpeed by stringPref("1", "playback_speed")
+    var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
+
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
     var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
-    var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
-    var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
+
+    var randomStartPosition by booleanPref(false, "random_start_position")
+    var randomStartPositionRange by stringPref("50", "random_start_position_range")
+
+    // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
     var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")
 

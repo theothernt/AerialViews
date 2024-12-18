@@ -23,6 +23,7 @@
   <string name="category_remote">Remote</string>
   <string name="category_local">Local</string>
   <string name="category_network">Network</string>
+  <string name="category_progress_bar">Progress Bar</string>
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
   <string name="category_server_details">Server details and credentials</string>
@@ -120,7 +121,7 @@
 
   <string name="local_media_type_title">Choose media type</string>
 
-  <string name="local_videos_search_type_title">Choose how videos &amp; photos are found</string>
+  <string name="local_videos_search_type_title">Choose how media is found</string>
   <string name="local_videos_search_test">Test local search settings</string>
 
   <string name="local_videos_media_store_summary">Android scans all local storage, USB devices, etc for videos &amp; photos</string>
@@ -239,13 +240,16 @@
 
   <string name="webdav_media_search_subfolders_title">Search subfolders</string>
   <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
-
   <string name="webdav_media_test_results">Test results</string>
 
   <!-- Main / Video Sources / Immich videos -->
   <string name="immich_media_enabled_title">Use Immich share media</string>
   <string name="immich_media_type_title">Choose media type</string>
   <string name="immich_media_test_connection">Test connection settings</string>
+  <string name="immich_media_auth_type_title">Authentication Method</string>
+  <string name="immich_media_api_key_title">API Key</string>
+  <string name="immich_media_api_key_summary">Enter your Immich API key</string>
+  <string name="immich_media_select_album">Select Album</string>
 
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
@@ -254,6 +258,16 @@
   <string name="immich_media_pathname_summary">The path of the shared album e.g. /share/qJejEpX_h_…TAypgOxmIZC</string>
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
+
+  <string name="category_authentication">Server Authentication Method</string>
+  <string name="category_authentication_information">Authentication Information</string>
+  <string name="category_connection">Authentication Test</string>
+  <string name="immich_media_select_album_summary">No album selected</string>
+  <string name="immich_media_selected_album">Selected album: %1$s</string>
+  <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
+  <string name="immich_media_no_albums">No Albums Found</string>
+  <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
+  <string name="immich_media_unknown_error">An unknown error occurred</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
@@ -266,6 +280,11 @@
 
   <string name="immich_media_test_results">Test results</string>
 
+  <string name="immich_media_url_title">Server URL</string>
+  <string name="immich_media_url_summary">Enter server URL (e.g., 192.168.1.100:8080)</string>
+  <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
+  <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+  <string name="immich_media_url_invalid">Invalid server URL</string>
   <!-- Main / Settings -->
   <string name="settings_overlays_title">Overlays</string>
   <string name="settings_overlays_summary">Choose what overlays are displayed in different corners of the screen</string>
@@ -331,6 +350,12 @@
   <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
 
   <!-- Main / Settings / Appearance -->
+  <string name="appearance_typography_title">Typography</string>
+  <string name="appearance_typography_summary">Change the font used by all the overlays</string>
+
+  <string name="appearance_progress_bar_title">Progress Bar</string>
+  <string name="appearance_progress_bar_summary">Show the progress of a video or photos at the top or bottom of the screen</string>
+
   <string name="appearance_alt_text_position_title">Alternate overlay position</string>
   <string name="appearance_alt_text_position_summary">Position of overlays changes from left to right with each new video or photo</string>
 
@@ -348,9 +373,6 @@
 
   <string name="appearance_startup_title">Startup</string>
   <string name="appearance_startup_summary">Change what you see while the app is loading</string>
-
-  <string name="appearance_typography_title">Typography</string>
-  <string name="appearance_typography_summary">Change the font used by all the overlays</string>
 
   <!-- Main / Settings / Appearance / Brightness -->
   <string name="appearance_brightness_level_title">Brightness level during media playback</string>
@@ -407,6 +429,11 @@
   <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
   <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
+  <!-- Main / Settings / Appearance / Progress Bar -->
+  <string name="progress_bar_location_title">Location</string>
+  <string name="progress_bar_type_title">Show on</string>
+  <string name="progress_bar_opacity_title">Opacity</string>
+
   <!-- Main / Settings / Appearance / Now Playing -->
   <string name="nowplaying_permission_title">Enable system notification access</string>
   <string name="nowplaying_permission_summary">Permission is required so that this app can listen for music notifications from the system</string>
@@ -449,7 +476,7 @@
   <string name="playlist_playback_speed_title">Playback speed</string>
   <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-  <string name="playlist_advanced_video_title">Advanced video options</string>
+  <string name="playlist_advanced_video_title">Advanced options</string>
   <string name="playlist_advanced_video_summary">Limit video length, loop short videos, start at a random position</string>
 
   <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
@@ -464,6 +491,11 @@
   <string name="playlist_loop_short_videos_summary">Short videos will be looped to meet the time limit, if set\n(eg. a 30sec video with a limit of 2mins will loop 4 times)</string>
 
   <string name="playlist_limit_longer_videos_title">Longer videos</string>
+
+  <string name="playlist_random_start_position_title">Random start position</string>
+  <string name="playlist_random_start_position_summary">Start at a random position in the video, within a certain range</string>
+
+  <string name="playlist_random_start_position_range_title">Random start range</string>
 
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_slideshow_speed_summary">Choose a duration</string>

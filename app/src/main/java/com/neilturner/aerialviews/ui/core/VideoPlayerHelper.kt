@@ -7,20 +7,24 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
 import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -49,10 +53,13 @@ object VideoPlayerHelper {
     }
 
     @OptIn(UnstableApi::class)
-    fun buildPlayer(context: Context): ExoPlayer {
+    fun buildPlayer(
+        context: Context,
+        prefs: GeneralPrefs,
+    ): ExoPlayer {
         val parametersBuilder = DefaultTrackSelector.Parameters.Builder(context)
 
-        if (GeneralPrefs.enableTunneling) {
+        if (prefs.enableTunneling) {
             parametersBuilder
                 .setTunnelingEnabled(true)
         }
@@ -61,10 +68,10 @@ object VideoPlayerHelper {
         trackSelector.parameters = parametersBuilder.build()
 
         var rendererFactory = DefaultRenderersFactory(context)
-        if (GeneralPrefs.allowFallbackDecoders) {
+        if (prefs.allowFallbackDecoders) {
             rendererFactory.setEnableDecoderFallback(true)
         }
-        if (GeneralPrefs.philipsDolbyVisionFix) {
+        if (prefs.philipsDolbyVisionFix) {
             rendererFactory = CustomRendererFactory(context)
         }
 
@@ -75,19 +82,19 @@ object VideoPlayerHelper {
                 .setRenderersFactory(rendererFactory)
                 .build()
 
-        if (GeneralPrefs.enablePlaybackLogging) {
+        if (prefs.enablePlaybackLogging) {
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (!GeneralPrefs.muteVideos) player.volume = GeneralPrefs.videoVolume.toFloat() / 100 else player.volume = 0f
+        if (!prefs.muteVideos) player.volume = prefs.videoVolume.toFloat() / 100 else player.volume = 0f
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && GeneralPrefs.refreshRateSwitching) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
             Timber.i("Android 12+, enabling refresh rate switching")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
-        player.setPlaybackSpeed(GeneralPrefs.playbackSpeed.toFloat())
+        player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
     }
 
@@ -104,6 +111,34 @@ object VideoPlayerHelper {
                         .Factory(SambaDataSourceFactory())
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
+            }
+            AerialMediaSource.IMMICH -> {
+                val dataSourceFactory =
+                    DefaultHttpDataSource
+                        .Factory()
+                        .setAllowCrossProtocolRedirects(true)
+                        .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                        .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+
+                // Add necessary headers for Immich
+                if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
+                    dataSourceFactory.setDefaultRequestProperties(
+                        mapOf("X-API-Key" to ImmichMediaPrefs.apiKey),
+                    )
+                }
+
+                // If SSL validation is disabled, we need to set the appropriate flags
+                if (!ImmichMediaPrefs.validateSsl) {
+                    System.setProperty("javax.net.ssl.trustAll", "true")
+                }
+
+                val mediaSource =
+                    ProgressiveMediaSource
+                        .Factory(dataSourceFactory)
+                        .createMediaSource(mediaItem)
+
+                player.setMediaSource(mediaSource)
+                Timber.d("Setting up Immich media source with URI: ${media.uri}")
             }
             AerialMediaSource.WEBDAV -> {
                 val mediaSource =
@@ -124,7 +159,8 @@ object VideoPlayerHelper {
         video: VideoInfo,
     ) {
         if (duration == 0L ||
-            maxLength == 0L) {
+            maxLength == 0L
+        ) {
             return
         }
 
@@ -163,7 +199,7 @@ object VideoPlayerHelper {
     ): Long {
         val loopShortVideos = prefs.loopShortVideos
         val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
-        val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+        val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val duration = player.duration
         val position = player.currentPosition
 

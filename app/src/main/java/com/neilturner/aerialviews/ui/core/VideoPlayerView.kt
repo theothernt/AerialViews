@@ -12,11 +12,18 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import kotlin.random.Random
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(UnstableApi::class)
 class VideoPlayerView
@@ -37,11 +44,16 @@ class VideoPlayerView
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val segmentLongVideos = GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
+        private val segmentLongVideos =
+            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+        private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
+        private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
+        private val progressBar =
+            GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
         init {
-            exoPlayer = VideoPlayerHelper.buildPlayer(context)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
             exoPlayer.addListener(this)
 
             player = exoPlayer
@@ -71,7 +83,6 @@ class VideoPlayerView
         // region Public methods
         fun setVideo(media: AerialMedia) {
             video = VideoInfo() // Reset params for each video
-
             exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
@@ -121,13 +132,16 @@ class VideoPlayerView
 
             if (playbackState == Player.STATE_BUFFERING) {
                 Timber.i("Buffering...")
-                // Pause progress bar
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
             }
 
             if (!video.prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
                 if (segmentLongVideos) {
                     handleSegmentedVideo()
+                }
+                if (randomStartPosition) {
+                    handleRandomStartPosition()
                 }
                 video.prepared = true
                 listener?.onVideoPrepared()
@@ -216,6 +230,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
             val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
         }
 
@@ -231,6 +246,18 @@ class VideoPlayerView
             if (video.isSegmented) {
                 Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${video.segmentStart}ms), continuing...")
             }
+        }
+
+        private fun handleRandomStartPosition() {
+            if (randomStartPositionRange < 5) {
+                return
+            }
+            val seekPosition = (exoPlayer.duration * randomStartPositionRange / 100.0).toLong()
+            val randomPosition = Random.nextLong(seekPosition)
+            exoPlayer.seekTo(randomPosition)
+
+            val percent = (randomPosition.toFloat() / exoPlayer.duration.toFloat() * 100).toInt()
+            Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%)")
         }
 
         interface OnVideoPlayerEventListener {

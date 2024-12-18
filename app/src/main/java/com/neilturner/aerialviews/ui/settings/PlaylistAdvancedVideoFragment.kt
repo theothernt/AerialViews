@@ -25,27 +25,37 @@ class PlaylistAdvancedVideoFragment : MenuStateFragment() {
     }
 
     private fun updateAllSummaries() {
-        val editPref = findPreference<ListPreference>("playback_max_video_length")
-        editPref?.onPreferenceChangeListener =
+        val maxLengthPref = findPreference<ListPreference>("playback_max_video_length")
+        maxLengthPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                toggleVideoLimitControls(newValue as String)
+                toggleControls(newValue as String)
                 true
             }
-        toggleVideoLimitControls(editPref?.value as String)
-
+        toggleControls(maxLengthPref?.value as String)
         setupSummaryUpdater("limit_longer_videos", R.array.limit_Longer_videos_summaries)
+
+        val randomStartPref = findPreference<ListPreference>("random_start_position_range")
+        randomStartPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                randomStartPref.summary = "0%% - $newValue%%"
+                true
+            }
+        randomStartPref?.summary = "0%% - ${randomStartPref.value}%%"
     }
 
-    private fun toggleVideoLimitControls(value: String) {
+    private fun toggleControls(value: String) {
         val shortVideosPref = findPreference<CheckBoxPreference>("loop_short_videos")
         val longVideosPref = findPreference<ListPreference>("limit_longer_videos")
+        val randomStartPref = findPreference<CheckBoxPreference>("random_start_position")
 
         if (value == "0") {
             shortVideosPref?.isEnabled = false
             longVideosPref?.isEnabled = false
+            randomStartPref?.isEnabled = true
         } else {
             shortVideosPref?.isEnabled = true
             longVideosPref?.isEnabled = true
+            randomStartPref?.isEnabled = false
         }
     }
 

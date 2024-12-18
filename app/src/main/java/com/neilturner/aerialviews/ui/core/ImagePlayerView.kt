@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.net.Uri
-import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import coil.EventListener
@@ -18,49 +17,94 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.utils.ServerConfig
+import com.neilturner.aerialviews.utils.SslHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.kosert.flowbus.GlobalBus
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.util.EnumSet
+import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView :
     AppCompatImageView,
     EventListener {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    private val progressBar =
+        GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
-    private var imageLoader: ImageLoader =
+    private val imageLoader: ImageLoader by lazy {
         ImageLoader
             .Builder(context)
             .eventListener(this)
             .components {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
                     add(ImageDecoderDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())
                 }
+            }.okHttpClient {
+                buildOkHttpClient()
             }.build()
+    }
+
+    private fun buildOkHttpClient(): OkHttpClient {
+        val serverConfig = ServerConfig("", ImmichMediaPrefs.validateSsl)
+        val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
+        return okHttpClient
+            .newBuilder()
+            .addInterceptor(ApiKeyInterceptor())
+            .build()
+    }
+
+    private class ApiKeyInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val originalRequest = chain.request()
+            val newRequest =
+                when (ImmichMediaPrefs.authType) {
+                    ImmichAuthType.API_KEY -> {
+                        originalRequest
+                            .newBuilder()
+                            .addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                            .build()
+                    }
+                    else -> originalRequest
+                }
+            return chain.proceed(newRequest)
+        }
+    }
 
     init {
         val scaleType =
             try {
                 ScaleType.valueOf(GeneralPrefs.photoScale.toString())
             } catch (e: Exception) {
+                Timber.e(e)
                 GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
                 ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
             }
@@ -89,6 +133,7 @@ class ImagePlayerView :
     }
 
     fun setImage(media: AerialMedia) {
+        Timber.i("Image URL: ${media.uri} (${media.source})")
         when (media.source) {
             AerialMediaSource.SAMBA -> {
                 coroutineScope.launch { loadSambaImage(media.uri) }
@@ -106,9 +151,10 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
+                .data(uri)
                 .target(this)
-        request.data(uri)
-        imageLoader.execute(request.build())
+                .build()
+        imageLoader.execute(request)
     }
 
     private suspend fun loadSambaImage(uri: Uri) {
@@ -190,9 +236,11 @@ class ImagePlayerView :
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
         listener?.onImagePrepared()
-        // Add fade in/out times?
-        val delay = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
+        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
         postDelayed(finishedRunnable, delay)
+        if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
+        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
     }
 
     private fun onPlayerError() {

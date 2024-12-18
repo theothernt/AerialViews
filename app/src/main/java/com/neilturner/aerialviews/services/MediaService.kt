@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
@@ -41,12 +42,10 @@ class MediaService(
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
-        // Sort by local first so duplicates removed are remote
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-        // Find all videos from all providers/sources
         var media = mutableListOf<AerialMedia>()
         providers.forEach {
             try {
@@ -58,14 +57,19 @@ class MediaService(
             }
         }
 
-        // Remove duplicates based on filename only
         if (GeneralPrefs.removeDuplicates) {
             val numVideos = media.size
-            media = media.distinctBy { Pair(it.uri.filenameWithoutExtension.lowercase(), it.type) }.toMutableList()
-            Timber.i("Duplicate videos removed based on filename: ${numVideos - media.size}")
+            media =
+                media
+                    .distinctBy {
+                        when (it.source) {
+                            AerialMediaSource.IMMICH -> it.uri.toString()
+                            else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
+                        }
+                    }.toMutableList()
+            Timber.i("Duplicate videos removed: ${numVideos - media.size}")
         }
 
-        // Add metadata to (Manifest) Apple, Community videos only
         val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
         Timber.i("Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
@@ -73,24 +77,19 @@ class MediaService(
         var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
         Timber.i("Unmatched: videos ${videos.size}, photos ${photos.size}")
 
-        // Remove if not Apple or Community videos
         if (GeneralPrefs.ignoreNonManifestVideos) {
             videos = listOf()
             Timber.i("Removing non-manifest videos")
         }
 
-        // Add description to user videos
         val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
         videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
 
-        // Add description to user images
         val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
         photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
 
-        // Combine all videos and photos
         var filteredMedia = matched + videos + photos
 
-        // Randomise video order
         if (GeneralPrefs.shuffleVideos) {
             filteredMedia = filteredMedia.shuffled()
             Timber.i("Shuffling media items")
@@ -111,13 +110,12 @@ class MediaService(
 
         providers.forEach {
             try {
-                metadata.addAll((it.fetchMetadata()))
+                metadata.addAll(it.fetchMetadata())
             } catch (ex: Exception) {
                 Timber.e(ex, "Exception while fetching metadata")
             }
         }
 
-        // Find video id in metadata list
         media.forEach video@{ video ->
             metadata.forEach { metadata ->
                 if (video.type == AerialMediaType.VIDEO &&

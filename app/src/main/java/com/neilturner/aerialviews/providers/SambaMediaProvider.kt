@@ -42,6 +42,9 @@ class SambaMediaProvider(
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
 
+        // TODO
+        // Break into a) validate b) get list of files c) create/sort media objects
+
         // Check hostname
         // Validate IP address or hostname?
         if (prefs.hostName.isEmpty()) {

@@ -24,5 +24,19 @@
                     app:key="limit_longer_videos"
                     app:title="@string/playlist_limit_longer_videos_title" />
 
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="random_start_position"
+                    app:summary="@string/playlist_random_start_position_summary"
+                    app:title="@string/playlist_random_start_position_title" />
+
+                <ListPreference
+                    app:dependency="random_start_position"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/random_start_position_range_default"
+                    app:entries="@array/percentage2_entries"
+                    app:entryValues="@array/percentage2_values"
+                    app:key="random_start_position_range"
+                    app:title="@string/playlist_random_start_position_range_title" />
         </PreferenceCategory>
 </PreferenceScreen>

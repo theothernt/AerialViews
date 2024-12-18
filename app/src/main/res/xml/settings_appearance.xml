@@ -14,6 +14,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_progress_bar_title"
+                    app:summary="@string/appearance_progress_bar_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceProgressBarFragment"/>
+
+                <Preference
                     app:title="@string/appearance_animations_title"
                     app:summary="@string/appearance_animations_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceAnimationsFragment"/>
