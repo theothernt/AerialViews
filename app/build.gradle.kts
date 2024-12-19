@@ -112,7 +112,7 @@ android {
     }
 
     flavorDimensions += "version"
-    var betaVersion = "-beta1"
+    var betaVersion = "-beta2"
     productFlavors {
         create("github") {
             signingConfig = signingConfigs.getByName("legacy")
