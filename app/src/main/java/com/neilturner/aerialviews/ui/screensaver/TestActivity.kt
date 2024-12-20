@@ -1,18 +1,17 @@
 package com.neilturner.aerialviews.ui.screensaver
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.WindowHelper
 
-class TestActivity : Activity() {
+class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +19,7 @@ class TestActivity : Activity() {
         // Setup
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
+        supportActionBar?.hide()
     }
 
     override fun onResume() {
@@ -31,6 +31,10 @@ class TestActivity : Activity() {
     override fun onPause() {
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onPause()
+
+        // Navigate back as we don't support pause/suspend
+        //supportFragmentManager.popBackStack()
+        finish()
     }
 
     override fun onAttachedToWindow() {
@@ -53,13 +57,6 @@ class TestActivity : Activity() {
             return true
         }
         return super.dispatchKeyEvent(event)
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::screenController.isInitialized) {
-            WindowHelper.hideSystemUI(window, screenController.view)
-        }
     }
 
     override fun onStop() {
