@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.WindowHelper
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
@@ -20,6 +19,7 @@ class TestActivity : AppCompatActivity() {
         // Setup
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
+        supportActionBar?.hide()
     }
 
     override fun onResume() {
@@ -57,13 +57,6 @@ class TestActivity : AppCompatActivity() {
             return true
         }
         return super.dispatchKeyEvent(event)
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::screenController.isInitialized) {
-            WindowHelper.hideSystemUI(window, screenController.view)
-        }
     }
 
     override fun onStop() {
