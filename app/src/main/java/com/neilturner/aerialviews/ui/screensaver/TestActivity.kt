@@ -31,9 +31,14 @@ class TestActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        finish()
         super.onPause()
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+
+        // finish()
 
         // Navigate back as we don't support pause/suspend
         //supportFragmentManager.popBackStack()

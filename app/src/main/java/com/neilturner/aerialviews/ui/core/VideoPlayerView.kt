@@ -68,16 +68,14 @@ class VideoPlayerView
         }
 
         fun release() {
+            pause()
             exoPlayer.release()
+
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)
             removeCallbacks(onErrorRunnable)
-            listener = null
-        }
 
-        override fun onDetachedFromWindow() {
-            pause()
-            super.onDetachedFromWindow()
+            listener = null
         }
 
         // region Public methods
