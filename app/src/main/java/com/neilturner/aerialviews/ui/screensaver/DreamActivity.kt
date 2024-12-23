@@ -28,7 +28,7 @@ class DreamActivity : DreamService() {
         super.onAttachedToWindow()
         // Setup
         isFullscreen = true
-        isInteractive = true
+        isInteractive = !(GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this))
 
         // Start playback, etc
         screenController =
@@ -56,11 +56,6 @@ class DreamActivity : DreamService() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
-            wakeUp()
-            return true
-        }
-
         if (this::screenController.isInitialized &&
             InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
         ) {

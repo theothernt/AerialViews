@@ -154,7 +154,7 @@ object GeneralPrefs : KotprefModel() {
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
-    var closeOnScreenTap by booleanPref(true, "close_on_screen_tap")
+    var closeOnScreenTap by booleanPref(false, "close_on_screen_tap")
 
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.screensaver
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
@@ -31,11 +32,11 @@ class TestActivity : AppCompatActivity() {
 
     override fun onPause() {
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        finish()
         super.onPause()
 
         // Navigate back as we don't support pause/suspend
         //supportFragmentManager.popBackStack()
-        finish()
     }
 
     override fun onAttachedToWindow() {
@@ -51,12 +52,15 @@ class TestActivity : AppCompatActivity() {
         setContentView(screenController.view)
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
             finish()
             return true
         }
+        return super.onTouchEvent(event)
+    }
 
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
             InputHelper.handleKeyEvent(event, screenController, ::finish)
         ) {
