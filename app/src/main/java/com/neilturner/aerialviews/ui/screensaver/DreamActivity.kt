@@ -14,6 +14,7 @@ import android.service.dreams.DreamService
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
@@ -55,11 +56,17 @@ class DreamActivity : DreamService() {
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
+            wakeUp()
+            return true
+        }
+
         if (this::screenController.isInitialized &&
             InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
         ) {
             return true
         }
+
         return super.dispatchKeyEvent(event)
     }
 
