@@ -25,7 +25,6 @@ class NowPlayingService(
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
-    private var music = MusicEvent()
 
     init {
         coroutineScope.launch {
@@ -87,17 +86,13 @@ class NowPlayingService(
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
-        metadata?.let {
-            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE).toString()
-            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST).toString()
-            music = MusicEvent(artist, song)
-        }
+        val musicEvent = metadata?.let {
+            val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+            val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+            MusicEvent(artist, song)
+        }.takeIf { active == true } ?: MusicEvent()
 
-        if (active == true) {
-            GlobalBus.post(music)
-        } else {
-            GlobalBus.post(MusicEvent())
-        }
+        GlobalBus.post(musicEvent)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
