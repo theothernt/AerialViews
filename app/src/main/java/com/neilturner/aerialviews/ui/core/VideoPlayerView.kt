@@ -143,6 +143,7 @@ class VideoPlayerView
                 if (randomStartPosition) {
                     // TODO
                     // should only be run once (prepared?)
+                    // should not be run with other playback segment modes
                     handleRandomStartPosition()
                 }
                 video.prepared = true
@@ -251,14 +252,16 @@ class VideoPlayerView
         }
 
         private fun handleRandomStartPosition() {
-            if (randomStartPositionRange < 5) {
+            val duration = exoPlayer.duration
+            if (duration <= 0 || randomStartPositionRange < 5) {
+                Timber.e("Invalid duration or range: duration=$duration, range=$randomStartPositionRange")
                 return
             }
-            val seekPosition = (exoPlayer.duration * randomStartPositionRange / 100.0).toLong()
+            val seekPosition = (duration * randomStartPositionRange / 100.0).toLong()
             val randomPosition = Random.nextLong(seekPosition)
             exoPlayer.seekTo(randomPosition)
 
-            val percent = (randomPosition.toFloat() / exoPlayer.duration.toFloat() * 100).toInt()
+            val percent = (randomPosition.toFloat() / duration.toFloat() * 100).toInt()
             Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%)")
         }
 
