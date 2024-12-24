@@ -35,6 +35,8 @@ class VideoPlayerView
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
         private val exoPlayer: ExoPlayer
+        // TODO
+        // VideoStatus (ref to ExoPlayer?)
         private var video = VideoInfo()
 
         private var listener: OnVideoPlayerEventListener? = null
@@ -139,6 +141,8 @@ class VideoPlayerView
                     handleSegmentedVideo()
                 }
                 if (randomStartPosition) {
+                    // TODO
+                    // should only be run once (prepared?)
                     handleRandomStartPosition()
                 }
                 video.prepared = true

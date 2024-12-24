@@ -197,6 +197,9 @@ object VideoPlayerHelper {
         player: ExoPlayer,
         prefs: GeneralPrefs,
     ): Long {
+        // TODO
+        // account for 0 or less than 0 values ?!
+        
         val loopShortVideos = prefs.loopShortVideos
         val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
@@ -250,6 +253,9 @@ object VideoPlayerHelper {
         video: VideoInfo,
         prefs: GeneralPrefs,
     ): Long {
+        // TODO
+        // account for 0 or less than 0 values ?!
+
         // Adjust the duration based on the playback speed
         // Take into account the current player position in case of speed changes during playback
         val delay = ((duration - position) / prefs.playbackSpeed.toDouble().toLong() - prefs.mediaFadeOutDuration.toLong())
@@ -262,6 +268,8 @@ object VideoPlayerHelper {
         maxVideoLength: Long,
         player: ExoPlayer,
     ): Pair<Boolean, Long> {
+        // TODO
+        // account for 0 or less than 0 values ?!
         val loopCount = ceil(maxVideoLength / player.duration.toDouble()).toInt()
         val targetDuration = player.duration * loopCount
         Timber.i("Looping $loopCount times (video is ${player.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
