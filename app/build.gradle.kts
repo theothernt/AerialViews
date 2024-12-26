@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
+        minSdk = 24 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
         versionCode = 27
         versionName = "1.7.4"

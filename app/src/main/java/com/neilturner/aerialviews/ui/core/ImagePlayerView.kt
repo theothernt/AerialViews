@@ -11,6 +11,7 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
+import com.github.awxkee.avifcoil.decoder.HeifDecoder
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -68,6 +69,7 @@ class ImagePlayerView :
                 } else {
                     add(GifDecoder.Factory())
                 }
+                add(HeifDecoder.Factory())
             }.okHttpClient {
                 buildOkHttpClient()
             }.build()

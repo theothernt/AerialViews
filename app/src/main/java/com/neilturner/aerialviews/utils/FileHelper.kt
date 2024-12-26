@@ -71,19 +71,20 @@ object FileHelper {
             filename.endsWith(".ts", true)
 
     fun isSupportedImageType(filename: String): Boolean {
-        if (filename.endsWith(".avif", true) &&
-            DeviceHelper.hasAvifSupport()
-        ) { // AVIF - AV1 image format
-            return true
-        }
-
         return filename.endsWith(".jpg", true) ||
             filename.endsWith(".jpeg", true) ||
             filename.endsWith(".gif", true) ||
             filename.endsWith(".webp", true) ||
-            filename.endsWith(".heic", true) ||
+            filename.endsWith(".png", true) ||
             // HEIF format
-            filename.endsWith(".png", true)
+            // Not sure if all extensions are needed?
+            filename.endsWith(".heif", true) ||
+            filename.endsWith(".heifs", true) ||
+            filename.endsWith(".heic", true) ||
+            filename.endsWith(".heics", true) ||
+            filename.endsWith(".avci", true) ||
+            filename.endsWith(".avcs", true) ||
+            filename.endsWith(".HIF", true)
     }
 
     fun shouldFilter(

@@ -29,6 +29,7 @@ kotpref = "2.13.2"
 smbj = "0.11.5"
 sardine-android = "0.0.2"
 coil = "2.7.0"
+coil-avif = "2.0.6"
 timber = "5.0.1"
 leakcanary = "2.14"
 junit-jupiter = "5.11.4"
@@ -69,6 +70,7 @@ media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "medi
 
 coil = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+coil-avif = { group = "com.github.awxkee", name = "avif-coder-coil", version.ref = "coil-avif" }
 
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
@@ -80,7 +82,7 @@ junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", v
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 
 [bundles]
-coil = ["coil", "coil-gif"]
+coil = ["coil", "coil-gif", "coil-avif"]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 flowbus = ["flowbus", "flowbus-android"]
