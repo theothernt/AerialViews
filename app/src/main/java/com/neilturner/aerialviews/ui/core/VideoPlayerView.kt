@@ -3,18 +3,14 @@ package com.neilturner.aerialviews.ui.core
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
-import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
-import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
@@ -35,8 +31,10 @@ class VideoPlayerView
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
         private val exoPlayer: ExoPlayer
+
         // TODO
         // VideoStatus (ref to ExoPlayer?)
+        // just remove!
         private var video = VideoInfo()
 
         private var listener: OnVideoPlayerEventListener? = null
@@ -46,32 +44,31 @@ class VideoPlayerView
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val segmentLongVideos =
-            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
         private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-        private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
         private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
-        init {
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
-            exoPlayer.addListener(this)
+        private var prepared = false
+        private var startPosition: Long = 0
+        private var endPosition: Long = 0
 
+        init {
+            exoPlayer =
+                VideoPlayerHelper
+                    .buildPlayer(context, GeneralPrefs)
             player = exoPlayer
+            player?.addListener(this)
             controllerAutoShow = false
             useController = false
             resizeMode =
-                if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) {
-                    AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                } else {
-                    AspectRatioFrameLayout.RESIZE_MODE_FIT
-                }
+                VideoPlayerHelper
+                    .getResizeMode(GeneralPrefs.videoScale)
         }
 
         fun release() {
             pause()
-            exoPlayer.release()
+            player?.release()
 
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)
@@ -82,8 +79,9 @@ class VideoPlayerView
 
         // region Public methods
         fun setVideo(media: AerialMedia) {
-            video = VideoInfo() // Reset params for each video
-            exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+            prepared = false
+            // video = VideoInfo() // Reset params for each video
+            // exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -128,25 +126,22 @@ class VideoPlayerView
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_ENDED -> Timber.i("Playback ended...")
+                Player.STATE_READY -> {}
+                Player.STATE_BUFFERING -> {
+                    Timber.i("Buffering...")
+                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+                }
             }
 
-            if (playbackState == Player.STATE_BUFFERING) {
-                Timber.i("Buffering...")
-                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
-            }
-
-            if (!video.prepared && playbackState == Player.STATE_READY) {
+            if (!prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
-                if (segmentLongVideos) {
-                    handleSegmentedVideo()
-                }
-                if (randomStartPosition) {
-                    // TODO
-                    // should only be run once (prepared?)
-                    // should not be run with other playback segment modes
-                    handleRandomStartPosition()
-                }
-                video.prepared = true
+
+                // Waiting for... https://youtrack.jetbrains.com/issue/KT-19627/Object-name-based-destructuring
+                val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs)
+                startPosition = result.first
+                endPosition = result.second
+
+                prepared = true
                 listener?.onVideoPrepared()
             }
 
@@ -160,16 +155,16 @@ class VideoPlayerView
             }
         }
 
-        override fun onMediaItemTransition(
-            mediaItem: MediaItem?,
-            reason: Int,
-        ) {
-            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                video.loopCount++
-                Timber.i("Looping video, count: ${video.loopCount}")
-            }
-            super.onMediaItemTransition(mediaItem, reason)
-        }
+//        override fun onMediaItemTransition(
+//            mediaItem: MediaItem?,
+//            reason: Int,
+//        ) {
+//            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
+//                video.loopCount++
+//                Timber.i("Looping video, count: ${video.loopCount}")
+//            }
+//            super.onMediaItemTransition(mediaItem, reason)
+//        }
 
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
@@ -232,7 +227,8 @@ class VideoPlayerView
 
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
-            val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
+            // val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
+            val delay = endPosition - exoPlayer.currentPosition
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
         }

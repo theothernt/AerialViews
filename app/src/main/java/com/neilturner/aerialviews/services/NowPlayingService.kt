@@ -86,11 +86,13 @@ class NowPlayingService(
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
-        val musicEvent = metadata?.let {
-            val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
-            val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
-            MusicEvent(artist, song)
-        }.takeIf { active == true } ?: MusicEvent()
+        val musicEvent =
+            metadata
+                ?.let {
+                    val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+                    val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+                    MusicEvent(artist, song)
+                }.takeIf { active == true } ?: MusicEvent()
 
         GlobalBus.post(musicEvent)
     }

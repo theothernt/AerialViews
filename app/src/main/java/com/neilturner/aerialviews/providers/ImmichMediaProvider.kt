@@ -56,7 +56,6 @@ class ImmichMediaProvider(
         // validate SSL certs
 
         if (prefs.authType == ImmichAuthType.SHARED_LINK) {
-
             if (prefs.pathName.isEmpty()) {
                 return Pair(media, "Path name is empty")
             }
@@ -65,7 +64,6 @@ class ImmichMediaProvider(
                 return Pair(media, "Password is empty")
             }
         } else {
-
             if (prefs.apiKey.isEmpty()) {
                 return Pair(media, "API key is empty")
             }

@@ -13,9 +13,11 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.util.EventLogger
+import androidx.media3.ui.AspectRatioFrameLayout
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -51,6 +53,14 @@ object VideoPlayerHelper {
                 .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
                 .build()
     }
+
+    @OptIn(UnstableApi::class)
+    fun getResizeMode(scale: VideoScale?): Int =
+        if (scale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) {
+            AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+        } else {
+            AspectRatioFrameLayout.RESIZE_MODE_FIT
+        }
 
     @OptIn(UnstableApi::class)
     fun buildPlayer(
@@ -95,6 +105,10 @@ object VideoPlayerHelper {
         }
 
         player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
+
+        // By default, repeat mode is on - only used for looping short videos
+        player.repeatMode == Player.REPEAT_MODE_ALL
+
         return player
     }
 
@@ -153,6 +167,62 @@ object VideoPlayerHelper {
         }
     }
 
+    fun calculatePlaybackParameters(
+        player: ExoPlayer,
+        prefs: GeneralPrefs,
+    ): Pair<Long, Long> {
+        // private val segmentLongVideos =
+        //            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
+
+        // private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
+
+        val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
+        val fiveSeconds = 5 * 1000
+        val isLengthLimited = maxVideoLength >= fiveSeconds
+        val isShortVideo = player.duration < maxVideoLength
+
+        if (!isLengthLimited && prefs.randomStartPosition) {
+            Timber.i("Calculating random start position...")
+            // calculate random start position
+            // return
+            return Pair(0, player.duration) // Test
+        }
+
+        if (isShortVideo && isLengthLimited && prefs.loopShortVideos) {
+            Timber.i("Calculating looping short video...")
+            // calculate short looping video
+            // return
+            return Pair(0, player.duration) // Test
+        }
+
+        if (!isShortVideo && isLengthLimited) {
+            when (prefs.limitLongerVideos) {
+                LimitLongerVideos.LIMIT -> {
+                    Timber.i("Calculating long video type... obey limit, play until time limit")
+                    return Pair(0, player.duration) // Test
+                }
+                LimitLongerVideos.SEGMENT -> {
+                    Timber.i("Calculating long video type... play random segment")
+                    return Pair(0, player.duration) // Test
+                }
+                else -> {
+                    Timber.i("Calculating long video type... ignore limit, play full video")
+                    return Pair(0, player.duration) // Test
+                }
+            }
+            // Skip to next video when limit is reached
+            // Play entire video
+            // Play random segment of long video
+
+            // calculate long video
+            // return
+        }
+
+        // Use normal start + end/duration
+        Timber.i("Calculating normal video type...")
+        return Pair(0, player.duration)
+    }
+
     fun calculateSegments(
         duration: Long,
         maxLength: Long,
@@ -199,12 +269,12 @@ object VideoPlayerHelper {
     ): Long {
         // TODO
         // account for 0 or less than 0 values ?!
-        
+
         val loopShortVideos = prefs.loopShortVideos
         val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
-        val duration = player.duration
-        val position = player.currentPosition
+        val duration = player.duration // remove
+        val position = player.currentPosition // remove
 
         // 10 seconds is the min. video length
         val tenSeconds = 10 * 1000
@@ -228,7 +298,7 @@ object VideoPlayerHelper {
             val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
             var targetDuration =
                 if (isLooping) {
-                    player.repeatMode = Player.REPEAT_MODE_ALL
+                    // player.repeatMode = Player.REPEAT_MODE_ALL
                     loopingDuration
                 } else {
                     duration

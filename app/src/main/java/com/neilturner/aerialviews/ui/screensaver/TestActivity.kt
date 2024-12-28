@@ -41,7 +41,7 @@ class TestActivity : AppCompatActivity() {
         // finish()
 
         // Navigate back as we don't support pause/suspend
-        //supportFragmentManager.popBackStack()
+        // supportFragmentManager.popBackStack()
     }
 
     override fun onAttachedToWindow() {
