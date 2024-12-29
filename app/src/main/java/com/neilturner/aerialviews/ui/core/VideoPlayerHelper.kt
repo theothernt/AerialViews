@@ -107,7 +107,7 @@ object VideoPlayerHelper {
         }
 
         // By default, set repeat mode to on, but only used for looping short videos
-        player.repeatMode == ExoPlayer.REPEAT_MODE_ALL
+        // player.repeatMode == ExoPlayer.REPEAT_MODE_ALL
 
         player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
@@ -260,78 +260,6 @@ object VideoPlayerHelper {
         Timber.i("$message1$message2")
 
         return Pair(segmentStart, segmentEnd)
-    }
-
-    fun calculateDelay(
-        video: VideoInfo,
-        player: ExoPlayer,
-        prefs: GeneralPrefs,
-    ): Long {
-        // TODO
-        // account for 0 or less than 0 values ?!
-
-        val loopShortVideos = prefs.loopShortVideos
-        val allowLongerVideos = prefs.limitLongerVideos == LimitLongerVideos.IGNORE
-        val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
-        val duration = player.duration // remove
-        val position = player.currentPosition // remove
-
-        // 10 seconds is the min. video length
-        val tenSeconds = 10 * 1000
-
-        // If max length disabled, play full video
-        if (maxVideoLength < tenSeconds) {
-            return calculateEndOfVideo(position, duration, video, prefs)
-        }
-
-        // Play a part/segment of a video only
-        if (video.isSegmented) {
-            val segmentPosition = if (position < video.segmentStart) 0 else position - video.segmentStart
-            val segmentDuration = video.segmentEnd - video.segmentStart
-            return calculateEndOfVideo(segmentPosition, segmentDuration, video, prefs)
-        }
-
-        // Check if we need to loop the video
-        if (loopShortVideos &&
-            duration < maxVideoLength
-        ) {
-//            val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
-//            var targetDuration =
-//                if (isLooping) {
-//                    // player.repeatMode = Player.REPEAT_MODE_ALL
-//                    loopingDuration
-//                } else {
-//                    duration
-//                }
-            return calculateEndOfVideo(position, 0, video, prefs)
-        }
-
-        // Limit the duration of the video, or not
-        if (maxVideoLength in tenSeconds until duration &&
-            !allowLongerVideos
-        ) {
-            Timber.i("Limiting duration (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
-            return calculateEndOfVideo(position, maxVideoLength, video, prefs)
-        }
-        Timber.i("Ignoring limit (video is ${duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
-        return calculateEndOfVideo(position, duration, video, prefs)
-    }
-
-    private fun calculateEndOfVideo(
-        position: Long,
-        duration: Long,
-        video: VideoInfo,
-        prefs: GeneralPrefs,
-    ): Long {
-        // TODO
-        // account for 0 or less than 0 values ?!
-
-        // Adjust the duration based on the playback speed
-        // Take into account the current player position in case of speed changes during playback
-        val delay = ((duration - position) / prefs.playbackSpeed.toDouble().toLong() - prefs.mediaFadeOutDuration.toLong())
-        val actualPosition = if (video.isSegmented) position + video.segmentStart else position
-        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds}, position: ${actualPosition.milliseconds})")
-        return if (delay < 0) 0 else delay
     }
 
     private fun calculateLoopingVideo(

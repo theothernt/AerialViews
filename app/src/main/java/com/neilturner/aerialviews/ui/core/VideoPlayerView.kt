@@ -31,11 +31,7 @@ class VideoPlayerView
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
         private val exoPlayer: ExoPlayer
-
-        // TODO
-        // VideoStatus (ref to ExoPlayer?)
-        // just remove!
-        private var video = VideoInfo()
+        private var state = VideoState()
         // replace player? with exoPlayer
 
         private var listener: OnVideoPlayerEventListener? = null
@@ -45,14 +41,8 @@ class VideoPlayerView
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
-
-        private var loopCount = 0
-        private var prepared = false
-        private var startPosition: Long = 0
-        private var endPosition: Long = 0
 
         init {
             exoPlayer =
@@ -80,9 +70,7 @@ class VideoPlayerView
 
         // region Public methods
         fun setVideo(media: AerialMedia) {
-            prepared = false
-            loopCount = 0
-            video = VideoInfo() // Reset params for each video
+            state = VideoState() // Reset params for each video
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -94,7 +82,10 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
-            player?.prepare()
+            player?.apply {
+                repeatMode = Player.REPEAT_MODE_ALL
+                prepare()
+            }
         }
 
         fun increaseSpeed() = changeSpeed(true)
@@ -134,20 +125,20 @@ class VideoPlayerView
                 }
             }
 
-            if (!prepared && playbackState == Player.STATE_READY) {
+            if (!state.prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
 
                 // Waiting for... https://youtrack.jetbrains.com/issue/KT-19627/Object-name-based-destructuring
                 val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs)
-                startPosition = result.first
-                endPosition = result.second
+                state.startPosition = result.first
+                state.endPosition = result.second
 
-                if (startPosition > 0) {
-                    Timber.i("Seeking to: ${startPosition.milliseconds}")
-                    player?.seekTo(startPosition)
+                if (state.startPosition > 0) {
+                    Timber.i("Seeking to: ${state.startPosition.milliseconds}")
+                    player?.seekTo(state.startPosition)
                 }
 
-                prepared = true
+                state.prepared = true
                 listener?.onVideoPrepared() // should be after playWhenReady, only fired once per video
             }
 
@@ -166,8 +157,8 @@ class VideoPlayerView
             reason: Int,
         ) {
             if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                video.loopCount++
-                Timber.i("Looping video, count: ${video.loopCount}")
+                state.loopCount++
+                Timber.i("Looping video, count: ${state.loopCount}")
             }
             super.onMediaItemTransition(mediaItem, reason)
         }
@@ -189,7 +180,7 @@ class VideoPlayerView
                 return
             }
 
-            if (!video.prepared || !exoPlayer.isPlaying) {
+            if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) {
                 return // Must be playing a video
             }
 
@@ -233,24 +224,12 @@ class VideoPlayerView
 
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
-            // val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
-            val delay = endPosition - exoPlayer.currentPosition
+
+            // TEMP
+            val delay = state.endPosition - exoPlayer.currentPosition
+
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
-        }
-
-        private fun handleSegmentedVideo() {
-//            if (!video.isSegmented) {
-//                VideoPlayerHelper.calculateSegments(exoPlayer.duration, maxVideoLength, video)
-//            }
-            if (video.isSegmented && exoPlayer.currentPosition !in video.segmentStart - 500..video.segmentEnd + 500) {
-                Timber.i("Seeking to segment ${video.segmentStart}ms")
-                exoPlayer.seekTo(video.segmentStart)
-                return
-            }
-            if (video.isSegmented) {
-                Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${video.segmentStart}ms), continuing...")
-            }
         }
 
         interface OnVideoPlayerEventListener {
@@ -268,11 +247,10 @@ class VideoPlayerView
         }
     }
 
-data class VideoInfo(
+data class VideoState(
     var prepared: Boolean = false,
-    var playbackSpeed: Float = 1.0f,
     var loopCount: Int = 0,
-    var isSegmented: Boolean = false,
-    var segmentStart: Long = 0L, // start position
-    var segmentEnd: Long = 0L, // end position
+    var startPosition: Long = 0L,
+    var endPosition: Long = 0L,
+    var initialSeek: Boolean = false
 )
