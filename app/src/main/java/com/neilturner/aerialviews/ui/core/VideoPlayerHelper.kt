@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
-import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
@@ -32,6 +31,8 @@ import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 
 object VideoPlayerHelper {
+    private const val FIVE_SECONDS = 5 * 1000
+
     fun setRefreshRate(
         context: Context,
         framerate: Float?,
@@ -105,11 +106,10 @@ object VideoPlayerHelper {
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
-        player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
-
         // By default, repeat mode is on - only used for looping short videos
-        player.repeatMode == Player.REPEAT_MODE_ALL
+        player.repeatMode == ExoPlayer.REPEAT_MODE_ALL
 
+        player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
     }
 
@@ -173,8 +173,8 @@ object VideoPlayerHelper {
         prefs: GeneralPrefs,
     ): Pair<Long, Long> {
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
-        val fiveSeconds = 5 * 1000
-        val isLengthLimited = maxVideoLength >= fiveSeconds
+
+        val isLengthLimited = maxVideoLength >= FIVE_SECONDS
         val isShortVideo = player.duration < maxVideoLength
 
         // methods should return start + duration without
@@ -182,17 +182,13 @@ object VideoPlayerHelper {
 
         if (!isLengthLimited && prefs.randomStartPosition) {
             Timber.i("Calculating random start position...")
-            val duration = player.duration
             val range = GeneralPrefs.randomStartPositionRange.toInt()
-            calculateRandomStartPosition(duration, range)
-            return Pair(0, player.duration) // Test
+            return calculateRandomStartPosition(player.duration, range)
         }
 
         if (isShortVideo && isLengthLimited && prefs.loopShortVideos) {
             Timber.i("Calculating looping short video...")
-            // calculate short looping video
-            // return
-            return Pair(0, player.duration) // Test
+            return calculateLoopingVideo(player.duration, maxVideoLength)
         }
 
         if (!isShortVideo && isLengthLimited) {
@@ -223,10 +219,13 @@ object VideoPlayerHelper {
         return Pair(0, player.duration)
     }
 
-    fun calculateRandomStartPosition(duration: Long, range: Int): Pair<Long, Long> {
+    fun calculateRandomStartPosition(
+        duration: Long,
+        range: Int,
+    ): Pair<Long, Long> {
         if (duration <= 0 || range < 5) {
             Timber.e("Invalid duration or range: duration=$duration, range=$range%")
-            return Pair(0,0)
+            return Pair(0, 0)
         }
         val seekPosition = (duration * range / 100.0).toLong()
         val randomPosition = Random.nextLong(seekPosition)
@@ -309,15 +308,15 @@ object VideoPlayerHelper {
         if (loopShortVideos &&
             duration < maxVideoLength
         ) {
-            val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
-            var targetDuration =
-                if (isLooping) {
-                    // player.repeatMode = Player.REPEAT_MODE_ALL
-                    loopingDuration
-                } else {
-                    duration
-                }
-            return calculateEndOfVideo(position, targetDuration, video, prefs)
+//            val (isLooping, loopingDuration) = calculateLoopingVideo(maxVideoLength, player)
+//            var targetDuration =
+//                if (isLooping) {
+//                    // player.repeatMode = Player.REPEAT_MODE_ALL
+//                    loopingDuration
+//                } else {
+//                    duration
+//                }
+            return calculateEndOfVideo(position, 0, video, prefs)
         }
 
         // Limit the duration of the video, or not
@@ -349,14 +348,16 @@ object VideoPlayerHelper {
     }
 
     private fun calculateLoopingVideo(
+        duration: Long,
         maxVideoLength: Long,
-        player: ExoPlayer,
-    ): Pair<Boolean, Long> {
-        // TODO
-        // account for 0 or less than 0 values ?!
-        val loopCount = ceil(maxVideoLength / player.duration.toDouble()).toInt()
-        val targetDuration = player.duration * loopCount
-        Timber.i("Looping $loopCount times (video is ${player.duration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
-        return Pair(loopCount > 1, targetDuration.toLong())
+    ): Pair<Long, Long> {
+        if (duration <= 0 || maxVideoLength < FIVE_SECONDS) {
+            Timber.e("Invalid duration or max video length: duration=$duration, range=$maxVideoLength%")
+            return Pair(0, 0)
+        }
+        val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
+        val targetDuration = duration * loopCount
+        Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        return Pair(0, targetDuration.toLong())
     }
 }
