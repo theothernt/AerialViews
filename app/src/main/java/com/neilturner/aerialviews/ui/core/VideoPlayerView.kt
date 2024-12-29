@@ -141,6 +141,10 @@ class VideoPlayerView
                 startPosition = result.first
                 endPosition = result.second
 
+                if (startPosition > 0) {
+                    player?.seekTo(startPosition)
+                }
+
                 prepared = true
                 listener?.onVideoPrepared()
             }

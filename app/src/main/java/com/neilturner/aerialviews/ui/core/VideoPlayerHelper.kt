@@ -28,6 +28,7 @@ import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
+import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 
 object VideoPlayerHelper {
@@ -171,20 +172,19 @@ object VideoPlayerHelper {
         player: ExoPlayer,
         prefs: GeneralPrefs,
     ): Pair<Long, Long> {
-        // private val segmentLongVideos =
-        //            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
-
-        // private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
-
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val fiveSeconds = 5 * 1000
         val isLengthLimited = maxVideoLength >= fiveSeconds
         val isShortVideo = player.duration < maxVideoLength
 
+        // methods should return start + duration without
+        // a) animation timing or b) playbackspeed
+
         if (!isLengthLimited && prefs.randomStartPosition) {
             Timber.i("Calculating random start position...")
-            // calculate random start position
-            // return
+            val duration = player.duration
+            val range = GeneralPrefs.randomStartPositionRange.toInt()
+            calculateRandomStartPosition(duration, range)
             return Pair(0, player.duration) // Test
         }
 
@@ -221,6 +221,20 @@ object VideoPlayerHelper {
         // Use normal start + end/duration
         Timber.i("Calculating normal video type...")
         return Pair(0, player.duration)
+    }
+
+    fun calculateRandomStartPosition(duration: Long, range: Int): Pair<Long, Long> {
+        if (duration <= 0 || range < 5) {
+            Timber.e("Invalid duration or range: duration=$duration, range=$range%")
+            return Pair(0,0)
+        }
+        val seekPosition = (duration * range / 100.0).toLong()
+        val randomPosition = Random.nextLong(seekPosition)
+
+        val percent = (randomPosition.toFloat() / duration.toFloat() * 100).toInt()
+        Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%, from 0%-%$range)")
+
+        return Pair(randomPosition, duration)
     }
 
     fun calculateSegments(
