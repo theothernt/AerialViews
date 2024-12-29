@@ -194,7 +194,14 @@ object VideoPlayerHelper {
             when (prefs.limitLongerVideos) {
                 LimitLongerVideos.LIMIT -> {
                     Timber.i("Calculating long video type... obey limit, play until time limit")
-                    return Pair(0, player.duration) // Test
+                    val duration = if (maxVideoLength >= player.duration) {
+                        Timber.i("Using video duration as limit (shorter than max!)")
+                        player.duration
+                    } else {
+                        Timber.i("Using max length as limit")
+                        maxVideoLength
+                    }
+                    return Pair(0, duration)
                 }
                 LimitLongerVideos.SEGMENT -> {
                     Timber.i("Calculating long video type... play random segment")
@@ -205,12 +212,6 @@ object VideoPlayerHelper {
                     return Pair(0, player.duration)
                 }
             }
-            // Skip to next video when limit is reached
-            // Play entire video
-            // Play random segment of long video
-
-            // calculate long video
-            // return
         }
 
         // Use normal start + end/duration
