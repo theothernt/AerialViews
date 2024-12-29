@@ -31,7 +31,7 @@ import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 
 object VideoPlayerHelper {
-    private const val FIVE_SECONDS = 5 * 1000
+    private const val TEN_SECONDS = 10 * 1000
 
     fun setRefreshRate(
         context: Context,
@@ -106,7 +106,7 @@ object VideoPlayerHelper {
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
-        // By default, repeat mode is on - only used for looping short videos
+        // By default, set repeat mode to on, but only used for looping short videos
         player.repeatMode == ExoPlayer.REPEAT_MODE_ALL
 
         player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
@@ -173,8 +173,7 @@ object VideoPlayerHelper {
         prefs: GeneralPrefs,
     ): Pair<Long, Long> {
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
-
-        val isLengthLimited = maxVideoLength >= FIVE_SECONDS
+        val isLengthLimited = maxVideoLength >= TEN_SECONDS
         val isShortVideo = player.duration < maxVideoLength
 
         // methods should return start + duration without
@@ -199,11 +198,11 @@ object VideoPlayerHelper {
                 }
                 LimitLongerVideos.SEGMENT -> {
                     Timber.i("Calculating long video type... play random segment")
-                    return Pair(0, player.duration) // Test
+                    return calculateRandomSegment(player.duration, maxVideoLength)
                 }
                 else -> {
                     Timber.i("Calculating long video type... ignore limit, play full video")
-                    return Pair(0, player.duration) // Test
+                    return Pair(0, player.duration)
                 }
             }
             // Skip to next video when limit is reached
@@ -236,43 +235,30 @@ object VideoPlayerHelper {
         return Pair(randomPosition, duration)
     }
 
-    fun calculateSegments(
+    private fun calculateRandomSegment(
         duration: Long,
         maxLength: Long,
-        video: VideoInfo,
-    ) {
-        if (duration == 0L ||
-            maxLength == 0L
-        ) {
-            return
+    ): Pair<Long, Long> {
+        if (duration <= 0 || maxLength < TEN_SECONDS) {
+            Timber.e("Invalid duration or max length: duration=$duration, maxLength=$maxLength%")
         }
 
-        val tenSeconds = 10 * 1000
-        val segments = duration / maxLength
-
-        // If too short or no segments
-        if (maxLength < tenSeconds ||
-            segments < 2
-        ) {
+        val numOfSegments = duration / maxLength
+        if (numOfSegments < 2) {
             Timber.i("Video too short for segments")
-            video.isSegmented = false
-            video.segmentStart = 0L
-            video.segmentEnd = 0L
-            return
+            return Pair(0, duration)
         }
 
-        val length = duration.floorDiv(segments).toLong()
-        val random = (1..segments).random()
-        val segmentStart = (random - 1) * length
-        val segmentEnd = random * length
+        val length = duration.floorDiv(numOfSegments).toLong()
+        val randomSegment = (1..numOfSegments).random()
+        val segmentStart = (randomSegment - 1) * length
+        val segmentEnd = randomSegment * length
 
-        val message1 = "Segment chosen: ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
-        val message2 = "($random of $segments, duration: ${duration.milliseconds}"
-        Timber.i("$message1 $message2")
+        val message1 = "Video length ${duration.milliseconds}, $numOfSegments segments of ${length.milliseconds}\n"
+        val message2 = "Chose segment ${randomSegment}, ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
+        Timber.i("$message1$message2")
 
-        video.isSegmented = true
-        video.segmentStart = segmentStart
-        video.segmentEnd = segmentEnd
+        return Pair(segmentStart, segmentEnd)
     }
 
     fun calculateDelay(
@@ -349,15 +335,15 @@ object VideoPlayerHelper {
 
     private fun calculateLoopingVideo(
         duration: Long,
-        maxVideoLength: Long,
+        maxLength: Long,
     ): Pair<Long, Long> {
-        if (duration <= 0 || maxVideoLength < FIVE_SECONDS) {
-            Timber.e("Invalid duration or max video length: duration=$duration, range=$maxVideoLength%")
+        if (duration <= 0 || maxLength < TEN_SECONDS) {
+            Timber.e("Invalid duration or max length: duration=$duration, maxLength=$maxLength%")
             return Pair(0, 0)
         }
-        val loopCount = ceil(maxVideoLength / duration.toDouble()).toInt()
+        val loopCount = ceil(maxLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount
-        Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxVideoLength.milliseconds})")
+        Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})")
         return Pair(0, targetDuration.toLong())
     }
 }

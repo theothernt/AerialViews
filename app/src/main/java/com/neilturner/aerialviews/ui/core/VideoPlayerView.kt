@@ -36,6 +36,7 @@ class VideoPlayerView
         // VideoStatus (ref to ExoPlayer?)
         // just remove!
         private var video = VideoInfo()
+        // replace player? with exoPlayer
 
         private var listener: OnVideoPlayerEventListener? = null
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
@@ -239,9 +240,9 @@ class VideoPlayerView
         }
 
         private fun handleSegmentedVideo() {
-            if (!video.isSegmented) {
-                VideoPlayerHelper.calculateSegments(exoPlayer.duration, maxVideoLength, video)
-            }
+//            if (!video.isSegmented) {
+//                VideoPlayerHelper.calculateSegments(exoPlayer.duration, maxVideoLength, video)
+//            }
             if (video.isSegmented && exoPlayer.currentPosition !in video.segmentStart - 500..video.segmentEnd + 500) {
                 Timber.i("Seeking to segment ${video.segmentStart}ms")
                 exoPlayer.seekTo(video.segmentStart)
