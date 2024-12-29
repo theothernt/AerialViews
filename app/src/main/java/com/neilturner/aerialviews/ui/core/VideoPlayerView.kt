@@ -45,16 +45,15 @@ class VideoPlayerView
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
         init {
-            exoPlayer =
-                VideoPlayerHelper
-                    .buildPlayer(context, GeneralPrefs)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
+
             player = exoPlayer
             player?.addListener(this)
+            player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+
             controllerAutoShow = false
             useController = false
-            resizeMode =
-                VideoPlayerHelper
-                    .getResizeMode(GeneralPrefs.videoScale)
+            resizeMode = VideoPlayerHelper.getResizeMode(GeneralPrefs.videoScale)
         }
 
         fun release() {
@@ -82,10 +81,8 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
-            player?.apply {
-                repeatMode = Player.REPEAT_MODE_ALL
-                prepare()
-            }
+            // player?.repeatMode = Player.REPEAT_MODE_ALL
+            player?.prepare()
         }
 
         fun increaseSpeed() = changeSpeed(true)
@@ -252,5 +249,5 @@ data class VideoState(
     var loopCount: Int = 0,
     var startPosition: Long = 0L,
     var endPosition: Long = 0L,
-    var initialSeek: Boolean = false
+    var initialSeek: Boolean = false,
 )

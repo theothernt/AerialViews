@@ -106,9 +106,6 @@ object VideoPlayerHelper {
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 
-        // By default, set repeat mode to on, but only used for looping short videos
-        // player.repeatMode == ExoPlayer.REPEAT_MODE_ALL
-
         player.setPlaybackSpeed(prefs.playbackSpeed.toFloat())
         return player
     }
@@ -194,13 +191,14 @@ object VideoPlayerHelper {
             when (prefs.limitLongerVideos) {
                 LimitLongerVideos.LIMIT -> {
                     Timber.i("Calculating long video type... obey limit, play until time limit")
-                    val duration = if (maxVideoLength >= player.duration) {
-                        Timber.i("Using video duration as limit (shorter than max!)")
-                        player.duration
-                    } else {
-                        Timber.i("Using max length as limit")
-                        maxVideoLength
-                    }
+                    val duration =
+                        if (maxVideoLength >= player.duration) {
+                            Timber.i("Using video duration as limit (shorter than max!)")
+                            player.duration
+                        } else {
+                            Timber.i("Using max length as limit")
+                            maxVideoLength
+                        }
                     return Pair(0, duration)
                 }
                 LimitLongerVideos.SEGMENT -> {
@@ -256,7 +254,7 @@ object VideoPlayerHelper {
         val segmentEnd = randomSegment * length
 
         val message1 = "Video length ${duration.milliseconds}, $numOfSegments segments of ${length.milliseconds}\n"
-        val message2 = "Chose segment ${randomSegment}, ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
+        val message2 = "Chose segment $randomSegment, ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
         Timber.i("$message1$message2")
 
         return Pair(segmentStart, segmentEnd)
@@ -272,7 +270,9 @@ object VideoPlayerHelper {
         }
         val loopCount = ceil(maxLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount
-        Timber.i("Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})")
+        Timber.i(
+            "Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})",
+        )
         return Pair(0, targetDuration.toLong())
     }
 }
