@@ -76,6 +76,10 @@
     <item>1800 毫秒</item>
     <item>2000 毫秒</item>
   </string-array>
+  <string-array name="immich_auth_type_entries">
+    <item>共享链接</item>
+    <item>API 密钥</item>
+  </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>达到上限时跳过</item>
     <item>让较长的视频播放完毕</item>
@@ -142,20 +146,15 @@
     <item>30 分钟</item>
     <item>60 分钟</item>
   </string-array>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (默认)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string-array name="progress_bar_location_entries">
+    <item>禁用</item>
+    <item>屏幕顶部</item>
+    <item>屏幕底部</item>
+  </string-array>
+  <string-array name="progress_bar_type_entries">
+    <item>视频和照片</item>
+    <item>Videos only</item>
+    <item>仅限照片</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 seconds</item>

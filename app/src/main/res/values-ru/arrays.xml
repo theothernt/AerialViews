@@ -76,6 +76,10 @@
     <item>1800 мс</item>
     <item>2000 мс</item>
   </string-array>
+  <string-array name="immich_auth_type_entries">
+    <item>Общая ссылка</item>
+    <item>Ключ API</item>
+  </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустить при достижении лимита</item>
     <item>Разрешить более длинным видео завершаться</item>
@@ -142,20 +146,15 @@
     <item>30 минут</item>
     <item>60 минут</item>
   </string-array>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (по умолчанию)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string-array name="progress_bar_location_entries">
+    <item>Выключено</item>
+    <item>Верхняя часть экрана</item>
+    <item>Нижняя часть экрана</item>
+  </string-array>
+  <string-array name="progress_bar_type_entries">
+    <item>Видео и фотографии</item>
+    <item>Только видео</item>
+    <item>Только фотографии</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>

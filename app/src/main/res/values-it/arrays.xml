@@ -76,6 +76,10 @@
     <item>1800ms</item>
     <item>2000ms</item>
   </string-array>
+  <string-array name="immich_auth_type_entries">
+    <item>Collegamento condiviso</item>
+    <item>API Key</item>
+  </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Salta quando viene raggiunto il limite</item>
     <item>Consenti il completamento dei video più lunghi</item>
@@ -142,20 +146,15 @@
     <item>30 minuti</item>
     <item>60 minuti</item>
   </string-array>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (Predefinito)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string-array name="progress_bar_location_entries">
+    <item>Disabilitato</item>
+    <item>Parte superiore dello schermo</item>
+    <item>Parte inferiore dello schermo</item>
+  </string-array>
+  <string-array name="progress_bar_type_entries">
+    <item>Video e immagini</item>
+    <item>Solo video</item>
+    <item>Solo immagini</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 secondi</item>

@@ -76,6 +76,10 @@
     <item>1800 אלפיות השנייה</item>
     <item>2000 אלפיות השנייה</item>
   </string-array>
+  <string-array name="immich_auth_type_entries">
+    <item></item>
+    <item></item>
+  </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>דלג כשמגיעים למגבלה</item>
     <item>אפשר לסרטונים ארוכים יותר להסתיים</item>
@@ -142,20 +146,15 @@
     <item>30 דקות</item>
     <item>60 דקות</item>
   </string-array>
-  <string-array name="playback_speed_entries">
-    <item>פי 0.25</item>
-    <item>פי 0.5</item>
-    <item>פי 0.75</item>
-    <item>פי 1 (ברירת מחדל)</item>
-    <item>פי 1.25</item>
-    <item>פי 1.5</item>
-    <item>פי 1.75</item>
-    <item>פי 2</item>
-    <item>פי 2.5</item>
-    <item>פי 3</item>
-    <item>פי 3.5</item>
-    <item>פי 4</item>
-    <item>פי 5</item>
+  <string-array name="progress_bar_location_entries">
+    <item>מבוטל</item>
+    <item></item>
+    <item></item>
+  </string-array>
+  <string-array name="progress_bar_type_entries">
+    <item>סרטונים ותמונות</item>
+    <item>סרטונים בלבד</item>
+    <item>תמונות בלבד</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 שניות</item>

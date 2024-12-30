@@ -76,6 +76,10 @@
     <item>1800 мс</item>
     <item>2000 мс</item>
   </string-array>
+  <string-array name="immich_auth_type_entries">
+    <item>Спільне посилання</item>
+    <item>Ключ API</item>
+  </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустити при досягненні ліміту</item>
     <item>Дозвольте завершити довші відео</item>
@@ -142,20 +146,15 @@
     <item>30 хвилин</item>
     <item>60 хвилин</item>
   </string-array>
-  <string-array name="playback_speed_entries">
-    <item>0.25x</item>
-    <item>0.5x</item>
-    <item>0.75x</item>
-    <item>1x (за замовчуванням)</item>
-    <item>1.25x</item>
-    <item>1.5x</item>
-    <item>1.75x</item>
-    <item>2x</item>
-    <item>2.5x</item>
-    <item>3x</item>
-    <item>3.5x</item>
-    <item>4x</item>
-    <item>5x</item>
+  <string-array name="progress_bar_location_entries">
+    <item>Вимкнено</item>
+    <item>Верхня частина екрану</item>
+    <item>Нижня частина екрану</item>
+  </string-array>
+  <string-array name="progress_bar_type_entries">
+    <item>Відео та фотографії</item>
+    <item>Лише відео</item>
+    <item>Лише фотографії</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>
