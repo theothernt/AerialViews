@@ -222,9 +222,18 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
 
-            // TEMP
-            val delay = state.endPosition - exoPlayer.currentPosition
+            if (state.startPosition <=0 && state.endPosition <=0) {
+                postDelayed(almostFinishedRunnable, 2 * 1000)
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                return
+            }
 
+            // Adjust the duration based on the playback speed
+            // Take into account the current player position in case of speed changes during playback
+            val duration = state.endPosition - state.startPosition
+            val delay = ((duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble().toLong() - GeneralPrefs.mediaFadeOutDuration.toLong())
+
+            Timber.i("Video will finish in: ${delay.milliseconds}")
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
             postDelayed(almostFinishedRunnable, delay)
         }

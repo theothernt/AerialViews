@@ -173,9 +173,6 @@ object VideoPlayerHelper {
         val isLengthLimited = maxVideoLength >= TEN_SECONDS
         val isShortVideo = player.duration < maxVideoLength
 
-        // methods should return start + duration without
-        // a) animation timing or b) playbackspeed
-
         if (!isLengthLimited && prefs.randomStartPosition) {
             Timber.i("Calculating random start position...")
             val range = GeneralPrefs.randomStartPositionRange.toInt()
