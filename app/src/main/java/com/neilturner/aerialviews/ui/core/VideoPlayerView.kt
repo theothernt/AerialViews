@@ -21,6 +21,7 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
+@Suppress("JoinDeclarationAndAssignment")
 @OptIn(UnstableApi::class)
 class VideoPlayerView
     @JvmOverloads

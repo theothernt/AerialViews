@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.net.Uri
 import okhttp3.OkHttpClient
 import timber.log.Timber
@@ -50,12 +51,14 @@ class SslHelper {
         if (!config.validateCertificates) {
             val trustAllCerts =
                 arrayOf<TrustManager>(
+                    @SuppressLint("CustomX509TrustManager")
                     object : X509TrustManager {
+                        @SuppressLint("TrustAllX509TrustManager")
                         override fun checkClientTrusted(
                             chain: Array<out X509Certificate>,
                             authType: String,
                         ) {}
-
+                        @SuppressLint("TrustAllX509TrustManager")
                         override fun checkServerTrusted(
                             chain: Array<out X509Certificate>,
                             authType: String,
