@@ -32,7 +32,6 @@ class VideoPlayerView
         Player.Listener {
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
-        // replace player? with exoPlayer
 
         private var listener: OnVideoPlayerEventListener? = null
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
@@ -81,7 +80,6 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
-            // player?.repeatMode = Player.REPEAT_MODE_ALL
             player?.prepare()
         }
 
@@ -131,21 +129,31 @@ class VideoPlayerView
                 state.endPosition = result.second
 
                 if (state.startPosition > 0) {
-                    Timber.i("Seeking to: ${state.startPosition.milliseconds}")
+                    Timber.i("Seeking to ${state.startPosition.milliseconds}")
                     player?.seekTo(state.startPosition)
                 }
 
                 state.prepared = true
-                listener?.onVideoPrepared() // should be after playWhenReady, only fired once per video
             }
 
             // Video is buffered, ready to play
             if (exoPlayer.playWhenReady && playbackState == Player.STATE_READY) {
-                Timber.i("Ready, Playing...")
-                if (GeneralPrefs.refreshRateSwitching) {
-                    VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                if (exoPlayer.isPlaying) {
+                    Timber.i("Ready, Playing...")
+
+                    if (GeneralPrefs.refreshRateSwitching) {
+                        VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                    }
+
+                    if (!state.ready) {
+                        listener?.onVideoPrepared()
+                        state.ready = true
+                    }
+
+                    setupAlmostFinishedRunnable()
+                } else {
+                    Timber.i("Preparing again...")
                 }
-                setupAlmostFinishedRunnable()
             }
         }
 
@@ -254,9 +262,9 @@ class VideoPlayerView
     }
 
 data class VideoState(
+    var ready: Boolean = false,
     var prepared: Boolean = false,
-    var loopCount: Int = 0,
+    var loopCount: Int = 1,
     var startPosition: Long = 0L,
     var endPosition: Long = 0L,
-    var initialSeek: Boolean = false,
 )

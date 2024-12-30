@@ -214,7 +214,7 @@ object VideoPlayerHelper {
         return Pair(0, player.duration)
     }
 
-    fun calculateRandomStartPosition(
+    private fun calculateRandomStartPosition(
         duration: Long,
         range: Int,
     ): Pair<Long, Long> {
@@ -226,7 +226,7 @@ object VideoPlayerHelper {
         val randomPosition = Random.nextLong(seekPosition)
 
         val percent = (randomPosition.toFloat() / duration.toFloat() * 100).toInt()
-        Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%, from 0%-%$range)")
+        Timber.i("Start at ${randomPosition.milliseconds} ($percent%, from 0%-%$range)")
 
         return Pair(randomPosition, duration)
     }
