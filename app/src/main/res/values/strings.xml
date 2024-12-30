@@ -431,8 +431,8 @@
   <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
-  <string name="progress_bar_location_title">Location</string>
-  <string name="progress_bar_type_title">Show on</string>
+  <string name="progress_bar_location_title">Location on screen</string>
+  <string name="progress_bar_type_title">Show for media type</string>
   <string name="progress_bar_opacity_title">Opacity</string>
 
   <!-- Main / Settings / Appearance / Now Playing -->

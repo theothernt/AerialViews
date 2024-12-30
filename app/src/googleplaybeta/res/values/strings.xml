@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <!-- General -->
   <string name="app_name" translatable="false">Aerial Views β</string>
