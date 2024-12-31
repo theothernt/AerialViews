@@ -1,194 +1,194 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 <resources>
-  <string-array name="appearance_font_entries">
-    <item>Open Sans (Standard)</item>
-    <item>Roboto</item>
-  </string-array>
-  <string-array name="appearance_font_weight_entries">
-    <item>100 / Dünn</item>
-    <item>200 / Extraleicht</item>
-    <item>300 / Leicht (Standard)</item>
-    <item>400 / Normal</item>
-    <item>500 / Mittel</item>
-    <item>600 / Halbfett</item>
-    <item>700 / Fett</item>
-    <item>800 / Extrafett</item>
-    <item>900 / Schwer</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>Aktion ignorieren</item>
-    <item>Bildschirmschoner beenden</item>
-    <item>Zum nächsten Foto / Video springen</item>
-    <item>Zum vorherigen Foto / Video springen</item>
-    <item>Geschwindigkeit der Videowiedergabe erhöhen</item>
-    <item>Geschwindigkeit der Videowiedergabe reduzieren</item>
-    <item>Overlays anzeigen (falls ausgeblendet)</item>
-    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>Systemstandard</item>
-    <item>12-Stunden</item>
-    <item>24-Stunden</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>Kompakt</item>
-    <item>Voll</item>
-    <item>Angepasst</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>Deaktiviert</item>
-    <item>Dateinamen unverändert verwenden</item>
-    <item>Ordner- &amp; Dateiname</item>
-    <item>Nur Ordnername</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>Deaktiviert</item>
-    <item>Dateiname unverändert verwenden, z. B. \'Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
-    <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
-    <item>Nur Ordnernamen verwenden, z. B. \'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>Deaktiviert</item>
-    <item>Kurze Beschreibung</item>
-    <item>Dynamische Sehenswürdigkeiten</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Deaktiviert</item>
-    <item>Dateinamen unverändert verwenden, z. B. \'Flying towards Mount Pilatus.mp4\' wird zu \'Flying towards Mount Pilatus\'</item>
-    <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Videos/Grand Canyon/Sunset.mp4\' wird zu \'Grand Canyon/Sunset\'</item>
-    <item>Nur Ordnernamen verwenden, z. B. \'Videos/Irland/Cliffs of Moher.mp4\' wird zu \'Irland\'</item>
-  </string-array>
-  <string-array name="description_video_manifest_entries">
-    <item>Deaktiviert</item>
-    <item>Eine kurze Beschreibung oder ein Standort</item>
-    <item>Dynamische, in vielen Sprachen verfügbare Sehenswürdigkeiten, die sich während der Wiedergabe des Videos ändern</item>
-  </string-array>
-  <string-array name="duration_entries">
-    <item>Deaktiviert</item>
-    <item>200 ms</item>
-    <item>400 ms</item>
-    <item>600ms</item>
-    <item>800ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400 ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item></item>
-    <item></item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>Überspringen, wenn das Limit erreicht ist</item>
-    <item>Längere Videos beenden lassen</item>
-    <item>Zufallsabschnitte langer Videos abspielen</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Limit einhalten - zum nächsten Video springen, wenn das Limit erreicht ist</item>
-    <item>Limit ignorieren - wenn ein Video länger als das eingestellte Limit ist, wird es bis zum Ende abgespielt</item>
-    <item>Zufälliges Segment – wenn ein Video länger als das Limit ist, wird ein zufälliger Videoteil abgespielt (z. B. kann ein 6-minütiges Video mit einem 2-Minuten-Limit 3 Segmente haben – eines wird zufällig abgespielt)</item>
-  </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>Medien-Scanner</item>
-    <item>Ordnerzugriff (Veraltet)</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>Nur Videos</item>
-    <item>Nur Fotos</item>
-    <item>Fotos &amp; Videos</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>Deaktiviert</item>
-    <item>Lied · Interpret</item>
-    <item>Interpret · Lied</item>
-    <item>Interpret</item>
-    <item>Lied</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>Nie ausblenden (Standard)</item>
-    <item>Immer ausgeblendet</item>
-    <item>2 Sekunden</item>
-    <item>4 Sekunden</item>
-    <item>6 Sekunden</item>
-    <item>8 Sekunden</item>
-    <item>10 Sekunden</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 Sekunden</item>
-    <item>4 Sekunden (Standard)</item>
-    <item>6 Sekunden</item>
-    <item>8 Sekunden</item>
-    <item>10 Sekunden</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Füllen (Standard)</item>
-    <item>Zentrieren</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>Kein Limit (Standard)</item>
-    <item>10 Sekunden</item>
-    <item>20 Sekunden</item>
-    <item>30 Sekunden</item>
-    <item>1 Minute</item>
-    <item>2 Minuten</item>
-    <item>3 Minuten</item>
-    <item>4 Minuten</item>
-    <item>5 Minuten</item>
-    <item>6 Minuten</item>
-    <item>7 Minuten</item>
-    <item>8 Minuten</item>
-    <item>9 Minuten</item>
-    <item>10 Minuten</item>
-    <item>20 Minuten</item>
-    <item>30 Minuten</item>
-    <item>60 Minuten</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>Deaktiviert</item>
-    <item></item>
-    <item></item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>Fotos &amp; Videos</item>
-    <item>Nur Videos</item>
-    <item>Nur Fotos</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 Sekunden</item>
-    <item>10 Sekunden</item>
-    <item>30 Sekunden (Standard)</item>
-    <item>1 Minute</item>
-    <item>3 Minuten</item>
-    <item>5 Minuten</item>
-    <item>10 Minuten</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>Leer</item>
-    <item>Uhrzeit</item>
-    <item>Ort</item>
-    <item>Datum</item>
-    <item>Nachricht #1</item>
-    <item>Nachricht #2</item>
-    <item>Jetzt läuft #1</item>
-    <item>Jetzt läuft #2</item>
-  </string-array>
-  <string-array name="text_size_entries">
-    <item>36sp</item>
-    <item>34sp</item>
-    <item>32sp</item>
-    <item>30sp</item>
-    <item>28sp</item>
-    <item>26sp</item>
-    <item>24sp</item>
-    <item>22sp</item>
-    <item>20sp</item>
-    <item>18sp (Standard)</item>
-    <item>16sp</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>Füllen mit Zuschneiden (Standard)</item>
-    <item>Skalieren ohne Zuschneiden</item>
-  </string-array>
+    <string-array name="appearance_font_entries">
+        <item>Open Sans (Standard)</item>
+        <item>Roboto</item>
+    </string-array>
+    <string-array name="appearance_font_weight_entries">
+        <item>100 / Dünn</item>
+        <item>200 / Extraleicht</item>
+        <item>300 / Leicht (Standard)</item>
+        <item>400 / Normal</item>
+        <item>500 / Mittel</item>
+        <item>600 / Halbfett</item>
+        <item>700 / Fett</item>
+        <item>800 / Extrafett</item>
+        <item>900 / Schwer</item>
+    </string-array>
+    <string-array name="button_action_entries">
+        <item>Aktion ignorieren</item>
+        <item>Bildschirmschoner beenden</item>
+        <item>Zum nächsten Foto / Video springen</item>
+        <item>Zum vorherigen Foto / Video springen</item>
+        <item>Geschwindigkeit der Videowiedergabe erhöhen</item>
+        <item>Geschwindigkeit der Videowiedergabe reduzieren</item>
+        <item>Overlays anzeigen (falls ausgeblendet)</item>
+        <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
+    </string-array>
+    <string-array name="clock_format_entries">
+        <item>Systemstandard</item>
+        <item>12-Stunden</item>
+        <item>24-Stunden</item>
+    </string-array>
+    <string-array name="date_format_entries">
+        <item>Kompakt</item>
+        <item>Voll</item>
+        <item>Angepasst</item>
+    </string-array>
+    <string-array name="description_filename_entries">
+        <item>Deaktiviert</item>
+        <item>Dateinamen unverändert verwenden</item>
+        <item>Ordner- &amp; Dateiname</item>
+        <item>Nur Ordnername</item>
+    </string-array>
+    <string-array name="description_photo_filename_entries">
+        <item>Deaktiviert</item>
+        <item>Dateiname unverändert verwenden, z. B. \'Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
+        <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
+        <item>Nur Ordnernamen verwenden, z. B. \'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
+    </string-array>
+    <string-array name="description_video_entries">
+        <item>Deaktiviert</item>
+        <item>Kurze Beschreibung</item>
+        <item>Dynamische Sehenswürdigkeiten</item>
+    </string-array>
+    <string-array name="description_video_filename_entries">
+        <item>Deaktiviert</item>
+        <item>Dateinamen unverändert verwenden, z. B. \'Flying towards Mount Pilatus.mp4\' wird zu \'Flying towards Mount Pilatus\'</item>
+        <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Videos/Grand Canyon/Sunset.mp4\' wird zu \'Grand Canyon/Sunset\'</item>
+        <item>Nur Ordnernamen verwenden, z. B. \'Videos/Irland/Cliffs of Moher.mp4\' wird zu \'Irland\'</item>
+    </string-array>
+    <string-array name="description_video_manifest_entries">
+        <item>Deaktiviert</item>
+        <item>Eine kurze Beschreibung oder ein Standort</item>
+        <item>Dynamische, in vielen Sprachen verfügbare Sehenswürdigkeiten, die sich während der Wiedergabe des Videos ändern</item>
+    </string-array>
+    <string-array name="duration_entries">
+        <item>Deaktiviert</item>
+        <item>200 ms</item>
+        <item>400 ms</item>
+        <item>600ms</item>
+        <item>800ms</item>
+        <item>1000ms</item>
+        <item>1200ms</item>
+        <item>1400 ms</item>
+        <item>1600ms</item>
+        <item>1800ms</item>
+        <item>2000ms</item>
+    </string-array>
+    <string-array name="immich_auth_type_entries">
+        <item>Shared Link</item>
+        <item>API Key</item>
+    </string-array>
+    <string-array name="limit_Longer_videos_entries">
+        <item>Überspringen, wenn das Limit erreicht ist</item>
+        <item>Längere Videos beenden lassen</item>
+        <item>Zufallsabschnitte langer Videos abspielen</item>
+    </string-array>
+    <string-array name="limit_Longer_videos_summaries">
+        <item>Limit einhalten - zum nächsten Video springen, wenn das Limit erreicht ist</item>
+        <item>Limit ignorieren - wenn ein Video länger als das eingestellte Limit ist, wird es bis zum Ende abgespielt</item>
+        <item>Zufälliges Segment – wenn ein Video länger als das Limit ist, wird ein zufälliger Videoteil abgespielt (z. B. kann ein 6-minütiges Video mit einem 2-Minuten-Limit 3 Segmente haben – eines wird zufällig abgespielt)</item>
+    </string-array>
+    <string-array name="local_videos_search_type_entries">
+        <item>Medien-Scanner</item>
+        <item>Ordnerzugriff (Veraltet)</item>
+    </string-array>
+    <string-array name="media_type_entries">
+        <item>Nur Videos</item>
+        <item>Nur Fotos</item>
+        <item>Fotos &amp; Videos</item>
+    </string-array>
+    <string-array name="nowplaying_format_entries">
+        <item>Deaktiviert</item>
+        <item>Lied · Interpret</item>
+        <item>Interpret · Lied</item>
+        <item>Interpret</item>
+        <item>Lied</item>
+    </string-array>
+    <string-array name="overlay_auto_hide_entries">
+        <item>Nie ausblenden (Standard)</item>
+        <item>Immer ausgeblendet</item>
+        <item>2 Sekunden</item>
+        <item>4 Sekunden</item>
+        <item>6 Sekunden</item>
+        <item>8 Sekunden</item>
+        <item>10 Sekunden</item>
+    </string-array>
+    <string-array name="overlay_reveal_timeout_entries">
+        <item>2 Sekunden</item>
+        <item>4 Sekunden (Standard)</item>
+        <item>6 Sekunden</item>
+        <item>8 Sekunden</item>
+        <item>10 Sekunden</item>
+    </string-array>
+    <string-array name="photo_scale_entries">
+        <item>Füllen (Standard)</item>
+        <item>Zentrieren</item>
+    </string-array>
+    <string-array name="playback_max_video_length_entries">
+        <item>Kein Limit (Standard)</item>
+        <item>10 Sekunden</item>
+        <item>20 Sekunden</item>
+        <item>30 Sekunden</item>
+        <item>1 Minute</item>
+        <item>2 Minuten</item>
+        <item>3 Minuten</item>
+        <item>4 Minuten</item>
+        <item>5 Minuten</item>
+        <item>6 Minuten</item>
+        <item>7 Minuten</item>
+        <item>8 Minuten</item>
+        <item>9 Minuten</item>
+        <item>10 Minuten</item>
+        <item>20 Minuten</item>
+        <item>30 Minuten</item>
+        <item>60 Minuten</item>
+    </string-array>
+    <string-array name="progress_bar_location_entries">
+        <item>Deaktiviert</item>
+        <item>Top of the screen</item>
+        <item>Bottom of the screen</item>
+    </string-array>
+    <string-array name="progress_bar_type_entries">
+        <item>Fotos &amp; Videos</item>
+        <item>Nur Videos</item>
+        <item>Nur Fotos</item>
+    </string-array>
+    <string-array name="slideshow_speed_entries">
+        <item>5 Sekunden</item>
+        <item>10 Sekunden</item>
+        <item>30 Sekunden (Standard)</item>
+        <item>1 Minute</item>
+        <item>3 Minuten</item>
+        <item>5 Minuten</item>
+        <item>10 Minuten</item>
+    </string-array>
+    <string-array name="slot_entries">
+        <item>Leer</item>
+        <item>Uhrzeit</item>
+        <item>Ort</item>
+        <item>Datum</item>
+        <item>Nachricht #1</item>
+        <item>Nachricht #2</item>
+        <item>Jetzt läuft #1</item>
+        <item>Jetzt läuft #2</item>
+    </string-array>
+    <string-array name="text_size_entries">
+        <item>36sp</item>
+        <item>34sp</item>
+        <item>32sp</item>
+        <item>30sp</item>
+        <item>28sp</item>
+        <item>26sp</item>
+        <item>24sp</item>
+        <item>22sp</item>
+        <item>20sp</item>
+        <item>18sp (Standard)</item>
+        <item>16sp</item>
+    </string-array>
+    <string-array name="video_scale_entries">
+        <item>Füllen mit Zuschneiden (Standard)</item>
+        <item>Skalieren ohne Zuschneiden</item>
+    </string-array>
 </resources>
