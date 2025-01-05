@@ -120,6 +120,21 @@ Next, find the IP address of your device and make a note of it. Navigate to the 
 </details>
 
 <details>
+<summary>Allow Auto Launch on TCL TVs</summary>
+&nbsp;
+
+If you have a TCL TV with Google TV, you need to allow the Auto Launch permission so that Aerial Views can be launched from the background when the screensaver starts.
+
+Otherwise, the screensaver cannot be started, either automatically, or manually via the Screensaver menu shortcut, unless the Aerial Views app has been recently opened (see [#191](https://github.com/theothernt/AerialViews/issues/191) for details).
+
+1. Open the __Safety Guard__ app on your TV
+2. Navigate to `Permission Shield > Auto Launch Permission`
+3. Change the `Auto manager` at the top to `Closed` - this allows you to manually select which apps can auto-launch instead of the system deciding automatically
+4. Scroll to __Aerial Views__ and change it to `Opened`
+
+</details>
+
+<details>
 <summary>Connect using an iPhone</summary>
 &nbsp;
 
