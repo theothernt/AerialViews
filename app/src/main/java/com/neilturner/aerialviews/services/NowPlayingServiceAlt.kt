@@ -56,7 +56,12 @@ class NowPlayingServiceAlt(
                 return it
             }
         }
-        if (controllers?.isNotEmpty() == true) return controllers.first()
+        if (controllers?.isNotEmpty() == true) {
+            Timber.i("No controller playing music, trying first one")
+            return controllers.first()
+        }
+
+        Timber.i("No controllers found.")
         return null
     }
 
