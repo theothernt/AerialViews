@@ -38,7 +38,7 @@ class TestActivity : AppCompatActivity() {
             screenController.stop()
         }
 
-        // finish()
+        finish()
 
         // Navigate back as we don't support pause/suspend
         // supportFragmentManager.popBackStack()
