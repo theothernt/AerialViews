@@ -138,7 +138,7 @@
     <item>0.4x</item>
     <item>0.6x</item>
     <item>0.8x</item>
-    <item>1x </item>
+    <item>1x</item>
     <item>1.2x</item>
     <item>1.4x</item>
     <item>1.6x</item>
@@ -551,7 +551,6 @@
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
   <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
 
-
   <!-- Percentage list 1 -->
   <string-array name="percentage1_entries" translatable="false">
     <item>5%</item>
@@ -646,6 +645,16 @@
   <string name="volume_default" translatable="false">100</string>
   <string name="random_start_position_range_default" translatable="false">50</string>
 
+  <!-- Immich -->
+  <string-array name="immich_auth_type_entries">
+    <item>Shared Link</item>
+    <item>API Key</item>
+  </string-array>
+  <string-array name="immich_auth_type_values" translatable="false">
+    <item>SHARED_LINK</item>
+    <item>API_KEY</item>
+  </string-array>
+
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">
     <item>Disabled</item>
@@ -685,5 +694,4 @@
     <item>60</item>
   </string-array>
   <string name="seek_interval_default" translatable="false">10</string>
-
 </resources>

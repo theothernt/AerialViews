@@ -25,7 +25,6 @@ class NowPlayingService(
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
     private var controllers = listOf<MediaController>()
-    private var music = MusicEvent()
 
     init {
         coroutineScope.launch {
@@ -42,6 +41,7 @@ class NowPlayingService(
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
+        Timber.i("onMetadataChanged")
         super.onMetadataChanged(metadata)
         try {
             updateNowPlaying(metadata, null)
@@ -51,6 +51,7 @@ class NowPlayingService(
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
+        Timber.i("onPlaybackStateChanged")
         super.onPlaybackStateChanged(state)
 
         if (state == null) {
@@ -73,6 +74,7 @@ class NowPlayingService(
         if (controllers.isNotEmpty()) {
             val activeController = controllers.first()
             val active = isActive(activeController.playbackState?.state)
+            Timber.i("Initial state - active: $active")
             try {
                 updateNowPlaying(activeController.metadata, active)
             } catch (ex: Exception) {
@@ -87,25 +89,21 @@ class NowPlayingService(
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
-        metadata?.let {
-            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
-            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
+        Timber.i("updateNowPlaying - metadata: $metadata., active: $active")
+        val musicEvent =
+            metadata
+                ?.let {
+                    val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+                    val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+                    MusicEvent(artist, song)
+                }.takeIf { active == true } ?: MusicEvent()
 
-            // Metadata bundle can little or no entries
-            if (song.isNullOrEmpty() || artist.isNullOrEmpty()) {
-                return
-            }
-            music = MusicEvent(artist, song)
-        }
-
-        if (active == true) {
-            GlobalBus.post(music)
-        } else {
-            GlobalBus.post(MusicEvent())
-        }
+        Timber.i("updateNowPlaying - trying $musicEvent, active: $active")
+        GlobalBus.post(musicEvent)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+        Timber.i("onActiveSessionsChanged")
         unregisterAll()
         if (!controllers.isNullOrEmpty()) {
             initControllers(controllers)
@@ -138,7 +136,7 @@ class NowPlayingService(
             state != PlaybackState.STATE_STOPPED &&
                 state != PlaybackState.STATE_PAUSED &&
                 state != PlaybackState.STATE_ERROR &&
-                state != PlaybackState.STATE_BUFFERING &&
+                //state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
 }

@@ -61,6 +61,7 @@
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
+  <string name="category_phone_tablet">Phone or Tablet</string>
   <string name="category_custom_format">Custom format</string>
 
   <!-- Common Prefs/Options -->
@@ -240,13 +241,16 @@
 
   <string name="webdav_media_search_subfolders_title">Search subfolders</string>
   <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
-
   <string name="webdav_media_test_results">Test results</string>
 
   <!-- Main / Video Sources / Immich videos -->
   <string name="immich_media_enabled_title">Use Immich share media</string>
   <string name="immich_media_type_title">Choose media type</string>
   <string name="immich_media_test_connection">Test connection settings</string>
+  <string name="immich_media_auth_type_title">Authentication Method</string>
+  <string name="immich_media_api_key_title">API Key</string>
+  <string name="immich_media_api_key_summary">Enter your Immich API key</string>
+  <string name="immich_media_select_album">Select Album</string>
 
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
@@ -255,6 +259,16 @@
   <string name="immich_media_pathname_summary">The path of the shared album e.g. /share/qJejEpX_h_…TAypgOxmIZC</string>
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
+
+  <string name="category_authentication">Server Authentication Method</string>
+  <string name="category_authentication_information">Authentication Information</string>
+  <string name="category_connection">Authentication Test</string>
+  <string name="immich_media_select_album_summary">No album selected</string>
+  <string name="immich_media_selected_album">Selected album: %1$s</string>
+  <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
+  <string name="immich_media_no_albums">No Albums Found</string>
+  <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
+  <string name="immich_media_unknown_error">An unknown error occurred</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
@@ -267,6 +281,11 @@
 
   <string name="immich_media_test_results">Test results</string>
 
+  <string name="immich_media_url_title">Server URL</string>
+  <string name="immich_media_url_summary">Enter server URL (e.g., 192.168.1.100:8080)</string>
+  <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
+  <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+  <string name="immich_media_url_invalid">Invalid server URL</string>
   <!-- Main / Settings -->
   <string name="settings_overlays_title">Overlays</string>
   <string name="settings_overlays_summary">Choose what overlays are displayed in different corners of the screen</string>
@@ -412,8 +431,8 @@
   <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
-  <string name="progress_bar_location_title">Location</string>
-  <string name="progress_bar_type_title">Show on</string>
+  <string name="progress_bar_location_title">Location on screen</string>
+  <string name="progress_bar_type_title">Show for media type</string>
   <string name="progress_bar_opacity_title">Opacity</string>
 
   <!-- Main / Settings / Appearance / Now Playing -->
@@ -560,6 +579,9 @@
 
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+
+  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
+  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
 
   <!-- Main / Settings / About -->
   <string name="about_version_title">Version</string>

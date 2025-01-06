@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
@@ -16,6 +15,7 @@ import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
@@ -137,7 +137,7 @@ class LocalVideosFragment :
             val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
             val result = provider.fetchTest()
             ensureActive()
-            showDialog(resources.getString(R.string.local_videos_test_results), result)
+            DialogHelper.show(requireContext(), resources.getString(R.string.local_videos_test_results), result)
         }
 
     private fun checkForMediaPermission() {
@@ -153,19 +153,6 @@ class LocalVideosFragment :
     private fun disableLocalMediaPreference() {
         val pref = findPreference<SwitchPreference>("local_videos_enabled")
         pref?.isChecked = false
-    }
-
-    @Suppress("SameParameterValue")
-    private suspend fun showDialog(
-        title: String,
-        message: String,
-    ) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton(R.string.button_ok, null)
-            create().show()
-        }
     }
 
     private fun updateVolumeAndFolderSummary() {

@@ -22,7 +22,7 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.NowPlayingServiceAlt
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
@@ -49,7 +49,7 @@ class ScreenController(
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
 
-    private var nowPlayingService: NowPlayingService? = null
+    private var nowPlayingService: NowPlayingServiceAlt? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -172,7 +172,9 @@ class ScreenController(
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
                 PermissionHelper.hasNotificationListenerPermission(context)
             ) {
-                nowPlayingService = NowPlayingService(context)
+                coroutineScope.launch {
+                    nowPlayingService = NowPlayingServiceAlt(context)
+                }
             }
 
             playlist = MediaService(context).fetchMedia()
