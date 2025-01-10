@@ -30,7 +30,7 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
-        versionCode = 28
+        versionCode = 29
         versionName = "1.7.4"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
@@ -112,7 +112,7 @@ android {
     }
 
     flavorDimensions += "version"
-    var betaVersion = "-beta4"
+    var betaVersion = "-beta5"
     productFlavors {
         create("github") {
             signingConfig = signingConfigs.getByName("legacy")

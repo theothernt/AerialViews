@@ -41,6 +41,7 @@ class NowPlayingService(
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
+        Timber.i("onMetadataChanged")
         super.onMetadataChanged(metadata)
         try {
             updateNowPlaying(metadata, null)
@@ -50,6 +51,7 @@ class NowPlayingService(
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
+        Timber.i("onPlaybackStateChanged")
         super.onPlaybackStateChanged(state)
 
         if (state == null) {
@@ -72,6 +74,7 @@ class NowPlayingService(
         if (controllers.isNotEmpty()) {
             val activeController = controllers.first()
             val active = isActive(activeController.playbackState?.state)
+            Timber.i("Initial state - active: $active")
             try {
                 updateNowPlaying(activeController.metadata, active)
             } catch (ex: Exception) {
@@ -86,6 +89,7 @@ class NowPlayingService(
         metadata: MediaMetadata?,
         active: Boolean?,
     ) {
+        Timber.i("updateNowPlaying - metadata: $metadata., active: $active")
         val musicEvent =
             metadata
                 ?.let {
@@ -94,10 +98,12 @@ class NowPlayingService(
                     MusicEvent(artist, song)
                 }.takeIf { active == true } ?: MusicEvent()
 
+        Timber.i("updateNowPlaying - trying $musicEvent, active: $active")
         GlobalBus.post(musicEvent)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
+        Timber.i("onActiveSessionsChanged")
         unregisterAll()
         if (!controllers.isNullOrEmpty()) {
             initControllers(controllers)
@@ -130,7 +136,7 @@ class NowPlayingService(
             state != PlaybackState.STATE_STOPPED &&
                 state != PlaybackState.STATE_PAUSED &&
                 state != PlaybackState.STATE_ERROR &&
-                state != PlaybackState.STATE_BUFFERING &&
+                //state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
 }
