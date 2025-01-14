@@ -251,7 +251,7 @@ class ImmichMediaProvider(
                     .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
-            throw e
+            //throw e
         }
     }
 
