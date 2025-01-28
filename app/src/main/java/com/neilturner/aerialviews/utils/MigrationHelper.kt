@@ -40,6 +40,7 @@ class MigrationHelper(
         if (lastKnownVersion < 20) release20()
         if (lastKnownVersion < 22) release22()
         if (lastKnownVersion < 23) release23()
+        if (lastKnownVersion < 24) release24()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -284,6 +285,41 @@ class MigrationHelper(
             prefs.edit().putString("button_up_press", "SPEED_INCREASE").apply()
             prefs.edit().putString("button_down_press", "SPEED_DECREASE").apply()
             prefs.edit().remove("enable_playback_speed_change").apply()
+        }
+    }
+
+    private fun release24() {
+        Timber.i("Migrating settings for release 24")
+
+        val playbackSpeedUsed = prefs.contains("playback_speed")
+        if (playbackSpeedUsed) {
+            val speed = prefs.getString("playback_speed", "1")
+            val speedMapping = mapOf(
+                "0.25" to "0.2",
+                "0.50" to "0.4",
+                "0.75" to "0.8",
+                "1.25" to "1.2",
+                "1.50" to "1.4",
+                "1.75" to "1.8",
+            )
+
+            // Ignore default
+            if (speed?.contains("1", true) == true) {
+                return
+            }
+
+            var found = false
+            speedMapping.forEach { (oldSpeed, newSpeed) ->
+                if (speed == oldSpeed) {
+                    prefs.edit().putString("playback_speed", newSpeed).apply()
+                    found = true
+                }
+            }
+
+            if (!found) {
+                // If other value, reset the pref to default
+                prefs.edit().putString("playback_speed", "1").apply()
+            }
         }
     }
 

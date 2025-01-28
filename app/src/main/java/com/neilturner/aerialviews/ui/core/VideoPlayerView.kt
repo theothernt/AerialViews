@@ -205,6 +205,10 @@ class VideoPlayerView
             val speedValues = resources.getStringArray(R.array.playback_speed_values)
             val currentSpeedIdx = speedValues.indexOf(currentSpeed)
 
+            if (currentSpeedIdx == -1) {
+                return // No matching speed, likely a resource error or pref mismatch
+            }
+
             if (!increase && currentSpeedIdx == 0) {
                 return // we are at minimum speed already
             }
