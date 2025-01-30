@@ -11,7 +11,7 @@
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default"
+                    app:defaultValue="@string/media_type_default2"
                     app:entries="@array/media_type_entries"
                     app:entryValues="@array/media_type_values"
                     app:key="immich_media_type"
