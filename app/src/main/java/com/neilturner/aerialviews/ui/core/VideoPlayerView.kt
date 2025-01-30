@@ -243,14 +243,20 @@ class VideoPlayerView
 
             // Adjust the duration based on the playback speed
             // Take into account the current player position in case of speed changes during playback
+
+            // Basic duration
             val duration = state.endPosition - state.startPosition
+            // Duration taking into account playback speed and animation timings
+            val durationAlt = (duration / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
+            // Delay until next video
             val delay = ((duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
+            // Current position
             val progress = exoPlayer.currentPosition - state.startPosition
 
             Timber.i("Duration: $duration (at 1x), Delay: $delay (at ${GeneralPrefs.playbackSpeed}x), Progress: $progress")
             Timber.i("Video will finish in: ${delay.milliseconds}")
 
-            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, delay))
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationAlt))
             postDelayed(almostFinishedRunnable, delay)
         }
 
