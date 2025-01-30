@@ -95,34 +95,36 @@ class ImmichMediaProvider(
         immichMedia.assets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val poi = mutableMapOf<Int, String>()
+            val description = asset.exifInfo?.description ?: ""
+            val filename = asset.originalPath
 
-            val description = asset.exifInfo?.description.toString()
-            if (!asset.exifInfo?.country.isNullOrEmpty()) {
+            Timber.i("Description: $description, Filename: $filename")
+
+            if (asset.exifInfo?.country != null &&
+                asset.exifInfo.country.isNotBlank()) {
                 Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
                 val location =
                     listOf(
                         asset.exifInfo.country,
                         asset.exifInfo.state,
                         asset.exifInfo.city,
-                    ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
+                    ).filter { !it.isBlank() }.joinToString(separator = ", ")
                 poi[poi.size] = location
             }
-            if (description.isNotEmpty()) {
-                poi[poi.size] = description
+
+            val item = AerialMedia(uri, description, poi).apply {
+                source = AerialMediaSource.IMMICH
             }
 
-            val item = AerialMedia(uri, description, poi)
-            item.source = AerialMediaSource.IMMICH
-
             when {
-                FileHelper.isSupportedVideoType(asset.originalPath.toString()) -> {
+                FileHelper.isSupportedVideoType(filename) -> {
                     item.type = AerialMediaType.VIDEO
                     videos++
                     if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                         media.add(item)
                     }
                 }
-                FileHelper.isSupportedImageType(asset.originalPath.toString()) -> {
+                FileHelper.isSupportedImageType(filename) -> {
                     item.type = AerialMediaType.IMAGE
                     images++
                     if (prefs.mediaType != ProviderMediaType.VIDEOS) {
@@ -226,6 +228,7 @@ class ImmichMediaProvider(
                     try {
                         Gson().fromJson(errorBody, ErrorResponse::class.java).message
                     } catch (e: Exception) {
+                        Timber.e(e, "Error parsing error body: $errorBody")
                         response.message()
                     }
                 Result.failure(Exception("${response.code()} - $errorMessage"))

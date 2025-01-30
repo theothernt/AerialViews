@@ -2,16 +2,16 @@ package com.neilturner.aerialviews.models.immich
 import com.google.gson.annotations.SerializedName
 
 data class ExifInfo(
-    val description: String? = null,
-    val country: String? = null,
-    val state: String? = null,
-    val city: String? = null,
+    val description: String = "",
+    val country: String = "",
+    val state: String = "",
+    val city: String = "",
 )
 
 data class Asset(
     val id: String = "",
-    val type: String? = null,
-    val originalPath: String? = null,
+    val type: String = "",
+    val originalPath: String = "",
     val exifInfo: ExifInfo? = null,
 )
 
@@ -21,9 +21,9 @@ data class Album(
     @SerializedName("albumName")
     val name: String = "",
     @SerializedName("description")
-    val description: String? = null,
+    val description: String = "",
     @SerializedName("shared")
-    val type: String? = null,
+    val type: String = "",
     @SerializedName("assets")
     val assets: List<Asset> = emptyList(),
     @SerializedName("assetCount")
@@ -34,5 +34,6 @@ data class ErrorResponse(
     val message: String = "",
     val error: String = "",
     val statusCode: Int = 0,
-    @SerializedName("correlationId") val correlationId: String = "",
+    @SerializedName("correlationId")
+    val correlationId: String = "",
 )
