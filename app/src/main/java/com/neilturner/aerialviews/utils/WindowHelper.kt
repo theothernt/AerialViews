@@ -119,9 +119,11 @@ object WindowHelper {
         val switchingModes = newMode.modeId != activeMode?.modeId
         if (switchingModes) {
             Timber.i("Switching mode from ${activeMode?.modeId} to ${newMode.modeId}")
-            window.attributes.preferredDisplayModeId = newMode.modeId
+            val layoutParams = window.attributes
+            layoutParams.preferredDisplayModeId = newMode.modeId
+            window.attributes = layoutParams
         } else {
-            Timber.i("Already in mode ${activeMode?.modeId}, no need to change.")
+            Timber.i("Already in mode ${activeMode.modeId}, no need to change.")
         }
 
         val refreshRates =
