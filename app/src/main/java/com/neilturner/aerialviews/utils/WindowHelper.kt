@@ -51,6 +51,12 @@ object WindowHelper {
     ) {
         // https://gist.github.com/pflammertsma/5a453e24938722b4218528a3e5a60259#file-mainactivity-kt
 
+        // val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+        // displayManager.matchContentFrameRateUserPreference
+        // MATCH_CONTENT_FRAMERATE_NEVER = 0;
+        // MATCH_CONTENT_FRAMERATE_SEAMLESSS_ONLY = 1;
+        // MATCH_CONTENT_FRAMERATE_ALWAYS = 2;
+
         val refreshRates = display.mode?.alternativeRefreshRates?.toList()
         val willBeSeamless = refreshRates?.contains(newRefreshRate)
         if (willBeSeamless == true) {
