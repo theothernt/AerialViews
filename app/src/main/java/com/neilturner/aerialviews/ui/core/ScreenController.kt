@@ -32,6 +32,7 @@ import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -383,6 +384,7 @@ class ScreenController(
     }
 
     fun stop() {
+        RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
         nowPlayingService?.stop()

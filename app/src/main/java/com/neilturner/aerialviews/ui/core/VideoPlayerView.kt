@@ -17,6 +17,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -38,6 +40,7 @@ class VideoPlayerView
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
+        private val refreshRateHelper by lazy { RefreshRateHelper(context) }
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
@@ -142,8 +145,9 @@ class VideoPlayerView
                 if (exoPlayer.isPlaying) {
                     Timber.i("Ready, Playing...")
 
-                    if (GeneralPrefs.refreshRateSwitching) {
-                        VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                    if (GeneralPrefs.refreshRateSwitching && PermissionHelper.hasSystemOverlayPermission(context)) {
+                        //VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                        refreshRateHelper.setRefreshRate(exoPlayer.videoFormat?.frameRate)
                     }
 
                     if (!state.ready) {
