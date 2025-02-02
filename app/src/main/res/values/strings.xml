@@ -57,6 +57,7 @@
   <string name="category_top_row_right">Top Right</string>
   <string name="category_bottom_row_left">Bottom Left</string>
   <string name="category_bottom_row_right">Bottom Right</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_overlay_animations">Overlay animations</string>
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
   <string name="category_clock">Clock</string>
@@ -552,6 +553,9 @@
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
   <!-- Main / Settings / Advanced -->
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+
   <string name="advanced_refresh_rate_switching_title">Auto refresh rate switching</string>
   <string name="advanced_refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 
