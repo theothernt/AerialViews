@@ -35,7 +35,9 @@ class RefreshRateHelper(private val context: Context) {
             originalMode = display.mode
         }
 
-        val supportedModes = display.supportedModes
+        val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
+        val supportedModes = getModesForResolution(sortedModes, display.mode)
+        //val targetRefreshRate = fps
         val targetRefreshRate = when {
             abs(fps - 24f) < 0.1f -> 24f
             abs(fps - 25f) < 0.1f -> 25f
@@ -57,6 +59,24 @@ class RefreshRateHelper(private val context: Context) {
                 useWindow(context, mode.modeId)
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun getModesForResolution(
+        supportedModes: List<Display.Mode>,
+        activeMode: Display.Mode,
+    ): List<Display.Mode> {
+        val filteredModes = mutableListOf<Display.Mode>()
+
+        for (mode in supportedModes) {
+            if (mode.physicalWidth == activeMode.physicalWidth &&
+                mode.physicalHeight == activeMode.physicalHeight
+            ) {
+                filteredModes.add(mode)
+            }
+        }
+
+        return filteredModes
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -118,18 +138,22 @@ class RefreshRateHelper(private val context: Context) {
 
         @RequiresApi(Build.VERSION_CODES.M)
         private fun useOverlay(context: Context, mode: Int) {
+            // View must be added/removed for refresh rate to change reliably
             if (overlayView == null) {
                 Timber.i("Using NEW Overlay view...")
+                windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
                 overlayView = View(context)
                 overlayView?.setBackgroundColor(Color.argb(0, 0, 0, 0))
-                val params = buildViewParams().apply { preferredDisplayModeId = mode }
-                windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
+                val params = buildViewParams()
                 windowManager?.addView(overlayView, params)
             } else {
                 Timber.i("Using EXISTING Overlay view...")
-                val params = buildViewParams().apply { preferredDisplayModeId = mode }
-                overlayView?.layoutParams = params
             }
+            windowManager?.removeView(overlayView)
+            overlayView = View(context)
+            overlayView?.setBackgroundColor(Color.argb(0, 0, 0, 0))
+            val params = buildViewParams().apply { preferredDisplayModeId = mode }
+            windowManager?.addView(overlayView, params)
         }
 
         private fun buildViewParams(): WindowManager.LayoutParams {
