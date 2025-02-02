@@ -15,7 +15,9 @@ import androidx.annotation.RequiresApi
 import timber.log.Timber
 import kotlin.math.abs
 
-class RefreshRateHelper(private val context: Context) {
+class RefreshRateHelper(
+    private val context: Context,
+) {
     private val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     private val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
 
@@ -37,19 +39,21 @@ class RefreshRateHelper(private val context: Context) {
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
         val supportedModes = getModesForResolution(sortedModes, display.mode)
-        //val targetRefreshRate = fps
-        val targetRefreshRate = when {
-            abs(fps - 24f) < 0.1f -> 24f
-            abs(fps - 25f) < 0.1f -> 25f
-            abs(fps - 30f) < 0.1f -> 30f
-            else -> return  // Don't change for other framerates
-        }
+        // val targetRefreshRate = fps
+        val targetRefreshRate =
+            when {
+                abs(fps - 24f) < 0.1f -> 24f
+                abs(fps - 25f) < 0.1f -> 25f
+                abs(fps - 30f) < 0.1f -> 30f
+                else -> return // Don't change for other framerates
+            }
 
         // Find the best matching mode
-        val bestMode = supportedModes.maxByOrNull { mode ->
-            val score = calculateModeScore(mode, targetRefreshRate)
-            score
-        }
+        val bestMode =
+            supportedModes.maxByOrNull { mode ->
+                val score = calculateModeScore(mode, targetRefreshRate)
+                score
+            }
 
         Timber.i("Refresh rate chosen: ${bestMode?.refreshRate} (Mode: ${bestMode?.modeId})")
         bestMode?.let { mode ->
@@ -80,7 +84,10 @@ class RefreshRateHelper(private val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun calculateModeScore(mode: Display.Mode, targetRefreshRate: Float): Float {
+    private fun calculateModeScore(
+        mode: Display.Mode,
+        targetRefreshRate: Float,
+    ): Float {
         val refreshRate = mode.refreshRate
 
         // Perfect match
@@ -99,6 +106,7 @@ class RefreshRateHelper(private val context: Context) {
 
     companion object {
         private var originalMode: Display.Mode? = null
+
         @SuppressLint("StaticFieldLeak")
         private var overlayView: View? = null
         private var windowManager: WindowManager? = null
@@ -108,27 +116,29 @@ class RefreshRateHelper(private val context: Context) {
                 return
             }
 
-            originalMode?.let { mode ->
-                Timber.i("Restoring original mode: ${mode.modeId}")
-                if (isDreamService(context)) {
-                    useOverlay(context, mode.modeId)
-                } else {
-                    useWindow(context, mode.modeId)
+            originalMode
+                ?.let { mode ->
+                    Timber.i("Restoring original mode: ${mode.modeId}")
+                    if (isDreamService(context)) {
+                        useOverlay(context, mode.modeId)
+                    } else {
+                        useWindow(context, mode.modeId)
+                    }
+                }.apply {
+                    windowManager?.removeView(overlayView)
+                    windowManager = null
+                    originalMode = null
+                    overlayView = null
                 }
-            }.apply {
-                windowManager?.removeView(overlayView)
-                windowManager = null
-                originalMode = null
-                overlayView = null
-            }
         }
 
-        private fun isDreamService(context: Context): Boolean {
-            return context !is Activity
-        }
+        private fun isDreamService(context: Context): Boolean = context !is Activity
 
         @RequiresApi(Build.VERSION_CODES.M)
-        private fun useWindow(context: Context, mode: Int) {
+        private fun useWindow(
+            context: Context,
+            mode: Int,
+        ) {
             Timber.i("Using Activity/Window...")
             val window = (context as Activity).window
             val layoutParams = window.attributes
@@ -137,7 +147,10 @@ class RefreshRateHelper(private val context: Context) {
         }
 
         @RequiresApi(Build.VERSION_CODES.M)
-        private fun useOverlay(context: Context, mode: Int) {
+        private fun useOverlay(
+            context: Context,
+            mode: Int,
+        ) {
             // View must be added/removed for refresh rate to change reliably
             if (overlayView == null) {
                 Timber.i("Using NEW Overlay view...")
@@ -160,18 +173,22 @@ class RefreshRateHelper(private val context: Context) {
             val dimension = WindowManager.LayoutParams.MATCH_PARENT
             val pixelFormat = PixelFormat.TRANSLUCENT // PixelFormat.RGBA_8888
 
-            val overlayType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-            } else {
-                WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
-            }
+            val overlayType =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                } else {
+                    @Suppress("DEPRECATION")
+                    WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+                }
 
             return WindowManager.LayoutParams(
-                dimension, dimension,
+                dimension,
+                dimension,
                 overlayType,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                pixelFormat)
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                pixelFormat,
+            )
         }
     }
 }

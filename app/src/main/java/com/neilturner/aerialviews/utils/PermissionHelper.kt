@@ -77,7 +77,7 @@ object PermissionHelper {
     fun hasSystemOverlayPermission(context: Context): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             Settings.canDrawOverlays(context)
-            //ContextCompat.checkSelfPermission(context, Settings.ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_GRANTED
+            // ContextCompat.checkSelfPermission(context, Settings.ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_GRANTED
         } else {
             false
         }

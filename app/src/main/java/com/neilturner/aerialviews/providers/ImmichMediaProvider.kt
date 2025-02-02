@@ -101,7 +101,8 @@ class ImmichMediaProvider(
             Timber.i("Description: $description, Filename: $filename")
 
             if (asset.exifInfo?.country != null &&
-                asset.exifInfo.country.isNotBlank()) {
+                asset.exifInfo.country.isNotBlank()
+            ) {
                 Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
                 val location =
                     listOf(
@@ -112,9 +113,10 @@ class ImmichMediaProvider(
                 poi[poi.size] = location
             }
 
-            val item = AerialMedia(uri, description, poi).apply {
-                source = AerialMediaSource.IMMICH
-            }
+            val item =
+                AerialMedia(uri, description, poi).apply {
+                    source = AerialMediaSource.IMMICH
+                }
 
             when {
                 FileHelper.isSupportedVideoType(filename) -> {
@@ -254,7 +256,7 @@ class ImmichMediaProvider(
                     .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
-            //throw e
+            // throw e
         }
     }
 

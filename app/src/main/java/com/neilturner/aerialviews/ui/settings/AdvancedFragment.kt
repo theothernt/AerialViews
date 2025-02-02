@@ -15,7 +15,8 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import timber.log.Timber
 
-class AdvancedFragment : MenuStateFragment(),
+class AdvancedFragment :
+    MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
