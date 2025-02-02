@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Context.WINDOW_SERVICE
@@ -78,8 +79,9 @@ class RefreshRateHelper(private val context: Context) {
 
     companion object {
         private var originalMode: Display.Mode? = null
+        @SuppressLint("StaticFieldLeak")
         private var overlayView: View? = null
-        //private var windowManager: WindowManager? = null
+        private var windowManager: WindowManager? = null
 
         fun restoreOriginalMode(context: Context) {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -94,17 +96,20 @@ class RefreshRateHelper(private val context: Context) {
                     useWindow(context, mode.modeId)
                 }
             }.apply {
+                windowManager?.removeView(overlayView)
+                windowManager = null
                 originalMode = null
                 overlayView = null
             }
         }
 
         private fun isDreamService(context: Context): Boolean {
-            return (context as Activity) == null
+            return context !is Activity
         }
 
         @RequiresApi(Build.VERSION_CODES.M)
         private fun useWindow(context: Context, mode: Int) {
+            Timber.i("Using Activity/Window...")
             val window = (context as Activity).window
             val layoutParams = window.attributes
             layoutParams.preferredDisplayModeId = mode
@@ -113,8 +118,21 @@ class RefreshRateHelper(private val context: Context) {
 
         @RequiresApi(Build.VERSION_CODES.M)
         private fun useOverlay(context: Context, mode: Int) {
-            overlayView = View(context)
-            overlayView?.setBackgroundColor(Color.argb(0, 0, 0, 0))
+            if (overlayView == null) {
+                Timber.i("Using NEW Overlay view...")
+                overlayView = View(context)
+                overlayView?.setBackgroundColor(Color.argb(0, 0, 0, 0))
+                val params = buildViewParams().apply { preferredDisplayModeId = mode }
+                windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
+                windowManager?.addView(overlayView, params)
+            } else {
+                Timber.i("Using EXISTING Overlay view...")
+                val params = buildViewParams().apply { preferredDisplayModeId = mode }
+                overlayView?.layoutParams = params
+            }
+        }
+
+        private fun buildViewParams(): WindowManager.LayoutParams {
             val dimension = WindowManager.LayoutParams.MATCH_PARENT
             val pixelFormat = PixelFormat.TRANSLUCENT // PixelFormat.RGBA_8888
 
@@ -124,19 +142,12 @@ class RefreshRateHelper(private val context: Context) {
                 WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
             }
 
-            val params = WindowManager.LayoutParams(
+            return WindowManager.LayoutParams(
                 dimension, dimension,
                 overlayType,
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or
                         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                pixelFormat
-            ).apply {
-                preferredDisplayModeId = mode
-                //screenOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            }
-            val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
-            Timber.i("Adding overlay view")
-            windowManager.addView(overlayView, params)
+                pixelFormat)
         }
     }
 }
