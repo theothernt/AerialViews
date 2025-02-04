@@ -2,8 +2,8 @@
 <resources>
   <string name="about_date_title">Дата збірки</string>
   <string name="about_version_title">Версія</string>
-  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
-  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
+  <string name="advanced_close_on_screen_tap_summary">Вийти із заставки при натисканні на екран</string>
+  <string name="advanced_close_on_screen_tap_title">Закрити після натискання на екран</string>
   <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
   <string name="advanced_enable_tunneling_title">Увімкнути тунелювання</string>
   <string name="advanced_ignore_animation_scale_summary">Ігнорує Налаштування &gt; Параметри розробника &gt; Шкала тривалості анімації - та використовує 1x для тривалості анімації</string>
@@ -158,7 +158,7 @@
   <string name="category_overlay_animations">Накладення анімації</string>
   <string name="category_overlays">Накладення</string>
   <string name="category_permission">Дозвіл</string>
-  <string name="category_phone_tablet">Phone or Tablet</string>
+  <string name="category_phone_tablet">Телефон або планшет</string>
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогрес-бар</string>
@@ -297,7 +297,7 @@
   <string name="playlist_wake_on_any_button_press_title">Вихід з режиму затемнення натисканням будь-якої кнопки або хрестовини</string>
   <string name="progress_bar_location_title">Місце розташування</string>
   <string name="progress_bar_opacity_title">Непрозорість</string>
-  <string name="progress_bar_type_title">Показати на</string>
+  <string name="progress_bar_type_title">Показати для типу носія</string>
   <string name="samba_media_test_summary1">Знайдено файлів: %1$s</string>
   <string name="samba_media_test_summary2">Непідтримувані файли: %1$s</string>
   <string name="samba_media_test_summary3">Знайдено відео: %1$s</string>
