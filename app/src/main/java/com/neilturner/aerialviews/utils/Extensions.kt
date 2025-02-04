@@ -82,3 +82,12 @@ fun View.delayOnLifecycle(
             block()
         }
     }
+
+// https://stackoverflow.com/a/59513133/247257
+fun Float.roundTo(n : Int) : Float {
+    return "%.${n}f".format(Locale.ENGLISH, this).toFloat()
+}
+
+fun Double.roundTo(n : Int) : Double {
+    return "%.${n}f".format(Locale.ENGLISH, this).toDouble()
+}

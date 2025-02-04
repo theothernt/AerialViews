@@ -43,13 +43,14 @@ class RefreshRateHelper(
 
         // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
-        val targetRefreshRate =
-            when {
-                abs(fps - 24f) < 0.1f -> 24f
-                abs(fps - 25f) < 0.1f -> 25f
-                abs(fps - 30f) < 0.1f -> 30f
-                else -> return // Don't change for other framerates
-            }
+        val targetRefreshRate = fps
+//        val targetRefreshRate =
+//            when {
+//                abs(fps - 24f) < 0.1f -> 24f
+//                abs(fps - 25f) < 0.1f -> 25f
+//                abs(fps - 30f) < 0.1f -> 30f
+//                else -> return // Don't change for other framerates
+//            }
 
         // Find the best matching mode
         val bestMode =
@@ -58,7 +59,7 @@ class RefreshRateHelper(
                 score
             }
 
-        Timber.i("Refresh rate chosen: ${bestMode?.refreshRate} (Mode: ${bestMode?.modeId})")
+        Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode?.refreshRate?.roundTo(2)} (Mode: ${bestMode?.modeId})")
         bestMode?.let { mode ->
             changeRefreshRate(context, mode)
         }
