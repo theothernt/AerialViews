@@ -23,11 +23,12 @@ class RefreshRateHelper(
 
     fun setRefreshRate(fps: Float?) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            Timber.e("Android TV version too old for AFR...")
             return
         }
 
         if (fps == null || fps == 0f) {
-            Timber.i("Unable to get video frame rate...")
+            Timber.e("Unable to get video frame rate...")
             return
         }
 
@@ -39,7 +40,9 @@ class RefreshRateHelper(
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
         val supportedModes = getModesForResolution(sortedModes, display.mode)
-        // val targetRefreshRate = fps
+
+        // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
+        // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
         val targetRefreshRate =
             when {
                 abs(fps - 24f) < 0.1f -> 24f
@@ -57,16 +60,19 @@ class RefreshRateHelper(
 
         Timber.i("Refresh rate chosen: ${bestMode?.refreshRate} (Mode: ${bestMode?.modeId})")
         bestMode?.let { mode ->
-            if (isDreamService(context)) {
-                useOverlay(context, mode.modeId)
-            } else {
-                useWindow(context, mode.modeId)
-            }
+            changeRefreshRate(context, mode)
         }
     }
 
+    private fun logRefreshRate(event: String, displayId: Int) {
+        val display = displayManager.getDisplay(displayId)
+        val refreshRate = display.refreshRate
+
+        Timber.i("$event: Display ID = $displayId, Refresh Rate = ${refreshRate}Hz")
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
-    fun getModesForResolution(
+    private fun getModesForResolution(
         supportedModes: List<Display.Mode>,
         activeMode: Display.Mode,
     ): List<Display.Mode> {
@@ -105,10 +111,9 @@ class RefreshRateHelper(
     }
 
     companion object {
-        private var originalMode: Display.Mode? = null
-
         @SuppressLint("StaticFieldLeak")
         private var overlayView: View? = null
+        private var originalMode: Display.Mode? = null
         private var windowManager: WindowManager? = null
 
         fun restoreOriginalMode(context: Context) {
@@ -118,12 +123,8 @@ class RefreshRateHelper(
 
             originalMode
                 ?.let { mode ->
-                    Timber.i("Restoring original mode: ${mode.modeId}")
-                    if (isDreamService(context)) {
-                        useOverlay(context, mode.modeId)
-                    } else {
-                        useWindow(context, mode.modeId)
-                    }
+                    Timber.d("Restoring original mode: ${mode.modeId}")
+                    changeRefreshRate(context, mode)
                 }.apply {
                     windowManager?.removeView(overlayView)
                     windowManager = null
@@ -132,14 +133,21 @@ class RefreshRateHelper(
                 }
         }
 
-        private fun isDreamService(context: Context): Boolean = context !is Activity
+        @RequiresApi(Build.VERSION_CODES.M)
+        private fun changeRefreshRate(context: Context, mode: Display.Mode) {
+            if (context !is Activity) {
+                useOverlay(context, mode.modeId)
+            } else {
+                useWindow(context, mode.modeId)
+            }
+        }
 
         @RequiresApi(Build.VERSION_CODES.M)
         private fun useWindow(
             context: Context,
             mode: Int,
         ) {
-            Timber.i("Using Activity/Window...")
+            Timber.d("Using Activity/Window...")
             val window = (context as Activity).window
             val layoutParams = window.attributes
             layoutParams.preferredDisplayModeId = mode
@@ -171,7 +179,7 @@ class RefreshRateHelper(
 
         private fun buildViewParams(): WindowManager.LayoutParams {
             val dimension = WindowManager.LayoutParams.MATCH_PARENT
-            val pixelFormat = PixelFormat.TRANSLUCENT // PixelFormat.RGBA_8888
+            val pixelFormat = PixelFormat.TRANSLUCENT
 
             val overlayType =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
