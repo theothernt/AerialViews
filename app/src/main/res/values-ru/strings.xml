@@ -2,8 +2,8 @@
 <resources>
   <string name="about_date_title">Дата сборки</string>
   <string name="about_version_title">Версия</string>
-  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
-  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
+  <string name="advanced_close_on_screen_tap_summary">Выйти из заставки при нажатии на экран</string>
+  <string name="advanced_close_on_screen_tap_title">Закрыть по нажатию на экран</string>
   <string name="advanced_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>
   <string name="advanced_enable_tunneling_title">Включить туннелирование</string>
   <string name="advanced_ignore_animation_scale_summary">Игнорирует Настройки &gt; Параметры разработчика &gt; Масштаб длительности анимации - и использует 1x для длительности анимации</string>
@@ -158,7 +158,7 @@
   <string name="category_overlay_animations">Наложение анимации</string>
   <string name="category_overlays">Наложения</string>
   <string name="category_permission">Разрешение</string>
-  <string name="category_phone_tablet">Phone or Tablet</string>
+  <string name="category_phone_tablet">Телефон или планшет</string>
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогресс-бар</string>
@@ -297,7 +297,7 @@
   <string name="playlist_wake_on_any_button_press_title">Выход из режима затемнения нажатием любой кнопки или крестовины</string>
   <string name="progress_bar_location_title">Местоположение</string>
   <string name="progress_bar_opacity_title">Непрозрачность</string>
-  <string name="progress_bar_type_title">Показать на</string>
+  <string name="progress_bar_type_title">Показать для типа носителя</string>
   <string name="samba_media_test_summary1">Найдено файлов: %1$s</string>
   <string name="samba_media_test_summary2">Неподдерживаемые файлы: %1$s</string>
   <string name="samba_media_test_summary3">Найдено видео: %1$s</string>

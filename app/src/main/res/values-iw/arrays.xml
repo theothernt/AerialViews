@@ -192,8 +192,8 @@
     <item>HTTPS</item>
   </string-array>
   <string-array name="immich_auth_type_entries">
-    <item>Shared Link</item>
-    <item>API Key</item>
+    <item>קישור משותף</item>
+    <item>מפתח API</item>
   </string-array>
   <string-array name="immich_auth_type_values" translatable="false">
     <item>SHARED_LINK</item>
@@ -501,8 +501,8 @@
   <string name="progress_bar_location_default" translatable="false">DISABLED</string>
   <string-array name="progress_bar_location_entries">
     <item>מבוטל</item>
-    <item>Top of the screen</item>
-    <item>Bottom of the screen</item>
+    <item>החלק העליון של המסך</item>
+    <item>תחתית המסך</item>
   </string-array>
   <string-array name="progress_bar_location_values" translatable="false">
     <item>DISABLED</item>

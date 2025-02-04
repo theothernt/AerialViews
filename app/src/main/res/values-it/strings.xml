@@ -2,8 +2,8 @@
 <resources>
   <string name="about_date_title">Date di compilazione</string>
   <string name="about_version_title">Versione</string>
-  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
-  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
+  <string name="advanced_close_on_screen_tap_summary">Uscire dallo screensaver quando si tocca lo schermo</string>
+  <string name="advanced_close_on_screen_tap_title">Chiudere con un tocco sullo schermo</string>
   <string name="advanced_enable_tunneling_summary">Usa l\'accelerazione hardware, più importante per 4K/HDR</string>
   <string name="advanced_enable_tunneling_title">Abilita il tunneling</string>
   <string name="advanced_ignore_animation_scale_summary">Ignora Impostazioni &gt; Opzioni sviluppatore &gt; Scala durata animazione - e usa 1x per la durata dell\'animazione</string>
@@ -158,7 +158,7 @@
   <string name="category_overlay_animations">Animazioni overlay</string>
   <string name="category_overlays">Overlay</string>
   <string name="category_permission">Permessi</string>
-  <string name="category_phone_tablet">Phone or Tablet</string>
+  <string name="category_phone_tablet">Telefono o tablet</string>
   <string name="category_photos">Foto</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_progress_bar">Barra di avanzamento</string>

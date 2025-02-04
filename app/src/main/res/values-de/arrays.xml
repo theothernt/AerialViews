@@ -192,8 +192,8 @@
     <item>HTTPS</item>
   </string-array>
   <string-array name="immich_auth_type_entries">
-    <item>Shared Link</item>
-    <item>API Key</item>
+    <item>Freigegebener Link</item>
+    <item>API-Schlüssel</item>
   </string-array>
   <string-array name="immich_auth_type_values" translatable="false">
     <item>SHARED_LINK</item>
@@ -425,8 +425,8 @@
   </string-array>
   <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
   <string-array name="photo_scale_entries">
-    <item>Füllen (Standard)</item>
-    <item>Zentrieren</item>
+    <item>Füllen mit Zuschneiden (Standard)</item>
+    <item>Skalieren ohne Zuschneiden</item>
   </string-array>
   <string-array name="photo_scale_values" translatable="false">
     <item>CENTER_CROP</item>
@@ -500,8 +500,8 @@
   <string name="progress_bar_location_default" translatable="false">DISABLED</string>
   <string-array name="progress_bar_location_entries">
     <item>Deaktiviert</item>
-    <item>Top of the screen</item>
-    <item>Bottom of the screen</item>
+    <item>Oberer Bildschirmrand</item>
+    <item>Unterer Bildschirmrand</item>
   </string-array>
   <string-array name="progress_bar_location_values" translatable="false">
     <item>DISABLED</item>
