@@ -13,7 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import timber.log.Timber
-import kotlin.math.abs
+import kotlin.math.roundToInt
 
 class RefreshRateHelper(
     private val context: Context,
@@ -49,33 +49,23 @@ class RefreshRateHelper(
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
         // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
         val targetRefreshRate = fps
-//        val targetRefreshRate =
-//            when {
-//                abs(fps - 24f) < 0.1f -> 24f
-//                abs(fps - 25f) < 0.1f -> 25f
-//                abs(fps - 30f) < 0.1f -> 30f
-//                else -> return // Don't change for other framerates
-//            }
+        val usePreciseMode = false
+        var bestMode: Display.Mode? = null
 
-        // Find the best matching mode
-        val bestMode =
-            supportedModes.maxByOrNull { mode ->
-                val score = calculateModeScore(mode, targetRefreshRate)
-                Timber.i("Mode: ${mode.refreshRate}, Score: $score")
-                score
-            }
+        bestMode = if (usePreciseMode) {
+            pickPreciseMode(supportedModes, targetRefreshRate)
+        } else {
+            pickImpreciseMode(supportedModes, targetRefreshRate)
+        }
 
-        Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode?.refreshRate?.roundTo(2)} (Mode: ${bestMode?.modeId})")
+        if (bestMode == null) {
+            Timber.i("Unable to find a suitable refresh rate for {$fps}fps")
+        }
+
         bestMode?.let { mode ->
+            Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode.refreshRate.roundTo(2)} (Mode: ${bestMode.modeId})")
             changeRefreshRate(context, mode)
         }
-    }
-
-    private fun logRefreshRate(event: String, displayId: Int) {
-        val display = displayManager.getDisplay(displayId)
-        val refreshRate = display.refreshRate
-
-        Timber.i("$event: Display ID = $displayId, Refresh Rate = ${refreshRate}Hz")
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -97,24 +87,29 @@ class RefreshRateHelper(
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun calculateModeScore(
-        mode: Display.Mode,
-        targetRefreshRate: Float,
-    ): Float {
-        val refreshRate = mode.refreshRate
-
-        // Perfect match
-        if (abs(refreshRate - targetRefreshRate) < 0.1f) return 100f
-
-        // Multiple of target (e.g., 60Hz for 30fps)
-        if (refreshRate % targetRefreshRate < 0.1f) return 80f
-
-        // Otherwise, prefer closer rates but higher is better than lower
-        return if (refreshRate > targetRefreshRate) {
-            50f - abs(refreshRate - targetRefreshRate)
-        } else {
-            30f - abs(refreshRate - targetRefreshRate)
+    private fun pickImpreciseMode(modes: List<Display.Mode>, fps: Float): Display.Mode? {
+        // Should pick 30hz over 29.97hz for 29.97fps
+        // Should pick 60hz over 30hz
+        var newMode: Display.Mode? = null
+        for (mode in modes) {
+            if (mode.refreshRate.roundToInt() % fps.roundToInt() == 0) {
+                if (newMode == null || mode.refreshRate.roundToInt() > newMode.refreshRate.roundToInt()) {
+                    newMode = mode
+                }
+            }
         }
+        return newMode
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun pickPreciseMode(modes: List<Display.Mode>, fps: Float): Display.Mode? {
+        var newMode: Display.Mode? = null
+        for (mode in modes) {
+            if (mode.refreshRate.roundTo(2) == fps.roundTo(2)) {
+                newMode = mode
+            }
+        }
+        return newMode
     }
 
     companion object {
