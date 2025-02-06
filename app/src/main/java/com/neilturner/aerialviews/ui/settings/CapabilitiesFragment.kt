@@ -99,7 +99,7 @@ class CapabilitiesFragment : MenuStateFragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun buildRefreshRatesSummary(): String {
         val activeMode = display.mode
-        val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
+        val sortedModes = display.supportedModes.sortedByDescending { it.refreshRate }
         val filteredModes = mutableListOf<OutputDescription>()
         for (mode in sortedModes) {
             if (mode.width == activeMode?.physicalWidth &&
@@ -109,12 +109,12 @@ class CapabilitiesFragment : MenuStateFragment() {
             }
         }
 
-        return filteredModes.map { it.refreshRate.roundTo(2).toString() + "Hz"}.joinToString(", ")
+        return filteredModes.map { it.refreshRate.roundTo(2).toString() + "Hz"}.distinct().joinToString(", ")
     }
 
     private fun buildResolutionsSummary(): String {
-        val sortedModes = display.supportedModes.sortedBy { it.height }
-        return sortedModes.map { it.width.toString() + "x" + it.height.toString() }.joinToString(", ")
+        val sortedModes = display.supportedModes.sortedByDescending { it.height }
+        return sortedModes.map { it.width.toString() + "x" + it.height.toString() }.distinct().joinToString(", ")
     }
 
     private fun buildCodecSummary(): String {
