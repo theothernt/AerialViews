@@ -532,9 +532,11 @@
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>
   <string name="capabilities_display_title">TV/Display</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_codecs_title">Codec Summary</string>
   <string name="capabilities_decoders_title">Video Decoders</string>
-  <string name="capabilities_resolution_title">Resolution</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
 
   <string name="capabilities_model">Model: %1$s</string>
   <string name="capabilities_android">Android: %1$s</string>
