@@ -40,9 +40,14 @@ class RefreshRateHelper(
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
         val supportedModes = getModesForResolution(sortedModes, display.mode)
+        Timber.i("Suitable modes: ${supportedModes.size} (Total: ${sortedModes.size})")
+
+        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2)}.joinToString(", ")
+        Timber.i("Available Refresh Rates: $availableRefreshRates")
 
         // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
+        // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
         val targetRefreshRate = fps
 //        val targetRefreshRate =
 //            when {
@@ -56,6 +61,7 @@ class RefreshRateHelper(
         val bestMode =
             supportedModes.maxByOrNull { mode ->
                 val score = calculateModeScore(mode, targetRefreshRate)
+                Timber.i("Mode: ${mode.refreshRate}, Score: $score")
                 score
             }
 
