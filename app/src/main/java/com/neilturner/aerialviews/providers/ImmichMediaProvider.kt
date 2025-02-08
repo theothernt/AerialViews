@@ -100,17 +100,22 @@ class ImmichMediaProvider(
 
             Timber.i("Description: $description, Filename: $filename")
 
-            if (asset.exifInfo?.country != null &&
-                asset.exifInfo.country.isNotBlank()
-            ) {
-                Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
-                val location =
-                    listOf(
-                        asset.exifInfo.country,
-                        asset.exifInfo.state,
-                        asset.exifInfo.city,
-                    ).filter { !it.isBlank() }.joinToString(separator = ", ")
-                poi[poi.size] = location
+            // Trying to fix ClassCastException
+            // Not sure what is causing it or exactly where it is
+            try {
+                if (asset.exifInfo?.country != null &&
+                    asset.exifInfo.country.isNotBlank()) {
+                    Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
+                    val location =
+                        listOf(
+                            asset.exifInfo.country,
+                            asset.exifInfo.state,
+                            asset.exifInfo.city,
+                        ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
+                    poi[poi.size] = location
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error parsing location EXIF data")
             }
 
             val item =

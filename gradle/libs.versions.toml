@@ -1,7 +1,7 @@
 [versions]
 agp = "8.8.0"
 google-services = "4.4.2"
-firebase-crashlytics-plugin = "3.0.2"
+firebase-crashlytics-plugin = "3.0.3"
 firebase-perf-plugin = "1.4.2"
 android-junit5 = "1.11.0.0"
 gradle-doctor = "0.9.1"
