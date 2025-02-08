@@ -2,17 +2,17 @@ package com.neilturner.aerialviews.models.immich
 import com.google.gson.annotations.SerializedName
 
 data class ExifInfo(
-    val description: String? = "",
-    val country: String? = "",
-    val state: String? = "",
-    val city: String? = "",
+    val description: String? = null,
+    val country: String? = null,
+    val state: String? = null,
+    val city: String? = null,
 )
 
 data class Asset(
     val id: String = "",
     val type: String = "",
     val originalPath: String = "",
-    val exifInfo: ExifInfo? = ExifInfo()
+    val exifInfo: ExifInfo? = null
 )
 
 data class Album(
