@@ -111,7 +111,7 @@ class ImmichMediaProvider(
                             asset.exifInfo.country,
                             asset.exifInfo.state,
                             asset.exifInfo.city,
-                        ).filter { it.isNullOrBlank() }.joinToString(separator = ", ")
+                        ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
                     poi[poi.size] = location
                 }
             } catch (e: Exception) {
