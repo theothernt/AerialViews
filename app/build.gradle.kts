@@ -31,9 +31,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
-        versionCode = 31
+        versionCode = 32
         versionName = "1.7.4"
-        betaVersion = "-beta7"
+        betaVersion = "-beta8"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
