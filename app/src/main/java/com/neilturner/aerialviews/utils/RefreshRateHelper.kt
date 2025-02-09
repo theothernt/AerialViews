@@ -41,7 +41,7 @@ class RefreshRateHelper(
         val supportedModes = getModesForResolution(sortedModes, display.mode)
         Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${sortedModes.size})")
 
-        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2)}.joinToString(", ")
+        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2).toString() + "Hz" }.joinToString(", ")
         Timber.i("Available Refresh Rates: $availableRefreshRates")
 
         // Store original mode if not already saved
@@ -54,7 +54,7 @@ class RefreshRateHelper(
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
         // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
         val targetRefreshRate = fps
-        val usePreciseMode = true
+        val usePreciseMode = false
         var bestMode: Display.Mode? = null
 
         bestMode = if (usePreciseMode) {
@@ -67,7 +67,7 @@ class RefreshRateHelper(
             Timber.i("Unable to find a suitable refresh rate for ${fps}fps video")
             originalMode = null
         } else {
-            Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode.refreshRate.roundTo(2)} (Mode: ${bestMode.modeId})")
+            Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode.refreshRate.roundTo(2).toString() + "Hz"} (Mode: ${bestMode.modeId})")
             changeRefreshRate(context, bestMode)
         }
     }
@@ -112,6 +112,12 @@ class RefreshRateHelper(
             if (mode.refreshRate.roundTo(2) == fps.roundTo(2)) {
                 newMode = mode
             }
+        }
+        // 25hz doesn't exist on most/all devices so 50hz is the only option
+        if (newMode == null && fps.toInt() == 25)
+        {
+            Timber.i("Picking 50hz for 25fps")
+            newMode = modes.find { it.refreshRate == (fps * 2) }
         }
         return newMode
     }
