@@ -32,24 +32,29 @@ class RefreshRateHelper(
             return
         }
 
+        val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
+        if (sortedModes.size <= 1) {
+            Timber.i("Only 1 mode found, exiting...")
+            return
+        }
+
+        val supportedModes = getModesForResolution(sortedModes, display.mode)
+        Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${sortedModes.size})")
+
+        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2)}.joinToString(", ")
+        Timber.i("Available Refresh Rates: $availableRefreshRates")
+
         // Store original mode if not already saved
         if (originalMode == null) {
             Timber.i("Saving original mode for later: ${display.mode.modeId}")
             originalMode = display.mode
         }
 
-        val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
-        val supportedModes = getModesForResolution(sortedModes, display.mode)
-        Timber.i("Suitable modes: ${supportedModes.size} (Total: ${sortedModes.size})")
-
-        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2)}.joinToString(", ")
-        Timber.i("Available Refresh Rates: $availableRefreshRates")
-
         // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
         // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
         val targetRefreshRate = fps
-        val usePreciseMode = false
+        val usePreciseMode = true
         var bestMode: Display.Mode? = null
 
         bestMode = if (usePreciseMode) {
@@ -59,12 +64,11 @@ class RefreshRateHelper(
         }
 
         if (bestMode == null) {
-            Timber.i("Unable to find a suitable refresh rate for {$fps}fps")
-        }
-
-        bestMode?.let { mode ->
+            Timber.i("Unable to find a suitable refresh rate for ${fps}fps video")
+            originalMode = null
+        } else {
             Timber.i("Video: ${fps.roundTo(2)}fps, Chosen refresh rate: ${bestMode.refreshRate.roundTo(2)} (Mode: ${bestMode.modeId})")
-            changeRefreshRate(context, mode)
+            changeRefreshRate(context, bestMode)
         }
     }
 
