@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -38,10 +39,7 @@ class TestActivity : AppCompatActivity() {
             screenController.stop()
         }
 
-        finish()
-
-        // Navigate back as we don't support pause/suspend
-        // supportFragmentManager.popBackStack()
+        finishWithResult()
     }
 
     override fun onAttachedToWindow() {
@@ -59,7 +57,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
-            finish()
+            finishWithResult()
             return true
         }
         return super.onTouchEvent(event)
@@ -67,7 +65,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::finish)
+            InputHelper.handleKeyEvent(event, screenController, ::finishWithResult)
         ) {
             return true
         }
@@ -82,5 +80,14 @@ class TestActivity : AppCompatActivity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+    }
+
+    private fun finishWithResult() {
+        val resultIntent = Intent().apply {
+            // true if assigned exit key (eg. OK button) was pressed
+            putExtra("should_exit", false)
+        }
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 }
