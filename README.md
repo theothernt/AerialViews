@@ -10,7 +10,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users), [Chromecast with Google TV](#how-to-set-aerial-views-as-the-default-screensaver), [onn. Google TV 4K Streaming Box](#how-to-set-aerial-views-as-the-default-screensaver) or [Amazon Fire TV](#how-to-set-aerial-views-as-the-default-screensaver)*
+*Please read if you have a [Nvidia Shield](#nvidia-shield-users) or [a modern Android/Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
 
 ## Features include...
 
@@ -85,6 +85,8 @@ But it can be done manually. Here is an overview of the steps...
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
 3. Connect to your Android/Google/Fire TV device
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
+
+Another option is to use the *TDUK Screensaver Manager* app. Details on this app are below.
 
 <details>
 <summary>Enable Developer Mode on your Android/Google TV</summary>
@@ -321,6 +323,18 @@ settings put secure screensaver_components com.amazon.bueller.photos/.daydream.S
 ```sh
 settings put secure screensaver_components com.google.android.backdrop/.Backdrop
 ```
+
+</details>
+
+<details>
+<summary>Use the TDUK Screensaver Manager app</summary>
+&nbsp;
+
+The [TDUK Screensaver Manager](https://play.google.com/store/apps/details?id=com.tduk.scrmgr) is a paid app (approx. $2/£2/€2) which allows you to easily change the active screensaver on your Android/Google TV device using a simple interface.
+
+Please make sure to enable **Developer Mode** and **USB/Networking Debugging**. Instructions are above.
+
+:information_source: This app will not work on recent Fire TV devices due to changes by Amazon.
 
 </details>
 
