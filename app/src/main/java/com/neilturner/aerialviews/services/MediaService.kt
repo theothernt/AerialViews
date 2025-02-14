@@ -1,8 +1,8 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.os.Build
 import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
@@ -27,6 +27,7 @@ import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 class MediaService(
@@ -46,29 +47,9 @@ class MediaService(
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-        var media = mutableListOf<AerialMedia>()
-        providers.forEach {
-            try {
-                if (it.enabled) {
-                    media.addAll(it.fetchMedia())
-                }
-            } catch (ex: Exception) {
-                Timber.e(ex, "Exception while fetching videos")
-            }
-        }
 
-        if (GeneralPrefs.removeDuplicates) {
-            val numVideos = media.size
-            media =
-                media
-                    .distinctBy {
-                        when (it.source) {
-                            AerialMediaSource.IMMICH -> it.uri.toString()
-                            else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
-                        }
-                    }.toMutableList()
-            Timber.i("Duplicate videos removed: ${numVideos - media.size}")
-        }
+        val media = buildMediaList()
+        Timber.i("Total media items: ${media.size}")
 
         val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
@@ -149,6 +130,36 @@ class MediaService(
                 media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
             }
             else -> { /* Do nothing */ }
+        }
+        return media
+    }
+
+    private suspend fun buildMediaList(): List<AerialMedia> {
+        var media = mutableListOf<AerialMedia>()
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            providers.forEach {
+                try {
+                    if (it.enabled) {
+                        media.addAll(it.fetchMedia())
+                    }
+                } catch (ex: Exception) {
+                    Timber.e(ex, "Exception while fetching videos")
+                }
+            }
+        } else {
+            providers
+                .parallelStream()
+                .filter { it.enabled }
+                .forEach {
+                    try {
+                        runBlocking {
+                            media.addAll(it.fetchMedia())
+                        }
+                    } catch (ex: Exception) {
+                        Timber.e(ex, "Exception while fetching videos")
+                    }
+                }
         }
         return media
     }
