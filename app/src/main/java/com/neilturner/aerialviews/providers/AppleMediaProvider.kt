@@ -17,6 +17,7 @@ class AppleMediaProvider(
     private val prefs: AppleVideoPrefs,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
+    val metadata = mutableListOf<VideoMetadata>()
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -25,27 +26,13 @@ class AppleMediaProvider(
 
     override suspend fun fetchTest(): String = fetchAppleVideos().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        val metadata = mutableListOf<VideoMetadata>()
-        val strings = parseJsonMap(context, R.raw.tvos15_strings)
-        val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
-        wrapper.assets?.forEach {
-            val video =
-                VideoMetadata(
-                    it.allUrls(),
-                    it.description,
-                    it.pointsOfInterest.mapValues { poi ->
-                        strings[poi.value] ?: it.description
-                    },
-                )
-            metadata.add(video)
-        }
-        return metadata
-    }
+    override suspend fun fetchMetadata() = metadata
 
     private suspend fun fetchAppleVideos(): Pair<List<AerialMedia>, String> {
         val videos = mutableListOf<AerialMedia>()
+        metadata.clear()
         val quality = prefs.quality
+        val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
@@ -53,6 +40,14 @@ class AppleMediaProvider(
                     it.uriAtQuality(quality),
                     type = AerialMediaType.VIDEO,
                 ),
+            )
+            metadata.add(VideoMetadata(
+                    it.allUrls(),
+                    it.description,
+                    it.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: it.description
+                    },
+                )
             )
         }
 
