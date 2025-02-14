@@ -119,18 +119,34 @@ class MediaService(
         media: List<AerialMedia>,
         description: DescriptionFilenameType,
     ): List<AerialMedia> {
-        when (description) {
-            DescriptionFilenameType.FILENAME -> {
-                media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            when (description) {
+                DescriptionFilenameType.FILENAME -> {
+                    media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+                }
+                DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
+                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                }
+                DescriptionFilenameType.LAST_FOLDER_NAME -> {
+                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                }
+                else -> { /* Do nothing */ }
             }
-            DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+        } else {
+            when (description) {
+                DescriptionFilenameType.FILENAME -> {
+                    media.parallelStream().forEach { item -> item.description = item.uri.filenameWithoutExtension }
+                }
+                DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
+                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                }
+                DescriptionFilenameType.LAST_FOLDER_NAME -> {
+                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                }
+                else -> { /* Do nothing */ }
             }
-            DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
-            }
-            else -> { /* Do nothing */ }
         }
+
         return media
     }
 
