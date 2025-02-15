@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Build
+import androidx.annotation.RequiresApi
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
@@ -46,6 +47,7 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     suspend fun fetchMedia(): MediaPlaylist {
 
         val media = buildMediaList()
@@ -97,21 +99,40 @@ class MediaService(
             }
         }
 
-        media.forEach video@{ video ->
-            metadata.forEach { metadata ->
-                if (video.type == AerialMediaType.VIDEO &&
-                    metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
-                ) {
-                    if (description != DescriptionManifestType.DISABLED) {
-                        video.description = metadata.description
-                        video.poi = metadata.poi
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            media.forEach video@{ video ->
+                metadata.forEach { metadata ->
+                    if (video.type == AerialMediaType.VIDEO &&
+                        metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
+                    ) {
+                        if (description != DescriptionManifestType.DISABLED) {
+                            video.description = metadata.description
+                            video.poi = metadata.poi
+                        }
+                        matched.add(video)
+                        return@video
                     }
-                    matched.add(video)
-                    return@video
                 }
+                unmatched.add(video)
             }
-            unmatched.add(video)
+        } else {
+            media.parallelStream().forEach video@{ video ->
+                for (meta in metadata) {
+                    if (video.type == AerialMediaType.VIDEO &&
+                        meta.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
+                    ) {
+                        if (description != DescriptionManifestType.DISABLED) {
+                            video.description = meta.description
+                            video.poi = meta.poi
+                        }
+                        matched.add(video)
+                        return@video
+                    }
+                }
+                unmatched.add(video)
+            }
         }
+
         return Pair(matched, unmatched)
     }
 
