@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import android.os.Build
-import androidx.annotation.RequiresApi
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
@@ -47,7 +46,6 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     suspend fun fetchMedia(): MediaPlaylist {
 
         val media = buildMediaList()
