@@ -1,13 +1,17 @@
 package com.neilturner.aerialviews.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import timber.log.Timber
 
 class MainActivity :
     AppCompatActivity(),
@@ -31,6 +35,37 @@ class MainActivity :
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        handleSharedFile(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleSharedFile(intent)
+    }
+
+    private fun handleSharedFile(intent: Intent?) {
+        if (intent == null) return
+
+        when (intent.action) {
+            Intent.ACTION_VIEW, Intent.ACTION_SEND -> {
+                val uri = intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM) ?: intent.data
+                uri?.let { processAerialViewsFile(it) }
+            }
+        }
+    }
+
+    private fun processAerialViewsFile(uri: Uri) {
+        try {
+            contentResolver.openInputStream(uri)?.use { inputStream ->
+                val text = inputStream.bufferedReader().use { it.readText() }
+                Timber.i("Read content: $text")
+                Toast.makeText(this, "Opened .aerialviews file!", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Timber.e("Error reading file: ${e.message}")
+            Toast.makeText(this, "Failed to open file", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onResume() {
