@@ -6,7 +6,6 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
@@ -17,7 +16,7 @@ class Comm2MediaProvider(
     private val prefs: Comm2VideoPrefs,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
-    val metadata = mutableListOf<VideoMetadata>()
+    val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -41,16 +40,16 @@ class Comm2MediaProvider(
                     type = AerialMediaType.VIDEO,
                 ),
             )
-            metadata.add(VideoMetadata(
-                    it.allUrls(),
-                    it.description,
-                    it.pointsOfInterest.mapValues { poi ->
-                        strings[poi.value] ?: it.description
-                    },
-                )
-            )
+            val data = Pair(it.description,
+                it.pointsOfInterest.mapValues { poi ->
+                    strings[poi.value] ?: it.description
+                })
+            it.allUrls().forEachIndexed { index, url ->
+                metadata.put(url, data)
+            }
         }
 
+        Timber.i("${metadata.count()} metadata items found")
         Timber.i("${videos.count()} $quality videos found")
         return Pair(videos, "")
     }

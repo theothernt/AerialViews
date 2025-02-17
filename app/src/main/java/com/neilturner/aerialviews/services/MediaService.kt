@@ -16,7 +16,6 @@ import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
@@ -85,13 +84,13 @@ class MediaService(
         providers: List<MediaProvider>,
         description: DescriptionManifestType,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
-        val metadata = mutableListOf<VideoMetadata>()
+        val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
         val matched = mutableListOf<AerialMedia>()
         val unmatched = mutableListOf<AerialMedia>()
 
         providers.forEach {
             try {
-                metadata.addAll(it.fetchMetadata())
+                metadata.putAll(it.fetchMetadata())
             } catch (ex: Exception) {
                 Timber.e(ex, "Exception while fetching metadata")
             }
@@ -99,33 +98,27 @@ class MediaService(
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             media.forEach video@{ video ->
-                metadata.forEach { metadata ->
-                    if (video.type == AerialMediaType.VIDEO &&
-                        metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
-                    ) {
-                        if (description != DescriptionManifestType.DISABLED) {
-                            video.description = metadata.description
-                            video.poi = metadata.poi
-                        }
-                        matched.add(video)
-                        return@video
+                val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
+                if (data != null) {
+                    if (description != DescriptionManifestType.DISABLED) {
+                        video.description = data.first
+                        video.poi = data.second
                     }
+                    matched.add(video)
+                    return@video
                 }
                 unmatched.add(video)
             }
         } else {
             media.parallelStream().forEach video@{ video ->
-                for (meta in metadata) {
-                    if (video.type == AerialMediaType.VIDEO &&
-                        meta.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
-                    ) {
-                        if (description != DescriptionManifestType.DISABLED) {
-                            video.description = meta.description
-                            video.poi = meta.poi
-                        }
-                        matched.add(video)
-                        return@video
+                val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
+                if (data != null) {
+                    if (description != DescriptionManifestType.DISABLED) {
+                        video.description = data.first
+                        video.poi = data.second
                     }
+                    matched.add(video)
+                    return@video
                 }
                 unmatched.add(video)
             }

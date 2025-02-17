@@ -16,7 +16,6 @@ import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +36,7 @@ class SambaMediaProvider(
 
     override suspend fun fetchTest(): String = fetchSambaMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
