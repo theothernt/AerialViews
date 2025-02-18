@@ -12,7 +12,7 @@ data class Asset(
     val id: String = "",
     val type: String = "",
     val originalPath: String = "",
-    val exifInfo: ExifInfo? = null
+    val exifInfo: ExifInfo? = null,
 )
 
 data class Album(

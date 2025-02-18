@@ -235,7 +235,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
 
-            if (state.startPosition <=0 && state.endPosition <=0) {
+            if (state.startPosition <= 0 && state.endPosition <= 0) {
                 postDelayed(almostFinishedRunnable, 2 * 1000)
                 if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
@@ -249,7 +249,11 @@ class VideoPlayerView
             // Duration taking into account playback speed and animation timings
             val durationAlt = (duration / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
             // Delay until next video
-            val delay = ((duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
+            val delay =
+                (
+                    (duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() -
+                        GeneralPrefs.mediaFadeOutDuration.toLong()
+                ).toLong()
             // Current position
             val progress = exoPlayer.currentPosition - state.startPosition
 
