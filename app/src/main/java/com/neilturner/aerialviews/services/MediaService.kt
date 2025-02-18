@@ -28,6 +28,8 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 class MediaService(
     val context: Context,
@@ -46,7 +48,6 @@ class MediaService(
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-
         val media = buildMediaList()
         Timber.i("Total media items: ${media.size}")
 
@@ -84,9 +85,9 @@ class MediaService(
         providers: List<MediaProvider>,
         description: DescriptionManifestType,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
-        val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
-        val matched = mutableListOf<AerialMedia>()
-        val unmatched = mutableListOf<AerialMedia>()
+        val metadata = ConcurrentHashMap<String, Pair<String, Map<Int, String>>>()
+        val matched = CopyOnWriteArrayList<AerialMedia>()
+        val unmatched = CopyOnWriteArrayList<AerialMedia>()
 
         providers.forEach {
             try {
@@ -163,7 +164,7 @@ class MediaService(
     }
 
     private suspend fun buildMediaList(): List<AerialMedia> {
-        var media = mutableListOf<AerialMedia>()
+        var media = CopyOnWriteArrayList<AerialMedia>()
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             providers.forEach {
