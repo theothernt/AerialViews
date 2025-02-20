@@ -71,6 +71,7 @@ class Display(
 ) {
     val name: String = source.name
     val id: Int = source.displayId
+    val mode: NativeDisplay.Mode?
 
     // val valid: Boolean = source.isValid
     val state: PowerState = displayStateToPowerState(source.state)
@@ -123,6 +124,12 @@ class Display(
                 source.getSize(renderPoint)
                 OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
             }
+
+        mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            source.mode
+        } else {
+            null
+        }
 
         // If available on device get display mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
