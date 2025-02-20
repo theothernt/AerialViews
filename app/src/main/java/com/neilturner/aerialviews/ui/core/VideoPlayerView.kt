@@ -206,8 +206,16 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            val speedValues = resources.getStringArray(R.array.playback_speed_values)
-            val currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            var speedValues: Array<String>
+            var currentSpeedIdx: Int
+
+            try {
+                speedValues = resources.getStringArray(R.array.playback_speed_values)
+                currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            } catch (ex: Exception) {
+                Timber.e(ex, "Exception while getting playback speed values")
+                return
+            }
 
             if (currentSpeedIdx == -1) {
                 return // No matching speed, likely a resource error or pref mismatch
