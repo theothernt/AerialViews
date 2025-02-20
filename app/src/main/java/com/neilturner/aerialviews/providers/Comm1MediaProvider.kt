@@ -6,7 +6,6 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
@@ -17,6 +16,7 @@ class Comm1MediaProvider(
     private val prefs: Comm1VideoPrefs,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
+    val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     override val enabled: Boolean
         get() = prefs.enabled
@@ -25,27 +25,13 @@ class Comm1MediaProvider(
 
     override suspend fun fetchTest(): String = fetchCommunityVideos().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> {
-        val metadata = mutableListOf<VideoMetadata>()
-        val strings = parseJsonMap(context, R.raw.comm1_strings)
-        val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
-        wrapper.assets?.forEach {
-            val video =
-                VideoMetadata(
-                    it.allUrls(),
-                    it.description,
-                    it.pointsOfInterest.mapValues { poi ->
-                        strings[poi.value] ?: it.description
-                    },
-                )
-            metadata.add(video)
-        }
-        return metadata
-    }
+    override suspend fun fetchMetadata() = metadata
 
     private suspend fun fetchCommunityVideos(): Pair<List<AerialMedia>, String> {
         val videos = mutableListOf<AerialMedia>()
+        metadata.clear()
         val quality = prefs.quality
+        val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
         wrapper.assets?.forEach {
             videos.add(
@@ -54,8 +40,16 @@ class Comm1MediaProvider(
                     type = AerialMediaType.VIDEO,
                 ),
             )
+            val data = Pair(it.description,
+                it.pointsOfInterest.mapValues { poi ->
+                    strings[poi.value] ?: it.description
+                })
+            it.allUrls().forEachIndexed { index, url ->
+                metadata.put(url, data)
+            }
         }
 
+        Timber.i("${metadata.count()} metadata items found")
         Timber.i("${videos.count()} $quality videos found")
         return Pair(videos, "")
     }

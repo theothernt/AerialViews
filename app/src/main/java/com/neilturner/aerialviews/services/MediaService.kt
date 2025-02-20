@@ -1,8 +1,8 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.os.Build
 import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
@@ -16,7 +16,6 @@ import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
@@ -27,7 +26,10 @@ import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.CopyOnWriteArrayList
 
 class MediaService(
     val context: Context,
@@ -46,29 +48,8 @@ class MediaService(
     }
 
     suspend fun fetchMedia(): MediaPlaylist {
-        var media = mutableListOf<AerialMedia>()
-        providers.forEach {
-            try {
-                if (it.enabled) {
-                    media.addAll(it.fetchMedia())
-                }
-            } catch (ex: Exception) {
-                Timber.e(ex, "Exception while fetching videos")
-            }
-        }
-
-        if (GeneralPrefs.removeDuplicates) {
-            val numVideos = media.size
-            media =
-                media
-                    .distinctBy {
-                        when (it.source) {
-                            AerialMediaSource.IMMICH -> it.uri.toString()
-                            else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
-                        }
-                    }.toMutableList()
-            Timber.i("Duplicate videos removed: ${numVideos - media.size}")
-        }
+        val media = buildMediaList()
+        Timber.i("Total media items: ${media.size}")
 
         val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
         val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
@@ -104,33 +85,46 @@ class MediaService(
         providers: List<MediaProvider>,
         description: DescriptionManifestType,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
-        val metadata = mutableListOf<VideoMetadata>()
-        val matched = mutableListOf<AerialMedia>()
-        val unmatched = mutableListOf<AerialMedia>()
+        val metadata = ConcurrentHashMap<String, Pair<String, Map<Int, String>>>()
+        val matched = CopyOnWriteArrayList<AerialMedia>()
+        val unmatched = CopyOnWriteArrayList<AerialMedia>()
 
         providers.forEach {
             try {
-                metadata.addAll(it.fetchMetadata())
+                metadata.putAll(it.fetchMetadata())
             } catch (ex: Exception) {
                 Timber.e(ex, "Exception while fetching metadata")
             }
         }
 
-        media.forEach video@{ video ->
-            metadata.forEach { metadata ->
-                if (video.type == AerialMediaType.VIDEO &&
-                    metadata.urls.any { it.contains(video.uri.filenameWithoutExtension, true) }
-                ) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            media.forEach video@{ video ->
+                val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
+                if (data != null) {
                     if (description != DescriptionManifestType.DISABLED) {
-                        video.description = metadata.description
-                        video.poi = metadata.poi
+                        video.description = data.first
+                        video.poi = data.second
                     }
                     matched.add(video)
                     return@video
                 }
+                unmatched.add(video)
             }
-            unmatched.add(video)
+        } else {
+            media.parallelStream().forEach video@{ video ->
+                val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
+                if (data != null) {
+                    if (description != DescriptionManifestType.DISABLED) {
+                        video.description = data.first
+                        video.poi = data.second
+                    }
+                    matched.add(video)
+                    return@video
+                }
+                unmatched.add(video)
+            }
         }
+
         return Pair(matched, unmatched)
     }
 
@@ -138,17 +132,63 @@ class MediaService(
         media: List<AerialMedia>,
         description: DescriptionFilenameType,
     ): List<AerialMedia> {
-        when (description) {
-            DescriptionFilenameType.FILENAME -> {
-                media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            when (description) {
+                DescriptionFilenameType.FILENAME -> {
+                    media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
+                }
+                DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
+                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                }
+                DescriptionFilenameType.LAST_FOLDER_NAME -> {
+                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                }
+                else -> { /* Do nothing */ }
             }
-            DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+        } else {
+            when (description) {
+                DescriptionFilenameType.FILENAME -> {
+                    media.parallelStream().forEach { item -> item.description = item.uri.filenameWithoutExtension }
+                }
+                DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
+                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                }
+                DescriptionFilenameType.LAST_FOLDER_NAME -> {
+                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                }
+                else -> { /* Do nothing */ }
             }
-            DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+        }
+
+        return media
+    }
+
+    private suspend fun buildMediaList(): List<AerialMedia> {
+        var media = CopyOnWriteArrayList<AerialMedia>()
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            providers.forEach {
+                try {
+                    if (it.enabled) {
+                        media.addAll(it.fetchMedia())
+                    }
+                } catch (ex: Exception) {
+                    Timber.e(ex, "Exception while fetching videos")
+                }
             }
-            else -> { /* Do nothing */ }
+        } else {
+            providers
+                .parallelStream()
+                .filter { it.enabled }
+                .forEach {
+                    try {
+                        runBlocking {
+                            media.addAll(it.fetchMedia())
+                        }
+                    } catch (ex: Exception) {
+                        Timber.e(ex, "Exception while fetching videos")
+                    }
+                }
         }
         return media
     }

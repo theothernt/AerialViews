@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.models.immich.Album
 import com.neilturner.aerialviews.models.immich.ErrorResponse
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
@@ -41,7 +40,7 @@ class ImmichMediaProvider(
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
