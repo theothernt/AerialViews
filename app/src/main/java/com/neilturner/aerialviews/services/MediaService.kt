@@ -26,7 +26,9 @@ import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -47,7 +49,7 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaPlaylist {
+    suspend fun fetchMedia(): MediaPlaylist = withContext(Dispatchers.IO){
         val media = buildMediaList()
         Timber.i("Total media items: ${media.size}")
 
@@ -77,7 +79,7 @@ class MediaService(
         }
 
         Timber.i("Total media items: ${filteredMedia.size}")
-        return MediaPlaylist(filteredMedia)
+        return@withContext MediaPlaylist(filteredMedia)
     }
 
     private suspend fun addMetadataToManifestVideos(

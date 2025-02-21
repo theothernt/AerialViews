@@ -45,7 +45,7 @@ class ScreenController(
     private val context: Context,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
@@ -169,16 +169,15 @@ class ScreenController(
 
         Timber.i("Duration scale: $durationScale")
 
-        coroutineScope.launch {
+        mainScope.launch {
             if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
                 PermissionHelper.hasNotificationListenerPermission(context)
             ) {
-                coroutineScope.launch {
-                    nowPlayingService = NowPlayingServiceAlt(context)
-                }
+                nowPlayingService = NowPlayingServiceAlt(context)
             }
 
             playlist = MediaService(context).fetchMedia()
+
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
