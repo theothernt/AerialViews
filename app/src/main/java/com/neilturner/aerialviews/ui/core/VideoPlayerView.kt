@@ -194,11 +194,11 @@ class VideoPlayerView
                 return // Must be playing a video
             }
 
-            if (exoPlayer.currentPosition <= 3) {
+            if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
                 return // No speed change at the start of the video
             }
 
-            if (exoPlayer.duration - exoPlayer.currentPosition <= 3) {
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
                 return // No speed changes at the end of video
             }
 
@@ -218,7 +218,9 @@ class VideoPlayerView
             }
 
             if (currentSpeedIdx == -1) {
-                return // No matching speed, likely a resource error or pref mismatch
+                // No matching speed, likely a resource error or pref mismatch
+                GeneralPrefs.playbackSpeed = "1" // Reset pref
+                return
             }
 
             if (!increase && currentSpeedIdx == 0) {
@@ -288,6 +290,7 @@ class VideoPlayerView
 
         companion object {
             const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
+            const val CHANGE_PLAYBACK_START_END_DELAY: Long = 4000
         }
     }
 
