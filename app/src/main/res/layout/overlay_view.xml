@@ -12,17 +12,15 @@
             android:id="@+id/gradientTop"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:background="@drawable/gradient_top"/>
+            android:layout_height="200dp"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/gradientBottom"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <TextView
             tools:ignore="MissingConstraints"

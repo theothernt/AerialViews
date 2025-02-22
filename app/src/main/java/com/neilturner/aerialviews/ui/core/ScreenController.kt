@@ -31,6 +31,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
@@ -140,66 +141,15 @@ class ScreenController(
 
         // Gradients
         if (GeneralPrefs.showTopGradient) {
-            overlayViewBinding.gradientTop.visibility = View.VISIBLE
+            val gradientView = overlayViewBinding.gradientTop
+            gradientView.visibility = View.VISIBLE
+            gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.BOTTOM_TOP)
         }
 
         if (GeneralPrefs.showBottomGradient) {
             val gradientView = overlayViewBinding.gradientBottom
-
-            //GradientOverlay.apply(overlayViewBinding.gradientBottom)
-
-            // Create a GradientDrawable with multiple stops for an ease-out effect
-            val gradientDrawable = GradientDrawable(
-                GradientDrawable.Orientation.TOP_BOTTOM, // 270 degrees (top to bottom)
-//                intArrayOf(
-//                    0x00000000.toInt(), // 0% → hsla(0, 0%, 0%, 0) → Fully transparent
-//                    0x03000000.toInt(), // 8.1% → hsla(0, 0%, 0%, 0.011)
-//                    0x0A000000.toInt(), // 15.5% → hsla(0, 0%, 0%, 0.041)
-//                    0x16000000.toInt(), // 22.5% → hsla(0, 0%, 0%, 0.088)
-//                    0x26000000.toInt(), // 29% → hsla(0, 0%, 0%, 0.149)
-//                    0x38000000.toInt(), // 35.3% → hsla(0, 0%, 0%, 0.22)
-//                    0x4C000000.toInt(), // 41.2% → hsla(0, 0%, 0%, 0.299)
-//                    0x62000000.toInt(), // 47.1% → hsla(0, 0%, 0%, 0.383)
-//                    0x77000000.toInt(), // 52.9% → hsla(0, 0%, 0%, 0.467)
-//                    0x8C000000.toInt(), // 58.8% → hsla(0, 0%, 0%, 0.551)
-//                    0xA0000000.toInt(), // 64.7% → hsla(0, 0%, 0%, 0.63)
-//                    0xB3000000.toInt(), // 71% → hsla(0, 0%, 0%, 0.701)
-//                    0xC2000000.toInt(), // 77.5% → hsla(0, 0%, 0%, 0.762)
-//                    0xCE000000.toInt(), // 84.5% → hsla(0, 0%, 0%, 0.809)
-//                    0xD6000000.toInt(), // 91.9% → hsla(0, 0%, 0%, 0.839)
-//                    0xD9000000.toInt()  // 100% → hsla(0, 0%, 0%, 0.85)
-//                )
-                intArrayOf(
-                    0x00000000.toInt(), // 0% → hsla(0, 0%, 0%, 0) → Fully transparent
-                    0x02000000.toInt(), // 8.1% → hsla(0, 0%, 0%, 0.01)
-                    0x09000000.toInt(), // 15.5% → hsla(0, 0%, 0%, 0.036)
-                    0x14000000.toInt(), // 22.5% → hsla(0, 0%, 0%, 0.078)
-                    0x22000000.toInt(), // 29% → hsla(0, 0%, 0%, 0.132)
-                    0x31000000.toInt(), // 35.3% → hsla(0, 0%, 0%, 0.194)
-                    0x43000000.toInt(), // 41.2% → hsla(0, 0%, 0%, 0.264)
-                    0x56000000.toInt(), // 47.1% → hsla(0, 0%, 0%, 0.338)
-                    0x69000000.toInt(), // 52.9% → hsla(0, 0%, 0%, 0.412)
-                    0x7C000000.toInt(), // 58.8% → hsla(0, 0%, 0%, 0.486)
-                    0x8E000000.toInt(), // 64.7% → hsla(0, 0%, 0%, 0.556)
-                    0x9E000000.toInt(), // 71% → hsla(0, 0%, 0%, 0.618)
-                    0xAB000000.toInt(), // 77.5% → hsla(0, 0%, 0%, 0.672)
-                    0xB6000000.toInt(), // 84.5% → hsla(0, 0%, 0%, 0.714)
-                    0xBD000000.toInt(), // 91.9% → hsla(0, 0%, 0%, 0.74)
-                    0xBF000000.toInt()  // 100% → hsla(0, 0%, 0%, 0.75)
-                )
-            )
-
-//            val radialGradient = GradientDrawable(
-//                GradientDrawable.Orientation.TOP_BOTTOM, // Still using top-to-bottom
-//                intArrayOf(0x00000000, 0x44000000, 0x99000000.toInt(), 0xCC000000.toInt())
-//            )
-            //radialGradient.gradientType = GradientDrawable.RADIAL_GRADIENT
-            //radialGradient.setGradientRadius(500f) // Adjust radius for a smoother effect
-            gradientView.background = gradientDrawable
-
-            // Apply the gradient as the background
-            //gradientView.background = gradientDrawable
-            overlayViewBinding.gradientBottom.visibility = View.VISIBLE
+            gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.TOP_BOTTOM)
+            gradientView.visibility = View.VISIBLE
         }
 
         // Get duration scale from the global settings.
