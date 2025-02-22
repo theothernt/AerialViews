@@ -109,7 +109,7 @@ class CapabilitiesFragment : MenuStateFragment() {
             }
         }
 
-        return filteredModes.map { it.refreshRate.roundTo(2).toString() + "Hz"}.distinct().joinToString(", ")
+        return filteredModes.map { it.refreshRate.roundTo(2).toString() + "Hz" }.distinct().joinToString(", ")
     }
 
     private fun buildResolutionsSummary(): String {

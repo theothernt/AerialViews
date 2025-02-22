@@ -271,7 +271,9 @@ class VideoPlayerView
             // Current position
             val progress = exoPlayer.currentPosition - state.startPosition
 
-            Timber.i("Duration: ${duration.milliseconds} (at 1x), Delay: ${delay.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: $progress")
+            Timber.i(
+                "Duration: ${duration.milliseconds} (at 1x), Delay: ${delay.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: $progress",
+            )
             Timber.i("Video will finish in: ${delay.milliseconds}")
 
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationAlt))

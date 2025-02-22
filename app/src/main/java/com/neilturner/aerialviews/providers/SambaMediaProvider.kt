@@ -36,7 +36,8 @@ class SambaMediaProvider(
 
     override suspend fun fetchTest(): String = fetchSambaMedia().second
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf<String, Pair<String, Map<Int, String>>>()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

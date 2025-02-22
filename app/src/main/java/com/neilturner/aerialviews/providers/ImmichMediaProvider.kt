@@ -40,7 +40,8 @@ class ImmichMediaProvider(
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf<String, Pair<String, Map<Int, String>>>()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

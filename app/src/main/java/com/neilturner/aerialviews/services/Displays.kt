@@ -125,11 +125,12 @@ class Display(
                 OutputDescription(-1, renderPoint.x, renderPoint.y, source.refreshRate)
             }
 
-        mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            source.mode
-        } else {
-            null
-        }
+        mode =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                source.mode
+            } else {
+                null
+            }
 
         // If available on device get display mode
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

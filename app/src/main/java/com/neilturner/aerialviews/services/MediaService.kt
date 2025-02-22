@@ -49,38 +49,39 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaPlaylist = withContext(Dispatchers.IO){
-        val media = buildMediaList()
-        Timber.i("Total media items: ${media.size}")
+    suspend fun fetchMedia(): MediaPlaylist =
+        withContext(Dispatchers.IO) {
+            val media = buildMediaList()
+            Timber.i("Total media items: ${media.size}")
 
-        val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
-        val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
-        Timber.i("Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
+            val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
+            val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
+            Timber.i("Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
 
-        var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
-        Timber.i("Unmatched: videos ${videos.size}, photos ${photos.size}")
+            var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
+            Timber.i("Unmatched: videos ${videos.size}, photos ${photos.size}")
 
-        if (GeneralPrefs.ignoreNonManifestVideos) {
-            videos = listOf()
-            Timber.i("Removing non-manifest videos")
+            if (GeneralPrefs.ignoreNonManifestVideos) {
+                videos = listOf()
+                Timber.i("Removing non-manifest videos")
+            }
+
+            val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
+            videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
+
+            val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
+            photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
+
+            var filteredMedia = matched + videos + photos
+
+            if (GeneralPrefs.shuffleVideos) {
+                filteredMedia = filteredMedia.shuffled()
+                Timber.i("Shuffling media items")
+            }
+
+            Timber.i("Total media items: ${filteredMedia.size}")
+            return@withContext MediaPlaylist(filteredMedia)
         }
-
-        val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
-        videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
-
-        val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
-        photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
-
-        var filteredMedia = matched + videos + photos
-
-        if (GeneralPrefs.shuffleVideos) {
-            filteredMedia = filteredMedia.shuffled()
-            Timber.i("Shuffling media items")
-        }
-
-        Timber.i("Total media items: ${filteredMedia.size}")
-        return@withContext MediaPlaylist(filteredMedia)
-    }
 
     private suspend fun addMetadataToManifestVideos(
         media: List<AerialMedia>,

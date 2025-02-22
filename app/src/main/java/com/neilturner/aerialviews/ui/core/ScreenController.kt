@@ -141,14 +141,14 @@ class ScreenController(
         if (GeneralPrefs.showTopGradient) {
             val gradientView = overlayViewBinding.gradientTop
             gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
-            //gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.BOTTOM_TOP)
+            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.BOTTOM_TOP)
             gradientView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
             val gradientView = overlayViewBinding.gradientBottom
             gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
-            //gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.TOP_BOTTOM)
+            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.TOP_BOTTOM)
             gradientView.visibility = View.VISIBLE
         }
 
