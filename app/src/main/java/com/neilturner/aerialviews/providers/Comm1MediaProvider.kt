@@ -25,7 +25,12 @@ class Comm1MediaProvider(
 
     override suspend fun fetchTest(): String = fetchCommunityVideos().second
 
-    override suspend fun fetchMetadata() = metadata
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        if (metadata.isEmpty()) {
+            fetchMedia()
+        }
+        return metadata
+    }
 
     private suspend fun fetchCommunityVideos(): Pair<List<AerialMedia>, String> {
         val videos = mutableListOf<AerialMedia>()

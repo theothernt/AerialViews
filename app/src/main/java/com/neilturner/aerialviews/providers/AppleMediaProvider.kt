@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
+import kotlin.collections.mutableMapOf
 
 class AppleMediaProvider(
     context: Context,
@@ -25,7 +26,12 @@ class AppleMediaProvider(
 
     override suspend fun fetchTest(): String = fetchAppleVideos().second
 
-    override suspend fun fetchMetadata() = metadata
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        if (metadata.isEmpty()) {
+            fetchMedia()
+        }
+        return metadata
+    }
 
     private suspend fun fetchAppleVideos(): Pair<List<AerialMedia>, String> {
         val videos = mutableListOf<AerialMedia>()
