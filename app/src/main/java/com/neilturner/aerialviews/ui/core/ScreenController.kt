@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.core
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.provider.Settings
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -30,7 +31,6 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
-import com.neilturner.aerialviews.utils.GradientOverlay
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
@@ -144,7 +144,32 @@ class ScreenController(
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            GradientOverlay.apply(overlayViewBinding.gradientBottom)
+            val gradientView = overlayViewBinding.gradientBottom
+
+            //GradientOverlay.apply(overlayViewBinding.gradientBottom)
+
+            // Create a GradientDrawable with multiple stops for an ease-out effect
+//            val gradientDrawable = GradientDrawable(
+//                GradientDrawable.Orientation.TOP_BOTTOM, // 270 degrees (top to bottom)
+//                intArrayOf(
+//                    0x00000000, // Fully transparent
+//                    0x22000000, // Slight fade-in
+//                    0x55000000, // Darker fade
+//                    0x88000000, // Even darker
+//                    0xCC000000  // Fully opaque at bottom
+//                )
+//            )
+
+            val radialGradient = GradientDrawable(
+                GradientDrawable.Orientation.TOP_BOTTOM, // Still using top-to-bottom
+                intArrayOf(0x00000000, 0x44000000, 0x99000000.toInt(), 0xCC000000.toInt())
+            )
+            radialGradient.gradientType = GradientDrawable.RADIAL_GRADIENT
+            radialGradient.setGradientRadius(500f) // Adjust radius for a smoother effect
+            gradientView.background = radialGradient
+
+            // Apply the gradient as the background
+            //gradientView.background = gradientDrawable
             overlayViewBinding.gradientBottom.visibility = View.VISIBLE
         }
 
