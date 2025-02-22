@@ -40,10 +40,13 @@ class AppleMediaProvider(
                     type = AerialMediaType.VIDEO,
                 ),
             )
-            val data = Pair(it.description,
-                it.pointsOfInterest.mapValues { poi ->
-                    strings[poi.value] ?: it.description
-                })
+            val data =
+                Pair(
+                    it.description,
+                    it.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: it.description
+                    },
+                )
             it.allUrls().forEachIndexed { index, url ->
                 metadata.put(url, data)
             }
