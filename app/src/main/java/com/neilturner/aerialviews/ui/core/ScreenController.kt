@@ -30,6 +30,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.utils.GradientOverlay
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
@@ -143,6 +144,7 @@ class ScreenController(
         }
 
         if (GeneralPrefs.showBottomGradient) {
+            GradientOverlay.apply(overlayViewBinding.gradientBottom)
             overlayViewBinding.gradientBottom.visibility = View.VISIBLE
         }
 

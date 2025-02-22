@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Layer 1: 0-30dp, fastest initial fade -->
+    <item android:top="0dp" android:bottom="120dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#00800000"
+                android:endColor="#33000000" />
+        </shape>
+    </item>
+
+    <!-- Layer 2: 30-60dp, fast fade -->
+    <item android:top="30dp" android:bottom="90dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#33000000"
+                android:endColor="#66000000" />
+        </shape>
+    </item>
+
+    <!-- Layer 3: 60-90dp, medium fade -->
+    <item android:top="60dp" android:bottom="60dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#66000000"
+                android:endColor="#99000000" />
+        </shape>
+    </item>
+
+    <!-- Layer 4: 90-120dp, slow fade -->
+    <item android:top="90dp" android:bottom="30dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#99000000"
+                android:endColor="#B3000000" />
+        </shape>
+    </item>
+
+    <!-- Layer 5: 120-150dp, slowest final fade -->
+    <item android:top="120dp" android:bottom="0dp">
+        <shape>
+            <gradient
+                android:type="linear"
+                android:angle="270"
+                android:startColor="#B3000000"
+                android:endColor="#CC000000" />
+        </shape>
+    </item>
+</layer-list>
