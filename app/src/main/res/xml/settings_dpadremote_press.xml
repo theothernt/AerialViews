@@ -42,4 +42,14 @@
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_button_ok_title" />
         </PreferenceCategory>
+
+        <PreferenceCategory
+            app:title="@string/category_permission"
+            app:key="music_permission_option"
+            app:isPreferenceVisible="false">
+                <Preference
+                    app:title="@string/playlist_music_permission_title"
+                    app:summary="@string/playlist_music_permission_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysNowPlayingFragment"/>
+        </PreferenceCategory>
 </PreferenceScreen>
