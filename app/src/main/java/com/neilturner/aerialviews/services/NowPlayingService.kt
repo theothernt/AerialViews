@@ -52,7 +52,7 @@ class NowPlayingServiceAlt(
 
     private fun pickController(controllers: MutableList<MediaController>?): MediaController? {
         controllers?.forEach {
-            if (it.playbackState?.state == PlaybackState.STATE_PLAYING) {
+            if (isActive(it)) {
                 Timber.i("Using controller: ${it.packageName}")
                 return it
             }
@@ -95,7 +95,7 @@ class NowPlayingServiceAlt(
     override fun onPlaybackStateChanged(state: PlaybackState?) {
         Timber.i("onPlaybackStateChanged")
         super.onPlaybackStateChanged(state)
-        active = state?.state == PlaybackState.STATE_PLAYING
+        active = isActive()
         updateMetadata()
     }
 
@@ -112,9 +112,6 @@ class NowPlayingServiceAlt(
             return
         }
 
-        val state = activeController?.playbackState?.state ?: PlaybackState.STATE_NONE
-        active = isActive(state)
-
         val musicEvent =
             metadata
                 ?.let {
@@ -127,7 +124,8 @@ class NowPlayingServiceAlt(
         GlobalBus.post(musicEvent)
     }
 
-    fun isActive(state: Int): Boolean {
+    fun isActive(controller: MediaController? = activeController): Boolean {
+        val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
         return state == PlaybackState.STATE_PLAYING ||
                 state == PlaybackState.STATE_BUFFERING ||
                 state == PlaybackState.STATE_FAST_FORWARDING ||
