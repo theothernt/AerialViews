@@ -27,14 +27,14 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            Timber.i("Key Up")
+            Timber.i("Press Event")
             result = eventToAction(event, controller, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            Timber.i("Long Press")
+            Timber.i("Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
@@ -43,7 +43,7 @@ object InputHelper {
             event.repeatCount.rem(10) == 0 &&
             longPressEvent
         ) {
-            Timber.i("Another Long Press")
+            Timber.i("Another Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
 
@@ -169,25 +169,31 @@ object InputHelper {
             controller?.blackOutMode == true &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
+            Timber.i("Action: toggleBlackOutMode")
             controller.toggleBlackOutMode()
             return true
         }
 
         if (action == ButtonType.IGNORE) {
+            Timber.i("Action: Ignore")
             return false
         }
 
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
+            Timber.i("Action: (no press and hold events yet)")
             when (action) {
                 // Prepare for fast forward/rewind
                 else -> exit()
             }
         } else {
+            Timber.i("Action: $action")
             when (action) {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
                 ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+                ButtonType.MUSIC_NEXT -> controller?.nextTrack()
+                ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
                 else -> exit()

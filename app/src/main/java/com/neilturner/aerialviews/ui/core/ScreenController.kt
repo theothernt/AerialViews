@@ -391,6 +391,14 @@ class ScreenController(
         }
     }
 
+    fun nextTrack() {
+        nowPlayingService?.nextTrack()
+    }
+
+    fun previousTrack() {
+        nowPlayingService?.previousTrack()
+    }
+
     fun increaseSpeed() {
         if (blackOutMode) {
             return

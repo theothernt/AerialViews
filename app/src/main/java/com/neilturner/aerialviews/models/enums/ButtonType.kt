@@ -9,6 +9,8 @@ enum class ButtonType {
     SKIP_PREVIOUS,
     SPEED_INCREASE,
     SPEED_DECREASE,
+    MUSIC_NEXT,
+    MUSIC_PREVIOUS,
     SHOW_OVERLAYS,
     BLACK_OUT_MODE,
 }

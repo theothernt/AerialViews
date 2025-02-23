@@ -124,13 +124,17 @@ class NowPlayingServiceAlt(
         GlobalBus.post(musicEvent)
     }
 
-    fun isActive(controller: MediaController? = activeController): Boolean {
+    private fun isActive(controller: MediaController? = activeController): Boolean {
         val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
         return state == PlaybackState.STATE_PLAYING ||
-                state == PlaybackState.STATE_BUFFERING ||
-                state == PlaybackState.STATE_FAST_FORWARDING ||
-                state == PlaybackState.STATE_REWINDING
+            state == PlaybackState.STATE_BUFFERING ||
+            state == PlaybackState.STATE_FAST_FORWARDING ||
+            state == PlaybackState.STATE_REWINDING
     }
+
+    fun nextTrack() = activeController?.transportControls?.skipToNext()
+
+    fun previousTrack() = activeController?.transportControls?.skipToPrevious()
 
     fun stop() {
         activeController = null
