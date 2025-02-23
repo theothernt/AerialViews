@@ -72,12 +72,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
+            <!-- Handle .aerialviews files passed by another app eg. File Manager -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="file" />
                 <data android:scheme="content" />
-                <data android:mimeType="*/*" />
+                <data android:mimeType="application/aerialviews" />
                 <data android:host="*" />
                 <data android:pathPattern=".*.aerialviews" />
             </intent-filter>

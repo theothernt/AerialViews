@@ -60,7 +60,7 @@ class MainActivity :
             contentResolver.openInputStream(uri)?.use { inputStream ->
                 val text = inputStream.bufferedReader().use { it.readText() }
                 Timber.i("Read content: $text")
-                Toast.makeText(this, "Opened .aerialviews file!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Opened .aerialviews file: $text", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
             Timber.e("Error reading file: ${e.message}")
