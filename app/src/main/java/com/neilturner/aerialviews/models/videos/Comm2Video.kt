@@ -2,7 +2,8 @@ package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
 import com.neilturner.aerialviews.models.enums.VideoQuality
-import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import kotlin.text.lowercase
 
 class Comm2Video : AbstractVideo() {
     override fun uriAtQuality(quality: VideoQuality?): Uri {
@@ -20,7 +21,7 @@ class Comm2Video : AbstractVideo() {
     override fun allUrls(): List<String> {
         val urls = mutableSetOf<String>()
         enumValues<VideoQuality>().forEach { quality ->
-            uriAtQuality(quality).let { uri -> urls.add(uri.filename) }
+            uriAtQuality(quality).let { uri -> urls.add(uri.filenameWithoutExtension.lowercase()) }
         }
         return urls.toList()
     }

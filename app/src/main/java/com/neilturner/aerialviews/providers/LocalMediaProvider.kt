@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.filename
@@ -40,7 +39,8 @@ class LocalMediaProvider(
             folderAccessFetch().second
         }
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources

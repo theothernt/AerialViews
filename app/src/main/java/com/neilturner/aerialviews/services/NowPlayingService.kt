@@ -136,7 +136,7 @@ class NowPlayingService(
             state != PlaybackState.STATE_STOPPED &&
                 state != PlaybackState.STATE_PAUSED &&
                 state != PlaybackState.STATE_ERROR &&
-                //state != PlaybackState.STATE_BUFFERING &&
+                // state != PlaybackState.STATE_BUFFERING &&
                 state != PlaybackState.STATE_NONE
         )
 }

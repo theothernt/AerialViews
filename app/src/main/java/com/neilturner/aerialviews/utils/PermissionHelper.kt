@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.provider.Settings
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
@@ -72,6 +73,14 @@ object PermissionHelper {
 
     fun hasNotificationListenerPermission(context: Context): Boolean =
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
+
+    fun hasSystemOverlayPermission(context: Context): Boolean =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Settings.canDrawOverlays(context)
+            // ContextCompat.checkSelfPermission(context, Settings.ACTION_MANAGE_OVERLAY_PERMISSION) == PackageManager.PERMISSION_GRANTED
+        } else {
+            false
+        }
 
     @Suppress("SameReturnValue")
     fun getReadDocumentPermission(): String = Manifest.permission.READ_EXTERNAL_STORAGE

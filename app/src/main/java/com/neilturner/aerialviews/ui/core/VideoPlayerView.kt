@@ -17,6 +17,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -38,6 +40,7 @@ class VideoPlayerView
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
+        private val refreshRateHelper by lazy { RefreshRateHelper(context) }
 
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
@@ -142,8 +145,9 @@ class VideoPlayerView
                 if (exoPlayer.isPlaying) {
                     Timber.i("Ready, Playing...")
 
-                    if (GeneralPrefs.refreshRateSwitching) {
-                        VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                    if (GeneralPrefs.refreshRateSwitching && PermissionHelper.hasSystemOverlayPermission(context)) {
+                        // VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                        refreshRateHelper.setRefreshRate(exoPlayer.videoFormat?.frameRate)
                     }
 
                     if (!state.ready) {
@@ -190,11 +194,11 @@ class VideoPlayerView
                 return // Must be playing a video
             }
 
-            if (exoPlayer.currentPosition <= 3) {
+            if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
                 return // No speed change at the start of the video
             }
 
-            if (exoPlayer.duration - exoPlayer.currentPosition <= 3) {
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
                 return // No speed changes at the end of video
             }
 
@@ -202,11 +206,21 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            val speedValues = resources.getStringArray(R.array.playback_speed_values)
-            val currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            var speedValues: Array<String>
+            var currentSpeedIdx: Int
+
+            try {
+                speedValues = resources.getStringArray(R.array.playback_speed_values)
+                currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            } catch (ex: Exception) {
+                Timber.e(ex, "Exception while getting playback speed values")
+                return
+            }
 
             if (currentSpeedIdx == -1) {
-                return // No matching speed, likely a resource error or pref mismatch
+                // No matching speed, likely a resource error or pref mismatch
+                GeneralPrefs.playbackSpeed = "1" // Reset pref
+                return
             }
 
             if (!increase && currentSpeedIdx == 0) {
@@ -235,7 +249,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
 
-            if (state.startPosition <=0 && state.endPosition <=0) {
+            if (state.startPosition <= 0 && state.endPosition <= 0) {
                 postDelayed(almostFinishedRunnable, 2 * 1000)
                 if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
@@ -249,11 +263,17 @@ class VideoPlayerView
             // Duration taking into account playback speed and animation timings
             val durationAlt = (duration / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
             // Delay until next video
-            val delay = ((duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
+            val delay =
+                (
+                    (duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() -
+                        GeneralPrefs.mediaFadeOutDuration.toLong()
+                ).toLong()
             // Current position
             val progress = exoPlayer.currentPosition - state.startPosition
 
-            Timber.i("Duration: $duration (at 1x), Delay: $delay (at ${GeneralPrefs.playbackSpeed}x), Progress: $progress")
+            Timber.i(
+                "Duration: ${duration.milliseconds} (at 1x), Delay: ${delay.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: $progress",
+            )
             Timber.i("Video will finish in: ${delay.milliseconds}")
 
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationAlt))
@@ -272,6 +292,7 @@ class VideoPlayerView
 
         companion object {
             const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
+            const val CHANGE_PLAYBACK_START_END_DELAY: Long = 4000
         }
     }
 
