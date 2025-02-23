@@ -14,7 +14,7 @@ import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
 // Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
-class NowPlayingServiceAlt(
+class NowPlayingService(
     private val context: Context,
 ) : MediaController.Callback(),
     MediaSessionManager.OnActiveSessionsChangedListener {
