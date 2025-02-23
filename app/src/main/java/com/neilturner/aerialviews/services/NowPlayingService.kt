@@ -111,7 +111,7 @@ class NowPlayingServiceAlt(
             Timber.i("updateMetadata - null")
             return
         }
-
+        active = isActive() // Don't remove!
         val musicEvent =
             metadata
                 ?.let {
