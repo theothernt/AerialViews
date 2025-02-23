@@ -65,8 +65,12 @@ class ProgressBar : View {
         length: Long,
     ) {
         parentWidth = (this.parent as View).measuredWidth
-        val newWidth = calculateWidth(position)
 
+        if (parentWidth == 0 || length == 0L) {
+            return
+        }
+
+        val newWidth = (position.toFloat() / length.toFloat()) * parentWidth
         animator =
             ValueAnimator.ofInt(newWidth.toInt(), parentWidth).apply {
                 duration = length
@@ -77,11 +81,6 @@ class ProgressBar : View {
                 }
                 start()
             }
-    }
-
-    private fun calculateWidth(progress: Long): Long {
-        val percentage = progress / parentWidth
-        return (width - paddingLeft - paddingRight) * percentage + paddingLeft
     }
 }
 

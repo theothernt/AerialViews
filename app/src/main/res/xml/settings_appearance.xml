@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_options">
+        <PreferenceCategory app:title="@string/category_appearance">
                 <CheckBoxPreference
-                    app:defaultValue="false"
+                    app:defaultValue="true"
                     app:key="alt_text_position"
                     app:summary="@string/appearance_alt_text_position_summary"
                     app:title="@string/appearance_alt_text_position_title" />

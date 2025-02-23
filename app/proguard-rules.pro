@@ -7,6 +7,7 @@
 
 # Mostly data class and json types
 -keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
+-keep class com.neilturner.aerialviews.models.immich.* { <fields>; }
 -keep class com.neilturner.aerialviews.utils.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.sources.* { <fields>; }

@@ -14,6 +14,7 @@ import android.service.dreams.DreamService
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
@@ -27,7 +28,7 @@ class DreamActivity : DreamService() {
         super.onAttachedToWindow()
         // Setup
         isFullscreen = true
-        isInteractive = true
+        isInteractive = !(GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this))
 
         // Start playback, etc
         screenController =
@@ -60,6 +61,7 @@ class DreamActivity : DreamService() {
         ) {
             return true
         }
+
         return super.dispatchKeyEvent(event)
     }
 

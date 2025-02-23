@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.Sardine
@@ -31,7 +30,8 @@ class WebDavMediaProvider(
 
     override suspend fun fetchTest(): String = fetchWebDavMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
