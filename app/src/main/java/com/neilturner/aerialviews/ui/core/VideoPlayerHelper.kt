@@ -23,7 +23,6 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.CustomRendererFactory
 import com.neilturner.aerialviews.services.SambaDataSourceFactory
 import com.neilturner.aerialviews.services.WebDavDataSourceFactory
-import com.neilturner.aerialviews.utils.WindowHelper
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil
@@ -32,21 +31,6 @@ import kotlin.time.Duration.Companion.milliseconds
 
 object VideoPlayerHelper {
     private const val TEN_SECONDS = 10 * 1000
-
-    fun setRefreshRate(
-        context: Context,
-        framerate: Float?,
-    ) {
-        if (framerate == null || framerate == 0f) {
-            Timber.i("Unable to get video frame rate...")
-            return
-        }
-
-        Timber.i("${framerate}fps video, setting refresh rate if needed...")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            WindowHelper.setLegacyRefreshRate(context, framerate)
-        }
-    }
 
     fun disableAudioTrack(player: ExoPlayer) {
         player.trackSelectionParameters =
@@ -102,7 +86,6 @@ object VideoPlayerHelper {
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
-            Timber.i("Android 12+, enabling refresh rate switching")
             player.videoChangeFrameRateStrategy = C.VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF
         }
 

@@ -58,6 +58,7 @@ class SslHelper {
                             chain: Array<out X509Certificate>,
                             authType: String,
                         ) {}
+
                         @SuppressLint("TrustAllX509TrustManager")
                         override fun checkServerTrusted(
                             chain: Array<out X509Certificate>,

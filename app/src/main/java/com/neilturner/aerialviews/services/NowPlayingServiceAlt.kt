@@ -75,7 +75,10 @@ class NowPlayingServiceAlt(
         }
     }
 
-    override fun onSessionEvent(event: String, extras: Bundle?) {
+    override fun onSessionEvent(
+        event: String,
+        extras: Bundle?,
+    ) {
         Timber.i("onSessionEvent")
         super.onSessionEvent(event, extras)
         updateMetadata()

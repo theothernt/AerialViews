@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.models.immich.Album
 import com.neilturner.aerialviews.models.immich.ErrorResponse
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
@@ -41,7 +40,8 @@ class ImmichMediaProvider(
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -104,7 +104,8 @@ class ImmichMediaProvider(
             // Not sure what is causing it or exactly where it is
             try {
                 if (asset.exifInfo?.country != null &&
-                    asset.exifInfo.country.isNotBlank()) {
+                    asset.exifInfo.country.isNotBlank()
+                ) {
                     Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
                     val location =
                         listOf(
@@ -118,9 +119,10 @@ class ImmichMediaProvider(
                 Timber.e(e, "Error parsing location EXIF data")
             }
 
-            val item = AerialMedia(uri, description, poi).apply {
-                source = AerialMediaSource.IMMICH
-            }
+            val item =
+                AerialMedia(uri, description, poi).apply {
+                    source = AerialMediaSource.IMMICH
+                }
 
             when {
                 FileHelper.isSupportedVideoType(filename) -> {
@@ -260,7 +262,7 @@ class ImmichMediaProvider(
                     .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
-            //throw e
+            // throw e
         }
     }
 

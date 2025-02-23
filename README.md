@@ -277,7 +277,7 @@ settings get secure screensaver_components
 If set correctly, you should see... 
 
 ```sh
-com.neilturner.aerialviews/com.neilturner.aerialviews.ui.screensaver.DreamActivity
+com.neilturner.aerialviews/.ui.screensaver.DreamActivity
 ```
 
 </details>

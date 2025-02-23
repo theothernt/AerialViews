@@ -294,14 +294,15 @@ class MigrationHelper(
         val playbackSpeedUsed = prefs.contains("playback_speed")
         if (playbackSpeedUsed) {
             val speed = prefs.getString("playback_speed", "1")
-            val speedMapping = mapOf(
-                "0.25" to "0.2",
-                "0.50" to "0.4",
-                "0.75" to "0.8",
-                "1.25" to "1.2",
-                "1.50" to "1.4",
-                "1.75" to "1.8",
-            )
+            val speedMapping =
+                mapOf(
+                    "0.25" to "0.2",
+                    "0.50" to "0.4",
+                    "0.75" to "0.8",
+                    "1.25" to "1.2",
+                    "1.50" to "1.4",
+                    "1.75" to "1.8",
+                )
 
             // Ignore default
             if (speed?.contains("1", true) == true) {
