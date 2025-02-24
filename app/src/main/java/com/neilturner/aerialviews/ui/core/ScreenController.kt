@@ -377,7 +377,7 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
-        if (playlist.size == 0) {
+        if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
