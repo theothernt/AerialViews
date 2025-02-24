@@ -2,15 +2,17 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.net.Uri
+import android.os.Build.VERSION.SDK_INT
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import coil.EventListener
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
-import coil.request.ErrorResult
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import coil3.EventListener
+import coil3.ImageLoader
+import coil3.gif.AnimatedImageDecoder
+import coil3.gif.GifDecoder
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.ErrorResult
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -44,8 +46,7 @@ import java.util.EnumSet
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView :
-    AppCompatImageView,
-    EventListener {
+    AppCompatImageView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -61,15 +62,30 @@ class ImagePlayerView :
     private val imageLoader: ImageLoader by lazy {
         ImageLoader
             .Builder(context)
-            .eventListener(this)
+            .eventListener(
+                object: EventListener() {
+
+                    override fun onSuccess(request: ImageRequest, result: SuccessResult) {
+                        super.onSuccess(request, result)
+                        setupFinishedRunnable()
+                    }
+
+                    override fun onError(request: ImageRequest, result: ErrorResult) {
+                        super.onError(request, result)
+                        Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+                        onPlayerError()
+                    }
+                }
+            )
             .components {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                    add(ImageDecoderDecoder.Factory())
+                OkHttpNetworkFetcherFactory(
+                    callFactory = { buildOkHttpClient() },
+                )
+                if (SDK_INT >= 28) {
+                    add(AnimatedImageDecoder.Factory())
                 } else {
                     add(GifDecoder.Factory())
                 }
-            }.okHttpClient {
-                buildOkHttpClient()
             }.build()
     }
 
@@ -117,21 +133,6 @@ class ImagePlayerView :
         listener = null
     }
 
-    override fun onSuccess(
-        request: ImageRequest,
-        result: SuccessResult,
-    ) {
-        setupFinishedRunnable()
-    }
-
-    override fun onError(
-        request: ImageRequest,
-        result: ErrorResult,
-    ) {
-        Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
-        onPlayerError()
-    }
-
     fun setImage(media: AerialMedia) {
         Timber.i("Image URL: ${media.uri} (${media.source})")
         when (media.source) {
@@ -152,7 +153,7 @@ class ImagePlayerView :
             ImageRequest
                 .Builder(context)
                 .data(uri)
-                .target(this)
+                .target(null)
                 .build()
         imageLoader.execute(request)
     }
@@ -161,7 +162,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(this)
+                .target(null)
 
         try {
             val byteArray = byteArrayFromSambaFile(uri)
@@ -179,7 +180,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(this)
+                .target(null)
 
         try {
             val byteArray = byteArrayFromWebDavFile(uri)
