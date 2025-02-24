@@ -180,11 +180,8 @@ object InputHelper {
         }
 
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
-            Timber.i("Action: (no press and hold events yet)")
-            when (action) {
-                // Prepare for fast forward/rewind
-                else -> exit()
-            }
+            Timber.i("Action: Ignore")
+            return false
         } else {
             Timber.i("Action: $action")
             when (action) {
