@@ -384,7 +384,7 @@
   <string name="appearance_loading_show_summary">Displays the \"Loading…\" message while building playlist of media</string>
 
   <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
-  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched from home screen</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
 
   <string name="appearance_loading_size_title">Size</string>
   <string name="appearance_loading_weight_title">Weight</string>

@@ -81,6 +81,10 @@ object InputHelper {
                 return !GeneralPrefs.enableMediaButtonPassthrough
             }
 
+//            KeyEvent.KEYCODE_BACK -> {
+//                return false
+//            }
+
             KeyEvent.KEYCODE_DPAD_CENTER -> {
                 // Only disable OK button if left/right/up/down keys are in use
                 action =

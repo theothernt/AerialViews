@@ -80,7 +80,7 @@ class MainActivity :
 
     private fun startScreensaver() {
         if (!GeneralPrefs.startScreensaverOnLaunch) return
-        fromAppLaunch = true
+
         try {
             val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
             resultLauncher.launch(intent)
