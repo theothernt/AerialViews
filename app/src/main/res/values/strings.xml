@@ -438,7 +438,7 @@
 
   <!-- Main / Settings / Appearance / Now Playing -->
   <string name="nowplaying_permission_title">Enable system notification access</string>
-  <string name="nowplaying_permission_summary">Permission is required so that this app can listen for music notifications from the system</string>
+  <string name="nowplaying_permission_summary">This grants permission to a) skip music tracks and b) listen for artist/album info</string>
 
   <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
   <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
@@ -514,6 +514,9 @@
   <string name="dpad_button_up_title">Up direction</string>
   <string name="dpad_button_down_title">Down direction</string>
   <string name="dpad_button_ok_title">OK button</string>
+
+  <string name="playlist_music_permission_title">Music control permission</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
 
   <string name="playlist_allow_video_skipping_title">Allow skipping to next/previous video or photo</string>
   <string name="playlist_allow_video_skipping_summary">Skip a video or photo by pressing left or right on the d-pad of your remote</string>

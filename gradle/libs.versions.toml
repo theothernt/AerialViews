@@ -31,7 +31,7 @@ sardine-android = "0.0.2"
 coil = "2.7.0"
 timber = "5.0.1"
 leakcanary = "2.14"
-junit-jupiter = "5.11.4"
+junit-jupiter = "5.12.0"
 
 [libraries]
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
