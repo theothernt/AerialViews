@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -9,6 +8,7 @@ import androidx.fragment.app.commit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
@@ -55,21 +55,18 @@ class MainActivity :
         FirebaseHelper.logScreenView("Main", this)
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putCharSequence("TITLE_TAG", title)
     }
 
     private fun startScreensaver() {
-        val startScreensaverOnLaunch = true
-        if (startScreensaverOnLaunch) {
-            try {
-                val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
-                resultLauncher.launch(intent)
-            } catch (ex: Exception) {
-                Timber.e(ex)
-            }
+        if (!GeneralPrefs.startScreensaverOnLaunch) return
+        try {
+            val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
+            resultLauncher.launch(intent)
+        } catch (ex: Exception) {
+            Timber.e(ex)
         }
     }
 

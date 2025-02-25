@@ -380,8 +380,11 @@
   <string name="appearance_brightness_level_title">Brightness level during media playback</string>
 
   <!-- Main / Settings / Appearance / Startup + Shutdown -->
-  <string name="appearance_loading_show_title">Show loading text</string>
-  <string name="appearance_loading_show_summary">Displays the "Loading…" text while the app is loading</string>
+  <string name="appearance_loading_show_title">Show loading message</string>
+  <string name="appearance_loading_show_summary">Displays the \"Loading…\" message while building playlist of media</string>
+
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched from home screen</string>
 
   <string name="appearance_loading_size_title">Size</string>
   <string name="appearance_loading_weight_title">Weight</string>
