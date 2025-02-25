@@ -85,7 +85,7 @@ class TestActivity : AppCompatActivity() {
     private fun finishWithResult() {
         val resultIntent = Intent().apply {
             // true if assigned exit key (eg. OK button) was pressed
-            putExtra("should_exit", true)
+            putExtra("should_exit", false)
         }
         setResult(RESULT_OK, resultIntent)
         finish()

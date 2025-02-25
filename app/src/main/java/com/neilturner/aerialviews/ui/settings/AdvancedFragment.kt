@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -92,9 +93,22 @@ class AdvancedFragment :
             setNegativeButton(R.string.button_cancel) { _, _ ->
             }
             setPositiveButton(R.string.button_ok) { _, _ ->
-                startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+                requireContext().restartApplication()
             }
             create().show()
+        }
+    }
+
+    fun Context.restartApplication() {
+        try {
+            val intent = packageManager.getLaunchIntentForPackage(packageName)
+            val componentName = intent?.component
+            val mainIntent = Intent.makeRestartActivityTask(componentName)
+            mainIntent.putExtra("from_app_restart", true)
+            startActivity(mainIntent)
+            Runtime.getRuntime().exit(0)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Unable to restart application: ${ex.message}")
         }
     }
 }

@@ -11,6 +11,6 @@ enum class ButtonType {
     SPEED_DECREASE,
     MUSIC_NEXT,
     MUSIC_PREVIOUS,
-    SHOW_OVERLAYS,
-    BLACK_OUT_MODE,
+    SHOW_OVERLAYS, // Show overlays if auto-hide is enabled
+    BLACK_OUT_MODE, // Hide overlays + video, black screen
 }

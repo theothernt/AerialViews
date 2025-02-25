@@ -19,6 +19,7 @@ class MainActivity :
     private val resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
+        Timber.i("activityResult: ${result.resultCode}")
         if (result.resultCode == RESULT_OK) {
             val shouldExit = result.data?.getBooleanExtra("should_exit", false)
             Timber.i("Should exit? $shouldExit")
@@ -47,7 +48,24 @@ class MainActivity :
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        Timber.i("onCreate")
+        Timber.i("Calling Activity: ${callingActivity?.className}")
+        Timber.i("Calling Package: $callingPackage")
+
+        val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
+        if (fromAppRestart) {
+            Timber.i("From app restart")
+            return
+        }
         startScreensaver()
+
+        // Launch from...
+        // Home screen
+        // File intent launch
+        // Test Activity launch directly
+
+
     }
 
     override fun onResume() {
@@ -62,6 +80,7 @@ class MainActivity :
 
     private fun startScreensaver() {
         if (!GeneralPrefs.startScreensaverOnLaunch) return
+        fromAppLaunch = true
         try {
             val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
             resultLauncher.launch(intent)
