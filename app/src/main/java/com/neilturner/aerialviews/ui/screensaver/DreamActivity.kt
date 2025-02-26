@@ -55,9 +55,13 @@ class DreamActivity : DreamService() {
         // Start playback, etc
     }
 
+    private fun altWakeUp(shouldExit: Boolean) {
+        wakeUp()
+    }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
+            InputHelper.handleKeyEvent(event, screenController, ::altWakeUp)
         ) {
             return true
         }

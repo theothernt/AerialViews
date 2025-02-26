@@ -13,7 +13,7 @@ object InputHelper {
     fun handleKeyEvent(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
     ): Boolean {
         var result = false
 
@@ -54,7 +54,7 @@ object InputHelper {
     private fun eventToAction(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType = ButtonPressType.NORMAL,
     ): Boolean {
         var action: ButtonType? = null
@@ -138,7 +138,7 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> exit()
+            else -> exit(false)
         }
 
         if (action == null) {
@@ -165,7 +165,7 @@ object InputHelper {
     private fun executeAction(
         action: ButtonType?,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
         // Check if any direction/button press should wake from black out mode
@@ -192,12 +192,13 @@ object InputHelper {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
                 ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
-                ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
                 ButtonType.MUSIC_NEXT -> controller?.nextTrack()
                 ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
+                ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-                else -> exit()
+                ButtonType.EXIT_TO_SETTINGS -> exit(true)
+                else -> exit(false)
             }
         }
         return true

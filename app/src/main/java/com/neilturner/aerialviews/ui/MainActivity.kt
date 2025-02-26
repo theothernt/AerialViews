@@ -49,23 +49,21 @@ class MainActivity :
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        Timber.i("onCreate")
-        Timber.i("Calling Activity: ${callingActivity?.className}")
-        Timber.i("Calling Package: $callingPackage")
-
+        // Check if app was restarted by user (language change)
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
         if (fromAppRestart) {
             Timber.i("From app restart")
             return
         }
+
+        //
+        val intentUri = intent.data
+        if (intentUri != null) {
+            Timber.i("From intent: $intentUri")
+            return
+        }
+
         startScreensaver()
-
-        // Launch from...
-        // Home screen
-        // File intent launch
-        // Test Activity launch directly
-
-
     }
 
     override fun onResume() {
