@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -15,20 +16,20 @@ import timber.log.Timber
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
-    private val resultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            val exitApp = result.data?.getBooleanExtra("exit_app", false)
-            Timber.i("Exit app now? $exitApp")
-            if (exitApp == true) {
-                //finish()
-                finishAndRemoveTask()
+    private val resultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val exitApp = result.data?.getBooleanExtra("exit_app", false)
+                Timber.i("Exit app now? $exitApp")
+                if (exitApp == true) {
+                    finishAndRemoveTask()
+                }
             }
         }
-    }
 
+    @SuppressLint("BinaryOperationInTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -51,19 +52,22 @@ class MainActivity :
 
         // Check if app was restarted by user (language change)
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
-        if (fromAppRestart) {
-            Timber.i("From app restart")
-            return
+
+        // Check if app was started from intent
+        val hasIntentUri = intent.data != null
+
+        if (GeneralPrefs.startScreensaverOnLaunch &&
+            !hasIntentUri &&
+            !fromAppRestart
+        ) {
+            startScreensaver()
         }
 
-        //
-        val intentUri = intent.data
-        if (intentUri != null) {
-            Timber.i("From intent: $intentUri")
-            return
-        }
-
-        startScreensaver()
+        Timber.i(
+            "fromAppRestart: $fromAppRestart, " +
+            "hasIntentUri: $hasIntentUri, " +
+            "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
     }
 
     override fun onResume() {
@@ -77,8 +81,6 @@ class MainActivity :
     }
 
     private fun startScreensaver() {
-        if (!GeneralPrefs.startScreensaverOnLaunch) return
-
         try {
             val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
             resultLauncher.launch(intent)
