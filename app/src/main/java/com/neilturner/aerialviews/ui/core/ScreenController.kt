@@ -21,13 +21,12 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.NowPlayingServiceAlt
+import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -50,7 +49,7 @@ class ScreenController(
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
 
-    private var nowPlayingService: NowPlayingServiceAlt? = null
+    private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -153,10 +152,10 @@ class ScreenController(
         }
 
         mainScope.launch {
-            if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
-                PermissionHelper.hasNotificationListenerPermission(context)
-            ) {
-                nowPlayingService = NowPlayingServiceAlt(context)
+            // Launch if we have permission
+            // Used for a) Skip music tracks b) music info widget
+            if (PermissionHelper.hasNotificationListenerPermission(context)) {
+                nowPlayingService = NowPlayingService(context)
             }
 
             playlist = MediaService(context).fetchMedia()
@@ -378,7 +377,7 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
-        if (playlist.size == 0) {
+        if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
@@ -389,6 +388,14 @@ class ScreenController(
             blackOutMode = false
             loadItem(playlist.nextItem())
         }
+    }
+
+    fun nextTrack() {
+        nowPlayingService?.nextTrack()
+    }
+
+    fun previousTrack() {
+        nowPlayingService?.previousTrack()
     }
 
     fun increaseSpeed() {
