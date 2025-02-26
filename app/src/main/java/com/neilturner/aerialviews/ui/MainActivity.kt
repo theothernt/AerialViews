@@ -19,12 +19,12 @@ class MainActivity :
     private val resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        Timber.i("activityResult: ${result.resultCode}")
         if (result.resultCode == RESULT_OK) {
-            val shouldExit = result.data?.getBooleanExtra("should_exit", false)
-            Timber.i("Should exit? $shouldExit")
-            if (shouldExit == true) {
-                finish()
+            val exitApp = result.data?.getBooleanExtra("exit_app", false)
+            Timber.i("Exit app now? $exitApp")
+            if (exitApp == true) {
+                //finish()
+                finishAndRemoveTask()
             }
         }
     }

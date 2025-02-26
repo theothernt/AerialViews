@@ -82,9 +82,9 @@ class TestActivity : AppCompatActivity() {
         }
     }
 
-    private fun finishWithResult(shouldExit: Boolean = false) {
+    private fun finishWithResult(exitApp: Boolean = false) {
         val resultIntent = Intent().apply {
-            putExtra("should_exit", shouldExit)
+            putExtra("exit_app", GeneralPrefs.startScreensaverOnLaunch && exitApp)
         }
         setResult(RESULT_OK, resultIntent)
         finish()

@@ -55,7 +55,7 @@ class DreamActivity : DreamService() {
         // Start playback, etc
     }
 
-    private fun altWakeUp(shouldExit: Boolean) {
+    private fun altWakeUp(exitApp: Boolean) {
         wakeUp()
     }
 

@@ -81,9 +81,9 @@ object InputHelper {
                 return !GeneralPrefs.enableMediaButtonPassthrough
             }
 
-//            KeyEvent.KEYCODE_BACK -> {
-//                return false
-//            }
+            KeyEvent.KEYCODE_BACK -> {
+                exit(true)
+            }
 
             KeyEvent.KEYCODE_DPAD_CENTER -> {
                 // Only disable OK button if left/right/up/down keys are in use
@@ -138,7 +138,7 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> exit(false)
+            else -> exit(true)
         }
 
         if (action == null) {
@@ -197,8 +197,8 @@ object InputHelper {
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-                ButtonType.EXIT_TO_SETTINGS -> exit(true)
-                else -> exit(false)
+                ButtonType.EXIT_TO_SETTINGS -> exit(false)
+                else -> exit(true)
             }
         }
         return true
