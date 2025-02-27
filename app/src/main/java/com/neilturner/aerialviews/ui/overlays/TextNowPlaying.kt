@@ -91,14 +91,15 @@ class TextNowPlaying : AppCompatTextView {
                 addTransition(Fade())
                 addTransition(ChangeBounds())
                 duration = 200
-            }
+            },
         )
 
-        visibility = if (text.isBlank()) {
-            GONE
-        } else {
-            VISIBLE
-        }
+        visibility =
+            if (text.isBlank()) {
+                GONE
+            } else {
+                VISIBLE
+            }
     }
 
     private suspend fun fadeOut() {

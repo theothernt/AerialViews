@@ -86,7 +86,8 @@ class TestActivity : AppCompatActivity() {
     private fun finishWithResult(exitApp: Boolean = false) {
         if (GeneralPrefs.startScreensaverOnLaunch &&
             exitApp &&
-            isExitToSettingSet()) {
+            isExitToSettingSet()
+        ) {
             val resultIntent =
                 Intent().apply {
                     putExtra("exit_app", true)

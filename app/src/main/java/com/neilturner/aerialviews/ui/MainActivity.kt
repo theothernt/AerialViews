@@ -65,8 +65,8 @@ class MainActivity :
 
         Timber.i(
             "fromAppRestart: $fromAppRestart, " +
-            "hasIntentUri: $hasIntentUri, " +
-            "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+                "hasIntentUri: $hasIntentUri, " +
+                "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
     }
 

@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class DpadRemotePressFragment :
@@ -18,13 +19,13 @@ class DpadRemotePressFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_dpadremote_press, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        showMusicPermissionOption()
-        showStartScreensaverOnLaunchOption()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("D-Pad/Remote Press", this)
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
     override fun onDestroy() {
@@ -59,18 +60,18 @@ class DpadRemotePressFragment :
 
     private fun showMusicPermissionOption() {
         val permission = preferenceScreen.findPreference<Preference>("music_permission_option")
-        var showPermission = false
+        var usingMusicActions = false
 
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
                 it.key.endsWith("_press") &&
                 it.value.toStringOrEmpty().contains("MUSIC_")
             ) {
-                showPermission = true
+                usingMusicActions = true
                 return@forEach
             }
         }
 
-        permission?.isVisible = showPermission
+        permission?.isVisible = usingMusicActions && !PermissionHelper.hasNotificationListenerPermission(requireContext())
     }
 }

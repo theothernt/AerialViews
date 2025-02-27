@@ -7,7 +7,9 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
+import timber.log.Timber
 
 class DpadRemotePressHoldFragment :
     MenuStateFragment(),
@@ -18,13 +20,13 @@ class DpadRemotePressHoldFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_dpadremote_press_hold, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        showMusicPermissionOption()
-        showStartScreensaverOnLaunchOption()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", this)
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
     override fun onDestroy() {
@@ -58,19 +60,20 @@ class DpadRemotePressHoldFragment :
     }
 
     private fun showMusicPermissionOption() {
+        Timber.i("Change")
         val permission = preferenceScreen.findPreference<Preference>("music_permission_option")
-        var showPermission = false
+        var usingMusicActions = false
 
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
                 it.key.endsWith("_hold") &&
                 it.value.toStringOrEmpty().contains("MUSIC_")
             ) {
-                showPermission = true
+                usingMusicActions = true
                 return@forEach
             }
         }
 
-        permission?.isVisible = showPermission
+        permission?.isVisible = usingMusicActions && !PermissionHelper.hasNotificationListenerPermission(requireContext())
     }
 }
