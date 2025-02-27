@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
-import timber.log.Timber
 
 class DpadRemotePressHoldFragment :
     MenuStateFragment(),
@@ -44,23 +43,22 @@ class DpadRemotePressHoldFragment :
 
     private fun showStartScreensaverOnLaunchOption() {
         val message = preferenceScreen.findPreference<Preference>("screensaver_on_launch_option")
-        var showMessage = false
+        var usingExitToSettingsAction = false
 
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
-                it.key.endsWith("_hold") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
                 it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
             ) {
-                showMessage = true
+                usingExitToSettingsAction = true
                 return@forEach
             }
         }
 
-        message?.isVisible = showMessage
+        message?.isVisible = !usingExitToSettingsAction && GeneralPrefs.startScreensaverOnLaunch
     }
 
     private fun showMusicPermissionOption() {
-        Timber.i("Change")
         val permission = preferenceScreen.findPreference<Preference>("music_permission_option")
         var usingMusicActions = false
 

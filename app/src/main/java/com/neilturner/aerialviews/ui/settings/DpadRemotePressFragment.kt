@@ -43,19 +43,19 @@ class DpadRemotePressFragment :
 
     private fun showStartScreensaverOnLaunchOption() {
         val message = preferenceScreen.findPreference<Preference>("screensaver_on_launch_option")
-        var showMessage = false
+        var usingExitToSettingsAction = false
 
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
-                it.key.endsWith("_press") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
                 it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
             ) {
-                showMessage = true
+                usingExitToSettingsAction = true
                 return@forEach
             }
         }
 
-        message?.isVisible = showMessage
+        message?.isVisible = !usingExitToSettingsAction && GeneralPrefs.startScreensaverOnLaunch
     }
 
     private fun showMusicPermissionOption() {

@@ -9,6 +9,15 @@
                     app:title="@string/appearance_screensaver_on_launch_title"
                     app:summary="@string/appearance_screensaver_on_launch_summary" />
 
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="startup_screensaver_on_launch"
+                    app:disableDependentsState="false"
+                    app:key="exit_to_settings"
+                    app:title="@string/appearance_exit_to_settings_title"
+                    app:summary="@string/appearance_exit_to_settings_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
+
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="startup_show_loading"
