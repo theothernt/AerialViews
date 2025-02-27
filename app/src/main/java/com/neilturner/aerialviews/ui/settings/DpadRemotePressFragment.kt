@@ -18,7 +18,8 @@ class DpadRemotePressFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_dpadremote_press, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        showMusicPermissionOptionIfNeeded()
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
     override fun onResume() {
@@ -35,10 +36,28 @@ class DpadRemotePressFragment :
         sharedPreferences: SharedPreferences?,
         key: String?,
     ) {
-        showMusicPermissionOptionIfNeeded()
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
-    private fun showMusicPermissionOptionIfNeeded() {
+    private fun showStartScreensaverOnLaunchOption() {
+        val message = preferenceScreen.findPreference<Preference>("screensaver_on_launch_option")
+        var showMessage = false
+
+        GeneralPrefs.preferences.all.forEach {
+            if (it.key.startsWith("button_") &&
+                it.key.endsWith("_press") &&
+                it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
+            ) {
+                showMessage = true
+                return@forEach
+            }
+        }
+
+        message?.isVisible = showMessage
+    }
+
+    private fun showMusicPermissionOption() {
         val permission = preferenceScreen.findPreference<Preference>("music_permission_option")
         var showPermission = false
 

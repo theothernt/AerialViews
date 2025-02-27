@@ -48,8 +48,18 @@
             app:key="music_permission_option"
             app:isPreferenceVisible="false">
                 <Preference
-                    app:title="@string/playlist_music_permission_title"
-                    app:summary="@string/playlist_music_permission_summary"
+                    app:title="@string/dpad_music_permission_title"
+                    app:summary="@string/dpad_music_permission_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysNowPlayingFragment"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            app:title="@string/category_startup"
+            app:key="screensaver_on_launch_option"
+            app:isPreferenceVisible="false">
+                <Preference
+                    app:title="@string/dpad_screensaver_on_launch_title"
+                    app:summary="@string/dpad_screensaver_on_launch_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
         </PreferenceCategory>
 </PreferenceScreen>
