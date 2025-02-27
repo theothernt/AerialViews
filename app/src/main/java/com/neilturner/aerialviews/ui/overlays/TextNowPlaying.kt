@@ -32,6 +32,7 @@ class TextNowPlaying : AppCompatTextView {
 
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
+        visibility = GONE
     }
 
     fun updateFormat(format: NowPlayingFormat?) {
