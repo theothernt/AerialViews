@@ -54,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">"Використовуйте ім\'я файлу/папки для опису"</string>
   <string name="appearance_description_videos_manifest_summary">Відеоролики Apple і спільноти - транслюються в потоковому режимі, що зберігаються локально або в загальному мережевому ресурсі.</string>
   <string name="appearance_description_videos_manifest_title">"Показати опис або пам\'ятки"</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">Поява</string>
   <string name="appearance_fade_out_title">Приховання</string>
   <string name="appearance_gradient_bottom_summary">Показати градієнт за накладками внизу екрана, щоб їх було легше побачити</string>
@@ -83,6 +85,8 @@
   <string name="appearance_reveal_for_title">Тайм-аут відображення накладення</string>
   <string name="appearance_scaling_summary">Змінити параметри масштабування та обрізання для відео та фотографій</string>
   <string name="appearance_scaling_title">Масштабування</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
   <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
   <string name="appearance_slot1_title">Нижній слот</string>
@@ -193,6 +197,10 @@
   <string name="dpad_button_press_title">Натискання хрестовини або кнопки</string>
   <string name="dpad_button_right_title">Напрямок вправо</string>
   <string name="dpad_button_up_title">Напрямок вгору</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">Відображати додаткову інформацію про відтворення в журналах. Корисно для усунення несправностей.</string>
   <string name="enable_playback_logging_title">Увімкнути ведення журналу відтворення</string>
   <string name="immich_media_api_key_summary">Введіть свій ключ API Immich</string>
@@ -282,8 +290,6 @@
 (наприклад, 30-секундне відео з обмеженням у 2 хвилини буде відтворюватися 4 рази)</string>
   <string name="playlist_loop_short_videos_title">Короткі відео</string>
   <string name="playlist_max_video_length_title">Обмежити довжину відео</string>
-  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
-  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Вимкнути звук у всіх відео</string>
   <string name="playlist_mute_videos_title">Без звуку</string>
   <string name="playlist_playback_speed_changed">Швидкість відтворення змінено на: %1$s</string>

@@ -67,18 +67,20 @@
     <item>Diminuer la vitesse de lecture de la vidéo</item>
     <item>Afficher les recouvrements (s\'ils sont cachés)</item>
     <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
-    <item>Show overlays, if hidden</item>
+    <item>Exit to settings screen</item>
+    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
     <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
-    <item>EXIT</item>
     <item>SKIP_NEXT</item>
     <item>SKIP_PREVIOUS</item>
-    <item>SPEED_INCREASE</item>
-    <item>SPEED_DECREASE</item>
     <item>MUSIC_NEXT</item>
     <item>MUSIC_PREVIOUS</item>
+    <item>SPEED_INCREASE</item>
+    <item>SPEED_DECREASE</item>
+    <item>EXIT</item>
+    <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
   </string-array>

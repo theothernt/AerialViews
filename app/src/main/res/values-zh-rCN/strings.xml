@@ -54,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">使用文件名/文件夹进行描述</string>
   <string name="appearance_description_videos_manifest_summary">苹果和社区视频 - 流媒体、本地存储或网络共享</string>
   <string name="appearance_description_videos_manifest_title">显示说明或兴趣点</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">淡入</string>
   <string name="appearance_fade_out_title">淡出</string>
   <string name="appearance_gradient_bottom_summary">在屏幕底部的叠加层后面显示渐变，使叠加层更容易看清</string>
@@ -83,6 +85,8 @@
   <string name="appearance_reveal_for_title">叠加显示超时</string>
   <string name="appearance_scaling_summary">更改视频和照片的缩放和裁剪选项</string>
   <string name="appearance_scaling_title">缩放</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">无论系统语言设置如何，始终显示西方数字</string>
   <string name="appearance_show_force_latin_digits_title">强制使用拉丁数字</string>
   <string name="appearance_slot1_title">较低插槽</string>
@@ -193,6 +197,10 @@
   <string name="dpad_button_press_title">D-pad 或按键</string>
   <string name="dpad_button_right_title">正确方向</string>
   <string name="dpad_button_up_title">向上</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">在日志中显示额外的播放信息。有助于排除故障。</string>
   <string name="enable_playback_logging_title">启用回放记录</string>
   <string name="immich_media_api_key_summary">输入您的 Immich API 密钥</string>
@@ -282,8 +290,6 @@
 (例如，一个 30 秒的视频，限制时间为 2 分钟，将循环播放 4 次）</string>
   <string name="playlist_loop_short_videos_title">短视频</string>
   <string name="playlist_max_video_length_title">限制视频长度</string>
-  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
-  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">将所有视频静音</string>
   <string name="playlist_mute_videos_title">静音播放视频</string>
   <string name="playlist_playback_speed_changed">播放速度改为：%1$s</string>

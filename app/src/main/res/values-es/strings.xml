@@ -54,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">Utilice el nombre de archivo/carpeta para la descripción</string>
   <string name="appearance_description_videos_manifest_summary">Vídeos de Apple y de la comunidad, ya sea transmitidos, almacenados localmente o compartidos en red</string>
   <string name="appearance_description_videos_manifest_title">Mostrar descripción o puntos de interés</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">Fundido de entrada</string>
   <string name="appearance_fade_out_title">Fundido de salida</string>
   <string name="appearance_gradient_bottom_summary">Muestre un gradiente detrás de las superposiciones en la parte inferior de la pantalla para que sean más fáciles de ver.</string>
@@ -83,6 +85,8 @@
   <string name="appearance_reveal_for_title">Tiempo de espera de la superposición</string>
   <string name="appearance_scaling_summary">Cambia las opciones de escala y recorte de vídeos y fotos</string>
   <string name="appearance_scaling_title">Escalado</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">Mostrar siempre dígitos occidentales independientemente de la configuración regional del sistema</string>
   <string name="appearance_show_force_latin_digits_title">Forzar dígitos latinos</string>
   <string name="appearance_slot1_title">Espacio inferior</string>
@@ -193,6 +197,10 @@
   <string name="dpad_button_press_title">Pad direccional o pulsar el botón</string>
   <string name="dpad_button_right_title">Dirección hacia derecha</string>
   <string name="dpad_button_up_title">Dirección hacia arriba</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">Muestra información de reproducción adicional en los registros. Útil para solucionar problemas.</string>
   <string name="enable_playback_logging_title">Habilitar el registro de reproducción</string>
   <string name="immich_media_api_key_summary">Introduzca su clave API de Immich</string>
@@ -282,8 +290,6 @@
 (por ejemplo, un vídeo de 30 segundos con un límite de 2 minutos se reproducirá 4 veces)</string>
   <string name="playlist_loop_short_videos_title">Videos cortos</string>
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
-  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
-  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
   <string name="playlist_playback_speed_changed">La velocidad de reproducción cambió a: %1$s</string>

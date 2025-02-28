@@ -54,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">Dateinamen / Ordner als Beschreibung nutzen</string>
   <string name="appearance_description_videos_manifest_summary">Apple- und Community-Videos – entweder gestreamt, lokal gespeichert oder auf einer Netzwerkfreigabe</string>
   <string name="appearance_description_videos_manifest_title">Zeige Beschreibung oder Sehenswürdigkeiten</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">Einblenden</string>
   <string name="appearance_fade_out_title">Ausblenden</string>
   <string name="appearance_gradient_bottom_summary">Zeige einen Farbverlauf hinter Overlays am unteren Bildschirmrand an, damit diese leichter zu erkennen sind</string>
@@ -83,6 +85,8 @@
   <string name="appearance_reveal_for_title">Timeout für die Overlay-Enthüllung</string>
   <string name="appearance_scaling_summary">Skalierungs- und Zuschneideoptionen für Fotos und Videos ändern</string>
   <string name="appearance_scaling_title">Skalierung</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">Eingestellte Systemsprache ignorieren und immer Westliche Ziffern verwenden</string>
   <string name="appearance_show_force_latin_digits_title">Lateinische Ziffern erzwingen</string>
   <string name="appearance_slot1_title">Unterer Slot</string>
@@ -193,6 +197,10 @@
   <string name="dpad_button_press_title">D-Pad oder Tastendruck</string>
   <string name="dpad_button_right_title">Rechts-Taste</string>
   <string name="dpad_button_up_title">Hoch-Taste</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">Zeige zusätzliche Wiedergabeinformationen in den Protokollen an. Nützlich für die Fehlersuche.</string>
   <string name="enable_playback_logging_title">Wiedergabeprotokollierung aktivieren</string>
   <string name="immich_media_api_key_summary">Gib deinen API-Schlüssel für Immich ein</string>
@@ -281,8 +289,6 @@
   <string name="playlist_loop_short_videos_summary">Kurze Videos werden in einer Schleife abgespielt, wenn ein Zeitlimit festgelegt wird (z. B. wird ein 30-Sekunden-Video mit einem Limit von 2 Minuten 4 Mal wiederholt)</string>
   <string name="playlist_loop_short_videos_title">Kurze Videos</string>
   <string name="playlist_max_video_length_title">Videolänge begrenzen</string>
-  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
-  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Videos ohne Ton wiedergegeben</string>
   <string name="playlist_mute_videos_title">Stummschaltung der Videos</string>
   <string name="playlist_playback_speed_changed">Wiedergabegeschwindigkeit geändert in: %1$s</string>

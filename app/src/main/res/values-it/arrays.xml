@@ -67,18 +67,20 @@
     <item>Riduci la velocità di riproduzione video</item>
     <item>Mostra overlay (se nascosti)</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
-    <item>Show overlays, if hidden</item>
+    <item>Exit to settings screen</item>
+    <item>Imposta lo schermo nero, rimuovi video e overlay</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
-    <item>EXIT</item>
     <item>SKIP_NEXT</item>
     <item>SKIP_PREVIOUS</item>
-    <item>SPEED_INCREASE</item>
-    <item>SPEED_DECREASE</item>
     <item>MUSIC_NEXT</item>
     <item>MUSIC_PREVIOUS</item>
+    <item>SPEED_INCREASE</item>
+    <item>SPEED_DECREASE</item>
+    <item>EXIT</item>
+    <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
   </string-array>
