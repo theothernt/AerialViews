@@ -67,6 +67,8 @@
     <item>降低视频播放速度</item>
     <item>显示叠加（如果隐藏）</item>
     <item>黑屏、淡出媒体和叠加内容</item>
+    <item>Show overlays, if hidden</item>
+    <item>黑屏、淡出媒体和叠加内容</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -75,6 +77,8 @@
     <item>SKIP_PREVIOUS</item>
     <item>SPEED_INCREASE</item>
     <item>SPEED_DECREASE</item>
+    <item>MUSIC_NEXT</item>
+    <item>MUSIC_PREVIOUS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
   </string-array>
@@ -278,6 +282,7 @@
     <item>random</item>
   </string-array>
   <string name="media_type_default" translatable="false">VIDEOS</string>
+  <string name="media_type_default2" translatable="false">VIDEOS_PHOTOS</string>
   <string-array name="media_type_entries">
     <item>Videos only</item>
     <item>Images only</item>

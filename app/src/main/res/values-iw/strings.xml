@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">תאריך בנייה</string>
   <string name="about_version_title">גירסה</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">צא משומר המסך בעת הקשה על המסך</string>
   <string name="advanced_close_on_screen_tap_title">סגור בהקשת מסך</string>
   <string name="advanced_enable_tunneling_summary">השתמש בהאצת חומרה, חשוב יותר עבור 4K/HDR</string>
@@ -111,6 +113,7 @@
   <string name="capabilities_android">אנדרואיד: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">סיכום Codec</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">מפענחי וידאו</string>
   <string name="capabilities_device_title">מכשיר</string>
   <string name="capabilities_display_title">טלוויזיה/תצוגה</string>
@@ -121,7 +124,8 @@
   <string name="capabilities_model">דגם: %1$s</string>
   <string name="capabilities_no">לא</string>
   <string name="capabilities_not_found">לא נמצא</string>
-  <string name="capabilities_resolution_title">רזולוציה</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">תומך בדולבי וויז׳ן: %1$s</string>
   <string name="capabilities_supports_hdr10">תומך ב-HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">רזולוציית ממשק משתמש: %1$s</string>
@@ -162,6 +166,7 @@
   <string name="category_photos">תמונות</string>
   <string name="category_playlist">רשימת השמעה</string>
   <string name="category_progress_bar">סרגל התקדמות</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">מרוחק</string>
   <string name="category_samba_options">אפשרויות Samba/SMB</string>
   <string name="category_scaling">שינוי גודל</string>
@@ -277,6 +282,8 @@
  (לדוגמה, סרטון של 30 שניות עם הגבלה של 2 דקות יעבור 4 פעמים בלולאה)</string>
   <string name="playlist_loop_short_videos_title">סרטונים קצרים</string>
   <string name="playlist_max_video_length_title">הגבל את אורך הסרטון</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">השתק את הצליל של כל הסרטונים</string>
   <string name="playlist_mute_videos_title">השתקת סרטונים</string>
   <string name="playlist_playback_speed_changed">מהירות ההשמעה השתנתה ל: %1$s</string>

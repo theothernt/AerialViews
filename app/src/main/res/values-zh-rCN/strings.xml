@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">构建日期</string>
   <string name="about_version_title">版本号</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">点击屏幕时退出屏幕保护程序</string>
   <string name="advanced_close_on_screen_tap_title">点击屏幕关闭</string>
   <string name="advanced_enable_tunneling_summary">使用硬件加速，对 4K/HDR 更为重要</string>
@@ -111,6 +113,7 @@
   <string name="capabilities_android">Android 系统版本： %1$s</string>
   <string name="capabilities_avc">AVC： %1$s</string>
   <string name="capabilities_codecs_title">编解码器概要</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">视频解码器</string>
   <string name="capabilities_device_title">设备</string>
   <string name="capabilities_display_title">电视/显示器</string>
@@ -121,7 +124,8 @@
   <string name="capabilities_model">型号：%1$s</string>
   <string name="capabilities_no">否</string>
   <string name="capabilities_not_found">未找到</string>
-  <string name="capabilities_resolution_title">分辨率</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">支持杜比视界： %1$s</string>
   <string name="capabilities_supports_hdr10">支持 HDR10： %1$s</string>
   <string name="capabilities_ui_resolution">UI 分辨率： %1$s</string>
@@ -162,6 +166,7 @@
   <string name="category_photos">照片</string>
   <string name="category_playlist">播放列表</string>
   <string name="category_progress_bar">进度条</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">互联网</string>
   <string name="category_samba_options">Samba/SMB 选项</string>
   <string name="category_scaling">缩放</string>
@@ -277,6 +282,8 @@
 (例如，一个 30 秒的视频，限制时间为 2 分钟，将循环播放 4 次）</string>
   <string name="playlist_loop_short_videos_title">短视频</string>
   <string name="playlist_max_video_length_title">限制视频长度</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">将所有视频静音</string>
   <string name="playlist_mute_videos_title">静音播放视频</string>
   <string name="playlist_playback_speed_changed">播放速度改为：%1$s</string>

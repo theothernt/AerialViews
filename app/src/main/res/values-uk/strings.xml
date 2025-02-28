@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Дата збірки</string>
   <string name="about_version_title">Версія</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">Вийти із заставки при натисканні на екран</string>
   <string name="advanced_close_on_screen_tap_title">Закрити після натискання на екран</string>
   <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
@@ -111,6 +113,7 @@
   <string name="capabilities_android">Android: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">Кодеки</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">Відео декодери</string>
   <string name="capabilities_device_title">Пристрій</string>
   <string name="capabilities_display_title">ТВ/Дисплей</string>
@@ -121,7 +124,8 @@
   <string name="capabilities_model">Модель: %1$s</string>
   <string name="capabilities_no">Ні</string>
   <string name="capabilities_not_found">Не знайдено</string>
-  <string name="capabilities_resolution_title">Роздільна здатність екрану</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">Підтримка Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Підтримка HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Роздільна здатність інтерфейсу: %1$s</string>
@@ -162,6 +166,7 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогрес-бар</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">Потокові відео</string>
   <string name="category_samba_options">Samba/SMB налаштування</string>
   <string name="category_scaling">Масштабування</string>
@@ -277,6 +282,8 @@
 (наприклад, 30-секундне відео з обмеженням у 2 хвилини буде відтворюватися 4 рази)</string>
   <string name="playlist_loop_short_videos_title">Короткі відео</string>
   <string name="playlist_max_video_length_title">Обмежити довжину відео</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Вимкнути звук у всіх відео</string>
   <string name="playlist_mute_videos_title">Без звуку</string>
   <string name="playlist_playback_speed_changed">Швидкість відтворення змінено на: %1$s</string>

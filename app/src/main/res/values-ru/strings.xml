@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Дата сборки</string>
   <string name="about_version_title">Версия</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">Выйти из заставки при нажатии на экран</string>
   <string name="advanced_close_on_screen_tap_title">Закрыть по нажатию на экран</string>
   <string name="advanced_enable_tunneling_summary">Используйте аппаратное ускорение, более важно для 4K/HDR</string>
@@ -111,6 +113,7 @@
   <string name="capabilities_android">Android: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">Кодеки</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">Видео декодеры</string>
   <string name="capabilities_device_title">Устройство</string>
   <string name="capabilities_display_title">ТВ/Дисплей</string>
@@ -121,7 +124,8 @@
   <string name="capabilities_model">Модель: %1$s</string>
   <string name="capabilities_no">Нет</string>
   <string name="capabilities_not_found">Не найдено</string>
-  <string name="capabilities_resolution_title">Разрешение</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">Поддержка Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Поддержка HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Разрешение пользовательского интерфейса: %1$s</string>
@@ -162,6 +166,7 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогресс-бар</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">Потоковые видео</string>
   <string name="category_samba_options">Параметры Samba/SMB</string>
   <string name="category_scaling">Масштабирование</string>
@@ -277,6 +282,8 @@
 (например, 30-секундное видео с ограничением в 2 минуты будет воспроизводиться 4 раза)</string>
   <string name="playlist_loop_short_videos_title">Короткие видео</string>
   <string name="playlist_max_video_length_title">Ограничить длину видео</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Отключить звук во всех видео</string>
   <string name="playlist_mute_videos_title">Без звука</string>
   <string name="playlist_playback_speed_changed">Скорость воспроизведения изменена на: %1$s</string>

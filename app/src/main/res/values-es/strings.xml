@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Fecha de compilación</string>
   <string name="about_version_title">Versión</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">Salir del salvapantallas al tocar la pantalla</string>
   <string name="advanced_close_on_screen_tap_title">Cerrar al tocar la pantalla</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
@@ -111,6 +113,7 @@
   <string name="capabilities_android">Android: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">Resumen de Códecs</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">Decodificadores de vídeo</string>
   <string name="capabilities_device_title">Dispositivo</string>
   <string name="capabilities_display_title">TV/Pantalla</string>
@@ -121,7 +124,8 @@
   <string name="capabilities_model">Modelo: %1$s</string>
   <string name="capabilities_no">No</string>
   <string name="capabilities_not_found">No se encuentra</string>
-  <string name="capabilities_resolution_title">Resolución</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">Soporta Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Soporta HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Resolución de interfaz: %1$s</string>
@@ -162,6 +166,7 @@
   <string name="category_photos">Fotos</string>
   <string name="category_playlist">Lista de reproducción</string>
   <string name="category_progress_bar">Barra de progreso</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">Remoto</string>
   <string name="category_samba_options">Opciones de Samba/SMB</string>
   <string name="category_scaling">Escalado</string>
@@ -277,6 +282,8 @@
 (por ejemplo, un vídeo de 30 segundos con un límite de 2 minutos se reproducirá 4 veces)</string>
   <string name="playlist_loop_short_videos_title">Videos cortos</string>
   <string name="playlist_max_video_length_title">Limitar la duración del vídeo</string>
+  <string name="playlist_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="playlist_music_permission_title">Music control permission</string>
   <string name="playlist_mute_videos_summary">Silenciar el sonido de todos los vídeos</string>
   <string name="playlist_mute_videos_title">Silenciar vídeos</string>
   <string name="playlist_playback_speed_changed">La velocidad de reproducción cambió a: %1$s</string>
