@@ -108,7 +108,7 @@ class TestActivity : AppCompatActivity() {
         var isSetup = false
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
-                it.key.endsWith("_press") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
                 it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
             ) {
                 isSetup = true

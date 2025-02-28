@@ -82,7 +82,7 @@ object InputHelper {
             }
 
             KeyEvent.KEYCODE_BACK -> {
-                exit(true)
+                action = ButtonType.EXIT
             }
 
             KeyEvent.KEYCODE_DPAD_CENTER -> {
@@ -138,7 +138,7 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> exit(true)
+            else -> return false
         }
 
         if (action == null) {
