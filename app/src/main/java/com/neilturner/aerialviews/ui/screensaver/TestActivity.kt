@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
+import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
@@ -84,6 +85,12 @@ class TestActivity : AppCompatActivity() {
     }
 
     private fun finishWithResult(exitApp: Boolean = false) {
+        Timber.i(
+            "isExitToSettingSet: ${isExitToSettingSet()}, " +
+                    "exitApp: $exitApp, " +
+                    "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
+
         if (GeneralPrefs.startScreensaverOnLaunch &&
             exitApp &&
             isExitToSettingSet()
