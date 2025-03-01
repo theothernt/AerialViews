@@ -23,7 +23,7 @@ class OverlayHelper(
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
-    //inline fun <reified T : View> isOverlayEnabled(): Boolean = findOverlay<T>().isNotEmpty()
+    // inline fun <reified T : View> isOverlayEnabled(): Boolean = findOverlay<T>().isNotEmpty()
 
     // Assign IDs/Overlays to correct Flow - or alternate
     fun assignOverlaysAndIds(

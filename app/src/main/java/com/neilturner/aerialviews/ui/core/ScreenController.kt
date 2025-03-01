@@ -413,12 +413,18 @@ class ScreenController(
         videoPlayer.decreaseSpeed()
     }
 
-    fun seekVideo(backward: Boolean = false) {
-        if (backward) {
-            videoPlayer.seekBackward()
-        } else {
-            videoPlayer.seekForward()
+    fun seekForward() {
+        if (blackOutMode) {
+            return
         }
+        videoPlayer.seekForward()
+    }
+
+    fun seekBackward() {
+        if (blackOutMode) {
+            return
+        }
+        videoPlayer.seekBackward()
     }
     // endregion
 

@@ -87,8 +87,8 @@ class TestActivity : AppCompatActivity() {
     private fun finishWithResult(exitApp: Boolean = false) {
         Timber.i(
             "isExitToSettingSet: ${isExitToSettingSet()}, " +
-                    "exitApp: $exitApp, " +
-                    "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+                "exitApp: $exitApp, " +
+                "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
         if (GeneralPrefs.startScreensaverOnLaunch &&
