@@ -75,6 +75,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Startup + Shutdown
     var showLoadingText by booleanPref(true, "startup_show_loading")
+    var startScreensaverOnLaunch by booleanPref(false, "startup_screensaver_on_launch")
     var loadingTextSize by stringPref("18", "startup_size")
     var loadingTextWeight by stringPref("300", "startup_weight")
 

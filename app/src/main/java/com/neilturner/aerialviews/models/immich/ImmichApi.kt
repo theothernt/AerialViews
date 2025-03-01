@@ -10,8 +10,8 @@ data class ExifInfo(
 
 data class Asset(
     val id: String = "",
-    val type: String? = null,
-    val originalPath: String? = null,
+    val type: String = "",
+    val originalPath: String = "",
     val exifInfo: ExifInfo? = null,
 )
 
@@ -21,9 +21,9 @@ data class Album(
     @SerializedName("albumName")
     val name: String = "",
     @SerializedName("description")
-    val description: String? = null,
+    val description: String = "",
     @SerializedName("shared")
-    val type: String? = null,
+    val type: String = "",
     @SerializedName("assets")
     val assets: List<Asset> = emptyList(),
     @SerializedName("assetCount")
@@ -34,5 +34,6 @@ data class ErrorResponse(
     val message: String = "",
     val error: String = "",
     val statusCode: Int = 0,
-    @SerializedName("correlationId") val correlationId: String = "",
+    @SerializedName("correlationId")
+    val correlationId: String = "",
 )

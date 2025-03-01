@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.models.immich.Album
 import com.neilturner.aerialviews.models.immich.ErrorResponse
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
@@ -41,7 +40,8 @@ class ImmichMediaProvider(
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf<String, Pair<String, Map<Int, String>>>()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -95,34 +95,44 @@ class ImmichMediaProvider(
         immichMedia.assets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val poi = mutableMapOf<Int, String>()
+            val description = asset.exifInfo?.description ?: ""
+            val filename = asset.originalPath
 
-            val description = asset.exifInfo?.description.toString()
-            if (!asset.exifInfo?.country.isNullOrEmpty()) {
-                Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
-                val location =
-                    listOf(
-                        asset.exifInfo.country,
-                        asset.exifInfo.state,
-                        asset.exifInfo.city,
-                    ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
-                poi[poi.size] = location
-            }
-            if (description.isNotEmpty()) {
-                poi[poi.size] = description
+            Timber.i("Description: $description, Filename: $filename")
+
+            // Trying to fix ClassCastException
+            // Not sure what is causing it or exactly where it is
+            try {
+                if (asset.exifInfo?.country != null &&
+                    asset.exifInfo.country.isNotBlank()
+                ) {
+                    Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
+                    val location =
+                        listOf(
+                            asset.exifInfo.country,
+                            asset.exifInfo.state,
+                            asset.exifInfo.city,
+                        ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
+                    poi[poi.size] = location
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error parsing location EXIF data")
             }
 
-            val item = AerialMedia(uri, description, poi)
-            item.source = AerialMediaSource.IMMICH
+            val item =
+                AerialMedia(uri, description, poi).apply {
+                    source = AerialMediaSource.IMMICH
+                }
 
             when {
-                FileHelper.isSupportedVideoType(asset.originalPath.toString()) -> {
+                FileHelper.isSupportedVideoType(filename) -> {
                     item.type = AerialMediaType.VIDEO
                     videos++
                     if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                         media.add(item)
                     }
                 }
-                FileHelper.isSupportedImageType(asset.originalPath.toString()) -> {
+                FileHelper.isSupportedImageType(filename) -> {
                     item.type = AerialMediaType.IMAGE
                     images++
                     if (prefs.mediaType != ProviderMediaType.VIDEOS) {
@@ -226,6 +236,7 @@ class ImmichMediaProvider(
                     try {
                         Gson().fromJson(errorBody, ErrorResponse::class.java).message
                     } catch (e: Exception) {
+                        Timber.e(e, "Error parsing error body: $errorBody")
                         response.message()
                     }
                 Result.failure(Exception("${response.code()} - $errorMessage"))
@@ -251,7 +262,7 @@ class ImmichMediaProvider(
                     .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
-            throw e
+            // throw e
         }
     }
 

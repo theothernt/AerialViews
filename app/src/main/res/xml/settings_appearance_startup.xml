@@ -4,12 +4,25 @@
 
         <PreferenceCategory app:title="@string/category_startup">
                 <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="startup_screensaver_on_launch"
+                    app:title="@string/appearance_screensaver_on_launch_title"
+                    app:summary="@string/appearance_screensaver_on_launch_summary" />
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="startup_screensaver_on_launch"
+                    app:disableDependentsState="false"
+                    app:key="exit_to_settings"
+                    app:title="@string/appearance_exit_to_settings_title"
+                    app:summary="@string/appearance_exit_to_settings_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
+
+                <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="startup_show_loading"
                     app:title="@string/appearance_loading_show_title"
                     app:summary="@string/appearance_loading_show_summary" />
-
-                <!-- Show more info while loading -->
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">

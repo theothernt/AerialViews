@@ -287,6 +287,7 @@
     <item>VIDEOS_PHOTOS</item>
   </string-array>
   <string name="media_type_default" translatable="false">VIDEOS</string>
+  <string name="media_type_default2" translatable="false">VIDEOS_PHOTOS</string>
 
   <!-- Samba Video Options -->
   <string-array name="samba_videos_smb_dialects_entries" translatable="false">
@@ -525,25 +526,31 @@
   <!-- Dpad/button actions -->
   <string-array name="button_action_entries">
     <item>Ignore action</item>
-    <item>Exit screensaver</item>
     <item>Skip to next video/photo</item>
     <item>Skip to previous video/photo</item>
+    <item>Skip to next music track</item>
+    <item>Skip to previous music track</item>
     <item>Increase video playback speed</item>
     <item>Decrease video playback speed</item>
     <item>Seek forwards</item>
     <item>Seek backwards</item>
+    <item>Exit screensaver</item>
+    <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
     <item>Black out screen, fade out media and overlays</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
-    <item>EXIT</item>
     <item>SKIP_NEXT</item>
     <item>SKIP_PREVIOUS</item>
+    <item>MUSIC_NEXT</item>
+    <item>MUSIC_PREVIOUS</item>
     <item>SPEED_INCREASE</item>
     <item>SPEED_DECREASE</item>
     <item>SEEK_FORWARD</item>
     <item>SEEK_BACKWARD</item>
+    <item>EXIT</item>
+    <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
   </string-array>

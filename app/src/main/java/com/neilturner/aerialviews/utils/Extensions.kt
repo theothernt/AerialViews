@@ -82,3 +82,8 @@ fun View.delayOnLifecycle(
             block()
         }
     }
+
+// https://stackoverflow.com/a/59513133/247257
+fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
+
+fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()

@@ -1,8 +1,13 @@
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
+import android.transition.ChangeBounds
+import android.transition.Fade
+import android.transition.TransitionManager
+import android.transition.TransitionSet
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
@@ -27,6 +32,7 @@ class TextNowPlaying : AppCompatTextView {
 
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
+        visibility = GONE
     }
 
     fun updateFormat(format: NowPlayingFormat?) {
@@ -67,11 +73,34 @@ class TextNowPlaying : AppCompatTextView {
             fadeIn()
         }
 
+        animateOverlays()
+
         isUpdating = false
 
         if (shouldUpdate) {
             updateNowPlaying()
         }
+    }
+
+    private fun animateOverlays() {
+        var layout: ConstraintLayout? = parent as ConstraintLayout
+
+        TransitionManager.beginDelayedTransition(
+            layout,
+            TransitionSet().apply {
+                ordering = TransitionSet.ORDERING_TOGETHER
+                addTransition(Fade())
+                addTransition(ChangeBounds())
+                duration = 200
+            },
+        )
+
+        visibility =
+            if (text.isBlank()) {
+                GONE
+            } else {
+                VISIBLE
+            }
     }
 
     private suspend fun fadeOut() {
@@ -92,11 +121,12 @@ class TextNowPlaying : AppCompatTextView {
 
     private fun updateText(): Boolean {
         val updatedText = formatNowPlaying(trackInfo)
-        if (updatedText.isNotBlank()) {
+        return if (updatedText.isNotBlank()) {
             text = updatedText
-            return true
+            true
         } else {
-            return false
+            text = null
+            false
         }
     }
 

@@ -13,7 +13,7 @@ object InputHelper {
     fun handleKeyEvent(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
     ): Boolean {
         var result = false
 
@@ -27,14 +27,14 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            Timber.i("Press")
+            Timber.i("Press Event")
             result = eventToAction(event, controller, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            Timber.i("Long Press")
+            Timber.i("Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
@@ -43,7 +43,7 @@ object InputHelper {
             event.repeatCount.rem(10) == 0 &&
             longPressEvent
         ) {
-            Timber.i("Another Long Press")
+            Timber.i("Another Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
 
@@ -54,7 +54,7 @@ object InputHelper {
     private fun eventToAction(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
         var action: ButtonType? = null
@@ -79,6 +79,10 @@ object InputHelper {
                 // Should play/pause/rewind keys be passed
                 // to the background app or not
                 return !GeneralPrefs.enableMediaButtonPassthrough
+            }
+
+            KeyEvent.KEYCODE_BACK -> {
+                action = ButtonType.EXIT
             }
 
             KeyEvent.KEYCODE_DPAD_CENTER -> {
@@ -134,7 +138,7 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> exit()
+            else -> return false
         }
 
         if (action == null) {
@@ -161,7 +165,7 @@ object InputHelper {
     private fun executeAction(
         action: ButtonType?,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
         Timber.i("Action: $action, ButtonType: $type")
@@ -171,33 +175,36 @@ object InputHelper {
             controller?.blackOutMode == true &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
+            Timber.i("Action: toggleBlackOutMode")
             controller.toggleBlackOutMode()
             return true
         }
 
         if (action == ButtonType.IGNORE) {
+            Timber.i("Action: Ignore")
             return false
         }
 
         // If black out mode is active, should ignore all other actions?
 
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
-            when (action) {
-                ButtonType.SEEK_FORWARD -> controller?.seekVideo()
-                ButtonType.SEEK_BACKWARD -> controller?.seekVideo(true)
-                else -> exit()
-            }
+            Timber.i("Action: Ignore")
+            return false
         } else {
+            Timber.i("Action: $action")
             when (action) {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
                 ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
+                ButtonType.MUSIC_NEXT -> controller?.nextTrack()
+                ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
                 ButtonType.SEEK_FORWARD -> controller?.seekVideo()
                 ButtonType.SEEK_BACKWARD -> controller?.seekVideo(true)
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-                else -> exit()
+                ButtonType.EXIT_TO_SETTINGS -> exit(false)
+                else -> exit(true)
             }
         }
         return true

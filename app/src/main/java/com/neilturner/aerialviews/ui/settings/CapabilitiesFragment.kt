@@ -1,20 +1,26 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.services.CodecType
+import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.HDRFormat
+import com.neilturner.aerialviews.services.OutputDescription
 import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.roundTo
 import timber.log.Timber
 
 class CapabilitiesFragment : MenuStateFragment() {
     private lateinit var resources: Resources
+    private lateinit var display: Display
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -22,6 +28,7 @@ class CapabilitiesFragment : MenuStateFragment() {
     ) {
         setPreferencesFromResource(R.xml.settings_capabilities, rootKey)
         resources = context?.resources!!
+        display = getDisplay(activity)
 
         updateCapabilities()
     }
@@ -37,12 +44,22 @@ class CapabilitiesFragment : MenuStateFragment() {
         val resolution = findPreference<Preference>("capabilities_resolution")
         val codecs = findPreference<Preference>("capabilities_codecs")
         val decoders = findPreference<Preference>("capabilities_decoders")
+        val resolutions = findPreference<Preference>("capabilities_resolutions")
+        val refreshRates = findPreference<Preference>("capabilities_refresh_rates")
 
         device?.summary = buildDeviceSummary()
         display?.summary = buildDisplaySummary()
         codecs?.summary = buildCodecSummary()
         decoders?.summary = buildDecoderSummary()
         resolution?.summary = buildResolutionSummary()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            resolutions?.summary = buildResolutionsSummary()
+            refreshRates?.summary = buildRefreshRatesSummary()
+
+            resolutions?.isVisible = true
+            refreshRates?.isVisible = true
+        }
     }
 
     private fun buildDeviceSummary(): String {
@@ -57,7 +74,6 @@ class CapabilitiesFragment : MenuStateFragment() {
         var supportsHDR10 = resources.getString(R.string.capabilities_no)
         var supportsDolbyVision = resources.getString(R.string.capabilities_no)
 
-        val display = getDisplay(activity)
         if (display.supportsHDR && display.hdrFormats.isNotEmpty()) {
             if (display.hdrFormats.contains(HDRFormat.DOLBY_VISION)) {
                 supportsDolbyVision = resources.getString(R.string.capabilities_yes)
@@ -73,12 +89,32 @@ class CapabilitiesFragment : MenuStateFragment() {
     }
 
     private fun buildResolutionSummary(): String {
-        val display = getDisplay(activity)
         var summary = String.format(resources.getString(R.string.capabilities_ui_resolution), display.renderOutput)
         if (display.physicalOutput != null) {
             summary += "\n" + String.format(resources.getString(R.string.capabilities_max_video_resolution), display.physicalOutput)
         }
         return summary
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun buildRefreshRatesSummary(): String {
+        val activeMode = display.mode
+        val sortedModes = display.supportedModes.sortedByDescending { it.refreshRate }
+        val filteredModes = mutableListOf<OutputDescription>()
+        for (mode in sortedModes) {
+            if (mode.width == activeMode?.physicalWidth &&
+                mode.height == activeMode.physicalHeight
+            ) {
+                filteredModes.add(mode)
+            }
+        }
+
+        return filteredModes.map { it.refreshRate.roundTo(2).toString() + "Hz" }.distinct().joinToString(", ")
+    }
+
+    private fun buildResolutionsSummary(): String {
+        val sortedModes = display.supportedModes.sortedByDescending { it.height }
+        return sortedModes.map { it.width.toString() + "x" + it.height.toString() }.distinct().joinToString(", ")
     }
 
     private fun buildCodecSummary(): String {

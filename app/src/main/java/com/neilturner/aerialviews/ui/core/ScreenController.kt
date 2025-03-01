@@ -1,9 +1,8 @@
 package com.neilturner.aerialviews.ui.core
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.provider.Settings
+import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -22,16 +21,17 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.NowPlayingServiceAlt
+import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
 import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,12 +44,12 @@ class ScreenController(
     private val context: Context,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources = context.resources!!
 
-    private var nowPlayingService: NowPlayingServiceAlt? = null
+    private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -138,46 +138,28 @@ class ScreenController(
 
         // Gradients
         if (GeneralPrefs.showTopGradient) {
-            overlayViewBinding.gradientTop.visibility = View.VISIBLE
+            val gradientView = overlayViewBinding.gradientTop
+            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.BOTTOM_TOP)
+            gradientView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            overlayViewBinding.gradientBottom.visibility = View.VISIBLE
+            val gradientView = overlayViewBinding.gradientBottom
+            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.TOP_BOTTOM)
+            gradientView.visibility = View.VISIBLE
         }
 
-        // Get duration scale from the global settings.
-        var durationScale =
-            Settings.Global.getFloat(
-                context.contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                0f,
-            )
-
-        // If global duration scale is not 1 (default), try to override it
-        // for the current application.
-        if (durationScale != 1f) {
-            try {
-                ValueAnimator::class.java.getMethod("setDurationScale", Float::class.java).invoke(null, 1f)
-                durationScale = 1f
-            } catch (t: Throwable) {
-                // It means something bad happened, and animations are still
-                // altered by the global settings. You should warn the user and
-                // exit application.
-            }
-        }
-
-        Timber.i("Duration scale: $durationScale")
-
-        coroutineScope.launch {
-            if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
-                PermissionHelper.hasNotificationListenerPermission(context)
-            ) {
-                coroutineScope.launch {
-                    nowPlayingService = NowPlayingServiceAlt(context)
-                }
+        mainScope.launch {
+            // Launch if we have permission
+            // Used for a) Skip music tracks b) music info widget
+            if (PermissionHelper.hasNotificationListenerPermission(context)) {
+                nowPlayingService = NowPlayingService(context)
             }
 
             playlist = MediaService(context).fetchMedia()
+
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
@@ -384,6 +366,7 @@ class ScreenController(
     }
 
     fun stop() {
+        RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
         nowPlayingService?.stop()
@@ -395,7 +378,7 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
-        if (playlist.size == 0) {
+        if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
@@ -406,6 +389,14 @@ class ScreenController(
             blackOutMode = false
             loadItem(playlist.nextItem())
         }
+    }
+
+    fun nextTrack() {
+        nowPlayingService?.nextTrack()
+    }
+
+    fun previousTrack() {
+        nowPlayingService?.previousTrack()
     }
 
     fun increaseSpeed() {

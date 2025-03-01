@@ -57,6 +57,7 @@
   <string name="category_top_row_right">Top Right</string>
   <string name="category_bottom_row_left">Bottom Left</string>
   <string name="category_bottom_row_right">Bottom Right</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_overlay_animations">Overlay animations</string>
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
   <string name="category_clock">Clock</string>
@@ -373,14 +374,20 @@
   <string name="appearance_animations_summary">Configure the animations used for overlays and between videos &amp; photos</string>
 
   <string name="appearance_startup_title">Startup</string>
-  <string name="appearance_startup_summary">Change what you see while the app is loading</string>
+  <string name="appearance_startup_summary">Change various startup options</string>
 
   <!-- Main / Settings / Appearance / Brightness -->
   <string name="appearance_brightness_level_title">Brightness level during media playback</string>
 
   <!-- Main / Settings / Appearance / Startup + Shutdown -->
-  <string name="appearance_loading_show_title">Show loading text</string>
-  <string name="appearance_loading_show_summary">Displays the "Loading…" text while the app is loading</string>
+  <string name="appearance_loading_show_title">Show loading message</string>
+  <string name="appearance_loading_show_summary">Displays a loading message while building the playlist of media</string>
+
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
 
   <string name="appearance_loading_size_title">Size</string>
   <string name="appearance_loading_weight_title">Weight</string>
@@ -437,7 +444,7 @@
 
   <!-- Main / Settings / Appearance / Now Playing -->
   <string name="nowplaying_permission_title">Enable system notification access</string>
-  <string name="nowplaying_permission_summary">Permission is required so that this app can listen for music notifications from the system</string>
+  <string name="nowplaying_permission_summary">Grants permission to skip music tracks and listen for artist/album info</string>
 
   <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
   <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
@@ -522,7 +529,12 @@
   <string name="dpad_button_down_title">Down direction</string>
   <string name="dpad_button_ok_title">OK button</string>
 
-  <!-- Should be dpad -->
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+
   <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
   <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
@@ -535,9 +547,11 @@
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>
   <string name="capabilities_display_title">TV/Display</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_codecs_title">Codec Summary</string>
   <string name="capabilities_decoders_title">Video Decoders</string>
-  <string name="capabilities_resolution_title">Resolution</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
 
   <string name="capabilities_model">Model: %1$s</string>
   <string name="capabilities_android">Android: %1$s</string>
@@ -556,6 +570,9 @@
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
   <!-- Main / Settings / Advanced -->
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+
   <string name="advanced_refresh_rate_switching_title">Auto refresh rate switching</string>
   <string name="advanced_refresh_rate_switching_summary">Change the refresh rate of the display to match the video frame rate</string>
 
