@@ -13,6 +13,7 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.target.ImageViewTarget
 import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
@@ -153,7 +154,7 @@ class ImagePlayerView :
             ImageRequest
                 .Builder(context)
                 .data(uri)
-                .target(null)
+                .target(ImageViewTarget(this))
                 .build()
         imageLoader.execute(request)
     }
@@ -162,7 +163,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(null)
+                .target(ImageViewTarget(this))
 
         try {
             val byteArray = byteArrayFromSambaFile(uri)
@@ -180,7 +181,7 @@ class ImagePlayerView :
         val request =
             ImageRequest
                 .Builder(context)
-                .target(null)
+                .target(ImageViewTarget(this))
 
         try {
             val byteArray = byteArrayFromWebDavFile(uri)
