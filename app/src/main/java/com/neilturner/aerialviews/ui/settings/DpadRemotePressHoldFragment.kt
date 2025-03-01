@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class DpadRemotePressHoldFragment :
@@ -18,12 +19,13 @@ class DpadRemotePressHoldFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_dpadremote_press_hold, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        showMusicPermissionOptionIfNeeded()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", this)
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
     override fun onDestroy() {
@@ -35,23 +37,41 @@ class DpadRemotePressHoldFragment :
         sharedPreferences: SharedPreferences?,
         key: String?,
     ) {
-        showMusicPermissionOptionIfNeeded()
+        showMusicPermissionOption()
+        showStartScreensaverOnLaunchOption()
     }
 
-    private fun showMusicPermissionOptionIfNeeded() {
+    private fun showStartScreensaverOnLaunchOption() {
+        val message = preferenceScreen.findPreference<Preference>("screensaver_on_launch_option")
+        var usingExitToSettingsAction = false
+
+        GeneralPrefs.preferences.all.forEach {
+            if (it.key.startsWith("button_") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
+                it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
+            ) {
+                usingExitToSettingsAction = true
+                return@forEach
+            }
+        }
+
+        message?.isVisible = !usingExitToSettingsAction && GeneralPrefs.startScreensaverOnLaunch
+    }
+
+    private fun showMusicPermissionOption() {
         val permission = preferenceScreen.findPreference<Preference>("music_permission_option")
-        var showPermission = false
+        var usingMusicActions = false
 
         GeneralPrefs.preferences.all.forEach {
             if (it.key.startsWith("button_") &&
                 it.key.endsWith("_hold") &&
                 it.value.toStringOrEmpty().contains("MUSIC_")
             ) {
-                showPermission = true
+                usingMusicActions = true
                 return@forEach
             }
         }
 
-        permission?.isVisible = showPermission
+        permission?.isVisible = usingMusicActions && !PermissionHelper.hasNotificationListenerPermission(requireContext())
     }
 }

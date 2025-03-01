@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">תאריך בנייה</string>
   <string name="about_version_title">גירסה</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">צא משומר המסך בעת הקשה על המסך</string>
   <string name="advanced_close_on_screen_tap_title">סגור בהקשת מסך</string>
   <string name="advanced_enable_tunneling_summary">השתמש בהאצת חומרה, חשוב יותר עבור 4K/HDR</string>
@@ -52,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">השתמש בשם הקובץ/התיקייה עבור התיאור</string>
   <string name="appearance_description_videos_manifest_summary">אפל וסרטוני קהילה - בהזרמה, שמורים מקומית או מהרשת</string>
   <string name="appearance_description_videos_manifest_title">הצג תיאור או נקודות עניין</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">דעיכה פנימה</string>
   <string name="appearance_fade_out_title">דעיכה החוצה</string>
   <string name="appearance_gradient_bottom_summary">הצג מדרון צבעים מאחורי תצוגת העל בתחתית המסך על מנת להקל את תצוגתם</string>
@@ -81,6 +85,8 @@
   <string name="appearance_reveal_for_title">פסק זמן לחשיפת שכבת-על</string>
   <string name="appearance_scaling_summary">שינוי אפשרויות שינוי קנה מידה וחיתוך עבור סרטונים ותמונות</string>
   <string name="appearance_scaling_title">שינוי גודל</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">הצג תמיד ספרות מערביות ללא קשר להגדרות אזור המערכת</string>
   <string name="appearance_show_force_latin_digits_title">כפה ספרות לטיניות</string>
   <string name="appearance_slot1_title">חריץ תחתון</string>
@@ -111,6 +117,7 @@
   <string name="capabilities_android">אנדרואיד: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">סיכום Codec</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">מפענחי וידאו</string>
   <string name="capabilities_device_title">מכשיר</string>
   <string name="capabilities_display_title">טלוויזיה/תצוגה</string>
@@ -121,7 +128,8 @@
   <string name="capabilities_model">דגם: %1$s</string>
   <string name="capabilities_no">לא</string>
   <string name="capabilities_not_found">לא נמצא</string>
-  <string name="capabilities_resolution_title">רזולוציה</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">תומך בדולבי וויז׳ן: %1$s</string>
   <string name="capabilities_supports_hdr10">תומך ב-HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">רזולוציית ממשק משתמש: %1$s</string>
@@ -162,6 +170,7 @@
   <string name="category_photos">תמונות</string>
   <string name="category_playlist">רשימת השמעה</string>
   <string name="category_progress_bar">סרגל התקדמות</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">מרוחק</string>
   <string name="category_samba_options">אפשרויות Samba/SMB</string>
   <string name="category_scaling">שינוי גודל</string>
@@ -188,6 +197,10 @@
   <string name="dpad_button_press_title">D-pad או לחיצה על כפתור</string>
   <string name="dpad_button_right_title">כיוון ישמינה</string>
   <string name="dpad_button_up_title">כיוון למעלה</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">הצג מידע ניגון נוסף בלוג. שימושי למטרת פתרון תקלות.</string>
   <string name="enable_playback_logging_title">הפעל לוג לניגון</string>
   <string name="immich_media_api_key_summary">הזן את מפתח ה-API של Immich</string>

@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">构建日期</string>
   <string name="about_version_title">版本号</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">点击屏幕时退出屏幕保护程序</string>
   <string name="advanced_close_on_screen_tap_title">点击屏幕关闭</string>
   <string name="advanced_enable_tunneling_summary">使用硬件加速，对 4K/HDR 更为重要</string>
@@ -52,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">使用文件名/文件夹进行描述</string>
   <string name="appearance_description_videos_manifest_summary">苹果和社区视频 - 流媒体、本地存储或网络共享</string>
   <string name="appearance_description_videos_manifest_title">显示说明或兴趣点</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">淡入</string>
   <string name="appearance_fade_out_title">淡出</string>
   <string name="appearance_gradient_bottom_summary">在屏幕底部的叠加层后面显示渐变，使叠加层更容易看清</string>
@@ -81,6 +85,8 @@
   <string name="appearance_reveal_for_title">叠加显示超时</string>
   <string name="appearance_scaling_summary">更改视频和照片的缩放和裁剪选项</string>
   <string name="appearance_scaling_title">缩放</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">无论系统语言设置如何，始终显示西方数字</string>
   <string name="appearance_show_force_latin_digits_title">强制使用拉丁数字</string>
   <string name="appearance_slot1_title">较低插槽</string>
@@ -111,6 +117,7 @@
   <string name="capabilities_android">Android 系统版本： %1$s</string>
   <string name="capabilities_avc">AVC： %1$s</string>
   <string name="capabilities_codecs_title">编解码器概要</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">视频解码器</string>
   <string name="capabilities_device_title">设备</string>
   <string name="capabilities_display_title">电视/显示器</string>
@@ -121,7 +128,8 @@
   <string name="capabilities_model">型号：%1$s</string>
   <string name="capabilities_no">否</string>
   <string name="capabilities_not_found">未找到</string>
-  <string name="capabilities_resolution_title">分辨率</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">支持杜比视界： %1$s</string>
   <string name="capabilities_supports_hdr10">支持 HDR10： %1$s</string>
   <string name="capabilities_ui_resolution">UI 分辨率： %1$s</string>
@@ -162,6 +170,7 @@
   <string name="category_photos">照片</string>
   <string name="category_playlist">播放列表</string>
   <string name="category_progress_bar">进度条</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">互联网</string>
   <string name="category_samba_options">Samba/SMB 选项</string>
   <string name="category_scaling">缩放</string>
@@ -188,6 +197,10 @@
   <string name="dpad_button_press_title">D-pad 或按键</string>
   <string name="dpad_button_right_title">正确方向</string>
   <string name="dpad_button_up_title">向上</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">在日志中显示额外的播放信息。有助于排除故障。</string>
   <string name="enable_playback_logging_title">启用回放记录</string>
   <string name="immich_media_api_key_summary">输入您的 Immich API 密钥</string>

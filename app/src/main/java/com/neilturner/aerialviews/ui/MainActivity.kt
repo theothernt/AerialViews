@@ -1,17 +1,35 @@
 package com.neilturner.aerialviews.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import timber.log.Timber
 
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    private val resultLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult(),
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val exitApp = result.data?.getBooleanExtra("exit_app", false)
+                Timber.i("Exit app now? $exitApp")
+                if (exitApp == true) {
+                    finishAndRemoveTask()
+                }
+            }
+        }
+
+    @SuppressLint("BinaryOperationInTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -31,6 +49,25 @@ class MainActivity :
         }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        // Check if app was restarted by user (language change)
+        val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
+
+        // Check if app was started from intent
+        val hasIntentUri = intent.data != null
+
+        if (GeneralPrefs.startScreensaverOnLaunch &&
+            !hasIntentUri &&
+            !fromAppRestart
+        ) {
+            startScreensaver()
+        }
+
+        Timber.i(
+            "fromAppRestart: $fromAppRestart, " +
+                "hasIntentUri: $hasIntentUri, " +
+                "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
     }
 
     override fun onResume() {
@@ -38,10 +75,18 @@ class MainActivity :
         FirebaseHelper.logScreenView("Main", this)
     }
 
-    @SuppressLint("MissingSuperCall")
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putCharSequence("TITLE_TAG", title)
+    }
+
+    private fun startScreensaver() {
+        try {
+            val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
+            resultLauncher.launch(intent)
+        } catch (ex: Exception) {
+            Timber.e(ex)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

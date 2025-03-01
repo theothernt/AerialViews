@@ -15,7 +15,6 @@ abstract class MediaProvider(
 
     abstract suspend fun fetchTest(): String
 
-    // abstract suspend fun fetchMetadata(): List<VideoMetadata>
     abstract suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>>
 
     // type

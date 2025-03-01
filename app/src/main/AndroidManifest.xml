@@ -90,10 +90,6 @@
             </intent-filter>
 
             <meta-data
-                android:name="android.service.dream"
-                android:resource="@xml/aerial_views" />
-
-            <meta-data
                 android:name="google_analytics_default_allow_analytics_storage"
                 android:value="true" />
 

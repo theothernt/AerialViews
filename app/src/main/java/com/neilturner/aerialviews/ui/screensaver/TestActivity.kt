@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -12,6 +13,8 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
+import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
@@ -38,10 +41,7 @@ class TestActivity : AppCompatActivity() {
             screenController.stop()
         }
 
-        finish()
-
-        // Navigate back as we don't support pause/suspend
-        // supportFragmentManager.popBackStack()
+        finishWithResult()
     }
 
     override fun onAttachedToWindow() {
@@ -59,7 +59,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
-            finish()
+            finishWithResult()
             return true
         }
         return super.onTouchEvent(event)
@@ -67,7 +67,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::finish)
+            InputHelper.handleKeyEvent(event, screenController, ::finishWithResult)
         ) {
             return true
         }
@@ -82,5 +82,39 @@ class TestActivity : AppCompatActivity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+    }
+
+    private fun finishWithResult(exitApp: Boolean = false) {
+        Timber.i(
+            "isExitToSettingSet: ${isExitToSettingSet()}, " +
+                    "exitApp: $exitApp, " +
+                    "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
+
+        if (GeneralPrefs.startScreensaverOnLaunch &&
+            exitApp &&
+            isExitToSettingSet()
+        ) {
+            val resultIntent =
+                Intent().apply {
+                    putExtra("exit_app", true)
+                }
+            setResult(RESULT_OK, resultIntent)
+        }
+        finish()
+    }
+
+    private fun isExitToSettingSet(): Boolean {
+        var isSetup = false
+        GeneralPrefs.preferences.all.forEach {
+            if (it.key.startsWith("button_") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
+                it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
+            ) {
+                isSetup = true
+                return@forEach
+            }
+        }
+        return isSetup
     }
 }

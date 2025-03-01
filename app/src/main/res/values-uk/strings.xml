@@ -2,6 +2,8 @@
 <resources>
   <string name="about_date_title">Дата збірки</string>
   <string name="about_version_title">Версія</string>
+  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
+  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_close_on_screen_tap_summary">Вийти із заставки при натисканні на екран</string>
   <string name="advanced_close_on_screen_tap_title">Закрити після натискання на екран</string>
   <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
@@ -52,6 +54,8 @@
   <string name="appearance_description_videos_filename_title">"Використовуйте ім\'я файлу/папки для опису"</string>
   <string name="appearance_description_videos_manifest_summary">Відеоролики Apple і спільноти - транслюються в потоковому режимі, що зберігаються локально або в загальному мережевому ресурсі.</string>
   <string name="appearance_description_videos_manifest_title">"Показати опис або пам\'ятки"</string>
+  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_fade_in_title">Поява</string>
   <string name="appearance_fade_out_title">Приховання</string>
   <string name="appearance_gradient_bottom_summary">Показати градієнт за накладками внизу екрана, щоб їх було легше побачити</string>
@@ -81,6 +85,8 @@
   <string name="appearance_reveal_for_title">Тайм-аут відображення накладення</string>
   <string name="appearance_scaling_summary">Змінити параметри масштабування та обрізання для відео та фотографій</string>
   <string name="appearance_scaling_title">Масштабування</string>
+  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
+  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
   <string name="appearance_show_force_latin_digits_title">Примусово латинські цифри</string>
   <string name="appearance_slot1_title">Нижній слот</string>
@@ -111,6 +117,7 @@
   <string name="capabilities_android">Android: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">Кодеки</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
   <string name="capabilities_decoders_title">Відео декодери</string>
   <string name="capabilities_device_title">Пристрій</string>
   <string name="capabilities_display_title">ТВ/Дисплей</string>
@@ -121,7 +128,8 @@
   <string name="capabilities_model">Модель: %1$s</string>
   <string name="capabilities_no">Ні</string>
   <string name="capabilities_not_found">Не знайдено</string>
-  <string name="capabilities_resolution_title">Роздільна здатність екрану</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
   <string name="capabilities_supports_dolby_vision">Підтримка Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Підтримка HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Роздільна здатність інтерфейсу: %1$s</string>
@@ -162,6 +170,7 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогрес-бар</string>
+  <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_remote">Потокові відео</string>
   <string name="category_samba_options">Samba/SMB налаштування</string>
   <string name="category_scaling">Масштабування</string>
@@ -188,6 +197,10 @@
   <string name="dpad_button_press_title">Натискання хрестовини або кнопки</string>
   <string name="dpad_button_right_title">Напрямок вправо</string>
   <string name="dpad_button_up_title">Напрямок вгору</string>
+  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
+  <string name="dpad_music_permission_title">Music control permission</string>
+  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
+  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="enable_playback_logging_summary">Відображати додаткову інформацію про відтворення в журналах. Корисно для усунення несправностей.</string>
   <string name="enable_playback_logging_title">Увімкнути ведення журналу відтворення</string>
   <string name="immich_media_api_key_summary">Введіть свій ключ API Immich</string>

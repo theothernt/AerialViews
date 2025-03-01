@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import android.os.Build
 import com.neilturner.aerialviews.models.MediaPlaylist
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
@@ -51,8 +52,21 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
-            val media = buildMediaList()
+            var media = buildMediaList()
             Timber.i("Total media items: ${media.size}")
+
+            if (GeneralPrefs.removeDuplicates) {
+                val numVideos = media.size
+                media =
+                    media
+                        .distinctBy {
+                            when (it.source) {
+                                AerialMediaSource.IMMICH -> it.uri.toString()
+                                else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
+                            }
+                        }.toMutableList()
+                Timber.i("Duplicate videos removed: ${numVideos - media.size}")
+            }
 
             val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
             val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)

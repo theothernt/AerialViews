@@ -67,14 +67,20 @@
     <item>Geschwindigkeit der Videowiedergabe reduzieren</item>
     <item>Overlays anzeigen (falls ausgeblendet)</item>
     <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
+    <item>Exit to settings screen</item>
+    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
+    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
-    <item>EXIT</item>
     <item>SKIP_NEXT</item>
     <item>SKIP_PREVIOUS</item>
+    <item>MUSIC_NEXT</item>
+    <item>MUSIC_PREVIOUS</item>
     <item>SPEED_INCREASE</item>
     <item>SPEED_DECREASE</item>
+    <item>EXIT</item>
+    <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
   </string-array>
@@ -277,6 +283,7 @@
     <item>random</item>
   </string-array>
   <string name="media_type_default" translatable="false">VIDEOS</string>
+  <string name="media_type_default2" translatable="false">VIDEOS_PHOTOS</string>
   <string-array name="media_type_entries">
     <item>Nur Videos</item>
     <item>Nur Fotos</item>
