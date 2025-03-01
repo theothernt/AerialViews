@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">Attivare le viste aeree in: Accesso speciale all\'app &gt; Accesso alle notifiche</string>
   <string name="playlist_advanced_video_summary">Limita la lunghezza del video, riproduci in loop video brevi, inizia da una posizione casuale</string>
   <string name="playlist_advanced_video_title">Opzioni avanzate</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Passa la pressione dei pulsanti di riproduzione, pausa, riavvolgimento, ecc. all\'applicazione in background (ad esempio, l\'applicazione musicale) senza uscire dallo screensaver.</string>
-  <string name="playlist_allow_media_button_passthrough_title">Consenti il pass-through dei tasti multimediali</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Passa la pressione dei pulsanti di riproduzione, pausa, riavvolgimento, ecc. all\'applicazione in background (ad esempio, l\'applicazione musicale) senza uscire dallo screensaver.</string>
+  <string name="dpad_allow_media_button_passthrough_title">Consenti il pass-through dei tasti multimediali</string>
   <string name="playlist_allow_playback_speed_change_summary">Modifica la velocità del video premendo il d-pad del telecomando verso l\'alto o verso il basso.</string>
   <string name="playlist_allow_playback_speed_change_title">Consenti di cambiare la velocità durante la riproduzione</string>
   <string name="playlist_allow_video_skipping_summary">Salta un video o un\'immagine premendo a sinistra o a destra sul d-pad del telecomando</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">Velocità slideshow</string>
   <string name="playlist_video_volume_summary">Scegli il livello di volume del video</string>
   <string name="playlist_video_volume_title">Volume video</string>
-  <string name="playlist_wake_on_any_button_press_summary">Se disabilitato, solo il d-pad o il pulsante assegnato termineranno la modalità black out</string>
-  <string name="playlist_wake_on_any_button_press_title">Termina la modalità black out col d-pad o con un pulsante</string>
+  <string name="dpad_wake_on_any_button_press_summary">Se disabilitato, solo il d-pad o il pulsante assegnato termineranno la modalità black out</string>
+  <string name="dpad_wake_on_any_button_press_title">Termina la modalità black out col d-pad o con un pulsante</string>
   <string name="progress_bar_location_title">Luogo</string>
   <string name="progress_bar_opacity_title">Opacità</string>
   <string name="progress_bar_type_title">Mostra in</string>

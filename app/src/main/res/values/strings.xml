@@ -535,14 +535,13 @@
   <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
   <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
 
-  <string name="playlist_allow_media_button_passthrough_title">Allow media button pass-through</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
+  <string name="dpad_allow_media_button_passthrough_title">Allow media button pass-through</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
-  <!-- Should be dpad -->
-  <string name="playlist_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
-  <string name="playlist_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
+  <string name="dpad_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
+  <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
 
-  <string name="dpad_seek_interval_title">Choose an interval for seeking backwards and forwards in a video</string>
+  <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
 
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>

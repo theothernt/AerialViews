@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">Veuillez activer les Vues aériennes dans : Accès aux applications spéciales &gt; Accès aux notifications</string>
   <string name="playlist_advanced_video_summary">Limiter la durée des vidéos, mettre en boucle les vidéos courtes, démarrer à une position aléatoire</string>
   <string name="playlist_advanced_video_title">Options avancées</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Transmet les pressions sur les boutons de lecture, de pause, de retour en arrière, etc. à l\'application d\'arrière-plan (par exemple, l\'application musicale) sans quitter l\'économiseur d\'écran.</string>
-  <string name="playlist_allow_media_button_passthrough_title">Autoriser le passage des boutons de média</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Transmet les pressions sur les boutons de lecture, de pause, de retour en arrière, etc. à l\'application d\'arrière-plan (par exemple, l\'application musicale) sans quitter l\'économiseur d\'écran.</string>
+  <string name="dpad_allow_media_button_passthrough_title">Autoriser le passage des boutons de média</string>
   <string name="playlist_allow_playback_speed_change_summary">Modifiez la vitesse de la vidéo en appuyant sur le haut ou le bas du d-pad de votre télécommande.</string>
   <string name="playlist_allow_playback_speed_change_title">Permettre le changement de vitesse pendant la lecture</string>
   <string name="playlist_allow_video_skipping_summary">Sauter une vidéo avec la télécommande (droite / gauche à D-Pad)</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">Vitesse du diaporama</string>
   <string name="playlist_video_volume_summary">Choisir un niveau de volume vidéo</string>
   <string name="playlist_video_volume_title">Volume de la vidéo</string>
-  <string name="playlist_wake_on_any_button_press_summary">S\'il est désactivé, seule la direction du d-pad ou le bouton assigné au mode noir se réveillera</string>
-  <string name="playlist_wake_on_any_button_press_title">Réveillez-vous du mode \"black out\" en appuyant sur le d-pad ou sur un bouton</string>
+  <string name="dpad_wake_on_any_button_press_summary">S\'il est désactivé, seule la direction du d-pad ou le bouton assigné au mode noir se réveillera</string>
+  <string name="dpad_wake_on_any_button_press_title">Réveillez-vous du mode \"black out\" en appuyant sur le d-pad ou sur un bouton</string>
   <string name="progress_bar_location_title">Localisation</string>
   <string name="progress_bar_opacity_title">Opacité</string>
   <string name="progress_bar_type_title">Afficher sur</string>

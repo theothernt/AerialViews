@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">请在特殊应用程序访问权限 &gt; 通知访问权限</string>
   <string name="playlist_advanced_video_summary">限制视频长度、循环播放短视频、从随机位置开始播放</string>
   <string name="playlist_advanced_video_title">高级选项</string>
-  <string name="playlist_allow_media_button_passthrough_summary">在不退出屏保的情况下，将按下的播放、暂停、倒带等按钮传递给后台程序（如音乐程序</string>
-  <string name="playlist_allow_media_button_passthrough_title">允许媒体按钮直通</string>
+  <string name="dpad_allow_media_button_passthrough_summary">在不退出屏保的情况下，将按下的播放、暂停、倒带等按钮传递给后台程序（如音乐程序</string>
+  <string name="dpad_allow_media_button_passthrough_title">允许媒体按钮直通</string>
   <string name="playlist_allow_playback_speed_change_summary">按遥控器方向键的向上或向下更改视频速度</string>
   <string name="playlist_allow_playback_speed_change_title">允许在播放期间改变速度</string>
   <string name="playlist_allow_video_skipping_summary">按遥控器方向键的向左或向右跳过视频</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_video_volume_summary">选择视频音量大小</string>
   <string name="playlist_video_volume_title">视频音量</string>
-  <string name="playlist_wake_on_any_button_press_summary">如果禁用，则只有指定为黑屏模式的 d-pad 方向或按钮才能唤醒黑屏模式</string>
-  <string name="playlist_wake_on_any_button_press_title">按下任何 d-pad 或按钮即可从黑屏模式唤醒</string>
+  <string name="dpad_wake_on_any_button_press_summary">如果禁用，则只有指定为黑屏模式的 d-pad 方向或按钮才能唤醒黑屏模式</string>
+  <string name="dpad_wake_on_any_button_press_title">按下任何 d-pad 或按钮即可从黑屏模式唤醒</string>
   <string name="progress_bar_location_title">地点</string>
   <string name="progress_bar_opacity_title">不透明度</string>
   <string name="progress_bar_type_title">显示</string>

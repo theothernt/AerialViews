@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">Увімкніть Aerial Views у: Спеціальний доступ &gt; Доступ до сповіщень</string>
   <string name="playlist_advanced_video_summary">Обмежити довжину відео, повторити короткі відео, починати з випадкової позиції</string>
   <string name="playlist_advanced_video_title">Розширені параметри відео</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Передає натискання кнопок відтворення, паузи, перемотування назад тощо у фонову програму (наприклад, музичну програму) без виходу із заставки.</string>
-  <string name="playlist_allow_media_button_passthrough_title">Дозволити наскрізну передачу мультимедійних кнопок</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Передає натискання кнопок відтворення, паузи, перемотування назад тощо у фонову програму (наприклад, музичну програму) без виходу із заставки.</string>
+  <string name="dpad_allow_media_button_passthrough_title">Дозволити наскрізну передачу мультимедійних кнопок</string>
   <string name="playlist_allow_playback_speed_change_summary">Змінюйте швидкість відео, натискаючи вгору або вниз на хрестовині пульта управління</string>
   <string name="playlist_allow_playback_speed_change_title">Дозволити зміну швидкості під час відтворення</string>
   <string name="playlist_allow_video_skipping_summary">Перемикати відео, натисканням вліво або вправо на хрестовині пульта управління</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">Швидкість показу слайдів</string>
   <string name="playlist_video_volume_summary">Виберіть рівень гучності відео</string>
   <string name="playlist_video_volume_title">Гучність відео</string>
-  <string name="playlist_wake_on_any_button_press_summary">Якщо відключено, з режиму затемнення можна вийти тільки за допомогою хрестовини або кнопки, призначеної на це</string>
-  <string name="playlist_wake_on_any_button_press_title">Вихід з режиму затемнення натисканням будь-якої кнопки або хрестовини</string>
+  <string name="dpad_wake_on_any_button_press_summary">Якщо відключено, з режиму затемнення можна вийти тільки за допомогою хрестовини або кнопки, призначеної на це</string>
+  <string name="dpad_wake_on_any_button_press_title">Вихід з режиму затемнення натисканням будь-якої кнопки або хрестовини</string>
   <string name="progress_bar_location_title">Місце розташування</string>
   <string name="progress_bar_opacity_title">Непрозорість</string>
   <string name="progress_bar_type_title">Показати для типу носія</string>
