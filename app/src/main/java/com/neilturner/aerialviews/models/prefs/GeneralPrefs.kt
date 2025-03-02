@@ -122,10 +122,10 @@ object GeneralPrefs : KotprefModel() {
     var playbackSpeed by stringPref("1", "playback_speed")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
 
+    // Playlist - Videos Advanced
     var maxVideoLength by stringPref("0", "playback_max_video_length")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
     var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
-
     var randomStartPosition by booleanPref(false, "random_start_position")
     var randomStartPositionRange by stringPref("50", "random_start_position_range")
 
@@ -148,6 +148,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
+    var seekInterval by stringPref("10", "seek_interval")
 
     // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")

@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">אנא הפעל תצוגות אוויר ב: גישה מיוחדת לאפליקציה &gt; גישת התראות</string>
   <string name="playlist_advanced_video_summary">הגבל את אורך הווידיאו, לולאת סרטונים קצרים, התחל במיקום אקראי</string>
   <string name="playlist_advanced_video_title">אפשרויות מתקדמות</string>
-  <string name="playlist_allow_media_button_passthrough_summary">מעביר לחיצות לחצן של הפעלה, עצירה, החזר אחורה, וכו׳ לאפליקציית הרקע (לדוגמה״ אפליקציית המוסיקה) ללא יציאה משומר המסך</string>
-  <string name="playlist_allow_media_button_passthrough_title">הרשה העברה של לחצני מדיה</string>
+  <string name="dpad_allow_media_button_passthrough_summary">מעביר לחיצות לחצן של הפעלה, עצירה, החזר אחורה, וכו׳ לאפליקציית הרקע (לדוגמה״ אפליקציית המוסיקה) ללא יציאה משומר המסך</string>
+  <string name="dpad_allow_media_button_passthrough_title">הרשה העברה של לחצני מדיה</string>
   <string name="playlist_allow_playback_speed_change_summary">שנה את מהירות הווידאו על ידי לחיצה למעלה או למטה בשלט</string>
   <string name="playlist_allow_playback_speed_change_title">אפשר שינוי מהירות במהלך השמעה</string>
   <string name="playlist_allow_video_skipping_summary">דלג על סרטון או תמונה על ידי לחיצה שמאלה או ימינה בשלט</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">מהירות מצגת</string>
   <string name="playlist_video_volume_summary">בחירת עוצמת קול של וידאו</string>
   <string name="playlist_video_volume_title">עוצמת וידאו</string>
-  <string name="playlist_wake_on_any_button_press_summary">אם מושבת, רק כיוון ה-d-pad או הכפתור שהוקצו למצב שחור יתעורר ממנו</string>
-  <string name="playlist_wake_on_any_button_press_title">התעורר ממצב בלק אאוט עם כל d-pad או לחיצה על לחצן</string>
+  <string name="dpad_wake_on_any_button_press_summary">אם מושבת, רק כיוון ה-d-pad או הכפתור שהוקצו למצב שחור יתעורר ממנו</string>
+  <string name="dpad_wake_on_any_button_press_title">התעורר ממצב בלק אאוט עם כל d-pad או לחיצה על לחצן</string>
   <string name="progress_bar_location_title">מיקום</string>
   <string name="progress_bar_opacity_title">אטימות</string>
   <string name="progress_bar_type_title">הצג עבור סוג מדיה</string>

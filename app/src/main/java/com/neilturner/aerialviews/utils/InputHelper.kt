@@ -55,7 +55,7 @@ object InputHelper {
         event: KeyEvent,
         controller: ScreenController?,
         exit: (shouldExit: Boolean) -> Unit,
-        type: ButtonPressType = ButtonPressType.NORMAL,
+        type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
         var action: ButtonType? = null
 
@@ -89,7 +89,7 @@ object InputHelper {
                 // Only disable OK button if left/right/up/down keys are in use
                 action =
                     if (anyOkButtonActionsEnabled()) {
-                        if (type == ButtonPressType.NORMAL) {
+                        if (type == ButtonPressType.PRESS) {
                             GeneralPrefs.buttonOkPress
                         } else {
                             GeneralPrefs.buttonOkHold
@@ -103,7 +103,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_UP -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonUpPress
                     } else {
                         GeneralPrefs.buttonUpHold
@@ -112,7 +112,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonDownPress
                     } else {
                         GeneralPrefs.buttonDownHold
@@ -121,7 +121,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonLeftPress
                     } else {
                         GeneralPrefs.buttonLeftHold
@@ -130,7 +130,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonRightPress
                     } else {
                         GeneralPrefs.buttonRightHold
@@ -168,6 +168,8 @@ object InputHelper {
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
+        Timber.i("Action: $action, ButtonType: $type")
+
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
             controller?.blackOutMode == true &&
@@ -183,6 +185,8 @@ object InputHelper {
             return false
         }
 
+        // If black out mode is active, should ignore all other actions?
+
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
             Timber.i("Action: Ignore")
             return false
@@ -195,6 +199,8 @@ object InputHelper {
                 ButtonType.MUSIC_NEXT -> controller?.nextTrack()
                 ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+                ButtonType.SEEK_FORWARD -> controller?.seekForward()
+                ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
@@ -206,7 +212,7 @@ object InputHelper {
 }
 
 enum class ButtonPressType {
-    NORMAL,
+    PRESS,
     LONG_PRESS,
     LONG_PRESS_HOLD,
 }

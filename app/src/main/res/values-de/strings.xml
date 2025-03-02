@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">Bitte erlaube Aerial Views in Spezieller App-Zugriff &gt; Benachrichtigungszugriff</string>
   <string name="playlist_advanced_video_summary">Begrenze die Videolänge, wiederhole kurze Videos, starte an einer zufälligen Position</string>
   <string name="playlist_advanced_video_title">Fortgeschrittene Optionen</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Play, Pause, Spulen usw. an die im Hintergrund laufende App weiterleiten, ohne den Bildschirmschoner zu beenden (für Musik)</string>
-  <string name="playlist_allow_media_button_passthrough_title">Durchleitung von Medien-Tasten erlauben</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Play, Pause, Spulen usw. an die im Hintergrund laufende App weiterleiten, ohne den Bildschirmschoner zu beenden (für Musik)</string>
+  <string name="dpad_allow_media_button_passthrough_title">Durchleitung von Medien-Tasten erlauben</string>
   <string name="playlist_allow_playback_speed_change_summary">Ändere die Wiedergabegeschwindigkeit (Hoch / Runter auf dem D-Pad der Fernbedienung)</string>
   <string name="playlist_allow_playback_speed_change_title">Geschwindigkeitsänderung während der Wiedergabe zulassen</string>
   <string name="playlist_allow_video_skipping_summary">Überspringe ein Video oder Foto mit der Fernbedienung (Rechts / Links auf dem D-Pad der Fernbedienung)</string>
@@ -305,8 +305,8 @@
   <string name="playlist_slideshow_speed_title">Geschwindigkeit der Diashow</string>
   <string name="playlist_video_volume_summary">Wähle eine Videolautstärke</string>
   <string name="playlist_video_volume_title">Videolautstärke</string>
-  <string name="playlist_wake_on_any_button_press_summary">Bei Deaktivierung wecken nur D-Pad-Tasten oder die konfigurierte Taste zum Bildschirm Schwärzen den Bildschirm auf</string>
-  <string name="playlist_wake_on_any_button_press_title">Schwarzen Bildschirm mit beliebiger Taste aufwecken</string>
+  <string name="dpad_wake_on_any_button_press_summary">Bei Deaktivierung wecken nur D-Pad-Tasten oder die konfigurierte Taste zum Bildschirm Schwärzen den Bildschirm auf</string>
+  <string name="dpad_wake_on_any_button_press_title">Schwarzen Bildschirm mit beliebiger Taste aufwecken</string>
   <string name="progress_bar_location_title">Position auf dem Bildschirm</string>
   <string name="progress_bar_opacity_title">Deckkraft</string>
   <string name="progress_bar_type_title">Medientyp anzeigen</string>

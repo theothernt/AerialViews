@@ -532,6 +532,8 @@
     <item>Skip to previous music track</item>
     <item>Increase video playback speed</item>
     <item>Decrease video playback speed</item>
+    <item>Seek forwards in a video</item>
+    <item>Seek backwards in a video</item>
     <item>Exit screensaver</item>
     <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
@@ -545,6 +547,8 @@
     <item>MUSIC_PREVIOUS</item>
     <item>SPEED_INCREASE</item>
     <item>SPEED_DECREASE</item>
+    <item>SEEK_FORWARD</item>
+    <item>SEEK_BACKWARD</item>
     <item>EXIT</item>
     <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
@@ -682,4 +686,23 @@
     <item>PHOTOS</item>
   </string-array>
   <string name="progress_bar_type_default" translatable="false">BOTH</string>
+
+  <!-- Seek intervals -->
+  <string-array name="seek_interval_entries">
+    <item>10 seconds</item>
+    <item>20 seconds</item>
+    <item>30 seconds</item>
+    <item>1 minute</item>
+    <item>2 minutes</item>
+    <item>5 minutes</item>
+  </string-array>
+  <string-array name="seek_interval_values" translatable="false">
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>60</item>
+    <item>120</item>
+    <item>300</item>
+  </string-array>
+  <string name="seek_interval_default" translatable="false">10</string>
 </resources>

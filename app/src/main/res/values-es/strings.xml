@@ -277,8 +277,8 @@
   <string name="nowplaying_toast_text">Por favor, habilite Aerial Views en: Acceso especial de aplicaciones &gt; Acceso a notificaciones</string>
   <string name="playlist_advanced_video_summary">Limita la duración del vídeo, reproduce en bucle vídeos cortos, empieza en una posición aleatoria</string>
   <string name="playlist_advanced_video_title">Opciones avanzadas</string>
-  <string name="playlist_allow_media_button_passthrough_summary">Pass-through del botón reproducir, pausa, rebobinar, etc a la aplicación en segundo plano (Por ejemplo: Aplicación de música) sin salir del protector de pantalla</string>
-  <string name="playlist_allow_media_button_passthrough_title">Permitir pass-through del botón multimedia</string>
+  <string name="dpad_allow_media_button_passthrough_summary">Pass-through del botón reproducir, pausa, rebobinar, etc a la aplicación en segundo plano (Por ejemplo: Aplicación de música) sin salir del protector de pantalla</string>
+  <string name="dpad_allow_media_button_passthrough_title">Permitir pass-through del botón multimedia</string>
   <string name="playlist_allow_playback_speed_change_summary">Cambie la velocidad del video presionando hacia arriba o hacia abajo en el pad direccional de su control remoto</string>
   <string name="playlist_allow_playback_speed_change_title">Permitir cambio de velocidad durante la reproducción</string>
   <string name="playlist_allow_video_skipping_summary">Salta un video presionando hacia la izquierda o hacia la derecha en el pad direccional de tu control remoto</string>
@@ -306,8 +306,8 @@
   <string name="playlist_slideshow_speed_title">Velocidad de presentación</string>
   <string name="playlist_video_volume_summary">Elige un nivel de volumen del vídeo</string>
   <string name="playlist_video_volume_title">Volumen de vídeo</string>
-  <string name="playlist_wake_on_any_button_press_summary">Si se desactiva, sólo la dirección del d-pad o el botón asignado al modo de apagado, lo encenderá</string>
-  <string name="playlist_wake_on_any_button_press_title">Despierta del modo apagado con cualquier pulsación del d-pad o de un botón</string>
+  <string name="dpad_wake_on_any_button_press_summary">Si se desactiva, sólo la dirección del d-pad o el botón asignado al modo de apagado, lo encenderá</string>
+  <string name="dpad_wake_on_any_button_press_title">Despierta del modo apagado con cualquier pulsación del d-pad o de un botón</string>
   <string name="progress_bar_location_title">Ubicación</string>
   <string name="progress_bar_opacity_title">Opacidad</string>
   <string name="progress_bar_type_title">Mostrar</string>

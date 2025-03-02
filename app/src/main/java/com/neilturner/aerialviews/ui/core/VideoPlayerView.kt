@@ -41,7 +41,6 @@ class VideoPlayerView
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
-
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private val progressBar =
@@ -90,6 +89,10 @@ class VideoPlayerView
         fun increaseSpeed() = changeSpeed(true)
 
         fun decreaseSpeed() = changeSpeed(false)
+
+        fun seekForward() = seek()
+
+        fun seekBackward() = seek(true)
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener
@@ -184,6 +187,19 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
         // endregion
+
+        private fun seek(backward: Boolean = false) {
+            val interval = GeneralPrefs.seekInterval.toLong() * 1000
+            val position = exoPlayer.currentPosition
+
+            Timber.i("Seeking to $position/$interval (backward: $backward)")
+
+            if (backward) {
+                exoPlayer.seekTo(position - interval)
+            } else {
+                exoPlayer.seekTo(position + interval)
+            }
+        }
 
         private fun changeSpeed(increase: Boolean) {
             if (!canChangePlaybackSpeed) {

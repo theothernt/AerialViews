@@ -9,7 +9,8 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
-class AppearanceStartupFragment : MenuStateFragment(),
+class AppearanceStartupFragment :
+    MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
