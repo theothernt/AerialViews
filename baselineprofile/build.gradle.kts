@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.ManagedVirtualDevice
+
 plugins {
     alias(libs.plugins.android.test)
     alias(libs.plugins.kotlin.android)
@@ -27,19 +29,22 @@ android {
 
     flavorDimensions += listOf("version")
     productFlavors {
-        create("github") { dimension = "version" }
-        create("beta") { dimension = "version" }
         create("googleplay") { dimension = "version" }
-        create("googleplaybeta") { dimension = "version" }
-        create("amazon") { dimension = "version" }
-        create("fdroid") { dimension = "version" }
     }
 
+    testOptions.managedDevices.devices {
+        create<ManagedVirtualDevice>("pixel9Api34") {
+            device = "Pixel 9"
+            apiLevel = 34
+            systemImageSource = "google_apis_playstore"
+        }
+    }
 }
 
 // This is the configuration block for the Baseline Profile plugin.
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
+    managedDevices += "pixel9Api34"
     useConnectedDevices = true
 }
 
