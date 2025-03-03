@@ -5,12 +5,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.services)
-    //alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -26,7 +27,7 @@ android {
         versionName = "1.7.5"
         betaVersion = "-beta4"
 
-        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
@@ -176,20 +177,11 @@ dependencies {
 
     debugImplementation(libs.leakcanary)
 
-    //testImplementation(libs.junit)
-    //androidTestImplementation(libs.androidx.junit)
-    //androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
 
-//    androidTestImplementation(libs.junit)
-//    androidTestImplementation(libs.androidx.test.core)
-//    androidTestImplementation(libs.androidx.test.runner)
-//    androidTestImplementation(libs.androidx.test.espresso.core)
-//    androidTestImplementation(libs.androidx.test.rules)
-//    androidTestImplementation(libs.androidx.test.ext.junit)
-    //androidTestImplementation(libs.kotlinx.coroutines.test)
-    //androidTestImplementation(libs.androidx.compose.ui.test)
+    implementation(libs.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
 }
 
 tasks.withType<Test>().configureEach {

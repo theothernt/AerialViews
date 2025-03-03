@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kotlinter.gradle) apply false
     alias(libs.plugins.gradle.doctor)
 
-    // alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.android.test) apply false
+    alias(libs.plugins.baselineprofile) apply false
 }
 

@@ -36,12 +36,12 @@ coil3 = "3.1.0"
 timber = "5.0.1"
 
 junit-jupiter = "5.12.0"
-# android-junit5 = "1.11.0.0"
-# junit = "4.13.2"
-# androidx-test = "1.6.1"
-# androidx-test-espresso = "3.6.1"
-# androidx-test-ext-junit = "1.2.1"
-# androidx-test-ext-truth = "1.6.0"
+junit = "1.2.1"
+espresso-core = "3.6.1"
+uiautomator = "2.3.0"
+benchmark-macro-junit4 = "1.3.3"
+baselineprofile = "1.3.3"
+profileinstaller = "1.4.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -90,19 +90,16 @@ leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", v
 
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
-# junit = { module = "junit:junit", version.ref = "junit" }
-# androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
-# androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
-# androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
-# androidx-test-ext-truth = { module = "androidx.test.ext:truth", version.ref = "androidx-test-ext-truth" }
-# androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
-# androidx-test-runner = "androidx.test:runner:1.6.2"
+junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
+uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark-macro-junit4" }
+profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [bundles]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
-
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
@@ -123,6 +120,5 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
-
-# android-test = { id = "com.android.test", version.ref = "agp" }
-# android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
+android-test = { id = "com.android.test", version.ref = "agp" }
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
