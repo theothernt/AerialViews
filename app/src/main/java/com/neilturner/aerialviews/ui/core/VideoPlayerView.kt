@@ -293,7 +293,8 @@ class VideoPlayerView
             Timber.i("Video will finish in: ${delay.milliseconds}")
 
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationAlt))
-            postDelayed(almostFinishedRunnable, delay)
+
+            if (!GeneralPrefs.loopUntilSkipped) postDelayed(almostFinishedRunnable, delay)
         }
 
         interface OnVideoPlayerEventListener {

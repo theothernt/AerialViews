@@ -124,6 +124,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Playlist - Videos Advanced
     var maxVideoLength by stringPref("0", "playback_max_video_length")
+    var loopUntilSkipped by booleanPref(false, "loop_until_skipped")
     var loopShortVideos by booleanPref(false, "loop_short_videos")
     var limitLongerVideos by nullableEnumValuePref(LimitLongerVideos.LIMIT, "limit_longer_videos")
     var randomStartPosition by booleanPref(false, "random_start_position")
