@@ -13,6 +13,12 @@
 
                 <CheckBoxPreference
                     app:defaultValue="false"
+                    app:key="loop_until_skipped"
+                    app:summary="@string/playlist_loop_until_skipped_summary"
+                    app:title="@string/playlist_loop_until_skipped_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
                     app:key="loop_short_videos"
                     app:summary="@string/playlist_loop_short_videos_summary"
                     app:title="@string/playlist_loop_short_videos_title" />
