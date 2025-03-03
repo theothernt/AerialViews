@@ -1,27 +1,31 @@
 [versions]
 agp = "8.8.2"
-google-services = "4.4.2"
-firebase-crashlytics-plugin = "3.0.3"
-firebase-perf-plugin = "1.4.2"
-android-junit5 = "1.11.0.0"
-gradle-doctor = "0.9.1"
-kotlinter-gradle = "5.0.1"
-ksp = "2.1.10-1.0.29"
 kotlin = "2.1.10"
+google-services = "4.4.2"
+ksp = "2.1.10-1.0.29"
 coroutines = "1.10.1"
-firebase-analytics = "22.3.0"
-firebase-crashlytics = "19.4.1"
-firebase-perf = "21.0.4"
 core-ktx = "1.15.0"
-leanback = "1.0.0"
-leanback-preference = "1.0.0"
-preference-ktx = "1.2.1"
 activity-ktx = "1.10.1"
 constraintlayout = "2.2.1"
 appcompat = "1.7.0"
-retrofit = "2.11.0"
+
+firebase-crashlytics-plugin = "3.0.3"
+firebase-perf-plugin = "1.4.2"
+firebase-analytics = "22.3.0"
+firebase-crashlytics = "19.4.1"
+firebase-perf = "21.0.4"
+
+gradle-doctor = "0.9.1"
+kotlinter-gradle = "5.0.1"
+leakcanary = "2.14"
+
+leanback = "1.0.0"
+leanback-preference = "1.0.0"
+preference-ktx = "1.2.1"
+
 # moshi = "1.15.1"
 # logging-interceptor = "4.12.0"
+retrofit = "2.11.0"
 gson = "2.12.1"
 media3-exoplayer = "1.5.1"
 flowbus = "1.1"
@@ -30,25 +34,31 @@ smbj = "0.11.5"
 sardine-android = "0.0.2"
 coil3 = "3.1.0"
 timber = "5.0.1"
-leakcanary = "2.14"
+
 junit-jupiter = "5.12.0"
+# android-junit5 = "1.11.0.0"
+# junit = "4.13.2"
+# androidx-test = "1.6.1"
+# androidx-test-espresso = "3.6.1"
+# androidx-test-ext-junit = "1.2.1"
+# androidx-test-ext-truth = "1.6.0"
 
 [libraries]
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebase-perf" }
 
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
-
-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
 preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 
 flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
 flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
@@ -77,26 +87,42 @@ sardine-android = { group = "com.github.nova-video-player", name = "sardine-andr
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+# junit = { module = "junit:junit", version.ref = "junit" }
+# androidx-test-core = { module = "androidx.test:core", version.ref = "androidx-test" }
+# androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso" }
+# androidx-test-ext-junit = { module = "androidx.test.ext:junit", version.ref = "androidx-test-ext-junit" }
+# androidx-test-ext-truth = { module = "androidx.test.ext:truth", version.ref = "androidx-test-ext-truth" }
+# androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-test" }
+# androidx-test-runner = "androidx.test:runner:1.6.2"
 
 [bundles]
-coil = ["coil", "coil-okhttp", "coil-gif"]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
-firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
-flowbus = ["flowbus", "flowbus-android"]
-exoplayer = ["media3-exoplayer", "media3-ui"]
-kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
+firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
+
+exoplayer = ["media3-exoplayer", "media3-ui"]
+flowbus = ["flowbus", "flowbus-android"]
+kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 # retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 retrofit = ["retrofit", "converter-gson"]
+coil = ["coil", "coil-okhttp", "coil-gif"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
-android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }
-kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
+
+gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+
+# android-test = { id = "com.android.test", version.ref = "agp" }
+# android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "android-junit5" }

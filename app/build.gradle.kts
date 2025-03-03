@@ -3,23 +3,14 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    kotlin("android")
-    kotlin("kapt")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlinter.gradle)
-    alias(libs.plugins.android.junit5)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.services)
+    //alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
-}
-
-fun loadProperties(fileName: String): Properties {
-    val properties = Properties()
-    val propertiesFile = rootProject.file("signing/$fileName")
-    if (propertiesFile.exists()) {
-        properties.load(FileInputStream(propertiesFile))
-    }
-    return properties
+    alias(libs.plugins.kotlinter.gradle)
 }
 
 android {
@@ -34,6 +25,8 @@ android {
         versionCode = 38
         versionName = "1.7.5"
         betaVersion = "-beta4"
+
+        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
@@ -52,6 +45,10 @@ android {
     buildFeatures {
         dataBinding = true
         buildConfig = true
+    }
+
+    kapt {
+        useBuildCache = false
     }
 
     lint {
@@ -178,8 +175,21 @@ dependencies {
     implementation(libs.timber)
 
     debugImplementation(libs.leakcanary)
+
+    //testImplementation(libs.junit)
+    //androidTestImplementation(libs.androidx.junit)
+    //androidTestImplementation(libs.androidx.espresso.core)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
+
+//    androidTestImplementation(libs.junit)
+//    androidTestImplementation(libs.androidx.test.core)
+//    androidTestImplementation(libs.androidx.test.runner)
+//    androidTestImplementation(libs.androidx.test.espresso.core)
+//    androidTestImplementation(libs.androidx.test.rules)
+//    androidTestImplementation(libs.androidx.test.ext.junit)
+    //androidTestImplementation(libs.kotlinx.coroutines.test)
+    //androidTestImplementation(libs.androidx.compose.ui.test)
 }
 
 tasks.withType<Test>().configureEach {
@@ -189,4 +199,13 @@ tasks.withType<Test>().configureEach {
         events("started", "skipped", "passed", "failed")
         showStandardStreams = true
     }
+}
+
+fun loadProperties(fileName: String): Properties {
+    val properties = Properties()
+    val propertiesFile = rootProject.file("signing/$fileName")
+    if (propertiesFile.exists()) {
+        properties.load(FileInputStream(propertiesFile))
+    }
+    return properties
 }
