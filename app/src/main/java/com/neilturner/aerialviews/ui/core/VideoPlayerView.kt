@@ -290,11 +290,15 @@ class VideoPlayerView
             Timber.i(
                 "Duration: ${duration.milliseconds} (at 1x), Delay: ${delay.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: $progress",
             )
-            Timber.i("Video will finish in: ${delay.milliseconds}")
 
             if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationAlt))
 
-            if (!GeneralPrefs.loopUntilSkipped) postDelayed(almostFinishedRunnable, delay)
+            if (!GeneralPrefs.loopUntilSkipped) {
+                Timber.i("Video will finish in: ${delay.milliseconds}")
+                postDelayed(almostFinishedRunnable, delay)
+            } else {
+                Timber.i("The video will only finish when skipped manually")
+            }
         }
 
         interface OnVideoPlayerEventListener {
