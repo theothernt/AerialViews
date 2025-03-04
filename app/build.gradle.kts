@@ -67,7 +67,7 @@ android {
 
     kotlin {
         sourceSets.configureEach {
-            languageSettings.languageVersion = "2.0"
+            languageSettings.languageVersion = "2.1"
         }
     }
 

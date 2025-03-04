@@ -29,7 +29,24 @@ android {
 
     flavorDimensions += listOf("version")
     productFlavors {
-        create("googleplay") { dimension = "version" }
+        create("googleplay") {
+            dimension = "version"
+        }
+        create("googleplaybeta") {
+            dimension = "version"
+        }
+        create("amazon") {
+            dimension = "version"
+        }
+        create("beta") {
+            dimension = "version"
+        }
+        create("fdroid") {
+            dimension = "version"
+        }
+        create("github") {
+            dimension = "version"
+        }
     }
 
     testOptions.managedDevices.devices {
