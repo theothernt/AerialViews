@@ -7,6 +7,7 @@ import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
@@ -67,14 +68,25 @@ object VideoPlayerHelper {
         if (prefs.allowFallbackDecoders) {
             rendererFactory.setEnableDecoderFallback(true)
         }
+
         if (prefs.philipsDolbyVisionFix) {
             rendererFactory = CustomRendererFactory(context)
         }
+
+        val loadControl = DefaultLoadControl.Builder()
+            .setBufferDurationsMs(
+                /* minBufferMs = */ 10_000,           // Minimum buffer duration
+                /* maxBufferMs = */ 20_000,           // Maximum buffer duration
+                /* bufferForPlaybackMs = */ 3_000,    // Buffer before initial playback
+                /* bufferForPlaybackAfterRebufferMs = */ 5_000 // Buffer after rebuffering
+            )
+            .build()
 
         val player =
             ExoPlayer
                 .Builder(context)
                 .setTrackSelector(trackSelector)
+                .setLoadControl(loadControl)
                 .setRenderersFactory(rendererFactory)
                 .build()
 
