@@ -73,14 +73,15 @@ object VideoPlayerHelper {
             rendererFactory = CustomRendererFactory(context)
         }
 
-        val loadControl = DefaultLoadControl.Builder()
-            .setBufferDurationsMs(
-                /* minBufferMs = */ 10_000,           // Minimum buffer duration
-                /* maxBufferMs = */ 20_000,           // Maximum buffer duration
-                /* bufferForPlaybackMs = */ 3_000,    // Buffer before initial playback
-                /* bufferForPlaybackAfterRebufferMs = */ 5_000 // Buffer after rebuffering
-            )
-            .build()
+        val loadControl =
+            DefaultLoadControl
+                .Builder()
+                .setBufferDurationsMs(
+                    10_000, // Minimum buffer duration
+                    20_000, // Maximum buffer duration
+                    3_000, // Buffer before initial playback
+                    5_000, // Buffer after rebuffering
+                ).build()
 
         val player =
             ExoPlayer

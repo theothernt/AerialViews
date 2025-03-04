@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
@@ -14,11 +13,6 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
-import com.hierynomus.msdtyp.AccessMask
-import com.hierynomus.mssmb2.SMB2CreateDisposition
-import com.hierynomus.mssmb2.SMB2ShareAccess
-import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -26,28 +20,23 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromSambaFile
+import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromWebDavFile
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import timber.log.Timber
-import java.util.EnumSet
 import kotlin.time.Duration.Companion.milliseconds
 
-class ImagePlayerView :
-    AppCompatImageView {
+class ImagePlayerView : AppCompatImageView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -60,24 +49,49 @@ class ImagePlayerView :
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
+    private var target = ImageViewTarget(this)
+
+    init {
+        val scaleType =
+            try {
+                ScaleType.valueOf(GeneralPrefs.photoScale.toString())
+            } catch (e: Exception) {
+                Timber.e(e)
+                GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
+                ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+            }
+        this.scaleType = scaleType
+    }
+
+    fun release() {
+        removeCallbacks(finishedRunnable)
+        removeCallbacks(errorRunnable)
+        listener = null
+    }
+
+    private val eventLister = object : EventListener() {
+        override fun onSuccess(
+            request: ImageRequest,
+            result: SuccessResult,
+        ) {
+            super.onSuccess(request, result)
+            setupFinishedRunnable()
+        }
+
+        override fun onError(
+            request: ImageRequest,
+            result: ErrorResult,
+        ) {
+            super.onError(request, result)
+            Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+            onPlayerError()
+        }
+    }
+
     private val imageLoader: ImageLoader by lazy {
         ImageLoader
             .Builder(context)
-            .eventListener(
-                object: EventListener() {
-
-                    override fun onSuccess(request: ImageRequest, result: SuccessResult) {
-                        super.onSuccess(request, result)
-                        setupFinishedRunnable()
-                    }
-
-                    override fun onError(request: ImageRequest, result: ErrorResult) {
-                        super.onError(request, result)
-                        Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
-                        onPlayerError()
-                    }
-                }
-            )
+            .eventListener(eventLister)
             .components {
                 OkHttpNetworkFetcherFactory(
                     callFactory = { buildOkHttpClient() },
@@ -116,124 +130,44 @@ class ImagePlayerView :
         }
     }
 
-    init {
-        val scaleType =
-            try {
-                ScaleType.valueOf(GeneralPrefs.photoScale.toString())
-            } catch (e: Exception) {
-                Timber.e(e)
-                GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
-                ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
-            }
-        this.scaleType = scaleType
-    }
-
-    fun release() {
-        removeCallbacks(finishedRunnable)
-        removeCallbacks(errorRunnable)
-        listener = null
-    }
-
     fun setImage(media: AerialMedia) {
-        Timber.i("Image URL: ${media.uri} (${media.source})")
-        when (media.source) {
-            AerialMediaSource.SAMBA -> {
-                coroutineScope.launch { loadSambaImage(media.uri) }
-            }
-            AerialMediaSource.WEBDAV -> {
-                coroutineScope.launch { loadWebDavImage(media.uri) }
-            }
-            else -> {
-                coroutineScope.launch { loadImage(media.uri) }
+        coroutineScope.launch {
+            when (media.source) {
+                AerialMediaSource.SAMBA -> {
+                    val byteArray = byteArrayFromSambaFile(media.uri)
+                    loadImage(byteArray)
+                }
+                AerialMediaSource.WEBDAV -> {
+                    val byteArray = byteArrayFromWebDavFile(media.uri)
+                    loadImage(byteArray)
+                }
+                else -> {
+                    loadImage(media.uri)
+                }
             }
         }
     }
 
-    private suspend fun loadImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .data(uri)
-                .target(ImageViewTarget(this))
-                .build()
-        imageLoader.execute(request)
-    }
-
-    private suspend fun loadSambaImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(ImageViewTarget(this))
-
+    private suspend fun loadImage(data: Any) {
         try {
-            val byteArray = byteArrayFromSambaFile(uri)
-            request.data(byteArray)
+            val request =
+                ImageRequest
+                    .Builder(context)
+                    .data(data)
+                    .target(target)
+                    .build()
+            imageLoader.execute(request)
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception while getting byte array from SMB share: ${ex.message}")
+            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
             listener?.onImageError()
             return
         }
-
-        imageLoader.execute(request.build())
-    }
-
-    private suspend fun loadWebDavImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(ImageViewTarget(this))
-
-        try {
-            val byteArray = byteArrayFromWebDavFile(uri)
-            request.data(byteArray)
-        } catch (ex: Exception) {
-            Timber.e(ex, "Exception while getting byte array from WebDAV resource: ${ex.message}")
-            listener?.onImageError()
-            return
-        }
-
-        imageLoader.execute(request.build())
     }
 
     fun stop() {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
     }
-
-    private suspend fun byteArrayFromWebDavFile(uri: Uri): ByteArray =
-        withContext(Dispatchers.IO) {
-            val client = OkHttpSardine()
-            client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
-            return@withContext client.get(uri.toString()).readBytes()
-        }
-
-    private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray =
-        withContext(Dispatchers.IO) {
-            val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
-            val shareName = shareNameAndPath.first
-            val path = shareNameAndPath.second
-
-            val config = SambaHelper.buildSmbConfig()
-            val smbClient = SMBClient(config)
-            val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
-
-            smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
-                val session = connection?.authenticate(authContext)
-                val share = session?.connectShare(shareName) as DiskShare
-                val shareAccess = hashSetOf<SMB2ShareAccess>()
-                shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-                val file =
-                    share.openFile(
-                        path,
-                        EnumSet.of(AccessMask.GENERIC_READ),
-                        null,
-                        shareAccess,
-                        SMB2CreateDisposition.FILE_OPEN,
-                        null,
-                    )
-                return@withContext file.inputStream.readBytes()
-            }
-        }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
