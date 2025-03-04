@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import com.android.build.api.dsl.ManagedVirtualDevice
 
 plugins {
@@ -50,6 +52,7 @@ android {
     }
 
     testOptions.managedDevices.devices {
+        @Suppress("UnstableApiUsage")
         create<ManagedVirtualDevice>("pixel9Api34") {
             device = "Pixel 9"
             apiLevel = 34

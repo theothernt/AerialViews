@@ -69,24 +69,25 @@ class ImagePlayerView : AppCompatImageView {
         listener = null
     }
 
-    private val eventLister = object : EventListener() {
-        override fun onSuccess(
-            request: ImageRequest,
-            result: SuccessResult,
-        ) {
-            super.onSuccess(request, result)
-            setupFinishedRunnable()
-        }
+    private val eventLister =
+        object : EventListener() {
+            override fun onSuccess(
+                request: ImageRequest,
+                result: SuccessResult,
+            ) {
+                super.onSuccess(request, result)
+                setupFinishedRunnable()
+            }
 
-        override fun onError(
-            request: ImageRequest,
-            result: ErrorResult,
-        ) {
-            super.onError(request, result)
-            Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
-            onPlayerError()
+            override fun onError(
+                request: ImageRequest,
+                result: ErrorResult,
+            ) {
+                super.onError(request, result)
+                Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+                onPlayerError()
+            }
         }
-    }
 
     private val imageLoader: ImageLoader by lazy {
         ImageLoader
