@@ -343,10 +343,12 @@ class ScreenController(
             }.start()
     }
 
-    // region Actions
     fun showOverlays() {
         // Overlay auto hide pref must be enabled
         if (autoHideOverlayDelay < 0) return
+
+        // If blackout mode is on, exit
+        if (blackOutMode) return
 
         // If media fading in/out
         if (!canSkip) return
@@ -426,7 +428,6 @@ class ScreenController(
         }
         videoPlayer.seekBackward()
     }
-    // endregion
 
     private fun handleError() {
         if (loadingView.visibility == View.VISIBLE) {

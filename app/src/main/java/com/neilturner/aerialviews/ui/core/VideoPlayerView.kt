@@ -69,7 +69,6 @@ class VideoPlayerView
             listener = null
         }
 
-        // region Public methods
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
 
@@ -113,9 +112,7 @@ class VideoPlayerView
 
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
-        // endregion
 
-        // region Player Listener
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
@@ -186,7 +183,6 @@ class VideoPlayerView
             super.onPlayerErrorChanged(error)
             error?.let { Timber.e(it) }
         }
-        // endregion
 
         private fun seek(backward: Boolean = false) {
             val interval = GeneralPrefs.seekInterval.toLong() * 1000
