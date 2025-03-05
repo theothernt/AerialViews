@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.services.MusicEvent
 import kotlinx.coroutines.delay
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
+import timber.log.Timber
 
 class TextNowPlaying : AppCompatTextView {
     var type = OverlayType.MUSIC1
@@ -43,6 +44,7 @@ class TextNowPlaying : AppCompatTextView {
         super.onAttachedToWindow()
 
         receiver.subscribe { newTrackInfo: MusicEvent ->
+            Timber.i("Subscribed for music updates...")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
                 if (!isUpdating) {
@@ -96,9 +98,11 @@ class TextNowPlaying : AppCompatTextView {
         )
 
         visibility =
-            if (text.isBlank()) {
+            if (text.isNullOrBlank()) {
+                Timber.i("Transition... GONE")
                 GONE
             } else {
+                Timber.i("Transition... VISIBLE")
                 VISIBLE
             }
     }
@@ -108,6 +112,7 @@ class TextNowPlaying : AppCompatTextView {
             .alpha(0f)
             .setDuration(300)
             .start()
+        Timber.i("Fading out...")
         delay(300)
     }
 
@@ -116,15 +121,18 @@ class TextNowPlaying : AppCompatTextView {
             .alpha(1f)
             .setDuration(300)
             .start()
+        Timber.i("Fading in...")
         delay(300)
     }
 
     private fun updateText(): Boolean {
         val updatedText = formatNowPlaying(trackInfo)
         return if (updatedText.isNotBlank()) {
+            Timber.i("Set new track info...")
             text = updatedText
             true
         } else {
+            Timber.i("Set text to NULL")
             text = null
             false
         }
