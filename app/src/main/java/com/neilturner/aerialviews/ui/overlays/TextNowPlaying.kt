@@ -8,6 +8,7 @@ import android.transition.TransitionSet
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isGone
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
@@ -44,7 +45,7 @@ class TextNowPlaying : AppCompatTextView {
         super.onAttachedToWindow()
 
         receiver.subscribe { newTrackInfo: MusicEvent ->
-            Timber.i("Subscribed for music updates...")
+            Timber.i("$type: Subscribed for music updates...")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
                 if (!isUpdating) {
@@ -93,18 +94,17 @@ class TextNowPlaying : AppCompatTextView {
                 ordering = TransitionSet.ORDERING_TOGETHER
                 addTransition(Fade())
                 addTransition(ChangeBounds())
-                duration = 200
+                duration = 300
             },
         )
 
-        visibility =
-            if (text.isNullOrBlank()) {
-                Timber.i("Transition... GONE")
-                GONE
-            } else {
-                Timber.i("Transition... VISIBLE")
-                VISIBLE
-            }
+        if (!isGone && text.isNullOrBlank()) {
+            Timber.i("$type: Transition... GONE")
+            visibility = GONE
+        } else if (isGone && text.isNotEmpty()) {
+            Timber.i("$type: Transition... VISIBLE")
+            visibility = VISIBLE
+        }
     }
 
     private suspend fun fadeOut() {
@@ -112,7 +112,7 @@ class TextNowPlaying : AppCompatTextView {
             .alpha(0f)
             .setDuration(300)
             .start()
-        Timber.i("Fading out...")
+        Timber.i("$type: Fading out...")
         delay(300)
     }
 
@@ -121,18 +121,18 @@ class TextNowPlaying : AppCompatTextView {
             .alpha(1f)
             .setDuration(300)
             .start()
-        Timber.i("Fading in...")
+        Timber.i("$type: Fading in...")
         delay(300)
     }
 
     private fun updateText(): Boolean {
         val updatedText = formatNowPlaying(trackInfo)
         return if (updatedText.isNotBlank()) {
-            Timber.i("Set new track info...")
+            Timber.i("$type: Set new track info...")
             text = updatedText
             true
         } else {
-            Timber.i("Set text to NULL")
+            Timber.i("$type: Set text to NULL")
             text = null
             false
         }
