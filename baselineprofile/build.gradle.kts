@@ -51,7 +51,7 @@ android {
         }
     }
 
-    testOptions.managedDevices.devices {
+    testOptions.managedDevices.allDevices {
         @Suppress("UnstableApiUsage")
         create<ManagedVirtualDevice>("pixel9Api34") {
             device = "Pixel 9"
@@ -65,7 +65,7 @@ android {
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
     managedDevices += "pixel9Api34"
-    useConnectedDevices = true
+    useConnectedDevices = false
 }
 
 dependencies {
