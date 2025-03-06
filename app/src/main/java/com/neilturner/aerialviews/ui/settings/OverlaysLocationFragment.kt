@@ -6,6 +6,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import timber.log.Timber
 
 class OverlaysLocationFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -34,21 +35,42 @@ class OverlaysLocationFragment : MenuStateFragment() {
         val pref = findPreference<ListPreference>(control)
         pref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                pref?.findIndexOfValue(newValue as String)?.let { updateSummary(control, entries, it) }
+                updateSummary(pref, entries, pref.findIndexOfValue(newValue as String))
+                showPathOptions(pref, newValue)
                 true
             }
-        pref?.findIndexOfValue(pref.value)?.let { updateSummary(control, entries, it) }
+
+        pref?.let {
+            updateSummary(pref, entries, it.findIndexOfValue(pref.value))
+            showPathOptions(it, it.value)
+        }
     }
 
     private fun updateSummary(
-        control: String,
+        pref: ListPreference,
         entries: Int,
         index: Int,
     ) {
         val res = requireContext().resources
-        val pref = findPreference<Preference>(control)
-        val summaries = res?.getStringArray(entries)
-        val summary = summaries?.elementAtOrNull(index) ?: ""
-        pref?.summary = summary
+        var summary = pref.entries?.elementAtOrNull(index) ?: ""
+        summary = if (summary == "Disabled") "" else "$summary: "
+
+        val entries = res?.getStringArray(entries)
+        val description = entries?.elementAtOrNull(index) ?: ""
+
+        pref.summary = summary + description
+    }
+
+    private fun showPathOptions(pref: ListPreference, value: String) {
+        if (pref.key == "description_video_filename_style") {
+            findPreference<ListPreference>("description_video_folder_levels")
+                ?.isVisible = (value.contains("LAST_FOLDER"))
+        }
+
+        if (pref.key == "description_photo_filename_style") {
+            findPreference<ListPreference>("description_photo_folder_levels")
+                ?.isVisible = (value.contains("LAST_FOLDER"))
+        }
+        Timber.i("control: ${pref.key}, value: $value")
     }
 }

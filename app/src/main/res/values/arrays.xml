@@ -78,8 +78,8 @@
   <string name="description_video_default" translatable="false">POI</string>
   <string-array name="description_video_manifest_entries">
     <item>Disabled</item>
-    <item>A short description or location</item>
-    <item>Dynamic points of interest, available in many languages, which change as the video plays</item>
+    <item>Place name or short description</item>
+    <item>Available in many languages, which change as the video plays</item>
   </string-array>
 
   <!-- Use filename as description -->
@@ -98,16 +98,33 @@
   <string name="description_filename_default" translatable="false">DISABLED</string>
   <string-array name="description_video_filename_entries">
     <item>Disabled</item>
-    <item>Use filename as-is eg. \'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-    <item>Use folder and filename as-is eg. \'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</item>
-    <item>Use folder name only eg. \'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+    <item>\'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabled</item>
-    <item>Use filename as-is eg. \'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Use folder and filename as-is eg. \'Pictures/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-    <item>Use folder name only eg. \'Pictures/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <item>\'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
   </string-array>
+
+  <!-- Description Folder levels -->
+  <string-array name="description_folder_level_entries">
+    <item>\'Italy / Naples\' - 1 Level</item>
+    <item>\'2025 / Italy / Naples\' - 2 Levels</item>
+    <item>\'Scenic / 2025 / Italy / Naples\' - 3 Levels</item>
+    <item>\'Photos / Scenic / 2025 / Italy / Naples\' - 4 Levels</item>
+    <item>\'Media / Photos / Scenic / 2025 / Italy / Naples\' - 5 Levels</item>
+  </string-array>
+  <string-array name="description_folder_level_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+  </string-array>
+  <string name="description_folder_level_default" translatable="false">1</string>
 
   <!-- Slots -->
   <string-array name="slot_entries">

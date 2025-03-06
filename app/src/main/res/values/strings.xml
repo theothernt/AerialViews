@@ -428,13 +428,13 @@
   <string name="appearance_date_custom_example">e.g.</string>
 
   <!-- Main / Settings / Appearance / Location -->
-  <string name="appearance_description_videos_manifest_summary">Apple and Community videos - streamed, stored locally or from a network share</string>
+  <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>
   <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
 
-  <string name="appearance_description_videos_filename_summary">Your videos from local storage or a network share</string>
+  <string name="appearance_description_videos_filename_summary">Your videos - stored locally or a network share</string>
   <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
 
-  <string name="appearance_description_photos_filename_summary">Your photos from local storage or a network share</string>
+  <string name="appearance_description_photos_filename_summary">Your photos - stored locally or a network share</string>
   <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
