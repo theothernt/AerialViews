@@ -61,7 +61,10 @@ class OverlaysLocationFragment : MenuStateFragment() {
         pref.summary = summary + description
     }
 
-    private fun showPathOptions(pref: ListPreference, value: String) {
+    private fun showPathOptions(
+        pref: ListPreference,
+        value: String,
+    ) {
         if (pref.key == "description_video_filename_style") {
             findPreference<ListPreference>("description_video_folder_levels")
                 ?.isVisible = (value.contains("LAST_FOLDER"))

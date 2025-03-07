@@ -104,7 +104,7 @@ object FileHelper {
     fun formatFolderAndFilenameFromUri(
         uri: Uri,
         includeFilename: Boolean = false,
-        pathDepth: Int = 1
+        pathDepth: Int = 1,
     ): String {
         val segments = uri.pathSegments.toMutableList()
         segments.removeAt(segments.lastIndex) // Remove filename at the end of the list
@@ -120,7 +120,7 @@ object FileHelper {
 
         return if (includeFilename && path.isNotBlank()) {
             "$path / $filename"
-        } else if(includeFilename && path.isBlank()) {
+        } else if (includeFilename && path.isBlank()) {
             filename
         } else {
             path

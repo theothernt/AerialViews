@@ -171,10 +171,16 @@ class MediaService(
                     media.parallelStream().forEach { item -> item.description = item.uri.filenameWithoutExtension }
                 }
                 DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                    media.parallelStream().forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth) }
+                    media.parallelStream().forEach { item ->
+                        item.description =
+                            FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
+                    }
                 }
                 DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                    media.parallelStream().forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth) }
+                    media.parallelStream().forEach { item ->
+                        item.description =
+                            FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
+                    }
                 }
                 else -> { /* Do nothing */ }
             }
