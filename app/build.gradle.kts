@@ -23,9 +23,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 24 // Android v7.0, Lvl 24 - Fire OS 6 (based on v7.1.2)
         targetSdk = 35
-        versionCode = 38
+        versionCode = 39
         versionName = "1.7.5"
-        betaVersion = "-beta4"
+        betaVersion = "-beta5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
