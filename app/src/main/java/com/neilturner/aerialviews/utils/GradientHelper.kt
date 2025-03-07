@@ -32,7 +32,7 @@ object GradientHelper {
                 colors.toIntArray(),
             )
 
-        gradientDrawable.setGradientType(GradientDrawable.LINEAR_GRADIENT)
+        gradientDrawable.gradientType = GradientDrawable.LINEAR_GRADIENT
         return gradientDrawable
     }
 }
