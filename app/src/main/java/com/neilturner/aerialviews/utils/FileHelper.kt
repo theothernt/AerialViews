@@ -5,7 +5,6 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import timber.log.Timber
 
 object FileHelper {
@@ -102,14 +101,7 @@ object FileHelper {
         return !uri.path.toStringOrEmpty().contains(newFolder, true)
     }
 
-    fun folderAndFilenameFromUri(
-        uri: Uri,
-        includeFilename: Boolean = false,
-    ): String {
-        return folderAndFilenameFromUri(uri, includeFilename, GeneralPrefs.descriptionPhotoFolderLevel.toInt())
-    }
-
-    fun folderAndFilenameFromUri(
+    fun formatFolderAndFilenameFromUri(
         uri: Uri,
         includeFilename: Boolean = false,
         pathDepth: Int = 1

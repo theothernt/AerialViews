@@ -81,10 +81,12 @@ class MediaService(
             }
 
             val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle)
+            var videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
+            videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle, videoPathDepth)
 
             val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle)
+            var photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
+            photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle, photoPathDepth)
 
             var filteredMedia = matched + videos + photos
 
@@ -148,6 +150,7 @@ class MediaService(
     private fun addFilenameAsDescriptionToMedia(
         media: List<AerialMedia>,
         description: DescriptionFilenameType,
+        pathDepth: Int,
     ): List<AerialMedia> {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             when (description) {
@@ -155,10 +158,10 @@ class MediaService(
                     media.forEach { item -> item.description = item.uri.filenameWithoutExtension }
                 }
                 DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                    media.forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth) }
                 }
                 DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                    media.forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                    media.forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth) }
                 }
                 else -> { /* Do nothing */ }
             }
@@ -168,10 +171,10 @@ class MediaService(
                     media.parallelStream().forEach { item -> item.description = item.uri.filenameWithoutExtension }
                 }
                 DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri, true) }
+                    media.parallelStream().forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth) }
                 }
                 DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                    media.parallelStream().forEach { item -> item.description = FileHelper.folderAndFilenameFromUri(item.uri) }
+                    media.parallelStream().forEach { item -> item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth) }
                 }
                 else -> { /* Do nothing */ }
             }
