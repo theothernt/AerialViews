@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <!-- Read videos+images, read/write SMB settings file -->
+    <!-- Read videos+images -->
     <uses-permission
         android:name="android.permission.READ_MEDIA_VIDEO"
         tools:ignore="SelectedPhotoAccess" />
@@ -17,10 +17,12 @@
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
 
+    <!-- Write settings backup file -->
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
+    <!-- Overlay permission for refresh rate matching -->
     <uses-permission
         android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 
@@ -60,6 +62,7 @@
         tools:ignore="DataExtractionRules,MediaCapabilities"
         tools:targetApi="m">
 
+        <!-- Default launch point -->
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -88,38 +91,6 @@
                 <action android:name="android.service.dreams.DreamService" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-            <meta-data
-                android:name="google_analytics_default_allow_analytics_storage"
-                android:value="true" />
-
-            <meta-data
-                android:name="google_analytics_default_allow_ad_storage"
-                android:value="false" />
-
-            <meta-data
-                android:name="google_analytics_default_allow_ad_user_data"
-                android:value="false" />
-
-            <meta-data
-                android:name="google_analytics_default_allow_ad_personalization_signals"
-                android:value="false" />
-
-            <meta-data
-                android:name="firebase_analytics_collection_enabled"
-                android:value="${analyticsCollectionEnabled}" />
-
-            <meta-data
-                android:name="firebase_crashlytics_collection_enabled"
-                android:value="${crashlyticsCollectionEnabled}" />
-
-            <meta-data
-                android:name="firebase_performance_collection_enabled"
-                android:value="${performanceCollectionEnabled}" />
-
-            <meta-data
-                android:name="google_analytics_automatic_screen_reporting_enabled"
-                android:value="false" />
         </service>
 
         <!-- Called when app is updated so migration code can run -->
@@ -141,5 +112,37 @@
             </intent-filter>
         </service>
 
+        <!-- Firebase Analytics and Crashlytics options -->
+        <meta-data
+            android:name="google_analytics_default_allow_analytics_storage"
+            android:value="true" />
+
+        <meta-data
+            android:name="google_analytics_default_allow_ad_storage"
+            android:value="false" />
+
+        <meta-data
+            android:name="google_analytics_default_allow_ad_user_data"
+            android:value="false" />
+
+        <meta-data
+            android:name="google_analytics_default_allow_ad_personalization_signals"
+            android:value="false" />
+
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="${analyticsCollectionEnabled}" />
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${crashlyticsCollectionEnabled}" />
+
+        <meta-data
+            android:name="firebase_performance_collection_enabled"
+            android:value="${performanceCollectionEnabled}" />
+
+        <meta-data
+            android:name="google_analytics_automatic_screen_reporting_enabled"
+            android:value="false" />
     </application>
 </manifest>
