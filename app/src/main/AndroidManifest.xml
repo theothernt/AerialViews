@@ -44,7 +44,7 @@
 
     <uses-feature
         android:name="android.software.leanback"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:name=".ui.App"
