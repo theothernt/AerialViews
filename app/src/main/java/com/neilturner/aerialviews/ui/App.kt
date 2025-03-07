@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui
 
 import android.app.Application
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -18,12 +19,14 @@ class App : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        // FireTV Gen 1 and emulator can't play HEVC/H.265
-        // Set video quality to H.264
-        if (!DeviceHelper.hasHevcSupport() &&
-            !GeneralPrefs.checkForHevcSupport
-        ) {
-            changeVideoQuality()
+        if (!GeneralPrefs.checkForHevcSupport) {
+            // FireTV Gen 1 and emulator can't play HEVC/H.265
+            // Set video quality to H.264
+            if (!DeviceHelper.hasHevcSupport()) changeVideoQuality()
+
+            // Turn off location overlay as layout is broken on the phone
+            if (DeviceHelper.isPhone(applicationContext)) changeOverlayOption()
+
             GeneralPrefs.checkForHevcSupport = true
         }
     }
@@ -32,5 +35,9 @@ class App : Application() {
         AppleVideoPrefs.quality = VideoQuality.VIDEO_1080_H264
         Comm1VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
         Comm2VideoPrefs.quality = VideoQuality.VIDEO_1080_H264
+    }
+
+    private fun changeOverlayOption() {
+        GeneralPrefs.slotBottomRight1 = OverlayType.EMPTY
     }
 }
