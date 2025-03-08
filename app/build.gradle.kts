@@ -21,7 +21,7 @@ android {
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 24 // Android v7.0, Lvl 24 - Fire OS 6 (based on v7.1.2)
+        minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
         versionCode = 39
         versionName = "1.7.5"
