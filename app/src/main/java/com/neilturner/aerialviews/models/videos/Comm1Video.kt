@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.models.videos
 
 import android.net.Uri
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 
@@ -11,10 +12,8 @@ class Comm1Video : AbstractVideo() {
                 VideoQuality.VIDEO_1080_SDR -> video1080sdr
                 VideoQuality.VIDEO_4K_SDR -> video4ksdr
                 else -> video1080h264
-            }
-        return Uri.parse(
-            url,
-        )
+            }.toString()
+        return url.toUri()
     }
 
     override fun allUrls(): List<String> {

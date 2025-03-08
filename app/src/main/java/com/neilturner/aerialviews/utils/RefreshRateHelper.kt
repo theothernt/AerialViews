@@ -33,15 +33,16 @@ class RefreshRateHelper(
         }
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
-        if (sortedModes.size <= 1) {
-            Timber.i("Only 1 mode found, exiting...")
-            return
-        }
+//        if (sortedModes.size <= 1) {
+//            Timber.i("Only 1 mode found, exiting...")
+//            return
+//        }
 
         val supportedModes = getModesForResolution(sortedModes, display.mode)
         Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${sortedModes.size})")
 
-        val availableRefreshRates = supportedModes.map { it.refreshRate.roundTo(2).toString() + "Hz" }.joinToString(", ")
+        val availableRefreshRates =
+            supportedModes.joinToString(", ") { it.refreshRate.roundTo(2).toString() + "Hz" }
         Timber.i("Available Refresh Rates: $availableRefreshRates")
 
         // Store original mode if not already saved

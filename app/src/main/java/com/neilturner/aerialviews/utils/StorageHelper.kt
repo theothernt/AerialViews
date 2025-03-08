@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import java.lang.reflect.Array
 import java.lang.reflect.InvocationTargetException
 
-@Suppress("UsePropertyAccessSyntax")
 object StorageHelper {
     // https://github.com/moneytoo/Player/blob/master/android-file-chooser/src/main/java/com/obsez/android/lib/filechooser/internals/FileUtil.java
 

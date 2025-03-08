@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import com.google.gson.Gson
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -276,8 +277,8 @@ class ImmichMediaProvider(
     private fun getAssetUri(id: String): Uri {
         val cleanedKey = cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
-            ImmichAuthType.SHARED_LINK -> Uri.parse("$server/api/assets/$id/original?key=$cleanedKey&password=${prefs.password}")
-            ImmichAuthType.API_KEY -> Uri.parse("$server/api/assets/$id/original")
+            ImmichAuthType.SHARED_LINK -> "$server/api/assets/$id/original?key=$cleanedKey&password=${prefs.password}".toUri()
+            ImmichAuthType.API_KEY -> "$server/api/assets/$id/original".toUri()
             null -> throw IllegalStateException("Invalid authentication type")
         }
     }

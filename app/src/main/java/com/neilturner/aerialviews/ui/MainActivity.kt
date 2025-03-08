@@ -17,8 +17,7 @@ import timber.log.Timber
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-
-        private val resultLauncher by lazy {
+    private val resultLauncher by lazy {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
         ) { result ->
@@ -67,8 +66,7 @@ class MainActivity :
         outState.putCharSequence("TITLE_TAG", title)
     }
 
-    private fun handleScreensaverOnLaunch()
-    {
+    private fun handleScreensaverOnLaunch() {
         // Check if app was restarted by user (language change)
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
 

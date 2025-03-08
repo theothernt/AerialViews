@@ -1,3 +1,5 @@
+@file:Suppress("SameParameterValue")
+
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context

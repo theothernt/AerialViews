@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.net.Uri
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -63,7 +63,7 @@ class WebDavMediaProvider(
 
         // Create WebDAV URL, add to media list, adding media type
         webDavMedia.first.forEach { url ->
-            val uri = Uri.parse(url)
+            val uri = url.toUri()
             val item = AerialMedia(uri)
 
             if (FileHelper.isSupportedVideoType(url)) {

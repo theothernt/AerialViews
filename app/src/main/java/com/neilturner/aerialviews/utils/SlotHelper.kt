@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceScreen
 import com.neilturner.aerialviews.R
@@ -68,9 +69,9 @@ object SlotHelper {
                 if (pref == null) {
                     // not on-screen, update pref only
                     GeneralPrefs.preferences
-                        .edit()
-                        .putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString())
-                        .apply()
+                        .edit {
+                            putString(it.type.toString().lowercase(), OverlayType.EMPTY.toString())
+                        }
                 } else {
                     // on-screen, control + pref are updated
                     pref.value = OverlayType.EMPTY.toString()

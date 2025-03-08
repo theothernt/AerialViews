@@ -210,7 +210,7 @@
   <string name="immich_media_auth_type_title">Authentifizierungsmethode</string>
   <string name="immich_media_enabled_title">Immich-Medienfreigabe verwenden</string>
   <string name="immich_media_fetch_albums_error">Fehler beim Abrufen von Alben</string>
-  <string name="immich_media_hostname_summary">IP-Adresse und Serverport, z. B. 192.168.1.2-2283</string>
+  <string name="immich_media_hostname_summary">IP–Adresse und Serverport, z. B. 192.168.1.2–2283</string>
   <string name="immich_media_hostname_title">Hostname und Port</string>
   <string name="immich_media_no_albums">Keine Alben gefunden</string>
   <string name="immich_media_no_albums_message">Es wurden keine Alben im Immich-Konto gefunden. Bitte sicherstellen dass mindestens ein Album erstellt wurde.</string>

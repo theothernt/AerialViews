@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.net.Uri
+import androidx.core.net.toUri
 import com.hierynomus.msfscc.FileAttributes
 import com.hierynomus.protocol.commons.EnumWithValue
 import com.hierynomus.smbj.SMBClient
@@ -64,7 +64,7 @@ class SambaMediaProvider(
         val path: String
         try {
             // /Videos/Aerial/Community -> Videos + /Aerial/Community
-            val shareNameAndPath = SambaHelper.parseShareAndPathName(Uri.parse(prefs.shareName))
+            val shareNameAndPath = SambaHelper.parseShareAndPathName(prefs.shareName.toUri())
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
         } catch (ex: Exception) {
@@ -102,7 +102,7 @@ class SambaMediaProvider(
             // smb://username@host/sharename/path
             // smb://username:password@host/sharename
 
-            val uri = Uri.parse("smb://$usernamePassword${prefs.hostName}/$shareName/$filename")
+            val uri = "smb://$usernamePassword${prefs.hostName}/$shareName/$filename".toUri()
             val item = AerialMedia(uri)
 
             if (FileHelper.isSupportedVideoType(filename)) {

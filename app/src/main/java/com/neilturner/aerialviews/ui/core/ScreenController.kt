@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
@@ -253,7 +254,7 @@ class ScreenController(
         val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
-        if (loadingText.visibility == View.VISIBLE) {
+        if (loadingText.isVisible) {
             fadeOutLoadingText()
             startDelay = LOADING_DELAY
         }
@@ -430,7 +431,7 @@ class ScreenController(
     }
 
     private fun handleError() {
-        if (loadingView.visibility == View.VISIBLE) {
+        if (loadingView.isVisible) {
             loadItem(playlist.nextItem())
         } else {
             fadeOutCurrentItem()

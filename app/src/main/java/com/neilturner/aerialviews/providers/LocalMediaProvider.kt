@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.net.Uri
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
@@ -86,7 +86,7 @@ class LocalMediaProvider(
 
         // Create media list, adding media type
         for (file in selected) {
-            val uri = Uri.parse(file)
+            val uri = file.toUri()
             val item = AerialMedia(uri)
             if (FileHelper.isSupportedVideoType(file)) {
                 item.type = AerialMediaType.VIDEO
@@ -183,7 +183,7 @@ class LocalMediaProvider(
 
         // Apply folder filter
         for (file in selected) {
-            val uri = Uri.parse(file)
+            val uri = file.toUri()
             if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
                 continue
             }

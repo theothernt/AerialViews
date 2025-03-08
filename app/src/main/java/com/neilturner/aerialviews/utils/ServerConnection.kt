@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.annotation.SuppressLint
-import android.net.Uri
+import androidx.core.net.toUri
 import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.security.SecureRandom
@@ -31,7 +31,7 @@ object UrlParser {
         }
 
         try {
-            val uri = Uri.parse(processedUrl)
+            val uri = processedUrl.toUri()
             // Validate basic URL components
             if (uri.host == null) {
                 throw IllegalArgumentException("Invalid URL: Missing host")
