@@ -16,7 +16,8 @@ import timber.log.Timber
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-    private val resultLauncher =
+
+        private val resultLauncher by lazy {
         registerForActivityResult(
             ActivityResultContracts.StartActivityForResult(),
         ) { result ->
@@ -28,6 +29,7 @@ class MainActivity :
                 }
             }
         }
+    }
 
     @SuppressLint("BinaryOperationInTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,9 +66,7 @@ class MainActivity :
         }
 
         Timber.i(
-            "fromAppRestart: $fromAppRestart, " +
-                "hasIntentUri: $hasIntentUri, " +
-                "startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+            "fromAppRestart: $fromAppRestart, hasIntentUri: $hasIntentUri, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
     }
 
