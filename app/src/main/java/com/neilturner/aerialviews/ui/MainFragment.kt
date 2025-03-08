@@ -22,13 +22,16 @@ import timber.log.Timber
 class MainFragment :
     MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.main, rootKey)
-        resetLocalPermissionIfNeeded()
         setMenuLocale()
+        setPreferencesFromResource(R.xml.main, rootKey)
+        lifecycleScope.launch {
+            resetLocalPermissionIfNeeded()
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -50,7 +53,6 @@ class MainFragment :
     }
 
     override fun onResume() {
-        Timber.i("onResume")
         super.onResume()
     }
 

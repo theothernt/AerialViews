@@ -1,16 +1,17 @@
 package com.neilturner.aerialviews.ui
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class MainActivity :
@@ -31,7 +32,6 @@ class MainActivity :
         }
     }
 
-    @SuppressLint("BinaryOperationInTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -52,6 +52,23 @@ class MainActivity :
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
+        lifecycleScope.launch {
+            handleScreensaverOnLaunch()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.logScreenView("Main", this)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putCharSequence("TITLE_TAG", title)
+    }
+
+    private fun handleScreensaverOnLaunch()
+    {
         // Check if app was restarted by user (language change)
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
 
@@ -68,16 +85,6 @@ class MainActivity :
         Timber.i(
             "fromAppRestart: $fromAppRestart, hasIntentUri: $hasIntentUri, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
-    }
-
-    override fun onResume() {
-        super.onResume()
-        FirebaseHelper.logScreenView("Main", this)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putCharSequence("TITLE_TAG", title)
     }
 
     private fun startScreensaver() {
