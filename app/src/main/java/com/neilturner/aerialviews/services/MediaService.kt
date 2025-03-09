@@ -26,6 +26,7 @@ import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.filename
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -52,43 +53,53 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
-            var media = buildMediaList()
-            Timber.i("Total media items: ${media.size}")
 
+            // Build media list from all providers
+            val media = buildMediaList()
+
+            // Split into videos and photos
+            var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
+            Timber.i("Total media items: ${media.size}, videos ${videos.size}, photos ${photos.size}")
+
+            // Remove duplicates based on filename (with extension!)
             if (GeneralPrefs.removeDuplicates) {
-                val numVideos = media.size
-                media =
-                    media
-                        .distinctBy {
-                            when (it.source) {
-                                AerialMediaSource.IMMICH -> it.uri.toString()
-                                else -> Pair(it.uri.filenameWithoutExtension.lowercase(), it.type)
-                            }
-                        }.toMutableList()
-                Timber.i("Duplicate videos removed: ${numVideos - media.size}")
+                val numVideos = videos.size
+                val numPhotos = photos.size
+                videos = videos.distinctBy { it.uri.filename.lowercase() }
+                // Except for Immich as filenames are random
+                photos = photos.distinctBy { Pair(it.uri.filename.lowercase(), it.source != AerialMediaSource.IMMICH) }
+                Timber.i("Duplicates removed: videos ${numVideos - videos.size}, photos ${numPhotos - photos.size}")
             }
 
+            // Try to match videos with Apple, Community metadata for location/description
             val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
-            val (matched, unmatched) = addMetadataToManifestVideos(media, providers, manifestDescriptionStyle)
-            Timber.i("Manifest: matched ${matched.size}, unmatched ${unmatched.size}")
+            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers, manifestDescriptionStyle)
+            Timber.i("Manifest Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
-            var (videos, photos) = unmatched.partition { it.type == AerialMediaType.VIDEO }
-            Timber.i("Unmatched: videos ${videos.size}, photos ${photos.size}")
+            // Split photos in those with metadata and those without
+            var (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }
+            Timber.i("Photos with metadata: matched ${matchedPhotos.size}, unmatched ${unmatchedPhotos.size}")
 
+            // Discard unmatched manifest videos
             if (GeneralPrefs.ignoreNonManifestVideos) {
-                videos = listOf()
-                Timber.i("Removing non-manifest videos")
+                Timber.i("Removing ${unmatchedVideos.size} non-manifest videos")
+                unmatchedVideos = emptyList()
             }
 
+            // Unmatched videos can have their filename added as a description
             val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            var videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
-            videos = addFilenameAsDescriptionToMedia(videos, videoDescriptionStyle, videoPathDepth)
+            if (videoDescriptionStyle != DescriptionFilenameType.DISABLED) {
+                var videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
+                unmatchedVideos = addFilenameAsDescriptionToMedia(unmatchedVideos, videoDescriptionStyle, videoPathDepth)
+            }
 
             val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            var photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
-            photos = addFilenameAsDescriptionToMedia(photos, photoDescriptionStyle, photoPathDepth)
+            if (photoDescriptionStyle != DescriptionFilenameType.DISABLED) {
+                var photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
+                unmatchedPhotos = addFilenameAsDescriptionToMedia(unmatchedPhotos, photoDescriptionStyle, photoPathDepth)
+            }
 
-            var filteredMedia = matched + videos + photos
+            var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
 
             if (GeneralPrefs.shuffleVideos) {
                 filteredMedia = filteredMedia.shuffled()
