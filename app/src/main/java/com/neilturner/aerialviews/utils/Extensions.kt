@@ -56,10 +56,6 @@ fun Any?.toBoolean() = this?.toString().equals("true", ignoreCase = true)
 // https://stackoverflow.com/a/41855007/247257
 inline fun <reified T : Enum<T>> enumContains(name: String): Boolean = enumValues<T>().any { it.name == name }
 
-// inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
-//    return enumValues<T>().find { it.name == name }
-// }
-
 // https://stackoverflow.com/a/67843987/247257
 fun String.capitalise(): String =
     this.replaceFirstChar {
@@ -87,3 +83,11 @@ fun View.delayOnLifecycle(
 fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
 
 fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
+
+fun <T> List<T>.parallelForEachCompat(action: (T) -> Unit) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        this.parallelStream().forEach(action)
+    } else {
+        this.forEach(action)
+    }
+}
