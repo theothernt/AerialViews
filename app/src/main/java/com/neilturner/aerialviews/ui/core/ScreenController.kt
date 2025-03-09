@@ -48,7 +48,7 @@ class ScreenController(
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
-    private val resources = context.resources!!
+    private val resources by lazy { context.resources }
 
     private var nowPlayingService: NowPlayingService? = null
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
