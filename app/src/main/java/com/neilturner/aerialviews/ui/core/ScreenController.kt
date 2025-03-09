@@ -88,6 +88,7 @@ class ScreenController(
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
 
+        // Setup binding for all views and controls
         view = binding.root
         loadingView = binding.loadingView.root
         loadingText = binding.loadingView.loadingText
@@ -105,6 +106,25 @@ class ScreenController(
         imagePlayer.setOnPlayerListener(this)
         imageViewBinding.root.setBackgroundColor(Color.BLACK)
 
+        // Setup loading message or hide it
+        if (GeneralPrefs.showLoadingText) {
+            loadingText.apply {
+                textSize = GeneralPrefs.loadingTextSize.toFloat()
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
+            }
+        } else {
+            loadingText.visibility = View.INVISIBLE
+        }
+
+        // Setup overlays and set initial positions
+        overlayHelper = OverlayHelper(context, GeneralPrefs)
+        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
+        this.bottomLeftIds = overlayIds.bottomLeftIds
+        this.bottomRightIds = overlayIds.bottomRightIds
+        this.topLeftIds = overlayIds.topLeftIds
+        this.topRightIds = overlayIds.topRightIds
+
+        // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
@@ -116,39 +136,21 @@ class ScreenController(
             binding.progressBar.visibility = View.VISIBLE
         }
 
-        if (GeneralPrefs.showLoadingText) {
-            loadingText.apply {
-                textSize = GeneralPrefs.loadingTextSize.toFloat()
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
-            }
-        } else {
-            loadingText.visibility = View.INVISIBLE
-        }
-
+        // Reset animation speed if needed
         if (GeneralPrefs.ignoreAnimationScale) {
             WindowHelper.resetSystemAnimationDuration(context)
         }
-
-        // Init overlays and set initial positions
-        overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
-        this.bottomLeftIds = overlayIds.bottomLeftIds
-        this.bottomRightIds = overlayIds.bottomRightIds
-        this.topLeftIds = overlayIds.topLeftIds
-        this.topRightIds = overlayIds.topRightIds
 
         // Gradients
         if (GeneralPrefs.showTopGradient) {
             val gradientView = overlayViewBinding.gradientTop
             gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
-            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.BOTTOM_TOP)
             gradientView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
             val gradientView = overlayViewBinding.gradientBottom
             gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
-            // gradientView.background = GradientHelper.smoothBackground(GradientDrawable.Orientation.TOP_BOTTOM)
             gradientView.visibility = View.VISIBLE
         }
 
@@ -159,8 +161,8 @@ class ScreenController(
                 nowPlayingService = NowPlayingService(context)
             }
 
+            // Build playlist and start screensaver
             playlist = MediaService(context).fetchMedia()
-
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
@@ -178,7 +180,7 @@ class ScreenController(
 
     private fun loadItem(media: AerialMedia) {
         if (media.uri.toString().contains("smb://")) {
-            val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
+            val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
             Timber.i("Loading: ${media.description} - $url (${media.poi})")

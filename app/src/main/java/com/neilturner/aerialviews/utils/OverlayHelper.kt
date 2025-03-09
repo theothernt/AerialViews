@@ -20,10 +20,7 @@ class OverlayHelper(
     private val prefs: GeneralPrefs,
 ) {
     var overlays = mutableListOf<View?>()
-
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
-
-    // inline fun <reified T : View> isOverlayEnabled(): Boolean = findOverlay<T>().isNotEmpty()
 
     // Assign IDs/Overlays to correct Flow - or alternate
     fun assignOverlaysAndIds(
@@ -46,17 +43,26 @@ class OverlayHelper(
 
     // Initialise chosen overlays, add them to the layout then return IDs for later use
     fun buildOverlaysAndIds(root: OverlayViewBinding): OverlayIds {
+        // Get a list of slots + selected overlay (or empty)
         val slots = SlotHelper.slotPrefs(context)
+
+        // For each slot type (top left 1, etc) - order matters
         for (type in SlotType.entries) {
+            // For each slot, find a matching overlay, init then return it
             val slot = slots.find { it.type == type }
             val view = getOverlay(slot!!.pref)
+
+            // Add ID to overlay for later use
             view?.id = View.generateViewId()
+
+            // Add overlay to overlays view for later positioning
             overlays.add(view)
             if (view != null) {
                 root.layout.addView(view)
             }
         }
 
+        // For each overlay loaded, update its prefs
         findOverlay<AltTextClock>().forEach {
             it.updateFormat(prefs.clockFormat)
         }
@@ -81,6 +87,7 @@ class OverlayHelper(
             }
         }
 
+        // Create each row of overlays - the order of views matter
         val bottomRow =
             buildReferenceIds(
                 root.emptyView1,
@@ -114,6 +121,7 @@ class OverlayHelper(
         view6: View?,
     ): Pair<List<Int>, List<Int>> {
         // Reverse order of views due to how the Flow control display order
+        // Use empty view if there are no overlays so that Flow layout is correct
         val leftIds = listOfNotNull(view1?.id, view2?.id, view3?.id)
         val rightIds = listOfNotNull(view4?.id, view5?.id, view6?.id)
         return Pair(leftIds, rightIds)
