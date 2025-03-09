@@ -53,7 +53,6 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
-
             // Build media list from all providers
             val media = buildMediaList()
 
@@ -175,11 +174,9 @@ class MediaService(
         providers
             .filter { it.enabled == true }
             .parallelForEachCompat {
-                Timber.i("${it.javaClass.simpleName} start")
                 runBlocking {
                     media.addAll(it.fetchMedia())
                 }
-                Timber.i("${it.javaClass.simpleName} ${it.type} media items: ${media.size}")
             }
         return media
     }
