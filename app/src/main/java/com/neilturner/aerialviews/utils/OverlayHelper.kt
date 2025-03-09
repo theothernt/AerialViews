@@ -20,6 +20,7 @@ class OverlayHelper(
     private val prefs: GeneralPrefs,
 ) {
     var overlays = mutableListOf<View?>()
+
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
     // Assign IDs/Overlays to correct Flow - or alternate

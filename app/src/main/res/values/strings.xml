@@ -212,7 +212,6 @@
 
   <string name="samba_videos_export_failed">Export failed</string>
   <string name="samba_videos_export_success">Export successful</string>
-  <string name="samba_videos_file_already_exists">The SMB settings file %1$s already exists in the Downloads folder</string>
   <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
   <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
 
