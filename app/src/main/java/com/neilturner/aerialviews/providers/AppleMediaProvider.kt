@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
-import kotlin.collections.mutableMapOf
 
 class AppleMediaProvider(
     context: Context,
@@ -18,24 +17,24 @@ class AppleMediaProvider(
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
     val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
+    val videos = mutableListOf<AerialMedia>()
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> = fetchAppleVideos().first
+    override suspend fun fetchTest(): String = ""
 
-    override suspend fun fetchTest(): String = fetchAppleVideos().second
+    override suspend fun fetchMedia(): List<AerialMedia> {
+        if (metadata.isEmpty()) buildVideoAndMetadata()
+        return videos
+    }
 
     override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
-        if (metadata.isEmpty()) {
-            fetchMedia()
-        }
+        if (metadata.isEmpty()) buildVideoAndMetadata()
         return metadata
     }
 
-    private suspend fun fetchAppleVideos(): Pair<List<AerialMedia>, String> {
-        val videos = mutableListOf<AerialMedia>()
-        metadata.clear()
+    private suspend fun buildVideoAndMetadata() {
         val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
         val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
@@ -60,6 +59,5 @@ class AppleMediaProvider(
 
         Timber.i("${metadata.count()} metadata items found")
         Timber.i("${videos.count()} $quality videos found")
-        return Pair(videos, "")
     }
 }
