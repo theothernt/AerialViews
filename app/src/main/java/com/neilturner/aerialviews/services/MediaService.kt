@@ -15,7 +15,6 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
@@ -24,16 +23,13 @@ import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
 import com.neilturner.aerialviews.providers.WebDavMediaProvider
-import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
+import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
+import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
 import com.neilturner.aerialviews.utils.filename
-import com.neilturner.aerialviews.utils.filenameWithoutExtension
-import com.neilturner.aerialviews.utils.parallelForEachCompat
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.CopyOnWriteArrayList
 
 class MediaService(
     val context: Context,
@@ -54,7 +50,7 @@ class MediaService(
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
             // Build media list from all providers
-            val media = buildMediaList()
+            val media = buildMediaList(providers)
 
             // Split into videos and photos
             var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
@@ -108,76 +104,4 @@ class MediaService(
             Timber.i("Total media items: ${filteredMedia.size}")
             return@withContext MediaPlaylist(filteredMedia)
         }
-
-    private suspend fun addMetadataToManifestVideos(
-        media: List<AerialMedia>,
-        providers: List<MediaProvider>,
-        description: DescriptionManifestType,
-    ): Pair<List<AerialMedia>, List<AerialMedia>> {
-        val metadata = ConcurrentHashMap<String, Pair<String, Map<Int, String>>>()
-        val matched = CopyOnWriteArrayList<AerialMedia>()
-        val unmatched = CopyOnWriteArrayList<AerialMedia>()
-
-        providers.forEach {
-            try {
-                metadata.putAll(it.fetchMetadata())
-            } catch (ex: Exception) {
-                Timber.e(ex, "Exception while fetching metadata")
-            }
-        }
-
-        media.parallelForEachCompat video@{ video ->
-            val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
-            if (data != null) {
-                if (description != DescriptionManifestType.DISABLED) {
-                    video.description = data.first
-                    video.poi = data.second
-                }
-                matched.add(video)
-                return@video
-            }
-            unmatched.add(video)
-        }
-
-        return Pair(matched, unmatched)
-    }
-
-    private fun addFilenameAsDescriptionToMedia(
-        media: List<AerialMedia>,
-        description: DescriptionFilenameType,
-        pathDepth: Int,
-    ): List<AerialMedia> {
-        when (description) {
-            DescriptionFilenameType.FILENAME -> {
-                media.parallelForEachCompat { item ->
-                    item.description = item.uri.filenameWithoutExtension
-                }
-            }
-            DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.parallelForEachCompat { item ->
-                    item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
-                }
-            }
-            DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.parallelForEachCompat { item ->
-                    item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
-                }
-            }
-            else -> { /* Do nothing */ }
-        }
-        return media
-    }
-
-    private fun buildMediaList(): List<AerialMedia> {
-        var media = CopyOnWriteArrayList<AerialMedia>()
-
-        providers
-            .filter { it.enabled == true }
-            .parallelForEachCompat {
-                runBlocking {
-                    media.addAll(it.fetchMedia())
-                }
-            }
-        return media
-    }
 }
