@@ -86,7 +86,7 @@ fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDo
 
 fun <T> List<T>.parallelForEachCompat(action: (T) -> Unit) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        this.parallelStream().forEach(action)
+        this.parallelStream().forEachOrdered(action)
     } else {
         this.forEach(action)
     }

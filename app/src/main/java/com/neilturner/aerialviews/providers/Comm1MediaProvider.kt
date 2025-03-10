@@ -36,8 +36,6 @@ class Comm1MediaProvider(
     }
 
     private suspend fun buildVideoAndMetadata() {
-        val videos = mutableListOf<AerialMedia>()
-        metadata.clear()
         val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson(context, R.raw.comm1, JsonHelper.Comm1Videos::class.java)
