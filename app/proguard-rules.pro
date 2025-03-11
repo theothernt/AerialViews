@@ -5,6 +5,10 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
+# Firebase Crashlytics
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
+
 # Mostly data class and json types
 -keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
 -keep class com.neilturner.aerialviews.models.immich.* { <fields>; }
