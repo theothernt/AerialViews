@@ -100,13 +100,12 @@ class ImagePlayerView : AppCompatImageView {
             }.build()
     }
 
-    private fun buildGifDecoder(): Decoder.Factory {
-        return if (SDK_INT >= 28) {
+    private fun buildGifDecoder(): Decoder.Factory =
+        if (SDK_INT >= 28) {
             AnimatedImageDecoder.Factory()
         } else {
             GifDecoder.Factory()
         }
-    }
 
     private fun buildOkHttpClient(): OkHttpClient {
         val serverConfig = ServerConfig("", ImmichMediaPrefs.validateSsl)

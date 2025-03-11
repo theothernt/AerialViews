@@ -22,7 +22,6 @@ class Comm1MediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-
     override suspend fun fetchTest(): String = ""
 
     override suspend fun fetchMedia(): List<AerialMedia> {

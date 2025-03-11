@@ -51,11 +51,6 @@ class MainFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onResume() {
-        Timber.i("onResume")
-        super.onResume()
-    }
-
     private fun testScreensaverSettings() {
         try {
             val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)

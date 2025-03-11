@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal object MediaServiceHelper {
-
     suspend fun addMetadataToManifestVideos(
         media: List<AerialMedia>,
         providers: List<MediaProvider>,
