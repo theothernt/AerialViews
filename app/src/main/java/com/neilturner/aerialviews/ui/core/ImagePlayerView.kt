@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import coil3.EventListener
 import coil3.ImageLoader
+import coil3.decode.Decoder
 import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -94,15 +95,17 @@ class ImagePlayerView : AppCompatImageView {
             .Builder(context)
             .eventListener(eventLister)
             .components {
-                OkHttpNetworkFetcherFactory(
-                    callFactory = { buildOkHttpClient() },
-                )
-                if (SDK_INT >= 28) {
-                    add(AnimatedImageDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
-                }
+                OkHttpNetworkFetcherFactory(buildOkHttpClient())
+                add(buildGifDecoder())
             }.build()
+    }
+
+    private fun buildGifDecoder(): Decoder.Factory {
+        return if (SDK_INT >= 28) {
+            AnimatedImageDecoder.Factory()
+        } else {
+            GifDecoder.Factory()
+        }
     }
 
     private fun buildOkHttpClient(): OkHttpClient {
