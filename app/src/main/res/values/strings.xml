@@ -492,7 +492,7 @@
 
   <string name="playlist_max_video_length_title">Limit video length</string>
 
-  <string name="playlist_loop_until_skipped_title">Loop videos until skipped</string>
+  <string name="playlist_loop_until_skipped_title">Loop video until skipped</string>
   <string name="playlist_loop_until_skipped_summary">Loops the video until manually skipped by a dpad or button press</string>
 
   <string name="playlist_loop_short_videos_title">Short videos</string>
