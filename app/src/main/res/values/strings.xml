@@ -64,6 +64,7 @@
   <string name="category_date">Date</string>
   <string name="category_phone_tablet">Phone or Tablet</string>
   <string name="category_custom_format">Custom format</string>
+  <string name="category_import_export_settings">Import/Export settings</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -194,9 +195,6 @@
   <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
   <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
 
-  <string name="samba_videos_import_export_settings_title">Import/Export settings</string>
-  <string name="samba_videos_import_export_settings_summary">Imports or Exports your SMB credentials to the Downloads folder</string>
-
   <string name="samba_media_test_summary1">Files found: %1$s</string>
   <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
   <string name="samba_media_test_summary3">Videos found: %1$s</string>
@@ -308,8 +306,8 @@
   <string name="settings_about_title">About</string>
   <string name="settings_about_summary">Version, build info, etc</string>
 
-  <string name="settings_import_export_settings_title">Import/Export settings</string>
-  <string name="settings_import_export_settings_summary">Imports or Exports settings to the Downloads folder</string>
+  <string name="settings_import_export_settings_title">Import/Export</string>
+  <string name="settings_import_export_settings_summary">Imports or exports settings to the Downloads folder</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>

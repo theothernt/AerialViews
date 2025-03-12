@@ -189,8 +189,8 @@ class SambaVideosFragment :
 
     private fun importExportSettings() {
         AlertDialog.Builder(requireContext()).apply {
-            setTitle(R.string.samba_videos_import_export_settings_title)
-            setMessage(R.string.samba_videos_import_export_settings_summary)
+            //setTitle(R.string.samba_videos_import_export_settings_title)
+            //setMessage(R.string.samba_videos_import_export_settings_summary)
             setNeutralButton(R.string.button_cancel, null)
             setNegativeButton(R.string.button_import) { _, _ ->
                 if (PermissionHelper.hasDocumentReadPermission(requireContext())) {
