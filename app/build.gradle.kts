@@ -18,6 +18,10 @@ android {
     namespace = "com.neilturner.aerialviews"
     compileSdk = 35
 
+    kotlin {
+        jvmToolchain(17)
+    }
+
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
@@ -32,15 +36,6 @@ android {
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         manifestPlaceholders["performanceCollectionEnabled"] = false
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
     }
 
     buildFeatures {
