@@ -60,9 +60,22 @@ class MediaService(
             if (GeneralPrefs.removeDuplicates) {
                 val numVideos = videos.size
                 val numPhotos = photos.size
-                videos = videos.distinctBy { it.uri.filename.lowercase() }
-                // Except for Immich as filenames are random
-                photos = photos.distinctBy { Pair(it.uri.filename.lowercase(), it.source != AerialMediaSource.IMMICH) }
+                videos = videos.distinctBy {
+                        videos ->
+                    if (videos.source != AerialMediaSource.IMMICH) {
+                        videos.uri.filename.lowercase()
+                    } else {
+                        videos.uri
+                    }
+                }
+                photos =
+                    photos.distinctBy { photo ->
+                        if (photo.source != AerialMediaSource.IMMICH) {
+                            photo.uri.filename.lowercase()
+                        } else {
+                            photo.uri
+                        }
+                    }
                 Timber.i("Duplicates removed: videos ${numVideos - videos.size}, photos ${numPhotos - photos.size}")
             }
 
