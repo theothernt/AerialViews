@@ -60,14 +60,14 @@ class MediaService(
             if (GeneralPrefs.removeDuplicates) {
                 val numVideos = videos.size
                 val numPhotos = photos.size
-                videos = videos.distinctBy {
-                        videos ->
-                    if (videos.source != AerialMediaSource.IMMICH) {
-                        videos.uri.filename.lowercase()
-                    } else {
-                        videos.uri
+                videos =
+                    videos.distinctBy { videos ->
+                        if (videos.source != AerialMediaSource.IMMICH) {
+                            videos.uri.filename.lowercase()
+                        } else {
+                            videos.uri
+                        }
                     }
-                }
                 photos =
                     photos.distinctBy { photo ->
                         if (photo.source != AerialMediaSource.IMMICH) {
