@@ -286,7 +286,7 @@
 (ad esempio, un video di 30 secondi con un limite di 2 minuti verrà riprodotto 4 volte).</string>
   <string name="playlist_loop_short_videos_title">Video brevi</string>
   <string name="playlist_loop_until_skipped_summary">Loops the video until manually skipped by a dpad or button press</string>
-  <string name="playlist_loop_until_skipped_title">Loop videos until skipped</string>
+  <string name="playlist_loop_until_skipped_title">Loop video until skipped</string>
   <string name="playlist_max_video_length_title">Limita la lunghezza dei video</string>
   <string name="playlist_mute_videos_summary">Silenzia il suono di tutti i video</string>
   <string name="playlist_mute_videos_title">Silenzia i video</string>
@@ -322,7 +322,6 @@
   <string name="samba_videos_export_failed">Esportazione non riuscita</string>
   <string name="samba_videos_export_success">Esportazione riuscita</string>
   <string name="samba_videos_export_write_success">Esportazione riuscita delle impostazioni SMB in %1$s nella cartella Download</string>
-  <string name="samba_videos_file_already_exists">Il file delle impostazioni SMB %1$s esiste già nella cartella Download.</string>
   <string name="samba_videos_file_not_found">Impossibile trovare il file delle impostazioni SMB nella cartella Download: %1$s</string>
   <string name="samba_videos_hostname_summary">Indirizzo IP</string>
   <string name="samba_videos_hostname_title">Nome host</string>

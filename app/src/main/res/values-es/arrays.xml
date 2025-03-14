@@ -67,10 +67,10 @@
     <item>Reducir la velocidad de reproducción de vídeo</item>
     <item>Mostrar superposiciones (si están ocultas)</item>
     <item>Apagado de pantalla, desvanecimiento y superposiciones</item>
-    <item>Seek backwards in a video</item>
+    <item>Buscar hacia atrás en un vídeo</item>
     <item>Apagado de pantalla, desvanecimiento y superposiciones</item>
     <item>Apagado de pantalla, desvanecimiento y superposiciones</item>
-    <item>Show overlays, if hidden</item>
+    <item>Mostrar superposiciones, si están ocultas</item>
     <item>Apagado de pantalla, desvanecimiento y superposiciones</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
@@ -137,11 +137,11 @@
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 Level</item>
-    <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
+    <item>\'Italia / Puesta de sol\' - 1 nivel</item>
+    <item>\'2025 / Italia / Puesta de sol\' - 2 Niveles</item>
+    <item>\'Paisajes / 2025 / Italia / Puesta de sol\' - 3 niveles</item>
+    <item>\'Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 4 niveles</item>
+    <item>\'Medios / Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 5 niveles</item>
   </string-array>
   <string-array name="description_folder_level_values" translatable="false">
     <item>1</item>
