@@ -18,24 +18,24 @@ android {
     namespace = "com.neilturner.aerialviews"
     compileSdk = 35
 
-    kotlin {
-        jvmToolchain(17)
-    }
-
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
-        versionCode = 39
+        versionCode = 40
         versionName = "1.7.5"
-        betaVersion = "-beta5"
+        betaVersion = "-beta6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         manifestPlaceholders["performanceCollectionEnabled"] = false
+    }
+
+    kotlin {
+        jvmToolchain(17)
     }
 
     buildFeatures {
