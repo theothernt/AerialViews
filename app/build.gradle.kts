@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.kotlinter.gradle)
@@ -36,6 +37,10 @@ android {
 
     kotlin {
         jvmToolchain(17)
+
+        sourceSets.configureEach {
+            languageSettings.languageVersion = "2.1"
+        }
     }
 
     buildFeatures {
@@ -57,12 +62,6 @@ android {
     bundle {
         language {
             enableSplit = false
-        }
-    }
-
-    kotlin {
-        sourceSets.configureEach {
-            languageSettings.languageVersion = "2.1"
         }
     }
 

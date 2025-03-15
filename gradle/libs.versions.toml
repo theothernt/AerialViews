@@ -36,6 +36,7 @@ coil3 = "3.1.0"
 timber = "5.0.1"
 
 junit-jupiter = "5.12.1"
+junit5 = "1.11.0.0"
 junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
@@ -120,5 +121,6 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
 gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
