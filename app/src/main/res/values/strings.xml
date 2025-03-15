@@ -297,7 +297,7 @@
   <string name="settings_dpad_title">D-Pad/Remote</string>
   <string name="settings_dpad_summary">Customise d-pad actions on your remote</string>
 
-  <string name="settings_capabilities_title">Device capabilities</string>
+  <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
 
   <string name="settings_advanced_title">Advanced</string>
