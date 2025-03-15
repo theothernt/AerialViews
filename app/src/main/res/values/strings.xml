@@ -64,7 +64,8 @@
   <string name="category_date">Date</string>
   <string name="category_phone_tablet">Phone or Tablet</string>
   <string name="category_custom_format">Custom format</string>
-  <string name="category_import_export_settings">Import/Export settings</string>
+  <string name="category_import_settings">Import settings</string>
+  <string name="category_export_settings">Export settings</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>

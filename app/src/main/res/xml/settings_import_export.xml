@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-        <PreferenceCategory app:title="@string/category_import_export_settings">
-            
+        <PreferenceCategory app:title="@string/category_export_settings">
+                <Preference
+                    app:selectable="false"
+                    app:summary="Only settings which have been changed from the defaults will be exported"/>
+
+                <Preference
+                    android:title="Export settings..."
+                    android:key="export_settings" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_import_settings">
+                <Preference
+                    app:selectable="false"
+                    app:summary="To import settings, please use a File Manager app to open the backup settings file.
+                    \n\nThis will invoke Aerial Views or give an option to do so.
+                    \n\nWhen successful, you will be asked to confirm the settings import"/>
         </PreferenceCategory>
 </PreferenceScreen>
