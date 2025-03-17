@@ -60,17 +60,17 @@
   <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
   <string-array name="button_action_entries">
     <item>Aktion ignorieren</item>
-    <item>Bildschirmschoner beenden</item>
     <item>Zum nächsten Foto / Video springen</item>
     <item>Zum vorherigen Foto / Video springen</item>
+    <item>Zum nächsten Musiktitel springen</item>
+    <item>Zum vorherigen Musiktitel springen</item>
     <item>Geschwindigkeit der Videowiedergabe erhöhen</item>
-    <item>Geschwindigkeit der Videowiedergabe reduzieren</item>
-    <item>Overlays anzeigen (falls ausgeblendet)</item>
-    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
-    <item>Seek backwards in a video</item>
-    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
-    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
-    <item>Show overlays, if hidden</item>
+    <item>Geschwindigkeit der Videowiedergabe verringern</item>
+    <item>In einem Video vorwärts suchen</item>
+    <item>In einem Video rückwärts suchen</item>
+    <item>Bildschirmschoner verlassen</item>
+    <item>Zurück zum Einstellungsbildschirm</item>
+    <item>Ausgeblendete Overlays anzeigen</item>
     <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
@@ -137,11 +137,11 @@
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 Level</item>
-    <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
+    <item>\'Italien / Sonnenuntergang\' - 1 Ebene</item>
+    <item>\'2025 / Italien / Sonnenuntergang\' - 2 Ebenen</item>
+    <item>\'Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 3 Ebenen</item>
+    <item>\'Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 4 Ebenen</item>
+    <item>\'Medien / Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 5 Ebenen</item>
   </string-array>
   <string-array name="description_folder_level_values" translatable="false">
     <item>1</item>
@@ -152,9 +152,9 @@
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Deaktiviert</item>
-    <item>Dateiname unverändert verwenden, z. B. \'Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
-    <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
-    <item>Nur Ordnernamen verwenden, z. B. \'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
+    <item>Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
+    <item>\'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
+    <item>\'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
   </string-array>
   <string name="description_video_default" translatable="false">POI</string>
   <string-array name="description_video_entries">
@@ -164,14 +164,14 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Deaktiviert</item>
-    <item>Dateinamen unverändert verwenden, z. B. \'Flying towards Mount Pilatus.mp4\' wird zu \'Flying towards Mount Pilatus\'</item>
-    <item>Ordner und Dateinamen unverändert verwenden, z. B. \'Videos/Grand Canyon/Sunset.mp4\' wird zu \'Grand Canyon/Sunset\'</item>
-    <item>Nur Ordnernamen verwenden, z. B. \'Videos/Irland/Cliffs of Moher.mp4\' wird zu \'Irland\'</item>
+    <item>\'Flug in Richtung Mount Pilatus.mp4\' wird zu \'Flug in Richtung Mount Pilatus\'</item>
+    <item>\'Videos/Grand Canyon/Sonnenuntergang.mp4\' wird zu \'Grand Canyon/Sonnenuntergang\'</item>
+    <item>\'Videos/Irland/Klippen von Moher.mp4\' wird zu \'Irland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Deaktiviert</item>
     <item>Eine kurze Beschreibung oder ein Standort</item>
-    <item>Dynamische, in vielen Sprachen verfügbare Sehenswürdigkeiten, die sich während der Wiedergabe des Videos ändern</item>
+    <item>Verfügbar in vielen Sprachen, ändern sich während der Wiedergabe</item>
   </string-array>
   <string-array name="description_video_values" translatable="false">
     <item>DISABLED</item>

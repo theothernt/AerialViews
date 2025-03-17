@@ -2,8 +2,8 @@
 <resources>
   <string name="about_date_title">Date di compilazione</string>
   <string name="about_version_title">Versione</string>
-  <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
-  <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
+  <string name="advanced_application_overlay_permission_summary">È richiesta l\'autorizzazione affinché questa app possa visualizzare una finestra nascosta speciale per modificare la frequenza di aggiornamento durante la riproduzione dei video</string>
+  <string name="advanced_application_overlay_permission_title">Abilita l\'autorizzazione per la visualizzazione in primo piano</string>
   <string name="advanced_close_on_screen_tap_summary">Uscire dallo screensaver quando si tocca lo schermo</string>
   <string name="advanced_close_on_screen_tap_title">Chiudere con un tocco sullo schermo</string>
   <string name="advanced_enable_tunneling_summary">Usa l\'accelerazione hardware, più importante per 4K/HDR</string>
@@ -54,8 +54,8 @@
   <string name="appearance_description_videos_filename_title">Usa il nome del file/cartella per la descrizione</string>
   <string name="appearance_description_videos_manifest_summary">Video Apple e della community in streaming, archiviati localmente o condivisi in rete</string>
   <string name="appearance_description_videos_manifest_title">Mostra la descrizione o i punti di interesse</string>
-  <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
-  <string name="appearance_exit_to_settings_title">Assign an action</string>
+  <string name="appearance_exit_to_settings_summary">L\'azione \"Esci dalle impostazioni\" deve essere assegnata a un pulsante o a una direzione del D-pad perché questa funzione funzioni</string>
+  <string name="appearance_exit_to_settings_title">Assegna un\'azione</string>
   <string name="appearance_fade_in_title">Dissolvenza in ingresso</string>
   <string name="appearance_fade_out_title">Dissolvenza in uscita</string>
   <string name="appearance_gradient_bottom_summary">Visualizza un gradiente dietro gli overlay nella parte inferiore dello schermo, rendendole più facili da vedere.</string>
@@ -84,8 +84,8 @@
   <string name="appearance_reveal_for_title">Timeout di visualizzazione degli overlay</string>
   <string name="appearance_scaling_summary">Modifica le opzioni di ridimensionamento e ritaglio per video e foto</string>
   <string name="appearance_scaling_title">Ridimensionamento</string>
-  <string name="appearance_screensaver_on_launch_summary">Launch into screensaver when app is launched manually from home screen</string>
-  <string name="appearance_screensaver_on_launch_title">Start screensaver on launch</string>
+  <string name="appearance_screensaver_on_launch_summary">Avvia lo screensaver quando l\'app viene avviata manualmente dalla schermata iniziale</string>
+  <string name="appearance_screensaver_on_launch_title">Avvia lo screensaver all\'avvio</string>
   <string name="appearance_show_force_latin_digits_summary">Mostra sempre i caratteri occidentali, indipendentemente dalle impostazioni della lingua di sistema.</string>
   <string name="appearance_show_force_latin_digits_title">Forza caratteri occidentali</string>
   <string name="appearance_slot1_title">Slot inferiore</string>
@@ -116,7 +116,7 @@
   <string name="capabilities_android">Android: %1$s</string>
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_codecs_title">Riepilogo codec</string>
-  <string name="capabilities_current_resolution_title">Current Resolution</string>
+  <string name="capabilities_current_resolution_title">Risoluzione corrente</string>
   <string name="capabilities_decoders_title">Decoder video</string>
   <string name="capabilities_device_title">Dispositivo</string>
   <string name="capabilities_display_title">TV/Monitor</string>
@@ -127,8 +127,8 @@
   <string name="capabilities_model">Modello: %1$s</string>
   <string name="capabilities_no">No</string>
   <string name="capabilities_not_found">Non trovato</string>
-  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
-  <string name="capabilities_resolutions_title">Available Resolutions</string>
+  <string name="capabilities_refresh_rates_title">Frequenze di aggiornamento disponibili</string>
+  <string name="capabilities_resolutions_title">Risoluzioni disponibili</string>
   <string name="capabilities_supports_dolby_vision">Supporto Dolby Vision: %1$s</string>
   <string name="capabilities_supports_hdr10">Supporto HDR10: %1$s</string>
   <string name="capabilities_ui_resolution">Risoluzione UI: %1$s</string>
@@ -169,7 +169,7 @@
   <string name="category_photos">Foto</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_progress_bar">Barra di avanzamento</string>
-  <string name="category_refresh_rate_options">Refresh rate options</string>
+  <string name="category_refresh_rate_options">Opzioni frequenza di aggiornamento</string>
   <string name="category_remote">Remote</string>
   <string name="category_samba_options">Opzioni Samba/SMB</string>
   <string name="category_scaling">Ridimensionamento</string>
@@ -196,11 +196,11 @@
   <string name="dpad_button_press_summary">Configurare le azioni del d-pad o dei pulsanti</string>
   <string name="dpad_button_right_title">Direzione a destra</string>
   <string name="dpad_button_up_title">Direzione in alto</string>
-  <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
-  <string name="dpad_music_permission_title">Music control permission</string>
-  <string name="dpad_screensaver_on_launch_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
-  <string name="dpad_screensaver_on_launch_title">Start screensaver on launch</string>
-  <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
+  <string name="dpad_music_permission_summary">Per passare al brano successivo/precedente è necessaria un\'ulteriore autorizzazione</string>
+  <string name="dpad_music_permission_title">Autorizzazione per il controllo della musica</string>
+  <string name="dpad_screensaver_on_launch_summary">L\'azione \"Esci dalle impostazioni\" deve essere assegnata a un pulsante o a una direzione del D-pad affinché questa funzione funzioni</string>
+  <string name="dpad_screensaver_on_launch_title">Avvia lo screensaver all\'avvio</string>
+  <string name="dpad_seek_interval_title">Intervallo per cercare indietro/avanti in un video</string>
   <string name="dpad_wake_on_any_button_press_summary">Se disabilitato, solo il d-pad o il pulsante assegnato termineranno la modalità black out</string>
   <string name="dpad_wake_on_any_button_press_title">Termina la modalità black out col d-pad o con un pulsante</string>
   <string name="enable_playback_logging_summary">Mostra informazioni aggiuntive sulla riproduzione nei log. Utile per la risoluzione dei problemi.</string>
@@ -285,8 +285,8 @@
   <string name="playlist_loop_short_videos_summary">I video di breve durata verranno mandati in loop per rispettare il limite di tempo, se impostato
 (ad esempio, un video di 30 secondi con un limite di 2 minuti verrà riprodotto 4 volte).</string>
   <string name="playlist_loop_short_videos_title">Video brevi</string>
-  <string name="playlist_loop_until_skipped_summary">Loops the video until manually skipped by a dpad or button press</string>
-  <string name="playlist_loop_until_skipped_title">Loop video until skipped</string>
+  <string name="playlist_loop_until_skipped_summary">Ripete il video fino a quando non viene saltato manualmente premendo il dpad o un pulsante</string>
+  <string name="playlist_loop_until_skipped_title">Ripete il video fino a quando non viene saltato</string>
   <string name="playlist_max_video_length_title">Limita la lunghezza dei video</string>
   <string name="playlist_mute_videos_summary">Silenzia il suono di tutti i video</string>
   <string name="playlist_mute_videos_title">Silenzia i video</string>
