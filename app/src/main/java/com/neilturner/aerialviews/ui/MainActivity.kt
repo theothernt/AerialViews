@@ -10,6 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.settings.ImportExportFragment
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -52,7 +53,7 @@ class MainActivity :
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         lifecycleScope.launch {
-            handleScreensaverOnLaunch()
+            handleCustomLaunching()
         }
     }
 
@@ -66,23 +67,37 @@ class MainActivity :
         outState.putCharSequence("TITLE_TAG", title)
     }
 
-    private fun handleScreensaverOnLaunch() {
+    private fun handleCustomLaunching() {
         // Check if app was restarted by user (language change)
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
 
         // Check if app was started from intent
         val hasIntentUri = intent.data != null
+        val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW && intent.type == "application/avsettings"
+
+        Timber.i(
+            "fromAppRestart: $fromAppRestart, hasIntentUri: $hasIntentUri, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
 
         if (GeneralPrefs.startScreensaverOnLaunch &&
             !hasIntentUri &&
             !fromAppRestart
         ) {
             startScreensaver()
+        } else if (hasValidIntentAndData) {
+            val bundle =
+                Bundle().apply {
+                    putParcelable("dataUri", intent.data)
+                }
+            supportFragmentManager.commit {
+                replace(
+                    R.id.container,
+                    ImportExportFragment().apply {
+                        arguments = bundle
+                    },
+                ).addToBackStack(null)
+            }
         }
-
-        Timber.i(
-            "fromAppRestart: $fromAppRestart, hasIntentUri: $hasIntentUri, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
-        )
     }
 
     private fun startScreensaver() {

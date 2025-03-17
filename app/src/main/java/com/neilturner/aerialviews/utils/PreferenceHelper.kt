@@ -8,8 +8,12 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 object PreferencesHelper {
-    fun exportPreferences(context: Context, prefsName: String, outputFile: File): Boolean {
-        return try {
+    fun exportPreferences(
+        context: Context,
+        prefsName: String,
+        outputFile: File,
+    ): Boolean =
+        try {
             val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
             val properties = Properties()
 
@@ -39,18 +43,20 @@ object PreferencesHelper {
             e.printStackTrace()
             false
         }
-    }
 
-    fun importPreferences(context: Context, prefsName: String, inputFile: File): Boolean {
-        return try {
+    fun importPreferences(
+        context: Context,
+        prefsName: String,
+        inputFile: File,
+    ): Boolean =
+        try {
             val properties = Properties()
             FileInputStream(inputFile).use { fis ->
                 properties.load(fis)
             }
 
             val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
-            prefs.edit() {
-
+            prefs.edit {
                 // Clear existing preferences
                 clear()
 
@@ -81,21 +87,20 @@ object PreferencesHelper {
                         }
 
                         keyString.startsWith("stringset_") -> {
-                            val set = if (valueString.isEmpty()) {
-                                emptySet()
-                            } else {
-                                valueString.split("|||").toSet()
-                            }
+                            val set =
+                                if (valueString.isEmpty()) {
+                                    emptySet()
+                                } else {
+                                    valueString.split("|||").toSet()
+                                }
                             putStringSet(keyString.removePrefix("stringset_"), set)
                         }
                     }
                 }
-
             }
             true
         } catch (e: Exception) {
             e.printStackTrace()
             false
         }
-    }
 }
