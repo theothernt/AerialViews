@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.annotation.SuppressLint
+import android.util.Patterns
 import androidx.core.net.toUri
 import okhttp3.OkHttpClient
 import timber.log.Timber
@@ -32,9 +33,15 @@ object UrlParser {
 
         try {
             val uri = processedUrl.toUri()
+
             // Validate basic URL components
             if (uri.host == null) {
-                throw IllegalArgumentException("Invalid URL: Missing host")
+                throw IllegalArgumentException("Invalid URL")
+            }
+
+            // Do more validation
+            if (Patterns.WEB_URL.matcher(processedUrl).matches() == false) {
+                throw IllegalArgumentException("Invalid URL")
             }
             return processedUrl
         } catch (e: Exception) {

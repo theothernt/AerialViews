@@ -67,10 +67,10 @@
     <item>הפחת את מהירות הפעלת הווידאו</item>
     <item>הצג שכבות-על (אם מוסתרות)</item>
     <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>Seek backwards in a video</item>
+    <item>חפש לאחור בסרטון</item>
     <item>מסך שחור, עמעום מדיה ושכבות-על</item>
     <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>Show overlays, if hidden</item>
+    <item>הצג שכבות-על, אם הן מוסתרות</item>
     <item>מסך שחור, עמעום מדיה ושכבות-על</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
@@ -137,11 +137,11 @@
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 Level</item>
-    <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
+    <item>\'איטליה / שקיעה\' - רמה אחת</item>
+    <item>\'2025 / איטליה / שקיעה\' - 2 רמות</item>
+    <item>\'נוף / 2025 / איטליה / שקיעה\' - 3 רמות</item>
+    <item>\'תמונות / נוף / 2025 / איטליה / שקיעה\' - 4 רמות</item>
+    <item>\'מדיה / תמונות / נוף / 2025 / איטליה / שקיעה\' - 5 רמות</item>
   </string-array>
   <string-array name="description_folder_level_values" translatable="false">
     <item>1</item>

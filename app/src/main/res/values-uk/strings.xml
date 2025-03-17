@@ -322,7 +322,6 @@
   <string name="samba_videos_export_failed">Помилка експорту</string>
   <string name="samba_videos_export_success">Успішно експортовано</string>
   <string name="samba_videos_export_write_success">Налаштування SMB успішно експортовано до %1$s у папці завантажень</string>
-  <string name="samba_videos_file_already_exists">Файл налаштувань SMB %1$s уже існує в папці завантажень</string>
   <string name="samba_videos_file_not_found">Не вдається знайти файл налаштувань SMB у папці завантажень: %1$s</string>
   <string name="samba_videos_hostname_summary">IP-адреса сервера</string>
   <string name="samba_videos_hostname_title">"Ім\'я хоста"</string>

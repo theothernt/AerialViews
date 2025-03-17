@@ -67,10 +67,10 @@
     <item>Riduci la velocità di riproduzione video</item>
     <item>Mostra overlay (se nascosti)</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
-    <item>Seek backwards in a video</item>
+    <item>Cercare all\'indietro in un video</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
-    <item>Show overlays, if hidden</item>
+    <item>Mostra le sovrapposizioni, se nascoste</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
@@ -137,11 +137,11 @@
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 Level</item>
-    <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
+    <item>\'Italia / Tramonto\' - 1 Livello</item>
+    <item>\'2025 / Italia / Tramonto\' - 2 livelli</item>
+    <item>\'Scenico / 2025 / Italia / Tramonto\' - 3 livelli</item>
+    <item>\'Foto / Scenico / 2025 / Italia / Tramonto\' - 4 livelli</item>
+    <item>\'Media / Foto / Scenico / 2025 / Italia / Tramonto\' - 5 livelli</item>
   </string-array>
   <string-array name="description_folder_level_values" translatable="false">
     <item>1</item>
@@ -570,7 +570,7 @@
     <item>10 secondi</item>
     <item>20 secondi</item>
     <item>30 secondi</item>
-    <item>1 minut0</item>
+    <item>1 minuto</item>
     <item>2 minuti</item>
     <item>5 minuti</item>
   </string-array>

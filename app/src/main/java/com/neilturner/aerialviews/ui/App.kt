@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui
 
 import android.app.Application
+import android.os.StrictMode
+import android.os.StrictMode.VmPolicy
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.VideoQuality
@@ -17,6 +19,10 @@ class App : Application() {
 
         if (BuildConfig.DEBUG || BuildConfig.FLAVOR.contains("beta", false)) {
             Timber.plant(Timber.DebugTree())
+        }
+
+        if (BuildConfig.DEBUG) {
+            //setupStrictMode()
         }
 
         if (!GeneralPrefs.checkForHevcSupport) {
@@ -39,5 +45,22 @@ class App : Application() {
 
     private fun changeOverlayOption() {
         GeneralPrefs.slotBottomRight1 = OverlayType.EMPTY
+    }
+
+    private fun setupStrictMode() {
+        StrictMode.setThreadPolicy(
+            StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .penaltyFlashScreen()
+                .penaltyLog()
+                .build()
+        )
+        StrictMode.setVmPolicy(
+            VmPolicy.Builder()
+                .detectAll()
+                .penaltyLog()
+                //.penaltyDeath()
+                .build()
+        )
     }
 }

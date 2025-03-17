@@ -90,15 +90,14 @@ class ImagePlayerView : AppCompatImageView {
             }
         }
 
-    private val imageLoader: ImageLoader by lazy {
+    private val imageLoader: ImageLoader =
         ImageLoader
             .Builder(context)
             .eventListener(eventLister)
             .components {
-                OkHttpNetworkFetcherFactory(buildOkHttpClient())
+                add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
                 add(buildGifDecoder())
             }.build()
-    }
 
     private fun buildGifDecoder(): Decoder.Factory =
         if (SDK_INT >= 28) {
