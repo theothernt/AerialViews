@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
+import android.os.Environment
 import androidx.core.content.edit
 import java.io.File
 import java.io.FileInputStream
@@ -10,15 +11,17 @@ import java.util.Properties
 object PreferencesHelper {
     fun exportPreferences(
         context: Context,
-        prefsName: String,
-        outputFile: File,
-    ): Boolean =
-        try {
-            val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+    ): Boolean {
+        return try {
+            val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            if (!documentsFolder.exists()) {
+                documentsFolder.mkdirs()
+            }
+
+            val outputFile = File(documentsFolder, "backup.avsettings")
+            val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
             val properties = Properties()
 
-            // Convert all preferences to Properties
-            // We'll add a type prefix to each key to handle different data types
             prefs.all.forEach { (key, value) ->
                 when (value) {
                     is Boolean -> properties.setProperty("bool_$key", value.toString())
@@ -27,22 +30,21 @@ object PreferencesHelper {
                     is Long -> properties.setProperty("long_$key", value.toString())
                     is String -> properties.setProperty("string_$key", value)
                     is Set<*> -> {
-                        // For string sets, we'll join elements with a delimiter
                         val setString = value.joinToString("|||")
                         properties.setProperty("stringset_$key", setString)
                     }
                 }
             }
 
-            // Write properties to file with a header comment
             FileOutputStream(outputFile).use { fos ->
-                properties.store(fos, "App Preferences Backup")
+                properties.store(fos, "Settings backup for Aerial Views")
             }
             true
         } catch (e: Exception) {
             e.printStackTrace()
             false
         }
+    }
 
     fun importPreferences(
         context: Context,

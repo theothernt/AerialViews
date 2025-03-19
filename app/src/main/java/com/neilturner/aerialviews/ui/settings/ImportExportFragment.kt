@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.PreferencesHelper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -89,6 +90,11 @@ class ImportExportFragment :
     }
 
     private fun exportSettings() {
-        Toast.makeText(requireContext(), "Settings exported", Toast.LENGTH_SHORT).show()
+        val success = PreferencesHelper.exportPreferences(requireContext())
+        if (success) {
+            Toast.makeText(requireContext(), "Settings exported", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Failed to export settings", Toast.LENGTH_SHORT).show()
+        }
     }
 }
