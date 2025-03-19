@@ -25,7 +25,6 @@ class SambaVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -42,6 +41,13 @@ class SambaVideosFragment :
         super.onDestroy()
     }
 
+    override fun onSharedPreferenceChanged(
+        sharedPreferences: SharedPreferences,
+        key: String?,
+    ) {
+        updateSummary()
+    }
+
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)
@@ -53,13 +59,6 @@ class SambaVideosFragment :
         }
 
         return super.onPreferenceTreeClick(preference)
-    }
-
-    override fun onSharedPreferenceChanged(
-        sharedPreferences: SharedPreferences,
-        key: String?,
-    ) {
-        updateSummary()
     }
 
     private fun updateSummary() {

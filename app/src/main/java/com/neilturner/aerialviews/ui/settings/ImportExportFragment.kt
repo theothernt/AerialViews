@@ -43,9 +43,7 @@ class ImportExportFragment :
                         )
                     }
                 } else {
-                    lifecycleScope.launch {
-                        exportSettings()
-                    }
+                    lifecycleScope.launch { exportSettings() }
                 }
             }
 
@@ -60,7 +58,7 @@ class ImportExportFragment :
     }
 
     private fun processDataUri() {
-         val dataUri: Uri? =
+        val dataUri: Uri? =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 arguments?.getParcelable("dataUri", Uri::class.java)
             } else {

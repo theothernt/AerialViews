@@ -48,11 +48,13 @@ class LocalVideosFragment :
                 }
             }
 
-        limitTextInput()
-        showNvidiaShieldNoticeIfNeeded()
-        updateEnabledOptions()
-        updateVolumeAndFolderSummary()
-        findVolumeList()
+        lifecycleScope.launch {
+            limitTextInput()
+            showNvidiaShieldNoticeIfNeeded()
+            updateEnabledOptions()
+            updateVolumeAndFolderSummary()
+            findVolumeList()
+        }
     }
 
     override fun onDestroy() {
@@ -66,9 +68,7 @@ class LocalVideosFragment :
         }
 
         if (preference.key.contains("local_videos_search_test")) {
-            lifecycleScope.launch {
-                testLocalVideosFilter()
-            }
+            lifecycleScope.launch { testLocalVideosFilter() }
             return true
         }
 
@@ -126,10 +126,11 @@ class LocalVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_filter_folder")?.setOnBindEditTextListener {
-            it.setSingleLine()
-        }
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_filter_folder")
+            ?.setOnBindEditTextListener { it.setSingleLine() }
+
+        preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
+            ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private suspend fun testLocalVideosFilter() =
@@ -141,13 +142,12 @@ class LocalVideosFragment :
         }
 
     private fun checkForMediaPermission() {
-        // If we already have permission, exit
         if (PermissionHelper.hasMediaReadPermission(requireContext())) {
+            // If we already have permission, exit
             return
         }
 
-        val permissions = PermissionHelper.getReadMediaPermissions()
-        requestMultiplePermissions.launch(permissions)
+        requestMultiplePermissions.launch(PermissionHelper.getReadMediaPermissions())
     }
 
     private fun disableLocalMediaPreference() {
