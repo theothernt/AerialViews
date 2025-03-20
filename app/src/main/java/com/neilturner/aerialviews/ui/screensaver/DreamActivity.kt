@@ -55,7 +55,9 @@ class DreamActivity : DreamService() {
         // Start playback, etc
     }
 
-    private fun altWakeUp(exitApp: Boolean) = wakeUp()
+    private fun altWakeUp(exitApp: Boolean) {
+        if (exitApp) wakeUp()
+    }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
