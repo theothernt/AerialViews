@@ -54,8 +54,12 @@ class ImportExportFragment :
             } else {
                 @Suppress("DEPRECATION")
                 arguments?.getParcelable("dataUri")
+            }?.apply {
+                PreferencesHelper.importPreferences(
+                    requireContext(),
+                    this,
+                )
             }
-
         Timber.i("Data: $dataUri")
     }
 

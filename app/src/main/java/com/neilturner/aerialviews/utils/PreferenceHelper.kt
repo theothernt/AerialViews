@@ -1,10 +1,10 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
+import android.net.Uri
 import android.os.Environment
 import androidx.core.content.edit
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.Properties
 
@@ -45,19 +45,21 @@ object PreferencesHelper {
 
     fun importPreferences(
         context: Context,
-        prefsName: String,
-        inputFile: File,
+        uri: Uri,
+        clearExisting: Boolean = false,
     ): Boolean =
         try {
-            val properties = Properties()
-            FileInputStream(inputFile).use { fis ->
-                properties.load(fis)
-            }
+            val properties =
+                Properties().apply {
+                    val stream = context.contentResolver.openInputStream(uri)
+                    this.load(stream)
+                }
 
-            val prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+            val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
             prefs.edit {
                 // Clear existing preferences
-                clear()
+                // if (clearExisting) clear()
+                // clear()
 
                 // Import all preferences from Properties
                 properties.forEach { (key, value) ->
@@ -66,23 +68,23 @@ object PreferencesHelper {
 
                     when {
                         keyString.startsWith("bool_") -> {
-                            putBoolean(keyString.removePrefix("bool_"), valueString.toBoolean())
+                            // putBoolean(keyString.removePrefix("bool_"), valueString.toBoolean())
                         }
 
                         keyString.startsWith("float_") -> {
-                            putFloat(keyString.removePrefix("float_"), valueString.toFloat())
+                            // putFloat(keyString.removePrefix("float_"), valueString.toFloat())
                         }
 
                         keyString.startsWith("int_") -> {
-                            putInt(keyString.removePrefix("int_"), valueString.toInt())
+                            // putInt(keyString.removePrefix("int_"), valueString.toInt())
                         }
 
                         keyString.startsWith("long_") -> {
-                            putLong(keyString.removePrefix("long_"), valueString.toLong())
+                            // putLong(keyString.removePrefix("long_"), valueString.toLong())
                         }
 
                         keyString.startsWith("string_") -> {
-                            putString(keyString.removePrefix("string_"), valueString)
+                            // putString(keyString.removePrefix("string_"), valueString)
                         }
 
                         keyString.startsWith("stringset_") -> {
@@ -92,7 +94,7 @@ object PreferencesHelper {
                                 } else {
                                     valueString.split("|||").toSet()
                                 }
-                            putStringSet(keyString.removePrefix("stringset_"), set)
+                            // putStringSet(keyString.removePrefix("stringset_"), set)
                         }
                     }
                 }
