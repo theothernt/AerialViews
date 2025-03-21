@@ -126,10 +126,12 @@ class LocalVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_media_store_filter_folder")
+        preferenceScreen
+            .findPreference<EditTextPreference>("local_videos_media_store_filter_folder")
             ?.setOnBindEditTextListener { it.setSingleLine() }
 
-        preferenceScreen.findPreference<EditTextPreference>("local_videos_legacy_folder")
+        preferenceScreen
+            .findPreference<EditTextPreference>("local_videos_legacy_folder")
             ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 

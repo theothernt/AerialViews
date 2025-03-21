@@ -196,26 +196,12 @@
   <string name="samba_videos_smb_dialects_title">Select SMB dialects</string>
   <string name="samba_videos_smb_dialects_summary">Choose which versions of the SMB protocol to use</string>
 
+  <string name="samba_videos_test_results">Test results</string>
   <string name="samba_media_test_summary1">Files found: %1$s</string>
   <string name="samba_media_test_summary2">Unsupported files: %1$s</string>
   <string name="samba_media_test_summary3">Videos found: %1$s</string>
   <string name="samba_media_test_summary4">Photos found: %1$s</string>
   <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
-
-  <string name="samba_videos_import_failed">Import failed</string>
-  <string name="samba_videos_import_success">Import successful</string>
-  <string name="samba_videos_unable_to_save">Unable to save imported settings</string>
-  <string name="samba_videos_file_not_found">Can\'t find SMB settings file in Downloads folder: %1$s</string>
-  <string name="samba_videos_error_parsing">Error while reading and parsing file. Please check the file again for mistakes or invalid characters.</string>
-  <string name="samba_videos_import_save_success">SMB settings successfully imported from: %1$s</string>
-
-  <string name="samba_videos_export_failed">Export failed</string>
-  <string name="samba_videos_export_success">Export successful</string>
-  <string name="samba_videos_unable_to_write">Error while trying to write SMB settings to %1$s in the Downloads folder</string>
-  <string name="samba_videos_export_write_success">Successfully exported SMB settings to %1$s in the Downloads folder</string>
-
-  <string name="samba_videos_permission_denied">Permission Denied</string>
-  <string name="samba_videos_test_results">Test results</string>
 
   <!-- Main / Video Sources / WebDAV videos -->
   <string name="webdav_media_enabled_title">Use WebDAV share media</string>
@@ -285,6 +271,7 @@
   <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
   <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
   <string name="immich_media_url_invalid">Invalid server URL</string>
+
   <!-- Main / Settings -->
   <string name="settings_overlays_title">Overlays</string>
   <string name="settings_overlays_summary">Choose what overlays are displayed in different corners of the screen</string>
@@ -308,7 +295,7 @@
   <string name="settings_about_summary">Version, build info, etc</string>
 
   <string name="settings_import_export_settings_title">Import/Export</string>
-  <string name="settings_import_export_settings_summary">Imports or exports settings to the Downloads folder</string>
+  <string name="settings_import_export_settings_summary">Import or export settings to the Documents folder</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
@@ -533,31 +520,6 @@
 
   <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
 
-  <!-- Main / Settings / Device capabilities -->
-  <string name="capabilities_device_title">Device</string>
-  <string name="capabilities_display_title">TV/Display</string>
-  <string name="capabilities_current_resolution_title">Current Resolution</string>
-  <string name="capabilities_codecs_title">Codec Summary</string>
-  <string name="capabilities_decoders_title">Video Decoders</string>
-  <string name="capabilities_resolutions_title">Available Resolutions</string>
-  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
-
-  <string name="capabilities_model">Model: %1$s</string>
-  <string name="capabilities_android">Android: %1$s</string>
-  <string name="capabilities_yes">Yes</string>
-  <string name="capabilities_no">No</string>
-
-  <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
-  <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
-
-  <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
-  <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
-  <string name="capabilities_found">Found</string>
-  <string name="capabilities_not_found">Not Found</string>
-  <string name="capabilities_avc">AVC: %1$s</string>
-  <string name="capabilities_hevc">HEVC: %1$s</string>
-  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
-
   <!-- Main / Settings / Advanced -->
   <string name="advanced_application_overlay_permission_title">Enable application overlay permission</string>
   <string name="advanced_application_overlay_permission_summary">Permission is required so that this app can display a special hidden window to change the refresh rate when playing videos</string>
@@ -588,6 +550,36 @@
 
   <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
   <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
+
+  <!-- Main / Settings / Device capabilities -->
+  <string name="capabilities_device_title">Device</string>
+  <string name="capabilities_display_title">TV/Display</string>
+  <string name="capabilities_current_resolution_title">Current Resolution</string>
+  <string name="capabilities_codecs_title">Codec Summary</string>
+  <string name="capabilities_decoders_title">Video Decoders</string>
+  <string name="capabilities_resolutions_title">Available Resolutions</string>
+  <string name="capabilities_refresh_rates_title">Available Refresh Rates</string>
+
+  <string name="capabilities_model">Model: %1$s</string>
+  <string name="capabilities_android">Android: %1$s</string>
+  <string name="capabilities_yes">Yes</string>
+  <string name="capabilities_no">No</string>
+
+  <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
+  <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
+
+  <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
+  <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
+  <string name="capabilities_found">Found</string>
+  <string name="capabilities_not_found">Not Found</string>
+  <string name="capabilities_avc">AVC: %1$s</string>
+  <string name="capabilities_hevc">HEVC: %1$s</string>
+  <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+
+  <!-- Main / Settings / Import / Export settings -->
+  <string name="import_export_export_settings">Export settings to Documents folder</string>
+  <string name="import_export_successful">Settings exported successfully</string>
+  <string name="import_export_failed">Failed to export settings</string>
 
   <!-- Main / Settings / About -->
   <string name="about_version_title">Version</string>

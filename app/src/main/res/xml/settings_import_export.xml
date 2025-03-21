@@ -7,7 +7,7 @@
                     app:summary="Only settings which have been changed from the defaults will be exported"/>
 
                 <Preference
-                    android:title="Export settings..."
+                    android:title="@string/import_export_export_settings"
                     android:key="export_settings" />
         </PreferenceCategory>
 

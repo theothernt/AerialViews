@@ -9,10 +9,8 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 object PreferencesHelper {
-    fun exportPreferences(
-        context: Context,
-    ): Boolean {
-        return try {
+    fun exportPreferences(context: Context): Boolean =
+        try {
             val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
             if (!documentsFolder.exists()) {
                 documentsFolder.mkdirs()
@@ -44,7 +42,6 @@ object PreferencesHelper {
             e.printStackTrace()
             false
         }
-    }
 
     fun importPreferences(
         context: Context,

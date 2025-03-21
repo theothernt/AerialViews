@@ -5,7 +5,6 @@ package com.neilturner.aerialviews.ui.settings
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
@@ -35,17 +34,7 @@ class ImportExportFragment :
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission(),
             ) { isGranted: Boolean ->
-                if (!isGranted) {
-                    lifecycleScope.launch {
-                        DialogHelper.show(
-                            requireContext(),
-                            resources.getString(R.string.samba_videos_export_failed),
-                            resources.getString(R.string.samba_videos_permission_denied),
-                        )
-                    }
-                } else {
-                    lifecycleScope.launch { exportSettings() }
-                }
+                exportSettings()
             }
 
         lifecycleScope.launch {
@@ -78,7 +67,7 @@ class ImportExportFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun checkWritePermission() {
+    private fun checkWritePermission() =
         lifecycleScope.launch {
             val hasPermission = PermissionHelper.hasDocumentWritePermission(requireContext())
             if (!hasPermission) {
@@ -87,14 +76,25 @@ class ImportExportFragment :
                 exportSettings()
             }
         }
-    }
 
-    private fun exportSettings() {
-        val success = PreferencesHelper.exportPreferences(requireContext())
-        if (success) {
-            Toast.makeText(requireContext(), "Settings exported", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(requireContext(), "Failed to export settings", Toast.LENGTH_SHORT).show()
+    private fun exportSettings() =
+        lifecycleScope.launch {
+            val success = PreferencesHelper.exportPreferences(requireContext())
+            val res = requireContext().resources
+            if (success) {
+                DialogHelper
+                    .show(
+                        requireContext(),
+                        "",
+                        res.getString(R.string.import_export_successful),
+                    ).show()
+            } else {
+                DialogHelper
+                    .show(
+                        requireContext(),
+                        "",
+                        res.getString(R.string.import_export_failed),
+                    ).show()
+            }
         }
-    }
 }
