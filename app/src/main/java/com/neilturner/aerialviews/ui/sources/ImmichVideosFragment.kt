@@ -168,7 +168,7 @@ class ImmichVideosFragment :
             val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
             val result = provider.fetchTest()
             ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
-            DialogHelper.show(requireContext(), getString(R.string.immich_media_test_results), result)
+            DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
         }
 
     private suspend fun selectAlbum() {
@@ -176,7 +176,7 @@ class ImmichVideosFragment :
         provider.fetchAlbums().fold(
             onSuccess = { albums ->
                 if (albums.isEmpty()) {
-                    DialogHelper.show(
+                    DialogHelper.showOnMain(
                         requireContext(),
                         getString(R.string.immich_media_no_albums),
                         getString(R.string.immich_media_no_albums_message),
@@ -186,7 +186,7 @@ class ImmichVideosFragment :
                 }
             },
             onFailure = { exception ->
-                DialogHelper.show(
+                DialogHelper.showOnMain(
                     requireContext(),
                     getString(R.string.immich_media_fetch_albums_error),
                     exception.message ?: getString(R.string.immich_media_unknown_error),
@@ -198,7 +198,7 @@ class ImmichVideosFragment :
     private suspend fun showAlbumSelectionDialog(albums: List<Album>) =
         withContext(Dispatchers.Main) {
             if (albums.isEmpty()) {
-                DialogHelper.show(
+                DialogHelper.showOnMain(
                     requireContext(),
                     getString(R.string.immich_media_no_albums),
                     getString(R.string.immich_media_no_albums_message),

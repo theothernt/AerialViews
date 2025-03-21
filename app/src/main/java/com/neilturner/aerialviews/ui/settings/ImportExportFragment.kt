@@ -5,8 +5,11 @@ package com.neilturner.aerialviews.ui.settings
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.CheckBox
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -17,7 +20,6 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.PreferencesHelper
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class ImportExportFragment :
     MenuStateFragment(),
@@ -48,19 +50,14 @@ class ImportExportFragment :
     }
 
     private fun processDataUri() {
-        val dataUri: Uri? =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable("dataUri", Uri::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                arguments?.getParcelable("dataUri")
-            }?.apply {
-                PreferencesHelper.importPreferences(
-                    requireContext(),
-                    this,
-                )
-            }
-        Timber.i("Data: $dataUri")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arguments?.getParcelable("dataUri", Uri::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            arguments?.getParcelable("dataUri")
+        }?.apply {
+            importSettings(this)
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -71,34 +68,68 @@ class ImportExportFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    private fun checkWritePermission() =
-        lifecycleScope.launch {
-            val hasPermission = PermissionHelper.hasDocumentWritePermission(requireContext())
-            if (!hasPermission) {
-                requestWritePermission.launch(PermissionHelper.getWriteDocumentPermission())
-            } else {
-                exportSettings()
-            }
+    private fun checkWritePermission() {
+        val hasPermission = PermissionHelper.hasDocumentWritePermission(requireContext())
+        if (!hasPermission) {
+            requestWritePermission.launch(PermissionHelper.getWriteDocumentPermission())
+        } else {
+            exportSettings()
         }
+    }
 
-    private fun exportSettings() =
-        lifecycleScope.launch {
-            val success = PreferencesHelper.exportPreferences(requireContext())
-            val res = requireContext().resources
-            if (success) {
-                DialogHelper
-                    .show(
-                        requireContext(),
-                        "",
-                        res.getString(R.string.import_export_successful),
-                    ).show()
-            } else {
-                DialogHelper
-                    .show(
-                        requireContext(),
-                        "",
-                        res.getString(R.string.import_export_failed),
-                    ).show()
-            }
+    private fun exportSettings() {
+        val success = PreferencesHelper.exportPreferences(requireContext())
+        val res = requireContext().resources
+        if (success) {
+            DialogHelper
+                .show(
+                    requireContext(),
+                    "",
+                    res.getString(R.string.import_export_export_successful),
+                )
+        } else {
+            DialogHelper
+                .show(
+                    requireContext(),
+                    "",
+                    res.getString(R.string.import_export_export_failed),
+                )
         }
+    }
+
+    private fun importSettings(uri: Uri) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_import_settings, null)
+        val clearCheckbox = dialogView.findViewById<CheckBox>(R.id.checkbox_clear_settings)
+        val res = requireContext().resources
+
+        AlertDialog
+            .Builder(requireContext())
+            .setMessage(res.getString(R.string.import_export_import_settings))
+            .setView(dialogView)
+            .setPositiveButton(res.getString(R.string.button_import)) { _, _ ->
+                val clearExisting = clearCheckbox.isChecked
+                val success =
+                    PreferencesHelper.importPreferences(
+                        requireContext(),
+                        uri,
+                        clearExisting,
+                    )
+
+                val message =
+                    if (success) {
+                        res.getString(R.string.import_export_export_successful)
+                    } else {
+                        res.getString(R.string.import_export_export_failed)
+                    }
+
+                DialogHelper
+                    .show(
+                        requireContext(),
+                        "",
+                        message,
+                    )
+            }.setNegativeButton(res.getString(R.string.button_cancel)) { dialog, _ ->
+                dialog.dismiss()
+            }.show()
+    }
 }

@@ -107,6 +107,6 @@ class WebDavVideosFragment :
             val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
             val result = provider.fetchTest()
             ensureActive()
-            DialogHelper.show(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
+            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
         }
 }

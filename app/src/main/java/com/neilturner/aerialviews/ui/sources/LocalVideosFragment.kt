@@ -140,7 +140,7 @@ class LocalVideosFragment :
             val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
             val result = provider.fetchTest()
             ensureActive()
-            DialogHelper.show(requireContext(), resources.getString(R.string.local_videos_test_results), result)
+            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), result)
         }
 
     private fun checkForMediaPermission() {

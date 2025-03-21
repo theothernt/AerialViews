@@ -35,7 +35,7 @@ object PreferencesHelper {
             }
 
             FileOutputStream(outputFile).use { fos ->
-                properties.store(fos, "Settings backup for Aerial Views")
+                properties.store(fos, "Settings backup for Aerial Views vX.X")
             }
             true
         } catch (e: Exception) {
@@ -57,34 +57,31 @@ object PreferencesHelper {
 
             val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
             prefs.edit {
-                // Clear existing preferences
-                // if (clearExisting) clear()
-                // clear()
+                if (clearExisting) clear()
 
-                // Import all preferences from Properties
                 properties.forEach { (key, value) ->
                     val keyString = key.toString()
                     val valueString = value.toString()
 
                     when {
                         keyString.startsWith("bool_") -> {
-                            // putBoolean(keyString.removePrefix("bool_"), valueString.toBoolean())
+                            putBoolean(keyString.removePrefix("bool_"), valueString.toBoolean())
                         }
 
                         keyString.startsWith("float_") -> {
-                            // putFloat(keyString.removePrefix("float_"), valueString.toFloat())
+                            putFloat(keyString.removePrefix("float_"), valueString.toFloat())
                         }
 
                         keyString.startsWith("int_") -> {
-                            // putInt(keyString.removePrefix("int_"), valueString.toInt())
+                            putInt(keyString.removePrefix("int_"), valueString.toInt())
                         }
 
                         keyString.startsWith("long_") -> {
-                            // putLong(keyString.removePrefix("long_"), valueString.toLong())
+                            putLong(keyString.removePrefix("long_"), valueString.toLong())
                         }
 
                         keyString.startsWith("string_") -> {
-                            // putString(keyString.removePrefix("string_"), valueString)
+                            putString(keyString.removePrefix("string_"), valueString)
                         }
 
                         keyString.startsWith("stringset_") -> {
@@ -94,7 +91,7 @@ object PreferencesHelper {
                                 } else {
                                     valueString.split("|||").toSet()
                                 }
-                            // putStringSet(keyString.removePrefix("stringset_"), set)
+                            putStringSet(keyString.removePrefix("stringset_"), set)
                         }
                     }
                 }
