@@ -66,7 +66,7 @@ class ProgressBar : View {
     ) {
         parentWidth = (this.parent as View).measuredWidth
 
-        if (parentWidth == 0 || length == 0L) {
+        if (parentWidth == 0 || length <= 0L) {
             return
         }
 
