@@ -65,8 +65,11 @@ android {
         }
     }
 
+    val keyProps = loadProperties("secrets.properties")
     buildTypes {
         getByName("debug") {
+            val openWeatherKey = keyProps["openWeatherDebugKey"] as String?
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"$openWeatherKey\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             applicationIdSuffix = ".debug"
@@ -75,6 +78,8 @@ android {
             // isPseudoLocalesEnabled = true
         }
         getByName("release") {
+            val openWeatherKey = keyProps["openWeatherKey"] as String?
+            buildConfigField("String", "OPEN_WEATHER_KEY", "\"$openWeatherKey\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true
@@ -90,14 +95,14 @@ android {
 
     signingConfigs {
         create("release") {
-            val releaseProps = loadProperties("release.properties")
+            val releaseProps = loadProperties("signing/release.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
             keyPassword = releaseProps["keyPassword"] as String?
         }
         create("legacy") {
-            val releaseProps = loadProperties("legacy.properties")
+            val releaseProps = loadProperties("signing/legacy.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
@@ -189,7 +194,7 @@ tasks.withType<Test>().configureEach {
 
 fun loadProperties(fileName: String): Properties {
     val properties = Properties()
-    val propertiesFile = rootProject.file("signing/$fileName")
+    val propertiesFile = rootProject.file(fileName)
     if (propertiesFile.exists()) {
         properties.load(FileInputStream(propertiesFile))
     }
