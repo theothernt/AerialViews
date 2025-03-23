@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
@@ -51,6 +52,8 @@ class ScreenController(
     private val resources by lazy { context.resources }
 
     private var nowPlayingService: NowPlayingService? = null
+    private var weatherService: WeatherService? = null
+
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -169,6 +172,12 @@ class ScreenController(
             } else {
                 showLoadingError()
             }
+
+            // Setup weather service
+            weatherService = WeatherService(context).apply {
+                update()
+            }
+
         }
 
         // 1. Load playlist

@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
+import com.neilturner.aerialviews.ui.overlays.TextWeather
 
 class OverlayHelper(
     private val context: Context,
@@ -88,6 +89,14 @@ class OverlayHelper(
             }
         }
 
+        findOverlay<TextWeather>().forEach {
+            if (it.type == OverlayType.WEATHER1) {
+                it.updateFormat("")
+            } else {
+                it.updateFormat("")
+            }
+        }
+
         // Create each row of overlays - the order of views matter
         val bottomRow =
             buildReferenceIds(
@@ -140,10 +149,13 @@ class OverlayHelper(
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
                 }
-            OverlayType.DATE ->
-                TextDate(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
+            OverlayType.WEATHER1,
+            OverlayType.WEATHER2,
+                ->
+                TextWeather(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
+                    this.type = type
                 }
             OverlayType.MUSIC1,
             OverlayType.MUSIC2,
@@ -152,6 +164,11 @@ class OverlayHelper(
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
                     this.type = type
+                }
+            OverlayType.DATE ->
+                TextDate(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_weather">
+              <Preference
+                  app:title="Location"
+                  app:summary="Dublin, Ireland" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_typography">
+                <ListPreference
+                    app:defaultValue="@string/text_size_default"
+                    app:entries="@array/text_size_entries"
+                    app:entryValues="@array/text_size_values"
+                    app:key="weather_size"
+                    app:title="@string/appearance_clock_size_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/appearance_font_weight_default"
+                    app:entries="@array/appearance_font_weight_entries"
+                    app:entryValues="@array/appearance_font_weight_values"
+                    app:key="weather_weight"
+                    app:title="@string/appearance_weight_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+</PreferenceScreen>

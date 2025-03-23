@@ -45,6 +45,7 @@
   <string name="category_startup">Startup</string>
   <string name="category_videos">Videos</string>
   <string name="category_photos">Photos</string>
+  <string name="category_weather">Weather</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_message">Message</string>
   <string name="category_typography">Typography</string>
