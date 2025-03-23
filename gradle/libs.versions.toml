@@ -1,6 +1,7 @@
 [versions]
 agp = "8.9.0"
 kotlin = "2.1.20"
+kotlin-serialization = "1.8.0"
 google-services = "4.4.2"
 ksp = "2.1.20-1.0.31"
 coroutines = "1.10.1"
@@ -46,6 +47,7 @@ profileinstaller = "1.4.1"
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
@@ -94,7 +96,7 @@ benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro
 profileinstaller = { group = "androidx.profileinstaller", name = "profileinstaller", version.ref = "profileinstaller" }
 
 [bundles]
-kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android"]
+kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "kotlinx-serialization-json"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
@@ -108,6 +110,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
