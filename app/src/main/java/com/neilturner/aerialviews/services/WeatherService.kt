@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import com.neilturner.aerialviews.BuildConfig
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
@@ -38,10 +39,11 @@ class WeatherService(private val context: Context) {
         val contentType = "application/json".toMediaType()
         val jsonConvertor = Json {
             ignoreUnknownKeys = true
+            isLenient = true
         }.asConverterFactory(contentType)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/data/2.5/")
+            .baseUrl("https://api.openweathermap.org/data/3.0/")
             .client(client)
             .addConverterFactory(jsonConvertor)
             .build()
@@ -49,43 +51,40 @@ class WeatherService(private val context: Context) {
         api = retrofit.create(WeatherApi::class.java)
     }
 
-    suspend fun update(lat: Double, lon: Double, apiKey: String) {
+    suspend fun update(lat: Double, lon: Double) {
         Timber.i("WeatherService: update()")
         try {
-            val response = api.getWeather(lat, lon, apiKey)
+            val key = BuildConfig.OPEN_WEATHER_KEY
+            val response = api.getWeather(lat, lon, key)
             Timber.i("WeatherService: Weather data: $response")
+            val weather = "${response.current.temp}°C, ${response.current.weather[0].description}"
+            Timber.i("Weather: $weather")
         } catch (e: Exception) {
             Timber.e(e, "WeatherService: Failed to fetch weather data")
         }
     }
 
     interface WeatherApi {
-        @GET("weather")
+        @GET("onecall")
         suspend fun getWeather(
             @Query("lat") lat: Double,
             @Query("lon") lon: Double,
-            @Query("appid") apiKey: String
+            @Query("appid") apiKey: String,
+            @Query("units") units: String = "metric",
         ): WeatherResponse
     }
 
     @Serializable
     data class WeatherResponse(
-        val weather: List<Weather>,
-        val main: Main,
-        val wind: Wind,
-        val sys: Sys,
-        val name: String
+        val current: Current
+    )
+
+    @Serializable
+    data class Current(
+        val temp: Double,
+        val weather: List<Weather>
     )
 
     @Serializable
     data class Weather(val description: String)
-
-    @Serializable
-    data class Main(val temp: Double, val pressure: Int, val humidity: Int)
-
-    @Serializable
-    data class Wind(val speed: Double)
-
-    @Serializable
-    data class Sys(val country: String)
 }

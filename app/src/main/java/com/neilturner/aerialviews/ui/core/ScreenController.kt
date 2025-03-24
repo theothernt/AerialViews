@@ -175,7 +175,7 @@ class ScreenController(
 
             // Setup weather service
             weatherService = WeatherService(context).apply {
-                //update()
+                update(53.35, -6.26)
             }
 
         }
