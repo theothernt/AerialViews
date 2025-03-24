@@ -66,8 +66,13 @@ class NowPlayingService(
         return null
     }
 
+    private fun unregisterCurrentController() {
+        activeController?.unregisterCallback(this)
+    }
+
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         Timber.i("onActiveSessionsChanged")
+        unregisterCurrentController()
         activeController = pickController(controllers)
         activeController?.let {
             it.registerCallback(this)
@@ -137,6 +142,7 @@ class NowPlayingService(
     fun previousTrack() = activeController?.transportControls?.skipToPrevious()
 
     fun stop() {
+        unregisterCurrentController()
         activeController = null
         metadata = null
         sessionManager?.removeOnActiveSessionsChangedListener(this)
