@@ -1,10 +1,14 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.neilturner.aerialviews.BuildConfig
+import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import okhttp3.Cache
+import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,15 +21,15 @@ import retrofit2.http.Query
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
+import kotlin.math.abs
+import kotlin.time.Duration.Companion.seconds
 
 class WeatherService(val context: Context) {
     private val api: WeatherApi
 
     init {
-        //Timber.i("WeatherService: init()")
-
-        val cacheSize = 10 * 1024 * 1024 // 10 MB
-        val cache = Cache(File(context.cacheDir, "http_cache"), cacheSize.toLong())
+        val cacheSize = 1 * 1024 * 1024 // 1 MB
+        val cache = Cache(File(context.cacheDir, "weather_cache"), cacheSize.toLong())
 
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BASIC
@@ -44,7 +48,7 @@ class WeatherService(val context: Context) {
             .cache(cache)
             .addInterceptor(logging)
             .addInterceptor(cacheStatusInterceptor)
-            //.addInterceptor(offlineCacheInterceptor(context))
+            .addInterceptor(offlineCacheInterceptor(context))
             .addNetworkInterceptor(onlineCacheInterceptor())
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
@@ -65,34 +69,85 @@ class WeatherService(val context: Context) {
         api = retrofit.create(WeatherApi::class.java)
     }
 
+    @Suppress("DEPRECATION")
+    private fun isNetworkAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            val network = connectivityManager.activeNetwork ?: return false
+            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+            return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        }
+        else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+    }
+
     fun offlineCacheInterceptor(context: Context) = Interceptor { chain ->
         var request = chain.request()
-        //if (!isNetworkAvailable(context)) {
-        if (false) { // TODO: Replace with actual network check
+        if (!isNetworkAvailable(context)) {
             request = request.newBuilder()
-                .header("Cache-Control", "public, only-if-cached, max-stale=604800") // 7 days cache
+                .header("Cache-Control", "public, only-if-cached, max-stale=86400") // 1 Day
                 .build()
         }
         chain.proceed(request)
     }
 
     fun onlineCacheInterceptor() = Interceptor { chain ->
-        val response = chain.proceed(chain.request())
-        response.newBuilder()
-            .header("Cache-Control", "public, max-age=60") // Cache data for 60 seconds
+        val cacheControlHeader = "Cache-Control"
+        val cacheControlNoCache = "no-cache"
+
+        val request = chain.request()
+        val originalResponse = chain.proceed(request)
+
+        val shouldUseCache = request.header(cacheControlHeader) != cacheControlNoCache
+        if (!shouldUseCache) return@Interceptor originalResponse
+
+        val cacheControl = CacheControl.Builder()
+            .maxAge(10, TimeUnit.MINUTES)
+            .build()
+
+        return@Interceptor originalResponse.newBuilder()
+            .header(cacheControlHeader, cacheControl.toString())
             .build()
     }
 
     suspend fun update(lat: Double, lon: Double) {
-        //Timber.i("WeatherService: update()")
         try {
             val key = BuildConfig.OPEN_WEATHER_KEY
             val response = api.getWeather(lat, lon, key)
-            Timber.i("WeatherService: Weather data: $response")
-            val weather = "${response.current.temp}°C, ${response.current.weather[0].description}"
+            val timeAgo = getTimeAgo(response.current.dt)
+            val weather = "${response.current.temp}°C, ${response.current.weather[0].description} - $timeAgo"
             Timber.i("Weather: $weather")
+
+            // Loop
+            delay(30.seconds)
+            update(lat, lon)
         } catch (e: Exception) {
-            Timber.e(e, "WeatherService: Failed to fetch weather data")
+            Timber.e(e, "Failed to fetch weather data")
+        }
+    }
+
+    fun getTimeAgo(unixTimestamp: Long): String {
+        val currentTimeMillis = System.currentTimeMillis()
+        val timestampMillis = unixTimestamp * 1000
+
+        val diffMillis = abs(currentTimeMillis - timestampMillis)
+
+        // Convert to appropriate time units
+        val seconds = TimeUnit.MILLISECONDS.toSeconds(diffMillis)
+        val minutes = TimeUnit.MILLISECONDS.toMinutes(diffMillis)
+        val hours = TimeUnit.MILLISECONDS.toHours(diffMillis)
+        val days = TimeUnit.MILLISECONDS.toDays(diffMillis)
+
+        return when {
+            seconds < 60 -> "$seconds seconds ago"
+            minutes < 60 -> "$minutes minutes ago"
+            hours < 24 -> "$hours hours ago"
+            days < 30 -> "$days days ago"
+            days < 365 -> "${days / 30} months ago"
+            else -> "${days / 365} years ago"
         }
     }
 
@@ -113,6 +168,7 @@ class WeatherService(val context: Context) {
 
     @Serializable
     data class Current(
+        val dt: Long,
         val temp: Double,
         val weather: List<Weather>
     )
