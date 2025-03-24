@@ -24,6 +24,5 @@ class TextWeather : AppCompatTextView {
     }
 
     fun updateFormat(format: String) {
-
     }
 }

@@ -174,10 +174,10 @@ class ScreenController(
             }
 
             // Setup weather service
-            weatherService = WeatherService(context).apply {
-                update(53.35, -6.26)
-            }
-
+            weatherService =
+                WeatherService(context).apply {
+                    update(53.35, -6.26)
+                }
         }
 
         // 1. Load playlist

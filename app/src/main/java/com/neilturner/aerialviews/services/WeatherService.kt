@@ -24,47 +24,56 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.seconds
 
-class WeatherService(val context: Context) {
+class WeatherService(
+    val context: Context,
+) {
     private val api: WeatherApi
 
     init {
         val cacheSize = 1 * 1024 * 1024 // 1 MB
         val cache = Cache(File(context.cacheDir, "weather_cache"), cacheSize.toLong())
 
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BASIC
-        }
-
-        val cacheStatusInterceptor = object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val response = chain.proceed(chain.request())
-                val isFromCache = response.cacheResponse != null
-                Timber.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
-                return response
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
             }
-        }
 
-        val client = OkHttpClient.Builder()
-            .cache(cache)
-            .addInterceptor(logging)
-            .addInterceptor(cacheStatusInterceptor)
-            .addInterceptor(offlineCacheInterceptor(context))
-            .addNetworkInterceptor(onlineCacheInterceptor())
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .build()
+        val cacheStatusInterceptor =
+            object : Interceptor {
+                override fun intercept(chain: Interceptor.Chain): Response {
+                    val response = chain.proceed(chain.request())
+                    val isFromCache = response.cacheResponse != null
+                    Timber.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
+                    return response
+                }
+            }
+
+        val client =
+            OkHttpClient
+                .Builder()
+                .cache(cache)
+                .addInterceptor(logging)
+                .addInterceptor(cacheStatusInterceptor)
+                .addInterceptor(offlineCacheInterceptor(context))
+                .addNetworkInterceptor(onlineCacheInterceptor())
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(10, TimeUnit.SECONDS)
+                .build()
 
         val contentType = "application/json".toMediaType()
-        val jsonConvertor = Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-        }.asConverterFactory(contentType)
+        val jsonConvertor =
+            Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            }.asConverterFactory(contentType)
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.openweathermap.org/data/3.0/")
-            .client(client)
-            .addConverterFactory(jsonConvertor)
-            .build()
+        val retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl("https://api.openweathermap.org/data/3.0/")
+                .client(client)
+                .addConverterFactory(jsonConvertor)
+                .build()
 
         api = retrofit.create(WeatherApi::class.java)
     }
@@ -77,43 +86,52 @@ class WeatherService(val context: Context) {
             val network = connectivityManager.activeNetwork ?: return false
             val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
             return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        }
-        else {
+        } else {
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnected
         }
     }
 
-    fun offlineCacheInterceptor(context: Context) = Interceptor { chain ->
-        var request = chain.request()
-        if (!isNetworkAvailable(context)) {
-            request = request.newBuilder()
-                .header("Cache-Control", "public, only-if-cached, max-stale=86400") // 1 Day
+    fun offlineCacheInterceptor(context: Context) =
+        Interceptor { chain ->
+            var request = chain.request()
+            if (!isNetworkAvailable(context)) {
+                request =
+                    request
+                        .newBuilder()
+                        .header("Cache-Control", "public, only-if-cached, max-stale=86400") // 1 Day
+                        .build()
+            }
+            chain.proceed(request)
+        }
+
+    fun onlineCacheInterceptor() =
+        Interceptor { chain ->
+            val cacheControlHeader = "Cache-Control"
+            val cacheControlNoCache = "no-cache"
+
+            val request = chain.request()
+            val originalResponse = chain.proceed(request)
+
+            val shouldUseCache = request.header(cacheControlHeader) != cacheControlNoCache
+            if (!shouldUseCache) return@Interceptor originalResponse
+
+            val cacheControl =
+                CacheControl
+                    .Builder()
+                    .maxAge(10, TimeUnit.MINUTES)
+                    .build()
+
+            return@Interceptor originalResponse
+                .newBuilder()
+                .header(cacheControlHeader, cacheControl.toString())
                 .build()
         }
-        chain.proceed(request)
-    }
 
-    fun onlineCacheInterceptor() = Interceptor { chain ->
-        val cacheControlHeader = "Cache-Control"
-        val cacheControlNoCache = "no-cache"
-
-        val request = chain.request()
-        val originalResponse = chain.proceed(request)
-
-        val shouldUseCache = request.header(cacheControlHeader) != cacheControlNoCache
-        if (!shouldUseCache) return@Interceptor originalResponse
-
-        val cacheControl = CacheControl.Builder()
-            .maxAge(10, TimeUnit.MINUTES)
-            .build()
-
-        return@Interceptor originalResponse.newBuilder()
-            .header(cacheControlHeader, cacheControl.toString())
-            .build()
-    }
-
-    suspend fun update(lat: Double, lon: Double) {
+    suspend fun update(
+        lat: Double,
+        lon: Double,
+    ) {
         try {
             val key = BuildConfig.OPEN_WEATHER_KEY
             val response = api.getWeather(lat, lon, key)
@@ -163,16 +181,18 @@ class WeatherService(val context: Context) {
 
     @Serializable
     data class WeatherResponse(
-        val current: Current
+        val current: Current,
     )
 
     @Serializable
     data class Current(
         val dt: Long,
         val temp: Double,
-        val weather: List<Weather>
+        val weather: List<Weather>,
     )
 
     @Serializable
-    data class Weather(val description: String)
+    data class Weather(
+        val description: String,
+    )
 }
