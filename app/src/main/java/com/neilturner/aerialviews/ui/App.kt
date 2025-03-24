@@ -31,7 +31,7 @@ class App : Application() {
             if (!DeviceHelper.hasHevcSupport()) changeVideoQuality()
 
             // Turn off location overlay as layout is broken on the phone
-            if (DeviceHelper.isPhone(applicationContext)) changeOverlayOption()
+            if (!DeviceHelper.isTV(applicationContext)) changeOverlayOption()
 
             GeneralPrefs.checkForHevcSupport = true
         }
