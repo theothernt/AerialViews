@@ -89,13 +89,13 @@ class OverlayHelper(
             }
         }
 
-        findOverlay<TextWeather>().forEach {
-            if (it.type == OverlayType.WEATHER1) {
-                it.updateFormat("")
-            } else {
-                it.updateFormat("")
-            }
-        }
+//        findOverlay<TextWeather>().forEach {
+//            if (it.type == OverlayType.WEATHER1) {
+//                it.updateFormat("")
+//            } else {
+//                it.updateFormat("")
+//            }
+//        }
 
         // Create each row of overlays - the order of views matter
         val bottomRow =

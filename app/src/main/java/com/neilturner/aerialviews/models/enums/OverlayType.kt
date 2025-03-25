@@ -5,7 +5,7 @@ enum class OverlayType {
     CLOCK,
     LOCATION,
     WEATHER1,
-    WEATHER2,
+//    WEATHER2,
     MUSIC1,
     MUSIC2,
     DATE,

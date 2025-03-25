@@ -23,7 +23,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
-import com.neilturner.aerialviews.services.WeatherService
+import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
@@ -176,7 +176,7 @@ class ScreenController(
             // Setup weather service
             weatherService =
                 WeatherService(context).apply {
-                    update(53.35, -6.26)
+                    startUpdates()
                 }
         }
 
@@ -384,6 +384,7 @@ class ScreenController(
         videoPlayer.release()
         imagePlayer.release()
         nowPlayingService?.stop()
+        weatherService?.stop()
     }
 
     fun skipItem(previous: Boolean = false) {
