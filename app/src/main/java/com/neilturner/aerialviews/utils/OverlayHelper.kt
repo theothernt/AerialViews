@@ -150,7 +150,7 @@ class OverlayHelper(
                     typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
                 }
             OverlayType.WEATHER1,
-            OverlayType.WEATHER2,
+            // OverlayType.WEATHER2,
             ->
                 TextWeather(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
