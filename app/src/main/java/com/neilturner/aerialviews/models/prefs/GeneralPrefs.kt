@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
+import com.neilturner.aerialviews.services.weather.WeatherUnitType
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -48,6 +49,12 @@ object GeneralPrefs : KotprefModel() {
     var dateWeight by stringPref("300", "date_weight")
     var dateSize by stringPref("18", "date_size")
 
+    // Weather
+    var weatherLocationName by stringPref("", "weather_location_name")
+    var weatherLocationLat by stringPref("", "weather_location_lat")
+    var weatherLocationLon by stringPref("", "weather_location_lon")
+    var weatherUnits by nullableEnumValuePref(WeatherUnitType.METRIC, "weather_units")
+
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(
         DescriptionManifestType.POI,
@@ -62,6 +69,7 @@ object GeneralPrefs : KotprefModel() {
         "description_photo_filename_style",
     ) // Filename - Photos
 
+    // Filename + Folder depth
     var descriptionVideoFolderLevel by stringPref("1", "description_video_folder_levels")
     var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
 

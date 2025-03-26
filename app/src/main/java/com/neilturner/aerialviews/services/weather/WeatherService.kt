@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,6 +32,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.seconds
 
 class WeatherService(
@@ -39,7 +41,6 @@ class WeatherService(
     private lateinit var weather: WeatherApi
     private val cacheSize = 1 * 1024 * 1024 // 1MB
     private val contentType = "application/json".toMediaType()
-
     private var updateJob: Job? = null
 
     val json by lazy {
@@ -86,7 +87,7 @@ class WeatherService(
     val retrofit: Retrofit by lazy {
         Retrofit
             .Builder()
-            .baseUrl("https://api.openweathermap.org/data/3.0/")
+            .baseUrl("https://api.openweathermap.org/")
             .client(client)
             .addConverterFactory(jsonConvertor)
             .build()
@@ -95,6 +96,21 @@ class WeatherService(
     init {
         // Nothing
     }
+
+    val location: LocationApi by lazy {
+        retrofit.create(LocationApi::class.java)
+    }
+
+    suspend fun lookupLocation(query: String): List<LocationResponse> =
+        try {
+            val key = BuildConfig.OPEN_WEATHER_KEY
+            val locations = location.getLocationByName(query, 10, key)
+            delay(1.seconds)
+            locations
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to fetch location data")
+            emptyList()
+        }
 
     fun startUpdates() {
         weather = retrofit.create(WeatherApi::class.java)
@@ -108,18 +124,32 @@ class WeatherService(
             }
     }
 
-    private suspend fun forecastUpdate(): String =
-        try {
+    private suspend fun forecastUpdate(): String {
+        return try {
             val key = BuildConfig.OPEN_WEATHER_KEY
-            val lat = 53.35
-            val lon = -6.26
-            val response = weather.getWeather(lat, lon, key)
+            val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
+            val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
+            val units = if (GeneralPrefs.weatherUnits == null) "metric" else GeneralPrefs.weatherUnits.toString().lowercase()
+
+            if (key.isEmpty() || lat == null || lon == null) {
+                Timber.Forest.e("Invalid location coordinates")
+                return ""
+            }
+
+            val response = weather.getWeather(lat, lon, key, units)
+
             val timeAgo = getTimeAgo(response.current.dt)
             val description =
                 response.current.weather[0]
                     .description
                     .capitalise()
-            val temperature = "${response.current.temp.roundToInt()}°C"
+
+            val unitsString = when (units) {
+                "imperial" -> "°F"
+                else -> "°C"
+            } // needed?
+
+            val temperature = "${response.current.temp.roundToInt()}°"
             val forecast = "$temperature, $description"
             Timber.Forest.i("Forecast: $forecast ($timeAgo)")
             forecast
@@ -127,6 +157,7 @@ class WeatherService(
             Timber.Forest.e(e, "Failed to fetch and parse weather data")
             ""
         }
+    }
 
     fun stop() {
         updateJob?.cancel()
@@ -152,10 +183,11 @@ class WeatherService(
             var request = chain.request()
             if (!isNetworkAvailable(context)) {
                 Timber.Forest.i("Using offline cache...")
+                val maxStale = 12.hours.inWholeSeconds.toInt()
                 request =
                     request
                         .newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=86400") // 1 Day
+                        .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
                         .build()
             }
             chain.proceed(request)
@@ -207,13 +239,38 @@ class WeatherService(
     }
 
     interface WeatherApi {
-        @GET("onecall")
+        @GET("data/3.0/onecall")
         suspend fun getWeather(
             @Query("lat") lat: Double,
             @Query("lon") lon: Double,
             @Query("appid") apiKey: String,
             @Query("units") units: String = "metric",
         ): WeatherResponse
+    }
+
+    interface LocationApi {
+        @GET("geo/1.0/direct")
+        suspend fun getLocationByName(
+            @Query("q") locationName: String,
+            @Query("limit") limit: Int = 10,
+            @Query("appid") apiKey: String,
+        ): List<LocationResponse>
+    }
+
+    @Serializable
+    data class LocationResponse(
+        val name: String,
+        val lat: Double,
+        val lon: Double,
+        val country: String,
+        val state: String? = null,
+    ) {
+        fun getDisplayName(): String =
+            if (state != null) {
+                "$name, $state, $country"
+            } else {
+                "$name, $country"
+            }
     }
 
     @Serializable

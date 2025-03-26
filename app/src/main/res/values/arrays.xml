@@ -727,4 +727,16 @@
     <item>300</item>
   </string-array>
   <string name="seek_interval_default" translatable="false">30</string>
+
+  <!-- Weather units -->
+  <string-array name="weather_units_entries">
+    <item>C° - Metric</item>
+    <item>F° - Imperial</item>
+  </string-array>
+  <string-array name="weather_units_values" translatable="false">
+    <item>METRIC</item>
+    <item>IMPERIAL</item>
+  </string-array>
+  <string name="weather_units_default" translatable="false">METRIC</string>
+
 </resources>

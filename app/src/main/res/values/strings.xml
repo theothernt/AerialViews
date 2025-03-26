@@ -351,6 +351,59 @@
   <string name="appearance_top_right_lower_slot">Top Right, Lower Slot</string>
   <string name="appearance_top_right_upper_slot">Top Right, Upper Slot</string>
 
+  <!-- Main / Settings / Overlays / Now Playing -->
+  <string name="nowplaying_permission_title">Enable system notification access</string>
+  <string name="nowplaying_permission_summary">Grants permission to skip music tracks and listen for artist/album info</string>
+
+  <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
+  <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
+
+  <string name="nowplaying_line1_title">Line 1</string>
+  <string name="nowplaying_line2_title">Line 2</string>
+
+  <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
+
+  <!-- Main / Settings / Overlays / Weather -->
+  <string name="weather_location_title">Weather</string>
+  <string name="weather_units_title">Temperature units</string>
+
+
+  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo, Japan or Chicago, IL</string>
+  <string name="weather_location_searching">Searching for locations…</string>
+
+  <!-- Main / Settings / Appearance / Location -->
+  <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>
+  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
+
+  <string name="appearance_description_videos_filename_summary">Your videos - stored locally or a network share</string>
+  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
+
+  <string name="appearance_description_photos_filename_summary">Your photos - stored locally or a network share</string>
+  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
+
+  <!-- Main / Settings / Overlays / Clock -->
+  <string name="appearance_clock_format_title">Clock format</string>
+
+  <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
+  <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
+
+  <string name="appearance_clock_size_title">Size</string>
+
+  <!-- Main / Settings / Appearance / Date -->
+  <string name="appearance_date_format_title">Date format</string>
+  <string name="appearance_date_custom_title">Specify a custom date format</string>
+  <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
+  <string name="appearance_date_size_title">Size</string>
+
+  <string name="appearance_date_custom_error">Invalid custom date format!</string>
+  <string name="appearance_date_custom_example">e.g.</string>
+
+  <!-- Main / Settings / Appearance / Message -->
+  <string name="appearance_message_line1_title">Line 1</string>
+  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+  <string name="appearance_message_line2_title">Line 2</string>
+  <string name="appearance_message_size_title">Size</string>
+
   <!-- Main / Settings / Appearance -->
   <string name="appearance_typography_title">Typography</string>
   <string name="appearance_typography_summary">Change the font used by all the overlays</string>
@@ -406,64 +459,14 @@
   <string name="appearance_fade_in_title">Fade in</string>
   <string name="appearance_fade_out_title">Fade out</string>
 
-  <!-- Main / Settings / Appearance / Clock -->
-  <string name="appearance_clock_format_title">Clock format</string>
-
-  <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-  <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
-
-  <string name="appearance_clock_size_title">Size</string>
-
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
   <string name="appearance_photo_scale_title">Photo scaling</string>
-
-  <!-- Main / Settings / Appearance / Date -->
-  <string name="appearance_date_format_title">Date format</string>
-  <string name="appearance_date_custom_title">Specify a custom date format</string>
-  <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
-  <string name="appearance_date_size_title">Size</string>
-
-  <string name="appearance_date_custom_error">Invalid custom date format!</string>
-  <string name="appearance_date_custom_example">e.g.</string>
-
-  <!-- Main / Settings / Appearance / Location -->
-  <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>
-  <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
-
-  <string name="appearance_description_videos_filename_summary">Your videos - stored locally or a network share</string>
-  <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
-
-  <string name="appearance_description_photos_filename_summary">Your photos - stored locally or a network share</string>
-  <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
   <string name="progress_bar_location_title">Location on screen</string>
   <string name="progress_bar_type_title">Show for media type</string>
   <string name="progress_bar_opacity_title">Opacity</string>
-
-  <!-- Main / Settings / Appearance / Now Playing -->
-  <string name="nowplaying_permission_title">Enable system notification access</string>
-  <string name="nowplaying_permission_summary">Grants permission to skip music tracks and listen for artist/album info</string>
-
-  <string name="nowplaying_permission_legacy_notice_summary">This feature is not available on older versions of Android TV</string>
-  <string name="nowplaying_permission_notice_summary">To enable Notification access, please look in Settings > Apps > Special Access > Notification access</string>
-
-  <string name="nowplaying_line1_title">Line 1</string>
-  <string name="nowplaying_line2_title">Line 2</string>
-
-  <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
-
-  <!-- Unsplash -->
-  <!-- Pexels? -->
-  <!-- Exif -->
-
-  <!-- Main / Settings / Appearance / Message -->
-  <string name="appearance_message_line1_title">Line 1</string>
-  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
-  <string name="appearance_message_line2_title">Line 2</string>
-
-  <string name="appearance_message_size_title">Size</string>
 
   <!-- Main / Settings / Appearance / Typography -->
   <string name="appearance_typeface_title">Typeface</string>

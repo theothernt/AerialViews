@@ -4,8 +4,17 @@
 
         <PreferenceCategory app:title="@string/category_weather">
               <Preference
-                  app:title="Location"
-                  app:summary="Dublin, Ireland" />
+                  app:key="weather_location_name"
+                  app:title="@string/weather_location_title" />
+
+                <ListPreference
+                    app:defaultValue="@string/weather_units_default"
+                    app:entries="@array/weather_units_entries"
+                    app:entryValues="@array/weather_units_values"
+                    app:key="weather_units"
+                    app:title="@string/weather_units_title"
+                    app:useSimpleSummaryProvider="true" />
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">
