@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.hours
 
 object NetworkHelpers {
-
     @Suppress("DEPRECATION")
     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -50,7 +49,8 @@ object NetworkHelpers {
     fun buildOkHttpClient(context: Context): OkHttpClient {
         val cache = Cache(File(context.cacheDir, "weather_cache"), 1 * 1024 * 1024.toLong())
 
-        return OkHttpClient.Builder()
+        return OkHttpClient
+            .Builder()
             .cache(cache)
             .addInterceptor(logging)
             .addInterceptor(cacheStatusInterceptor)

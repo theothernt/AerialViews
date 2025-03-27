@@ -84,10 +84,11 @@ class WeatherService(
                     .description
                     .capitalise()
 
-            val unitsString = when (units) {
-                "imperial" -> "°F"
-                else -> "°C"
-            } // needed?
+            val unitsString =
+                when (units) {
+                    "imperial" -> "°F"
+                    else -> "°C"
+                } // needed?
 
             val temperature = "${response.current.temp.roundToInt()}°"
             val forecast = "$temperature, $description"

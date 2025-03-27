@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 object TimeHelper {
-
     // Function to calculate time ago from a given Unix timestamp
     fun calculateTimeAgo(unixTimestamp: Long): String {
         val currentTimeMillis = System.currentTimeMillis()
