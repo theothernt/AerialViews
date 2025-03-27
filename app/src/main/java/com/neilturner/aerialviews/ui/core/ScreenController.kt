@@ -29,6 +29,7 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.ui.overlays.TextWeather
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -174,10 +175,12 @@ class ScreenController(
             }
 
             // Setup weather service
-            weatherService =
-                WeatherService(context).apply {
-                    startUpdates()
-                }
+            if (overlayHelper.findOverlay<TextWeather>().isNotEmpty()) {
+                weatherService =
+                    WeatherService(context).apply {
+                        startUpdates()
+                    }
+            }
         }
 
         // 1. Load playlist
