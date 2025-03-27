@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.services.weather.LocationResponse
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -110,7 +111,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
         }
     }
 
-    private fun showLocationSelectionDialog(locations: List<WeatherService.LocationResponse>) {
+    private fun showLocationSelectionDialog(locations: List<LocationResponse>) {
         val locationNames = locations.map { it.getDisplayName() }.toTypedArray()
 
         AlertDialog
@@ -124,7 +125,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
             .show()
     }
 
-    private fun saveLocation(location: WeatherService.LocationResponse) {
+    private fun saveLocation(location: LocationResponse) {
         val prefs = GeneralPrefs
         prefs.weatherLocationName = location.getDisplayName()
         prefs.weatherLocationLat = location.lat.toString()
