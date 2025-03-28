@@ -87,24 +87,28 @@ class ScreenController(
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
+        var backgroundColour = Color.BLACK
 
         // Setup binding for all views and controls
         view = binding.root
         loadingView = binding.loadingView.root
+        loadingView.setBackgroundColor(backgroundColour)
         loadingText = binding.loadingView.loadingText
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
 
         videoViewBinding = binding.videoView
+        videoViewBinding.root.setBackgroundColor(backgroundColour)
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
-        videoViewBinding.root.setBackgroundColor(Color.BLACK)
+
 
         imageViewBinding = binding.imageView
+        imageViewBinding.root.setBackgroundColor(backgroundColour)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
-        imageViewBinding.root.setBackgroundColor(Color.BLACK)
+
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
