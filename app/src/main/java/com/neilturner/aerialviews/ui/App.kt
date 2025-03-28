@@ -22,7 +22,7 @@ class App : Application() {
         }
 
         if (BuildConfig.DEBUG) {
-            //setupStrictMode()
+            // setupStrictMode()
         }
 
         if (!GeneralPrefs.checkForHevcSupport) {
@@ -49,18 +49,20 @@ class App : Application() {
 
     private fun setupStrictMode() {
         StrictMode.setThreadPolicy(
-            StrictMode.ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy
+                .Builder()
                 .detectAll()
                 .penaltyFlashScreen()
                 .penaltyLog()
-                .build()
+                .build(),
         )
         StrictMode.setVmPolicy(
-            VmPolicy.Builder()
+            VmPolicy
+                .Builder()
                 .detectAll()
                 .penaltyLog()
-                //.penaltyDeath()
-                .build()
+                // .penaltyDeath()
+                .build(),
         )
     }
 }
