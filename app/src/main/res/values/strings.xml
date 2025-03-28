@@ -364,11 +364,10 @@
   <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
   <!-- Main / Settings / Overlays / Weather -->
-  <string name="weather_location_title">Weather</string>
+  <string name="weather_location_title">Location</string>
   <string name="weather_units_title">Temperature units</string>
 
-
-  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo, Japan or Chicago, IL</string>
+  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
   <string name="weather_location_searching">Searching for locations…</string>
 
   <!-- Main / Settings / Appearance / Location -->

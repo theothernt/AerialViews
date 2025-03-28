@@ -75,14 +75,12 @@ class OverlaysWeatherFragment : MenuStateFragment() {
     }
 
     private fun searchLocation(query: String) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_progress, null)
+        val loadingMessage = getString(R.string.weather_location_searching)
         val progressDialog =
-            AlertDialog
-                .Builder(requireContext())
-                .setView(dialogView)
-                .setCancelable(false)
-                .create()
-
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
         progressDialog.show()
 
         lifecycleScope.launch {
