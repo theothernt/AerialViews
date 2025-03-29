@@ -18,6 +18,7 @@
   <!-- All Categories -->
   <string name="category_actions">Actions</string>
   <string name="category_advanced">Advanced</string>
+  <string name="category_background_colour">Background Colour</string>
   <string name="category_video_source">Video Source</string>
   <string name="category_options">Options</string>
   <string name="category_remote">Remote</string>
@@ -349,6 +350,9 @@
   <string name="appearance_gradient_title">Gradients</string>
   <string name="appearance_gradient_summary">Display gradients behind overlays making them easier to see</string>
 
+  <string name="appearance_background_colour_title">Background Colour</string>
+  <string name="appearance_background_colour_summary">Change the colour used when a video or photo does not fill the screen</string>
+
   <string name="appearance_brightness_title">Brightness</string>
   <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
@@ -360,6 +364,11 @@
 
   <string name="appearance_startup_title">Startup</string>
   <string name="appearance_startup_summary">Change various startup options</string>
+
+  <!-- Main / Settings / Appearance / Background Colour -->
+  <string name="appearance_background_colour_loading_title">Loading screen</string>
+  <string name="appearance_background_colour_videos_title">Video player</string>
+  <string name="appearance_background_colour_photos_title">Photo player</string>
 
   <!-- Main / Settings / Appearance / Brightness -->
   <string name="appearance_brightness_level_title">Brightness level during media playback</string>

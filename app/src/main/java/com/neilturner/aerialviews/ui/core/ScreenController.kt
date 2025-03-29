@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -28,6 +27,7 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -88,23 +88,28 @@ class ScreenController(
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
 
+        val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
+        val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
+        val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
+
         // Setup binding for all views and controls
         view = binding.root
         loadingView = binding.loadingView.root
+        loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
 
         videoViewBinding = binding.videoView
+        videoViewBinding.root.setBackgroundColor(backgroundVideos)
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
-        videoViewBinding.root.setBackgroundColor(Color.BLACK)
 
         imageViewBinding = binding.imageView
+        imageViewBinding.root.setBackgroundColor(backgroundPhotos)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
-        imageViewBinding.root.setBackgroundColor(Color.BLACK)
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {

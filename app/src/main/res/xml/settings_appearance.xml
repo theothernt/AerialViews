@@ -24,6 +24,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceAnimationsFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_background_colour_title"
+                    app:summary="@string/appearance_background_colour_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBackgroundFragment"/>
+
+                <Preference
                     app:title="@string/appearance_brightness_title"
                     app:summary="@string/appearance_brightness_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBrightnessFragment"/>

@@ -722,4 +722,15 @@
     <item>300</item>
   </string-array>
   <string name="seek_interval_default" translatable="false">30</string>
+
+  <!-- Background Colors -->
+  <string-array name="background_colour_entries">
+    <item>Black</item>
+    <item>White</item>
+  </string-array>
+  <string-array name="background_colour_values" translatable="false">
+    <item>BLACK</item>
+    <item>WHITE</item>
+  </string-array>
+  <string name="background_colour_default" translatable="false">BLACK</string>
 </resources>

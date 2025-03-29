@@ -93,6 +93,11 @@ object GeneralPrefs : KotprefModel() {
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
+    // Background Colour
+    var backgroundLoading by stringPref("BLACK", "background_colour_loading")
+    var backgroundVideos by stringPref("BLACK", "background_colour_videos")
+    var backgroundPhotos by stringPref("BLACK", "background_colour_photos")
+
     // Brightness / Dimness
     var videoBrightness by stringPref("100", "video_brightness")
 
