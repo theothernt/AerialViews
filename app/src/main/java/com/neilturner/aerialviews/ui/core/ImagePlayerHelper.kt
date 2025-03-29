@@ -34,19 +34,22 @@ internal object ImagePlayerHelper {
 
             smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
                 val session = connection?.authenticate(authContext)
-                val share = session?.connectShare(shareName) as DiskShare
-                val shareAccess = hashSetOf<SMB2ShareAccess>()
-                shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-
-                share.openFile(
-                    path,
-                    EnumSet.of(AccessMask.GENERIC_READ),
-                    null,
-                    shareAccess,
-                    SMB2CreateDisposition.FILE_OPEN,
-                    null,
-                ).use { file ->
-                    return@withContext file.inputStream.readBytes()
+                try {
+                    val share = session?.connectShare(shareName) as DiskShare
+                    val shareAccess = hashSetOf<SMB2ShareAccess>()
+                    shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+                    share.openFile(
+                        path,
+                        EnumSet.of(AccessMask.GENERIC_READ),
+                        null,
+                        shareAccess,
+                        SMB2CreateDisposition.FILE_OPEN,
+                        null,
+                    ).use { file ->
+                        return@withContext file.inputStream.readBytes()
+                    }
+                } finally {
+                    session?.close()
                 }
             }
         }
