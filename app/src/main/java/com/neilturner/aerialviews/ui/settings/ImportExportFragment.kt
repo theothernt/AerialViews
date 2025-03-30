@@ -85,14 +85,14 @@ class ImportExportFragment :
                 .show(
                     requireContext(),
                     "",
-                    res.getString(R.string.import_export_export_successful),
+                    res.getString(R.string.settings_export_successful),
                 )
         } else {
             DialogHelper
                 .show(
                     requireContext(),
                     "",
-                    res.getString(R.string.import_export_export_failed),
+                    res.getString(R.string.settings_export_failed),
                 )
         }
     }
@@ -104,7 +104,7 @@ class ImportExportFragment :
 
         AlertDialog
             .Builder(requireContext())
-            .setMessage(res.getString(R.string.import_export_import_settings))
+            .setMessage(res.getString(R.string.settings_import_settings))
             .setView(dialogView)
             .setPositiveButton(res.getString(R.string.button_import)) { _, _ ->
                 val clearExisting = clearCheckbox.isChecked
@@ -117,9 +117,9 @@ class ImportExportFragment :
 
                 val message =
                     if (success) {
-                        res.getString(R.string.import_export_export_successful)
+                        res.getString(R.string.settings_export_successful)
                     } else {
-                        res.getString(R.string.import_export_export_failed)
+                        res.getString(R.string.settings_export_failed)
                     }
 
                 DialogHelper

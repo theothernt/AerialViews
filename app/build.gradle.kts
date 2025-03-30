@@ -169,7 +169,7 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.timber)
 
-    debugImplementation(libs.leakcanary)
+    // debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)

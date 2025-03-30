@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import androidx.core.content.edit
+import com.neilturner.aerialviews.BuildConfig
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Properties
@@ -35,7 +36,7 @@ object PreferencesHelper {
             }
 
             FileOutputStream(outputFile).use { fos ->
-                properties.store(fos, "Settings backup for Aerial Views vX.X")
+                properties.store(fos, "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})")
             }
             true
         } catch (e: Exception) {
