@@ -54,6 +54,15 @@
     <item>VIDEO_4K_SDR</item>
     <item>VIDEO_4K_HDR</item>
   </string-array>
+  <string name="background_colour_default" translatable="false">BLACK</string>
+  <string-array name="background_colour_entries">
+    <item>Черный</item>
+    <item>Белый</item>
+  </string-array>
+  <string-array name="background_colour_values" translatable="false">
+    <item>BLACK</item>
+    <item>WHITE</item>
+  </string-array>
   <string name="brightness_default" translatable="false">100</string>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
@@ -565,7 +574,7 @@
     <item>SMB_2_1</item>
     <item>SMB_2_0_2</item>
   </string-array>
-  <string name="seek_interval_default" translatable="false">10</string>
+  <string name="seek_interval_default" translatable="false">30</string>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
     <item>20 сек</item>
