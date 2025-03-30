@@ -57,7 +57,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat"
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:ignore="DataExtractionRules,MediaCapabilities"
         tools:targetApi="m">
@@ -66,7 +66,6 @@
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/SettingsTheme"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
