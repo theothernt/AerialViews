@@ -36,7 +36,10 @@ object PreferencesHelper {
             }
 
             FileOutputStream(outputFile).use { fos ->
-                properties.store(fos, "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})")
+                properties.store(
+                    fos,
+                    "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
+                )
             }
             true
         } catch (e: Exception) {
