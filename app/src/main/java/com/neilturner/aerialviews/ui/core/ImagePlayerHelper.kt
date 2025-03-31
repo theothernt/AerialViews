@@ -17,9 +17,12 @@ import java.util.EnumSet
 internal object ImagePlayerHelper {
     suspend fun byteArrayFromWebDavFile(uri: Uri): ByteArray =
         withContext(Dispatchers.IO) {
-            val client = OkHttpSardine()
+            var client = OkHttpSardine()
             client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
-            return@withContext client.get(uri.toString()).readBytes()
+            val inputStream = client.get(uri.toString())
+            val byteArray = inputStream.readBytes()
+            inputStream.close()
+            return@withContext byteArray
         }
 
     suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray =
