@@ -92,13 +92,5 @@
                     app:title="@string/samba_videos_smb_dialects_title"
                     app:summary="@string/samba_videos_smb_dialects_summary"
                     app:dialogTitle="@string/samba_videos_smb_dialects_title" />
-
-                <Preference
-                    app:isPreferenceVisible="false"
-                    app:dependency="samba_videos_enabled"
-                    app:disableDependentsState="false"
-                    android:title="@string/samba_videos_import_export_settings_title"
-                    android:summary="@string/samba_videos_import_export_settings_summary"
-                    android:key="samba_videos_import_export_settings" />
         </PreferenceCategory>
 </PreferenceScreen>

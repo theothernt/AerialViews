@@ -25,9 +25,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 35
-        versionCode = 41
-        versionName = "1.7.5"
-        betaVersion = "-beta6"
+        versionCode = 42
+        versionName = "1.7.6"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -174,7 +174,7 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.timber)
 
-    debugImplementation(libs.leakcanary)
+    // debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
