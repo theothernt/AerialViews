@@ -24,7 +24,7 @@ leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
 
 # moshi = "1.15.1"
-# logging-interceptor = "4.12.0"
+logging-interceptor = "4.12.0"
 retrofit = "2.11.0"
 gson = "2.12.1"
 media3-exoplayer = "1.6.0"
@@ -71,7 +71,7 @@ kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 # converter-moshi = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
-# logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 # moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
 # moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" } # ksp
 
@@ -103,7 +103,7 @@ androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "ac
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
-kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
+kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
 # retrofit = ["retrofit", "converter-moshi", "converter-gson", "moshi-kotlin", "logging-interceptor"]
 retrofit = ["retrofit", "converter-gson"]
 coil = ["coil", "coil-okhttp", "coil-gif"]

@@ -7,10 +7,13 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -29,15 +32,13 @@ class WebDavDataSource : BaseDataSource(true) {
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
 
-        val (file, size) = openWebDavFile()
-        inputStream = file
+        openWebDavFile()
 
         val skipped = inputStream?.skip(bytesRead) ?: 0
         if (skipped < dataSpec.position) {
             throw EOFException()
         }
 
-        bytesToRead = size
         transferStarted(dataSpec)
         return bytesToRead
     }
@@ -64,24 +65,32 @@ class WebDavDataSource : BaseDataSource(true) {
         }
     }
 
-    private fun openWebDavFile(): Pair<InputStream?, Long> {
-        return try {
-            var size = 0L
-            val url = dataSpec.uri.toString()
-            if (client == null) {
-                client = OkHttpSardine()
-                client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
+    private fun openWebDavFile() {
+        Timber.i("openWebDavFile: ${dataSpec.uri}")
+
+        val url = dataSpec.uri.toString()
+
+        if (client == null) {
+            val logging = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
             }
-            val resource = client?.list(url)
-            if (resource?.isNotEmpty() == true) {
-                size = resource[0].contentLength
-            }
-            val file = client?.get(url)
-            return Pair(file, size)
-        } catch (ex: Exception) {
-            Timber.e(ex)
-            Pair(null, 0)
+
+            val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .callTimeout(3, TimeUnit.SECONDS)
+                .readTimeout(3, TimeUnit.SECONDS)
+                .writeTimeout(3, TimeUnit.SECONDS)
+                .build()
+
+            client = OkHttpSardine(okHttpClient)
+            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
         }
+
+        val resource = client?.list(url)
+        bytesToRead = resource?.get(0)?.contentLength ?: 0L
+
+        val stream = client?.get(url)
+        inputStream = stream
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -91,6 +100,8 @@ class WebDavDataSource : BaseDataSource(true) {
         offset: Int,
         readLength: Int,
     ): Int {
+        Timber.i("readInternal: $readLength")
+
         var newReadLength = readLength
         if (newReadLength == 0) {
             return 0
