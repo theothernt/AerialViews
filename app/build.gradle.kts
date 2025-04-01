@@ -161,6 +161,7 @@ dependencies {
     implementation(libs.bundles.flowbus)
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
+    implementation(libs.bundles.webdav)
 
     //ksp(libs.moshi.codegen)
     implementation(libs.bundles.exoplayer)

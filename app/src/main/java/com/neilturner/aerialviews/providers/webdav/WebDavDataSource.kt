@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.services
+package com.neilturner.aerialviews.providers.webdav
 
 import android.annotation.SuppressLint
 import androidx.media3.common.C
@@ -6,21 +6,18 @@ import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import timber.log.Timber
+import kotlinx.coroutines.runBlocking
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
-import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
-class WebDavDataSource : BaseDataSource(true) {
+class WebDavDataSource() : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
 
-    private var client: OkHttpSardine? = null
+    private var client: WebDavClient? = null
     private var inputStream: InputStream? = null
 
     private var bytesRead: Long = 0
@@ -32,12 +29,7 @@ class WebDavDataSource : BaseDataSource(true) {
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
 
-        openWebDavFile()
-
-        val skipped = inputStream?.skip(bytesRead) ?: 0
-        if (skipped < dataSpec.position) {
-            throw EOFException()
-        }
+        openWebDavFile(bytesRead)
 
         transferStarted(dataSpec)
         return bytesToRead
@@ -65,32 +57,26 @@ class WebDavDataSource : BaseDataSource(true) {
         }
     }
 
-    private fun openWebDavFile() {
-        Timber.i("openWebDavFile: ${dataSpec.uri}")
+    private fun openWebDavFile(offset: Long) {
+        val credentials = WebDavCredentials(
+            WebDavMediaPrefs.userName,
+            WebDavMediaPrefs.password
+        )
 
-        val url = dataSpec.uri.toString()
+        val host = "${WebDavMediaPrefs.scheme}://${WebDavMediaPrefs.hostName}"
+        client = WebDavClient(
+            host.toHttpUrl(),
+            credentials
+        )
 
-        if (client == null) {
-            val logging = HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.HEADERS
+        runBlocking {
+            val video = dataSpec.uri.path.toString()
+            val response = client?.get(video, offset)
+            if (response?.isSuccessful == true) {
+                bytesToRead = response.contentLength ?: 0L
+                inputStream = response.body as InputStream
             }
-
-            val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .callTimeout(3, TimeUnit.SECONDS)
-                .readTimeout(3, TimeUnit.SECONDS)
-                .writeTimeout(3, TimeUnit.SECONDS)
-                .build()
-
-            client = OkHttpSardine(okHttpClient)
-            client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
         }
-
-        val resource = client?.list(url)
-        bytesToRead = resource?.get(0)?.contentLength ?: 0L
-
-        val stream = client?.get(url)
-        inputStream = stream
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -100,22 +86,20 @@ class WebDavDataSource : BaseDataSource(true) {
         offset: Int,
         readLength: Int,
     ): Int {
-        Timber.i("readInternal: $readLength")
-
         var newReadLength = readLength
         if (newReadLength == 0) {
             return 0
         }
 
         if (bytesToRead != C.LENGTH_UNSET.toLong()) {
-            val bytesRemaining: Long = bytesToRead - bytesRead
+            val bytesRemaining: Long = bytesToRead
             if (bytesRemaining == 0L) {
                 return C.RESULT_END_OF_INPUT
             }
             newReadLength = min(newReadLength.toLong(), bytesRemaining).toInt()
         }
 
-        val read = inputStream!!.read(buffer, offset, newReadLength)
+        val read = inputStream!!.read(buffer,  offset, newReadLength)
         if (read == -1) {
             if (bytesToRead != C.LENGTH_UNSET.toLong()) {
                 throw EOFException()
@@ -129,7 +113,7 @@ class WebDavDataSource : BaseDataSource(true) {
     }
 }
 
-class WebDavDataSourceFactory : DataSource.Factory {
+class WebDavDataSourceFactory() : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource = WebDavDataSource()
 }
