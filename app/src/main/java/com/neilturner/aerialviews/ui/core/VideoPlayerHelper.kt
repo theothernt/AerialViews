@@ -190,7 +190,7 @@ object VideoPlayerHelper {
                             Timber.i("Using video duration as limit (shorter than max!)")
                             player.duration
                         } else {
-                            Timber.i("Using max length as limit")
+                            Timber.i("Using user limit")
                             maxVideoLength
                         }
                     return Pair(0, duration)
