@@ -6,18 +6,20 @@ import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import kotlinx.coroutines.runBlocking
-import okhttp3.HttpUrl.Companion.toHttpUrl
+import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import okhttp3.Headers
+import okhttp3.OkHttpClient
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
-class WebDavDataSource() : BaseDataSource(true) {
+class WebDavDataSource : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
 
-    private var client: WebDavClient? = null
+    private var client: OkHttpSardine? = null
     private var inputStream: InputStream? = null
 
     private var bytesRead: Long = 0
@@ -58,25 +60,30 @@ class WebDavDataSource() : BaseDataSource(true) {
     }
 
     private fun openWebDavFile(offset: Long) {
-        val credentials = WebDavCredentials(
-            WebDavMediaPrefs.userName,
-            WebDavMediaPrefs.password
-        )
+        val url = dataSpec.uri.toString()
 
-        val host = "${WebDavMediaPrefs.scheme}://${WebDavMediaPrefs.hostName}"
-        client = WebDavClient(
-            host.toHttpUrl(),
-            credentials
-        )
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                .callTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .build()
 
-        runBlocking {
-            val video = dataSpec.uri.path.toString()
-            val response = client?.get(video, offset)
-            if (response?.isSuccessful == true) {
-                bytesToRead = response.contentLength ?: 0L
-                inputStream = response.body as InputStream
-            }
+        client = OkHttpSardine(okHttpClient)
+        client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
+
+        val resource = client?.list(url)
+        if (resource?.isNotEmpty() == true) {
+            bytesToRead = resource[0].contentLength
         }
+
+        val headers =
+            Headers
+                .Builder()
+                .add("Range", "bytes=$offset-")
+                .build()
+        inputStream = client?.get(url, headers)
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -99,7 +106,7 @@ class WebDavDataSource() : BaseDataSource(true) {
             newReadLength = min(newReadLength.toLong(), bytesRemaining).toInt()
         }
 
-        val read = inputStream!!.read(buffer,  offset, newReadLength)
+        val read = inputStream!!.read(buffer, offset, newReadLength)
         if (read == -1) {
             if (bytesToRead != C.LENGTH_UNSET.toLong()) {
                 throw EOFException()
@@ -113,7 +120,7 @@ class WebDavDataSource() : BaseDataSource(true) {
     }
 }
 
-class WebDavDataSourceFactory() : DataSource.Factory {
+class WebDavDataSourceFactory : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
     override fun createDataSource(): DataSource = WebDavDataSource()
 }

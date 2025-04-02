@@ -8,7 +8,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.providers.WebDavMediaProvider
+import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper

@@ -160,12 +160,7 @@ dependencies {
     implementation(libs.bundles.flowbus)
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
-    // Temporary fix while app uses sardine-android and 2nd set of WebDav code
-    implementation(libs.bundles.retrofit) {
-        exclude(module = "xpp3") // Step 1: remove sardine-android
-        exclude(module = "stax") // Step 2: remove use of simple-xml
-        exclude(module = "stax-api") // Step 3: use modern kotlin alternative
-    }
+    implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)

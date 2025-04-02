@@ -24,7 +24,6 @@ leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
 
 sardine-android = "0.0.3"
-converter-simplexml = "2.11.0"
 logging-interceptor = "4.12.0"
 retrofit = "2.11.0"
 gson = "2.12.1"
@@ -83,7 +82,6 @@ coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
-converter-simplexml = { group = "com.squareup.retrofit2", name = "converter-simplexml", version.ref = "converter-simplexml"}
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
@@ -103,7 +101,7 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
-retrofit = ["retrofit", "converter-gson", "converter-simplexml"]
+retrofit = ["retrofit", "converter-gson"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 
 [plugins]
