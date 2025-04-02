@@ -278,10 +278,10 @@ class VideoPlayerView
 
             // Duration taking into account playback speed and animation timings
             val durationWithEffects =
-                duration / GeneralPrefs.playbackSpeed.toLong() - GeneralPrefs.mediaFadeOutDuration.toLong()
+                (duration / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
 
             // Duration taking into account only playback speed
-            val durationWithSpeed = duration / GeneralPrefs.playbackSpeed.toLong()
+            val durationWithSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
 
             // Delay until next media
             val delayUntilNextItem = durationWithEffects - progress
