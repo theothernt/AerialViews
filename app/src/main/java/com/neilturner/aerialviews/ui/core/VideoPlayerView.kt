@@ -279,7 +279,7 @@ class VideoPlayerView
             // Delay until next video
             val delay =
                 (
-                    (duration - exoPlayer.currentPosition) / GeneralPrefs.playbackSpeed.toDouble() -
+                    (duration - (exoPlayer.currentPosition - state.startPosition)) / GeneralPrefs.playbackSpeed.toDouble() -
                         GeneralPrefs.mediaFadeOutDuration.toLong()
                 ).toLong()
             // Current position
