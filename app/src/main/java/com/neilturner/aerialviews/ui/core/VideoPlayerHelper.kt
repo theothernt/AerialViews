@@ -126,8 +126,8 @@ object VideoPlayerHelper {
                     DefaultHttpDataSource
                         .Factory()
                         .setAllowCrossProtocolRedirects(true)
-                        .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-                        .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                        .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(5).toInt())
+                        .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(5).toInt())
 
                 // Add necessary headers for Immich
                 if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
@@ -190,7 +190,7 @@ object VideoPlayerHelper {
                             Timber.i("Using video duration as limit (shorter than max!)")
                             player.duration
                         } else {
-                            Timber.i("Using max length as limit")
+                            Timber.i("Using user limit")
                             maxVideoLength
                         }
                     return Pair(0, duration)
