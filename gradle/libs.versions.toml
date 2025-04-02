@@ -23,7 +23,7 @@ leanback = "1.0.0"
 leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
 
-sardine-android = "0.0.2"
+sardine-android = "0.0.3"
 converter-simplexml = "2.11.0"
 logging-interceptor = "4.12.0"
 retrofit = "2.11.0"
