@@ -308,8 +308,7 @@
     <item>PHOTOS</item>
     <item>VIDEOS_PHOTOS</item>
   </string-array>
-  <string name="media_type_default" translatable="false">VIDEOS</string>
-  <string name="media_type_default2" translatable="false">VIDEOS_PHOTOS</string>
+  <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
 
   <!-- Samba Video Options -->
   <string-array name="samba_videos_smb_dialects_entries" translatable="false">

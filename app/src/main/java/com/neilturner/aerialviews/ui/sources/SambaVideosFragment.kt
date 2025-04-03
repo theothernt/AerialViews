@@ -16,10 +16,7 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SambaVideosFragment :
     MenuStateFragment(),
@@ -125,11 +122,23 @@ class SambaVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private suspend fun testSambaConnection() =
-        withContext(Dispatchers.IO) {
-            val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
-            val result = provider.fetchTest()
-            ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
-            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.samba_videos_test_results), result)
-        }
+    private suspend fun testSambaConnection() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
+        val result = provider.fetchTest()
+
+        progressDialog.dismiss()
+        DialogHelper.showOnMain(
+            requireContext(),
+            resources.getString(R.string.samba_videos_test_results),
+            result,
+        )
+    }
 }

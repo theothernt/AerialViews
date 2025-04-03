@@ -18,12 +18,12 @@ class AboutFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_about, rootKey)
-        updateSummary()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("About", this)
+        updateSummary()
     }
 
     private fun updateSummary() {

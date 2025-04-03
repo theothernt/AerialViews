@@ -64,4 +64,47 @@
                     app:summary="@string/playlist_advanced_video_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistAdvancedVideoFragment"/>
         </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_advanced">
+                <ListPreference
+                    app:key="playback_max_video_length"
+                    app:defaultValue="@string/playback_max_video_length_default"
+                    app:entries="@array/playback_max_video_length_entries"
+                    app:entryValues="@array/playback_max_video_length_values"
+                    app:title="@string/playlist_max_video_length_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_max_video_length_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="loop_until_skipped"
+                    app:summary="@string/playlist_loop_until_skipped_summary"
+                    app:title="@string/playlist_loop_until_skipped_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="loop_short_videos"
+                    app:summary="@string/playlist_loop_short_videos_summary"
+                    app:title="@string/playlist_loop_short_videos_title" />
+
+                <ListPreference
+                    app:defaultValue="@string/limit_Longer_videos_default"
+                    app:entries="@array/limit_Longer_videos_entries"
+                    app:entryValues="@array/limit_Longer_videos_values"
+                    app:key="limit_longer_videos"
+                    app:title="@string/playlist_limit_longer_videos_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="random_start_position"
+                    app:summary="@string/playlist_random_start_position_summary"
+                    app:title="@string/playlist_random_start_position_title" />
+
+                <ListPreference
+                    app:defaultValue="@string/random_start_position_range_default"
+                    app:entries="@array/percentage2_entries"
+                    app:entryValues="@array/percentage2_values"
+                    app:key="random_start_position_range"
+                    app:title="@string/playlist_random_start_position_range_title" />
+        </PreferenceCategory>
 </PreferenceScreen>

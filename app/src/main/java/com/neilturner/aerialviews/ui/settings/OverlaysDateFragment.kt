@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.content.Context
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -10,6 +11,7 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class OverlaysDateFragment : MenuStateFragment() {
@@ -21,15 +23,16 @@ class OverlaysDateFragment : MenuStateFragment() {
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_date, rootKey)
 
-        entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
-
-        limitTextInput()
-        updateSummary()
+        lifecycleScope.launch {
+            entriesAndValues = findEntriesAndValues(requireContext(), R.array.date_format_values, R.array.date_format_entries)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Date", this)
+        limitTextInput()
+        updateSummary()
     }
 
     private fun updateSummary() {

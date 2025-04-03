@@ -24,13 +24,12 @@ class AdvancedFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_advanced, rootKey)
-        restartOnLanguageChange()
-        checkPermission()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Advanced", this)
+        restartOnLanguageChange()
         checkPermission()
     }
 

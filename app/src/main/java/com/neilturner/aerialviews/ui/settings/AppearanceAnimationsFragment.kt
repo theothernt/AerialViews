@@ -13,12 +13,12 @@ class AppearanceAnimationsFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_appearance_animations, rootKey)
-        updateAllSummaries()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Animations", this)
+        updateAllSummaries()
     }
 
     private fun updateAllSummaries() {

@@ -14,12 +14,12 @@ class OverlaysLocationFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_location, rootKey)
-        updateAllSummaries()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Location", this)
+        updateAllSummaries()
     }
 
     private fun updateAllSummaries() {

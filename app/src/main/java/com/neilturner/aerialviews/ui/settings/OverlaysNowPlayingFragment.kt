@@ -21,7 +21,14 @@ class OverlaysNowPlayingFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_nowplaying, rootKey)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        FirebaseHelper.logScreenView("Now Playing", this)
         checkPermission()
+
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -82,11 +89,5 @@ class OverlaysNowPlayingFragment :
             val notice = preferenceScreen.findPreference<Preference>("nowplaying_permission_notice")
             notice?.isVisible = true
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        FirebaseHelper.logScreenView("Now Playing", this)
-        checkPermission()
     }
 }

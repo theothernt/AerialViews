@@ -16,15 +16,14 @@ class OverlaysMessageFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_message, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
-        limitTextInput()
-        updateSummary()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Message", this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        limitTextInput()
+        updateSummary()
     }
 
     override fun onDestroy() {
