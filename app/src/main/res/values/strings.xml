@@ -27,7 +27,9 @@
   <string name="category_progress_bar">Progress Bar</string>
   <string name="category_media_scanner_options">Media scanner options</string>
   <string name="category_folder_access_options">Folder access options</string>
-  <string name="category_server_details">Server details and credentials</string>
+  <string name="category_server_details_and_credentials">Server details and credentials</string>
+  <string name="category_server_details">Server details</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_brightness">Brightness</string>
   <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
@@ -246,9 +248,7 @@
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
 
-  <string name="category_authentication">Server Authentication Method</string>
-  <string name="category_authentication_information">Authentication Information</string>
-  <string name="category_connection">Authentication Test</string>
+
   <string name="immich_media_select_album_summary">No album selected</string>
   <string name="immich_media_selected_album">Selected album: %1$s</string>
   <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>

@@ -9,14 +9,19 @@
                     app:title="@string/appearance_alt_text_position_title" />
 
                 <Preference
-                    app:title="@string/appearance_gradient_title"
-                    app:summary="@string/appearance_gradient_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
+                    app:title="@string/appearance_startup_title"
+                    app:summary="@string/appearance_startup_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
 
                 <Preference
                     app:title="@string/appearance_progress_bar_title"
                     app:summary="@string/appearance_progress_bar_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceProgressBarFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_gradient_title"
+                    app:summary="@string/appearance_gradient_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
 
                 <Preference
                     app:title="@string/appearance_animations_title"
@@ -37,11 +42,6 @@
                     app:title="@string/appearance_scaling_title"
                     app:summary="@string/appearance_scaling_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceScalingFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_startup_title"
-                    app:summary="@string/appearance_startup_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
 
                 <Preference
                     app:title="@string/appearance_typography_title"

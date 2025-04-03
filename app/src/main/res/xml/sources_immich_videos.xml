@@ -11,16 +11,21 @@
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default2"
+                    app:defaultValue="@string/media_type_default"
                     app:entries="@array/media_type_entries"
                     app:entryValues="@array/media_type_values"
                     app:key="immich_media_type"
                     app:title="@string/immich_media_type_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    android:title="@string/immich_media_test_connection"
+                    android:key="immich_media_test_connection" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_authentication">
-
+        <PreferenceCategory app:title="@string/category_server_details">
                 <EditTextPreference
                     app:dependency="immich_media_enabled"
                     app:key="immich_media_url"
@@ -34,7 +39,9 @@
                     app:title="@string/immich_media_validate_ssl_title"
                     app:summary="@string/immich_media_validate_ssl_summary"
                     app:defaultValue="true" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_authentication_details">
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
@@ -44,9 +51,7 @@
                     app:key="immich_media_auth_type"
                     app:title="@string/immich_media_auth_type_title"
                     app:useSimpleSummaryProvider="true" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_authentication_information">
                 <!-- Shared Link preferences -->
                 <EditTextPreference
                     app:dependency="immich_media_enabled"
@@ -77,13 +82,5 @@
                     app:disableDependentsState="false"
                     android:title="@string/immich_media_select_album"
                     android:key="immich_media_select_album" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_connection">
-                <Preference
-                    app:dependency="immich_media_enabled"
-                    app:disableDependentsState="false"
-                    android:title="@string/immich_media_test_connection"
-                    android:key="immich_media_test_connection" />
         </PreferenceCategory>
 </PreferenceScreen>

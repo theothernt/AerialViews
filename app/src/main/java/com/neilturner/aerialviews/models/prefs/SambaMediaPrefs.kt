@@ -9,7 +9,7 @@ object SambaMediaPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "samba_videos_enabled")
-    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "samba_media_type")
+    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "samba_media_type")
     var hostName by stringPref("", "samba_videos_hostname")
     var domainName by stringPref("WORKGROUP", "samba_videos_domainname")
     var shareName by stringPref("", "samba_videos_sharename")

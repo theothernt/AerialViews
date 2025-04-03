@@ -9,7 +9,7 @@ object WebDavMediaPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "webdav_media_enabled")
-    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "webdav_media_type")
+    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "webdav_media_type")
     var scheme by nullableEnumValuePref(SchemeType.HTTP, "webdav_media_scheme")
     var hostName by stringPref("", "webdav_media_hostname")
     var pathName by stringPref("", "webdav_media_pathname")
