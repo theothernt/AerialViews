@@ -32,15 +32,15 @@ class ImportExportFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_import_export, rootKey)
 
-        requestWritePermission =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission(),
-            ) { isGranted: Boolean ->
-                exportSettings()
-            }
-
         lifecycleScope.launch {
             processDataUri()
+
+            requestWritePermission =
+                registerForActivityResult(
+                    ActivityResultContracts.RequestPermission(),
+                ) { isGranted: Boolean ->
+                    exportSettings()
+                }
         }
     }
 

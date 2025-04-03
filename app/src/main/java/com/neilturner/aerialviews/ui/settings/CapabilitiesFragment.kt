@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.services.CodecType
@@ -16,6 +17,7 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.roundTo
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class CapabilitiesFragment : MenuStateFragment() {
@@ -27,15 +29,17 @@ class CapabilitiesFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_capabilities, rootKey)
-        resources = context?.resources!!
-        display = getDisplay(activity)
 
-        updateCapabilities()
+        lifecycleScope.launch {
+            resources = context?.resources!!
+            display = getDisplay(activity)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Capabilities", this)
+        updateCapabilities()
     }
 
     private fun updateCapabilities() {

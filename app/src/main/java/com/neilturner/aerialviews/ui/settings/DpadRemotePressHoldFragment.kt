@@ -18,12 +18,12 @@ class DpadRemotePressHoldFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_dpadremote_press_hold, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         showMusicPermissionOption()
         showStartScreensaverOnLaunchOption()
     }
