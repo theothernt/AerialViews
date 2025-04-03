@@ -58,11 +58,6 @@
                     app:title="@string/playlist_playback_speed_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/playlist_playback_speed_summary" />
-
-                <Preference
-                    app:title="@string/playlist_advanced_video_title"
-                    app:summary="@string/playlist_advanced_video_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistAdvancedVideoFragment"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_advanced">
