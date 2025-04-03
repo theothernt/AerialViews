@@ -99,7 +99,7 @@ class WebDavDataSource : BaseDataSource(true) {
         }
 
         if (bytesToRead != C.LENGTH_UNSET.toLong()) {
-            val bytesRemaining: Long = bytesToRead
+            val bytesRemaining: Long = bytesToRead - bytesRead
             if (bytesRemaining == 0L) {
                 return C.RESULT_END_OF_INPUT
             }
