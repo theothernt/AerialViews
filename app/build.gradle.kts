@@ -91,11 +91,8 @@ android {
 
     packaging {
         resources {
-            // Exclude META-INF/INDEX.LIST files
-            excludes.add("META-INF/INDEX.LIST")
-            // You might need these exclusions too for similar issues
-            excludes.add("META-INF/io.netty.versions.properties")
-            excludes.add("META-INF/*.kotlin_module")
+            resources.excludes.add("META-INF/INDEX.LIST")
+            resources.excludes.add("META-INF/io.netty.versions.properties")
         }
     }
 

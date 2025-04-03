@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.ui
 
-import android.content.Context
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -19,7 +18,7 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.net.BindException
 
-class KtorServer(private val context: Context) {
+class KtorServer() {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
 
     fun start() {
@@ -28,11 +27,6 @@ class KtorServer(private val context: Context) {
                 server = embeddedServer(Netty, port = 8080) {
                     configureRouting()
                     configurePlugins()
-//                    routing {
-//                        get("/") {
-//                            call.respondText("Hello, world!")
-//                        }
-//                    }
                 }.start(wait = true)
                 Timber.i("Ktor server started on port 8080")
             } catch (e: BindException) {
@@ -43,8 +37,6 @@ class KtorServer(private val context: Context) {
         }
     }
 
-
-
     fun stop() {
         server?.stop(1000, 2000)
         Timber.i("Ktor server stopped")
@@ -53,7 +45,11 @@ class KtorServer(private val context: Context) {
     private fun Application.configureRouting() {
         routing {
             get("/") {
-                call.respondText("Hello from Android Ktor Server!")
+                var params = ""
+                call.queryParameters.forEach { key, value ->
+                    params += "$key = $value \n"
+                }
+                call.respondText("Hello from Android Ktor Server!\n$params")
             }
 
             get("/status") {
@@ -71,6 +67,5 @@ class KtorServer(private val context: Context) {
                 isLenient = true
             })
         }
-        // Install additional plugins as needed
     }
 }

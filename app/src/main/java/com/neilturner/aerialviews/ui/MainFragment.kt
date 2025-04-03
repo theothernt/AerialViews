@@ -33,7 +33,7 @@ class MainFragment :
         lifecycleScope.launch {
             resetLocalPermissionIfNeeded()
 
-            ktorServer = KtorServer(requireContext())
+            ktorServer = KtorServer()
             ktorServer.start()
         }
     }
