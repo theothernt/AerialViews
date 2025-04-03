@@ -10,7 +10,7 @@ object LocalMediaPrefs : KotprefModel() {
 
     var enabled by booleanPref(false, "local_videos_enabled")
     var searchType by nullableEnumValuePref(SearchType.MEDIA_STORE, "local_videos_search_type")
-    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "local_media_type")
+    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "local_media_type")
 
     var filterEnabled by booleanPref(false, "local_videos_media_store_filter_enabled")
     var filterFolder by stringPref("", "local_videos_media_store_filter_folder")
