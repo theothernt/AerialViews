@@ -74,6 +74,8 @@
 
   <string name="appearance_description_size_title">Size</string>
 
+  <string name="message_media_searching">Searching for media…</string>
+
   <!-- Main -->
   <string name="settings_media_sources_title">Media Sources</string>
   <string name="settings_media_sources_summary">Play videos &amp; photos from the internet, USB storage, and network sources</string>
@@ -168,9 +170,7 @@
 
   <!-- Main / Video Sources / Samba videos -->
   <string name="samba_videos_enabled_title">Use SMB/Samba share media</string>
-
   <string name="samba_media_type_title">Choose media type</string>
-
   <string name="samba_videos_test_connection">Test connection settings</string>
 
   <string name="samba_videos_hostname_title">Hostname</string>

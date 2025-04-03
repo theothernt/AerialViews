@@ -18,7 +18,7 @@ import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
-import com.neilturner.aerialviews.utils.PreferencesHelper
+import com.neilturner.aerialviews.utils.PreferenceHelper
 import kotlinx.coroutines.launch
 
 class ImportExportFragment :
@@ -78,7 +78,7 @@ class ImportExportFragment :
     }
 
     private fun exportSettings() {
-        val success = PreferencesHelper.exportPreferences(requireContext())
+        val success = PreferenceHelper.exportPreferences(requireContext())
         val res = requireContext().resources
         if (success) {
             DialogHelper
@@ -109,7 +109,7 @@ class ImportExportFragment :
             .setPositiveButton(res.getString(R.string.button_import)) { _, _ ->
                 val clearExisting = clearCheckbox.isChecked
                 val success =
-                    PreferencesHelper.importPreferences(
+                    PreferenceHelper.importPreferences(
                         requireContext(),
                         uri,
                         clearExisting,

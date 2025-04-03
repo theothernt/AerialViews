@@ -13,10 +13,7 @@ import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WebDavVideosFragment :
     MenuStateFragment(),
@@ -62,7 +59,7 @@ class WebDavVideosFragment :
         // Host name
         val hostname = findPreference<EditTextPreference>("webdav_media_hostname")
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {
-            hostname?.summary = hostname?.text
+            hostname?.summary = hostname.text
         } else {
             hostname?.summary = getString(R.string.webdav_media_hostname_summary)
         }
@@ -81,7 +78,7 @@ class WebDavVideosFragment :
         // Username
         val username = findPreference<EditTextPreference>("webdav_media_username")
         if (username?.text.toStringOrEmpty().isNotEmpty()) {
-            username?.summary = username?.text
+            username?.summary = username.text
         } else {
             username?.summary = getString(R.string.webdav_media_username_summary)
         }
@@ -102,11 +99,19 @@ class WebDavVideosFragment :
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private suspend fun testWebDavConnection() =
-        withContext(Dispatchers.IO) {
-            val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
-            val result = provider.fetchTest()
-            ensureActive()
-            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
-        }
+    private suspend fun testWebDavConnection() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
+        val result = provider.fetchTest()
+
+        progressDialog.dismiss()
+        DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
+    }
 }

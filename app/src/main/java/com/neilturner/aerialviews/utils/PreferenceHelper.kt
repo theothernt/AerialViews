@@ -9,7 +9,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.util.Properties
 
-object PreferencesHelper {
+object PreferenceHelper {
     fun exportPreferences(context: Context): Boolean =
         try {
             val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)

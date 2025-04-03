@@ -16,7 +16,6 @@ import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -163,13 +162,21 @@ class ImmichVideosFragment :
         }
     }
 
-    private suspend fun testImmichConnection() =
-        withContext(Dispatchers.IO) {
-            val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-            val result = provider.fetchTest()
-            ensureActive() // Quick fix for provider methods not cancelling when coroutine is cancelled, etc
-            DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
-        }
+    private suspend fun testImmichConnection() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
+        val result = provider.fetchTest()
+
+        progressDialog.dismiss()
+        DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
+    }
 
     private suspend fun selectAlbum() {
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
