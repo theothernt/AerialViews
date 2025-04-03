@@ -22,6 +22,8 @@ import timber.log.Timber
 class MainFragment :
     MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
+    private lateinit var ktorServer: KtorServer
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -30,7 +32,15 @@ class MainFragment :
         setPreferencesFromResource(R.xml.main, rootKey)
         lifecycleScope.launch {
             resetLocalPermissionIfNeeded()
+
+            ktorServer = KtorServer(requireContext())
+            ktorServer.start()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ktorServer.stop()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

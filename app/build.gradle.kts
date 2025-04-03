@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.kotlinter.gradle)
     alias(libs.plugins.baselineprofile)
+    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 android {
@@ -85,6 +86,16 @@ android {
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["performanceCollectionEnabled"] = true
+        }
+    }
+
+    packaging {
+        resources {
+            // Exclude META-INF/INDEX.LIST files
+            excludes.add("META-INF/INDEX.LIST")
+            // You might need these exclusions too for similar issues
+            excludes.add("META-INF/io.netty.versions.properties")
+            excludes.add("META-INF/*.kotlin_module")
         }
     }
 
@@ -162,6 +173,7 @@ dependencies {
     implementation(libs.bundles.coil)
     implementation(libs.bundles.retrofit)
 
+    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.gson)

@@ -15,6 +15,8 @@ firebase-analytics = "22.4.0"
 firebase-crashlytics = "19.4.2"
 firebase-perf = "21.0.5"
 
+ktor = "3.1.2"
+
 gradle-doctor = "0.9.1"
 kotlinter-gradle = "5.0.1"
 leakcanary = "2.14"
@@ -56,6 +58,11 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebase-perf" }
+
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
 leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
@@ -103,6 +110,7 @@ flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
 retrofit = ["retrofit", "converter-gson"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
+ktor = ["ktor-server-core", "ktor-server-netty", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
