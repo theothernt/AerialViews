@@ -22,7 +22,7 @@ import com.neilturner.aerialviews.providers.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.SambaMediaProvider
-import com.neilturner.aerialviews.providers.WebDavMediaProvider
+import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList

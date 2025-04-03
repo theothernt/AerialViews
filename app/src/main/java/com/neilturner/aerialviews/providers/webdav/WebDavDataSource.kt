@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.services
+package com.neilturner.aerialviews.providers.webdav
 
 import android.annotation.SuppressLint
 import androidx.media3.common.C
@@ -7,10 +7,12 @@ import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
-import timber.log.Timber
+import okhttp3.Headers
+import okhttp3.OkHttpClient
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream
+import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -29,15 +31,8 @@ class WebDavDataSource : BaseDataSource(true) {
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
 
-        val (file, size) = openWebDavFile()
-        inputStream = file
+        openWebDavFile(bytesRead)
 
-        val skipped = inputStream?.skip(bytesRead) ?: 0
-        if (skipped < dataSpec.position) {
-            throw EOFException()
-        }
-
-        bytesToRead = size
         transferStarted(dataSpec)
         return bytesToRead
     }
@@ -64,24 +59,31 @@ class WebDavDataSource : BaseDataSource(true) {
         }
     }
 
-    private fun openWebDavFile(): Pair<InputStream?, Long> {
-        return try {
-            var size = 0L
-            val url = dataSpec.uri.toString()
-            if (client == null) {
-                client = OkHttpSardine()
-                client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
-            }
-            val resource = client?.list(url)
-            if (resource?.isNotEmpty() == true) {
-                size = resource[0].contentLength
-            }
-            val file = client?.get(url)
-            return Pair(file, size)
-        } catch (ex: Exception) {
-            Timber.e(ex)
-            Pair(null, 0)
+    private fun openWebDavFile(offset: Long) {
+        val url = dataSpec.uri.toString()
+
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                .callTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .build()
+
+        client = OkHttpSardine(okHttpClient)
+        client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
+
+        val resource = client?.list(url)
+        if (resource?.isNotEmpty() == true) {
+            bytesToRead = resource[0].contentLength
         }
+
+        val headers =
+            Headers
+                .Builder()
+                .add("Range", "bytes=$offset-")
+                .build()
+        inputStream = client?.get(url, headers)
     }
 
     @SuppressLint("UnsafeOptInUsageError")

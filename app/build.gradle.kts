@@ -163,10 +163,10 @@ dependencies {
 
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.retrofit)
     implementation(libs.bundles.flowbus)
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
+    implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)

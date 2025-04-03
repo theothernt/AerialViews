@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.providers
+package com.neilturner.aerialviews.providers.webdav
 
 import android.content.Context
 import androidx.core.net.toUri
@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.Sardine
@@ -57,7 +58,7 @@ class WebDavMediaProvider(
                     prefs.password,
                 )
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
@@ -75,7 +76,7 @@ class WebDavMediaProvider(
             media.add(item)
         }
 
-        Timber.i("Media found: ${media.size}")
+        Timber.Forest.i("Media found: ${media.size}")
         return Pair(media, webDavMedia.second)
     }
 
@@ -98,7 +99,7 @@ class WebDavMediaProvider(
                 client = OkHttpSardine()
                 client.setCredentials(userName, password, true)
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return@withContext Pair(
                     selected,
                     "Failed to create WebDAV client",
@@ -129,15 +130,32 @@ class WebDavMediaProvider(
             images = selected.size - videos
             excluded = files.size - selected.size
 
-            var message = String.format(res.getString(R.string.webdav_media_test_summary1), files.size.toString()) + "\n"
-            message += String.format(res.getString(R.string.webdav_media_test_summary2), excluded.toString()) + "\n"
+            var message =
+                String.format(
+                    res.getString(R.string.webdav_media_test_summary1),
+                    files.size.toString(),
+                ) + "\n"
+            message += String.format(
+                res.getString(R.string.webdav_media_test_summary2),
+                excluded.toString(),
+            ) + "\n"
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary3), videos.toString()) + "\n"
+                message += String.format(
+                    res.getString(R.string.webdav_media_test_summary3),
+                    videos.toString(),
+                ) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-                message += String.format(res.getString(R.string.webdav_media_test_summary4), images.toString()) + "\n"
+                message += String.format(
+                    res.getString(R.string.webdav_media_test_summary4),
+                    images.toString(),
+                ) + "\n"
             }
-            message += String.format(res.getString(R.string.webdav_media_test_summary5), selected.size.toString())
+            message +=
+                String.format(
+                    res.getString(R.string.webdav_media_test_summary5),
+                    selected.size.toString(),
+                )
             return@withContext Pair(selected, message)
         }
 
@@ -160,7 +178,7 @@ class WebDavMediaProvider(
                 }
             }
         } catch (ex: Exception) {
-            Timber.e(ex)
+            Timber.Forest.e(ex)
         }
         return files
     }

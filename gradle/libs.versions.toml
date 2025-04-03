@@ -24,14 +24,15 @@ leanback = "1.0.0"
 leanback-preference = "1.0.0"
 preference-ktx = "1.2.1"
 
+sardine-android = "0.0.3"
 logging-interceptor = "4.12.0"
 retrofit = "2.11.0"
 gson = "2.12.1"
+
+smbj = "0.11.5"
 media3-exoplayer = "1.6.0"
 flowbus = "1.1"
 kotpref = "2.13.2"
-smbj = "0.11.5"
-sardine-android = "0.0.2"
 coil3 = "3.1.0"
 timber = "5.0.1"
 
