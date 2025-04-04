@@ -311,8 +311,7 @@
     <item>ru-RU</item>
     <item>random</item>
   </string-array>
-  <string name="media_type_default" translatable="false">VIDEOS</string>
-  <string name="media_type_default2" translatable="false">VIDEOS_PHOTOS</string>
+  <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
   <string-array name="media_type_entries">
     <item>סרטונים בלבד</item>
     <item>תמונות בלבד</item>

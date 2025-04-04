@@ -145,15 +145,13 @@
   <string name="category_animation">动画</string>
   <string name="category_appearance">外观</string>
   <string name="category_apple_and_community_videos">Apple 和社区视频</string>
-  <string name="category_authentication">服务器验证方法</string>
-  <string name="category_authentication_information">认证信息</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Background Colour</string>
   <string name="category_bottom_row_left">左下角</string>
   <string name="category_bottom_row_right">右下角</string>
   <string name="category_brightness">亮度</string>
   <string name="category_capabilities">性能</string>
   <string name="category_clock">时钟</string>
-  <string name="category_connection">认证测试</string>
   <string name="category_custom_format">自定义格式</string>
   <string name="category_date">日期</string>
   <string name="category_dpad">D-Pad/遥控器</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Samba/SMB 选项</string>
   <string name="category_scaling">缩放</string>
   <string name="category_server_details">服务器详细信息和凭据</string>
+  <string name="category_server_details_and_credentials">服务器详细信息和凭据</string>
   <string name="category_settings">设置</string>
   <string name="category_slots">插槽</string>
   <string name="category_startup">启动</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">设置 &gt; 设备首选项 &gt; 存储 &gt; 自动扫描媒体</string>
   <string name="local_videos_shield_notice_title">Nvidia Shield 用户，请确保启用以下选项…</string>
   <string name="local_videos_test_results">测试结果</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">1 号线</string>
   <string name="nowplaying_line2_title">2 号线</string>
   <string name="nowplaying_permission_legacy_notice_summary">旧版本的安卓电视无法使用此功能</string>

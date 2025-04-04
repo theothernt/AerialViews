@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
@@ -18,19 +19,8 @@ import timber.log.Timber
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
-    private val resultLauncher by lazy {
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult(),
-        ) { result ->
-            if (result.resultCode == RESULT_OK) {
-                val exitApp = result.data?.getBooleanExtra("exit_app", false)
-                Timber.i("Exit app now? $exitApp")
-                if (exitApp == true) {
-                    finishAndRemoveTask()
-                }
-            }
-        }
-    }
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private var fromScreensaver = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,14 +42,29 @@ class MainActivity :
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
-        lifecycleScope.launch {
-            handleCustomLaunching()
-        }
+        resultLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.StartActivityForResult(),
+            ) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val exitApp = result.data?.getBooleanExtra("exit_app", false)
+                    Timber.i("Exit app now? $exitApp")
+                    if (exitApp == true) {
+                        fromScreensaver = false
+                        finishAndRemoveTask()
+                    } else {
+                        fromScreensaver = true
+                    }
+                }
+            }
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Main", this)
+        lifecycleScope.launch {
+            handleCustomLaunching()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -76,12 +81,13 @@ class MainActivity :
         val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW && intent.type == "application/avsettings"
 
         Timber.i(
-            "fromAppRestart: $fromAppRestart, hasIntentUri: $hasIntentUri, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+            "fromScreensaver:$fromScreensaver fromAppRestart:$fromAppRestart, hasIntentUri:$hasIntentUri, startScreensaverOnLaunch:${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
         if (GeneralPrefs.startScreensaverOnLaunch &&
             !hasIntentUri &&
-            !fromAppRestart
+            !fromAppRestart &&
+            !fromScreensaver
         ) {
             startScreensaver()
         } else if (hasValidIntentAndData) {
@@ -100,7 +106,8 @@ class MainActivity :
         }
     }
 
-    private fun startScreensaver() {
+    fun startScreensaver() {
+        fromScreensaver = false
         try {
             val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
             resultLauncher.launch(intent)

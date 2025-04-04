@@ -145,15 +145,13 @@
   <string name="category_animation">Animation</string>
   <string name="category_appearance">Apparence</string>
   <string name="category_apple_and_community_videos">Vidéos Apple et communautaires uniquement</string>
-  <string name="category_authentication">Méthode d\'authentification du serveur</string>
-  <string name="category_authentication_information">Informations d\'authentification</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Background Colour</string>
   <string name="category_bottom_row_left">En bas à gauche</string>
   <string name="category_bottom_row_right">En bas à droite</string>
   <string name="category_brightness">Luminosité</string>
   <string name="category_capabilities">Capacités</string>
   <string name="category_clock">Horloge</string>
-  <string name="category_connection">Test d\'authentification</string>
   <string name="category_custom_format">Format personnalisé</string>
   <string name="category_date">Date</string>
   <string name="category_dpad">D-Pad/Télécommande</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Options Samba/SMB</string>
   <string name="category_scaling">Mise à l\'échelle</string>
   <string name="category_server_details">Détails du serveur et informations d\'identification</string>
+  <string name="category_server_details_and_credentials">Détails du serveur et informations d\'identification</string>
   <string name="category_settings">Paramètres</string>
   <string name="category_slots">Slots</string>
   <string name="category_startup">Démarrage</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">Paramètres &gt; Préférences de l\'appareil &gt; Stockage &gt; Recherche automatique de supports</string>
   <string name="local_videos_shield_notice_title">Utilisateurs de Nvidia Shield, assurez-vous que l\'option suivante est activée…</string>
   <string name="local_videos_test_results">Résultats des tests</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">Ligne 1</string>
   <string name="nowplaying_line2_title">Ligne 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Cette fonction n\'est pas disponible sur les anciennes versions d\'Android TV.</string>

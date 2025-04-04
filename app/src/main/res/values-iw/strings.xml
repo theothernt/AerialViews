@@ -145,15 +145,13 @@
   <string name="category_animation">הנפשה</string>
   <string name="category_appearance">מראה</string>
   <string name="category_apple_and_community_videos">סרטוני אפל וקהילה בלבד</string>
-  <string name="category_authentication">שיטת אימות שרת</string>
-  <string name="category_authentication_information">פרטי אימות</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Background Colour</string>
   <string name="category_bottom_row_left">שמאלי תחתון</string>
   <string name="category_bottom_row_right">ימיני תחתון</string>
   <string name="category_brightness">בְּהִירוּת</string>
   <string name="category_capabilities">יכולות</string>
   <string name="category_clock">שעון</string>
-  <string name="category_connection">בדיקת אימות</string>
   <string name="category_custom_format">עיצוב מותאם אישית</string>
   <string name="category_date">תאריך</string>
   <string name="category_dpad">D-Pad/שלט</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">אפשרויות Samba/SMB</string>
   <string name="category_scaling">שינוי גודל</string>
   <string name="category_server_details">פרטי שרת ומשתמש</string>
+  <string name="category_server_details_and_credentials">פרטי שרת ומשתמש</string>
   <string name="category_settings">הגדרות</string>
   <string name="category_slots">חריצים</string>
   <string name="category_startup">הפעלה</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">הגדרות &gt; העדפות המכשיר &gt; אחסון &gt; סריקה אוטומטית לאיתור מדיה</string>
   <string name="local_videos_shield_notice_title">משתמשי Nvidia Shield, ודא שהאפשרות הבאה מופעלת…</string>
   <string name="local_videos_test_results">תוצאות מבחן</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">שורה 1</string>
   <string name="nowplaying_line2_title">שורה 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">תכונה זו אינה זמינה בגרסאות ישנות יותר של אנדרואיד טיוי</string>
