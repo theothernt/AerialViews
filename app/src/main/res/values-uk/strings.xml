@@ -145,15 +145,13 @@
   <string name="category_animation">Анімація</string>
   <string name="category_appearance">Вигляд</string>
   <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
-  <string name="category_authentication">Метод автентифікації сервера</string>
-  <string name="category_authentication_information">Інформація про автентифікацію</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Колір фону</string>
   <string name="category_bottom_row_left">Нижній лівий</string>
   <string name="category_bottom_row_right">Нижній правий</string>
   <string name="category_brightness">Яскравість</string>
   <string name="category_capabilities">Можливості</string>
   <string name="category_clock">Годинник</string>
-  <string name="category_connection">Тест автентифікації</string>
   <string name="category_custom_format">Свій формат</string>
   <string name="category_date">Дата</string>
   <string name="category_dpad">Хрестовині пульта управління</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Samba/SMB налаштування</string>
   <string name="category_scaling">Масштабування</string>
   <string name="category_server_details">Відомості про сервер і облікові дані</string>
+  <string name="category_server_details_and_credentials">Відомості про сервер і облікові дані</string>
   <string name="category_settings">Налаштування</string>
   <string name="category_slots">Слоти</string>
   <string name="category_startup">Запуск</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">Налаштування &gt; Налаштування пристрою &gt; Сховище &gt; Автоматичне сканування медіафайлів</string>
   <string name="local_videos_shield_notice_title">Користувачі Nvidia Shield, переконайтеся, що включена наступна опція…</string>
   <string name="local_videos_test_results">Результати випробувань</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">Лінія 1</string>
   <string name="nowplaying_line2_title">Лінія 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Ця функція недоступна у старих версіях Android TV</string>

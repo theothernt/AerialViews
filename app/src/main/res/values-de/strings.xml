@@ -145,15 +145,13 @@
   <string name="category_animation">Animation</string>
   <string name="category_appearance">Aussehen</string>
   <string name="category_apple_and_community_videos">Nur Apple und Community-Videos</string>
-  <string name="category_authentication">Server-Authentifizierungsmethode</string>
-  <string name="category_authentication_information">Authentifizierungsinformationen</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Background Colour</string>
   <string name="category_bottom_row_left">Unten Links</string>
   <string name="category_bottom_row_right">Unten Rechts</string>
   <string name="category_brightness">Helligkeit</string>
   <string name="category_capabilities">Fähigkeiten</string>
   <string name="category_clock">Uhr</string>
-  <string name="category_connection">Authentifizierungstest</string>
   <string name="category_custom_format">Angepasstes Format</string>
   <string name="category_date">Datum</string>
   <string name="category_dpad">D-Pad / Fernbedienung</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Optionen für Samba (SMB)</string>
   <string name="category_scaling">Skalierung</string>
   <string name="category_server_details">Serverdetails und Zugangsdaten</string>
+  <string name="category_server_details_and_credentials">Serverdetails und Zugangsdaten</string>
   <string name="category_settings">Einstellungen</string>
   <string name="category_slots">Slots</string>
   <string name="category_startup">Starten</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">Einstellungen &gt; Geräteeinstellungen &gt; Speicher &gt; Automatisch nach Medien durchsuchen</string>
   <string name="local_videos_shield_notice_title">\"Nvidia Shield\"-Nutzer: Bitte folgende Option aktivieren…</string>
   <string name="local_videos_test_results">Testresultate</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">Zeile 1</string>
   <string name="nowplaying_line2_title">Zeile 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Diese Funktion ist in älteren Versionen von Android TV nicht verfügbar</string>

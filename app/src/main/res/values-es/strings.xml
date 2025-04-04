@@ -145,15 +145,13 @@
   <string name="category_animation">Animación</string>
   <string name="category_appearance">Apariencia</string>
   <string name="category_apple_and_community_videos">Apple y vídeos de la comunidad</string>
-  <string name="category_authentication">Método de autenticación del servidor</string>
-  <string name="category_authentication_information">Información de autenticación</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Background Colour</string>
   <string name="category_bottom_row_left">Abajo a la izquierda</string>
   <string name="category_bottom_row_right">Abajo a la derecha</string>
   <string name="category_brightness">Brillo</string>
   <string name="category_capabilities">Capacidades</string>
   <string name="category_clock">Reloj</string>
-  <string name="category_connection">Prueba de autenticación</string>
   <string name="category_custom_format">Formato personalizado</string>
   <string name="category_date">Fecha</string>
   <string name="category_dpad">Pad Direccional/Control Remoto</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Opciones de Samba/SMB</string>
   <string name="category_scaling">Escalado</string>
   <string name="category_server_details">Detalles y credenciales del servidor</string>
+  <string name="category_server_details_and_credentials">Detalles y credenciales del servidor</string>
   <string name="category_settings">Ajustes</string>
   <string name="category_slots">Espacios</string>
   <string name="category_startup">Arranque</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">Ajustes &gt; Preferencias de Dispositivo &gt; Almacenamiento &gt; Escanear por multimedia automáticamente</string>
   <string name="local_videos_shield_notice_title">Usuarios de Nvidia Shield, asegúrense que la siguiente opción este activada…</string>
   <string name="local_videos_test_results">Resultados de la prueba</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">Línea 1</string>
   <string name="nowplaying_line2_title">Línea 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Esta función no está disponible en versiones anteriores de Android TV</string>
