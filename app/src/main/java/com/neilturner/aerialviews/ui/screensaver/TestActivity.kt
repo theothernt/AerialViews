@@ -90,9 +90,10 @@ class TestActivity : AppCompatActivity() {
             "isExitToSettingSet: ${PreferenceHelper.isExitToSettingSet()}, exitApp: $exitApp, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
-        val shouldExitApp = (GeneralPrefs.startScreensaverOnLaunch &&
-            exitApp &&
-            PreferenceHelper.isExitToSettingSet()
+        val shouldExitApp = (
+            GeneralPrefs.startScreensaverOnLaunch &&
+                exitApp &&
+                PreferenceHelper.isExitToSettingSet()
         )
         val resultIntent =
             Intent().apply {
