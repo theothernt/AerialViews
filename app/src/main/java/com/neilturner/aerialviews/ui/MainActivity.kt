@@ -79,16 +79,16 @@ class MainActivity :
         // Check if app was started from intent
         val hasIntentUri = intent.data != null
         val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW && intent.type == "application/avsettings"
+        val shouldExitApp = GeneralPrefs.startScreensaverOnLaunch &&
+                !hasIntentUri &&
+                !fromAppRestart &&
+                !fromScreensaver
 
         Timber.i(
             "fromScreensaver:$fromScreensaver fromAppRestart:$fromAppRestart, hasIntentUri:$hasIntentUri, startScreensaverOnLaunch:${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
-        if (GeneralPrefs.startScreensaverOnLaunch &&
-            !hasIntentUri &&
-            !fromAppRestart &&
-            !fromScreensaver
-        ) {
+        if (shouldExitApp) {
             startScreensaver()
         } else if (hasValidIntentAndData) {
             val bundle =

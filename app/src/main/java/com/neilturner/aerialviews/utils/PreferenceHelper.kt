@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Environment
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Properties
@@ -105,4 +106,18 @@ object PreferenceHelper {
             e.printStackTrace()
             false
         }
+
+    fun isExitToSettingSet(): Boolean {
+        var isSetup = false
+        GeneralPrefs.preferences.all.forEach {
+            if (it.key.startsWith("button_") &&
+                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
+                it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
+            ) {
+                isSetup = true
+                return@forEach
+            }
+        }
+        return isSetup
+    }
 }
