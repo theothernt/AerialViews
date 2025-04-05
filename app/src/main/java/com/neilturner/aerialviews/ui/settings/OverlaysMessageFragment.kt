@@ -42,7 +42,7 @@ class OverlaysMessageFragment :
         // Line 1
         val line1 = findPreference<EditTextPreference>("message_line1")
         if (line1?.text.toStringOrEmpty().isNotEmpty()) {
-            line1?.summary = line1?.text
+            line1?.summary = line1.text
         } else {
             line1?.summary = getString(R.string.appearance_message_line1_summary)
         }
@@ -50,7 +50,7 @@ class OverlaysMessageFragment :
         // Line 2
         val line2 = findPreference<EditTextPreference>("message_line2")
         if (line2?.text.toStringOrEmpty().isNotEmpty()) {
-            line2?.summary = line2?.text
+            line2?.summary = line2.text
         } else {
             line2?.summary = getString(R.string.appearance_message_line1_summary)
         }

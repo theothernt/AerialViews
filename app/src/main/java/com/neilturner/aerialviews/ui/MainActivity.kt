@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.settings.ImportExportFragment
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.PreferenceHelper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -73,22 +74,20 @@ class MainActivity :
     }
 
     private fun handleCustomLaunching() {
-        // Check if app was restarted by user (language change)
-        val fromAppRestart = intent.getBooleanExtra("from_app_restart", false)
-
-        // Check if app was started from intent
-        val hasIntentUri = intent.data != null
+        val fromAppRestart = intent.getBooleanExtra("from_app_restart", false) // Check if app was restarted by user (language change)
+        val hasIntentUri = intent.data != null // Check if app was started from intent
         val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW && intent.type == "application/avsettings"
+        val shouldExitApp = GeneralPrefs.startScreensaverOnLaunch &&
+                PreferenceHelper.isExitToSettingSet() &&
+                !hasIntentUri &&
+                !fromAppRestart &&
+                !fromScreensaver
 
         Timber.i(
-            "fromScreensaver:$fromScreensaver fromAppRestart:$fromAppRestart, hasIntentUri:$hasIntentUri, startScreensaverOnLaunch:${GeneralPrefs.startScreensaverOnLaunch}",
+            "isExitToSettingSet: ${PreferenceHelper.isExitToSettingSet()}, fromScreensaver:$fromScreensaver fromAppRestart:$fromAppRestart, hasIntentUri:$hasIntentUri, startScreensaverOnLaunch:${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
-        if (GeneralPrefs.startScreensaverOnLaunch &&
-            !hasIntentUri &&
-            !fromAppRestart &&
-            !fromScreensaver
-        ) {
+        if (shouldExitApp) {
             startScreensaver()
         } else if (hasValidIntentAndData) {
             val bundle =
@@ -104,6 +103,7 @@ class MainActivity :
                 ).addToBackStack(null)
             }
         }
+        fromScreensaver = false
     }
 
     fun startScreensaver() {
