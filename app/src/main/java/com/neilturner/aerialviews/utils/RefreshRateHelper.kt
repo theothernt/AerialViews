@@ -13,6 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import timber.log.Timber
+import kotlin.math.ceil
 import kotlin.math.roundToInt
 
 class RefreshRateHelper(
@@ -53,9 +54,9 @@ class RefreshRateHelper(
 
         // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
         // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
-        // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
+        // 23.97, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
         val targetRefreshRate = fps
-        val usePreciseMode = true
+        val usePreciseMode = false
         var bestMode: Display.Mode? = null
 
         bestMode =
@@ -101,35 +102,72 @@ class RefreshRateHelper(
         modes: List<Display.Mode>,
         fps: Float,
     ): Display.Mode? {
-        // Should pick 30hz over 29.97hz for 29.97fps
-        // Should pick 60hz over 30hz
-        var newMode: Display.Mode? = null
-        for (mode in modes) {
-            if (mode.refreshRate.roundToInt() % fps.roundToInt() == 0) {
-                if (newMode == null || mode.refreshRate.roundToInt() > newMode.refreshRate.roundToInt()) {
-                    newMode = mode
-                }
-            }
+        // Round the input FPS *up* to the nearest integer.
+        val targetFpsInt = ceil(fps.toDouble()).toInt()
+        Timber.d("Target FPS (rounded up): $targetFpsInt Hz")
+
+        // Avoid division by zero if fps rounds up to 0 (shouldn't happen with fps > 0 check earlier)
+        if (targetFpsInt == 0) {
+            Timber.w("Rounded target FPS is 0, cannot find multiple.")
+            return null
         }
-        return newMode
+
+        // Find modes where the rounded refresh rate is a multiple of the rounded-up FPS.
+        val suitableModes = modes.filter { mode ->
+            val roundedRefreshRate = mode.refreshRate.roundToInt()
+            // Check if refresh rate is a positive multiple of the target FPS
+            roundedRefreshRate > 0 && roundedRefreshRate % targetFpsInt == 0
+        }
+
+        if (suitableModes.isEmpty()) {
+            Timber.i("No suitable modes found where refresh rate is a multiple of $targetFpsInt Hz.")
+            return null // No mode found that's a multiple
+        }
+
+        // Log the suitable modes found
+        Timber.d("Suitable modes (multiple of $targetFpsInt Hz): ${suitableModes.joinToString { it.refreshRate.roundTo(2).toString() + "Hz" }}")
+
+        // From the suitable modes, prefer the one with the highest actual refresh rate.
+        // This implicitly prefers 60Hz over 30Hz, or 50Hz over 25Hz.
+        val bestMode = suitableModes.maxByOrNull { it.refreshRate }
+
+        Timber.d("Best imprecise mode chosen: ${bestMode?.refreshRate?.roundTo(2)}Hz (Mode ID: ${bestMode?.modeId})")
+
+        return bestMode
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+   @RequiresApi(Build.VERSION_CODES.M)
     private fun pickPreciseMode(
         modes: List<Display.Mode>,
         fps: Float,
     ): Display.Mode? {
+        Timber.d("Attempting precise match for ${fps.roundTo(2)}fps")
         var newMode: Display.Mode? = null
+        val targetFpsRounded = fps.roundTo(2)
+
+        // Find a mode where the refresh rate exactly matches the rounded FPS
         for (mode in modes) {
-            if (mode.refreshRate.roundTo(2) == fps.roundTo(2)) {
+            if (mode.refreshRate.roundTo(2) == targetFpsRounded) {
                 newMode = mode
+                Timber.d("Found precise match: ${newMode.refreshRate.roundTo(2)}Hz (Mode ID: ${newMode.modeId})")
+                break // Found the exact match
             }
         }
-        // 25hz doesn't exist on most/all devices so 50hz is the only option
-        if (newMode == null && fps.toInt() == 25) {
-            Timber.i("Picking 50hz for 25fps")
-            newMode = modes.find { it.refreshRate == (fps * 2) }
+
+        // Fallback: If no exact match and FPS is ~25, try finding 50Hz
+        if (newMode == null && fps.roundToInt() == 25) {
+            Timber.i("No precise match for ~25fps found. Looking for 50Hz mode as fallback.")
+            // Find a mode with refresh rate exactly 50.0
+            newMode = modes.find { it.refreshRate.roundTo(2) == 50.0f }
+            if (newMode != null) {
+                Timber.d("Found 50Hz fallback mode: ${newMode.refreshRate.roundTo(2)}Hz (Mode ID: ${newMode.modeId})")
+            }
         }
+
+        if (newMode == null) {
+            Timber.i("No precise mode or suitable fallback found for ${fps.roundTo(2)}fps.")
+        }
+
         return newMode
     }
 
