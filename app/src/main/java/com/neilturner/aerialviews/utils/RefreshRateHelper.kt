@@ -12,6 +12,7 @@ import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import com.neilturner.aerialviews.BuildConfig
 import timber.log.Timber
 import kotlin.math.ceil
 import kotlin.math.roundToInt
@@ -34,7 +35,7 @@ class RefreshRateHelper(
         }
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
-        if (sortedModes.size <= 1) {
+        if (sortedModes.size <= 1 && !BuildConfig.DEBUG) {
             Timber.i("Only 1 mode found, exiting...")
             return
         }
