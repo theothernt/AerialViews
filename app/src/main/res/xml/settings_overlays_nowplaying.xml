@@ -48,15 +48,15 @@
                     app:entries="@array/text_size_entries"
                     app:entryValues="@array/text_size_values"
                     app:key="nowplaying_size"
-                    app:title="@string/appearance_message_size_title"
+                    app:title="@string/text_size_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
-                    app:defaultValue="@string/appearance_font_weight_default"
-                    app:entries="@array/appearance_font_weight_entries"
-                    app:entryValues="@array/appearance_font_weight_values"
+                    app:defaultValue="@string/text_weight_default"
+                    app:entries="@array/text_weight_entries"
+                    app:entryValues="@array/text_weight_values"
                     app:key="nowplaying_weight"
-                    app:title="@string/appearance_weight_title"
+                    app:title="@string/text_weight_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

@@ -78,6 +78,9 @@
 
   <string name="message_media_searching">Searching for media…</string>
 
+  <string name="text_size_title">Size</string>
+  <string name="text_weight_title">Weight</string>
+
   <!-- Main -->
   <string name="settings_media_sources_title">Media Sources</string>
   <string name="settings_media_sources_summary">Play videos &amp; photos from the internet, USB storage, and network sources</string>
@@ -383,9 +386,6 @@
   <string name="appearance_exit_to_settings_title">Assign an action</string>
   <string name="appearance_exit_to_settings_summary">The \"Exit to settings\" action must be assigned to a button or d-pad direction for this feature to work</string>
 
-  <string name="appearance_loading_size_title">Size</string>
-  <string name="appearance_loading_weight_title">Weight</string>
-
   <!-- Main / Settings / Appearance / Gradient -->
   <string name="appearance_gradient_top_title">Show top gradient</string>
   <string name="appearance_gradient_top_summary">Display a gradient behind overlays at the top of the screen making them easier to see</string>
@@ -405,8 +405,6 @@
 
   <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
   <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
-
-  <string name="appearance_clock_size_title">Size</string>
 
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
@@ -461,7 +459,6 @@
 
   <!-- Main / Settings / Appearance / Typography -->
   <string name="appearance_typeface_title">Typeface</string>
-  <string name="appearance_weight_title">Weight</string>
 
   <!-- Main / Settings / Playlist -->
   <string name="playlist_mute_videos_title">Mute videos</string>
