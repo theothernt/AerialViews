@@ -104,6 +104,7 @@ class MainActivity :
                 ).addToBackStack(null)
             }
         }
+        fromScreensaver = false
     }
 
     fun startScreensaver() {
