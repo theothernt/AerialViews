@@ -62,12 +62,8 @@ class MainFragment :
     }
 
     private fun testScreensaverSettings() {
-        try {
-            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
-            startActivity(intent)
-        } catch (ex: Exception) {
-            Timber.e(ex)
-        }
+        val main = activity as MainActivity
+        main.startScreensaver()
     }
 
     private fun setMenuLocale() {

@@ -41,7 +41,8 @@ class TestActivity : AppCompatActivity() {
             screenController.stop()
         }
 
-        finishWithResult()
+        // Don't use finishWithResult as it's not suitable at the moment
+        finishAndRemoveTask()
     }
 
     override fun onAttachedToWindow() {
@@ -89,16 +90,15 @@ class TestActivity : AppCompatActivity() {
             "isExitToSettingSet: ${isExitToSettingSet()}, exitApp: $exitApp, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
-        if (GeneralPrefs.startScreensaverOnLaunch &&
+        val shouldExitApp = (GeneralPrefs.startScreensaverOnLaunch &&
             exitApp &&
             isExitToSettingSet()
-        ) {
-            val resultIntent =
-                Intent().apply {
-                    putExtra("exit_app", true)
-                }
-            setResult(RESULT_OK, resultIntent)
-        }
+        )
+        val resultIntent =
+            Intent().apply {
+                putExtra("exit_app", shouldExitApp)
+            }
+        setResult(RESULT_OK, resultIntent)
         finish()
     }
 

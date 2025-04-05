@@ -145,15 +145,13 @@
   <string name="category_animation">Анимация</string>
   <string name="category_appearance">Внешний вид</string>
   <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
-  <string name="category_authentication">Метод аутентификации сервера</string>
-  <string name="category_authentication_information">Информация об аутентификации</string>
+  <string name="category_authentication_details">Authentication details</string>
   <string name="category_background_colour">Цвет фона</string>
   <string name="category_bottom_row_left">Внизу слева</string>
   <string name="category_bottom_row_right">Внизу справа</string>
   <string name="category_brightness">Яркость</string>
   <string name="category_capabilities">Возможности</string>
   <string name="category_clock">Часы</string>
-  <string name="category_connection">Тест аутентификации</string>
   <string name="category_custom_format">Свой формат</string>
   <string name="category_date">Дата</string>
   <string name="category_dpad">Крестовина пульта управления</string>
@@ -182,6 +180,7 @@
   <string name="category_samba_options">Параметры Samba/SMB</string>
   <string name="category_scaling">Масштабирование</string>
   <string name="category_server_details">Сведения о сервере и учетные данные</string>
+  <string name="category_server_details_and_credentials">Сведения о сервере и учетные данные</string>
   <string name="category_settings">Настройки</string>
   <string name="category_slots">Слоты</string>
   <string name="category_startup">Запуск</string>
@@ -278,6 +277,7 @@
   <string name="local_videos_shield_notice_summary">Настройки &gt; Настройки устройства &gt; Хранилище &gt; Сканировать носители автоматически</string>
   <string name="local_videos_shield_notice_title">Пользователи Nvidia Shield, убедитесь, что включена следующая опция…</string>
   <string name="local_videos_test_results">Результаты проверки</string>
+  <string name="message_media_searching">Searching for media…</string>
   <string name="nowplaying_line1_title">Строка 1</string>
   <string name="nowplaying_line2_title">Строка 2</string>
   <string name="nowplaying_permission_legacy_notice_summary">Эта функция недоступна в старых версиях Android TV</string>
