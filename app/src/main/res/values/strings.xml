@@ -453,12 +453,6 @@
   <string name="appearance_fade_in_title">Fade in</string>
   <string name="appearance_fade_out_title">Fade out</string>
 
-  <!-- Main / Settings / Appearance / Clock -->
-  <string name="appearance_clock_format_title">Clock format</string>
-
-  <string name="appearance_show_force_latin_digits_title">Force Latin digits</string>
-  <string name="appearance_show_force_latin_digits_summary">Always show Western digits regardless of system locale settings</string>
-
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
   <string name="appearance_photo_scale_title">Photo scaling</string>
