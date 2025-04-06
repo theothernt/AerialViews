@@ -13,7 +13,7 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.toStringOrEmpty
+import com.neilturner.aerialviews.utils.PreferenceHelper
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
@@ -87,12 +87,13 @@ class TestActivity : AppCompatActivity() {
 
     private fun finishWithResult(exitApp: Boolean = false) {
         Timber.i(
-            "isExitToSettingSet: ${isExitToSettingSet()}, exitApp: $exitApp, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+            "isExitToSettingSet: ${PreferenceHelper.isExitToSettingSet()}, exitApp: $exitApp, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
         )
 
-        val shouldExitApp = (GeneralPrefs.startScreensaverOnLaunch &&
-            exitApp &&
-            isExitToSettingSet()
+        val shouldExitApp = (
+            GeneralPrefs.startScreensaverOnLaunch &&
+                exitApp &&
+                PreferenceHelper.isExitToSettingSet()
         )
         val resultIntent =
             Intent().apply {
@@ -100,19 +101,5 @@ class TestActivity : AppCompatActivity() {
             }
         setResult(RESULT_OK, resultIntent)
         finish()
-    }
-
-    private fun isExitToSettingSet(): Boolean {
-        var isSetup = false
-        GeneralPrefs.preferences.all.forEach {
-            if (it.key.startsWith("button_") &&
-                (it.key.endsWith("_press") || it.key.endsWith("_hold")) &&
-                it.value.toStringOrEmpty().contains("EXIT_TO_SETTINGS")
-            ) {
-                isSetup = true
-                return@forEach
-            }
-        }
-        return isSetup
     }
 }

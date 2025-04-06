@@ -21,14 +21,12 @@ class OverlaysNowPlayingFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_nowplaying, rootKey)
-
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Now Playing", this)
         checkPermission()
-
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

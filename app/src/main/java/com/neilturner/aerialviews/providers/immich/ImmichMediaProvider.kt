@@ -1,30 +1,26 @@
-package com.neilturner.aerialviews.providers
+package com.neilturner.aerialviews.providers.immich
 
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
-import com.google.gson.Gson
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
-import com.neilturner.aerialviews.models.immich.Album
-import com.neilturner.aerialviews.models.immich.ErrorResponse
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import com.neilturner.aerialviews.utils.UrlParser
-import retrofit2.Response
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 
 class ImmichMediaProvider(
@@ -35,6 +31,7 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
     private lateinit var server: String
+
     private lateinit var apiInterface: ImmichService
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
@@ -232,10 +229,10 @@ class ImmichMediaProvider(
             if (response.isSuccessful) {
                 Result.success(response.body() ?: emptyList())
             } else {
-                val errorBody = response.errorBody()?.string()
+                val errorBody = response.errorBody()?.string() ?: ""
                 val errorMessage =
                     try {
-                        Gson().fromJson(errorBody, ErrorResponse::class.java).message
+                        Json.decodeFromString<ErrorResponse>(errorBody).message
                     } catch (e: Exception) {
                         Timber.e(e, "Error parsing error body: $errorBody")
                         response.message()
@@ -258,12 +255,11 @@ class ImmichMediaProvider(
                     .Builder()
                     .baseUrl(server)
                     .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(buildSerializer())
                     .build()
                     .create(ImmichService::class.java)
         } catch (e: Exception) {
             Timber.e(e, "Error creating Immich API interface: ${e.message}")
-            // throw e
         }
     }
 
@@ -283,22 +279,16 @@ class ImmichMediaProvider(
         }
     }
 
-    private interface ImmichService {
-        @GET("/api/shared-links/me")
-        suspend fun getSharedAlbum(
-            @Query("key") key: String,
-            @Query("password") password: String?,
-        ): Response<Album>
+    fun buildSerializer(): Converter.Factory {
+        val contentType = "application/json".toMediaType()
 
-        @GET("/api/albums")
-        suspend fun getAlbums(
-            @Header("x-api-key") apiKey: String,
-        ): Response<List<Album>>
+        val json =
+            Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            }
 
-        @GET("/api/albums/{id}")
-        suspend fun getAlbum(
-            @Header("x-api-key") apiKey: String,
-            @Path("id") albumId: String,
-        ): Response<Album>
+        return json.asConverterFactory(contentType)
     }
+
 }

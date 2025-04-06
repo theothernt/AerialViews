@@ -4,7 +4,9 @@ import android.net.Uri
 import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Comm1Video : AbstractVideo() {
     override fun uriAtQuality(quality: VideoQuality?): Uri {
         val url =
@@ -23,4 +25,9 @@ class Comm1Video : AbstractVideo() {
         }
         return urls.toList()
     }
+}
+
+@Serializable
+class Comm1Videos {
+    val assets: List<Comm1Video>? = null
 }

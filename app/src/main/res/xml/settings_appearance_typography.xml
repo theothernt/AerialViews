@@ -4,9 +4,9 @@
 
         <PreferenceCategory app:title="@string/category_typography">
                 <ListPreference
-                    app:defaultValue="@string/appearance_font_default"
-                    app:entries="@array/appearance_font_entries"
-                    app:entryValues="@array/appearance_font_values"
+                    app:defaultValue="@string/text_font_default"
+                    app:entries="@array/text_font_entries"
+                    app:entryValues="@array/text_font_values"
                     app:key="font_typeface"
                     app:title="@string/appearance_typeface_title"
                     app:useSimpleSummaryProvider="true" />
