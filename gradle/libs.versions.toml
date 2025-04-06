@@ -27,7 +27,6 @@ preference-ktx = "1.2.1"
 sardine-android = "0.0.3"
 logging-interceptor = "4.12.0"
 retrofit = "2.11.0"
-gson = "2.12.1"
 
 smbj = "0.11.5"
 media3-exoplayer = "1.6.0"
@@ -71,7 +70,6 @@ kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer",
 kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support", version.ref = "kotpref" }
 
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 converter-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 
@@ -82,7 +80,6 @@ coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3" }
 
-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
@@ -104,7 +101,7 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
-retrofit = ["retrofit", "converter-gson", "converter-kotlin-serialization"]
+retrofit = ["retrofit", "converter-kotlin-serialization"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 
 [plugins]

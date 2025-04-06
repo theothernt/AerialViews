@@ -165,7 +165,6 @@ dependencies {
 
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
-    implementation(libs.gson)
     implementation(libs.smbj)
     implementation(libs.timber)
 
