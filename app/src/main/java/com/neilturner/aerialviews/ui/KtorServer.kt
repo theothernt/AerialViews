@@ -18,16 +18,17 @@ import kotlinx.serialization.json.Json
 import timber.log.Timber
 import java.net.BindException
 
-class KtorServer() {
+class KtorServer {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
 
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                server = embeddedServer(Netty, port = 8080) {
-                    configureRouting()
-                    configurePlugins()
-                }.start(wait = true)
+                server =
+                    embeddedServer(Netty, port = 8080) {
+                        configureRouting()
+                        configurePlugins()
+                    }.start(wait = true)
                 Timber.i("Ktor server started on port 8080")
             } catch (e: BindException) {
                 Timber.e(e, "Failed to start server: Port 8080 already in use")
@@ -62,10 +63,12 @@ class KtorServer() {
 
     private fun Application.configurePlugins() {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-            })
+            json(
+                Json {
+                    prettyPrint = true
+                    isLenient = true
+                },
+            )
         }
     }
 }
