@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.utils.JsonHelper
+import com.neilturner.aerialviews.models.videos.Comm2Videos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
@@ -37,7 +37,8 @@ class Comm2MediaProvider(
     private suspend fun buildVideoAndMetadata() {
         val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.comm2_strings)
-        val wrapper = parseJson(context, R.raw.comm2, JsonHelper.Comm2Videos::class.java)
+        val wrapper = parseJson<Comm2Videos>(context, R.raw.comm2)
+
         wrapper.assets?.forEach {
             videos.add(
                 AerialMedia(

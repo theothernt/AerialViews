@@ -9,9 +9,9 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
-import com.neilturner.aerialviews.models.immich.Album
+import com.neilturner.aerialviews.providers.immich.Album
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
-import com.neilturner.aerialviews.providers.ImmichMediaProvider
+import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
