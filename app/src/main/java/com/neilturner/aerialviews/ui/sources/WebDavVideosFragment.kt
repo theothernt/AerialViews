@@ -94,7 +94,7 @@ class WebDavVideosFragment :
 
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_path")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("webdav_media_pathname")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_username")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
