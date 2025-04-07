@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="appearance_font_default" translatable="false">open-sans</string>
-  <string-array name="appearance_font_entries">
-    <item>Open Sans (Predefinito)</item>
-    <item>Roboto</item>
-  </string-array>
-  <string-array name="appearance_font_values" translatable="false">
-    <item>open-sans</item>
-    <item>sans-serif</item>
-  </string-array>
-  <string name="appearance_font_weight_default" translatable="false">300</string>
-  <string-array name="appearance_font_weight_entries">
-    <item>100/Thin</item>
-    <item>200/Extra Light</item>
-    <item>300/Light (Predefinito)</item>
-    <item>400/Normal</item>
-    <item>500/Medium</item>
-    <item>600/Semi Bold</item>
-    <item>700/Bold</item>
-    <item>800/Extra Bold</item>
-    <item>900/Heavy</item>
-  </string-array>
-  <string-array name="appearance_font_weight_values" translatable="false">
-    <item>100</item>
-    <item>200</item>
-    <item>300</item>
-    <item>400</item>
-    <item>500</item>
-    <item>600</item>
-    <item>700</item>
-    <item>800</item>
-    <item>900</item>
-  </string-array>
   <string-array name="apple_videos_data_usage_values" translatable="false">
     <item>37GB</item>
     <item>23GB</item>
@@ -261,7 +229,7 @@
   </string-array>
   <string name="locale_menu_default" translatable="false">default</string>
   <string-array name="locale_menu_entries" translatable="false">
-    <item>System locale (default)</item>
+    <item>System locale*</item>
     <item>English</item>
     <item>German</item>
     <item>French</item>
@@ -286,7 +254,7 @@
   </string-array>
   <string name="locale_screensaver_default" translatable="false">default</string>
   <string-array name="locale_screensaver_entries" translatable="false">
-    <item>System locale (default)</item>
+    <item>System locale*</item>
     <item>English</item>
     <item>German</item>
     <item>French</item>
@@ -512,7 +480,7 @@
     <item>0.4x</item>
     <item>0.6x</item>
     <item>0.8x</item>
-    <item>1x</item>
+    <item>1x*</item>
     <item>1.2x</item>
     <item>1.4x</item>
     <item>1.6x</item>
@@ -630,8 +598,17 @@
     <item>MUSIC1</item>
     <item>MUSIC2</item>
   </string-array>
+  <string name="text_font_default" translatable="false">open-sans</string>
+  <string-array name="text_font_entries">
+    <item>Open Sans*</item>
+    <item>Roboto</item>
+  </string-array>
+  <string-array name="text_font_values" translatable="false">
+    <item>open-sans</item>
+    <item>sans-serif</item>
+  </string-array>
   <string name="text_size_default" translatable="false">18</string>
-  <string-array name="text_size_entries">
+  <string-array name="text_size_entries" translatable="false">
     <item>36sp</item>
     <item>34sp</item>
     <item>32sp</item>
@@ -641,7 +618,7 @@
     <item>24sp</item>
     <item>22sp</item>
     <item>20sp</item>
-    <item>18sp (Predefinito)</item>
+    <item>18sp*</item>
     <item>16sp</item>
   </string-array>
   <string-array name="text_size_values" translatable="false">
@@ -656,6 +633,29 @@
     <item>20</item>
     <item>18</item>
     <item>16</item>
+  </string-array>
+  <string name="text_weight_default" translatable="false">300</string>
+  <string-array name="text_weight_entries">
+    <item>100/Thin</item>
+    <item>200/Extra Light</item>
+    <item>300/Light*</item>
+    <item>400/Normal</item>
+    <item>500/Medium</item>
+    <item>600/Semi Bold</item>
+    <item>700/Bold</item>
+    <item>800/Extra Bold</item>
+    <item>900/Heavy</item>
+  </string-array>
+  <string-array name="text_weight_values" translatable="false">
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
+    <item>500</item>
+    <item>600</item>
+    <item>700</item>
+    <item>800</item>
+    <item>900</item>
   </string-array>
   <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
   <string-array name="video_scale_entries">

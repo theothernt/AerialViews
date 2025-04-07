@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">控制视频和照片的整体亮度</string>
   <string name="appearance_brightness_title">亮度</string>
   <string name="appearance_clock_format_title">时钟格式</string>
-  <string name="appearance_clock_size_title">调整时钟文字大小</string>
   <string name="appearance_clock_summary">显示当前时间</string>
   <string name="appearance_clock_title">时钟</string>
   <string name="appearance_date_custom_error">自定义日期格式无效！</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">显示顶部渐变</string>
   <string name="appearance_loading_show_summary">在加载应用程序时显示 \"正在加载… \"文本</string>
   <string name="appearance_loading_show_title">显示加载文本</string>
-  <string name="appearance_loading_size_title">尺寸</string>
-  <string name="appearance_loading_weight_title">重量</string>
   <string name="appearance_location_summary">显示地点或景点</string>
   <string name="appearance_location_title">地点</string>
   <string name="appearance_message_line1_summary">输入要显示的文本，包括表情符号</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">视频缩放</string>
   <string name="appearance_weather_summary">显示当前天气状况</string>
   <string name="appearance_weather_title">天气</string>
-  <string name="appearance_weight_title">字重</string>
   <string name="apple_videos_data_estimate_summary">每小时约 %1$s</string>
   <string name="apple_videos_data_usage_title">数据使用情况</string>
   <string name="apple_videos_enabled">使用 Apple 视频</string>
@@ -394,6 +390,8 @@ When successful, you will be asked to confirm the settings import</string>
   <string name="sources_samba_title">SMB/Samba 共享</string>
   <string name="sources_webdav_summary">本地或远程播放存储在 WebDAV 服务器上的视频</string>
   <string name="sources_webdav_title">WebDAV 服务器</string>
+  <string name="text_size_title">尺寸</string>
+  <string name="text_weight_title">重量</string>
   <string name="videos_quality_summary">选择视频质量</string>
   <string name="videos_quality_title">视频质量</string>
   <string name="webdav_media_enabled_title">使用 WebDAV 共享媒体</string>
