@@ -9,6 +9,7 @@ import coil3.ImageLoader
 import coil3.decode.Decoder
 import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
+import coil3.memory.MemoryCache
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
@@ -90,9 +91,16 @@ class ImagePlayerView : AppCompatImageView {
             }
         }
 
-    private val imageLoader: ImageLoader =
+    private val memoryCache =
+        MemoryCache
+            .Builder()
+            .maxSizePercent(context, 0.0)
+            .build()
+
+    private val imageLoader =
         ImageLoader
             .Builder(context)
+            .memoryCache(memoryCache)
             .eventListener(eventLister)
             .components {
                 add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
