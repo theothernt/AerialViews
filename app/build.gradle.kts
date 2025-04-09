@@ -4,8 +4,9 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.services)
     alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
@@ -173,7 +174,6 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
-    implementation(libs.gson)
     implementation(libs.smbj)
     implementation(libs.timber)
 

@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">Gesamthelligkeit von Fotos &amp; Videos anpassen</string>
   <string name="appearance_brightness_title">Helligkeit</string>
   <string name="appearance_clock_format_title">Uhrzeitformat</string>
-  <string name="appearance_clock_size_title">Größe</string>
   <string name="appearance_clock_summary">Zeige aktuelle Zeit an</string>
   <string name="appearance_clock_title">Uhr</string>
   <string name="appearance_date_custom_error">Ungültiges eigenes Datumsformat!</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">Oberen Farbverlauf anzeigen</string>
   <string name="appearance_loading_show_summary">Zeigt beim Erstellen der Medien-Wiedergabeliste eine Lademeldung an</string>
   <string name="appearance_loading_show_title">Lademeldung anzeigen</string>
-  <string name="appearance_loading_size_title">Größe</string>
-  <string name="appearance_loading_weight_title">Schriftstärke</string>
   <string name="appearance_location_summary">Zeige Ort, Beschreibung oder Sehenswürdigkeiten an</string>
   <string name="appearance_location_title">Ort / Beschreibung</string>
   <string name="appearance_message_line1_summary">Anzuzeigenden Text inklusive Emojis eingeben</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">Videoskalierung</string>
   <string name="appearance_weather_summary">Zeige aktuelle Wetterbedingungen an</string>
   <string name="appearance_weather_title">Wetter</string>
-  <string name="appearance_weight_title">Schriftstärke</string>
   <string name="apple_videos_data_estimate_summary">Ca. %1$s pro Stunde</string>
   <string name="apple_videos_data_usage_title">Datenverbrauch</string>
   <string name="apple_videos_enabled">Nutze Videos von Apple</string>
@@ -393,6 +389,8 @@ Für mehr Infos bitte die Aerial Views Webseite besuchen</string>
   <string name="sources_samba_title">Sambafreigabe (SMB)</string>
   <string name="sources_webdav_summary">Fotos &amp; Videos von einem WebDAV-Server abspielen (Lokal oder Internet)</string>
   <string name="sources_webdav_title">WebDAV-Server</string>
+  <string name="text_size_title">Größe</string>
+  <string name="text_weight_title">Schriftstärke</string>
   <string name="videos_quality_summary">Videoqualität auswählen</string>
   <string name="videos_quality_title">Videoqualität</string>
   <string name="webdav_media_enabled_title">WebDAV-Medienfreigabe verwenden</string>

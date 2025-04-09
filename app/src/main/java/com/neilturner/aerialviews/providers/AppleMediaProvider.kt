@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.utils.JsonHelper
+import com.neilturner.aerialviews.models.videos.Apple2018Videos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
@@ -37,7 +37,8 @@ class AppleMediaProvider(
     private suspend fun buildVideoAndMetadata() {
         val quality = prefs.quality
         val strings = parseJsonMap(context, R.raw.tvos15_strings)
-        val wrapper = parseJson(context, R.raw.tvos15, JsonHelper.Apple2018Videos::class.java)
+        val wrapper = parseJson<Apple2018Videos>(context, R.raw.tvos15)
+
         wrapper.assets?.forEach {
             videos.add(
                 AerialMedia(

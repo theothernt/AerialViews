@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">Controlla la luminosità complessiva di video e foto</string>
   <string name="appearance_brightness_title">Luminosità</string>
   <string name="appearance_clock_format_title">Formato orologio</string>
-  <string name="appearance_clock_size_title">Dimensione</string>
   <string name="appearance_clock_summary">Visualizza l\'ora corrente</string>
   <string name="appearance_clock_title">Orologio</string>
   <string name="appearance_date_custom_error">Formato data non valido!</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">Mostra gradiente superiore</string>
   <string name="appearance_loading_show_summary">Visualizza il testo “Caricamento…” durante l\'avvio dell\'applicazione.</string>
   <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
-  <string name="appearance_loading_size_title">Dimensione</string>
-  <string name="appearance_loading_weight_title">Spessore</string>
   <string name="appearance_location_summary">Visualizza la posizione o i punti di interesse</string>
   <string name="appearance_location_title">Posizione</string>
   <string name="appearance_message_line1_summary">Immeti il testo da mostrare, include emoji</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">Ridimensionamento video</string>
   <string name="appearance_weather_summary">Visualizza le condizioni meteo attuali</string>
   <string name="appearance_weather_title">Meteo</string>
-  <string name="appearance_weight_title">Spessore</string>
   <string name="apple_videos_data_estimate_summary">Circa %1$s all\'ora</string>
   <string name="apple_videos_data_usage_title">Utilizzo dei dati</string>
   <string name="apple_videos_enabled">Utilizza i video Apple</string>
@@ -394,6 +390,8 @@ Per ulteriori informazioni, visitare il sito Web di Aerial Views.</string>
   <string name="sources_samba_title">Condivisione SMB/Samba</string>
   <string name="sources_webdav_summary">Riproduci video e immagini da un server WebDAV locale o remoto.</string>
   <string name="sources_webdav_title">Server WebDAV</string>
+  <string name="text_size_title">Dimensione</string>
+  <string name="text_weight_title">Spessore</string>
   <string name="videos_quality_summary">Seleziona la qualità video</string>
   <string name="videos_quality_title">Qualità video</string>
   <string name="webdav_media_enabled_title">Utilizzare la condivisione di file multimediali WebDAV</string>

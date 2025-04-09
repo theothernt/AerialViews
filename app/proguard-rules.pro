@@ -11,14 +11,9 @@
 
 # Mostly data class and json types
 -keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
--keep class com.neilturner.aerialviews.models.immich.* { <fields>; }
 -keep class com.neilturner.aerialviews.utils.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
 -keep class com.neilturner.aerialviews.ui.sources.* { <fields>; }
-
-# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 # Sardine Android / XmlPullParser
 # -dontwarn org.xmlpull.v1.**
