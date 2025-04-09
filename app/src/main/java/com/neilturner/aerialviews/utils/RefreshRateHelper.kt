@@ -12,8 +12,8 @@ import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import com.neilturner.aerialviews.BuildConfig
 import timber.log.Timber
-import kotlin.math.roundToInt
 
 class RefreshRateHelper(
     private val context: Context,
@@ -33,10 +33,10 @@ class RefreshRateHelper(
         }
 
         val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
-//        if (sortedModes.size <= 1) {
-//            Timber.i("Only 1 mode found, exiting...")
-//            return
-//        }
+        if (sortedModes.size <= 1 && !BuildConfig.DEBUG) {
+            Timber.i("Only 1 mode found, exiting...")
+            return
+        }
 
         val supportedModes = getModesForResolution(sortedModes, display.mode)
         Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${sortedModes.size})")
@@ -51,30 +51,39 @@ class RefreshRateHelper(
             originalMode = display.mode
         }
 
-        // 1. Match FPS with HZ exactly if possible eg. 29.97fps to 29.97Hz
-        // 2. Less accurate matches eg. 29.97fps to 30fps to 60Hz
-        // 23.98, 24.0, 29.97, 30.0, 50.0, 59.94, 60.0
-        val targetRefreshRate = fps
         val usePreciseMode = false
-        var bestMode: Display.Mode? = null
+        val preciseModes = mapOf(
+            23.98f to 23.98f,
+            24.0f to 24.0f,
+            25.0f to 50.0f, // No 25Hz mode
+            29.97f to 29.97f,
+            30.0f to 30.0f,
+            50.0f to 50.0f,
+            59.94f to 59.94f,
+            60.0f to 60.0f,
+        )
 
-        bestMode =
-            if (usePreciseMode) {
-                pickPreciseMode(supportedModes, targetRefreshRate)
-            } else {
-                pickImpreciseMode(supportedModes, targetRefreshRate)
-            }
+        val impreciseModes = mapOf(
+            23.98f to listOf(24.0f, 23.98f),
+            24.0f to listOf(24.0f, 23.98f),
+            25.0f to listOf(50.0f),
+            29.97f to listOf(60.0f, 59.97f),
+            30.0f to listOf(60.0f, 59.97f),
+            50.0f to listOf(50.0f),
+            59.94f to listOf(60.0f, 59.97f),
+            60.0f to listOf(60.0f, 59.97f),
+        )
 
-        if (bestMode == null) {
-            Timber.i("Unable to find a suitable refresh rate for ${fps}fps video")
-            originalMode = null
-        } else {
-            Timber.i(
-                "Video: ${fps.roundTo(
-                    2,
-                )}fps, Chosen refresh rate: ${bestMode.refreshRate.roundTo(2).toString() + "Hz"} (Mode: ${bestMode.modeId})",
-            )
-            changeRefreshRate(context, bestMode)
+        Timber.i("Video fps: ${fps.roundTo(2)}")
+        val frameRates = impreciseModes[fps.roundTo(2)]
+        if (frameRates?.contains(display.mode.refreshRate) == false) {
+            val target = frameRates.first()
+            sortedModes
+                .firstOrNull { it.refreshRate.roundTo(2) == target }
+                ?.let { bestMode ->
+                    Timber.i("Best mode found: ${bestMode.refreshRate.roundTo(2)}Hz")
+                    changeRefreshRate(context, bestMode)
+                }
         }
     }
 
@@ -92,45 +101,7 @@ class RefreshRateHelper(
                 filteredModes.add(mode)
             }
         }
-
         return filteredModes
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun pickImpreciseMode(
-        modes: List<Display.Mode>,
-        fps: Float,
-    ): Display.Mode? {
-        // Should pick 30hz over 29.97hz for 29.97fps
-        // Should pick 60hz over 30hz
-        var newMode: Display.Mode? = null
-        for (mode in modes) {
-            if (mode.refreshRate.roundToInt() % fps.roundToInt() == 0) {
-                if (newMode == null || mode.refreshRate.roundToInt() > newMode.refreshRate.roundToInt()) {
-                    newMode = mode
-                }
-            }
-        }
-        return newMode
-    }
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun pickPreciseMode(
-        modes: List<Display.Mode>,
-        fps: Float,
-    ): Display.Mode? {
-        var newMode: Display.Mode? = null
-        for (mode in modes) {
-            if (mode.refreshRate.roundTo(2) == fps.roundTo(2)) {
-                newMode = mode
-            }
-        }
-        // 25hz doesn't exist on most/all devices so 50hz is the only option
-        if (newMode == null && fps.toInt() == 25) {
-            Timber.i("Picking 50hz for 25fps")
-            newMode = modes.find { it.refreshRate == (fps * 2) }
-        }
-        return newMode
     }
 
     companion object {
