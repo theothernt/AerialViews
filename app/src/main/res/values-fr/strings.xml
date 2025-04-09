@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">Contrôle de la luminosité générale des vidéos et des photos</string>
   <string name="appearance_brightness_title">Luminosité</string>
   <string name="appearance_clock_format_title">Format de l\'horloge</string>
-  <string name="appearance_clock_size_title">Ajuster la taille du texte de l\'horloge</string>
   <string name="appearance_clock_summary">Afficher l\'heure actuelle</string>
   <string name="appearance_clock_title">Horloge</string>
   <string name="appearance_date_custom_error">Format de date personnalisé non valide !</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">Afficher le dégradé supérieur</string>
   <string name="appearance_loading_show_summary">Affiche le texte \"Loading…\" pendant le chargement de l\'application</string>
   <string name="appearance_loading_show_title">Afficher le texte de chargement</string>
-  <string name="appearance_loading_size_title">Taille</string>
-  <string name="appearance_loading_weight_title">Poids</string>
   <string name="appearance_location_summary">Affichage de la localisation ou des points d\'intérêt</string>
   <string name="appearance_location_title">Localisation</string>
   <string name="appearance_message_line1_summary">Saisir le texte à afficher, y compris les emoji</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">Mise à l\'échelle de la vidéo</string>
   <string name="appearance_weather_summary">Afficher les conditions météorologiques actuelles</string>
   <string name="appearance_weather_title">Météo</string>
-  <string name="appearance_weight_title">Poids</string>
   <string name="apple_videos_data_estimate_summary">Environ %1$s par heure</string>
   <string name="apple_videos_data_usage_title">Consommation de données</string>
   <string name="apple_videos_enabled">Utiliser les vidéos Apple</string>
@@ -394,6 +390,8 @@ Pour plus d\'informations, veuillez consulter le site web Aerial Views.</string>
   <string name="sources_samba_title">Partage SMB/Samba</string>
   <string name="sources_webdav_summary">Lecture de vidéos et d\'images stockées sur un serveur WebDAV, localement ou à distance</string>
   <string name="sources_webdav_title">Serveur WebDAV</string>
+  <string name="text_size_title">Taille</string>
+  <string name="text_weight_title">Poids</string>
   <string name="videos_quality_summary">Sélectionnez la qualité de la vidéo</string>
   <string name="videos_quality_title">Qualité de la vidéo</string>
   <string name="webdav_media_enabled_title">Utiliser le support de partage WebDAV</string>

@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">שלוט בבהירות הכוללת של סרטונים ותמונות</string>
   <string name="appearance_brightness_title">בְּהִירוּת</string>
   <string name="appearance_clock_format_title">תבנית שעון</string>
-  <string name="appearance_clock_size_title">גודל</string>
   <string name="appearance_clock_summary">הצג את השעה הנוכחית</string>
   <string name="appearance_clock_title">שעון</string>
   <string name="appearance_date_custom_error">תבנית תאריך מותאמת אישית לא חוקית!</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">הצג מדרון צבעים בחלק העליון של המסך</string>
   <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען…״ בזמן טעינת האפליקציה</string>
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
-  <string name="appearance_loading_size_title">גודל</string>
-  <string name="appearance_loading_weight_title">משקל</string>
   <string name="appearance_location_summary">הצג מיקום, תיאור או נקודות עניין</string>
   <string name="appearance_location_title">מיקום / תאור</string>
   <string name="appearance_message_line1_summary">הזן טקסט לתצוגה, כולל אמוג\'י</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">קנה מידה של וידאו</string>
   <string name="appearance_weather_summary">הצג את תנאי מזג האוויר הנוכחיים</string>
   <string name="appearance_weather_title">מזג אוויר</string>
-  <string name="appearance_weight_title">משקל</string>
   <string name="apple_videos_data_estimate_summary">משוער. %1$s לשעה</string>
   <string name="apple_videos_data_usage_title">שימוש בנתונים</string>
   <string name="apple_videos_enabled">השתמש בסרטוני אפל</string>
@@ -394,6 +390,8 @@ When successful, you will be asked to confirm the settings import</string>
   <string name="sources_samba_title">שיתוף SMB/Samba</string>
   <string name="sources_webdav_summary">הפעל סרטונים ותמונות המאוחסנים בשרת WebDAV באופן מקומי או מרחוק</string>
   <string name="sources_webdav_title">שרת WebDAV</string>
+  <string name="text_size_title">גודל</string>
+  <string name="text_weight_title">משקל</string>
   <string name="videos_quality_summary">בחר איכות וידאו</string>
   <string name="videos_quality_title">איכות וידאו</string>
   <string name="webdav_media_enabled_title">שימוש במדיית שיתוף WebDAV</string>

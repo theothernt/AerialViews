@@ -41,7 +41,6 @@
   <string name="appearance_brightness_summary">Controla el brillo general de videos y fotos.</string>
   <string name="appearance_brightness_title">Brillo</string>
   <string name="appearance_clock_format_title">Formato de reloj</string>
-  <string name="appearance_clock_size_title">Ajustar el tamaño del texto del reloj</string>
   <string name="appearance_clock_summary">Mostrar la hora actual</string>
   <string name="appearance_clock_title">Reloj</string>
   <string name="appearance_date_custom_error">¡Formato de fecha personalizado no válido!</string>
@@ -71,8 +70,6 @@
   <string name="appearance_gradient_top_title">Mostrar gradiente superior</string>
   <string name="appearance_loading_show_summary">Muestra el texto \"Cargando…\" mientras se carga la aplicación.</string>
   <string name="appearance_loading_show_title">Mostrar texto de \"Cargando\"</string>
-  <string name="appearance_loading_size_title">Tamaño</string>
-  <string name="appearance_loading_weight_title">Grosor</string>
   <string name="appearance_location_summary">Mostrar ubicación o puntos de interés</string>
   <string name="appearance_location_title">Ubicación</string>
   <string name="appearance_message_line1_summary">Ingrese el texto para mostrar, incluido emojis</string>
@@ -110,7 +107,6 @@
   <string name="appearance_video_scale_title">Escalado de vídeo</string>
   <string name="appearance_weather_summary">Mostrar las condiciones climáticas actuales</string>
   <string name="appearance_weather_title">Clima</string>
-  <string name="appearance_weight_title">Tamaño</string>
   <string name="apple_videos_data_estimate_summary">Aproximadamente %1$s por hora</string>
   <string name="apple_videos_data_usage_title">Uso de datos</string>
   <string name="apple_videos_enabled">Usar vídeos de Apple</string>
@@ -393,6 +389,8 @@ When successful, you will be asked to confirm the settings import</string>
   <string name="sources_samba_title">Compartido por SMB/Samba</string>
   <string name="sources_webdav_summary">Reproduce vídeos almacenados en un servidor WebDAV local o remoto</string>
   <string name="sources_webdav_title">Servidor WebDAV</string>
+  <string name="text_size_title">Tamaño</string>
+  <string name="text_weight_title">Grosor</string>
   <string name="videos_quality_summary">Seleccione la calidad del vídeo</string>
   <string name="videos_quality_title">Calidad de Vídeo</string>
   <string name="webdav_media_enabled_title">Usar WebDAV</string>
