@@ -12,7 +12,6 @@ import java.util.Calendar
 import java.util.Locale
 
 object FirebaseHelper {
-
     fun logScreenView(
         screenName: String,
         screenClass: Any,

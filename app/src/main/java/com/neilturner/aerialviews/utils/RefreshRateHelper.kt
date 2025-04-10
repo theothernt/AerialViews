@@ -52,27 +52,29 @@ class RefreshRateHelper(
         }
 
         val usePreciseMode = false
-        val preciseModes = mapOf(
-            23.98f to 23.98f,
-            24.0f to 24.0f,
-            25.0f to 50.0f, // No 25Hz mode
-            29.97f to 29.97f,
-            30.0f to 30.0f,
-            50.0f to 50.0f,
-            59.94f to 59.94f,
-            60.0f to 60.0f,
-        )
+        val preciseModes =
+            mapOf(
+                23.98f to 23.98f,
+                24.0f to 24.0f,
+                25.0f to 50.0f, // No 25Hz mode
+                29.97f to 29.97f,
+                30.0f to 30.0f,
+                50.0f to 50.0f,
+                59.94f to 59.94f,
+                60.0f to 60.0f,
+            )
 
-        val impreciseModes = mapOf(
-            23.98f to listOf(24.0f, 23.98f),
-            24.0f to listOf(24.0f, 23.98f),
-            25.0f to listOf(50.0f),
-            29.97f to listOf(60.0f, 59.97f),
-            30.0f to listOf(60.0f, 59.97f),
-            50.0f to listOf(50.0f),
-            59.94f to listOf(60.0f, 59.97f),
-            60.0f to listOf(60.0f, 59.97f),
-        )
+        val impreciseModes =
+            mapOf(
+                23.98f to listOf(24.0f, 23.98f),
+                24.0f to listOf(24.0f, 23.98f),
+                25.0f to listOf(50.0f),
+                29.97f to listOf(60.0f, 59.97f),
+                30.0f to listOf(60.0f, 59.97f),
+                50.0f to listOf(50.0f),
+                59.94f to listOf(60.0f, 59.97f),
+                60.0f to listOf(60.0f, 59.97f),
+            )
 
         Timber.i("Video fps: ${fps.roundTo(2)}")
         val frameRates = impreciseModes[fps.roundTo(2)]
