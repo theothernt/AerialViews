@@ -14,6 +14,7 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.size.Scale
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -23,10 +24,10 @@ import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromSambaFile
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromWebDavFile
+import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +88,7 @@ class ImagePlayerView : AppCompatImageView {
             ) {
                 super.onError(request, result)
                 Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+                FirebaseHelper.logExceptionIfRecent(result.throwable)
                 onPlayerError()
             }
         }
@@ -104,6 +106,7 @@ class ImagePlayerView : AppCompatImageView {
             .eventListener(eventLister)
             .components {
                 add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
+                add(InputStreamFetcher.Factory())
                 add(buildGifDecoder())
             }.build()
 
@@ -141,20 +144,32 @@ class ImagePlayerView : AppCompatImageView {
     }
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
-            when (media.source) {
-                AerialMediaSource.SAMBA -> {
-                    val byteArray = byteArrayFromSambaFile(media.uri)
-                    loadImage(byteArray)
-                }
-                AerialMediaSource.WEBDAV -> {
-                    val byteArray = byteArrayFromWebDavFile(media.uri)
-                    loadImage(byteArray)
-                }
-                else -> {
-                    loadImage(media.uri)
+        try {
+            coroutineScope.launch {
+                when (media.source) {
+                    AerialMediaSource.SAMBA -> {
+                        val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
+                        stream?.let {
+                            loadImage(it)
+                        }
+                    }
+
+                    AerialMediaSource.WEBDAV -> {
+                        val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
+                        stream?.let {
+                            loadImage(it)
+                        }
+                    }
+
+                    else -> {
+                        loadImage(media.uri)
+                    }
                 }
             }
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex.cause)
+            listener?.onImageError()
         }
     }
 
@@ -164,11 +179,14 @@ class ImagePlayerView : AppCompatImageView {
                 ImageRequest
                     .Builder(context)
                     .data(data)
+                    .size(this.width, this.height)
+                    .scale(Scale.FIT)
                     .target(target)
                     .build()
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex.cause)
             listener?.onImageError()
             return
         }

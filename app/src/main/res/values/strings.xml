@@ -409,7 +409,7 @@
   <string name="appearance_background_colour_title">Background Colour</string>
   <string name="appearance_background_colour_summary">Change the colour used when a video or photo does not fill the screen</string>
 
-  <string name="appearance_brightness_title">Brightness</string>
+  <string name="appearance_brightness_title">Brightness/Dimness</string>
   <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
   <string name="appearance_scaling_title">Scaling</string>

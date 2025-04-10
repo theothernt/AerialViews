@@ -19,6 +19,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
 import me.kosert.flowbus.GlobalBus
@@ -179,6 +180,7 @@ class VideoPlayerView
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
             postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
+            FirebaseHelper.logExceptionIfRecent(error.cause)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {

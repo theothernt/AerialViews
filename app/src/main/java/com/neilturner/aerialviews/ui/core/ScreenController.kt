@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -62,8 +63,6 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
-
-    private val loadingViewAlphaVisible = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -143,6 +142,14 @@ class ScreenController(
             Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
 
             binding.progressBar.visibility = View.VISIBLE
+        }
+
+        // Setup brightness/dimness
+        if (GeneralPrefs.videoBrightness != "100") {
+            val view = binding.brightnessView
+            view.setBackgroundColor(Color.BLACK)
+            view.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
+            view.visibility = View.VISIBLE
         }
 
         // Reset animation speed if needed
@@ -300,7 +307,7 @@ class ScreenController(
         // Video should be playing underneath
         loadingView
             .animate()
-            .alpha(loadingViewAlphaVisible)
+            .alpha(0f)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
             .withEndAction {
@@ -480,6 +487,6 @@ class ScreenController(
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
-        const val ERROR_DELAY: Long = 500 // Delay before loading next item, after error
+        const val ERROR_DELAY: Long = 1000 // Delay before loading next item, after error
     }
 }
