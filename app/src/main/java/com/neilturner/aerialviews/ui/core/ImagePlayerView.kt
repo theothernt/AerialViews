@@ -23,8 +23,7 @@ import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromSambaFile
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromWebDavFile
+import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -106,6 +105,7 @@ class ImagePlayerView : AppCompatImageView {
             .eventListener(eventLister)
             .components {
                 add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
+                add(InputStreamFetcher.Factory())
                 add(buildGifDecoder())
             }.build()
 
@@ -147,13 +147,17 @@ class ImagePlayerView : AppCompatImageView {
             coroutineScope.launch {
                 when (media.source) {
                     AerialMediaSource.SAMBA -> {
-                        val byteArray = byteArrayFromSambaFile(media.uri)
-                        loadImage(byteArray)
+                        val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
+                        stream?.let {
+                            loadImage(it)
+                        }
                     }
 
                     AerialMediaSource.WEBDAV -> {
-                        val byteArray = byteArrayFromWebDavFile(media.uri)
-                        loadImage(byteArray)
+                        val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
+                        stream?.let {
+                            loadImage(it)
+                        }
                     }
 
                     else -> {
