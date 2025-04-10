@@ -290,5 +290,4 @@ class ImmichMediaProvider(
 
         return json.asConverterFactory(contentType)
     }
-
 }

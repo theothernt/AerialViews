@@ -10,22 +10,17 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import java.io.InputStream
 import java.util.EnumSet
 
 internal object ImagePlayerHelper {
-    fun byteArrayFromWebDavFile(uri: Uri): ByteArray {
+    fun streamFromWebDavFile(uri: Uri): InputStream? {
         var client: OkHttpSardine? = OkHttpSardine()
         client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
-
-        val inputStream = client?.get(uri.toString())
-        inputStream.use { inputStream ->
-            val byteArray = inputStream?.readBytes()
-            client = null
-            return byteArray ?: ByteArray(0)
-        }
+        return client?.get(uri.toString())
     }
 
-    fun byteArrayFromSambaFile(uri: Uri): ByteArray {
+    fun streamFromSambaFile(uri: Uri): InputStream? {
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
@@ -38,27 +33,21 @@ internal object ImagePlayerHelper {
                 SambaMediaPrefs.domainName,
             )
 
-        smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
-            val session = connection?.authenticate(authContext)
-            val share = session?.connectShare(shareName) as DiskShare
-            val shareAccess = hashSetOf<SMB2ShareAccess>()
-            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+        val connection = smbClient.connect(SambaMediaPrefs.hostName)
+        val session = connection?.authenticate(authContext)
+        val share = session?.connectShare(shareName) as DiskShare
+        val shareAccess = hashSetOf<SMB2ShareAccess>()
+        shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
 
-            val file =
-                share.openFile(
-                    path,
-                    EnumSet.of(AccessMask.GENERIC_READ),
-                    null,
-                    shareAccess,
-                    SMB2CreateDisposition.FILE_OPEN,
-                    null,
-                )
-
-            file.inputStream.use { inputStream ->
-                val byteArray = inputStream.readBytes()
-                smbClient.close()
-                return byteArray
-            }
-        }
+        val file =
+            share.openFile(
+                path,
+                EnumSet.of(AccessMask.GENERIC_READ),
+                null,
+                shareAccess,
+                SMB2CreateDisposition.FILE_OPEN,
+                null,
+            )
+        return file.inputStream
     }
 }

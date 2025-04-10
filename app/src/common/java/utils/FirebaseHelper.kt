@@ -7,12 +7,11 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 object FirebaseHelper {
-    fun logException(ex: Throwable) {
-        Firebase.crashlytics.recordException(ex)
-    }
-
     fun logScreenView(
         screenName: String,
         screenClass: Any,
@@ -26,7 +25,17 @@ object FirebaseHelper {
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }
 
-    // log event with number (eg. number of photos or videos
+    fun logException(ex: Throwable) {
+        Firebase.crashlytics.recordException(ex)
+    }
 
-    // log setting with true/false (eg. is webDAV or SMB used)
+    fun logExceptionIfRecent(ex: Throwable?) {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val endDate = simpleDateFormat.parse("2025-06-30")
+        val currentDate = Calendar.getInstance().time
+
+        if (currentDate.before(endDate)) {
+            ex?.let { logException(it) }
+        }
+    }
 }
