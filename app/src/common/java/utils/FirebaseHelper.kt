@@ -29,13 +29,13 @@ object FirebaseHelper {
         Firebase.crashlytics.recordException(ex)
     }
 
-    fun logExceptionIfRecent(ex: Throwable) {
+    fun logExceptionIfRecent(ex: Throwable?) {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val endDate = simpleDateFormat.parse("2025-06-30")
         val currentDate = Calendar.getInstance().time
 
         if (currentDate.before(endDate)) {
-            logException(ex)
+            ex?.let { logException(it) }
         }
     }
 }

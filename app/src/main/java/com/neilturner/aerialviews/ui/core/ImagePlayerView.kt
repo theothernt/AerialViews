@@ -27,6 +27,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromSambaFi
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.byteArrayFromWebDavFile
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import kotlinx.coroutines.CoroutineScope
@@ -87,6 +88,7 @@ class ImagePlayerView : AppCompatImageView {
             ) {
                 super.onError(request, result)
                 Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+                FirebaseHelper.logExceptionIfRecent(result.throwable)
                 onPlayerError()
             }
         }
@@ -141,20 +143,28 @@ class ImagePlayerView : AppCompatImageView {
     }
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
-            when (media.source) {
-                AerialMediaSource.SAMBA -> {
-                    val byteArray = byteArrayFromSambaFile(media.uri)
-                    loadImage(byteArray)
-                }
-                AerialMediaSource.WEBDAV -> {
-                    val byteArray = byteArrayFromWebDavFile(media.uri)
-                    loadImage(byteArray)
-                }
-                else -> {
-                    loadImage(media.uri)
+        try {
+            coroutineScope.launch {
+                when (media.source) {
+                    AerialMediaSource.SAMBA -> {
+                        val byteArray = byteArrayFromSambaFile(media.uri)
+                        loadImage(byteArray)
+                    }
+
+                    AerialMediaSource.WEBDAV -> {
+                        val byteArray = byteArrayFromWebDavFile(media.uri)
+                        loadImage(byteArray)
+                    }
+
+                    else -> {
+                        loadImage(media.uri)
+                    }
                 }
             }
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex.cause)
+            listener?.onImageError()
         }
     }
 
@@ -169,6 +179,7 @@ class ImagePlayerView : AppCompatImageView {
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex.cause)
             listener?.onImageError()
             return
         }
