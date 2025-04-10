@@ -23,13 +23,21 @@ class InputStreamFetcher(
     override suspend fun fetch(): FetchResult {
         return withContext(Dispatchers.IO) {
             try {
-                // Check if the InputStream supports mark/reset
-                val bufferedStream = if (inputStream.markSupported()) {
-                    Timber.Forest.d("InputStream already supports mark/reset")
-                    inputStream
-                } else {
-                    Timber.Forest.d("Wrapping InputStream in BufferedInputStream")
-                    BufferedInputStream(inputStream)
+                val bufferedStream = when {
+                    inputStream.markSupported() -> {
+                        Timber.i("InputStream already supports mark/reset")
+                        inputStream
+                    }
+
+                    inputStream is BufferedInputStream -> {
+                        Timber.i("InputStream is already a BufferedInputStream")
+                        inputStream
+                    }
+
+                    else -> {
+                        Timber.i("Wrapping InputStream in BufferedInputStream")
+                        BufferedInputStream(inputStream, BUFFER_SIZE)
+                    }
                 }
 
                 // Use Okio to create a source from the buffered stream
@@ -50,6 +58,10 @@ class InputStreamFetcher(
                 throw e
             }
         }
+    }
+
+    companion object {
+        private const val BUFFER_SIZE = 8 * 1024 // 8KB buffer
     }
 
     class Factory : Fetcher.Factory<InputStream> {
