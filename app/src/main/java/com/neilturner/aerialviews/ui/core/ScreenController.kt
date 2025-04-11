@@ -299,7 +299,7 @@ class ScreenController(
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
             .withEndAction {
-                // loadingView.visibility = View.GONE
+                loadingView.visibility = View.GONE
                 canSkip = true
             }.start()
     }
@@ -320,6 +320,7 @@ class ScreenController(
             .setDuration(mediaFadeOut)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
+                loadingView.alpha = 0f
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE

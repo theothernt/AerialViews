@@ -202,11 +202,12 @@ class ImagePlayerView : AppCompatImageView {
         listener?.onImagePrepared()
 
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
-        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
+        val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
+        val durationMinusFade = duration - fadeDuration
 
-        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
+        Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
-        postDelayed(finishedRunnable, delay)
+        postDelayed(finishedRunnable, durationMinusFade)
     }
 
     private fun onPlayerError() {
