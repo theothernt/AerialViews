@@ -14,7 +14,6 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
-import coil3.size.Scale
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -180,7 +179,8 @@ class ImagePlayerView : AppCompatImageView {
                     .Builder(context)
                     .data(data)
                     .size(this.width, this.height)
-                    .scale(Scale.FIT)
+                    //.precision(Precision.INEXACT)
+                    //.scale(Scale.FIT)
                     .target(target)
                     .build()
             imageLoader.execute(request)
