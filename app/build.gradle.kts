@@ -14,7 +14,6 @@ plugins {
     alias(libs.plugins.firebase.perf)
     alias(libs.plugins.kotlinter.gradle)
     alias(libs.plugins.baselineprofile)
-    kotlin("plugin.serialization") version libs.versions.kotlin.get()
 }
 
 android {
