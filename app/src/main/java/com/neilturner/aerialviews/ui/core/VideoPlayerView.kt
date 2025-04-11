@@ -172,6 +172,10 @@ class VideoPlayerView
             if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
                 state.loopCount++
                 Timber.i("Looping video, count: ${state.loopCount}")
+
+                if (GeneralPrefs.loopUntilSkipped) {
+                    setupAlmostFinishedRunnable()
+                }
             }
             super.onMediaItemTransition(mediaItem, reason)
         }
@@ -277,26 +281,22 @@ class VideoPlayerView
             // Basic duration and progress
             val duration = state.endPosition - state.startPosition
             val progress = exoPlayer.currentPosition - state.startPosition
+            val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
 
-            // Duration taking into account playback speed and animation timings
-            val durationWithEffects =
-                (duration / GeneralPrefs.playbackSpeed.toDouble() - GeneralPrefs.mediaFadeOutDuration.toLong()).toLong()
-
-            // Duration taking into account only playback speed
-            val durationWithSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
-
-            // Delay until next media
-            val delayUntilNextItem = durationWithEffects - progress
+            // Duration taking into account...
+            val durationMinusSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
+            val durationMinusSpeedAndProgress = durationMinusSpeed - progress
+            val durationMinusSpeedAndProgressAndFade = durationMinusSpeedAndProgress - fadeDuration
 
             Timber.i(
-                "Duration: ${duration.milliseconds} (at 1x), Delay: ${delayUntilNextItem.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: $progress",
+                "Duration: ${duration.milliseconds} (at 1x), Delay: ${durationMinusSpeedAndProgressAndFade.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
             )
 
-            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationWithSpeed))
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationMinusSpeed))
 
             if (!GeneralPrefs.loopUntilSkipped) {
-                Timber.i("Video will finish in: ${delayUntilNextItem.milliseconds}")
-                postDelayed(almostFinishedRunnable, delayUntilNextItem)
+                Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
+                postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
             } else {
                 Timber.i("The video will only finish when skipped manually")
             }

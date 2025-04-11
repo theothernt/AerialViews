@@ -32,14 +32,13 @@ class RefreshRateHelper(
             return
         }
 
-        val sortedModes = display.supportedModes.sortedBy { it.refreshRate }
-        if (sortedModes.size <= 1 && !BuildConfig.DEBUG) {
+        val supportedModes = getModesForResolution(display.supportedModes.toList(), display.mode)
+        if (supportedModes.size <= 1 && !BuildConfig.DEBUG) {
             Timber.i("Only 1 mode found, exiting...")
             return
         }
 
-        val supportedModes = getModesForResolution(sortedModes, display.mode)
-        Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${sortedModes.size})")
+        Timber.i("Suitable modes for current resolution: ${supportedModes.size} (Total: ${display.supportedModes.size})")
 
         val availableRefreshRates =
             supportedModes.joinToString(", ") { it.refreshRate.roundTo(2).toString() + "Hz" }
@@ -51,18 +50,18 @@ class RefreshRateHelper(
             originalMode = display.mode
         }
 
-        val usePreciseMode = false
-        val preciseModes =
-            mapOf(
-                23.98f to 23.98f,
-                24.0f to 24.0f,
-                25.0f to 50.0f, // No 25Hz mode
-                29.97f to 29.97f,
-                30.0f to 30.0f,
-                50.0f to 50.0f,
-                59.94f to 59.94f,
-                60.0f to 60.0f,
-            )
+//        val usePreciseMode = false
+//        val preciseModes =
+//            mapOf(
+//                23.98f to 23.98f,
+//                24.0f to 24.0f,
+//                25.0f to 50.0f, // No 25Hz mode
+//                29.97f to 29.97f,
+//                30.0f to 30.0f,
+//                50.0f to 50.0f,
+//                59.94f to 59.94f,
+//                60.0f to 60.0f,
+//            )
 
         val impreciseModes =
             mapOf(
@@ -80,7 +79,7 @@ class RefreshRateHelper(
         val frameRates = impreciseModes[fps.roundTo(2)]
         if (frameRates?.contains(display.mode.refreshRate) == false) {
             val target = frameRates.first()
-            sortedModes
+            supportedModes
                 .firstOrNull { it.refreshRate.roundTo(2) == target }
                 ?.let { bestMode ->
                     Timber.i("Best mode found: ${bestMode.refreshRate.roundTo(2)}Hz")
