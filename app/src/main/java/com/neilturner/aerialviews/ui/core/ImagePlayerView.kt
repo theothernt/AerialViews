@@ -14,7 +14,6 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
-import coil3.size.Scale
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -180,7 +179,8 @@ class ImagePlayerView : AppCompatImageView {
                     .Builder(context)
                     .data(data)
                     .size(this.width, this.height)
-                    .scale(Scale.FIT)
+                    //.precision(Precision.INEXACT)
+                    //.scale(Scale.FIT)
                     .target(target)
                     .build()
             imageLoader.execute(request)
@@ -202,11 +202,12 @@ class ImagePlayerView : AppCompatImageView {
         listener?.onImagePrepared()
 
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
-        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
+        val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
+        val durationMinusFade = duration - fadeDuration
 
-        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
+        Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
-        postDelayed(finishedRunnable, delay)
+        postDelayed(finishedRunnable, durationMinusFade)
     }
 
     private fun onPlayerError() {
