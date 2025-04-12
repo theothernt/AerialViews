@@ -46,7 +46,7 @@ class RefreshRateHelper(
 
         // Store original mode if not already saved
         if (originalMode == null) {
-            Timber.i("Saving original mode for later: ${display.mode.modeId}")
+            Timber.i("Saving original mode for later: ${display.mode.modeId} (${display.mode.refreshRate.roundTo(2)}Hz)")
             originalMode = display.mode
         }
 
@@ -77,14 +77,21 @@ class RefreshRateHelper(
 
         Timber.i("Video fps: ${fps.roundTo(2)}")
         val frameRates = impreciseModes[fps.roundTo(2)]
-        if (frameRates?.contains(display.mode.refreshRate) == false) {
+        if (frameRates?.contains(display.mode.refreshRate.roundTo(2)) == false) {
             val target = frameRates.first()
-            supportedModes
+            val bestMode = supportedModes
                 .firstOrNull { it.refreshRate.roundTo(2) == target }
-                ?.let { bestMode ->
-                    Timber.i("Best mode found: ${bestMode.refreshRate.roundTo(2)}Hz")
-                    changeRefreshRate(context, bestMode)
+            if (bestMode != null) {
+                Timber.i("Best mode found: ${bestMode.refreshRate.roundTo(2)}Hz")
+                changeRefreshRate(context, bestMode)
+            } else {
+                Timber.e("No suitable mode found, reverting to original mode...")
+                originalMode?.let {
+                    changeRefreshRate(context, it)
                 }
+            }
+        } else {
+            Timber.i("${display.mode.refreshRate.roundTo(2)}Hz already suitable video fps: ${fps.roundTo(2)}")
         }
     }
 
