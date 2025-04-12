@@ -10,13 +10,9 @@
 -keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
 
 # Mostly data class and json types
--keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
--keep class com.neilturner.aerialviews.utils.* { <fields>; }
--keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
--keep class com.neilturner.aerialviews.ui.sources.* { <fields>; }
+-keep public class * extends androidx.fragment.app.Fragment { public <init>(); }
 
 # Sardine Android / XmlPullParser
-# -dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
 
