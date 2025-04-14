@@ -10,7 +10,7 @@
                     app:title="@string/appearance_gradient_top_title" />
 
                 <CheckBoxPreference
-                    app:defaultValue="false"
+                    app:defaultValue="true"
                     app:key="gradient_bottom_show"
                     app:summary="@string/appearance_gradient_bottom_summary"
                     app:title="@string/appearance_gradient_bottom_title" />
