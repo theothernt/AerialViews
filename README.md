@@ -69,6 +69,14 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
+## Fire TV and Frame Rate Switching
+
+Fire OS has no menu to allow advanced permissions for apps, so it must be done manually with an ADB command...
+
+```sh
+adb shell appops set com.neilturner.aerialviews SYSTEM_ALERT_WINDOW allow
+```
+
 ## How to set Aerial Views as the default screensaver
 
 Since 2023, nearly all devices that ship with Google TV have no user-interface to change the screensaver to a 3rd party one...
