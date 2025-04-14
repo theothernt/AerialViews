@@ -103,7 +103,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Gradients
     var showTopGradient by booleanPref(false, "gradient_top_show")
-    var showBottomGradient by booleanPref(false, "gradient_bottom_show")
+    var showBottomGradient by booleanPref(true, "gradient_bottom_show")
 
     // Typeface (for whole app)
     var fontTypeface by stringPref("open-sans", "font_typeface")

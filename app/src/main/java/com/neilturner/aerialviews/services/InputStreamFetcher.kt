@@ -19,46 +19,46 @@ class InputStreamFetcher(
     private val inputStream: InputStream,
     private val options: Options,
 ) : Fetcher {
-
-    override suspend fun fetch(): FetchResult {
-        return withContext(Dispatchers.IO) {
+    override suspend fun fetch(): FetchResult =
+        withContext(Dispatchers.IO) {
             try {
-                val bufferedStream = when {
-                    inputStream.markSupported() -> {
-                        Timber.i("InputStream already supports mark/reset")
-                        inputStream
-                    }
+                val bufferedStream =
+                    when {
+                        inputStream.markSupported() -> {
+                            Timber.i("InputStream already supports mark/reset")
+                            inputStream
+                        }
 
-                    inputStream is BufferedInputStream -> {
-                        Timber.i("InputStream is already a BufferedInputStream")
-                        inputStream
-                    }
+                        inputStream is BufferedInputStream -> {
+                            Timber.i("InputStream is already a BufferedInputStream")
+                            inputStream
+                        }
 
-                    else -> {
-                        Timber.i("Wrapping InputStream in BufferedInputStream")
-                        BufferedInputStream(inputStream, BUFFER_SIZE)
+                        else -> {
+                            Timber.i("Wrapping InputStream in BufferedInputStream")
+                            BufferedInputStream(inputStream, BUFFER_SIZE)
+                        }
                     }
-                }
 
                 // Use Okio to create a source from the buffered stream
                 val source = bufferedStream.source().buffer()
 
                 // Create a SourceResult with the buffered stream
                 SourceFetchResult(
-                    source = ImageSource(
-                        source = source,
-                        fileSystem = options.fileSystem,
-                        metadata = null,
-                    ),
+                    source =
+                        ImageSource(
+                            source = source,
+                            fileSystem = options.fileSystem,
+                            metadata = null,
+                        ),
                     mimeType = null,
-                    dataSource = DataSource.NETWORK
+                    dataSource = DataSource.NETWORK,
                 )
             } catch (e: Exception) {
                 Timber.Forest.e(e, "Error fetching data from InputStream")
                 throw e
             }
         }
-    }
 
     companion object {
         private const val BUFFER_SIZE = 8 * 1024 // 8KB buffer
@@ -68,9 +68,7 @@ class InputStreamFetcher(
         override fun create(
             data: InputStream,
             options: Options,
-            imageLoader: ImageLoader
-        ): Fetcher? {
-            return InputStreamFetcher(data, options)
-        }
+            imageLoader: ImageLoader,
+        ): Fetcher? = InputStreamFetcher(data, options)
     }
 }

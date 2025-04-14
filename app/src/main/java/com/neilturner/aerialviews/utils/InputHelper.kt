@@ -168,30 +168,30 @@ object InputHelper {
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
-        Timber.i("Action: $action, ButtonType: $type")
+        Timber.i("Action: $action, PressType: $type")
 
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
             controller?.blackOutMode == true &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
-            Timber.i("Action: toggleBlackOutMode")
+            // Timber.i("Action: toggleBlackOutMode")
             controller.toggleBlackOutMode()
             return true
         }
 
         if (action == ButtonType.IGNORE) {
-            Timber.i("Action: Ignore")
+            // Timber.i("Action: Ignore")
             return false
         }
 
         // If black out mode is active, should ignore all other actions?
 
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
-            Timber.i("Action: Ignore")
+            // Timber.i("Action: Ignore")
             return false
         } else {
-            Timber.i("Action: $action")
+            // Timber.i("Action: $action")
             when (action) {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
