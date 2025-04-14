@@ -79,8 +79,9 @@ class RefreshRateHelper(
         val frameRates = impreciseModes[fps.roundTo(2)]
         if (frameRates?.contains(display.mode.refreshRate.roundTo(2)) == false) {
             val target = frameRates.first()
-            val bestMode = supportedModes
-                .firstOrNull { it.refreshRate.roundTo(2) == target }
+            val bestMode =
+                supportedModes
+                    .firstOrNull { it.refreshRate.roundTo(2) == target }
             if (bestMode != null) {
                 Timber.i("Best mode found: ${bestMode.refreshRate.roundTo(2)}Hz")
                 changeRefreshRate(context, bestMode)
