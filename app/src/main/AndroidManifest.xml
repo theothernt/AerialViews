@@ -74,6 +74,7 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <!-- Handle .avsettings files passed by another app eg. File Manager -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -86,14 +87,27 @@
                 <data android:mimeType="text/avsettings" />
                 <data android:pathPattern=".*\.avsettings" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="content"
+                    android:host="*"
+                    android:mimeType="application/octet-stream"
+                    android:pathPattern=".*\\.avsettings" />
+                <data android:mimeType="application/x-avsettings" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
         </activity>
 
-        <!-- Allow activity to be called externally via 3rd party app, etc -->
+        <!-- Allow screensaver to be started via 3rd party app, etc -->
         <activity
             android:exported="true"
             android:name=".ui.screensaver.TestActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
 
+        <!-- Dream Service/Activity can only be called by the system! -->
         <service
             android:name=".ui.screensaver.DreamActivity"
             android:exported="true"
