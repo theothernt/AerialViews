@@ -76,7 +76,7 @@ class MainActivity :
     private fun handleCustomLaunching() {
         val fromAppRestart = intent.getBooleanExtra("from_app_restart", false) // Check if app was restarted by user (language change)
         val hasIntentUri = intent.data != null // Check if app was started from intent
-        val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW && intent.type == "application/avsettings"
+        val hasValidIntentAndData = hasIntentUri && intent.action == Intent.ACTION_VIEW // && (intent.type == "application/avsettings" || intent.type == "text/avsettings")
         val shouldExitApp =
             GeneralPrefs.startScreensaverOnLaunch &&
                 PreferenceHelper.isExitToSettingSet() &&

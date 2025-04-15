@@ -6,11 +6,17 @@ import android.os.Environment
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.util.Properties
 
 object PreferenceHelper {
+
+    private val ignorePrefs = listOf(
+        "check_for_hevc_support",
+    )
+
     fun exportPreferences(context: Context): Boolean =
         try {
             val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
@@ -23,6 +29,11 @@ object PreferenceHelper {
             val properties = Properties()
 
             prefs.all.forEach { (key, value) ->
+                if (ignorePrefs.contains(key)) {
+                    Timber.i("Ignoring key: $key")
+                    return@forEach
+                }
+
                 when (value) {
                     is Boolean -> properties.setProperty("bool_$key", value.toString())
                     is Float -> properties.setProperty("float_$key", value.toString())

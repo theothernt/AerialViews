@@ -80,13 +80,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:host="*" />
-                <data android:scheme="content" />
                 <data android:scheme="file" />
+                <data android:scheme="content" />
                 <data android:mimeType="application/avsettings" />
-                <data android:pathPattern=".*\\.avsettings" />
-                <data android:pathPattern=".*\\..*\\.avsettings" />
-                <data android:pathPattern=".*\\..*\\..*\\.avsettings" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.avsettings" />
+                <data android:mimeType="text/avsettings" />
+                <data android:pathPattern=".*\.avsettings" />
             </intent-filter>
         </activity>
 
