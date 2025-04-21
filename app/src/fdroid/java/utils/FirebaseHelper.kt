@@ -11,4 +11,8 @@ object FirebaseHelper {
     ) {
         // No op
     }
+
+    fun logExceptionIfRecent(ex: Throwable?) {
+        // No op
+    }
 }
