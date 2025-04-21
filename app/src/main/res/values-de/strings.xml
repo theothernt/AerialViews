@@ -348,20 +348,16 @@
   <string name="settings_dpad_title">D-Pad / Fernbedienung</string>
   <string name="settings_export_failed">Failed to export settings</string>
   <string name="settings_export_successful">Settings exported successfully</string>
-  <string name="settings_export_summary">Only settings which have been changed from the defaults will be exported</string>
+  <string name="settings_export_summary1">Only settings which have been changed from the defaults will be exported</string>
   <string name="settings_export_title">Export settings to Documents folder</string>
   <string name="settings_import_export_settings_summary">Einstellungen im Downloadordner Sichern oder daraus Wiederherstellen</string>
   <string name="settings_import_export_settings_title">Einstellungen Sichern / Wiederherstellen</string>
   <string name="settings_import_failed">Failed to import settings</string>
   <string name="settings_import_settings">Import settings from backup?</string>
   <string name="settings_import_successful">Settings imported successfully</string>
-  <string name="settings_import_summary">To import settings, please use a File Manager app to open the backup settings file.
-                    
-
-This will invoke Aerial Views or give an option to do so.
-                    
-
-When successful, you will be asked to confirm the settings import</string>
+  <string name="settings_import_summary1">To import settings, please use a File Manager app to open the backup settings file</string>
+  <string name="settings_import_summary2">This will invoke Aerial Views or give an option to do so</string>
+  <string name="settings_import_summary3">When successful, you will be asked to confirm the settings import</string>
   <string name="settings_media_sources_summary">Fotos &amp; Videos aus dem Internet, von USB-Speichern und Netzwerkquellen abspielen</string>
   <string name="settings_media_sources_title">Medienquellen</string>
   <string name="settings_overlays_summary">Auswählen welche Overlays in verschiedenen Ecken des Bildschirms angezeigt werden</string>

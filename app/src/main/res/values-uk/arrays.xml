@@ -638,7 +638,7 @@
   <string-array name="text_weight_entries">
     <item>100/Тонка</item>
     <item>200/Надсвітла</item>
-    <item>300/Light*</item>
+    <item>300/Світла*</item>
     <item>400/Нормальна</item>
     <item>500/Середня</item>
     <item>600/Напівжирна</item>

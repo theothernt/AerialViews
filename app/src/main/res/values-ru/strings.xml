@@ -349,18 +349,16 @@
   <string name="settings_dpad_title">Крестовина пульта управления</string>
   <string name="settings_export_failed">Не удалось экспортировать настройки</string>
   <string name="settings_export_successful">Настройки успешно экспортированы</string>
-  <string name="settings_export_summary">Экспортируются только те настройки, которые были изменены по сравнению с настройками по умолчанию</string>
+  <string name="settings_export_summary1">Экспортируются только те настройки, которые были изменены по сравнению с настройками по умолчанию</string>
   <string name="settings_export_title">Экспорт настроек в папку «Документы»</string>
   <string name="settings_import_export_settings_summary">Импортирует или экспортирует настройки в папку Загрузки</string>
   <string name="settings_import_export_settings_title">Импорт/Экспорт настроек</string>
   <string name="settings_import_failed">Не удалось импортировать настройки</string>
   <string name="settings_import_settings">Импортировать настройки из резервной копии?</string>
   <string name="settings_import_successful">Настройки успешно импортированы</string>
-  <string name="settings_import_summary">Чтобы импортировать настройки, используйте приложение «Файловый менеджер», чтобы открыть файл настроек резервного копирования.
-                    
-Это вызовет Aerial Views или предоставит возможность сделать это.
-                    
-В случае успеха вам будет предложено подтвердить импорт настроек</string>
+  <string name="settings_import_summary1">Чтобы импортировать настройки, откройте файл резервной копии настроек с помощью приложения \"Файловый менеджер\"</string>
+  <string name="settings_import_summary2">Это вызовет функцию Aerial Views или предоставит возможность сделать это</string>
+  <string name="settings_import_summary3">В случае успеха вам будет предложено подтвердить импорт настроек</string>
   <string name="settings_media_sources_summary">Воспроизведение видео и изображений из Интернета, USB-накопителей и сетевых источников.</string>
   <string name="settings_media_sources_title">Медиа-источники</string>
   <string name="settings_overlays_summary">Выберите, какие наложения будут отображаться в разных углах экрана</string>
