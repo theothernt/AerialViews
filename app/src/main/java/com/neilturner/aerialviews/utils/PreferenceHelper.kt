@@ -12,10 +12,10 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 object PreferenceHelper {
-
-    private val ignorePrefs = listOf(
-        "check_for_hevc_support",
-    )
+    private val ignorePrefs =
+        listOf(
+            "check_for_hevc_support",
+        )
 
     fun exportPreferences(context: Context): Boolean =
         try {
