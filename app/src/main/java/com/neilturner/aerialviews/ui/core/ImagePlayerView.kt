@@ -9,12 +9,14 @@ import coil3.ImageLoader
 import coil3.decode.Decoder
 import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
-import coil3.memory.MemoryCache
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
+import coil3.util.DebugLogger
+import coil3.util.Logger
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -92,16 +94,13 @@ class ImagePlayerView : AppCompatImageView {
             }
         }
 
-    private val memoryCache =
-        MemoryCache
-            .Builder()
-            .maxSizePercent(context, 0.0)
-            .build()
+    private val logger: Logger? = if (BuildConfig.DEBUG) DebugLogger() else null
 
     private val imageLoader =
         ImageLoader
             .Builder(context)
-            .memoryCache(memoryCache)
+            .memoryCache(null)
+            .logger(logger)
             .eventListener(eventLister)
             .components {
                 add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
