@@ -95,7 +95,8 @@
                     android:scheme="content"
                     android:host="*"
                     android:mimeType="application/octet-stream"
-                    android:pathPattern=".*\\.avsettings" />
+                    android:pathPattern=".*\\.avsettings"
+                    tools:ignore="IntentFilterUniqueDataAttributes" />
                 <data android:mimeType="application/x-avsettings" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
