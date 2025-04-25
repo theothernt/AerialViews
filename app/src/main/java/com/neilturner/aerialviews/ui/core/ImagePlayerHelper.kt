@@ -17,17 +17,18 @@ import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import timber.log.Timber
 import java.io.InputStream
 import java.util.EnumSet
 
 internal object ImagePlayerHelper {
-
     val logger: Logger? = if (BuildConfig.DEBUG) DebugLogger() else null
 
     fun buildGifDecoder(): Decoder.Factory =
@@ -64,9 +65,15 @@ internal object ImagePlayerHelper {
     }
 
     fun streamFromWebDavFile(uri: Uri): InputStream? {
-        var client: OkHttpSardine? = OkHttpSardine()
-        client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
-        return client?.get(uri.toString())
+        var client = OkHttpSardine()
+        try {
+            client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
+            return client.get(uri.toString())
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex)
+            return null
+        }
     }
 
     fun streamFromSambaFile(uri: Uri): InputStream? {
@@ -82,22 +89,27 @@ internal object ImagePlayerHelper {
                 SambaMediaPrefs.domainName,
             )
 
-
-        val connection = smbClient.connect(SambaMediaPrefs.hostName)
-        val session = connection?.authenticate(authContext)
-        val share = session?.connectShare(shareName) as DiskShare
-        val shareAccess = hashSetOf<SMB2ShareAccess>()
-        shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-
-        val file =
-            share.openFile(
-                path,
-                EnumSet.of(AccessMask.GENERIC_READ),
-                null,
-                shareAccess,
-                SMB2CreateDisposition.FILE_OPEN,
-                null,
-            )
-        return file.inputStream
+        try {
+            val connection = smbClient.connect(SambaMediaPrefs.hostName)
+            val session = connection?.authenticate(authContext)
+            val share = session?.connectShare(shareName) as DiskShare
+            val shareAccess = hashSetOf<SMB2ShareAccess>()
+            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+            val file =
+                share.openFile(
+                    path,
+                    EnumSet.of(AccessMask.GENERIC_READ),
+                    null,
+                    shareAccess,
+                    SMB2CreateDisposition.FILE_OPEN,
+                    null,
+                )
+            return file.inputStream
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while opening Samba file: ${ex.message}")
+            FirebaseHelper.logExceptionIfRecent(ex)
+            smbClient.close()
+            return null
+        }
     }
 }

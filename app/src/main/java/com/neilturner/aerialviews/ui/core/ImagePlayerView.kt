@@ -96,40 +96,23 @@ class ImagePlayerView : AppCompatImageView {
                 add(buildGifDecoder())
             }.build()
 
-
-
-
     fun setImage(media: AerialMedia) {
-        try {
-            coroutineScope.launch {
-                when (media.source) {
-                    AerialMediaSource.SAMBA -> {
-                        val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
-                        stream?.let {
-                            loadImage(it)
-                        }
-                    }
-
-                    AerialMediaSource.WEBDAV -> {
-                        val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
-                        stream?.let {
-                            loadImage(it)
-                        }
-                    }
-
-                    else -> {
-                        loadImage(media.uri)
-                    }
+        coroutineScope.launch {
+            when (media.source) {
+                AerialMediaSource.SAMBA -> {
+                    loadImage(ImagePlayerHelper.streamFromSambaFile(media.uri))
+                }
+                AerialMediaSource.WEBDAV -> {
+                    loadImage(ImagePlayerHelper.streamFromWebDavFile(media.uri))
+                }
+                else -> {
+                    loadImage(media.uri)
                 }
             }
-        } catch (ex: Exception) {
-            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
-            FirebaseHelper.logExceptionIfRecent(ex.cause)
-            listener?.onImageError()
         }
     }
 
-    private suspend fun loadImage(data: Any) {
+    private suspend fun loadImage(data: Any?) {
         try {
             val request =
                 ImageRequest
