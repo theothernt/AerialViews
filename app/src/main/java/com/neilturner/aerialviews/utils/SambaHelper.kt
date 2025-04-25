@@ -6,6 +6,7 @@ import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 @Suppress("unused")
 object SambaHelper {
@@ -93,6 +94,8 @@ object SambaHelper {
         val config =
             SmbConfig
                 .builder()
+                .withTimeout(2, TimeUnit.MINUTES)
+                .withReadTimeout(2, TimeUnit.MINUTES)
                 .withEncryptData(SambaMediaPrefs.enableEncryption)
                 .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {
