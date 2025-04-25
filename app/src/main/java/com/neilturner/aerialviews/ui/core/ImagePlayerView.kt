@@ -119,16 +119,12 @@ class ImagePlayerView : AppCompatImageView {
                     .Builder(context)
                     .data(data)
                     .size(this.width, this.height)
-                    // .precision(Precision.INEXACT)
-                    // .scale(Scale.FIT)
                     .target(target)
                     .build()
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
-            FirebaseHelper.logExceptionIfRecent(ex.cause)
             listener?.onImageError()
-            return
         }
     }
 
