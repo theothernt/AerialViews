@@ -67,7 +67,6 @@ class WebDavDataSource : BaseDataSource(true) {
                 .Builder()
                 .callTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
-                .writeTimeout(5, TimeUnit.SECONDS)
                 .build()
 
         client = OkHttpSardine(okHttpClient)

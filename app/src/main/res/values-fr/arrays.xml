@@ -24,8 +24,8 @@
   </string-array>
   <string name="background_colour_default" translatable="false">BLACK</string>
   <string-array name="background_colour_entries">
-    <item>Black</item>
-    <item>White</item>
+    <item>Noir</item>
+    <item>Blanc</item>
   </string-array>
   <string-array name="background_colour_values" translatable="false">
     <item>BLACK</item>

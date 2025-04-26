@@ -585,11 +585,11 @@
   <!-- Main / Settings / Import / Export settings -->
 
   <string name="settings_export_title">Export settings to Documents folder</string>
-  <string name="settings_export_summary">Only settings which have been changed from the defaults will be exported</string>
+  <string name="settings_export_summary1">Only settings which have been changed from the defaults will be exported</string>
 
-  <string name="settings_import_summary">To import settings, please use a File Manager app to open the backup settings file.
-                    \n\nThis will invoke Aerial Views or give an option to do so.
-                    \n\nWhen successful, you will be asked to confirm the settings import</string>
+  <string name="settings_import_summary1">To import settings, please use a File Manager app to open the backup settings file</string>
+  <string name="settings_import_summary2">This will invoke Aerial Views or give an option to do so</string>
+  <string name="settings_import_summary3">When successful, you will be asked to confirm the settings import</string>
 
   <string name="settings_export_successful">Settings exported successfully</string>
   <string name="settings_export_failed">Failed to export settings</string>

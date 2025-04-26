@@ -24,8 +24,8 @@
   </string-array>
   <string name="background_colour_default" translatable="false">BLACK</string>
   <string-array name="background_colour_entries">
-    <item>Black</item>
-    <item>White</item>
+    <item>黑色</item>
+    <item>白色</item>
   </string-array>
   <string-array name="background_colour_values" translatable="false">
     <item>BLACK</item>
@@ -600,7 +600,7 @@
   </string-array>
   <string name="text_font_default" translatable="false">open-sans</string>
   <string-array name="text_font_entries">
-    <item>Open Sans*</item>
+    <item>开放式三色字体*</item>
     <item>Roboto</item>
   </string-array>
   <string-array name="text_font_values" translatable="false">
@@ -638,7 +638,7 @@
   <string-array name="text_weight_entries">
     <item>100/淡体</item>
     <item>200/特细</item>
-    <item>300/Light*</item>
+    <item>300/灯*</item>
     <item>400/标准</item>
     <item>500/适中</item>
     <item>600/次粗</item>
