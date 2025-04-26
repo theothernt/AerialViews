@@ -16,9 +16,11 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Play videos from your device, USB storage or network share
+* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
+* Show videos & photos from USB storage, Samba, WebDAV or Immich server
 * Option to avoid burn-in on QD/OLED TVs
-* Skip videos, change speed with the d-pad
+* Many playlist options to limit media length or loop certain videos
+* Use the D-Pad to skip media, skip songs, change speed, seek and more
 * Refresh rate switching
 
 ## Support the project
