@@ -58,7 +58,7 @@ class WebDavMediaProvider(
                     prefs.password,
                 )
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
@@ -76,7 +76,7 @@ class WebDavMediaProvider(
             media.add(item)
         }
 
-        Timber.Forest.i("Media found: ${media.size}")
+        Timber.i("Media found: ${media.size}")
         return Pair(media, webDavMedia.second)
     }
 
@@ -99,7 +99,7 @@ class WebDavMediaProvider(
                 client = OkHttpSardine()
                 client.setCredentials(userName, password, true)
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Failed to create WebDAV client",
@@ -164,22 +164,33 @@ class WebDavMediaProvider(
         url: String = "",
     ): List<String> {
         val files = mutableListOf<String>()
-        try {
-            val resources = client.list(url).drop(1)
-            for (resource in resources) {
-                if (FileHelper.isDotOrHiddenFile(resource.name)) {
-                    continue
-                }
+        val directories = ArrayDeque<String>()
 
-                if (resource.isDirectory && prefs.searchSubfolders) {
-                    files.addAll(listFilesAndFoldersRecursively(client, "$url/${resource.name}"))
-                } else if (!resource.isDirectory) {
-                    files.add("$url/${resource.name}")
+        // Start with the initial URL
+        directories.add(url)
+
+        // Process directories until the queue is empty
+        while (directories.isNotEmpty()) {
+            val currentUrl = directories.removeFirst()
+
+            try {
+                val resources = client.list(currentUrl).drop(1)
+                for (resource in resources) {
+                    if (FileHelper.isDotOrHiddenFile(resource.name)) {
+                        continue
+                    }
+
+                    if (resource.isDirectory && prefs.searchSubfolders) {
+                        directories.add("$currentUrl/${resource.name}")
+                    } else if (!resource.isDirectory) {
+                        files.add("$currentUrl/${resource.name}")
+                    }
                 }
+            } catch (ex: Exception) {
+                Timber.e(ex)
             }
-        } catch (ex: Exception) {
-            Timber.Forest.e(ex)
         }
+
         return files
     }
 }

@@ -24,8 +24,8 @@
   </string-array>
   <string name="background_colour_default" translatable="false">BLACK</string>
   <string-array name="background_colour_entries">
-    <item>Black</item>
-    <item>White</item>
+    <item>שחור</item>
+    <item>לבן</item>
   </string-array>
   <string-array name="background_colour_values" translatable="false">
     <item>BLACK</item>
@@ -638,7 +638,7 @@
   <string-array name="text_weight_entries">
     <item>100/דק</item>
     <item>200/קליל במיוחד</item>
-    <item>300/Light*</item>
+    <item>300/קליל</item>
     <item>400/רגיל</item>
     <item>500/בינוני</item>
     <item>600/חצי מודגש</item>

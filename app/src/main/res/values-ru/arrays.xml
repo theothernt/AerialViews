@@ -37,16 +37,16 @@
   <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
   <string-array name="button_action_entries">
     <item>Игнорировать действие</item>
-    <item>Выход из заставки</item>
-    <item>Переход к следующему видео/фото</item>
-    <item>Переход к предыдущему видео/фото</item>
+    <item>Перейти к следующему видео/фото</item>
+    <item>Перейти к предыдущему видео/фото</item>
+    <item>Перейти к следующему музыкальному треку</item>
+    <item>Перейти к предыдущему музыкальному треку</item>
     <item>Увеличить скорость воспроизведения видео</item>
     <item>Уменьшить скорость воспроизведения видео</item>
-    <item>Показать наложения (если скрыты)</item>
-    <item>Затемнение экрана, затухание мультимедиа и наложений</item>
+    <item>Перемотка вперед в видео</item>
     <item>Перемотка назад по видео</item>
-    <item>Затемнение экрана, затухание мультимедиа и наложений</item>
-    <item>Затемнение экрана, затухание мультимедиа и наложений</item>
+    <item>Выйти из заставки</item>
+    <item>Выход на экран настроек</item>
     <item>Показывать наложения, если они скрыты</item>
     <item>Затемнение экрана, затухание мультимедиа и наложений</item>
   </string-array>
@@ -636,15 +636,15 @@
   </string-array>
   <string name="text_weight_default" translatable="false">300</string>
   <string-array name="text_weight_entries">
-    <item>100/Тонкое</item>
-    <item>200/Сверхсветлое</item>
-    <item>300/Light*</item>
-    <item>400/Нормальное</item>
+    <item>100/Тонкий</item>
+    <item>200/Сверхсветлый</item>
+    <item>300/Светлый*</item>
+    <item>400/Нормальный</item>
     <item>500/Среднее</item>
-    <item>600/Полужирное</item>
-    <item>700/Жирное</item>
-    <item>800/Сверхжирное</item>
-    <item>900/Тяжелое</item>
+    <item>600/Полужирный</item>
+    <item>700/Жирный</item>
+    <item>800/Сверхжирный</item>
+    <item>900/Тяжелый</item>
   </string-array>
   <string-array name="text_weight_values" translatable="false">
     <item>100</item>

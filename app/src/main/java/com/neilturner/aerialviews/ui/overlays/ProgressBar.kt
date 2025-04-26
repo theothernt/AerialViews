@@ -20,7 +20,7 @@ class ProgressBar : View {
         defStyleAttr,
     )
 
-    private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paint: Paint = Paint()
     private var parentWidth: Int = 0
     private var animator: ValueAnimator? = null
     private val receiver = EventsReceiver()
@@ -66,7 +66,7 @@ class ProgressBar : View {
     ) {
         parentWidth = (this.parent as View).measuredWidth
 
-        if (parentWidth == 0 || length <= 0L) {
+        if (parentWidth == 0 || length <= 0L || position < 0L || position > length) {
             return
         }
 

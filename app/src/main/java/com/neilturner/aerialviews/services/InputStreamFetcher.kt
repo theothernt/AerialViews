@@ -55,7 +55,7 @@ class InputStreamFetcher(
                     dataSource = DataSource.NETWORK,
                 )
             } catch (e: Exception) {
-                Timber.Forest.e(e, "Error fetching data from InputStream")
+                Timber.e(e, "Error fetching data from InputStream")
                 throw e
             }
         }

@@ -5,12 +5,18 @@
                 <Preference
                     android:key="export_settings"
                     android:title="@string/settings_export_title"
-                    app:summary="@string/settings_export_summary"/>
+                    app:summary="@string/settings_export_summary1"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_import_settings">
                 <Preference
                     app:selectable="false"
-                    app:summary="@string/settings_import_summary"/>
+                    app:summary="@string/settings_import_summary1"/>
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/settings_import_summary2"/>
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/settings_import_summary3"/>
         </PreferenceCategory>
 </PreferenceScreen>

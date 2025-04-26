@@ -311,7 +311,8 @@ class ScreenController(
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
             .withEndAction {
-                loadingView.visibility = View.GONE
+                loadingView.alpha = 0f
+                loadingView.visibility = View.INVISIBLE
                 canSkip = true
             }.start()
     }
