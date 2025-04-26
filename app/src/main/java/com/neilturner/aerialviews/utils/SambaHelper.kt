@@ -94,8 +94,8 @@ object SambaHelper {
         val config =
             SmbConfig
                 .builder()
-                .withTimeout(2, TimeUnit.MINUTES)
-                .withReadTimeout(2, TimeUnit.MINUTES)
+                .withTimeout(3, TimeUnit.MINUTES)
+                .withReadTimeout(3, TimeUnit.MINUTES)
                 .withEncryptData(SambaMediaPrefs.enableEncryption)
                 .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {

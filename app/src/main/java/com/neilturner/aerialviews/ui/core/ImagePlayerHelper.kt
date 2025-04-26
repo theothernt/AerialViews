@@ -27,6 +27,7 @@ import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.io.InputStream
 import java.util.EnumSet
+import java.util.concurrent.TimeUnit
 
 internal object ImagePlayerHelper {
     val logger: Logger? = if (BuildConfig.DEBUG) DebugLogger() else null
@@ -65,7 +66,13 @@ internal object ImagePlayerHelper {
     }
 
     fun streamFromWebDavFile(uri: Uri): InputStream? {
-        var client = OkHttpSardine()
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                .callTimeout(5, TimeUnit.SECONDS)
+                .readTimeout(5, TimeUnit.SECONDS)
+                .build()
+        var client = OkHttpSardine(okHttpClient)
         try {
             client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
             return client.get(uri.toString())
