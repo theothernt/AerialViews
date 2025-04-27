@@ -20,7 +20,6 @@
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
   <string name="allow_fallback_decoders_summary">支持某些设备上基于软件的编解码器或替代编解码器</string>
   <string name="allow_fallback_decoders_title">允许后备解码器</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">为了防止 OLED 烧屏，每个视频的时钟和地点都会改变</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_animations_summary">配置用于叠加的动画以及视频和照片之间的动画</string>

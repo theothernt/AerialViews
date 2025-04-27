@@ -20,7 +20,6 @@
   <string name="advanced_refresh_rate_switching_title">Switch automatico della frequenza di aggiornamento</string>
   <string name="allow_fallback_decoders_summary">Abilita il supporto di codec alternativi o basati su software su alcuni dispositivi.</string>
   <string name="allow_fallback_decoders_title">Consenti il fallback dei decodificatori</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">L\'orologio e la posizione cambiano a ogni video per aiutare a prevenire il burn-in dell\'OLED</string>
   <string name="appearance_alt_text_position_title">Alterna la posizione del testo</string>
   <string name="appearance_animations_summary">Configurare le animazioni utilizzate per gli overlay e tra video e foto</string>
