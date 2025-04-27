@@ -338,6 +338,7 @@
     <item>Japanese</item>
     <item>Chinese</item>
     <item>Russian</item>
+    <item>Ukrainian</item>
   </string-array>
   <string-array name="locale_menu_values" translatable="false">
     <item>default</item>
@@ -350,6 +351,7 @@
     <item>ja-JP</item>
     <item>zh-CN</item>
     <item>ru-RU</item>
+    <item>uk-UA</item>
   </string-array>
   <string name="locale_menu_default" translatable="false">default</string>
 
@@ -364,6 +366,7 @@
     <item>Japanese</item>
     <item>Chinese</item>
     <item>Russian</item>
+    <item>Ukrainian</item>
     <item>Random</item>
   </string-array>
   <string-array name="locale_screensaver_values" translatable="false">
@@ -377,6 +380,7 @@
     <item>ja-JP</item>
     <item>zh-CN</item>
     <item>ru-RU</item>
+    <item>uk-UA</item>
     <item>random</item>
   </string-array>
   <string name="locale_screensaver_default" translatable="false">default</string>
