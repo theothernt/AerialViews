@@ -18,16 +18,16 @@ plugins {
 
 android {
     namespace = "com.neilturner.aerialviews"
-    compileSdk = 35
+    compileSdk = 36
 
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 47
-        versionName = "1.7.6"
-        betaVersion = "-beta4"
+        versionName = "1.7.7"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
