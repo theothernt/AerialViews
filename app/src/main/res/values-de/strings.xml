@@ -20,7 +20,6 @@
   <string name="advanced_refresh_rate_switching_title">Automatische Umschaltung der Bildwiederholfrequenz</string>
   <string name="allow_fallback_decoders_summary">Ermöglicht die Unterstützung von softwarebasierten oder alternativen Codecs auf einigen Geräten</string>
   <string name="allow_fallback_decoders_title">Fallback-Decoder zulassen</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Overlay-Positionen ändern sich mit jedem neuen Foto oder Video von links nach rechts</string>
   <string name="appearance_alt_text_position_title">Alternative Overlay-Position</string>
   <string name="appearance_animations_summary">Animationen die für Overlays und zwischen Fotos &amp; Videos und verwendet werden konfigurieren</string>

@@ -3,22 +3,24 @@
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
 [![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=100k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
-[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=7k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
+[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=8k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
 [![License](https://img.shields.io/:license-gpl%20v3-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users) or [a modern Android/Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
+*Please read if you have a [Nvidia Shield](#nvidia-shield-users) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
 
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Play videos from your device, USB storage or network share
+* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
+* Show videos & photos from USB storage, Samba, WebDAV or Immich server
 * Option to avoid burn-in on QD/OLED TVs
-* Skip videos, change speed with the d-pad
+* Many playlist options to limit media length or loop certain videos
+* Use the D-Pad to skip media, skip songs, change speed, seek and more
 * Refresh rate switching
 
 ## Support the project
@@ -69,6 +71,10 @@ If your device is running Android 11 (Shield Experience 9+) and you want to play
 `Settings > Device Preferences > Storage > Scan for
 media automatically`
 
+To change the default screensaver on your Nvidia Shield, use the following menu:
+
+`Settings > Device Preferences > Screen saver`
+
 ## Fire TV and Frame Rate Switching
 
 Fire OS has no menu to allow advanced permissions for apps, so it must be done manually with an ADB command...
@@ -79,13 +85,13 @@ adb shell appops set com.neilturner.aerialviews SYSTEM_ALERT_WINDOW allow
 
 ## How to set Aerial Views as the default screensaver
 
-Since 2023, nearly all devices that ship with Google TV have no user-interface to change the screensaver to a 3rd party one...
+Since 2023, nearly all devices that ship with Google TV, running Android TV 12 or later, have no user-interface to change the screensaver to a 3rd party one...
 
 * __Chromecast with Google TV, Google TV Streamer__
 * __Recent MECOOL devices__
 * __Recent TCL, Philips, and Sony TVs__
 * __onn. Google TV devices (excluding the 2021 model)__
-* __Fire TV__
+* __Fire TV (won't work with Fire OS 8.1 and above)__
 
 But it can be done manually. Here is an overview of the steps...
 
@@ -94,7 +100,7 @@ But it can be done manually. Here is an overview of the steps...
 3. Connect to your Android/Google/Fire TV device
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
 
-Another option is to use the *TDUK Screensaver Manager* app. Details on this app are below.
+Another option is to use the *TDUK Screensaver Manager* app. Details on the app are below.
 
 <details>
 <summary>Enable Developer Mode on your Android/Google TV</summary>

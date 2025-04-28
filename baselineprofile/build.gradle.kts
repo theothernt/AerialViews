@@ -10,7 +10,7 @@ plugins {
 
 android {
     namespace = "com.neilturner.aerialviews.baselineprofile"
-    compileSdk = 35
+    compileSdk = 36
 
     kotlin {
         jvmToolchain(17)
@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         minSdk = 28
-        targetSdk = 35
+        targetSdk = 36
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 

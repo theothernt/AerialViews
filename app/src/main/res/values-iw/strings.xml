@@ -20,7 +20,6 @@
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
   <string name="allow_fallback_decoders_summary">הפעל תמיכה לפורמט וידאו מבוסס תוכנה או חלופי על מספר מכשירים</string>
   <string name="allow_fallback_decoders_title">הרשה חזרת מחדל למפענחי וידאו</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">מיקום שכבות העל משתנה משמאל לימין עם כל סרטון או תמונה חדשים</string>
   <string name="appearance_alt_text_position_title">החלף לסירוגין מיקום שכבת על</string>
   <string name="appearance_animations_summary">הגדר את האנימציות המשמשות לשכבות-על ובין סרטונים ותמונות</string>

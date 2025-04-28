@@ -9,6 +9,7 @@ object JsonHelper {
     val json =
         Json {
             ignoreUnknownKeys = true
+            isLenient = true
         }
 
     internal suspend inline fun <reified T> parseJson(
