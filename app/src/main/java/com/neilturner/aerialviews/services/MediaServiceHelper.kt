@@ -5,6 +5,7 @@ import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import com.neilturner.aerialviews.utils.parallelForEachCompat
 import kotlinx.coroutines.runBlocking
@@ -79,7 +80,12 @@ internal object MediaServiceHelper {
             .filter { it.enabled == true }
             .parallelForEachCompat {
                 runBlocking {
-                    media.addAll(it.fetchMedia())
+                    try {
+                        media.addAll(it.fetchMedia())
+                    } catch (ex: Exception) {
+                        Timber.e(ex, "Exception while fetching media from ${it.type}")
+                        FirebaseHelper.logExceptionIfRecent(ex)
+                    }
                 }
             }
         return media
