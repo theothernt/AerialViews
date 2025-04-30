@@ -178,6 +178,9 @@
 
   <!-- Text sizes -->
   <string-array name="text_size_entries" translatable="false">
+    <item>72sp</item>
+    <item>60sp</item>
+    <item>48sp</item>
     <item>36sp</item>
     <item>34sp</item>
     <item>32sp</item>
@@ -191,6 +194,9 @@
     <item>16sp</item>
   </string-array>
   <string-array name="text_size_values" translatable="false">
+    <item>72</item>
+    <item>60</item>
+    <item>48</item>
     <item>36</item>
     <item>34</item>
     <item>32</item>
