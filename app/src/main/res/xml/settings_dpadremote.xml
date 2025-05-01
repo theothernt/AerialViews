@@ -11,7 +11,13 @@
                     app:title="@string/category_dpad_press_and_hold"
                     app:summary="@string/dpad_button_press_and_hold_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemotePressHoldFragment"/>
+
+                <Preference
+                    app:title="@string/dpad_swipe_and_tap_title"
+                    app:summary="@string/dpad_swipe_and_tap_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteSwipeFragment"/>
         </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_options">
                 <CheckBoxPreference
                     app:defaultValue="true"

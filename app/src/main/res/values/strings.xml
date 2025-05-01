@@ -69,6 +69,8 @@
   <string name="category_custom_format">Custom format</string>
   <string name="category_import_settings">Import settings</string>
   <string name="category_export_settings">Export settings</string>
+  <string name="category_swipe_gestures">Swipe gestures</string>
+  <string name="category_tap_gestures">Tap gestures</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -506,11 +508,23 @@
   <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
   <string name="dpad_button_press_and_hold_summary">Configure d-pad or button press and hold actions</string>
 
+  <string name="dpad_swipe_and_tap_title">Swipe &amp; Tap</string>
+  <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
+
   <string name="dpad_button_left_title">Left direction</string>
   <string name="dpad_button_right_title">Right direction</string>
   <string name="dpad_button_up_title">Up direction</string>
   <string name="dpad_button_down_title">Down direction</string>
   <string name="dpad_button_ok_title">OK button</string>
+
+  <string name="dpad_swipe_up_title">Swipe Up</string>
+  <string name="dpad_swipe_down_title">Swipe Down</string>
+  <string name="dpad_swipe_left_title">Swipe Left</string>
+  <string name="dpad_swipe_right_title">Swipe Right</string>
+
+  <string name="dpad_tap_title">Single Tap</string>
+  <string name="dpad_double_tap_title">Double Tap</string>
+  <string name="dpad_long_press_title">Long Press</string>
 
   <string name="dpad_music_permission_title">Music control permission</string>
   <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
