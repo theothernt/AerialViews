@@ -59,7 +59,9 @@ class TestActivity : AppCompatActivity() {
             }
         setContentView(screenController.view)
 
-        screenController.view.setOnTouchListener(
+        screenController
+            .view
+            .setOnTouchListener(
             SwipeGestureListener(
                 context = this,
                 onSwipeUp = { Toast.makeText(this, "Swiped Up", Toast.LENGTH_SHORT).show() },

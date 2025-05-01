@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import timber.log.Timber
 import kotlin.math.abs
 
 class SwipeGestureListener(
@@ -13,16 +14,23 @@ class SwipeGestureListener(
     private val onSwipeLeft: () -> Unit = {},
     private val onSwipeRight: () -> Unit = {}
 ) : View.OnTouchListener {
+    private val gestureDetector: GestureDetector
+    private val swipeThreshold = 100
+    private val swipeVelocityThreshold = 100
 
-    private val gestureDetector = GestureDetector(context, GestureListener())
+    init {
+        gestureDetector = GestureDetector(context, GestureListener())
+    }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        Timber.i("onTouch: ${event?.action}, x: ${event?.x}, y: ${event?.y}")
         return event?.let { gestureDetector.onTouchEvent(it) } == true
     }
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-        private val SWIPE_THRESHOLD = 100
-        private val SWIPE_VELOCITY_THRESHOLD = 100
+        override fun onDown(e: MotionEvent): Boolean {
+            return true
+        }
 
         override fun onFling(
             e1: MotionEvent?,
@@ -36,12 +44,12 @@ class SwipeGestureListener(
             val diffY = e2.y - e1.y
 
             return if (abs(diffX) > abs(diffY)) {
-                if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                if (abs(diffX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
                     if (diffX > 0) onSwipeRight() else onSwipeLeft()
                     true
                 } else false
             } else {
-                if (abs(diffY) > SWIPE_THRESHOLD && abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                if (abs(diffY) > swipeThreshold && abs(velocityY) > swipeVelocityThreshold) {
                     if (diffY > 0) onSwipeDown() else onSwipeUp()
                     true
                 } else false
