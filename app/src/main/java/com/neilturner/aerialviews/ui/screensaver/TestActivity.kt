@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -14,6 +15,7 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PreferenceHelper
+import com.neilturner.aerialviews.utils.SwipeGestureListener
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
@@ -56,6 +58,16 @@ class TestActivity : AppCompatActivity() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
+
+        screenController.view.setOnTouchListener(
+            SwipeGestureListener(
+                context = this,
+                onSwipeUp = { Toast.makeText(this, "Swiped Up", Toast.LENGTH_SHORT).show() },
+                onSwipeDown = { Toast.makeText(this, "Swiped Down", Toast.LENGTH_SHORT).show() },
+                onSwipeLeft = { Toast.makeText(this, "Swiped Left", Toast.LENGTH_SHORT).show() },
+                onSwipeRight = { Toast.makeText(this, "Swiped Right", Toast.LENGTH_SHORT).show() },
+            )
+        )
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
