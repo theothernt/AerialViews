@@ -12,7 +12,10 @@ class SwipeGestureListener(
     private val onSwipeUp: () -> Unit = {},
     private val onSwipeDown: () -> Unit = {},
     private val onSwipeLeft: () -> Unit = {},
-    private val onSwipeRight: () -> Unit = {}
+    private val onSwipeRight: () -> Unit = {},
+    private val onTap: () -> Unit = {},
+    private val onLongTap: () -> Unit = {},
+    private val onDoubleTap: () -> Unit = {},
 ) : View.OnTouchListener {
     private val gestureDetector: GestureDetector
     private val swipeThreshold = 100
@@ -54,6 +57,19 @@ class SwipeGestureListener(
                     true
                 } else false
             }
+        }
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
+            //onTap()
+            return true
+        }
+
+        override fun onDoubleTap(e: MotionEvent): Boolean {
+            //onDoubleTap()
+            return true
+        }
+
+        override fun onLongPress(e: MotionEvent) {
+            //onLongTap()
         }
     }
 }
