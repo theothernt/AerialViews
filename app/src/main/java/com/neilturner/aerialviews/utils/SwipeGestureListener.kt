@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import timber.log.Timber
 import kotlin.math.abs
 
 class SwipeGestureListener(
@@ -26,7 +25,6 @@ class SwipeGestureListener(
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        Timber.i("onTouch: ${event?.action}, x: ${event?.x}, y: ${event?.y}")
         return event?.let { gestureDetector.onTouchEvent(it) } == true
     }
 
@@ -58,18 +56,18 @@ class SwipeGestureListener(
                 } else false
             }
         }
-        override fun onSingleTapUp(e: MotionEvent): Boolean {
-            //onTap()
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+            onTap()
             return true
         }
 
         override fun onDoubleTap(e: MotionEvent): Boolean {
-            //onDoubleTap()
+            onDoubleTap()
             return true
         }
 
         override fun onLongPress(e: MotionEvent) {
-            //onLongTap()
+            onLongTap()
         }
     }
 }
