@@ -111,7 +111,35 @@ internal object ImagePlayerHelper {
                     SMB2CreateDisposition.FILE_OPEN,
                     null,
                 )
-            return file.inputStream
+
+            return object : InputStream() {
+                private val wrappedStream = file.inputStream
+
+                override fun read(): Int = wrappedStream.read()
+
+                override fun read(b: ByteArray): Int = wrappedStream.read(b)
+
+                override fun read(b: ByteArray, off: Int, len: Int): Int =
+                    wrappedStream.read(b, off, len)
+
+                override fun skip(n: Long): Long = wrappedStream.skip(n)
+
+                override fun available(): Int = wrappedStream.available()
+
+                override fun close() {
+                    try {
+                        wrappedStream.close()
+                        file.close()
+                        share.close()
+                        session.close()
+                        connection.close()
+                        smbClient.close()
+                    } catch (ex: Exception) {
+                        Timber.e(ex, "Error closing SMB resources: ${ex.message}")
+                    }
+                }
+            }
+
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while opening Samba file: ${ex.message}")
             FirebaseHelper.logExceptionIfRecent(ex)

@@ -100,10 +100,14 @@ class ImagePlayerView : AppCompatImageView {
         coroutineScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
-                    loadImage(ImagePlayerHelper.streamFromSambaFile(media.uri))
+                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
+                    loadImage(stream)
+                    stream?.close()
                 }
                 AerialMediaSource.WEBDAV -> {
-                    loadImage(ImagePlayerHelper.streamFromWebDavFile(media.uri))
+                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
+                    loadImage(stream)
+                    stream?.close()
                 }
                 else -> {
                     loadImage(media.uri)

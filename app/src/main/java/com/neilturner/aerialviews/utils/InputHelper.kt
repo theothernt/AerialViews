@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.content.Context
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -49,6 +50,72 @@ object InputHelper {
 
         previousEvent = event
         return result
+    }
+
+    fun setupGestureListener(
+        context: Context,
+        controller: ScreenController,
+        exit: (shouldExit: Boolean) -> Unit,
+    ) {
+        controller
+            .view
+            .setOnTouchListener(
+                SwipeGestureListener(
+                    context = context,
+                    onSwipeUp = { gestureToAction(GestureType.UP, controller, exit) },
+                    onSwipeDown = { gestureToAction(GestureType.DOWN, controller, exit) },
+                    onSwipeLeft = { gestureToAction(GestureType.LEFT, controller, exit) },
+                    onSwipeRight = { gestureToAction(GestureType.RIGHT, controller, exit) },
+                    onTap = { gestureToAction(GestureType.TAP, controller, exit) },
+                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
+                    onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, controller, exit) },
+                )
+            )
+    }
+
+    private fun gestureToAction(
+        gesture: GestureType,
+        controller: ScreenController?,
+        exit: (shouldExit: Boolean) -> Unit,
+    ) {
+        val action = when (gesture) {
+            GestureType.UP -> GeneralPrefs.gestureUp
+            GestureType.DOWN -> GeneralPrefs.gestureDown
+            GestureType.LEFT -> GeneralPrefs.gestureLeft
+            GestureType.RIGHT -> GeneralPrefs.gestureRight
+            GestureType.TAP -> GeneralPrefs.gestureTap
+            GestureType.DOUBLE_TAP -> GeneralPrefs.gestureDoubleTap
+            GestureType.TAP_HOLD -> GeneralPrefs.gestureTapHold
+        }
+
+        Timber.i("Gesture: $gesture, Action: $action")
+
+        // Check if any swipe or screen tap should wake from black out mode
+        if (GeneralPrefs.wakeOnAnyButtonPress &&
+            controller?.blackOutMode == true
+        ) {
+            controller.toggleBlackOutMode()
+            return
+        }
+
+        if (action == ButtonType.IGNORE) {
+            return
+        }
+
+        when (action) {
+            ButtonType.SKIP_NEXT -> controller?.skipItem()
+            ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
+            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
+            ButtonType.MUSIC_NEXT -> controller?.nextTrack()
+            ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
+            ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+            ButtonType.SEEK_FORWARD -> controller?.seekForward()
+            ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
+            ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
+            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
+            ButtonType.EXIT_TO_SETTINGS -> exit(false)
+            else -> exit(true)
+        }
     }
 
     private fun eventToAction(
@@ -168,7 +235,7 @@ object InputHelper {
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
-        Timber.i("Action: $action, PressType: $type")
+        Timber.i("Action: $action, ButtonPressType: $type")
 
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
@@ -213,6 +280,16 @@ object InputHelper {
 
 enum class ButtonPressType {
     PRESS,
-    LONG_PRESS,
-    LONG_PRESS_HOLD,
+    LONG_PRESS, // eg. 1 second
+    LONG_PRESS_HOLD, // eg. 5 seconds - for seeking, etc
+}
+
+enum class GestureType {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    TAP,
+    DOUBLE_TAP,
+    TAP_HOLD,
 }
