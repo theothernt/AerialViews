@@ -51,14 +51,6 @@
                     app:title="@string/advanced_ignore_animation_scale_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_phone_tablet">
-                <CheckBoxPreference
-                    app:defaultValue="false"
-                    app:key="close_on_screen_tap"
-                    app:summary="@string/advanced_close_on_screen_tap_summary"
-                    app:title="@string/advanced_close_on_screen_tap_title" />
-        </PreferenceCategory>
-
         <PreferenceCategory app:title="@string/category_appearance">
                 <ListPreference
                     app:key="locale_menu"

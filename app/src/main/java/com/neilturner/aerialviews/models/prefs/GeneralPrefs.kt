@@ -164,6 +164,14 @@ object GeneralPrefs : KotprefModel() {
     var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
+    var gestureLeft by nullableEnumValuePref(ButtonType.IGNORE, "gesture_left")
+    var gestureRight by nullableEnumValuePref(ButtonType.IGNORE, "gesture_right")
+    var gestureUp by nullableEnumValuePref(ButtonType.IGNORE, "gesture_up")
+    var gestureDown by nullableEnumValuePref(ButtonType.IGNORE, "gesture_down")
+    var gestureTap by nullableEnumValuePref(ButtonType.IGNORE, "gesture_tap")
+    var gestureDoubleTap by nullableEnumValuePref(ButtonType.IGNORE, "gesture_double_tap")
+    var gestureTapHold by nullableEnumValuePref(ButtonType.IGNORE, "gesture_tap_hold")
+
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
     var seekInterval by stringPref("10", "seek_interval")

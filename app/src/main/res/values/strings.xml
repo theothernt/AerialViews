@@ -70,6 +70,8 @@
   <string name="category_custom_format">Custom format</string>
   <string name="category_import_settings">Import settings</string>
   <string name="category_export_settings">Export settings</string>
+  <string name="category_swipe_gestures">Swipe gestures</string>
+  <string name="category_tap_gestures">Tap gestures</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -508,14 +510,29 @@
   <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
 
   <!-- Main / Settings / D-Pad/Remote -->
+  <string name="dpad_button_press_title">Button or D-Pad Press</string>
   <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
+
+  <string name="dpad_button_press_and_hold_title">Button or D-Pad Press &amp; Hold</string>
   <string name="dpad_button_press_and_hold_summary">Configure d-pad or button press and hold actions</string>
+
+  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap gestures</string>
+  <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
 
   <string name="dpad_button_left_title">Left direction</string>
   <string name="dpad_button_right_title">Right direction</string>
   <string name="dpad_button_up_title">Up direction</string>
   <string name="dpad_button_down_title">Down direction</string>
   <string name="dpad_button_ok_title">OK button</string>
+
+  <string name="dpad_swipe_up_title">Swipe Up</string>
+  <string name="dpad_swipe_down_title">Swipe Down</string>
+  <string name="dpad_swipe_left_title">Swipe Left</string>
+  <string name="dpad_swipe_right_title">Swipe Right</string>
+
+  <string name="dpad_tap_title">Single Tap</string>
+  <string name="dpad_double_tap_title">Double Tap</string>
+  <string name="dpad_long_press_title">Long Press</string>
 
   <string name="dpad_music_permission_title">Music control permission</string>
   <string name="dpad_music_permission_summary">Additional permission is required to skip to next/previous track</string>
@@ -558,9 +575,6 @@
 
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
-
-  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
-  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
 
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>
