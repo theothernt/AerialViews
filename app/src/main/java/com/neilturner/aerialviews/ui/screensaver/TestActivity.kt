@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
@@ -62,17 +61,6 @@ class TestActivity : AppCompatActivity() {
             controller = screenController,
             exit = ::finishWithResult,
         )
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        // TODO
-        // migrate prefs
-
-//        if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
-//            finishWithResult()
-//            return true
-//        }
-        return super.onTouchEvent(event)
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {

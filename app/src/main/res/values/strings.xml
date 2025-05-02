@@ -571,9 +571,6 @@
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 
-  <string name="advanced_close_on_screen_tap_title">Close on screen tap</string>
-  <string name="advanced_close_on_screen_tap_summary">Exit the screensaver when the screen is tapped</string>
-
   <!-- Main / Settings / Device capabilities -->
   <string name="capabilities_device_title">Device</string>
   <string name="capabilities_display_title">TV/Display</string>

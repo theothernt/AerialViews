@@ -27,7 +27,6 @@ class DreamActivity : DreamService() {
         super.onAttachedToWindow()
         // Setup
         isFullscreen = true
-        // isInteractive = !(GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this))
         isInteractive = false
 
         // Start playback, etc
