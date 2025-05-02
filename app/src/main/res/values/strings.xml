@@ -505,10 +505,13 @@
   <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
 
   <!-- Main / Settings / D-Pad/Remote -->
+  <string name="dpad_button_press_title">Button or D-Pad Press</string>
   <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
+
+  <string name="dpad_button_press_and_hold_title">Button or D-Pad Press &amp; Hold</string>
   <string name="dpad_button_press_and_hold_summary">Configure d-pad or button press and hold actions</string>
 
-  <string name="dpad_swipe_and_tap_title">Swipe &amp; Tap</string>
+  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap gestures</string>
   <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
 
   <string name="dpad_button_left_title">Left direction</string>

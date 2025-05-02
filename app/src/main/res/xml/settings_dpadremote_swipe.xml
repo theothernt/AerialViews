@@ -21,7 +21,7 @@
                 <ListPreference
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default2"
+                    app:defaultValue="@string/button_action_default"
                     app:key="gesture_swipe_right"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_swipe_right_title" />
@@ -29,7 +29,7 @@
                 <ListPreference
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default3"
+                    app:defaultValue="@string/button_action_default"
                     app:key="gesture_swipe_left"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_swipe_left_title" />
