@@ -43,6 +43,8 @@ class MigrationHelper(
         if (lastKnownVersion < 23) release23()
         if (lastKnownVersion < 24) release24()
 
+        if (lastKnownVersion < 49) release49()
+
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
     }
@@ -367,6 +369,21 @@ class MigrationHelper(
                 // If other value, reset the pref to default
                 prefs.edit { putString("playback_speed", "1") }
             }
+        }
+    }
+
+    private fun release49() {
+        Timber.i("Migrating settings for release 49")
+
+        val closeOnScreenTapUsed = prefs.contains("close_on_screen_tap")
+        if (closeOnScreenTapUsed) {
+            Timber.i("Updating close on screen tap")
+            prefs.edit { putBoolean("close_on_screen_tap", false) }
+            val closeOnScreenTap = prefs.getBoolean("close_on_screen_tap", false)
+            if (closeOnScreenTap) {
+                prefs.edit { putString("gesture_tap", "EXIT") }
+            }
+            prefs.edit { remove("close_on_screen_tap") }
         }
     }
 

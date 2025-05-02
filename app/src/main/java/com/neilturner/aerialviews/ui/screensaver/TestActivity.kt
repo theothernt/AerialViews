@@ -3,13 +3,11 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
-import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
@@ -47,6 +45,7 @@ class TestActivity : AppCompatActivity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
@@ -56,14 +55,12 @@ class TestActivity : AppCompatActivity() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
-    }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        if (GeneralPrefs.closeOnScreenTap && !DeviceHelper.isTV(this)) {
-            finishWithResult()
-            return true
-        }
-        return super.onTouchEvent(event)
+        InputHelper.setupGestureListener(
+            context = this,
+            controller = screenController,
+            exit = ::finishWithResult,
+        )
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
