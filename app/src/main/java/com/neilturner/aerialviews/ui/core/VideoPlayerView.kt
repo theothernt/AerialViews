@@ -286,7 +286,11 @@ class VideoPlayerView
             // Duration taking into account...
             val durationMinusSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
             val durationMinusSpeedAndProgress = durationMinusSpeed - progress
-            val durationMinusSpeedAndProgressAndFade = durationMinusSpeedAndProgress - fadeDuration
+            var durationMinusSpeedAndProgressAndFade = durationMinusSpeedAndProgress - fadeDuration
+
+            if (durationMinusSpeedAndProgressAndFade < 1000) {
+                durationMinusSpeedAndProgressAndFade = 1000
+            }
 
             Timber.i(
                 "Duration: ${duration.milliseconds} (at 1x), Delay: ${durationMinusSpeedAndProgressAndFade.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
