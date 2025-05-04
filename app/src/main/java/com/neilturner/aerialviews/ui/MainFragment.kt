@@ -143,6 +143,5 @@ class MainFragment :
     companion object {
         const val SETTINGS = "android.settings.SETTINGS"
         const val SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS"
-        const val TEST_SCREENSAVER = "com.neilturner.aerialviews.ui.screensaver.TestActivity"
     }
 }
