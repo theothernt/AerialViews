@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.baselineprofile
 
+import android.content.Intent
 import androidx.benchmark.macro.BaselineProfileMode
 import androidx.benchmark.macro.CompilationMode
 import androidx.benchmark.macro.StartupMode
@@ -48,7 +49,6 @@ class StartupBenchmarks {
         benchmark(CompilationMode.Partial(BaselineProfileMode.Require))
 
     private fun benchmark(compilationMode: CompilationMode) {
-        // The application id for the running build variant is read from the instrumentation arguments.
         rule.measureRepeated(
             packageName = InstrumentationRegistry.getArguments().getString("targetAppId")
                 ?: throw Exception("targetAppId not passed as instrumentation runner arg"),
@@ -60,16 +60,22 @@ class StartupBenchmarks {
                 pressHome()
             },
             measureBlock = {
-                startActivityAndWait()
+                startActivityAndWait(Intent().apply {
+                    setClassName(
+                        packageName,
+                        "com.neilturner.aerialviews.ui.screensaver.TestActivity"
+                    )
+                })
 
-                // TODO Add interactions to wait for when your app is fully drawn.
-                // The app is fully drawn when Activity.reportFullyDrawn is called.
-                // For Jetpack Compose, you can use ReportDrawn, ReportDrawnWhen and ReportDrawnAfter
-                // from the AndroidX Activity library.
+            // StartupBenchmarks_startupCompilationBaselineProfiles
+            // timeToInitialDisplayMs   min 712.5,   median 807.3,   max 835.9
 
-                // Check the UiAutomator documentation for more information on how to
-                // interact with the app.
-                // https://d.android.com/training/testing/other-components/ui-automator
+            // StartupBenchmarks_startupCompilationNone
+            // timeToInitialDisplayMs   min   792.8,   median   998.9,   max 1,477.1
+
+            // Check the UiAutomator documentation for more information on how to
+            // interact with the app.
+            // https://d.android.com/training/testing/other-components/ui-automator
             }
         )
     }

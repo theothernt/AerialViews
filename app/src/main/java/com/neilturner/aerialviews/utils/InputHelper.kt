@@ -28,14 +28,12 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            Timber.i("Press Event")
             result = eventToAction(event, controller, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            Timber.i("Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
@@ -44,7 +42,6 @@ object InputHelper {
             event.repeatCount.rem(10) == 0 &&
             longPressEvent
         ) {
-            Timber.i("Another Long Press Event")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
 
