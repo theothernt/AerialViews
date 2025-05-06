@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.services
+package com.neilturner.aerialviews.providers.samba
 
 import android.annotation.SuppressLint
 import androidx.media3.common.C

@@ -23,8 +23,8 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.webdav.WebDavDataSourceFactory
-import com.neilturner.aerialviews.services.CustomRendererFactory
-import com.neilturner.aerialviews.services.SambaDataSourceFactory
+import com.neilturner.aerialviews.services.philips.CustomRendererFactory
+import com.neilturner.aerialviews.providers.samba.SambaDataSourceFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import kotlin.math.ceil

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.providers
+package com.neilturner.aerialviews.providers.samba
 
 import android.content.Context
 import androidx.core.net.toUri
@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
@@ -68,7 +69,7 @@ class SambaMediaProvider(
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
         } catch (ex: Exception) {
-            Timber.e(ex)
+            Timber.Forest.e(ex)
             return Pair(media, "Failed to parse share name")
         }
 
@@ -83,7 +84,7 @@ class SambaMediaProvider(
                     path,
                 )
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
@@ -114,7 +115,7 @@ class SambaMediaProvider(
             media.add(item)
         }
 
-        Timber.i("Videos found: ${media.size}")
+        Timber.Forest.i("Videos found: ${media.size}")
         return Pair(media, sambaMedia.second)
     }
 
@@ -137,7 +138,7 @@ class SambaMediaProvider(
             try {
                 config = SambaHelper.buildSmbConfig()
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return@withContext Pair(selected, "Failed to create SMB config")
             }
 
@@ -147,7 +148,7 @@ class SambaMediaProvider(
             try {
                 connection = smbClient.connect(hostName)
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return@withContext Pair(selected, "Failed to connect, hostname error")
             }
 
@@ -157,7 +158,7 @@ class SambaMediaProvider(
                 val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
                 session = connection.authenticate(authContext)
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return@withContext Pair(
                     selected,
                     "Authentication failed. Please check the username and password, or server settings if using anonymous login",
@@ -168,7 +169,7 @@ class SambaMediaProvider(
             try {
                 share = session?.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
-                Timber.e(ex)
+                Timber.Forest.e(ex)
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",
@@ -199,15 +200,30 @@ class SambaMediaProvider(
             images = selected.size - videos
             excluded = files.size - selected.size
 
-            var message = String.format(res.getString(R.string.samba_media_test_summary1), files.size.toString()) + "\n"
-            message += String.format(res.getString(R.string.samba_media_test_summary2), excluded.toString()) + "\n"
+            var message = String.format(
+                res.getString(R.string.samba_media_test_summary1),
+                files.size.toString()
+            ) + "\n"
+            message += String.format(
+                res.getString(R.string.samba_media_test_summary2),
+                excluded.toString()
+            ) + "\n"
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-                message += String.format(res.getString(R.string.samba_media_test_summary3), videos.toString()) + "\n"
+                message += String.format(
+                    res.getString(R.string.samba_media_test_summary3),
+                    videos.toString()
+                ) + "\n"
             }
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-                message += String.format(res.getString(R.string.samba_media_test_summary4), images.toString()) + "\n"
+                message += String.format(
+                    res.getString(R.string.samba_media_test_summary4),
+                    images.toString()
+                ) + "\n"
             }
-            message += String.format(res.getString(R.string.samba_media_test_summary5), selected.size.toString())
+            message += String.format(
+                res.getString(R.string.samba_media_test_summary5),
+                selected.size.toString()
+            )
             return@withContext Pair(selected, message)
         }
 
