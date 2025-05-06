@@ -24,15 +24,11 @@ class WeatherService(
 ) {
     private var updateJob: Job? = null
 
-    private val forecast by lazy {
-        openWeather.create(ForecastApi::class.java)
+    private val weather by lazy {
+        openWeatherClient.create(OpenWeatherApi::class.java)
     }
 
-    private val location by lazy {
-        openWeather.create(LocationApi::class.java)
-    }
-
-    private val openWeather: Retrofit by lazy {
+    private val openWeatherClient: Retrofit by lazy {
         Retrofit
             .Builder()
             .baseUrl("https://api.openweathermap.org/")
@@ -43,8 +39,8 @@ class WeatherService(
 
     suspend fun lookupLocation(query: String): List<LocationResponse> =
         try {
-            val key = BuildConfig.OPEN_WEATHER_KEY
-            val locations = location.getLocationByName(query, 10, key)
+            val key = BuildConfig.OPEN_WEATHER
+            val locations = weather.getLocationByName(query, 10, key)
             delay(1.seconds)
             locations
         } catch (e: Exception) {
@@ -66,7 +62,7 @@ class WeatherService(
 
     private suspend fun forecastUpdate(): String {
         return try {
-            val key = BuildConfig.OPEN_WEATHER_KEY
+            val key = BuildConfig.OPEN_WEATHER
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
             val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
             val units = if (GeneralPrefs.weatherUnits == null) "metric" else GeneralPrefs.weatherUnits.toString().lowercase()
@@ -76,11 +72,12 @@ class WeatherService(
                 return ""
             }
 
-            val response = forecast.getForecast(lat, lon, key, units)
+            val response = weather.getCurrentWeather(lat, lon, key, units)
 
-            val timeAgo = calculateTimeAgo(response.current.dt)
+            val timeAgo = calculateTimeAgo(response.dt)
             val description =
-                response.current.weather[0]
+                response.weather
+                    .first()
                     .description
                     .capitalise()
 
@@ -90,7 +87,7 @@ class WeatherService(
                     else -> "°C"
                 } // needed?
 
-            val temperature = "${response.current.temp.roundToInt()}°"
+            val temperature = "${response.main.temp.roundToInt()}°"
             val forecast = "$temperature, $description"
             Timber.Forest.i("Forecast: $forecast ($timeAgo)")
             forecast

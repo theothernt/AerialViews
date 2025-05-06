@@ -69,8 +69,8 @@ android {
     val keyProps = loadProperties("secrets.properties")
     buildTypes {
         getByName("debug") {
-            val openWeatherKey = keyProps["openWeatherDebugKey"] as String?
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"$openWeatherKey\"")
+            val openWeather = keyProps["openWeatherDebug"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             applicationIdSuffix = ".debug"
@@ -79,8 +79,8 @@ android {
             // isPseudoLocalesEnabled = true
         }
         getByName("release") {
-            val openWeatherKey = keyProps["openWeatherKey"] as String?
-            buildConfigField("String", "OPEN_WEATHER_KEY", "\"$openWeatherKey\"")
+            val openWeather = keyProps["openWeather"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true
