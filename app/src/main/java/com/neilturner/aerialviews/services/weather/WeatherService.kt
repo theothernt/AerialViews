@@ -4,7 +4,7 @@ import android.content.Context
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
-import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildSerializer
+import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
@@ -24,23 +24,20 @@ class WeatherService(
 ) {
     private var updateJob: Job? = null
 
-    private val weather by lazy {
-        openWeatherClient.create(OpenWeatherApi::class.java)
-    }
-
-    private val openWeatherClient: Retrofit by lazy {
+    private val openWeatherClient by lazy {
         Retrofit
             .Builder()
             .baseUrl("https://api.openweathermap.org/")
             .client(buildOkHttpClient(context))
             .addConverterFactory(buildSerializer())
             .build()
+            .create(OpenWeatherApi::class.java)
     }
 
     suspend fun lookupLocation(query: String): List<LocationResponse> =
         try {
             val key = BuildConfig.OPEN_WEATHER
-            val locations = weather.getLocationByName(query, 10, key)
+            val locations = openWeatherClient.getLocationByName(query, 10, key)
             delay(1.seconds)
             locations
         } catch (e: Exception) {
@@ -72,7 +69,7 @@ class WeatherService(
                 return ""
             }
 
-            val response = weather.getCurrentWeather(lat, lon, key, units)
+            val response = openWeatherClient.getCurrentWeather(lat, lon, key, units)
 
             val timeAgo = calculateTimeAgo(response.dt)
             val description =

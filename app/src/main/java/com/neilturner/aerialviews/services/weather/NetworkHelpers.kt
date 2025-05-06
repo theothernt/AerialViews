@@ -4,16 +4,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import kotlinx.serialization.json.Json
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Converter
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -32,18 +28,6 @@ object NetworkHelpers {
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnected
         }
-    }
-
-    fun buildSerializer(): Converter.Factory {
-        val contentType = "application/json".toMediaType()
-
-        val json =
-            Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            }
-
-        return json.asConverterFactory(contentType)
     }
 
     fun buildOkHttpClient(context: Context): OkHttpClient {
