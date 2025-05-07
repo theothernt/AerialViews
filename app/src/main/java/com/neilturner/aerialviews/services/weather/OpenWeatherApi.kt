@@ -72,7 +72,6 @@ data class Weather(
     val description: String,
 )
 
-
 // Current Weather
 @Serializable
 data class CurrentWeatherResponse(
