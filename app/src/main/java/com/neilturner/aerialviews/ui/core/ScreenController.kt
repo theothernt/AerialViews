@@ -29,7 +29,7 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextWeather
+import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
@@ -187,7 +187,7 @@ class ScreenController(
             }
 
             // Setup weather service
-            if (overlayHelper.findOverlay<TextWeather>().isNotEmpty()) {
+            if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
                 weatherService =
                     WeatherService(context).apply {
                         startUpdates()

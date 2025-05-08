@@ -87,7 +87,7 @@ class WeatherService(
             val temperature = "${response.main.temp.roundToInt()}°"
             val forecast = "$temperature, $description"
             Timber.Forest.i("Forecast: $forecast ($timeAgo)")
-            forecast
+            temperature
         } catch (e: Exception) {
             Timber.Forest.e(e, "Failed to fetch and parse weather data")
             ""
@@ -101,5 +101,9 @@ class WeatherService(
 }
 
 data class WeatherEvent(
-    val forecast: String = "",
+    val temperature: String = "",
+    val icon: String = "",
+    val city: String = "",
+    val wind: String = "",
+    val humidity: String = "",
 )

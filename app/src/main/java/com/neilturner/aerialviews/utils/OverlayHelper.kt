@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.ui.overlays.TextDate
 import com.neilturner.aerialviews.ui.overlays.TextLocation
 import com.neilturner.aerialviews.ui.overlays.TextMessage
 import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
-import com.neilturner.aerialviews.ui.overlays.TextWeather
+import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 
 class OverlayHelper(
     private val context: Context,
@@ -137,46 +137,49 @@ class OverlayHelper(
         return Pair(leftIds, rightIds)
     }
 
-    private fun getOverlay(type: OverlayType): View? {
-        return when (type) {
+    private fun getOverlay(overlay: OverlayType): View? {
+        return when (overlay) {
             OverlayType.CLOCK ->
                 AltTextClock(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.clockWeight)
                 }
             OverlayType.LOCATION ->
                 TextLocation(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.descriptionWeight)
                 }
-            OverlayType.WEATHER1,
-            // OverlayType.WEATHER2,
-            ->
-                TextWeather(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
-                    this.type = type
+            OverlayType.WEATHER1 ->
+                WeatherOverlay(context).apply {
+                    type = overlay
+                    style(prefs.fontTypeface, prefs.weatherLine1Size, prefs.weatherLine1Weight)
+                    layout(prefs.weatherLine1)
+                }
+            OverlayType.WEATHER2 ->
+                WeatherOverlay(context).apply {
+                    style(prefs.fontTypeface, prefs.weatherLine2Size, prefs.weatherLine2Weight)
+                    layout(prefs.weatherLine2)
                 }
             OverlayType.MUSIC1,
             OverlayType.MUSIC2,
             ->
                 TextNowPlaying(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
-                    this.type = type
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight)
+                    type = overlay
                 }
             OverlayType.DATE ->
                 TextDate(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
             ->
                 TextMessage(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-                    this.type = type
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    type = overlay
                 }
             else -> return null
         }
