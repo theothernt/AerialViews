@@ -152,13 +152,15 @@ class OverlayHelper(
             OverlayType.WEATHER1 ->
                 WeatherOverlay(context).apply {
                     type = overlay
-                    style(prefs.fontTypeface, prefs.weatherLine1Size, prefs.weatherLine1Weight)
-                    layout(prefs.weatherLine1)
+                    style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
+                    // layout(prefs.weatherLine1)
+                    layout("TEMPERATURE, ICON")
                 }
             OverlayType.WEATHER2 ->
                 WeatherOverlay(context).apply {
-                    style(prefs.fontTypeface, prefs.weatherLine2Size, prefs.weatherLine2Weight)
-                    layout(prefs.weatherLine2)
+                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
+                    // layout(prefs.weatherLine2)
+                    layout("SUMMARY")
                 }
             OverlayType.MUSIC1,
             OverlayType.MUSIC2,

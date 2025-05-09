@@ -19,6 +19,7 @@ import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 import timber.log.Timber
 import androidx.core.view.isNotEmpty
+import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.services.weather.WeatherInfo
 
 class WeatherOverlay @JvmOverloads constructor(
@@ -31,6 +32,10 @@ class WeatherOverlay @JvmOverloads constructor(
     private var overlayItems: List<OverlayItem> = emptyList()
     private var layout = ""
 
+    private var font = ""
+    private var size = 0f
+    private var weight = ""
+
     sealed class OverlayItem {
         data class TextItem(val text: String) : OverlayItem()
         data class ImageItem(@DrawableRes val imageResId: Int) : OverlayItem()
@@ -40,8 +45,10 @@ class WeatherOverlay @JvmOverloads constructor(
         orientation = HORIZONTAL
     }
 
-    fun style(font: String, size: String, weight: String) {
-        // Set font properties
+    fun style(font: String, size: Float, weight: String) {
+        this.font = font
+        this.size = size
+        this.weight = weight
     }
 
     fun layout(layout: String) {
@@ -65,6 +72,7 @@ class WeatherOverlay @JvmOverloads constructor(
 
     private fun updateWeather(weather: WeatherEvent) {
         if (layout.isEmpty()) return
+        overlayItems = emptyList()
 
         layout.split(",").forEach { item ->
             val trimmedItem = item.trim()
@@ -94,7 +102,7 @@ class WeatherOverlay @JvmOverloads constructor(
 
         val textSizePx = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_SP,
-            18f,
+            size,
             resources.displayMetrics
         )
 
@@ -105,18 +113,18 @@ class WeatherOverlay @JvmOverloads constructor(
         overlayItems.forEach { item ->
             when (item) {
                 is OverlayItem.TextItem -> {
-                    Timber.i("Adding text item: ${item.text}")
                     val textView = TextView(context).apply {
                         text = item.text
-                        setTextColor(Color.WHITE) // Set text color to white
                     }
+                    TextViewCompat.setTextAppearance(textView, R.style.OverlayText)
+
                     val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                     params.gravity = android.view.Gravity.CENTER_VERTICAL
                     if (isNotEmpty()) {
                         params.leftMargin = 8
                     }
 
-                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                     textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
 
                     textView.layoutParams = params
@@ -124,7 +132,6 @@ class WeatherOverlay @JvmOverloads constructor(
                 }
                 
                 is OverlayItem.ImageItem -> {
-                    Timber.i("Adding image item: ${item.imageResId}")
                     val imageView = ImageView(context).apply {
                         val drawable = ContextCompat.getDrawable(context, item.imageResId)
                         if (drawable != null) {
