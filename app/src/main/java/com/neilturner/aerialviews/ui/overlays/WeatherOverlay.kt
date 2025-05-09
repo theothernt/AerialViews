@@ -46,7 +46,7 @@ class WeatherOverlay @JvmOverloads constructor(
 
     fun layout(layout: String) {
         // TEST
-        this.layout = "ICON, TEMPERATURE"
+        this.layout = "TEMPERATURE, SUMMARY"
         // this.layout = layout
     }
 
@@ -72,7 +72,8 @@ class WeatherOverlay @JvmOverloads constructor(
                 val weatherInfo = WeatherInfo.valueOf(trimmedItem)
                 when (weatherInfo) {
                     WeatherInfo.TEMPERATURE -> overlayItems = overlayItems + OverlayItem.TextItem(weather.temperature)
-                    WeatherInfo.ICON -> overlayItems = overlayItems + OverlayItem.ImageItem(R.drawable.sun)
+                    WeatherInfo.ICON -> overlayItems = overlayItems + OverlayItem.ImageItem(weather.icon)
+                    WeatherInfo.SUMMARY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.summary)
                     WeatherInfo.CITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.city)
                     WeatherInfo.WIND -> overlayItems = overlayItems + OverlayItem.TextItem(weather.wind)
                     WeatherInfo.HUMIDITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.humidity)
@@ -96,7 +97,7 @@ class WeatherOverlay @JvmOverloads constructor(
             18f,
             resources.displayMetrics
         )
-        
+
         // Add a multiplier to make the icon slightly larger than the text for better visibility
         // Typically icons look better when they're about 1.2-1.5x the text size
         val iconSizePx = (textSizePx * 1.2).toInt()

@@ -5,13 +5,13 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OpenWeatherApi {
-    @GET("data/3.0/onecall")
-    suspend fun getForecast(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric",
-    ): OneCallResponse
+//    @GET("data/3.0/onecall")
+//    suspend fun getForecast(
+//        @Query("lat") lat: Double,
+//        @Query("lon") lon: Double,
+//        @Query("appid") apiKey: String,
+//        @Query("units") units: String = "metric",
+//    ): OneCallResponse
 
     @GET("data/2.5/weather")
     suspend fun getCurrentWeather(
@@ -54,24 +54,6 @@ data class LocationResponse(
         }
 }
 
-// One Call Forecast
-@Serializable
-data class OneCallResponse(
-    val current: Current,
-)
-
-@Serializable
-data class Current(
-    val dt: Long,
-    val temp: Double,
-    val weather: List<Weather>,
-)
-
-@Serializable
-data class Weather(
-    val description: String,
-)
-
 // Current Weather
 @Serializable
 data class CurrentWeatherResponse(
@@ -80,6 +62,7 @@ data class CurrentWeatherResponse(
     val dt: Long,
     val name: String,
     val sys: SysInfo,
+    val wind: Wind,
 )
 
 @Serializable
@@ -93,10 +76,25 @@ data class MainWeatherData(
 )
 
 @Serializable
+data class Weather(
+    val id: Int,
+    val main: String,
+    val description: String,
+    val icon: String,
+)
+
+@Serializable
 data class SysInfo(
     val country: String,
     val sunrise: Long,
     val sunset: Long,
+)
+
+@Serializable
+data class Wind(
+    val speed: Double,
+    val deg: Int,
+    // val gust: Double,
 )
 
 // 5 Day Forecast

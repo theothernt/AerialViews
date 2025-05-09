@@ -2,11 +2,12 @@ package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
-import com.neilturner.aerialviews.utils.capitalise
+import com.neilturner.aerialviews.utils.capitaliseEachWord
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -16,6 +17,7 @@ import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import retrofit2.Retrofit
 import timber.log.Timber
+import kotlin.math.round
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.seconds
 
@@ -50,14 +52,14 @@ class WeatherService(
         updateJob =
             CoroutineScope(Dispatchers.IO).launch {
                 while (isActive) {
-                    val forecast = forecastUpdate()
-                    GlobalBus.post(WeatherEvent(forecast))
+                    val update = forecastUpdate()
+                    GlobalBus.post(update)
                     delay(30.seconds)
                 }
             }
     }
 
-    private suspend fun forecastUpdate(): String {
+    private suspend fun forecastUpdate(): WeatherEvent {
         return try {
             val key = BuildConfig.OPEN_WEATHER
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
@@ -66,17 +68,21 @@ class WeatherService(
 
             if (key.isEmpty() || lat == null || lon == null) {
                 Timber.Forest.e("Invalid location coordinates")
-                return ""
+                return WeatherEvent()
             }
 
             val response = openWeatherClient.getCurrentWeather(lat, lon, key, units)
 
             val timeAgo = calculateTimeAgo(response.dt)
-            val description =
-                response.weather
-                    .first()
-                    .description
-                    .capitalise()
+            Timber.Forest.i("Forecast from $timeAgo")
+
+            val temperature = "${response.main.temp.roundToInt()}°"
+            val description = response.weather.first().description.capitaliseEachWord()
+            val wind = round(response.wind.speed)
+            val humidity = response.main.humidity
+            val code = response.weather.first().id
+            val type = response.weather.first().main
+            val icon = response.weather.first().icon
 
             val unitsString =
                 when (units) {
@@ -84,14 +90,22 @@ class WeatherService(
                     else -> "°C"
                 } // needed?
 
-            val temperature = "${response.main.temp.roundToInt()}°"
-            val forecast = "$temperature, $description"
-            Timber.Forest.i("Forecast: $forecast ($timeAgo)")
-            temperature
+            WeatherEvent(
+                temperature = temperature,
+                icon = getWeatherIcon(code, type, icon),
+                summary = description,
+                city = response.name,
+                wind = "$wind km/h",
+                humidity = "$humidity%",
+            )
         } catch (e: Exception) {
             Timber.Forest.e(e, "Failed to fetch and parse weather data")
-            ""
+            WeatherEvent()
         }
+    }
+
+    fun getWeatherIcon(code: Int, type: String, icon: String): Int {
+        return R.drawable.sun
     }
 
     fun stop() {
@@ -102,7 +116,8 @@ class WeatherService(
 
 data class WeatherEvent(
     val temperature: String = "",
-    val icon: String = "",
+    val icon: Int = -1,
+    val summary: String = "",
     val city: String = "",
     val wind: String = "",
     val humidity: String = "",
