@@ -27,7 +27,7 @@ class DreamActivity : DreamService() {
         super.onAttachedToWindow()
         // Setup
         isFullscreen = true
-        isInteractive = false
+        isInteractive = true
 
         // Start playback, etc
         screenController =
