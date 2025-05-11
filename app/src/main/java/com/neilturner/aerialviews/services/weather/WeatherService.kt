@@ -77,7 +77,11 @@ class WeatherService(
             Timber.Forest.i("Forecast from $timeAgo")
 
             val temperature = "${response.main.temp.roundToInt()}°"
-            val description = response.weather.first().description.capitaliseEachWord()
+            val description =
+                response.weather
+                    .first()
+                    .description
+                    .capitaliseEachWord()
             val wind = round(response.wind.speed)
             val humidity = response.main.humidity
             val code = response.weather.first().id
@@ -104,9 +108,11 @@ class WeatherService(
         }
     }
 
-    fun getWeatherIcon(code: Int, type: String, icon: String): Int {
-        return R.drawable.sun
-    }
+    fun getWeatherIcon(
+        code: Int,
+        type: String,
+        icon: String,
+    ): Int = R.drawable.sun
 
     fun stop() {
         updateJob?.cancel()
