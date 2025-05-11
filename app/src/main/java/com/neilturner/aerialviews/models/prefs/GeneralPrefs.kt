@@ -56,11 +56,11 @@ object GeneralPrefs : KotprefModel() {
     var weatherUnits by nullableEnumValuePref(WeatherUnit.METRIC, "weather_units")
 
     var weatherLine1 by stringPref("", "weather_line1")
-    var weatherLine1Size by stringPref("18", "weather_line1_size")
+    var weatherLine1Size by stringPref("36", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
     var weatherLine2 by stringPref("", "weather_line2")
-    var weatherLine2Size by stringPref("18", "weather_line2_size")
+    var weatherLine2Size by stringPref("36", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
     // Location

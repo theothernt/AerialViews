@@ -21,6 +21,7 @@ import timber.log.Timber
 import androidx.core.view.isNotEmpty
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.services.weather.WeatherInfo
+import com.neilturner.aerialviews.ui.views.ShadowedSvgImageView
 
 class WeatherOverlay @JvmOverloads constructor(
     context: Context,
@@ -53,7 +54,7 @@ class WeatherOverlay @JvmOverloads constructor(
 
     fun layout(layout: String) {
         // TEST
-        this.layout = "TEMPERATURE, SUMMARY"
+        this.layout = "TEMPERATURE, ICON, SUMMARY"
         // this.layout = layout
     }
 
@@ -100,15 +101,19 @@ class WeatherOverlay @JvmOverloads constructor(
     private fun setupViews() {
         removeAllViews()
 
-        val textSizePx = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_SP,
-            size,
-            resources.displayMetrics
-        )
+        // Get text metrics for the given size
+        val textPaint = TextView(context).apply {
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+            typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+        }.paint
 
-        // Add a multiplier to make the icon slightly larger than the text for better visibility
-        // Typically icons look better when they're about 1.2-1.5x the text size
-        val iconSizePx = (textSizePx * 1.2).toInt()
+        // Calculate approximate text height based on text metrics
+        val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
+
+        // Use text height directly for icon size to maintain visual balance
+        val iconSize = textHeight.toInt()
+
+        Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
 
         overlayItems.forEach { item ->
             when (item) {
@@ -126,21 +131,18 @@ class WeatherOverlay @JvmOverloads constructor(
 
                     textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
                     textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-
                     textView.layoutParams = params
+
                     addView(textView)
                 }
-                
+
                 is OverlayItem.ImageItem -> {
-                    val imageView = ImageView(context).apply {
-                        val drawable = ContextCompat.getDrawable(context, item.imageResId)
-                        if (drawable != null) {
-                            DrawableCompat.setTint(drawable, Color.WHITE)
-                        }
-                        setImageDrawable(drawable)
+                    // Use our custom ShadowedSvgImageView instead of regular ImageView
+                    val imageView = ShadowedSvgImageView(context).apply {
+                        setSvgResource(item.imageResId)
                     }
-                    
-                    val params = LayoutParams(iconSizePx, iconSizePx)
+
+                    val params = LayoutParams(iconSize, iconSize)
                     params.gravity = android.view.Gravity.CENTER_VERTICAL
                     if (isNotEmpty()) {
                         params.leftMargin = 8
