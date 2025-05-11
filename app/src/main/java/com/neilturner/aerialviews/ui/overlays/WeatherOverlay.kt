@@ -21,7 +21,7 @@ import timber.log.Timber
 import androidx.core.view.isNotEmpty
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.services.weather.WeatherInfo
-import com.neilturner.aerialviews.ui.views.ShadowedSvgImageView
+import com.neilturner.aerialviews.ui.overlays.ShadowedSvgImageView
 
 class WeatherOverlay @JvmOverloads constructor(
     context: Context,
@@ -98,9 +98,7 @@ class WeatherOverlay @JvmOverloads constructor(
         // Show overlay
     }
 
-    private fun setupViews() {
-        removeAllViews()
-
+    private fun calculateIconSize(size: Float): Int {
         // Get text metrics for the given size
         val textPaint = TextView(context).apply {
             setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
@@ -111,9 +109,15 @@ class WeatherOverlay @JvmOverloads constructor(
         val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
 
         // Use text height directly for icon size to maintain visual balance
-        val iconSize = textHeight.toInt()
-
+a        val iconSize = textHeight.toInt()
         Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
+        return iconSize
+    }
+
+    private fun setupViews() {
+        removeAllViews()
+
+        val iconSize = calculateIconSize(size)
 
         overlayItems.forEach { item ->
             when (item) {
