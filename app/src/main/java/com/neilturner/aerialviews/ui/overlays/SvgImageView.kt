@@ -2,7 +2,7 @@ package com.neilturner.aerialviews.ui.overlays
 
 import androidx.core.graphics.withTranslation
 
-class ShadowedSvgImageView
+class SvgImageView
     @JvmOverloads
     constructor(
         context: android.content.Context,

@@ -9,11 +9,11 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.overlays.AltTextClock
-import com.neilturner.aerialviews.ui.overlays.TextDate
-import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextMessage
-import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
+import com.neilturner.aerialviews.ui.overlays.ClockOverlay
+import com.neilturner.aerialviews.ui.overlays.DateOverlay
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
+import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 
 class OverlayHelper(
@@ -65,15 +65,15 @@ class OverlayHelper(
         }
 
         // For each overlay loaded, update its prefs
-        findOverlay<AltTextClock>().forEach {
+        findOverlay<ClockOverlay>().forEach {
             it.updateFormat(prefs.clockFormat)
         }
 
-        findOverlay<TextDate>().forEach {
+        findOverlay<DateOverlay>().forEach {
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
-        findOverlay<TextMessage>().forEach {
+        findOverlay<MessageOverlay>().forEach {
             if (it.type == OverlayType.MESSAGE1) {
                 it.updateMessage(prefs.messageLine1)
             } else {
@@ -81,7 +81,7 @@ class OverlayHelper(
             }
         }
 
-        findOverlay<TextNowPlaying>().forEach {
+        findOverlay<NowPlayingOverlay>().forEach {
             if (it.type == OverlayType.MUSIC1) {
                 it.updateFormat(prefs.nowPlayingLine1)
             } else {
@@ -140,12 +140,12 @@ class OverlayHelper(
     private fun getOverlay(overlay: OverlayType): View? {
         return when (overlay) {
             OverlayType.CLOCK ->
-                AltTextClock(context).apply {
+                ClockOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.clockWeight)
                 }
             OverlayType.LOCATION ->
-                TextLocation(context).apply {
+                LocationOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.descriptionWeight)
                 }
@@ -165,20 +165,20 @@ class OverlayHelper(
             OverlayType.MUSIC1,
             OverlayType.MUSIC2,
             ->
-                TextNowPlaying(context).apply {
+                NowPlayingOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight)
                     type = overlay
                 }
             OverlayType.DATE ->
-                TextDate(context).apply {
+                DateOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
             ->
-                TextMessage(context).apply {
+                MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay

@@ -28,7 +28,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventList
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
@@ -213,7 +213,7 @@ class ScreenController(
         }
 
         // Set overlay data for current video
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
                 it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
@@ -321,7 +321,7 @@ class ScreenController(
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             it.isFadingOutMedia = true
         }
 

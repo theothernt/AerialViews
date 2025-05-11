@@ -8,7 +8,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.utils.DateHelper
 
-class TextDate : AppCompatTextView {
+class DateOverlay : AppCompatTextView {
     private var refreshDateHandler: (() -> Unit)? = null
     private var type = DateType.COMPACT
     private var custom = ""

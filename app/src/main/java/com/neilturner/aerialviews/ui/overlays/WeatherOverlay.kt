@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.services.weather.WeatherInfo
-import com.neilturner.aerialviews.ui.overlays.ShadowedSvgImageView
+import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
@@ -152,9 +152,9 @@ class WeatherOverlay
                     }
 
                     is OverlayItem.ImageItem -> {
-                        // Use our custom ShadowedSvgImageView instead of regular ImageView
+                        // Use our custom SvgImageView instead of regular ImageView
                         val imageView =
-                            ShadowedSvgImageView(context).apply {
+                            SvgImageView(context).apply {
                                 setSvgResource(item.imageResId)
                             }
 
