@@ -19,6 +19,7 @@ interface OpenWeatherApi {
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric",
+        @Query("lang") language: String = "en",
     ): CurrentWeatherResponse
 
     @GET("data/2.5/forecast")
@@ -27,6 +28,7 @@ interface OpenWeatherApi {
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric",
+        @Query("lang") language: String = "en",
     ): FiveDayForecastResponse
 
     @GET("geo/1.0/direct")
@@ -34,6 +36,7 @@ interface OpenWeatherApi {
         @Query("q") locationName: String,
         @Query("limit") limit: Int = 10,
         @Query("appid") apiKey: String,
+        @Query("lang") language: String = "en",
     ): List<LocationResponse>
 }
 

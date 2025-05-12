@@ -5,6 +5,7 @@ import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
+import com.neilturner.aerialviews.services.weather.WeatherLanguage
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitaliseEachWord
@@ -39,7 +40,8 @@ class WeatherService(
     suspend fun lookupLocation(query: String): List<LocationResponse> =
         try {
             val key = BuildConfig.OPEN_WEATHER
-            val locations = openWeatherClient.getLocationByName(query, 10, key)
+            val language = WeatherLanguage.getLanguageCode(context)
+            val locations = openWeatherClient.getLocationByName(query, 10, key, language)
             delay(1.seconds)
             locations
         } catch (e: Exception) {
@@ -65,13 +67,14 @@ class WeatherService(
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
             val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
             val units = if (GeneralPrefs.weatherUnits == null) "metric" else GeneralPrefs.weatherUnits.toString().lowercase()
+            val language = WeatherLanguage.getLanguageCode(context)
 
             if (key.isEmpty() || lat == null || lon == null) {
                 Timber.Forest.e("Invalid location coordinates")
                 return WeatherEvent()
             }
 
-            val response = openWeatherClient.getCurrentWeather(lat, lon, key, units)
+            val response = openWeatherClient.getCurrentWeather(lat, lon, key, units, language)
 
             val timeAgo = calculateTimeAgo(response.dt)
             Timber.Forest.i("Forecast from $timeAgo")
