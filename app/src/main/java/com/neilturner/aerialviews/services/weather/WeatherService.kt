@@ -5,6 +5,8 @@ import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
+import com.neilturner.aerialviews.services.weather.WeatherIcons
+import com.neilturner.aerialviews.services.weather.WeatherLanguage
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitaliseEachWord
@@ -116,7 +118,7 @@ class WeatherService(
         code: Int,
         type: String,
         icon: String,
-    ): Int = R.drawable.sun
+    ): Int = WeatherIcons.getWeatherIcon(code, type, icon)
 
     fun stop() {
         updateJob?.cancel()
