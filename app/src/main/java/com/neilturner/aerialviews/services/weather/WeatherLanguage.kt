@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
 import android.os.Build
+import timber.log.Timber
 import java.util.Locale
 
 object WeatherLanguage {
@@ -70,6 +71,7 @@ object WeatherLanguage {
             langCode == "zh" && countryCode == "cn" -> return "zh_cn"
             langCode == "zh" && countryCode == "tw" -> return "zh_tw"
             langCode == "pt" && countryCode == "br" -> return "pt_br"
+            langCode == "iw" -> return "he" // Use he instead of iw
             langCode == "es" -> return "es" // Use es instead of sp
             langCode == "uk" -> return "uk" // Use uk instead of ua
             langCode == "es" && supportedLanguages.contains("sp") -> return "sp"
@@ -77,6 +79,7 @@ object WeatherLanguage {
         }
 
         // Return the language code if supported, or English as fallback
+         Timber.i("Weather: device language: $langCode, Country: $countryCode")
         return if (supportedLanguages.contains(langCode)) langCode else "en"
     }
 
@@ -85,6 +88,7 @@ object WeatherLanguage {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.resources.configuration.locales.get(0)
         } else {
+            @Suppress("DEPRECATION")
             context.resources.configuration.locale
         }
     }

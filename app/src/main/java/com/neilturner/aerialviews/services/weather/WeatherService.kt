@@ -5,7 +5,6 @@ import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
-import com.neilturner.aerialviews.services.weather.WeatherLanguage
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitaliseEachWord
@@ -68,6 +67,7 @@ class WeatherService(
             val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
             val units = if (GeneralPrefs.weatherUnits == null) "metric" else GeneralPrefs.weatherUnits.toString().lowercase()
             val language = WeatherLanguage.getLanguageCode(context)
+            Timber.i("Language: $language")
 
             if (key.isEmpty() || lat == null || lon == null) {
                 Timber.Forest.e("Invalid location coordinates")
