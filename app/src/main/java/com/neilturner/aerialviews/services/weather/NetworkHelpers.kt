@@ -16,6 +16,12 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.hours
 
 object NetworkHelpers {
+    private val timeout = 10L // Socket, etc timeout
+    private val timeoutUnits = TimeUnit.SECONDS
+    private val cacheSize = 1 * 1024 * 1024L // 10 MB
+    private val offlineCacheTimeout = 2.hours.inWholeSeconds.toInt()
+    private val onlineCacheTimeout = 60 // Minutes
+
     @Suppress("DEPRECATION")
     fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -31,8 +37,7 @@ object NetworkHelpers {
     }
 
     fun buildOkHttpClient(context: Context): OkHttpClient {
-        val cache = Cache(File(context.cacheDir, "weather_cache"), 1 * 1024 * 1024.toLong())
-
+        val cache = Cache(File(context.cacheDir, "weather_cache"), cacheSize)
         return OkHttpClient
             .Builder()
             .cache(cache)
@@ -40,8 +45,8 @@ object NetworkHelpers {
             .addInterceptor(cacheStatusInterceptor)
             .addInterceptor(offlineCacheInterceptor(context))
             .addNetworkInterceptor(onlineCacheInterceptor())
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(10, TimeUnit.SECONDS)
+            .connectTimeout(timeout, timeoutUnits)
+            .readTimeout(timeout, timeoutUnits)
             .build()
     }
 
@@ -67,7 +72,7 @@ object NetworkHelpers {
             var request = chain.request()
             if (!isNetworkAvailable(context)) {
                 Timber.Forest.i("Using offline cache...")
-                val maxStale = 12.hours.inWholeSeconds.toInt()
+                val maxStale = offlineCacheTimeout
                 request =
                     request
                         .newBuilder()
@@ -91,7 +96,7 @@ object NetworkHelpers {
             val cacheControl =
                 CacheControl
                     .Builder()
-                    .maxAge(5, TimeUnit.MINUTES)
+                    .maxAge(onlineCacheTimeout, timeoutUnits)
                     .build()
 
             return@Interceptor originalResponse

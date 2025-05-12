@@ -19,6 +19,7 @@ import retrofit2.Retrofit
 import timber.log.Timber
 import kotlin.math.round
 import kotlin.math.roundToInt
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class WeatherService(
@@ -55,7 +56,7 @@ class WeatherService(
                 while (isActive) {
                     val update = forecastUpdate()
                     GlobalBus.post(update)
-                    delay(30.seconds)
+                    delay(5.minutes)
                 }
             }
     }
