@@ -6,22 +6,6 @@
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
                     app:defaultValue="@string/button_action_default"
-                    app:key="gesture_swipe_up"
-                    app:useSimpleSummaryProvider="true"
-                    app:title="@string/dpad_swipe_up_title" />
-
-                <ListPreference
-                    app:entries="@array/button_action_entries"
-                    app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default"
-                    app:key="gesture_swipe_down"
-                    app:useSimpleSummaryProvider="true"
-                    app:title="@string/dpad_swipe_down_title" />
-
-                <ListPreference
-                    app:entries="@array/button_action_entries"
-                    app:entryValues="@array/button_action_values"
-                    app:defaultValue="@string/button_action_default"
                     app:key="gesture_swipe_right"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_swipe_right_title" />
@@ -33,6 +17,22 @@
                     app:key="gesture_swipe_left"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_swipe_left_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_up"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_up_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_down"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_down_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_tap_gestures">
