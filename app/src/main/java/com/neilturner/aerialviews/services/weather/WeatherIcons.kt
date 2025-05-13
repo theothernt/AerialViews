@@ -35,7 +35,7 @@ object WeatherIcons {
         Timber.d("Weather condition: code=$conditionCode, type=$conditionType, icon=$iconCode")
         
         // Default fallback icon
-        var iconResource = R.drawable.sun
+        var iconResource = R.drawable.weather_clear
         
         // Determine if it's day or night from the icon code
         val isNight = iconCode.lastOrNull() == ICON_NIGHT
@@ -122,7 +122,7 @@ object WeatherIcons {
             // Fallback for unknown conditions
             else -> {
                 Timber.w("Unknown weather condition code: $conditionCode")
-                iconResource = R.drawable.sun
+                iconResource = R.drawable.weather_clear
             }
         }
         
