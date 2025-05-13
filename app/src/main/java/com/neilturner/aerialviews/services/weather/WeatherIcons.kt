@@ -45,18 +45,18 @@ object WeatherIcons {
             // Thunderstorm group (200-299)
             conditionCode / 100 == GROUP_THUNDERSTORM -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_thunderstorm_night
+                    R.drawable.weather_clear
                 } else {
-                    R.drawable.weather_thunderstorm
+                    R.drawable.weather_clear
                 }
             }
             
             // Drizzle group (300-399)
             conditionCode / 100 == GROUP_DRIZZLE -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_drizzle_night
+                    R.drawable.weather_clear
                 } else {
-                    R.drawable.weather_drizzle
+                    R.drawable.weather_clear
                 }
             }
             
@@ -65,13 +65,13 @@ object WeatherIcons {
                 // Handle different types of rain
                 iconResource = when (conditionCode) {
                     in 500..504 -> { // Light to heavy rain
-                        if (isNight) R.drawable.weather_rain_night else R.drawable.weather_rain
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                     511 -> { // Freezing rain
-                        if (isNight) R.drawable.weather_freezing_rain_night else R.drawable.weather_freezing_rain
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                     else -> { // Shower rain
-                        if (isNight) R.drawable.weather_shower_night else R.drawable.weather_shower
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                 }
             }
@@ -79,18 +79,18 @@ object WeatherIcons {
             // Snow group (600-699)
             conditionCode / 100 == GROUP_SNOW -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_snow_night
+                    R.drawable.weather_clear
                 } else {
-                    R.drawable.weather_snow
+                    R.drawable.weather_clear
                 }
             }
             
             // Atmosphere group (700-799): fog, mist, etc.
             conditionCode / 100 == GROUP_ATMOSPHERE -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_fog_night
+                    R.drawable.weather_clear
                 } else {
-                    R.drawable.weather_fog
+                    R.drawable.weather_clear
                 }
             }
             
@@ -108,13 +108,13 @@ object WeatherIcons {
                 // Different levels of cloudiness
                 iconResource = when (conditionCode) {
                     801 -> { // Few clouds
-                        if (isNight) R.drawable.weather_few_clouds_night else R.drawable.weather_few_clouds
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                     802 -> { // Scattered clouds
-                        if (isNight) R.drawable.weather_scattered_clouds_night else R.drawable.weather_scattered_clouds
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                     else -> { // Broken or overcast clouds
-                        if (isNight) R.drawable.weather_broken_clouds_night else R.drawable.weather_broken_clouds
+                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
                     }
                 }
             }
