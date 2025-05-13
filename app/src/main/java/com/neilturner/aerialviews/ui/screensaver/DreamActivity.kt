@@ -21,7 +21,6 @@ import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.WindowHelper
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -99,9 +98,9 @@ class DreamActivity : DreamService() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::screenController.isInitialized) {
-            WindowHelper.hideSystemUI(window, screenController.view)
-        }
+//        if (hasFocus && this::screenController.isInitialized) {
+//            WindowHelper.hideSystemUI(window, screenController.view)
+//        }
     }
 
     override fun onDreamingStopped() {
