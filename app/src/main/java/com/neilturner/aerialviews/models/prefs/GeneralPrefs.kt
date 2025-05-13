@@ -156,10 +156,10 @@ object GeneralPrefs : KotprefModel() {
     var buttonDownHold by nullableEnumValuePref(ButtonType.IGNORE, "button_down_hold")
     var buttonOkHold by nullableEnumValuePref(ButtonType.IGNORE, "button_ok_hold")
 
-    var gestureLeft by nullableEnumValuePref(ButtonType.IGNORE, "gesture_left")
-    var gestureRight by nullableEnumValuePref(ButtonType.IGNORE, "gesture_right")
-    var gestureUp by nullableEnumValuePref(ButtonType.IGNORE, "gesture_up")
-    var gestureDown by nullableEnumValuePref(ButtonType.IGNORE, "gesture_down")
+    var gestureLeft by nullableEnumValuePref(ButtonType.IGNORE, "gesture_swipe_left")
+    var gestureRight by nullableEnumValuePref(ButtonType.IGNORE, "gesture_swipe_right")
+    var gestureUp by nullableEnumValuePref(ButtonType.IGNORE, "gesture_swipe_up")
+    var gestureDown by nullableEnumValuePref(ButtonType.IGNORE, "gesture_swipe_down")
     var gestureTap by nullableEnumValuePref(ButtonType.IGNORE, "gesture_tap")
     var gestureDoubleTap by nullableEnumValuePref(ButtonType.IGNORE, "gesture_double_tap")
     var gestureTapHold by nullableEnumValuePref(ButtonType.IGNORE, "gesture_tap_hold")
@@ -174,7 +174,6 @@ object GeneralPrefs : KotprefModel() {
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
-    var closeOnScreenTap by booleanPref(false, "close_on_screen_tap")
 
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")
