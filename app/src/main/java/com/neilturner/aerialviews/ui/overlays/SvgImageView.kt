@@ -1,5 +1,7 @@
 package com.neilturner.aerialviews.ui.overlays
 
+import android.graphics.BlurMaskFilter
+import android.graphics.BlurMaskFilter.Blur
 import androidx.core.graphics.withTranslation
 
 class SvgImageView
@@ -40,9 +42,13 @@ class SvgImageView
             shadowPaint.color = shadowColor
 
             // Add blur if radius > 0
-//        if (shadowRadius > 0) {
-//            shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.SOLID)
-//        }
+            if (shadowRadius > 0) {
+                shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.SOLID)
+            }
+
+            // Add padding to make room for shadow
+            val extraPadding = (shadowRadius * 2).toInt()
+            setPadding(extraPadding, extraPadding, extraPadding, extraPadding)
         }
 
         fun setSvgResource(resId: Int) {
@@ -60,35 +66,49 @@ class SvgImageView
         override fun onDraw(canvas: android.graphics.Canvas) {
             val drawable = drawable ?: return
 
-            // Ensure the drawable uses the full bounds of the view
-            drawable.setBounds(0, 0, width, height)
-
-            // Save original alpha
-            val originalAlpha = drawable.alpha
-
-            // Apply adjustments to shadow properties
+            // Calculate shadow offset and extra space needed
             val adjustedDx = shadowDx * shadowDxAdjustment
             val adjustedDy = shadowDy * shadowDyAdjustment
+            val shadowBlur = shadowRadius * 2
 
-            // Draw shadow first
-            canvas.withTranslation(adjustedDx, adjustedDy) {
-                // For the shadow, we'll use the shadowColor with proper alpha
+            // Calculate the content area (excluding padding)
+            val contentWidth = width - paddingLeft - paddingRight
+            val contentHeight = height - paddingTop - paddingBottom
+            
+            // Calculate drawable size to fit in content area
+            val drawableWidth = contentWidth - shadowBlur.toInt()
+            val drawableHeight = contentHeight - shadowBlur.toInt()
+            
+            // Set bounds to the reduced size to accommodate shadow
+            drawable.setBounds(0, 0, drawableWidth, drawableHeight)
+
+            // Save canvas state
+            canvas.withTranslation(paddingLeft.toFloat(), paddingTop.toFloat()) {
+
+                // Translate to respect padding and center the drawable
+                // Save original alpha
+                val originalAlpha = drawable.alpha
+
+                // Draw shadow first
+                withTranslation(adjustedDx, adjustedDy) {
+                    // For the shadow, we'll use the shadowColor with proper alpha
+                    androidx.core.graphics.drawable.DrawableCompat
+                        .setTint(drawable, shadowColor)
+
+                    // Set alpha for shadow (make it slightly transparent)
+                    drawable.alpha = android.graphics.Color.alpha(shadowColor)
+
+                    // Draw the shadow
+                    drawable.draw(this)
+                }
+
+                // Reset for the actual image
                 androidx.core.graphics.drawable.DrawableCompat
-                    .setTint(drawable, shadowColor)
+                    .setTint(drawable, android.graphics.Color.WHITE)
+                drawable.alpha = originalAlpha
 
-                // Set alpha for shadow (make it slightly transparent)
-                drawable.alpha = android.graphics.Color.alpha(shadowColor)
-
-                // Draw the shadow
+                // Draw the original white image
                 drawable.draw(this)
             }
-
-            // Reset for the actual image
-            androidx.core.graphics.drawable.DrawableCompat
-                .setTint(drawable, android.graphics.Color.WHITE)
-            drawable.alpha = originalAlpha
-
-            // Draw the original white image
-            drawable.draw(canvas)
         }
     }

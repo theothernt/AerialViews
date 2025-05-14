@@ -159,7 +159,7 @@ class WeatherOverlay
                             }
 
                         val params = LayoutParams(iconSize, iconSize)
-                        params.gravity = android.view.Gravity.CENTER_VERTICAL
+                        params.gravity = android.view.Gravity.BOTTOM
                         if (isNotEmpty()) {
                             params.leftMargin = 10
                         }
