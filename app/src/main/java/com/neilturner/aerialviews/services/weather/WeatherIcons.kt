@@ -31,13 +31,10 @@ object WeatherIcons {
      * @return The resource ID for the appropriate weather icon
      */
     fun getWeatherIcon(conditionCode: Int, conditionType: String, iconCode: String): Int {
-        // Log the inputs for debugging
         Timber.d("Weather condition: code=$conditionCode, type=$conditionType, icon=$iconCode")
         
         // Default fallback icon
         var iconResource = R.drawable.weather_clear
-        
-        // Determine if it's day or night from the icon code
         val isNight = iconCode.lastOrNull() == ICON_NIGHT
         
         // Map the condition code to the appropriate icon
@@ -45,18 +42,18 @@ object WeatherIcons {
             // Thunderstorm group (200-299)
             conditionCode / 100 == GROUP_THUNDERSTORM -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_clear
+                    R.drawable.weather_thunder
                 } else {
-                    R.drawable.weather_clear
+                    R.drawable.weather_thunder
                 }
             }
             
             // Drizzle group (300-399)
             conditionCode / 100 == GROUP_DRIZZLE -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_clear
+                    R.drawable.weather_rain
                 } else {
-                    R.drawable.weather_clear
+                    R.drawable.weather_rain
                 }
             }
             
@@ -65,13 +62,13 @@ object WeatherIcons {
                 // Handle different types of rain
                 iconResource = when (conditionCode) {
                     in 500..504 -> { // Light to heavy rain
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
                     }
                     511 -> { // Freezing rain
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
                     }
                     else -> { // Shower rain
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
                     }
                 }
             }
@@ -79,18 +76,18 @@ object WeatherIcons {
             // Snow group (600-699)
             conditionCode / 100 == GROUP_SNOW -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_clear
+                    R.drawable.weather_snow
                 } else {
-                    R.drawable.weather_clear
+                    R.drawable.weather_snow
                 }
             }
             
             // Atmosphere group (700-799): fog, mist, etc.
             conditionCode / 100 == GROUP_ATMOSPHERE -> {
                 iconResource = if (isNight) {
-                    R.drawable.weather_clear
+                    R.drawable.weather_mist
                 } else {
-                    R.drawable.weather_clear
+                    R.drawable.weather_mist
                 }
             }
             
@@ -108,21 +105,15 @@ object WeatherIcons {
                 // Different levels of cloudiness
                 iconResource = when (conditionCode) {
                     801 -> { // Few clouds
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_cloudy_night else R.drawable.weather_cloudy
                     }
                     802 -> { // Scattered clouds
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_cloudy_night else R.drawable.weather_cloudy
                     }
                     else -> { // Broken or overcast clouds
-                        if (isNight) R.drawable.weather_clear else R.drawable.weather_clear
+                        if (isNight) R.drawable.weather_overcast else R.drawable.weather_overcast
                     }
                 }
-            }
-            
-            // Fallback for unknown conditions
-            else -> {
-                Timber.w("Unknown weather condition code: $conditionCode")
-                iconResource = R.drawable.weather_clear
             }
         }
         

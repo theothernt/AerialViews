@@ -119,9 +119,9 @@ class WeatherOverlay
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
 
             // Use text height directly for icon size to maintain visual balance
-            val iconSize = textHeight.toInt()
+            val iconSize = textHeight * 0.9f
             Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
-            return iconSize
+            return iconSize.toInt()
         }
 
         private fun setupViews() {
@@ -141,7 +141,7 @@ class WeatherOverlay
                         val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                         params.gravity = android.view.Gravity.CENTER_VERTICAL
                         if (isNotEmpty()) {
-                            params.leftMargin = 8
+                            params.leftMargin = 10
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
@@ -161,7 +161,7 @@ class WeatherOverlay
                         val params = LayoutParams(iconSize, iconSize)
                         params.gravity = android.view.Gravity.CENTER_VERTICAL
                         if (isNotEmpty()) {
-                            params.leftMargin = 8
+                            params.leftMargin = 10
                         }
 
                         imageView.layoutParams = params
