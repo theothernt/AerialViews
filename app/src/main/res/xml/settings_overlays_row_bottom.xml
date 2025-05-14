@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="@string/category_bottom_row_left">
+        <!-- These ListPreferences will be handled programmatically through DualDropdownPreference -->
         <ListPreference
             app:key="slot_bottom_left2"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot2_title" />
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
 
         <ListPreference
             app:key="slot_bottom_left1"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot1_title" />
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_bottom_left"
+            app:selectable="false" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_bottom_row_right">
+        <!-- These ListPreferences will be handled programmatically through DualDropdownPreference -->
         <ListPreference
             app:key="slot_bottom_right2"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot2_title" />
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
 
         <ListPreference
             app:key="slot_bottom_right1"
             app:summary="@string/appearance_slot_summary"
-            app:title="@string/appearance_slot1_title" />
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_bottom_right"
+            app:selectable="false" />
     </PreferenceCategory>
 </PreferenceScreen>
