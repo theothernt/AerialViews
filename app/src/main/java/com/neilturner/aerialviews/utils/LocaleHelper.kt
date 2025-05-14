@@ -51,7 +51,6 @@ object LocaleHelper {
                 @Suppress("DEPRECATION")
                 Locale(parts[0], parts[1])
             }
-
         }
         if (parts.size == 3) {
             return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
