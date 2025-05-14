@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -24,6 +25,7 @@ class SwipeGestureListener(
         gestureDetector = GestureDetector(context, GestureListener())
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(
         v: View?,
         event: MotionEvent?,

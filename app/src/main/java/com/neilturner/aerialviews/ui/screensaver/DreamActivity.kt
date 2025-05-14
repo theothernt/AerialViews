@@ -1,12 +1,3 @@
-@file:Suppress(
-    "unused",
-    "RedundantOverride",
-    "RedundantOverride",
-    "EmptyMethod",
-    "RedundantSuppression",
-    "RedundantSuppression",
-)
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.annotation.SuppressLint
@@ -75,13 +66,6 @@ class DreamActivity : DreamService() {
         }
 
         return super.dispatchKeyEvent(event)
-    }
-
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-//        if (hasFocus && this::screenController.isInitialized) {
-//            WindowHelper.hideSystemUI(window, screenController.view)
-//        }
     }
 
     override fun onDreamingStopped() {
