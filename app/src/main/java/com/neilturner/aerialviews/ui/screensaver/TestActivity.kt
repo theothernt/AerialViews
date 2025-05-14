@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PreferenceHelper
+import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
@@ -45,6 +46,9 @@ class TestActivity : AppCompatActivity() {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        // Hide system UI on phones
+        hideSystemUI(window)
 
         // Start playback, etc
         screenController =
