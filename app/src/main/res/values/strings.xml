@@ -56,8 +56,10 @@
   <string name="category_permission">Permission</string>
   <string name="category_apple_and_community_videos">Apple and Community videos only</string>
   <string name="category_all_other_media">All other videos &amp; photos</string>
+  <string name="category_top_row">Top Row</string>
   <string name="category_top_row_left">Top Left</string>
   <string name="category_top_row_right">Top Right</string>
+  <string name="category_bottom_row">Bottom Row</string>
   <string name="category_bottom_row_left">Bottom Left</string>
   <string name="category_bottom_row_right">Bottom Right</string>
   <string name="category_refresh_rate_options">Refresh rate options</string>
@@ -309,6 +311,9 @@
 
   <string name="appearance_bottom_row_title">Bottom Row</string>
   <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+  
+  <string name="appearance_slots_title">All Slots</string>
+  <string name="appearance_slots_summary">Configure all corner overlays in one screen</string>
 
   <string name="appearance_clock_title">Clock</string>
   <string name="appearance_clock_summary">Display the current time</string>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/category_top_row">
+        <!-- Top Left -->
+        <ListPreference
+            app:key="slot_top_left2"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
+
+        <ListPreference
+            app:key="slot_top_left1"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_top_left"
+            app:title="@string/category_top_row_left"
+            app:selectable="false" />
+            
+        <!-- Top Right -->
+        <ListPreference
+            app:key="slot_top_right2"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
+
+        <ListPreference
+            app:key="slot_top_right1"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_top_right"
+            app:title="@string/category_top_row_right"
+            app:selectable="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_bottom_row">
+        <!-- Bottom Left -->
+        <ListPreference
+            app:key="slot_bottom_left2"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
+
+        <ListPreference
+            app:key="slot_bottom_left1"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_bottom_left"
+            app:title="@string/category_bottom_row_left"
+            app:selectable="false" />
+            
+        <!-- Bottom Right -->
+        <ListPreference
+            app:key="slot_bottom_right2"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot2_title" 
+            app:isPreferenceVisible="false" />
+
+        <ListPreference
+            app:key="slot_bottom_right1"
+            app:summary="@string/appearance_slot_summary"
+            app:title="@string/appearance_slot1_title" 
+            app:isPreferenceVisible="false" />
+            
+        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+            app:key="dual_bottom_right"
+            app:title="@string/category_bottom_row_right"
+            app:selectable="false" />
+    </PreferenceCategory>
+</PreferenceScreen>
