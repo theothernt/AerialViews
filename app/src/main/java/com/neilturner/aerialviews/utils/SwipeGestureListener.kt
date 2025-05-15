@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -24,20 +25,20 @@ class SwipeGestureListener(
         gestureDetector = GestureDetector(context, GestureListener())
     }
 
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        return event?.let { gestureDetector.onTouchEvent(it) } == true
-    }
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouch(
+        v: View?,
+        event: MotionEvent?,
+    ): Boolean = event?.let { gestureDetector.onTouchEvent(it) } == true
 
     private inner class GestureListener : GestureDetector.SimpleOnGestureListener() {
-        override fun onDown(e: MotionEvent): Boolean {
-            return true
-        }
+        override fun onDown(e: MotionEvent): Boolean = true
 
         override fun onFling(
             e1: MotionEvent?,
             e2: MotionEvent,
             velocityX: Float,
-            velocityY: Float
+            velocityY: Float,
         ): Boolean {
             if (e1 == null) return false
 
@@ -48,14 +49,19 @@ class SwipeGestureListener(
                 if (abs(diffX) > swipeThreshold && abs(velocityX) > swipeVelocityThreshold) {
                     if (diffX > 0) onSwipeRight() else onSwipeLeft()
                     true
-                } else false
+                } else {
+                    false
+                }
             } else {
                 if (abs(diffY) > swipeThreshold && abs(velocityY) > swipeVelocityThreshold) {
                     if (diffY > 0) onSwipeDown() else onSwipeUp()
                     true
-                } else false
+                } else {
+                    false
+                }
             }
         }
+
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             onTap()
             return true

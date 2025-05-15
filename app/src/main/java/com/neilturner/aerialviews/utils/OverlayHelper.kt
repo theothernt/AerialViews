@@ -9,11 +9,12 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.overlays.AltTextClock
-import com.neilturner.aerialviews.ui.overlays.TextDate
-import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextMessage
-import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
+import com.neilturner.aerialviews.ui.overlays.ClockOverlay
+import com.neilturner.aerialviews.ui.overlays.DateOverlay
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
+import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 
 class OverlayHelper(
     private val context: Context,
@@ -64,15 +65,15 @@ class OverlayHelper(
         }
 
         // For each overlay loaded, update its prefs
-        findOverlay<AltTextClock>().forEach {
+        findOverlay<ClockOverlay>().forEach {
             it.updateFormat(prefs.clockFormat)
         }
 
-        findOverlay<TextDate>().forEach {
+        findOverlay<DateOverlay>().forEach {
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
-        findOverlay<TextMessage>().forEach {
+        findOverlay<MessageOverlay>().forEach {
             if (it.type == OverlayType.MESSAGE1) {
                 it.updateMessage(prefs.messageLine1)
             } else {
@@ -80,13 +81,21 @@ class OverlayHelper(
             }
         }
 
-        findOverlay<TextNowPlaying>().forEach {
+        findOverlay<NowPlayingOverlay>().forEach {
             if (it.type == OverlayType.MUSIC1) {
                 it.updateFormat(prefs.nowPlayingLine1)
             } else {
                 it.updateFormat(prefs.nowPlayingLine2)
             }
         }
+
+//        findOverlay<TextWeather>().forEach {
+//            if (it.type == OverlayType.WEATHER1) {
+//                it.updateFormat("")
+//            } else {
+//                it.updateFormat("")
+//            }
+//        }
 
         // Create each row of overlays - the order of views matter
         val bottomRow =
@@ -128,38 +137,51 @@ class OverlayHelper(
         return Pair(leftIds, rightIds)
     }
 
-    private fun getOverlay(type: OverlayType): View? {
-        return when (type) {
+    private fun getOverlay(overlay: OverlayType): View? {
+        return when (overlay) {
             OverlayType.CLOCK ->
-                AltTextClock(context).apply {
+                ClockOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.clockWeight)
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.clockWeight)
                 }
             OverlayType.LOCATION ->
-                TextLocation(context).apply {
+                LocationOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.descriptionWeight)
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.descriptionWeight)
                 }
-            OverlayType.DATE ->
-                TextDate(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.dateWeight)
+            OverlayType.WEATHER1 ->
+                WeatherOverlay(context).apply {
+                    type = overlay
+                    style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
+                    // layout(prefs.weatherLine1)
+                    layout("TEMPERATURE, ICON")
+                }
+            OverlayType.WEATHER2 ->
+                WeatherOverlay(context).apply {
+                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
+                    // layout(prefs.weatherLine2)
+                    layout("SUMMARY")
                 }
             OverlayType.MUSIC1,
             OverlayType.MUSIC2,
             ->
-                TextNowPlaying(context).apply {
+                NowPlayingOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.nowPlayingWeight)
-                    this.type = type
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight)
+                    type = overlay
+                }
+            OverlayType.DATE ->
+                DateOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
             ->
-                TextMessage(context).apply {
+                MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-                    this.type = type
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    type = overlay
                 }
             else -> return null
         }

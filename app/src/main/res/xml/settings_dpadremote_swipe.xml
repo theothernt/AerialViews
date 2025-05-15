@@ -56,7 +56,7 @@
                     app:entries="@array/button_action_entries"
                     app:entryValues="@array/button_action_values"
                     app:defaultValue="@string/button_action_default"
-                    app:key="gesture_long_press"
+                    app:key="gesture_tap_hold"
                     app:useSimpleSummaryProvider="true"
                     app:title="@string/dpad_long_press_title" />
         </PreferenceCategory>

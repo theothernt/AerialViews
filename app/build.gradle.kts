@@ -3,10 +3,10 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
@@ -66,8 +66,11 @@ android {
         }
     }
 
+    val keyProps = loadProperties("secrets.properties")
     buildTypes {
         getByName("debug") {
+            val openWeather = keyProps["openWeatherDebug"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             applicationIdSuffix = ".debug"
@@ -76,6 +79,8 @@ android {
             // isPseudoLocalesEnabled = true
         }
         getByName("release") {
+            val openWeather = keyProps["openWeather"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true
@@ -98,14 +103,14 @@ android {
 
     signingConfigs {
         create("release") {
-            val releaseProps = loadProperties("release.properties")
+            val releaseProps = loadProperties("signing/release.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
             keyPassword = releaseProps["keyPassword"] as String?
         }
         create("legacy") {
-            val releaseProps = loadProperties("legacy.properties")
+            val releaseProps = loadProperties("signing/legacy.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
@@ -196,7 +201,7 @@ tasks.withType<Test>().configureEach {
 
 fun loadProperties(fileName: String): Properties {
     val properties = Properties()
-    val propertiesFile = rootProject.file("signing/$fileName")
+    val propertiesFile = rootProject.file(fileName)
     if (propertiesFile.exists()) {
         properties.load(FileInputStream(propertiesFile))
     }

@@ -7,7 +7,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface ImmichService {
+interface ImmichApi {
     @GET("/api/shared-links/me")
     suspend fun getSharedAlbum(
         @Query("key") key: String,

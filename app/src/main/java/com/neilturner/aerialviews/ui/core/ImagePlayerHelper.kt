@@ -119,8 +119,11 @@ internal object ImagePlayerHelper {
 
                 override fun read(b: ByteArray): Int = wrappedStream.read(b)
 
-                override fun read(b: ByteArray, off: Int, len: Int): Int =
-                    wrappedStream.read(b, off, len)
+                override fun read(
+                    b: ByteArray,
+                    off: Int,
+                    len: Int,
+                ): Int = wrappedStream.read(b, off, len)
 
                 override fun skip(n: Long): Long = wrappedStream.skip(n)
 
@@ -139,7 +142,6 @@ internal object ImagePlayerHelper {
                     }
                 }
             }
-
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while opening Samba file: ${ex.message}")
             FirebaseHelper.logExceptionIfRecent(ex)

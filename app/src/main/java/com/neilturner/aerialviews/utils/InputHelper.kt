@@ -64,9 +64,9 @@ object InputHelper {
                     onSwipeLeft = { gestureToAction(GestureType.LEFT, controller, exit) },
                     onSwipeRight = { gestureToAction(GestureType.RIGHT, controller, exit) },
                     onTap = { gestureToAction(GestureType.TAP, controller, exit) },
-                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
                     onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, controller, exit) },
-                )
+                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
+                ),
             )
     }
 
@@ -75,15 +75,16 @@ object InputHelper {
         controller: ScreenController?,
         exit: (shouldExit: Boolean) -> Unit,
     ) {
-        val action = when (gesture) {
-            GestureType.UP -> GeneralPrefs.gestureUp
-            GestureType.DOWN -> GeneralPrefs.gestureDown
-            GestureType.LEFT -> GeneralPrefs.gestureLeft
-            GestureType.RIGHT -> GeneralPrefs.gestureRight
-            GestureType.TAP -> GeneralPrefs.gestureTap
-            GestureType.DOUBLE_TAP -> GeneralPrefs.gestureDoubleTap
-            GestureType.TAP_HOLD -> GeneralPrefs.gestureTapHold
-        }
+        val action =
+            when (gesture) {
+                GestureType.UP -> GeneralPrefs.gestureUp
+                GestureType.DOWN -> GeneralPrefs.gestureDown
+                GestureType.LEFT -> GeneralPrefs.gestureLeft
+                GestureType.RIGHT -> GeneralPrefs.gestureRight
+                GestureType.TAP -> GeneralPrefs.gestureTap
+                GestureType.DOUBLE_TAP -> GeneralPrefs.gestureDoubleTap
+                GestureType.TAP_HOLD -> GeneralPrefs.gestureTapHold
+            }
 
         Timber.i("Gesture: $gesture, Action: $action")
 

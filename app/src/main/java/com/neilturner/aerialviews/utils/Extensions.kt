@@ -66,6 +66,12 @@ fun String.capitalise(): String =
         }
     }
 
+// https://stackoverflow.com/a/78022759/247257
+fun String.capitaliseEachWord(): String {
+    val regex = "(\\b[a-z](?!\\s))".toRegex()
+    return this.replace(regex) { it.value.uppercase() }
+}
+
 // https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
 fun View.delayOnLifecycle(
     durationInMillis: Long,

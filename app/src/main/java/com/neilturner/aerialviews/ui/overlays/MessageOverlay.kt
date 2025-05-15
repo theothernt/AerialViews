@@ -7,7 +7,7 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 
-class TextMessage : AppCompatTextView {
+class MessageOverlay : AppCompatTextView {
     var type = OverlayType.MESSAGE1
 
     constructor(context: Context) : super(context)

@@ -16,7 +16,7 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
+import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -206,21 +206,10 @@ class VideoPlayerView
         }
 
         private fun changeSpeed(increase: Boolean) {
-            if (!canChangePlaybackSpeed) {
-                return
-            }
-
-            if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) {
-                return // Must be playing a video
-            }
-
-            if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
-                return // No speed change at the start of the video
-            }
-
-            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) {
-                return // No speed changes at the end of video
-            }
+            if (!canChangePlaybackSpeed) return
+            if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
+            if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed changes at the end of video
 
             canChangePlaybackSpeed = false
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
@@ -243,13 +232,8 @@ class VideoPlayerView
                 return
             }
 
-            if (!increase && currentSpeedIdx == 0) {
-                return // we are at minimum speed already
-            }
-
-            if (increase && currentSpeedIdx == speedValues.size - 1) {
-                return // we are at maximum speed already
-            }
+            if (!increase && currentSpeedIdx == 0) return // we are at minimum speed already
+            if (increase && currentSpeedIdx == speedValues.size - 1) return // we are at maximum speed already
 
             val newSpeed =
                 if (increase) {
