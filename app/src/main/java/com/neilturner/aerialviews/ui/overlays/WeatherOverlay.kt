@@ -81,6 +81,8 @@ class WeatherOverlay
 
         private fun updateWeather(weather: WeatherEvent) {
             if (layout.isEmpty()) return
+            if (weather.temperature.isEmpty()) return
+
             overlayItems = emptyList()
 
             layout.split(",").forEach { item ->
