@@ -7,7 +7,7 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ClockType
 
-class AltTextClock : TextClock {
+class ClockOverlay : TextClock {
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)

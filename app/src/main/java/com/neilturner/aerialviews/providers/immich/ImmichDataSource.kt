@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.services
+package com.neilturner.aerialviews.providers.immich
 
 import android.annotation.SuppressLint
 import android.net.Uri

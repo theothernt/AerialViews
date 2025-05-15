@@ -13,14 +13,12 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import timber.log.Timber
 
 class ImmichMediaProvider(
@@ -32,7 +30,20 @@ class ImmichMediaProvider(
         get() = prefs.enabled
     private lateinit var server: String
 
-    private lateinit var apiInterface: ImmichService
+    private val immichClient by lazy {
+        server = UrlParser.parseServerUrl(prefs.url)
+        val serverConfig = ServerConfig(server, prefs.validateSsl)
+        val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
+        Timber.i("Connecting to $server")
+
+        Retrofit
+            .Builder()
+            .baseUrl(server)
+            .client(okHttpClient)
+            .addConverterFactory(buildSerializer())
+            .build()
+            .create(ImmichApi::class.java)
+    }
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
 
@@ -68,11 +79,9 @@ class ImmichMediaProvider(
 
             // Name needed?
             if (prefs.selectedAlbumId.isEmpty()) {
-                return Pair(media, "Password is empty")
+                return Pair(media, "Please select an album")
             }
         }
-
-        setupApiInterface()
 
         val immichMedia =
             try {
@@ -174,7 +183,7 @@ class ImmichMediaProvider(
         try {
             val cleanedKey = cleanSharedLinkKey(prefs.pathName)
             Timber.d("Fetching shared album with key: $cleanedKey")
-            val response = apiInterface.getSharedAlbum(key = cleanedKey, password = prefs.password)
+            val response = immichClient.getSharedAlbum(key = cleanedKey, password = prefs.password)
             Timber.d("Shared album API response: ${response.raw()}")
             if (response.isSuccessful) {
                 val album = response.body()
@@ -198,7 +207,7 @@ class ImmichMediaProvider(
             Timber.d("Attempting to fetch selected album")
             Timber.d("Selected Album ID: $selectedAlbumId")
             Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
-            val response = apiInterface.getAlbum(apiKey = prefs.apiKey, albumId = selectedAlbumId)
+            val response = immichClient.getAlbum(apiKey = prefs.apiKey, albumId = selectedAlbumId)
             Timber.d("API Request URL: ${response.raw().request.url}")
             Timber.d("API Request Method: ${response.raw().request.method}")
             Timber.d("API Request Headers: ${response.raw().request.headers}")
@@ -224,8 +233,7 @@ class ImmichMediaProvider(
 
     suspend fun fetchAlbums(): Result<List<Album>> =
         try {
-            setupApiInterface()
-            val response = apiInterface.getAlbums(apiKey = prefs.apiKey)
+            val response = immichClient.getAlbums(apiKey = prefs.apiKey)
             if (response.isSuccessful) {
                 Result.success(response.body() ?: emptyList())
             } else {
@@ -243,26 +251,6 @@ class ImmichMediaProvider(
             Result.failure(e)
         }
 
-    private fun setupApiInterface() {
-        try {
-            server = UrlParser.parseServerUrl(prefs.url)
-            val serverConfig = ServerConfig(server, prefs.validateSsl)
-            val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
-
-            Timber.i("Connecting to $server")
-            apiInterface =
-                Retrofit
-                    .Builder()
-                    .baseUrl(server)
-                    .client(okHttpClient)
-                    .addConverterFactory(buildSerializer())
-                    .build()
-                    .create(ImmichService::class.java)
-        } catch (e: Exception) {
-            Timber.e(e, "Error creating Immich API interface: ${e.message}")
-        }
-    }
-
     private fun cleanSharedLinkKey(input: String): String {
         return input
             .trim()
@@ -277,17 +265,5 @@ class ImmichMediaProvider(
             ImmichAuthType.API_KEY -> "$server/api/assets/$id/original".toUri()
             null -> throw IllegalStateException("Invalid authentication type")
         }
-    }
-
-    fun buildSerializer(): Converter.Factory {
-        val contentType = "application/json".toMediaType()
-
-        val json =
-            Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            }
-
-        return json.asConverterFactory(contentType)
     }
 }

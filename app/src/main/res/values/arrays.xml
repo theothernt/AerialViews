@@ -131,21 +131,26 @@
     <item>Empty</item>
     <item>Clock</item>
     <item>Location</item>
+    <item>Weather #1</item>
+    <item>Weather #2</item>
+    <item>Now Playing #1</item>
+    <item>Now Playing #2</item>
     <item>Date</item>
     <item>Message #1</item>
     <item>Message #2</item>
-    <item>Now Playing #1</item>
-    <item>Now Playing #2</item>
+
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
     <item>CLOCK</item>
     <item>LOCATION</item>
+    <item>WEATHER1</item>
+    <item>WEATHER2</item>
+    <item>MUSIC1</item>
+    <item>MUSIC2</item>
     <item>DATE</item>
     <item>MESSAGE1</item>
     <item>MESSAGE2</item>
-    <item>MUSIC1</item>
-    <item>MUSIC2</item>
   </string-array>
   <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
 
@@ -732,6 +737,17 @@
     <item>300</item>
   </string-array>
   <string name="seek_interval_default" translatable="false">30</string>
+
+  <!-- Weather units -->
+  <string-array name="weather_units_entries">
+    <item>C° - Metric</item>
+    <item>F° - Imperial</item>
+  </string-array>
+  <string-array name="weather_units_values" translatable="false">
+    <item>METRIC</item>
+    <item>IMPERIAL</item>
+  </string-array>
+  <string name="weather_units_default" translatable="false">METRIC</string>
 
   <!-- Background Colors -->
   <string-array name="background_colour_entries">

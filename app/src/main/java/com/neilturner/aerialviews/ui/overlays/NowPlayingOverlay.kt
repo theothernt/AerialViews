@@ -19,7 +19,7 @@ import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
-class TextNowPlaying : AppCompatTextView {
+class NowPlayingOverlay : AppCompatTextView {
     var type = OverlayType.MUSIC1
     var format = NowPlayingFormat.DISABLED
 

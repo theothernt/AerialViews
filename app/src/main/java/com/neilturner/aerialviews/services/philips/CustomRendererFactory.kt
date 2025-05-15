@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.services
+package com.neilturner.aerialviews.services.philips
 
 import android.annotation.SuppressLint
 import android.content.Context

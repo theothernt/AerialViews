@@ -23,11 +23,13 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.TextLocation
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
@@ -52,6 +54,8 @@ class ScreenController(
     private val resources by lazy { context.resources }
 
     private var nowPlayingService: NowPlayingService? = null
+    private var weatherService: WeatherService? = null
+
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -181,6 +185,14 @@ class ScreenController(
             } else {
                 showLoadingError()
             }
+
+            // Setup weather service
+            if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
+                weatherService =
+                    WeatherService(context).apply {
+                        startUpdates()
+                    }
+            }
         }
 
         // 1. Load playlist
@@ -201,7 +213,7 @@ class ScreenController(
         }
 
         // Set overlay data for current video
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
                 it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
@@ -309,7 +321,7 @@ class ScreenController(
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             it.isFadingOutMedia = true
         }
 
@@ -389,6 +401,7 @@ class ScreenController(
         videoPlayer.release()
         imagePlayer.release()
         nowPlayingService?.stop()
+        weatherService?.stop()
     }
 
     fun skipItem(previous: Boolean = false) {
