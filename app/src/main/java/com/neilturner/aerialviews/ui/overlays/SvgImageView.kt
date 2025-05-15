@@ -74,17 +74,16 @@ class SvgImageView
             // Calculate the content area (excluding padding)
             val contentWidth = width - paddingLeft - paddingRight
             val contentHeight = height - paddingTop - paddingBottom
-            
+
             // Calculate drawable size to fit in content area
             val drawableWidth = contentWidth - shadowBlur.toInt()
             val drawableHeight = contentHeight - shadowBlur.toInt()
-            
+
             // Set bounds to the reduced size to accommodate shadow
             drawable.setBounds(0, 0, drawableWidth, drawableHeight)
 
             // Save canvas state
             canvas.withTranslation(paddingLeft.toFloat(), paddingTop.toFloat()) {
-
                 // Translate to respect padding and center the drawable
                 // Save original alpha
                 val originalAlpha = drawable.alpha

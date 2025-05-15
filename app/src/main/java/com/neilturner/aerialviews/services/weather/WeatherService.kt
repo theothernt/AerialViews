@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
 import com.neilturner.aerialviews.BuildConfig
-import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.services.weather.WeatherIcons
