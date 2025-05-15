@@ -32,10 +32,19 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
             return
         }
 
-        val view = listView.findFocus()
-        view?.let {
+        val focusedView = listView.findFocus()
+        focusedView?.let {
             try {
-                position = listView.layoutManager?.getPosition(view) ?: -1
+                var view = it
+                // Walk up the view hierarchy until we find a view that's a direct child of the RecyclerView
+                while (view.parent != null && view.parent !== listView && view.parent is android.view.View) {
+                    view = view.parent as android.view.View
+                }
+
+                // Only try to get position if the view is a direct child of the RecyclerView
+                if (view.parent === listView) {
+                    position = listView.layoutManager?.getPosition(view) ?: -1
+                }
             } catch (e: Exception) {
                 Timber.e(e)
             }
