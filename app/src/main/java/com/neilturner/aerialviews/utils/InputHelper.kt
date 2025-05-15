@@ -64,8 +64,8 @@ object InputHelper {
                     onSwipeLeft = { gestureToAction(GestureType.LEFT, controller, exit) },
                     onSwipeRight = { gestureToAction(GestureType.RIGHT, controller, exit) },
                     onTap = { gestureToAction(GestureType.TAP, controller, exit) },
-                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
                     onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, controller, exit) },
+                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
                 ),
             )
     }
