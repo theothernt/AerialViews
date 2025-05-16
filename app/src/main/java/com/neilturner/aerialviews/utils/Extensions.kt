@@ -13,6 +13,9 @@ import androidx.preference.MultiSelectListPreference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -90,10 +93,10 @@ fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloa
 
 fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
 
-fun <T> List<T>.parallelForEachCompat(action: (T) -> Unit) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        this.parallelStream().forEachOrdered(action)
-    } else {
-        this.forEach(action)
-    }
+suspend fun <T> List<T>.parallelForEachCompat(action: suspend (T) -> Unit) = coroutineScope {
+    map { item ->
+        async(Dispatchers.Default) {
+            action(item)
+        }
+    }.awaitAll()
 }

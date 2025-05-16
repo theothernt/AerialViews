@@ -8,7 +8,8 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import com.neilturner.aerialviews.utils.parallelForEachCompat
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -31,7 +32,7 @@ internal object MediaServiceHelper {
             }
         }
 
-        media.parallelForEachCompat video@{ video ->
+        media.parallelForEachCompat { video ->
             val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
             if (data != null) {
                 if (description != DescriptionManifestType.DISABLED) {
@@ -39,15 +40,15 @@ internal object MediaServiceHelper {
                     video.poi = data.second
                 }
                 matched.add(video)
-                return@video
+            } else {
+                unmatched.add(video)
             }
-            unmatched.add(video)
         }
 
         return Pair(matched, unmatched)
     }
 
-    fun addFilenameAsDescriptionToMedia(
+    suspend fun addFilenameAsDescriptionToMedia(
         media: List<AerialMedia>,
         description: DescriptionFilenameType,
         pathDepth: Int,
@@ -73,19 +74,18 @@ internal object MediaServiceHelper {
         return media
     }
 
-    fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
-        var media = CopyOnWriteArrayList<AerialMedia>()
+    suspend fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
+        val media = CopyOnWriteArrayList<AerialMedia>()
 
         providers
             .filter { it.enabled == true }
             .parallelForEachCompat {
-                runBlocking {
-                    try {
-                        media.addAll(it.fetchMedia())
-                    } catch (ex: Exception) {
-                        Timber.e(ex, "Exception while fetching media from ${it.type}")
-                        FirebaseHelper.logExceptionIfRecent(ex)
-                    }
+                try {
+                    val providerMedia = it.fetchMedia()
+                    media.addAll(providerMedia)
+                } catch (ex: Exception) {
+                    Timber.e(ex, "Exception while fetching media from ${it.type}")
+                    FirebaseHelper.logExceptionIfRecent(ex)
                 }
             }
         return media
