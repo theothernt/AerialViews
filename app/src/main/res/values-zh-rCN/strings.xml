@@ -4,8 +4,6 @@
   <string name="about_version_title">版本号</string>
   <string name="advanced_application_overlay_permission_summary">播放视频时，该程序需要获得许可才能显示一个特殊的隐藏窗口来更改刷新率。</string>
   <string name="advanced_application_overlay_permission_title">启用应用程序覆盖权限</string>
-  <string name="advanced_close_on_screen_tap_summary">点击屏幕时退出屏幕保护程序</string>
-  <string name="advanced_close_on_screen_tap_title">点击屏幕关闭</string>
   <string name="advanced_enable_tunneling_summary">使用硬件加速，对 4K/HDR 更为重要</string>
   <string name="advanced_enable_tunneling_title">启用隧道</string>
   <string name="advanced_ignore_animation_scale_summary">忽略 \"设置\"&gt;\"开发人员选项\"&gt;\"动画持续时间比例\"，并使用 1x 来表示动画持续时间</string>
@@ -20,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
   <string name="allow_fallback_decoders_summary">支持某些设备上基于软件的编解码器或替代编解码器</string>
   <string name="allow_fallback_decoders_title">允许后备解码器</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">为了防止 OLED 烧屏，每个视频的时钟和地点都会改变</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_animations_summary">配置用于叠加的动画以及视频和照片之间的动画</string>
@@ -40,6 +39,7 @@
   <string name="appearance_brightness_summary">控制视频和照片的整体亮度</string>
   <string name="appearance_brightness_title">亮度</string>
   <string name="appearance_clock_format_title">时钟格式</string>
+  <string name="appearance_clock_size_title">尺寸</string>
   <string name="appearance_clock_summary">显示当前时间</string>
   <string name="appearance_clock_title">时钟</string>
   <string name="appearance_date_custom_error">自定义日期格式无效！</string>
@@ -179,6 +179,8 @@
   <string name="category_settings">设置</string>
   <string name="category_slots">插槽</string>
   <string name="category_startup">启动</string>
+  <string name="category_swipe_gestures">Swipe gestures</string>
+  <string name="category_tap_gestures">Tap gestures</string>
   <string name="category_top_row_left">左上角</string>
   <string name="category_top_row_right">右上角</string>
   <string name="category_typography">排版</string>
@@ -186,6 +188,7 @@
   <string name="category_video_render_options">视频和渲染选项</string>
   <string name="category_video_source">视频源</string>
   <string name="category_videos">Videos</string>
+  <string name="category_weather">天气</string>
   <string name="comm1_videos_enabled">使用社区视频</string>
   <string name="comm2_videos_enabled">使用社区视频</string>
   <string name="common_default">（默认）</string>
@@ -195,14 +198,25 @@
   <string name="dpad_button_left_title">左方向</string>
   <string name="dpad_button_ok_title">确定按钮</string>
   <string name="dpad_button_press_and_hold_summary">配置 d-pad 或按键的按住动作</string>
+  <string name="dpad_button_press_and_hold_title">Button or D-Pad Press &amp; Hold</string>
   <string name="dpad_button_press_summary">配置 d-pad 或按键操作</string>
+  <string name="dpad_button_press_title">Button or D-Pad Press</string>
   <string name="dpad_button_right_title">正确方向</string>
   <string name="dpad_button_up_title">向上</string>
+  <string name="dpad_double_tap_title">Double Tap</string>
+  <string name="dpad_long_press_title">Long Press</string>
   <string name="dpad_music_permission_summary">跳到下一曲/上一曲需要额外许可</string>
   <string name="dpad_music_permission_title">音乐控制权限</string>
   <string name="dpad_screensaver_on_launch_summary">退出到设置 \"操作必须指定给按钮或 d-pad 方向，该功能才能正常工作</string>
   <string name="dpad_screensaver_on_launch_title">启动屏幕保护程序</string>
   <string name="dpad_seek_interval_title">在视频中前后搜索的时间间隔</string>
+  <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
+  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap gestures</string>
+  <string name="dpad_swipe_down_title">Swipe Down</string>
+  <string name="dpad_swipe_left_title">Swipe Left</string>
+  <string name="dpad_swipe_right_title">Swipe Right</string>
+  <string name="dpad_swipe_up_title">Swipe Up</string>
+  <string name="dpad_tap_title">Single Tap</string>
   <string name="dpad_wake_on_any_button_press_summary">如果禁用，则只有指定为黑屏模式的 d-pad 方向或按钮才能唤醒黑屏模式</string>
   <string name="dpad_wake_on_any_button_press_title">按下任何 d-pad 或按钮即可从黑屏模式唤醒</string>
   <string name="enable_playback_logging_summary">在日志中显示额外的播放信息。有助于排除故障。</string>
@@ -389,6 +403,10 @@
   <string name="text_weight_title">重量</string>
   <string name="videos_quality_summary">选择视频质量</string>
   <string name="videos_quality_title">视频质量</string>
+  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
+  <string name="weather_location_searching">Searching for locations…</string>
+  <string name="weather_location_title">地点</string>
+  <string name="weather_units_title">Temperature units</string>
   <string name="webdav_media_enabled_title">使用 WebDAV 共享媒体</string>
   <string name="webdav_media_hostname_summary">服务器的 IP 地址和端口，例如 192.168.1.2:5005</string>
   <string name="webdav_media_hostname_title">主机名和端口</string>

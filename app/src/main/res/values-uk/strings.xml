@@ -4,8 +4,6 @@
   <string name="about_version_title">Версія</string>
   <string name="advanced_application_overlay_permission_summary">Потрібен дозвіл, щоб ця програма могла відображати спеціальне приховане вікно для зміни частоти оновлення під час відтворення відео</string>
   <string name="advanced_application_overlay_permission_title">Увімкнути дозвіл накладання програми</string>
-  <string name="advanced_close_on_screen_tap_summary">Вийти із заставки при натисканні на екран</string>
-  <string name="advanced_close_on_screen_tap_title">Закрити після натискання на екран</string>
   <string name="advanced_enable_tunneling_summary">Використовуйте апаратне прискорення, більш важливе для 4K/HDR</string>
   <string name="advanced_enable_tunneling_title">Увімкнути тунелювання</string>
   <string name="advanced_ignore_animation_scale_summary">Ігнорує Налаштування &gt; Параметри розробника &gt; Шкала тривалості анімації - та використовує 1x для тривалості анімації</string>
@@ -20,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
   <string name="allow_fallback_decoders_summary">Включає підтримку програмних або альтернативних кодеків на деяких пристроях</string>
   <string name="allow_fallback_decoders_title">Дозволити резервні декодери</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
   <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
   <string name="appearance_animations_summary">Налаштуйте анімацію, яка використовується для накладання, а також між відео та фотографіями</string>
@@ -40,6 +39,7 @@
   <string name="appearance_brightness_summary">Керуйте загальною яскравістю відео та фотографій</string>
   <string name="appearance_brightness_title">Яскравість</string>
   <string name="appearance_clock_format_title">Формат годинника</string>
+  <string name="appearance_clock_size_title">Розмір</string>
   <string name="appearance_clock_summary">Відображення поточного часу</string>
   <string name="appearance_clock_title">Годинник</string>
   <string name="appearance_date_custom_error">Недійсний спеціальний формат дати!</string>
@@ -179,6 +179,8 @@
   <string name="category_settings">Налаштування</string>
   <string name="category_slots">Слоти</string>
   <string name="category_startup">Запуск</string>
+  <string name="category_swipe_gestures">Жести зрушенням</string>
+  <string name="category_tap_gestures">Жести натискання</string>
   <string name="category_top_row_left">Верхній лівий</string>
   <string name="category_top_row_right">Верхній правий</string>
   <string name="category_typography">Оформлення</string>
@@ -186,6 +188,7 @@
   <string name="category_video_render_options">Параметри відео та рендеринга</string>
   <string name="category_video_source">Джерело відео</string>
   <string name="category_videos">Відео</string>
+  <string name="category_weather">Погода</string>
   <string name="comm1_videos_enabled">Використовувати відео спільноти</string>
   <string name="comm2_videos_enabled">Використовувати відео спільноти</string>
   <string name="common_default">(за замовчуванням)</string>
@@ -195,14 +198,25 @@
   <string name="dpad_button_left_title">Напрямок вліво</string>
   <string name="dpad_button_ok_title">Кнопка ОК</string>
   <string name="dpad_button_press_and_hold_summary">Налаштування дій натискання та утримання хрестовини або кнопки</string>
+  <string name="dpad_button_press_and_hold_title">Натисніть і утримуйте кнопку або хрестовину</string>
   <string name="dpad_button_press_summary">Налаштування дій при натисканні хрестовини або кнопки</string>
+  <string name="dpad_button_press_title">Натискання кнопки або хрестовини</string>
   <string name="dpad_button_right_title">Напрямок вправо</string>
   <string name="dpad_button_up_title">Напрямок вгору</string>
+  <string name="dpad_double_tap_title">Подвійне натискання</string>
+  <string name="dpad_long_press_title">Тривале натискання</string>
   <string name="dpad_music_permission_summary">Для переходу до наступного/попереднього треку потрібен додатковий дозвіл</string>
   <string name="dpad_music_permission_title">Дозвіл на керування музикою</string>
   <string name="dpad_screensaver_on_launch_summary">Для роботи цієї функції дія «Вихід у налаштування» повинна бути призначена кнопці або напрямку на хрестовині</string>
   <string name="dpad_screensaver_on_launch_title">Запускати заставку під час запуску</string>
   <string name="dpad_seek_interval_title">Інтервал для перемотування назад/вперед у відео</string>
+  <string name="dpad_swipe_and_tap_summary">Налаштуйте дії зрушення та натискання для телефонів та планшетів</string>
+  <string name="dpad_swipe_and_tap_title">Жести зрушення та натискання екрану</string>
+  <string name="dpad_swipe_down_title">Зрушення вниз</string>
+  <string name="dpad_swipe_left_title">Зрушення вліво</string>
+  <string name="dpad_swipe_right_title">Зрушення вправо</string>
+  <string name="dpad_swipe_up_title">Зрушення вгору</string>
+  <string name="dpad_tap_title">Одне натискання</string>
   <string name="dpad_wake_on_any_button_press_summary">Якщо відключено, з режиму затемнення можна вийти тільки за допомогою хрестовини або кнопки, призначеної на це</string>
   <string name="dpad_wake_on_any_button_press_title">Вихід з режиму затемнення натисканням будь-якої кнопки або хрестовини</string>
   <string name="enable_playback_logging_summary">Відображати додаткову інформацію про відтворення в журналах. Корисно для усунення несправностей.</string>
@@ -389,6 +403,10 @@
   <string name="text_weight_title">Насиченість</string>
   <string name="videos_quality_summary">Виберіть якість відео</string>
   <string name="videos_quality_title">Якість відео</string>
+  <string name="weather_location_search_hint">Введіть назву міста, наприклад, Токіо або Буенос-Айрес</string>
+  <string name="weather_location_searching">Пошук локації...</string>
+  <string name="weather_location_title">Місце розташування</string>
+  <string name="weather_units_title">Одиниці вимірювання температури</string>
   <string name="webdav_media_enabled_title">Використовуйте спільний доступ до WebDAV media</string>
   <string name="webdav_media_hostname_summary">IP-адреса та порт сервера, наприклад, 192.168.1.2:5005</string>
   <string name="webdav_media_hostname_title">"Ім\'я хоста та порт"</string>

@@ -4,8 +4,6 @@
   <string name="about_version_title">Versión</string>
   <string name="advanced_application_overlay_permission_summary">Se requiere permiso para que esta aplicación pueda mostrar una ventana oculta especial para cambiar la frecuencia de actualización al reproducir videos.</string>
   <string name="advanced_application_overlay_permission_title">Habilitar el permiso de superposición de aplicaciones</string>
-  <string name="advanced_close_on_screen_tap_summary">Salir del salvapantallas al tocar la pantalla</string>
-  <string name="advanced_close_on_screen_tap_title">Cerrar al tocar la pantalla</string>
   <string name="advanced_enable_tunneling_summary">Utilice aceleración de hardware, muy importante para 4K/HDR</string>
   <string name="advanced_enable_tunneling_title">Activar aceleración de hardware</string>
   <string name="advanced_ignore_animation_scale_summary">Ignora Configuración &gt; Opciones de desarrollador &gt; Escala de duración de la animación - y utiliza 1x para la duración de la animación</string>
@@ -20,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
   <string name="allow_fallback_decoders_summary">Habilita el soporte de decodificación por software o códecs alternativos en algunos dispositivos</string>
   <string name="allow_fallback_decoders_title">Permitir decodificadores alternativos</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">La posición del reloj y la ubicación cambian en cada vídeo para ayudar a prevenir el desgaste de OLED</string>
   <string name="appearance_alt_text_position_title">Posición alternativa del texto</string>
   <string name="appearance_animations_summary">Configura las animaciones utilizadas para las superposiciones entre vídeos y fotos</string>
@@ -40,6 +39,7 @@
   <string name="appearance_brightness_summary">Controla el brillo general de videos y fotos.</string>
   <string name="appearance_brightness_title">Brillo</string>
   <string name="appearance_clock_format_title">Formato de reloj</string>
+  <string name="appearance_clock_size_title">Tamaño</string>
   <string name="appearance_clock_summary">Mostrar la hora actual</string>
   <string name="appearance_clock_title">Reloj</string>
   <string name="appearance_date_custom_error">¡Formato de fecha personalizado no válido!</string>
@@ -179,6 +179,8 @@
   <string name="category_settings">Ajustes</string>
   <string name="category_slots">Espacios</string>
   <string name="category_startup">Arranque</string>
+  <string name="category_swipe_gestures">Swipe gestures</string>
+  <string name="category_tap_gestures">Tap gestures</string>
   <string name="category_top_row_left">Arriba a la izquierda</string>
   <string name="category_top_row_right">Arriba a la derecha</string>
   <string name="category_typography">Tipografía</string>
@@ -186,6 +188,7 @@
   <string name="category_video_render_options">Vídeo &amp; opciones de renderizado</string>
   <string name="category_video_source">Fuente del Vídeo</string>
   <string name="category_videos">Vídeos</string>
+  <string name="category_weather">Clima</string>
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="common_default">(predeterminado)</string>
@@ -195,14 +198,25 @@
   <string name="dpad_button_left_title">Dirección hacia izquierda</string>
   <string name="dpad_button_ok_title">Botón OK</string>
   <string name="dpad_button_press_and_hold_summary">Configurar pad direccional o las acciones de mantener pulsado el botón</string>
+  <string name="dpad_button_press_and_hold_title">Button or D-Pad Press &amp; Hold</string>
   <string name="dpad_button_press_summary">Configurar el pad direccional o mantener pulsado el botón</string>
+  <string name="dpad_button_press_title">Button or D-Pad Press</string>
   <string name="dpad_button_right_title">Dirección hacia derecha</string>
   <string name="dpad_button_up_title">Dirección hacia arriba</string>
+  <string name="dpad_double_tap_title">Double Tap</string>
+  <string name="dpad_long_press_title">Long Press</string>
   <string name="dpad_music_permission_summary">Se requiere permiso adicional para saltar a la pista siguiente/anterior</string>
   <string name="dpad_music_permission_title">Permiso de control de música</string>
   <string name="dpad_screensaver_on_launch_summary">La acción \"Salir a configuración\" debe asignarse a un botón o dirección del d-pad para que esta función funcione</string>
   <string name="dpad_screensaver_on_launch_title">Iniciar protector de pantalla al iniciar</string>
   <string name="dpad_seek_interval_title">Intervalo para buscar hacia atrás/adelante en un vídeo</string>
+  <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
+  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap gestures</string>
+  <string name="dpad_swipe_down_title">Swipe Down</string>
+  <string name="dpad_swipe_left_title">Swipe Left</string>
+  <string name="dpad_swipe_right_title">Swipe Right</string>
+  <string name="dpad_swipe_up_title">Swipe Up</string>
+  <string name="dpad_tap_title">Single Tap</string>
   <string name="dpad_wake_on_any_button_press_summary">Si se desactiva, sólo la dirección del d-pad o el botón asignado al modo de apagado, lo encenderá</string>
   <string name="dpad_wake_on_any_button_press_title">Despierta del modo apagado con cualquier pulsación del d-pad o de un botón</string>
   <string name="enable_playback_logging_summary">Muestra información de reproducción adicional en los registros. Útil para solucionar problemas.</string>
@@ -388,6 +402,10 @@
   <string name="text_weight_title">Grosor</string>
   <string name="videos_quality_summary">Seleccione la calidad del vídeo</string>
   <string name="videos_quality_title">Calidad de Vídeo</string>
+  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
+  <string name="weather_location_searching">Searching for locations…</string>
+  <string name="weather_location_title">Ubicación</string>
+  <string name="weather_units_title">Temperature units</string>
   <string name="webdav_media_enabled_title">Usar WebDAV</string>
   <string name="webdav_media_hostname_summary">Dirección IP y puerto del servidor, por ejemplo 192.168.1.2:5005</string>
   <string name="webdav_media_hostname_title">Nombre de host y puerto</string>
