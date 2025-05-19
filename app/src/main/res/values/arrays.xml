@@ -132,7 +132,7 @@
     <item>Clock</item>
     <item>Location</item>
     <item>Weather #1</item>
-    <item>Weather #2</item>
+<!--    <item>Weather #2</item>-->
     <item>Now Playing #1</item>
     <item>Now Playing #2</item>
     <item>Date</item>
@@ -145,7 +145,7 @@
     <item>CLOCK</item>
     <item>LOCATION</item>
     <item>WEATHER1</item>
-    <item>WEATHER2</item>
+<!--    <item>WEATHER2</item>-->
     <item>MUSIC1</item>
     <item>MUSIC2</item>
     <item>DATE</item>
