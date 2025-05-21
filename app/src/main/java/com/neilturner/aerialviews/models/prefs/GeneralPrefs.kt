@@ -42,6 +42,11 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISABLED, "nowplaying_line2")
     var nowPlayingSize by stringPref("18", "nowplaying_size")
     var nowPlayingWeight by stringPref("300", "nowplaying_weight")
+    // New: per-line font size/weight for Now Playing overlay
+    var nowPlayingSize1 by stringPref(nowPlayingSize, "nowplaying_size1")
+    var nowPlayingSize2 by stringPref(nowPlayingSize, "nowplaying_size2")
+    var nowPlayingWeight1 by stringPref(nowPlayingWeight, "nowplaying_weight1")
+    var nowPlayingWeight2 by stringPref(nowPlayingWeight, "nowplaying_weight2")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")

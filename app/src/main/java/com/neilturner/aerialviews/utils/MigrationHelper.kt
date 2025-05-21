@@ -44,6 +44,7 @@ class MigrationHelper(
         if (lastKnownVersion < 24) release24()
 
         if (lastKnownVersion < 49) release49()
+        if (lastKnownVersion < 25) release25()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -384,6 +385,31 @@ class MigrationHelper(
                 prefs.edit { putString("gesture_tap", "EXIT") }
             }
             prefs.edit { remove("close_on_screen_tap") }
+        }
+    }
+
+    private fun release25() {
+        Timber.i("Migrating settings for release 25 (NowPlaying per-line font)")
+        // Migrate nowplaying_size/weight to nowplaying_size1/2 and nowplaying_weight1/2 if only old exists
+        val sizeUsed = prefs.contains("nowplaying_size")
+        val weightUsed = prefs.contains("nowplaying_weight")
+        val size1Used = prefs.contains("nowplaying_size1")
+        val size2Used = prefs.contains("nowplaying_size2")
+        val weight1Used = prefs.contains("nowplaying_weight1")
+        val weight2Used = prefs.contains("nowplaying_weight2")
+        if (sizeUsed && !size1Used && !size2Used) {
+            val size = prefs.getString("nowplaying_size", "18")
+            prefs.edit {
+                putString("nowplaying_size1", size)
+                putString("nowplaying_size2", size)
+            }
+        }
+        if (weightUsed && !weight1Used && !weight2Used) {
+            val weight = prefs.getString("nowplaying_weight", "300")
+            prefs.edit {
+                putString("nowplaying_weight1", weight)
+                putString("nowplaying_weight2", weight)
+            }
         }
     }
 

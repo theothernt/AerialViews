@@ -162,12 +162,16 @@ class OverlayHelper(
                     // layout(prefs.weatherLine2)
                     layout("SUMMARY")
                 }
-            OverlayType.MUSIC1,
-            OverlayType.MUSIC2,
-            ->
+            OverlayType.MUSIC1 ->
                 NowPlayingOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize1.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight1)
+                    type = overlay
+                }
+            OverlayType.MUSIC2 ->
+                NowPlayingOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize2.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight2)
                     type = overlay
                 }
             OverlayType.DATE ->

@@ -84,6 +84,11 @@
   <string name="text_size_title">Size</string>
   <string name="text_weight_title">Weight</string>
 
+  <string name="text_size_title_line1">Text size (Line 1)</string>
+  <string name="text_size_title_line2">Text size (Line 2)</string>
+  <string name="text_weight_title_line1">Font weight (Line 1)</string>
+  <string name="text_weight_title_line2">Font weight (Line 2)</string>
+
   <!-- Main -->
   <string name="settings_media_sources_title">Media Sources</string>
   <string name="settings_media_sources_summary">Play videos &amp; photos from the internet, USB storage, and network sources</string>
