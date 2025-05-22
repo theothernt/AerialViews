@@ -130,6 +130,7 @@ class WeatherOverlay
             removeAllViews()
 
             val iconSize = calculateIconSize(size)
+            val itemMargin = 0
 
             overlayItems.forEach { item ->
                 when (item) {
@@ -143,7 +144,7 @@ class WeatherOverlay
                         val params = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                         params.gravity = android.view.Gravity.CENTER_VERTICAL
                         if (isNotEmpty()) {
-                            params.leftMargin = 10
+                            params.leftMargin = itemMargin
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
@@ -163,7 +164,7 @@ class WeatherOverlay
                         val params = LayoutParams(iconSize, iconSize)
                         params.gravity = android.view.Gravity.BOTTOM
                         if (isNotEmpty()) {
-                            params.leftMargin = 10
+                            params.leftMargin = itemMargin
                         }
 
                         imageView.layoutParams = params
