@@ -115,13 +115,13 @@ object WeatherIcons {
                 iconResource =
                     when (conditionCode) {
                         801 -> { // Few clouds
-                            if (isNight) R.drawable.weather_cloudy_night else R.drawable.weather_cloudy
+                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
                         }
                         802 -> { // Scattered clouds
-                            if (isNight) R.drawable.weather_cloudy_night else R.drawable.weather_cloudy
+                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
                         }
                         else -> { // Broken or overcast clouds
-                            if (isNight) R.drawable.weather_overcast else R.drawable.weather_overcast
+                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
                         }
                     }
             }
