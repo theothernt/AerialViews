@@ -73,7 +73,6 @@ class SvgImageView
 
             // Save canvas state
             canvas.withTranslation(paddingLeft.toFloat(), paddingTop.toFloat()) {
-
                 // Translate to respect padding and center the drawable
                 // Save original alpha
                 val originalAlpha = drawable.alpha
