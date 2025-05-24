@@ -21,7 +21,7 @@ class SvgImageView
         private var shadowColor = Color.argb(120, 0, 0, 0)
         private var shadowDx = 1f
         private var shadowDy = 1f
-        private var shadowRadius = 1f
+        private var shadowRadius = 2f // Increasing this makes the icon smaller
 
         private val shadowPaint = Paint()
         private var originalDrawable: Drawable? = null
