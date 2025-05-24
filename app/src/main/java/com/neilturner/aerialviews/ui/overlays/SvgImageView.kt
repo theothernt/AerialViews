@@ -36,7 +36,7 @@ class SvgImageView
             // Configure shadow paint
             shadowPaint.style = Style.FILL
             shadowPaint.color = shadowColor
-            shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.OUTER)
+            shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.NORMAL)
 
             // Add padding to make room for shadow
             val extraPadding = (shadowRadius * 1).toInt()
