@@ -749,6 +749,26 @@
   </string-array>
   <string name="weather_units_default" translatable="false">METRIC</string>
 
+  <!-- Weather Info Options -->
+  <string-array name="weather_info_entries">
+    <item>Empty</item>
+    <item>Temperature</item>
+    <item>Icon</item>
+    <item>Summary</item>
+    <item>City</item>
+    <item>Wind</item>
+    <item>Humidity</item>
+  </string-array>
+  <string-array name="weather_info_values" translatable="false">
+    <item>EMPTY</item>
+    <item>TEMPERATURE</item>
+    <item>ICON</item>
+    <item>SUMMARY</item>
+    <item>CITY</item>
+    <item>WIND</item>
+    <item>HUMIDITY</item>
+  </string-array>
+
   <!-- Background Colors -->
   <string-array name="background_colour_entries">
     <item>Black</item>

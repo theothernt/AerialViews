@@ -15,6 +15,10 @@
                     app:title="@string/weather_units_title"
                     app:useSimpleSummaryProvider="true" />
 
+                <Preference
+                    app:title="@string/weather_forecast_title"
+                    app:summary="@string/weather_forecast_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysWeatherForecastFragment"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">
