@@ -22,8 +22,8 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
 
         lifecycleScope.launch {
             setupPreferences()
-            loadSavedValues()
-            setupPreferenceChangeListeners()
+            loadValues()
+            setupChangeListeners()
         }
     }
 
@@ -43,21 +43,19 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
         }
     }
 
-    private fun loadSavedValues() {
+    private fun loadValues() {
         val items = GeneralPrefs.weatherForecast.split(",")
-
         items.forEachIndexed { index, item ->
             if (index < prefs.size && !item.isBlank()) {
                 prefs[index]?.value = item
             }
         }
-
         Timber.i("Loaded weather forecast preferences: ${GeneralPrefs.weatherForecast}")
     }
 
-    private fun setupPreferenceChangeListeners() {
-        val changeListener = Preference.OnPreferenceChangeListener { _, _ ->
-            saveWeatherInfoList()
+    private fun setupChangeListeners() {
+        val changeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
+            saveValues(preference as ListPreference, newValue.toString())
             true
         }
 
@@ -66,9 +64,13 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
         }
     }
 
-    private fun saveWeatherInfoList() {
-        val values = prefs.joinToString(",") {
-            it?.value ?: ""
+    private fun saveValues(changedPreference: ListPreference? = null, newValue: String = "") {
+        val values = prefs.joinToString(",") { pref ->
+            if (pref == changedPreference) {
+                newValue
+            } else {
+                pref?.value ?: ""
+            }
         }
 
         GeneralPrefs.weatherForecast = values
