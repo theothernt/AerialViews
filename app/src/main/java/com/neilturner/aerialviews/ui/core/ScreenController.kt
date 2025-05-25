@@ -50,7 +50,7 @@ class ScreenController(
     OnImagePlayerEventListener {
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
-    private var overlayHelper: OverlayHelper
+    private lateinit var overlayHelper: OverlayHelper
     private val resources by lazy { context.resources }
 
     private var nowPlayingService: NowPlayingService? = null
@@ -69,20 +69,20 @@ class ScreenController(
     private var previousItem = false
     private var canSkip = false
 
-    private val videoViewBinding: VideoViewBinding
-    private val imageViewBinding: ImageViewBinding
-    private val overlayViewBinding: OverlayViewBinding
-    private val loadingView: View
-    private val overlayView: View
-    private var loadingText: TextView
-    private var videoPlayer: VideoPlayerView
-    private var imagePlayer: ImagePlayerView
-    val view: View
+    private lateinit var videoViewBinding: VideoViewBinding
+    private lateinit var imageViewBinding: ImageViewBinding
+    private lateinit var overlayViewBinding: OverlayViewBinding
+    private lateinit var loadingView: View
+    private lateinit var overlayView: View
+    private lateinit var loadingText: TextView
+    private lateinit var videoPlayer: VideoPlayerView
+    private lateinit var imagePlayer: ImagePlayerView
+    var view: View
 
-    private val topLeftIds: List<Int>
-    private val topRightIds: List<Int>
-    private val bottomLeftIds: List<Int>
-    private val bottomRightIds: List<Int>
+    private lateinit var topLeftIds: List<Int>
+    private lateinit var topRightIds: List<Int>
+    private lateinit var bottomLeftIds: List<Int>
+    private lateinit var bottomRightIds: List<Int>
 
     var blackOutMode = false
         private set
@@ -90,13 +90,20 @@ class ScreenController(
     init {
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
+        view = binding.root // Assign view early
 
+        setupViews(binding)
+        setupAppearance(binding)
+        setupOverlays(binding)
+        loadInitialData()
+    }
+
+    private fun setupViews(binding: AerialActivityBinding) {
         val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
         val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
         val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
 
         // Setup binding for all views and controls
-        view = binding.root
         loadingView = binding.loadingView.root
         loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
@@ -123,33 +130,25 @@ class ScreenController(
         } else {
             loadingText.visibility = View.INVISIBLE
         }
+    }
 
-        // Setup overlays and set initial positions
-        overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
-        this.bottomLeftIds = overlayIds.bottomLeftIds
-        this.bottomRightIds = overlayIds.bottomRightIds
-        this.topLeftIds = overlayIds.topLeftIds
-        this.topRightIds = overlayIds.topRightIds
-
+    private fun setupAppearance(binding: AerialActivityBinding) {
         // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
-
             val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
             binding.progressBar.alpha = alpha
-            Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
-
             binding.progressBar.visibility = View.VISIBLE
+            Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
         }
 
         // Setup brightness/dimness
         if (GeneralPrefs.videoBrightness != "100") {
-            val view = binding.brightnessView
-            view.setBackgroundColor(Color.BLACK)
-            view.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
-            view.visibility = View.VISIBLE
+            val brightnessView = binding.brightnessView
+            brightnessView.setBackgroundColor(Color.BLACK)
+            brightnessView.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
+            brightnessView.visibility = View.VISIBLE
         }
 
         // Reset animation speed if needed
@@ -157,22 +156,34 @@ class ScreenController(
             WindowHelper.resetSystemAnimationDuration(context)
         }
 
-        // Gradients
+        // Setup gradients
         if (GeneralPrefs.showTopGradient) {
-            val gradientView = overlayViewBinding.gradientTop
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
-            gradientView.visibility = View.VISIBLE
+            overlayViewBinding.gradientTop.apply {
+                background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+                visibility = View.VISIBLE
+            }
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            val gradientView = overlayViewBinding.gradientBottom
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
-            gradientView.visibility = View.VISIBLE
+            overlayViewBinding.gradientBottom.apply {
+                background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+                visibility = View.VISIBLE
+            }
         }
+    }
 
+    private fun setupOverlays(binding: AerialActivityBinding) {
+        overlayHelper = OverlayHelper(context, GeneralPrefs)
+        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
+        bottomLeftIds = overlayIds.bottomLeftIds
+        bottomRightIds = overlayIds.bottomRightIds
+        topLeftIds = overlayIds.topLeftIds
+        topRightIds = overlayIds.topRightIds
+    }
+
+    private fun loadInitialData() {
         mainScope.launch {
-            // Launch if we have permission
-            // Used for a) Skip music tracks b) music info widget
+            // Launch if we have permission for NowPlayingService
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context)
             }
@@ -188,18 +199,11 @@ class ScreenController(
 
             // Setup weather service
             if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
-                weatherService =
-                    WeatherService(context).apply {
-                        startUpdates()
-                    }
+                weatherService = WeatherService(context).apply {
+                    startUpdates()
+                }
             }
         }
-
-        // 1. Load playlist
-        // 2. load video, setup location/POI, start playback call
-        // 3. playback started callback, fade out loading text, fade out loading view
-        // 4. when video is almost finished - or skip - fade in loading view
-        // 5. goto 2
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -264,14 +268,9 @@ class ScreenController(
     }
 
     private fun fadeOutLoadingText() {
-        // Fade out TextView
-        loadingText
-            .animate()
-            .alpha(0f)
-            .setDuration(LOADING_FADE_OUT)
-            .withEndAction {
-                loadingText.visibility = TextView.GONE
-            }.start()
+        loadingText.fadeOut(LOADING_FADE_OUT) {
+            loadingText.visibility = TextView.GONE
+        }
     }
 
     private fun fadeInNextItem() {
@@ -303,18 +302,11 @@ class ScreenController(
             hideOverlays(overlayDelay)
         }
 
-        // Fade out LoadingView
-        // Video should be playing underneath
-        loadingView
-            .animate()
-            .alpha(0f)
-            .setStartDelay(startDelay)
-            .setDuration(mediaFadeIn)
-            .withEndAction {
-                loadingView.alpha = 0f
-                loadingView.visibility = View.INVISIBLE
-                canSkip = true
-            }.start()
+        // Fade out LoadingView using helper
+        loadingView.fadeOut(mediaFadeIn, startDelay) {
+            loadingView.alpha = 0f
+            canSkip = true
+        }
     }
 
     private fun fadeOutCurrentItem() {
@@ -325,16 +317,11 @@ class ScreenController(
             it.isFadingOutMedia = true
         }
 
-        // Fade in LoadView (ie. black screen)
-        loadingView
-            .animate()
-            .alpha(1f)
-            .setStartDelay(0)
-            .setDuration(mediaFadeOut)
-            .withStartAction {
-                loadingView.visibility = View.VISIBLE
-                loadingView.alpha = 0f
-            }.withEndAction {
+        // Fade in LoadView (ie. black screen) using helper
+        loadingView.fadeIn(
+            duration = mediaFadeOut,
+            onStart = { loadingView.alpha = 0f },
+            onEnd = {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
                 videoViewBinding.videoPlayer.stop()
@@ -343,18 +330,18 @@ class ScreenController(
                 imageViewBinding.imagePlayer.stop()
 
                 // Pick next/previous video
-                val media =
-                    if (!previousItem) {
-                        playlist.nextItem()
-                    } else {
-                        playlist.previousItem()
-                    }
+                val media = if (!previousItem) {
+                    playlist.nextItem()
+                } else {
+                    playlist.previousItem()
+                }
                 previousItem = false
 
                 if (!blackOutMode) {
                     loadItem(media)
                 }
-            }.start()
+            }
+        )
     }
 
     private fun showLoadingError() {
@@ -362,14 +349,9 @@ class ScreenController(
     }
 
     private fun hideOverlays(delay: Long = 0L) {
-        overlayView
-            .animate()
-            .alpha(0f)
-            .setStartDelay(delay)
-            .setDuration(overlayFadeOut)
-            .withEndAction {
-                canShowOverlays = true
-            }.start()
+        overlayView.fadeOut(overlayFadeOut, delay) {
+            canShowOverlays = true
+        }
     }
 
     fun showOverlays() {
@@ -386,14 +368,9 @@ class ScreenController(
         if (!canShowOverlays) return
         canShowOverlays = false
 
-        overlayView
-            .animate()
-            .alpha(1f)
-            .setStartDelay(0)
-            .setDuration(overlayFadeIn)
-            .withEndAction {
-                hideOverlays(overlayRevealTimeout * 1000)
-            }.start()
+        overlayView.fadeIn(overlayFadeIn) {
+            hideOverlays(overlayRevealTimeout * 1000)
+        }
     }
 
     fun stop() {
@@ -485,6 +462,34 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     override fun onImagePrepared() = fadeInNextItem()
+
+    // Animation helper extension functions
+    private fun View.fadeIn(duration: Long, delay: Long = 0, onStart: (() -> Unit)? = null, onEnd: (() -> Unit)? = null) {
+        this.animate()
+            .alpha(1f)
+            .setStartDelay(delay)
+            .setDuration(duration)
+            .withStartAction {
+                this.visibility = View.VISIBLE
+                this.alpha = 0f
+                onStart?.invoke()
+            }
+            .withEndAction { onEnd?.invoke() }
+            .start()
+    }
+
+    private fun View.fadeOut(duration: Long, delay: Long = 0, onStart: (() -> Unit)? = null, onEnd: (() -> Unit)? = null) {
+        this.animate()
+            .alpha(0f)
+            .setStartDelay(delay)
+            .setDuration(duration)
+            .withStartAction { onStart?.invoke() }
+            .withEndAction {
+                this.visibility = View.INVISIBLE
+                onEnd?.invoke()
+            }
+            .start()
+    }
 
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
