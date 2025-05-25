@@ -749,24 +749,36 @@
   </string-array>
   <string name="weather_units_default" translatable="false">METRIC</string>
 
-  <!-- Weather Info Options -->
-  <string-array name="weather_info_entries">
+  <!-- Weather Type Options -->
+  <string-array name="weather_type_entries">
     <item>Empty</item>
+    <item>Forecast</item>
+    <item>Wind</item>
+    <item>Humidity</item>
+    <item>Sunrise</item>
+  </string-array>
+  <string-array name="weather_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>FORECAST</item>
+    <item>WIND</item>
+    <item>HUMIDITY</item>
+    <item>SUNRISE</item>
+  </string-array>
+
+  <!-- Forecast Type Options -->
+  <string-array name="weather_forecast_type_entries">
+    <item>Empty</item>
+    <item>City</item>
     <item>Temperature</item>
     <item>Icon</item>
     <item>Summary</item>
-    <item>City</item>
-    <item>Wind</item>
-    <item>Humidity</item>
   </string-array>
-  <string-array name="weather_info_values" translatable="false">
+  <string-array name="weather_forecast_type_values" translatable="false">
     <item>EMPTY</item>
+    <item>CITY</item>
     <item>TEMPERATURE</item>
     <item>ICON</item>
     <item>SUMMARY</item>
-    <item>CITY</item>
-    <item>WIND</item>
-    <item>HUMIDITY</item>
   </string-array>
 
   <!-- Background Colors -->

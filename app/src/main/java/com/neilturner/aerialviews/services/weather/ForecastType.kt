@@ -1,10 +1,8 @@
 package com.neilturner.aerialviews.services.weather
 
-enum class WeatherInfo {
+enum class ForecastType {
+    CITY,
     TEMPERATURE,
     ICON,
     SUMMARY,
-    CITY,
-    WIND,
-    HUMIDITY,
 }

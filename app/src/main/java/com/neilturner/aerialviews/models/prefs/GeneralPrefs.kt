@@ -57,13 +57,18 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationLon by stringPref("", "weather_location_lon")
     var weatherUnits by nullableEnumValuePref(WeatherUnit.METRIC, "weather_units")
 
-    var weatherLine1 by stringPref("", "weather_line1")
+    var weatherLine1 by stringPref("FORECAST", "weather_line1")
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2 by stringPref("", "weather_line2")
+    var weatherLine2 by stringPref("WIND", "weather_line2")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
+
+    var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
+    var weatherWind by stringPref("", "weather_wind")
+    var weatherHumidity by stringPref("", "weather_humidity")
+    var weatherSunrise by stringPref("", "weather_sunrise")
 
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(

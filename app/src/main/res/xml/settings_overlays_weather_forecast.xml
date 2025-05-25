@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <PreferenceCategory app:title="@string/weather_forecast_settings">
+    <PreferenceCategory app:title="@string/category_forecast">
         <ListPreference
-            app:key="weather_info_dropdown_1"
-            app:title="@string/weather_info_item_1"
-            app:entries="@array/weather_info_entries"
-            app:entryValues="@array/weather_info_values"
+            app:key="weather_forecast_slot1"
+            app:persistent="false"
+            app:title="@string/weather_forecast_slot1"
+            app:entries="@array/weather_forecast_type_entries"
+            app:entryValues="@array/weather_forecast_type_values"
             app:defaultValue="EMPTY"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:key="weather_info_dropdown_2"
-            app:title="@string/weather_info_item_2"
-            app:entries="@array/weather_info_entries"
-            app:entryValues="@array/weather_info_values"
+            app:key="weather_forecast_slot2"
+            app:persistent="false"
+            app:title="@string/weather_forecast_slot2"
+            app:entries="@array/weather_forecast_type_entries"
+            app:entryValues="@array/weather_forecast_type_values"
             app:defaultValue="EMPTY"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:key="weather_info_dropdown_3"
-            app:title="@string/weather_info_item_3"
-            app:entries="@array/weather_info_entries"
-            app:entryValues="@array/weather_info_values"
+            app:key="weather_forecast_slot3"
+            app:persistent="false"
+            app:title="@string/weather_forecast_slot3"
+            app:entries="@array/weather_forecast_type_entries"
+            app:entryValues="@array/weather_forecast_type_values"
             app:defaultValue="EMPTY"
             app:useSimpleSummaryProvider="true" />
 
         <ListPreference
-            app:key="weather_info_dropdown_4"
-            app:title="@string/weather_info_item_4"
-            app:entries="@array/weather_info_entries"
-            app:entryValues="@array/weather_info_values"
+            app:key="weather_forecast_slot4"
+            app:persistent="false"
+            app:title="@string/weather_forecast_slot4"
+            app:entries="@array/weather_forecast_type_entries"
+            app:entryValues="@array/weather_forecast_type_values"
             app:defaultValue="EMPTY"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>

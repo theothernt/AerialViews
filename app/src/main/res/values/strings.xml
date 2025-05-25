@@ -49,7 +49,7 @@
   <string name="category_videos">Videos</string>
   <string name="category_photos">Photos</string>
   <string name="category_weather">Weather</string>
-  <string name="category_weather_forecast">Weather Forecast</string>
+  <string name="category_forecast">Forecast</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_message">Message</string>
   <string name="category_typography">Typography</string>
@@ -365,14 +365,14 @@
   <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
   <string name="weather_location_searching">Searching for locations…</string>
 
+  <string name="weather_forecast_title">Forecast</string>
+  <string name="weather_forecast_summary">Change the layout of the current weather forecast</string>
+
   <!-- Weather Forecast -->
-  <string name="weather_forecast_settings">Weather Forecast Settings</string>
-  <string name="weather_info_item_1">Weather Info Item 1</string>
-  <string name="weather_info_item_2">Weather Info Item 2</string>
-  <string name="weather_info_item_3">Weather Info Item 3</string>
-  <string name="weather_info_item_4">Weather Info Item 4</string>
-  <string name="weather_forecast_title">Weather Forecast</string>
-  <string name="weather_forecast_summary">Configure weather forecast display</string>
+  <string name="weather_forecast_slot1">Slot 1</string>
+  <string name="weather_forecast_slot2">Slot 2</string>
+  <string name="weather_forecast_slot3">Slot 3</string>
+  <string name="weather_forecast_slot4">Slot 4</string>
 
   <!-- Main / Settings / Appearance / Location -->
   <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>

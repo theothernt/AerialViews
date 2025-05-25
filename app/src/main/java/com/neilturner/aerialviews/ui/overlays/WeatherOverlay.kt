@@ -12,8 +12,9 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.services.weather.WeatherInfo
+import com.neilturner.aerialviews.services.weather.WeatherType
 import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
@@ -86,14 +87,12 @@ class WeatherOverlay
             layout.split(",").forEach { item ->
                 val trimmedItem = item.trim()
                 try {
-                    val weatherInfo = WeatherInfo.valueOf(trimmedItem)
-                    when (weatherInfo) {
-                        WeatherInfo.TEMPERATURE -> overlayItems = overlayItems + OverlayItem.TextItem(weather.temperature)
-                        WeatherInfo.ICON -> overlayItems = overlayItems + OverlayItem.ImageItem(weather.icon)
-                        WeatherInfo.SUMMARY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.summary)
-                        WeatherInfo.CITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.city)
-                        WeatherInfo.WIND -> overlayItems = overlayItems + OverlayItem.TextItem(weather.wind)
-                        WeatherInfo.HUMIDITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.humidity)
+                    val forecastType = ForecastType.valueOf(trimmedItem)
+                    when (forecastType) {
+                        ForecastType.CITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.city)
+                        ForecastType.TEMPERATURE -> overlayItems = overlayItems + OverlayItem.TextItem(weather.temperature)
+                        ForecastType.ICON -> overlayItems = overlayItems + OverlayItem.ImageItem(weather.icon)
+                        ForecastType.SUMMARY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.summary)
                     }
                 } catch (e: IllegalArgumentException) {
                     Timber.e("Invalid weather info item: $trimmedItem")
