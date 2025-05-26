@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.services.weather.TemperatureUnit
+import com.neilturner.aerialviews.services.weather.WindSpeedUnit
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -56,9 +57,6 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
 
-    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
-    // Wind speed units
-
     var weatherLine1 by stringPref("FORECAST", "weather_line1")
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
@@ -68,7 +66,11 @@ object GeneralPrefs : KotprefModel() {
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
     var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
+    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
+
     var weatherWind by stringPref("", "weather_wind")
+    var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
+
     var weatherHumidity by stringPref("", "weather_humidity")
     var weatherSunrise by stringPref("", "weather_sunrise")
 

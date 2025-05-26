@@ -154,8 +154,7 @@ class OverlayHelper(
                     type = overlay
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)
-                    // layout("CITY, TEMPERATURE, ICON, SUMMARY")
-                    layout("TEMPERATURE, ICON, SUMMARY")
+                    layout(prefs.weatherForecast)
                 }
 //            OverlayType.WEATHER2 ->
 //                WeatherOverlay(context).apply {
