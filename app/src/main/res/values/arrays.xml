@@ -738,16 +738,16 @@
   </string-array>
   <string name="seek_interval_default" translatable="false">30</string>
 
-  <!-- Weather units -->
-  <string-array name="weather_units_entries">
-    <item>C° - Metric</item>
-    <item>F° - Imperial</item>
+  <!-- Temperature units -->
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
   </string-array>
-  <string-array name="weather_units_values" translatable="false">
+  <string-array name="temperature_units_values" translatable="false">
     <item>METRIC</item>
     <item>IMPERIAL</item>
   </string-array>
-  <string name="weather_units_default" translatable="false">METRIC</string>
+  <string name="temperature_units_default" translatable="false">METRIC</string>
 
   <!-- Weather Type Options -->
   <string-array name="weather_type_entries">

@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
-import com.neilturner.aerialviews.services.weather.WeatherUnit
+import com.neilturner.aerialviews.services.weather.TemperatureUnit
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -55,7 +55,9 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationName by stringPref("", "weather_location_name")
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
-    var weatherUnits by nullableEnumValuePref(WeatherUnit.METRIC, "weather_units")
+
+    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
+    // Wind speed units
 
     var weatherLine1 by stringPref("FORECAST", "weather_line1")
     var weatherLine1Size by stringPref("18", "weather_line1_size")

@@ -4,8 +4,6 @@ import android.content.Context
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
-import com.neilturner.aerialviews.services.weather.WeatherIcons
-import com.neilturner.aerialviews.services.weather.WeatherLanguage
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitaliseEachWord
@@ -67,7 +65,7 @@ class WeatherService(
             val key = BuildConfig.OPEN_WEATHER
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
             val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
-            val units = if (GeneralPrefs.weatherUnits == null) "metric" else GeneralPrefs.weatherUnits.toString().lowercase()
+            val units = if (GeneralPrefs.weatherTemperatureUnits == null) "metric" else GeneralPrefs.weatherTemperatureUnits.toString().lowercase()
             val language = WeatherLanguage.getLanguageCode(context)
             Timber.i("Language: $language")
 
