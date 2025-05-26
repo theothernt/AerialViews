@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services.weather
 
 import kotlinx.serialization.Serializable
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -20,7 +21,7 @@ interface OpenWeatherApi {
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric",
         @Query("lang") language: String = "en",
-    ): CurrentWeatherResponse
+    ): Response<CurrentWeatherResponse>
 
     @GET("data/2.5/forecast")
     suspend fun getFiveDayForecast(
@@ -29,7 +30,7 @@ interface OpenWeatherApi {
         @Query("appid") apiKey: String,
         @Query("units") units: String = "metric",
         @Query("lang") language: String = "en",
-    ): FiveDayForecastResponse
+    ): Response<FiveDayForecastResponse>
 
     @GET("geo/1.0/direct")
     suspend fun getLocationByName(
@@ -37,7 +38,7 @@ interface OpenWeatherApi {
         @Query("limit") limit: Int = 10,
         @Query("appid") apiKey: String,
         @Query("lang") language: String = "en",
-    ): List<LocationResponse>
+    ): Response<List<LocationResponse>>
 }
 
 // Location
