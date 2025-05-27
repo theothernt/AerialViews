@@ -83,6 +83,7 @@ class WeatherService(
                 while (isActive) {
                     val update = forecastUpdate()
                     GlobalBus.post(update)
+                    Timber.i("Next weather update in ${updateDelay.inWholeMinutes} minutes")
                     delay(updateDelay)
                 }
             }
