@@ -61,7 +61,8 @@ class UnsplashMediaProvider(
                             unsplashClient.searchPhotos(
                                 authorization = authHeader,
                                 query = prefs.searchQuery,
-                                perPage = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                // perPage = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                perPage = 30,
                                 orderBy = prefs.orderBy,
                                 orientation = if (prefs.orientation == "any") null else prefs.orientation,
                             )
@@ -78,7 +79,8 @@ class UnsplashMediaProvider(
                         val response =
                             unsplashClient.getRandomPhotos(
                                 authorization = authHeader,
-                                count = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                //count = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                count = 30,
                                 orientation = if (prefs.orientation == "any") null else prefs.orientation,
                             )
 
