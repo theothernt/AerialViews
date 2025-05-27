@@ -818,13 +818,11 @@
     <item>10</item>
     <item>20</item>
     <item>30</item>
-    <item>50</item>
   </string-array>
   <string-array name="unsplash_photos_per_page_values" translatable="false">
     <item>10</item>
     <item>20</item>
     <item>30</item>
-    <item>50</item>
   </string-array>
   <string name="unsplash_photos_per_page_default" translatable="false">30</string>
 
@@ -839,3 +837,4 @@
   <string name="unsplash_order_by_default" translatable="false">relevant</string>
 
 </resources>
+
