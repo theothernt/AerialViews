@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <PreferenceCategory app:title="@string/category_remote">
+    xmlns:app="http://schemas.android.com/apk/res-auto">    <PreferenceCategory app:title="@string/category_remote">
         <Preference
             app:title="@string/sources_apple_title"
             app:summary="@string/sources_apple_summary"
@@ -17,6 +15,11 @@
             app:title="@string/sources_comm2_title"
             app:summary="@string/sources_comm2_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_unsplash_title"
+            app:summary="@string/sources_unsplash_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.UnsplashVideosFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_local">

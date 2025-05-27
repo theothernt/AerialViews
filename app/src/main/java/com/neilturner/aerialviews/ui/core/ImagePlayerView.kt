@@ -103,8 +103,7 @@ class ImagePlayerView : AppCompatImageView {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
                     loadImage(stream)
                     stream?.close()
-                }
-                AerialMediaSource.WEBDAV -> {
+                }                AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
                     stream?.close()

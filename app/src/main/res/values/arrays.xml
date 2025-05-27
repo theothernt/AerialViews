@@ -303,7 +303,6 @@
     <item>FOLDER_ACCESS</item>
   </string-array>
   <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
-
   <!-- Media type -->
   <string-array name="media_type_entries">
     <item>Videos only</item>
@@ -316,6 +315,15 @@
     <item>VIDEOS_PHOTOS</item>
   </string-array>
   <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
+
+  <!-- Media type - Photos Only (for Unsplash) -->
+  <string-array name="media_type_photos_only_entries">
+    <item>Photos only</item>
+  </string-array>
+  <string-array name="media_type_photos_only_values" translatable="false">
+    <item>PHOTOS</item>
+  </string-array>
+  <string name="media_type_photos_only_default" translatable="false">PHOTOS</string>
 
   <!-- Samba Video Options -->
   <string-array name="samba_videos_smb_dialects_entries" translatable="false">
@@ -780,7 +788,6 @@
     <item>ICON</item>
     <item>SUMMARY</item>
   </string-array>
-
   <!-- Background Colors -->
   <string-array name="background_colour_entries">
     <item>Black</item>
@@ -791,4 +798,44 @@
     <item>WHITE</item>
   </string-array>
   <string name="background_colour_default" translatable="false">BLACK</string>
+
+  <!-- Unsplash Options -->
+  <string-array name="unsplash_orientation_entries">
+    <item>Any</item>
+    <item>Landscape</item>
+    <item>Portrait</item>
+    <item>Square</item>
+  </string-array>
+  <string-array name="unsplash_orientation_values" translatable="false">
+    <item>any</item>
+    <item>landscape</item>
+    <item>portrait</item>
+    <item>squarish</item>
+  </string-array>
+  <string name="unsplash_orientation_default" translatable="false">landscape</string>
+
+  <string-array name="unsplash_photos_per_page_entries">
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>50</item>
+  </string-array>
+  <string-array name="unsplash_photos_per_page_values" translatable="false">
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>50</item>
+  </string-array>
+  <string name="unsplash_photos_per_page_default" translatable="false">30</string>
+
+  <string-array name="unsplash_order_by_entries">
+    <item>Relevant</item>
+    <item>Latest</item>
+  </string-array>
+  <string-array name="unsplash_order_by_values" translatable="false">
+    <item>relevant</item>
+    <item>latest</item>
+  </string-array>
+  <string name="unsplash_order_by_default" translatable="false">relevant</string>
+
 </resources>

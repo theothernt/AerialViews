@@ -72,9 +72,10 @@
   <string name="category_phone_tablet">Phone or Tablet</string>
   <string name="category_custom_format">Custom format</string>
   <string name="category_import_settings">Import settings</string>
-  <string name="category_export_settings">Export settings</string>
-  <string name="category_swipe_gestures">Swipe gestures</string>
+  <string name="category_export_settings">Export settings</string>  <string name="category_swipe_gestures">Swipe gestures</string>
   <string name="category_tap_gestures">Tap gestures</string>
+  <string name="category_api_details">API Details</string>
+  <string name="category_search_options">Search Options</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -118,9 +119,11 @@
 
   <string name="sources_webdav_title">WebDAV server</string>
   <string name="sources_webdav_summary">Play videos &amp; photos stored on a WebDAV server locally or remotely</string>
-
   <string name="sources_immich_title">Immich server</string>
   <string name="sources_immich_summary">Play videos &amp; photos from an Immich server</string>
+
+  <string name="sources_unsplash_title">Unsplash</string>
+  <string name="sources_unsplash_summary">Stream high-quality photos from Unsplash</string>
 
   <!-- Main / Video Sources / Apple videos -->
   <string name="apple_videos_enabled">Use Apple videos</string>
@@ -273,7 +276,6 @@
 
   <string name="immich_media_search_subfolders_title">Search subfolders</string>
   <string name="immich_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
-
   <string name="immich_media_test_results">Test results</string>
 
   <string name="immich_media_url_title">Server URL</string>
@@ -281,6 +283,25 @@
   <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
   <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
   <string name="immich_media_url_invalid">Invalid server URL</string>
+  <!-- Main / Video Sources / Unsplash photos -->
+  <string name="unsplash_media_enabled_title">Use Unsplash photos</string>
+  <string name="unsplash_media_type_title">Choose media type</string>
+  <string name="unsplash_media_test_connection">Test connection settings</string>
+  <string name="unsplash_media_access_key_title">Access Key</string>
+  <string name="unsplash_media_access_key_summary">Enter your Unsplash Access Key</string>
+  <string name="unsplash_media_search_query_title">Search Query</string>
+  <string name="unsplash_media_search_query_summary">Search for specific topics or leave empty for random photos</string>
+  <string name="unsplash_media_orientation_title">Photo Orientation</string>
+  <string name="unsplash_media_orientation_summary">Choose photo orientation preference</string>
+  <string name="unsplash_media_photos_per_page_title">Photos Per Page</string>
+  <string name="unsplash_media_photos_per_page_summary">Number of photos to fetch at once</string>
+  <string name="unsplash_media_order_by_title">Order By</string>
+  <string name="unsplash_media_order_by_summary">How to order search results</string>
+
+  <string name="unsplash_media_test_summary1">Photos found: %1$s</string>
+  <string name="unsplash_media_test_summary2">Resolution: %1$s</string>
+  <string name="unsplash_media_test_summary3">Selected for playback: %1$s</string>
+  <string name="unsplash_media_test_results">Test results</string>
 
   <!-- Main / Settings -->
   <string name="settings_overlays_title">Overlays</string>

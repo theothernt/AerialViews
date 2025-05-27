@@ -14,6 +14,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.UnsplashMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -22,6 +23,7 @@ import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
+import com.neilturner.aerialviews.providers.unsplash.UnsplashMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
@@ -35,7 +37,7 @@ class MediaService(
     val context: Context,
 ) {
     private val providers = mutableListOf<MediaProvider>()
-
+    
     init {
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
@@ -43,6 +45,7 @@ class MediaService(
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
+        providers.add(UnsplashMediaProvider(context, UnsplashMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }

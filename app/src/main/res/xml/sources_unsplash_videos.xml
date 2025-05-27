@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="unsplash_media_enabled"
+                    app:title="@string/unsplash_media_enabled_title" />
+
+                <ListPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="PHOTOS"
+                    app:entries="@array/media_type_photos_only_entries"
+                    app:entryValues="@array/media_type_photos_only_values"
+                    app:key="unsplash_media_type"
+                    app:title="@string/unsplash_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:dependency="unsplash_media_enabled"
+                    app:disableDependentsState="false"
+                    android:title="@string/unsplash_media_test_connection"
+                    android:key="unsplash_media_test_connection" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_api_details">
+                <EditTextPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:key="unsplash_media_access_key"
+                    app:title="@string/unsplash_media_access_key_title"
+                    app:summary="@string/unsplash_media_access_key_summary"
+                    app:iconSpaceReserved="false" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_search_options">
+                <EditTextPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:key="unsplash_media_search_query"
+                    app:title="@string/unsplash_media_search_query_title"
+                    app:summary="@string/unsplash_media_search_query_summary"
+                    app:iconSpaceReserved="false" />
+
+                <ListPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="landscape"
+                    app:entries="@array/unsplash_orientation_entries"
+                    app:entryValues="@array/unsplash_orientation_values"
+                    app:key="unsplash_media_orientation"
+                    app:title="@string/unsplash_media_orientation_title"
+                    app:summary="Landscape"
+                    app:iconSpaceReserved="false" />
+
+                <ListPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="30"
+                    app:entries="@array/unsplash_photos_per_page_entries"
+                    app:entryValues="@array/unsplash_photos_per_page_values"
+                    app:key="unsplash_media_photos_per_page"
+                    app:title="@string/unsplash_media_photos_per_page_title"
+                    app:summary="30 photos"
+                    app:iconSpaceReserved="false" />
+
+                <ListPreference
+                    app:dependency="unsplash_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="relevant"
+                    app:entries="@array/unsplash_order_by_entries"
+                    app:entryValues="@array/unsplash_order_by_values"
+                    app:key="unsplash_media_order_by"
+                    app:title="@string/unsplash_media_order_by_title"
+                    app:summary="Relevant"
+                    app:iconSpaceReserved="false" />
+        </PreferenceCategory>
+
+</PreferenceScreen>
