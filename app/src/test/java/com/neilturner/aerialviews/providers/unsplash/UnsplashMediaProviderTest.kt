@@ -5,12 +5,11 @@ import org.junit.jupiter.api.Test
 
 /**
  * Unit tests for UnsplashMediaProvider
- * 
+ *
  * These tests validate the basic structure and type safety of the Unsplash implementation.
  * Note: Full integration tests would require actual API keys and network connectivity.
  */
 class UnsplashMediaProviderTest {
-
     @Test
     fun `validate basic test framework works`() {
         // Simple test to verify the test framework is working
@@ -27,7 +26,7 @@ class UnsplashMediaProviderTest {
         assertTrue(apiClass.isInterface)
     }
 
-    @Test 
+    @Test
     fun `validate UnsplashPhoto class exists`() {
         // Test that the model class can be loaded
         val photoClass = UnsplashPhoto::class.java

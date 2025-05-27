@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.services.weather.WeatherType
 import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
@@ -133,7 +132,6 @@ class WeatherOverlay
             overlayItems.forEach { item ->
                 when (item) {
                     is OverlayItem.TextItem -> {
-
                         val textView =
                             TextView(context).apply {
                                 text = item.text
@@ -145,8 +143,9 @@ class WeatherOverlay
 
                         // Check if this item should have a margin
                         // No margin if previous item is an image or if this is the first item
-                        val previousItemIsImage = overlayItems.indexOf(item) > 0 &&
-                                                 overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
+                        val previousItemIsImage =
+                            overlayItems.indexOf(item) > 0 &&
+                                overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
 
                         if (isNotEmpty() && !previousItemIsImage) {
                             Timber.d("Adding margin to text view")
@@ -164,7 +163,6 @@ class WeatherOverlay
                     }
 
                     is OverlayItem.ImageItem -> {
-
                         // Use our custom SvgImageView instead of regular ImageView
                         val imageView =
                             SvgImageView(context).apply {

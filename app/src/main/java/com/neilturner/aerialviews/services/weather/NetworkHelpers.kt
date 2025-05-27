@@ -63,7 +63,7 @@ object NetworkHelpers {
 
     private val logging by lazy {
         HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BASIC
         }
     }
 

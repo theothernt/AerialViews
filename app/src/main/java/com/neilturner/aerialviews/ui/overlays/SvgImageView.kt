@@ -38,7 +38,7 @@ class SvgImageView
             shadowPaint.color = shadowColor
             shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.NORMAL)
 
-            setPadding(3,0,0,0)
+            setPadding(3, 0, 0, 0)
         }
 
         fun setSvgResource(resId: Int) {

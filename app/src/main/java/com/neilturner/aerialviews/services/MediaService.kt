@@ -37,7 +37,7 @@ class MediaService(
     val context: Context,
 ) {
     private val providers = mutableListOf<MediaProvider>()
-    
+
     init {
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))

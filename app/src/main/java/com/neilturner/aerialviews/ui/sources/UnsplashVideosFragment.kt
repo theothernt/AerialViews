@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 class UnsplashVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -57,7 +56,9 @@ class UnsplashVideosFragment :
         key: String?,
     ) {
         updateSummary()
-    }    private fun updateSummary() {
+    }
+
+    private fun updateSummary() {
         // Search Query
         val searchQuery = findPreference<EditTextPreference>("unsplash_media_search_query")
         if (searchQuery?.text.toStringOrEmpty().isNotEmpty()) {
@@ -83,7 +84,9 @@ class UnsplashVideosFragment :
         val orderByValues = resources.getStringArray(R.array.unsplash_order_by_values)
         val orderByIndex = orderByValues.indexOf(orderBy?.value ?: "relevant")
         orderBy?.summary = if (orderByIndex >= 0) orderByEntries[orderByIndex] else "Relevant"
-    }    private fun limitTextInput() {
+    }
+
+    private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("unsplash_media_search_query")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 

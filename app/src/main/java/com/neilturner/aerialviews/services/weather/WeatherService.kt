@@ -50,7 +50,7 @@ class WeatherService(
             val language = WeatherLanguage.getLanguageCode(context)
             val response = openWeatherClient.getLocationByName(query, 10, key, language)
             delay(lookupDelay)
-            
+
             when {
                 response.isSuccessful -> response.body() ?: emptyList()
                 response.code() == 401 -> {
@@ -94,7 +94,14 @@ class WeatherService(
             val key = BuildConfig.OPEN_WEATHER
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
             val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
-            val units = if (GeneralPrefs.weatherTemperatureUnits == null) "metric" else GeneralPrefs.weatherTemperatureUnits.toString().lowercase()
+            val units =
+                if (GeneralPrefs.weatherTemperatureUnits ==
+                    null
+                ) {
+                    "metric"
+                } else {
+                    GeneralPrefs.weatherTemperatureUnits.toString().lowercase()
+                }
             val language = WeatherLanguage.getLanguageCode(context)
             Timber.i("Language: $language")
 

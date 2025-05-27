@@ -56,73 +56,80 @@ class UnsplashMediaProvider(
             val authHeader = "Client-ID $accessKey"
 
             try {
-                val photos = if (prefs.searchQuery.isNotEmpty()) {
-                    // Search for specific photos
-                    val response = unsplashClient.searchPhotos(
-                        authorization = authHeader,
-                        query = prefs.searchQuery,
-                        perPage = prefs.photosPerPage.toIntOrNull() ?: 30,
-                        orderBy = prefs.orderBy,
-                        orientation = if (prefs.orientation == "any") null else prefs.orientation
-                    )
+                val photos =
+                    if (prefs.searchQuery.isNotEmpty()) {
+                        // Search for specific photos
+                        val response =
+                            unsplashClient.searchPhotos(
+                                authorization = authHeader,
+                                query = prefs.searchQuery,
+                                perPage = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                orderBy = prefs.orderBy,
+                                orientation = if (prefs.orientation == "any") null else prefs.orientation,
+                            )
 
-                    if (response.isSuccessful) {
-                        totalPhotos = response.body()?.total ?: 0
-                        response.body()?.results ?: emptyList()
+                        if (response.isSuccessful) {
+                            totalPhotos = response.body()?.total ?: 0
+                            response.body()?.results ?: emptyList()
+                        } else {
+                            val errorMsg = response.errorBody()?.string() ?: response.message()
+                            return@withContext Pair(media, "API Error: ${response.code()} - $errorMsg")
+                        }
                     } else {
-                        val errorMsg = response.errorBody()?.string() ?: response.message()
-                        return@withContext Pair(media, "API Error: ${response.code()} - $errorMsg")
-                    }
-                } else {
-                    // Get random photos
-                    val response = unsplashClient.getRandomPhotos(
-                        authorization = authHeader,
-                        count = prefs.photosPerPage.toIntOrNull() ?: 30,
-                        orientation = if (prefs.orientation == "any") null else prefs.orientation
-                    )
+                        // Get random photos
+                        val response =
+                            unsplashClient.getRandomPhotos(
+                                authorization = authHeader,
+                                count = prefs.photosPerPage.toIntOrNull() ?: 30,
+                                orientation = if (prefs.orientation == "any") null else prefs.orientation,
+                            )
 
-                    if (response.isSuccessful) {
-                        val photoList = response.body() ?: emptyList()
-                        totalPhotos = photoList.size
-                        photoList
-                    } else {
-                        val errorMsg = response.errorBody()?.string() ?: response.message()
-                        return@withContext Pair(media, "API Error: ${response.code()} - $errorMsg")
+                        if (response.isSuccessful) {
+                            val photoList = response.body() ?: emptyList()
+                            totalPhotos = photoList.size
+                            photoList
+                        } else {
+                            val errorMsg = response.errorBody()?.string() ?: response.message()
+                            return@withContext Pair(media, "API Error: ${response.code()} - $errorMsg")
+                        }
                     }
-                }
 
                 // Convert Unsplash photos to AerialMedia
                 photos.forEach { photo ->
-                    val imageUrl = when {
-                        photo.width >= 1920 -> photo.urls.raw + "&w=1920&q=80"
-                        photo.width >= 1080 -> photo.urls.full
-                        else -> photo.urls.regular
-                    }
+                    val imageUrl =
+                        when {
+                            photo.width >= 1920 -> photo.urls.raw + "&w=1920&q=80"
+                            photo.width >= 1080 -> photo.urls.full
+                            else -> photo.urls.regular
+                        }
 
-                    val description = listOfNotNull(
-                        photo.description,
-                        photo.altDescription,
-                        "Photo by ${photo.user.name} on Unsplash"
-                    ).firstOrNull() ?: "Unsplash Photo"
+                    val description =
+                        listOfNotNull(
+                            photo.description,
+                            photo.altDescription,
+                            "Photo by ${photo.user.name} on Unsplash",
+                        ).firstOrNull() ?: "Unsplash Photo"
 
                     val poi = mutableMapOf<Int, String>()
                     photo.location?.let { location ->
-                        val locationText = listOfNotNull(
-                            location.city,
-                            location.country
-                        ).joinToString(", ")
+                        val locationText =
+                            listOfNotNull(
+                                location.city,
+                                location.country,
+                            ).joinToString(", ")
                         if (locationText.isNotEmpty()) {
                             poi[0] = locationText
                         }
                     }
 
-                    val item = AerialMedia(
-                        uri = imageUrl.toUri(),
-                        description = description,
-                        poi = poi,
-                        type = AerialMediaType.IMAGE,
-                        source = AerialMediaSource.UNSPLASH
-                    )
+                    val item =
+                        AerialMedia(
+                            uri = imageUrl.toUri(),
+                            description = description,
+                            poi = poi,
+                            type = AerialMediaType.IMAGE,
+                            source = AerialMediaSource.UNSPLASH,
+                        )
 
                     media.add(item)
                 }
@@ -139,20 +146,20 @@ class UnsplashMediaProvider(
                     }
                 }
 
-                val message = if (prefs.searchQuery.isNotEmpty()) {
-                    "Search query: '${prefs.searchQuery}'\n" +
-                    "Total matching photos: $totalPhotos\n" +
-                    "Photos fetched: ${media.size}\n" +
-                    "Orientation: ${prefs.orientation}\n" +
-                    "Order by: ${prefs.orderBy}"
-                } else {
-                    "Random photos fetched: ${media.size}\n" +
-                    "Orientation: ${prefs.orientation}"
-                }
+                val message =
+                    if (prefs.searchQuery.isNotEmpty()) {
+                        "Search query: '${prefs.searchQuery}'\n" +
+                            "Total matching photos: $totalPhotos\n" +
+                            "Photos fetched: ${media.size}\n" +
+                            "Orientation: ${prefs.orientation}\n" +
+                            "Order by: ${prefs.orderBy}"
+                    } else {
+                        "Random photos fetched: ${media.size}\n" +
+                            "Orientation: ${prefs.orientation}"
+                    }
 
                 Timber.i("Unsplash photos found: ${media.size}")
                 return@withContext Pair(media, message)
-
             } catch (e: Exception) {
                 Timber.e(e, "Error fetching Unsplash media")
                 return@withContext Pair(emptyList(), e.message ?: "Unknown error occurred")
