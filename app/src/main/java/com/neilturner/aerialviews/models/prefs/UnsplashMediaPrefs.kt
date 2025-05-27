@@ -9,7 +9,6 @@ object UnsplashMediaPrefs : KotprefModel() {
 
     var enabled by booleanPref(false, "unsplash_media_enabled")
     var mediaType by nullableEnumValuePref(ProviderMediaType.PHOTOS, "unsplash_media_type")
-    var accessKey by stringPref("", "unsplash_media_access_key")
     var searchQuery by stringPref("", "unsplash_media_search_query")
     var orientation by stringPref("landscape", "unsplash_media_orientation")
     var photosPerPage by stringPref("30", "unsplash_media_photos_per_page")

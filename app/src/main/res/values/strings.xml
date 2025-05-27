@@ -282,13 +282,10 @@
   <string name="immich_media_url_summary">Enter server URL (e.g., 192.168.1.100:8080)</string>
   <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
   <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
-  <string name="immich_media_url_invalid">Invalid server URL</string>
-  <!-- Main / Video Sources / Unsplash photos -->
+  <string name="immich_media_url_invalid">Invalid server URL</string>  <!-- Main / Video Sources / Unsplash photos -->
   <string name="unsplash_media_enabled_title">Use Unsplash photos</string>
   <string name="unsplash_media_type_title">Choose media type</string>
   <string name="unsplash_media_test_connection">Test connection settings</string>
-  <string name="unsplash_media_access_key_title">Access Key</string>
-  <string name="unsplash_media_access_key_summary">Enter your Unsplash Access Key</string>
   <string name="unsplash_media_search_query_title">Search Query</string>
   <string name="unsplash_media_search_query_summary">Search for specific topics or leave empty for random photos</string>
   <string name="unsplash_media_orientation_title">Photo Orientation</string>

@@ -70,7 +70,9 @@ android {
     buildTypes {
         getByName("debug") {
             val openWeather = keyProps["openWeatherDebug"] as String?
+            val unsplash = keyProps["unsplashDebug"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
+            buildConfigField("String", "UNSPLASH", "\"$unsplash\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             applicationIdSuffix = ".debug"
@@ -80,7 +82,9 @@ android {
         }
         getByName("release") {
             val openWeather = keyProps["openWeather"] as String?
+            val unsplash = keyProps["unsplash"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
+            buildConfigField("String", "UNSPLASH", "\"$unsplash\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true

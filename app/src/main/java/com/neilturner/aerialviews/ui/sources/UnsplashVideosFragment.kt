@@ -57,17 +57,7 @@ class UnsplashVideosFragment :
         key: String?,
     ) {
         updateSummary()
-    }
-
-    private fun updateSummary() {
-        // Access Key
-        val accessKey = findPreference<EditTextPreference>("unsplash_media_access_key")
-        if (accessKey?.text.toStringOrEmpty().isNotEmpty()) {
-            accessKey?.summary = "*".repeat(minOf(accessKey.text!!.length, 20))
-        } else {
-            accessKey?.summary = getString(R.string.unsplash_media_access_key_summary)
-        }
-
+    }    private fun updateSummary() {
         // Search Query
         val searchQuery = findPreference<EditTextPreference>("unsplash_media_search_query")
         if (searchQuery?.text.toStringOrEmpty().isNotEmpty()) {
@@ -93,10 +83,7 @@ class UnsplashVideosFragment :
         val orderByValues = resources.getStringArray(R.array.unsplash_order_by_values)
         val orderByIndex = orderByValues.indexOf(orderBy?.value ?: "relevant")
         orderBy?.summary = if (orderByIndex >= 0) orderByEntries[orderByIndex] else "Relevant"
-    }
-
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("unsplash_media_access_key")?.setOnBindEditTextListener { it.setSingleLine() }
+    }    private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("unsplash_media_search_query")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 

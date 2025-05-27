@@ -2,20 +2,19 @@ package com.neilturner.aerialviews.providers.unsplash
 
 import android.content.Context
 import androidx.core.net.toUri
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.UnsplashMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
-import com.neilturner.aerialviews.utils.ServerConfig
-import com.neilturner.aerialviews.utils.SslHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import timber.log.Timber
-import java.util.concurrent.TimeUnit
 
 class UnsplashMediaProvider(
     context: Context,
@@ -26,19 +25,11 @@ class UnsplashMediaProvider(
         get() = prefs.enabled
 
     private val unsplashClient by lazy {
-        val serverConfig = ServerConfig("https://api.unsplash.com/", true)
-        val okHttpClient = SslHelper().createOkHttpClient(serverConfig)
-            .newBuilder()
-            .connectTimeout(10, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build()
-
         Timber.i("Connecting to Unsplash API")
-
         Retrofit
             .Builder()
             .baseUrl("https://api.unsplash.com/")
-            .client(okHttpClient)
+            .client(buildOkHttpClient(context))
             .addConverterFactory(buildSerializer())
             .build()
             .create(UnsplashApi::class.java)
@@ -56,12 +47,13 @@ class UnsplashMediaProvider(
             val media = mutableListOf<AerialMedia>()
             var totalPhotos = 0
 
-            // Validate access key
-            if (prefs.accessKey.isEmpty()) {
-                return@withContext Pair(media, "Access Key is required")
+            // Validate access key from BuildConfig
+            val accessKey = BuildConfig.UNSPLASH
+            if (accessKey.isEmpty()) {
+                return@withContext Pair(media, "Unsplash API key not configured")
             }
 
-            val authHeader = "Client-ID ${prefs.accessKey}"
+            val authHeader = "Client-ID $accessKey"
 
             try {
                 val photos = if (prefs.searchQuery.isNotEmpty()) {
