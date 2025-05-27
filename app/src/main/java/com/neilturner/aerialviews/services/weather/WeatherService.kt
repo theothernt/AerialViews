@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
-import com.neilturner.aerialviews.utils.capitaliseEachWord
+import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,7 +14,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
-import retrofit2.Response
 import retrofit2.Retrofit
 import timber.log.Timber
 import kotlin.math.round
@@ -28,6 +27,12 @@ class WeatherService(
     private var updateJob: Job? = null
     private var retryCount = 0
     private val maxRetries = 3
+
+    private val lookupDelay = 1.seconds
+    private val errorDelay = 3.seconds // Slow down response when there is an error
+    private val updateDelay = 61.minutes // Delay between full weather data updates
+    private val rateLimitDelay = 1.minutes // Delay for rate limiting
+    private val retryDelay = 30.seconds // Delay before retrying after an error
 
     private val openWeatherClient by lazy {
         Retrofit
@@ -44,25 +49,29 @@ class WeatherService(
             val key = BuildConfig.OPEN_WEATHER
             val language = WeatherLanguage.getLanguageCode(context)
             val response = openWeatherClient.getLocationByName(query, 10, key, language)
-            delay(1.seconds)
+            delay(lookupDelay)
             
             when {
                 response.isSuccessful -> response.body() ?: emptyList()
                 response.code() == 401 -> {
                     Timber.e("Unauthorized access to weather API - invalid API key")
+                    delay(errorDelay)
                     emptyList()
                 }
                 response.code() in 500..599 -> {
                     Timber.e("Server error (${response.code()}) while fetching location data")
+                    delay(errorDelay)
                     emptyList()
                 }
                 else -> {
                     Timber.e("Failed to fetch location data - HTTP ${response.code()}: ${response.message()}")
+                    delay(errorDelay)
                     emptyList()
                 }
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to fetch location data")
+            delay(errorDelay)
             emptyList()
         }
 
@@ -74,7 +83,7 @@ class WeatherService(
                 while (isActive) {
                     val update = forecastUpdate()
                     GlobalBus.post(update)
-                    delay(5.minutes)
+                    delay(updateDelay)
                 }
             }
     }
@@ -94,7 +103,6 @@ class WeatherService(
             }
 
             val response = openWeatherClient.getCurrentWeather(lat, lon, key, units, language)
-            
             when {
                 response.isSuccessful -> {
                     val weatherData = response.body()
@@ -115,7 +123,7 @@ class WeatherService(
                     Timber.w("Server error (${response.code()}) - attempt ${retryCount + 1}/$maxRetries")
                     if (retryCount < maxRetries) {
                         retryCount++
-                        delay(30.seconds) // Wait before retry
+                        delay(retryDelay) // Wait before retry
                         return forecastUpdate() // Retry
                     } else {
                         Timber.e("Max retries reached for server error, giving up")
@@ -125,7 +133,7 @@ class WeatherService(
                 }
                 response.code() == 429 -> {
                     Timber.w("Rate limit exceeded (429) - backing off")
-                    delay(60.seconds) // Back off for rate limiting
+                    delay(rateLimitDelay) // Back off for rate limiting
                     WeatherEvent()
                 }
                 else -> {
@@ -148,7 +156,7 @@ class WeatherService(
             response.weather
                 .first()
                 .description
-                .capitaliseEachWord()
+                .capitalise()
         val wind = round(response.wind.speed)
         val humidity = response.main.humidity
         val code = response.weather.first().id
