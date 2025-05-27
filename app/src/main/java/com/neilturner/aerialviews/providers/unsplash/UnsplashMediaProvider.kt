@@ -47,14 +47,12 @@ class UnsplashMediaProvider(
             val media = mutableListOf<AerialMedia>()
             var totalPhotos = 0
 
-            // Validate access key from BuildConfig
             val accessKey = BuildConfig.UNSPLASH
             if (accessKey.isEmpty()) {
                 return@withContext Pair(media, "Unsplash API key not configured")
             }
 
             val authHeader = "Client-ID $accessKey"
-
             try {
                 val photos =
                     if (prefs.searchQuery.isNotEmpty()) {
@@ -103,12 +101,17 @@ class UnsplashMediaProvider(
                             else -> photo.urls.regular
                         }
 
-                    val description =
+                    var description =
                         listOfNotNull(
                             photo.description,
-                            photo.altDescription,
-                            "Photo by ${photo.user.name} on Unsplash",
-                        ).firstOrNull() ?: "Unsplash Photo"
+                            // photo.altDescription,
+                            // "Photo by ${photo.user.name} on Unsplash",
+                        ).firstOrNull() ?: ""
+
+                    val limit = 85
+                    if (description.length > limit) {
+                        description = description.substring(0, limit) + "..."
+                    }
 
                     val poi = mutableMapOf<Int, String>()
                     photo.location?.let { location ->
@@ -137,14 +140,14 @@ class UnsplashMediaProvider(
                 // Track downloads (required by Unsplash API guidelines)
                 // Note: This should ideally be done when the image is actually displayed,
                 // but for now we'll track when fetched
-                photos.forEach { photo ->
-                    try {
-                        unsplashClient.trackDownload(authHeader, photo.id)
-                    } catch (e: Exception) {
-                        // Don't fail the whole operation if tracking fails
-                        Timber.w(e, "Failed to track download for photo ${photo.id}")
-                    }
-                }
+//                photos.forEach { photo ->
+//                    try {
+//                        unsplashClient.trackDownload(authHeader, photo.id)
+//                    } catch (e: Exception) {
+//                        // Don't fail the whole operation if tracking fails
+//                        Timber.w(e, "Failed to track download for photo ${photo.id}")
+//                    }
+//                }
 
                 val message =
                     if (prefs.searchQuery.isNotEmpty()) {
