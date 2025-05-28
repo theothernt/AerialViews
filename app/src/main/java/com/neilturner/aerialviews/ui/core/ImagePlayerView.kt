@@ -102,12 +102,10 @@ class ImagePlayerView : AppCompatImageView {
                 AerialMediaSource.SAMBA -> {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 else -> {
                     loadImage(media.uri)
@@ -126,7 +124,7 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
-            throw Exception("ImagePlayerView.loadImage() test exception")
+
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
             listener?.onImageError()
