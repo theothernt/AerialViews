@@ -42,8 +42,8 @@ class MigrationHelper(
         if (lastKnownVersion < 22) release22()
         if (lastKnownVersion < 23) release23()
         if (lastKnownVersion < 24) release24()
-
         if (lastKnownVersion < 49) release49()
+        if (lastKnownVersion < 53) release53()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -384,6 +384,30 @@ class MigrationHelper(
                 prefs.edit { putString("gesture_tap", "EXIT") }
             }
             prefs.edit { remove("close_on_screen_tap") }
+        }
+    }
+
+    private fun release53() {
+        Timber.i("Migrating settings for release 53")
+
+        val sizeUsed = prefs.contains("nowplaying_size")
+        if (sizeUsed) {
+            val size = prefs.getString("nowplaying_size", "18")
+            prefs.edit {
+                putString("nowplaying_size1", size)
+                putString("nowplaying_size2", size)
+                remove("nowplaying_size")
+            }
+        }
+
+        val weightUsed = prefs.contains("nowplaying_weight")
+        if (weightUsed) {
+            val weight = prefs.getString("nowplaying_weight", "300")
+            prefs.edit {
+                putString("nowplaying_weight1", weight)
+                putString("nowplaying_weight2", weight)
+                remove("nowplaying_weight")
+            }
         }
     }
 

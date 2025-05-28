@@ -14,7 +14,8 @@ import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
-import com.neilturner.aerialviews.services.weather.WeatherUnit
+import com.neilturner.aerialviews.services.weather.TemperatureUnit
+import com.neilturner.aerialviews.services.weather.WindSpeedUnit
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -40,8 +41,10 @@ object GeneralPrefs : KotprefModel() {
     // Music
     var nowPlayingLine1 by nullableEnumValuePref(NowPlayingFormat.SONG_ARTIST, "nowplaying_line1")
     var nowPlayingLine2 by nullableEnumValuePref(NowPlayingFormat.DISABLED, "nowplaying_line2")
-    var nowPlayingSize by stringPref("18", "nowplaying_size")
-    var nowPlayingWeight by stringPref("300", "nowplaying_weight")
+    var nowPlayingSize1 by stringPref("18", "nowplaying_size1")
+    var nowPlayingWeight1 by stringPref("300", "nowplaying_weight1")
+    var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
+    var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -53,15 +56,23 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationName by stringPref("", "weather_location_name")
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
-    var weatherUnits by nullableEnumValuePref(WeatherUnit.METRIC, "weather_units")
 
-    var weatherLine1 by stringPref("", "weather_line1")
+    var weatherLine1 by stringPref("FORECAST", "weather_line1")
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2 by stringPref("", "weather_line2")
+    var weatherLine2 by stringPref("WIND", "weather_line2")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
+
+    var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
+    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
+
+    var weatherWind by stringPref("", "weather_wind")
+    var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
+
+    var weatherHumidity by stringPref("", "weather_humidity")
+    var weatherSunrise by stringPref("", "weather_sunrise")
 
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(

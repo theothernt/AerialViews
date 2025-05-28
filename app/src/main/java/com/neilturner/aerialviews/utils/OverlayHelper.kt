@@ -154,20 +154,24 @@ class OverlayHelper(
                     type = overlay
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)
-                    layout("TEMPERATURE, ICON")
+                    layout(prefs.weatherForecast)
                 }
-            OverlayType.WEATHER2 ->
-                WeatherOverlay(context).apply {
-                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
-                    // layout(prefs.weatherLine2)
-                    layout("SUMMARY")
-                }
-            OverlayType.MUSIC1,
-            OverlayType.MUSIC2,
-            ->
+//            OverlayType.WEATHER2 ->
+//                WeatherOverlay(context).apply {
+//                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
+//                    // layout(prefs.weatherLine2)
+//                    layout("SUMMARY")
+//                }
+            OverlayType.MUSIC1 ->
                 NowPlayingOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight)
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize1.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight1)
+                    type = overlay
+                }
+            OverlayType.MUSIC2 ->
+                NowPlayingOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize2.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight2)
                     type = overlay
                 }
             OverlayType.DATE ->
