@@ -38,12 +38,12 @@ class ImagePlayerView : AppCompatImageView {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var target = ImageViewTarget(this)
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
-
-    private var target = ImageViewTarget(this)
 
     init {
         val scaleType =
@@ -97,7 +97,7 @@ class ImagePlayerView : AppCompatImageView {
             }.build()
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
+        ioScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
@@ -126,6 +126,7 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
+            throw Exception("ImagePlayerView.loadImage() test exception")
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
             listener?.onImageError()
