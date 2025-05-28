@@ -124,7 +124,6 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
-
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
             listener?.onImageError()
