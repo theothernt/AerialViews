@@ -85,6 +85,9 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
+            // Disable subtitles/text tracks by default
+            VideoPlayerHelper.disableTextTrack(exoPlayer)
+
             player?.prepare()
         }
 
