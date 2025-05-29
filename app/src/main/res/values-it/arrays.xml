@@ -1,40 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <string-array name="apple_videos_data_usage_values" translatable="false">
-    <item>37GB</item>
-    <item>23GB</item>
-    <item>46GB</item>
-    <item>45GB</item>
-    <item>90GB</item>
-  </string-array>
-  <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
-  <string-array name="apple_videos_quality_entries" translatable="false">
-    <item>1080p H.264</item>
-    <item>1080p HEVC</item>
-    <item>1080p HEVC Dolby Vision</item>
-    <item>4K HEVC</item>
-    <item>4K HEVC Dolby Vision</item>
-  </string-array>
-  <string-array name="apple_videos_quality_values" translatable="false">
-    <item>VIDEO_1080_H264</item>
-    <item>VIDEO_1080_SDR</item>
-    <item>VIDEO_1080_HDR</item>
-    <item>VIDEO_4K_SDR</item>
-    <item>VIDEO_4K_HDR</item>
-  </string-array>
-  <string name="background_colour_default" translatable="false">BLACK</string>
+<resources>
   <string-array name="background_colour_entries">
     <item>Nero</item>
     <item>Bianco</item>
   </string-array>
-  <string-array name="background_colour_values" translatable="false">
-    <item>BLACK</item>
-    <item>WHITE</item>
-  </string-array>
-  <string name="brightness_default" translatable="false">100</string>
-  <string name="button_action_default" translatable="false">IGNORE</string>
-  <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
-  <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
   <string-array name="button_action_entries">
     <item>Ignora azione</item>
     <item>Esci dallo screensaver</item>
@@ -50,69 +19,22 @@
     <item>Mostra le sovrapposizioni, se nascoste</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
   </string-array>
-  <string-array name="button_action_values" translatable="false">
-    <item>IGNORE</item>
-    <item>SKIP_NEXT</item>
-    <item>SKIP_PREVIOUS</item>
-    <item>MUSIC_NEXT</item>
-    <item>MUSIC_PREVIOUS</item>
-    <item>SPEED_INCREASE</item>
-    <item>SPEED_DECREASE</item>
-    <item>SEEK_FORWARD</item>
-    <item>SEEK_BACKWARD</item>
-    <item>EXIT</item>
-    <item>EXIT_TO_SETTINGS</item>
-    <item>SHOW_OVERLAYS</item>
-    <item>BLACK_OUT_MODE</item>
-  </string-array>
-  <string name="clock_format_default" translatable="false">DEFAULT</string>
   <string-array name="clock_format_entries">
     <item>Predefinito</item>
     <item>12-Ore</item>
     <item>24-Ore</item>
   </string-array>
-  <string-array name="clock_format_values" translatable="false">
-    <item>DEFAULT</item>
-    <item>HOUR_12</item>
-    <item>HOUR_24</item>
-  </string-array>
-  <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
-  <string-array name="comm1_videos_quality_entries" translatable="false">
-    <item>1080p H.264</item>
-    <item>1080p HEVC</item>
-    <item>4K HEVC</item>
-  </string-array>
-  <string-array name="comm1_videos_quality_values" translatable="false">
-    <item>VIDEO_1080_H264</item>
-    <item>VIDEO_1080_SDR</item>
-    <item>VIDEO_4K_SDR</item>
-  </string-array>
-  <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
-  <string name="date_format_default" translatable="false">COMPACT</string>
   <string-array name="date_format_entries">
     <item>Compato</item>
     <item>Esteso</item>
     <item>Personalizzato</item>
   </string-array>
-  <string-array name="date_format_values" translatable="false">
-    <item>COMPACT</item>
-    <item>FULL</item>
-    <item>CUSTOM</item>
-  </string-array>
-  <string name="description_filename_default" translatable="false">DISABLED</string>
   <string-array name="description_filename_entries">
     <item>Disabilitato</item>
     <item>Usa nome file formattato</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
   </string-array>
-  <string-array name="description_filename_values" translatable="false">
-    <item>DISABLED</item>
-    <item>FILENAME</item>
-    <item>LAST_FOLDER_FILENAME</item>
-    <item>LAST_FOLDER_NAME</item>
-  </string-array>
-  <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
     <item>\'Italia / Tramonto\' - 1 Livello</item>
     <item>\'2025 / Italia / Tramonto\' - 2 livelli</item>
@@ -120,20 +42,12 @@
     <item>\'Foto / Scenico / 2025 / Italia / Tramonto\' - 4 livelli</item>
     <item>\'Media / Foto / Scenico / 2025 / Italia / Tramonto\' - 5 livelli</item>
   </string-array>
-  <string-array name="description_folder_level_values" translatable="false">
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
-    <item>5</item>
-  </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabilitato</item>
     <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
     <item>Usa il nome del file, ad es. \'Japan - Deep snow in Hokkaido.jpg\' diventa \'Japan - Deep snow in Hokkaido\'</item>
     <item>Usa la cartella e il nome del file, ad es. \'Pictures/Italy/Dolomites.jpg\' diventa \'Italy / Dolomites\'</item>
   </string-array>
-  <string name="description_video_default" translatable="false">POI</string>
   <string-array name="description_video_entries">
     <item>Disabilitato</item>
     <item>Breve descrizione</item>
@@ -150,11 +64,6 @@
     <item>Una breve descrizione o località</item>
     <item>Punti di interesse dinamici, disponibili in molte lingue, che cambiano durante la riproduzione del video</item>
   </string-array>
-  <string-array name="description_video_values" translatable="false">
-    <item>DISABLED</item>
-    <item>TITLE</item>
-    <item>POI</item>
-  </string-array>
   <string-array name="duration_entries">
     <item>Disabilitato</item>
     <item>200ms</item>
@@ -168,40 +77,10 @@
     <item>1800ms</item>
     <item>2000ms</item>
   </string-array>
-  <string name="duration_fade_in_default" translatable="false">600</string>
-  <string name="duration_fade_out_default" translatable="false">800</string>
-  <string name="duration_overlay_fade_default" translatable="false">600</string>
-  <string-array name="duration_values" translatable="false">
-    <item>0</item>
-    <item>200</item>
-    <item>400</item>
-    <item>600</item>
-    <item>800</item>
-    <item>1000</item>
-    <item>1200</item>
-    <item>1400</item>
-    <item>1600</item>
-    <item>1800</item>
-    <item>2000</item>
-  </string-array>
-  <string name="http_scheme_default" translatable="false">HTTP</string>
-  <string-array name="http_scheme_entries" translatable="false">
-    <item>HTTP</item>
-    <item>HTTPS</item>
-  </string-array>
-  <string-array name="http_scheme_values" translatable="false">
-    <item>HTTP</item>
-    <item>HTTPS</item>
-  </string-array>
   <string-array name="immich_auth_type_entries">
     <item>Collegamento condiviso</item>
     <item>API Key</item>
   </string-array>
-  <string-array name="immich_auth_type_values" translatable="false">
-    <item>SHARED_LINK</item>
-    <item>API_KEY</item>
-  </string-array>
-  <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
   <string-array name="limit_Longer_videos_entries">
     <item>Salta quando viene raggiunto il limite</item>
     <item>Consenti il completamento dei video più lunghi</item>
@@ -213,89 +92,15 @@
     <item>Segmento casuale - se un video è più lungo del limite, verrà riprodotta una parte casuale del video.
 (ad esempio, con un limite di 2 minuti, un video di 6 minuti può avere 3 segmenti - uno sarà riprodotto in modo casuale)</item>
   </string-array>
-  <string-array name="limit_Longer_videos_values" translatable="false">
-    <item>LIMIT</item>
-    <item>IGNORE</item>
-    <item>SEGMENT</item>
-  </string-array>
-  <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
   <string-array name="local_videos_search_type_entries">
     <item>Media scanner</item>
     <item>Accesso alle cartelle (legacy)</item>
   </string-array>
-  <string-array name="local_videos_search_type_values" translatable="false">
-    <item>MEDIA_STORE</item>
-    <item>FOLDER_ACCESS</item>
-  </string-array>
-  <string name="locale_menu_default" translatable="false">default</string>
-  <string-array name="locale_menu_entries" translatable="false">
-    <item>System locale*</item>
-    <item>English</item>
-    <item>German</item>
-    <item>French</item>
-    <item>Arabic</item>
-    <item>Hebrew (he)</item>
-    <item>Hebrew (iw)</item>
-    <item>Japanese</item>
-    <item>Chinese</item>
-    <item>Russian</item>
-    <item>Ukrainian</item>
-  </string-array>
-  <string-array name="locale_menu_values" translatable="false">
-    <item>default</item>
-    <item>en-IE</item>
-    <item>de-DE</item>
-    <item>fr-FR</item>
-    <item>ar</item>
-    <item>he</item>
-    <item>iw</item>
-    <item>ja-JP</item>
-    <item>zh-CN</item>
-    <item>ru-RU</item>
-    <item>uk-UA</item>
-  </string-array>
-  <string name="locale_screensaver_default" translatable="false">default</string>
-  <string-array name="locale_screensaver_entries" translatable="false">
-    <item>System locale*</item>
-    <item>English</item>
-    <item>German</item>
-    <item>French</item>
-    <item>Arabic</item>
-    <item>Hebrew (he)</item>
-    <item>Hebrew (iw)</item>
-    <item>Japanese</item>
-    <item>Chinese</item>
-    <item>Russian</item>
-    <item>Ukrainian</item>
-    <item>Random</item>
-  </string-array>
-  <string-array name="locale_screensaver_values" translatable="false">
-    <item>default</item>
-    <item>en-IE</item>
-    <item>de-DE</item>
-    <item>fr-FR</item>
-    <item>ar</item>
-    <item>he</item>
-    <item>iw</item>
-    <item>ja-JP</item>
-    <item>zh-CN</item>
-    <item>ru-RU</item>
-    <item>uk-UA</item>
-    <item>random</item>
-  </string-array>
-  <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
   <string-array name="media_type_entries">
     <item>Solo video</item>
     <item>Solo immagini</item>
     <item>Video e immagini</item>
   </string-array>
-  <string-array name="media_type_values" translatable="false">
-    <item>VIDEOS</item>
-    <item>PHOTOS</item>
-    <item>VIDEOS_PHOTOS</item>
-  </string-array>
-  <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
-  <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
   <string-array name="nowplaying_format_entries">
     <item>Disabilitato</item>
     <item>Canzone · Artista</item>
@@ -303,14 +108,6 @@
     <item>Artista</item>
     <item>Canzone</item>
   </string-array>
-  <string-array name="nowplaying_format_values" translatable="false">
-    <item>DISABLED</item>
-    <item>SONG_ARTIST</item>
-    <item>ARTIST_SONG</item>
-    <item>ARTIST</item>
-    <item>SONG</item>
-  </string-array>
-  <string name="overlay_auto_hide_default" translatable="false">-1</string>
   <string-array name="overlay_auto_hide_entries">
     <item>Non nascondere mai (predefinito)</item>
     <item>Sempre nascosto</item>
@@ -320,16 +117,6 @@
     <item>8 secondi</item>
     <item>10 secondi</item>
   </string-array>
-  <string-array name="overlay_auto_hide_values" translatable="false">
-    <item>-1</item>
-    <item>0</item>
-    <item>2</item>
-    <item>4</item>
-    <item>6</item>
-    <item>8</item>
-    <item>10</item>
-  </string-array>
-  <string name="overlay_reveal_timeout_default" translatable="false">4</string>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 secondi</item>
     <item>4 secondi (predefinito)</item>
@@ -337,109 +124,10 @@
     <item>8 secondi</item>
     <item>10 secondi</item>
   </string-array>
-  <string-array name="overlay_reveal_timeout_values" translatable="false">
-    <item>2</item>
-    <item>4</item>
-    <item>6</item>
-    <item>8</item>
-    <item>10</item>
-  </string-array>
-  <string-array name="percentage1_entries" translatable="false">
-    <item>5%</item>
-    <item>10%</item>
-    <item>15%</item>
-    <item>20%</item>
-    <item>25%</item>
-    <item>30%</item>
-    <item>35%</item>
-    <item>40%</item>
-    <item>45%</item>
-    <item>50%</item>
-    <item>55%</item>
-    <item>60%</item>
-    <item>65%</item>
-    <item>70%</item>
-    <item>75%</item>
-    <item>80%</item>
-    <item>85%</item>
-    <item>90%</item>
-    <item>95%</item>
-    <item>100%</item>
-  </string-array>
-  <string-array name="percentage1_values" translatable="false">
-    <item>5</item>
-    <item>10</item>
-    <item>15</item>
-    <item>20</item>
-    <item>25</item>
-    <item>30</item>
-    <item>35</item>
-    <item>40</item>
-    <item>45</item>
-    <item>50</item>
-    <item>55</item>
-    <item>60</item>
-    <item>65</item>
-    <item>70</item>
-    <item>75</item>
-    <item>80</item>
-    <item>85</item>
-    <item>90</item>
-    <item>95</item>
-    <item>100</item>
-  </string-array>
-  <string-array name="percentage2_entries" translatable="false">
-    <item>5%</item>
-    <item>10%</item>
-    <item>15%</item>
-    <item>20%</item>
-    <item>25%</item>
-    <item>30%</item>
-    <item>35%</item>
-    <item>40%</item>
-    <item>45%</item>
-    <item>50%</item>
-    <item>55%</item>
-    <item>60%</item>
-    <item>65%</item>
-    <item>70%</item>
-    <item>75%</item>
-    <item>80%</item>
-    <item>85%</item>
-    <item>90%</item>
-    <item>95%</item>
-  </string-array>
-  <string-array name="percentage2_values" translatable="false">
-    <item>5</item>
-    <item>10</item>
-    <item>15</item>
-    <item>20</item>
-    <item>25</item>
-    <item>30</item>
-    <item>35</item>
-    <item>40</item>
-    <item>45</item>
-    <item>50</item>
-    <item>55</item>
-    <item>60</item>
-    <item>65</item>
-    <item>70</item>
-    <item>75</item>
-    <item>80</item>
-    <item>85</item>
-    <item>90</item>
-    <item>95</item>
-  </string-array>
-  <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
   <string-array name="photo_scale_entries">
     <item>Riempi (Predefinito)</item>
     <item>Centra</item>
   </string-array>
-  <string-array name="photo_scale_values" translatable="false">
-    <item>CENTER_CROP</item>
-    <item>FIT_CENTER</item>
-  </string-array>
-  <string name="playback_max_video_length_default" translatable="false">0</string>
   <string-array name="playback_max_video_length_entries">
     <item>Nessun limite (Predefinito)</item>
     <item>10 secondi</item>
@@ -459,93 +147,16 @@
     <item>30 minuti</item>
     <item>60 minuti</item>
   </string-array>
-  <string-array name="playback_max_video_length_values" translatable="false">
-    <item>0</item>
-    <item>10</item>
-    <item>20</item>
-    <item>30</item>
-    <item>60</item>
-    <item>120</item>
-    <item>180</item>
-    <item>240</item>
-    <item>300</item>
-    <item>360</item>
-    <item>420</item>
-    <item>480</item>
-    <item>540</item>
-    <item>600</item>
-    <item>1200</item>
-    <item>1800</item>
-    <item>3600</item>
-  </string-array>
-  <string name="playback_speed_default" translatable="false">1</string>
-  <string-array name="playback_speed_entries" translatable="false">
-    <item>0.2x</item>
-    <item>0.4x</item>
-    <item>0.6x</item>
-    <item>0.8x</item>
-    <item>1x*</item>
-    <item>1.2x</item>
-    <item>1.4x</item>
-    <item>1.6x</item>
-    <item>1.8x</item>
-    <item>2x</item>
-  </string-array>
-  <string-array name="playback_speed_values" translatable="false">
-    <item>0.2</item>
-    <item>0.4</item>
-    <item>0.6</item>
-    <item>0.8</item>
-    <item>1</item>
-    <item>1.2</item>
-    <item>1.4</item>
-    <item>1.6</item>
-    <item>1.8</item>
-    <item>2</item>
-  </string-array>
-  <string name="progress_bar_default" translatable="false">100</string>
-  <string name="progress_bar_location_default" translatable="false">DISABLED</string>
   <string-array name="progress_bar_location_entries">
     <item>Disabilitato</item>
     <item>Parte superiore dello schermo</item>
     <item>Parte inferiore dello schermo</item>
   </string-array>
-  <string-array name="progress_bar_location_values" translatable="false">
-    <item>DISABLED</item>
-    <item>TOP</item>
-    <item>BOTTOM</item>
-  </string-array>
-  <string name="progress_bar_type_default" translatable="false">BOTH</string>
   <string-array name="progress_bar_type_entries">
     <item>Video e immagini</item>
     <item>Solo video</item>
     <item>Solo immagini</item>
   </string-array>
-  <string-array name="progress_bar_type_values" translatable="false">
-    <item>BOTH</item>
-    <item>VIDEOS</item>
-    <item>PHOTOS</item>
-  </string-array>
-  <string name="random_start_position_range_default" translatable="false">50</string>
-  <string-array name="samba_videos_smb_dialects_default" translatable="false">
-    <item>SMB_2_1</item>
-    <item>SMB_2_0_2</item>
-  </string-array>
-  <string-array name="samba_videos_smb_dialects_entries" translatable="false">
-    <item>v3.1.1</item>
-    <item>v3.0.2</item>
-    <item>v3.0</item>
-    <item>v2.1</item>
-    <item>v2.0.2</item>
-  </string-array>
-  <string-array name="samba_videos_smb_dialects_values" translatable="false">
-    <item>SMB_3_1_1</item>
-    <item>SMB_3_0_2</item>
-    <item>SMB_3_0</item>
-    <item>SMB_2_1</item>
-    <item>SMB_2_0_2</item>
-  </string-array>
-  <string name="seek_interval_default" translatable="false">30</string>
   <string-array name="seek_interval_entries">
     <item>10 secondi</item>
     <item>20 secondi</item>
@@ -554,15 +165,6 @@
     <item>2 minuti</item>
     <item>5 minuti</item>
   </string-array>
-  <string-array name="seek_interval_values" translatable="false">
-    <item>10</item>
-    <item>20</item>
-    <item>30</item>
-    <item>60</item>
-    <item>120</item>
-    <item>300</item>
-  </string-array>
-  <string name="slideshow_speed_default" translatable="false">30</string>
   <string-array name="slideshow_speed_entries">
     <item>5 secondi</item>
     <item>10 secondi</item>
@@ -572,90 +174,25 @@
     <item>5 minuti</item>
     <item>10 minuti</item>
   </string-array>
-  <string-array name="slideshow_speed_values" translatable="false">
-    <item>5</item>
-    <item>10</item>
-    <item>30</item>
-    <item>60</item>
-    <item>180</item>
-    <item>300</item>
-    <item>600</item>
-  </string-array>
-  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
   <string-array name="slot_entries">
     <item>Vuoto</item>
     <item>Orologio</item>
     <item>Luogo</item>
-    <item>Weather #1</item>
-    <item>Now Playing #1</item>
-    <item>Now Playing #2</item>
-    <item>Date</item>
-    <item>Message #1</item>
-    <item>Message #2</item>
+    <item>Meteo #1</item>
+    <item>In riproduzione #1</item>
+    <item>In riproduzione #2</item>
+    <item>Data</item>
+    <item>Messaggio #1</item>
+    <item>Messaggio #2</item>
   </string-array>
-  <string-array name="slot_values" translatable="false">
-    <item>EMPTY</item>
-    <item>CLOCK</item>
-    <item>LOCATION</item>
-    <item>WEATHER1</item>
-    <item>MUSIC1</item>
-    <item>MUSIC2</item>
-    <item>DATE</item>
-    <item>MESSAGE1</item>
-    <item>MESSAGE2</item>
-  </string-array>
-  <string name="temperature_units_default" translatable="false">METRIC</string>
   <string-array name="temperature_units_entries">
     <item>C° / Celsius</item>
     <item>F° / Fahrenheit</item>
   </string-array>
-  <string-array name="temperature_units_values" translatable="false">
-    <item>METRIC</item>
-    <item>IMPERIAL</item>
-  </string-array>
-  <string name="text_font_default" translatable="false">open-sans</string>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
     <item>Roboto</item>
   </string-array>
-  <string-array name="text_font_values" translatable="false">
-    <item>open-sans</item>
-    <item>sans-serif</item>
-  </string-array>
-  <string name="text_size_default" translatable="false">18</string>
-  <string-array name="text_size_entries" translatable="false">
-    <item>72sp</item>
-    <item>60sp</item>
-    <item>48sp</item>
-    <item>36sp</item>
-    <item>34sp</item>
-    <item>32sp</item>
-    <item>30sp</item>
-    <item>28sp</item>
-    <item>26sp</item>
-    <item>24sp</item>
-    <item>22sp</item>
-    <item>20sp</item>
-    <item>18sp*</item>
-    <item>16sp</item>
-  </string-array>
-  <string-array name="text_size_values" translatable="false">
-    <item>72</item>
-    <item>60</item>
-    <item>48</item>
-    <item>36</item>
-    <item>34</item>
-    <item>32</item>
-    <item>30</item>
-    <item>28</item>
-    <item>26</item>
-    <item>24</item>
-    <item>22</item>
-    <item>20</item>
-    <item>18</item>
-    <item>16</item>
-  </string-array>
-  <string name="text_weight_default" translatable="false">300</string>
   <string-array name="text_weight_entries">
     <item>100/Thin</item>
     <item>200/Extra Light</item>
@@ -667,53 +204,22 @@
     <item>800/Extra Bold</item>
     <item>900/Heavy</item>
   </string-array>
-  <string-array name="text_weight_values" translatable="false">
-    <item>100</item>
-    <item>200</item>
-    <item>300</item>
-    <item>400</item>
-    <item>500</item>
-    <item>600</item>
-    <item>700</item>
-    <item>800</item>
-    <item>900</item>
-  </string-array>
-  <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
   <string-array name="video_scale_entries">
     <item>Riempimento con ritaglio (predefinito)</item>
     <item>Scala senza coltura</item>
   </string-array>
-  <string-array name="video_scale_values" translatable="false">
-    <item>SCALE_TO_FIT_WITH_CROPPING</item>
-    <item>SCALE_TO_FIT</item>
-  </string-array>
-  <string name="volume_default" translatable="false">100</string>
   <string-array name="weather_forecast_type_entries">
     <item>Vuoto</item>
-    <item>City</item>
-    <item>Temperature</item>
-    <item>Icon</item>
-    <item>Summary</item>
-  </string-array>
-  <string-array name="weather_forecast_type_values" translatable="false">
-    <item>EMPTY</item>
-    <item>CITY</item>
-    <item>TEMPERATURE</item>
-    <item>ICON</item>
-    <item>SUMMARY</item>
+    <item>Città</item>
+    <item>Temperatura</item>
+    <item>Icona</item>
+    <item>Sommario</item>
   </string-array>
   <string-array name="weather_type_entries">
     <item>Vuoto</item>
-    <item>Forecast</item>
-    <item>Wind</item>
-    <item>Humidity</item>
-    <item>Sunrise</item>
-  </string-array>
-  <string-array name="weather_type_values" translatable="false">
-    <item>EMPTY</item>
-    <item>FORECAST</item>
-    <item>WIND</item>
-    <item>HUMIDITY</item>
-    <item>SUNRISE</item>
+    <item>Previsione</item>
+    <item>Vento</item>
+    <item>Umidità</item>
+    <item>Alba</item>
   </string-array>
 </resources>

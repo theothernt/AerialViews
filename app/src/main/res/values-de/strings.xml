@@ -18,7 +18,6 @@
   <string name="advanced_refresh_rate_switching_title">Automatische Umschaltung der Bildwiederholfrequenz</string>
   <string name="allow_fallback_decoders_summary">Ermöglicht die Unterstützung von softwarebasierten oder alternativen Codecs auf einigen Geräten</string>
   <string name="allow_fallback_decoders_title">Fallback-Decoder zulassen</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Overlay-Positionen ändern sich mit jedem neuen Foto oder Video von links nach rechts</string>
   <string name="appearance_alt_text_position_title">Alternative Overlay-Position</string>
   <string name="appearance_animations_summary">Animationen die für Overlays und zwischen Fotos &amp; Videos und verwendet werden konfigurieren</string>
@@ -154,7 +153,7 @@
   <string name="category_dpad_press_and_hold">Drücken &amp; Halten</string>
   <string name="category_export_settings">Einstellungen exportieren</string>
   <string name="category_folder_access_options">Ordnerzugriffsoptionen</string>
-  <string name="category_forecast">Forecast</string>
+  <string name="category_forecast">Vorhersage</string>
   <string name="category_gradient">Farbverlauf</string>
   <string name="category_import_settings">Einstellungen importieren</string>
   <string name="category_line1">Zeile 1</string>
@@ -405,13 +404,13 @@ Für mehr Infos bitte die Aerial Views Webseite besuchen</string>
   <string name="text_weight_title">Schriftstärke</string>
   <string name="videos_quality_summary">Videoqualität auswählen</string>
   <string name="videos_quality_title">Videoqualität</string>
-  <string name="weather_forecast_slot1">Slot 1</string>
-  <string name="weather_forecast_slot2">Slot 2</string>
-  <string name="weather_forecast_slot3">Slot 3</string>
-  <string name="weather_forecast_slot4">Slot 4</string>
-  <string name="weather_forecast_summary">Change the layout of the forecast information</string>
+  <string name="weather_forecast_slot1">Steckplatz 1</string>
+  <string name="weather_forecast_slot2">Steckplatz 2</string>
+  <string name="weather_forecast_slot3">Steckplatz 3</string>
+  <string name="weather_forecast_slot4">Steckplatz 4</string>
+  <string name="weather_forecast_summary">Ändern Sie das Layout der Prognoseinformationen</string>
   <string name="weather_forecast_temperature_units_title">Temperatureinheiten</string>
-  <string name="weather_forecast_title">Current forecast</string>
+  <string name="weather_forecast_title">Aktuelle Prognose</string>
   <string name="weather_location_search_hint">Geben Sie einen Städtenamen ein, z. B. Tokio oder Buenos Aires</string>
   <string name="weather_location_searching">Suche nach Standorten…</string>
   <string name="weather_location_title">Ort</string>
