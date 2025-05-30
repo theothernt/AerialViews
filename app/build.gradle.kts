@@ -179,7 +179,10 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
+
     "baselineProfile"(project(":baselineprofile"))
+
+    implementation(project(":projectivyapi"))
 }
 
 tasks.withType<Test>().configureEach {

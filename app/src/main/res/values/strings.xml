@@ -3,6 +3,10 @@
 
   <!-- General -->
   <string name="app_name" translatable="false">Aerial Views</string>
+
+<!--  <string name="plugin_name" translatable="false">Aerial Views</string>-->
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
+
   <string name="loading_title">Loading…</string>
   <string name="loading_error">No videos or photos found, please check your settings</string>
 
