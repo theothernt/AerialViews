@@ -70,7 +70,7 @@ class WeatherOverlay
         override fun onAttachedToWindow() {
             super.onAttachedToWindow()
             receiver.subscribe { weather: WeatherEvent ->
-                Timber.i("$weather")
+                Timber.d("$weather")
                 updateWeather(weather)
             }
         }

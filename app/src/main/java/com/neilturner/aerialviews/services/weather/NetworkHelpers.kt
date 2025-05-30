@@ -41,7 +41,7 @@ object NetworkHelpers {
         return OkHttpClient
             .Builder()
             .cache(cache)
-            .addInterceptor(logging)
+            //.addInterceptor(logging)
             .addInterceptor(cacheStatusInterceptor)
             .addInterceptor(offlineCacheInterceptor(context))
             .addNetworkInterceptor(onlineCacheInterceptor())
