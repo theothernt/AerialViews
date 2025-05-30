@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.L
 import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.VIDEO
 import kotlinx.parcelize.Parcelize
 
-
 @Target(AnnotationTarget.TYPE)
 @Retention(AnnotationRetention.SOURCE)
 @IntDef(IMAGE, DRAWABLE, ANIMATED_DRAWABLE, LOTTIE, VIDEO)
@@ -47,5 +46,5 @@ data class Wallpaper(
     val title: String? = null,
     val source: String? = null,
     val author: String? = null,
-    val actionUri: String? = null
+    val actionUri: String? = null,
 ) : Parcelable

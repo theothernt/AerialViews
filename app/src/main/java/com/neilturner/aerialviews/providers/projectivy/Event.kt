@@ -23,15 +23,16 @@ annotation class WallpaperUpdateEventType {
     }
 }
 
-sealed class Event(open val eventType: Int) : Parcelable {
-
+sealed class Event(
+    open val eventType: Int,
+) : Parcelable {
     companion object CREATOR : Parcelable.Creator<Event> {
         override fun createFromParcel(parcel: Parcel): Event? {
             val initialDataPosition = parcel.dataPosition() // save current data position
             val eventType = parcel.readInt() // get the Event type for dynamic creation
-            parcel.setDataPosition(initialDataPosition)   // reset position to let the specialized CREATOR read from start
+            parcel.setDataPosition(initialDataPosition) // reset position to let the specialized CREATOR read from start
 
-            return when(eventType) {
+            return when (eventType) {
                 TIME_ELAPSED -> createEventFromParcel(parcel, TimeElapsed::class.java)
                 NOW_PLAYING_CHANGED -> createEventFromParcel(parcel, NowPlayingChanged::class.java)
                 CARD_FOCUSED -> createEventFromParcel(parcel, CardFocused::class.java)
@@ -41,11 +42,12 @@ sealed class Event(open val eventType: Int) : Parcelable {
             }
         }
 
-        override fun newArray(size: Int): Array<Event?> {
-            return arrayOfNulls(size)
-        }
+        override fun newArray(size: Int): Array<Event?> = arrayOfNulls(size)
 
-        private fun <T> createEventFromParcel(parcel: Parcel, clazz: Class<T>): T {
+        private fun <T> createEventFromParcel(
+            parcel: Parcel,
+            clazz: Class<T>,
+        ): T {
             val creatorField = clazz.getField("CREATOR")
             val creator = creatorField.get(null) as Parcelable.Creator<*>
             return creator.createFromParcel(parcel) as T
@@ -53,16 +55,40 @@ sealed class Event(open val eventType: Int) : Parcelable {
     }
 
     @Parcelize
-    data class TimeElapsed(override val eventType: Int = TIME_ELAPSED): Event(eventType)
+    data class TimeElapsed(
+        override val eventType: Int = TIME_ELAPSED,
+    ) : Event(eventType)
+
     @Parcelize
-    data class NowPlayingChanged(override val eventType: Int = NOW_PLAYING_CHANGED, val isPlaying: Boolean = true, val title: String?=null, val artist: String?=null, val album: String?=null, val iconUri: String?=null): Event(eventType)
+    data class NowPlayingChanged(
+        override val eventType: Int = NOW_PLAYING_CHANGED,
+        val isPlaying: Boolean = true,
+        val title: String? = null,
+        val artist: String? = null,
+        val album: String? = null,
+        val iconUri: String? = null,
+    ) : Event(eventType)
+
     @Parcelize
-    data class CardFocused(override val eventType: Int = CARD_FOCUSED, val lightColor: Int=0, val darkColor: Int=0): Event(eventType)
+    data class CardFocused(
+        override val eventType: Int = CARD_FOCUSED,
+        val lightColor: Int = 0,
+        val darkColor: Int = 0,
+    ) : Event(eventType)
+
     // type refers to TYPE_* in TvContractCompat.PreviewProgramColumns
     @Parcelize
-    data class ProgramCardFocused(override val eventType: Int = PROGRAM_CARD_FOCUSED, val title: String?=null, val type: Int?=null, val iconUri: String?=null, val iconAspectRatio: Int=0): Event(eventType)
+    data class ProgramCardFocused(
+        override val eventType: Int = PROGRAM_CARD_FOCUSED,
+        val title: String? = null,
+        val type: Int? = null,
+        val iconUri: String? = null,
+        val iconAspectRatio: Int = 0,
+    ) : Event(eventType)
+
     @Parcelize
-    data class LauncherIdleModeChanged(override val eventType: Int = LAUNCHER_IDLE_MODE_CHANGED, val isIdle: Boolean = true): Event(eventType)
-
-
+    data class LauncherIdleModeChanged(
+        override val eventType: Int = LAUNCHER_IDLE_MODE_CHANGED,
+        val isIdle: Boolean = true,
+    ) : Event(eventType)
 }
