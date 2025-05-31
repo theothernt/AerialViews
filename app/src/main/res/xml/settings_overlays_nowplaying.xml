@@ -50,6 +50,14 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_options">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="nowplaying_shorten_track_name"
+                    app:title="@string/nowplaying_shorten_track_name_title"
+                    app:summary="@string/nowplaying_shorten_track_name_summary" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_line2">
                 <ListPreference
                     app:defaultValue="@string/nowplaying_format_default2"

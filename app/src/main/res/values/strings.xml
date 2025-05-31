@@ -356,6 +356,9 @@
   <string name="nowplaying_line1_title">Line 1</string>
   <string name="nowplaying_line2_title">Line 2</string>
 
+  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
+  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
+
   <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
   <!-- Main / Settings / Overlays / Weather -->
