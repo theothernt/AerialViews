@@ -107,45 +107,44 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private suspend fun crossFadeText(newText: String) {
-        // Fade out current text
-        animate().alpha(0f).setDuration(animationDuration / 2).start()
-        delay(animationDuration / 2)
+        // First transition: fade out
+        animateLayoutChange {
+            alpha = 0f
+        }
 
         // Update text while invisible
         text = newText
 
-        // Fade back in
-        animate().alpha(1f).setDuration(animationDuration / 2).start()
-        delay(animationDuration / 2)
-    }
-
-    private suspend fun fadeOutAndHide() {
-        animate().alpha(0f).setDuration(animationDuration).start()
-        delay(animationDuration)
-
-        // Apply layout changes after fade out
-        text = ""
+        // Second transition: fade back in
         animateLayoutChange {
-            visibility = GONE
+            alpha = 1f
         }
     }
 
+    private suspend fun fadeOutAndHide() {
+        // Single transition: fade out and hide
+        animateLayoutChange {
+            alpha = 0f
+            visibility = GONE
+        }
+
+        // Clear text after animation
+        text = ""
+    }
+
     private suspend fun showAndFadeIn(newText: String) {
-        // Set text while still invisible
+        // Set text and make visible but transparent
         text = newText
         visibility = VISIBLE
         alpha = 0f
 
-        // Animate layout changes first
-        animateLayoutChange()
-        delay(50) // Small delay to ensure layout is updated
-
-        // Fade in
-        animate().alpha(1f).setDuration(animationDuration).start()
-        delay(animationDuration)
+        // Single transition: fade in
+        animateLayoutChange {
+            alpha = 1f
+        }
     }
 
-    private fun animateLayoutChange(changes: (() -> Unit)? = null) {
+    private suspend fun animateLayoutChange(changes: (() -> Unit)? = null) {
         val parentLayout = parent as? ConstraintLayout ?: return
 
         TransitionManager.beginDelayedTransition(
@@ -159,6 +158,7 @@ class NowPlayingOverlay : AppCompatTextView {
         )
 
         changes?.invoke()
+        delay(animationDuration)
     }
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
