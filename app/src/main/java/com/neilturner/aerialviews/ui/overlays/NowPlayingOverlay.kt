@@ -8,13 +8,17 @@ import android.transition.TransitionSet
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MusicEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 import timber.log.Timber
@@ -27,6 +31,9 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
+    private val animationDuration = 300L
+
+    private val mainScope = CoroutineScope(Dispatchers.Main)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -35,6 +42,7 @@ class NowPlayingOverlay : AppCompatTextView {
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
         visibility = GONE
+        alpha = 0f
     }
 
     fun updateFormat(format: NowPlayingFormat?) {
@@ -45,13 +53,16 @@ class NowPlayingOverlay : AppCompatTextView {
         super.onAttachedToWindow()
 
         receiver.subscribe { newTrackInfo: MusicEvent ->
-            Timber.i("$type: Subscribed for music updates...")
+            Timber.i("$type: Received music update")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
-                if (!isUpdating) {
-                    updateNowPlaying()
-                } else {
-                    shouldUpdate = true
+
+                mainScope.launch {
+                    if (!isUpdating) {
+                        updateNowPlaying()
+                    } else {
+                        shouldUpdate = true
+                    }
                 }
             }
         }
@@ -60,23 +71,33 @@ class NowPlayingOverlay : AppCompatTextView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         receiver.unsubscribe()
+        mainScope.cancel()
     }
 
     private suspend fun updateNowPlaying() {
         isUpdating = true
-
-        if (alpha != 0f) {
-            fadeOut()
-        }
-
         shouldUpdate = false
-        val shouldFadeIn = updateText()
 
-        if (shouldFadeIn) {
-            fadeIn()
+        val newText = formatNowPlaying(trackInfo)
+        val textChanged = text?.toString() != newText
+        val isShowing = isVisible && alpha > 0f
+
+        if (textChanged) {
+            // Only animate if text is actually changing
+            if (isShowing && newText.isNotBlank()) {
+                // Text is changing to a different non-empty value
+                crossFadeText(newText)
+            } else if (isShowing && newText.isBlank()) {
+                // Text is disappearing
+                fadeOutAndHide()
+            } else if (!isShowing && newText.isNotBlank()) {
+                // Text is appearing
+                showAndFadeIn(newText)
+            } else {
+                // Empty to empty, no visible change needed
+                text = newText
+            }
         }
-
-        animateOverlays()
 
         isUpdating = false
 
@@ -85,57 +106,59 @@ class NowPlayingOverlay : AppCompatTextView {
         }
     }
 
-    private fun animateOverlays() {
-        var layout: ConstraintLayout? = parent as ConstraintLayout
+    private suspend fun crossFadeText(newText: String) {
+        // Fade out current text
+        animate().alpha(0f).setDuration(animationDuration / 2).start()
+        delay(animationDuration / 2)
+
+        // Update text while invisible
+        text = newText
+
+        // Fade back in
+        animate().alpha(1f).setDuration(animationDuration / 2).start()
+        delay(animationDuration / 2)
+    }
+
+    private suspend fun fadeOutAndHide() {
+        animate().alpha(0f).setDuration(animationDuration).start()
+        delay(animationDuration)
+
+        // Apply layout changes after fade out
+        text = ""
+        animateLayoutChange {
+            visibility = GONE
+        }
+    }
+
+    private suspend fun showAndFadeIn(newText: String) {
+        // Set text while still invisible
+        text = newText
+        visibility = VISIBLE
+        alpha = 0f
+
+        // Animate layout changes first
+        animateLayoutChange()
+        delay(50) // Small delay to ensure layout is updated
+
+        // Fade in
+        animate().alpha(1f).setDuration(animationDuration).start()
+        delay(animationDuration)
+    }
+
+    private fun animateLayoutChange(changes: (() -> Unit)? = null) {
+        val parentLayout = parent as? ConstraintLayout ?: return
 
         TransitionManager.beginDelayedTransition(
-            layout,
+            parentLayout,
             TransitionSet().apply {
                 ordering = TransitionSet.ORDERING_TOGETHER
-                addTransition(Fade())
                 addTransition(ChangeBounds())
-                duration = 300
+                addTransition(Fade())
+                duration = animationDuration
             },
         )
 
-        if (!isGone && text.isNullOrBlank()) {
-            Timber.i("$type: Transition... GONE")
-            visibility = GONE
-        } else if (isGone && text.isNotEmpty()) {
-            Timber.i("$type: Transition... VISIBLE")
-            visibility = VISIBLE
-        }
-    }
-
-    private suspend fun fadeOut() {
-        animate()
-            .alpha(0f)
-            .setDuration(300)
-            .start()
-        Timber.i("$type: Fading out...")
-        delay(300)
-    }
-
-    private suspend fun fadeIn() {
-        animate()
-            .alpha(1f)
-            .setDuration(300)
-            .start()
-        Timber.i("$type: Fading in...")
-        delay(300)
-    }
-
-    private fun updateText(): Boolean {
-        val updatedText = formatNowPlaying(trackInfo)
-        return if (updatedText.isNotBlank()) {
-            Timber.i("$type: Set new track info...")
-            text = updatedText
-            true
-        } else {
-            Timber.i("$type: Set text to NULL")
-            text = null
-            false
-        }
+        changes?.invoke()
     }
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
