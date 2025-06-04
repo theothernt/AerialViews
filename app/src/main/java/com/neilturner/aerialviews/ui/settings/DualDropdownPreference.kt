@@ -1,9 +1,8 @@
-package com.neilturner.aerialviews.ui.preference
+package com.neilturner.aerialviews.ui.settings
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.preference.ListPreference
@@ -65,7 +64,7 @@ class DualDropdownPreference @JvmOverloads constructor(
                 )
             )
             pref.onBindViewHolder(preferenceHolder)
-            
+
             // Add the view to our container
             val view = preferenceHolder.itemView
             if (view.parent != null) {
@@ -86,7 +85,7 @@ class DualDropdownPreference @JvmOverloads constructor(
                 )
             )
             pref.onBindViewHolder(preferenceHolder)
-            
+
             // Add the view to our container
             val view = preferenceHolder.itemView
             if (view.parent != null) {

@@ -14,7 +14,7 @@
             app:title="@string/appearance_slot1_title" 
             app:isPreferenceVisible="false" />
             
-        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+        <com.neilturner.aerialviews.ui.settings.DualDropdownPreference
             app:key="dual_top_left"
             app:title="@string/category_top_row_left"
             app:selectable="false" />
@@ -32,7 +32,7 @@
             app:title="@string/appearance_slot1_title" 
             app:isPreferenceVisible="false" />
             
-        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+        <com.neilturner.aerialviews.ui.settings.DualDropdownPreference
             app:key="dual_top_right"
             app:title="@string/category_top_row_right"
             app:selectable="false" />
@@ -52,7 +52,7 @@
             app:title="@string/appearance_slot1_title" 
             app:isPreferenceVisible="false" />
             
-        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+        <com.neilturner.aerialviews.ui.settings.DualDropdownPreference
             app:key="dual_bottom_left"
             app:title="@string/category_bottom_row_left"
             app:selectable="false" />
@@ -70,7 +70,7 @@
             app:title="@string/appearance_slot1_title" 
             app:isPreferenceVisible="false" />
             
-        <com.neilturner.aerialviews.ui.preference.DualDropdownPreference
+        <com.neilturner.aerialviews.ui.settings.DualDropdownPreference
             app:key="dual_bottom_right"
             app:title="@string/category_bottom_row_right"
             app:selectable="false" />

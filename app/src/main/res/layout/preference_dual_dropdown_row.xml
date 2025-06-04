@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:baselineAligned="false"
     android:orientation="horizontal">
 
     <FrameLayout
@@ -9,6 +10,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:paddingStart="0dp"
         android:paddingEnd="8dp" />
 
     <FrameLayout
@@ -16,6 +18,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingStart="8dp" />
-
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"/>
 </LinearLayout>
