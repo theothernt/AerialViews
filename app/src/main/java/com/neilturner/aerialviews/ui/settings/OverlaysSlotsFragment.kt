@@ -10,14 +10,14 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SlotHelper
 
-class OverlaysCombinedRowsFragment :
+class OverlaysSlotsFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_overlays_combined_rows, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_slots, rootKey)
         setupDualDropdowns()
     }
 

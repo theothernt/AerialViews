@@ -316,8 +316,8 @@
   <string name="appearance_bottom_row_title">Bottom Row</string>
   <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
   
-  <string name="appearance_slots_title">All Slots</string>
-  <string name="appearance_slots_summary">Configure all corner overlays in one screen</string>
+  <string name="appearance_slots_title">Overlay slots</string>
+  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
 
   <string name="appearance_clock_title">Clock</string>
   <string name="appearance_clock_summary">Display the current time</string>
