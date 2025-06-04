@@ -39,26 +39,25 @@ class OverlaysCombinedRowsFragment :
         val dualTopLeft = preferenceScreen.findPreference<DualDropdownPreference>("dual_top_left")
         val dualTopRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_top_right")
         val dualBottomLeft = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_left")
-        val dualBottomRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_right")
-
-        // Set up the dual preferences
-        dualTopLeft?.apply {
+        val dualBottomRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_right")        // Set up the dual preferences - Upper Slot (slot2) appears first, Lower Slot (slot1) appears second
+        // Note: XML ordering is dual_top_right (slot2) first, then dual_top_left (slot1) second
+        dualTopRight?.apply {
             topLeft2?.let { setLeftPreference(it) }
-            topLeft1?.let { setRightPreference(it) }
+            topRight2?.let { setRightPreference(it) }
         }
 
-        dualTopRight?.apply {
-            topRight2?.let { setLeftPreference(it) }
+        dualTopLeft?.apply {
+            topLeft1?.let { setLeftPreference(it) }
             topRight1?.let { setRightPreference(it) }
         }
         
-        dualBottomLeft?.apply {
+        dualBottomRight?.apply {
             bottomLeft2?.let { setLeftPreference(it) }
-            bottomLeft1?.let { setRightPreference(it) }
+            bottomRight2?.let { setRightPreference(it) }
         }
 
-        dualBottomRight?.apply {
-            bottomRight2?.let { setLeftPreference(it) }
+        dualBottomLeft?.apply {
+            bottomLeft1?.let { setLeftPreference(it) }
             bottomRight1?.let { setRightPreference(it) }
         }
     }
