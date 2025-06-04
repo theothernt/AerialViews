@@ -178,11 +178,16 @@
     <item>Порожній</item>
     <item>Годинник</item>
     <item>Місцезнаходження</item>
+    <item>Погода №1</item>
+    <item>Зараз грає №1</item>
+    <item>Зараз грає №2</item>
     <item>Дата</item>
-    <item>Повідомлення - Рядок 1</item>
-    <item>Повідомлення - Рядок 2</item>
-    <item>Тепер граємо #1</item>
-    <item>Тепер граємо #2</item>
+    <item>Повідомлення №1</item>
+    <item>Повідомлення №2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C° / Цельсія</item>
+    <item>F° / Фаренгейта</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
@@ -202,5 +207,19 @@
   <string-array name="video_scale_entries">
     <item>Заповнення з кадруванням (за замовчуванням)</item>
     <item>Заповнення без кадрування</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>Порожній</item>
+    <item>Місто</item>
+    <item>Температура</item>
+    <item>Значок</item>
+    <item>Короткий зміст</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>Порожній</item>
+    <item>Прогноз</item>
+    <item>Вітер</item>
+    <item>Вологість</item>
+    <item>Схід сонця</item>
   </string-array>
 </resources>

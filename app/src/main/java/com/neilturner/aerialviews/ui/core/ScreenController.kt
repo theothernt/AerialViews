@@ -26,9 +26,9 @@ import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
@@ -39,6 +39,7 @@ import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -460,10 +461,13 @@ class ScreenController(
     }
 
     private fun handleError() {
-        if (loadingView.isVisible) {
-            loadItem(playlist.nextItem())
-        } else {
-            fadeOutCurrentItem()
+        mainScope.launch {
+            delay(ERROR_DELAY)
+            if (loadingView.isVisible) {
+                loadItem(playlist.nextItem())
+            } else {
+                fadeOutCurrentItem()
+            }
         }
     }
 
@@ -489,6 +493,6 @@ class ScreenController(
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
-        const val ERROR_DELAY: Long = 500 // Delay before loading next item, after error
+        const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
     }
 }

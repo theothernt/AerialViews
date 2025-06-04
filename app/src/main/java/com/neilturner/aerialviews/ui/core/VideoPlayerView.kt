@@ -85,6 +85,9 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
+            // Disable subtitles/text tracks by default
+            VideoPlayerHelper.disableTextTrack(exoPlayer)
+
             player?.prepare()
         }
 
@@ -183,8 +186,8 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
-            postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
             FirebaseHelper.logExceptionIfRecent(error.cause)
+            post(onErrorRunnable)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {

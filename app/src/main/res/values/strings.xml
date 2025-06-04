@@ -49,6 +49,7 @@
   <string name="category_videos">Videos</string>
   <string name="category_photos">Photos</string>
   <string name="category_weather">Weather</string>
+  <string name="category_forecast">Forecast</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_message">Message</string>
   <string name="category_typography">Typography</string>
@@ -68,6 +69,8 @@
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
+  <string name="category_line1">Line 1</string>
+  <string name="category_line2">Line 2</string>
   <string name="category_phone_tablet">Phone or Tablet</string>
   <string name="category_custom_format">Custom format</string>
   <string name="category_import_settings">Import settings</string>
@@ -362,10 +365,18 @@
 
   <!-- Main / Settings / Overlays / Weather -->
   <string name="weather_location_title">Location</string>
-  <string name="weather_units_title">Temperature units</string>
-
   <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
   <string name="weather_location_searching">Searching for locations…</string>
+
+  <string name="weather_forecast_title">Current forecast</string>
+  <string name="weather_forecast_temperature_units_title">Temperature units</string>
+  <string name="weather_forecast_summary">Change the layout of the forecast information</string>
+
+  <!-- Weather Forecast -->
+  <string name="weather_forecast_slot1">Slot 1</string>
+  <string name="weather_forecast_slot2">Slot 2</string>
+  <string name="weather_forecast_slot3">Slot 3</string>
+  <string name="weather_forecast_slot4">Slot 4</string>
 
   <!-- Main / Settings / Appearance / Location -->
   <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>

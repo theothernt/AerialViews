@@ -178,11 +178,16 @@
     <item>留空</item>
     <item>时钟</item>
     <item>地点</item>
-    <item>日期</item>
-    <item>第 1 行信息</item>
-    <item>第 2 行信息</item>
+    <item>天气 #1</item>
     <item>正在播放 #1</item>
     <item>正在播放 #2</item>
+    <item>日期</item>
+    <item>信息 #1</item>
+    <item>信息 #2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C°/摄氏度</item>
+    <item>C°/华氏度</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>开放式三色字体*</item>
@@ -202,5 +207,19 @@
   <string-array name="video_scale_entries">
     <item>用裁剪填充（默认）</item>
     <item>无作物比例尺</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>留空</item>
+    <item>城市</item>
+    <item>温度</item>
+    <item>图标</item>
+    <item>摘要</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>留空</item>
+    <item>预测</item>
+    <item>风</item>
+    <item>湿度</item>
+    <item>日出</item>
   </string-array>
 </resources>
