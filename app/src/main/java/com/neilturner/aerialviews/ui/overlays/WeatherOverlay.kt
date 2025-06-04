@@ -117,8 +117,7 @@ class WeatherOverlay
                         .alpha(1f)
                         .setDuration(fadeAnimationDuration)
                         .start()
-                }
-                .start()
+                }.start()
         }
 
         private fun updateOverlayContent(weather: WeatherEvent) {
