@@ -31,7 +31,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
-    private val animationDuration = 300L
+    private val animationDuration = 400L
 
     private val mainScope = CoroutineScope(Dispatchers.Main)
 
@@ -100,7 +100,6 @@ class NowPlayingOverlay : AppCompatTextView {
         }
 
         isUpdating = false
-
         if (shouldUpdate) {
             updateNowPlaying()
         }
