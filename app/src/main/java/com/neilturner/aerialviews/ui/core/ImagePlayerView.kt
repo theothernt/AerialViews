@@ -38,12 +38,12 @@ class ImagePlayerView : AppCompatImageView {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+    private var target = ImageViewTarget(this)
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
-
-    private var target = ImageViewTarget(this)
 
     init {
         val scaleType =
@@ -97,17 +97,15 @@ class ImagePlayerView : AppCompatImageView {
             }.build()
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
+        ioScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 else -> {
                     loadImage(media.uri)

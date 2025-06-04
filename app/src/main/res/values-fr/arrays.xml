@@ -178,11 +178,16 @@
     <item>Vide</item>
     <item>Horloge</item>
     <item>Localisation</item>
-    <item>Date</item>
-    <item>Ligne de message 1</item>
-    <item>Ligne de message 2</item>
+    <item>Météo #1</item>
     <item>En cours de lecture #1</item>
     <item>En cours de lecture #2</item>
+    <item>Date</item>
+    <item>Message #1</item>
+    <item>Message #2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
@@ -202,5 +207,19 @@
   <string-array name="video_scale_entries">
     <item>Remplir avec du rognage (par défaut)</item>
     <item>Échelle sans culture</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>Vide</item>
+    <item>Ville</item>
+    <item>Température</item>
+    <item>Icône</item>
+    <item>Résumé</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>Vide</item>
+    <item>Prévisions</item>
+    <item>Le vent</item>
+    <item>Humidité</item>
+    <item>Lever de soleil</item>
   </string-array>
 </resources>

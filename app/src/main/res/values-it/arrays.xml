@@ -178,11 +178,16 @@
     <item>Vuoto</item>
     <item>Orologio</item>
     <item>Luogo</item>
-    <item>Data</item>
-    <item>Linea messaggio 1</item>
-    <item>Linea messaggio 2</item>
+    <item>Meteo #1</item>
     <item>In riproduzione #1</item>
     <item>In riproduzione #2</item>
+    <item>Data</item>
+    <item>Messaggio #1</item>
+    <item>Messaggio #2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
@@ -202,5 +207,19 @@
   <string-array name="video_scale_entries">
     <item>Riempimento con ritaglio (predefinito)</item>
     <item>Scala senza coltura</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>Vuoto</item>
+    <item>Città</item>
+    <item>Temperatura</item>
+    <item>Icona</item>
+    <item>Sommario</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>Vuoto</item>
+    <item>Previsione</item>
+    <item>Vento</item>
+    <item>Umidità</item>
+    <item>Alba</item>
   </string-array>
 </resources>

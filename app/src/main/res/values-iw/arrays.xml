@@ -178,11 +178,16 @@
     <item>ריק</item>
     <item>שעון</item>
     <item>מיקום</item>
-    <item>תאריך</item>
-    <item>שורת הודעה 1</item>
-    <item>שורת הודעה 2</item>
+    <item>מזג אוויר מספר 1</item>
     <item>מנגן כעת מס\' 1</item>
     <item>מנגן כעת מס\' 2</item>
+    <item>תאריך</item>
+    <item>הודעה מס\' 1</item>
+    <item>הודעה מס\' 2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C° / צלזיוס</item>
+    <item>F° / פרנהייט</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
@@ -202,5 +207,19 @@
   <string-array name="video_scale_entries">
     <item>מילוי עם חיתוך (ברירת מחדל)</item>
     <item>שינוי קנה מידה ללא חיתוך</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>ריק</item>
+    <item>עיר</item>
+    <item>טמפרטורה</item>
+    <item>סמל</item>
+    <item>תקציר</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>ריק</item>
+    <item>תחזית</item>
+    <item>רוח</item>
+    <item>לחות</item>
+    <item>זריחה</item>
   </string-array>
 </resources>

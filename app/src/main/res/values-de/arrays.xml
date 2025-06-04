@@ -177,11 +177,16 @@
     <item>Leer</item>
     <item>Uhrzeit</item>
     <item>Ort</item>
+    <item>Wetter #1</item>
+    <item>Jetzt läuft #1</item>
+    <item>Jetzt läuft #2</item>
     <item>Datum</item>
     <item>Nachricht #1</item>
     <item>Nachricht #2</item>
-    <item>Jetzt läuft #1</item>
-    <item>Jetzt läuft #2</item>
+  </string-array>
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
   </string-array>
   <string-array name="text_font_entries">
     <item>Open Sans*</item>
@@ -201,5 +206,19 @@
   <string-array name="video_scale_entries">
     <item>Füllen mit Zuschneiden (Standard)</item>
     <item>Skalieren ohne Zuschneiden</item>
+  </string-array>
+  <string-array name="weather_forecast_type_entries">
+    <item>Leer</item>
+    <item>Stadt</item>
+    <item>Temperatur</item>
+    <item>Symbol</item>
+    <item>Zusammenfassung</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>Leer</item>
+    <item>Vorhersage</item>
+    <item>Wind</item>
+    <item>Luftfeuchtigkeit</item>
+    <item>Sonnenaufgang</item>
   </string-array>
 </resources>

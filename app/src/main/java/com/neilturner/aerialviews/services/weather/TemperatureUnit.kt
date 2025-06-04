@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.services.weather
 
-enum class WeatherUnit {
+enum class TemperatureUnit {
     METRIC,
     IMPERIAL,
 }
