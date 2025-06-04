@@ -7,9 +7,7 @@ import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
-import com.neilturner.aerialviews.utils.parallelForEachCompat
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import com.neilturner.aerialviews.utils.parallelForEach
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -32,7 +30,7 @@ internal object MediaServiceHelper {
             }
         }
 
-        media.parallelForEachCompat { video ->
+        media.parallelForEach { video ->
             val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
             if (data != null) {
                 if (description != DescriptionManifestType.DISABLED) {
@@ -55,17 +53,17 @@ internal object MediaServiceHelper {
     ): List<AerialMedia> {
         when (description) {
             DescriptionFilenameType.FILENAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = item.uri.filenameWithoutExtension
                 }
             }
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
                 }
             }
             DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
                 }
             }
@@ -79,7 +77,7 @@ internal object MediaServiceHelper {
 
         providers
             .filter { it.enabled == true }
-            .parallelForEachCompat {
+            .parallelForEach {
                 try {
                     val providerMedia = it.fetchMedia()
                     media.addAll(providerMedia)
