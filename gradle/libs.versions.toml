@@ -8,7 +8,7 @@ coroutines = "1.10.2"
 core-ktx = "1.16.0"
 activity-ktx = "1.10.1"
 constraintlayout = "2.2.1"
-appcompat = "1.7.0"
+appcompat = "1.7.1"
 
 firebase-crashlytics-plugin = "3.0.3"
 firebase-perf-plugin = "1.4.2"
