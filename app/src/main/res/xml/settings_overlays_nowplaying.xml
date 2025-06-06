@@ -75,4 +75,12 @@
                     app:title="@string/text_weight_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_options">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="nowplaying_shorten_track_name"
+                    app:title="@string/nowplaying_shorten_track_name_title"
+                    app:summary="@string/nowplaying_shorten_track_name_summary" />
+        </PreferenceCategory>
 </PreferenceScreen>

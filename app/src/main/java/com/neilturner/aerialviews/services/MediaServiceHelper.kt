@@ -7,8 +7,7 @@ import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
-import com.neilturner.aerialviews.utils.parallelForEachCompat
-import kotlinx.coroutines.runBlocking
+import com.neilturner.aerialviews.utils.parallelForEach
 import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
@@ -31,7 +30,7 @@ internal object MediaServiceHelper {
             }
         }
 
-        media.parallelForEachCompat video@{ video ->
+        media.parallelForEach { video ->
             val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
             if (data != null) {
                 if (description != DescriptionManifestType.DISABLED) {
@@ -39,32 +38,32 @@ internal object MediaServiceHelper {
                     video.poi = data.second
                 }
                 matched.add(video)
-                return@video
+            } else {
+                unmatched.add(video)
             }
-            unmatched.add(video)
         }
 
         return Pair(matched, unmatched)
     }
 
-    fun addFilenameAsDescriptionToMedia(
+    suspend fun addFilenameAsDescriptionToMedia(
         media: List<AerialMedia>,
         description: DescriptionFilenameType,
         pathDepth: Int,
     ): List<AerialMedia> {
         when (description) {
             DescriptionFilenameType.FILENAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = item.uri.filenameWithoutExtension
                 }
             }
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
                 }
             }
             DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.parallelForEachCompat { item ->
+                media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
                 }
             }
@@ -73,19 +72,18 @@ internal object MediaServiceHelper {
         return media
     }
 
-    fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
-        var media = CopyOnWriteArrayList<AerialMedia>()
+    suspend fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
+        val media = CopyOnWriteArrayList<AerialMedia>()
 
         providers
             .filter { it.enabled == true }
-            .parallelForEachCompat {
-                runBlocking {
-                    try {
-                        media.addAll(it.fetchMedia())
-                    } catch (ex: Exception) {
-                        Timber.e(ex, "Exception while fetching media from ${it.type}")
-                        FirebaseHelper.logExceptionIfRecent(ex)
-                    }
+            .parallelForEach {
+                try {
+                    val providerMedia = it.fetchMedia()
+                    media.addAll(providerMedia)
+                } catch (ex: Exception) {
+                    Timber.e(ex, "Exception while fetching media from ${it.type}")
+                    FirebaseHelper.logExceptionIfRecent(ex)
                 }
             }
         return media
