@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.firebase.perf) apply false
 
     alias(libs.plugins.kotlinter.gradle) apply false
-    alias(libs.plugins.gradle.doctor)
+    // alias(libs.plugins.gradle.doctor)
 
     alias(libs.plugins.android.junit5) apply false
     alias(libs.plugins.android.test) apply false

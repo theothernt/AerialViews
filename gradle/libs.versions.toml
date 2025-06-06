@@ -124,7 +124,7 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebase-perf-plugin" }
 
-gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
+# gradle-doctor = { id = "com.osacky.doctor", version.ref = "gradle-doctor" }
 android-junit5 = { id = "de.mannodermaus.android-junit5", version.ref = "junit5" }
 android-test = { id = "com.android.test", version.ref = "agp" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
