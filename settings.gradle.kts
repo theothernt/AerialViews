@@ -26,3 +26,4 @@ dependencyResolutionManagement {
 rootProject.name = "Aerial Views"
 include(":app")
 include(":baselineprofile")
+include(":microbenchmark")
