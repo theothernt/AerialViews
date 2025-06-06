@@ -70,7 +70,7 @@ class WeatherOverlay
         override fun onAttachedToWindow() {
             super.onAttachedToWindow()
             receiver.subscribe { weather: WeatherEvent ->
-                Timber.i("$weather")
+                Timber.d("$weather")
                 updateWeather(weather)
             }
         }
@@ -117,8 +117,7 @@ class WeatherOverlay
                         .alpha(1f)
                         .setDuration(fadeAnimationDuration)
                         .start()
-                }
-                .start()
+                }.start()
         }
 
         private fun updateOverlayContent(weather: WeatherEvent) {
@@ -175,7 +174,7 @@ class WeatherOverlay
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")
@@ -208,7 +207,7 @@ class WeatherOverlay
                 TextView(context)
                     .apply {
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
                     }.paint
 
             // Calculate approximate text height based on text metrics
