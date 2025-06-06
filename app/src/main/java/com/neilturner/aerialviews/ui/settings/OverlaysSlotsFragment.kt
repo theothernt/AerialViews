@@ -28,7 +28,7 @@ class OverlaysSlotsFragment :
         val topLeft2 = preferenceScreen.findPreference<ListPreference>("slot_top_left2")
         val topRight1 = preferenceScreen.findPreference<ListPreference>("slot_top_right1")
         val topRight2 = preferenceScreen.findPreference<ListPreference>("slot_top_right2")
-        
+
         // Bottom Row
         val bottomLeft1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left1")
         val bottomLeft2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left2")
@@ -39,8 +39,8 @@ class OverlaysSlotsFragment :
         val dualTopLeft = preferenceScreen.findPreference<DualDropdownPreference>("dual_top_left")
         val dualTopRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_top_right")
         val dualBottomLeft = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_left")
-        val dualBottomRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_right")        // Set up the dual preferences - Upper Slot (slot2) appears first, Lower Slot (slot1) appears second
-        // Note: XML ordering is dual_top_right (slot2) first, then dual_top_left (slot1) second
+        val dualBottomRight = preferenceScreen.findPreference<DualDropdownPreference>("dual_bottom_right")
+
         dualTopRight?.apply {
             topLeft2?.let { setLeftPreference(it) }
             topRight2?.let { setRightPreference(it) }
@@ -50,7 +50,7 @@ class OverlaysSlotsFragment :
             topLeft1?.let { setLeftPreference(it) }
             topRight1?.let { setRightPreference(it) }
         }
-        
+
         dualBottomRight?.apply {
             bottomLeft2?.let { setLeftPreference(it) }
             bottomRight2?.let { setRightPreference(it) }
@@ -90,7 +90,7 @@ class OverlaysSlotsFragment :
         val topLeft2 = preferenceScreen.findPreference<ListPreference>("slot_top_left2")
         val topRight1 = preferenceScreen.findPreference<ListPreference>("slot_top_right1")
         val topRight2 = preferenceScreen.findPreference<ListPreference>("slot_top_right2")
-        
+
         // Bottom Row
         val bottomLeft1 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left1")
         val bottomLeft2 = preferenceScreen.findPreference<ListPreference>("slot_bottom_left2")
@@ -118,13 +118,13 @@ class OverlaysSlotsFragment :
         SlotHelper.buildOverlayList(topLeft2, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(topRight1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(topRight2, overlayData.first, overlayData.second, slotPrefs)
-        
+
         // Build lists for Bottom Row
         SlotHelper.buildOverlayList(bottomLeft1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomLeft2, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight1, overlayData.first, overlayData.second, slotPrefs)
         SlotHelper.buildOverlayList(bottomRight2, overlayData.first, overlayData.second, slotPrefs)
-        
+
         // Update dual preferences after list preferences have been updated
         setupDualDropdowns()
     }

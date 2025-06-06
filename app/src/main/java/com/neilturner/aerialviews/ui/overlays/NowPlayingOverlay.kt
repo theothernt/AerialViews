@@ -144,7 +144,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
         val (artist, song) = trackInfo
         val processedSong = if (prefs.nowPlayingShortenTrackName) TrackNameShortener.shortenTrackName(song) else song
-        
+
         return when (format) {
             NowPlayingFormat.SONG_ARTIST ->
                 if (processedSong.isNotBlank() && artist.isNotBlank()) {
