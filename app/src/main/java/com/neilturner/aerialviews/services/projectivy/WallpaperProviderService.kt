@@ -35,5 +35,13 @@ class WallpaperProviderService : Service() {
                     else -> emptyList() // Returning an empty list won't change the currently displayed wallpaper
                 }
             }
+
+            override fun getPreferences(): String? {
+                return null
+            }
+
+            override fun setPreferences(params: String?) {
+
+            }
         }
 }
