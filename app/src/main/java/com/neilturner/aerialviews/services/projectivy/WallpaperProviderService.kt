@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.providers.projectivy
+package com.neilturner.aerialviews.services.projectivy
 
 import android.app.Service
 import android.content.Intent

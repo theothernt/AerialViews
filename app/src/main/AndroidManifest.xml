@@ -140,7 +140,7 @@
         </service>
 
         <service
-            android:name=".providers.projectivy.WallpaperProviderService"
+            android:name=".services.projectivy.WallpaperProviderService"
             android:exported="true"
             android:label="@string/app_name"
             android:icon="@mipmap/ic_launcher"

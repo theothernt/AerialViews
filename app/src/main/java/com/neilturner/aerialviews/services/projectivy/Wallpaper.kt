@@ -1,16 +1,16 @@
-package com.neilturner.aerialviews.providers.projectivy
+package com.neilturner.aerialviews.services.projectivy
 
 import android.os.Parcelable
 import androidx.annotation.IntDef
-import com.neilturner.aerialviews.providers.projectivy.WallpaperDisplayMode.Companion.BLUR
-import com.neilturner.aerialviews.providers.projectivy.WallpaperDisplayMode.Companion.CROP
-import com.neilturner.aerialviews.providers.projectivy.WallpaperDisplayMode.Companion.DEFAULT
-import com.neilturner.aerialviews.providers.projectivy.WallpaperDisplayMode.Companion.STRETCH
-import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.ANIMATED_DRAWABLE
-import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.DRAWABLE
-import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.IMAGE
-import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.LOTTIE
-import com.neilturner.aerialviews.providers.projectivy.WallpaperType.Companion.VIDEO
+import com.neilturner.aerialviews.services.projectivy.WallpaperDisplayMode.Companion.BLUR
+import com.neilturner.aerialviews.services.projectivy.WallpaperDisplayMode.Companion.CROP
+import com.neilturner.aerialviews.services.projectivy.WallpaperDisplayMode.Companion.DEFAULT
+import com.neilturner.aerialviews.services.projectivy.WallpaperDisplayMode.Companion.STRETCH
+import com.neilturner.aerialviews.services.projectivy.WallpaperType.Companion.ANIMATED_DRAWABLE
+import com.neilturner.aerialviews.services.projectivy.WallpaperType.Companion.DRAWABLE
+import com.neilturner.aerialviews.services.projectivy.WallpaperType.Companion.IMAGE
+import com.neilturner.aerialviews.services.projectivy.WallpaperType.Companion.LOTTIE
+import com.neilturner.aerialviews.services.projectivy.WallpaperType.Companion.VIDEO
 import kotlinx.parcelize.Parcelize
 
 @Target(AnnotationTarget.TYPE)

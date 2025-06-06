@@ -1,13 +1,13 @@
-package com.neilturner.aerialviews.providers.projectivy
+package com.neilturner.aerialviews.services.projectivy
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.annotation.IntDef
-import com.neilturner.aerialviews.providers.projectivy.WallpaperUpdateEventType.Companion.CARD_FOCUSED
-import com.neilturner.aerialviews.providers.projectivy.WallpaperUpdateEventType.Companion.LAUNCHER_IDLE_MODE_CHANGED
-import com.neilturner.aerialviews.providers.projectivy.WallpaperUpdateEventType.Companion.NOW_PLAYING_CHANGED
-import com.neilturner.aerialviews.providers.projectivy.WallpaperUpdateEventType.Companion.PROGRAM_CARD_FOCUSED
-import com.neilturner.aerialviews.providers.projectivy.WallpaperUpdateEventType.Companion.TIME_ELAPSED
+import com.neilturner.aerialviews.services.projectivy.WallpaperUpdateEventType.Companion.CARD_FOCUSED
+import com.neilturner.aerialviews.services.projectivy.WallpaperUpdateEventType.Companion.LAUNCHER_IDLE_MODE_CHANGED
+import com.neilturner.aerialviews.services.projectivy.WallpaperUpdateEventType.Companion.NOW_PLAYING_CHANGED
+import com.neilturner.aerialviews.services.projectivy.WallpaperUpdateEventType.Companion.PROGRAM_CARD_FOCUSED
+import com.neilturner.aerialviews.services.projectivy.WallpaperUpdateEventType.Companion.TIME_ELAPSED
 import kotlinx.parcelize.Parcelize
 
 @Target(AnnotationTarget.TYPE)
