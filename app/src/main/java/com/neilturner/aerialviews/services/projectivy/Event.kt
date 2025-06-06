@@ -50,6 +50,7 @@ sealed class Event(
         ): T {
             val creatorField = clazz.getField("CREATOR")
             val creator = creatorField.get(null) as Parcelable.Creator<*>
+            @Suppress("UNCHECKED_CAST")
             return creator.createFromParcel(parcel) as T
         }
     }
