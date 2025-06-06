@@ -45,6 +45,7 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingWeight1 by stringPref("300", "nowplaying_weight1")
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
+    var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -200,6 +201,7 @@ object GeneralPrefs : KotprefModel() {
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
+    var showMediaErrorToasts by booleanPref(false, "show_media_error_toasts")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
     // Old devices

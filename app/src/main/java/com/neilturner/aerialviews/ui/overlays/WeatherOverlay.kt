@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.services.weather.WeatherType
 import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
@@ -32,6 +31,8 @@ class WeatherOverlay
         private val receiver = EventsReceiver()
         private var overlayItems: List<OverlayItem> = emptyList()
         private var layout = ""
+        private var previousWeather: WeatherEvent? = null
+        private val fadeAnimationDuration = 300L
 
         private var font = ""
         private var size = 0f
@@ -49,6 +50,7 @@ class WeatherOverlay
 
         init {
             orientation = HORIZONTAL
+            alpha = 0f
         }
 
         fun style(
@@ -68,7 +70,7 @@ class WeatherOverlay
         override fun onAttachedToWindow() {
             super.onAttachedToWindow()
             receiver.subscribe { weather: WeatherEvent ->
-                Timber.i("$weather")
+                Timber.d("$weather")
                 updateWeather(weather)
             }
         }
@@ -82,6 +84,43 @@ class WeatherOverlay
             if (layout.isEmpty()) return
             if (weather.temperature.isEmpty()) return
 
+            // Check if the new weather data is the same as the previous data
+            if (previousWeather == weather) {
+                Timber.d("Weather data unchanged, skipping UI update")
+                return
+            }
+
+            // If this is the first weather update, fade in directly
+            if (previousWeather == null) {
+                previousWeather = weather
+                updateOverlayContent(weather)
+                animate()
+                    .alpha(1f)
+                    .setDuration(fadeAnimationDuration)
+                    .start()
+                return
+            }
+
+            // Store current weather for next comparison
+            previousWeather = weather
+
+            // Fade out
+            animate()
+                .alpha(0f)
+                .setDuration(fadeAnimationDuration)
+                .withEndAction {
+                    // Update content when fade out is complete
+                    updateOverlayContent(weather)
+
+                    // Fade back in
+                    animate()
+                        .alpha(1f)
+                        .setDuration(fadeAnimationDuration)
+                        .start()
+                }.start()
+        }
+
+        private fun updateOverlayContent(weather: WeatherEvent) {
             overlayItems = emptyList()
 
             layout.split(",").forEach { item ->
@@ -100,28 +139,7 @@ class WeatherOverlay
                 }
             }
 
-            // Check if visual update is needed
-            // Hide overlay if needed
             setupViews()
-            // Show overlay
-        }
-
-        private fun calculateIconSize(size: Float): Int {
-            // Get text metrics for the given size
-            val textPaint =
-                TextView(context)
-                    .apply {
-                        setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
-                    }.paint
-
-            // Calculate approximate text height based on text metrics
-            val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
-
-            // Use text height directly for icon size to maintain visual balance
-            val iconSize = textHeight * 1.5f
-            Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
-            return iconSize.toInt()
         }
 
         private fun setupViews() {
@@ -133,7 +151,6 @@ class WeatherOverlay
             overlayItems.forEach { item ->
                 when (item) {
                     is OverlayItem.TextItem -> {
-
                         val textView =
                             TextView(context).apply {
                                 text = item.text
@@ -145,8 +162,9 @@ class WeatherOverlay
 
                         // Check if this item should have a margin
                         // No margin if previous item is an image or if this is the first item
-                        val previousItemIsImage = overlayItems.indexOf(item) > 0 &&
-                                                 overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
+                        val previousItemIsImage =
+                            overlayItems.indexOf(item) > 0 &&
+                                overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
 
                         if (isNotEmpty() && !previousItemIsImage) {
                             Timber.d("Adding margin to text view")
@@ -156,7 +174,7 @@ class WeatherOverlay
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")
@@ -164,7 +182,6 @@ class WeatherOverlay
                     }
 
                     is OverlayItem.ImageItem -> {
-
                         // Use our custom SvgImageView instead of regular ImageView
                         val imageView =
                             SvgImageView(context).apply {
@@ -182,5 +199,23 @@ class WeatherOverlay
                     }
                 }
             }
+        }
+
+        private fun calculateIconSize(size: Float): Int {
+            // Get text metrics for the given size
+            val textPaint =
+                TextView(context)
+                    .apply {
+                        setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
+                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+                    }.paint
+
+            // Calculate approximate text height based on text metrics
+            val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
+
+            // Use text height directly for icon size to maintain visual balance
+            val iconSize = textHeight * 1.5f
+            Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
+            return iconSize.toInt()
         }
     }

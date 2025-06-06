@@ -17,7 +17,7 @@
                     app:title ="@string/advanced_refresh_rate_switching_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_video_render_options">
+        <PreferenceCategory app:title="@string/category_media_render_options">
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
@@ -35,6 +35,12 @@
                     app:key="enable_playback_logging"
                     app:summary="@string/enable_playback_logging_summary"
                     app:title="@string/enable_playback_logging_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="show_media_error_toasts"
+                    app:summary="@string/show_media_error_toasts_summary"
+                    app:title="@string/show_media_error_toasts_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"

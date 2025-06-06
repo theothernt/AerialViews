@@ -37,7 +37,7 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
             "weather_forecast_slot1",
             "weather_forecast_slot2",
             "weather_forecast_slot3",
-            "weather_forecast_slot4"
+            "weather_forecast_slot4",
         ).forEach { name ->
             prefs.add(preferenceScreen.findPreference<ListPreference>(name))
         }
@@ -54,24 +54,29 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
     }
 
     private fun setupChangeListeners() {
-        val changeListener = Preference.OnPreferenceChangeListener { preference, newValue ->
-            saveValues(preference as ListPreference, newValue.toString())
-            true
-        }
+        val changeListener =
+            Preference.OnPreferenceChangeListener { preference, newValue ->
+                saveValues(preference as ListPreference, newValue.toString())
+                true
+            }
 
         prefs.forEach { preference ->
             preference?.onPreferenceChangeListener = changeListener
         }
     }
 
-    private fun saveValues(changedPreference: ListPreference? = null, newValue: String = "") {
-        val values = prefs.joinToString(",") { pref ->
-            if (pref == changedPreference) {
-                newValue
-            } else {
-                pref?.value ?: ""
+    private fun saveValues(
+        changedPreference: ListPreference? = null,
+        newValue: String = "",
+    ) {
+        val values =
+            prefs.joinToString(",") { pref ->
+                if (pref == changedPreference) {
+                    newValue
+                } else {
+                    pref?.value ?: ""
+                }
             }
-        }
 
         GeneralPrefs.weatherForecast = values
         Timber.i("Weather forecast preferences saved: $values")

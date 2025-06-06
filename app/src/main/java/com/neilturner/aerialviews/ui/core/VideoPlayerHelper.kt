@@ -42,6 +42,14 @@ object VideoPlayerHelper {
                 .build()
     }
 
+    fun disableTextTrack(player: ExoPlayer) {
+        player.trackSelectionParameters =
+            player.trackSelectionParameters
+                .buildUpon()
+                .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
+                .build()
+    }
+
     @OptIn(UnstableApi::class)
     fun getResizeMode(scale: VideoScale?): Int =
         if (scale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) {

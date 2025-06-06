@@ -22,6 +22,10 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.ToastHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
@@ -44,6 +48,7 @@ class VideoPlayerView
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
+        private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private val progressBar =
@@ -84,6 +89,9 @@ class VideoPlayerView
             if (GeneralPrefs.muteVideos) {
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
+
+            // Disable subtitles/text tracks by default
+            VideoPlayerHelper.disableTextTrack(exoPlayer)
 
             player?.prepare()
         }
@@ -183,8 +191,16 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
-            postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
             FirebaseHelper.logExceptionIfRecent(error.cause)
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = error.localizedMessage ?: "Media playback error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
+            post(onErrorRunnable)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {
@@ -209,7 +225,8 @@ class VideoPlayerView
             if (!canChangePlaybackSpeed) return
             if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
             if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
-            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed changes at the end of video
+            // No speed changes at the end of video
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return
 
             canChangePlaybackSpeed = false
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
