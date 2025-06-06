@@ -25,8 +25,8 @@ class WallpaperProviderService : Service() {
 
     private val binder =
         object : IWallpaperProviderService.Stub() {
-            override fun getWallpapers(event: Event?): List<Wallpaper> {
-                return when (event) {
+            override fun getWallpapers(event: Event?): List<Wallpaper> =
+                when (event) {
                     is Event.TimeElapsed -> {
                         // Fetch all videos from Comm1MediaProvider
                         val comm1Provider = Comm1MediaProvider(applicationContext, Comm1VideoPrefs)
@@ -40,20 +40,16 @@ class WallpaperProviderService : Service() {
                                 media.uri.toString(),
                                 WallpaperType.VIDEO,
                                 WallpaperDisplayMode.DEFAULT,
-                                title = media.description
+                                title = media.description,
                             )
                         }
                     }
                     else -> emptyList() // Returning an empty list won't change the currently displayed wallpaper
                 }
-            }
 
-            override fun getPreferences(): String? {
-                return null
-            }
+            override fun getPreferences(): String? = null
 
             override fun setPreferences(params: String?) {
-
             }
         }
 }
