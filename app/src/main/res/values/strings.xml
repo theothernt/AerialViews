@@ -503,9 +503,6 @@
   <string name="playlist_playback_speed_title">Playback speed</string>
   <string name="playlist_playback_speed_summary">Choose a playback speed</string>
 
-  <string name="playlist_advanced_video_title">Advanced options</string>
-  <string name="playlist_advanced_video_summary">Limit video length, loop short videos, start at a random position</string>
-
   <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
   <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; photos from the playlist based on filename only</string>
 
