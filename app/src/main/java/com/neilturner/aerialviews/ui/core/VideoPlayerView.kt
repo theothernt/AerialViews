@@ -1,5 +1,3 @@
-@file:Suppress("SameParameterValue")
-
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
@@ -30,16 +28,17 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("JoinDeclarationAndAssignment")
-@OptIn(UnstableApi::class)
+@Suppress("SameParameterValue")
 class VideoPlayerView
-    @JvmOverloads
+@OptIn(UnstableApi::class)
+@JvmOverloads
     constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
+        @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
 
@@ -124,7 +123,8 @@ class VideoPlayerView
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
 
-        override fun onPlaybackStateChanged(playbackState: Int) {
+    @OptIn(UnstableApi::class)
+    override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_ENDED -> Timber.i("Playback ended...")
