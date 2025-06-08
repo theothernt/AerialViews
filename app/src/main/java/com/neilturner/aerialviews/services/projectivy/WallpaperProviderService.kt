@@ -32,7 +32,7 @@ class WallpaperProviderService : Service() {
                         val comm1Provider = Comm1MediaProvider(applicationContext, Comm1VideoPrefs)
 
                         // Use runBlocking since the provider's fetchMedia is a suspend function
-                        val aerialMediaList = runBlocking { comm1Provider.fetchMedia() }
+                        val aerialMediaList = runBlocking { comm1Provider.fetchMedia() }.shuffled()
 
                         // Convert AerialMedia objects to Wallpaper objects
                         aerialMediaList.map { media ->

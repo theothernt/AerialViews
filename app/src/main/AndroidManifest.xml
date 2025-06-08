@@ -165,16 +165,16 @@
 
             <meta-data
                 android:name="mainActivity"
-                android:value=".MainActivity"/>
+                android:value=".ui.MainActivity"/>
 
             <meta-data
                 android:name="itemsCacheDurationMillis"
                 android:value="@integer/projectivy_cache_duration"/>
 
-            <!-- This sample plugin will receive time_elapsed and launcher_idle_mode_changed events -->
-<!--            <meta-data-->
-<!--                android:name="updateMode"-->
-<!--                android:value="17"/>-->
+            <!-- what events to listen for - refer to WallpaperUpdateEventType -->
+            <meta-data
+                android:name="updateMode"
+                android:value="1"/>
         </service>
 
         <!-- Firebase Analytics and Crashlytics options -->
