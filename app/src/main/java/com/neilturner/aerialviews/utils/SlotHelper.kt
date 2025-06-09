@@ -150,4 +150,32 @@ object SlotHelper {
         )
         return slotPrefs
     }
+
+    // Get summary text for a specific slot preference
+    fun getOverlaySummary(slotKey: String): String {
+        val prefs = GeneralPrefs
+        val value = when (slotKey) {
+            "slot_top_left1" -> prefs.slotTopLeft1
+            "slot_top_left2" -> prefs.slotTopLeft2
+            "slot_top_right1" -> prefs.slotTopRight1
+            "slot_top_right2" -> prefs.slotTopRight2
+            "slot_bottom_left1" -> prefs.slotBottomLeft1
+            "slot_bottom_left2" -> prefs.slotBottomLeft2
+            "slot_bottom_right1" -> prefs.slotBottomRight1
+            "slot_bottom_right2" -> prefs.slotBottomRight2
+            else -> OverlayType.EMPTY
+        }
+          return when (value) {
+            OverlayType.EMPTY -> "Empty"
+            OverlayType.CLOCK -> "Clock"
+            OverlayType.DATE -> "Date"
+            OverlayType.LOCATION -> "Location"
+            OverlayType.WEATHER1 -> "Weather"
+            OverlayType.MESSAGE1 -> "Message Line 1"
+            OverlayType.MESSAGE2 -> "Message Line 2"
+            OverlayType.MUSIC1 -> "Now Playing Line 1"
+            OverlayType.MUSIC2 -> "Now Playing Line 2"
+            else -> "Unknown"
+        }
+    }
 }
