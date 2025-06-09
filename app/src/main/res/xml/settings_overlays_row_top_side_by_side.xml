@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.neilturner.aerialviews.ui.settings.TwoListPreferenceSideBySide
+        app:key="left_slots_top_row"
+        app:title="@string/category_top_row_left" />
+    
+    <com.neilturner.aerialviews.ui.settings.TwoListPreferenceSideBySide
+        app:key="right_slots_top_row"
+        app:title="@string/category_top_row_right" />
+</PreferenceScreen>
