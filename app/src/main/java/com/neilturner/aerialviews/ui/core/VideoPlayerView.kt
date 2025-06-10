@@ -219,9 +219,7 @@ class VideoPlayerView
             } else {
                 exoPlayer.seekTo(position + interval)
             }
-        }
-
-        private fun changeSpeed(increase: Boolean) {
+        }        private fun changeSpeed(increase: Boolean) {
             if (!canChangePlaybackSpeed) return
             if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
             if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
@@ -232,13 +230,14 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            var speedValues: Array<String>
-            var currentSpeedIdx: Int
+            var speedValues: Array<String>? = null
+            var currentSpeedIdx: Int = -1
 
             try {
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
+                FirebaseHelper.logExceptionIfRecent(ex)
                 Timber.e(ex, "Exception while getting playback speed values")
                 return
             }
