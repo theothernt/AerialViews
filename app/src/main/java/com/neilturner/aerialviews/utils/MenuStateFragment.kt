@@ -18,19 +18,19 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
 
         lifecycleScope.launch {
             delay(60)
-            requestFocus()
+            tryRequestFocus()
         }
     }
 
-    private fun requestFocus() {
-        if (position != -1 && listView.adapter != null && listView.layoutManager != null) {
-            try {
+    private fun tryRequestFocus() {
+        try {
+            if (position != -1 && listView != null && listView.adapter != null && listView.layoutManager != null) {
                 val item = listView.findViewHolderForAdapterPosition(position)?.itemView
                 item?.requestFocus()
-            } catch (ex: Exception) {
-                FirebaseHelper.logExceptionIfRecent(ex)
-                Timber.e(ex)
             }
+        } catch (ex: Exception) {
+            FirebaseHelper.logExceptionIfRecent(ex)
+            Timber.e(ex)
         }
     }
 
