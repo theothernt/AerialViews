@@ -23,6 +23,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("nonMinifiedRelease") {
+        }
+        create("benchmarkRelease") {
+        }
     }
 
     kotlin {
