@@ -25,9 +25,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 36
-        versionCode = 56
-        versionName = "1.7.8"
-        betaVersion = "-beta7"
+        versionCode = 57
+        versionName = "1.7.9"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -187,7 +187,10 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
+
     "baselineProfile"(project(":baselineprofile"))
+
+    implementation(project(":projectivyapi"))
 }
 
 tasks.withType<Test>().configureEach {

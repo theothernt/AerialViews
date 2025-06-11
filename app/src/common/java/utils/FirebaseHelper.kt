@@ -12,7 +12,14 @@ import java.util.Calendar
 import java.util.Locale
 
 object FirebaseHelper {
-    private val loggingEndDate = "2025-06-30"
+    private const val LOGGING_END_DATE = "2025-07-30"
+
+    private fun isWithinLoggingPeriod(): Boolean {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val endDate = simpleDateFormat.parse(LOGGING_END_DATE)
+        val currentDate = Calendar.getInstance().time
+        return currentDate.before(endDate)
+    }
 
     fun logScreenView(
         screenName: String,
@@ -32,22 +39,21 @@ object FirebaseHelper {
     }
 
     fun logExceptionIfRecent(ex: Throwable?) {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val endDate = simpleDateFormat.parse(loggingEndDate)
-        val currentDate = Calendar.getInstance().time
-
-        if (currentDate.before(endDate)) {
+        if (isWithinLoggingPeriod()) {
             ex?.let { logException(it) }
         }
     }
 
     fun logIfRecent(error: String) {
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val endDate = simpleDateFormat.parse(loggingEndDate)
-        val currentDate = Calendar.getInstance().time
-
-        if (currentDate.before(endDate)) {
+        if (isWithinLoggingPeriod()) {
             Firebase.crashlytics.log(error)
         }
     }
+
+    fun logCustomKeysIfRecent(key: String, value: String) {
+        if (isWithinLoggingPeriod()) {
+            Firebase.crashlytics.setCustomKey(key, value)
+        }
+    }
 }
+

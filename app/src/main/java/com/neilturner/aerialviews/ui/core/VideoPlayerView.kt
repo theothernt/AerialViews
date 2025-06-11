@@ -1,5 +1,3 @@
-@file:Suppress("SameParameterValue")
-
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
@@ -30,16 +28,17 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("JoinDeclarationAndAssignment")
-@OptIn(UnstableApi::class)
+@Suppress("SameParameterValue")
 class VideoPlayerView
-    @JvmOverloads
+@OptIn(UnstableApi::class)
+@JvmOverloads
     constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
+        @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
 
@@ -124,7 +123,8 @@ class VideoPlayerView
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
 
-        override fun onPlaybackStateChanged(playbackState: Int) {
+    @OptIn(UnstableApi::class)
+    override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_ENDED -> Timber.i("Playback ended...")
@@ -219,9 +219,7 @@ class VideoPlayerView
             } else {
                 exoPlayer.seekTo(position + interval)
             }
-        }
-
-        private fun changeSpeed(increase: Boolean) {
+        }        private fun changeSpeed(increase: Boolean) {
             if (!canChangePlaybackSpeed) return
             if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
             if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
@@ -232,13 +230,14 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            var speedValues: Array<String>
-            var currentSpeedIdx: Int
+            var speedValues: Array<String>? = null
+            var currentSpeedIdx: Int = -1
 
             try {
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
+                FirebaseHelper.logExceptionIfRecent(ex)
                 Timber.e(ex, "Exception while getting playback speed values")
                 return
             }

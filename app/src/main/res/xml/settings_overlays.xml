@@ -3,9 +3,14 @@
 
         <PreferenceCategory app:title="@string/category_slots">
                 <Preference
-                    app:title="@string/appearance_slots_title"
-                    app:summary="@string/appearance_slots_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysSlotsFragment"/>
+                    app:title="@string/appearance_top_row_title"
+                    app:summary="@string/appearance_top_row_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysRowTopFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_bottom_row_title"
+                    app:summary="@string/appearance_bottom_row_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysRowBottomFragment"/>
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_overlays">

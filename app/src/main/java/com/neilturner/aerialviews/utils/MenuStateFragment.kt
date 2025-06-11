@@ -17,11 +17,20 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
         }
 
         lifecycleScope.launch {
-            delay(50)
-            if (position != -1) {
+            delay(60)
+            tryRequestFocus()
+        }
+    }
+
+    private fun tryRequestFocus() {
+        try {
+            if (position != -1 && listView != null && listView.adapter != null && listView.layoutManager != null) {
                 val item = listView.findViewHolderForAdapterPosition(position)?.itemView
                 item?.requestFocus()
             }
+        } catch (ex: Exception) {
+            FirebaseHelper.logExceptionIfRecent(ex)
+            Timber.e(ex)
         }
     }
 
@@ -45,8 +54,9 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                 if (view.parent === listView) {
                     position = listView.layoutManager?.getPosition(view) ?: -1
                 }
-            } catch (e: Exception) {
-                Timber.e(e)
+            } catch (ex: Exception) {
+                FirebaseHelper.logException(ex)
+                Timber.e(ex)
             }
         }
     }

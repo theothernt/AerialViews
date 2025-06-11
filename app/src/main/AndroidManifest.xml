@@ -139,6 +139,44 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".services.projectivy.WallpaperProviderService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:icon="@mipmap/ic_launcher"
+            android:banner="@mipmap/ic_banner"
+            tools:ignore="ExportedService">
+
+            <intent-filter>
+                <action android:name="tv.projectivy.plugin.WALLPAPER_PROVIDER"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="apiVersion"
+                android:value="1"/>
+
+            <meta-data
+                android:name="uuid"
+                android:value="@string/plugin_uuid"/>
+
+            <meta-data
+                android:name="name"
+                android:value="@string/app_name"/>
+
+            <meta-data
+                android:name="mainActivity"
+                android:value=".ui.MainActivity"/>
+
+            <meta-data
+                android:name="itemsCacheDurationMillis"
+                android:value="@integer/projectivy_cache_duration"/>
+
+            <!-- what events to listen for - refer to WallpaperUpdateEventType -->
+            <meta-data
+                android:name="updateMode"
+                android:value="1"/>
+        </service>
+
         <!-- Firebase Analytics and Crashlytics options -->
         <meta-data
             android:name="google_analytics_default_allow_analytics_storage"
