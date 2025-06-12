@@ -24,9 +24,11 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
+import com.neilturner.aerialviews.ui.KtorServer
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
@@ -56,6 +58,7 @@ class ScreenController(
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
+    private var ktorServer: KtorServer? = null
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -176,6 +179,12 @@ class ScreenController(
             // Used for a) Skip music tracks b) music info widget
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context)
+            }
+
+            val useWebServer = true
+            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && useWebServer) {
+                ktorServer = KtorServer()
+                ktorServer?.start()
             }
 
             // Build playlist and start screensaver
@@ -401,6 +410,7 @@ class ScreenController(
         RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
+        ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
     }
