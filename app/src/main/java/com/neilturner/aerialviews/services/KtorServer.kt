@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui
+package com.neilturner.aerialviews.services
 
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -29,18 +29,18 @@ class KtorServer {
                         configureRouting()
                         configurePlugins()
                     }.start(wait = true)
-                Timber.i("Ktor server started on port 8080")
+                Timber.Forest.i("Ktor server started on port 8080")
             } catch (e: BindException) {
-                Timber.e(e, "Failed to start server: Port 8080 already in use")
+                Timber.Forest.e(e, "Failed to start server: Port 8080 already in use")
             } catch (e: Exception) {
-                Timber.e(e, "Error starting Ktor server")
+                Timber.Forest.e(e, "Error starting Ktor server")
             }
         }
     }
 
     fun stop() {
         server?.stop(1000, 2000)
-        Timber.i("Ktor server stopped")
+        Timber.Forest.i("Ktor server stopped")
     }
 
     private fun Application.configureRouting() {

@@ -13,7 +13,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import timber.log.Timber
 
-class AerialViewsApp : Application() {
+class AerialApp : Application() {
     override fun onCreate() {
         super.onCreate()
 

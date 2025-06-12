@@ -47,7 +47,7 @@
         android:required="false" />
 
     <application
-        android:name=".ui.AerialViewsApp"
+        android:name=".ui.AerialApp"
         android:allowBackup="true"
         android:banner="@mipmap/ic_banner"
         android:fullBackupContent="true"
