@@ -68,7 +68,7 @@ android {
 
     val keyProps = loadProperties("secrets.properties")
     buildTypes {
-        getByName("debug") {
+        debug {
             val openWeather = keyProps["openWeatherDebug"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
@@ -78,7 +78,7 @@ android {
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
-        getByName("release") {
+        release {
             val openWeather = keyProps["openWeather"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
