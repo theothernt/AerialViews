@@ -125,7 +125,6 @@
     <item>5</item>
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
-
   <!-- Slots -->
   <string-array name="slot_entries">
     <item>Empty</item>
@@ -138,7 +137,8 @@
     <item>Date</item>
     <item>Message #1</item>
     <item>Message #2</item>
-
+    <item>Message #3</item>
+    <item>Message #4</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
@@ -151,8 +151,10 @@
     <item>DATE</item>
     <item>MESSAGE1</item>
     <item>MESSAGE2</item>
+    <item>MESSAGE3</item>
+    <item>MESSAGE4</item>
   </string-array>
-  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
+<!--  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>-->
 
   <!-- Playback speed -->
   <string-array name="playback_speed_entries" translatable="false">

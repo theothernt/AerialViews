@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <PreferenceCategory app:title="@string/category_message">
+    <PreferenceCategory app:title="@string/category_message">
                 <EditTextPreference
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line1"
@@ -12,6 +11,16 @@
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line2"
                     app:title="@string/appearance_message_line2_title" />
+
+                <EditTextPreference
+                    app:summary="@string/appearance_message_line1_summary"
+                    app:key="message_line3"
+                    app:title="@string/appearance_message_line3_title" />
+
+                <EditTextPreference
+                    app:summary="@string/appearance_message_line1_summary"
+                    app:key="message_line4"
+                    app:title="@string/appearance_message_line4_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">

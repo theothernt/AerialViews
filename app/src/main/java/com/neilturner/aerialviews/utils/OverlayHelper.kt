@@ -68,7 +68,6 @@ class OverlayHelper(
         findOverlay<ClockOverlay>().forEach {
             it.updateFormat(prefs.clockFormat)
         }
-
         findOverlay<DateOverlay>().forEach {
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
@@ -76,8 +75,12 @@ class OverlayHelper(
         findOverlay<MessageOverlay>().forEach {
             if (it.type == OverlayType.MESSAGE1) {
                 it.updateMessage(prefs.messageLine1)
-            } else {
+            } else if (it.type == OverlayType.MESSAGE2) {
                 it.updateMessage(prefs.messageLine2)
+            } else if (it.type == OverlayType.MESSAGE3) {
+                it.updateMessage(prefs.messageLine3)
+            } else {
+                it.updateMessage(prefs.messageLine4)
             }
         }
 
@@ -181,6 +184,8 @@ class OverlayHelper(
                 }
             OverlayType.MESSAGE1,
             OverlayType.MESSAGE2,
+            OverlayType.MESSAGE3,
+            OverlayType.MESSAGE4,
             ->
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
