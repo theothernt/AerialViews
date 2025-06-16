@@ -22,7 +22,7 @@ class AerialApp : Application() {
         }
 
         if (BuildConfig.DEBUG) {
-            // setupStrictMode()
+            setupStrictMode()
         }
 
         if (!GeneralPrefs.checkForHevcSupport) {
@@ -51,7 +51,7 @@ class AerialApp : Application() {
         StrictMode.setThreadPolicy(
             StrictMode.ThreadPolicy
                 .Builder()
-                .detectAll()
+                .detectCustomSlowCalls()
                 .penaltyFlashScreen()
                 .penaltyLog()
                 .build(),
@@ -59,7 +59,10 @@ class AerialApp : Application() {
         StrictMode.setVmPolicy(
             VmPolicy
                 .Builder()
-                .detectAll()
+                .detectLeakedClosableObjects()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedRegistrationObjects()
+                .detectActivityLeaks()
                 .penaltyLog()
                 // .penaltyDeath()
                 .build(),
