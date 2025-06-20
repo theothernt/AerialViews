@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.hours
 
 object NetworkHelpers {
-    private val timeout = 10L // Socket, etc timeout
+    private val timeout = 10L // Seconds = socket, etc timeout
     private val timeoutUnits = TimeUnit.SECONDS
     private val cacheSize = 1 * 1024 * 1024L // 10 MB
     private val offlineCacheTimeout = 2.hours.inWholeSeconds.toInt()
