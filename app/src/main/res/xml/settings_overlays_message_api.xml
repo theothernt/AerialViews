@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_api_settings">
+        <SwitchPreference
+            app:key="message_api_enabled"
+            app:title="@string/appearance_message_api_enabled_title"
+            app:summary="@string/appearance_message_api_enabled_summary"
+            app:defaultValue="false" />
+
+        <EditTextPreference
+            app:key="message_api_port"
+            app:title="@string/appearance_message_api_port_title"
+            app:summary="@string/appearance_message_api_port_summary"
+            app:defaultValue="8080"
+            app:dependency="message_api_enabled" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_connection_information">
+        <Preference
+            app:key="message_api_current_ip"
+            app:title="@string/appearance_message_api_current_ip_title"
+            app:summary="@string/appearance_message_api_current_ip_summary"
+            app:selectable="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_api_usage">
+        <Preference
+            app:key="message_api_usage"
+            app:title="@string/appearance_message_api_usage_title"
+            app:summary="@string/appearance_message_api_usage_summary"
+            app:selectable="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

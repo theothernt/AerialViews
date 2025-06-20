@@ -71,6 +71,10 @@
   <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_overlay_animations">Overlay animations</string>
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
+  <string name="category_message_api">Message API</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_connection_information">Connection Information</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
   <string name="category_line1">Line 1</string>
@@ -379,7 +383,6 @@
   <string name="weather_forecast_temperature_units_title">Temperature units</string>
   <string name="weather_forecast_summary">Change the layout of the forecast information</string>
 
-  <!-- Weather Forecast -->
   <string name="weather_forecast_slot1">Slot 1</string>
   <string name="weather_forecast_slot2">Slot 2</string>
   <string name="weather_forecast_slot3">Slot 3</string>
@@ -411,13 +414,22 @@
 
   <string name="appearance_date_custom_error">Invalid custom date format!</string>
   <string name="appearance_date_custom_example">e.g.</string>
-  <!-- Main / Settings / Appearance / Message -->
 
+  <!-- Main / Settings / Appearance / Message -->
   <string name="appearance_message_line1_title">Line 1</string>
   <string name="appearance_message_line2_title">Line 2</string>
   <string name="appearance_message_line3_title">Line 3</string>
   <string name="appearance_message_line4_title">Line 4</string>
   <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via HTTP API</string>
+  <string name="appearance_message_api_port_title">Port number</string>
+  <string name="appearance_message_api_port_summary">Port for the HTTP API server (default: 8080)</string>
+  <string name="appearance_message_api_current_ip_title">Connection Details</string>
+  <string name="appearance_message_api_current_ip_summary">Shows current device IP address and API URL</string>
+  <string name="appearance_message_api_usage_title">How to Use</string>
+  <string name="appearance_message_api_usage_summary">API endpoints and usage examples</string>
 
   <!-- Main / Settings / Appearance -->
   <string name="appearance_typography_title">Typography</string>
@@ -592,7 +604,6 @@
 
   <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
   <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
-
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
@@ -625,7 +636,6 @@
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
   <!-- Main / Settings / Import / Export settings -->
-
   <string name="settings_export_title">Export settings to Documents folder</string>
   <string name="settings_export_summary1">Only settings which have been changed from the defaults will be exported</string>
 

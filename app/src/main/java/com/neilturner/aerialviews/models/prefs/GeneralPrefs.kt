@@ -95,12 +95,17 @@ object GeneralPrefs : KotprefModel() {
 
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight")    // Message
+
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
     var messageLine3 by stringPref("", "message_line3")
     var messageLine4 by stringPref("", "message_line4")
+
     var messageSize by stringPref("18", "message_size")
     var messageWeight by stringPref("300", "message_weight")
+
+    var messageApiEnabled by booleanPref(false, "message_api_enabled")
+    var messageApiPort by stringPref("8080", "message_api_port")
 
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
@@ -194,9 +199,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
-    var seekInterval by stringPref("10", "seek_interval")
-
-    // Advanced
+    var seekInterval by stringPref("10", "seek_interval")    // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
