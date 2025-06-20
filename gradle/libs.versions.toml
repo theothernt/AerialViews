@@ -36,7 +36,7 @@ coil3 = "3.2.0"
 timber = "5.0.1"
 
 junit-jupiter = "5.13.1"
-junit5 = "1.12.2.0"
+junit5 = "1.13.0.0"
 junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
