@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -66,16 +67,10 @@ class KtorServer {
 
     private fun Application.configureRouting() {
         routing {
-            get("/") {
-                var params = ""
-                call.queryParameters.forEach { key, value ->
-                    params += "$key = $value \n"
-                }
-                call.respondText("Hello from Android Ktor Server!\n$params")
-            }
+            // get("/") { }
 
             get("/status") {
-                call.respondText("Server is running")
+                call.respondText("Aerial Views Message API is running", contentType = ContentType.Text.Plain)
             }
 
             get("/message1") {
@@ -103,16 +98,19 @@ class KtorServer {
             val textSize = call.queryParameters["textSize"] ?: "medium"
             val textWeight = call.queryParameters["textWeight"] ?: "normal"
 
-            // Validate required parameters
-            if (text.isNullOrBlank()) {
+            if (text == null) {
                 call.respond(
                     ErrorResponse(
                         success = false,
-                        error = "Required parameter 'text' is missing or empty"
+                        error = "Required parameter 'text' is missing"
                     )
                 )
                 return
             }
+
+            // Handle empty text as a clear message command
+            val finalText = text.ifEmpty { "" }
+            val isClearing = text.isEmpty()
 
             // Validate text size parameter
             val validSizes = listOf("small", "medium", "large", "xl", "xxl")
@@ -132,16 +130,17 @@ class KtorServer {
 
             // TODO: Here you would typically handle the message display logic for each message slot
             // For now, we'll just log it and return a success response
-            Timber.i("Message $messageNumber received - Text: $text, Duration: ${duration}s, Size: $normalizedTextSize, Weight: $normalizedTextWeight")
+            val actionType = if (isClearing) "cleared" else "received"
+            Timber.i("Message $messageNumber $actionType - Text: '$finalText', Duration: ${duration}s, Size: $normalizedTextSize, Weight: $normalizedTextWeight")
 
             call.respond(
                 MessageResponse(
-                    text = text,
+                    text = finalText,
                     duration = duration,
                     textSize = normalizedTextSize,
                     textWeight = normalizedTextWeight,
                     success = true,
-                    message = "Message $messageNumber processed successfully"
+                    message = if (isClearing) "Message $messageNumber cleared successfully" else "Message $messageNumber processed successfully"
                 )
             )
         } catch (e: Exception) {

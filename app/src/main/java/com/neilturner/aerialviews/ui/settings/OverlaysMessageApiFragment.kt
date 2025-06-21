@@ -48,20 +48,29 @@ class OverlaysMessageApiFragment :
             val ipAddress = DeviceIPHelper.getIPAddress(requireContext())
             val port = GeneralPrefs.messageApiPort
 
-            val summary =
-                "Device IP: $ipAddress\nAPI URL: http://$ipAddress:$port"
-
-            ipPreference.summary = summary
+            ipPreference.summary = "Device IP: $ipAddress\nAPI URL: http://$ipAddress:$port"
         }
 
         if (usagePreference != null) {
             val port = GeneralPrefs.messageApiPort
             val usageText = """
-                GET /api/messages - Get current messages
-                POST /api/messages/1 - Set message line 1
-                POST /api/messages/2 - Set message line 2
+                GET /status - Check server status
+                GET /message1?text=Hello - Display message on slot 1
+                GET /message2?text=Hello - Display message on slot 2
+                GET /message3?text=Hello - Display message on slot 3
+                GET /message4?text=Hello - Display message on slot 4
+                GET /message1?text= - Clear message on slot 1
                 
-                Example: curl -X POST http://YOUR_IP:$port/api/messages/1 -H "Content-Type: application/json" -d '{"message":"Hello World"}'
+                Parameters:
+                • text (required) - Message content, empty to clear
+                • duration (optional) - Display duration in seconds
+                • textSize (optional) - small/medium/large/xl/xxl
+                • textWeight (optional) - light/normal/bold/heavy
+                
+                Examples:
+                http://YOUR_IP:$port/message1?text=Hello%20World
+                http://YOUR_IP:$port/message2?text=Test&duration=20&textSize=large&textWeight=bold
+                http://YOUR_IP:$port/message3?text= (clears message)
             """.trimIndent()
             usagePreference.summary = usageText
         }
