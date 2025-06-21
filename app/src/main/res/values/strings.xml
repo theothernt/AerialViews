@@ -423,7 +423,7 @@
   <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
 
   <string name="appearance_message_api_enabled_title">Enable API</string>
-  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via HTTP API</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
   <string name="appearance_message_api_port_title">Port number</string>
   <string name="appearance_message_api_port_summary">Port for the HTTP API server (default: 8080)</string>
   <string name="appearance_message_api_current_ip_title">Connection Details</string>
