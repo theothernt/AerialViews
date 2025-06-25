@@ -20,11 +20,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.net.BindException
 
 @Serializable
 data class MessageResponse(
+    val messageNumber: Int,
     val text: String,
     val duration: Int,
     val textSize: String,
@@ -37,6 +39,15 @@ data class MessageResponse(
 data class ErrorResponse(
     val success: Boolean,
     val error: String
+)
+
+data class MessageEvent(
+    val messageNumber: Int,
+    val text: String = "",
+    val duration: Int = 0,
+    val textSize: String = "medium",
+    val textWeight: String = "normal",
+    val timestamp: Long = System.currentTimeMillis()
 )
 
 class KtorServer {
@@ -128,13 +139,23 @@ class KtorServer {
                 "normal"
             }
 
-            // TODO: Here you would typically handle the message display logic for each message slot
-            // For now, we'll just log it and return a success response
+            // Post message event to FlowBus for overlay consumption
+            val messageEvent = MessageEvent(
+                messageNumber = messageNumber,
+                text = finalText,
+                duration = duration,
+                textSize = normalizedTextSize,
+                textWeight = normalizedTextWeight
+            )
+            
+            GlobalBus.post(messageEvent)
+            
             val actionType = if (isClearing) "cleared" else "received"
             Timber.i("Message $messageNumber $actionType - Text: '$finalText', Duration: ${duration}s, Size: $normalizedTextSize, Weight: $normalizedTextWeight")
 
             call.respond(
                 MessageResponse(
+                    messageNumber = messageNumber,
                     text = finalText,
                     duration = duration,
                     textSize = normalizedTextSize,
