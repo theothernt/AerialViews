@@ -1,5 +1,7 @@
 package com.neilturner.aerialviews.services
 
+import android.content.Context
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
@@ -29,8 +31,8 @@ data class MessageResponse(
     val messageNumber: Int,
     val text: String,
     val duration: Int,
-    val textSize: String,
-    val textWeight: String,
+    val textSize: Int,
+    val textWeight: Int,
     val success: Boolean,
     val message: String
 )
@@ -45,13 +47,42 @@ data class MessageEvent(
     val messageNumber: Int,
     val text: String = "",
     val duration: Int = 0,
-    val textSize: String = "medium",
-    val textWeight: String = "normal",
+    val textSize: Int = 18,
+    val textWeight: Int = 300,
     val timestamp: Long = System.currentTimeMillis()
 )
 
-class KtorServer {
+class KtorServer(context: Context) {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
+    private var context: Context? = null
+
+    // Dynamic validation arrays loaded from XML
+    private var validTextSizes: List<Int> = emptyList()
+    private var validTextWeights: List<Int> = emptyList()
+    private val defaultTextSize = 18
+    private val defaultTextWeight = 300
+
+    private fun loadValidationArrays() {
+        context?.let { ctx ->
+            try {
+                // Load text size values from XML
+                val textSizeArray = ctx.resources.getStringArray(R.array.text_size_values)
+                validTextSizes = textSizeArray.mapNotNull { it.toIntOrNull() }
+
+                // Load text weight values from XML
+                val textWeightArray = ctx.resources.getStringArray(R.array.text_weight_values)
+                validTextWeights = textWeightArray.mapNotNull { it.toIntOrNull() }
+
+                Timber.d("Loaded text size values: $validTextSizes")
+                Timber.d("Loaded text weight values: $validTextWeights")
+            } catch (e: Exception) {
+                Timber.e(e, "Error loading validation arrays from XML, using defaults")
+                // Fallback to hardcoded values if XML loading fails
+                validTextSizes = listOf(72, 66, 60, 54, 48, 42, 36, 32, 28, 24, 21, 18, 15)
+                validTextWeights = listOf(100, 200, 300, 400, 500, 600, 700, 800, 900)
+            }
+        }
+    }
 
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
@@ -68,6 +99,7 @@ class KtorServer {
             } catch (e: Exception) {
                 Timber.Forest.e(e, "Error starting Ktor server")
             }
+            loadValidationArrays()
         }
     }
 
@@ -106,8 +138,8 @@ class KtorServer {
         try {
             val text = call.queryParameters["text"]
             val duration = call.queryParameters["duration"]?.toIntOrNull() ?: 0
-            val textSize = call.queryParameters["textSize"] ?: "medium"
-            val textWeight = call.queryParameters["textWeight"] ?: "normal"
+            val textSizeParam = call.queryParameters["textSize"]?.toIntOrNull()
+            val textWeightParam = call.queryParameters["textWeight"]?.toIntOrNull()
 
             if (text == null) {
                 call.respond(
@@ -124,19 +156,25 @@ class KtorServer {
             val isClearing = text.isEmpty()
 
             // Validate text size parameter
-            val validSizes = listOf("small", "medium", "large", "xl", "xxl")
-            val normalizedTextSize = if (textSize.lowercase() in validSizes) {
-                textSize.lowercase()
+            val normalizedTextSize = if (textSizeParam != null && textSizeParam in validTextSizes) {
+                textSizeParam
             } else {
-                "medium"
+                defaultTextSize
             }
 
             // Validate text weight parameter
-            val validWeights = listOf("light", "normal", "bold", "heavy")
-            val normalizedTextWeight = if (textWeight.lowercase() in validWeights) {
-                textWeight.lowercase()
+            val normalizedTextWeight = if (textWeightParam != null && textWeightParam in validTextWeights) {
+                textWeightParam
             } else {
-                "normal"
+                defaultTextWeight
+            }
+
+            // Log validation warnings if invalid values were provided
+            if (textSizeParam != null && textSizeParam !in validTextSizes) {
+                Timber.w("Invalid textSize value: $textSizeParam. Using default: $defaultTextSize. Valid values: $validTextSizes")
+            }
+            if (textWeightParam != null && textWeightParam !in validTextWeights) {
+                Timber.w("Invalid textWeight value: $textWeightParam. Using default: $defaultTextWeight. Valid values: $validTextWeights")
             }
 
             // Post message event to FlowBus for overlay consumption
@@ -147,9 +185,9 @@ class KtorServer {
                 textSize = normalizedTextSize,
                 textWeight = normalizedTextWeight
             )
-            
+
             GlobalBus.post(messageEvent)
-            
+
             val actionType = if (isClearing) "cleared" else "received"
             Timber.i("Message $messageNumber $actionType - Text: '$finalText', Duration: ${duration}s, Size: $normalizedTextSize, Weight: $normalizedTextWeight")
 

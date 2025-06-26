@@ -165,29 +165,27 @@ class MessageOverlay : AppCompatTextView {
         }
     }
 
-    private fun applyTextSize(sizeString: String) {
-        val sizeInSp = when (sizeString.lowercase()) {
-            "small" -> prefs.messageSize.toFloat() * 0.8f
-            "medium" -> prefs.messageSize.toFloat()
-            "large" -> prefs.messageSize.toFloat() * 1.2f
-            "xl" -> prefs.messageSize.toFloat() * 1.4f
-            "xxl" -> prefs.messageSize.toFloat() * 1.6f
-            else -> prefs.messageSize.toFloat()
-        }
+    private fun applyTextSize(sizeValue: Int) {
+        val sizeInSp = sizeValue.toFloat()
         setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeInSp)
-        Timber.d("$type: Applied text size: $sizeString ($sizeInSp sp)")
+        Timber.d("$type: Applied text size: ${sizeValue}sp")
     }
 
-    private fun applyTextWeight(weightString: String) {
-        val weight = when (weightString.lowercase()) {
-            "light" -> "Light"
-            "normal" -> "Normal"
-            "bold" -> "Bold"
-            "heavy" -> "Black"
+    private fun applyTextWeight(weightValue: Int) {
+        val weight = when (weightValue) {
+            100 -> "Thin"
+            200 -> "ExtraLight"
+            300 -> "Light"
+            400 -> "Normal"
+            500 -> "Medium"
+            600 -> "SemiBold"
+            700 -> "Bold"
+            800 -> "ExtraBold"
+            900 -> "Black"
             else -> prefs.messageWeight
         }
         typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weight)
-        Timber.d("$type: Applied text weight: $weightString -> $weight")
+        Timber.d("$type: Applied text weight: $weightValue -> $weight")
     }
 
     private fun animateOverlays() {

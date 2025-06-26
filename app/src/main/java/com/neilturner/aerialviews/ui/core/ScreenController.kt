@@ -182,8 +182,9 @@ class ScreenController(
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
-                ktorServer = KtorServer()
-                ktorServer?.start()
+                ktorServer = KtorServer(context).apply {
+                    start()
+                }
             }
 
             // Build playlist and start screensaver
