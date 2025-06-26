@@ -123,7 +123,7 @@ class NowPlayingService(
                     val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
                     val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
                     MusicEvent(artist, song)
-                }.takeIf { active == true } ?: MusicEvent()
+                }.takeIf { active } ?: MusicEvent()
 
         Timber.i("updateMetadata - trying $musicEvent")
         GlobalBus.post(musicEvent)
