@@ -19,13 +19,13 @@ object DeviceIPHelper {
                 return modernIP
             }
         }
-        
+
         // Try to get Wi-Fi IP address (legacy method)
         val wifiIP = getWifiIPAddressLegacy(context)
         if (wifiIP.isNotEmpty()) {
             return wifiIP
         }
-        
+
         // Fallback to network interface enumeration
         return getNetworkInterfaceIPAddress()
     }
@@ -36,13 +36,13 @@ object DeviceIPHelper {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val activeNetwork = connectivityManager.activeNetwork ?: return ""
             val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return ""
-            
+
             if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
-                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
-                
+                networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+            ) {
                 val linkProperties = connectivityManager.getLinkProperties(activeNetwork) ?: return ""
-                
+
                 for (linkAddress in linkProperties.linkAddresses) {
                     val address = linkAddress.address
                     if (address is Inet4Address && !address.isLoopbackAddress) {
@@ -55,14 +55,14 @@ object DeviceIPHelper {
         }
         return ""
     }
-    
+
     @Suppress("DEPRECATION")
     private fun getWifiIPAddressLegacy(context: Context): String {
         try {
             val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
             val wifiInfo = wifiManager.connectionInfo
             val ip = wifiInfo.ipAddress
-            
+
             if (ip != 0) {
                 return String.format(
                     Locale.getDefault(),
@@ -70,7 +70,7 @@ object DeviceIPHelper {
                     (ip and 0xff),
                     (ip shr 8 and 0xff),
                     (ip shr 16 and 0xff),
-                    (ip shr 24 and 0xff)
+                    (ip shr 24 and 0xff),
                 )
             }
         } catch (e: Exception) {
@@ -78,7 +78,7 @@ object DeviceIPHelper {
         }
         return ""
     }
-    
+
     private fun getNetworkInterfaceIPAddress(): String {
         try {
             val interfaces = NetworkInterface.getNetworkInterfaces()
@@ -86,7 +86,7 @@ object DeviceIPHelper {
                 if (networkInterface.isLoopback || !networkInterface.isUp) {
                     continue
                 }
-                
+
                 val addresses = networkInterface.inetAddresses
                 for (address in addresses) {
                     if (address is Inet4Address && !address.isLoopbackAddress) {

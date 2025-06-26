@@ -36,7 +36,9 @@ class OverlaysMessageFragment :
         key: String?,
     ) {
         updateSummary()
-    }    private fun updateSummary() {
+    }
+
+    private fun updateSummary() {
         // Line 1
         val line1 = findPreference<EditTextPreference>("message_line1")
         if (line1?.text.toStringOrEmpty().isNotEmpty()) {

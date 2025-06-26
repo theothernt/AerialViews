@@ -9,9 +9,7 @@ import com.neilturner.aerialviews.utils.DeviceIPHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 
-class OverlaysMessageApiFragment :
-    MenuStateFragment() {
-
+class OverlaysMessageApiFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -28,7 +26,6 @@ class OverlaysMessageApiFragment :
     }
 
     override fun onDestroy() {
-
         super.onDestroy()
     }
 
@@ -43,7 +40,7 @@ class OverlaysMessageApiFragment :
     private fun updateIPAddressDisplay() {
         val ipPreference = findPreference<Preference>("message_api_current_ip")
         val usagePreference = findPreference<Preference>("message_api_usage")
-        
+
         if (ipPreference != null) {
             val ipAddress = DeviceIPHelper.getIPAddress(requireContext())
             val port = GeneralPrefs.messageApiPort
@@ -53,7 +50,8 @@ class OverlaysMessageApiFragment :
 
         if (usagePreference != null) {
             val port = GeneralPrefs.messageApiPort
-            val usageText = """
+            val usageText =
+                """
                 GET /status - Check server status
                 GET /message1?text=Hello - Display message on slot 1
                 GET /message2?text=Hello - Display message on slot 2
@@ -71,7 +69,7 @@ class OverlaysMessageApiFragment :
                 http://YOUR_IP:$port/message1?text=Hello%20World
                 http://YOUR_IP:$port/message2?text=Test&duration=20&textSize=large&textWeight=bold
                 http://YOUR_IP:$port/message3?text= (clears message)
-            """.trimIndent()
+                """.trimIndent()
             usagePreference.summary = usageText
         }
     }

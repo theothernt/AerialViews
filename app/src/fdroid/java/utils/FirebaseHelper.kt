@@ -20,7 +20,10 @@ object FirebaseHelper {
         // No op
     }
 
-    fun logCustomKeysIfRecent(key: String, value: String) {
+    fun logCustomKeysIfRecent(
+        key: String,
+        value: String,
+    ) {
         // No op
     }
 }

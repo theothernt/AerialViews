@@ -4,18 +4,21 @@ import android.content.Context
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import io.ktor.http.ContentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.server.netty.NettyApplicationEngine
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
-import io.ktor.server.routing.RoutingCall
 import io.ktor.server.routing.get
+import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,34 +30,38 @@ import timber.log.Timber
 import java.net.BindException
 
 @Serializable
-data class MessageResponse(
+data class MessageRequest(
+    val text: String?,
+    val duration: Int? = null,
+    val textSize: Int? = null,
+    val textWeight: Int? = null,
+)
+
+@Serializable
+data class SuccessResponse(
+    val success: Boolean = true,
+    val message: String,
+)
+
+@Serializable
+data class ErrorResponse(
+    val success: Boolean = false,
+    val error: String,
+)
+
+data class MessageEvent(
     val messageNumber: Int,
     val text: String,
     val duration: Int,
     val textSize: Int,
     val textWeight: Int,
-    val success: Boolean,
-    val message: String
 )
 
-@Serializable
-data class ErrorResponse(
-    val success: Boolean,
-    val error: String
-)
-
-data class MessageEvent(
-    val messageNumber: Int,
-    val text: String = "",
-    val duration: Int = 0,
-    val textSize: Int = 18,
-    val textWeight: Int = 300,
-    val timestamp: Long = System.currentTimeMillis()
-)
-
-class KtorServer(context: Context) {
+class KtorServer(
+    context: Context,
+) {
     private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
-    private var context: Context? = null
+    private val context: Context = context.applicationContext
 
     // Dynamic validation arrays loaded from XML
     private var validTextSizes: List<Int> = emptyList()
@@ -62,25 +69,23 @@ class KtorServer(context: Context) {
     private val defaultTextSize = 18
     private val defaultTextWeight = 300
 
+    init {
+        loadValidationArrays()
+    }
+
     private fun loadValidationArrays() {
-        context?.let { ctx ->
-            try {
-                // Load text size values from XML
-                val textSizeArray = ctx.resources.getStringArray(R.array.text_size_values)
-                validTextSizes = textSizeArray.mapNotNull { it.toIntOrNull() }
+        try {
+            // Load text size values from XML
+            val textSizeArray = context.resources.getStringArray(R.array.text_size_values)
+            validTextSizes = textSizeArray.mapNotNull { it.toIntOrNull() }
 
-                // Load text weight values from XML
-                val textWeightArray = ctx.resources.getStringArray(R.array.text_weight_values)
-                validTextWeights = textWeightArray.mapNotNull { it.toIntOrNull() }
+            // Load text weight values from XML
+            val textWeightArray = context.resources.getStringArray(R.array.text_weight_values)
+            validTextWeights = textWeightArray.mapNotNull { it.toIntOrNull() }
 
-                Timber.d("Loaded text size values: $validTextSizes")
-                Timber.d("Loaded text weight values: $validTextWeights")
-            } catch (e: Exception) {
-                Timber.e(e, "Error loading validation arrays from XML, using defaults")
-                // Fallback to hardcoded values if XML loading fails
-                validTextSizes = listOf(72, 66, 60, 54, 48, 42, 36, 32, 28, 24, 21, 18, 15)
-                validTextWeights = listOf(100, 200, 300, 400, 500, 600, 700, 800, 900)
-            }
+            Timber.d("Loaded text size & weight values")
+        } catch (e: Exception) {
+            Timber.e(e, "Error loading validation arrays from XML, using defaults")
         }
     }
 
@@ -99,7 +104,6 @@ class KtorServer(context: Context) {
             } catch (e: Exception) {
                 Timber.Forest.e(e, "Error starting Ktor server")
             }
-            loadValidationArrays()
         }
     }
 
@@ -110,106 +114,79 @@ class KtorServer(context: Context) {
 
     private fun Application.configureRouting() {
         routing {
-            // get("/") { }
-
             get("/status") {
-                call.respondText("Aerial Views Message API is running", contentType = ContentType.Text.Plain)
+                call.respondText("Aerial Views message API is running", ContentType.Text.Plain)
             }
 
-            get("/message1") {
-                handleMessageRequest(call, 1)
-            }
-
-            get("/message2") {
-                handleMessageRequest(call, 2)
-            }
-
-            get("/message3") {
-                handleMessageRequest(call, 3)
-            }
-
-            get("/message4") {
-                handleMessageRequest(call, 4)
+            post("/message/{messageNumber}") {
+                val messageNumber = call.parameters["messageNumber"]?.toIntOrNull()
+                if (messageNumber == null || messageNumber !in 1..4) {
+                    call.respond(
+                        HttpStatusCode.BadRequest,
+                        ErrorResponse(error = "Invalid message number. Must be between 1 and 4."),
+                    )
+                    return@post
+                }
+                handleMessageRequest(call, messageNumber)
             }
         }
     }
 
-    private suspend fun handleMessageRequest(call: RoutingCall, messageNumber: Int) {
+    private suspend fun handleMessageRequest(
+        call: ApplicationCall,
+        messageNumber: Int,
+    ) {
         try {
-            val text = call.queryParameters["text"]
-            val duration = call.queryParameters["duration"]?.toIntOrNull() ?: 0
-            val textSizeParam = call.queryParameters["textSize"]?.toIntOrNull()
-            val textWeightParam = call.queryParameters["textWeight"]?.toIntOrNull()
+            val request = call.receive<MessageRequest>()
 
+            val text = request.text
             if (text == null) {
+                call.respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Required parameter 'text' is missing."))
+                return
+            }
+
+            val isClearing = text.isEmpty()
+            val duration = request.duration ?: 0
+
+            // Validate textSize, if provided
+            val textSize = request.textSize ?: defaultTextSize
+            if (request.textSize != null && request.textSize !in validTextSizes) {
                 call.respond(
-                    ErrorResponse(
-                        success = false,
-                        error = "Required parameter 'text' is missing"
-                    )
+                    HttpStatusCode.BadRequest,
+                    ErrorResponse(error = "Invalid textSize value: ${request.textSize}. Valid values are: $validTextSizes"),
                 )
                 return
             }
 
-            // Handle empty text as a clear message command
-            val finalText = text.ifEmpty { "" }
-            val isClearing = text.isEmpty()
-
-            // Validate text size parameter
-            val normalizedTextSize = if (textSizeParam != null && textSizeParam in validTextSizes) {
-                textSizeParam
-            } else {
-                defaultTextSize
-            }
-
-            // Validate text weight parameter
-            val normalizedTextWeight = if (textWeightParam != null && textWeightParam in validTextWeights) {
-                textWeightParam
-            } else {
-                defaultTextWeight
-            }
-
-            // Log validation warnings if invalid values were provided
-            if (textSizeParam != null && textSizeParam !in validTextSizes) {
-                Timber.w("Invalid textSize value: $textSizeParam. Using default: $defaultTextSize. Valid values: $validTextSizes")
-            }
-            if (textWeightParam != null && textWeightParam !in validTextWeights) {
-                Timber.w("Invalid textWeight value: $textWeightParam. Using default: $defaultTextWeight. Valid values: $validTextWeights")
+            // Validate textWeight, if provided
+            val textWeight = request.textWeight ?: defaultTextWeight
+            if (request.textWeight != null && request.textWeight !in validTextWeights) {
+                call.respond(
+                    HttpStatusCode.BadRequest,
+                    ErrorResponse(error = "Invalid textWeight value: ${request.textWeight}. Valid values are: $validTextWeights"),
+                )
+                return
             }
 
             // Post message event to FlowBus for overlay consumption
-            val messageEvent = MessageEvent(
-                messageNumber = messageNumber,
-                text = finalText,
-                duration = duration,
-                textSize = normalizedTextSize,
-                textWeight = normalizedTextWeight
-            )
-
+            val messageEvent =
+                MessageEvent(
+                    messageNumber,
+                    text,
+                    duration,
+                    textSize,
+                    textWeight,
+                )
             GlobalBus.post(messageEvent)
 
             val actionType = if (isClearing) "cleared" else "received"
-            Timber.i("Message $messageNumber $actionType - Text: '$finalText', Duration: ${duration}s, Size: $normalizedTextSize, Weight: $normalizedTextWeight")
+            Timber.i("Message $messageNumber $actionType - Text: '$text', Duration: ${duration}s, Size: $textSize, Weight: $textWeight")
 
-            call.respond(
-                MessageResponse(
-                    messageNumber = messageNumber,
-                    text = finalText,
-                    duration = duration,
-                    textSize = normalizedTextSize,
-                    textWeight = normalizedTextWeight,
-                    success = true,
-                    message = if (isClearing) "Message $messageNumber cleared successfully" else "Message $messageNumber processed successfully"
-                )
-            )
+            val successMessage = if (isClearing) "Message $messageNumber cleared successfully" else "Message $messageNumber processed successfully"
+            call.respond(HttpStatusCode.OK, SuccessResponse(message = successMessage))
         } catch (e: Exception) {
             Timber.e(e, "Error processing message $messageNumber request")
-            call.respond(
-                ErrorResponse(
-                    success = false,
-                    error = "Internal server error: ${e.message}"
-                )
-            )
+            call.respond(HttpStatusCode.InternalServerError, ErrorResponse(error = "An internal server error occurred."))
         }
     }
 

@@ -94,7 +94,7 @@ object GeneralPrefs : KotprefModel() {
     var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
 
     var descriptionSize by stringPref("18", "description_size")
-    var descriptionWeight by stringPref("300", "description_weight")    // Message
+    var descriptionWeight by stringPref("300", "description_weight") // Message
 
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
@@ -199,7 +199,7 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
-    var seekInterval by stringPref("10", "seek_interval")    // Advanced
+    var seekInterval by stringPref("10", "seek_interval") // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")

@@ -129,8 +129,7 @@ class LocalMediaProvider(
                     continue
                 }
                 val files = directory.listFiles()
-                if (!files.isNullOrEmpty()
-                ) {
+                if (!files.isNullOrEmpty()) {
                     found.addAll(
                         files.filter { file ->
                             val filename = file.name.split("/").last()

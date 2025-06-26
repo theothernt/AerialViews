@@ -50,10 +50,12 @@ object FirebaseHelper {
         }
     }
 
-    fun logCustomKeysIfRecent(key: String, value: String) {
+    fun logCustomKeysIfRecent(
+        key: String,
+        value: String,
+    ) {
         if (isWithinLoggingPeriod()) {
             Firebase.crashlytics.setCustomKey(key, value)
         }
     }
 }
-

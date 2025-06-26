@@ -4,14 +4,12 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 
 class SettingsFragment :
     MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -26,7 +24,6 @@ class SettingsFragment :
 
     override fun onDestroy() {
         super.onDestroy()
-
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

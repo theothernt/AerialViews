@@ -29,7 +29,7 @@ class MessageOverlay : AppCompatTextView {
     var type = OverlayType.MESSAGE1
 
     private val receiver = EventsReceiver()
-    private var currentMessage = MessageEvent(messageNumber = 0)
+    private var currentMessage = MessageEvent(0, "", 0, 0, 0)
     private var shouldUpdate = false
     private var isUpdating = false
     private val prefs = GeneralPrefs
@@ -50,7 +50,7 @@ class MessageOverlay : AppCompatTextView {
 
         receiver.subscribe { messageEvent: MessageEvent ->
             Timber.i("$type: Received message event for slot ${messageEvent.messageNumber}")
-            
+
             // Only process messages for this overlay's message number
             val overlayMessageNumber = getMessageNumberFromType()
             if (messageEvent.messageNumber == overlayMessageNumber) {
@@ -75,15 +75,7 @@ class MessageOverlay : AppCompatTextView {
         clearJob?.cancel()
     }
 
-    private fun getMessageNumberFromType(): Int {
-        return when (type) {
-            OverlayType.MESSAGE1 -> 1
-            OverlayType.MESSAGE2 -> 2
-            OverlayType.MESSAGE3 -> 3
-            OverlayType.MESSAGE4 -> 4
-            else -> 1
-        }
-    }
+    private fun getMessageNumberFromType(): Int = type.name.last().code
 
     private suspend fun updateMessage() {
         isUpdating = true
@@ -100,21 +92,18 @@ class MessageOverlay : AppCompatTextView {
 
         if (shouldFadeIn) {
             fadeIn()
-            
+
             // Schedule auto-clear if duration is specified
             if (currentMessage.duration > 0) {
-                clearJob = mainScope.launch {
-                    delay(currentMessage.duration * 1000L)
-                    if (text.isNotEmpty()) {
-                        Timber.i("$type: Auto-clearing message after ${currentMessage.duration} seconds")
-                        currentMessage = MessageEvent(
-                            messageNumber = getMessageNumberFromType(),
-                            text = "",
-                            duration = 0
-                        )
-                        updateMessage()
+                clearJob =
+                    mainScope.launch {
+                        delay(currentMessage.duration * 1000L)
+                        if (text.isNotEmpty()) {
+                            Timber.i("$type: Auto-clearing message after ${currentMessage.duration} seconds")
+                            currentMessage = currentMessage.copy(text = "", duration = 0)
+                            updateMessage()
+                        }
                     }
-                }
             }
         }
 
@@ -147,13 +136,13 @@ class MessageOverlay : AppCompatTextView {
 
     private fun updateTextAndStyle(): Boolean {
         val message = currentMessage.text
-        
+
         // Apply dynamic text size
         applyTextSize(currentMessage.textSize)
-        
+
         // Apply dynamic text weight
         applyTextWeight(currentMessage.textWeight)
-        
+
         return if (message.isNotEmpty()) {
             Timber.i("$type: Set new message: '$message'")
             text = message
@@ -172,18 +161,19 @@ class MessageOverlay : AppCompatTextView {
     }
 
     private fun applyTextWeight(weightValue: Int) {
-        val weight = when (weightValue) {
-            100 -> "Thin"
-            200 -> "ExtraLight"
-            300 -> "Light"
-            400 -> "Normal"
-            500 -> "Medium"
-            600 -> "SemiBold"
-            700 -> "Bold"
-            800 -> "ExtraBold"
-            900 -> "Black"
-            else -> prefs.messageWeight
-        }
+        val weight =
+            when (weightValue) {
+                100 -> "Thin"
+                200 -> "ExtraLight"
+                300 -> "Light"
+                400 -> "Normal"
+                500 -> "Medium"
+                600 -> "SemiBold"
+                700 -> "Bold"
+                800 -> "ExtraBold"
+                900 -> "Black"
+                else -> prefs.messageWeight
+            }
         typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weight)
         Timber.d("$type: Applied text weight: $weightValue -> $weight")
     }
@@ -199,7 +189,7 @@ class MessageOverlay : AppCompatTextView {
                     addTransition(Fade())
                     addTransition(ChangeBounds())
                     duration = 300
-                }
+                },
             )
         }
 
