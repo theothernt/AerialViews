@@ -50,11 +50,11 @@ data class ErrorResponse(
 )
 
 data class MessageEvent(
-    val messageNumber: Int,
-    val text: String,
-    val duration: Int,
-    val textSize: Int,
-    val textWeight: Int,
+    val messageNumber: Int = 1,
+    val text: String = "",
+    val duration: Int?,
+    val textSize: Int?,
+    val textWeight: Int?,
 )
 
 class KtorServer(

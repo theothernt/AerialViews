@@ -137,12 +137,17 @@ class MessageOverlay : AppCompatTextView {
     private fun updateTextAndStyle(): Boolean {
         val message = currentMessage.text
 
-        // Apply dynamic text size
-        applyTextSize(currentMessage.textSize)
+        // Font size
+        currentMessage.textSize?.let {
+            applyTextSize(it)
+        }
 
-        // Apply dynamic text weight
-        applyTextWeight(currentMessage.textWeight)
+        // Font weight
+        currentMessage.textWeight?.let {
+            applyTextWeight(it)
+        }
 
+        // Message
         return if (message.isNotEmpty()) {
             Timber.i("$type: Set new message: '$message'")
             text = message
@@ -157,25 +162,10 @@ class MessageOverlay : AppCompatTextView {
     private fun applyTextSize(sizeValue: Int) {
         val sizeInSp = sizeValue.toFloat()
         setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeInSp)
-        Timber.d("$type: Applied text size: ${sizeValue}sp")
     }
 
     private fun applyTextWeight(weightValue: Int) {
-        val weight =
-            when (weightValue) {
-                100 -> "Thin"
-                200 -> "ExtraLight"
-                300 -> "Light"
-                400 -> "Normal"
-                500 -> "Medium"
-                600 -> "SemiBold"
-                700 -> "Bold"
-                800 -> "ExtraBold"
-                900 -> "Black"
-                else -> prefs.messageWeight
-            }
-        typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weight)
-        Timber.d("$type: Applied text weight: $weightValue -> $weight")
+        typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weightValue)
     }
 
     private fun animateOverlays() {
