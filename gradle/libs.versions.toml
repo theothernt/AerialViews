@@ -2,7 +2,7 @@
 agp = "8.11.0"
 kotlin = "2.2.0"
 kotlin-serialization = "1.8.1"
-google-services = "4.4.2"
+google-services = "4.4.3"
 ksp = "2.2.0-2.0.2"
 coroutines = "1.10.2"
 core-ktx = "1.16.0"
@@ -12,7 +12,7 @@ appcompat = "1.7.1"
 
 firebase-crashlytics-plugin = "3.0.4"
 firebase-perf-plugin = "1.4.2"
-firebase-analytics = "22.4.0"
+firebase-analytics = "22.5.0"
 firebase-crashlytics = "19.4.4"
 firebase-perf = "21.0.5"
 
