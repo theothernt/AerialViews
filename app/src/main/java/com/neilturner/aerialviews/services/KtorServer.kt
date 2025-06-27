@@ -52,7 +52,7 @@ data class ErrorResponse(
 data class MessageEvent(
     val messageNumber: Int = 1,
     val text: String = "",
-    val duration: Int?,
+    val duration: Int = 0,
     val textSize: Int?,
     val textWeight: Int?,
 )

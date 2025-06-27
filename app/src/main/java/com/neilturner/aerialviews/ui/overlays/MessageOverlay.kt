@@ -1,15 +1,9 @@
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
-import android.transition.ChangeBounds
-import android.transition.Fade
-import android.transition.TransitionManager
-import android.transition.TransitionSet
 import android.util.AttributeSet
 import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
@@ -30,15 +24,17 @@ class MessageOverlay : AppCompatTextView {
 
     private val receiver = EventsReceiver()
     private var currentMessage = MessageEvent(0, "", 0, 0, 0)
-    private var shouldUpdate = false
-    private var isUpdating = false
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var clearJob: Job? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
@@ -51,22 +47,20 @@ class MessageOverlay : AppCompatTextView {
         receiver.subscribe { messageEvent: MessageEvent ->
             Timber.i("$type: Received message event for slot ${messageEvent.messageNumber}")
 
+            // TODO: add throttling
+            // https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-1198103541
+
             // Only process messages for this overlay's message number
             val overlayMessageNumber = getMessageNumberFromType()
             if (messageEvent.messageNumber == overlayMessageNumber) {
                 Timber.i("$type: Processing message for slot $overlayMessageNumber")
                 if (currentMessage != messageEvent) {
                     currentMessage = messageEvent
-                    if (!isUpdating) {
-                        mainScope.launch {
-                            updateMessage()
-                        }
-                    } else {
-                        shouldUpdate = true
-                    }
+                    updateMessage()
                 }
             }
         }
+
     }
 
     override fun onDetachedFromWindow() {
@@ -77,64 +71,26 @@ class MessageOverlay : AppCompatTextView {
 
     private fun getMessageNumberFromType(): Int = type.name.last().code
 
-    private suspend fun updateMessage() {
-        isUpdating = true
-
-        // Cancel any pending clear job
+    private fun updateMessage() {
         clearJob?.cancel()
+        updateTextAndStyle()
+        visibility = if (text.isNullOrBlank()) GONE else VISIBLE
 
-        if (alpha != 0f) {
-            fadeOut()
-        }
-
-        shouldUpdate = false
-        val shouldFadeIn = updateTextAndStyle()
-
-        if (shouldFadeIn) {
-            fadeIn()
-
-            // Schedule auto-clear if duration is specified
-            if (currentMessage.duration > 0) {
-                clearJob =
-                    mainScope.launch {
-                        delay(currentMessage.duration * 1000L)
-                        if (text.isNotEmpty()) {
-                            Timber.i("$type: Auto-clearing message after ${currentMessage.duration} seconds")
-                            currentMessage = currentMessage.copy(text = "", duration = 0)
-                            updateMessage()
-                        }
+        // Schedule auto-clear if duration is specified
+        if (currentMessage.duration > 0) {
+            clearJob =
+                mainScope.launch {
+                    delay(currentMessage.duration * 1000L)
+                    if (text.isNotEmpty()) {
+                        Timber.i("$type: Auto-clearing message after ${currentMessage.duration} seconds")
+                        currentMessage = currentMessage.copy(text = "", duration = 0)
+                        updateMessage()
                     }
-            }
-        }
-
-        animateOverlays()
-
-        isUpdating = false
-
-        if (shouldUpdate) {
-            updateMessage()
+                }
         }
     }
 
-    private suspend fun fadeOut() {
-        animate()
-            .alpha(0f)
-            .setDuration(300)
-            .start()
-        Timber.i("$type: Fading out...")
-        delay(300)
-    }
-
-    private suspend fun fadeIn() {
-        animate()
-            .alpha(1f)
-            .setDuration(300)
-            .start()
-        Timber.i("$type: Fading in...")
-        delay(300)
-    }
-
-    private fun updateTextAndStyle(): Boolean {
+    private fun updateTextAndStyle() {
         val message = currentMessage.text
 
         // Font size
@@ -148,14 +104,12 @@ class MessageOverlay : AppCompatTextView {
         }
 
         // Message
-        return if (message.isNotEmpty()) {
+        if (message.isNotEmpty()) {
             Timber.i("$type: Set new message: '$message'")
             text = message
-            true
         } else {
             Timber.i("$type: Clearing message")
             text = null
-            false
         }
     }
 
@@ -166,30 +120,6 @@ class MessageOverlay : AppCompatTextView {
 
     private fun applyTextWeight(weightValue: Int) {
         typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weightValue)
-    }
-
-    private fun animateOverlays() {
-        val layout: ConstraintLayout? = parent as? ConstraintLayout
-
-        layout?.let {
-            TransitionManager.beginDelayedTransition(
-                it,
-                TransitionSet().apply {
-                    ordering = TransitionSet.ORDERING_TOGETHER
-                    addTransition(Fade())
-                    addTransition(ChangeBounds())
-                    duration = 300
-                },
-            )
-        }
-
-        if (!isGone && text.isNullOrBlank()) {
-            Timber.i("$type: Transition... GONE")
-            visibility = GONE
-        } else if (isGone && !text.isNullOrEmpty()) {
-            Timber.i("$type: Transition... VISIBLE")
-            visibility = VISIBLE
-        }
     }
 
     fun updateMessage(message: String) {
