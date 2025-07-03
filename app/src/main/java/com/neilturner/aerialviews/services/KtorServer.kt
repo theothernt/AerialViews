@@ -98,18 +98,18 @@ class KtorServer(
                         configureRouting()
                         configurePlugins()
                     }.start(wait = true)
-                Timber.Forest.i("Ktor server started on port $port")
+                Timber.i("Ktor server started on port $port")
             } catch (e: BindException) {
-                Timber.Forest.e(e, "Failed to start server: Port $port already in use")
+                Timber.e(e, "Failed to start server: Port $port already in use")
             } catch (e: Exception) {
-                Timber.Forest.e(e, "Error starting Ktor server")
+                Timber.e(e, "Error starting Ktor server")
             }
         }
     }
 
     fun stop() {
-        server?.stop(1000, 2000)
-        Timber.Forest.i("Ktor server stopped")
+        server?.stop(500, 1000)
+        Timber.i("Ktor server stopped")
     }
 
     private fun Application.configureRouting() {
