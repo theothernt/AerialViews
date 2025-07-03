@@ -16,7 +16,7 @@ object FontHelper {
         getTypeface(
             context,
             typeface,
-            weight,
+            weight.toInt(),
         )
 
     fun getTypeface(
