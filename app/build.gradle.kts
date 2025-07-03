@@ -25,9 +25,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 36
-        versionCode = 54
-        versionName = "1.7.8"
-        betaVersion = "-beta6"
+        versionCode = 57
+        versionName = "1.7.9"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -68,7 +68,7 @@ android {
 
     val keyProps = loadProperties("secrets.properties")
     buildTypes {
-        getByName("debug") {
+        debug {
             val openWeather = keyProps["openWeatherDebug"] as String?
             val unsplash = keyProps["unsplashDebug"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
@@ -80,7 +80,7 @@ android {
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
-        getByName("release") {
+        release {
             val openWeather = keyProps["openWeather"] as String?
             val unsplash = keyProps["unsplash"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
@@ -183,7 +183,10 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
+
     "baselineProfile"(project(":baselineprofile"))
+
+    implementation(project(":projectivyapi"))
 }
 
 tasks.withType<Test>().configureEach {

@@ -18,7 +18,6 @@
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
   <string name="allow_fallback_decoders_summary">Включає підтримку програмних або альтернативних кодеків на деяких пристроях</string>
   <string name="allow_fallback_decoders_title">Дозволити резервні декодери</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
   <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
   <string name="appearance_animations_summary">Налаштуйте анімацію, яка використовується для накладання, а також між відео та фотографіями</string>

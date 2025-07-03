@@ -4,6 +4,7 @@ import android.content.Context
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.TimeHelper.calculateTimeAgo
 import com.neilturner.aerialviews.utils.capitalise
@@ -123,8 +124,10 @@ class WeatherService(
                     }
                 }
                 response.code() == 401 -> {
-                    Timber.e("Unauthorized access to weather API - cancelling weather updates")
+                    val error = "Unauthorized access to weather API - cancelling weather updates"
+                    Timber.e(error)
                     stop() // Cancel the job for unauthorized access
+                    FirebaseHelper.logIfRecent(error)
                     WeatherEvent()
                 }
                 response.code() in 500..599 -> {
@@ -134,23 +137,30 @@ class WeatherService(
                         delay(retryDelay) // Wait before retry
                         return forecastUpdate() // Retry
                     } else {
-                        Timber.e("Max retries reached for server error, giving up")
+                        val error = "Max retries reached for server error - giving up"
+                        Timber.e(error)
+                        FirebaseHelper.logIfRecent(error)
                         retryCount = 0
                         WeatherEvent()
                     }
                 }
                 response.code() == 429 -> {
-                    Timber.w("Rate limit exceeded (429) - backing off")
+                    val error = "Rate limit exceeded - backing off"
+                    Timber.w(error)
+                    FirebaseHelper.logIfRecent(error)
                     delay(rateLimitDelay) // Back off for rate limiting
                     WeatherEvent()
                 }
                 else -> {
-                    Timber.e("Failed to fetch weather data - HTTP ${response.code()}: ${response.message()}")
+                    val error = "Failed to fetch weather data - HTTP ${response.code()}: ${response.message()}"
+                    Timber.e(error)
+                    FirebaseHelper.logIfRecent(error)
                     WeatherEvent()
                 }
             }
         } catch (e: Exception) {
             Timber.Forest.e(e, "Failed to fetch and parse weather data")
+            FirebaseHelper.logExceptionIfRecent(e)
             WeatherEvent()
         }
     }
