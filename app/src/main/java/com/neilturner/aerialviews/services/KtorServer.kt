@@ -11,8 +11,8 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
-import io.ktor.server.netty.NettyApplicationEngine
+import io.ktor.server.cio.CIO
+import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -60,7 +60,7 @@ data class MessageEvent(
 class KtorServer(
     context: Context,
 ) {
-    private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
+    private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
     private val context: Context = context.applicationContext
 
     // Dynamic validation arrays loaded from XML
@@ -94,7 +94,7 @@ class KtorServer(
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
             try {
                 server =
-                    embeddedServer(Netty, port) {
+                    embeddedServer(CIO, port) {
                         configureRouting()
                         configurePlugins()
                     }.start(wait = true)
