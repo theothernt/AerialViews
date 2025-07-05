@@ -25,8 +25,9 @@ leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
 sardine-android = "0.0.3"
-logging-interceptor = "4.12.0"
+logging-interceptor = "5.0.0"
 retrofit = "3.0.0"
+okhttp = "5.0.0"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.7.1"
@@ -35,8 +36,8 @@ kotpref = "2.13.2"
 coil3 = "3.2.0"
 timber = "5.0.1"
 
-junit-jupiter = "5.13.2"
-junit5 = "1.13.0.0"
+junit-jupiter = "5.13.3"
+junit5 = "1.13.1.0"
 junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
@@ -73,6 +74,7 @@ kotpref = { group = "com.chibatching.kotpref", name = "kotpref", version.ref = "
 kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer", version.ref = "kotpref" }
 kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support", version.ref = "kotpref" }
 
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
@@ -108,7 +110,7 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
-retrofit = ["retrofit", "converter-kotlin-serialization"]
+retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 
 [plugins]
