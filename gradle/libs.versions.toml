@@ -25,9 +25,9 @@ leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
 sardine-android = "0.0.3"
-logging-interceptor = "5.0.0"
+logging-interceptor = "5.1.0"
 retrofit = "3.0.0"
-okhttp = "5.0.0"
+okhttp = "5.1.0"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.7.1"
