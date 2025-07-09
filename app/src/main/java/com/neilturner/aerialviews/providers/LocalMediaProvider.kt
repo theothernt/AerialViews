@@ -128,18 +128,39 @@ class LocalMediaProvider(
                 if (!directory.exists() || !directory.isDirectory) {
                     continue
                 }
-                val files = directory.listFiles()
-                if (!files.isNullOrEmpty()) {
-                    found.addAll(
-                        files.filter { file ->
-                            val filename = file.name.split("/").last()
-                            !FileHelper.isDotOrHiddenFile(filename)
-                        },
-                    )
+
+                if (prefs.legacySearchSubfolders) {
+                    found.addAll(listFilesAndFoldersRecursively(directory))
+                } else {
+                    val files = directory.listFiles()
+                    if (!files.isNullOrEmpty()) {
+                        found.addAll(
+                            files.filter { file ->
+                                val filename = file.name.split("/").last()
+                                !FileHelper.isDotOrHiddenFile(filename)
+                            },
+                        )
+                    }
                 }
             }
             return@withContext found.map { item -> item.absolutePath }
         }
+
+    private fun listFilesAndFoldersRecursively(directory: File): List<File> {
+        val files = mutableListOf<File>()
+        directory.listFiles()?.forEach { file ->
+            if (FileHelper.isDotOrHiddenFile(file.name)) {
+                return@forEach
+            }
+
+            if (file.isDirectory) {
+                files.addAll(listFilesAndFoldersRecursively(file))
+            } else {
+                files.add(file)
+            }
+        }
+        return files
+    }
 
     @Suppress("JoinDeclarationAndAssignment")
     private suspend fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {

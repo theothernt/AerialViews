@@ -173,6 +173,7 @@
 
   <string name="local_videos_legacy_folder_title">Specify a folder (eg. /Movies, case sensitive)</string>
   <string name="local_videos_legacy_folder_summary">No folder specified</string>
+  <string name="local_videos_legacy_search_subfolders_title">Search subfolders</string>
 
   <string name="local_videos_legacy_no_volume">Volume not specified</string>
   <string name="local_videos_legacy_no_folder">Folder not specified</string>
