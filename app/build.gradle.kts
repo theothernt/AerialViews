@@ -156,7 +156,7 @@ android {
         getByName("googleplay").java.srcDir("src/common/java")
         getByName("googleplaybeta").java.srcDir("src/common/java")
         getByName("amazon").java.srcDir("src/common/java")
-        getByName("fdroid").java.srcDir("src/froid/java")
+        getByName("fdroid").java.srcDir("src/fdroid/java")
     }
 }
 
