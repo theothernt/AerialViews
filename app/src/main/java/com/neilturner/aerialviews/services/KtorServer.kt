@@ -91,13 +91,14 @@ class KtorServer(
 
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
+            Timber.i("Attempting to start Ktor server...")
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
             try {
                 server =
                     embeddedServer(CIO, port) {
                         configureRouting()
                         configurePlugins()
-                    }.start(wait = true)
+                    }.start(wait = false)
                 Timber.i("Ktor server started on port $port")
             } catch (e: BindException) {
                 Timber.e(e, "Failed to start server: Port $port already in use")
@@ -108,7 +109,7 @@ class KtorServer(
     }
 
     fun stop() {
-        server?.stop(500, 1000)
+        server?.stop(1000, 2000)
         Timber.i("Ktor server stopped")
     }
 

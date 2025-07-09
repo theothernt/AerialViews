@@ -105,7 +105,7 @@ object GeneralPrefs : KotprefModel() {
     var messageWeight by stringPref("300", "message_weight")
 
     var messageApiEnabled by booleanPref(false, "message_api_enabled")
-    var messageApiPort by stringPref("8080", "message_api_port")
+    var messageApiPort by stringPref("8081", "message_api_port")
 
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")

@@ -425,12 +425,7 @@
 
   <string name="appearance_message_api_enabled_title">Enable API</string>
   <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
-  <string name="appearance_message_api_port_title">Port number</string>
-  <string name="appearance_message_api_port_summary">Port for the HTTP API server (default: 8080)</string>
-  <string name="appearance_message_api_current_ip_title">Connection Details</string>
-  <string name="appearance_message_api_current_ip_summary">Shows current device IP address and API URL</string>
-  <string name="appearance_message_api_usage_title">How to Use</string>
-  <string name="appearance_message_api_usage_summary">API endpoints and usage examples</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
 
   <!-- Main / Settings / Appearance -->
   <string name="appearance_typography_title">Typography</string>
