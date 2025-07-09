@@ -97,7 +97,7 @@ android {
     packaging {
         resources {
             resources.excludes.add("META-INF/INDEX.LIST")
-            resources.excludes.add("META-INF/io.netty.versions.properties")
+            
         }
     }
 

@@ -11,8 +11,8 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
 import io.ktor.server.engine.EmbeddedServer
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
-import io.ktor.server.netty.NettyApplicationEngine
+import io.ktor.server.cio.CIO
+import io.ktor.server.cio.CIOApplicationEngine
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -60,7 +60,7 @@ data class MessageEvent(
 class KtorServer(
     context: Context,
 ) {
-    private var server: EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration>? = null
+    private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
     private val context: Context = context.applicationContext
 
     // Dynamic validation arrays loaded from XML
@@ -94,22 +94,22 @@ class KtorServer(
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
             try {
                 server =
-                    embeddedServer(Netty, port) {
+                    embeddedServer(CIO, port) {
                         configureRouting()
                         configurePlugins()
                     }.start(wait = true)
-                Timber.Forest.i("Ktor server started on port $port")
+                Timber.i("Ktor server started on port $port")
             } catch (e: BindException) {
-                Timber.Forest.e(e, "Failed to start server: Port $port already in use")
+                Timber.e(e, "Failed to start server: Port $port already in use")
             } catch (e: Exception) {
-                Timber.Forest.e(e, "Error starting Ktor server")
+                Timber.e(e, "Error starting Ktor server")
             }
         }
     }
 
     fun stop() {
-        server?.stop(1000, 2000)
-        Timber.Forest.i("Ktor server stopped")
+        server?.stop(500, 1000)
+        Timber.i("Ktor server stopped")
     }
 
     private fun Application.configureRouting() {
