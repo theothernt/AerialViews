@@ -18,4 +18,5 @@ object LocalMediaPrefs : KotprefModel() {
     var legacyVolumeLabel by stringPref("", "local_videos_legacy_volume_label")
     var legacyVolume by stringPref("", "local_videos_legacy_volume")
     var legacyFolder by stringPref("", "local_videos_legacy_folder")
+    var legacySearchSubfolders by booleanPref(false, "local_videos_legacy_search_subfolders")
 }
