@@ -18,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
   <string name="allow_fallback_decoders_summary">Включає підтримку програмних або альтернативних кодеків на деяких пристроях</string>
   <string name="allow_fallback_decoders_title">Дозволити резервні декодери</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
   <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
   <string name="appearance_animations_summary">Налаштуйте анімацію, яка використовується для накладання, а також між відео та фотографіями</string>
@@ -70,10 +71,14 @@
   <string name="appearance_loading_show_title">Показувати текст завантаження</string>
   <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
   <string name="appearance_location_title">Місце розташування</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
   <string name="appearance_message_line1_summary">Введіть текст для відображення, включаючи емодзі</string>
   <string name="appearance_message_line1_title">Рядок 1</string>
   <string name="appearance_message_line2_title">Рядок 2</string>
-  <string name="appearance_message_size_title">Відрегулюйте розмір тексту</string>
+  <string name="appearance_message_line3_title">Line 3</string>
+  <string name="appearance_message_line4_title">Line 4</string>
   <string name="appearance_message_summary">Відображати до 2 рядків користувацького тексту</string>
   <string name="appearance_message_title">Повідомлення</string>
   <string name="appearance_music_summary">Відображення відтворюваної в даний момент пісні</string>
@@ -91,6 +96,8 @@
   <string name="appearance_slot1_title">Нижній слот</string>
   <string name="appearance_slot2_title">Верхній слот</string>
   <string name="appearance_slot_summary">Порожній</string>
+  <string name="appearance_slots_summary">Налаштуйте, де на екрані відображатиметься накладання</string>
+  <string name="appearance_slots_title">Слоти накладання</string>
   <string name="appearance_startup_summary">Змініть те, що ви бачите під час завантаження програми</string>
   <string name="appearance_startup_title">Запуск</string>
   <string name="appearance_top_left_lower_slot">Верхній лівий, нижній слот</string>
@@ -137,15 +144,19 @@
   <string name="category_advanced">Розширені</string>
   <string name="category_all_other_media">Усі інші відео та зображення</string>
   <string name="category_animation">Анімація</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_appearance">Вигляд</string>
   <string name="category_apple_and_community_videos">Відео Apple та спільнот</string>
   <string name="category_authentication_details">Деталі автентифікації</string>
   <string name="category_background_colour">Колір фону</string>
+  <string name="category_bottom_row">Нижній ряд</string>
   <string name="category_bottom_row_left">Нижній лівий</string>
   <string name="category_bottom_row_right">Нижній правий</string>
   <string name="category_brightness">Яскравість</string>
   <string name="category_capabilities">Можливості</string>
   <string name="category_clock">Годинник</string>
+  <string name="category_connection_information">Connection Information</string>
   <string name="category_custom_format">Свій формат</string>
   <string name="category_date">Дата</string>
   <string name="category_dpad">Хрестовині пульта управління</string>
@@ -159,8 +170,10 @@
   <string name="category_line1">Рядок 1</string>
   <string name="category_line2">Лінія 2</string>
   <string name="category_local">Локальне сховище</string>
+  <string name="category_media_render_options">Параметри медіа та рендерингу</string>
   <string name="category_media_scanner_options">Опції сканера мультимедіа</string>
   <string name="category_message">Повідомлення</string>
+  <string name="category_message_api">Message API</string>
   <string name="category_music">Музика</string>
   <string name="category_network">Мережа</string>
   <string name="category_now_playing">Зараз грає</string>
@@ -183,11 +196,11 @@
   <string name="category_startup">Запуск</string>
   <string name="category_swipe_gestures">Жести зрушенням</string>
   <string name="category_tap_gestures">Жести натискання</string>
+  <string name="category_top_row">Верхній ряд</string>
   <string name="category_top_row_left">Верхній лівий</string>
   <string name="category_top_row_right">Верхній правий</string>
   <string name="category_typography">Оформлення</string>
   <string name="category_vide_and_photo_animations">Анімація відео та фотографій</string>
-  <string name="category_video_render_options">Параметри відео та рендеринга</string>
   <string name="category_video_source">Джерело відео</string>
   <string name="category_videos">Відео</string>
   <string name="category_weather">Погода</string>
@@ -273,6 +286,7 @@
   <string name="local_videos_legacy_no_folder">Папка не вказана</string>
   <string name="local_videos_legacy_no_folder_found">Папка не існує</string>
   <string name="local_videos_legacy_no_volume">Обсяг не вказано</string>
+  <string name="local_videos_legacy_search_subfolders_title">Пошук у підпапках</string>
   <string name="local_videos_legacy_summary">Вкажіть одну папку, в якій зберігаються відео</string>
   <string name="local_videos_legacy_volume_summary">Том не вибрано</string>
   <string name="local_videos_legacy_volume_title">Виберіть обсяг</string>
@@ -295,9 +309,9 @@
   <string name="nowplaying_permission_notice_summary">Щоб увімкнути доступ до сповіщень, перейдіть до Налаштування &gt; Програми &gt; Спеціальний доступ &gt; Доступ до сповіщень</string>
   <string name="nowplaying_permission_summary">Потрібен дозвіл, щоб ця програма могла слухати музичні сповіщення з системи</string>
   <string name="nowplaying_permission_title">Увімкнути доступ до системних повідомлень</string>
+  <string name="nowplaying_shorten_track_name_summary">Видаліть поширені суфікси на кшталт \"- Original Mix\" або \"(Remastered)\"</string>
+  <string name="nowplaying_shorten_track_name_title">Скоротити назви треків</string>
   <string name="nowplaying_toast_text">Увімкніть Aerial Views у: Спеціальний доступ &gt; Доступ до сповіщень</string>
-  <string name="playlist_advanced_video_summary">Обмежити довжину відео, повторити короткі відео, починати з випадкової позиції</string>
-  <string name="playlist_advanced_video_title">Розширені параметри відео</string>
   <string name="playlist_ignore_unmatched_videos_summary">Пропустити відео, не зазначені в жодному відеоманіфесті Apple</string>
   <string name="playlist_ignore_unmatched_videos_title">Ігнорувати відео не Apple в локальному сховищі або в локальній мережі</string>
   <string name="playlist_limit_longer_videos_title">Довші відео</string>
@@ -323,6 +337,7 @@
   <string name="playlist_slideshow_speed_title">Швидкість показу слайдів</string>
   <string name="playlist_video_volume_summary">Виберіть рівень гучності відео</string>
   <string name="playlist_video_volume_title">Гучність відео</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Місце розташування</string>
   <string name="progress_bar_opacity_title">Непрозорість</string>
   <string name="progress_bar_type_title">Показати для типу носія</string>
@@ -387,6 +402,8 @@
   <string name="settings_system_options_error">Неможливо відкрити параметри заставки вашого пристрою</string>
   <string name="settings_system_options_removed">Ця функція була видалена виробником
 Для отримання додаткової інформації відвідайте веб-сайт Aerial Views</string>
+  <string name="show_media_error_toasts_summary">Відображати спливаючі повідомлення, коли виникають помилки відтворення медіафайлів</string>
+  <string name="show_media_error_toasts_title">Показувати спливаючі повідомлення про помилки мультимедіа</string>
   <string name="sources_apple_summary">Потокове відео Apple, за допомогою підключення до Інтернету</string>
   <string name="sources_apple_title">Відео Apple</string>
   <string name="sources_comm1_summary">Потокове відео спільноти, використовуючи підключення до Інтернету</string>
