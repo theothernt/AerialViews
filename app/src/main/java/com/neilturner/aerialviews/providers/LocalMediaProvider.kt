@@ -40,7 +40,7 @@ class LocalMediaProvider(
         }
 
     override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
-        mutableMapOf<String, Pair<String, Map<Int, String>>>()
+        mutableMapOf()
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources

@@ -232,8 +232,8 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            var speedValues: Array<String>? = null
-            var currentSpeedIdx: Int = -1
+            var speedValues: Array<String>?
+            var currentSpeedIdx: Int
 
             try {
                 speedValues = resources.getStringArray(R.array.playback_speed_values)

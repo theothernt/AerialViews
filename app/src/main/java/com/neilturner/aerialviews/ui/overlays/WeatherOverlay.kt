@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe

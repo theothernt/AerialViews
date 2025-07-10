@@ -22,10 +22,6 @@ class SettingsFragment :
         FirebaseHelper.logScreenView("Settings", this)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key.isNullOrEmpty()) {
             return super.onPreferenceTreeClick(preference)

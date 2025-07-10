@@ -122,7 +122,7 @@ object InputHelper {
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
-        var action: ButtonType? = null
+        var action: ButtonType?
 
         when (event.keyCode) {
             // Ignore diagonal direction presses

@@ -97,13 +97,13 @@ class MediaService(
             // Unmatched videos can have their filename added as a description
             val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
             if (videoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                var videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
+                val videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
                 unmatchedVideos = addFilenameAsDescriptionToMedia(unmatchedVideos, videoDescriptionStyle, videoPathDepth)
             }
 
             val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
             if (photoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                var photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
+                val photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
                 unmatchedPhotos = addFilenameAsDescriptionToMedia(unmatchedPhotos, photoDescriptionStyle, photoPathDepth)
             }
 

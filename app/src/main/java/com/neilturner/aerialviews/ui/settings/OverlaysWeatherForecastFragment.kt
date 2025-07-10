@@ -39,7 +39,7 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
             "weather_forecast_slot3",
             "weather_forecast_slot4",
         ).forEach { name ->
-            prefs.add(preferenceScreen.findPreference<ListPreference>(name))
+            prefs.add(preferenceScreen.findPreference(name))
         }
     }
 

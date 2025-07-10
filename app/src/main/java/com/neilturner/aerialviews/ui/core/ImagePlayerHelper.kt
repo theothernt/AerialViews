@@ -72,7 +72,7 @@ internal object ImagePlayerHelper {
                 .callTimeout(5, TimeUnit.SECONDS)
                 .readTimeout(5, TimeUnit.SECONDS)
                 .build()
-        var client = OkHttpSardine(okHttpClient)
+        val client = OkHttpSardine(okHttpClient)
         try {
             client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
             return client.get(uri.toString())

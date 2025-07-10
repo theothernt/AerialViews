@@ -89,7 +89,7 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private fun animateOverlays() {
-        var layout: ConstraintLayout? = parent as ConstraintLayout
+        val layout: ConstraintLayout? = parent as ConstraintLayout
 
         TransitionManager.beginDelayedTransition(
             layout,

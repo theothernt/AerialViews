@@ -40,7 +40,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
     private fun updateSummary(text: String = "") {
         if (locationPreference == null) {
-            locationPreference = findPreference<Preference>("weather_location_name")
+            locationPreference = findPreference("weather_location_name")
             locationPreference?.setOnPreferenceClickListener {
                 showLocationSearchDialog()
                 true
