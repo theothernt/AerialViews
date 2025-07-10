@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -90,7 +89,7 @@ class ScreenController(
 
     init {
         val inflater = LayoutInflater.from(context)
-        val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
+        val binding = AerialActivityBinding.inflate(inflater)
 
         val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
         val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
