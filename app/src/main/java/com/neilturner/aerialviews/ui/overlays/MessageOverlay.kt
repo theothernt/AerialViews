@@ -23,7 +23,7 @@ class MessageOverlay : AppCompatTextView {
     var type = OverlayType.MESSAGE1
 
     private val receiver = EventsReceiver()
-    private var currentMessage = MessageEvent(0, "", 0, 0, 0)
+    private var currentMessage = MessageEvent(0, "")
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var clearJob: Job? = null
@@ -68,7 +68,7 @@ class MessageOverlay : AppCompatTextView {
         clearJob?.cancel()
     }
 
-    private fun getMessageNumberFromType(): Int = type.name.last().code
+    private fun getMessageNumberFromType(): Int = type.name.last().digitToInt()
 
     private fun updateMessage() {
         clearJob?.cancel()
@@ -76,16 +76,18 @@ class MessageOverlay : AppCompatTextView {
         //visibility = if (text.isNullOrBlank()) GONE else VISIBLE
 
         // Schedule auto-clear if duration is specified
-        if (currentMessage.duration > 0) {
-            clearJob =
-                mainScope.launch {
-                    delay(currentMessage.duration * 1000L)
-                    if (text.isNotEmpty()) {
-                        Timber.i("$type: Auto-clearing message after ${currentMessage.duration} seconds")
-                        currentMessage = currentMessage.copy(text = "", duration = 0)
-                        updateMessage()
+        currentMessage.duration?.let {
+            if (it > 0) {
+                clearJob =
+                    mainScope.launch {
+                        delay(it * 1000L)
+                        if (text.isNotEmpty()) {
+                            Timber.i("$type: Auto-clearing message after $it seconds")
+                            currentMessage = currentMessage.copy(text = "", duration = 0)
+                            updateMessage()
+                        }
                     }
-                }
+            }
         }
     }
 
@@ -93,14 +95,10 @@ class MessageOverlay : AppCompatTextView {
         val message = currentMessage.text
 
         // Font size
-        currentMessage.textSize?.let {
-            applyTextSize(it)
-        }
+        currentMessage.textSize?.let { applyTextSize(it) }
 
         // Font weight
-        currentMessage.textWeight?.let {
-            applyTextWeight(it)
-        }
+        currentMessage.textWeight?.let { applyTextWeight(it) }
 
         // Message
         if (message.isNotEmpty()) {
@@ -119,10 +117,5 @@ class MessageOverlay : AppCompatTextView {
 
     private fun applyTextWeight(weightValue: Int) {
         typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weightValue)
-    }
-
-    fun updateMessage(message: String) {
-        // Legacy method for static message updates from preferences
-        this.text = message
     }
 }

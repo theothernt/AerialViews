@@ -9,12 +9,14 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import me.kosert.flowbus.GlobalBus
 
 class OverlayHelper(
     private val context: Context,
@@ -73,14 +75,12 @@ class OverlayHelper(
         }
 
         findOverlay<MessageOverlay>().forEach {
-            if (it.type == OverlayType.MESSAGE1) {
-                it.updateMessage(prefs.messageLine1)
-            } else if (it.type == OverlayType.MESSAGE2) {
-                it.updateMessage(prefs.messageLine2)
-            } else if (it.type == OverlayType.MESSAGE3) {
-                it.updateMessage(prefs.messageLine3)
-            } else {
-                it.updateMessage(prefs.messageLine4)
+            when (it.type) {
+                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(1, prefs.messageLine1))
+                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(2, prefs.messageLine2))
+                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(3, prefs.messageLine3))
+                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(4, prefs.messageLine4))
+                else -> {}
             }
         }
 

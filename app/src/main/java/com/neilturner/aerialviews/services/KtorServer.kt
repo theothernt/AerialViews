@@ -52,9 +52,9 @@ data class ErrorResponse(
 data class MessageEvent(
     val messageNumber: Int = 1,
     val text: String = "",
-    val duration: Int = 0,
-    val textSize: Int?,
-    val textWeight: Int?,
+    val duration: Int? = null,
+    val textSize: Int? = null,
+    val textWeight: Int? = null,
 )
 
 class KtorServer(

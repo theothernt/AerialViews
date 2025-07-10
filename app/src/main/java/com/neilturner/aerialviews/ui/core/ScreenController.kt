@@ -204,7 +204,6 @@ class ScreenController(
                     }
             }
         }
-
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
         // 3. playback started callback, fade out loading text, fade out loading view
