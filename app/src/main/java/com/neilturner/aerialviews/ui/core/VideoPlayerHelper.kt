@@ -250,7 +250,7 @@ object VideoPlayerHelper {
             return Pair(0, duration)
         }
 
-        val length = duration.floorDiv(numOfSegments).toLong()
+        val length = duration.floorDiv(numOfSegments)
         val randomSegment = (1..numOfSegments).random()
         val segmentStart = (randomSegment - 1) * length
         val segmentEnd = randomSegment * length
@@ -275,6 +275,6 @@ object VideoPlayerHelper {
         Timber.i(
             "Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})",
         )
-        return Pair(0, targetDuration.toLong())
+        return Pair(0, targetDuration)
     }
 }

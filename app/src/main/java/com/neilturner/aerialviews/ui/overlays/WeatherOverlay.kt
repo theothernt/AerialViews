@@ -14,7 +14,6 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.ui.overlays.SvgImageView
 import com.neilturner.aerialviews.utils.FontHelper
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
@@ -174,7 +173,7 @@ class WeatherOverlay
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                        textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
                         textView.layoutParams = params
 
                         Timber.d("Adding text view with text: ${item.text}")
@@ -207,7 +206,7 @@ class WeatherOverlay
                 TextView(context)
                     .apply {
                         setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.messageWeight)
+                        typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
                     }.paint
 
             // Calculate approximate text height based on text metrics

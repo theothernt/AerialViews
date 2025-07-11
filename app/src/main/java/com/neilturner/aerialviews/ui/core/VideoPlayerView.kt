@@ -1,5 +1,3 @@
-@file:Suppress("SameParameterValue")
-
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
@@ -22,13 +20,17 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.ToastHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("JoinDeclarationAndAssignment")
-@OptIn(UnstableApi::class)
+@Suppress("SameParameterValue")
 class VideoPlayerView
+    @OptIn(UnstableApi::class)
     @JvmOverloads
     constructor(
         context: Context,
@@ -36,6 +38,7 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
+        @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
 
@@ -44,6 +47,7 @@ class VideoPlayerView
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
+        private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private val progressBar =
@@ -119,6 +123,7 @@ class VideoPlayerView
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
 
+        @OptIn(UnstableApi::class)
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
@@ -187,6 +192,14 @@ class VideoPlayerView
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.logExceptionIfRecent(error.cause)
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = error.localizedMessage ?: "Media playback error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
             post(onErrorRunnable)
         }
 
@@ -212,19 +225,21 @@ class VideoPlayerView
             if (!canChangePlaybackSpeed) return
             if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
             if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
-            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed changes at the end of video
+            // No speed changes at the end of video
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return
 
             canChangePlaybackSpeed = false
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            var speedValues: Array<String>
+            var speedValues: Array<String>?
             var currentSpeedIdx: Int
 
             try {
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
+                FirebaseHelper.logExceptionIfRecent(ex)
                 Timber.e(ex, "Exception while getting playback speed values")
                 return
             }

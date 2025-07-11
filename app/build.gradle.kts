@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
@@ -25,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 36
-        versionCode = 56
-        versionName = "1.7.8"
-        betaVersion = "-beta7"
+        versionCode = 58
+        versionName = "1.7.9"
+        betaVersion = "-beta2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,12 +44,8 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
         buildConfig = true
-    }
-
-    kapt {
-        useBuildCache = false
     }
 
     lint {
@@ -68,7 +63,7 @@ android {
 
     val keyProps = loadProperties("secrets.properties")
     buildTypes {
-        getByName("debug") {
+        debug {
             val openWeather = keyProps["openWeatherDebug"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
@@ -78,7 +73,7 @@ android {
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
-        getByName("release") {
+        release {
             val openWeather = keyProps["openWeather"] as String?
             buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
@@ -91,6 +86,13 @@ android {
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["performanceCollectionEnabled"] = true
+        }
+    }
+
+    packaging {
+        resources {
+            resources.excludes.add("META-INF/INDEX.LIST")
+            
         }
     }
 
@@ -149,7 +151,7 @@ android {
         getByName("googleplay").java.srcDir("src/common/java")
         getByName("googleplaybeta").java.srcDir("src/common/java")
         getByName("amazon").java.srcDir("src/common/java")
-        getByName("fdroid").java.srcDir("src/froid/java")
+        getByName("fdroid").java.srcDir("src/fdroid/java")
     }
 }
 
@@ -168,6 +170,7 @@ dependencies {
     implementation(libs.bundles.coil)
     implementation(libs.bundles.retrofit)
 
+    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
@@ -179,7 +182,10 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
+
     "baselineProfile"(project(":baselineprofile"))
+
+    implementation(project(":projectivyapi"))
 }
 
 tasks.withType<Test>().configureEach {

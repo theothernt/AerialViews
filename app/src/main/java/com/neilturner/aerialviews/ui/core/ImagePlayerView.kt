@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,8 +39,8 @@ class ImagePlayerView : AppCompatImageView {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-
     private val ioScope = CoroutineScope(Dispatchers.IO)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     private var target = ImageViewTarget(this)
 
     private val progressBar =
@@ -80,6 +81,15 @@ class ImagePlayerView : AppCompatImageView {
                 super.onError(request, result)
                 Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
                 FirebaseHelper.logExceptionIfRecent(result.throwable)
+
+                // Show toast if preference is enabled
+                if (GeneralPrefs.showMediaErrorToasts) {
+                    mainScope.launch {
+                        val errorMessage = result.throwable.localizedMessage ?: "Media loading error occurred"
+                        ToastHelper.show(context, errorMessage)
+                    }
+                }
+
                 onPlayerError()
             }
         }
@@ -126,6 +136,15 @@ class ImagePlayerView : AppCompatImageView {
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = ex.localizedMessage ?: "Media loading error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
             listener?.onImageError()
         }
     }

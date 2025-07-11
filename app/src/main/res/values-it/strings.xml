@@ -18,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">Switch automatico della frequenza di aggiornamento</string>
   <string name="allow_fallback_decoders_summary">Abilita il supporto di codec alternativi o basati su software su alcuni dispositivi.</string>
   <string name="allow_fallback_decoders_title">Consenti il fallback dei decodificatori</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">L\'orologio e la posizione cambiano a ogni video per aiutare a prevenire il burn-in dell\'OLED</string>
   <string name="appearance_alt_text_position_title">Alterna la posizione del testo</string>
   <string name="appearance_animations_summary">Configurare le animazioni utilizzate per gli overlay e tra video e foto</string>
@@ -70,10 +71,14 @@
   <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
   <string name="appearance_location_summary">Visualizza la posizione o i punti di interesse</string>
   <string name="appearance_location_title">Posizione</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
   <string name="appearance_message_line1_summary">Immeti il testo da mostrare, include emoji</string>
   <string name="appearance_message_line1_title">Linea 1</string>
   <string name="appearance_message_line2_title">Linea 2</string>
-  <string name="appearance_message_size_title">Dimensione</string>
+  <string name="appearance_message_line3_title">Line 3</string>
+  <string name="appearance_message_line4_title">Line 4</string>
   <string name="appearance_message_summary">Visualizza fino a 2 righe di testo personalizzato</string>
   <string name="appearance_message_title">Messaggio</string>
   <string name="appearance_music_summary">Visualizza il brano in riproduzione</string>
@@ -91,6 +96,8 @@
   <string name="appearance_slot1_title">Slot inferiore</string>
   <string name="appearance_slot2_title">Slot superiore</string>
   <string name="appearance_slot_summary">Vuoto</string>
+  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
+  <string name="appearance_slots_title">Overlay slots</string>
   <string name="appearance_startup_summary">Cambia ciò che si vede durante il caricamento dell\'applicazione</string>
   <string name="appearance_startup_title">Avvio</string>
   <string name="appearance_top_left_lower_slot">In alto a sinistra, slot inferiore</string>
@@ -137,15 +144,19 @@
   <string name="category_advanced">Avanzato</string>
   <string name="category_all_other_media">Tutti gli altri video e immagini</string>
   <string name="category_animation">Animazione</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_appearance">Aspetto</string>
   <string name="category_apple_and_community_videos">Solo video Apple e della community</string>
   <string name="category_authentication_details">Dettagli di autenticazione</string>
   <string name="category_background_colour">Colore di sfondo</string>
+  <string name="category_bottom_row">Riga inferiore</string>
   <string name="category_bottom_row_left">In basso a sinistra</string>
   <string name="category_bottom_row_right">In basso a destra</string>
   <string name="category_brightness">Luminosità</string>
   <string name="category_capabilities">Caratteristiche</string>
   <string name="category_clock">Orologio</string>
+  <string name="category_connection_information">Connection Information</string>
   <string name="category_custom_format">Formato personalizzato</string>
   <string name="category_date">Data</string>
   <string name="category_dpad">D-Pad/Telecomando</string>
@@ -159,8 +170,10 @@
   <string name="category_line1">Linea 1</string>
   <string name="category_line2">Linea 2</string>
   <string name="category_local">Locali</string>
+  <string name="category_media_render_options">Media &amp; render options</string>
   <string name="category_media_scanner_options">Opzioni di scansione dei media</string>
   <string name="category_message">Messaggio</string>
+  <string name="category_message_api">Message API</string>
   <string name="category_music">Musica</string>
   <string name="category_network">Rete</string>
   <string name="category_now_playing">In riproduzione</string>
@@ -183,11 +196,11 @@
   <string name="category_startup">Avvio</string>
   <string name="category_swipe_gestures">Gesti di scorrimento</string>
   <string name="category_tap_gestures">Gesti di tocco</string>
+  <string name="category_top_row">Riga superiore</string>
   <string name="category_top_row_left">In alto a sinistra</string>
   <string name="category_top_row_right">In alto a destra</string>
   <string name="category_typography">Carattere</string>
   <string name="category_vide_and_photo_animations">Animazioni video e foto</string>
-  <string name="category_video_render_options">Opzioni video e rendering</string>
   <string name="category_video_source">Sorgente Video</string>
   <string name="category_videos">Video</string>
   <string name="category_weather">Meteo</string>
@@ -273,6 +286,7 @@
   <string name="local_videos_legacy_no_folder">Cartella non specificata</string>
   <string name="local_videos_legacy_no_folder_found">La cartella non esiste</string>
   <string name="local_videos_legacy_no_volume">Volume non specificato</string>
+  <string name="local_videos_legacy_search_subfolders_title">Ricerca nelle sottocartelle</string>
   <string name="local_videos_legacy_summary">Specifica una singola cartella in cui sono memorizzati video e immagini</string>
   <string name="local_videos_legacy_volume_summary">Nessun volume scelto</string>
   <string name="local_videos_legacy_volume_title">Scegli un volume</string>
@@ -295,9 +309,9 @@
   <string name="nowplaying_permission_notice_summary">Per abilitare l\'accesso alle notifiche, cerca in Impostazioni &gt; App &gt; Accesso speciale &gt; Accesso alle notifiche</string>
   <string name="nowplaying_permission_summary">È richiesta l\'autorizzazione affinché questa app possa ascoltare le notifiche musicali dal sistema</string>
   <string name="nowplaying_permission_title">Abilita l\'accesso alle notifiche di sistema</string>
+  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
+  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
   <string name="nowplaying_toast_text">Attivare le viste aeree in: Accesso speciale all\'app &gt; Accesso alle notifiche</string>
-  <string name="playlist_advanced_video_summary">Limita la lunghezza del video, riproduci in loop video brevi, inizia da una posizione casuale</string>
-  <string name="playlist_advanced_video_title">Opzioni avanzate</string>
   <string name="playlist_ignore_unmatched_videos_summary">Salta i video non riconosciuti come Apple o della community</string>
   <string name="playlist_ignore_unmatched_videos_title">Ignora i video che non sono di Apple o della community</string>
   <string name="playlist_limit_longer_videos_title">Video più lunghi</string>
@@ -323,6 +337,7 @@
   <string name="playlist_slideshow_speed_title">Velocità slideshow</string>
   <string name="playlist_video_volume_summary">Scegli il livello di volume del video</string>
   <string name="playlist_video_volume_title">Volume video</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Luogo</string>
   <string name="progress_bar_opacity_title">Opacità</string>
   <string name="progress_bar_type_title">Mostra in</string>
@@ -387,6 +402,8 @@
   <string name="settings_system_options_error">Impossibile aprire le opzioni dello screensaver del dispositivo</string>
   <string name="settings_system_options_removed">Questa funzione è stata rimossa dal produttore.
 Per ulteriori informazioni, visitare il sito Web di Aerial Views.</string>
+  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
+  <string name="show_media_error_toasts_title">Show media error toasts</string>
   <string name="sources_apple_summary">Streaming video Apple via Internet</string>
   <string name="sources_apple_title">Video Apple</string>
   <string name="sources_comm1_summary">Streaming video della comunità via Internet</string>

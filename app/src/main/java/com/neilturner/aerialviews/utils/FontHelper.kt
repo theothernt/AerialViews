@@ -12,6 +12,17 @@ object FontHelper {
         context: Context,
         typeface: String,
         weight: String,
+    ): Typeface =
+        getTypeface(
+            context,
+            typeface,
+            weight.toInt(),
+        )
+
+    fun getTypeface(
+        context: Context,
+        typeface: String,
+        weight: Int,
     ): Typeface {
         val font =
             try {
@@ -24,6 +35,6 @@ object FontHelper {
                 Timber.e(ex)
                 Typeface.create("san-serif", Typeface.NORMAL)
             }
-        return TypefaceCompat.create(context, font, weight.toInt(), false)
+        return TypefaceCompat.create(context, font, weight, false)
     }
 }

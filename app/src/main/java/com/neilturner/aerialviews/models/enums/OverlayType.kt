@@ -12,4 +12,6 @@ enum class OverlayType {
     DATE,
     MESSAGE1,
     MESSAGE2,
+    MESSAGE3,
+    MESSAGE4,
 }

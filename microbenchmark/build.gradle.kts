@@ -19,7 +19,7 @@ android {
         debug {
             // Since isDebuggable can"t be modified by gradle for library modules,
             // it must be done in a manifest - see src/androidTest/AndroidManifest.xml
-            isMinifyEnabled = true
+            // isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "benchmark-proguard-rules.pro"

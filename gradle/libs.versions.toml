@@ -1,23 +1,24 @@
 [versions]
-agp = "8.10.1"
-kotlin = "2.1.21"
-kotlin-serialization = "1.8.1"
-google-services = "4.4.2"
-ksp = "2.1.21-2.0.1"
+agp = "8.11.0"
+kotlin = "2.2.0"
+kotlin-serialization = "1.9.0"
+google-services = "4.4.3"
+ksp = "2.2.0-2.0.2"
 coroutines = "1.10.2"
 core-ktx = "1.16.0"
 activity-ktx = "1.10.1"
 constraintlayout = "2.2.1"
 appcompat = "1.7.1"
 
-firebase-crashlytics-plugin = "3.0.3"
+firebase-crashlytics-plugin = "3.0.4"
 firebase-perf-plugin = "1.4.2"
-firebase-analytics = "22.4.0"
-firebase-crashlytics = "19.4.3"
+firebase-analytics = "22.5.0"
+firebase-crashlytics = "19.4.4"
 firebase-perf = "21.0.5"
 
-gradle-doctor = "0.9.1"
-kotlinter-gradle = "5.0.1"
+ktor = "3.2.1"
+gradle-doctor = "0.11.0"
+kotlinter-gradle = "5.1.1"
 leakcanary = "2.14"
 
 leanback = "1.2.0"
@@ -25,18 +26,19 @@ leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
 sardine-android = "0.0.3"
-logging-interceptor = "4.12.0"
+logging-interceptor = "5.1.0"
 retrofit = "3.0.0"
+okhttp = "5.1.0"
 
-smbj = "0.11.5"
+smbj = "0.13.0"
 media3-exoplayer = "1.7.1"
 flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.2.0"
 timber = "5.0.1"
 
-junit-jupiter = "5.13.0"
-junit5 = "1.11.0.0"
+junit-jupiter = "5.13.3"
+junit5 = "1.13.1.0"
 junit = "1.2.1"
 espresso-core = "3.6.1"
 uiautomator = "2.3.0"
@@ -62,6 +64,11 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebase-perf" }
 
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktor" }
+ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
 leanback = { group = "androidx.leanback", name = "leanback", version.ref = "leanback" }
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
 preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
@@ -73,6 +80,7 @@ kotpref = { group = "com.chibatching.kotpref", name = "kotpref", version.ref = "
 kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer", version.ref = "kotpref" }
 kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support", version.ref = "kotpref" }
 
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
@@ -108,8 +116,9 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
-retrofit = ["retrofit", "converter-kotlin-serialization"]
+retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
+ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -118,7 +127,6 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }

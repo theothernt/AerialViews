@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services.weather
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.Response
 import retrofit2.http.GET
@@ -72,9 +73,9 @@ data class CurrentWeatherResponse(
 @Serializable
 data class MainWeatherData(
     val temp: Double,
-    val feels_like: Double,
-    val temp_min: Double,
-    val temp_max: Double,
+    @SerialName("feels_like") val feelsLike: Double,
+    @SerialName("temp_min") val tempMin: Double,
+    @SerialName("temp_max") val tempMax: Double,
     val pressure: Int,
     val humidity: Int,
 )
@@ -113,7 +114,7 @@ data class ForecastItem(
     val dt: Long,
     val main: MainWeatherData,
     val weather: List<Weather>,
-    val dt_txt: String,
+    @SerialName("dt_txt") val dtTxt: String,
 )
 
 @Serializable

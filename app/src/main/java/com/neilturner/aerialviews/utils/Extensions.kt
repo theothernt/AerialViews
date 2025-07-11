@@ -94,11 +94,12 @@ fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloa
 
 fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
 
-suspend fun <T> List<T>.parallelForEach(action: suspend (T) -> Unit) = coroutineScope {
-    map { item ->
-        async(Dispatchers.Default) {
-            Timber.i("Coroutine running on thread: ${Thread.currentThread().name}")
-            action(item)
-        }
-    }.awaitAll()
-}
+suspend fun <T> List<T>.parallelForEach(action: suspend (T) -> Unit) =
+    coroutineScope {
+        map { item ->
+            async(Dispatchers.Default) {
+                Timber.i("Coroutine running on thread: ${Thread.currentThread().name}")
+                action(item)
+            }
+        }.awaitAll()
+    }

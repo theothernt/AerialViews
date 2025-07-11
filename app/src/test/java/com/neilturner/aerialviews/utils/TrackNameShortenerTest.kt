@@ -1,12 +1,11 @@
 package com.neilturner.aerialviews.utils
 
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 
 @DisplayName("Track Name Shortener Tests")
 internal class TrackNameShortenerTest {
-
     @Test
     @DisplayName("Should remove original mix suffix")
     fun testRemoveOriginalMix() {
