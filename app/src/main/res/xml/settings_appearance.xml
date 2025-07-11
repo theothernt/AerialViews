@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_options">
+        <PreferenceCategory app:title="@string/category_appearance">
                 <CheckBoxPreference
-                    app:defaultValue="false"
+                    app:defaultValue="true"
                     app:key="alt_text_position"
                     app:summary="@string/appearance_alt_text_position_summary"
                     app:title="@string/appearance_alt_text_position_title" />
 
                 <Preference
-                    app:title="@string/appearance_gradient_title"
-                    app:summary="@string/appearance_gradient_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
+                    app:title="@string/appearance_startup_title"
+                    app:summary="@string/appearance_startup_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
 
                 <Preference
                     app:title="@string/appearance_progress_bar_title"
@@ -19,9 +19,19 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceProgressBarFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_gradient_title"
+                    app:summary="@string/appearance_gradient_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
+
+                <Preference
                     app:title="@string/appearance_animations_title"
                     app:summary="@string/appearance_animations_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceAnimationsFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_background_colour_title"
+                    app:summary="@string/appearance_background_colour_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBackgroundFragment"/>
 
                 <Preference
                     app:title="@string/appearance_brightness_title"
@@ -32,11 +42,6 @@
                     app:title="@string/appearance_scaling_title"
                     app:summary="@string/appearance_scaling_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceScalingFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_startup_title"
-                    app:summary="@string/appearance_startup_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
 
                 <Preference
                     app:title="@string/appearance_typography_title"

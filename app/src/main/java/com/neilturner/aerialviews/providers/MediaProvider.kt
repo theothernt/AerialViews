@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 
 abstract class MediaProvider(
     val context: Context,
@@ -16,7 +15,7 @@ abstract class MediaProvider(
 
     abstract suspend fun fetchTest(): String
 
-    abstract suspend fun fetchMetadata(): List<VideoMetadata>
+    abstract suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>>
 
     // type
     // VideoType.LOCAL, REMOTE

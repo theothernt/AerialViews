@@ -8,25 +8,29 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.ui.AspectRatioFrameLayout
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
-import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.services.PhilipsMediaCodecAdapterFactory
+import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.ToastHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
-import kotlin.random.Random
 import kotlin.time.Duration.Companion.milliseconds
 
-@OptIn(UnstableApi::class)
+@Suppress("SameParameterValue")
 class VideoPlayerView
+    @OptIn(UnstableApi::class)
     @JvmOverloads
     constructor(
         context: Context,
@@ -34,56 +38,46 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context, attrs, defStyleAttr),
         Player.Listener {
+        @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
-        private var video = VideoInfo()
+        private var state = VideoState()
 
         private var listener: OnVideoPlayerEventListener? = null
         private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable = Runnable { listener?.onVideoError() }
-
+        private val refreshRateHelper by lazy { RefreshRateHelper(context) }
+        private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
-        private val segmentLongVideos =
-            GeneralPrefs.limitLongerVideos == LimitLongerVideos.SEGMENT && GeneralPrefs.maxVideoLength.toLong() > 0
-        private val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
-        private val randomStartPosition = GeneralPrefs.randomStartPosition && GeneralPrefs.maxVideoLength.toLong() == 0L
-        private val randomStartPositionRange = GeneralPrefs.randomStartPositionRange.toInt()
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
-            exoPlayer.addListener(this)
 
             player = exoPlayer
+            player?.addListener(this)
+            player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+
             controllerAutoShow = false
             useController = false
-            resizeMode =
-                if (GeneralPrefs.videoScale == VideoScale.SCALE_TO_FIT_WITH_CROPPING) {
-                    AspectRatioFrameLayout.RESIZE_MODE_ZOOM
-                } else {
-                    AspectRatioFrameLayout.RESIZE_MODE_FIT
-                }
+            resizeMode = VideoPlayerHelper.getResizeMode(GeneralPrefs.videoScale)
         }
 
         fun release() {
-            exoPlayer.release()
+            pause()
+            player?.release()
+
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)
             removeCallbacks(onErrorRunnable)
+
             listener = null
         }
 
-        override fun onDetachedFromWindow() {
-            pause()
-            super.onDetachedFromWindow()
-        }
-
-        // region Public methods
         fun setVideo(media: AerialMedia) {
-            video = VideoInfo() // Reset params for each video
-            exoPlayer.repeatMode = Player.REPEAT_MODE_OFF
+            state = VideoState() // Reset params for each video
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -95,12 +89,19 @@ class VideoPlayerView
                 VideoPlayerHelper.disableAudioTrack(exoPlayer)
             }
 
-            exoPlayer.prepare()
+            // Disable subtitles/text tracks by default
+            VideoPlayerHelper.disableTextTrack(exoPlayer)
+
+            player?.prepare()
         }
 
         fun increaseSpeed() = changeSpeed(true)
 
         fun decreaseSpeed() = changeSpeed(false)
+
+        fun seekForward() = seek()
+
+        fun seekBackward() = seek(true)
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener
@@ -121,39 +122,54 @@ class VideoPlayerView
 
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
-        // endregion
 
-        // region Player Listener
+        @OptIn(UnstableApi::class)
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_ENDED -> Timber.i("Playback ended...")
+                Player.STATE_READY -> {}
+                Player.STATE_BUFFERING -> {
+                    Timber.i("Buffering...")
+                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+                }
             }
 
-            if (playbackState == Player.STATE_BUFFERING) {
-                Timber.i("Buffering...")
-                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
-            }
-
-            if (!video.prepared && playbackState == Player.STATE_READY) {
+            if (!state.prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
-                if (segmentLongVideos) {
-                    handleSegmentedVideo()
+
+                // Waiting for... https://youtrack.jetbrains.com/issue/KT-19627/Object-name-based-destructuring
+                val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs)
+                state.startPosition = result.first
+                state.endPosition = result.second
+
+                if (state.startPosition > 0) {
+                    Timber.i("Seeking to ${state.startPosition.milliseconds}")
+                    player?.seekTo(state.startPosition)
                 }
-                if (randomStartPosition) {
-                    handleRandomStartPosition()
-                }
-                video.prepared = true
-                listener?.onVideoPrepared()
+
+                state.prepared = true
             }
 
             // Video is buffered, ready to play
             if (exoPlayer.playWhenReady && playbackState == Player.STATE_READY) {
-                Timber.i("Ready, Playing...")
-                if (GeneralPrefs.refreshRateSwitching) {
-                    VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                if (exoPlayer.isPlaying) {
+                    Timber.i("Ready, Playing...")
+
+                    if (GeneralPrefs.refreshRateSwitching && PermissionHelper.hasSystemOverlayPermission(context)) {
+                        // VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
+                        refreshRateHelper.setRefreshRate(exoPlayer.videoFormat?.frameRate)
+                    }
+
+                    if (!state.ready) {
+                        listener?.onVideoPrepared()
+                        state.ready = true
+                    }
+
+                    setupAlmostFinishedRunnable()
+                } else {
+                    Timber.i("Preparing again...")
                 }
-                setupAlmostFinishedRunnable()
             }
         }
 
@@ -162,8 +178,12 @@ class VideoPlayerView
             reason: Int,
         ) {
             if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                video.loopCount++
-                Timber.i("Looping video, count: ${video.loopCount}")
+                state.loopCount++
+                Timber.i("Looping video, count: ${state.loopCount}")
+
+                if (GeneralPrefs.loopUntilSkipped) {
+                    setupAlmostFinishedRunnable()
+                }
             }
             super.onMediaItemTransition(mediaItem, reason)
         }
@@ -171,46 +191,67 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
-            postDelayed(onErrorRunnable, ScreenController.ERROR_DELAY)
+            FirebaseHelper.logExceptionIfRecent(error.cause)
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = error.localizedMessage ?: "Media playback error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
+            post(onErrorRunnable)
         }
 
         override fun onPlayerErrorChanged(error: PlaybackException?) {
             super.onPlayerErrorChanged(error)
             error?.let { Timber.e(it) }
         }
-        // endregion
+
+        private fun seek(backward: Boolean = false) {
+            val interval = GeneralPrefs.seekInterval.toLong() * 1000
+            val position = exoPlayer.currentPosition
+
+            Timber.i("Seeking to $position/$interval (backward: $backward)")
+
+            if (backward) {
+                exoPlayer.seekTo(position - interval)
+            } else {
+                exoPlayer.seekTo(position + interval)
+            }
+        }
 
         private fun changeSpeed(increase: Boolean) {
-            if (!canChangePlaybackSpeed) {
-                return
-            }
-
-            if (!video.prepared || !exoPlayer.isPlaying) {
-                return // Must be playing a video
-            }
-
-            if (exoPlayer.currentPosition <= 3) {
-                return // No speed change at the start of the video
-            }
-
-            if (exoPlayer.duration - exoPlayer.currentPosition <= 3) {
-                return // No speed changes at the end of video
-            }
+            if (!canChangePlaybackSpeed) return
+            if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
+            if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
+            // No speed changes at the end of video
+            if (exoPlayer.duration - exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return
 
             canChangePlaybackSpeed = false
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            val speedValues = resources.getStringArray(R.array.playback_speed_values)
-            val currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            var speedValues: Array<String>?
+            var currentSpeedIdx: Int
 
-            if (!increase && currentSpeedIdx == 0) {
-                return // we are at minimum speed already
+            try {
+                speedValues = resources.getStringArray(R.array.playback_speed_values)
+                currentSpeedIdx = speedValues.indexOf(currentSpeed)
+            } catch (ex: Exception) {
+                FirebaseHelper.logExceptionIfRecent(ex)
+                Timber.e(ex, "Exception while getting playback speed values")
+                return
             }
 
-            if (increase && currentSpeedIdx == speedValues.size - 1) {
-                return // we are at maximum speed already
+            if (currentSpeedIdx == -1) {
+                // No matching speed, likely a resource error or pref mismatch
+                GeneralPrefs.playbackSpeed = "1" // Reset pref
+                return
             }
+
+            if (!increase && currentSpeedIdx == 0) return // we are at minimum speed already
+            if (increase && currentSpeedIdx == speedValues.size - 1) return // we are at maximum speed already
 
             val newSpeed =
                 if (increase) {
@@ -229,35 +270,42 @@ class VideoPlayerView
 
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
-            val delay = VideoPlayerHelper.calculateDelay(video, exoPlayer, GeneralPrefs)
-            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
-            postDelayed(almostFinishedRunnable, delay)
-        }
 
-        private fun handleSegmentedVideo() {
-            if (!video.isSegmented) {
-                VideoPlayerHelper.calculateSegments(exoPlayer.duration, maxVideoLength, video)
-            }
-            if (video.isSegmented && exoPlayer.currentPosition !in video.segmentStart - 500..video.segmentEnd + 500) {
-                Timber.i("Seeking to segment ${video.segmentStart}ms")
-                exoPlayer.seekTo(video.segmentStart)
+            if (state.startPosition <= 0 && state.endPosition <= 0) {
+                postDelayed(almostFinishedRunnable, 2 * 1000)
+                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
             }
-            if (video.isSegmented) {
-                Timber.i("At segment ${exoPlayer.currentPosition}ms (target ${video.segmentStart}ms), continuing...")
-            }
-        }
 
-        private fun handleRandomStartPosition() {
-            if (randomStartPositionRange < 5) {
-                return
-            }
-            val seekPosition = (exoPlayer.duration * randomStartPositionRange / 100.0).toLong()
-            val randomPosition = Random.nextLong(seekPosition)
-            exoPlayer.seekTo(randomPosition)
+            // Adjust the duration based on the playback speed
+            // Take into account the current player position, speed changes, fade in/out
 
-            val percent = (randomPosition.toFloat() / exoPlayer.duration.toFloat() * 100).toInt()
-            Timber.i("Seeking to ${randomPosition.milliseconds} ($percent%)")
+            // Basic duration and progress
+            val duration = state.endPosition - state.startPosition
+            val progress = exoPlayer.currentPosition - state.startPosition
+            val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
+
+            // Duration taking into account...
+            val durationMinusSpeed = (duration / GeneralPrefs.playbackSpeed.toDouble()).toLong()
+            val durationMinusSpeedAndProgress = durationMinusSpeed - progress
+            var durationMinusSpeedAndProgressAndFade = durationMinusSpeedAndProgress - fadeDuration
+
+            if (durationMinusSpeedAndProgressAndFade < 1000) {
+                durationMinusSpeedAndProgressAndFade = 1000
+            }
+
+            Timber.i(
+                "Duration: ${duration.milliseconds} (at 1x), Delay: ${durationMinusSpeedAndProgressAndFade.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
+            )
+
+            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationMinusSpeed))
+
+            if (!GeneralPrefs.loopUntilSkipped) {
+                Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
+                postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
+            } else {
+                Timber.i("The video will only finish when skipped manually")
+            }
         }
 
         interface OnVideoPlayerEventListener {
@@ -272,14 +320,14 @@ class VideoPlayerView
 
         companion object {
             const val CHANGE_PLAYBACK_SPEED_DELAY: Long = 2000
+            const val CHANGE_PLAYBACK_START_END_DELAY: Long = 4000
         }
     }
 
-data class VideoInfo(
+data class VideoState(
+    var ready: Boolean = false,
     var prepared: Boolean = false,
-    var playbackSpeed: Float = 1.0f,
-    var loopCount: Int = 0,
-    var isSegmented: Boolean = false,
-    var segmentStart: Long = 0L, // start position
-    var segmentEnd: Long = 0L, // end position
+    var loopCount: Int = 1,
+    var startPosition: Long = 0L,
+    var endPosition: Long = 0L,
 )

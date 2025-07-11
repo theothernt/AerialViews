@@ -6,141 +6,147 @@ import android.media.MediaMetadata
 import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
+import android.os.Bundle
 import androidx.core.content.getSystemService
 import com.neilturner.aerialviews.utils.PermissionHelper
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
+// Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
 class NowPlayingService(
     private val context: Context,
 ) : MediaController.Callback(),
     MediaSessionManager.OnActiveSessionsChangedListener {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null
-    private var controllers = listOf<MediaController>()
-    private var music = MusicEvent()
+    private var activeController: MediaController? = null
+    private var metadata: MediaMetadata? = null
+    private var active = false
 
     init {
-        coroutineScope.launch {
-            if (hasPermission) {
-                try {
-                    setupSession()
-                } catch (e: Exception) {
-                    Timber.e(e, "Error setting up session")
-                }
-            } else {
-                Timber.i("No permission given to access media sessions")
+        if (hasPermission) {
+            try {
+                setupSession()
+            } catch (e: Exception) {
+                Timber.e(e, "Error setting up session")
             }
-        }
-    }
-
-    override fun onMetadataChanged(metadata: MediaMetadata?) {
-        super.onMetadataChanged(metadata)
-        try {
-            updateNowPlaying(metadata, null)
-        } catch (ex: Exception) {
-            Timber.e(ex, "Error setting Now Playing info")
-        }
-    }
-
-    override fun onPlaybackStateChanged(state: PlaybackState?) {
-        super.onPlaybackStateChanged(state)
-
-        if (state == null) {
-            return
-        }
-
-        try {
-            val active = isActive(state.state)
-            updateNowPlaying(null, active)
-        } catch (ex: Exception) {
-            Timber.e(ex, "Error setting Now Playing info")
+        } else {
+            Timber.i("No permission given to access media sessions")
         }
     }
 
     private fun setupSession() {
+        Timber.i("Setting up Now Playing session")
         sessionManager = context.getSystemService<MediaSessionManager>()
-
-        // Set metadata for active sessions
-        onActiveSessionsChanged(sessionManager?.getActiveSessions(notificationListener))
-        if (controllers.isNotEmpty()) {
-            val activeController = controllers.first()
-            val active = isActive(activeController.playbackState?.state)
-            try {
-                updateNowPlaying(activeController.metadata, active)
-            } catch (ex: Exception) {
-                Timber.e(ex, "Error setting initial Now Playing info")
-            }
-        }
-        // Listen for future changes to active sessions
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
+        val controllers = sessionManager?.getActiveSessions(notificationListener)
+        activeController = pickController(controllers)
+        activeController?.let {
+            it.registerCallback(this)
+            metadata = it.metadata
+            updateMetadata()
+        }
     }
 
-    private fun updateNowPlaying(
-        metadata: MediaMetadata?,
-        active: Boolean?,
-    ) {
-        metadata?.let {
-            val song = metadata.getString(MediaMetadata.METADATA_KEY_TITLE)
-            val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST)
-
-            // Metadata bundle can little or no entries
-            if (song.isNullOrEmpty() || artist.isNullOrEmpty()) {
-                return
+    private fun pickController(controllers: MutableList<MediaController>?): MediaController? {
+        controllers?.forEach {
+            if (isActive(it)) {
+                Timber.i("Using controller: ${it.packageName}")
+                return it
             }
-            music = MusicEvent(artist, song)
+        }
+        if (controllers?.isNotEmpty() == true) {
+            Timber.i("No controller playing music, trying first one")
+            return controllers.first()
         }
 
-        if (active == true) {
-            GlobalBus.post(music)
-        } else {
-            GlobalBus.post(MusicEvent())
-        }
+        Timber.i("No controllers found.")
+        return null
+    }
+
+    private fun unregisterCurrentController() {
+        activeController?.unregisterCallback(this)
     }
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
-        unregisterAll()
-        if (!controllers.isNullOrEmpty()) {
-            initControllers(controllers)
-        } else {
-            updateNowPlaying(null, false)
+        Timber.i("onActiveSessionsChanged")
+        unregisterCurrentController()
+        activeController = pickController(controllers)
+        activeController?.let {
+            it.registerCallback(this)
+            metadata = it.metadata
+            updateMetadata()
         }
     }
 
-    private fun initControllers(newControllers: List<MediaController>?) {
-        controllers = if (!newControllers.isNullOrEmpty()) newControllers else emptyList()
-        controllers.forEach { controller ->
-            controller.registerCallback(this)
-        }
+    override fun onSessionEvent(
+        event: String,
+        extras: Bundle?,
+    ) {
+        Timber.i("onSessionEvent")
+        super.onSessionEvent(event, extras)
+        updateMetadata()
     }
 
-    private fun unregisterAll() {
-        controllers.forEach { controller ->
-            controller.unregisterCallback(this)
-        }
+    override fun onMetadataChanged(metadata: MediaMetadata?) {
+        Timber.i("onMetadataChanged")
+        super.onMetadataChanged(metadata)
+        this.metadata = metadata
+        updateMetadata()
     }
+
+    override fun onPlaybackStateChanged(state: PlaybackState?) {
+        Timber.i("onPlaybackStateChanged")
+        super.onPlaybackStateChanged(state)
+        active = isActive()
+        updateMetadata()
+    }
+
+    override fun onSessionDestroyed() {
+        Timber.i("onSessionDestroyed")
+        activeController = null
+        metadata = null
+        super.onSessionDestroyed()
+    }
+
+    private fun updateMetadata() {
+        if (metadata == null) {
+            Timber.i("updateMetadata - null")
+            return
+        }
+        active = isActive() // Don't remove!
+        val musicEvent =
+            metadata
+                ?.let {
+                    val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+                    val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+                    MusicEvent(artist, song)
+                }.takeIf { active } ?: MusicEvent()
+
+        Timber.i("updateMetadata - trying $musicEvent")
+        GlobalBus.post(musicEvent)
+    }
+
+    private fun isActive(controller: MediaController? = activeController): Boolean {
+        val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
+        return state == PlaybackState.STATE_PLAYING ||
+            state == PlaybackState.STATE_BUFFERING ||
+            state == PlaybackState.STATE_FAST_FORWARDING ||
+            state == PlaybackState.STATE_REWINDING
+    }
+
+    fun nextTrack() = activeController?.transportControls?.skipToNext()
+
+    fun previousTrack() = activeController?.transportControls?.skipToPrevious()
 
     fun stop() {
-        unregisterAll()
+        unregisterCurrentController()
+        activeController = null
+        metadata = null
         sessionManager?.removeOnActiveSessionsChangedListener(this)
-        coroutineScope.cancel()
     }
-
-    private fun isActive(state: Int?): Boolean =
-        (
-            state != PlaybackState.STATE_STOPPED &&
-                state != PlaybackState.STATE_PAUSED &&
-                state != PlaybackState.STATE_ERROR &&
-                state != PlaybackState.STATE_BUFFERING &&
-                state != PlaybackState.STATE_NONE
-        )
 }
 
 data class MusicEvent(

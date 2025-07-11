@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_video_render_options">
+        <PreferenceCategory app:title="@string/category_refresh_rate_options">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="application_overlay_permission"
+                    app:title="@string/advanced_application_overlay_permission_title"
+                    app:summary="@string/advanced_application_overlay_permission_summary" />
+
                 <CheckBoxPreference
+                    app:dependency="application_overlay_permission"
+                    app:disableDependentsState="false"
                     app:defaultValue="false"
                     app:key="refresh_rate_switching"
                     app:summary="@string/advanced_refresh_rate_switching_summary"
-                    app:title="@string/advanced_refresh_rate_switching_title" />
+                    app:title ="@string/advanced_refresh_rate_switching_title" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_media_render_options">
                 <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="enable_tunneling"
@@ -25,6 +35,12 @@
                     app:key="enable_playback_logging"
                     app:summary="@string/enable_playback_logging_summary"
                     app:title="@string/enable_playback_logging_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="show_media_error_toasts"
+                    app:summary="@string/show_media_error_toasts_summary"
+                    app:title="@string/show_media_error_toasts_title" />
 
                 <CheckBoxPreference
                     app:defaultValue="false"

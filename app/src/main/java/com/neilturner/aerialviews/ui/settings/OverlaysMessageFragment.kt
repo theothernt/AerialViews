@@ -16,15 +16,14 @@ class OverlaysMessageFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_message, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
-        limitTextInput()
-        updateSummary()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Message", this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        limitTextInput()
+        updateSummary()
     }
 
     override fun onDestroy() {
@@ -43,7 +42,7 @@ class OverlaysMessageFragment :
         // Line 1
         val line1 = findPreference<EditTextPreference>("message_line1")
         if (line1?.text.toStringOrEmpty().isNotEmpty()) {
-            line1?.summary = line1?.text
+            line1?.summary = line1.text
         } else {
             line1?.summary = getString(R.string.appearance_message_line1_summary)
         }
@@ -51,14 +50,32 @@ class OverlaysMessageFragment :
         // Line 2
         val line2 = findPreference<EditTextPreference>("message_line2")
         if (line2?.text.toStringOrEmpty().isNotEmpty()) {
-            line2?.summary = line2?.text
+            line2?.summary = line2.text
         } else {
             line2?.summary = getString(R.string.appearance_message_line1_summary)
+        }
+
+        // Line 3
+        val line3 = findPreference<EditTextPreference>("message_line3")
+        if (line3?.text.toStringOrEmpty().isNotEmpty()) {
+            line3?.summary = line3.text
+        } else {
+            line3?.summary = getString(R.string.appearance_message_line1_summary)
+        }
+
+        // Line 4
+        val line4 = findPreference<EditTextPreference>("message_line4")
+        if (line4?.text.toStringOrEmpty().isNotEmpty()) {
+            line4?.summary = line4.text
+        } else {
+            line4?.summary = getString(R.string.appearance_message_line1_summary)
         }
     }
 
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("message_line3")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("message_line4")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 }

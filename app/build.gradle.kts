@@ -3,52 +3,48 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    kotlin("android")
-    kotlin("kapt")
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.kotlinter.gradle)
-    alias(libs.plugins.android.junit5)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.firebase.perf)
-}
-
-fun loadProperties(fileName: String): Properties {
-    val properties = Properties()
-    val propertiesFile = rootProject.file("signing/$fileName")
-    if (propertiesFile.exists()) {
-        properties.load(FileInputStream(propertiesFile))
-    }
-    return properties
+    alias(libs.plugins.kotlinter.gradle)
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
     namespace = "com.neilturner.aerialviews"
-    compileSdk = 35
+    compileSdk = 36
 
+    var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
-        targetSdk = 35
-        versionCode = 25
-        versionName = "1.7.4"
+        targetSdk = 36
+        versionCode = 58
+        versionName = "1.7.9"
+        betaVersion = "-beta2"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         manifestPlaceholders["performanceCollectionEnabled"] = false
     }
 
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
+    kotlin {
+        jvmToolchain(17)
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        sourceSets.configureEach {
+            languageSettings.languageVersion = "2.1"
+        }
     }
 
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
         buildConfig = true
     }
 
@@ -65,14 +61,11 @@ android {
         }
     }
 
-    kotlin {
-        sourceSets.configureEach {
-            languageSettings.languageVersion = "2.0"
-        }
-    }
-
+    val keyProps = loadProperties("secrets.properties")
     buildTypes {
-        getByName("debug") {
+        debug {
+            val openWeather = keyProps["openWeatherDebug"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             applicationIdSuffix = ".debug"
@@ -80,7 +73,9 @@ android {
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
-        getByName("release") {
+        release {
+            val openWeather = keyProps["openWeather"] as String?
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
             buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
 
             isMinifyEnabled = true
@@ -94,16 +89,23 @@ android {
         }
     }
 
+    packaging {
+        resources {
+            resources.excludes.add("META-INF/INDEX.LIST")
+            
+        }
+    }
+
     signingConfigs {
         create("release") {
-            val releaseProps = loadProperties("release.properties")
+            val releaseProps = loadProperties("signing/release.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
             keyPassword = releaseProps["keyPassword"] as String?
         }
         create("legacy") {
-            val releaseProps = loadProperties("legacy.properties")
+            val releaseProps = loadProperties("signing/legacy.properties")
             storeFile = releaseProps["storeFile"]?.let { file(it) }
             storePassword = releaseProps["storePassword"] as String?
             keyAlias = releaseProps["keyAlias"] as String?
@@ -121,11 +123,16 @@ android {
             signingConfig = signingConfigs.getByName("legacy")
             dimension = "version"
             isDefault = true
-            versionNameSuffix = "-beta1"
+            versionNameSuffix = betaVersion
         }
         create("googleplay") {
             signingConfig = signingConfigs.getByName("release")
             dimension = "version"
+        }
+        create("googleplaybeta") {
+            signingConfig = signingConfigs.getByName("release")
+            dimension = "version"
+            versionNameSuffix = betaVersion
         }
         create("amazon") {
             signingConfig = signingConfigs.getByName("release")
@@ -142,8 +149,9 @@ android {
         getByName("github").java.srcDir("src/common/java")
         getByName("beta").java.srcDir("src/common/java")
         getByName("googleplay").java.srcDir("src/common/java")
+        getByName("googleplaybeta").java.srcDir("src/common/java")
         getByName("amazon").java.srcDir("src/common/java")
-        getByName("fdroid").java.srcDir("src/froid/java")
+        getByName("fdroid").java.srcDir("src/fdroid/java")
     }
 }
 
@@ -152,25 +160,32 @@ dependencies {
     "githubImplementation"(libs.bundles.firebase)
     "betaImplementation"(libs.bundles.firebase)
     "googleplayImplementation"(libs.bundles.firebase)
+    "googleplaybetaImplementation"(libs.bundles.firebase)
     "amazonImplementation"(libs.bundles.firebase)
 
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.retrofit)
     implementation(libs.bundles.flowbus)
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
+    implementation(libs.bundles.retrofit)
 
-    //ksp(libs.moshi.codegen)
+    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
-    implementation(libs.gson)
     implementation(libs.smbj)
     implementation(libs.timber)
 
     debugImplementation(libs.leakcanary)
+
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
+
+    implementation(libs.profileinstaller)
+
+    "baselineProfile"(project(":baselineprofile"))
+
+    implementation(project(":projectivyapi"))
 }
 
 tasks.withType<Test>().configureEach {
@@ -180,4 +195,13 @@ tasks.withType<Test>().configureEach {
         events("started", "skipped", "passed", "failed")
         showStandardStreams = true
     }
+}
+
+fun loadProperties(fileName: String): Properties {
+    val properties = Properties()
+    val propertiesFile = rootProject.file(fileName)
+    if (propertiesFile.exists()) {
+        properties.load(FileInputStream(propertiesFile))
+    }
+    return properties
 }

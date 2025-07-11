@@ -2,8 +2,10 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import androidx.annotation.RawRes
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -13,6 +15,7 @@ import java.util.Locale
 
 object LocaleHelper {
     // https://stackoverflow.com/a/44145807/247257
+    @SuppressLint("AppBundleLocaleChanges")
     fun localeString(
         requestedLocale: Locale?,
         resourceId: Int,
@@ -36,13 +39,28 @@ object LocaleHelper {
     private fun localeFromString(locale: String): Locale {
         val parts = locale.split("-")
         if (parts.size == 1) {
-            return Locale(parts[0])
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+                Locale.of(parts[0])
+            } else {
+                @Suppress("DEPRECATION")
+                Locale(parts[0])
+            }
         }
         if (parts.size == 2) {
-            return Locale(parts[0], parts[1])
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+                Locale.of(parts[0], parts[1])
+            } else {
+                @Suppress("DEPRECATION")
+                Locale(parts[0], parts[1])
+            }
         }
         if (parts.size == 3) {
-            return Locale(parts[0], parts[1], parts[2])
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+                Locale.of(parts[0], parts[1], parts[2])
+            } else {
+                @Suppress("DEPRECATION")
+                Locale(parts[0], parts[1], parts[2])
+            }
         }
         return Locale.ENGLISH
     }

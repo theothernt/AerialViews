@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <View
             android:id="@+id/gradientTop"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:background="@drawable/gradient_top"/>
+            android:layout_height="200dp"
+            android:visibility="gone" />
 
         <View
             android:id="@+id/gradientBottom"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:visibility="gone"
-            android:background="@drawable/gradient_bottom"/>
+            android:layout_height="200dp"
+            android:visibility="gone" />
 
         <TextView
             tools:ignore="MissingConstraints"
@@ -114,5 +110,4 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

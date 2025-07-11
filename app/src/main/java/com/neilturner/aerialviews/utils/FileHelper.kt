@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
@@ -101,37 +99,27 @@ object FileHelper {
         return !uri.path.toStringOrEmpty().contains(newFolder, true)
     }
 
-    fun filenameToTitleCase(uri: Uri): String {
-        val filename = uri.lastPathSegment.toStringOrEmpty()
-        val index = filename.lastIndexOf(".")
-
-        // some.video.mov -> some.video
-        var location = filename
-        if (index > 0) {
-            location = filename.substring(0, index)
-        }
-
-        // somevideo -> Somevideo
-        // city-place_video -> City - Place Video
-        // some.video -> Some Video
-        location = location.replace("-", ".-.")
-        location = location.replace("_", ".")
-        return location.split(".").joinToString(" ") { it.lowercase().replaceFirstChar { char -> char.uppercase() } }
-    }
-
-    fun folderAndFilenameFromUri(
+    fun formatFolderAndFilenameFromUri(
         uri: Uri,
         includeFilename: Boolean = false,
+        pathDepth: Int = 1,
     ): String {
-        val path =
-            if (uri.pathSegments.size < 2) {
-                ""
-            } else {
-                val count = uri.pathSegments.size
-                uri.pathSegments[count - 2] ?: ""
-            }
-        return if (includeFilename) {
-            "$path / ${uri.filenameWithoutExtension}"
+        val segments = uri.pathSegments.toMutableList()
+        segments.removeAt(segments.lastIndex) // Remove filename at the end of the list
+        val segmentCount = segments.size
+        val filename = uri.filenameWithoutExtension
+        var path = ""
+
+        if (segmentCount > 0) {
+            val effectiveDepth = pathDepth.coerceIn(1, minOf(5, segmentCount))
+            val relevantSegments = segments.takeLast(effectiveDepth)
+            path = relevantSegments.joinToString(" / ")
+        }
+
+        return if (includeFilename && path.isNotBlank()) {
+            "$path / $filename"
+        } else if (includeFilename && path.isBlank()) {
+            filename
         } else {
             path
         }

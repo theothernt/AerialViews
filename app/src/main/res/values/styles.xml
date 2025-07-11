@@ -1,6 +1,6 @@
 <resources>
-
-    <style name="SettingsTheme" parent="Theme.AppCompat">
+    <style name="DefaultTheme" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
@@ -25,6 +25,4 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
     </style>
-
-
 </resources>

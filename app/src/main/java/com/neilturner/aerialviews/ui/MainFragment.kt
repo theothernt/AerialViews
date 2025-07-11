@@ -26,9 +26,11 @@ class MainFragment :
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.main, rootKey)
-        resetLocalPermissionIfNeeded()
         setMenuLocale()
+        setPreferencesFromResource(R.xml.main, rootKey)
+        lifecycleScope.launch {
+            resetLocalPermissionIfNeeded()
+        }
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -49,18 +51,9 @@ class MainFragment :
         return super.onPreferenceTreeClick(preference)
     }
 
-    override fun onResume() {
-        Timber.i("onResume")
-        super.onResume()
-    }
-
     private fun testScreensaverSettings() {
-        try {
-            val intent = Intent().setClassName(requireContext(), TEST_SCREENSAVER)
-            startActivity(intent)
-        } catch (ex: Exception) {
-            Timber.e(ex)
-        }
+        val main = activity as MainActivity
+        main.startScreensaver()
     }
 
     private fun setMenuLocale() {
@@ -150,6 +143,5 @@ class MainFragment :
     companion object {
         const val SETTINGS = "android.settings.SETTINGS"
         const val SCREENSAVER_SETTINGS = "android.settings.DREAM_SETTINGS"
-        const val TEST_SCREENSAVER = "com.neilturner.aerialviews.ui.screensaver.TestActivity"
     }
 }

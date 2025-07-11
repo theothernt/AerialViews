@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.providers
 
 import android.content.Context
-import android.net.Uri
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.VideoMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.filename
@@ -40,7 +39,8 @@ class LocalMediaProvider(
             folderAccessFetch().second
         }
 
-    override suspend fun fetchMetadata(): List<VideoMetadata> = emptyList()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
+        mutableMapOf()
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources
@@ -86,7 +86,7 @@ class LocalMediaProvider(
 
         // Create media list, adding media type
         for (file in selected) {
-            val uri = Uri.parse(file)
+            val uri = file.toUri()
             val item = AerialMedia(uri)
             if (FileHelper.isSupportedVideoType(file)) {
                 item.type = AerialMediaType.VIDEO
@@ -128,19 +128,39 @@ class LocalMediaProvider(
                 if (!directory.exists() || !directory.isDirectory) {
                     continue
                 }
-                val files = directory.listFiles()
-                if (!files.isNullOrEmpty()
-                ) {
-                    found.addAll(
-                        files.filter { file ->
-                            val filename = file.name.split("/").last()
-                            !FileHelper.isDotOrHiddenFile(filename)
-                        },
-                    )
+
+                if (prefs.legacySearchSubfolders) {
+                    found.addAll(listFilesAndFoldersRecursively(directory))
+                } else {
+                    val files = directory.listFiles()
+                    if (!files.isNullOrEmpty()) {
+                        found.addAll(
+                            files.filter { file ->
+                                val filename = file.name.split("/").last()
+                                !FileHelper.isDotOrHiddenFile(filename)
+                            },
+                        )
+                    }
                 }
             }
             return@withContext found.map { item -> item.absolutePath }
         }
+
+    private fun listFilesAndFoldersRecursively(directory: File): List<File> {
+        val files = mutableListOf<File>()
+        directory.listFiles()?.forEach { file ->
+            if (FileHelper.isDotOrHiddenFile(file.name)) {
+                return@forEach
+            }
+
+            if (file.isDirectory) {
+                files.addAll(listFilesAndFoldersRecursively(file))
+            } else {
+                files.add(file)
+            }
+        }
+        return files
+    }
 
     @Suppress("JoinDeclarationAndAssignment")
     private suspend fun mediaStoreFetch(): Pair<List<AerialMedia>, String> {
@@ -183,7 +203,7 @@ class LocalMediaProvider(
 
         // Apply folder filter
         for (file in selected) {
-            val uri = Uri.parse(file)
+            val uri = file.toUri()
             if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
                 continue
             }

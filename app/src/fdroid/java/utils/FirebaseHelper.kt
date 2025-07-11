@@ -11,4 +11,19 @@ object FirebaseHelper {
     ) {
         // No op
     }
+
+    fun logExceptionIfRecent(ex: Throwable?) {
+        // No op
+    }
+
+    fun logIfRecent(error: String) {
+        // No op
+    }
+
+    fun logCustomKeysIfRecent(
+        key: String,
+        value: String,
+    ) {
+        // No op
+    }
 }

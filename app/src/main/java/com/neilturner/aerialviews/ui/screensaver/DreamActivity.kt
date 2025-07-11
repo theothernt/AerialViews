@@ -1,12 +1,3 @@
-@file:Suppress(
-    "unused",
-    "RedundantOverride",
-    "RedundantOverride",
-    "EmptyMethod",
-    "RedundantSuppression",
-    "RedundantSuppression",
-)
-
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.annotation.SuppressLint
@@ -17,7 +8,7 @@ import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.WindowHelper
+import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -29,6 +20,9 @@ class DreamActivity : DreamService() {
         isFullscreen = true
         isInteractive = true
 
+        // Hide system UI on phones
+        hideSystemUI(window)
+
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
@@ -38,6 +32,12 @@ class DreamActivity : DreamService() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
+
+        InputHelper.setupGestureListener(
+            context = this,
+            controller = screenController,
+            exit = ::altWakeUp,
+        )
     }
 
     override fun onWakeUp() {
@@ -54,20 +54,18 @@ class DreamActivity : DreamService() {
         // Start playback, etc
     }
 
+    private fun altWakeUp(exitApp: Boolean) {
+        if (exitApp) wakeUp()
+    }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::wakeUp)
+            InputHelper.handleKeyEvent(event, screenController, ::altWakeUp)
         ) {
             return true
         }
-        return super.dispatchKeyEvent(event)
-    }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::screenController.isInitialized) {
-            WindowHelper.hideSystemUI(window, screenController.view)
-        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDreamingStopped() {

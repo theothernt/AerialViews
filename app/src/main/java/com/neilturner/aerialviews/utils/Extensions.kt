@@ -13,8 +13,12 @@ import androidx.preference.MultiSelectListPreference
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 
 // https://stackoverflow.com/a/36795003/247257
@@ -56,10 +60,6 @@ fun Any?.toBoolean() = this?.toString().equals("true", ignoreCase = true)
 // https://stackoverflow.com/a/41855007/247257
 inline fun <reified T : Enum<T>> enumContains(name: String): Boolean = enumValues<T>().any { it.name == name }
 
-// inline fun <reified T : Enum<T>> enumValueOfOrNull(name: String): T? {
-//    return enumValues<T>().find { it.name == name }
-// }
-
 // https://stackoverflow.com/a/67843987/247257
 fun String.capitalise(): String =
     this.replaceFirstChar {
@@ -69,6 +69,12 @@ fun String.capitalise(): String =
             it.toString()
         }
     }
+
+// https://stackoverflow.com/a/78022759/247257
+fun String.capitaliseEachWord(): String {
+    val regex = "(\\b[a-z](?!\\s))".toRegex()
+    return this.replace(regex) { it.value.uppercase() }
+}
 
 // https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
 fun View.delayOnLifecycle(
@@ -81,4 +87,19 @@ fun View.delayOnLifecycle(
             delay(durationInMillis)
             block()
         }
+    }
+
+// https://stackoverflow.com/a/59513133/247257
+fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
+
+fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
+
+suspend fun <T> List<T>.parallelForEach(action: suspend (T) -> Unit) =
+    coroutineScope {
+        map { item ->
+            async(Dispatchers.Default) {
+                Timber.i("Coroutine running on thread: ${Thread.currentThread().name}")
+                action(item)
+            }
+        }.awaitAll()
     }

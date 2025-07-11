@@ -2,21 +2,18 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.providers.WebDavMediaProvider
+import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class WebDavVideosFragment :
     MenuStateFragment(),
@@ -62,7 +59,7 @@ class WebDavVideosFragment :
         // Host name
         val hostname = findPreference<EditTextPreference>("webdav_media_hostname")
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {
-            hostname?.summary = hostname?.text
+            hostname?.summary = hostname.text
         } else {
             hostname?.summary = getString(R.string.webdav_media_hostname_summary)
         }
@@ -81,7 +78,7 @@ class WebDavVideosFragment :
         // Username
         val username = findPreference<EditTextPreference>("webdav_media_username")
         if (username?.text.toStringOrEmpty().isNotEmpty()) {
-            username?.summary = username?.text
+            username?.summary = username.text
         } else {
             username?.summary = getString(R.string.webdav_media_username_summary)
         }
@@ -97,28 +94,24 @@ class WebDavVideosFragment :
 
     private fun limitTextInput() {
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_path")?.setOnBindEditTextListener { it.setSingleLine() }
+        preferenceScreen.findPreference<EditTextPreference>("webdav_media_pathname")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_username")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
-    private suspend fun testWebDavConnection() =
-        withContext(Dispatchers.IO) {
-            val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
-            val result = provider.fetchTest()
-            ensureActive()
-            showDialog(resources.getString(R.string.webdav_media_test_results), result)
-        }
+    private suspend fun testWebDavConnection() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
 
-    private suspend fun showDialog(
-        title: String = "",
-        message: String,
-    ) = withContext(Dispatchers.Main) {
-        AlertDialog.Builder(requireContext()).apply {
-            setTitle(title)
-            setMessage(message)
-            setPositiveButton(R.string.button_ok, null)
-            create().show()
-        }
+        val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs)
+        val result = provider.fetchTest()
+
+        progressDialog.dismiss()
+        DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
     }
 }

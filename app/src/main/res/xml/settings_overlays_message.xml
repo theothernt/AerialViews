@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
-        <PreferenceCategory app:title="@string/category_message">
+    <PreferenceCategory app:title="@string/category_message">
                 <EditTextPreference
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line1"
@@ -12,6 +11,23 @@
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line2"
                     app:title="@string/appearance_message_line2_title" />
+
+                <EditTextPreference
+                    app:summary="@string/appearance_message_line1_summary"
+                    app:key="message_line3"
+                    app:title="@string/appearance_message_line3_title" />
+                <EditTextPreference
+                    app:summary="@string/appearance_message_line1_summary"
+                    app:key="message_line4"
+                    app:title="@string/appearance_message_line4_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_advanced">
+                <Preference
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageApiFragment"
+                    app:key="message_api_settings"
+                    app:title="@string/category_message_api"
+                    app:summary="@string/appearance_message_api_enabled_summary" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">
@@ -20,15 +36,15 @@
                     app:entries="@array/text_size_entries"
                     app:entryValues="@array/text_size_values"
                     app:key="message_size"
-                    app:title="@string/appearance_message_size_title"
+                    app:title="@string/text_size_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
-                    app:defaultValue="@string/appearance_font_weight_default"
-                    app:entries="@array/appearance_font_weight_entries"
-                    app:entryValues="@array/appearance_font_weight_values"
+                    app:defaultValue="@string/text_weight_default"
+                    app:entries="@array/text_weight_entries"
+                    app:entryValues="@array/text_weight_values"
                     app:key="message_weight"
-                    app:title="@string/appearance_weight_title"
+                    app:title="@string/text_weight_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

@@ -18,14 +18,13 @@ class OverlaysRowBottomFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_row_bottom, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
-        updateDropDownAndSummary()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Bottom Row", this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        updateDropDownAndSummary()
     }
 
     override fun onDestroy() {

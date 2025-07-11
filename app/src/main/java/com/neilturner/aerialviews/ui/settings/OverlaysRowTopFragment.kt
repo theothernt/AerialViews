@@ -18,14 +18,13 @@ class OverlaysRowTopFragment :
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.settings_overlays_row_top, rootKey)
-        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-
-        updateDropDownAndSummary()
     }
 
     override fun onResume() {
         super.onResume()
         FirebaseHelper.logScreenView("Top Row", this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+        updateDropDownAndSummary()
     }
 
     override fun onDestroy() {

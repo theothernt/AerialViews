@@ -7,10 +7,18 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.crashlytics.ktx.crashlytics
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 object FirebaseHelper {
-    fun logException(ex: Throwable) {
-        Firebase.crashlytics.recordException(ex)
+    private const val LOGGING_END_DATE = "2025-07-30"
+
+    private fun isWithinLoggingPeriod(): Boolean {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val endDate = simpleDateFormat.parse(LOGGING_END_DATE)
+        val currentDate = Calendar.getInstance().time
+        return currentDate.before(endDate)
     }
 
     fun logScreenView(
@@ -26,7 +34,28 @@ object FirebaseHelper {
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }
 
-    // log event with number (eg. number of photos or videos
+    fun logException(ex: Throwable) {
+        Firebase.crashlytics.recordException(ex)
+    }
 
-    // log setting with true/false (eg. is webDAV or SMB used)
+    fun logExceptionIfRecent(ex: Throwable?) {
+        if (isWithinLoggingPeriod()) {
+            ex?.let { logException(it) }
+        }
+    }
+
+    fun logIfRecent(error: String) {
+        if (isWithinLoggingPeriod()) {
+            Firebase.crashlytics.log(error)
+        }
+    }
+
+    fun logCustomKeysIfRecent(
+        key: String,
+        value: String,
+    ) {
+        if (isWithinLoggingPeriod()) {
+            Firebase.crashlytics.setCustomKey(key, value)
+        }
+    }
 }

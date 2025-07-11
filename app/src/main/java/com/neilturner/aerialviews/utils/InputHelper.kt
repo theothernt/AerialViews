@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import android.content.Context
 import android.view.KeyEvent
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -13,7 +14,7 @@ object InputHelper {
     fun handleKeyEvent(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
     ): Boolean {
         var result = false
 
@@ -27,14 +28,12 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            Timber.i("Key Up")
             result = eventToAction(event, controller, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            Timber.i("Long Press")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
@@ -43,7 +42,6 @@ object InputHelper {
             event.repeatCount.rem(10) == 0 &&
             longPressEvent
         ) {
-            Timber.i("Another Long Press")
             result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
 
@@ -51,13 +49,80 @@ object InputHelper {
         return result
     }
 
+    fun setupGestureListener(
+        context: Context,
+        controller: ScreenController,
+        exit: (shouldExit: Boolean) -> Unit,
+    ) {
+        controller
+            .view
+            .setOnTouchListener(
+                SwipeGestureListener(
+                    context = context,
+                    onSwipeUp = { gestureToAction(GestureType.UP, controller, exit) },
+                    onSwipeDown = { gestureToAction(GestureType.DOWN, controller, exit) },
+                    onSwipeLeft = { gestureToAction(GestureType.LEFT, controller, exit) },
+                    onSwipeRight = { gestureToAction(GestureType.RIGHT, controller, exit) },
+                    onTap = { gestureToAction(GestureType.TAP, controller, exit) },
+                    onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, controller, exit) },
+                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
+                ),
+            )
+    }
+
+    private fun gestureToAction(
+        gesture: GestureType,
+        controller: ScreenController?,
+        exit: (shouldExit: Boolean) -> Unit,
+    ) {
+        val action =
+            when (gesture) {
+                GestureType.UP -> GeneralPrefs.gestureUp
+                GestureType.DOWN -> GeneralPrefs.gestureDown
+                GestureType.LEFT -> GeneralPrefs.gestureLeft
+                GestureType.RIGHT -> GeneralPrefs.gestureRight
+                GestureType.TAP -> GeneralPrefs.gestureTap
+                GestureType.DOUBLE_TAP -> GeneralPrefs.gestureDoubleTap
+                GestureType.TAP_HOLD -> GeneralPrefs.gestureTapHold
+            }
+
+        Timber.i("Gesture: $gesture, Action: $action")
+
+        // Check if any swipe or screen tap should wake from black out mode
+        if (GeneralPrefs.wakeOnAnyButtonPress &&
+            controller?.blackOutMode == true
+        ) {
+            controller.toggleBlackOutMode()
+            return
+        }
+
+        if (action == ButtonType.IGNORE) {
+            return
+        }
+
+        when (action) {
+            ButtonType.SKIP_NEXT -> controller?.skipItem()
+            ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
+            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
+            ButtonType.MUSIC_NEXT -> controller?.nextTrack()
+            ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
+            ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+            ButtonType.SEEK_FORWARD -> controller?.seekForward()
+            ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
+            ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
+            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
+            ButtonType.EXIT_TO_SETTINGS -> exit(false)
+            else -> exit(true)
+        }
+    }
+
     private fun eventToAction(
         event: KeyEvent,
         controller: ScreenController?,
-        exit: () -> Unit,
-        type: ButtonPressType = ButtonPressType.NORMAL,
+        exit: (shouldExit: Boolean) -> Unit,
+        type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
-        var action: ButtonType? = null
+        var action: ButtonType?
 
         when (event.keyCode) {
             // Ignore diagonal direction presses
@@ -81,11 +146,15 @@ object InputHelper {
                 return !GeneralPrefs.enableMediaButtonPassthrough
             }
 
+            KeyEvent.KEYCODE_BACK -> {
+                action = ButtonType.EXIT
+            }
+
             KeyEvent.KEYCODE_DPAD_CENTER -> {
                 // Only disable OK button if left/right/up/down keys are in use
                 action =
                     if (anyOkButtonActionsEnabled()) {
-                        if (type == ButtonPressType.NORMAL) {
+                        if (type == ButtonPressType.PRESS) {
                             GeneralPrefs.buttonOkPress
                         } else {
                             GeneralPrefs.buttonOkHold
@@ -99,7 +168,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_UP -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonUpPress
                     } else {
                         GeneralPrefs.buttonUpHold
@@ -108,7 +177,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonDownPress
                     } else {
                         GeneralPrefs.buttonDownHold
@@ -117,7 +186,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_LEFT -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonLeftPress
                     } else {
                         GeneralPrefs.buttonLeftHold
@@ -126,7 +195,7 @@ object InputHelper {
 
             KeyEvent.KEYCODE_DPAD_RIGHT -> {
                 action =
-                    if (type == ButtonPressType.NORMAL) {
+                    if (type == ButtonPressType.PRESS) {
                         GeneralPrefs.buttonRightPress
                     } else {
                         GeneralPrefs.buttonRightHold
@@ -134,7 +203,7 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> exit()
+            else -> return false
         }
 
         if (action == null) {
@@ -161,36 +230,46 @@ object InputHelper {
     private fun executeAction(
         action: ButtonType?,
         controller: ScreenController?,
-        exit: () -> Unit,
+        exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
+        Timber.i("Action: $action, ButtonPressType: $type")
+
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
             controller?.blackOutMode == true &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
+            // Timber.i("Action: toggleBlackOutMode")
             controller.toggleBlackOutMode()
             return true
         }
 
         if (action == ButtonType.IGNORE) {
+            // Timber.i("Action: Ignore")
             return false
         }
 
+        // If black out mode is active, should ignore all other actions?
+
         if (type == ButtonPressType.LONG_PRESS_HOLD) {
-            when (action) {
-                // Prepare for fast forward/rewind
-                else -> exit()
-            }
+            // Timber.i("Action: Ignore")
+            return false
         } else {
+            // Timber.i("Action: $action")
             when (action) {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
                 ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
+                ButtonType.MUSIC_NEXT -> controller?.nextTrack()
+                ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
+                ButtonType.SEEK_FORWARD -> controller?.seekForward()
+                ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-                else -> exit()
+                ButtonType.EXIT_TO_SETTINGS -> exit(false)
+                else -> exit(true)
             }
         }
         return true
@@ -198,7 +277,17 @@ object InputHelper {
 }
 
 enum class ButtonPressType {
-    NORMAL,
-    LONG_PRESS,
-    LONG_PRESS_HOLD,
+    PRESS,
+    LONG_PRESS, // eg. 1 second
+    LONG_PRESS_HOLD, // eg. 5 seconds - for seeking, etc
+}
+
+enum class GestureType {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    TAP,
+    DOUBLE_TAP,
+    TAP_HOLD,
 }

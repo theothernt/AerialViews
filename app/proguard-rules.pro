@@ -5,18 +5,14 @@
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
-# Mostly data class and json types
--keep class com.neilturner.aerialviews.models.videos.* { <fields>; }
--keep class com.neilturner.aerialviews.utils.* { <fields>; }
--keep class com.neilturner.aerialviews.ui.settings.* { <fields>; }
--keep class com.neilturner.aerialviews.ui.sources.* { <fields>; }
+# Firebase Crashlytics
+-keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
+-keep public class * extends java.lang.Exception  # Optional: Keep custom exceptions.
 
-# Retain generic signatures of TypeToken and its subclasses with R8 version 3.0 and higher.
--keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
--keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+# Mostly data class and json types
+-keep public class * extends androidx.fragment.app.Fragment { public <init>(); }
 
 # Sardine Android / XmlPullParser
-# -dontwarn org.xmlpull.v1.**
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
 
@@ -35,3 +31,22 @@
 -dontwarn org.ietf.jgss.GSSName**
 -dontwarn org.ietf.jgss.Oid**
 -dontwarn org.slf4j.impl.StaticLoggerBinder**
+
+# Ktor
+
+-dontwarn java.lang.management.ManagementFactory
+-dontwarn java.lang.management.RuntimeMXBean
+-dontwarn org.apache.log4j.Level
+-dontwarn org.apache.log4j.Logger
+-dontwarn org.apache.log4j.Priority
+-dontwarn org.apache.logging.log4j.Level
+-dontwarn org.apache.logging.log4j.LogManager
+-dontwarn org.apache.logging.log4j.Logger
+-dontwarn org.apache.logging.log4j.message.MessageFactory
+-dontwarn org.apache.logging.log4j.spi.ExtendedLogger
+-dontwarn org.apache.logging.log4j.spi.ExtendedLoggerWrapper
+-dontwarn org.eclipse.jetty.npn.NextProtoNego$ClientProvider
+-dontwarn org.eclipse.jetty.npn.NextProtoNego$Provider
+-dontwarn org.eclipse.jetty.npn.NextProtoNego$ServerProvider
+-dontwarn org.eclipse.jetty.npn.NextProtoNego
+-dontwarn reactor.blockhound.integration.BlockHoundIntegration

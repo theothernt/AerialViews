@@ -1,16 +1,15 @@
 package com.neilturner.aerialviews.ui.core
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.provider.Settings
+import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.databinding.DataBindingUtil
+import androidx.core.view.isVisible
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -21,20 +20,27 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
+import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
+import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.TextLocation
-import com.neilturner.aerialviews.ui.overlays.TextNowPlaying
+import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -44,12 +50,15 @@ class ScreenController(
     private val context: Context,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
-    private val resources = context.resources!!
+    private val resources by lazy { context.resources }
 
     private var nowPlayingService: NowPlayingService? = null
+    private var weatherService: WeatherService? = null
+    private var ktorServer: KtorServer? = null
+
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
@@ -57,8 +66,6 @@ class ScreenController(
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
     private val mediaFadeIn = GeneralPrefs.mediaFadeInDuration.toLong()
     private val mediaFadeOut = GeneralPrefs.mediaFadeOutDuration.toLong()
-
-    private val loadingViewAlphaVisible = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
 
     private var canShowOverlays = false
     private var alternate = false
@@ -85,25 +92,50 @@ class ScreenController(
 
     init {
         val inflater = LayoutInflater.from(context)
-        val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
+        val binding = AerialActivityBinding.inflate(inflater)
 
+        val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
+        val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
+        val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
+
+        // Setup binding for all views and controls
         view = binding.root
         loadingView = binding.loadingView.root
+        loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
 
         videoViewBinding = binding.videoView
+        videoViewBinding.root.setBackgroundColor(backgroundVideos)
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
-        videoViewBinding.root.setBackgroundColor(Color.BLACK)
 
         imageViewBinding = binding.imageView
+        imageViewBinding.root.setBackgroundColor(backgroundPhotos)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
-        imageViewBinding.root.setBackgroundColor(Color.BLACK)
 
+        // Setup loading message or hide it
+        if (GeneralPrefs.showLoadingText) {
+            loadingText.apply {
+                textSize = GeneralPrefs.loadingTextSize.toFloat()
+                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
+            }
+        } else {
+            loadingText.visibility = View.INVISIBLE
+        }
+
+        // Setup overlays and set initial positions
+        overlayHelper = OverlayHelper(context, GeneralPrefs)
+        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
+        this.bottomLeftIds = overlayIds.bottomLeftIds
+        this.bottomRightIds = overlayIds.bottomRightIds
+        this.topLeftIds = overlayIds.topLeftIds
+        this.topRightIds = overlayIds.topRightIds
+
+        // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
             (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
@@ -115,66 +147,47 @@ class ScreenController(
             binding.progressBar.visibility = View.VISIBLE
         }
 
-        if (GeneralPrefs.showLoadingText) {
-            loadingText.apply {
-                textSize = GeneralPrefs.loadingTextSize.toFloat()
-                typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
-            }
-        } else {
-            loadingText.visibility = View.INVISIBLE
+        // Setup brightness/dimness
+        if (GeneralPrefs.videoBrightness != "100") {
+            val view = binding.brightnessView
+            view.setBackgroundColor(Color.BLACK)
+            view.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
+            view.visibility = View.VISIBLE
         }
 
+        // Reset animation speed if needed
         if (GeneralPrefs.ignoreAnimationScale) {
             WindowHelper.resetSystemAnimationDuration(context)
         }
 
-        // Init overlays and set initial positions
-        overlayHelper = OverlayHelper(context, GeneralPrefs)
-        val overlayIds = overlayHelper.buildOverlaysAndIds(overlayViewBinding)
-        this.bottomLeftIds = overlayIds.bottomLeftIds
-        this.bottomRightIds = overlayIds.bottomRightIds
-        this.topLeftIds = overlayIds.topLeftIds
-        this.topRightIds = overlayIds.topRightIds
-
         // Gradients
         if (GeneralPrefs.showTopGradient) {
-            overlayViewBinding.gradientTop.visibility = View.VISIBLE
+            val gradientView = overlayViewBinding.gradientTop
+            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+            gradientView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            overlayViewBinding.gradientBottom.visibility = View.VISIBLE
+            val gradientView = overlayViewBinding.gradientBottom
+            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+            gradientView.visibility = View.VISIBLE
         }
 
-        // Get duration scale from the global settings.
-        var durationScale =
-            Settings.Global.getFloat(
-                context.contentResolver,
-                Settings.Global.ANIMATOR_DURATION_SCALE,
-                0f,
-            )
-
-        // If global duration scale is not 1 (default), try to override it
-        // for the current application.
-        if (durationScale != 1f) {
-            try {
-                ValueAnimator::class.java.getMethod("setDurationScale", Float::class.java).invoke(null, 1f)
-                durationScale = 1f
-            } catch (t: Throwable) {
-                // It means something bad happened, and animations are still
-                // altered by the global settings. You should warn the user and
-                // exit application.
-            }
-        }
-
-        Timber.i("Duration scale: $durationScale")
-
-        coroutineScope.launch {
-            if (overlayHelper.isOverlayEnabled<TextNowPlaying>() &&
-                PermissionHelper.hasNotificationListenerPermission(context)
-            ) {
+        mainScope.launch {
+            // Launch if we have permission
+            // Used for a) Skip music tracks b) music info widget
+            if (PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context)
             }
 
+            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
+                ktorServer =
+                    KtorServer(context).apply {
+                        start()
+                    }
+            }
+
+            // Build playlist and start screensaver
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
@@ -182,8 +195,15 @@ class ScreenController(
             } else {
                 showLoadingError()
             }
-        }
 
+            // Setup weather service
+            if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
+                weatherService =
+                    WeatherService(context).apply {
+                        startUpdates()
+                    }
+            }
+        }
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
         // 3. playback started callback, fade out loading text, fade out loading view
@@ -193,7 +213,7 @@ class ScreenController(
 
     private fun loadItem(media: AerialMedia) {
         if (media.uri.toString().contains("smb://")) {
-            val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d\\.]+)/")
+            val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
             Timber.i("Loading: ${media.description} - $url (${media.poi})")
@@ -202,7 +222,7 @@ class ScreenController(
         }
 
         // Set overlay data for current video
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             val locationType = GeneralPrefs.descriptionVideoManifestStyle
             if (locationType != null) {
                 it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
@@ -269,7 +289,7 @@ class ScreenController(
         val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text
-        if (loadingText.visibility == View.VISIBLE) {
+        if (loadingText.isVisible) {
             fadeOutLoadingText()
             startDelay = LOADING_DELAY
         }
@@ -296,11 +316,12 @@ class ScreenController(
         // Video should be playing underneath
         loadingView
             .animate()
-            .alpha(loadingViewAlphaVisible)
+            .alpha(0f)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
             .withEndAction {
-                // loadingView.visibility = View.GONE
+                loadingView.alpha = 0f
+                loadingView.visibility = View.INVISIBLE
                 canSkip = true
             }.start()
     }
@@ -309,7 +330,7 @@ class ScreenController(
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay<TextLocation>().forEach {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
             it.isFadingOutMedia = true
         }
 
@@ -321,6 +342,7 @@ class ScreenController(
             .setDuration(mediaFadeOut)
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
+                loadingView.alpha = 0f
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
@@ -363,6 +385,9 @@ class ScreenController(
         // Overlay auto hide pref must be enabled
         if (autoHideOverlayDelay < 0) return
 
+        // If blackout mode is on, exit
+        if (blackOutMode) return
+
         // If media fading in/out
         if (!canSkip) return
 
@@ -381,9 +406,12 @@ class ScreenController(
     }
 
     fun stop() {
+        RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
+        ktorServer?.stop()
         nowPlayingService?.stop()
+        weatherService?.stop()
     }
 
     fun skipItem(previous: Boolean = false) {
@@ -392,7 +420,7 @@ class ScreenController(
     }
 
     fun toggleBlackOutMode() {
-        if (playlist.size == 0) {
+        if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
@@ -403,6 +431,14 @@ class ScreenController(
             blackOutMode = false
             loadItem(playlist.nextItem())
         }
+    }
+
+    fun nextTrack() {
+        nowPlayingService?.nextTrack()
+    }
+
+    fun previousTrack() {
+        nowPlayingService?.previousTrack()
     }
 
     fun increaseSpeed() {
@@ -419,11 +455,28 @@ class ScreenController(
         videoPlayer.decreaseSpeed()
     }
 
+    fun seekForward() {
+        if (blackOutMode) {
+            return
+        }
+        videoPlayer.seekForward()
+    }
+
+    fun seekBackward() {
+        if (blackOutMode) {
+            return
+        }
+        videoPlayer.seekBackward()
+    }
+
     private fun handleError() {
-        if (loadingView.visibility == View.VISIBLE) {
-            loadItem(playlist.nextItem())
-        } else {
-            fadeOutCurrentItem()
+        mainScope.launch {
+            delay(ERROR_DELAY)
+            if (loadingView.isVisible) {
+                loadItem(playlist.nextItem())
+            } else {
+                fadeOutCurrentItem()
+            }
         }
     }
 

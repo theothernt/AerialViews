@@ -1,18 +1,21 @@
 package com.neilturner.aerialviews.ui.screensaver
 
-import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.WindowHelper
+import com.neilturner.aerialviews.utils.PreferenceHelper
+import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
+import timber.log.Timber
 
-class TestActivity : Activity() {
+class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +23,7 @@ class TestActivity : Activity() {
         // Setup
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
+        supportActionBar?.hide()
     }
 
     override fun onResume() {
@@ -29,12 +33,23 @@ class TestActivity : Activity() {
     }
 
     override fun onPause() {
-        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         super.onPause()
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+
+        // Don't use finishWithResult as it's not suitable at the moment
+        finishAndRemoveTask()
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+
+        // Hide system UI on phones
+        hideSystemUI(window)
+
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
@@ -44,22 +59,22 @@ class TestActivity : Activity() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
+
+        InputHelper.setupGestureListener(
+            context = this,
+            controller = screenController,
+            exit = ::finishWithResult,
+        )
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
-            InputHelper.handleKeyEvent(event, screenController, ::finish)
+            InputHelper.handleKeyEvent(event, screenController, ::finishWithResult)
         ) {
             return true
         }
-        return super.dispatchKeyEvent(event)
-    }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        if (hasFocus && this::screenController.isInitialized) {
-            WindowHelper.hideSystemUI(window, screenController.view)
-        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onStop() {
@@ -69,5 +84,23 @@ class TestActivity : Activity() {
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
+    }
+
+    private fun finishWithResult(exitApp: Boolean = false) {
+        Timber.i(
+            "isExitToSettingSet: ${PreferenceHelper.isExitToSettingSet()}, exitApp: $exitApp, startScreensaverOnLaunch: ${GeneralPrefs.startScreensaverOnLaunch}",
+        )
+
+        val shouldExitApp = (
+            GeneralPrefs.startScreensaverOnLaunch &&
+                exitApp &&
+                PreferenceHelper.isExitToSettingSet()
+        )
+        val resultIntent =
+            Intent().apply {
+                putExtra("exit_app", shouldExitApp)
+            }
+        setResult(RESULT_OK, resultIntent)
+        finish()
     }
 }

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <PreferenceCategory app:title="@string/category_swipe_gestures">
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_right"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_right_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_left"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_left_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_up"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_up_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_swipe_down"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_swipe_down_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_tap_gestures">
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_tap"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_tap_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_double_tap"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_double_tap_title" />
+
+                <ListPreference
+                    app:entries="@array/button_action_entries"
+                    app:entryValues="@array/button_action_values"
+                    app:defaultValue="@string/button_action_default"
+                    app:key="gesture_tap_hold"
+                    app:useSimpleSummaryProvider="true"
+                    app:title="@string/dpad_long_press_title" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            app:title="@string/category_permission"
+            app:key="music_permission_option"
+            app:isPreferenceVisible="false">
+                <Preference
+                    app:title="@string/dpad_music_permission_title"
+                    app:summary="@string/dpad_music_permission_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysNowPlayingFragment"/>
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            app:title="@string/category_startup"
+            app:key="screensaver_on_launch_option"
+            app:isPreferenceVisible="false">
+                <Preference
+                    app:title="@string/dpad_screensaver_on_launch_title"
+                    app:summary="@string/dpad_screensaver_on_launch_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceStartupFragment"/>
+        </PreferenceCategory>
+</PreferenceScreen>

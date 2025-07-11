@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_background_colour">
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_videos"
+                    app:title="@string/appearance_background_colour_videos_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_photos"
+                    app:title="@string/appearance_background_colour_photos_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_loading"
+                    app:title="@string/appearance_background_colour_loading_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+        </PreferenceCategory>
+</PreferenceScreen>

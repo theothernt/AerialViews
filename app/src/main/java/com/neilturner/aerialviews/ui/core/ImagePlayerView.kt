@@ -1,46 +1,37 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.net.Uri
-import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
-import coil.EventListener
-import coil.ImageLoader
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
-import coil.request.ErrorResult
-import coil.request.ImageRequest
-import coil.request.SuccessResult
-import com.hierynomus.msdtyp.AccessMask
-import com.hierynomus.mssmb2.SMB2CreateDisposition
-import com.hierynomus.mssmb2.SMB2ShareAccess
-import com.hierynomus.smbj.SMBClient
-import com.hierynomus.smbj.share.DiskShare
+import coil3.EventListener
+import coil3.ImageLoader
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.ErrorResult
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.InputStreamFetcher
+import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
+import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
+import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.utils.SambaHelper
-import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
+import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
-import java.util.EnumSet
 import kotlin.time.Duration.Companion.milliseconds
 
-class ImagePlayerView :
-    AppCompatImageView,
-    EventListener {
+class ImagePlayerView : AppCompatImageView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -48,22 +39,12 @@ class ImagePlayerView :
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+    private var target = ImageViewTarget(this)
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
-
-    private var imageLoader: ImageLoader =
-        ImageLoader
-            .Builder(context)
-            .eventListener(this)
-            .components {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    add(ImageDecoderDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
-                }
-            }.build()
 
     init {
         val scaleType =
@@ -83,78 +64,89 @@ class ImagePlayerView :
         listener = null
     }
 
-    override fun onSuccess(
-        request: ImageRequest,
-        result: SuccessResult,
-    ) {
-        setupFinishedRunnable()
-    }
+    private val eventLister =
+        object : EventListener() {
+            override fun onSuccess(
+                request: ImageRequest,
+                result: SuccessResult,
+            ) {
+                super.onSuccess(request, result)
+                setupFinishedRunnable()
+            }
 
-    override fun onError(
-        request: ImageRequest,
-        result: ErrorResult,
-    ) {
-        Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
-        onPlayerError()
-    }
+            override fun onError(
+                request: ImageRequest,
+                result: ErrorResult,
+            ) {
+                super.onError(request, result)
+                Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
+                FirebaseHelper.logExceptionIfRecent(result.throwable)
+
+                // Show toast if preference is enabled
+                if (GeneralPrefs.showMediaErrorToasts) {
+                    mainScope.launch {
+                        val errorMessage = result.throwable.localizedMessage ?: "Media loading error occurred"
+                        ToastHelper.show(context, errorMessage)
+                    }
+                }
+
+                onPlayerError()
+            }
+        }
+
+    private val imageLoader =
+        ImageLoader
+            .Builder(context)
+            .memoryCache(null)
+            .logger(logger)
+            .eventListener(eventLister)
+            .components {
+                add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
+                add(InputStreamFetcher.Factory())
+                add(buildGifDecoder())
+            }.build()
 
     fun setImage(media: AerialMedia) {
-        when (media.source) {
-            AerialMediaSource.SAMBA -> {
-                coroutineScope.launch { loadSambaImage(media.uri) }
-            }
-            AerialMediaSource.WEBDAV -> {
-                coroutineScope.launch { loadWebDavImage(media.uri) }
-            }
-            else -> {
-                coroutineScope.launch { loadImage(media.uri) }
+        ioScope.launch {
+            when (media.source) {
+                AerialMediaSource.SAMBA -> {
+                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
+                    loadImage(stream)
+                }
+                AerialMediaSource.WEBDAV -> {
+                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
+                    loadImage(stream)
+                }
+                else -> {
+                    loadImage(media.uri)
+                }
             }
         }
     }
 
-    private suspend fun loadImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(this)
-        request.data(uri)
-        imageLoader.execute(request.build())
-    }
-
-    private suspend fun loadSambaImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(this)
-
+    private suspend fun loadImage(data: Any?) {
         try {
-            val byteArray = byteArrayFromSambaFile(uri)
-            request.data(byteArray)
+            val request =
+                ImageRequest
+                    .Builder(context)
+                    .data(data)
+                    .size(this.width, this.height)
+                    .target(target)
+                    .build()
+            imageLoader.execute(request)
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception while getting byte array from SMB share: ${ex.message}")
+            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = ex.localizedMessage ?: "Media loading error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
             listener?.onImageError()
-            return
         }
-
-        imageLoader.execute(request.build())
-    }
-
-    private suspend fun loadWebDavImage(uri: Uri) {
-        val request =
-            ImageRequest
-                .Builder(context)
-                .target(this)
-
-        try {
-            val byteArray = byteArrayFromWebDavFile(uri)
-            request.data(byteArray)
-        } catch (ex: Exception) {
-            Timber.e(ex, "Exception while getting byte array from WebDAV resource: ${ex.message}")
-            listener?.onImageError()
-            return
-        }
-
-        imageLoader.execute(request.build())
     }
 
     fun stop() {
@@ -162,49 +154,17 @@ class ImagePlayerView :
         setImageBitmap(null)
     }
 
-    private suspend fun byteArrayFromWebDavFile(uri: Uri): ByteArray =
-        withContext(Dispatchers.IO) {
-            val client = OkHttpSardine()
-            client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
-            return@withContext client.get(uri.toString()).readBytes()
-        }
-
-    private suspend fun byteArrayFromSambaFile(uri: Uri): ByteArray =
-        withContext(Dispatchers.IO) {
-            val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
-            val shareName = shareNameAndPath.first
-            val path = shareNameAndPath.second
-
-            val config = SambaHelper.buildSmbConfig()
-            val smbClient = SMBClient(config)
-            val authContext = SambaHelper.buildAuthContext(SambaMediaPrefs.userName, SambaMediaPrefs.password, SambaMediaPrefs.domainName)
-
-            smbClient.connect(SambaMediaPrefs.hostName).use { connection ->
-                val session = connection?.authenticate(authContext)
-                val share = session?.connectShare(shareName) as DiskShare
-                val shareAccess = hashSetOf<SMB2ShareAccess>()
-                shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
-                val file =
-                    share.openFile(
-                        path,
-                        EnumSet.of(AccessMask.GENERIC_READ),
-                        null,
-                        shareAccess,
-                        SMB2CreateDisposition.FILE_OPEN,
-                        null,
-                    )
-                return@withContext file.inputStream.readBytes()
-            }
-        }
-
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
         listener?.onImagePrepared()
+
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
-        val delay = duration - GeneralPrefs.mediaFadeOutDuration.toLong()
-        postDelayed(finishedRunnable, delay)
-        if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, delay))
-        Timber.i("Delay: ${delay.milliseconds} (duration: ${duration.milliseconds})")
+        val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
+        val durationMinusFade = duration - fadeDuration
+
+        Timber.i("Delay: ${durationMinusFade.milliseconds}")
+        if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
+        postDelayed(finishedRunnable, durationMinusFade)
     }
 
     private fun onPlayerError() {

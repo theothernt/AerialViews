@@ -4,12 +4,25 @@
 
         <PreferenceCategory app:title="@string/category_startup">
                 <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="startup_screensaver_on_launch"
+                    app:title="@string/appearance_screensaver_on_launch_title"
+                    app:summary="@string/appearance_screensaver_on_launch_summary" />
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="startup_screensaver_on_launch"
+                    app:disableDependentsState="false"
+                    app:key="exit_to_settings"
+                    app:title="@string/appearance_exit_to_settings_title"
+                    app:summary="@string/appearance_exit_to_settings_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>
+
+                <CheckBoxPreference
                     app:defaultValue="true"
                     app:key="startup_show_loading"
                     app:title="@string/appearance_loading_show_title"
                     app:summary="@string/appearance_loading_show_summary" />
-
-                <!-- Show more info while loading -->
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">
@@ -18,15 +31,15 @@
                     app:entries="@array/text_size_entries"
                     app:entryValues="@array/text_size_values"
                     app:key="startup_size"
-                    app:title="@string/appearance_loading_size_title"
+                    app:title="@string/text_size_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
-                    app:defaultValue="@string/appearance_font_weight_default"
-                    app:entries="@array/appearance_font_weight_entries"
-                    app:entryValues="@array/appearance_font_weight_values"
+                    app:defaultValue="@string/text_weight_default"
+                    app:entries="@array/text_weight_entries"
+                    app:entryValues="@array/text_weight_values"
                     app:key="startup_weight"
-                    app:title="@string/appearance_loading_weight_title"
+                    app:title="@string/text_weight_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
