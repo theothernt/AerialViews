@@ -2,10 +2,10 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.widget.EditText
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.databinding.DialogLocationSearchBinding
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.LocationResponse
 import com.neilturner.aerialviews.services.weather.WeatherService
@@ -58,15 +58,14 @@ class OverlaysWeatherFragment : MenuStateFragment() {
     }
 
     private fun showLocationSearchDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_location_search, null)
-        val input = dialogView.findViewById<EditText>(R.id.edit_location_search)
+        val binding = DialogLocationSearchBinding.inflate(layoutInflater)
 
         AlertDialog
             .Builder(requireContext())
             .setTitle("Search for a location")
-            .setView(dialogView)
+            .setView(binding.root)
             .setPositiveButton("Search") { _, _ ->
-                val query = input.text.toString().trim()
+                val query = binding.editLocationSearch.text.toString().trim()
                 if (query.isNotEmpty()) {
                     searchLocation(query)
                 }

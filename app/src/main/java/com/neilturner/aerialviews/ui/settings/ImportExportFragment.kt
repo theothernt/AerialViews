@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.CheckBox
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -14,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.databinding.DialogImportSettingsBinding
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
@@ -98,16 +98,15 @@ class ImportExportFragment :
     }
 
     private fun importSettings(uri: Uri) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_import_settings, null)
-        val clearCheckbox = dialogView.findViewById<CheckBox>(R.id.checkbox_clear_settings)
+        val binding = DialogImportSettingsBinding.inflate(LayoutInflater.from(requireContext()))
         val res = requireContext().resources
 
         AlertDialog
             .Builder(requireContext())
             .setMessage(res.getString(R.string.settings_import_settings))
-            .setView(dialogView)
+            .setView(binding.root)
             .setPositiveButton(res.getString(R.string.button_import)) { _, _ ->
-                val clearExisting = clearCheckbox.isChecked
+                val clearExisting = binding.checkboxClearSettings.isChecked
                 val success =
                     PreferenceHelper.importPreferences(
                         requireContext(),
