@@ -400,6 +400,9 @@
   <string-array name="slideshow_speed_entries">
     <item>5 seconds</item>
     <item>10 seconds</item>
+    <item>15 seconds</item>
+    <item>20 seconds</item>
+    <item>25 seconds</item>
     <item>30 seconds*</item>
     <item>1 minute</item>
     <item>3 minutes</item>
@@ -409,6 +412,9 @@
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
     <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
     <item>30</item>
     <item>60</item>
     <item>180</item>
