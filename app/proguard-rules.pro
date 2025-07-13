@@ -33,7 +33,6 @@
 -dontwarn org.slf4j.impl.StaticLoggerBinder**
 
 # Ktor
-
 -dontwarn java.lang.management.ManagementFactory
 -dontwarn java.lang.management.RuntimeMXBean
 -dontwarn org.apache.log4j.Level
