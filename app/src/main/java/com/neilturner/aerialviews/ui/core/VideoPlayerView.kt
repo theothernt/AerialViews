@@ -50,8 +50,11 @@ class VideoPlayerView
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
+
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
+
+        private var isMuted = GeneralPrefs.muteVideos
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
@@ -86,7 +89,7 @@ class VideoPlayerView
             VideoPlayerHelper.setupMediaSource(exoPlayer, media)
 
             if (GeneralPrefs.muteVideos) {
-                VideoPlayerHelper.disableAudioTrack(exoPlayer)
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer)
             }
 
             // Disable subtitles/text tracks by default
@@ -102,6 +105,19 @@ class VideoPlayerView
         fun seekForward() = seek()
 
         fun seekBackward() = seek(true)
+
+        fun toggleMute() {
+            if (isMuted) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
+                isMuted = false
+
+            } else {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                exoPlayer.volume = 0f
+                isMuted = true
+            }
+        }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener

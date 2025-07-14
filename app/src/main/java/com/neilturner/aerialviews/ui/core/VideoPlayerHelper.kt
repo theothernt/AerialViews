@@ -34,11 +34,11 @@ import kotlin.time.Duration.Companion.milliseconds
 object VideoPlayerHelper {
     private const val TEN_SECONDS = 10 * 1000
 
-    fun disableAudioTrack(player: ExoPlayer) {
+    fun toggleAudioTrack(player: ExoPlayer, disableAudio: Boolean) {
         player.trackSelectionParameters =
             player.trackSelectionParameters
                 .buildUpon()
-                .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
+                .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, disableAudio)
                 .build()
     }
 
