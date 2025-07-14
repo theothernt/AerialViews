@@ -34,7 +34,10 @@ import kotlin.time.Duration.Companion.milliseconds
 object VideoPlayerHelper {
     private const val TEN_SECONDS = 10 * 1000
 
-    fun toggleAudioTrack(player: ExoPlayer, disableAudio: Boolean) {
+    fun toggleAudioTrack(
+        player: ExoPlayer,
+        disableAudio: Boolean,
+    ) {
         player.trackSelectionParameters =
             player.trackSelectionParameters
                 .buildUpon()

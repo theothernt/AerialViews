@@ -38,7 +38,7 @@ class MessageOverlay : AppCompatTextView {
 
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
-        //visibility = VISIBLE
+        // visibility = VISIBLE
     }
 
     override fun onAttachedToWindow() {
@@ -73,7 +73,7 @@ class MessageOverlay : AppCompatTextView {
     private fun updateMessage() {
         clearJob?.cancel()
         updateTextAndStyle()
-        //visibility = if (text.isNullOrBlank()) GONE else VISIBLE
+        // visibility = if (text.isNullOrBlank()) GONE else VISIBLE
 
         // Schedule auto-clear if duration is specified
         currentMessage.duration?.let {

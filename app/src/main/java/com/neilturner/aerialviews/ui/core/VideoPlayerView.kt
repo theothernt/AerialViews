@@ -89,7 +89,7 @@ class VideoPlayerView
             VideoPlayerHelper.setupMediaSource(exoPlayer, media)
 
             if (GeneralPrefs.muteVideos) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer)
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
             }
 
             // Disable subtitles/text tracks by default
@@ -111,7 +111,6 @@ class VideoPlayerView
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
                 isMuted = false
-
             } else {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 exoPlayer.volume = 0f

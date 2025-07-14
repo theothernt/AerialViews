@@ -13,7 +13,6 @@ import tv.projectivy.plugin.wallpaperprovider.api.WallpaperDisplayMode
 import tv.projectivy.plugin.wallpaperprovider.api.WallpaperType
 
 class WallpaperProviderService : Service() {
-
     override fun onBind(intent: Intent): IBinder {
         // Return the interface.
         return binder
