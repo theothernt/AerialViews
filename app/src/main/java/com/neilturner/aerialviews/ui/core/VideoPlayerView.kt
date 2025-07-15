@@ -61,7 +61,12 @@ class VideoPlayerView
 
             player = exoPlayer
             player?.addListener(this)
-            player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+
+            if (GeneralPrefs.loopUntilSkipped || GeneralPrefs.loopShortVideos) {
+                player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+            } else {
+                player?.repeatMode = Player.REPEAT_MODE_OFF // No looping
+            }
 
             controllerAutoShow = false
             useController = false
@@ -192,12 +197,13 @@ class VideoPlayerView
             mediaItem: MediaItem?,
             reason: Int,
         ) {
-            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                state.loopCount++
-                Timber.i("Looping video, count: ${state.loopCount}")
-
-                if (GeneralPrefs.loopUntilSkipped) {
-                    setupAlmostFinishedRunnable()
+            when (reason) {
+                Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED -> Timber.i("Reason: Playlist changed")
+                Player.MEDIA_ITEM_TRANSITION_REASON_SEEK -> Timber.i("Reason: Seek to new media item")
+                Player.MEDIA_ITEM_TRANSITION_REASON_AUTO -> Timber.i("Reason: Auto transition")
+                Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
+                    state.loopCount++
+                    Timber.i("Reason: Looping video, count: ${state.loopCount}")
                 }
             }
             super.onMediaItemTransition(mediaItem, reason)
@@ -207,7 +213,7 @@ class VideoPlayerView
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.logExceptionIfRecent(error.cause)
-            // Show toast if preference is enabled
+
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
                     val errorMessage = error.localizedMessage ?: "Media playback error occurred"
@@ -342,7 +348,7 @@ class VideoPlayerView
 data class VideoState(
     var ready: Boolean = false,
     var prepared: Boolean = false,
-    var loopCount: Int = 1,
+    var loopCount: Int = 0,
     var startPosition: Long = 0L,
     var endPosition: Long = 0L,
 )
