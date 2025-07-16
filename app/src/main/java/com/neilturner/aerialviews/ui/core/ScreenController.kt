@@ -117,6 +117,9 @@ class ScreenController(
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
 
+        // Connect the background image view for blurred background effect
+        imagePlayer.setBackgroundImageView(imageViewBinding.backgroundImage)
+
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
