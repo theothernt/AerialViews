@@ -35,6 +35,7 @@ media3-exoplayer = "1.7.1"
 flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.2.0"
+coil-transformations = "3.0.0"
 timber = "5.0.1"
 
 junit-jupiter = "5.13.3"
@@ -91,6 +92,7 @@ media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "medi
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3" }
+coil-transformations = { group = "com.github.Commit451.coil-transformations", name = "transformations", version.ref = "coil-transformations" }
 
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
@@ -117,7 +119,7 @@ exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization"]
-coil = ["coil", "coil-okhttp", "coil-gif"]
+coil = ["coil", "coil-okhttp", "coil-gif", "coil-transformations"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 
 [plugins]
