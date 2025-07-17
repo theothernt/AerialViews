@@ -248,9 +248,11 @@ class ImmichMediaProvider(
     private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
         try {
             Timber.d("Fetching favorite assets")
-            val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey)
+            val searchRequest = SearchMetadataRequest(isFavorite = true)
+            val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
-                val assets = response.body() ?: emptyList()
+                val searchResponse = response.body()
+                val assets = searchResponse?.assets?.items ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} favorite assets")
                 return assets
             } else {
