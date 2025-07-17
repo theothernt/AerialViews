@@ -90,5 +90,15 @@
                     app:key="immich_media_include_favorites"
                     app:title="@string/immich_media_include_favourites_title"
                     app:summary="@string/immich_media_include_favourites_summary" />
+
+                <MultiSelectListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:key="immich_media_include_ratings"
+                    app:title="@string/immich_media_include_ratings_title"
+                    app:summary="@string/immich_media_include_ratings_summary"
+                    app:entries="@array/immich_rating_entries"
+                    app:entryValues="@array/immich_rating_values"
+                    app:defaultValue="@array/immich_rating_values" />
         </PreferenceCategory>
 </PreferenceScreen>

@@ -97,7 +97,7 @@ class ImmichMediaProvider(
         // Get favorites if enabled and using API key authentication
         val favoriteAssets = if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
             try {
-                getFavoriteAssetsFromAPI()
+                getFavoriteAssetsFromAPI(true)
             } catch (e: Exception) {
                 Timber.w(e, "Failed to fetch favorite assets, continuing without them")
                 emptyList()
@@ -106,12 +106,24 @@ class ImmichMediaProvider(
             emptyList()
         }
 
-        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty()) {
+        // Get rated assets if enabled and using API key authentication
+        val ratedAssets = if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
+            try {
+                getRatedAssetsFromAPI()
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to fetch rated assets, continuing without them")
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+
+        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
         // Combine album assets and favorite assets, removing duplicates
-        val allAssets = (immichMedia.assets + favoriteAssets).distinctBy { it.id }
+        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets).distinctBy { it.id }
 
         allAssets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
@@ -245,10 +257,10 @@ class ImmichMediaProvider(
         }
     }
 
-    private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
+    private suspend fun getFavoriteAssetsFromAPI(isFavorite: Boolean): List<Asset> {
         try {
             Timber.d("Fetching favorite assets")
-            val searchRequest = SearchMetadataRequest(isFavorite = true)
+            val searchRequest = SearchMetadataRequest(isFavorite = isFavorite)
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -264,6 +276,32 @@ class ImmichMediaProvider(
             Timber.e(e, "Exception while fetching favorite assets")
             throw Exception("Failed to fetch favorite assets", e)
         }
+    }
+
+    private suspend fun getRatedAssetsFromAPI(): List<Asset> {
+        val ratedAssets = mutableListOf<Asset>()
+        try {
+            val ratings = prefs.includeRatings
+            if (ratings.isNotEmpty()) {
+                for (rating in ratings) {
+                    Timber.d("Fetching rated assets with rating: $rating")
+                    val searchRequest = SearchMetadataRequest(rating = rating.toInt())
+                    val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                    if (response.isSuccessful) {
+                        val searchResponse = response.body()
+                        val assets = searchResponse?.assets?.items ?: emptyList()
+                        Timber.d("Successfully fetched ${assets.size} rated assets")
+                        ratedAssets.addAll(assets)
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Timber.e("Failed to fetch rated assets. Code: ${response.code()}, Error: $errorBody")
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching rated assets")
+        }
+        return ratedAssets
     }
 
     suspend fun fetchAlbums(): Result<List<Album>> =

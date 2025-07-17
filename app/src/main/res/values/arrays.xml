@@ -702,6 +702,22 @@
     <item>API_KEY</item>
   </string-array>
 
+  <!-- Immich rating -->
+  <string-array name="immich_rating_entries" translatable="false">
+    <item>1 Star</item>
+    <item>2 Stars</item>
+    <item>3 Stars</item>
+    <item>4 Stars</item>
+    <item>5 Stars</item>
+  </string-array>
+  <string-array name="immich_rating_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+  </string-array>
+
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">
     <item>Disabled</item>

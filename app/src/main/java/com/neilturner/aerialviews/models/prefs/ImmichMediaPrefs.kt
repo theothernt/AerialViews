@@ -19,4 +19,5 @@ object ImmichMediaPrefs : KotprefModel() {
     var selectedAlbumId by stringPref("", "immich_media_selected_album_id")
     var selectedAlbumName by stringPref("", "immich_media_selected_album_name")
     var includeFavorites by booleanPref(false, "immich_media_include_favorites")
+    val includeRatings by stringSetPref(emptySet(), "immich_media_include_ratings")
 }

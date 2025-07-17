@@ -46,7 +46,8 @@ data class AssetsResult(
 
 @Serializable
 data class SearchMetadataRequest(
-    val isFavorite: Boolean = true,
+    val isFavorite: Boolean? = null,
+    val rating: Int? = null,
 )
 
 @Serializable
