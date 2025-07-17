@@ -276,6 +276,9 @@
   <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
   <string name="immich_media_unknown_error">An unknown error occurred</string>
 
+  <string name="immich_media_include_favorites_title">Include favorite photos</string>
+  <string name="immich_media_include_favorites_summary">Add your favorite photos to the screensaver in addition to the selected album</string>
+
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
   <string name="immich_media_test_summary3">Videos found: %1$s</string>

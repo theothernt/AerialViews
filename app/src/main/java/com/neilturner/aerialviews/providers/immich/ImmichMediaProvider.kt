@@ -94,11 +94,26 @@ class ImmichMediaProvider(
                 return Pair(emptyList(), e.message.toString())
             }
 
-        if (immichMedia.assets.isEmpty()) {
+        // Get favorites if enabled and using API key authentication
+        val favoriteAssets = if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
+            try {
+                getFavoriteAssetsFromAPI()
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to fetch favorite assets, continuing without them")
+                emptyList()
+            }
+        } else {
+            emptyList()
+        }
+
+        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
-        immichMedia.assets.forEach lit@{ asset ->
+        // Combine album assets and favorite assets, removing duplicates
+        val allAssets = (immichMedia.assets + favoriteAssets).distinctBy { it.id }
+
+        allAssets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val poi = mutableMapOf<Int, String>()
             val description = asset.exifInfo?.description ?: ""
@@ -227,6 +242,25 @@ class ImmichMediaProvider(
         } catch (e: Exception) {
             Timber.e(e, "Exception while fetching selected album")
             throw Exception("Failed to fetch selected album", e)
+        }
+    }
+
+    private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
+        try {
+            Timber.d("Fetching favorite assets")
+            val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey)
+            if (response.isSuccessful) {
+                val assets = response.body() ?: emptyList()
+                Timber.d("Successfully fetched ${assets.size} favorite assets")
+                return assets
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Timber.e("Failed to fetch favorites. Code: ${response.code()}, Error: $errorBody")
+                throw Exception("Failed to fetch favorite assets: ${response.code()} - ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching favorite assets")
+            throw Exception("Failed to fetch favorite assets", e)
         }
     }
 

@@ -24,6 +24,12 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Path("id") albumId: String,
     ): Response<Album>
+
+    @GET("/api/search/metadata")
+    suspend fun getFavoriteAssets(
+        @Header("x-api-key") apiKey: String,
+        @Query("isFavorite") isFavorite: Boolean = true,
+    ): Response<List<Asset>>
 }
 
 @Serializable

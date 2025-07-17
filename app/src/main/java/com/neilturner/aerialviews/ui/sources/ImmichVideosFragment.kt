@@ -30,6 +30,7 @@ class ImmichVideosFragment :
     private lateinit var apiKeyPreference: EditTextPreference
     private lateinit var selectAlbumPreference: Preference
     private lateinit var pathnamePreference: EditTextPreference
+    private lateinit var includeFavoritesPreference: Preference
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -45,6 +46,7 @@ class ImmichVideosFragment :
         apiKeyPreference = findPreference("immich_media_api_key")!!
         selectAlbumPreference = findPreference("immich_media_select_album")!!
         pathnamePreference = findPreference("immich_media_pathname")!!
+        includeFavoritesPreference = findPreference("immich_media_include_favorites")!!
 
         limitTextInput()
         updateAuthTypeVisibility()
@@ -142,12 +144,14 @@ class ImmichVideosFragment :
                 passwordPreference.isVisible = true
                 apiKeyPreference.isVisible = false
                 selectAlbumPreference.isVisible = false
+                includeFavoritesPreference.isVisible = false
             }
             ImmichAuthType.API_KEY -> {
                 pathnamePreference.isVisible = false
                 passwordPreference.isVisible = false
                 apiKeyPreference.isVisible = true
                 selectAlbumPreference.isVisible = true
+                includeFavoritesPreference.isVisible = true
             }
         }
     }

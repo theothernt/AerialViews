@@ -18,4 +18,5 @@ object ImmichMediaPrefs : KotprefModel() {
     var apiKey by stringPref("", "immich_media_api_key")
     var selectedAlbumId by stringPref("", "immich_media_selected_album_id")
     var selectedAlbumName by stringPref("", "immich_media_selected_album_name")
+    var includeFavorites by booleanPref(false, "immich_media_include_favorites")
 }
