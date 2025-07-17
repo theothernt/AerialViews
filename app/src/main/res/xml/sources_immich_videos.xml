@@ -88,7 +88,7 @@
                     app:disableDependentsState="false"
                     app:defaultValue="false"
                     app:key="immich_media_include_favorites"
-                    app:title="@string/immich_media_include_favorites_title"
-                    app:summary="@string/immich_media_include_favorites_summary" />
+                    app:title="@string/immich_media_include_favourites_title"
+                    app:summary="@string/immich_media_include_favourites_summary" />
         </PreferenceCategory>
 </PreferenceScreen>

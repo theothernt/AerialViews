@@ -16,6 +16,7 @@ object JsonHelper {
         Json {
             ignoreUnknownKeys = true
             isLenient = true
+            encodeDefaults = true
         }
 
     fun buildSerializer(): Converter.Factory {
