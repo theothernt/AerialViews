@@ -115,11 +115,15 @@ class SambaVideosFragment :
     }
 
     private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("samba_videos_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("samba_videos_domainname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("samba_videos_sharename")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("samba_videos_username")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("samba_videos_password")?.setOnBindEditTextListener { it.setSingleLine() }
+        listOf(
+            "samba_videos_hostname",
+            "samba_videos_domainname",
+            "samba_videos_sharename",
+            "samba_videos_username",
+            "samba_videos_password"
+        ).forEach { key ->
+            findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
+        }
     }
 
     private suspend fun testSambaConnection() {

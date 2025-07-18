@@ -259,6 +259,7 @@
   <string name="immich_media_api_key_title">API Key</string>
   <string name="immich_media_api_key_summary">Enter your Immich API key</string>
   <string name="immich_media_select_album">Select Album</string>
+  <string name="immich_media_select_albums">Select Albums</string>
 
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
@@ -268,9 +269,10 @@
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
 
-
   <string name="immich_media_select_album_summary">No album selected</string>
+  <string name="immich_media_select_albums_summary">No albums selected</string>
   <string name="immich_media_selected_album">Selected album: %1$s</string>
+  <string name="immich_media_selected_albums">%1$d albums selected</string>
   <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
   <string name="immich_media_no_albums">No Albums Found</string>
   <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
