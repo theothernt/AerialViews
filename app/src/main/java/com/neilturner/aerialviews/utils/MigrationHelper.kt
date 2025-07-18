@@ -44,6 +44,7 @@ class MigrationHelper(
         if (lastKnownVersion < 24) release24()
         if (lastKnownVersion < 49) release49()
         if (lastKnownVersion < 53) release53()
+        if (lastKnownVersion < 60) release60()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -407,6 +408,26 @@ class MigrationHelper(
                 putString("nowplaying_weight1", weight)
                 putString("nowplaying_weight2", weight)
                 remove("nowplaying_weight")
+            }
+        }
+    }
+
+    private fun release60() {
+        Timber.i("Migrating settings for release 59")
+
+        val albumIdUsed = prefs.contains("immich_media_selected_album_id")
+        if (albumIdUsed) {
+            val id = prefs.getString("immich_media_selected_album_id", "")
+            prefs.edit {
+                putStringSet("immich_media_selected_album_ids", setOf(id))
+                remove("immich_media_selected_album_id")
+            }
+        }
+
+        val albumNameUsed = prefs.contains("immich_media_selected_album_name")
+        if (albumNameUsed) {
+            prefs.edit {
+                remove("immich_media_selected_album_name")
             }
         }
     }
