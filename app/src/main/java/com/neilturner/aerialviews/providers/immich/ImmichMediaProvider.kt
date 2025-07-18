@@ -61,8 +61,6 @@ class ImmichMediaProvider(
             return Pair(media, "Hostname and port not specified")
         }
 
-        // validate SSL certs
-
         if (prefs.authType == ImmichAuthType.SHARED_LINK) {
             if (prefs.pathName.isEmpty()) {
                 return Pair(media, "Path name is empty")

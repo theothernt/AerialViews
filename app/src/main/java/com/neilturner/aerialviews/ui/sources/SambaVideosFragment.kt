@@ -120,7 +120,7 @@ class SambaVideosFragment :
             "samba_videos_domainname",
             "samba_videos_sharename",
             "samba_videos_username",
-            "samba_videos_password"
+            "samba_videos_password",
         ).forEach { key ->
             findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
         }

@@ -31,7 +31,6 @@ class ImmichVideosFragment :
     private lateinit var pathnamePreference: EditTextPreference
     private lateinit var includeFavoritesPreference: Preference
     private lateinit var includeRatedPreference: Preference
-    private var availableAlbums: List<Album> = emptyList()
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -194,7 +193,6 @@ class ImmichVideosFragment :
             val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
             provider.fetchAlbums().fold(
                 onSuccess = { albums ->
-                    availableAlbums = albums
                     populateAlbumsPreference(albums)
                 },
                 onFailure = { exception ->
