@@ -297,6 +297,22 @@ com.neilturner.aerialviews/.ui.screensaver.DreamActivity
 </details>
 
 <details>
+<summary>ADB command - extra command for Fire TV + Fire OS 7.6.9.x</summary>
+&nbsp;
+
+Recent updates to Fire OS mean extra commands are required for Aerial Views to function properly as the default screensaver.
+
+Like with previous ADB commands, connect to your Android TV device and start a command shell. Then run the following commands...
+
+```sh
+settings put secure screensaver_default_component com.neilturner.aerialviews/.ui.screensaver.DreamActivity
+settings put secure contextual_screen_off_timeout 300000 
+settings put secure screensaver_enabled 1
+```
+
+</details>
+
+<details>
 <summary>ADB command - change the screensaver timeout</summary>
 &nbsp;
 

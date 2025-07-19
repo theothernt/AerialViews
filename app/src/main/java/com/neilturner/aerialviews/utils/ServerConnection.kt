@@ -40,7 +40,7 @@ object UrlParser {
             }
 
             // Do more validation
-            if (Patterns.WEB_URL.matcher(processedUrl).matches() == false) {
+            if (!Patterns.WEB_URL.matcher(processedUrl).matches()) {
                 throw IllegalArgumentException("Invalid URL")
             }
             return processedUrl

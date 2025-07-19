@@ -71,6 +71,10 @@
   <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_overlay_animations">Overlay animations</string>
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
+  <string name="category_message_api">Message API</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_connection_information">Connection Information</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
   <string name="category_line1">Line 1</string>
@@ -172,6 +176,7 @@
 
   <string name="local_videos_legacy_folder_title">Specify a folder (eg. /Movies, case sensitive)</string>
   <string name="local_videos_legacy_folder_summary">No folder specified</string>
+  <string name="local_videos_legacy_search_subfolders_title">Search subfolders</string>
 
   <string name="local_videos_legacy_no_volume">Volume not specified</string>
   <string name="local_videos_legacy_no_folder">Folder not specified</string>
@@ -257,6 +262,7 @@
   <string name="immich_media_api_key_title">API Key</string>
   <string name="immich_media_api_key_summary">Enter your Immich API key</string>
   <string name="immich_media_select_album">Select Album</string>
+  <string name="immich_media_select_albums">Select Albums</string>
 
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
@@ -266,13 +272,20 @@
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
 
-
   <string name="immich_media_select_album_summary">No album selected</string>
+  <string name="immich_media_select_albums_summary">No albums selected</string>
   <string name="immich_media_selected_album">Selected album: %1$s</string>
+  <string name="immich_media_selected_albums">%1$d albums selected</string>
   <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
   <string name="immich_media_no_albums">No Albums Found</string>
   <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
   <string name="immich_media_unknown_error">An unknown error occurred</string>
+
+  <string name="immich_media_include_favourites_title">Include favourite photos</string>
+  <string name="immich_media_include_favourites_summary">Show favorite photos in addition to the selected albums</string>
+
+  <string name="immich_media_include_ratings_title">Include rated photos</string>
+  <string name="immich_media_include_ratings_summary">Show rated photos in addition to the selected albums</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
@@ -357,7 +370,7 @@
   <string name="appearance_music_summary">Display the currently playing song</string>
 
   <string name="appearance_message_title">Message</string>
-  <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+  <string name="appearance_message_summary">Display up to 4 lines of custom text</string>
 
   <!-- Main / Settings / Overlays / Rows -->
   <string name="appearance_slot1_title">Lower Slot</string>
@@ -397,7 +410,6 @@
   <string name="weather_forecast_temperature_units_title">Temperature units</string>
   <string name="weather_forecast_summary">Change the layout of the forecast information</string>
 
-  <!-- Weather Forecast -->
   <string name="weather_forecast_slot1">Slot 1</string>
   <string name="weather_forecast_slot2">Slot 2</string>
   <string name="weather_forecast_slot3">Slot 3</string>
@@ -432,9 +444,14 @@
 
   <!-- Main / Settings / Appearance / Message -->
   <string name="appearance_message_line1_title">Line 1</string>
-  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
   <string name="appearance_message_line2_title">Line 2</string>
-  <string name="appearance_message_size_title">Size</string>
+  <string name="appearance_message_line3_title">Line 3</string>
+  <string name="appearance_message_line4_title">Line 4</string>
+  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
 
   <!-- Main / Settings / Appearance -->
   <string name="appearance_typography_title">Typography</string>
@@ -609,7 +626,6 @@
 
   <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
   <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
-
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
@@ -642,7 +658,6 @@
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
   <!-- Main / Settings / Import / Export settings -->
-
   <string name="settings_export_title">Export settings to Documents folder</string>
   <string name="settings_export_summary1">Only settings which have been changed from the defaults will be exported</string>
 

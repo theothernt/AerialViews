@@ -87,5 +87,12 @@
                     android:key="local_videos_legacy_folder"
                     android:title="@string/local_videos_legacy_folder_title"
                     android:summary="@string/local_videos_legacy_folder_summary" />
+
+                <SwitchPreferenceCompat
+                    app:dependency="local_videos_legacy_notice"
+                    app:disableDependentsState="false"
+                    app:key="local_videos_legacy_search_subfolders"
+                    app:title="@string/local_videos_legacy_search_subfolders_title"
+                    app:defaultValue="false" />
         </PreferenceCategory>
 </PreferenceScreen>

@@ -30,8 +30,8 @@ import kotlin.time.Duration.Companion.milliseconds
 
 @Suppress("SameParameterValue")
 class VideoPlayerView
-@OptIn(UnstableApi::class)
-@JvmOverloads
+    @OptIn(UnstableApi::class)
+    @JvmOverloads
     constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -50,15 +50,23 @@ class VideoPlayerView
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
+
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
+
+        private var isMuted = GeneralPrefs.muteVideos
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
 
             player = exoPlayer
             player?.addListener(this)
-            player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+
+            if (GeneralPrefs.loopUntilSkipped || GeneralPrefs.loopShortVideos) {
+                player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+            } else {
+                player?.repeatMode = Player.REPEAT_MODE_OFF // No looping
+            }
 
             controllerAutoShow = false
             useController = false
@@ -86,7 +94,7 @@ class VideoPlayerView
             VideoPlayerHelper.setupMediaSource(exoPlayer, media)
 
             if (GeneralPrefs.muteVideos) {
-                VideoPlayerHelper.disableAudioTrack(exoPlayer)
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
             }
 
             // Disable subtitles/text tracks by default
@@ -102,6 +110,18 @@ class VideoPlayerView
         fun seekForward() = seek()
 
         fun seekBackward() = seek(true)
+
+        fun toggleMute() {
+            if (isMuted) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
+                isMuted = false
+            } else {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                exoPlayer.volume = 0f
+                isMuted = true
+            }
+        }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener
@@ -123,8 +143,8 @@ class VideoPlayerView
         val currentPosition
             get() = exoPlayer.currentPosition.toInt()
 
-    @OptIn(UnstableApi::class)
-    override fun onPlaybackStateChanged(playbackState: Int) {
+        @OptIn(UnstableApi::class)
+        override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
                 Player.STATE_IDLE -> Timber.i("Idle...")
                 Player.STATE_ENDED -> Timber.i("Playback ended...")
@@ -177,12 +197,13 @@ class VideoPlayerView
             mediaItem: MediaItem?,
             reason: Int,
         ) {
-            if (reason == Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT) {
-                state.loopCount++
-                Timber.i("Looping video, count: ${state.loopCount}")
-
-                if (GeneralPrefs.loopUntilSkipped) {
-                    setupAlmostFinishedRunnable()
+            when (reason) {
+                Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED -> Timber.i("Reason: Playlist changed")
+                Player.MEDIA_ITEM_TRANSITION_REASON_SEEK -> Timber.i("Reason: Seek to new media item")
+                Player.MEDIA_ITEM_TRANSITION_REASON_AUTO -> Timber.i("Reason: Auto transition")
+                Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
+                    state.loopCount++
+                    Timber.i("Reason: Looping video, count: ${state.loopCount}")
                 }
             }
             super.onMediaItemTransition(mediaItem, reason)
@@ -192,7 +213,7 @@ class VideoPlayerView
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.logExceptionIfRecent(error.cause)
-            // Show toast if preference is enabled
+
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
                     val errorMessage = error.localizedMessage ?: "Media playback error occurred"
@@ -219,7 +240,9 @@ class VideoPlayerView
             } else {
                 exoPlayer.seekTo(position + interval)
             }
-        }        private fun changeSpeed(increase: Boolean) {
+        }
+
+        private fun changeSpeed(increase: Boolean) {
             if (!canChangePlaybackSpeed) return
             if (!exoPlayer.playWhenReady || !exoPlayer.isPlaying) return // Must be playing a video
             if (exoPlayer.currentPosition <= CHANGE_PLAYBACK_START_END_DELAY) return // No speed change at the start of the video
@@ -230,8 +253,8 @@ class VideoPlayerView
             postDelayed(canChangePlaybackSpeedRunnable, CHANGE_PLAYBACK_SPEED_DELAY)
 
             val currentSpeed = playbackSpeed
-            var speedValues: Array<String>? = null
-            var currentSpeedIdx: Int = -1
+            var speedValues: Array<String>?
+            var currentSpeedIdx: Int
 
             try {
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
@@ -325,7 +348,7 @@ class VideoPlayerView
 data class VideoState(
     var ready: Boolean = false,
     var prepared: Boolean = false,
-    var loopCount: Int = 1,
+    var loopCount: Int = 0,
     var startPosition: Long = 0L,
     var endPosition: Long = 0L,
 )

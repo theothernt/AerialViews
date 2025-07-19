@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -21,12 +20,14 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
@@ -56,6 +57,7 @@ class ScreenController(
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
+    private var ktorServer: KtorServer? = null
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -90,7 +92,7 @@ class ScreenController(
 
     init {
         val inflater = LayoutInflater.from(context)
-        val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
+        val binding = AerialActivityBinding.inflate(inflater)
 
         val backgroundLoading = ColourHelper.colourFromString(GeneralPrefs.backgroundLoading)
         val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
@@ -178,6 +180,13 @@ class ScreenController(
                 nowPlayingService = NowPlayingService(context)
             }
 
+            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
+                ktorServer =
+                    KtorServer(context).apply {
+                        start()
+                    }
+            }
+
             // Build playlist and start screensaver
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
@@ -195,7 +204,6 @@ class ScreenController(
                     }
             }
         }
-
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
         // 3. playback started callback, fade out loading text, fade out loading view
@@ -401,6 +409,7 @@ class ScreenController(
         RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
+        ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
     }
@@ -458,6 +467,10 @@ class ScreenController(
             return
         }
         videoPlayer.seekBackward()
+    }
+
+    fun toggleMute() {
+        videoPlayer.toggleMute()
     }
 
     private fun handleError() {

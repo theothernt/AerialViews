@@ -2,6 +2,7 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
@@ -14,6 +15,7 @@ import java.util.Locale
 
 object LocaleHelper {
     // https://stackoverflow.com/a/44145807/247257
+    @SuppressLint("AppBundleLocaleChanges")
     fun localeString(
         requestedLocale: Locale?,
         resourceId: Int,

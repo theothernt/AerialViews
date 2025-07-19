@@ -13,7 +13,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DeviceHelper
 import timber.log.Timber
 
-class App : Application() {
+class AerialApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
@@ -22,7 +22,7 @@ class App : Application() {
         }
 
         if (BuildConfig.DEBUG) {
-            // setupStrictMode()
+            setupStrictMode()
         }
 
         if (!GeneralPrefs.checkForHevcSupport) {
@@ -51,7 +51,7 @@ class App : Application() {
         StrictMode.setThreadPolicy(
             StrictMode.ThreadPolicy
                 .Builder()
-                .detectAll()
+                .detectCustomSlowCalls()
                 .penaltyFlashScreen()
                 .penaltyLog()
                 .build(),
@@ -59,7 +59,10 @@ class App : Application() {
         StrictMode.setVmPolicy(
             VmPolicy
                 .Builder()
-                .detectAll()
+                .detectLeakedClosableObjects()
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedRegistrationObjects()
+                .detectActivityLeaks()
                 .penaltyLog()
                 // .penaltyDeath()
                 .build(),

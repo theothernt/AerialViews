@@ -18,6 +18,7 @@
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
   <string name="allow_fallback_decoders_summary">支持某些设备上基于软件的编解码器或替代编解码器</string>
   <string name="allow_fallback_decoders_title">允许后备解码器</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">为了防止 OLED 烧屏，每个视频的时钟和地点都会改变</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_animations_summary">配置用于叠加的动画以及视频和照片之间的动画</string>
@@ -70,10 +71,14 @@
   <string name="appearance_loading_show_title">显示加载文本</string>
   <string name="appearance_location_summary">显示地点或景点</string>
   <string name="appearance_location_title">地点</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
   <string name="appearance_message_line1_summary">输入要显示的文本，包括表情符号</string>
   <string name="appearance_message_line1_title">第 1 行</string>
   <string name="appearance_message_line2_title">第 2 行</string>
-  <string name="appearance_message_size_title">调整信息文字大小</string>
+  <string name="appearance_message_line3_title">Line 3</string>
+  <string name="appearance_message_line4_title">Line 4</string>
   <string name="appearance_message_summary">最多显示 2 行自定义文本</string>
   <string name="appearance_message_title">信息</string>
   <string name="appearance_music_summary">显示当前播放的歌曲</string>
@@ -91,6 +96,8 @@
   <string name="appearance_slot1_title">较低插槽</string>
   <string name="appearance_slot2_title">较高插槽</string>
   <string name="appearance_slot_summary">留空</string>
+  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
+  <string name="appearance_slots_title">Overlay slots</string>
   <string name="appearance_startup_summary">更改应用程序加载时的显示内容</string>
   <string name="appearance_startup_title">启动</string>
   <string name="appearance_top_left_lower_slot">左上角，较低插槽</string>
@@ -137,15 +144,19 @@
   <string name="category_advanced">高级设置</string>
   <string name="category_all_other_media">All other videos and images</string>
   <string name="category_animation">动画</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_appearance">外观</string>
   <string name="category_apple_and_community_videos">Apple 和社区视频</string>
   <string name="category_authentication_details">认证详细信息</string>
   <string name="category_background_colour">背景颜色</string>
+  <string name="category_bottom_row">底部</string>
   <string name="category_bottom_row_left">左下角</string>
   <string name="category_bottom_row_right">右下角</string>
   <string name="category_brightness">亮度</string>
   <string name="category_capabilities">性能</string>
   <string name="category_clock">时钟</string>
+  <string name="category_connection_information">Connection Information</string>
   <string name="category_custom_format">自定义格式</string>
   <string name="category_date">日期</string>
   <string name="category_dpad">D-Pad/遥控器</string>
@@ -159,8 +170,10 @@
   <string name="category_line1">第 1 行</string>
   <string name="category_line2">第 2 行</string>
   <string name="category_local">本地</string>
+  <string name="category_media_render_options">Media &amp; render options</string>
   <string name="category_media_scanner_options">媒体扫描仪选项</string>
   <string name="category_message">信息</string>
+  <string name="category_message_api">Message API</string>
   <string name="category_music">音乐</string>
   <string name="category_network">局域网</string>
   <string name="category_now_playing">正在播放</string>
@@ -183,11 +196,11 @@
   <string name="category_startup">启动</string>
   <string name="category_swipe_gestures">轻扫手势</string>
   <string name="category_tap_gestures">轻点手势</string>
+  <string name="category_top_row">顶部</string>
   <string name="category_top_row_left">左上角</string>
   <string name="category_top_row_right">右上角</string>
   <string name="category_typography">排版</string>
   <string name="category_vide_and_photo_animations">视频和照片动画</string>
-  <string name="category_video_render_options">视频和渲染选项</string>
   <string name="category_video_source">视频源</string>
   <string name="category_videos">Videos</string>
   <string name="category_weather">天气</string>
@@ -273,6 +286,7 @@
   <string name="local_videos_legacy_no_folder">未指定文件夹</string>
   <string name="local_videos_legacy_no_folder_found">文件夹不存在</string>
   <string name="local_videos_legacy_no_volume">未指定存储卷</string>
+  <string name="local_videos_legacy_search_subfolders_title">搜索子文件夹</string>
   <string name="local_videos_legacy_summary">指定存储视频的单个文件夹（Android 12 或更低版本）</string>
   <string name="local_videos_legacy_volume_summary">未选择存储卷</string>
   <string name="local_videos_legacy_volume_title">选择存储卷</string>
@@ -295,9 +309,9 @@
   <string name="nowplaying_permission_notice_summary">要启用通知访问，请在设置&gt; 应用程序&gt; 特殊访问&gt; 通知访问</string>
   <string name="nowplaying_permission_summary">必须获得许可，此应用程序才能监听来自系统的音乐通知</string>
   <string name="nowplaying_permission_title">启用系统通知访问</string>
+  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
+  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
   <string name="nowplaying_toast_text">请在特殊应用程序访问权限 &gt; 通知访问权限</string>
-  <string name="playlist_advanced_video_summary">限制视频长度、循环播放短视频、从随机位置开始播放</string>
-  <string name="playlist_advanced_video_title">高级选项</string>
   <string name="playlist_ignore_unmatched_videos_summary">跳过任何 Apple 视频清单中未列出的视频</string>
   <string name="playlist_ignore_unmatched_videos_title">忽略无法识别/非 Apple 视频</string>
   <string name="playlist_limit_longer_videos_title">较长的视频</string>
@@ -323,6 +337,7 @@
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_video_volume_summary">选择视频音量大小</string>
   <string name="playlist_video_volume_title">视频音量</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">地点</string>
   <string name="progress_bar_opacity_title">不透明度</string>
   <string name="progress_bar_type_title">显示</string>
@@ -387,6 +402,8 @@
   <string name="settings_system_options_error">无法打开设备的屏保选项</string>
   <string name="settings_system_options_removed">该功能已被制造商删除
 请访问 Aerial Views 网站了解更多详情</string>
+  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
+  <string name="show_media_error_toasts_title">Show media error toasts</string>
   <string name="sources_apple_summary">使用互联网在线播放苹果官方视频</string>
   <string name="sources_apple_title">Apple 官方视频</string>
   <string name="sources_comm1_summary">使用互联网在线播放这些社区视频</string>

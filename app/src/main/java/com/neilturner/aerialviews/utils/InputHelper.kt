@@ -111,6 +111,7 @@ object InputHelper {
             ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
             ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
             ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
+            ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }
@@ -122,7 +123,7 @@ object InputHelper {
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
-        var action: ButtonType? = null
+        var action: ButtonType?
 
         when (event.keyCode) {
             // Ignore diagonal direction presses
@@ -268,6 +269,7 @@ object InputHelper {
                 ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
+                ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
                 else -> exit(true)
             }

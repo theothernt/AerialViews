@@ -76,7 +76,7 @@ internal object MediaServiceHelper {
         val media = CopyOnWriteArrayList<AerialMedia>()
 
         providers
-            .filter { it.enabled == true }
+            .filter { it.enabled }
             .parallelForEach {
                 try {
                     val providerMedia = it.fetchMedia()

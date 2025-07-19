@@ -10,7 +10,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.databinding.MainActivityBinding
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.screensaver.TestActivity
 import com.neilturner.aerialviews.ui.settings.ImportExportFragment
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.PreferenceHelper
@@ -20,16 +22,18 @@ import timber.log.Timber
 class MainActivity :
     AppCompatActivity(),
     PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
+    private lateinit var binding: MainActivityBinding
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
     private var fromScreensaver = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.container, MainFragment())
+                replace(binding.container.id, MainFragment())
             }
         } else {
             title = savedInstanceState.getCharSequence("TITLE_TAG")
@@ -98,7 +102,7 @@ class MainActivity :
                 }
             supportFragmentManager.commit {
                 replace(
-                    R.id.container,
+                    binding.container.id,
                     ImportExportFragment().apply {
                         arguments = bundle
                     },
@@ -111,7 +115,7 @@ class MainActivity :
     fun startScreensaver() {
         fromScreensaver = false
         try {
-            val intent = Intent().setClassName(applicationContext, "com.neilturner.aerialviews.ui.screensaver.TestActivity")
+            val intent = Intent(this, TestActivity::class.java)
             resultLauncher.launch(intent)
         } catch (ex: Exception) {
             Timber.e(ex)
@@ -146,7 +150,7 @@ class MainActivity :
                     R.anim.fade_in,
                     R.anim.slide_out,
                 )
-                replace(R.id.container, fragment)
+                replace(binding.container.id, fragment)
                     .addToBackStack(null)
             }.apply {
                 title = pref.title

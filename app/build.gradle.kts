@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.kapt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
@@ -25,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 36
-        versionCode = 57
+        versionCode = 60
         versionName = "1.7.9"
-        betaVersion = "-beta1"
+        betaVersion = "-beta4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -45,12 +44,8 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
+        viewBinding = true
         buildConfig = true
-    }
-
-    kapt {
-        useBuildCache = false
     }
 
     lint {
@@ -95,6 +90,13 @@ android {
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["performanceCollectionEnabled"] = true
+        }
+    }
+
+    packaging {
+        resources {
+            resources.excludes.add("META-INF/INDEX.LIST")
+            
         }
     }
 
@@ -153,7 +155,7 @@ android {
         getByName("googleplay").java.srcDir("src/common/java")
         getByName("googleplaybeta").java.srcDir("src/common/java")
         getByName("amazon").java.srcDir("src/common/java")
-        getByName("fdroid").java.srcDir("src/froid/java")
+        getByName("fdroid").java.srcDir("src/fdroid/java")
     }
 }
 
@@ -172,6 +174,7 @@ dependencies {
     implementation(libs.bundles.coil)
     implementation(libs.bundles.retrofit)
 
+    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
