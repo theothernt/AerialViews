@@ -31,8 +31,7 @@ class WebDavMediaProvider(
 
     override suspend fun fetchTest(): String = fetchWebDavMedia().second
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
-        mutableMapOf()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
 
     private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

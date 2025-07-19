@@ -135,8 +135,8 @@ internal object ImagePlayerHelper {
                         file.close()
                         share.close()
                         session.close()
-                        connection.close()
-                        smbClient.close()
+                        // connection.close()
+                        // smbClient.close()
                     } catch (ex: Exception) {
                         Timber.e(ex, "Error closing SMB resources: ${ex.message}")
                     }

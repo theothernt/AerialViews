@@ -65,7 +65,10 @@ class OverlaysWeatherFragment : MenuStateFragment() {
             .setTitle("Search for a location")
             .setView(binding.root)
             .setPositiveButton("Search") { _, _ ->
-                val query = binding.editLocationSearch.text.toString().trim()
+                val query =
+                    binding.editLocationSearch.text
+                        .toString()
+                        .trim()
                 if (query.isNotEmpty()) {
                     searchLocation(query)
                 }

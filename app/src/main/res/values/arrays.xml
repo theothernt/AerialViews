@@ -400,6 +400,9 @@
   <string-array name="slideshow_speed_entries">
     <item>5 seconds</item>
     <item>10 seconds</item>
+    <item>15 seconds</item>
+    <item>20 seconds</item>
+    <item>25 seconds</item>
     <item>30 seconds*</item>
     <item>1 minute</item>
     <item>3 minutes</item>
@@ -409,6 +412,9 @@
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
     <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
     <item>30</item>
     <item>60</item>
     <item>180</item>
@@ -570,6 +576,7 @@
     <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
     <item>Black out screen, fade out media and overlays</item>
+    <item>Toggle mute/unmute audio</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -585,6 +592,7 @@
     <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
+    <item>TOGGLE_MUTE</item>
   </string-array>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
@@ -692,6 +700,22 @@
   <string-array name="immich_auth_type_values" translatable="false">
     <item>SHARED_LINK</item>
     <item>API_KEY</item>
+  </string-array>
+
+  <!-- Immich rating -->
+  <string-array name="immich_rating_entries" translatable="false">
+    <item>1 Star</item>
+    <item>2 Stars</item>
+    <item>3 Stars</item>
+    <item>4 Stars</item>
+    <item>5 Stars</item>
+  </string-array>
+  <string-array name="immich_rating_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
   </string-array>
 
   <!-- Progress Bar -->

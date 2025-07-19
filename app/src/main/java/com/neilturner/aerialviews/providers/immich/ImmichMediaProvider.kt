@@ -49,8 +49,7 @@ class ImmichMediaProvider(
 
     override suspend fun fetchTest(): String = fetchImmichMedia().second
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> =
-        mutableMapOf()
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -61,8 +60,6 @@ class ImmichMediaProvider(
         if (prefs.url.isEmpty()) {
             return Pair(media, "Hostname and port not specified")
         }
-
-        // validate SSL certs
 
         if (prefs.authType == ImmichAuthType.SHARED_LINK) {
             if (prefs.pathName.isEmpty()) {
@@ -78,7 +75,7 @@ class ImmichMediaProvider(
             }
 
             // Name needed?
-            if (prefs.selectedAlbumId.isEmpty()) {
+            if (prefs.selectedAlbumIds.isEmpty()) {
                 return Pair(media, "Please select an album")
             }
         }
@@ -95,11 +92,40 @@ class ImmichMediaProvider(
                 return Pair(emptyList(), e.message.toString())
             }
 
-        if (immichMedia.assets.isEmpty()) {
+        // Get favorites if enabled and using API key authentication
+        val favoriteAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
+                try {
+                    getFavoriteAssetsFromAPI(true)
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to fetch favorite assets, continuing without them")
+                    emptyList()
+                }
+            } else {
+                emptyList()
+            }
+
+        // Get rated assets if enabled and using API key authentication
+        val ratedAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
+                try {
+                    getRatedAssetsFromAPI()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to fetch rated assets, continuing without them")
+                    emptyList()
+                }
+            } else {
+                emptyList()
+            }
+
+        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
-        immichMedia.assets.forEach lit@{ asset ->
+        // Combine album assets and favorite assets, removing duplicates
+        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets).distinctBy { it.id }
+
+        allAssets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val poi = mutableMapOf<Int, String>()
             val description = asset.exifInfo?.description ?: ""
@@ -107,8 +133,6 @@ class ImmichMediaProvider(
 
             Timber.i("Description: $description, Filename: $filename")
 
-            // Trying to fix ClassCastException
-            // Not sure what is causing it or exactly where it is
             try {
                 if (asset.exifInfo?.country != null &&
                     asset.exifInfo.country.isNotBlank()
@@ -203,32 +227,105 @@ class ImmichMediaProvider(
 
     private suspend fun getSelectedAlbumFromAPI(): Album {
         try {
-            val selectedAlbumId = prefs.selectedAlbumId
-            Timber.d("Attempting to fetch selected album")
-            Timber.d("Selected Album ID: $selectedAlbumId")
+            val selectedAlbumIds = prefs.selectedAlbumIds
+            if (selectedAlbumIds.isEmpty()) {
+                throw Exception("No albums selected")
+            }
+
+            Timber.d("Attempting to fetch ${selectedAlbumIds.size} selected albums")
+            Timber.d("Selected Album IDs: $selectedAlbumIds")
             Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
-            val response = immichClient.getAlbum(apiKey = prefs.apiKey, albumId = selectedAlbumId)
-            Timber.d("API Request URL: ${response.raw().request.url}")
-            Timber.d("API Request Method: ${response.raw().request.method}")
-            Timber.d("API Request Headers: ${response.raw().request.headers}")
-            if (response.isSuccessful) {
-                val album = response.body()
-                if (album != null) {
-                    Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                    return album
+
+            val allAssets = mutableListOf<Asset>()
+            var combinedAlbumName = ""
+
+            for ((index, albumId) in selectedAlbumIds.withIndex()) {
+                val response = immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId)
+                Timber.d("API Request for album $albumId - URL: ${response.raw().request.url}")
+
+                if (response.isSuccessful) {
+                    val album = response.body()
+                    if (album != null) {
+                        Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                        allAssets.addAll(album.assets)
+                        combinedAlbumName += if (index == 0) album.name else ", ${album.name}"
+                    } else {
+                        Timber.e("Received null album from successful response for album ID: $albumId")
+                    }
                 } else {
-                    Timber.e("Received null album from successful response")
-                    throw Exception("Received null album from API")
+                    val errorBody = response.errorBody()?.string()
+                    Timber.e("Failed to fetch album $albumId. Code: ${response.code()}, Error: $errorBody")
+                    // Continue with other albums instead of failing completely
                 }
+            }
+
+            if (allAssets.isEmpty()) {
+                throw Exception("No assets found in any of the selected albums")
+            }
+
+            // Remove duplicate assets based on ID
+            val uniqueAssets = allAssets.distinctBy { it.id }
+            Timber.d("Combined ${allAssets.size} assets from ${selectedAlbumIds.size} albums, ${uniqueAssets.size} unique assets")
+
+            // Return a combined album with all assets
+            return Album(
+                id = "combined", // Use a special ID for the combined album
+                name = combinedAlbumName,
+                description = "Combined album from ${selectedAlbumIds.size} selected albums",
+                assetCount = uniqueAssets.size,
+                assets = uniqueAssets,
+            )
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching selected albums")
+            throw Exception("Failed to fetch selected albums", e)
+        }
+    }
+
+    private suspend fun getFavoriteAssetsFromAPI(isFavorite: Boolean): List<Asset> {
+        try {
+            Timber.d("Fetching favorite assets")
+            val searchRequest = SearchMetadataRequest(isFavorite = isFavorite)
+            val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+            if (response.isSuccessful) {
+                val searchResponse = response.body()
+                val assets = searchResponse?.assets?.items ?: emptyList()
+                Timber.d("Successfully fetched ${assets.size} favorite assets")
+                return assets
             } else {
                 val errorBody = response.errorBody()?.string()
-                Timber.e("Failed to fetch album. Code: ${response.code()}, Error: $errorBody")
-                throw Exception("Failed to fetch selected album: ${response.code()} - ${response.message()}")
+                Timber.e("Failed to fetch favorites. Code: ${response.code()}, Error: $errorBody")
+                throw Exception("Failed to fetch favorite assets: ${response.code()} - ${response.message()}")
             }
         } catch (e: Exception) {
-            Timber.e(e, "Exception while fetching selected album")
-            throw Exception("Failed to fetch selected album", e)
+            Timber.e(e, "Exception while fetching favorite assets")
+            throw Exception("Failed to fetch favorite assets", e)
         }
+    }
+
+    private suspend fun getRatedAssetsFromAPI(): List<Asset> {
+        val ratedAssets = mutableListOf<Asset>()
+        try {
+            val ratings = prefs.includeRatings
+            if (ratings.isNotEmpty()) {
+                for (rating in ratings) {
+                    Timber.d("Fetching rated assets with rating: $rating")
+                    val searchRequest = SearchMetadataRequest(rating = rating.toInt())
+                    val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                    if (response.isSuccessful) {
+                        val searchResponse = response.body()
+                        val assets = searchResponse?.assets?.items ?: emptyList()
+                        Timber.d("Successfully fetched ${assets.size} rated assets")
+                        ratedAssets.addAll(assets)
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Timber.e("Failed to fetch rated assets. Code: ${response.code()}, Error: $errorBody")
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching rated assets")
+        }
+        return ratedAssets
     }
 
     suspend fun fetchAlbums(): Result<List<Album>> =

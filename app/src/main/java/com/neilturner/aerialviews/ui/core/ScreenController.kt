@@ -469,6 +469,10 @@ class ScreenController(
         videoPlayer.seekBackward()
     }
 
+    fun toggleMute() {
+        videoPlayer.toggleMute()
+    }
+
     private fun handleError() {
         mainScope.launch {
             delay(ERROR_DELAY)
