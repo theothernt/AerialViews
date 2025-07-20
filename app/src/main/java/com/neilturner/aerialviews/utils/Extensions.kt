@@ -18,7 +18,6 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.util.Locale
 
 // https://stackoverflow.com/a/36795003/247257
@@ -98,7 +97,6 @@ suspend fun <T> List<T>.parallelForEach(action: suspend (T) -> Unit) =
     coroutineScope {
         map { item ->
             async(Dispatchers.Default) {
-                Timber.i("Coroutine running on thread: ${Thread.currentThread().name}")
                 action(item)
             }
         }.awaitAll()

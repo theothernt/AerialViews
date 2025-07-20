@@ -40,6 +40,7 @@ import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
@@ -412,6 +413,7 @@ class ScreenController(
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        mainScope.cancel()
     }
 
     fun skipItem(previous: Boolean = false) {
