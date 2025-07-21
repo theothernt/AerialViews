@@ -96,7 +96,7 @@ class ImmichMediaProvider(
         val favoriteAssets =
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
                 try {
-                    getFavoriteAssetsFromAPI(true)
+                    getFavoriteAssetsFromAPI()
                 } catch (e: Exception) {
                     Timber.w(e, "Failed to fetch favorite assets, continuing without them")
                     emptyList()
@@ -281,10 +281,10 @@ class ImmichMediaProvider(
         }
     }
 
-    private suspend fun getFavoriteAssetsFromAPI(isFavorite: Boolean): List<Asset> {
+    private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
         try {
             Timber.d("Fetching favorite assets")
-            val searchRequest = SearchMetadataRequest(isFavorite = isFavorite)
+            val searchRequest = SearchMetadataRequest(isFavorite = true)
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
