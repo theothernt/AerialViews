@@ -36,10 +36,10 @@ android {
     }
 
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(21)
 
         sourceSets.configureEach {
-            languageSettings.languageVersion = "2.1"
+            languageSettings.languageVersion = "2.2"
         }
     }
 
