@@ -577,6 +577,7 @@
     <item>Show overlays, if hidden</item>
     <item>Black out screen, fade out media and overlays</item>
     <item>Toggle mute/unmute audio</item>
+    <item>Pause/unpause video or photo timer</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -593,6 +594,7 @@
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
     <item>TOGGLE_MUTE</item>
+    <item>TOGGLE_PAUSE</item>
   </string-array>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>

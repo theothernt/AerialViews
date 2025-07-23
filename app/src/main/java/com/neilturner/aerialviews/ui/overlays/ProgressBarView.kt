@@ -45,6 +45,12 @@ class ProgressBar : View {
                     }
                     Timber.i("Pausing progress bar animation")
                 }
+                ProgressState.RESUME -> {
+                    if (animator?.isPaused == true) {
+                        animator?.resume()
+                    }
+                    Timber.i("Resuming progress bar animation")
+                }
                 else -> {
                     Timber.i("Reset progress bar animation")
                     animator?.cancel()
@@ -93,5 +99,6 @@ data class ProgressBarEvent(
 enum class ProgressState {
     START,
     PAUSE,
+    RESUME,
     RESET,
 }

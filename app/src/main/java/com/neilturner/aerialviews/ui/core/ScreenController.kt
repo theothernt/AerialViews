@@ -72,6 +72,8 @@ class ScreenController(
     private var alternate = false
     private var previousItem = false
     private var canSkip = false
+    private var isPaused = false
+    private var pauseStartTime: Long = 0
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -213,6 +215,10 @@ class ScreenController(
     }
 
     private fun loadItem(media: AerialMedia) {
+        // Reset pause state when loading new item
+        isPaused = false
+        pauseStartTime = 0
+        
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
@@ -352,6 +358,10 @@ class ScreenController(
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
 
+                // Reset pause state when transitioning between items
+                isPaused = false
+                pauseStartTime = 0
+
                 // Pick next/previous video
                 val media =
                     if (!previousItem) {
@@ -473,6 +483,62 @@ class ScreenController(
 
     fun toggleMute() {
         videoPlayer.toggleMute()
+    }
+
+    fun togglePause() {
+        if (blackOutMode) {
+            return
+        }
+
+        if (isPaused) {
+            resumeMedia()
+        } else {
+            pauseMedia()
+        }
+    }
+
+    private fun pauseMedia() {
+        if (isPaused) return
+        
+        isPaused = true
+        pauseStartTime = System.currentTimeMillis()
+        
+        // Pause video if currently showing
+        if (videoViewBinding.root.visibility == View.VISIBLE) {
+            videoPlayer.pause()
+        }
+        
+        // Pause image timer if currently showing
+        if (imageViewBinding.root.visibility == View.VISIBLE) {
+            imagePlayer.pauseTimer()
+        }
+        
+        // Pause progress bar
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+        }
+    }
+
+    private fun resumeMedia() {
+        if (!isPaused) return
+        
+        isPaused = false
+        val pauseDuration = System.currentTimeMillis() - pauseStartTime
+        
+        // Resume video if currently showing
+        if (videoViewBinding.root.visibility == View.VISIBLE) {
+            videoPlayer.resume()
+        }
+        
+        // Resume image timer if currently showing
+        if (imageViewBinding.root.visibility == View.VISIBLE) {
+            imagePlayer.resumeTimer(pauseDuration)
+        }
+        
+        // Resume progress bar
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
+        }
     }
 
     private fun handleError() {

@@ -42,6 +42,9 @@ class ImagePlayerView : AppCompatImageView {
     private val ioScope = CoroutineScope(Dispatchers.IO)
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var target = ImageViewTarget(this)
+    private var pausedTimestamp: Long = 0
+    private var totalDuration: Long = 0
+    private var remainingDuration: Long = 0
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
@@ -152,6 +155,26 @@ class ImagePlayerView : AppCompatImageView {
     fun stop() {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
+        pausedTimestamp = 0
+        remainingDuration = 0
+    }
+
+    fun pauseTimer() {
+        pausedTimestamp = System.currentTimeMillis()
+        removeCallbacks(finishedRunnable)
+    }
+
+    fun resumeTimer(pauseDuration: Long) {
+        if (pausedTimestamp > 0) {
+            remainingDuration = maxOf(0, remainingDuration - pauseDuration)
+            if (remainingDuration > 0) {
+                postDelayed(finishedRunnable, remainingDuration)
+            } else {
+                // If time has expired, finish immediately
+                listener?.onImageFinished()
+            }
+            pausedTimestamp = 0
+        }
     }
 
     private fun setupFinishedRunnable() {
@@ -161,6 +184,9 @@ class ImagePlayerView : AppCompatImageView {
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
         val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
         val durationMinusFade = duration - fadeDuration
+
+        totalDuration = duration
+        remainingDuration = durationMinusFade
 
         Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
