@@ -112,6 +112,7 @@ object InputHelper {
             ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
             ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
             ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
+            ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }
@@ -270,6 +271,7 @@ object InputHelper {
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
                 ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
+                ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
                 else -> exit(true)
             }
