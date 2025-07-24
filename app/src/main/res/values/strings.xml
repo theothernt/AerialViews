@@ -451,10 +451,10 @@
   <string name="appearance_background_colour_title">Background Colour</string>
   <string name="appearance_background_colour_summary">Change the colour used when a video or photo does not fill the screen</string>
 
-  <string name="appearance_brightness_title">Brightness/Dimness</string>
+  <string name="appearance_brightness_title">Brightness / Dimness</string>
   <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
-  <string name="appearance_scaling_title">Scaling</string>
+  <string name="appearance_scaling_title">Scaling / Cropping</string>
   <string name="appearance_scaling_summary">Change scaling and cropping options for videos &amp; photos</string>
 
   <string name="appearance_animations_title">Animations</string>
@@ -497,7 +497,8 @@
 
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
-  <string name="appearance_photo_scale_title">Photo scaling</string>
+  <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
+  <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
   <string name="progress_bar_location_title">Location on screen</string>

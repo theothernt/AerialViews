@@ -174,7 +174,6 @@ object GeneralPrefs : KotprefModel() {
 
     // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
-    var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
 
