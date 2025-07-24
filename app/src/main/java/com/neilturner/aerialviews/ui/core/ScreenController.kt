@@ -504,12 +504,12 @@ class ScreenController(
         pauseStartTime = System.currentTimeMillis()
         
         // Pause video if currently showing
-        if (videoViewBinding.root.visibility == View.VISIBLE) {
+        if (videoViewBinding.root.isVisible) {
             videoPlayer.pause()
         }
         
         // Pause image timer if currently showing
-        if (imageViewBinding.root.visibility == View.VISIBLE) {
+        if (imageViewBinding.root.isVisible) {
             imagePlayer.pauseTimer()
         }
         
@@ -526,12 +526,12 @@ class ScreenController(
         val pauseDuration = System.currentTimeMillis() - pauseStartTime
         
         // Resume video if currently showing
-        if (videoViewBinding.root.visibility == View.VISIBLE) {
+        if (videoViewBinding.root.isVisible) {
             videoPlayer.resume()
         }
         
         // Resume image timer if currently showing
-        if (imageViewBinding.root.visibility == View.VISIBLE) {
+        if (imageViewBinding.root.isVisible) {
             imagePlayer.resumeTimer(pauseDuration)
         }
         
