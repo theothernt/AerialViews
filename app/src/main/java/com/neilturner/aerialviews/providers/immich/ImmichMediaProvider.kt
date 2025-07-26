@@ -131,12 +131,25 @@ class ImmichMediaProvider(
                 emptyList()
             }
 
-        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty() && randomAssets.isEmpty()) {
+        // Get recent assets if enabled and using API key authentication
+        val recentAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
+                try {
+                    getRecentAssetsFromAPI()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to fetch recent assets, continuing without them")
+                    emptyList()
+                }
+            } else {
+                emptyList()
+            }
+
+        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty() && randomAssets.isEmpty() && recentAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
-        // Combine album assets, favorite assets, rated assets, and random assets, removing duplicates
-        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets + randomAssets).distinctBy { it.id }
+        // Combine album assets, favorite assets, rated assets, random assets, and recent assets, removing duplicates
+        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets + randomAssets + recentAssets).distinctBy { it.id }
 
         // Process all assets
         val processedAssets = allAssets
@@ -216,6 +229,9 @@ class ImmichMediaProvider(
         // Add information about different asset sources
         if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
             message += "Random assets fetched: ${randomAssets.size}\n"
+        }
+        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
+            message += "Recent assets fetched: ${recentAssets.size}\n"
         }
         if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
             message += "Favorite assets fetched: ${favoriteAssets.size}\n"
@@ -370,6 +386,26 @@ class ImmichMediaProvider(
         } catch (e: Exception) {
             Timber.e(e, "Exception while fetching random assets")
             throw Exception("Failed to fetch random assets", e)
+        }
+    }
+
+    private suspend fun getRecentAssetsFromAPI(): List<Asset> {
+        try {
+            val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
+            Timber.d("Fetching $count recent assets")
+            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, count = count)
+            if (response.isSuccessful) {
+                val assets = response.body() ?: emptyList()
+                Timber.d("Successfully fetched ${assets.size} recent assets")
+                return assets
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Timber.e("Failed to fetch recent assets. Code: ${response.code()}, Error: $errorBody")
+                throw Exception("Failed to fetch recent assets: ${response.code()} - ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching recent assets")
+            throw Exception("Failed to fetch recent assets", e)
         }
     }
 

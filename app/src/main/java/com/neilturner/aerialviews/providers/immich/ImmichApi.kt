@@ -38,6 +38,13 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Query("count") count: Int,
     ): Response<List<Asset>>
+
+    @GET("/api/assets")
+    suspend fun getRecentAssets(
+        @Header("x-api-key") apiKey: String,
+        @Query("take") count: Int,
+        @Query("order") order: String = "desc",
+    ): Response<List<Asset>>
 }
 
 @Serializable

@@ -105,12 +105,23 @@
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/immich_random_default"
-                    app:entries="@array/immich_random_entries"
-                    app:entryValues="@array/immich_random_values"
+                    app:defaultValue="@string/immich_include_random_default"
+                    app:entries="@array/immich_include_entries"
+                    app:entryValues="@array/immich_include_values"
                     app:key="immich_media_include_random"
                     app:title="@string/immich_media_include_random_title"
                     app:summary="@string/immich_media_include_random_summary"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/immich_include_recent_default"
+                    app:entries="@array/immich_include_entries"
+                    app:entryValues="@array/immich_include_values"
+                    app:key="immich_media_include_recent"
+                    app:title="@string/immich_media_include_recent_title"
+                    app:summary="@string/immich_media_include_recent_summary"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

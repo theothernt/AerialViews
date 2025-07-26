@@ -32,6 +32,7 @@ class ImmichVideosFragment :
     private lateinit var includeFavoritesPreference: Preference
     private lateinit var includeRatedPreference: Preference
     private lateinit var includeLimitPreference: Preference
+    private lateinit var includeRecentPreference: Preference
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -50,6 +51,7 @@ class ImmichVideosFragment :
         includeFavoritesPreference = findPreference("immich_media_include_favorites")!!
         includeRatedPreference = findPreference("immich_media_include_ratings")!!
         includeLimitPreference = findPreference("immich_media_include_random")!!
+        includeRecentPreference = findPreference("immich_media_include_recent")!!
 
         lifecycleScope.launch {
             limitTextInput()
@@ -153,6 +155,7 @@ class ImmichVideosFragment :
                 includeFavoritesPreference.isVisible = false
                 includeRatedPreference.isVisible = false
                 includeLimitPreference.isVisible = false
+                includeRecentPreference.isVisible = false
             }
             ImmichAuthType.API_KEY -> {
                 pathnamePreference.isVisible = false
@@ -162,6 +165,7 @@ class ImmichVideosFragment :
                 includeFavoritesPreference.isVisible = true
                 includeRatedPreference.isVisible = true
                 includeLimitPreference.isVisible = true
+                includeRecentPreference.isVisible = true
             }
         }
     }

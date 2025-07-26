@@ -287,6 +287,9 @@
   <string name="immich_media_include_random_title">Include random photos</string>
   <string name="immich_media_include_random_summary">Show a collection of random photos in the playlist</string>
 
+  <string name="immich_media_include_recent_title">Include recent photos</string>
+  <string name="immich_media_include_recent_summary">Show recently added photos in the playlist</string>
+
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
   <string name="immich_media_test_summary3">Videos found: %1$s</string>
