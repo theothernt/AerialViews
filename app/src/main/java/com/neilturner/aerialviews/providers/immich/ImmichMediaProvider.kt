@@ -125,7 +125,16 @@ class ImmichMediaProvider(
         // Combine album assets and favorite assets, removing duplicates
         val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets).distinctBy { it.id }
 
-        allAssets.forEach lit@{ asset ->
+        // Apply random shuffling if enabled
+        val processedAssets = if (prefs.randomLimit != "DISABLED") {
+            val shuffledAssets = allAssets.shuffled()
+            val limit = prefs.randomLimit.toIntOrNull() ?: shuffledAssets.size
+            shuffledAssets.take(limit)
+        } else {
+            allAssets
+        }
+
+        processedAssets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
             val poi = mutableMapOf<Int, String>()
             val description = asset.exifInfo?.description ?: ""
@@ -140,8 +149,6 @@ class ImmichMediaProvider(
                     Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
                     val location =
                         listOf(
-                            asset.exifInfo.country,
-                            asset.exifInfo.state,
                             asset.exifInfo.city,
                         ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
                     poi[poi.size] = location
@@ -197,6 +204,13 @@ class ImmichMediaProvider(
                 context.getString(R.string.immich_media_test_summary4),
                 images.toString(),
             ) + "\n"
+        }
+        
+        // Add random limit information if enabled
+        if (prefs.randomLimit != "DISABLED") {
+            val totalAvailable = allAssets.size
+            val limited = processedAssets.size
+            message += "Random limit: $limited of $totalAvailable assets selected\n"
         }
 
         Timber.i("Media found: ${media.size}")

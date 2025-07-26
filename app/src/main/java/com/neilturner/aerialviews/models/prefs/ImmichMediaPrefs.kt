@@ -19,4 +19,5 @@ object ImmichMediaPrefs : KotprefModel() {
     val selectedAlbumIds by stringSetPref(emptySet(), "immich_media_selected_album_ids")
     var includeFavorites by booleanPref(false, "immich_media_include_favorites")
     val includeRatings by stringSetPref(emptySet(), "immich_media_include_ratings")
+    var randomLimit by stringPref("DISABLED", "immich_media_random_limit")
 }

@@ -693,6 +693,7 @@
   <string name="brightness_default" translatable="false">100</string>
   <string name="volume_default" translatable="false">100</string>
   <string name="random_start_position_range_default" translatable="false">50</string>
+  <string name="immich_random_limit_default" translatable="false">DISABLED</string>
 
   <!-- Immich -->
   <string-array name="immich_auth_type_entries">
@@ -718,6 +719,22 @@
     <item>3</item>
     <item>4</item>
     <item>5</item>
+  </string-array>
+
+  <!-- Immich random limit -->
+  <string-array name="immich_random_limit_entries">
+    <item>Disabled</item>
+    <item>100 photos</item>
+    <item>200 photos</item>
+    <item>300 photos</item>
+    <item>400 photos</item>
+  </string-array>
+  <string-array name="immich_random_limit_values" translatable="false">
+    <item>DISABLED</item>
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
   </string-array>
 
   <!-- Progress Bar -->
