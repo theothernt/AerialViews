@@ -118,21 +118,28 @@ class ImmichMediaProvider(
                 emptyList()
             }
 
-        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty()) {
+        // Get random assets if enabled and using API key authentication
+        val randomAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
+                try {
+                    getRandomAssetsFromAPI()
+                } catch (e: Exception) {
+                    Timber.w(e, "Failed to fetch random assets, continuing without them")
+                    emptyList()
+                }
+            } else {
+                emptyList()
+            }
+
+        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty() && randomAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
-        // Combine album assets and favorite assets, removing duplicates
-        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets).distinctBy { it.id }
+        // Combine album assets, favorite assets, rated assets, and random assets, removing duplicates
+        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets + randomAssets).distinctBy { it.id }
 
-        // Apply random shuffling if enabled
-        val processedAssets = if (prefs.randomLimit != "DISABLED") {
-            val shuffledAssets = allAssets.shuffled()
-            val limit = prefs.randomLimit.toIntOrNull() ?: shuffledAssets.size
-            shuffledAssets.take(limit)
-        } else {
-            allAssets
-        }
+        // Process all assets
+        val processedAssets = allAssets
 
         processedAssets.forEach lit@{ asset ->
             val uri = getAssetUri(asset.id)
@@ -206,11 +213,15 @@ class ImmichMediaProvider(
             ) + "\n"
         }
         
-        // Add random limit information if enabled
-        if (prefs.randomLimit != "DISABLED") {
-            val totalAvailable = allAssets.size
-            val limited = processedAssets.size
-            message += "Random limit: $limited of $totalAvailable assets selected\n"
+        // Add information about different asset sources
+        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
+            message += "Random assets fetched: ${randomAssets.size}\n"
+        }
+        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
+            message += "Favorite assets fetched: ${favoriteAssets.size}\n"
+        }
+        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
+            message += "Rated assets fetched: ${ratedAssets.size}\n"
         }
 
         Timber.i("Media found: ${media.size}")
@@ -340,6 +351,26 @@ class ImmichMediaProvider(
             Timber.e(e, "Exception while fetching rated assets")
         }
         return ratedAssets
+    }
+
+    private suspend fun getRandomAssetsFromAPI(): List<Asset> {
+        try {
+            val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
+            Timber.d("Fetching $count random assets")
+            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, count = count)
+            if (response.isSuccessful) {
+                val assets = response.body() ?: emptyList()
+                Timber.d("Successfully fetched ${assets.size} random assets")
+                return assets
+            } else {
+                val errorBody = response.errorBody()?.string()
+                Timber.e("Failed to fetch random assets. Code: ${response.code()}, Error: $errorBody")
+                throw Exception("Failed to fetch random assets: ${response.code()} - ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Exception while fetching random assets")
+            throw Exception("Failed to fetch random assets", e)
+        }
     }
 
     suspend fun fetchAlbums(): Result<List<Album>> =

@@ -105,12 +105,12 @@
                 <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/immich_random_limit_default"
-                    app:entries="@array/immich_random_limit_entries"
-                    app:entryValues="@array/immich_random_limit_values"
-                    app:key="immich_media_random_limit"
-                    app:title="@string/immich_media_random_limit_title"
-                    app:summary="@string/immich_media_random_limit_summary"
+                    app:defaultValue="@string/immich_random_default"
+                    app:entries="@array/immich_random_entries"
+                    app:entryValues="@array/immich_random_values"
+                    app:key="immich_media_include_random"
+                    app:title="@string/immich_media_include_random_title"
+                    app:summary="@string/immich_media_include_random_summary"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

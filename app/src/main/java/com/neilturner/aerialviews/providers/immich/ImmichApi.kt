@@ -32,6 +32,12 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
+
+    @GET("/api/assets/random")
+    suspend fun getRandomAssets(
+        @Header("x-api-key") apiKey: String,
+        @Query("count") count: Int,
+    ): Response<List<Asset>>
 }
 
 @Serializable

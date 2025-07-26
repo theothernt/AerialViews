@@ -279,13 +279,13 @@
   <string name="immich_media_unknown_error">An unknown error occurred</string>
 
   <string name="immich_media_include_favourites_title">Include favourite photos</string>
-  <string name="immich_media_include_favourites_summary">Show favorite photos in addition to the selected albums</string>
+  <string name="immich_media_include_favourites_summary">Show favorite photos in the playlist</string>
 
   <string name="immich_media_include_ratings_title">Include rated photos</string>
-  <string name="immich_media_include_ratings_summary">Show rated photos in addition to the selected albums</string>
+  <string name="immich_media_include_ratings_summary">Show rated photos in the playlist</string>
 
-  <string name="immich_media_random_limit_title">Random photo limit</string>
-  <string name="immich_media_random_limit_summary">Limit the number of random photos to show</string>
+  <string name="immich_media_include_random_title">Include random photos</string>
+  <string name="immich_media_include_random_summary">Show a collection of random photos in the playlist</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
