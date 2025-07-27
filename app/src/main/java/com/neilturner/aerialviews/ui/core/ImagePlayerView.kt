@@ -167,32 +167,35 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
-    private fun setScaleMode(width: Int, height: Int) {
+    private fun setScaleMode(
+        width: Int,
+        height: Int,
+    ) {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        scaleType = when (aspect) {
-            AspectRatio.SQUARE -> {
-                getScaleType(GeneralPrefs.photoScalePortrait)
-            }
+        scaleType =
+            when (aspect) {
+                AspectRatio.SQUARE -> {
+                    getScaleType(GeneralPrefs.photoScalePortrait)
+                }
 
-            AspectRatio.PORTRAIT -> {
-                getScaleType(GeneralPrefs.photoScalePortrait)
-            }
+                AspectRatio.PORTRAIT -> {
+                    getScaleType(GeneralPrefs.photoScalePortrait)
+                }
 
-            AspectRatio.LANDSCAPE -> {
-                getScaleType(GeneralPrefs.photoScaleLandscape)
+                AspectRatio.LANDSCAPE -> {
+                    getScaleType(GeneralPrefs.photoScaleLandscape)
+                }
             }
-        }
     }
 
-    private fun getScaleType(scale: PhotoScale?): ScaleType {
-        return try {
+    private fun getScaleType(scale: PhotoScale?): ScaleType =
+        try {
             ScaleType.valueOf(scale.toString())
         } catch (e: Exception) {
             Timber.e(e)
             ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
         }
-    }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)

@@ -23,11 +23,12 @@ class SettingsFragment :
             val fav = ImmichMediaPrefs.includeFavorites
             Timber.d("Include Favorites: $fav")
         } catch (e: Exception) {
-            Toast.makeText(
-                requireContext(),
-                "Error accessing Immich preferences: ${e.message}",
-                Toast.LENGTH_LONG,
-            ).show()
+            Toast
+                .makeText(
+                    requireContext(),
+                    "Error accessing Immich preferences: ${e.message}",
+                    Toast.LENGTH_LONG,
+                ).show()
             e.printStackTrace()
         }
     }

@@ -3,30 +3,35 @@ package com.neilturner.aerialviews.models.enums
 enum class AspectRatio {
     PORTRAIT,
     LANDSCAPE,
-    SQUARE;
+    SQUARE,
+    ;
 
     companion object {
         /**
          * Determines aspect ratio from width and height dimensions
          */
-        fun fromDimensions(width: Int, height: Int): AspectRatio {
-            return when {
+        fun fromDimensions(
+            width: Int,
+            height: Int,
+        ): AspectRatio =
+            when {
                 width > height -> LANDSCAPE
                 height > width -> PORTRAIT
                 else -> SQUARE
             }
-        }
 
         /**
          * Determines aspect ratio from a ratio value (width/height)
          */
-        fun fromRatio(ratio: Float, tolerance: Float = 0.05f): AspectRatio {
-            return when {
+        fun fromRatio(
+            ratio: Float,
+            tolerance: Float = 0.05f,
+        ): AspectRatio =
+            when {
                 ratio > 1 + tolerance -> LANDSCAPE
                 ratio < 1 - tolerance -> PORTRAIT
                 else -> SQUARE
             }
-        }
     }
 
     /**
@@ -42,11 +47,10 @@ enum class AspectRatio {
     /**
      * Returns the aspect ratio as a human-readable string
      */
-    fun toDisplayString(): String {
-        return when (this) {
+    fun toDisplayString(): String =
+        when (this) {
             PORTRAIT -> "Portrait"
             LANDSCAPE -> "Landscape"
             SQUARE -> "Square"
         }
-    }
 }

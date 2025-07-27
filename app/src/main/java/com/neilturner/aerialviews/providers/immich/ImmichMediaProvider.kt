@@ -144,7 +144,12 @@ class ImmichMediaProvider(
                 emptyList()
             }
 
-        if (immichMedia.assets.isEmpty() && favoriteAssets.isEmpty() && ratedAssets.isEmpty() && randomAssets.isEmpty() && recentAssets.isEmpty()) {
+        if (immichMedia.assets.isEmpty() &&
+            favoriteAssets.isEmpty() &&
+            ratedAssets.isEmpty() &&
+            randomAssets.isEmpty() &&
+            recentAssets.isEmpty()
+        ) {
             return Pair(media, "No files found")
         }
 
@@ -225,7 +230,7 @@ class ImmichMediaProvider(
                 images.toString(),
             ) + "\n"
         }
-        
+
         // Add information about different asset sources
         if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
             message += "Random assets fetched: ${randomAssets.size}\n"

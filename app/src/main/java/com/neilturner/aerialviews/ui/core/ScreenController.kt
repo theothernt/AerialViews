@@ -218,7 +218,7 @@ class ScreenController(
         // Reset pause state when loading new item
         isPaused = false
         pauseStartTime = 0
-        
+
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
@@ -499,20 +499,20 @@ class ScreenController(
 
     private fun pauseMedia() {
         if (isPaused) return
-        
+
         isPaused = true
         pauseStartTime = System.currentTimeMillis()
-        
+
         // Pause video if currently showing
         if (videoViewBinding.root.isVisible) {
             videoPlayer.pause()
         }
-        
+
         // Pause image timer if currently showing
         if (imageViewBinding.root.isVisible) {
             imagePlayer.pauseTimer()
         }
-        
+
         // Pause progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
@@ -521,20 +521,20 @@ class ScreenController(
 
     private fun resumeMedia() {
         if (!isPaused) return
-        
+
         isPaused = false
         val pauseDuration = System.currentTimeMillis() - pauseStartTime
-        
+
         // Resume video if currently showing
         if (videoViewBinding.root.isVisible) {
             videoPlayer.resume()
         }
-        
+
         // Resume image timer if currently showing
         if (imageViewBinding.root.isVisible) {
             imagePlayer.resumeTimer(pauseDuration)
         }
-        
+
         // Resume progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
