@@ -84,13 +84,15 @@
                     android:key="immich_media_selected_album_ids"
                     android:summary="@string/immich_media_select_albums_summary" />
 
-                <SwitchPreference
+                <ListPreference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="false"
+                    app:defaultValue="@string/immich_include_favorites_default"
+                    app:entries="@array/immich_include_entries"
+                    app:entryValues="@array/immich_include_values"
                     app:key="immich_media_include_favorites"
                     app:title="@string/immich_media_include_favourites_title"
-                    app:summary="@string/immich_media_include_favourites_summary" />
+                    app:useSimpleSummaryProvider="true" />
 
                 <MultiSelectListPreference
                     app:dependency="immich_media_enabled"
@@ -110,7 +112,6 @@
                     app:entryValues="@array/immich_include_values"
                     app:key="immich_media_include_random"
                     app:title="@string/immich_media_include_random_title"
-                    app:summary="@string/immich_media_include_random_summary"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
@@ -121,7 +122,6 @@
                     app:entryValues="@array/immich_include_values"
                     app:key="immich_media_include_recent"
                     app:title="@string/immich_media_include_recent_title"
-                    app:summary="@string/immich_media_include_recent_summary"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 </PreferenceScreen>

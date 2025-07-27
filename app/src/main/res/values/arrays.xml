@@ -723,10 +723,10 @@
   <!-- Immich include photos -->
   <string-array name="immich_include_entries">
     <item>Disabled</item>
-    <item>Fetch 100 random photos</item>
-    <item>Fetch 200 random photos</item>
-    <item>Fetch 300 random photos</item>
-    <item>Fetch 400 random photos</item>
+    <item>100 photos</item>
+    <item>200 photos</item>
+    <item>300 photos</item>
+    <item>400 photos</item>
   </string-array>
   <string-array name="immich_include_values" translatable="false">
     <item>DISABLED</item>
@@ -737,6 +737,7 @@
   </string-array>
   <string name="immich_include_random_default" translatable="false">DISABLED</string>
   <string name="immich_include_recent_default" translatable="false">DISABLED</string>
+  <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
 
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">

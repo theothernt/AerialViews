@@ -17,7 +17,7 @@ object ImmichMediaPrefs : KotprefModel() {
     var authType by nullableEnumValuePref(ImmichAuthType.SHARED_LINK, "immich_media_auth_type")
     var apiKey by stringPref("", "immich_media_api_key")
     val selectedAlbumIds by stringSetPref(emptySet(), "immich_media_selected_album_ids")
-    var includeFavorites by booleanPref(false, "immich_media_include_favorites")
+    var includeFavorites by stringPref("DISABLED", "immich_media_include_favorites")
     val includeRatings by stringSetPref(emptySet(), "immich_media_include_ratings")
     var includeRandom by stringPref("DISABLED", "immich_media_include_random")
     var includeRecent by stringPref("DISABLED", "immich_media_include_recent")

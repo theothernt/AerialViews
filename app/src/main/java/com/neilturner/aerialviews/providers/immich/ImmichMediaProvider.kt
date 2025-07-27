@@ -94,7 +94,7 @@ class ImmichMediaProvider(
 
         // Get favorites if enabled and using API key authentication
         val favoriteAssets =
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
                 try {
                     getFavoriteAssetsFromAPI()
                 } catch (e: Exception) {
@@ -233,7 +233,7 @@ class ImmichMediaProvider(
         if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
             message += "Recent assets fetched: ${recentAssets.size}\n"
         }
-        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites) {
+        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
             message += "Favorite assets fetched: ${favoriteAssets.size}\n"
         }
         if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
@@ -324,14 +324,16 @@ class ImmichMediaProvider(
 
     private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
         try {
-            Timber.d("Fetching favorite assets")
+            val count = prefs.includeFavorites.toIntOrNull() ?: return emptyList()
+            Timber.d("Fetching up to $count favorite assets")
             val searchRequest = SearchMetadataRequest(isFavorite = true)
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
-                val assets = searchResponse?.assets?.items ?: emptyList()
-                Timber.d("Successfully fetched ${assets.size} favorite assets")
-                return assets
+                val allAssets = searchResponse?.assets?.items ?: emptyList()
+                val limitedAssets = allAssets.take(count)
+                Timber.d("Successfully fetched ${limitedAssets.size} favorite assets (from ${allAssets.size} total)")
+                return limitedAssets
             } else {
                 val errorBody = response.errorBody()?.string()
                 Timber.e("Failed to fetch favorites. Code: ${response.code()}, Error: $errorBody")
