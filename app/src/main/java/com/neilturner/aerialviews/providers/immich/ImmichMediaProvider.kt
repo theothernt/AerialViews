@@ -73,11 +73,6 @@ class ImmichMediaProvider(
             if (prefs.apiKey.isEmpty()) {
                 return Pair(media, "API key is empty")
             }
-
-            // Name needed?
-            if (prefs.selectedAlbumIds.isEmpty()) {
-                return Pair(media, "Please select an album")
-            }
         }
 
         val immichMedia =
@@ -275,7 +270,11 @@ class ImmichMediaProvider(
         try {
             val selectedAlbumIds = prefs.selectedAlbumIds
             if (selectedAlbumIds.isEmpty()) {
-                throw Exception("No albums selected")
+                return Album(
+                    id = "combined", // Use a special ID for the combined album
+                    name = "",
+                    description = "No albums selected",
+                )
             }
 
             Timber.d("Attempting to fetch ${selectedAlbumIds.size} selected albums")
