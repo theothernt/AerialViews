@@ -3,7 +3,7 @@
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
 [![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=100k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
-[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=8k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
+[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=9k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
 [![License](https://img.shields.io/:license-gpl%20v3-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
@@ -16,9 +16,9 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
 * Show videos & photos from USB storage, Samba, WebDAV or Immich server
-* Option to avoid burn-in on QD/OLED TVs
+* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
+* Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
 * Use the D-Pad to skip media, skip songs, change speed, seek and more
 * Refresh rate switching
