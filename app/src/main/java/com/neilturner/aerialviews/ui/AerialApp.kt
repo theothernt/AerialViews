@@ -35,35 +35,6 @@ class AerialApp : Application() {
 
             GeneralPrefs.checkForHevcSupport = true
         }
-
-        migrateImmichFavoritesPreference()
-    }
-
-    // Temp fix for betas, should be removed in future releases
-    private fun migrateImmichFavoritesPreference() {
-        val sharedPrefs = androidx.preference.PreferenceManager.getDefaultSharedPreferences(this)
-
-        try {
-            // Check if the preference exists
-            if (sharedPrefs.contains("immich_media_include_favorites")) {
-                // Check if it's a boolean value
-                val allPrefs = sharedPrefs.all
-                if (allPrefs["immich_media_include_favorites"] is Boolean) {
-                    // Get editor and perform migration
-                    sharedPrefs.edit().apply {
-                        // Remove boolean preference
-                        remove("immich_media_include_favorites")
-                        // Create string preference with same name
-                        putString("immich_media_include_favorites", "100")
-                        apply()
-                    }
-
-                    Timber.d("Migrated immich_media_include_favorites from boolean to string")
-                }
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Error migrating immich_media_include_favorites preference")
-        }
     }
 
     private fun changeVideoQuality() {
