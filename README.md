@@ -10,7 +10,7 @@
 
 A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
 
-*Please read if you have a [Nvidia Shield](#nvidia-shield-users) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
+*Please read if you have an [Nvidia Shield](#nvidia-shield-users) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
 
 ## Features include...
 
@@ -44,9 +44,15 @@ We use the [Lokalise](https://lokalise.com/) platform to coordinate translations
 
 [![Lokalise logo](docs/images/lokalise_logo.png)](https://lokalise.com/)
 
+## Want to Contribute?
+
+Aerial Views is an open-source project — contributions are welcome! Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
+
+And please get in contact before submitting pull requests, thanks!
+
 ## Where to download videos for offline/local playback
 
-Follow these links to download the videos from...
+Download curated videos from...
 
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
@@ -126,7 +132,7 @@ Next, find the __IP address__ of your device. Try looking in the Network & Inter
 
 Open __Settings__, then navigate to __My Fire TV__ then the __About__ screen.
 
-Highlight the first option on the list, which is usually your device's name, and press the action button on your remote seven times.
+Highlight your device name and press the action button on your remote seven times.
 
 You'll now see a message confirming "You are now a developer", and it'll unlock the __Developer Options__ in the previous menu.
 
@@ -367,6 +373,24 @@ Please make sure to enable **Developer Mode** and **USB/Networking Debugging**. 
 :information_source: This app will not work on recent Fire TV devices due to changes by Amazon.
 
 </details>
+
+## How to launch Aerial Views from other apps
+
+Android screensaver use a special intent (DreamService) which cannot be called by 3rd party apps, only the OS itself.
+
+Instead, Aerial Views uses a standard intent which can be called by 3rd party to launch the 'Test screensaver' (Activity) which works in the same way as launching the screensaver.
+
+To do this, launch the following intent in apps like [Button Mapper](https://play.google.com/store/apps/details?id=flar2.homebutton) or [tvQuickActions](https://play.google.com/store/apps/details?id=dev.vodik7.tvquickactions.free)
+
+```sh
+com.neilturner.aerialviews/.ui.screensaver.TestActivity
+```
+
+If you are using Fully Kiosk, try the following...
+
+```sh
+intent://#Intent;component=com.neilturner.aerialviews/.ui.screensaver.TestActivity;end
+```
 
 ## Weather data
 
