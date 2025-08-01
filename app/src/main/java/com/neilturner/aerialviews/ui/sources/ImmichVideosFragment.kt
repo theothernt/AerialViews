@@ -98,8 +98,19 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
+            // Check if API key is present before allowing dropdown to open
+            if (ImmichMediaPrefs.apiKey.isEmpty()) {
+                AlertDialog
+                    .Builder(requireContext())
+                    .setMessage(getString(R.string.immich_media_api_key_required))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .show()
+                return@setOnPreferenceClickListener true
+            }
+
             lifecycleScope.launch { loadAlbumsForPreference() }
-            true
+            // Return false to allow the normal dropdown behavior to proceed
+            false
         }
     }
 

@@ -277,6 +277,7 @@
   <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
   <string name="immich_media_no_albums">No Albums Found</string>
   <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
+  <string name="immich_media_api_key_required">API key is required to load albums. Please enter your API key first.</string>
   <string name="immich_media_unknown_error">An unknown error occurred</string>
 
   <string name="immich_media_include_favourites_title">Include favourite photos</string>
