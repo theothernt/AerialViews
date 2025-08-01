@@ -57,7 +57,6 @@ class ImmichVideosFragment :
             limitTextInput()
             updateAuthTypeVisibility()
             updateSummary()
-            loadAlbumsForPreference()
             setupPreferenceClickListeners()
         }
     }
@@ -98,6 +97,7 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
+
             // Check if API key is present before allowing dropdown to open
             if (ImmichMediaPrefs.apiKey.isEmpty()) {
                 AlertDialog
@@ -208,19 +208,31 @@ class ImmichVideosFragment :
     }
 
     private suspend fun loadAlbumsForPreference() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
         if (ImmichMediaPrefs.url.isNotEmpty() && ImmichMediaPrefs.apiKey.isNotEmpty()) {
             val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
             provider.fetchAlbums().fold(
                 onSuccess = { albums ->
+                    progressDialog.dismiss()
                     populateAlbumsPreference(albums)
                 },
                 onFailure = { exception ->
+                    progressDialog.dismiss()
                     Timber.e(exception, "Failed to load albums for preference")
                     // Clear preference entries if loading fails
                     selectAlbumsPreference.entries = emptyArray()
                     selectAlbumsPreference.entryValues = emptyArray()
                 },
             )
+        } else {
+            progressDialog.dismiss()
         }
     }
 
