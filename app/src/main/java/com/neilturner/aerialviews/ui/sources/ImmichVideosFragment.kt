@@ -97,7 +97,6 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
-
             // Check if API key is present before allowing dropdown to open
             if (ImmichMediaPrefs.apiKey.isEmpty()) {
                 AlertDialog

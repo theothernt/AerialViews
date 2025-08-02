@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.MultiSelectListPreference
 
-class SafeMultiSelectListPreference: MultiSelectListPreference {
+class SafeMultiSelectListPreference : MultiSelectListPreference {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -12,10 +12,6 @@ class SafeMultiSelectListPreference: MultiSelectListPreference {
         attrs,
         defStyleAttr,
     )
-    
-    init {
-        isIconSpaceReserved = true
-    }
 
     override fun onClick() {
         if (entries.isNullOrEmpty()) {
