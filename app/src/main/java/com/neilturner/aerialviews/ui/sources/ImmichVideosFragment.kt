@@ -110,7 +110,7 @@ class ImmichVideosFragment :
 
             lifecycleScope.launch { loadAlbumsForPreference() }
             // Return false to allow the normal dropdown behavior to proceed
-            false
+            true
         }
     }
 
