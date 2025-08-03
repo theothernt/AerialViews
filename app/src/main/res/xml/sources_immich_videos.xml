@@ -81,7 +81,7 @@
                     android:title="@string/immich_media_pathname_title" />
 
                 <!-- API key albums -->
-                <MultiSelectListPreference
+                <Preference
                     app:dependency="immich_media_enabled"
                     app:disableDependentsState="false"
                     android:title="@string/immich_media_select_albums"

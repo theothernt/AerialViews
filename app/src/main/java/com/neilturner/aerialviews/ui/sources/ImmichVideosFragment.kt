@@ -6,7 +6,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
-import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -27,7 +26,7 @@ class ImmichVideosFragment :
     private lateinit var validateSslPreference: Preference
     private lateinit var passwordPreference: EditTextPreference
     private lateinit var apiKeyPreference: EditTextPreference
-    private lateinit var selectAlbumsPreference: MultiSelectListPreference
+    private lateinit var selectAlbumsPreference: Preference
     private lateinit var pathnamePreference: EditTextPreference
     private lateinit var includeFavoritesPreference: Preference
     private lateinit var includeRatedPreference: Preference
@@ -57,7 +56,6 @@ class ImmichVideosFragment :
             limitTextInput()
             updateAuthTypeVisibility()
             updateSummary()
-            loadAlbumsForPreference()
             setupPreferenceClickListeners()
         }
     }
@@ -98,7 +96,7 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
-            lifecycleScope.launch { loadAlbumsForPreference() }
+            lifecycleScope.launch { showAlbumSelectionDialog() }
             true
         }
     }
@@ -196,34 +194,74 @@ class ImmichVideosFragment :
         DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
     }
 
-    private suspend fun loadAlbumsForPreference() {
+    private suspend fun showAlbumSelectionDialog() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
         if (ImmichMediaPrefs.url.isNotEmpty() && ImmichMediaPrefs.apiKey.isNotEmpty()) {
             val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
             provider.fetchAlbums().fold(
                 onSuccess = { albums ->
-                    populateAlbumsPreference(albums)
+                    progressDialog.dismiss()
+                    showAlbumMultiSelectDialog(albums)
                 },
                 onFailure = { exception ->
-                    Timber.e(exception, "Failed to load albums for preference")
-                    // Clear preference entries if loading fails
-                    selectAlbumsPreference.entries = emptyArray()
-                    selectAlbumsPreference.entryValues = emptyArray()
+                    Timber.e(exception, "Failed to load albums for selection")
+                    progressDialog.dismiss()
+                    DialogHelper.show(
+                        requireContext(),
+                        "Error",
+                        "Failed to load albums: ${exception.message}"
+                    )
                 },
+            )
+        } else {
+            progressDialog.dismiss()
+            DialogHelper.show(
+                requireContext(),
+                "Configuration Required",
+                "Please configure server URL and API key first."
             )
         }
     }
 
-    private fun populateAlbumsPreference(albums: List<Album>) {
+    private fun showAlbumMultiSelectDialog(albums: List<Album>) {
+        if (albums.isEmpty()) {
+            DialogHelper.show(
+                requireContext(),
+                "No Albums",
+                "No albums found in your Immich instance."
+            )
+            return
+        }
+
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         val albumIds = albums.map { it.id }.toTypedArray()
+        val selectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val checkedItems = BooleanArray(albums.size) { index ->
+            selectedAlbumIds.contains(albumIds[index])
+        }
 
-        selectAlbumsPreference.entries = albumNames
-        selectAlbumsPreference.entryValues = albumIds
-
-        // Set the current selected values
-        selectAlbumsPreference.values = ImmichMediaPrefs.selectedAlbumIds
-
-        // Update summary after setting entries
-        updateSelectedAlbumsSummary()
+        AlertDialog
+            .Builder(requireContext())
+            .setTitle("Select Albums")
+            .setMultiChoiceItems(albumNames, checkedItems) { _, which, isChecked ->
+                if (isChecked) {
+                    selectedAlbumIds.add(albumIds[which])
+                } else {
+                    selectedAlbumIds.remove(albumIds[which])
+                }
+            }
+            .setPositiveButton("OK") { _, _ ->
+                // updateSelectedAlbumsSummary()
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
     }
 }
