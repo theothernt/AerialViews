@@ -47,7 +47,7 @@ class NowPlayingOverlay : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        receiver.subscribe { newTrackInfo: MusicEvent ->
+        receiver.subscribe(skipRetained = true) { newTrackInfo: MusicEvent ->
             Timber.i("$type: Subscribed for music updates...")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
