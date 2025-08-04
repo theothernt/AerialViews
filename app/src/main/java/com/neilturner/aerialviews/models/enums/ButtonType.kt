@@ -15,4 +15,5 @@ enum class ButtonType {
     SHOW_OVERLAYS, // Show overlays if auto-hide is enabled
     BLACK_OUT_MODE, // Hide overlays + video, black screen
     TOGGLE_MUTE, // Toggle audio mute/unmute
+    TOGGLE_PAUSE, // Pause/unpause video or photo timer
 }

@@ -28,6 +28,7 @@ class WeatherService(
     private var updateJob: Job? = null
     private var retryCount = 0
     private val maxRetries = 3
+    private var totalUpdates = 0
 
     private val lookupDelay = 1.seconds
     private val errorDelay = 3.seconds // Slow down response when there is an error
@@ -53,7 +54,10 @@ class WeatherService(
             delay(lookupDelay)
 
             when {
-                response.isSuccessful -> response.body() ?: emptyList()
+                response.isSuccessful -> {
+                    totalUpdates++
+                    response.body() ?: emptyList()
+                }
                 response.code() == 401 -> {
                     Timber.e("Unauthorized access to weather API - invalid API key")
                     delay(errorDelay)
@@ -200,7 +204,7 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        retryCount = 0
+        Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }
 

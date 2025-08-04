@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // to support Fire OS 5, Android v5.1, Lvl 22
         targetSdk = 36
-        versionCode = 60
+        versionCode = 62
         versionName = "1.7.9"
-        betaVersion = "-beta4"
+        betaVersion = "-beta6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -36,10 +36,10 @@ android {
     }
 
     kotlin {
-        jvmToolchain(17)
+        jvmToolchain(21)
 
         sourceSets.configureEach {
-            languageSettings.languageVersion = "2.1"
+            languageSettings.languageVersion = "2.2"
         }
     }
 

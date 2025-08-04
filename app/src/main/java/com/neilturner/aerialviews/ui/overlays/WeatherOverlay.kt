@@ -6,7 +6,6 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.annotation.DrawableRes
 import androidx.core.view.isNotEmpty
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
@@ -43,7 +42,7 @@ class WeatherOverlay
             ) : OverlayItem()
 
             data class ImageItem(
-                @DrawableRes val imageResId: Int,
+                val imageResId: Int,
             ) : OverlayItem()
         }
 

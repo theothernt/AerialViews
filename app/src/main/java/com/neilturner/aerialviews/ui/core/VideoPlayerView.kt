@@ -50,6 +50,8 @@ class VideoPlayerView
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
+        private var pausedTimestamp: Long = 0
+        private var wasPlaying = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
@@ -132,7 +134,18 @@ class VideoPlayerView
         }
 
         fun pause() {
+            wasPlaying = exoPlayer.playWhenReady
             exoPlayer.playWhenReady = false
+            pausedTimestamp = System.currentTimeMillis()
+            removeCallbacks(almostFinishedRunnable)
+        }
+
+        fun resume() {
+            if (wasPlaying) {
+                exoPlayer.playWhenReady = true
+                // Recalculate remaining time and restart timer
+                setupAlmostFinishedRunnable()
+            }
         }
 
         fun stop() {

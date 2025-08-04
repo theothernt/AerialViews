@@ -85,6 +85,7 @@
   <string name="category_export_settings">Export settings</string>
   <string name="category_swipe_gestures">Swipe gestures</string>
   <string name="category_tap_gestures">Tap gestures</string>
+  <string name="category_albums">Albums</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -264,7 +265,7 @@
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
   <string name="immich_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:2283</string>
-  <string name="immich_media_pathname_title">Path name (case sensitive)</string>
+  <string name="immich_media_pathname_title">Shared link (case sensitive)</string>
   <string name="immich_media_pathname_summary">The path of the shared album e.g. /share/qJejEpX_h_…TAypgOxmIZC</string>
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
@@ -279,10 +280,10 @@
   <string name="immich_media_unknown_error">An unknown error occurred</string>
 
   <string name="immich_media_include_favourites_title">Include favourite photos</string>
-  <string name="immich_media_include_favourites_summary">Show favorite photos in addition to the selected albums</string>
-
   <string name="immich_media_include_ratings_title">Include rated photos</string>
-  <string name="immich_media_include_ratings_summary">Show rated photos in addition to the selected albums</string>
+  <string name="immich_media_include_ratings_summary">Show rated photos in the playlist</string>
+  <string name="immich_media_include_random_title">Include random photos</string>
+  <string name="immich_media_include_recent_title">Include recent photos</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
@@ -451,10 +452,10 @@
   <string name="appearance_background_colour_title">Background Colour</string>
   <string name="appearance_background_colour_summary">Change the colour used when a video or photo does not fill the screen</string>
 
-  <string name="appearance_brightness_title">Brightness/Dimness</string>
+  <string name="appearance_brightness_title">Brightness / Dimness</string>
   <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
-  <string name="appearance_scaling_title">Scaling</string>
+  <string name="appearance_scaling_title">Scaling / Cropping</string>
   <string name="appearance_scaling_summary">Change scaling and cropping options for videos &amp; photos</string>
 
   <string name="appearance_animations_title">Animations</string>
@@ -497,7 +498,8 @@
 
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
-  <string name="appearance_photo_scale_title">Photo scaling</string>
+  <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
+  <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
   <string name="progress_bar_location_title">Location on screen</string>

@@ -52,7 +52,7 @@ class AerialApp : Application() {
             StrictMode.ThreadPolicy
                 .Builder()
                 .detectCustomSlowCalls()
-                .penaltyFlashScreen()
+                // .penaltyFlashScreen()
                 .penaltyLog()
                 .build(),
         )
