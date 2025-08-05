@@ -137,6 +137,15 @@ class ImmichVideosFragment :
                     ImmichMediaPrefs.selectedAlbumIds.size,
                 )
             }
+
+        // Include Ratings
+        includeRatedPreference.summary =
+            if (ImmichMediaPrefs.includeRatings.isEmpty()) {
+                "No rated photos selected"
+            } else {
+                val selectedRatings = ImmichMediaPrefs.includeRatings.sorted().joinToString(", ") { "${it}★" }
+                "$selectedRatings photos selected"
+            }
     }
 
     private fun updateAuthTypeVisibility() {
