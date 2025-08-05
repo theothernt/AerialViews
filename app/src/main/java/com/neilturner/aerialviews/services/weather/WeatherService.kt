@@ -204,7 +204,7 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        FirebaseHelper.logCustomKeysIfRecent("weather_updates_per_session", totalUpdates.toString())
+        FirebaseHelper.logCustomKeysIfRecent("weather_updates_per_session", totalUpdates)
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }

@@ -165,10 +165,7 @@ class WeatherOverlay
                                 overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
 
                         if (isNotEmpty() && !previousItemIsImage) {
-                            Timber.d("Adding margin to text view")
                             params.leftMargin = itemMargin
-                        } else {
-                            Timber.d("No margin needed for text view")
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)

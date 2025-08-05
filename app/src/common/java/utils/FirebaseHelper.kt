@@ -50,12 +50,20 @@ object FirebaseHelper {
         }
     }
 
-    fun logCustomKeysIfRecent(
+    fun <T> logCustomKeysIfRecent(
         key: String,
-        value: String,
+        value: T,
     ) {
         if (isWithinLoggingPeriod()) {
-            Firebase.crashlytics.setCustomKey(key, value)
+            when (value) {
+                is String -> Firebase.crashlytics.setCustomKey(key, value)
+                is Int -> Firebase.crashlytics.setCustomKey(key, value)
+                is Long -> Firebase.crashlytics.setCustomKey(key, value)
+                is Float -> Firebase.crashlytics.setCustomKey(key, value)
+                is Double -> Firebase.crashlytics.setCustomKey(key, value)
+                is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
+                else -> Firebase.crashlytics.setCustomKey(key, value.toString())
+            }
         }
     }
 }

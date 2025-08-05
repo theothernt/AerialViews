@@ -75,8 +75,6 @@ object WeatherLanguage {
             langCode == "iw" -> return "he" // Use he instead of iw
             langCode == "es" -> return "es" // Use es instead of sp
             langCode == "uk" -> return "uk" // Use uk instead of ua
-            langCode == "es" && supportedLanguages.contains("sp") -> return "sp"
-            langCode == "uk" && supportedLanguages.contains("ua") -> return "ua"
         }
 
         // Return the language code if supported, or English as fallback
