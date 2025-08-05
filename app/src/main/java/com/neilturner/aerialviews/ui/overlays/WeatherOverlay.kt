@@ -212,7 +212,7 @@ class WeatherOverlay
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
 
             // Use text height directly for icon size to maintain visual balance
-            val iconSize = textHeight * 1.5f
+            val iconSize = textHeight * 1.1f
             Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
             return iconSize.toInt()
         }
