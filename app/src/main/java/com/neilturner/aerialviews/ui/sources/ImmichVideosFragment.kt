@@ -127,10 +127,6 @@ class ImmichVideosFragment :
                 "*".repeat(apiKeyPreference.text!!.length)
             }
 
-        updateSelectedAlbumsSummary()
-    }
-
-    private fun updateSelectedAlbumsSummary() {
         // Selected Albums
         selectAlbumsPreference.summary =
             if (ImmichMediaPrefs.selectedAlbumIds.isEmpty()) {
@@ -244,12 +240,10 @@ class ImmichVideosFragment :
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         val albumIds = albums.map { it.id }.toTypedArray()
         val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
         val checkedItems = BooleanArray(albums.size) { index ->
             currentSelectedAlbumIds.contains(albumIds[index])
         }
-
-        // Keep track of temporary selections without modifying the actual preference
-        val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
 
         AlertDialog
             .Builder(requireContext())
@@ -262,10 +256,9 @@ class ImmichVideosFragment :
                 }
             }
             .setPositiveButton("OK") { _, _ ->
-                // Only save the selections when OK is pressed
                 ImmichMediaPrefs.selectedAlbumIds.clear()
                 ImmichMediaPrefs.selectedAlbumIds.addAll(tempSelectedAlbumIds)
-                updateSelectedAlbumsSummary()
+                updateSummary()
             }
             .setNegativeButton("Cancel", null)
             .create()
