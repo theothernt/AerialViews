@@ -192,7 +192,6 @@ class WeatherOverlay
                         imageView.layoutParams = params
                         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
-                        Timber.d("Adding image view with resource ID: ${item.imageResId}")
                         addView(imageView)
                     }
                 }

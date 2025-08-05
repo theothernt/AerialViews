@@ -55,7 +55,6 @@ class WeatherService(
 
             when {
                 response.isSuccessful -> {
-                    totalUpdates++
                     response.body() ?: emptyList()
                 }
                 response.code() == 401 -> {
@@ -120,6 +119,7 @@ class WeatherService(
                 response.isSuccessful -> {
                     val weatherData = response.body()
                     if (weatherData != null) {
+                        totalUpdates++
                         retryCount = 0 // Reset retry count on successful response
                         processWeatherResponse(weatherData)
                     } else {
@@ -204,6 +204,7 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
+        FirebaseHelper.logCustomKeysIfRecent("weather_updates_per_session", totalUpdates.toString())
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }
