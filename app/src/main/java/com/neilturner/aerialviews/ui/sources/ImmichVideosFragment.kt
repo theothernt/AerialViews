@@ -69,10 +69,11 @@ class ImmichVideosFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        updateSummary()
         if (key == "immich_media_auth_type") {
             updateAuthTypeVisibility()
         }
+
+        updateSummary()
     }
 
     private fun setupPreferenceClickListeners() {
@@ -96,7 +97,7 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
-            lifecycleScope.launch { showAlbumSelectionDialog() }
+            lifecycleScope.launch { pickAlbums() }
             true
         }
     }
@@ -194,7 +195,7 @@ class ImmichVideosFragment :
         DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
     }
 
-    private suspend fun showAlbumSelectionDialog() {
+    private suspend fun pickAlbums() {
         val loadingMessage = getString(R.string.message_media_searching)
         val progressDialog =
             DialogHelper.progressDialog(
@@ -242,23 +243,29 @@ class ImmichVideosFragment :
 
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         val albumIds = albums.map { it.id }.toTypedArray()
-        val selectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
         val checkedItems = BooleanArray(albums.size) { index ->
-            selectedAlbumIds.contains(albumIds[index])
+            currentSelectedAlbumIds.contains(albumIds[index])
         }
+
+        // Keep track of temporary selections without modifying the actual preference
+        val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
 
         AlertDialog
             .Builder(requireContext())
             .setTitle("Select Albums")
             .setMultiChoiceItems(albumNames, checkedItems) { _, which, isChecked ->
                 if (isChecked) {
-                    selectedAlbumIds.add(albumIds[which])
+                    tempSelectedAlbumIds.add(albumIds[which])
                 } else {
-                    selectedAlbumIds.remove(albumIds[which])
+                    tempSelectedAlbumIds.remove(albumIds[which])
                 }
             }
             .setPositiveButton("OK") { _, _ ->
-                // updateSelectedAlbumsSummary()
+                // Only save the selections when OK is pressed
+                ImmichMediaPrefs.selectedAlbumIds.clear()
+                ImmichMediaPrefs.selectedAlbumIds.addAll(tempSelectedAlbumIds)
+                updateSelectedAlbumsSummary()
             }
             .setNegativeButton("Cancel", null)
             .create()
