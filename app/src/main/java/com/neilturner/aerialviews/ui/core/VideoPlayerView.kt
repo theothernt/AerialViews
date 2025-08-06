@@ -229,7 +229,7 @@ class VideoPlayerView
 
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
-                    val errorMessage = error.localizedMessage ?: "Media playback error occurred"
+                    val errorMessage = error.localizedMessage ?: "Video playback error occurred"
                     ToastHelper.show(context, errorMessage)
                 }
             }

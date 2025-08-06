@@ -133,7 +133,7 @@ class ImagePlayerView : AppCompatImageView {
             // Show toast if preference is enabled
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
-                    val errorMessage = ex.localizedMessage ?: "Media loading error occurred"
+                    val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
                     ToastHelper.show(context, errorMessage)
                 }
             }

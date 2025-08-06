@@ -143,7 +143,7 @@ class ImmichVideosFragment :
             if (ImmichMediaPrefs.includeRatings.isEmpty()) {
                 "No rated photos selected"
             } else {
-                val selectedRatings = ImmichMediaPrefs.includeRatings.sorted().joinToString(", ") { "${it}★" }
+                val selectedRatings = ImmichMediaPrefs.includeRatings.sorted().joinToString(", ") { "$it★" }
                 "$selectedRatings photos selected"
             }
     }
@@ -222,7 +222,7 @@ class ImmichVideosFragment :
                     DialogHelper.show(
                         requireContext(),
                         "Error",
-                        "Failed to load albums: ${exception.message}"
+                        "Failed to load albums: ${exception.message}",
                     )
                 },
             )
@@ -231,7 +231,7 @@ class ImmichVideosFragment :
             DialogHelper.show(
                 requireContext(),
                 "Configuration Required",
-                "Please configure server URL and API key first."
+                "Please configure server URL and API key first.",
             )
         }
     }
@@ -241,7 +241,7 @@ class ImmichVideosFragment :
             DialogHelper.show(
                 requireContext(),
                 "No Albums",
-                "No albums found in your Immich instance."
+                "No albums found in your Immich instance.",
             )
             return
         }
@@ -250,9 +250,10 @@ class ImmichVideosFragment :
         val albumIds = albums.map { it.id }.toTypedArray()
         val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
         val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
-        val checkedItems = BooleanArray(albums.size) { index ->
-            currentSelectedAlbumIds.contains(albumIds[index])
-        }
+        val checkedItems =
+            BooleanArray(albums.size) { index ->
+                currentSelectedAlbumIds.contains(albumIds[index])
+            }
 
         AlertDialog
             .Builder(requireContext())
@@ -263,13 +264,11 @@ class ImmichVideosFragment :
                 } else {
                     tempSelectedAlbumIds.remove(albumIds[which])
                 }
-            }
-            .setPositiveButton("OK") { _, _ ->
+            }.setPositiveButton("OK") { _, _ ->
                 ImmichMediaPrefs.selectedAlbumIds.clear()
                 ImmichMediaPrefs.selectedAlbumIds.addAll(tempSelectedAlbumIds)
                 updateSummary()
-            }
-            .setNegativeButton("Cancel", null)
+            }.setNegativeButton("Cancel", null)
             .create()
             .show()
     }
