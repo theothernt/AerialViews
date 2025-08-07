@@ -79,7 +79,10 @@ class WeatherService(
             emptyList()
         }
 
-    suspend fun lookupLocationByCoordinates(lat: Double, lon: Double): List<LocationResponse> =
+    suspend fun lookupLocationByCoordinates(
+        lat: Double,
+        lon: Double,
+    ): List<LocationResponse> =
         try {
             val key = BuildConfig.OPEN_WEATHER
             val language = WeatherLanguage.getLanguageCode(context)

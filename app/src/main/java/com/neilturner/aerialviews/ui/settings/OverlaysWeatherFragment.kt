@@ -95,7 +95,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
                     DialogHelper.show(
                         requireContext(),
                         "Invalid Coordinates",
-                        "Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180."
+                        "Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.",
                     )
                     return
                 }
@@ -103,7 +103,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
                 DialogHelper.show(
                     requireContext(),
                     "Invalid Format",
-                    "Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)"
+                    "Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)",
                 )
                 return
             }
@@ -144,7 +144,10 @@ class OverlaysWeatherFragment : MenuStateFragment() {
         }
     }
 
-    private fun searchLocationByCoordinates(lat: Double, lon: Double) {
+    private fun searchLocationByCoordinates(
+        lat: Double,
+        lon: Double,
+    ) {
         val loadingMessage = "Looking up location for coordinates..."
         val progressDialog =
             DialogHelper.progressDialog(
@@ -164,19 +167,21 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
                 if (locations.isEmpty()) {
                     // If no location found via API, create a custom location with coordinates
-                    val coordinateLocation = LocationResponse(
-                        name = "Custom Location",
-                        lat = lat,
-                        lon = lon,
-                        country = "",
-                        state = null
-                    )
+                    val coordinateLocation =
+                        LocationResponse(
+                            name = "Custom Location",
+                            lat = lat,
+                            lon = lon,
+                            country = "",
+                            state = null,
+                        )
                     showLocationSelectionDialog(listOf(coordinateLocation))
                 } else {
                     // Update the coordinates in the API results to match the exact input
-                    val updatedLocations = locations.map { location ->
-                        location.copy(lat = lat, lon = lon)
-                    }
+                    val updatedLocations =
+                        locations.map { location ->
+                            location.copy(lat = lat, lon = lon)
+                        }
                     showLocationSelectionDialog(updatedLocations)
                 }
             } catch (e: Exception) {
@@ -184,13 +189,14 @@ class OverlaysWeatherFragment : MenuStateFragment() {
                 progressDialog.dismiss()
 
                 // Fallback: create a custom location if API fails
-                val coordinateLocation = LocationResponse(
-                    name = "Custom Location",
-                    lat = lat,
-                    lon = lon,
-                    country = "",
-                    state = null
-                )
+                val coordinateLocation =
+                    LocationResponse(
+                        name = "Custom Location",
+                        lat = lat,
+                        lon = lon,
+                        country = "",
+                        state = null,
+                    )
                 showLocationSelectionDialog(listOf(coordinateLocation))
             }
         }

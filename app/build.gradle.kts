@@ -92,7 +92,6 @@ android {
     packaging {
         resources {
             resources.excludes.add("META-INF/INDEX.LIST")
-            
         }
     }
 
@@ -182,9 +181,7 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
-
     "baselineProfile"(project(":baselineprofile"))
-
     implementation(project(":projectivyapi"))
 }
 
