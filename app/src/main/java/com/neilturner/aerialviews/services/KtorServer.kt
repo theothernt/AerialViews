@@ -3,9 +3,9 @@ package com.neilturner.aerialviews.services
 import android.content.Context
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.JsonHelper
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
@@ -24,46 +24,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.net.BindException
 
-@Serializable
-data class MessageRequest(
-    val text: String?,
-    val duration: Int? = null,
-    val textSize: Int? = null,
-    val textWeight: Int? = null,
-)
-
-@Serializable
-data class SuccessResponse(
-    val success: Boolean = true,
-    val message: String,
-)
-
-@Serializable
-data class ErrorResponse(
-    val success: Boolean = false,
-    val error: String,
-)
-
-data class MessageEvent(
-    val messageNumber: Int = 1,
-    val text: String = "",
-    val duration: Int? = null,
-    val textSize: Int? = null,
-    val textWeight: Int? = null,
-)
-
 class KtorServer(
-    context: Context,
+    val context: Context,
 ) {
     private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
-    private val context: Context = context.applicationContext
-
-    // Dynamic validation arrays loaded from XML
     private var validTextSizes: List<Int> = emptyList()
     private var validTextWeights: List<Int> = emptyList()
     private val defaultTextSize = 18
@@ -109,7 +77,7 @@ class KtorServer(
     }
 
     fun stop() {
-        server?.stop(1000, 2000)
+        server?.stop(1000, 3000)
         Timber.i("Ktor server stopped")
     }
 
@@ -169,7 +137,6 @@ class KtorServer(
                 return
             }
 
-            // Post message event to FlowBus for overlay consumption
             val messageEvent =
                 MessageEvent(
                     messageNumber,
@@ -192,13 +159,34 @@ class KtorServer(
     }
 
     private fun Application.configurePlugins() {
-        install(ContentNegotiation) {
-            json(
-                Json {
-                    prettyPrint = true
-                    isLenient = true
-                },
-            )
-        }
+        install(ContentNegotiation) { JsonHelper.json }
     }
 }
+
+@Serializable
+data class MessageRequest(
+    val text: String?,
+    val duration: Int? = null,
+    val textSize: Int? = null,
+    val textWeight: Int? = null,
+)
+
+@Serializable
+data class SuccessResponse(
+    val success: Boolean = true,
+    val message: String,
+)
+
+@Serializable
+data class ErrorResponse(
+    val success: Boolean = false,
+    val error: String,
+)
+
+data class MessageEvent(
+    val messageNumber: Int = 1,
+    val text: String = "",
+    val duration: Int? = null,
+    val textSize: Int? = null,
+    val textWeight: Int? = null,
+)
