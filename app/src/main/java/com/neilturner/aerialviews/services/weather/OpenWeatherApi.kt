@@ -40,6 +40,15 @@ interface OpenWeatherApi {
         @Query("appid") apiKey: String,
         @Query("lang") language: String = "en",
     ): Response<List<LocationResponse>>
+
+    @GET("geo/1.0/reverse")
+    suspend fun getLocationByCoordinates(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("limit") limit: Int = 5,
+        @Query("appid") apiKey: String,
+        @Query("lang") language: String = "en",
+    ): Response<List<LocationResponse>>
 }
 
 // Location

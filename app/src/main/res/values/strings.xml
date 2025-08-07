@@ -386,7 +386,7 @@
 
   <!-- Main / Settings / Overlays / Weather -->
   <string name="weather_location_title">Location</string>
-  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
+  <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
   <string name="weather_location_searching">Searching for locations…</string>
 
   <string name="weather_forecast_title">Current forecast</string>
