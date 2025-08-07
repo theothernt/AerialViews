@@ -36,6 +36,12 @@ If you enjoy using the app, please consider [buying me a coffee](https://ko-fi.c
 
 Or [download the APK from the Releases page](https://github.com/theothernt/AerialViews/releases) and install it manually
 
+## Want to Contribute?
+
+Aerial Views is an open-source project — contributions are welcome! Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
+
+And please get in contact before submitting pull requests, thanks!
+
 ## Translations
 
 If Aerial Views is not available in your language but you have some free time to help translate menu text and video descriptions, please get in touch!
@@ -44,12 +50,6 @@ We use the [Lokalise](https://lokalise.com/) platform to coordinate translations
 
 [![Lokalise logo](docs/images/lokalise_logo.png)](https://lokalise.com/)
 
-## Want to Contribute?
-
-Aerial Views is an open-source project — contributions are welcome! Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
-
-And please get in contact before submitting pull requests, thanks!
-
 ## Where to download videos for offline/local playback
 
 Download curated videos from...
@@ -57,37 +57,6 @@ Download curated videos from...
 * [Apple](https://aerial-videos.netlify.app/#apple) (114 videos)
 * [Jetson Creative](https://aerial-videos.netlify.app/#jetson-creative) (20 community videos)
 * [Robin Fourcade](https://aerial-videos.netlify.app/#robin-fourcade) (18 community videos)
-
-## HDR videos don't seem to play, I only see black screen...
-
-Apple's videos only support Dolby Vision HDR. Even if your TV supports HDR, it might not support Dolby Vision.
-
-Here are some things to try...
-
-* Find the make and model of your TV, search online for a product page for that device and it should list the supported HDR modes (there are a few!)
-
-* If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
-
-* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, or Amazon Prime Video
-
-## Nvidia Shield users
-
-If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled:
-
-`Settings > Device Preferences > Storage > Scan for
-media automatically`
-
-To change the default screensaver on your Nvidia Shield, use the following menu:
-
-`Settings > Device Preferences > Screen saver`
-
-## Fire TV and Frame Rate Switching
-
-Fire OS has no menu to allow advanced permissions for apps, so it must be done manually with an ADB command...
-
-```sh
-adb shell appops set com.neilturner.aerialviews SYSTEM_ALERT_WINDOW allow
-```
 
 ## How to set Aerial Views as the default screensaver
 
@@ -105,6 +74,8 @@ But it can be done manually. Here is an overview of the steps...
 2. Use a Mac, iPhone, PC or Android phone with the required software or app
 3. Connect to your Android/Google/Fire TV device
 4. Run two ADB commands, one to set Aerial Views as the default screensaver, the other to set how long it takes the screensaver to start
+
+The full instructions are below, please click or tap to expand each step.
 
 Another option is to use the *TDUK Screensaver Manager* app. Details on the app are below.
 
@@ -374,7 +345,56 @@ Please make sure to enable **Developer Mode** and **USB/Networking Debugging**. 
 
 </details>
 
-## How to launch Aerial Views from other apps
+## Frequently asked questions
+
+Please click or tap to expand each item below...
+
+<details>
+<summary>Playing local media on the Nvidia Shield </summary>
+&nbsp;
+
+If your device is running Android 11 (Shield Experience 9+) and you want to play videos from a USB storage device, make sure the following setting is enabled:
+
+`Settings > Device Preferences > Storage > Scan for
+media automatically`
+
+To change the default screensaver on your Nvidia Shield, use the following menu:
+
+`Settings > Device Preferences > Screen saver`
+
+</details>
+
+<details>
+<summary>Fire TV and Frame Rate Switching</summary>
+&nbsp;
+
+Fire OS has no menu to allow advanced permissions for apps, so it must be done manually with an ADB command...
+
+```sh
+adb shell appops set com.neilturner.aerialviews SYSTEM_ALERT_WINDOW allow
+```
+
+</details>
+
+<details>
+<summary>HDR videos don't seem to play, I only see black screen...</summary>
+&nbsp;
+
+Apple's videos only support Dolby Vision HDR. Even if your TV supports HDR, it might not support Dolby Vision.
+
+Here are some things to try...
+
+* Find the make and model of your TV, search online for a product page for that device and it should list the supported HDR modes (there are a few!)
+
+* If you use a Nvidia Shield, please [follow their instructions on how to enable (or confirm) that Dolby Vision playback is possible](https://www.nvidia.com/en-us/shield/support/shield-tv/enable-dolby-vision-hdr10-on-shield/)
+
+* Confirm that Dolby Vision playback works in other apps like Netflix, Disney+, or Amazon Prime Video
+
+</details>
+
+<details>
+<summary>How to launch Aerial Views from other apps</summary>
+&nbsp;
 
 Android screensaver use a special intent (DreamService) which cannot be called by 3rd party apps, only the OS itself.
 
@@ -391,6 +411,8 @@ If you are using Fully Kiosk, try the following...
 ```sh
 intent://#Intent;component=com.neilturner.aerialviews/.ui.screensaver.TestActivity;end
 ```
+
+</details>
 
 ## Weather data
 
