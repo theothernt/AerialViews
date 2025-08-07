@@ -89,14 +89,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
                 // Validate coordinate ranges
                 if (lat in -90.0..90.0 && lon in -180.0..180.0) {
-                    val coordinateLocation = LocationResponse(
-                        name = "Custom Location",
-                        lat = lat,
-                        lon = lon,
-                        country = "",
-                        state = null
-                    )
-                    saveLocation(coordinateLocation)
+                    searchLocationByCoordinates(lat, lon)
                     return
                 } else {
                     DialogHelper.show(
@@ -147,6 +140,58 @@ class OverlaysWeatherFragment : MenuStateFragment() {
                 Timber.e(e, "Failed to search for location")
                 progressDialog.dismiss()
                 DialogHelper.show(requireContext(), "Error", "Failed to search for location.")
+            }
+        }
+    }
+
+    private fun searchLocationByCoordinates(lat: Double, lon: Double) {
+        val loadingMessage = "Looking up location for coordinates..."
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        lifecycleScope.launch {
+            try {
+                val locations =
+                    withContext(Dispatchers.IO) {
+                        weatherService.lookupLocationByCoordinates(lat, lon)
+                    }
+
+                progressDialog.dismiss()
+
+                if (locations.isEmpty()) {
+                    // If no location found via API, create a custom location with coordinates
+                    val coordinateLocation = LocationResponse(
+                        name = "Custom Location",
+                        lat = lat,
+                        lon = lon,
+                        country = "",
+                        state = null
+                    )
+                    showLocationSelectionDialog(listOf(coordinateLocation))
+                } else {
+                    // Update the coordinates in the API results to match the exact input
+                    val updatedLocations = locations.map { location ->
+                        location.copy(lat = lat, lon = lon)
+                    }
+                    showLocationSelectionDialog(updatedLocations)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to lookup location by coordinates")
+                progressDialog.dismiss()
+
+                // Fallback: create a custom location if API fails
+                val coordinateLocation = LocationResponse(
+                    name = "Custom Location",
+                    lat = lat,
+                    lon = lon,
+                    country = "",
+                    state = null
+                )
+                showLocationSelectionDialog(listOf(coordinateLocation))
             }
         }
     }

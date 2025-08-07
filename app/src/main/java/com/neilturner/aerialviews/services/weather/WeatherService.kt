@@ -79,6 +79,39 @@ class WeatherService(
             emptyList()
         }
 
+    suspend fun lookupLocationByCoordinates(lat: Double, lon: Double): List<LocationResponse> =
+        try {
+            val key = BuildConfig.OPEN_WEATHER
+            val language = WeatherLanguage.getLanguageCode(context)
+            val response = openWeatherClient.getLocationByCoordinates(lat, lon, 5, key, language)
+            delay(lookupDelay)
+
+            when {
+                response.isSuccessful -> {
+                    response.body() ?: emptyList()
+                }
+                response.code() == 401 -> {
+                    Timber.e("Unauthorized access to weather API - invalid API key")
+                    delay(errorDelay)
+                    emptyList()
+                }
+                response.code() in 500..599 -> {
+                    Timber.e("Server error (${response.code()}) while fetching location data")
+                    delay(errorDelay)
+                    emptyList()
+                }
+                else -> {
+                    Timber.e("Failed to fetch location data - HTTP ${response.code()}: ${response.message()}")
+                    delay(errorDelay)
+                    emptyList()
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to fetch location data by coordinates")
+            delay(errorDelay)
+            emptyList()
+        }
+
     fun startUpdates() {
         updateJob?.cancel()
         retryCount = 0
