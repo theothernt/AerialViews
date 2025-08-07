@@ -62,7 +62,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
         AlertDialog
             .Builder(requireContext())
-            .setTitle("Search for a location")
+            .setTitle("Search for a location or enter GPS coordinates")
             .setView(binding.root)
             .setPositiveButton("Search") { _, _ ->
                 val query =
@@ -77,6 +77,46 @@ class OverlaysWeatherFragment : MenuStateFragment() {
     }
 
     private fun searchLocation(query: String) {
+        // Check if the query contains GPS coordinates (lat,lon format)
+        val gpsPattern = Regex("""^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$""")
+        val matchResult = gpsPattern.find(query.trim())
+
+        if (matchResult != null) {
+            // Handle GPS coordinates directly
+            try {
+                val lat = matchResult.groupValues[1].toDouble()
+                val lon = matchResult.groupValues[2].toDouble()
+
+                // Validate coordinate ranges
+                if (lat in -90.0..90.0 && lon in -180.0..180.0) {
+                    val coordinateLocation = LocationResponse(
+                        name = "Custom Location",
+                        lat = lat,
+                        lon = lon,
+                        country = "",
+                        state = null
+                    )
+                    saveLocation(coordinateLocation)
+                    return
+                } else {
+                    DialogHelper.show(
+                        requireContext(),
+                        "Invalid Coordinates",
+                        "Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180."
+                    )
+                    return
+                }
+            } catch (e: NumberFormatException) {
+                DialogHelper.show(
+                    requireContext(),
+                    "Invalid Format",
+                    "Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)"
+                )
+                return
+            }
+        }
+
+        // Original location search logic
         val loadingMessage = getString(R.string.weather_location_searching)
         val progressDialog =
             DialogHelper.progressDialog(
