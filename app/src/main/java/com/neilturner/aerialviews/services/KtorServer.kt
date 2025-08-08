@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.JsonHelper
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.install
@@ -66,13 +67,14 @@ class KtorServer(
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
             if (!isPortAvailable(port)) {
                 Timber.e("Failed to start server: Port $port already in use")
+                return@launch
             }
 
             try {
                 server =
                     embeddedServer(CIO, port) {
-                        configureRouting()
                         configurePlugins()
+                        configureRouting()
                     }.start(wait = false)
                 Timber.i("Ktor server started on port $port")
             } catch (e: BindException) {
@@ -85,6 +87,7 @@ class KtorServer(
 
     fun stop() {
         server?.stop(1000, 3000)
+        server = null
         Timber.i("Ktor server stopped")
     }
 
@@ -174,7 +177,7 @@ class KtorServer(
     }
 
     private fun Application.configurePlugins() {
-        install(ContentNegotiation) { JsonHelper.json }
+        install(ContentNegotiation) { json(JsonHelper.json) }
     }
 }
 
