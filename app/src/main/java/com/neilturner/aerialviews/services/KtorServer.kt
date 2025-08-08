@@ -26,7 +26,9 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.IOException
 import java.net.BindException
+import java.net.ServerSocket
 
 class KtorServer(
     val context: Context,
@@ -60,7 +62,12 @@ class KtorServer(
     fun start() {
         CoroutineScope(Dispatchers.IO).launch {
             Timber.i("Attempting to start Ktor server...")
+
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
+            if (!isPortAvailable(port)) {
+                Timber.e("Failed to start server: Port $port already in use")
+            }
+
             try {
                 server =
                     embeddedServer(CIO, port) {
@@ -79,6 +86,14 @@ class KtorServer(
     fun stop() {
         server?.stop(1000, 3000)
         Timber.i("Ktor server stopped")
+    }
+
+    private fun isPortAvailable(port: Int): Boolean {
+        return try {
+            ServerSocket(port).use { true }
+        } catch (_: IOException) {
+            false
+        }
     }
 
     private fun Application.configureRouting() {
