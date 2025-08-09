@@ -38,7 +38,7 @@ class SvgImageView
             shadowPaint.color = shadowColor
             shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.NORMAL)
 
-            setPadding(3, 0, 0, 0)
+            setPadding(2, 0, 0, 0)
         }
 
         fun setSvgResource(resId: Int) {
@@ -56,7 +56,7 @@ class SvgImageView
             // Calculate shadow offset and extra space needed
             val adjustedDx = shadowDx
             val adjustedDy = shadowDy
-            val shadowBlur = shadowRadius * 2
+            val shadowBlur = shadowRadius * 1
 
             // Calculate the content area (excluding padding)
             val contentWidth = width

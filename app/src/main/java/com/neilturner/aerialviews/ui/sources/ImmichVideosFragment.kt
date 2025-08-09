@@ -69,10 +69,11 @@ class ImmichVideosFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        updateSummary()
         if (key == "immich_media_auth_type") {
             updateAuthTypeVisibility()
         }
+
+        updateSummary()
     }
 
     private fun setupPreferenceClickListeners() {
@@ -96,7 +97,7 @@ class ImmichVideosFragment :
         }
 
         selectAlbumsPreference.setOnPreferenceClickListener {
-            lifecycleScope.launch { showAlbumSelectionDialog() }
+            lifecycleScope.launch { pickAlbums() }
             true
         }
     }
@@ -126,10 +127,6 @@ class ImmichVideosFragment :
                 "*".repeat(apiKeyPreference.text!!.length)
             }
 
-        updateSelectedAlbumsSummary()
-    }
-
-    private fun updateSelectedAlbumsSummary() {
         // Selected Albums
         selectAlbumsPreference.summary =
             if (ImmichMediaPrefs.selectedAlbumIds.isEmpty()) {
@@ -139,6 +136,15 @@ class ImmichVideosFragment :
                     R.string.immich_media_selected_albums,
                     ImmichMediaPrefs.selectedAlbumIds.size,
                 )
+            }
+
+        // Include Ratings
+        includeRatedPreference.summary =
+            if (ImmichMediaPrefs.includeRatings.isEmpty()) {
+                "No rated photos selected"
+            } else {
+                val selectedRatings = ImmichMediaPrefs.includeRatings.sorted().joinToString(", ") { "$it★" }
+                "$selectedRatings photos selected"
             }
     }
 
@@ -194,7 +200,7 @@ class ImmichVideosFragment :
         DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
     }
 
-    private suspend fun showAlbumSelectionDialog() {
+    private suspend fun pickAlbums() {
         val loadingMessage = getString(R.string.message_media_searching)
         val progressDialog =
             DialogHelper.progressDialog(
@@ -216,7 +222,7 @@ class ImmichVideosFragment :
                     DialogHelper.show(
                         requireContext(),
                         "Error",
-                        "Failed to load albums: ${exception.message}"
+                        "Failed to load albums: ${exception.message}",
                     )
                 },
             )
@@ -225,7 +231,7 @@ class ImmichVideosFragment :
             DialogHelper.show(
                 requireContext(),
                 "Configuration Required",
-                "Please configure server URL and API key first."
+                "Please configure server URL and API key first.",
             )
         }
     }
@@ -235,32 +241,34 @@ class ImmichVideosFragment :
             DialogHelper.show(
                 requireContext(),
                 "No Albums",
-                "No albums found in your Immich instance."
+                "No albums found in your Immich instance.",
             )
             return
         }
 
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         val albumIds = albums.map { it.id }.toTypedArray()
-        val selectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
-        val checkedItems = BooleanArray(albums.size) { index ->
-            selectedAlbumIds.contains(albumIds[index])
-        }
+        val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
+        val checkedItems =
+            BooleanArray(albums.size) { index ->
+                currentSelectedAlbumIds.contains(albumIds[index])
+            }
 
         AlertDialog
             .Builder(requireContext())
             .setTitle("Select Albums")
             .setMultiChoiceItems(albumNames, checkedItems) { _, which, isChecked ->
                 if (isChecked) {
-                    selectedAlbumIds.add(albumIds[which])
+                    tempSelectedAlbumIds.add(albumIds[which])
                 } else {
-                    selectedAlbumIds.remove(albumIds[which])
+                    tempSelectedAlbumIds.remove(albumIds[which])
                 }
-            }
-            .setPositiveButton("OK") { _, _ ->
-                // updateSelectedAlbumsSummary()
-            }
-            .setNegativeButton("Cancel", null)
+            }.setPositiveButton("OK") { _, _ ->
+                ImmichMediaPrefs.selectedAlbumIds.clear()
+                ImmichMediaPrefs.selectedAlbumIds.addAll(tempSelectedAlbumIds)
+                updateSummary()
+            }.setNegativeButton("Cancel", null)
             .create()
             .show()
     }

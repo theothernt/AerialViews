@@ -5,7 +5,6 @@ import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import com.neilturner.aerialviews.utils.parallelForEach
 import timber.log.Timber
@@ -83,7 +82,7 @@ internal object MediaServiceHelper {
                     media.addAll(providerMedia)
                 } catch (ex: Exception) {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")
-                    FirebaseHelper.logExceptionIfRecent(ex)
+                    // FirebaseHelper.logExceptionIfRecent(ex)
                 }
             }
         return media

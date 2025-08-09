@@ -165,10 +165,7 @@ class WeatherOverlay
                                 overlayItems[overlayItems.indexOf(item) - 1] is OverlayItem.ImageItem
 
                         if (isNotEmpty() && !previousItemIsImage) {
-                            Timber.d("Adding margin to text view")
                             params.leftMargin = itemMargin
-                        } else {
-                            Timber.d("No margin needed for text view")
                         }
 
                         textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
@@ -192,7 +189,6 @@ class WeatherOverlay
                         imageView.layoutParams = params
                         imageView.scaleType = ImageView.ScaleType.FIT_CENTER
 
-                        Timber.d("Adding image view with resource ID: ${item.imageResId}")
                         addView(imageView)
                     }
                 }
@@ -212,7 +208,7 @@ class WeatherOverlay
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
 
             // Use text height directly for icon size to maintain visual balance
-            val iconSize = textHeight * 1.5f
+            val iconSize = textHeight // * 1.2f
             Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
             return iconSize.toInt()
         }
