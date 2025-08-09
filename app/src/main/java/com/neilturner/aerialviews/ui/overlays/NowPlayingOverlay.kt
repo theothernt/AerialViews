@@ -13,7 +13,9 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.MusicEvent
+import com.neilturner.aerialviews.utils.TrackNameShortener
 import kotlinx.coroutines.delay
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
@@ -27,6 +29,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
+    private val prefs = GeneralPrefs
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -44,7 +47,7 @@ class NowPlayingOverlay : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        receiver.subscribe { newTrackInfo: MusicEvent ->
+        receiver.subscribe(skipRetained = true) { newTrackInfo: MusicEvent ->
             Timber.i("$type: Subscribed for music updates...")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
@@ -86,7 +89,7 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private fun animateOverlays() {
-        var layout: ConstraintLayout? = parent as ConstraintLayout
+        val layout: ConstraintLayout? = parent as ConstraintLayout
 
         TransitionManager.beginDelayedTransition(
             layout,
@@ -140,21 +143,23 @@ class NowPlayingOverlay : AppCompatTextView {
 
     private fun formatNowPlaying(trackInfo: MusicEvent): String {
         val (artist, song) = trackInfo
+        val processedSong = if (prefs.nowPlayingShortenTrackName) TrackNameShortener.shortenTrackName(song) else song
+
         return when (format) {
             NowPlayingFormat.SONG_ARTIST ->
-                if (song.isNotBlank() && artist.isNotBlank()) {
-                    "$song · $artist"
+                if (processedSong.isNotBlank() && artist.isNotBlank()) {
+                    "$processedSong · $artist"
                 } else {
-                    song.takeIf { it.isNotBlank() } ?: artist
+                    processedSong.takeIf { it.isNotBlank() } ?: artist
                 }
             NowPlayingFormat.ARTIST_SONG ->
-                if (artist.isNotBlank() && song.isNotBlank()) {
-                    "$artist · $song"
+                if (artist.isNotBlank() && processedSong.isNotBlank()) {
+                    "$artist · $processedSong"
                 } else {
-                    artist.takeIf { it.isNotBlank() } ?: song
+                    artist.takeIf { it.isNotBlank() } ?: processedSong
                 }
             NowPlayingFormat.ARTIST -> artist
-            NowPlayingFormat.SONG -> song
+            NowPlayingFormat.SONG -> processedSong
             else -> ""
         }
     }

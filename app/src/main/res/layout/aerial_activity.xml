@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true">
 
-    <FrameLayout
+    <include
+        android:id="@+id/video_view"
+        layout="@layout/video_view" />
+
+    <include
+        android:id="@+id/image_view"
+        layout="@layout/image_view" />
+
+    <include
+        android:id="@+id/overlay_view"
+        layout="@layout/overlay_view" />
+
+    <com.neilturner.aerialviews.ui.overlays.ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:layout_gravity="bottom" />
+
+    <include
+        android:id="@+id/loading_view"
+        layout="@layout/loading_view" />
+
+    <View
+        android:id="@+id/brightness_view"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:keepScreenOn="true">
+        android:layout_height="match_parent" />
 
-        <include
-            android:id="@+id/video_view"
-            layout="@layout/video_view" />
-
-        <include
-            android:id="@+id/image_view"
-            layout="@layout/image_view" />
-
-        <include
-            android:id="@+id/overlay_view"
-            layout="@layout/overlay_view" />
-
-        <com.neilturner.aerialviews.ui.overlays.ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:visibility="gone"
-            android:layout_gravity="bottom" />
-
-        <include
-            android:id="@+id/loading_view"
-            layout="@layout/loading_view" />
-
-        <View
-            android:id="@+id/brightness_view"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </FrameLayout>
-</layout>
+</FrameLayout>

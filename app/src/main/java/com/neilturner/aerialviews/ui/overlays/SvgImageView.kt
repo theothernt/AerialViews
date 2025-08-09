@@ -21,7 +21,7 @@ class SvgImageView
         private var shadowColor = Color.argb(120, 0, 0, 0)
         private var shadowDx = 1f
         private var shadowDy = 1f
-        private var shadowRadius = 2f // Increasing this makes the icon smaller
+        private var shadowRadius = 1f // Increasing this makes the icon smaller
 
         private val shadowPaint = Paint()
         private var originalDrawable: Drawable? = null
@@ -36,11 +36,9 @@ class SvgImageView
             // Configure shadow paint
             shadowPaint.style = Style.FILL
             shadowPaint.color = shadowColor
-            shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.OUTER)
+            shadowPaint.maskFilter = BlurMaskFilter(shadowRadius, Blur.NORMAL)
 
-            // Add padding to make room for shadow
-            val extraPadding = (shadowRadius * 1).toInt()
-            setPadding(extraPadding, extraPadding, extraPadding, extraPadding)
+            setPadding(2, 0, 0, 0)
         }
 
         fun setSvgResource(resId: Int) {
@@ -58,7 +56,7 @@ class SvgImageView
             // Calculate shadow offset and extra space needed
             val adjustedDx = shadowDx
             val adjustedDy = shadowDy
-            val shadowBlur = shadowRadius * 2
+            val shadowBlur = shadowRadius * 1
 
             // Calculate the content area (excluding padding)
             val contentWidth = width

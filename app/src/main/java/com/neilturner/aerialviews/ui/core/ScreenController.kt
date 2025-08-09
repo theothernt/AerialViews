@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -21,12 +20,14 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
@@ -39,6 +40,8 @@ import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -55,6 +58,7 @@ class ScreenController(
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
+    private var ktorServer: KtorServer? = null
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -68,6 +72,8 @@ class ScreenController(
     private var alternate = false
     private var previousItem = false
     private var canSkip = false
+    private var isPaused = false
+    private var pauseStartTime: Long = 0
 
     private lateinit var videoViewBinding: VideoViewBinding
     private lateinit var imageViewBinding: ImageViewBinding
@@ -77,7 +83,7 @@ class ScreenController(
     private lateinit var loadingText: TextView
     private lateinit var videoPlayer: VideoPlayerView
     private lateinit var imagePlayer: ImagePlayerView
-    var view: View
+    lateinit var view: View
 
     private lateinit var topLeftIds: List<Int>
     private lateinit var topRightIds: List<Int>
@@ -89,9 +95,7 @@ class ScreenController(
 
     init {
         val inflater = LayoutInflater.from(context)
-        val binding = DataBindingUtil.inflate(inflater, R.layout.aerial_activity, null, false) as AerialActivityBinding
-        view = binding.root // Assign view early
-
+        val binding = AerialActivityBinding.inflate(inflater)
         setupViews(binding)
         setupAppearance(binding)
         setupOverlays(binding)
@@ -188,6 +192,13 @@ class ScreenController(
                 nowPlayingService = NowPlayingService(context)
             }
 
+            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
+                ktorServer =
+                    KtorServer(context).apply {
+                        start()
+                    }
+            }
+
             // Build playlist and start screensaver
             playlist = MediaService(context).fetchMedia()
             if (playlist.size > 0) {
@@ -204,9 +215,18 @@ class ScreenController(
                 }
             }
         }
+        // 1. Load playlist
+        // 2. load video, setup location/POI, start playback call
+        // 3. playback started callback, fade out loading text, fade out loading view
+        // 4. when video is almost finished - or skip - fade in loading view
+        // 5. goto 2
     }
 
     private fun loadItem(media: AerialMedia) {
+        // Reset pause state when loading new item
+        isPaused = false
+        pauseStartTime = 0
+
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
@@ -329,6 +349,10 @@ class ScreenController(
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
 
+                // Reset pause state when transitioning between items
+                isPaused = false
+                pauseStartTime = 0
+
                 // Pick next/previous video
                 val media = if (!previousItem) {
                     playlist.nextItem()
@@ -377,8 +401,10 @@ class ScreenController(
         RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
+        ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        mainScope.cancel()
     }
 
     fun skipItem(previous: Boolean = false) {
@@ -436,11 +462,74 @@ class ScreenController(
         videoPlayer.seekBackward()
     }
 
-    private fun handleError() {
-        if (loadingView.isVisible) {
-            loadItem(playlist.nextItem())
+    fun toggleMute() {
+        videoPlayer.toggleMute()
+    }
+
+    fun togglePause() {
+        if (blackOutMode) {
+            return
+        }
+
+        if (isPaused) {
+            resumeMedia()
         } else {
-            fadeOutCurrentItem()
+            pauseMedia()
+        }
+    }
+
+    private fun pauseMedia() {
+        if (isPaused) return
+
+        isPaused = true
+        pauseStartTime = System.currentTimeMillis()
+
+        // Pause video if currently showing
+        if (videoViewBinding.root.isVisible) {
+            videoPlayer.pause()
+        }
+
+        // Pause image timer if currently showing
+        if (imageViewBinding.root.isVisible) {
+            imagePlayer.pauseTimer()
+        }
+
+        // Pause progress bar
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+        }
+    }
+
+    private fun resumeMedia() {
+        if (!isPaused) return
+
+        isPaused = false
+        val pauseDuration = System.currentTimeMillis() - pauseStartTime
+
+        // Resume video if currently showing
+        if (videoViewBinding.root.isVisible) {
+            videoPlayer.resume()
+        }
+
+        // Resume image timer if currently showing
+        if (imageViewBinding.root.isVisible) {
+            imagePlayer.resumeTimer(pauseDuration)
+        }
+
+        // Resume progress bar
+        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
+        }
+    }
+
+    private fun handleError() {
+        mainScope.launch {
+            delay(ERROR_DELAY)
+            if (loadingView.isVisible) {
+                loadItem(playlist.nextItem())
+            } else {
+                fadeOutCurrentItem()
+            }
         }
     }
 
@@ -494,6 +583,6 @@ class ScreenController(
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
         const val LOADING_DELAY: Long = 400 // Delay before fading out loading view
-        const val ERROR_DELAY: Long = 500 // Delay before loading next item, after error
+        const val ERROR_DELAY: Long = 2000 // Delay before loading next item, after error
     }
 }

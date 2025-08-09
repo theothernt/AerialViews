@@ -15,4 +15,15 @@ object FirebaseHelper {
     fun logExceptionIfRecent(ex: Throwable?) {
         // No op
     }
+
+    fun logIfRecent(error: String) {
+        // No op
+    }
+
+    fun <T> logCustomKeysIfRecent(
+        key: String,
+        value: T,
+    ) {
+        // No op
+    }
 }

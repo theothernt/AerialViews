@@ -2,10 +2,10 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.widget.EditText
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.databinding.DialogLocationSearchBinding
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.LocationResponse
 import com.neilturner.aerialviews.services.weather.WeatherService
@@ -40,7 +40,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
     private fun updateSummary(text: String = "") {
         if (locationPreference == null) {
-            locationPreference = findPreference<Preference>("weather_location_name")
+            locationPreference = findPreference("weather_location_name")
             locationPreference?.setOnPreferenceClickListener {
                 showLocationSearchDialog()
                 true
@@ -58,15 +58,17 @@ class OverlaysWeatherFragment : MenuStateFragment() {
     }
 
     private fun showLocationSearchDialog() {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_location_search, null)
-        val input = dialogView.findViewById<EditText>(R.id.edit_location_search)
+        val binding = DialogLocationSearchBinding.inflate(layoutInflater)
 
         AlertDialog
             .Builder(requireContext())
-            .setTitle("Search for a location")
-            .setView(dialogView)
+            .setTitle("Search for a location or enter GPS coordinates")
+            .setView(binding.root)
             .setPositiveButton("Search") { _, _ ->
-                val query = input.text.toString().trim()
+                val query =
+                    binding.editLocationSearch.text
+                        .toString()
+                        .trim()
                 if (query.isNotEmpty()) {
                     searchLocation(query)
                 }
@@ -75,6 +77,39 @@ class OverlaysWeatherFragment : MenuStateFragment() {
     }
 
     private fun searchLocation(query: String) {
+        // Check if the query contains GPS coordinates (lat,lon format)
+        val gpsPattern = Regex("""^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$""")
+        val matchResult = gpsPattern.find(query.trim())
+
+        if (matchResult != null) {
+            // Handle GPS coordinates directly
+            try {
+                val lat = matchResult.groupValues[1].toDouble()
+                val lon = matchResult.groupValues[2].toDouble()
+
+                // Validate coordinate ranges
+                if (lat in -90.0..90.0 && lon in -180.0..180.0) {
+                    searchLocationByCoordinates(lat, lon)
+                    return
+                } else {
+                    DialogHelper.show(
+                        requireContext(),
+                        "Invalid Coordinates",
+                        "Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.",
+                    )
+                    return
+                }
+            } catch (e: NumberFormatException) {
+                DialogHelper.show(
+                    requireContext(),
+                    "Invalid Format",
+                    "Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)",
+                )
+                return
+            }
+        }
+
+        // Original location search logic
         val loadingMessage = getString(R.string.weather_location_searching)
         val progressDialog =
             DialogHelper.progressDialog(
@@ -105,6 +140,64 @@ class OverlaysWeatherFragment : MenuStateFragment() {
                 Timber.e(e, "Failed to search for location")
                 progressDialog.dismiss()
                 DialogHelper.show(requireContext(), "Error", "Failed to search for location.")
+            }
+        }
+    }
+
+    private fun searchLocationByCoordinates(
+        lat: Double,
+        lon: Double,
+    ) {
+        val loadingMessage = "Looking up location for coordinates..."
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        lifecycleScope.launch {
+            try {
+                val locations =
+                    withContext(Dispatchers.IO) {
+                        weatherService.lookupLocationByCoordinates(lat, lon)
+                    }
+
+                progressDialog.dismiss()
+
+                if (locations.isEmpty()) {
+                    // If no location found via API, create a custom location with coordinates
+                    val coordinateLocation =
+                        LocationResponse(
+                            name = "Custom Location",
+                            lat = lat,
+                            lon = lon,
+                            country = "",
+                            state = null,
+                        )
+                    showLocationSelectionDialog(listOf(coordinateLocation))
+                } else {
+                    // Update the coordinates in the API results to match the exact input
+                    val updatedLocations =
+                        locations.map { location ->
+                            location.copy(lat = lat, lon = lon)
+                        }
+                    showLocationSelectionDialog(updatedLocations)
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to lookup location by coordinates")
+                progressDialog.dismiss()
+
+                // Fallback: create a custom location if API fails
+                val coordinateLocation =
+                    LocationResponse(
+                        name = "Custom Location",
+                        lat = lat,
+                        lon = lon,
+                        country = "",
+                        state = null,
+                    )
+                showLocationSelectionDialog(listOf(coordinateLocation))
             }
         }
     }

@@ -3,6 +3,10 @@
 
   <!-- General -->
   <string name="app_name" translatable="false">Aerial Views</string>
+
+<!--  <string name="plugin_name" translatable="false">Aerial Views</string>-->
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
+
   <string name="loading_title">Loading…</string>
   <string name="loading_error">No videos or photos found, please check your settings</string>
 
@@ -36,7 +40,7 @@
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
   <string name="category_settings">Settings</string>
-  <string name="category_video_render_options">Video &amp; render options</string>
+  <string name="category_media_render_options">Media &amp; render options</string>
   <string name="category_samba_options">Samba/SMB options</string>
   <string name="category_dpad">D-Pad/Remote</string>
   <string name="category_dpad_press">Press</string>
@@ -49,6 +53,7 @@
   <string name="category_videos">Videos</string>
   <string name="category_photos">Photos</string>
   <string name="category_weather">Weather</string>
+  <string name="category_forecast">Forecast</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_message">Message</string>
   <string name="category_typography">Typography</string>
@@ -57,13 +62,19 @@
   <string name="category_permission">Permission</string>
   <string name="category_apple_and_community_videos">Apple and Community videos only</string>
   <string name="category_all_other_media">All other videos &amp; photos</string>
+  <string name="category_top_row">Top Row</string>
   <string name="category_top_row_left">Top Left</string>
   <string name="category_top_row_right">Top Right</string>
+  <string name="category_bottom_row">Bottom Row</string>
   <string name="category_bottom_row_left">Bottom Left</string>
   <string name="category_bottom_row_right">Bottom Right</string>
   <string name="category_refresh_rate_options">Refresh rate options</string>
   <string name="category_overlay_animations">Overlay animations</string>
   <string name="category_vide_and_photo_animations">Video &amp; photo animations</string>
+  <string name="category_message_api">Message API</string>
+  <string name="category_api_settings">API Settings</string>
+  <string name="category_connection_information">Connection Information</string>
+  <string name="category_api_usage">API Usage</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
   <string name="category_line1">Line 1</string>
@@ -74,6 +85,7 @@
   <string name="category_export_settings">Export settings</string>
   <string name="category_swipe_gestures">Swipe gestures</string>
   <string name="category_tap_gestures">Tap gestures</string>
+  <string name="category_albums">Albums</string>
 
   <!-- Common Prefs/Options -->
   <string name="videos_quality_title">Video quality</string>
@@ -162,6 +174,7 @@
 
   <string name="local_videos_legacy_folder_title">Specify a folder (eg. /Movies, case sensitive)</string>
   <string name="local_videos_legacy_folder_summary">No folder specified</string>
+  <string name="local_videos_legacy_search_subfolders_title">Search subfolders</string>
 
   <string name="local_videos_legacy_no_volume">Volume not specified</string>
   <string name="local_videos_legacy_no_folder">Folder not specified</string>
@@ -247,22 +260,30 @@
   <string name="immich_media_api_key_title">API Key</string>
   <string name="immich_media_api_key_summary">Enter your Immich API key</string>
   <string name="immich_media_select_album">Select Album</string>
+  <string name="immich_media_select_albums">Select Albums</string>
 
   <string name="immich_media_scheme_title">Scheme</string>
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
   <string name="immich_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:2283</string>
-  <string name="immich_media_pathname_title">Path name (case sensitive)</string>
+  <string name="immich_media_pathname_title">Shared link (case sensitive)</string>
   <string name="immich_media_pathname_summary">The path of the shared album e.g. /share/qJejEpX_h_…TAypgOxmIZC</string>
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
 
-
   <string name="immich_media_select_album_summary">No album selected</string>
+  <string name="immich_media_select_albums_summary">No albums selected</string>
   <string name="immich_media_selected_album">Selected album: %1$s</string>
+  <string name="immich_media_selected_albums">%1$d albums selected</string>
   <string name="immich_media_fetch_albums_error">Error Fetching Albums</string>
   <string name="immich_media_no_albums">No Albums Found</string>
   <string name="immich_media_no_albums_message">No albums were found in your Immich account. Please make sure you have at least one album created.</string>
   <string name="immich_media_unknown_error">An unknown error occurred</string>
+
+  <string name="immich_media_include_favourites_title">Include favourite photos</string>
+  <string name="immich_media_include_ratings_title">Include rated photos</string>
+  <string name="immich_media_include_ratings_summary">Show rated photos in the playlist</string>
+  <string name="immich_media_include_random_title">Include random photos</string>
+  <string name="immich_media_include_recent_title">Include recent photos</string>
 
   <string name="immich_media_test_summary1">Files found: %1$s</string>
   <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
@@ -312,6 +333,9 @@
 
   <string name="appearance_bottom_row_title">Bottom Row</string>
   <string name="appearance_bottom_row_summary">Choose overlays for the bottom left &amp; right of the screen</string>
+  
+  <string name="appearance_slots_title">Overlay slots</string>
+  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
 
   <string name="appearance_clock_title">Clock</string>
   <string name="appearance_clock_summary">Display the current time</string>
@@ -329,7 +353,7 @@
   <string name="appearance_music_summary">Display the currently playing song</string>
 
   <string name="appearance_message_title">Message</string>
-  <string name="appearance_message_summary">Display up to 2 lines of custom text</string>
+  <string name="appearance_message_summary">Display up to 4 lines of custom text</string>
 
   <!-- Main / Settings / Overlays / Rows -->
   <string name="appearance_slot1_title">Lower Slot</string>
@@ -355,14 +379,24 @@
   <string name="nowplaying_line1_title">Line 1</string>
   <string name="nowplaying_line2_title">Line 2</string>
 
+  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
+  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
+
   <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
   <!-- Main / Settings / Overlays / Weather -->
   <string name="weather_location_title">Location</string>
-  <string name="weather_units_title">Temperature units</string>
-
-  <string name="weather_location_search_hint">Enter a city name e.g. Tokyo or Buenos Aires</string>
+  <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
   <string name="weather_location_searching">Searching for locations…</string>
+
+  <string name="weather_forecast_title">Current forecast</string>
+  <string name="weather_forecast_temperature_units_title">Temperature units</string>
+  <string name="weather_forecast_summary">Change the layout of the forecast information</string>
+
+  <string name="weather_forecast_slot1">Slot 1</string>
+  <string name="weather_forecast_slot2">Slot 2</string>
+  <string name="weather_forecast_slot3">Slot 3</string>
+  <string name="weather_forecast_slot4">Slot 4</string>
 
   <!-- Main / Settings / Appearance / Location -->
   <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>
@@ -393,9 +427,14 @@
 
   <!-- Main / Settings / Appearance / Message -->
   <string name="appearance_message_line1_title">Line 1</string>
-  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
   <string name="appearance_message_line2_title">Line 2</string>
-  <string name="appearance_message_size_title">Size</string>
+  <string name="appearance_message_line3_title">Line 3</string>
+  <string name="appearance_message_line4_title">Line 4</string>
+  <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+
+  <string name="appearance_message_api_enabled_title">Enable API</string>
+  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
+  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
 
   <!-- Main / Settings / Appearance -->
   <string name="appearance_typography_title">Typography</string>
@@ -413,10 +452,10 @@
   <string name="appearance_background_colour_title">Background Colour</string>
   <string name="appearance_background_colour_summary">Change the colour used when a video or photo does not fill the screen</string>
 
-  <string name="appearance_brightness_title">Brightness/Dimness</string>
+  <string name="appearance_brightness_title">Brightness / Dimness</string>
   <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
-  <string name="appearance_scaling_title">Scaling</string>
+  <string name="appearance_scaling_title">Scaling / Cropping</string>
   <string name="appearance_scaling_summary">Change scaling and cropping options for videos &amp; photos</string>
 
   <string name="appearance_animations_title">Animations</string>
@@ -459,7 +498,8 @@
 
   <!-- Main / Settings / Appearance / Scaling -->
   <string name="appearance_video_scale_title">Video scaling</string>
-  <string name="appearance_photo_scale_title">Photo scaling</string>
+  <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
+  <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
 
   <!-- Main / Settings / Appearance / Progress Bar -->
   <string name="progress_bar_location_title">Location on screen</string>
@@ -481,9 +521,6 @@
 
   <string name="playlist_playback_speed_title">Playback speed</string>
   <string name="playlist_playback_speed_summary">Choose a playback speed</string>
-
-  <string name="playlist_advanced_video_title">Advanced options</string>
-  <string name="playlist_advanced_video_summary">Limit video length, loop short videos, start at a random position</string>
 
   <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
   <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; photos from the playlist based on filename only</string>
@@ -565,13 +602,14 @@
 
   <string name="enable_playback_logging_title">Enable playback logging</string>
   <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
+  <string name="show_media_error_toasts_title">Show media error toasts</string>
+  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
 
   <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
 
   <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
   <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
-
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
@@ -604,7 +642,6 @@
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
 
   <!-- Main / Settings / Import / Export settings -->
-
   <string name="settings_export_title">Export settings to Documents folder</string>
   <string name="settings_export_summary1">Only settings which have been changed from the defaults will be exported</string>
 

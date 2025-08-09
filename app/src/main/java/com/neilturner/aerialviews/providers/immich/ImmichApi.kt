@@ -2,8 +2,10 @@ package com.neilturner.aerialviews.providers.immich
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -24,7 +26,42 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Path("id") albumId: String,
     ): Response<Album>
+
+    @POST("/api/search/metadata")
+    suspend fun getFavoriteAssets(
+        @Header("x-api-key") apiKey: String,
+        @Body searchRequest: SearchMetadataRequest,
+    ): Response<SearchAssetsResponse>
+
+    @GET("/api/assets/random")
+    suspend fun getRandomAssets(
+        @Header("x-api-key") apiKey: String,
+        @Query("count") count: Int,
+    ): Response<List<Asset>>
+
+    @GET("/api/assets")
+    suspend fun getRecentAssets(
+        @Header("x-api-key") apiKey: String,
+        @Query("take") count: Int,
+        @Query("order") order: String = "desc",
+    ): Response<List<Asset>>
 }
+
+@Serializable
+data class SearchAssetsResponse(
+    val assets: AssetsResult,
+)
+
+@Serializable
+data class AssetsResult(
+    val items: List<Asset>,
+)
+
+@Serializable
+data class SearchMetadataRequest(
+    val isFavorite: Boolean? = null,
+    val rating: Int? = null,
+)
 
 @Serializable
 data class ExifInfo(

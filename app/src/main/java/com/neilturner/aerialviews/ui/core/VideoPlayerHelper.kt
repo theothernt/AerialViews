@@ -34,11 +34,22 @@ import kotlin.time.Duration.Companion.milliseconds
 object VideoPlayerHelper {
     private const val TEN_SECONDS = 10 * 1000
 
-    fun disableAudioTrack(player: ExoPlayer) {
+    fun toggleAudioTrack(
+        player: ExoPlayer,
+        disableAudio: Boolean,
+    ) {
         player.trackSelectionParameters =
             player.trackSelectionParameters
                 .buildUpon()
-                .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, true)
+                .setTrackTypeDisabled(C.TRACK_TYPE_AUDIO, disableAudio)
+                .build()
+    }
+
+    fun disableTextTrack(player: ExoPlayer) {
+        player.trackSelectionParameters =
+            player.trackSelectionParameters
+                .buildUpon()
+                .setTrackTypeDisabled(C.TRACK_TYPE_TEXT, true)
                 .build()
     }
 
@@ -242,7 +253,7 @@ object VideoPlayerHelper {
             return Pair(0, duration)
         }
 
-        val length = duration.floorDiv(numOfSegments).toLong()
+        val length = duration.floorDiv(numOfSegments)
         val randomSegment = (1..numOfSegments).random()
         val segmentStart = (randomSegment - 1) * length
         val segmentEnd = randomSegment * length
@@ -267,6 +278,6 @@ object VideoPlayerHelper {
         Timber.i(
             "Looping $loopCount times (video is ${duration.milliseconds}, total is ${targetDuration.milliseconds}, limit is ${maxLength.milliseconds})",
         )
-        return Pair(0, targetDuration.toLong())
+        return Pair(0, targetDuration)
     }
 }

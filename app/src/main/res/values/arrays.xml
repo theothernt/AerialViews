@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <!-- Apple Video Options -->
   <string-array name="apple_videos_quality_entries" translatable="false">
     <item>1080p H.264</item>
@@ -125,7 +125,6 @@
     <item>5</item>
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
-
   <!-- Slots -->
   <string-array name="slot_entries">
     <item>Empty</item>
@@ -138,7 +137,8 @@
     <item>Date</item>
     <item>Message #1</item>
     <item>Message #2</item>
-
+    <item>Message #3</item>
+    <item>Message #4</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
@@ -151,8 +151,10 @@
     <item>DATE</item>
     <item>MESSAGE1</item>
     <item>MESSAGE2</item>
+    <item>MESSAGE3</item>
+    <item>MESSAGE4</item>
   </string-array>
-  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
+<!--  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>-->
 
   <!-- Playback speed -->
   <string-array name="playback_speed_entries" translatable="false">
@@ -184,35 +186,33 @@
   <!-- Text sizes -->
   <string-array name="text_size_entries" translatable="false">
     <item>72sp</item>
+    <item>66sp</item>
     <item>60sp</item>
+    <item>54sp</item>
     <item>48sp</item>
+    <item>42sp</item>
     <item>36sp</item>
-    <item>34sp</item>
     <item>32sp</item>
-    <item>30sp</item>
     <item>28sp</item>
-    <item>26sp</item>
     <item>24sp</item>
-    <item>22sp</item>
-    <item>20sp</item>
+    <item>21sp</item>
     <item>18sp*</item>
-    <item>16sp</item>
+    <item>15sp</item>
   </string-array>
   <string-array name="text_size_values" translatable="false">
     <item>72</item>
+    <item>66</item>
     <item>60</item>
+    <item>54</item>
     <item>48</item>
+    <item>42</item>
     <item>36</item>
-    <item>34</item>
     <item>32</item>
-    <item>30</item>
     <item>28</item>
-    <item>26</item>
     <item>24</item>
-    <item>22</item>
-    <item>20</item>
+    <item>21</item>
     <item>18</item>
-    <item>16</item>
+    <item>15</item>
   </string-array>
   <string name="text_size_default" translatable="false">18</string>
 
@@ -400,6 +400,9 @@
   <string-array name="slideshow_speed_entries">
     <item>5 seconds</item>
     <item>10 seconds</item>
+    <item>15 seconds</item>
+    <item>20 seconds</item>
+    <item>25 seconds</item>
     <item>30 seconds*</item>
     <item>1 minute</item>
     <item>3 minutes</item>
@@ -409,6 +412,9 @@
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
     <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
     <item>30</item>
     <item>60</item>
     <item>180</item>
@@ -570,6 +576,8 @@
     <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
     <item>Black out screen, fade out media and overlays</item>
+    <item>Toggle mute/unmute audio</item>
+    <item>Pause/unpause video or photo timer</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -585,6 +593,8 @@
     <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
+    <item>TOGGLE_MUTE</item>
+    <item>TOGGLE_PAUSE</item>
   </string-array>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
@@ -694,6 +704,41 @@
     <item>API_KEY</item>
   </string-array>
 
+  <!-- Immich rating -->
+  <string-array name="immich_rating_entries" translatable="false">
+    <item>1 Star</item>
+    <item>2 Stars</item>
+    <item>3 Stars</item>
+    <item>4 Stars</item>
+    <item>5 Stars</item>
+  </string-array>
+  <string-array name="immich_rating_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+  </string-array>
+
+  <!-- Immich include photos -->
+  <string-array name="immich_include_entries">
+    <item>Disabled</item>
+    <item>100 photos</item>
+    <item>200 photos</item>
+    <item>300 photos</item>
+    <item>400 photos</item>
+  </string-array>
+  <string-array name="immich_include_values" translatable="false">
+    <item>DISABLED</item>
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
+  </string-array>
+  <string name="immich_include_random_default" translatable="false">DISABLED</string>
+  <string name="immich_include_recent_default" translatable="false">DISABLED</string>
+  <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
+
   <!-- Progress Bar -->
   <string-array name="progress_bar_location_entries">
     <item>Disabled</item>
@@ -738,16 +783,48 @@
   </string-array>
   <string name="seek_interval_default" translatable="false">30</string>
 
-  <!-- Weather units -->
-  <string-array name="weather_units_entries">
-    <item>C° - Metric</item>
-    <item>F° - Imperial</item>
+  <!-- Temperature units -->
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
   </string-array>
-  <string-array name="weather_units_values" translatable="false">
+  <string-array name="temperature_units_values" translatable="false">
     <item>METRIC</item>
     <item>IMPERIAL</item>
   </string-array>
-  <string name="weather_units_default" translatable="false">METRIC</string>
+  <string name="temperature_units_default" translatable="false">METRIC</string>
+
+  <!-- Weather Type Options -->
+  <string-array name="weather_type_entries">
+    <item>Empty</item>
+    <item>Forecast</item>
+    <item>Wind</item>
+    <item>Humidity</item>
+    <item>Sunrise</item>
+  </string-array>
+  <string-array name="weather_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>FORECAST</item>
+    <item>WIND</item>
+    <item>HUMIDITY</item>
+    <item>SUNRISE</item>
+  </string-array>
+
+  <!-- Forecast Type Options -->
+  <string-array name="weather_forecast_type_entries">
+    <item>Empty</item>
+    <item>City</item>
+    <item>Temperature</item>
+    <item>Icon</item>
+    <item>Summary</item>
+  </string-array>
+  <string-array name="weather_forecast_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>CITY</item>
+    <item>TEMPERATURE</item>
+    <item>ICON</item>
+    <item>SUMMARY</item>
+  </string-array>
 
   <!-- Background Colors -->
   <string-array name="background_colour_entries">

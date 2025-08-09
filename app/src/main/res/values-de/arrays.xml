@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <string-array name="apple_videos_data_usage_values" translatable="false">
     <item>37GB</item>
     <item>23GB</item>
@@ -580,30 +580,40 @@
     <item>300</item>
     <item>600</item>
   </string-array>
-  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>
   <string-array name="slot_entries">
     <item>Leer</item>
     <item>Uhrzeit</item>
     <item>Ort</item>
+    <item>Wetter #1</item>
+    <item>Jetzt läuft #1</item>
+    <item>Jetzt läuft #2</item>
     <item>Datum</item>
     <item>Nachricht #1</item>
     <item>Nachricht #2</item>
-    <item>Jetzt läuft #1</item>
-    <item>Jetzt läuft #2</item>
-    <item>Nachricht #1</item>
-    <item>Nachricht #2</item>
+    <item>Message #3</item>
+    <item>Message #4</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
     <item>CLOCK</item>
     <item>LOCATION</item>
     <item>WEATHER1</item>
-    <item>WEATHER2</item>
     <item>MUSIC1</item>
     <item>MUSIC2</item>
     <item>DATE</item>
     <item>MESSAGE1</item>
     <item>MESSAGE2</item>
+    <item>MESSAGE3</item>
+    <item>MESSAGE4</item>
+  </string-array>
+  <string name="temperature_units_default" translatable="false">METRIC</string>
+  <string-array name="temperature_units_entries">
+    <item>C° / Celsius</item>
+    <item>F° / Fahrenheit</item>
+  </string-array>
+  <string-array name="temperature_units_values" translatable="false">
+    <item>METRIC</item>
+    <item>IMPERIAL</item>
   </string-array>
   <string name="text_font_default" translatable="false">open-sans</string>
   <string-array name="text_font_entries">
@@ -629,7 +639,6 @@
     <item>22sp</item>
     <item>20sp</item>
     <item>18sp*</item>
-    <item>16sp</item>
   </string-array>
   <string-array name="text_size_values" translatable="false">
     <item>72</item>
@@ -645,7 +654,6 @@
     <item>22</item>
     <item>20</item>
     <item>18</item>
-    <item>16</item>
   </string-array>
   <string name="text_weight_default" translatable="false">300</string>
   <string-array name="text_weight_entries">
@@ -680,13 +688,32 @@
     <item>SCALE_TO_FIT</item>
   </string-array>
   <string name="volume_default" translatable="false">100</string>
-  <string name="weather_units_default" translatable="false">METRIC</string>
-  <string-array name="weather_units_entries">
-    <item>C° - Metric</item>
-    <item>F° - Imperial</item>
+  <string-array name="weather_forecast_type_entries">
+    <item>Leer</item>
+    <item>Stadt</item>
+    <item>Temperatur</item>
+    <item>Symbol</item>
+    <item>Zusammenfassung</item>
   </string-array>
-  <string-array name="weather_units_values" translatable="false">
-    <item>METRIC</item>
-    <item>IMPERIAL</item>
+  <string-array name="weather_forecast_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>CITY</item>
+    <item>TEMPERATURE</item>
+    <item>ICON</item>
+    <item>SUMMARY</item>
+  </string-array>
+  <string-array name="weather_type_entries">
+    <item>Leer</item>
+    <item>Vorhersage</item>
+    <item>Wind</item>
+    <item>Luftfeuchtigkeit</item>
+    <item>Sonnenaufgang</item>
+  </string-array>
+  <string-array name="weather_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>FORECAST</item>
+    <item>WIND</item>
+    <item>HUMIDITY</item>
+    <item>SUNRISE</item>
   </string-array>
 </resources>

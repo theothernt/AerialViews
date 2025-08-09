@@ -11,6 +11,7 @@ import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -23,6 +24,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,24 +40,15 @@ class ImagePlayerView : AppCompatImageView {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private val ioScope = CoroutineScope(Dispatchers.IO)
+    private val mainScope = CoroutineScope(Dispatchers.Main)
+    private var target = ImageViewTarget(this)
+    private var pausedTimestamp: Long = 0
+    private var totalDuration: Long = 0
+    private var remainingDuration: Long = 0
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
-
-    private var target = ImageViewTarget(this)
-
-    init {
-        val scaleType =
-            try {
-                ScaleType.valueOf(GeneralPrefs.photoScale.toString())
-            } catch (e: Exception) {
-                Timber.e(e)
-                GeneralPrefs.photoScale = PhotoScale.CENTER_CROP
-                ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
-            }
-        this.scaleType = scaleType
-    }
 
     fun release() {
         removeCallbacks(finishedRunnable)
@@ -70,6 +63,7 @@ class ImagePlayerView : AppCompatImageView {
                 result: SuccessResult,
             ) {
                 super.onSuccess(request, result)
+                setScaleMode(result.image.width, result.image.height)
                 setupFinishedRunnable()
             }
 
@@ -80,6 +74,15 @@ class ImagePlayerView : AppCompatImageView {
                 super.onError(request, result)
                 Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
                 FirebaseHelper.logExceptionIfRecent(result.throwable)
+
+                // Show toast if preference is enabled
+                if (GeneralPrefs.showMediaErrorToasts) {
+                    mainScope.launch {
+                        val errorMessage = result.throwable.localizedMessage ?: "Photo loading error occurred"
+                        ToastHelper.show(context, errorMessage)
+                    }
+                }
+
                 onPlayerError()
             }
         }
@@ -97,17 +100,15 @@ class ImagePlayerView : AppCompatImageView {
             }.build()
 
     fun setImage(media: AerialMedia) {
-        coroutineScope.launch {
+        ioScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
-                    stream?.close()
                 }
                 else -> {
                     loadImage(media.uri)
@@ -128,6 +129,15 @@ class ImagePlayerView : AppCompatImageView {
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
+
+            // Show toast if preference is enabled
+            if (GeneralPrefs.showMediaErrorToasts) {
+                mainScope.launch {
+                    val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
+                    ToastHelper.show(context, errorMessage)
+                }
+            }
+
             listener?.onImageError()
         }
     }
@@ -135,7 +145,57 @@ class ImagePlayerView : AppCompatImageView {
     fun stop() {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
+        pausedTimestamp = 0
+        remainingDuration = 0
     }
+
+    fun pauseTimer() {
+        pausedTimestamp = System.currentTimeMillis()
+        removeCallbacks(finishedRunnable)
+    }
+
+    fun resumeTimer(pauseDuration: Long) {
+        if (pausedTimestamp > 0) {
+            remainingDuration = maxOf(0, remainingDuration - pauseDuration)
+            if (remainingDuration > 0) {
+                postDelayed(finishedRunnable, remainingDuration)
+            } else {
+                // If time has expired, finish immediately
+                listener?.onImageFinished()
+            }
+            pausedTimestamp = 0
+        }
+    }
+
+    private fun setScaleMode(
+        width: Int,
+        height: Int,
+    ) {
+        val aspect = AspectRatio.fromDimensions(width, height)
+        Timber.i("Aspect ratio: $aspect")
+        scaleType =
+            when (aspect) {
+                AspectRatio.SQUARE -> {
+                    getScaleType(GeneralPrefs.photoScalePortrait)
+                }
+
+                AspectRatio.PORTRAIT -> {
+                    getScaleType(GeneralPrefs.photoScalePortrait)
+                }
+
+                AspectRatio.LANDSCAPE -> {
+                    getScaleType(GeneralPrefs.photoScaleLandscape)
+                }
+            }
+    }
+
+    private fun getScaleType(scale: PhotoScale?): ScaleType =
+        try {
+            ScaleType.valueOf(scale.toString())
+        } catch (e: Exception) {
+            Timber.e(e)
+            ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+        }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
@@ -144,6 +204,9 @@ class ImagePlayerView : AppCompatImageView {
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
         val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
         val durationMinusFade = duration - fadeDuration
+
+        totalDuration = duration
+        remainingDuration = durationMinusFade
 
         Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))

@@ -14,7 +14,8 @@ import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
-import com.neilturner.aerialviews.services.weather.WeatherUnit
+import com.neilturner.aerialviews.services.weather.TemperatureUnit
+import com.neilturner.aerialviews.services.weather.WindSpeedUnit
 
 object GeneralPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
@@ -44,6 +45,7 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingWeight1 by stringPref("300", "nowplaying_weight1")
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
+    var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -55,15 +57,23 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationName by stringPref("", "weather_location_name")
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
-    var weatherUnits by nullableEnumValuePref(WeatherUnit.METRIC, "weather_units")
 
-    var weatherLine1 by stringPref("", "weather_line1")
+    var weatherLine1 by stringPref("FORECAST", "weather_line1")
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2 by stringPref("", "weather_line2")
+    var weatherLine2 by stringPref("WIND", "weather_line2")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
+
+    var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
+    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
+
+    var weatherWind by stringPref("", "weather_wind")
+    var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
+
+    var weatherHumidity by stringPref("", "weather_humidity")
+    var weatherSunrise by stringPref("", "weather_sunrise")
 
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(
@@ -84,13 +94,18 @@ object GeneralPrefs : KotprefModel() {
     var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
 
     var descriptionSize by stringPref("18", "description_size")
-    var descriptionWeight by stringPref("300", "description_weight")
+    var descriptionWeight by stringPref("300", "description_weight") // Message
 
-    // Message
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
+    var messageLine3 by stringPref("", "message_line3")
+    var messageLine4 by stringPref("", "message_line4")
+
     var messageSize by stringPref("18", "message_size")
     var messageWeight by stringPref("300", "message_weight")
+
+    var messageApiEnabled by booleanPref(false, "message_api_enabled")
+    var messageApiPort by stringPref("8081", "message_api_port")
 
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
@@ -159,7 +174,8 @@ object GeneralPrefs : KotprefModel() {
 
     // Playlist - Photos
     var slideshowSpeed by stringPref("30", "slideshow_speed")
-    var photoScale by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale")
+    var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
+    var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
 
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")
@@ -184,13 +200,12 @@ object GeneralPrefs : KotprefModel() {
 
     var enableMediaButtonPassthrough by booleanPref(true, "enable_media_button_passthrough")
     var wakeOnAnyButtonPress by booleanPref(true, "wake_on_any_button_press")
-    var seekInterval by stringPref("10", "seek_interval")
-
-    // Advanced
+    var seekInterval by stringPref("10", "seek_interval") // Advanced
     var enableTunneling by booleanPref(true, "enable_tunneling")
     var refreshRateSwitching by booleanPref(false, "refresh_rate_switching")
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
+    var showMediaErrorToasts by booleanPref(false, "show_media_error_toasts")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
     // Old devices

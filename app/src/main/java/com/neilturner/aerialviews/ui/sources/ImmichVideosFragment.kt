@@ -15,9 +15,7 @@ import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class ImmichVideosFragment :
@@ -28,8 +26,12 @@ class ImmichVideosFragment :
     private lateinit var validateSslPreference: Preference
     private lateinit var passwordPreference: EditTextPreference
     private lateinit var apiKeyPreference: EditTextPreference
-    private lateinit var selectAlbumPreference: Preference
+    private lateinit var selectAlbumsPreference: Preference
     private lateinit var pathnamePreference: EditTextPreference
+    private lateinit var includeFavoritesPreference: Preference
+    private lateinit var includeRatedPreference: Preference
+    private lateinit var includeLimitPreference: Preference
+    private lateinit var includeRecentPreference: Preference
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -43,14 +45,19 @@ class ImmichVideosFragment :
         validateSslPreference = findPreference("immich_media_validate_ssl")!!
         passwordPreference = findPreference("immich_media_password")!!
         apiKeyPreference = findPreference("immich_media_api_key")!!
-        selectAlbumPreference = findPreference("immich_media_select_album")!!
+        selectAlbumsPreference = findPreference("immich_media_selected_album_ids")!!
         pathnamePreference = findPreference("immich_media_pathname")!!
+        includeFavoritesPreference = findPreference("immich_media_include_favorites")!!
+        includeRatedPreference = findPreference("immich_media_include_ratings")!!
+        includeLimitPreference = findPreference("immich_media_include_random")!!
+        includeRecentPreference = findPreference("immich_media_include_recent")!!
 
-        limitTextInput()
-        updateAuthTypeVisibility()
-        updateSummary()
-
-        setupPreferenceClickListeners()
+        lifecycleScope.launch {
+            limitTextInput()
+            updateAuthTypeVisibility()
+            updateSummary()
+            setupPreferenceClickListeners()
+        }
     }
 
     override fun onDestroy() {
@@ -62,10 +69,11 @@ class ImmichVideosFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        updateSummary()
         if (key == "immich_media_auth_type") {
             updateAuthTypeVisibility()
         }
+
+        updateSummary()
     }
 
     private fun setupPreferenceClickListeners() {
@@ -88,13 +96,14 @@ class ImmichVideosFragment :
             true
         }
 
-        selectAlbumPreference.setOnPreferenceClickListener {
-            lifecycleScope.launch { selectAlbum() }
+        selectAlbumsPreference.setOnPreferenceClickListener {
+            lifecycleScope.launch { pickAlbums() }
             true
         }
     }
 
     private fun updateSummary() {
+        // Server URL
         urlPreference.summary =
             if (urlPreference.text.isNullOrEmpty()) {
                 getString(R.string.immich_media_url_summary)
@@ -102,35 +111,40 @@ class ImmichVideosFragment :
                 urlPreference.text
             }
 
-        updatePasswordSummary()
-        updateApiKeySummary()
-        updateSelectedAlbumSummary()
-    }
-
-    private fun updatePasswordSummary() {
+        // Shared Link Password
         passwordPreference.summary =
             if (passwordPreference.text.isNullOrEmpty()) {
                 getString(R.string.immich_media_password_summary)
             } else {
                 "*".repeat(passwordPreference.text!!.length)
             }
-    }
 
-    private fun updateApiKeySummary() {
+        // API Key
         apiKeyPreference.summary =
             if (apiKeyPreference.text.isNullOrEmpty()) {
                 getString(R.string.immich_media_api_key_summary)
             } else {
                 "*".repeat(apiKeyPreference.text!!.length)
             }
-    }
 
-    private fun updateSelectedAlbumSummary() {
-        selectAlbumPreference.summary =
-            if (ImmichMediaPrefs.selectedAlbumId.isEmpty()) {
-                getString(R.string.immich_media_select_album_summary)
+        // Selected Albums
+        selectAlbumsPreference.summary =
+            if (ImmichMediaPrefs.selectedAlbumIds.isEmpty()) {
+                getString(R.string.immich_media_select_albums_summary)
             } else {
-                getString(R.string.immich_media_selected_album, ImmichMediaPrefs.selectedAlbumName)
+                getString(
+                    R.string.immich_media_selected_albums,
+                    ImmichMediaPrefs.selectedAlbumIds.size,
+                )
+            }
+
+        // Include Ratings
+        includeRatedPreference.summary =
+            if (ImmichMediaPrefs.includeRatings.isEmpty()) {
+                "No rated photos selected"
+            } else {
+                val selectedRatings = ImmichMediaPrefs.includeRatings.sorted().joinToString(", ") { "$it★" }
+                "$selectedRatings photos selected"
             }
     }
 
@@ -141,13 +155,21 @@ class ImmichVideosFragment :
                 pathnamePreference.isVisible = true
                 passwordPreference.isVisible = true
                 apiKeyPreference.isVisible = false
-                selectAlbumPreference.isVisible = false
+                selectAlbumsPreference.isVisible = false
+                includeFavoritesPreference.isVisible = false
+                includeRatedPreference.isVisible = false
+                includeLimitPreference.isVisible = false
+                includeRecentPreference.isVisible = false
             }
             ImmichAuthType.API_KEY -> {
                 pathnamePreference.isVisible = false
                 passwordPreference.isVisible = false
                 apiKeyPreference.isVisible = true
-                selectAlbumPreference.isVisible = true
+                selectAlbumsPreference.isVisible = true
+                includeFavoritesPreference.isVisible = true
+                includeRatedPreference.isVisible = true
+                includeLimitPreference.isVisible = true
+                includeRecentPreference.isVisible = true
             }
         }
     }
@@ -178,53 +200,76 @@ class ImmichVideosFragment :
         DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
     }
 
-    private suspend fun selectAlbum() {
-        val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-        provider.fetchAlbums().fold(
-            onSuccess = { albums ->
-                if (albums.isEmpty()) {
-                    DialogHelper.showOnMain(
+    private suspend fun pickAlbums() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        if (ImmichMediaPrefs.url.isNotEmpty() && ImmichMediaPrefs.apiKey.isNotEmpty()) {
+            val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
+            provider.fetchAlbums().fold(
+                onSuccess = { albums ->
+                    progressDialog.dismiss()
+                    showAlbumMultiSelectDialog(albums)
+                },
+                onFailure = { exception ->
+                    Timber.e(exception, "Failed to load albums for selection")
+                    progressDialog.dismiss()
+                    DialogHelper.show(
                         requireContext(),
-                        getString(R.string.immich_media_no_albums),
-                        getString(R.string.immich_media_no_albums_message),
+                        "Error",
+                        "Failed to load albums: ${exception.message}",
                     )
-                } else {
-                    showAlbumSelectionDialog(albums)
-                }
-            },
-            onFailure = { exception ->
-                DialogHelper.showOnMain(
-                    requireContext(),
-                    getString(R.string.immich_media_fetch_albums_error),
-                    exception.message ?: getString(R.string.immich_media_unknown_error),
-                )
-            },
-        )
+                },
+            )
+        } else {
+            progressDialog.dismiss()
+            DialogHelper.show(
+                requireContext(),
+                "Configuration Required",
+                "Please configure server URL and API key first.",
+            )
+        }
     }
 
-    private suspend fun showAlbumSelectionDialog(albums: List<Album>) =
-        withContext(Dispatchers.Main) {
-            if (albums.isEmpty()) {
-                DialogHelper.showOnMain(
-                    requireContext(),
-                    getString(R.string.immich_media_no_albums),
-                    getString(R.string.immich_media_no_albums_message),
-                )
-                return@withContext
+    private fun showAlbumMultiSelectDialog(albums: List<Album>) {
+        if (albums.isEmpty()) {
+            DialogHelper.show(
+                requireContext(),
+                "No Albums",
+                "No albums found in your Immich instance.",
+            )
+            return
+        }
+
+        val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
+        val albumIds = albums.map { it.id }.toTypedArray()
+        val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
+        val checkedItems =
+            BooleanArray(albums.size) { index ->
+                currentSelectedAlbumIds.contains(albumIds[index])
             }
 
-            Timber.d("Showing album selection dialog with ${albums.size} albums")
-            val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
-            AlertDialog.Builder(requireContext()).apply {
-                setTitle(R.string.immich_media_select_album)
-                setSingleChoiceItems(albumNames, -1) { dialog, which ->
-                    ImmichMediaPrefs.selectedAlbumId = albums[which].id
-                    ImmichMediaPrefs.selectedAlbumName = albums[which].name
-                    dialog.dismiss()
-                    updateSummary()
+        AlertDialog
+            .Builder(requireContext())
+            .setTitle("Select Albums")
+            .setMultiChoiceItems(albumNames, checkedItems) { _, which, isChecked ->
+                if (isChecked) {
+                    tempSelectedAlbumIds.add(albumIds[which])
+                } else {
+                    tempSelectedAlbumIds.remove(albumIds[which])
                 }
-                setNegativeButton(R.string.button_cancel, null)
-                create().show()
-            }
-        }
+            }.setPositiveButton("OK") { _, _ ->
+                ImmichMediaPrefs.selectedAlbumIds.clear()
+                ImmichMediaPrefs.selectedAlbumIds.addAll(tempSelectedAlbumIds)
+                updateSummary()
+            }.setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
 }
