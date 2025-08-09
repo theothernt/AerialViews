@@ -45,6 +45,7 @@ class MigrationHelper(
         if (lastKnownVersion < 49) release49()
         if (lastKnownVersion < 53) release53()
         if (lastKnownVersion < 60) release60()
+        if (lastKnownVersion < 61) release61()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -393,6 +394,7 @@ class MigrationHelper(
 
         val sizeUsed = prefs.contains("nowplaying_size")
         if (sizeUsed) {
+            Timber.i("Updating now playing font size")
             val size = prefs.getString("nowplaying_size", "18")
             prefs.edit {
                 putString("nowplaying_size1", size)
@@ -403,6 +405,7 @@ class MigrationHelper(
 
         val weightUsed = prefs.contains("nowplaying_weight")
         if (weightUsed) {
+            Timber.i("Updating now playing font weight")
             val weight = prefs.getString("nowplaying_weight", "300")
             prefs.edit {
                 putString("nowplaying_weight1", weight)
@@ -417,6 +420,7 @@ class MigrationHelper(
 
         val albumIdUsed = prefs.contains("immich_media_selected_album_id")
         if (albumIdUsed) {
+            Timber.i("Updating Immich albums ID")
             val id = prefs.getString("immich_media_selected_album_id", "")
             prefs.edit {
                 putStringSet("immich_media_selected_album_ids", setOf(id))
@@ -426,8 +430,24 @@ class MigrationHelper(
 
         val albumNameUsed = prefs.contains("immich_media_selected_album_name")
         if (albumNameUsed) {
+            Timber.i("Deleting Immich album name key as it is no longer used")
             prefs.edit {
                 remove("immich_media_selected_album_name")
+            }
+        }
+    }
+
+    private fun release61() {
+        Timber.i("Migrating settings for release 61")
+
+        val photoScaleUsed = prefs.contains("photo_scale")
+        if (photoScaleUsed) {
+            val photoScale = prefs.getString("photo_scale", "CENTER_CROP")
+            Timber.i("Migrating photo scale")
+            prefs.edit {
+                putString("photo_scale_landscape", photoScale)
+                putString("photo_scale_portrait", photoScale)
+                remove("photo_scale")
             }
         }
     }

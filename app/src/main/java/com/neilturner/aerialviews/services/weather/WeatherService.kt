@@ -28,6 +28,7 @@ class WeatherService(
     private var updateJob: Job? = null
     private var retryCount = 0
     private val maxRetries = 3
+    private var totalUpdates = 0
 
     private val lookupDelay = 1.seconds
     private val errorDelay = 3.seconds // Slow down response when there is an error
@@ -53,7 +54,9 @@ class WeatherService(
             delay(lookupDelay)
 
             when {
-                response.isSuccessful -> response.body() ?: emptyList()
+                response.isSuccessful -> {
+                    response.body() ?: emptyList()
+                }
                 response.code() == 401 -> {
                     Timber.e("Unauthorized access to weather API - invalid API key")
                     delay(errorDelay)
@@ -72,6 +75,42 @@ class WeatherService(
             }
         } catch (e: Exception) {
             Timber.e(e, "Failed to fetch location data")
+            delay(errorDelay)
+            emptyList()
+        }
+
+    suspend fun lookupLocationByCoordinates(
+        lat: Double,
+        lon: Double,
+    ): List<LocationResponse> =
+        try {
+            val key = BuildConfig.OPEN_WEATHER
+            val language = WeatherLanguage.getLanguageCode(context)
+            val response = openWeatherClient.getLocationByCoordinates(lat, lon, 5, key, language)
+            delay(lookupDelay)
+
+            when {
+                response.isSuccessful -> {
+                    response.body() ?: emptyList()
+                }
+                response.code() == 401 -> {
+                    Timber.e("Unauthorized access to weather API - invalid API key")
+                    delay(errorDelay)
+                    emptyList()
+                }
+                response.code() in 500..599 -> {
+                    Timber.e("Server error (${response.code()}) while fetching location data")
+                    delay(errorDelay)
+                    emptyList()
+                }
+                else -> {
+                    Timber.e("Failed to fetch location data - HTTP ${response.code()}: ${response.message()}")
+                    delay(errorDelay)
+                    emptyList()
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to fetch location data by coordinates")
             delay(errorDelay)
             emptyList()
         }
@@ -116,6 +155,7 @@ class WeatherService(
                 response.isSuccessful -> {
                     val weatherData = response.body()
                     if (weatherData != null) {
+                        totalUpdates++
                         retryCount = 0 // Reset retry count on successful response
                         processWeatherResponse(weatherData)
                     } else {
@@ -200,7 +240,8 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        retryCount = 0
+        FirebaseHelper.logCustomKeysIfRecent("weather_updates_per_session", totalUpdates)
+        Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }
 

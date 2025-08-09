@@ -56,9 +56,9 @@ object WeatherIcons {
             conditionCode / 100 == GROUP_DRIZZLE -> {
                 iconResource =
                     if (isNight) {
-                        R.drawable.weather_rain
+                        R.drawable.weather_rain_heavy
                     } else {
-                        R.drawable.weather_rain
+                        R.drawable.weather_rain_heavy
                     }
             }
 
@@ -67,14 +67,20 @@ object WeatherIcons {
                 // Handle different types of rain
                 iconResource =
                     when (conditionCode) {
-                        in 500..504 -> { // Light to heavy rain
-                            if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
+                        in 500..501 -> { // Light
+                            if (isNight) R.drawable.weather_rain_light else R.drawable.weather_rain_light
+                        }
+                        in 502..504 -> { // Heavy rain
+                            if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
                         511 -> { // Freezing rain
-                            if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
+                            if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
-                        else -> { // Shower rain
-                            if (isNight) R.drawable.weather_rain else R.drawable.weather_rain
+                        521 -> { // Shower rain
+                            if (isNight) R.drawable.weather_rain_light else R.drawable.weather_rain_light
+                        }
+                        else -> { // Shower heavy, etc
+                            if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
                     }
             }
@@ -115,13 +121,13 @@ object WeatherIcons {
                 iconResource =
                     when (conditionCode) {
                         801 -> { // Few clouds
-                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
+                            if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }
                         802 -> { // Scattered clouds
-                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
+                            if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }
                         else -> { // Broken or overcast clouds
-                            if (isNight) R.drawable.weather_cloudy else R.drawable.weather_cloudy
+                            if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }
                     }
             }

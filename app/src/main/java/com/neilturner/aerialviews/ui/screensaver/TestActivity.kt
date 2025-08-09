@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
@@ -36,12 +37,12 @@ class TestActivity : AppCompatActivity() {
         super.onPause()
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        if (this::screenController.isInitialized) {
+        // Using OSD TV menus calls suspend but the screensaver is still running
+        // So only stop if on phone or tablet
+        if (!DeviceHelper.isTV(this) && this::screenController.isInitialized) {
             screenController.stop()
+            finishWithResult()
         }
-
-        // Don't use finishWithResult as it's not suitable at the moment
-        finishAndRemoveTask()
     }
 
     override fun onAttachedToWindow() {
@@ -80,9 +81,11 @@ class TestActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         // Stop playback, animations, etc
+        // Stop here in TV, already stopped in onPause if phone
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        if (this::screenController.isInitialized) {
+        if (this::screenController.isInitialized && DeviceHelper.isTV(this)) {
             screenController.stop()
+            finishAndRemoveTask()
         }
     }
 
