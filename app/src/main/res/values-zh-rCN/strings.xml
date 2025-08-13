@@ -18,7 +18,6 @@
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
   <string name="allow_fallback_decoders_summary">支持某些设备上基于软件的编解码器或替代编解码器</string>
   <string name="allow_fallback_decoders_title">允许后备解码器</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">为了防止 OLED 烧屏，每个视频的时钟和地点都会改变</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_animations_summary">配置用于叠加的动画以及视频和照片之间的动画</string>
@@ -71,19 +70,20 @@
   <string name="appearance_loading_show_title">显示加载文本</string>
   <string name="appearance_location_summary">显示地点或景点</string>
   <string name="appearance_location_title">地点</string>
-  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
-  <string name="appearance_message_api_enabled_title">Enable API</string>
-  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
+  <string name="appearance_message_api_enabled_summary">允许通过 HTTP API 远程设置自定义信息</string>
+  <string name="appearance_message_api_enabled_title">启用应用程序接口</string>
+  <string name="appearance_message_api_port_title">端口号（默认：8081）</string>
   <string name="appearance_message_line1_summary">输入要显示的文本，包括表情符号</string>
   <string name="appearance_message_line1_title">第 1 行</string>
   <string name="appearance_message_line2_title">第 2 行</string>
-  <string name="appearance_message_line3_title">Line 3</string>
-  <string name="appearance_message_line4_title">Line 4</string>
+  <string name="appearance_message_line3_title">三号线</string>
+  <string name="appearance_message_line4_title">第 4 行</string>
   <string name="appearance_message_summary">最多显示 2 行自定义文本</string>
   <string name="appearance_message_title">信息</string>
   <string name="appearance_music_summary">显示当前播放的歌曲</string>
   <string name="appearance_music_title">音乐</string>
-  <string name="appearance_photo_scale_title">照片缩放</string>
+  <string name="appearance_photo_scale_landscape_title">风景照片缩放</string>
+  <string name="appearance_photo_scale_portrait_title">人像照片缩放</string>
   <string name="appearance_progress_bar_summary">在屏幕顶部或底部显示视频或照片的进度</string>
   <string name="appearance_progress_bar_title">进度条</string>
   <string name="appearance_reveal_for_title">叠加显示超时</string>
@@ -96,8 +96,8 @@
   <string name="appearance_slot1_title">较低插槽</string>
   <string name="appearance_slot2_title">较高插槽</string>
   <string name="appearance_slot_summary">留空</string>
-  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
-  <string name="appearance_slots_title">Overlay slots</string>
+  <string name="appearance_slots_summary">配置屏幕上的叠加显示位置</string>
+  <string name="appearance_slots_title">叠加插槽</string>
   <string name="appearance_startup_summary">更改应用程序加载时的显示内容</string>
   <string name="appearance_startup_title">启动</string>
   <string name="appearance_top_left_lower_slot">左上角，较低插槽</string>
@@ -142,10 +142,11 @@
   <string name="category_about">关于</string>
   <string name="category_actions">动作</string>
   <string name="category_advanced">高级设置</string>
+  <string name="category_albums">专辑</string>
   <string name="category_all_other_media">All other videos and images</string>
   <string name="category_animation">动画</string>
-  <string name="category_api_settings">API Settings</string>
-  <string name="category_api_usage">API Usage</string>
+  <string name="category_api_settings">应用程序接口设置</string>
+  <string name="category_api_usage">应用程序接口的使用</string>
   <string name="category_appearance">外观</string>
   <string name="category_apple_and_community_videos">Apple 和社区视频</string>
   <string name="category_authentication_details">认证详细信息</string>
@@ -156,7 +157,7 @@
   <string name="category_brightness">亮度</string>
   <string name="category_capabilities">性能</string>
   <string name="category_clock">时钟</string>
-  <string name="category_connection_information">Connection Information</string>
+  <string name="category_connection_information">连接信息</string>
   <string name="category_custom_format">自定义格式</string>
   <string name="category_date">日期</string>
   <string name="category_dpad">D-Pad/遥控器</string>
@@ -170,10 +171,10 @@
   <string name="category_line1">第 1 行</string>
   <string name="category_line2">第 2 行</string>
   <string name="category_local">本地</string>
-  <string name="category_media_render_options">Media &amp; render options</string>
+  <string name="category_media_render_options">媒体和渲染选项</string>
   <string name="category_media_scanner_options">媒体扫描仪选项</string>
   <string name="category_message">信息</string>
-  <string name="category_message_api">Message API</string>
+  <string name="category_message_api">信息应用程序接口</string>
   <string name="category_music">音乐</string>
   <string name="category_network">局域网</string>
   <string name="category_now_playing">正在播放</string>
@@ -243,6 +244,11 @@
   <string name="immich_media_fetch_albums_error">获取相册时出错</string>
   <string name="immich_media_hostname_summary">服务器的 IP 地址和端口，例如 192.168.1.2:2283</string>
   <string name="immich_media_hostname_title">主机名和端口</string>
+  <string name="immich_media_include_favourites_title">包括最喜欢的照片</string>
+  <string name="immich_media_include_random_title">包含随机照片</string>
+  <string name="immich_media_include_ratings_summary">在播放列表中显示评分照片</string>
+  <string name="immich_media_include_ratings_title">包含评级照片</string>
+  <string name="immich_media_include_recent_title">包括近期照片</string>
   <string name="immich_media_no_albums">未找到专辑</string>
   <string name="immich_media_no_albums_message">您的 Immich 账户中没有相册。请确保您至少创建了一个相册。</string>
   <string name="immich_media_password_summary">未设置。可选</string>
@@ -254,7 +260,10 @@
   <string name="immich_media_search_subfolders_title">搜索子文件夹</string>
   <string name="immich_media_select_album">选择相册</string>
   <string name="immich_media_select_album_summary">未选择相册</string>
+  <string name="immich_media_select_albums">选择相册</string>
+  <string name="immich_media_select_albums_summary">未选择专辑</string>
   <string name="immich_media_selected_album">精选专辑%1$s</string>
+  <string name="immich_media_selected_albums">%1$d 所选专辑</string>
   <string name="immich_media_test_connection">测试连接设置</string>
   <string name="immich_media_test_results">测试结果</string>
   <string name="immich_media_test_summary1">Files found: %1$s</string>
@@ -309,8 +318,8 @@
   <string name="nowplaying_permission_notice_summary">要启用通知访问，请在设置&gt; 应用程序&gt; 特殊访问&gt; 通知访问</string>
   <string name="nowplaying_permission_summary">必须获得许可，此应用程序才能监听来自系统的音乐通知</string>
   <string name="nowplaying_permission_title">启用系统通知访问</string>
-  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
-  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
+  <string name="nowplaying_shorten_track_name_summary">删除常见的后缀，如\"- 原始混合 \"或\"（重制版）\"</string>
+  <string name="nowplaying_shorten_track_name_title">缩短赛道名称</string>
   <string name="nowplaying_toast_text">请在特殊应用程序访问权限 &gt; 通知访问权限</string>
   <string name="playlist_ignore_unmatched_videos_summary">跳过任何 Apple 视频清单中未列出的视频</string>
   <string name="playlist_ignore_unmatched_videos_title">忽略无法识别/非 Apple 视频</string>
@@ -337,7 +346,6 @@
   <string name="playlist_slideshow_speed_title">Slideshow speed</string>
   <string name="playlist_video_volume_summary">选择视频音量大小</string>
   <string name="playlist_video_volume_title">视频音量</string>
-  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">地点</string>
   <string name="progress_bar_opacity_title">不透明度</string>
   <string name="progress_bar_type_title">显示</string>
@@ -402,8 +410,8 @@
   <string name="settings_system_options_error">无法打开设备的屏保选项</string>
   <string name="settings_system_options_removed">该功能已被制造商删除
 请访问 Aerial Views 网站了解更多详情</string>
-  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
-  <string name="show_media_error_toasts_title">Show media error toasts</string>
+  <string name="show_media_error_toasts_summary">媒体播放出错时显示祝酒词</string>
+  <string name="show_media_error_toasts_title">显示媒体错误祝酒词</string>
   <string name="sources_apple_summary">使用互联网在线播放苹果官方视频</string>
   <string name="sources_apple_title">Apple 官方视频</string>
   <string name="sources_comm1_summary">使用互联网在线播放这些社区视频</string>

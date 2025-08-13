@@ -18,7 +18,6 @@
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
   <string name="allow_fallback_decoders_summary">הפעל תמיכה לפורמט וידאו מבוסס תוכנה או חלופי על מספר מכשירים</string>
   <string name="allow_fallback_decoders_title">הרשה חזרת מחדל למפענחי וידאו</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">מיקום שכבות העל משתנה משמאל לימין עם כל סרטון או תמונה חדשים</string>
   <string name="appearance_alt_text_position_title">החלף לסירוגין מיקום שכבת על</string>
   <string name="appearance_animations_summary">הגדר את האנימציות המשמשות לשכבות-על ובין סרטונים ותמונות</string>
@@ -71,19 +70,20 @@
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
   <string name="appearance_location_summary">הצג מיקום, תיאור או נקודות עניין</string>
   <string name="appearance_location_title">מיקום / תאור</string>
-  <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
-  <string name="appearance_message_api_enabled_title">Enable API</string>
-  <string name="appearance_message_api_port_title">Port number (default: 8081)</string>
+  <string name="appearance_message_api_enabled_summary">אפשר הגדרה מרחוק של הודעות מותאמות אישית באמצעות HTTP API</string>
+  <string name="appearance_message_api_enabled_title">הפעלת API</string>
+  <string name="appearance_message_api_port_title">מספר יציאה (ברירת מחדל: 8081)</string>
   <string name="appearance_message_line1_summary">הזן טקסט לתצוגה, כולל אמוג\'י</string>
   <string name="appearance_message_line1_title">שורה 1</string>
   <string name="appearance_message_line2_title">שורה 2</string>
-  <string name="appearance_message_line3_title">Line 3</string>
-  <string name="appearance_message_line4_title">Line 4</string>
+  <string name="appearance_message_line3_title">שורה 3</string>
+  <string name="appearance_message_line4_title">שורה 4</string>
   <string name="appearance_message_summary">הצג עד 2 שורות של טקסט מותאם אישית</string>
   <string name="appearance_message_title">הודעה</string>
   <string name="appearance_music_summary">הצג את השיר המתנגן כעת</string>
   <string name="appearance_music_title">מוסיקה</string>
-  <string name="appearance_photo_scale_title">קנה מידה לתמונה</string>
+  <string name="appearance_photo_scale_landscape_title">קנה מידה לתמונת נוף</string>
+  <string name="appearance_photo_scale_portrait_title">קנה מידה לתמונת דיוקן</string>
   <string name="appearance_progress_bar_summary">הצג את ההתקדמות של סרטון או תמונות בחלק העליון או התחתון של המסך</string>
   <string name="appearance_progress_bar_title">סרגל התקדמות</string>
   <string name="appearance_reveal_for_title">פסק זמן לחשיפת שכבת-על</string>
@@ -96,8 +96,8 @@
   <string name="appearance_slot1_title">חריץ תחתון</string>
   <string name="appearance_slot2_title">חריץ עליון</string>
   <string name="appearance_slot_summary">ריק</string>
-  <string name="appearance_slots_summary">Configure where an overlay will appear on the screen</string>
-  <string name="appearance_slots_title">Overlay slots</string>
+  <string name="appearance_slots_summary">הגדר היכן תופיע שכבת-על על המסך</string>
+  <string name="appearance_slots_title">חריצי שכבת-על</string>
   <string name="appearance_startup_summary">שנה את מה שאתה רואה בזמן טעינת האפליקציה</string>
   <string name="appearance_startup_title">הפעלה</string>
   <string name="appearance_top_left_lower_slot">שמאלי עליון, חריץ תחתון</string>
@@ -142,10 +142,11 @@
   <string name="category_about">אודות</string>
   <string name="category_actions">פעולות</string>
   <string name="category_advanced">מתקדם</string>
+  <string name="category_albums">אלבומים</string>
   <string name="category_all_other_media">כל הסרטונים והתמונות האחרים</string>
   <string name="category_animation">הנפשה</string>
-  <string name="category_api_settings">API Settings</string>
-  <string name="category_api_usage">API Usage</string>
+  <string name="category_api_settings">הגדרות API</string>
+  <string name="category_api_usage">שימוש ב-API</string>
   <string name="category_appearance">מראה</string>
   <string name="category_apple_and_community_videos">סרטוני אפל וקהילה בלבד</string>
   <string name="category_authentication_details">פרטי אימות</string>
@@ -156,7 +157,7 @@
   <string name="category_brightness">בְּהִירוּת</string>
   <string name="category_capabilities">יכולות</string>
   <string name="category_clock">שעון</string>
-  <string name="category_connection_information">Connection Information</string>
+  <string name="category_connection_information">מידע על חיבור</string>
   <string name="category_custom_format">עיצוב מותאם אישית</string>
   <string name="category_date">תאריך</string>
   <string name="category_dpad">D-Pad/שלט</string>
@@ -170,10 +171,10 @@
   <string name="category_line1">שורה 1</string>
   <string name="category_line2">שורה 2</string>
   <string name="category_local">מקומי</string>
-  <string name="category_media_render_options">Media &amp; render options</string>
+  <string name="category_media_render_options">אפשרויות מדיה ורינדור</string>
   <string name="category_media_scanner_options">אפשרויות סורק מדיה</string>
   <string name="category_message">הודעה</string>
-  <string name="category_message_api">Message API</string>
+  <string name="category_message_api">ממשק API להודעות</string>
   <string name="category_music">מוסיקה</string>
   <string name="category_network">רשת</string>
   <string name="category_now_playing">מנגן כעת</string>
@@ -243,6 +244,11 @@
   <string name="immich_media_fetch_albums_error">שגיאה בשליפת אלבומים</string>
   <string name="immich_media_hostname_summary">כתובת IP ויציאה של השרת למשל 192.168.1.2:2283</string>
   <string name="immich_media_hostname_title">שם מארח ויציאה</string>
+  <string name="immich_media_include_favourites_title">כלול תמונות מועדפות</string>
+  <string name="immich_media_include_random_title">כלול תמונות אקראיות</string>
+  <string name="immich_media_include_ratings_summary">הצגת תמונות מדורגות בנוסף לאלבומים שנבחרו</string>
+  <string name="immich_media_include_ratings_title">כלול תמונות מדורגות</string>
+  <string name="immich_media_include_recent_title">כלול תמונות אחרונות</string>
   <string name="immich_media_no_albums">לא נמצאו אלבומים</string>
   <string name="immich_media_no_albums_message">לא נמצאו אלבומים בחשבון Immich שלך. ודא שיצרת לפחות אלבום אחד.</string>
   <string name="immich_media_password_summary">לא מוגדר. אופציונלי</string>
@@ -254,7 +260,10 @@
   <string name="immich_media_search_subfolders_title">חפש בתיקיות משנה</string>
   <string name="immich_media_select_album">בחר אלבום</string>
   <string name="immich_media_select_album_summary">לא נבחר אלבום</string>
+  <string name="immich_media_select_albums">בחר אלבומים</string>
+  <string name="immich_media_select_albums_summary">לא נבחרו אלבומים</string>
   <string name="immich_media_selected_album">אלבום נבחר: %1$s</string>
+  <string name="immich_media_selected_albums">נבחרו %1$d אלבומים</string>
   <string name="immich_media_test_connection">בדוק את הגדרות החיבור</string>
   <string name="immich_media_test_results">תוצאות מבחן</string>
   <string name="immich_media_test_summary1">קבצים שנמצאו: %1$s</string>
@@ -309,8 +318,8 @@
   <string name="nowplaying_permission_notice_summary">כדי להפעיל גישה להתראות, חפש בהגדרות &gt; אפליקציות &gt; גישה מיוחדת &gt; גישת התראות</string>
   <string name="nowplaying_permission_summary">נדרשת הרשאה כדי שאפליקציה זו תוכל להאזין להודעות מוזיקה מהמערכת</string>
   <string name="nowplaying_permission_title">אפשר גישה להתראות מערכת</string>
-  <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
-  <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
+  <string name="nowplaying_shorten_track_name_summary">הסר סיומות נפוצות כמו \"- Original Mix\" או \"(Remastered)\"</string>
+  <string name="nowplaying_shorten_track_name_title">קיצור שמות רצועות שירום</string>
   <string name="nowplaying_toast_text">אנא הפעל תצוגות אוויר ב: גישה מיוחדת לאפליקציה &gt; גישת התראות</string>
   <string name="playlist_ignore_unmatched_videos_summary">דלג על סרטונים שאינם מזוהים כסרטוני אפל או קהילה</string>
   <string name="playlist_ignore_unmatched_videos_title">התעלם מסרטונים שאינם של אפל, ושאינם קהילתיים</string>
@@ -337,7 +346,6 @@
   <string name="playlist_slideshow_speed_title">מהירות מצגת</string>
   <string name="playlist_video_volume_summary">בחירת עוצמת קול של וידאו</string>
   <string name="playlist_video_volume_title">עוצמת וידאו</string>
-  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">מיקום</string>
   <string name="progress_bar_opacity_title">אטימות</string>
   <string name="progress_bar_type_title">הצג עבור סוג מדיה</string>
@@ -402,8 +410,8 @@
   <string name="settings_system_options_error">לא ניתן לפתוח את אפשרויות שומר המסך של המכשיר שלך</string>
   <string name="settings_system_options_removed">יכולת זו הוסרה על ידי היצרן
  אנא בקר באתר Aerial Views לפרטים נוספים</string>
-  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
-  <string name="show_media_error_toasts_title">Show media error toasts</string>
+  <string name="show_media_error_toasts_summary">הצגת הודעות זמניות כאשר מתרחשות שגיאות הפעלת מדיה</string>
+  <string name="show_media_error_toasts_title">הצג הודעות זמניות של שגיאות מדיה</string>
   <string name="sources_apple_summary">הזרם סרטוני אפל באמצעות חיבור האינטרנט שלך</string>
   <string name="sources_apple_title">סרטונים של אפל</string>
   <string name="sources_comm1_summary">הזרם סרטוני קהילה אלה באמצעות חיבור האינטרנט שלך</string>
