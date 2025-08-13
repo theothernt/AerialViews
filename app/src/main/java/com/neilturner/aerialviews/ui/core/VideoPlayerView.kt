@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFacto
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.ToastHelper
@@ -273,6 +274,10 @@ class VideoPlayerView
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
+                val (systemLocale, appLocale) = LocaleHelper.systemLanguageAndLocale(context)
+                FirebaseHelper.logCustomKeysIfRecent("current_system_locale", systemLocale)
+                FirebaseHelper.logCustomKeysIfRecent("current_app_locale", appLocale)
+                FirebaseHelper.logCustomKeysIfRecent("current_speed", currentSpeed)
                 FirebaseHelper.logExceptionIfRecent(ex)
                 Timber.e(ex, "Exception while getting playback speed values")
                 return
