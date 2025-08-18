@@ -13,13 +13,13 @@
     <item>Riduci la velocità di riproduzione video</item>
     <item>Mostra overlay (se nascosti)</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
-    <item>Cercare all\'indietro in un video</item>
+    <item>Cerca all\'indietro in un video</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
     <item>Mostra le sovrapposizioni, se nascoste</item>
     <item>Imposta lo schermo nero, rimuovi video e overlay</item>
-    <item>Alterna l\'audio in mute/unmute</item>
-    <item>Pausa/riposo del timer video o foto</item>
+    <item>Attiva/disattiva l\'audio</item>
+    <item>Pausa/riprendi del timer video o foto</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Predefinito</item>
@@ -210,7 +210,7 @@
   <string-array name="text_weight_entries">
     <item>100/Thin</item>
     <item>200/Extra Light</item>
-    <item>300/Luce*</item>
+    <item>300/Light*</item>
     <item>400/Normal</item>
     <item>500/Medium</item>
     <item>600/Semi Bold</item>
