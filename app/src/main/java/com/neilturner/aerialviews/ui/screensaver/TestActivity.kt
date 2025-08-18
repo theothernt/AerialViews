@@ -30,7 +30,7 @@ class TestActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        FirebaseHelper.logScreenView("Test Screensaver", this)
+        FirebaseHelper.analyticsScreenView("Test Screensaver", this)
     }
 
     override fun onPause() {

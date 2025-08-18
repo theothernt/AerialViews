@@ -22,7 +22,7 @@ class AboutFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("About", this)
+        FirebaseHelper.analyticsScreenView("About", this)
         updateSummary()
     }
 

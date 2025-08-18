@@ -78,7 +78,7 @@ internal object ImagePlayerHelper {
             return client.get(uri.toString())
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
-            FirebaseHelper.logExceptionIfRecent(ex)
+            FirebaseHelper.crashlyticsException(ex)
             return null
         }
     }
@@ -144,7 +144,7 @@ internal object ImagePlayerHelper {
             }
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while opening Samba file: ${ex.message}")
-            FirebaseHelper.logExceptionIfRecent(ex)
+            FirebaseHelper.crashlyticsException(ex)
             smbClient.close()
             return null
         }

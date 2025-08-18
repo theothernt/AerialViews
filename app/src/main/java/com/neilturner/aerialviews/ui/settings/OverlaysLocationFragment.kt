@@ -18,7 +18,7 @@ class OverlaysLocationFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Location", this)
+        FirebaseHelper.analyticsScreenView("Location", this)
         updateAllSummaries()
     }
 

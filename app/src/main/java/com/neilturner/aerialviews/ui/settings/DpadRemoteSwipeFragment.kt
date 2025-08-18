@@ -22,7 +22,7 @@ class DpadRemoteSwipeFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Touch/Swipe Gestures", this)
+        FirebaseHelper.analyticsScreenView("Touch/Swipe Gestures", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         showMusicPermissionOption()
         showStartScreensaverOnLaunchOption()

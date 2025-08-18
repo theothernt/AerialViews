@@ -28,7 +28,7 @@ class AdvancedFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Advanced", this)
+        FirebaseHelper.analyticsScreenView("Advanced", this)
         restartOnLanguageChange()
         checkPermission()
     }

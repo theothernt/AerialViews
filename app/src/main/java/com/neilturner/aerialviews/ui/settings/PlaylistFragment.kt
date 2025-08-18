@@ -20,7 +20,7 @@ class PlaylistFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Playlist", this)
+        FirebaseHelper.analyticsScreenView("Playlist", this)
         updateAllSummaries()
     }
 

@@ -35,7 +35,7 @@ class OverlaysWeatherFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Weather", this)
+        FirebaseHelper.analyticsScreenView("Weather", this)
     }
 
     private fun updateSummary(text: String = "") {

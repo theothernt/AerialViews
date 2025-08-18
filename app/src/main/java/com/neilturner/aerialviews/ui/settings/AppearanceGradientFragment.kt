@@ -15,6 +15,6 @@ class AppearanceGradientFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Gradient", this)
+        FirebaseHelper.analyticsScreenView("Gradient", this)
     }
 }

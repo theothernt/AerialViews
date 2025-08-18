@@ -15,6 +15,6 @@ class AppearanceTypographyFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Typography", this)
+        FirebaseHelper.analyticsScreenView("Typography", this)
     }
 }

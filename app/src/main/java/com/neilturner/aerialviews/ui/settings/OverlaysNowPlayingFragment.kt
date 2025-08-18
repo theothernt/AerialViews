@@ -25,7 +25,7 @@ class OverlaysNowPlayingFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Now Playing", this)
+        FirebaseHelper.analyticsScreenView("Now Playing", this)
         checkPermission()
     }
 

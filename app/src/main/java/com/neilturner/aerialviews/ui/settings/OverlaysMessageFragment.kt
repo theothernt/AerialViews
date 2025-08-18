@@ -20,7 +20,7 @@ class OverlaysMessageFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Message", this)
+        FirebaseHelper.analyticsScreenView("Message", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         limitTextInput()
         updateSummary()

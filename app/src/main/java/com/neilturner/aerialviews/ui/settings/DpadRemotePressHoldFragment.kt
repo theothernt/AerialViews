@@ -22,7 +22,7 @@ class DpadRemotePressHoldFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("D-Pad/Remote Press Hold", this)
+        FirebaseHelper.analyticsScreenView("D-Pad/Remote Press Hold", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         showMusicPermissionOption()
         showStartScreensaverOnLaunchOption()

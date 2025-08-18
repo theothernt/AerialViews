@@ -21,7 +21,7 @@ class AppearanceStartupFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Startup", this)
+        FirebaseHelper.analyticsScreenView("Startup", this)
         showStartScreensaverOnLaunchOption()
     }
 

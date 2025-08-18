@@ -15,6 +15,6 @@ class AppearanceProgressBarFragment : PreferenceFragmentCompat() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("ProgressBar", this)
+        FirebaseHelper.analyticsScreenView("ProgressBar", this)
     }
 }

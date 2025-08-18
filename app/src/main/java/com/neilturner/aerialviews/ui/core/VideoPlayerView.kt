@@ -226,7 +226,7 @@ class VideoPlayerView
         override fun onPlayerError(error: PlaybackException) {
             super.onPlayerError(error)
             removeCallbacks(almostFinishedRunnable)
-            FirebaseHelper.logExceptionIfRecent(error.cause)
+            FirebaseHelper.crashlyticsException(error.cause)
 
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
@@ -275,10 +275,10 @@ class VideoPlayerView
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
                 val (systemLocale, appLocale) = LocaleHelper.systemLanguageAndLocale(context)
-                FirebaseHelper.logCustomKeysIfRecent("current_system_locale", systemLocale)
-                FirebaseHelper.logCustomKeysIfRecent("current_app_locale", appLocale)
-                FirebaseHelper.logCustomKeysIfRecent("current_speed", currentSpeed)
-                FirebaseHelper.logExceptionIfRecent(ex)
+                FirebaseHelper.crashlyticsLogKeys("current_system_locale", systemLocale)
+                FirebaseHelper.crashlyticsLogKeys("current_app_locale", appLocale)
+                FirebaseHelper.crashlyticsLogKeys("current_speed", currentSpeed)
+                FirebaseHelper.crashlyticsException(ex)
                 Timber.e(ex, "Exception while getting playback speed values")
                 return
             }

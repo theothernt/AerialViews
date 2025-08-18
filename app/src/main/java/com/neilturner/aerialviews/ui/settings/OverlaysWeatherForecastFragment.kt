@@ -29,7 +29,7 @@ class OverlaysWeatherForecastFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Weather Forecast", this)
+        FirebaseHelper.analyticsScreenView("Weather Forecast", this)
     }
 
     private fun setupPreferences() {

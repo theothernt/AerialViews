@@ -15,6 +15,6 @@ class OverlaysClockFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Clock", this)
+        FirebaseHelper.analyticsScreenView("Clock", this)
     }
 }

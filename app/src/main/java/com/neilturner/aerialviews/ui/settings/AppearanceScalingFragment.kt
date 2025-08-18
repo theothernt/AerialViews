@@ -15,6 +15,6 @@ class AppearanceScalingFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Scaling", this)
+        FirebaseHelper.analyticsScreenView("Scaling", this)
     }
 }

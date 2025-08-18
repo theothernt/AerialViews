@@ -38,7 +38,7 @@ class CapabilitiesFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Capabilities", this)
+        FirebaseHelper.analyticsScreenView("Capabilities", this)
         updateCapabilities()
     }
 

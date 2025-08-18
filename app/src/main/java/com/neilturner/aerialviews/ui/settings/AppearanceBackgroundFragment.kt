@@ -15,6 +15,6 @@ class AppearanceBackgroundFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Background", this)
+        FirebaseHelper.analyticsScreenView("Background", this)
     }
 }

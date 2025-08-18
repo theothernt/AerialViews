@@ -17,7 +17,7 @@ class AppearanceAnimationsFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Animations", this)
+        FirebaseHelper.analyticsScreenView("Animations", this)
         updateAllSummaries()
     }
 

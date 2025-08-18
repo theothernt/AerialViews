@@ -50,7 +50,7 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
-        FirebaseHelper.logScreenView("Screensaver", this)
+        FirebaseHelper.analyticsScreenView("Screensaver", this)
         // Start playback, etc
     }
 

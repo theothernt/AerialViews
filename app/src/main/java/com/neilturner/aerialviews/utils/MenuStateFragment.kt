@@ -29,7 +29,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                 item?.requestFocus()
             }
         } catch (ex: Exception) {
-            FirebaseHelper.logExceptionIfRecent(ex)
+            FirebaseHelper.crashlyticsException(ex)
             Timber.e(ex)
         }
     }
@@ -55,7 +55,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                     position = listView.layoutManager?.getPosition(view) ?: -1
                 }
             } catch (ex: Exception) {
-                FirebaseHelper.logException(ex)
+                FirebaseHelper.crashlyticsException(ex)
                 Timber.e(ex)
             }
         }

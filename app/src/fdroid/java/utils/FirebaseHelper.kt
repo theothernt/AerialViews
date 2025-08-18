@@ -5,24 +5,25 @@ object FirebaseHelper {
         // No op
     }
 
-    fun logScreenView(
+    fun analyticsScreenView(
         screenName: String,
         screenClass: Any,
     ) {
         // No op
     }
 
-    fun logExceptionIfRecent(ex: Throwable?) {
+    fun crashlyticsException(ex: Throwable?, alwaysLog: Boolean = false) {
         // No op
     }
 
-    fun logIfRecent(error: String) {
+    fun crashlyticsLogMessage(error: String, alwaysLog: Boolean = false) {
         // No op
     }
 
-    fun <T> logCustomKeysIfRecent(
+    fun <T> crashlyticsLogKeys(
         key: String,
         value: T,
+        alwaysLog: Boolean = false,
     ) {
         // No op
     }

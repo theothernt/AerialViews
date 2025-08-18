@@ -46,7 +46,7 @@ class ImportExportFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("ImportExport", this)
+        FirebaseHelper.analyticsScreenView("ImportExport", this)
     }
 
     private fun processDataUri() {

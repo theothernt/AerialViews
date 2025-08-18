@@ -167,7 +167,7 @@ class WeatherService(
                     val error = "Unauthorized access to weather API - cancelling weather updates"
                     Timber.e(error)
                     stop() // Cancel the job for unauthorized access
-                    FirebaseHelper.logIfRecent(error)
+                    FirebaseHelper.crashlyticsLogMessage(error)
                     WeatherEvent()
                 }
                 response.code() in 500..599 -> {
@@ -179,7 +179,7 @@ class WeatherService(
                     } else {
                         val error = "Max retries reached for server error - giving up"
                         Timber.e(error)
-                        FirebaseHelper.logIfRecent(error)
+                        FirebaseHelper.crashlyticsLogMessage(error)
                         retryCount = 0
                         WeatherEvent()
                     }
@@ -187,20 +187,20 @@ class WeatherService(
                 response.code() == 429 -> {
                     val error = "Rate limit exceeded - backing off"
                     Timber.w(error)
-                    FirebaseHelper.logIfRecent(error)
+                    FirebaseHelper.crashlyticsLogMessage(error)
                     delay(rateLimitDelay) // Back off for rate limiting
                     WeatherEvent()
                 }
                 else -> {
                     val error = "Failed to fetch weather data - HTTP ${response.code()}: ${response.message()}"
                     Timber.e(error)
-                    FirebaseHelper.logIfRecent(error)
+                    FirebaseHelper.crashlyticsLogMessage(error)
                     WeatherEvent()
                 }
             }
         } catch (e: Exception) {
             Timber.Forest.e(e, "Failed to fetch and parse weather data")
-            FirebaseHelper.logExceptionIfRecent(e)
+            FirebaseHelper.crashlyticsException(e)
             WeatherEvent()
         }
     }
@@ -240,7 +240,7 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        FirebaseHelper.logCustomKeysIfRecent("weather_updates_per_session", totalUpdates)
+        // FirebaseHelper.crashlyticsLogKeys("weather_updates_per_session", totalUpdates)
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }

@@ -15,6 +15,6 @@ class OverlaysFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Overlays", this)
+        FirebaseHelper.analyticsScreenView("Overlays", this)
     }
 }

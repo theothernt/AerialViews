@@ -19,7 +19,7 @@ class SettingsFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Settings", this)
+        FirebaseHelper.analyticsScreenView("Settings", this)
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {

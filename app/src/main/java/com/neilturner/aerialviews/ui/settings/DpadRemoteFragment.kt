@@ -15,6 +15,6 @@ class DpadRemoteFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("D-Pad/Remote", this)
+        FirebaseHelper.analyticsScreenView("D-Pad/Remote", this)
     }
 }

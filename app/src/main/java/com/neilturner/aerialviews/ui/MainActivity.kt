@@ -66,7 +66,7 @@ class MainActivity :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Main", this)
+        FirebaseHelper.analyticsScreenView("Main", this)
         lifecycleScope.launch {
             handleCustomLaunching()
         }

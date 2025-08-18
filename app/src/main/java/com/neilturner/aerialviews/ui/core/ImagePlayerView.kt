@@ -73,7 +73,7 @@ class ImagePlayerView : AppCompatImageView {
             ) {
                 super.onError(request, result)
                 Timber.e(result.throwable, "Exception while loading image: ${result.throwable.message}")
-                FirebaseHelper.logExceptionIfRecent(result.throwable)
+                FirebaseHelper.crashlyticsException(result.throwable)
 
                 // Show toast if preference is enabled
                 if (GeneralPrefs.showMediaErrorToasts) {

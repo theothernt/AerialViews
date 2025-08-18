@@ -30,7 +30,7 @@ class OverlaysDateFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Date", this)
+        FirebaseHelper.analyticsScreenView("Date", this)
         limitTextInput()
         updateSummary()
     }

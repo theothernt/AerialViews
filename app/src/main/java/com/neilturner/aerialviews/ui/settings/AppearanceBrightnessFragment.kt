@@ -15,6 +15,6 @@ class AppearanceBrightnessFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Brightness", this)
+        FirebaseHelper.analyticsScreenView("Brightness", this)
     }
 }

@@ -21,7 +21,7 @@ object FirebaseHelper {
         return currentDate.before(endDate)
     }
 
-    fun logScreenView(
+    fun analyticsScreenView(
         screenName: String,
         screenClass: Any,
     ) {
@@ -34,27 +34,26 @@ object FirebaseHelper {
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }
 
-    fun logException(ex: Throwable) {
-        Firebase.crashlytics.recordException(ex)
-    }
-
-    fun logExceptionIfRecent(ex: Throwable?) {
-        if (isWithinLoggingPeriod()) {
-            ex?.let { logException(it) }
+    fun crashlyticsException(ex: Throwable?, alwaysLog: Boolean = false) {
+        if (isWithinLoggingPeriod() || alwaysLog) {
+            ex?.let {
+                Firebase.crashlytics.recordException(ex)
+            }
         }
     }
 
-    fun logIfRecent(error: String) {
-        if (isWithinLoggingPeriod()) {
+    fun crashlyticsLogMessage(error: String, alwaysLog: Boolean = false) {
+        if (isWithinLoggingPeriod() || alwaysLog) {
             Firebase.crashlytics.log(error)
         }
     }
 
-    fun <T> logCustomKeysIfRecent(
+    fun <T> crashlyticsLogKeys(
         key: String,
         value: T,
+        alwaysLog: Boolean = false,
     ) {
-        if (isWithinLoggingPeriod()) {
+        if (isWithinLoggingPeriod() || alwaysLog) {
             when (value) {
                 is String -> Firebase.crashlytics.setCustomKey(key, value)
                 is Int -> Firebase.crashlytics.setCustomKey(key, value)

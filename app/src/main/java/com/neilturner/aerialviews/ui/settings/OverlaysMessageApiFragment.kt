@@ -19,7 +19,7 @@ class OverlaysMessageApiFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Message API", this)
+        FirebaseHelper.analyticsScreenView("Message API", this)
 
         updateIPAddressDisplay()
         limitTextInput()

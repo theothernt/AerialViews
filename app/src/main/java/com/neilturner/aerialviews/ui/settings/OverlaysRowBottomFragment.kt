@@ -22,7 +22,7 @@ class OverlaysRowBottomFragment :
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.logScreenView("Bottom Row", this)
+        FirebaseHelper.analyticsScreenView("Bottom Row", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
         updateDropDownAndSummary()
     }
