@@ -146,7 +146,7 @@ class WeatherService(
             Timber.i("Language: $language")
 
             if (key.isEmpty() || lat == null || lon == null) {
-                Timber.Forest.e("Invalid location coordinates")
+                Timber.e("Invalid location coordinates")
                 return WeatherEvent()
             }
 
@@ -199,7 +199,7 @@ class WeatherService(
                 }
             }
         } catch (e: Exception) {
-            Timber.Forest.e(e, "Failed to fetch and parse weather data")
+            Timber.e(e, "Failed to fetch and parse weather data")
             FirebaseHelper.crashlyticsException(e)
             WeatherEvent()
         }
@@ -207,7 +207,7 @@ class WeatherService(
 
     private fun processWeatherResponse(response: CurrentWeatherResponse): WeatherEvent {
         val timeAgo = calculateTimeAgo(response.dt)
-        Timber.Forest.i("Forecast from $timeAgo")
+        Timber.i("Forecast from $timeAgo")
 
         val temperature = "${response.main.temp.roundToInt()}°"
         val description =
@@ -240,7 +240,10 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        // FirebaseHelper.crashlyticsLogKeys("weather_updates_per_session", totalUpdates)
+        val data = mapOf(
+            "total_updates" to totalUpdates,
+        )
+        FirebaseHelper.analyticsEvent("weather_updates", data)
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }

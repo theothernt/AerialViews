@@ -34,6 +34,16 @@ object FirebaseHelper {
         Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }
 
+    fun analyticsEvent(
+        eventName: String,
+        parameters: Map<String, Any>,
+        alwaysLog: Boolean = false,
+    ) {
+        if (isWithinLoggingPeriod() || alwaysLog) {
+            Firebase.analytics.logEvent(eventName, bundleOf(*parameters.map { it.toPair() }.toTypedArray()))
+        }
+    }
+
     fun crashlyticsException(ex: Throwable?, alwaysLog: Boolean = false) {
         if (isWithinLoggingPeriod() || alwaysLog) {
             ex?.let {

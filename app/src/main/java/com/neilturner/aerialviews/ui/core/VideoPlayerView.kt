@@ -274,6 +274,8 @@ class VideoPlayerView
                 speedValues = resources.getStringArray(R.array.playback_speed_values)
                 currentSpeedIdx = speedValues.indexOf(currentSpeed)
             } catch (ex: Exception) {
+                // Track possible issues with playback speed values
+                // Might be related to a certain language or locale?
                 val (systemLocale, appLocale) = LocaleHelper.systemLanguageAndLocale(context)
                 FirebaseHelper.crashlyticsLogKeys("current_system_locale", systemLocale)
                 FirebaseHelper.crashlyticsLogKeys("current_app_locale", appLocale)
