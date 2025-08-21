@@ -2,6 +2,7 @@
 
 package com.neilturner.aerialviews.utils
 
+import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -36,11 +37,11 @@ object FirebaseHelper {
 
     fun analyticsEvent(
         eventName: String,
-        parameters: Map<String, Any>,
+        parameters: Bundle,
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            Firebase.analytics.logEvent(eventName, bundleOf(*parameters.map { it.toPair() }.toTypedArray()))
+            Firebase.analytics.logEvent(eventName, parameters)
         }
     }
 
