@@ -16,19 +16,20 @@
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line3"
                     app:title="@string/appearance_message_line3_title" />
+
                 <EditTextPreference
                     app:summary="@string/appearance_message_line1_summary"
                     app:key="message_line4"
                     app:title="@string/appearance_message_line4_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_advanced">
-                <Preference
-                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageApiFragment"
-                    app:key="message_api_settings"
-                    app:title="@string/category_message_api"
-                    app:summary="@string/appearance_message_api_enabled_summary" />
-        </PreferenceCategory>
+<!--        <PreferenceCategory app:title="@string/category_advanced">-->
+<!--                <Preference-->
+<!--                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageApiFragment"-->
+<!--                    app:key="message_api_settings"-->
+<!--                    app:title="@string/category_message_api"-->
+<!--                    app:summary="@string/appearance_message_api_enabled_summary" />-->
+<!--        </PreferenceCategory>-->
 
         <PreferenceCategory app:title="@string/category_typography">
                 <ListPreference
