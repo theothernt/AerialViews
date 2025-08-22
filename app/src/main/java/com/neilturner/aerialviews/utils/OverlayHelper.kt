@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import me.kosert.flowbus.GlobalBus
+import timber.log.Timber
 
 class OverlayHelper(
     private val context: Context,
@@ -75,11 +76,12 @@ class OverlayHelper(
         }
 
         findOverlay<MessageOverlay>().forEach {
+            Timber.i("Found MessageOverlay: ${it.type}")
             when (it.type) {
-                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(1, prefs.messageLine1))
-                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(2, prefs.messageLine2))
-                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(3, prefs.messageLine3))
-                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(4, prefs.messageLine4))
+                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE1, prefs.messageLine1))
+                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE2, prefs.messageLine2))
+                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE3, prefs.messageLine3))
+                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE4, prefs.messageLine4))
                 else -> {}
             }
         }

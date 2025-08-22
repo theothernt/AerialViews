@@ -22,7 +22,7 @@ class AerialApp : Application() {
         }
 
         if (BuildConfig.DEBUG) {
-            setupStrictMode()
+            // setupStrictMode()
         }
 
         if (!GeneralPrefs.checkForHevcSupport) {

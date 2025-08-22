@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services
 
+import com.neilturner.aerialviews.models.enums.OverlayType
 import kotlinx.serialization.Serializable
 
 //class KtorServer(
@@ -173,7 +174,7 @@ data class ErrorResponse(
 )
 
 data class MessageEvent(
-    val messageNumber: Int = 1,
+    val type: OverlayType = OverlayType.EMPTY,
     val text: String = "",
     val duration: Int? = null,
     val textSize: Int? = null,

@@ -21,6 +21,7 @@ import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
@@ -204,6 +205,10 @@ class ScreenController(
                     WeatherService(context).apply {
                         startUpdates()
                     }
+            }
+
+            GlobalBus.getFlow<MessageEvent>(MessageEvent::class.java).collect {
+                Timber.i("ScreenController: Message ${it.text}")
             }
         }
         // 1. Load playlist

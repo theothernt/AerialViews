@@ -20,10 +20,10 @@ import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
 class MessageOverlay : AppCompatTextView {
-    var type = OverlayType.MESSAGE1
+    var type = OverlayType.EMPTY
 
     private val receiver = EventsReceiver()
-    private var currentMessage = MessageEvent(0, "")
+    private var currentMessage = MessageEvent(OverlayType.EMPTY, "")
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var clearJob: Job? = null
@@ -44,18 +44,18 @@ class MessageOverlay : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        receiver.subscribe { messageEvent: MessageEvent ->
-            Timber.i("$type: Received message event for slot ${messageEvent.messageNumber}")
+        receiver
+            .subscribe { message: MessageEvent ->
+            Timber.i("$type: Received message event for slot ${message.type}")
 
             // TODO: add throttling
             // https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-1198103541
 
             // Only process messages for this overlay's message number
-            val overlayNum = getMessageNumberFromType()
-            if (messageEvent.messageNumber == overlayNum) {
+            if (message.type == type) {
                 Timber.i("Processing message for $type")
-                if (currentMessage != messageEvent) {
-                    currentMessage = messageEvent
+                if (currentMessage != message) {
+                    currentMessage = message
                     updateMessage()
                 }
             }
@@ -67,8 +67,6 @@ class MessageOverlay : AppCompatTextView {
         receiver.unsubscribe()
         clearJob?.cancel()
     }
-
-    private fun getMessageNumberFromType(): Int = type.name.last().digitToInt()
 
     private fun updateMessage() {
         clearJob?.cancel()
