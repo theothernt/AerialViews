@@ -1,6 +1,6 @@
 # Aerial Views Privacy Policy
 
-Updated: July 2025
+Updated: August 2025
 
 ## 1. What information we collect
 
@@ -22,7 +22,7 @@ Here are the links to the privacy policy of third-party service providers used b
 
 We use Firebase Analytics and crash reporting to:
 
-* Help us understand how the app is used
+* Help us understand how the app is used (eg. are some features unused? what are the most popular features?)
 
 * Identify and fix crashes or bugs
 
@@ -30,7 +30,13 @@ We use Firebase Analytics and crash reporting to:
 
 No personal information is ever collected or linked to a real person or device.
 
-## 3. How your data is protected
+## 3. Examples of data collected and why
+
+1. We once saw a crash that only affected a specific device language. Including the device’s language and region (without any personal identifiers) helped us diagnose and fix the issue.
+
+2. The weather feature uses a third‑party API with rate limits. We record anonymous request counts to ensure the app stays within those limits and to tune the frequency of weather updates in the future.
+
+## 4. How your data is protected
 
 Analytics and crash data is transmitted using industry-standard encryption (e.g., HTTPS)
 
@@ -38,16 +44,16 @@ No identifying data is collected or stored
 
 Crash logs and event stats remain anonymous
 
-## 4. Do we share your data?
+## 5. Do we share your data?
 
 We do not share your data with advertisers, marketers, or any third parties.
 
 The information is used exclusively for improving Aerial Views.
 
-## 5. Updates to this policy
+## 6. Updates to this policy
 
 If anything changes (e.g. new data collection is added), this page will be updated with the new effective date. We’ll also include a note in app release notes.
 
-## 6. Contact & support
+## 7. Contact & support
 
 If you have questions or concerns about your privacy, feel free to email: <support@neilturner.com>
