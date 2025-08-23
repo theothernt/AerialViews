@@ -103,14 +103,15 @@ object LocaleHelper {
 
     fun systemLanguageAndLocale(context: Context): Pair<String, String> {
         // Get display language (what language the UI is shown in)
-        val displayLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // API 24+ - Use ConfigurationCompat for better multi-locale support
-            ConfigurationCompat.getLocales(context.resources.configuration)[0]
-        } else {
-            // API 22-23 - Use deprecated but functional approach
-            @Suppress("DEPRECATION")
-            context.resources.configuration.locale
-        }
+        val displayLocale =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                // API 24+ - Use ConfigurationCompat for better multi-locale support
+                ConfigurationCompat.getLocales(context.resources.configuration)[0]
+            } else {
+                // API 22-23 - Use deprecated but functional approach
+                @Suppress("DEPRECATION")
+                context.resources.configuration.locale
+            }
 
         // Get system default locale (regional formatting settings)
         val systemLocale = Locale.getDefault()
@@ -123,26 +124,28 @@ object LocaleHelper {
     }
 
     fun detailedSystemLanguageAndLocale(context: Context): Triple<String, String, Map<String, String?>> {
-        val displayLocale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            ConfigurationCompat.getLocales(context.resources.configuration)[0]
-        } else {
-            @Suppress("DEPRECATION")
-            context.resources.configuration.locale
-        }
+        val displayLocale =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                ConfigurationCompat.getLocales(context.resources.configuration)[0]
+            } else {
+                @Suppress("DEPRECATION")
+                context.resources.configuration.locale
+            }
 
         val systemLocale = Locale.getDefault()
 
         val displayLanguage = "${displayLocale?.language}-${displayLocale?.country}"
         val systemRegion = "${systemLocale.language}-${systemLocale.country}"
 
-        val additionalInfo = mapOf(
-            "displayLanguageName" to displayLocale?.displayLanguage,
-            "displayCountryName" to displayLocale?.displayCountry,
-            "systemLanguageName" to systemLocale.displayLanguage,
-            "systemCountryName" to systemLocale.displayCountry,
-            "apiLevel" to Build.VERSION.SDK_INT.toString(),
-            "timestamp" to System.currentTimeMillis().toString()
-        )
+        val additionalInfo =
+            mapOf(
+                "displayLanguageName" to displayLocale?.displayLanguage,
+                "displayCountryName" to displayLocale?.displayCountry,
+                "systemLanguageName" to systemLocale.displayLanguage,
+                "systemCountryName" to systemLocale.displayCountry,
+                "apiLevel" to Build.VERSION.SDK_INT.toString(),
+                "timestamp" to System.currentTimeMillis().toString(),
+            )
 
         return Triple(displayLanguage, systemRegion, additionalInfo)
     }

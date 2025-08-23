@@ -45,20 +45,20 @@ class MessageOverlay : AppCompatTextView {
 
         receiver
             .subscribe { message: MessageEvent ->
-            Timber.i("$type: Received message event for slot ${message.type}")
+                Timber.i("$type: Received message event for slot ${message.type}")
 
-            // TODO: add throttling
-            // https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-1198103541
+                // TODO: add throttling
+                // https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-1198103541
 
-            // Only process messages for this overlay's message number
-            if (message.type == type) {
-                Timber.i("Processing message for $type")
-                if (currentMessage != message) {
-                    currentMessage = message
-                    updateMessage()
+                // Only process messages for this overlay's message number
+                if (message.type == type) {
+                    Timber.i("Processing message for $type")
+                    if (currentMessage != message) {
+                        currentMessage = message
+                        updateMessage()
+                    }
                 }
             }
-        }
     }
 
     override fun onDetachedFromWindow() {

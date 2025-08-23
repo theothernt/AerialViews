@@ -1,5 +1,7 @@
 package com.neilturner.aerialviews.utils
 
+import android.os.Bundle
+
 object FirebaseHelper {
     fun logException(ex: Throwable) {
         // No op
@@ -12,11 +14,25 @@ object FirebaseHelper {
         // No op
     }
 
-    fun crashlyticsException(ex: Throwable?, alwaysLog: Boolean = false) {
+    fun analyticsEvent(
+        eventName: String,
+        parameters: Bundle,
+        alwaysLog: Boolean = false,
+    ) {
         // No op
     }
 
-    fun crashlyticsLogMessage(error: String, alwaysLog: Boolean = false) {
+    fun crashlyticsException(
+        ex: Throwable?,
+        alwaysLog: Boolean = false,
+    ) {
+        // No op
+    }
+
+    fun crashlyticsLogMessage(
+        error: String,
+        alwaysLog: Boolean = false,
+    ) {
         // No op
     }
 

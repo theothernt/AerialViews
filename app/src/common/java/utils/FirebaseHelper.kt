@@ -45,7 +45,10 @@ object FirebaseHelper {
         }
     }
 
-    fun crashlyticsException(ex: Throwable?, alwaysLog: Boolean = false) {
+    fun crashlyticsException(
+        ex: Throwable?,
+        alwaysLog: Boolean = false,
+    ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
             ex?.let {
                 Firebase.crashlytics.recordException(ex)
@@ -53,7 +56,10 @@ object FirebaseHelper {
         }
     }
 
-    fun crashlyticsLogMessage(error: String, alwaysLog: Boolean = false) {
+    fun crashlyticsLogMessage(
+        error: String,
+        alwaysLog: Boolean = false,
+    ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
             Firebase.crashlytics.log(error)
         }

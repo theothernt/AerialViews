@@ -3,9 +3,9 @@ package com.neilturner.aerialviews.services
 import com.neilturner.aerialviews.models.enums.OverlayType
 import kotlinx.serialization.Serializable
 
-//class KtorServer(
+// class KtorServer(
 //    val context: Context,
-//) {
+// ) {
 //    private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
 //    private var validTextSizes: List<Int> = emptyList()
 //    private var validTextWeights: List<Int> = emptyList()
@@ -151,7 +151,7 @@ import kotlinx.serialization.Serializable
 //    private fun Application.configurePlugins() {
 //        install(ContentNegotiation) { json(JsonHelper.json) }
 //    }
-//}
+// }
 
 @Serializable
 data class MessageRequest(

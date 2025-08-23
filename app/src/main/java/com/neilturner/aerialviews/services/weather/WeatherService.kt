@@ -241,9 +241,12 @@ class WeatherService(
     fun stop() {
         updateJob?.cancel()
         updateJob = null
-        FirebaseHelper.analyticsEvent("weather_updates", bundleOf(
-            Pair("per_session", totalUpdates),
-        ))
+        FirebaseHelper.analyticsEvent(
+            "weather_updates",
+            bundleOf(
+                Pair("per_session", totalUpdates),
+            ),
+        )
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")
     }
 }
