@@ -2,13 +2,15 @@
 
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
-[![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=100k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
+[![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=170k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
 [![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=9k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
 [![License](https://img.shields.io/:license-gpl%20v3-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
 
-A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chromecast with Google TV. Inspired by Apple TV's video screensaver.
+A screensaver for Android/Google TV devices and phones including Nvidia Shield, Fire TV, and Google TV Streamer.
+
+Inspired by Apple TV's beautiful video screensaver!
 
 *Please read if you have an [Nvidia Shield](#nvidia-shield-users) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
 
@@ -16,12 +18,12 @@ A screensaver for Android TV devices including Nvidia Shield, Fire TV, and Chrom
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Show videos & photos from USB storage, Samba, WebDAV or Immich server
+* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, or WebDAV
 * Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
-* Use the D-Pad to skip media, skip songs, change speed, seek and more
-* Refresh rate switching
+* Use the D-Pad or swipe (on phones, tablets, etc) to skip media, skip songs, change speed, seek, pause and more
+* Refresh rate switching 24fps, 50fps, etc content
 
 ## Support the project
 
