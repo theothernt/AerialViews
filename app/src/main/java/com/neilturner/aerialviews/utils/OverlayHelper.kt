@@ -9,15 +9,12 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
-import me.kosert.flowbus.GlobalBus
-import timber.log.Timber
 
 class OverlayHelper(
     private val context: Context,
@@ -75,16 +72,16 @@ class OverlayHelper(
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
-        findOverlay<MessageOverlay>().forEach {
-            Timber.i("Found MessageOverlay: ${it.type}")
-            when (it.type) {
-                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE1, prefs.messageLine1))
-                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE2, prefs.messageLine2))
-                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE3, prefs.messageLine3))
-                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE4, prefs.messageLine4))
-                else -> {}
-            }
-        }
+//        findOverlay<MessageOverlay>().forEach {
+//            Timber.i("Found MessageOverlay: ${it.type}")
+//            when (it.type) {
+//                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE1, prefs.messageLine1))
+//                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE2, prefs.messageLine2))
+//                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE3, prefs.messageLine3))
+//                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE4, prefs.messageLine4))
+//                else -> {}
+//            }
+//        }
 
         findOverlay<NowPlayingOverlay>().forEach {
             if (it.type == OverlayType.MUSIC1) {
@@ -176,15 +173,33 @@ class OverlayHelper(
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
                 }
-            OverlayType.MESSAGE1,
-            OverlayType.MESSAGE2,
-            OverlayType.MESSAGE3,
-            OverlayType.MESSAGE4,
-            ->
+            OverlayType.MESSAGE1 ->
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
+                    message(prefs.messageLine1)
+                }
+            OverlayType.MESSAGE2 ->
+                MessageOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    type = overlay
+                    message(prefs.messageLine2)
+                }
+            OverlayType.MESSAGE3 ->
+                MessageOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    type = overlay
+                    message(prefs.messageLine3)
+                }
+            OverlayType.MESSAGE4 ->
+                MessageOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
+                    type = overlay
+                    message(prefs.messageLine4)
                 }
             else -> return null
         }

@@ -38,7 +38,6 @@ class MessageOverlay : AppCompatTextView {
 
     init {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
-        // visibility = VISIBLE
     }
 
     override fun onAttachedToWindow() {
@@ -66,6 +65,10 @@ class MessageOverlay : AppCompatTextView {
         super.onDetachedFromWindow()
         receiver.unsubscribe()
         clearJob?.cancel()
+    }
+
+    fun message(message: String) {
+        text = message
     }
 
     private fun updateMessage() {
