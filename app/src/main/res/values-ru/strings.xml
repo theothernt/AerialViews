@@ -36,7 +36,7 @@
   <string name="appearance_bottom_row_title">Нижний ряд</string>
   <string name="appearance_brightness_level_title">Уровень яркости при воспроизведении мультимедиа</string>
   <string name="appearance_brightness_summary">Управляйте общей яркостью видео и фотографий</string>
-  <string name="appearance_brightness_title">Яркость</string>
+  <string name="appearance_brightness_title">Яркость/Тусклость</string>
   <string name="appearance_clock_format_title">Формат часов</string>
   <string name="appearance_clock_size_title">Размер</string>
   <string name="appearance_clock_summary">Отображение текущего времени</string>
@@ -78,7 +78,7 @@
   <string name="appearance_message_line2_title">Строка 2</string>
   <string name="appearance_message_line3_title">Строка 3</string>
   <string name="appearance_message_line4_title">Строка 4</string>
-  <string name="appearance_message_summary">Отображение до 2 строк пользовательского текста</string>
+  <string name="appearance_message_summary">Отображение до 4 строк пользовательского текста</string>
   <string name="appearance_message_title">Сообщение</string>
   <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
   <string name="appearance_music_title">Музыка</string>
@@ -88,7 +88,7 @@
   <string name="appearance_progress_bar_title">Прогресс-бар</string>
   <string name="appearance_reveal_for_title">Тайм-аут отображения наложения</string>
   <string name="appearance_scaling_summary">Изменение параметров масштабирования и обрезки видео и фотографий</string>
-  <string name="appearance_scaling_title">Масштабирование</string>
+  <string name="appearance_scaling_title">Масштабирование/Обрезка</string>
   <string name="appearance_screensaver_on_launch_summary">Переход в режим заставки при ручном запуске приложения с главного экрана</string>
   <string name="appearance_screensaver_on_launch_title">Запустить заставку при запуске</string>
   <string name="appearance_show_force_latin_digits_summary">Всегда показывать западные цифры, независимо от настроек языкового стандарта системы</string>
@@ -437,7 +437,7 @@
   <string name="weather_forecast_summary">Изменить расположение информации о прогнозе</string>
   <string name="weather_forecast_temperature_units_title">Единицы измерения температуры</string>
   <string name="weather_forecast_title">Текущий прогноз</string>
-  <string name="weather_location_search_hint">Введите название города, например, Токио или Буэнос-Айрес</string>
+  <string name="weather_location_search_hint">Введите название города (например, Токио) или GPS-координаты</string>
   <string name="weather_location_searching">Поиск локации…</string>
   <string name="weather_location_title">Местоположение</string>
   <string name="webdav_media_enabled_title">Использовать WebDAV для обмена медиа</string>

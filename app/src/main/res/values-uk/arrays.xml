@@ -177,11 +177,11 @@
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>
     <item>10 секунд</item>
+    <item>15 секунд</item>
+    <item>20 секунд</item>
+    <item>25 секунд</item>
     <item>30 секунд (за замовчуванням)</item>
     <item>1 хвилина</item>
-    <item>3 хвилини</item>
-    <item>5 хвилин</item>
-    <item>10 хвилин</item>
     <item>3 хвилини</item>
     <item>5 хвилин</item>
     <item>10 хвилин</item>

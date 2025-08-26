@@ -36,7 +36,7 @@
   <string name="appearance_bottom_row_title">Нижній ряд</string>
   <string name="appearance_brightness_level_title">Рівень яскравості під час відтворення медіа</string>
   <string name="appearance_brightness_summary">Керуйте загальною яскравістю відео та фотографій</string>
-  <string name="appearance_brightness_title">Яскравість</string>
+  <string name="appearance_brightness_title">Яскравість/Тьмяність</string>
   <string name="appearance_clock_format_title">Формат годинника</string>
   <string name="appearance_clock_size_title">Розмір</string>
   <string name="appearance_clock_summary">Відображення поточного часу</string>
@@ -78,7 +78,7 @@
   <string name="appearance_message_line2_title">Рядок 2</string>
   <string name="appearance_message_line3_title">Рядок 3</string>
   <string name="appearance_message_line4_title">Рядок 4</string>
-  <string name="appearance_message_summary">Відображати до 2 рядків користувацького тексту</string>
+  <string name="appearance_message_summary">Відображення до 4 рядків користувацького тексту</string>
   <string name="appearance_message_title">Повідомлення</string>
   <string name="appearance_music_summary">Відображення відтворюваної в даний момент пісні</string>
   <string name="appearance_music_title">Музика</string>
@@ -88,7 +88,7 @@
   <string name="appearance_progress_bar_title">Прогрес-бар</string>
   <string name="appearance_reveal_for_title">Тайм-аут відображення накладення</string>
   <string name="appearance_scaling_summary">Змінити параметри масштабування та обрізання для відео та фотографій</string>
-  <string name="appearance_scaling_title">Масштабування</string>
+  <string name="appearance_scaling_title">Масштабування/Обрізка</string>
   <string name="appearance_screensaver_on_launch_summary">Запускати заставку, коли програму запускають вручну з головного екрана</string>
   <string name="appearance_screensaver_on_launch_title">Запускати заставку під час запуску</string>
   <string name="appearance_show_force_latin_digits_summary">Завжди показуйте західні цифри, незалежно від налаштувань мовного стандарту системи</string>
@@ -437,7 +437,7 @@
   <string name="weather_forecast_summary">Змінити розташування інформації про прогноз</string>
   <string name="weather_forecast_temperature_units_title">Одиниці вимірювання температури</string>
   <string name="weather_forecast_title">Поточний прогноз</string>
-  <string name="weather_location_search_hint">Введіть назву міста, наприклад, Токіо або Буенос-Айрес</string>
+  <string name="weather_location_search_hint">Введіть назву міста (наприклад, Токіо) або GPS-координати</string>
   <string name="weather_location_searching">Пошук локації…</string>
   <string name="weather_location_title">Місце розташування</string>
   <string name="webdav_media_enabled_title">Використовуйте спільний доступ до WebDAV media</string>
