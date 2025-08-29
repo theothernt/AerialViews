@@ -29,6 +29,7 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
     private lateinit var server: String
+    private var resolvedSharedKey: String? = null
 
     private val immichClient by lazy {
         server = UrlParser.parseServerUrl(prefs.url)
@@ -242,18 +243,34 @@ class ImmichMediaProvider(
 
     private suspend fun getSharedAlbumFromAPI(): Album {
         try {
-            val cleanedKey = cleanSharedLinkKey(prefs.pathName)
-            Timber.d("Fetching shared album with key: $cleanedKey")
+            val path = prefs.pathName
+            val cleaned = cleanSharedLinkKey(path)
+            val useSlug = isSlugFormat(path)
+            Timber.d("Fetching shared album with ${if (useSlug) "slug" else "key"}: $cleaned")
             val response =
                 immichClient.getSharedAlbum(
-                    key = cleanedKey,
+                    key = if (useSlug) null else cleaned,
+                    slug = if (useSlug) cleaned else null,
                     password = prefs.password.takeIf { it.isNotEmpty() },
                 )
             Timber.d("Shared album API response: ${response.raw()}")
             if (response.isSuccessful) {
-                val album = response.body()
-                Timber.d("Shared album fetched successfully: ${album?.toString()}")
-                return album ?: throw Exception("Empty response body")
+                val shared = response.body()
+                Timber.d("Shared album fetched successfully: ${shared?.toString()}")
+                if (shared == null) throw Exception("Empty response body")
+                // Cache server-provided key for use in asset URLs
+                resolvedSharedKey = shared.key
+                // Prefer album info if present; otherwise synthesize from assets
+                val album =
+                    shared.album
+                        ?: Album(
+                            id = "shared-${shared.id}",
+                            name = shared.description ?: "Shared Link",
+                            description = shared.description ?: "",
+                            assetCount = shared.assets.size,
+                            assets = shared.assets,
+                        )
+                return album
             } else {
                 val errorBody = response.errorBody()?.string()
                 Timber.e("API error: ${response.code()} - ${response.message()}")
@@ -439,11 +456,16 @@ class ImmichMediaProvider(
         return input
             .trim()
             .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
-            .replace(Regex("^(share|s)/"), "") // Support both "/share/<key>" and "/s/<key>" formats
+            .replace(Regex("^(share|s)/"), "") // Support both "/share/<key>" and "/s/<slug>" formats
+    }
+
+    private fun isSlugFormat(input: String): Boolean {
+        val trimmed = input.trim().replace(Regex("^/+"), "")
+        return trimmed.startsWith("s/")
     }
 
     private fun getAssetUri(id: String): Uri {
-        val cleanedKey = cleanSharedLinkKey(prefs.pathName)
+    val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
             ImmichAuthType.SHARED_LINK -> {
                 val base = "$server/api/assets/$id/original?key=$cleanedKey"

@@ -12,9 +12,10 @@ import retrofit2.http.Query
 interface ImmichApi {
     @GET("/api/shared-links/me")
     suspend fun getSharedAlbum(
-        @Query("key") key: String,
-        @Query("password") password: String?,
-    ): Response<Album>
+        @Query("key") key: String? = null,
+        @Query("slug") slug: String? = null,
+        @Query("password") password: String? = null,
+    ): Response<SharedLinkResponse>
 
     @GET("/api/albums")
     suspend fun getAlbums(
@@ -93,6 +94,26 @@ data class Album(
     val assets: List<Asset> = emptyList(),
     @SerialName("assetCount")
     val assetCount: Int = 0,
+)
+
+@Serializable
+data class SharedLinkResponse(
+    val id: String = "",
+    val description: String? = null,
+    val password: String? = null,
+    val token: String? = null,
+    val userId: String = "",
+    val key: String = "",
+    val type: String = "",
+    val createdAt: String = "",
+    val expiresAt: String? = null,
+    val assets: List<Asset> = emptyList(),
+    val album: Album? = null,
+    val allowUpload: Boolean = true,
+    val allowDownload: Boolean = true,
+    @SerialName("showMetadata")
+    val showMetadata: Boolean = true,
+    val slug: String? = null,
 )
 
 @Serializable
