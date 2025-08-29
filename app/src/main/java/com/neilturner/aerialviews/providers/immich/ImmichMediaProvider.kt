@@ -439,7 +439,7 @@ class ImmichMediaProvider(
         return input
             .trim()
             .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
-            .replace(Regex("^share/|^/share/"), "") // Remove "share/" or "/share/" from the beginning
+            .replace(Regex("^(share|s)/"), "") // Support both "/share/<key>" and "/s/<key>" formats
     }
 
     private fun getAssetUri(id: String): Uri {
