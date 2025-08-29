@@ -65,10 +65,6 @@ class ImmichMediaProvider(
             if (prefs.pathName.isEmpty()) {
                 return Pair(media, "Path name is empty")
             }
-
-            if (prefs.password.isEmpty()) {
-                return Pair(media, "Password is empty")
-            }
         } else {
             if (prefs.apiKey.isEmpty()) {
                 return Pair(media, "API key is empty")
@@ -248,7 +244,11 @@ class ImmichMediaProvider(
         try {
             val cleanedKey = cleanSharedLinkKey(prefs.pathName)
             Timber.d("Fetching shared album with key: $cleanedKey")
-            val response = immichClient.getSharedAlbum(key = cleanedKey, password = prefs.password)
+            val response =
+                immichClient.getSharedAlbum(
+                    key = cleanedKey,
+                    password = prefs.password.takeIf { it.isNotEmpty() },
+                )
             Timber.d("Shared album API response: ${response.raw()}")
             if (response.isSuccessful) {
                 val album = response.body()
@@ -445,7 +445,11 @@ class ImmichMediaProvider(
     private fun getAssetUri(id: String): Uri {
         val cleanedKey = cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
-            ImmichAuthType.SHARED_LINK -> "$server/api/assets/$id/original?key=$cleanedKey&password=${prefs.password}".toUri()
+            ImmichAuthType.SHARED_LINK -> {
+                val base = "$server/api/assets/$id/original?key=$cleanedKey"
+                val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
+                url.toUri()
+            }
             ImmichAuthType.API_KEY -> "$server/api/assets/$id/original".toUri()
             null -> throw IllegalStateException("Invalid authentication type")
         }
