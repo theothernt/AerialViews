@@ -20,6 +20,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.NowPlayingService
@@ -58,7 +59,7 @@ class ScreenController(
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
-    // private var ktorServer: KtorServer? = null
+    private var ktorServer: KtorServer? = null
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -184,10 +185,10 @@ class ScreenController(
             }
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
-//                ktorServer =
-//                    KtorServer(context).apply {
-//                        start()
-//                    }
+                ktorServer =
+                    KtorServer(context).apply {
+                        start()
+                    }
             }
 
             // Build playlist and start screensaver
@@ -424,7 +425,7 @@ class ScreenController(
         RefreshRateHelper.restoreOriginalMode(context)
         videoPlayer.release()
         imagePlayer.release()
-        // ktorServer?.stop()
+        ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
         mainScope.cancel()
