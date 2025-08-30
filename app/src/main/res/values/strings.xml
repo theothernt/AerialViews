@@ -266,7 +266,7 @@
   <string name="immich_media_hostname_title">Hostname &amp; port</string>
   <string name="immich_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:2283</string>
   <string name="immich_media_pathname_title">Shared link (case sensitive)</string>
-  <string name="immich_media_pathname_summary">The path of the shared album, e.g. /share/qJejEpX_h_…TAypgOxmIZC or /s/qJejEpX_h_…TAypgOxmIZC</string>
+  <string name="immich_media_pathname_summary">The path of the shared album, e.g. /s/short-code or /share/long-random-number-and-letters</string>
   <string name="immich_media_password_title">Password</string>
   <string name="immich_media_password_summary">Not set. Optional</string>
 
