@@ -465,7 +465,7 @@ class ImmichMediaProvider(
     }
 
     private fun getAssetUri(id: String): Uri {
-    val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
+        val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
             ImmichAuthType.SHARED_LINK -> {
                 val base = "$server/api/assets/$id/original?key=$cleanedKey"
