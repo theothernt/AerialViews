@@ -169,7 +169,7 @@ dependencies {
     implementation(libs.bundles.coil)
     implementation(libs.bundles.retrofit)
 
-    // implementation(libs.bundles.ktor)
+    implementation(libs.bundles.ktor)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
