@@ -32,9 +32,9 @@ import java.io.IOException
 import java.net.BindException
 import java.net.ServerSocket
 
- class KtorServer(
-     val context: Context,
- ) {
+class KtorServer(
+    val context: Context,
+) {
     private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
     private var validTextSizes: List<Int> = emptyList()
     private var validTextWeights: List<Int> = emptyList()
@@ -92,13 +92,12 @@ import java.net.ServerSocket
         Timber.i("Ktor server stopped")
     }
 
-    private fun isPortAvailable(port: Int): Boolean {
-        return try {
+    private fun isPortAvailable(port: Int): Boolean =
+        try {
             ServerSocket(port).use { true }
         } catch (_: IOException) {
             false
         }
-    }
 
     private fun Application.configureRouting() {
         routing {
@@ -156,10 +155,11 @@ import java.net.ServerSocket
                 return
             }
 
-            val type = OverlayType.entries.firstOrNull { it.name == "MESSAGE$messageNumber" } ?: run {
-                call.respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid message number."))
-                return
-            }
+            val type =
+                OverlayType.entries.firstOrNull { it.name == "MESSAGE$messageNumber" } ?: run {
+                    call.respond(HttpStatusCode.BadRequest, ErrorResponse(error = "Invalid message number."))
+                    return
+                }
 
             val messageEvent =
                 MessageEvent(
@@ -185,7 +185,7 @@ import java.net.ServerSocket
     private fun Application.configurePlugins() {
         install(ContentNegotiation) { json(JsonHelper.json) }
     }
- }
+}
 
 @Serializable
 data class MessageRequest(

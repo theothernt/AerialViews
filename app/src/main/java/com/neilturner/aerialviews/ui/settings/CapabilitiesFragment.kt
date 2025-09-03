@@ -198,13 +198,20 @@ class CapabilitiesFragment : MenuStateFragment() {
         val denied = resources.getString(R.string.capabilities_permission_denied)
         val lines = mutableListOf<String>()
 
-        // Internet (normal permission, always granted if declared)
         lines.add(String.format(resources.getString(R.string.capabilities_permission_internet), granted))
+
+        // Overlay permission (special)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val overlayGranted = if (PermissionHelper.hasSystemOverlayPermission(ctx)) granted else denied
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_overlay), overlayGranted))
+        }
+
+        // Notification listener access (special)
+        val notificationAccess = if (PermissionHelper.hasNotificationListenerPermission(ctx)) granted else denied
+        lines.add(String.format(resources.getString(R.string.capabilities_permission_notification_access), notificationAccess))
 
         // Media / External storage read
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            val mediaReadGranted = if (PermissionHelper.hasMediaReadPermission(ctx)) granted else denied
-            // Separate lines for video/images so user can tell if one is missing
             val videoGranted =
                 if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.READ_MEDIA_VIDEO) ==
                     android.content.pm.PackageManager.PERMISSION_GRANTED
@@ -233,16 +240,6 @@ class CapabilitiesFragment : MenuStateFragment() {
             val writeGranted = if (PermissionHelper.hasDocumentWritePermission(ctx)) granted else denied
             lines.add(String.format(resources.getString(R.string.capabilities_permission_write_external), writeGranted))
         }
-
-        // Overlay permission (special)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val overlayGranted = if (PermissionHelper.hasSystemOverlayPermission(ctx)) granted else denied
-            lines.add(String.format(resources.getString(R.string.capabilities_permission_overlay), overlayGranted))
-        }
-
-        // Notification listener access (special)
-        val notificationAccess = if (PermissionHelper.hasNotificationListenerPermission(ctx)) granted else denied
-        lines.add(String.format(resources.getString(R.string.capabilities_permission_notification_access), notificationAccess))
 
         return lines.joinToString("\n")
     }
