@@ -633,6 +633,7 @@
   <string name="capabilities_ui_resolution">UI resolution: %1$s</string>
   <string name="capabilities_max_video_resolution">Max. video resolution: %1$s</string>
 
+  <string name="capabilities_permission_notification_access">Notification Access: %1$s</string>
   <string name="capabilities_supports_hdr10">Supports HDR10: %1$s</string>
   <string name="capabilities_supports_dolby_vision">Supports Dolby Vision: %1$s</string>
   <string name="capabilities_found">Found</string>
@@ -640,6 +641,16 @@
   <string name="capabilities_avc">AVC: %1$s</string>
   <string name="capabilities_hevc">HEVC: %1$s</string>
   <string name="capabilities_dolby_vision">Dolby Vision: %1$s</string>
+
+  <string name="capabilities_permissions_title">Permissions</string>
+  <string name="capabilities_permission_granted">Granted</string>
+  <string name="capabilities_permission_denied">Denied</string>
+  <string name="capabilities_permission_internet">Internet: %1$s</string>
+  <string name="capabilities_permission_media_video">Media (Video): %1$s</string>
+  <string name="capabilities_permission_media_images">Media (Images): %1$s</string>
+  <string name="capabilities_permission_read_external">External Storage (Read): %1$s</string>
+  <string name="capabilities_permission_write_external">External Storage (Write): %1$s</string>
+  <string name="capabilities_permission_overlay">Overlay (Draw over apps): %1$s</string>
 
   <!-- Main / Settings / Import / Export settings -->
   <string name="settings_export_title">Export settings to Documents folder</string>

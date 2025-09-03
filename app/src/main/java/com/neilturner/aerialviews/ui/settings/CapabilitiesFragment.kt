@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
@@ -16,6 +17,7 @@ import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.roundTo
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -50,12 +52,14 @@ class CapabilitiesFragment : MenuStateFragment() {
         val decoders = findPreference<Preference>("capabilities_decoders")
         val resolutions = findPreference<Preference>("capabilities_resolutions")
         val refreshRates = findPreference<Preference>("capabilities_refresh_rates")
+        val permissions = findPreference<Preference>("capabilities_permissions")
 
         device?.summary = buildDeviceSummary()
         display?.summary = buildDisplaySummary()
         codecs?.summary = buildCodecSummary()
         decoders?.summary = buildDecoderSummary()
         resolution?.summary = buildResolutionSummary()
+        permissions?.summary = buildPermissionsSummary()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             resolutions?.summary = buildResolutionsSummary()
@@ -186,5 +190,60 @@ class CapabilitiesFragment : MenuStateFragment() {
                     it.contains(type, true)
             }
         return videoCodecs.isNotEmpty()
+    }
+
+    private fun buildPermissionsSummary(): String {
+        val ctx = context ?: return ""
+        val granted = resources.getString(R.string.capabilities_permission_granted)
+        val denied = resources.getString(R.string.capabilities_permission_denied)
+        val lines = mutableListOf<String>()
+
+        // Internet (normal permission, always granted if declared)
+        lines.add(String.format(resources.getString(R.string.capabilities_permission_internet), granted))
+
+        // Media / External storage read
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val mediaReadGranted = if (PermissionHelper.hasMediaReadPermission(ctx)) granted else denied
+            // Separate lines for video/images so user can tell if one is missing
+            val videoGranted =
+                if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.READ_MEDIA_VIDEO) ==
+                    android.content.pm.PackageManager.PERMISSION_GRANTED
+                ) {
+                    granted
+                } else {
+                    denied
+                }
+            val imagesGranted =
+                if (ContextCompat.checkSelfPermission(ctx, android.Manifest.permission.READ_MEDIA_IMAGES) ==
+                    android.content.pm.PackageManager.PERMISSION_GRANTED
+                ) {
+                    granted
+                } else {
+                    denied
+                }
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_media_video), videoGranted))
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_media_images), imagesGranted))
+        } else {
+            val extReadGranted = if (PermissionHelper.hasDocumentReadPermission(ctx)) granted else denied
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_read_external), extReadGranted))
+        }
+
+        // External storage write (only meaningful below R / 30)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            val writeGranted = if (PermissionHelper.hasDocumentWritePermission(ctx)) granted else denied
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_write_external), writeGranted))
+        }
+
+        // Overlay permission (special)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val overlayGranted = if (PermissionHelper.hasSystemOverlayPermission(ctx)) granted else denied
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_overlay), overlayGranted))
+        }
+
+        // Notification listener access (special)
+        val notificationAccess = if (PermissionHelper.hasNotificationListenerPermission(ctx)) granted else denied
+        lines.add(String.format(resources.getString(R.string.capabilities_permission_notification_access), notificationAccess))
+
+        return lines.joinToString("\n")
     }
 }
