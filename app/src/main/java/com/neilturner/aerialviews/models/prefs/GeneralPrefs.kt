@@ -156,6 +156,7 @@ object GeneralPrefs : KotprefModel() {
     // Playlist
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
+    var sleepTimer by stringPref("0", "sleep_timer")
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")

@@ -41,6 +41,7 @@ import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -75,6 +76,7 @@ class ScreenController(
     private var canSkip = false
     private var isPaused = false
     private var pauseStartTime: Long = 0
+    private var sleepTimerJob: Job? = null
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -196,6 +198,7 @@ class ScreenController(
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
+                scheduleSleepTimer()
             } else {
                 showLoadingError()
             }
@@ -217,6 +220,23 @@ class ScreenController(
         // 3. playback started callback, fade out loading text, fade out loading view
         // 4. when video is almost finished - or skip - fade in loading view
         // 5. goto 2
+    }
+
+    private fun scheduleSleepTimer() {
+        sleepTimerJob?.cancel()
+        val minutes = GeneralPrefs.sleepTimer.toLongOrNull() ?: 0L
+        if (minutes <= 0L) {
+            Timber.i("Sleep timer disabled")
+            return
+        }
+        Timber.i("Scheduling sleep timer for $minutes minute(s)")
+        sleepTimerJob = mainScope.launch {
+            delay(minutes * 60_000L)
+            if (!blackOutMode) {
+                Timber.i("Sleep timer finished - toggling blackout mode")
+                toggleBlackOutMode()
+            }
+        }
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -428,6 +448,7 @@ class ScreenController(
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        sleepTimerJob?.cancel()
         mainScope.cancel()
     }
 
@@ -443,10 +464,14 @@ class ScreenController(
 
         if (!blackOutMode) {
             blackOutMode = true
+            // Cancel any pending sleep timer as we've already entered blackout
+            sleepTimerJob?.cancel()
             fadeOutCurrentItem()
         } else {
             blackOutMode = false
             loadItem(playlist.nextItem())
+            // Restart sleep timer if preference still enabled
+            scheduleSleepTimer()
         }
     }
 

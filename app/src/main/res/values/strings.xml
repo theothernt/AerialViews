@@ -513,6 +513,9 @@
   <string name="playlist_mute_videos_title">Mute videos</string>
   <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
+  <string name="playlist_sleep_timer_title">Sleep timer</string>
+  <string name="playlist_sleep_timer_summary">Automatically black out the screen after a set time</string>
+
   <string name="playlist_video_volume_title">Video volume</string>
   <string name="playlist_video_volume_summary">Choose a video volume level</string>
 
@@ -672,4 +675,5 @@
   <!-- Main / Settings / About -->
   <string name="about_version_title">Version</string>
   <string name="about_date_title">Build Date</string>
+
 </resources>

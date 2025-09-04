@@ -13,6 +13,17 @@
                     app:key="remove_duplicates"
                     app:summary="@string/playlist_remove_duplicates_summary"
                     app:title="@string/playlist_remove_duplicates_title" />
+
+                <!-- Sleep timer -->
+                <ListPreference
+                    app:defaultValue="@string/sleep_timer_default"
+                    app:entries="@array/sleep_timer_entries"
+                    app:entryValues="@array/sleep_timer_values"
+                    app:key="sleep_timer"
+                    app:title="@string/playlist_sleep_timer_title"
+                    app:summary="@string/playlist_sleep_timer_summary"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_sleep_timer_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_photos">
