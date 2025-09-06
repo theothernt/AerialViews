@@ -12,14 +12,14 @@ android {
     namespace = "com.neilturner.aerialviews.baselineprofile"
     compileSdk = 36
 
-    kotlin {
-        jvmToolchain(17)
-    }
-
     defaultConfig {
         minSdk = 28
         targetSdk = 36
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    kotlin {
+        jvmToolchain(21)
     }
 
     targetProjectPath = ":app"
