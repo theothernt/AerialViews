@@ -28,6 +28,9 @@ abstract class AbstractVideo {
     @SerialName("pointsOfInterest")
     val pointsOfInterest: Map<Int, String> = emptyMap()
 
+    val timeOfDay: String = ""
+    val scene: String = ""
+
     abstract fun uriAtQuality(quality: VideoQuality?): Uri
 
     abstract fun allUrls(): List<String>
