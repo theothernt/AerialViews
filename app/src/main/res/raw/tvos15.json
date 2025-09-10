@@ -1,6 +1,8 @@
 {
   "assets" : [
     {
+      "timeOfDay":"day",
+      "scene":"sea",
       "accessibilityLabel" : "Seals",
       "categories" : [
         "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
@@ -17,6 +19,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/SE_A016_C009_SDR_20190717_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"space",
       "accessibilityLabel" : "Southern California to Baja",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -42,6 +46,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A114_C001_0305OT_v10_SDR_FINAL_22062018_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"nature",
       "accessibilityLabel" : "Greenland",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
@@ -58,6 +64,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G002_C002_PSNK_v03_SDR_PS_20180925_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"space",
       "accessibilityLabel" : "Korea and Japan Night",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -82,6 +90,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT026_363A_103NC_E1027_KOREA_JAPAN_NIGHT_v18_SDR_PS_20180907_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"sea",
       "accessibilityLabel" : "Palau Jellies",
       "categories" : [
         "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
@@ -100,6 +110,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A001_C007_SDR_20190717_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"beach",
       "accessibilityLabel" : "Los Angeles",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -118,6 +130,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A008_C004_ALTB_ED_FROM_FLAME_RETIME_v46_SDR_PS_20180917_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"city",
       "accessibilityLabel" : "London",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -141,6 +155,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_L007_C007_PS_v01_SDR_PS_20180925_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"space",
       "accessibilityLabel" : "Africa Night",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -165,6 +181,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT312_162NC_139M_1041_AFRICA_NIGHT_v14_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"nature",
       "accessibilityLabel" : "China",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
@@ -181,6 +199,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C002_C005_PSNK_v05_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"nature",
       "accessibilityLabel" : "Greenland",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
@@ -197,6 +217,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GL_G004_C010_PSNK_v04_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"sea",
       "accessibilityLabel" : "Palau Coral",
       "categories" : [
         "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
@@ -213,6 +235,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/PA_A004_C003_SDR_20190719_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"city",
       "accessibilityLabel" : "Los Angeles",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -229,6 +253,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A005_C009_PSNK_ALT_v09_SDR_PS_201809134_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"space",
       "accessibilityLabel" : "Sahara and Italy",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -254,6 +280,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A009_C001_010181A_v09_SDR_PS_FINAL_20180725_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"city",
       "accessibilityLabel" : "Los Angeles",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -270,6 +298,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A011_C003_DGRN_LNFIX_STAB_v57_SDR_PS_20181002_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"sea",
       "accessibilityLabel" : "Kelp",
       "categories" : [
         "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
@@ -286,6 +316,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/KP_A010_C002_SDR_20190717_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"city",
       "accessibilityLabel" : "New York",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -304,6 +336,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_N013_C004_PS_v01_SDR_PS_20180925_F1970F7193_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"night",
+      "scene":"space",
       "accessibilityLabel" : "Italy to Asia",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -326,6 +360,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_GMT329_113NC_396B_1105_ITALY_v03_SDR_FINAL_20180706_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"sunset",
+      "scene":"city",
       "accessibilityLabel" : "Los Angeles",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -343,6 +379,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_LA_A006_C004_v01_SDR_FINAL_PS_20180730_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"space",
       "accessibilityLabel" : "Caribbean",
       "categories" : [
         "55B7C95D-CEAF-4FD8-ADEF-F5BC657D8F6D"
@@ -365,6 +403,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A105_C002_v06_SDR_FINAL_25062018_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"countryside",
       "accessibilityLabel" : "San Francisco",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -385,6 +425,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_A013_C012_0122D6_CC_v01_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"sea",
       "accessibilityLabel" : "Barracuda",
       "categories" : [
         "8BE8B524-6EAE-43F5-A3E8-01DCFA1BCD4B"
@@ -401,6 +443,8 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/BO_A018_C029_SDR_20190812_SDR_2K_HEVC.mov"
     },
     {
+      "timeOfDay":"day",
+      "scene":"nature",
       "accessibilityLabel" : "China",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
