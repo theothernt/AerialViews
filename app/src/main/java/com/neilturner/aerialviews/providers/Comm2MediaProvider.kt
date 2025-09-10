@@ -2,8 +2,11 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.SceneType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.Comm2Videos
@@ -44,6 +47,9 @@ class Comm2MediaProvider(
                 AerialMedia(
                     it.uriAtQuality(quality),
                     type = AerialMediaType.VIDEO,
+                    source = AerialMediaSource.COMM2,
+                    timeOfDay = TimeOfDay.fromString(it.timeOfDay),
+                    scene = SceneType.fromString(it.scene)
                 ),
             )
             val data =
