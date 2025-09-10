@@ -1003,7 +1003,7 @@
       "url-1080-SDR" : "https:\/\/sylvan.apple.com\/Aerials\/2x\/Videos\/comp_CH_C007_C011_PSNK_v02_SDR_PS_FINAL_20180709_SDR_2K_HEVC.mov"
     },
     {
-      "timeOfDay":"night",
+      "timeOfDay":"day",
       "scene":"sea",
       "accessibilityLabel" : "Sea Stars",
       "categories" : [

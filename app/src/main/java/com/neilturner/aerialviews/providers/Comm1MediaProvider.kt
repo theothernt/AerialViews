@@ -42,24 +42,32 @@ class Comm1MediaProvider(
         val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson<Comm1Videos>(context, R.raw.comm1)
 
-        wrapper.assets?.forEach {
-            videos.add(
-                AerialMedia(
-                    it.uriAtQuality(quality),
-                    type = AerialMediaType.VIDEO,
-                    source = AerialMediaSource.COMM1,
-                    timeOfDay = TimeOfDay.fromString(it.timeOfDay),
-                    scene = SceneType.fromString(it.scene)
-                ),
-            )
+        wrapper.assets?.forEach { asset ->
+            val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
+            val scene = SceneType.fromString(asset.scene)
+
+            val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
+            val sceneMatches = prefs.scene.contains(scene.toString())
+
+            if (timeOfDayMatches && sceneMatches) {
+                videos.add(
+                    AerialMedia(
+                        asset.uriAtQuality(quality),
+                        type = AerialMediaType.VIDEO,
+                        source = AerialMediaSource.COMM1,
+                        timeOfDay = timeOfDay,
+                        scene = scene
+                    ),
+                )
+            }
             val data =
                 Pair(
-                    it.description,
-                    it.pointsOfInterest.mapValues { poi ->
-                        strings[poi.value] ?: it.description
+                    asset.description,
+                    asset.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: asset.description
                     },
                 )
-            it.allUrls().forEachIndexed { index, url ->
+            asset.allUrls().forEachIndexed { index, url ->
                 metadata.put(url, data)
             }
         }
