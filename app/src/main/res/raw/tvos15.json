@@ -111,7 +111,7 @@
     },
     {
       "timeOfDay":"day",
-      "scene":"city",
+      "scene":"beach",
       "accessibilityLabel" : "Los Angeles",
       "categories" : [
         "5EF41171-4862-4F93-800C-AD86CE5E6891"
@@ -618,7 +618,7 @@
     },
     {
       "timeOfDay":"day",
-      "scene":"nature",
+      "scene":"beach",
       "accessibilityLabel" : "Hawaii",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
@@ -1495,7 +1495,7 @@
     },
     {
       "timeOfDay":"day",
-      "scene":"nature",
+      "scene":"beach",
       "accessibilityLabel" : "Hawaii",
       "categories" : [
         "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
