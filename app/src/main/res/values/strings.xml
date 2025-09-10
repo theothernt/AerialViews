@@ -139,6 +139,12 @@
   <string name="apple_videos_data_usage_title">Data usage</string>
   <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
+  <string name="apple_videos_time_of_day_title">Time of day</string>
+  <string name="apple_videos_time_of_day_summary">Select which times of day to include</string>
+
+  <string name="apple_videos_scene_type_title">Scene types</string>
+  <string name="apple_videos_scene_type_summary">Select which scene types to include</string>
+
   <!-- Main / Video Sources / Comm1 videos -->
   <string name="comm1_videos_enabled">Use community videos</string>
 

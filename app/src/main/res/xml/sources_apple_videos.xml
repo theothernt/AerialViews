@@ -20,6 +20,28 @@
                     app:title="@string/videos_quality_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/videos_quality_summary" />
+
+                <MultiSelectListPreference
+                    app:dependency="apple_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:entries="@array/video_time_of_day_entries"
+                    app:entryValues="@array/video_time_of_day_values"
+                    app:defaultValue="@array/video_time_of_day_default"
+                    app:key="apple_videos_time_of_day"
+                    app:title="@string/apple_videos_time_of_day_title"
+                    app:summary="@string/apple_videos_time_of_day_summary"
+                    app:dialogTitle="@string/apple_videos_time_of_day_title" />
+
+                <MultiSelectListPreference
+                    app:dependency="apple_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:entries="@array/video_scene_type_entries"
+                    app:entryValues="@array/video_scene_type_values"
+                    app:defaultValue="@array/video_scene_type_default"
+                    app:key="apple_videos_scene_type"
+                    app:title="@string/apple_videos_scene_type_title"
+                    app:summary="@string/apple_videos_scene_type_summary"
+                    app:dialogTitle="@string/apple_videos_scene_type_title" />
         </PreferenceCategory>
 
         <Preference
