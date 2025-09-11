@@ -21,6 +21,7 @@ class AerialApp : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
+        @Suppress("ControlFlowWithEmptyBody")
         if (BuildConfig.DEBUG) {
             // setupStrictMode()
         }
