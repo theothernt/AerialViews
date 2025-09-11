@@ -37,6 +37,8 @@
   <string name="category_brightness">Brightness</string>
   <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
+  <string name="category_quality">Quality</string>
+  <string name="category_filters">Filters</string>
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
   <string name="category_settings">Settings</string>
