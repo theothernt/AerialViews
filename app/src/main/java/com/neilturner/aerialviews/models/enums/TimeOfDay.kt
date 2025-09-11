@@ -5,17 +5,17 @@ enum class TimeOfDay {
     DAY,
     NIGHT,
     SUNSET,
-    SUNRISE;
+    SUNRISE,
+    ;
 
     companion object {
-        fun fromString(value: String?): TimeOfDay {
-            return when (value?.lowercase()) {
+        fun fromString(value: String?): TimeOfDay =
+            when (value?.lowercase()) {
                 "day" -> DAY
                 "night" -> NIGHT
                 "sunset" -> SUNSET
                 "sunrise" -> SUNRISE
                 else -> UNKNOWN
             }
-        }
     }
 }

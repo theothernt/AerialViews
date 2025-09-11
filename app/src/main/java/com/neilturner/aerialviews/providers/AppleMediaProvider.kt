@@ -56,7 +56,7 @@ class AppleMediaProvider(
                         type = AerialMediaType.VIDEO,
                         source = AerialMediaSource.APPLE,
                         timeOfDay = timeOfDay,
-                        scene = scene
+                        scene = scene,
                     ),
                 )
             } else if (prefs.enabled) {

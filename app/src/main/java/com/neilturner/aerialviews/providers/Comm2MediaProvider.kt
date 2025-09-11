@@ -56,7 +56,7 @@ class Comm2MediaProvider(
                         type = AerialMediaType.VIDEO,
                         source = AerialMediaSource.COMM2,
                         timeOfDay = timeOfDay,
-                        scene = scene
+                        scene = scene,
                     ),
                 )
             } else if (prefs.enabled) {

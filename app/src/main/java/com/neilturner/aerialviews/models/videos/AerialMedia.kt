@@ -13,5 +13,5 @@ data class AerialMedia(
     var type: AerialMediaType = AerialMediaType.VIDEO,
     var source: AerialMediaSource = AerialMediaSource.UNKNOWN,
     var timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
-    var scene: SceneType = SceneType.UNKNOWN
+    var scene: SceneType = SceneType.UNKNOWN,
 )

@@ -1,4 +1,5 @@
 @file:Suppress("UNCHECKED_CAST")
+
 package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
@@ -34,7 +35,10 @@ class Comm2VideosFragment : MenuStateFragment() {
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
     }
 
-    private fun updateMultiSelectSummary(preference: MultiSelectListPreference, selectedValues: Set<String>) {
+    private fun updateMultiSelectSummary(
+        preference: MultiSelectListPreference,
+        selectedValues: Set<String>,
+    ) {
         val res = context?.resources ?: return
         val entries = preference.entries
         val entryValues = preference.entryValues
@@ -52,10 +56,11 @@ class Comm2VideosFragment : MenuStateFragment() {
             }
         }
 
-        preference.summary = if (selectedEntries.size == entries.size) {
-            res.getString(R.string.all_selected)
-        } else {
-            selectedEntries.joinToString(", ")
-        }
+        preference.summary =
+            if (selectedEntries.size == entries.size) {
+                res.getString(R.string.all_selected)
+            } else {
+                selectedEntries.joinToString(", ")
+            }
     }
 }
