@@ -230,13 +230,14 @@ class ScreenController(
             return
         }
         Timber.i("Scheduling sleep timer for $minutes minute(s)")
-        sleepTimerJob = mainScope.launch {
-            delay(minutes * 60_000L)
-            if (!blackOutMode) {
-                Timber.i("Sleep timer finished - toggling blackout mode")
-                toggleBlackOutMode()
+        sleepTimerJob =
+            mainScope.launch {
+                delay(minutes * 60_000L)
+                if (!blackOutMode) {
+                    Timber.i("Sleep timer finished - toggling blackout mode")
+                    toggleBlackOutMode()
+                }
             }
-        }
     }
 
     private fun loadItem(media: AerialMedia) {

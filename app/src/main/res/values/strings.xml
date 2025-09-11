@@ -37,6 +37,8 @@
   <string name="category_brightness">Brightness</string>
   <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
+  <string name="category_quality">Quality</string>
+  <string name="category_filters">Filters</string>
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
   <string name="category_settings">Settings</string>
@@ -98,6 +100,9 @@
   <string name="text_size_title">Size</string>
   <string name="text_weight_title">Weight</string>
 
+  <string name="none_selected">None selected</string>
+  <string name="all_selected">All selected</string>
+
   <!-- Main -->
   <string name="settings_media_sources_title">Media Sources</string>
   <string name="settings_media_sources_summary">Play videos &amp; photos from the internet, USB storage, and network sources</string>
@@ -138,6 +143,9 @@
 
   <string name="apple_videos_data_usage_title">Data usage</string>
   <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
+
+  <string name="apple_videos_time_of_day_title">Time of day</string>
+  <string name="apple_videos_scene_type_title">Scene types</string>
 
   <!-- Main / Video Sources / Comm1 videos -->
   <string name="comm1_videos_enabled">Use community videos</string>

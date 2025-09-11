@@ -2,8 +2,11 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.SceneType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.Comm1Videos
@@ -39,21 +42,35 @@ class Comm1MediaProvider(
         val strings = parseJsonMap(context, R.raw.comm1_strings)
         val wrapper = parseJson<Comm1Videos>(context, R.raw.comm1)
 
-        wrapper.assets?.forEach {
-            videos.add(
-                AerialMedia(
-                    it.uriAtQuality(quality),
-                    type = AerialMediaType.VIDEO,
-                ),
-            )
+        wrapper.assets?.forEach { asset ->
+            val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
+            val scene = SceneType.fromString(asset.scene)
+
+            val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
+            val sceneMatches = prefs.scene.contains(scene.toString())
+
+            if (timeOfDayMatches && sceneMatches && prefs.enabled) {
+                videos.add(
+                    AerialMedia(
+                        asset.uriAtQuality(quality),
+                        type = AerialMediaType.VIDEO,
+                        source = AerialMediaSource.COMM1,
+                        timeOfDay = timeOfDay,
+                        scene = scene,
+                    ),
+                )
+            } else if (prefs.enabled) {
+                Timber.d("Filtering out video: ${asset.description}")
+            }
+
             val data =
                 Pair(
-                    it.description,
-                    it.pointsOfInterest.mapValues { poi ->
-                        strings[poi.value] ?: it.description
+                    asset.description,
+                    asset.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: asset.description
                     },
                 )
-            it.allUrls().forEachIndexed { index, url ->
+            asset.allUrls().forEachIndexed { index, url ->
                 metadata.put(url, data)
             }
         }
