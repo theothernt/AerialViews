@@ -12,7 +12,7 @@ A screensaver for Android/Google TV devices and phones including Nvidia Shield, 
 
 Inspired by Apple TV's beautiful video screensaver!
 
-*Please read if you have an [Nvidia Shield](#nvidia-shield-users) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
+*Please read if you have an [Nvidia Shield](#frequently-asked-questions) or [a recent Google TV device.](#how-to-set-aerial-views-as-the-default-screensaver)*
 
 ## Features include...
 
