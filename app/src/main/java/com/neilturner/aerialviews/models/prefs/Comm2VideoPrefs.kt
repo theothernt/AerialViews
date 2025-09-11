@@ -12,10 +12,10 @@ object Comm2VideoPrefs : KotprefModel() {
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "comm2_videos_quality")
 
     val scene by stringSetPref("comm2_videos_scene_type") {
-        context.resources.getStringArray(R.array.video_scene_type_default).toSet()
+        context.resources.getStringArray(R.array.comm2_videos_scene_type_default).toSet()
     }
 
     val timeOfDay by stringSetPref("comm2_videos_time_of_day") {
-        context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
+        context.resources.getStringArray(R.array.comm2_videos_time_of_day_default).toSet()
     }
 }

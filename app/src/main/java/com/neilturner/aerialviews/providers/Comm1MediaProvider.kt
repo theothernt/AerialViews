@@ -49,7 +49,7 @@ class Comm1MediaProvider(
             val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
             val sceneMatches = prefs.scene.contains(scene.toString())
 
-            if (timeOfDayMatches && sceneMatches) {
+            if (timeOfDayMatches && sceneMatches && prefs.enabled) {
                 videos.add(
                     AerialMedia(
                         asset.uriAtQuality(quality),
@@ -59,7 +59,10 @@ class Comm1MediaProvider(
                         scene = scene
                     ),
                 )
+            } else if (prefs.enabled) {
+                Timber.d("Filtering out video: ${asset.description}")
             }
+
             val data =
                 Pair(
                     asset.description,

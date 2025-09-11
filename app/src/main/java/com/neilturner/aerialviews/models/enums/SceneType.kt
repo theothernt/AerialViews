@@ -3,6 +3,8 @@ package com.neilturner.aerialviews.models.enums
 enum class SceneType {
     UNKNOWN,
     NATURE,
+    COUNTRYSIDE,
+    WATERFALL,
     BEACH,
     CITY,
     SEA,
@@ -13,6 +15,8 @@ enum class SceneType {
             return when (value?.lowercase()) {
                 "nature" -> NATURE
                 "beach" -> BEACH
+                "countryside" -> COUNTRYSIDE
+                "waterfall" -> WATERFALL
                 "city" -> CITY
                 "sea" -> SEA
                 "space" -> SPACE

@@ -44,9 +44,23 @@
     <item>SUNRISE</item>
   </string-array>
 
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>Day</item>
+    <item>Sunset</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_values" translatable="false">
+    <item>DAY</item>
+    <item>SUNSET</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_default" translatable="false">
+    <item>DAY</item>
+    <item>SUNSET</item>
+  </string-array>
+
   <!-- Video Scene Type -->
   <string-array name="video_scene_type_entries">
     <item>Nature</item>
+    <item>Countryside</item>
     <item>Beach</item>
     <item>City</item>
     <item>Sea</item>
@@ -54,6 +68,7 @@
   </string-array>
   <string-array name="video_scene_type_values" translatable="false">
     <item>NATURE</item>
+    <item>COUNTRYSIDE</item>
     <item>BEACH</item>
     <item>CITY</item>
     <item>SEA</item>
@@ -61,10 +76,30 @@
   </string-array>
   <string-array name="video_scene_type_default" translatable="false">
     <item>NATURE</item>
+    <item>COUNTRYSIDE</item>
     <item>BEACH</item>
     <item>CITY</item>
     <item>SEA</item>
     <item>SPACE</item>
+  </string-array>
+
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>Nature</item>
+    <item>Waterfall</item>
+    <item>Beach</item>
+    <item>Sea</item>
+   </string-array>
+  <string-array name="comm2_videos_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>WATERFALL</item>
+    <item>BEACH</item>
+    <item>SEA</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>WATERFALL</item>
+    <item>BEACH</item>
+    <item>SEA</item>
   </string-array>
 
   <!-- Community Videos -->
