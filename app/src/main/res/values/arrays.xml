@@ -17,11 +17,11 @@
   </string-array>
   <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
   <string-array name="apple_videos_data_usage_values" translatable="false">
-    <item>37GB</item>
-    <item>23GB</item>
-    <item>46GB</item>
-    <item>45GB</item>
-    <item>90GB</item>
+    <item>~3GB</item>
+    <item>~2GB</item>
+    <item>~3GB</item>
+    <item>~4GB</item>
+    <item>~5.5GB</item>
   </string-array>
 
   <!-- Video Time of Day -->
