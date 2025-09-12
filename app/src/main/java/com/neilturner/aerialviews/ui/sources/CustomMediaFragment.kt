@@ -21,6 +21,19 @@ class CustomMediaFragment : MenuStateFragment() {
         updateSummary()
     }
 
+    override fun onPreferenceTreeClick(preference: Preference): Boolean {
+        if (preference.key.isNullOrEmpty()) {
+            return super.onPreferenceTreeClick(preference)
+        }
+
+        if (preference.key.contains("custom_media_test_connection")) {
+            // lifecycleScope.launch { testSambaConnection() }
+            return true
+        }
+
+        return super.onPreferenceTreeClick(preference)
+    }
+
     private fun updateSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls")
         urls?.onPreferenceChangeListener =
@@ -123,3 +136,4 @@ class CustomMediaFragment : MenuStateFragment() {
             }
     }
 }
+
