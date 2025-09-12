@@ -158,7 +158,7 @@
   <string name="comm2_videos_enabled">Use community videos</string>
 
   <!-- Main / Video Sources / Custom feeds -->
-  <string name="custom_media_enabled">Use media from custom feeds</string>
+  <string name="custom_media_enabled">Use custom feeds</string>
   <string name="custom_media_test_connection">Test connection settings</string>
 
   <string name="custom_media_urls_title">Custom URLs</string>
