@@ -153,6 +153,9 @@
   <!-- Main / Video Sources / Comm2 videos -->
   <string name="comm2_videos_enabled">Use community videos</string>
 
+  <!-- Main / Video Sources / Custom feeds -->
+  <string name="custom_media_enabled">Use media from custom feeds</string>
+
   <!-- Main / Video Sources / Local+USB videos -->
   <string name="local_videos_enabled_title">Use Local or USB storage media</string>
 

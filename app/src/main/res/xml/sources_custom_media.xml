@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_video_source">
+                <SwitchPreference
+                    app:defaultValue="true"
+                    app:key="custom_media_enabled"
+                    app:title="@string/custom_media_enabled" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_quality">
+                <ListPreference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/apple_videos_quality_default"
+                    app:entries="@array/apple_videos_quality_entries"
+                    app:entryValues="@array/apple_videos_quality_values"
+                    app:key="custom_media_quality"
+                    app:title="@string/videos_quality_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/videos_quality_summary" />
+
+                <Preference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:selectable="false"
+                    app:key="custom_media_data_usage"
+                    app:isPreferenceVisible="true"
+                    app:title="@string/apple_videos_data_usage_title"
+                    app:summary=""/>
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_filters">
+                <MultiSelectListPreference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:entries="@array/video_scene_type_entries"
+                    app:entryValues="@array/video_scene_type_values"
+                    app:defaultValue="@array/video_scene_type_default"
+                    app:key="custom_media_scene_type"
+                    app:title="@string/apple_videos_scene_type_title"
+                    app:dialogTitle="@string/apple_videos_scene_type_title" />
+
+                <MultiSelectListPreference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:entries="@array/video_time_of_day_entries"
+                    app:entryValues="@array/video_time_of_day_values"
+                    app:defaultValue="@array/video_time_of_day_default"
+                    app:key="custom_media_time_of_day"
+                    app:title="@string/apple_videos_time_of_day_title"
+                    app:dialogTitle="@string/apple_videos_time_of_day_title" />
+        </PreferenceCategory>
+</PreferenceScreen>
