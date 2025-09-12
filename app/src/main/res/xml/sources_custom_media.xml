@@ -7,6 +7,13 @@
                     app:defaultValue="true"
                     app:key="custom_media_enabled"
                     app:title="@string/custom_media_enabled" />
+
+                <EditTextPreference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:key="custom_media_urls"
+                    app:title="@string/custom_media_urls_title"
+                    app:summary="@string/custom_media_urls_summary" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_quality">

@@ -3,11 +3,14 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.utils.UrlValidator
 
 class CustomMediaFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -19,6 +22,28 @@ class CustomMediaFragment : MenuStateFragment() {
     }
 
     private fun updateSummary() {
+        val urls = findPreference<EditTextPreference>("custom_media_urls")
+        urls?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                val urlsString = newValue as String
+                val (isValid, invalidUrls) = UrlValidator.validateUrls(urlsString)
+
+                if (!isValid) {
+                    val context = context ?: return@OnPreferenceChangeListener false
+                    val invalidUrlsText = invalidUrls.joinToString(", ")
+                    DialogHelper.show(
+                        context,
+                        context.getString(R.string.custom_media_urls_invalid),
+                        invalidUrlsText
+                    )
+                    return@OnPreferenceChangeListener false
+                }
+
+                updateUrlsSummary(urlsString)
+                true
+            }
+        urls?.let { updateUrlsSummary(it.text) }
+
         val quality = findPreference<ListPreference>("custom_media_quality")
         quality?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
@@ -42,6 +67,23 @@ class CustomMediaFragment : MenuStateFragment() {
                 true
             }
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
+    }
+
+    private fun updateUrlsSummary(urlsString: String?) {
+        val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
+        val context = context ?: return
+
+        if (urlsString?.isBlank() == true) {
+            urls.summary = context.getString(R.string.custom_media_urls_summary)
+            return
+        }
+
+        val validUrls = UrlValidator.parseUrls(urlsString)
+        urls.summary = when {
+            validUrls.isEmpty() -> context.getString(R.string.custom_media_urls_invalid)
+            validUrls.size == 1 -> "1 URL configured"
+            else -> "${validUrls.size} URLs configured"
+        }
     }
 
     private fun updateDataUsageSummary(index: Int) {

@@ -10,6 +10,7 @@ object CustomMediaPrefs : KotprefModel() {
 
     var enabled by booleanPref(true, "custom_media_enabled")
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "custom_media_quality")
+    var urls by stringPref("", "custom_media_urls")
 
     val scene by stringSetPref("custom_media_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()

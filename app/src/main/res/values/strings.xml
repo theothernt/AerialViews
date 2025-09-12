@@ -126,6 +126,9 @@
   <string name="sources_comm2_title">Videos by Robin Fourcade</string>
   <string name="sources_comm2_summary">Stream these community videos using your internet connection</string>
 
+  <string name="sources_custom_title">Videos from a custom feed</string>
+  <string name="sources_custom_summary">Use your own JSON manifest with a custom feed of videos</string>
+
   <string name="sources_local_title">Local or USB storage</string>
   <string name="sources_local_summary">Play videos &amp; photos directly from your device or attached USB storage</string>
 
@@ -155,6 +158,9 @@
 
   <!-- Main / Video Sources / Custom feeds -->
   <string name="custom_media_enabled">Use media from custom feeds</string>
+  <string name="custom_media_urls_title">Custom URLs</string>
+  <string name="custom_media_urls_summary">Enter video URLs separated by commas (e.g., https://example.com/video1.mp4, https://example.com/video2.mp4)</string>
+  <string name="custom_media_urls_invalid">One or more URLs are invalid</string>
 
   <!-- Main / Video Sources / Local+USB videos -->
   <string name="local_videos_enabled_title">Use Local or USB storage media</string>

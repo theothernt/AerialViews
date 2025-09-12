@@ -17,6 +17,11 @@
             app:title="@string/sources_comm2_title"
             app:summary="@string/sources_comm2_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_custom_title"
+            app:summary="@string/sources_custom_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.CustomMediaFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_local">
