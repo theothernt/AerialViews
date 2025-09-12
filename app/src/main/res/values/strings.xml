@@ -162,7 +162,7 @@
   <string name="custom_media_test_connection">Test connection settings</string>
 
   <string name="custom_media_urls_title">Custom URLs</string>
-  <string name="custom_media_urls_summary">Enter video URLs separated by commas (e.g., https://example.com/video1.mp4, https://example.com/video2.mp4)</string>
+  <string name="custom_media_urls_summary">Enter video URLs separated by commas (e.g., https://example.com/manifest.json, https://example.com/entries.json)</string>
   <string name="custom_media_urls_invalid">One or more URLs are invalid</string>
 
   <!-- Main / Video Sources / Local+USB videos -->

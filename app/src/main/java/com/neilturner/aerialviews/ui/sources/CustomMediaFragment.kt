@@ -4,7 +4,6 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
 import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
@@ -27,7 +26,7 @@ class CustomMediaFragment : MenuStateFragment() {
         }
 
         if (preference.key.contains("custom_media_test_connection")) {
-            // lifecycleScope.launch { testSambaConnection() }
+            // lifecycleScope.launch { xyz() }
             return true
         }
 
@@ -56,14 +55,6 @@ class CustomMediaFragment : MenuStateFragment() {
                 true
             }
         urls?.let { updateUrlsSummary(it.text) }
-
-        val quality = findPreference<ListPreference>("custom_media_quality")
-        quality?.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _, newValue ->
-                updateDataUsageSummary(quality.findIndexOfValue(newValue as String))
-                true
-            }
-        quality?.findIndexOfValue(quality.value)?.let { updateDataUsageSummary(it) }
 
         val sceneType = findPreference<MultiSelectListPreference>("custom_media_scene_type")
         sceneType?.onPreferenceChangeListener =
@@ -97,14 +88,6 @@ class CustomMediaFragment : MenuStateFragment() {
             validUrls.size == 1 -> "1 URL configured"
             else -> "${validUrls.size} URLs configured"
         }
-    }
-
-    private fun updateDataUsageSummary(index: Int) {
-//        val res = context?.resources ?: return
-//        val dataUsage = findPreference<Preference>("custom_media_data_usage") ?: return
-//        val bitrateList = res.getStringArray(R.array.apple_videos_data_usage_values)
-//        val bitrate = bitrateList[index]
-//        dataUsage.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 
     private fun updateMultiSelectSummary(
