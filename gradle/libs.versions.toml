@@ -115,8 +115,8 @@ androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "ac
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui"]
 flowbus = ["flowbus", "flowbus-android"]
-kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer", "logging-interceptor"]
-retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization"]
+kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
+retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "logging-interceptor"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 
