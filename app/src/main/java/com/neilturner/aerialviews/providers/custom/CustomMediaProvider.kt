@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.providers
+package com.neilturner.aerialviews.providers.custom
 
 import android.content.Context
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -6,18 +6,16 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SceneType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
+import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.models.videos.CustomVideos
-import com.neilturner.aerialviews.models.videos.Manifest
+import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.UrlValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.http.GET
-import retrofit2.http.Url
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -64,7 +62,7 @@ class CustomMediaProvider(
         val urls = UrlValidator.parseUrls(prefs.urls)
 
         if (urls.isEmpty()) {
-            Timber.w("No valid URLs found in custom media preferences")
+            Timber.Forest.w("No valid URLs found in custom media preferences")
             return
         }
 
@@ -74,16 +72,16 @@ class CustomMediaProvider(
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://example.com/") // Base URL required but not used for @Url
+            .baseUrl("http://example.com") // Base URL required but not used for @Url
             .client(okHttpClient)
             .addConverterFactory(JsonHelper.buildSerializer())
             .build()
 
-        val apiService = retrofit.create(CustomMediaApiService::class.java)
+        val apiService = retrofit.create(CustomApi::class.java)
 
         for (url in urls) {
             try {
-                Timber.d("Processing URL: $url")
+                Timber.Forest.d("Processing URL: $url")
 
                 // First try to parse as manifest format
                 val manifestUrls = tryParseAsManifest(apiService, url)
@@ -97,15 +95,15 @@ class CustomMediaProvider(
                     processEntriesUrl(apiService, url, quality)
                 }
             } catch (e: Exception) {
-                Timber.w(e, "Failed to process URL: $url")
+                Timber.Forest.w(e, "Failed to process URL: $url")
             }
         }
 
-        Timber.i("${metadata.count()} metadata items found")
-        Timber.i("${videos.count()} $quality videos found")
+        Timber.Forest.i("${metadata.count()} metadata items found")
+        Timber.Forest.i("${videos.count()} $quality videos found")
     }
 
-    private suspend fun tryParseAsManifest(apiService: CustomMediaApiService, url: String): List<String> {
+    private suspend fun tryParseAsManifest(apiService: CustomApi, url: String): List<String> {
         return withContext(Dispatchers.IO) {
             try {
                 val manifest = apiService.getManifest(url)
@@ -114,26 +112,26 @@ class CustomMediaProvider(
                 manifest.sources.forEach { source ->
                     if (source.manifestUrl.isNotBlank()) {
                         entriesUrls.add(source.manifestUrl)
-                        Timber.d("Found manifest entry: ${source.name} -> ${source.manifestUrl}")
+                        Timber.Forest.d("Found manifest entry: ${source.name} -> ${source.manifestUrl}")
                     }
                 }
 
                 entriesUrls
             } catch (e: Exception) {
-                Timber.d("URL is not a manifest format: $url - ${e.message}")
+                Timber.Forest.d("URL is not a manifest format: $url - ${e.message}")
                 emptyList()
             }
         }
     }
 
-    private suspend fun processEntriesUrl(apiService: CustomMediaApiService, url: String, quality: com.neilturner.aerialviews.models.enums.VideoQuality?) {
+    private suspend fun processEntriesUrl(apiService: CustomApi, url: String, quality: VideoQuality?) {
         withContext(Dispatchers.IO) {
             try {
                 val customVideos = apiService.getCustomVideos(url)
 
                 customVideos.assets?.forEach { asset ->
-                    val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
-                    val scene = SceneType.fromString(asset.scene)
+                    val timeOfDay = TimeOfDay.Companion.fromString(asset.timeOfDay)
+                    val scene = SceneType.Companion.fromString(asset.scene)
 
                     val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
                     val sceneMatches = prefs.scene.contains(scene.toString())
@@ -149,7 +147,7 @@ class CustomMediaProvider(
                             ),
                         )
                     } else if (prefs.enabled) {
-                        Timber.d("Filtering out video: ${asset.description}")
+                        Timber.Forest.d("Filtering out video: ${asset.description}")
                     }
 
                     val data = Pair(
@@ -163,18 +161,10 @@ class CustomMediaProvider(
                     }
                 }
 
-                Timber.d("Processed ${customVideos.assets?.size ?: 0} videos from $url")
+                Timber.Forest.d("Processed ${customVideos.assets?.size ?: 0} videos from $url")
             } catch (e: Exception) {
-                Timber.w(e, "Failed to parse entries from URL: $url")
+                Timber.Forest.w(e, "Failed to parse entries from URL: $url")
             }
         }
-    }
-
-    interface CustomMediaApiService {
-        @GET
-        suspend fun getManifest(@Url url: String): Manifest
-
-        @GET
-        suspend fun getCustomVideos(@Url url: String): CustomVideos
     }
 }

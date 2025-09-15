@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
+import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
@@ -20,6 +21,7 @@ import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.custom.CustomMediaProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
@@ -44,6 +46,7 @@ class MediaService(
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
+        providers.add(CustomMediaProvider(context, CustomMediaPrefs))
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
