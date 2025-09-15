@@ -5,6 +5,7 @@ enum class AerialMediaSource {
     APPLE,
     COMM1,
     COMM2,
+    CUSTOM,
     LOCAL,
     SAMBA,
     WEBDAV,
