@@ -161,7 +161,7 @@
   <string name="custom_media_enabled">Use custom feeds</string>
   <string name="custom_media_test_connection">Test connection settings</string>
 
-  <string name="custom_media_urls_title">Custom URLs</string>
+  <string name="custom_media_urls_title">Feed URLs</string>
   <string name="custom_media_urls_summary">Enter video URLs separated by commas (e.g., https://example.com/manifest.json, https://example.com/entries.json)</string>
   <string name="custom_media_urls_invalid">One or more URLs are invalid</string>
 
@@ -332,8 +332,8 @@
   <string name="settings_playlist_title">Playlist</string>
   <string name="settings_playlist_summary">Change volume, mute videos, shuffle, video length, looping, etc</string>
 
-  <string name="settings_dpad_title">D-Pad/Remote</string>
-  <string name="settings_dpad_summary">Customise d-pad actions on your remote</string>
+  <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
+  <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 
   <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
@@ -409,7 +409,7 @@
   <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
   <string name="weather_location_searching">Searching for locations…</string>
 
-  <string name="weather_forecast_title">Current forecast</string>
+  <string name="weather_forecast_title">Configure Current Forecast</string>
   <string name="weather_forecast_temperature_units_title">Temperature units</string>
   <string name="weather_forecast_summary">Change the layout of the forecast information</string>
 
@@ -572,13 +572,13 @@
   <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
 
   <!-- Main / Settings / D-Pad/Remote -->
-  <string name="dpad_button_press_title">Button or D-Pad Press</string>
+  <string name="dpad_button_press_title">D-Pad or Button Press</string>
   <string name="dpad_button_press_summary">Configure d-pad or button press actions</string>
 
-  <string name="dpad_button_press_and_hold_title">Button or D-Pad Press &amp; Hold</string>
+  <string name="dpad_button_press_and_hold_title">D-Pad or Button Press &amp; Hold</string>
   <string name="dpad_button_press_and_hold_summary">Configure d-pad or button press and hold actions</string>
 
-  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap gestures</string>
+  <string name="dpad_swipe_and_tap_title">Screen Swipe &amp; Tap Gestures</string>
   <string name="dpad_swipe_and_tap_summary">Configure swipe and tap actions for phone and tablets</string>
 
   <string name="dpad_button_left_title">Left direction</string>
