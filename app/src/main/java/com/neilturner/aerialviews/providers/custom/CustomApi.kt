@@ -7,15 +7,19 @@ import retrofit2.http.Url
 
 interface CustomApi {
     @GET
-    suspend fun getManifest(@Url url: String): Manifest
+    suspend fun getManifest(
+        @Url url: String,
+    ): Manifest
 
     @GET
-    suspend fun getCustomVideos(@Url url: String): CustomVideos
+    suspend fun getCustomVideos(
+        @Url url: String,
+    ): CustomVideos
 }
 
 @Serializable
 data class CustomVideos(
-    val assets: List<Comm1Video>? = null
+    val assets: List<Comm1Video>? = null,
 )
 
 @Serializable
@@ -27,10 +31,10 @@ data class ManifestSource(
     val license: String? = null,
     val more: String? = null,
     val local: Boolean = false,
-    val cacheable: Boolean = true
+    val cacheable: Boolean = true,
 )
 
 @Serializable
 data class Manifest(
-    val sources: List<ManifestSource>
+    val sources: List<ManifestSource>,
 )

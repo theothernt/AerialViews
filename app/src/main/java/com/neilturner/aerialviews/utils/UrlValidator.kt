@@ -12,29 +12,29 @@ data class UrlValidationResult(
     val isValid: Boolean,
     val isAccessible: Boolean = false,
     val containsJson: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )
 
 object UrlValidator {
-
-    private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .build()
+    private val okHttpClient =
+        OkHttpClient
+            .Builder()
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(10, TimeUnit.SECONDS)
+            .build()
 
     private val json = Json { ignoreUnknownKeys = true }
 
     /**
      * Validates a single URL format only
      */
-    fun isValidUrl(url: String): Boolean {
-        return try {
+    fun isValidUrl(url: String): Boolean =
+        try {
             UrlParser.parseServerUrl(url)
             true
         } catch (_: Exception) {
             false
         }
-    }
 
     /**
      * Validates a single URL with network testing and JSON validation
@@ -46,10 +46,12 @@ object UrlValidator {
                 val parsedUrl = UrlParser.parseServerUrl(url)
 
                 // Then test network accessibility
-                val request = Request.Builder()
-                    .url(parsedUrl)
-                    .head() // Use HEAD request first to avoid downloading large content
-                    .build()
+                val request =
+                    Request
+                        .Builder()
+                        .url(parsedUrl)
+                        .head() // Use HEAD request first to avoid downloading large content
+                        .build()
 
                 val response = okHttpClient.newCall(request).execute()
 
@@ -57,20 +59,22 @@ object UrlValidator {
                     return@withContext UrlValidationResult(
                         isValid = true,
                         isAccessible = false,
-                        error = "HTTP ${response.code}: ${response.message}"
+                        error = "HTTP ${response.code}: ${response.message}",
                     )
                 }
 
                 // Check if content type suggests JSON
                 val contentType = response.header("content-type")?.lowercase()
-                val mightBeJson = contentType?.contains("json") == true ||  contentType?.contains("text") == true
+                val mightBeJson = contentType?.contains("json") == true || contentType?.contains("text") == true
 
                 if (mightBeJson) {
                     // If it might be JSON, make a GET request to verify
-                    val getRequest = Request.Builder()
-                        .url(parsedUrl)
-                        .get()
-                        .build()
+                    val getRequest =
+                        Request
+                            .Builder()
+                            .url(parsedUrl)
+                            .get()
+                            .build()
 
                     val getResponse = okHttpClient.newCall(getRequest).execute()
 
@@ -82,7 +86,7 @@ object UrlValidator {
                             isValid = true,
                             isAccessible = true,
                             containsJson = containsJson,
-                            error = if (!containsJson) "Response is not valid JSON" else null
+                            error = if (!containsJson) "Response is not valid JSON" else null,
                         )
                     }
                 }
@@ -91,15 +95,14 @@ object UrlValidator {
                     isValid = true,
                     isAccessible = true,
                     containsJson = false,
-                    error = "Content does not appear to be JSON (Content-Type: $contentType)"
+                    error = "Content does not appear to be JSON (Content-Type: $contentType)",
                 )
-
             } catch (e: Exception) {
                 Timber.w("URL validation failed: $url - ${e.message}")
                 UrlValidationResult(
                     isValid = false,
                     isAccessible = false,
-                    error = e.message
+                    error = e.message,
                 )
             }
         }
@@ -152,7 +155,8 @@ object UrlValidator {
             return emptyList()
         }
 
-        return urlsString?.split(",")
+        return urlsString
+            ?.split(",")
             ?.map { it.trim() }
             ?.filter { it.isNotEmpty() }
             ?.mapNotNull { url ->
@@ -168,12 +172,11 @@ object UrlValidator {
     /**
      * Checks if a string contains valid JSON
      */
-    private fun isValidJson(jsonString: String): Boolean {
-        return try {
+    private fun isValidJson(jsonString: String): Boolean =
+        try {
             json.parseToJsonElement(jsonString)
             true
         } catch (_: Exception) {
             false
         }
-    }
 }

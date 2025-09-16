@@ -36,25 +36,24 @@ class CustomMediaProvider(
     }
 
     override suspend fun fetchTest(): String {
-        // Run series of tests to validate URLs, connection, content is JSON, etc.
-        // If URL is valid and contains JSON, quick validation with Regex for manifest/entries format
-        // If any valid URLs left, run buildVideoAndMetadata to parse and build list of videos
+        val validationResults = UrlValidator.validateUrlsWithNetworkTest(prefs.urls)
+        val validUrls = validationResults.filter { it.value.isValid && it.value.isAccessible && it.value.containsJson }.keys.toList()
 
-        // val urls = validateUrlsAndJsonContent()
-        // if (urls.isNotEmpty()) buildVideoAndMetadata()
-
-        // Should return result - count + message or summary?
-        return ""
+        return if (validUrls.isNotEmpty()) {
+            buildVideoAndMetadata()
+            "${videos.size} videos found from ${validUrls.size} valid URLs."
+        } else {
+            val errorSummary =
+                validationResults.entries.joinToString("\n") { (url, result) ->
+                    "$url: ${result.error ?: "Unknown error"}"
+                }
+            "No valid URLs found.\n$errorSummary"
+        }
     }
 
     override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
         if (metadata.isEmpty()) buildVideoAndMetadata()
         return metadata
-    }
-
-    private fun validateUrlsAndJsonContent(): String {
-
-        return ""
     }
 
     private suspend fun buildVideoAndMetadata() {
@@ -66,16 +65,20 @@ class CustomMediaProvider(
             return
         }
 
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .build()
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build()
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://example.com") // Base URL required but not used for @Url
-            .client(okHttpClient)
-            .addConverterFactory(JsonHelper.buildSerializer())
-            .build()
+        val retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl("http://example.com") // Base URL required but not used for @Url
+                .client(okHttpClient)
+                .addConverterFactory(JsonHelper.buildSerializer())
+                .build()
 
         val apiService = retrofit.create(CustomApi::class.java)
 
@@ -103,8 +106,11 @@ class CustomMediaProvider(
         Timber.Forest.i("${videos.count()} $quality videos found")
     }
 
-    private suspend fun tryParseAsManifest(apiService: CustomApi, url: String): List<String> {
-        return withContext(Dispatchers.IO) {
+    private suspend fun tryParseAsManifest(
+        apiService: CustomApi,
+        url: String,
+    ): List<String> =
+        withContext(Dispatchers.IO) {
             try {
                 val manifest = apiService.getManifest(url)
                 val entriesUrls = mutableListOf<String>()
@@ -122,9 +128,12 @@ class CustomMediaProvider(
                 emptyList()
             }
         }
-    }
 
-    private suspend fun processEntriesUrl(apiService: CustomApi, url: String, quality: VideoQuality?) {
+    private suspend fun processEntriesUrl(
+        apiService: CustomApi,
+        url: String,
+        quality: VideoQuality?,
+    ) {
         withContext(Dispatchers.IO) {
             try {
                 val customVideos = apiService.getCustomVideos(url)
@@ -150,12 +159,13 @@ class CustomMediaProvider(
                         Timber.Forest.d("Filtering out video: ${asset.description}")
                     }
 
-                    val data = Pair(
-                        asset.description,
-                        asset.pointsOfInterest.mapValues { poi ->
-                            poi.value // No string mapping for custom videos
-                        },
-                    )
+                    val data =
+                        Pair(
+                            asset.description,
+                            asset.pointsOfInterest.mapValues { poi ->
+                                poi.value // No string mapping for custom videos
+                            },
+                        )
                     asset.allUrls().forEach { videoUrl ->
                         metadata[videoUrl] = data
                     }
