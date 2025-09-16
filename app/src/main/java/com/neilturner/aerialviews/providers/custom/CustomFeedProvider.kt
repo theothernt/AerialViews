@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.utils.UrlValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -65,9 +66,15 @@ class CustomFeedProvider(
             return
         }
 
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BASIC
+            }
+
         val okHttpClient =
             OkHttpClient
                 .Builder()
+                // .addInterceptor(logging)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
