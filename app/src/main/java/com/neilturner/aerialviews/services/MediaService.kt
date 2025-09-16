@@ -21,7 +21,7 @@ import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
-import com.neilturner.aerialviews.providers.custom.CustomMediaProvider
+import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
@@ -46,7 +46,7 @@ class MediaService(
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
-        providers.add(CustomMediaProvider(context, CustomMediaPrefs))
+        providers.add(CustomFeedProvider(context, CustomMediaPrefs))
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
@@ -85,7 +85,7 @@ class MediaService(
             // Try to match videos with Apple, Community metadata for location/description
             val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
             var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers, manifestDescriptionStyle)
-            Timber.i("Manifest Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
+            Timber.i("FeedManifests Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
             // Split photos in those with metadata and those without
             var (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }

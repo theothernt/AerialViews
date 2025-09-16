@@ -19,7 +19,7 @@ import retrofit2.Retrofit
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class CustomMediaProvider(
+class CustomFeedProvider(
     context: Context,
     private val prefs: CustomMediaPrefs,
 ) : MediaProvider(context) {
@@ -45,9 +45,9 @@ class CustomMediaProvider(
         } else {
             val errorSummary =
                 validationResults.entries.joinToString("\n") { (url, result) ->
-                    "$url: ${result.error ?: "Unknown error"}"
+                    "${result.error ?: "Unknown error"}\n\n$url"
                 }
-            "No valid URLs found.\n$errorSummary"
+            "No valid URLs found.\n\n$errorSummary"
         }
     }
 
@@ -80,7 +80,7 @@ class CustomMediaProvider(
                 .addConverterFactory(JsonHelper.buildSerializer())
                 .build()
 
-        val apiService = retrofit.create(CustomApi::class.java)
+        val apiService = retrofit.create(CustomFeedApi::class.java)
 
         for (url in urls) {
             try {
@@ -107,7 +107,7 @@ class CustomMediaProvider(
     }
 
     private suspend fun tryParseAsManifest(
-        apiService: CustomApi,
+        apiService: CustomFeedApi,
         url: String,
     ): List<String> =
         withContext(Dispatchers.IO) {
@@ -130,13 +130,13 @@ class CustomMediaProvider(
         }
 
     private suspend fun processEntriesUrl(
-        apiService: CustomApi,
+        apiService: CustomFeedApi,
         url: String,
         quality: VideoQuality?,
     ) {
         withContext(Dispatchers.IO) {
             try {
-                val customVideos = apiService.getCustomVideos(url)
+                val customVideos = apiService.getVideos(url)
 
                 customVideos.assets?.forEach { asset ->
                     val timeOfDay = TimeOfDay.Companion.fromString(asset.timeOfDay)

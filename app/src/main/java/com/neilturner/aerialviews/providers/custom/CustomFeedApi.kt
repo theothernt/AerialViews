@@ -5,36 +5,31 @@ import kotlinx.serialization.Serializable
 import retrofit2.http.GET
 import retrofit2.http.Url
 
-interface CustomApi {
+interface CustomFeedApi {
     @GET
     suspend fun getManifest(
         @Url url: String,
-    ): Manifest
+    ): FeedManifests
 
     @GET
-    suspend fun getCustomVideos(
+    suspend fun getVideos(
         @Url url: String,
-    ): CustomVideos
+    ): FeedVideos
 }
 
 @Serializable
-data class CustomVideos(
+data class FeedVideos(
     val assets: List<Comm1Video>? = null,
 )
 
 @Serializable
-data class ManifestSource(
+data class FeedManifest(
     val name: String,
     val description: String? = null,
-    val scenes: List<String>? = null,
     val manifestUrl: String,
-    val license: String? = null,
-    val more: String? = null,
-    val local: Boolean = false,
-    val cacheable: Boolean = true,
 )
 
 @Serializable
-data class Manifest(
-    val sources: List<ManifestSource>,
+data class FeedManifests(
+    val sources: List<FeedManifest>,
 )

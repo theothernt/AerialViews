@@ -23,7 +23,7 @@ object UrlValidator {
             .readTimeout(10, TimeUnit.SECONDS)
             .build()
 
-    private val json = Json { ignoreUnknownKeys = true }
+    private val json = Json { ignoreUnknownKeys = true; isLenient = true }
 
     /**
      * Validates a single URL format only

@@ -9,7 +9,7 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
-import com.neilturner.aerialviews.providers.custom.CustomMediaProvider
+import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlValidator
@@ -46,7 +46,7 @@ class CustomMediaFragment : MenuStateFragment() {
             )
         progressDialog.show()
 
-        val provider = CustomMediaProvider(requireContext(), CustomMediaPrefs)
+        val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
         val result = provider.fetchTest()
 
         progressDialog.dismiss()
