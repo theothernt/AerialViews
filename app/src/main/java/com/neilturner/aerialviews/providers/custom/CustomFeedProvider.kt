@@ -61,7 +61,7 @@ class CustomFeedProvider(
         val urls = UrlValidator.parseUrls(prefs.urls)
 
         if (urls.isEmpty()) {
-            Timber.Forest.w("No valid URLs found in custom media preferences")
+            Timber.w("No valid URLs found in custom media preferences")
             return
         }
 
@@ -80,30 +80,30 @@ class CustomFeedProvider(
                 .addConverterFactory(JsonHelper.buildSerializer())
                 .build()
 
-        val apiService = retrofit.create(CustomFeedApi::class.java)
+        val customFeedApi = retrofit.create(CustomFeedApi::class.java)
 
         for (url in urls) {
             try {
-                Timber.Forest.d("Processing URL: $url")
+                Timber.d("Processing URL: $url")
 
                 // First try to parse as manifest format
-                val manifestUrls = tryParseAsManifest(apiService, url)
+                val manifestUrls = tryParseAsManifest(customFeedApi, url)
                 if (manifestUrls.isNotEmpty()) {
                     // Process each entries URL from the manifest
                     for (entriesUrl in manifestUrls) {
-                        processEntriesUrl(apiService, entriesUrl, quality)
+                        processEntriesUrl(customFeedApi, entriesUrl, quality)
                     }
                 } else {
                     // Try to parse directly as entries format
-                    processEntriesUrl(apiService, url, quality)
+                    processEntriesUrl(customFeedApi, url, quality)
                 }
             } catch (e: Exception) {
-                Timber.Forest.w(e, "Failed to process URL: $url")
+                Timber.w(e, "Failed to process URL: $url")
             }
         }
 
-        Timber.Forest.i("${metadata.count()} metadata items found")
-        Timber.Forest.i("${videos.count()} $quality videos found")
+        Timber.i("${metadata.count()} metadata items found")
+        Timber.i("${videos.count()} $quality videos found")
     }
 
     private suspend fun tryParseAsManifest(
@@ -111,22 +111,31 @@ class CustomFeedProvider(
         url: String,
     ): List<String> =
         withContext(Dispatchers.IO) {
+            val manifestUrls = mutableListOf<String>()
             try {
                 val manifest = apiService.getManifest(url)
-                val entriesUrls = mutableListOf<String>()
+                Timber.i("Manifest name: ${manifest.name}")
+                manifestUrls.add(manifest.manifestUrl)
+            } catch (e: Exception) {
+                Timber.d("URL is not a manifest format: $url - ${e.message}")
+            }
 
-                manifest.sources.forEach { source ->
+            try {
+                val manifests = apiService.getManifests(url)
+                val entriesUrls = mutableListOf<String>()
+                manifests.sources.forEach { source ->
                     if (source.manifestUrl.isNotBlank()) {
                         entriesUrls.add(source.manifestUrl)
-                        Timber.Forest.d("Found manifest entry: ${source.name} -> ${source.manifestUrl}")
+                        Timber.d("Found manifest entry: ${source.name} -> ${source.manifestUrl}")
                     }
                 }
 
-                entriesUrls
+                manifestUrls.addAll(entriesUrls)
             } catch (e: Exception) {
-                Timber.Forest.d("URL is not a manifest format: $url - ${e.message}")
-                emptyList()
+                Timber.d("URL is not a manifest list format: $url - ${e.message}")
             }
+
+            return@withContext manifestUrls
         }
 
     private suspend fun processEntriesUrl(
@@ -156,7 +165,7 @@ class CustomFeedProvider(
                             ),
                         )
                     } else if (prefs.enabled) {
-                        Timber.Forest.d("Filtering out video: ${asset.description}")
+                        Timber.d("Filtering out video: ${asset.description}")
                     }
 
                     val data =
@@ -171,9 +180,9 @@ class CustomFeedProvider(
                     }
                 }
 
-                Timber.Forest.d("Processed ${customVideos.assets?.size ?: 0} videos from $url")
+                Timber.d("Processed ${customVideos.assets?.size ?: 0} videos from $url")
             } catch (e: Exception) {
-                Timber.Forest.w(e, "Failed to parse entries from URL: $url")
+                Timber.w(e, "Failed to parse entries from URL: $url")
             }
         }
     }

@@ -7,9 +7,14 @@ import retrofit2.http.Url
 
 interface CustomFeedApi {
     @GET
-    suspend fun getManifest(
+    suspend fun getManifests(
         @Url url: String,
     ): FeedManifests
+
+    @GET
+    suspend fun getManifest(
+        @Url url: String,
+    ): FeedManifest
 
     @GET
     suspend fun getVideos(
