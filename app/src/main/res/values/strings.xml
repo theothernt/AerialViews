@@ -142,6 +142,34 @@
   <string name="sources_immich_title">Immich server</string>
   <string name="sources_immich_summary">Play videos &amp; photos from an Immich server</string>
 
+  <!-- Main / Video Sources / Common -->
+  <!-- Media Provider Error Messages -->
+  <string name="error_missing_hostname_or_ip">Hostname or IP address is required</string>
+  <string name="error_missing_hostname_or_ip_and_port">Hostname/IP address and port are required</string>
+  <string name="error_missing_username">Username is required</string>
+  <string name="error_missing_password">Password is required</string>
+  <string name="error_missing_pathname">Path name is required</string>
+  <string name="error_missing_folder">Folder is required</string>
+  <string name="error_missing_volume">Volume is required</string>
+  <string name="error_missing_api_key">API key is required</string>
+  <string name="error_missing_shared_link">Shared link is required</string>
+  <string name="error_invalid_hostname_or_ip">Invalid hostname or IP address</string>
+  <string name="error_invalid_hostname_or_ip_and_port">Invalid hostname/IP address or port</string>
+  <string name="error_invalid_folder">Invalid folder path</string>
+  <string name="error_invalid_volume">Invalid volume</string>
+  <string name="error_invalid_api_key">Invalid API key</string>
+  <string name="error_invalid_shared_link">Invalid shared link</string>
+  <string name="error_no_internet_connection">No internet connection available</string>
+  <string name="error_authentication_failed">Authentication failed</string>
+  <string name="error_connection_failed">Connection failed</string>
+  <string name="error_connection_successful">Connection successful</string>
+  <string name="error_network_error">Network error occurred</string>
+  <string name="error_api_error">API error occurred</string>
+  <string name="error_ssl_error">SSL connection error</string>
+  <string name="error_timeout_error">Connection timeout</string>
+  <string name="error_permission_denied">Permission denied</string>
+  <string name="error_unknown_error">An unknown error occurred</string>
+
   <!-- Main / Video Sources / Apple videos -->
   <string name="apple_videos_enabled">Use Apple videos</string>
 
