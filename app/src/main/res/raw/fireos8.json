@@ -1,0 +1,1360 @@
+{
+    "assets": [
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Fisk Train",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d1b2090f-f2ad-49fa-bbc7-4ec64957680b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d1b2090f-f2ad-49fa-bbc7-4ec64957680b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d1b2090f-f2ad-49fa-bbc7-4ec64957680b.mp4",
+            "pointsOfInterest": {
+                "0": "A huge school of Yellowtail Snapper fish gather in formation, creating a colorful train of marine life."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Color on Parade",
+            "title": "",
+            "scene": "nature",
+            "id": "content-91fbd4d1-6ec9-4593-a7ac-f60a6ce76f3f",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-91fbd4d1-6ec9-4593-a7ac-f60a6ce76f3f.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-91fbd4d1-6ec9-4593-a7ac-f60a6ce76f3f.mp4",
+            "pointsOfInterest": {
+                "0": "Tropical colorful fish gather in schools and unique formations in clear, tropical waters."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Jack Formatics",
+            "title": "",
+            "scene": "nature",
+            "id": "content-07bdc4a2-e78d-4654-8654-43535af8c250",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-07bdc4a2-e78d-4654-8654-43535af8c250.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-07bdc4a2-e78d-4654-8654-43535af8c250.mp4",
+            "pointsOfInterest": {
+                "0": "Bigeye Jack fish swim in formations in clear tropical waters."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Massive Fish School",
+            "title": "",
+            "scene": "nature",
+            "id": "content-eb587210-bad9-4007-b812-9c3ca0eea447",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-eb587210-bad9-4007-b812-9c3ca0eea447.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-eb587210-bad9-4007-b812-9c3ca0eea447.mp4",
+            "pointsOfInterest": {
+                "0": "Thousands of Bigeye Jack fish gather in unique formations in deep blue tropical waters."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Band of Jacks",
+            "title": "",
+            "scene": "nature",
+            "id": "content-cf158e88-0e98-46a7-9d1c-1d9e47d76475",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cf158e88-0e98-46a7-9d1c-1d9e47d76475.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cf158e88-0e98-46a7-9d1c-1d9e47d76475.mp4",
+            "pointsOfInterest": {
+                "0": "Bigeye Jack fish swim in formations in clear tropical waters."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sardine Bait Balls",
+            "title": "",
+            "scene": "nature",
+            "id": "content-094ad2b1-07ec-40e4-8603-0f4e265d66a8",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-094ad2b1-07ec-40e4-8603-0f4e265d66a8.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-094ad2b1-07ec-40e4-8603-0f4e265d66a8.mp4",
+            "pointsOfInterest": {
+                "0": "Thousands of sardines swim together to form bait balls as a protective device against hungry predators in the deep blue ocean."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Fish Tower",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ff0ab38d-d878-47cd-9499-7e2df0ada55b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ff0ab38d-d878-47cd-9499-7e2df0ada55b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ff0ab38d-d878-47cd-9499-7e2df0ada55b.mp4",
+            "pointsOfInterest": {
+                "0": "A huge tower of fish swim together in the deep blue waters of Cabo Pulmo, Mexico."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sardine Hunters",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f5a26b43-4b28-420c-a4a3-05b011f22546",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f5a26b43-4b28-420c-a4a3-05b011f22546.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f5a26b43-4b28-420c-a4a3-05b011f22546.mp4",
+            "pointsOfInterest": {
+                "0": "Blue Striped Marlin and a Bryde's Whale hunt for sardines in the fruitful waters of Magdalena Bay."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Magdalena Bay Sea Cliffs",
+            "title": "",
+            "scene": "nature",
+            "id": "content-6baf8f6b-0fcc-48c6-8d2f-7a72d8ab0166",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-6baf8f6b-0fcc-48c6-8d2f-7a72d8ab0166.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-6baf8f6b-0fcc-48c6-8d2f-7a72d8ab0166.mp4",
+            "pointsOfInterest": {
+                "0": "Ocean waves crash on the steep sea cliffs that surround the majestic Magdalena Bay of Mexico."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Magdalena Bay Sunset",
+            "title": "",
+            "scene": "nature",
+            "id": "content-82f845c1-85ae-4eba-b57a-7860f1e8e998",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-82f845c1-85ae-4eba-b57a-7860f1e8e998.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-82f845c1-85ae-4eba-b57a-7860f1e8e998.mp4",
+            "pointsOfInterest": {
+                "0": "The sun sets over the clear blue waters of Magdalena Bay, Mexico."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Mangroves Meet Ocean",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ac8b4de6-cc05-442e-aa2f-33a2ec8f92f7",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ac8b4de6-cc05-442e-aa2f-33a2ec8f92f7.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ac8b4de6-cc05-442e-aa2f-33a2ec8f92f7.mp4",
+            "pointsOfInterest": {
+                "0": "Mangroves surround a sea of dunes with the sparkling ocean nearby."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "The Arch of Cabo San Lucas",
+            "title": "",
+            "scene": "nature",
+            "id": "content-af6685b8-c7fe-44c5-865f-223e7cca26b4",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-af6685b8-c7fe-44c5-865f-223e7cca26b4.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-af6685b8-c7fe-44c5-865f-223e7cca26b4.mp4",
+            "pointsOfInterest": {
+                "0": "Flying around the famous landmark The Arch of Cabo San Lucas on a sunny summer day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Beach from Above",
+            "title": "",
+            "scene": "nature",
+            "id": "content-daf38cfa-0974-4c64-b332-8812cf8c831c",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-daf38cfa-0974-4c64-b332-8812cf8c831c.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-daf38cfa-0974-4c64-b332-8812cf8c831c.mp4",
+            "pointsOfInterest": {
+                "0": "Flying around the famous landmark The Arch of Cabo San Lucas on a sunny summer day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Cabo Pulmo Beaches",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f82d75b8-94e1-429d-bdb7-0db5c9fd9725",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f82d75b8-94e1-429d-bdb7-0db5c9fd9725.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f82d75b8-94e1-429d-bdb7-0db5c9fd9725.mp4",
+            "pointsOfInterest": {
+                "0": "Crystal blue waters crash on the shores of Cabo Pulmo on a sunny summer's day, with green hills along the coast."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sea Lion Games",
+            "title": "",
+            "scene": "nature",
+            "id": "content-447b1a9e-53f3-459c-a5cf-dbb717e3d010",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-447b1a9e-53f3-459c-a5cf-dbb717e3d010.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-447b1a9e-53f3-459c-a5cf-dbb717e3d010.mp4",
+            "pointsOfInterest": {
+                "0": "A young sea lion plays with a sinking piece of coral in the safety of a sea lion rookery cave."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Chasing Mackerel",
+            "title": "",
+            "scene": "nature",
+            "id": "content-7a0c7986-cbf4-42a4-8673-b2402f5afc82",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-7a0c7986-cbf4-42a4-8673-b2402f5afc82.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-7a0c7986-cbf4-42a4-8673-b2402f5afc82.mp4",
+            "pointsOfInterest": {
+                "0": "Sea lions chase Mackerel bait balls in the deep waters near Magdalena Bay, Mexico."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "We Are Family",
+            "title": "",
+            "scene": "nature",
+            "id": "content-90eef1c7-9c5d-42d9-a563-993b7d756846",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-90eef1c7-9c5d-42d9-a563-993b7d756846.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-90eef1c7-9c5d-42d9-a563-993b7d756846.mp4",
+            "pointsOfInterest": {
+                "0": "A family of sea lions take a break from hunting and playfully swim together in deep blue waters."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sea Lion Paradise",
+            "title": "",
+            "scene": "nature",
+            "id": "content-fada2d8c-130e-4000-967e-368559c6cc8e",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-fada2d8c-130e-4000-967e-368559c6cc8e.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-fada2d8c-130e-4000-967e-368559c6cc8e.mp4",
+            "pointsOfInterest": {
+                "0": "Thousands of fish make their homes in a sea lion rookery, where sea lions swim through their massive schools."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Parting the Fish Curtain",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f9370703-48ca-447c-905e-234d1a51a0df",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f9370703-48ca-447c-905e-234d1a51a0df.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f9370703-48ca-447c-905e-234d1a51a0df.mp4",
+            "pointsOfInterest": {
+                "0": "Sea Lions and large fish swim through massive schools of smaller fish, creating a shimmering curtain parting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Soda lake bloom",
+            "title": "",
+            "scene": "nature",
+            "id": "content-29ee9e04-4562-43f0-8670-d9ed842615d1",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-29ee9e04-4562-43f0-8670-d9ed842615d1.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-29ee9e04-4562-43f0-8670-d9ed842615d1.mp4",
+            "pointsOfInterest": {
+                "0": "Spring wildflowers bloom alongside Soda Lake in central California."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Morning mist",
+            "title": "",
+            "scene": "nature",
+            "id": "content-8dd41619-4b4d-4077-aa02-5ad62a658f7d",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-8dd41619-4b4d-4077-aa02-5ad62a658f7d.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-8dd41619-4b4d-4077-aa02-5ad62a658f7d.mp4",
+            "pointsOfInterest": {
+                "0": "Morning mist breaks over the California coastline."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Carizzo wildflowers",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d372544f-388a-4811-8f12-1ad3d01f48b2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d372544f-388a-4811-8f12-1ad3d01f48b2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d372544f-388a-4811-8f12-1ad3d01f48b2.mp4",
+            "pointsOfInterest": {
+                "0": "Wildflowers undulate in the wind as seen from above the Carizzo Plain in California."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Trona sunrise and beachside blooms",
+            "title": "",
+            "scene": "nature",
+            "id": "content-dae24c2f-97d6-4ef1-8c94-e4b5e6d57544",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-dae24c2f-97d6-4ef1-8c94-e4b5e6d57544.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-dae24c2f-97d6-4ef1-8c94-e4b5e6d57544.mp4",
+            "pointsOfInterest": {
+                "0": "The sun rises over wildflower-covered desert landscape in the Trona Pinnacles of central California."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Northern Fjords of Norway",
+            "title": "",
+            "scene": "nature",
+            "id": "content-aa6726c3-9b24-4e1b-8e74-46a061385087",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-aa6726c3-9b24-4e1b-8e74-46a061385087.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-aa6726c3-9b24-4e1b-8e74-46a061385087.mp4",
+            "pointsOfInterest": {
+                "0": "Flying over the majestic fjords of northern Norway."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Lofoten Islands",
+            "title": "",
+            "scene": "nature",
+            "id": "content-32bfa054-b5bb-48a3-b05f-e3024057abe1",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-32bfa054-b5bb-48a3-b05f-e3024057abe1.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-32bfa054-b5bb-48a3-b05f-e3024057abe1.mp4",
+            "pointsOfInterest": {
+                "0": "An aerial perspective on the many small islands that make up the beautiful Lofoten archipelago."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Zebras",
+            "title": "",
+            "scene": "nature",
+            "id": "content-efa40377-381b-49b2-a3cb-cae70093fc34",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-efa40377-381b-49b2-a3cb-cae70093fc34.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-efa40377-381b-49b2-a3cb-cae70093fc34.mp4",
+            "pointsOfInterest": {
+                "0": "A herd of zebras graze on grass and socialize on the African savannah."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elephant Sunset",
+            "title": "",
+            "scene": "nature",
+            "id": "content-22b4f764-b0b9-41bc-b02a-4543139ed365",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-22b4f764-b0b9-41bc-b02a-4543139ed365.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-22b4f764-b0b9-41bc-b02a-4543139ed365.mp4",
+            "pointsOfInterest": {
+                "0": "An elephant grazes on marsh grass the sun sets behind it."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Dawn and Dust",
+            "title": "",
+            "scene": "nature",
+            "id": "content-02f6361d-390c-4015-a06d-e92bf6d727aa",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-02f6361d-390c-4015-a06d-e92bf6d727aa.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-02f6361d-390c-4015-a06d-e92bf6d727aa.mp4",
+            "pointsOfInterest": {
+                "0": "The sun rises and the bust blows on epic nature scenes on the African savannah."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Friends On The Savannah",
+            "title": "",
+            "scene": "nature",
+            "id": "content-adeb362a-47c2-475c-b5c5-37879c0a6dfc",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-adeb362a-47c2-475c-b5c5-37879c0a6dfc.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-adeb362a-47c2-475c-b5c5-37879c0a6dfc.mp4",
+            "pointsOfInterest": {
+                "0": "Animal friends groom each other, eat together, and just hand out for the company."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "The Big 5 of Africa",
+            "title": "",
+            "scene": "nature",
+            "id": "content-bfd4ffc6-0901-44dc-b939-da5f3e958eaa",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-bfd4ffc6-0901-44dc-b939-da5f3e958eaa.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-bfd4ffc6-0901-44dc-b939-da5f3e958eaa.mp4",
+            "pointsOfInterest": {
+                "0": "Africa's most famous and iconic animals."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elephants Down By The River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-5853ae03-cf6e-4087-ad46-670ef0b225f2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-5853ae03-cf6e-4087-ad46-670ef0b225f2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-5853ae03-cf6e-4087-ad46-670ef0b225f2.mp4",
+            "pointsOfInterest": {
+                "0": "A large herd of elephants enjoy the afternoon sun while bathing and drinking in the river."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Baboons",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ed1551b4-1a65-4706-922b-1844fa2c85c7",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ed1551b4-1a65-4706-922b-1844fa2c85c7.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ed1551b4-1a65-4706-922b-1844fa2c85c7.mp4",
+            "pointsOfInterest": {
+                "0": "Baboons run, play, climb, and groom each other as the sun sets on Namibia."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Relaxing Lions",
+            "title": "",
+            "scene": "nature",
+            "id": "content-dacdbc4b-3132-4685-a9d1-8478488c8bb4",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-dacdbc4b-3132-4685-a9d1-8478488c8bb4.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-dacdbc4b-3132-4685-a9d1-8478488c8bb4.mp4",
+            "pointsOfInterest": {
+                "0": "Lions spend most of their day resting and relaxing in the shade, saving up their energy for the nightly hunt for food."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Flamingo Bay",
+            "title": "",
+            "scene": "nature",
+            "id": "content-98701494-85bf-4b51-90af-a60921221de8",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-98701494-85bf-4b51-90af-a60921221de8.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-98701494-85bf-4b51-90af-a60921221de8.mp4",
+            "pointsOfInterest": {
+                "0": "Flamingos gather in salty ponds near the ocean in Namibia."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Victoria Falls",
+            "title": "",
+            "scene": "nature",
+            "id": "content-583ab8d7-e2d2-4237-9dba-d27b09e3ac34",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-583ab8d7-e2d2-4237-9dba-d27b09e3ac34.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-583ab8d7-e2d2-4237-9dba-d27b09e3ac34.mp4",
+            "pointsOfInterest": {
+                "0": "One of the natural wonders of the world, Victoria Falls is a massive waterfall surrounded by a lush jungle landscape."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Dunes Of Sossuvlei",
+            "title": "",
+            "scene": "nature",
+            "id": "content-e09fee49-492e-4c84-87ab-16101cc7a8fd",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-e09fee49-492e-4c84-87ab-16101cc7a8fd.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-e09fee49-492e-4c84-87ab-16101cc7a8fd.mp4",
+            "pointsOfInterest": {
+                "0": "The desert sands pile into incredible dunes at Sossuvlei, Namibia."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Namibia Landscapes",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ee377c5d-2076-4279-843e-f5163e4703a3",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ee377c5d-2076-4279-843e-f5163e4703a3.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ee377c5d-2076-4279-843e-f5163e4703a3.mp4",
+            "pointsOfInterest": {
+                "0": "Diverse and expansive landscapes unfold throughout the country of Namibia."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Okavango From The Air",
+            "title": "",
+            "scene": "nature",
+            "id": "content-b3f2b993-31fd-4dea-b8d5-52f048be01e9",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-b3f2b993-31fd-4dea-b8d5-52f048be01e9.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-b3f2b993-31fd-4dea-b8d5-52f048be01e9.mp4",
+            "pointsOfInterest": {
+                "0": "Colorful landscapes unfold on the spectacular Okavango Delta."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Spitzkoppe Peak",
+            "title": "",
+            "scene": "nature",
+            "id": "content-9f2ce803-dda4-4974-a7ed-7003da8c599b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-9f2ce803-dda4-4974-a7ed-7003da8c599b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-9f2ce803-dda4-4974-a7ed-7003da8c599b.mp4",
+            "pointsOfInterest": {
+                "0": "Spitzkoppe Peak rises out of the otherwise flat Namibian desert."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Coastal Sand Dunes",
+            "title": "",
+            "scene": "nature",
+            "id": "content-c36dc382-9f10-4e77-b766-1e35b21eda19",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-c36dc382-9f10-4e77-b766-1e35b21eda19.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-c36dc382-9f10-4e77-b766-1e35b21eda19.mp4",
+            "pointsOfInterest": {
+                "0": "Along the coast of Namibia, sand dunes rise and fall in unique shapes and patterns."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "African Wildlife Icons",
+            "title": "",
+            "scene": "nature",
+            "id": "content-be105994-60f3-4db2-91cb-284eb96ce9cc",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-be105994-60f3-4db2-91cb-284eb96ce9cc.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-be105994-60f3-4db2-91cb-284eb96ce9cc.mp4",
+            "pointsOfInterest": {
+                "0": "Some of Africa's most iconic animals in some of nature's most beautiful places."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Rhythm Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-36e9f743-c256-45b9-a63b-82654e1c5b42",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-36e9f743-c256-45b9-a63b-82654e1c5b42.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-36e9f743-c256-45b9-a63b-82654e1c5b42.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Invigoration Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-2f3ab81b-7375-4265-b71f-0202059420b9",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-2f3ab81b-7375-4265-b71f-0202059420b9.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-2f3ab81b-7375-4265-b71f-0202059420b9.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Focus Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-e854de73-a53f-490a-a9c8-cf84396982eb",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-e854de73-a53f-490a-a9c8-cf84396982eb.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-e854de73-a53f-490a-a9c8-cf84396982eb.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Bliss Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f4047615-05b8-4bfa-b298-e4658eec7772",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f4047615-05b8-4bfa-b298-e4658eec7772.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f4047615-05b8-4bfa-b298-e4658eec7772.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Tranquil Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-24ffa36c-1959-42a1-a4c1-71fd8452122b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-24ffa36c-1959-42a1-a4c1-71fd8452122b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-24ffa36c-1959-42a1-a4c1-71fd8452122b.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Serenity Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-075374d8-6139-41f7-924f-5d3575903663",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-075374d8-6139-41f7-924f-5d3575903663.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-075374d8-6139-41f7-924f-5d3575903663.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Refresh Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-6a822dcb-7920-485e-be60-8b320110a15a",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-6a822dcb-7920-485e-be60-8b320110a15a.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-6a822dcb-7920-485e-be60-8b320110a15a.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Elastic Gradients: Calm Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d56fd6d4-533f-4f21-bb26-fe178b4f3eff",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d56fd6d4-533f-4f21-bb26-fe178b4f3eff.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d56fd6d4-533f-4f21-bb26-fe178b4f3eff.mp4",
+            "pointsOfInterest": {
+                "0": "A hypnotic composition of elastic ribbons that transform through time and space."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Waking Light Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-6fcd1260-daa6-4491-825d-3a1025b7e308",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-6fcd1260-daa6-4491-825d-3a1025b7e308.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-6fcd1260-daa6-4491-825d-3a1025b7e308.mp4",
+            "pointsOfInterest": {
+                "0": "An abstract representation of vibrant sky colors and forms throughout the day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunset Gaze Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-e6d9324f-826e-4adf-93e5-7ccfc9cac7b0",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-e6d9324f-826e-4adf-93e5-7ccfc9cac7b0.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-e6d9324f-826e-4adf-93e5-7ccfc9cac7b0.mp4",
+            "pointsOfInterest": {
+                "0": "An abstract representation of vibrant sky colors and forms throughout the day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Skymelt Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-c05cef2e-8370-44f2-9622-bd3ee48ab959",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-c05cef2e-8370-44f2-9622-bd3ee48ab959.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-c05cef2e-8370-44f2-9622-bd3ee48ab959.mp4",
+            "pointsOfInterest": {
+                "0": "An abstract representation of vibrant sky colors and forms throughout the day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Dancing at Dawn Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-c05cef2e-8370-44f2-9622-bd3ee48ab959",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-b18313eb-00a1-4bde-a91e-89689dd8a9d0.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-b18313eb-00a1-4bde-a91e-89689dd8a9d0.mp4",
+            "pointsOfInterest": {
+                "0": "An abstract representation of vibrant sky colors and forms throughout the day."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "North Symmetry Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-b3a8177f-11a4-4b98-9596-c8d940cb553f",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-b3a8177f-11a4-4b98-9596-c8d940cb553f.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-b3a8177f-11a4-4b98-9596-c8d940cb553f.mp4",
+            "pointsOfInterest": {
+                "0": "A graphical study into the proportions of the Fire TV screen and the conceptual space within.  An underlying 16 x8 'grid' creates a fixed number of 144 geometric shapes, which are digitally manipulated into a sequence of linked compositions. The resulting images are distinct, but not predetermined. Spatial qualities of expansion, layering, scale and symmetry emerge through shifts in colour and form."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "North Spaces Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-98313e1f-eac2-433e-b6a9-b9468c95b74c",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-98313e1f-eac2-433e-b6a9-b9468c95b74c.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-98313e1f-eac2-433e-b6a9-b9468c95b74c.mp4",
+            "pointsOfInterest": {
+                "0": "A graphical study into the proportions of the Fire TV screen and the conceptual space within.  An underlying 16 x8 'grid' creates a fixed number of 144 geometric shapes, which are digitally manipulated into a sequence of linked compositions. The resulting images are distinct, but not predetermined. Spatial qualities of expansion, layering, scale and symmetry emerge through shifts in colour and form."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "North Layering Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-a3c12727-09a4-4b36-8032-5d0ec4433c4b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-a3c12727-09a4-4b36-8032-5d0ec4433c4b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-a3c12727-09a4-4b36-8032-5d0ec4433c4b.mp4",
+            "pointsOfInterest": {
+                "0": "A graphical study into the proportions of the Fire TV screen and the conceptual space within.  An underlying 16 x8 'grid' creates a fixed number of 144 geometric shapes, which are digitally manipulated into a sequence of linked compositions. The resulting images are distinct, but not predetermined. Spatial qualities of expansion, layering, scale and symmetry emerge through shifts in colour and form."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "North Expansion Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-dcfaebce-8cc0-44de-ae49-2b547f4570a3",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-dcfaebce-8cc0-44de-ae49-2b547f4570a3.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-dcfaebce-8cc0-44de-ae49-2b547f4570a3.mp4",
+            "pointsOfInterest": {
+                "0": "A graphical study into the proportions of the Fire TV screen and the conceptual space within.  An underlying 16 x8 'grid' creates a fixed number of 144 geometric shapes, which are digitally manipulated into a sequence of linked compositions. The resulting images are distinct, but not predetermined. Spatial qualities of expansion, layering, scale and symmetry emerge through shifts in colour and form."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Vitality Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-bfb0980c-80d6-4f6f-abb2-542b2c802898",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-bfb0980c-80d6-4f6f-abb2-542b2c802898.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-bfb0980c-80d6-4f6f-abb2-542b2c802898.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Tranquil Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-76a244a0-19d9-4897-95d4-f76aab8ef060",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-76a244a0-19d9-4897-95d4-f76aab8ef060.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-76a244a0-19d9-4897-95d4-f76aab8ef060.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Serenity Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-1988ca2a-79bd-434c-bee4-680abfb79e29",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-1988ca2a-79bd-434c-bee4-680abfb79e29.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-1988ca2a-79bd-434c-bee4-680abfb79e29.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Refresh Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-8b631bb5-fa9b-455c-bea5-1a010539a97b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-8b631bb5-fa9b-455c-bea5-1a010539a97b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-8b631bb5-fa9b-455c-bea5-1a010539a97b.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Invigorate Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-fc1b76f6-4948-4076-9264-3923644ba291",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-fc1b76f6-4948-4076-9264-3923644ba291.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-fc1b76f6-4948-4076-9264-3923644ba291.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Focus Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-eab433cf-10cb-4adb-9f07-2dca2f8ebb6e",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-eab433cf-10cb-4adb-9f07-2dca2f8ebb6e.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-eab433cf-10cb-4adb-9f07-2dca2f8ebb6e.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Light Leaks: Bliss Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-6bbf7359-01d8-44ac-bb21-98a70a5917cb",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-6bbf7359-01d8-44ac-bb21-98a70a5917cb.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-6bbf7359-01d8-44ac-bb21-98a70a5917cb.mp4",
+            "pointsOfInterest": {
+                "0": "A dynamic dream state motion piece with a sculpted lighting effect."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Coastal White Cliffs",
+            "title": "",
+            "scene": "nature",
+            "id": "content-7b30a2e7-f8f6-4b74-9334-8480025c855c",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-7b30a2e7-f8f6-4b74-9334-8480025c855c.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-7b30a2e7-f8f6-4b74-9334-8480025c855c.mp4",
+            "pointsOfInterest": {
+                "0": "Calm ocean waters roll against the white chalk cliffs of the British Isles in daylight."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Cloudy Mountain Sunset",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0337ea90-e015-4a9a-84cc-a34e968a1d10",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0337ea90-e015-4a9a-84cc-a34e968a1d10.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0337ea90-e015-4a9a-84cc-a34e968a1d10.mp4",
+            "pointsOfInterest": {
+                "0": "A mountain top peaks above a current of slowly moving clouds at sunset."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Waterfall In The Forest",
+            "title": "",
+            "scene": "nature",
+            "id": "content-375f9f99-1a78-44f7-8563-cf370a252896",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-375f9f99-1a78-44f7-8563-cf370a252896.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-375f9f99-1a78-44f7-8563-cf370a252896.mp4",
+            "pointsOfInterest": {
+                "0": "A slow motion view of a misty waterfall. Mossy logs and rocks lay in the foreground surrounded by a forest of tall trees."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Swaying Green Leaves",
+            "title": "",
+            "scene": "nature",
+            "id": "content-695f5f09-1d34-43ef-bbcd-9e637b8fbfe2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-695f5f09-1d34-43ef-bbcd-9e637b8fbfe2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-695f5f09-1d34-43ef-bbcd-9e637b8fbfe2.mp4",
+            "pointsOfInterest": {
+                "0": "Close up detail of large tropical leaves as they sway in the breeze."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Smokey Lava Field",
+            "title": "",
+            "scene": "nature",
+            "id": "content-b6efb9f4-7489-4d53-a243-03f8e1c22d6f",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-b6efb9f4-7489-4d53-a243-03f8e1c22d6f.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-b6efb9f4-7489-4d53-a243-03f8e1c22d6f.mp4",
+            "pointsOfInterest": {
+                "0": "Smoke rises as an erupting volcano spews molten hot lava into the air and oozes a river of hot lava with snow covered mountains in the distance."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Rocky Mountainscape",
+            "title": "",
+            "scene": "nature",
+            "id": "content-9fdd7289-060c-47ab-8bd5-0fe657f1a50c",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-9fdd7289-060c-47ab-8bd5-0fe657f1a50c.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-9fdd7289-060c-47ab-8bd5-0fe657f1a50c.mp4",
+            "pointsOfInterest": {
+                "0": "Clouds floating over a rocky mountainscape setting a moody tone. The sun peeks through the clouds illuminating the mountain side in a golden glow."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Lava River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-a741d464-cc97-443d-93c5-2597cc482fa7",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-a741d464-cc97-443d-93c5-2597cc482fa7.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-a741d464-cc97-443d-93c5-2597cc482fa7.mp4",
+            "pointsOfInterest": {
+                "0": "A river of molten hot lava slowly flowing through a rocky terrain."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Ice Field",
+            "title": "",
+            "scene": "nature",
+            "id": "content-cee0c4ce-e264-4b34-9340-40fa6292ac59",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cee0c4ce-e264-4b34-9340-40fa6292ac59.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cee0c4ce-e264-4b34-9340-40fa6292ac59.mp4",
+            "pointsOfInterest": {
+                "0": "Icebergs float in an ocean as the sun sets on snow covered mountains looming in the distance."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Geometric Waterfall",
+            "title": "",
+            "scene": "nature",
+            "id": "content-5109df9c-c9dd-417a-b682-24e3e6edc3e5",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-5109df9c-c9dd-417a-b682-24e3e6edc3e5.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-5109df9c-c9dd-417a-b682-24e3e6edc3e5.mp4",
+            "pointsOfInterest": {
+                "0": "A slow motion view of a waterfall rushing down from a cliff into a swimming hole. Viewed from the water level's perspective."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Forest Stream",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0d31b9ce-c733-4089-9257-ba8234b6eef2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0d31b9ce-c733-4089-9257-ba8234b6eef2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0d31b9ce-c733-4089-9257-ba8234b6eef2.mp4",
+            "pointsOfInterest": {
+                "0": "A tranquil scene of a small stream  gently flowing down the forest floor."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Cloud Covered Mountain",
+            "title": "",
+            "scene": "nature",
+            "id": "content-07a65dc6-ccc9-458d-8d35-d6e3079a9496",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-07a65dc6-ccc9-458d-8d35-d6e3079a9496.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-07a65dc6-ccc9-458d-8d35-d6e3079a9496.mp4",
+            "pointsOfInterest": {
+                "0": "Large plumes of steam rise from Marmolada, the largest mountain in the Dolomite Mountains of northeastern Italy."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Snow Flurry by the River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-5cd28834-7c08-40fa-8660-6ce892e45a8d",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-5cd28834-7c08-40fa-8660-6ce892e45a8d.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-5cd28834-7c08-40fa-8660-6ce892e45a8d.mp4",
+            "pointsOfInterest": {
+                "0": "A snowy winter landscape in Yosemite National Park"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunset Beach Bonfire",
+            "title": "",
+            "scene": "nature",
+            "id": "content-797f3ba6-8913-4215-bdec-29c3ef3be88c",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-797f3ba6-8913-4215-bdec-29c3ef3be88c.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-797f3ba6-8913-4215-bdec-29c3ef3be88c.mp4",
+            "pointsOfInterest": {
+                "0": "Beach bonfire at sunset"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Peaceful Snowy Afternoon",
+            "title": "",
+            "scene": "nature",
+            "id": "content-85922aa7-18a3-4b58-8d8c-4b530070c353",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-85922aa7-18a3-4b58-8d8c-4b530070c353.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-85922aa7-18a3-4b58-8d8c-4b530070c353.mp4",
+            "pointsOfInterest": {
+                "0": "Falling snow in winter at Oirase River in Aomori Prefecture, Japan"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sparks Rising",
+            "title": "",
+            "scene": "nature",
+            "id": "content-8bce100d-9817-420c-b535-5cdd631ec5a9",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-8bce100d-9817-420c-b535-5cdd631ec5a9.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-8bce100d-9817-420c-b535-5cdd631ec5a9.mp4",
+            "pointsOfInterest": {
+                "0": "Bonfire sparks floating over a black background"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Cozy Evening Fire",
+            "title": "",
+            "scene": "nature",
+            "id": "content-df92b4e1-0409-4a57-9ed8-fa63a8c2c597",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-df92b4e1-0409-4a57-9ed8-fa63a8c2c597.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-df92b4e1-0409-4a57-9ed8-fa63a8c2c597.mp4",
+            "pointsOfInterest": {
+                "0": "Wood burning in a cozy fireplace at home"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Calm Fireplace",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f440e359-8b39-48e3-b9b2-c666bc270e27",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f440e359-8b39-48e3-b9b2-c666bc270e27.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f440e359-8b39-48e3-b9b2-c666bc270e27.mp4",
+            "pointsOfInterest": {
+                "0": "Logs burning in fireplace"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Polar Sunset",
+            "title": "",
+            "scene": "nature",
+            "id": "content-f5e21abc-a775-4d9d-bb07-2983787a1a10",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-f5e21abc-a775-4d9d-bb07-2983787a1a10.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-f5e21abc-a775-4d9d-bb07-2983787a1a10.mp4",
+            "pointsOfInterest": {
+                "0": "Winter sunset time-lapse"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Windy Mountain Top",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d22ed373-a23c-416d-b856-9d3848275279",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d22ed373-a23c-416d-b856-9d3848275279.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d22ed373-a23c-416d-b856-9d3848275279.mp4",
+            "pointsOfInterest": {
+                "0": "A snowy scene of Mont Blanc (Dome du Gouter), with strong winds blowing snow across the mountain's shoulder"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Vibrant Sunset",
+            "title": "",
+            "scene": "nature",
+            "id": "content-cbea0741-c4b1-4613-b339-2b2d9049f3aa",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cbea0741-c4b1-4613-b339-2b2d9049f3aa.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cbea0741-c4b1-4613-b339-2b2d9049f3aa.mp4",
+            "pointsOfInterest": {
+                "0": "A colorful sunset over the Atlantic Ocean with vibrant cloudscape"
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunrise Over Water",
+            "title": "",
+            "scene": "nature",
+            "id": "content-9956ed96-db87-4283-b6df-a5982dcdd9b2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-9956ed96-db87-4283-b6df-a5982dcdd9b2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-9956ed96-db87-4283-b6df-a5982dcdd9b2.mp4",
+            "pointsOfInterest": {
+                "0": "A time-lapse of the sun rising over a mountain. The water in the foreground reflects the sun and clouds floating above."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunny Blue Sky",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ab4b56de-5bbe-4475-91ba-daaf63aca172",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ab4b56de-5bbe-4475-91ba-daaf63aca172.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ab4b56de-5bbe-4475-91ba-daaf63aca172.mp4",
+            "pointsOfInterest": {
+                "0": "A sky at sunset in slow motion with white  fluffy clounds."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Snowy River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-8d28ff8d-e91b-47d4-8b8d-792444ea92da",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-8d28ff8d-e91b-47d4-8b8d-792444ea92da.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-8d28ff8d-e91b-47d4-8b8d-792444ea92da.mp4",
+            "pointsOfInterest": {
+                "0": "A winter scene of snow covered trees on each side of a partially frozen river with water flowing through."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sand Dunes",
+            "title": "",
+            "scene": "nature",
+            "id": "content-5f937efd-3e34-4947-86f9-9161b0a2238d",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-5f937efd-3e34-4947-86f9-9161b0a2238d.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-5f937efd-3e34-4947-86f9-9161b0a2238d.mp4",
+            "pointsOfInterest": {
+                "0": "Wind blowing through a desert landscape of sand dunes. Located in the Sahara Desert, Mhamid, Erg Chigaga, Morocco."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Rocky Mountain Sunrise",
+            "title": "",
+            "scene": "nature",
+            "id": "content-1ce566be-9002-4143-ac65-d90f307a4ab8",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-1ce566be-9002-4143-ac65-d90f307a4ab8.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-1ce566be-9002-4143-ac65-d90f307a4ab8.mp4",
+            "pointsOfInterest": {
+                "0": "Sunrise Time Lapse rocky mountains after a heavy snowfall."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Mountain River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-fe8f3976-fcfa-405e-8d5c-286f57df7e74",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-fe8f3976-fcfa-405e-8d5c-286f57df7e74.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-fe8f3976-fcfa-405e-8d5c-286f57df7e74.mp4",
+            "pointsOfInterest": {
+                "0": "A mountain river in the Bavarian Alps, close to the Austrian border in Sylvenstein, Germany in autumn. The water is rushing through naturally formed rocks."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Misty River",
+            "title": "",
+            "scene": "nature",
+            "id": "content-c0055cd6-1b36-459d-8d79-b6ac7a892fcf",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-c0055cd6-1b36-459d-8d79-b6ac7a892fcf.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-c0055cd6-1b36-459d-8d79-b6ac7a892fcf.mp4",
+            "pointsOfInterest": {
+                "0": "A misty river in the Alps  with the evening sun shining through the snow covered trees in the background."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Lavender Fields Motion",
+            "title": "",
+            "scene": "nature",
+            "id": "content-a5448b6c-0a36-4c23-baed-9cd106f2d71e",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-a5448b6c-0a36-4c23-baed-9cd106f2d71e.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-a5448b6c-0a36-4c23-baed-9cd106f2d71e.mp4",
+            "pointsOfInterest": {
+                "0": "Purple fields of blooming lavender flowers in Provence, France."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Gentle Moments",
+            "title": "",
+            "scene": "nature",
+            "id": "content-b69c91bf-9b03-4697-b3e8-23be15b75afc",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-b69c91bf-9b03-4697-b3e8-23be15b75afc.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-b69c91bf-9b03-4697-b3e8-23be15b75afc.mp4",
+            "pointsOfInterest": {
+                "0": "Gentle lake within a serene mountains landscape at sunset."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Aurora Borealis",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0c7e91c9-bec7-453b-9163-cd9605186157",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0c7e91c9-bec7-453b-9163-cd9605186157.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0c7e91c9-bec7-453b-9163-cd9605186157.mp4",
+            "pointsOfInterest": {
+                "0": "A slow motion time lapse of an Aurora Borealis phenomenon over mountains and snow."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Turquoise Coast",
+            "title": "",
+            "scene": "nature",
+            "id": "content-77793fbb-1315-41ca-9b66-0eb92048ea17",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-77793fbb-1315-41ca-9b66-0eb92048ea17.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-77793fbb-1315-41ca-9b66-0eb92048ea17.mp4",
+            "pointsOfInterest": {
+                "0": "An aerial view of turquoise colored sea water and breaking waves on a sandy beach. Located at Oludeniz Beach in Fethiya/Mugla, Turkey on the Aegean Sea."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sponge Coral",
+            "title": "",
+            "scene": "nature",
+            "id": "content-e72ec070-a9ee-4a8b-9845-d5d0525e9347",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-e72ec070-a9ee-4a8b-9845-d5d0525e9347.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-e72ec070-a9ee-4a8b-9845-d5d0525e9347.mp4",
+            "pointsOfInterest": {
+                "0": "A purple and blue sponge coral waving with the water's current."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Siamese Fighting Fish",
+            "title": "",
+            "scene": "nature",
+            "id": "content-3fb8f0dc-83e9-43d8-a500-d95364e60fa4",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-3fb8f0dc-83e9-43d8-a500-d95364e60fa4.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-3fb8f0dc-83e9-43d8-a500-d95364e60fa4.mp4",
+            "pointsOfInterest": {
+                "0": "Vibrant Siamese fighting fish swimming."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sea Anemone",
+            "title": "",
+            "scene": "nature",
+            "id": "content-902bec1a-d887-4b15-b119-1ad179910b44",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-902bec1a-d887-4b15-b119-1ad179910b44.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-902bec1a-d887-4b15-b119-1ad179910b44.mp4",
+            "pointsOfInterest": {
+                "0": "Pink and purple fluorescent sea anemone waving with the water's current, while a clown fish swims through."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Rocky Sea",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d74dea5b-648d-47c2-abc0-ec0876c2eb27",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d74dea5b-648d-47c2-abc0-ec0876c2eb27.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d74dea5b-648d-47c2-abc0-ec0876c2eb27.mp4",
+            "pointsOfInterest": {
+                "0": "An aerial view of stormy waves in Atlantic ocean breaking on black rocks. Set under stormy weather with gusts of wind."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "The Oculus Transportation Hub",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0e2c8ff3-1f28-4c59-bc08-9d813e695100",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0e2c8ff3-1f28-4c59-bc08-9d813e695100.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0e2c8ff3-1f28-4c59-bc08-9d813e695100.mp4",
+            "pointsOfInterest": {
+                "0": "A view from under the eaves of the NYC World Trade Center Transportation Hub, The Oculus."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunset at the Sydney Opera House",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0d9639cb-46b1-44b1-952b-abd80507f0b5",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0d9639cb-46b1-44b1-952b-abd80507f0b5.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0d9639cb-46b1-44b1-952b-abd80507f0b5.mp4",
+            "pointsOfInterest": {
+                "0": "The Sydney Opera house silhouette's a beautiful ocean sunset in the harbour."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Sunny Afternoon in Florence, Italy",
+            "title": "",
+            "scene": "nature",
+            "id": "content-832de54b-ef9b-469f-bf15-459ab668d1ca",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-832de54b-ef9b-469f-bf15-459ab668d1ca.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-832de54b-ef9b-469f-bf15-459ab668d1ca.mp4",
+            "pointsOfInterest": {
+                "0": "Overlook of Florence, Italy on a sunny afternoon with the Cathedral of Santa Maria del Fiore defining the city skyline."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Neon City",
+            "title": "",
+            "scene": "nature",
+            "id": "content-8cc628a1-1f11-43aa-92a4-8d3026a53272",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-8cc628a1-1f11-43aa-92a4-8d3026a53272.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-8cc628a1-1f11-43aa-92a4-8d3026a53272.mp4",
+            "pointsOfInterest": {
+                "0": "Cars cruise through a neon-lit Singapore cityscape at night."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Clouds Over The Golden Gate Bridge",
+            "title": "",
+            "scene": "nature",
+            "id": "content-dc50fb3c-701a-4c6b-b3e0-e8f82d8b5142",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-dc50fb3c-701a-4c6b-b3e0-e8f82d8b5142.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-dc50fb3c-701a-4c6b-b3e0-e8f82d8b5142.mp4",
+            "pointsOfInterest": {
+                "0": "The Golden Gate Bridge can be seen peeking above the clouds as they slowly roll by."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Bay Bridge over Treasure Island",
+            "title": "",
+            "scene": "nature",
+            "id": "content-cef6e713-0c1b-4eaa-bb5b-21f156046711",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
+            "pointsOfInterest": {
+                "0": "A quiet, sunny afternoon view of The Bay Bridge crossing over Treasure Island."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Bay Bridge over Treasure Island",
+            "title": "",
+            "scene": "nature",
+            "id": "content-cef6e713-0c1b-4eaa-bb5b-21f156046711",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
+            "pointsOfInterest": {
+                "0": "A quiet, sunny afternoon view of The Bay Bridge crossing over Treasure Island."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Spinner Dolphins",
+            "title": "",
+            "scene": "nature",
+            "id": "content-5a9b48bd-f1ba-48d7-a630-5df8345ce488",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-5a9b48bd-f1ba-48d7-a630-5df8345ce488.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-5a9b48bd-f1ba-48d7-a630-5df8345ce488.mp4",
+            "pointsOfInterest": {
+                "0": "One of the many incredible species of marine life that call Hawaii home, these spinner dolphins are curious, playful and inspiring to watch.  They visit the Hawaiian shoreline during the day to rest and socialize, before returning to the deep blue at dusk to find their nightly catch."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Faroe Islands",
+            "title": "",
+            "scene": "nature",
+            "id": "content-e9e7e61e-5ade-4164-95b7-68a0a4e570c2",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-e9e7e61e-5ade-4164-95b7-68a0a4e570c2.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-e9e7e61e-5ade-4164-95b7-68a0a4e570c2.mp4",
+            "pointsOfInterest": {
+                "0": "The Faroe Islands are made up of 18 rocky, volcanic islands between Iceland and Norway in the North Atlantic Ocean. Their rugged terrain and unique landscapes make them a sight to behold from the ground and above."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Shooting Stars Time-lapse",
+            "title": "",
+            "scene": "nature",
+            "id": "content-d4f623e8-d559-4993-b943-cc849024939b",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-d4f623e8-d559-4993-b943-cc849024939b.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-d4f623e8-d559-4993-b943-cc849024939b.mp4",
+            "pointsOfInterest": {
+                "0": "Star trails illuminate the night sky as waves crash along the rocky coastline."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Planet Earth",
+            "title": "",
+            "scene": "nature",
+            "id": "content-a5ba1bdf-afc1-4066-9803-098c31237296",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-a5ba1bdf-afc1-4066-9803-098c31237296.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-a5ba1bdf-afc1-4066-9803-098c31237296.mp4",
+            "pointsOfInterest": {
+                "0": "City lights are seen here from outer space as planet Earth slowly rotates on its axis. The dark vastness of space can be seen behind the curvature of Earth."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Night Sky Time-lapse",
+            "title": "",
+            "scene": "nature",
+            "id": "content-ca8346df-646d-47e1-b997-e0c68785800f",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-ca8346df-646d-47e1-b997-e0c68785800f.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-ca8346df-646d-47e1-b997-e0c68785800f.mp4",
+            "pointsOfInterest": {
+                "0": "The sun sets behind a mountain as the stars appear and travel across the night sky."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Galaxy Time-lapse",
+            "title": "",
+            "scene": "nature",
+            "id": "content-41afee51-85ba-48b2-93da-21fd5a2d165d",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-41afee51-85ba-48b2-93da-21fd5a2d165d.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-41afee51-85ba-48b2-93da-21fd5a2d165d.mp4",
+            "pointsOfInterest": {
+                "0": "A time-lapse of the Milky Way Galaxy traveling across the night sky."
+            }
+        },
+        {
+            "timeOfDay": "day",
+            "accessibilityLabel": "Earth Meets Sky Time-lapse",
+            "title": "",
+            "scene": "nature",
+            "id": "content-0a1d2549-ab74-4f18-a9ed-b0b9cfa031ff",
+            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-0a1d2549-ab74-4f18-a9ed-b0b9cfa031ff.mp4",
+            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-0a1d2549-ab74-4f18-a9ed-b0b9cfa031ff.mp4",
+            "pointsOfInterest": {
+                "0": "Clouds roll over mountaintops and give way to a time-lapse of the Milky Way Galaxy glowing across the night sky."
+            }
+        }
+    ]
+}
