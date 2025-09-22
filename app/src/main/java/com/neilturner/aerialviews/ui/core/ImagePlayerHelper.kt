@@ -54,12 +54,16 @@ internal object ImagePlayerHelper {
             val newRequest =
                 when (ImmichMediaPrefs.authType) {
                     ImmichAuthType.API_KEY -> {
+                        Timber.d("Adding X-API-Key header")
                         originalRequest
                             .newBuilder()
                             .addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
                             .build()
                     }
-                    else -> originalRequest
+                    else -> {
+                        Timber.d("NOT Adding X-API-Key header")
+                        originalRequest
+                    }
                 }
             return chain.proceed(newRequest)
         }
