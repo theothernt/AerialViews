@@ -1262,18 +1262,6 @@
         },
         {
             "timeOfDay": "day",
-            "accessibilityLabel": "Bay Bridge over Treasure Island",
-            "title": "",
-            "scene": "nature",
-            "id": "content-cef6e713-0c1b-4eaa-bb5b-21f156046711",
-            "url-4K-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/UHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
-            "url-1080-SDR": "https://aebcs-cdn-prod-na.services.firetv.amazon.dev/content/FHD/content-cef6e713-0c1b-4eaa-bb5b-21f156046711.mp4",
-            "pointsOfInterest": {
-                "0": "A quiet, sunny afternoon view of The Bay Bridge crossing over Treasure Island."
-            }
-        },
-        {
-            "timeOfDay": "day",
             "accessibilityLabel": "Spinner Dolphins",
             "title": "",
             "scene": "nature",
