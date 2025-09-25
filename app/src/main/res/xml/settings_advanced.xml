@@ -73,5 +73,12 @@
                     app:entryValues="@array/locale_screensaver_values"
                     app:title="@string/advanced_locale_screensaver_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <MultiSelectListPreference
+                    app:key="share_projectivy_videos"
+                    app:entries="@array/projectivy_share_videos_entries"
+                    app:entryValues="@array/projectivy_share_videos_values"
+                    app:title="@string/advanced_projectivy_share_videos_title"
+                    app:summary="@string/advanced_projectivy_share_videos_summary" />
         </PreferenceCategory>
 </PreferenceScreen>

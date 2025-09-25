@@ -947,4 +947,21 @@
     <item>60</item>
   </string-array>
   <string name="sleep_timer_default" translatable="false">0</string>
+
+  <!-- Share Projectivy Videos Options -->
+  <string-array name="projectivy_share_videos_entries">
+    <item>Apple Videos</item>
+    <item>Community Videos (Jetson Creative)</item>
+    <item>Community Videos (Robin Fourcade)</item>
+    <item>Local Videos</item>
+  </string-array>
+  <string-array name="projectivy_share_videos_values" translatable="false">
+    <item>apple</item>
+    <item>comm1</item>
+    <item>comm2</item>
+    <item>local</item>
+  </string-array>
+  <string-array name="projectivy_share_videos_default" translatable="false">
+  </string-array>
+
 </resources>
