@@ -178,6 +178,9 @@ object GeneralPrefs : KotprefModel() {
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
 
+    // Projectivy sharing
+    val shareProjectivyVideos by stringSetPref(emptySet(), "projectivy_share_videos")
+
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")
     var buttonRightPress by nullableEnumValuePref(ButtonType.SKIP_NEXT, "button_right_press")
