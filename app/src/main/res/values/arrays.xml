@@ -951,9 +951,9 @@
   <!-- Share Projectivy Videos Options -->
   <string-array name="projectivy_share_videos_entries">
     <item>Apple Videos</item>
-    <item>Community Videos (Jetson Creative)</item>
-    <item>Community Videos (Robin Fourcade)</item>
-    <item>Local Videos</item>
+    <item>Jetson Creative Videos</item>
+    <item>Robin Fourcade Videos</item>
+    <item>Local/USB Videos</item>
   </string-array>
   <string-array name="projectivy_share_videos_values" translatable="false">
     <item>apple</item>
