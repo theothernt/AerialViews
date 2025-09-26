@@ -80,6 +80,7 @@
   <string name="category_api_usage">API Usage</string>
   <string name="category_clock">Clock</string>
   <string name="category_date">Date</string>
+  <string name="category_3rd_party_apps">3rd Party Apps</string>
   <string name="category_line1">Line 1</string>
   <string name="category_line2">Line 2</string>
   <string name="category_phone_tablet">Phone or Tablet</string>
@@ -637,7 +638,7 @@
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
   <string name="advanced_projectivy_share_videos_title">Share videos with Projectivy</string>
-  <string name="advanced_projectivy_share_videos_summary">Select which video sources to share with Projectivy</string>
+  <string name="advanced_projectivy_share_videos_summary">Select which video sources to share with Projectivy to use as video wallpapers</string>
 
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
