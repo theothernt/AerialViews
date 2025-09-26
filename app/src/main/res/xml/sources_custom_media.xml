@@ -13,9 +13,7 @@
                     app:disableDependentsState="false"
                     app:title="@string/custom_media_test_connection"
                     app:key="custom_media_test_connection" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_feeds">
                 <EditTextPreference
                     app:dependency="custom_media_enabled"
                     app:disableDependentsState="false"
