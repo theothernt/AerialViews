@@ -2,6 +2,9 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import coil3.EventListener
 import coil3.ImageLoader
@@ -9,7 +12,9 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.allowHardware
 import coil3.target.ImageViewTarget
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -32,23 +37,41 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-class ImagePlayerView : AppCompatImageView {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+class ImagePlayerView : FrameLayout {
+    constructor(context: Context) : super(context) {
+        init()
+    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init()
+    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init()
+    }
+
+    private lateinit var backgroundImageView: AppCompatImageView
+    private lateinit var foregroundImageView: AppCompatImageView
 
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
     private val ioScope = CoroutineScope(Dispatchers.IO)
     private val mainScope = CoroutineScope(Dispatchers.Main)
-    private var target = ImageViewTarget(this)
+    private lateinit var target: ImageViewTarget
+    private lateinit var backgroundTarget: ImageViewTarget
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
+
+    private fun init() {
+        LayoutInflater.from(context).inflate(R.layout.image_player_view, this, true)
+        backgroundImageView = findViewById(R.id.background_image)
+        foregroundImageView = findViewById(R.id.foreground_image)
+        target = ImageViewTarget(foregroundImageView)
+        backgroundTarget = ImageViewTarget(backgroundImageView)
+    }
 
     fun release() {
         removeCallbacks(finishedRunnable)
@@ -123,28 +146,27 @@ class ImagePlayerView : AppCompatImageView {
                 ImageRequest
                     .Builder(context)
                     .data(data)
-                    .size(this.width, this.height)
+                    .allowHardware(false)
                     .target(target)
+                    .size(this.width, this.height)
                     .build()
             imageLoader.execute(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
-
-            // Show toast if preference is enabled
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
                     val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
                     ToastHelper.show(context, errorMessage)
                 }
             }
-
             listener?.onImageError()
         }
     }
 
     fun stop() {
         removeCallbacks(finishedRunnable)
-        setImageBitmap(null)
+        foregroundImageView.setImageBitmap(null)
+        backgroundImageView.setImageBitmap(null)
         pausedTimestamp = 0
         remainingDuration = 0
     }
@@ -173,7 +195,7 @@ class ImagePlayerView : AppCompatImageView {
     ) {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        scaleType =
+        val scaleType =
             when (aspect) {
                 AspectRatio.SQUARE -> {
                     getScaleType(GeneralPrefs.photoScalePortrait)
@@ -187,14 +209,18 @@ class ImagePlayerView : AppCompatImageView {
                     getScaleType(GeneralPrefs.photoScaleLandscape)
                 }
             }
+
+        // Apply scale type to both ImageViews
+        foregroundImageView.scaleType = scaleType
+        backgroundImageView.scaleType = ImageView.ScaleType.CENTER_CROP
     }
 
-    private fun getScaleType(scale: PhotoScale?): ScaleType =
+    private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =
         try {
-            ScaleType.valueOf(scale.toString())
+            ImageView.ScaleType.valueOf(scale.toString())
         } catch (e: Exception) {
             Timber.e(e)
-            ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+            ImageView.ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
         }
 
     private fun setupFinishedRunnable() {
