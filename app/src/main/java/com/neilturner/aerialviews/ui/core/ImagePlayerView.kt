@@ -18,9 +18,9 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.request.allowHardware
-import coil3.request.transformations
 import coil3.size.Size
 import coil3.target.ImageViewTarget
+import coil3.toBitmap
 import coil3.transform.Transformation
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -41,6 +41,7 @@ import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.InputStream
@@ -131,6 +132,24 @@ class ImagePlayerView : FrameLayout {
             ) {
                 super.onSuccess(request, result)
                 setScaleMode(result.image.width, result.image.height)
+                
+                // Create blurred background from the same bitmap
+                ioScope.launch {
+                    try {
+                        val bitmap = result.image.toBitmap()
+                        val blurredBitmap = BlurTransformation(25f).transform(bitmap, Size(bitmap.width, bitmap.height))
+                        withContext(Dispatchers.Main) {
+                            backgroundImageView.setImageBitmap(blurredBitmap)
+                        }
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error creating blurred background")
+                        // Fallback: just use the original image for background
+                        withContext(Dispatchers.Main) {
+                            backgroundImageView.setImageBitmap(result.image.toBitmap())
+                        }
+                    }
+                }
+                
                 setupFinishedRunnable()
             }
 
@@ -186,50 +205,19 @@ class ImagePlayerView : FrameLayout {
 
     private suspend fun loadImageWithTwoStreams(uri: Uri, source: AerialMediaSource) {
         try {
-            val stream1 = when (source) {
+            val stream = when (source) {
                 AerialMediaSource.SAMBA -> ImagePlayerHelper.streamFromSambaFile(uri)
                 AerialMediaSource.WEBDAV -> ImagePlayerHelper.streamFromWebDavFile(uri)
                 else -> null
             }
             
-            val stream2 = when (source) {
-                AerialMediaSource.SAMBA -> ImagePlayerHelper.streamFromSambaFile(uri)
-                AerialMediaSource.WEBDAV -> ImagePlayerHelper.streamFromWebDavFile(uri)
-                else -> null
-            }
-            
-            if (stream1 != null && stream2 != null) {
-                // Load foreground image
-                val foregroundRequest = ImageRequest.Builder(context)
-                    .data(stream1)
-                    .allowHardware(false)
-                    .target(target)
-                    .size(this.width, this.height)
-                    .build()
-
-                // Load background image with blur
-                val backgroundRequest = ImageRequest.Builder(context)
-                    .data(stream2)
-                    .allowHardware(false)
-                    .target(backgroundTarget)
-                    .size(this.width, this.height)
-                    .transformations(BlurTransformation(25f))
-                    .build()
-                
-                // Execute both requests
-                imageLoader.execute(backgroundRequest)
-                imageLoader.execute(foregroundRequest)
+            if (stream != null) {
+                loadImageFromStream(stream)
             } else {
-                // Fallback to single stream method if one fails
-                val stream = stream1 ?: stream2
-                if (stream != null) {
-                    loadImageFromStream(stream)
-                } else {
-                    listener?.onImageError()
-                }
+                listener?.onImageError()
             }
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception while loading image with two streams: ${ex.message}")
+            Timber.e(ex, "Exception while loading image with stream: ${ex.message}")
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
                     val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
@@ -241,8 +229,6 @@ class ImagePlayerView : FrameLayout {
     }
 
     private suspend fun loadImageFromStream(stream: InputStream) {
-        // For streams, we need to avoid the toBitmap conversion complexity
-        // Just load into foreground and rely on the dual stream approach
         val request = ImageRequest.Builder(context)
             .data(stream)
             .allowHardware(false)
@@ -254,8 +240,7 @@ class ImagePlayerView : FrameLayout {
     }
     
     private suspend fun loadImageFromUri(data: Any?) {
-        // For URIs, we can load directly twice as before
-        val foregroundRequest =
+        val request =
             ImageRequest
                 .Builder(context)
                 .data(data)
@@ -264,19 +249,7 @@ class ImagePlayerView : FrameLayout {
                 .size(this.width, this.height)
                 .build()
 
-        val backgroundRequest =
-            ImageRequest
-                .Builder(context)
-                .data(data)
-                .allowHardware(false)
-                .target(backgroundTarget)
-                .size(this.width, this.height)
-                .transformations(BlurTransformation(25f))
-                .build()
-        
-        // Execute both requests
-        imageLoader.execute(backgroundRequest)
-        imageLoader.execute(foregroundRequest)
+        imageLoader.execute(request)
     }
 
     fun stop() {
