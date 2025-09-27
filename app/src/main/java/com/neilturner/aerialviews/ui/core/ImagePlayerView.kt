@@ -1,11 +1,15 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.createBitmap
 import coil3.EventListener
 import coil3.ImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -13,7 +17,10 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.request.allowHardware
+import coil3.request.transformations
+import coil3.size.Size
 import coil3.target.ImageViewTarget
+import coil3.transform.Transformation
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
@@ -35,7 +42,42 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
+
+class BlurTransformation(private val radius: Float = 25f) : Transformation() {
+    
+    override val cacheKey: String = "${BlurTransformation::class.java.name}-$radius"
+    
+    override suspend fun transform(input: Bitmap, size: Size): Bitmap {
+        return applyCanvasBlur(input, radius)
+    }
+    
+    private fun applyCanvasBlur(bitmap: Bitmap, radius: Float): Bitmap {
+        // Simple box blur implementation for older Android versions
+        val width = bitmap.width
+        val height = bitmap.height
+        val blurredBitmap = createBitmap(width, height)
+        val canvas = Canvas(blurredBitmap)
+        
+        // Apply a simple alpha-based blur effect
+        val paint = Paint().apply {
+            alpha = 180 // Make it slightly transparent for a blur-like effect
+            isAntiAlias = true
+        }
+        
+        // Draw multiple slightly offset copies to simulate blur
+        val offset = (radius / 10f).coerceAtMost(5f)
+        for (i in -2..2) {
+            for (j in -2..2) {
+                paint.alpha = (60 + (25 * (3 - abs(i) - abs(j)))).coerceIn(30, 180)
+                canvas.drawBitmap(bitmap, i * offset, j * offset, paint)
+            }
+        }
+        
+        return blurredBitmap
+    }
+}
 
 class ImagePlayerView : FrameLayout {
     constructor(context: Context) : super(context) {
@@ -113,7 +155,7 @@ class ImagePlayerView : FrameLayout {
     private val imageLoader =
         ImageLoader
             .Builder(context)
-            .memoryCache(null)
+            // .memoryCache(null)
             .logger(logger)
             .eventListener(eventLister)
             .components {
@@ -132,6 +174,7 @@ class ImagePlayerView : FrameLayout {
                 AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
+                    // loadImage(BufferedInputStream(stream))
                 }
                 else -> {
                     loadImage(media.uri)
@@ -142,7 +185,7 @@ class ImagePlayerView : FrameLayout {
 
     private suspend fun loadImage(data: Any?) {
         try {
-            val request =
+            val foregroundRequest =
                 ImageRequest
                     .Builder(context)
                     .data(data)
@@ -150,7 +193,21 @@ class ImagePlayerView : FrameLayout {
                     .target(target)
                     .size(this.width, this.height)
                     .build()
-            imageLoader.execute(request)
+
+            // Load the same image with blur into background
+            val backgroundRequest =
+                ImageRequest
+                    .Builder(context)
+                    .data(data)
+                    .allowHardware(false)
+                    .target(backgroundTarget)
+                    .size(this.width, this.height)
+                    .transformations(BlurTransformation(25f))
+                    .build()
+            
+            // Execute both requests
+            imageLoader.execute(backgroundRequest)
+            imageLoader.execute(foregroundRequest)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
             if (GeneralPrefs.showMediaErrorToasts) {
