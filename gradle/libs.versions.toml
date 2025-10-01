@@ -37,7 +37,7 @@ kotpref = "2.13.2"
 coil3 = "3.3.0"
 timber = "5.0.1"
 
-junit-jupiter = "5.13.4"
+junit-jupiter = "6.0.0"
 junit5 = "1.13.4.0"
 junit = "1.3.0"
 espresso-core = "3.7.0"
