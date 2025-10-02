@@ -16,14 +16,54 @@ Inspired by Apple TV's beautiful video screensaver!
 
 ## Features include...
 
+### Video & Media Sources
+
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, or WebDAV
-* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
-* Alternate the position of overlays to avoid burn-in on QD/OLED TVs
-* Many playlist options to limit media length or loop certain videos
-* Use the D-Pad or swipe (on phones, tablets, etc) to skip media, skip songs, change speed, seek, pause and more
-* Refresh rate switching 24fps, 50fps, etc content
+* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba/SMB shares, or WebDAV servers
+* Custom video feeds - support for your own JSON feeds following the [Aerial Community formats](https://github.com/AerialScreensaver/AerialCommunity)
+* Immich integration with API key or shared link authentication, album selection, favorites, ratings, and recent photos
+
+### Overlays & Display
+
+* Customisable overlays in screen corners: clock, location/description, weather, music, date, custom messages
+* Weather forecast with 4-slot configurable display showing temperature, icons, and conditions
+* Now Playing overlay showing currently playing music with artist and track info
+* Alternate overlay positions to prevent burn-in on QD/OLED TVs
+* Gradient backgrounds behind overlays for improved readability
+* Progress bar showing video/photo progress at top or bottom of screen
+* Full typography customisation - fonts, sizes, and weights for all overlays
+* Custom date formats with support for any date pattern
+
+### Playlist & Playback
+
+* Shuffle videos and remove duplicates from playlist
+* Limit maximum video length and skip longer content
+* Adjustable slideshow speed for photos
+* Volume control and mute options for videos
+* Video looping and repeat options
+* Sleep timer to automatically stop screensaver after set duration
+* Refresh rate switching for 24fps, 50fps content
+
+### Controls & Interactions
+
+* Fully customizable D-Pad/remote button actions (press, hold)
+* Touch gestures - tap and swipe controls for phones and tablets
+* Skip media, skip songs, change playback speed, seek, pause and more
+* Customisable actions: skip forward/back, exit, pause, resume, and more
+
+### Appearance & Customisation
+
+* Adjustable brightness/dimness for videos and photos
+* Video and photo scaling/cropping options
+* Configurable animations for overlays and media transitions
+* Auto-hide overlays with reveal on button press
+
+### Advanced Features
+
+* Import/Export settings for easy backup and restore
+* Message API - HTTP endpoint to remotely set custom messages (home automation integration)
+* ProjectIvy launcher integration - share videos as wallpapers
 
 ## Support the project
 
