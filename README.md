@@ -276,7 +276,7 @@ com.neilturner.aerialviews/.ui.screensaver.DreamActivity
 </details>
 
 <details>
-<summary>ADB command - extra command for Fire TV + Fire OS 7.6.9.x</summary>
+<summary>ADB command - extra command for Fire TV + Fire OS 7.6.x.x</summary>
 &nbsp;
 
 Recent updates to Fire OS mean extra commands are required for Aerial Views to function properly as the default screensaver.
@@ -288,6 +288,22 @@ settings put secure screensaver_default_component com.neilturner.aerialviews/.ui
 settings put secure contextual_screen_off_timeout 300000 
 settings put secure screensaver_enabled 1
 ```
+
+</details>
+
+<details>
+<summary>ADB command - extra command for Fire TV + Fire OS 8.1.x.x</summary>
+&nbsp;
+
+Fire OS 8.x introduces a new Ambient Experience screensaver. This must also be disabled for a 3rd party screensaver, like Aerial Views, to run normally.
+
+To disable the Ambient Experience, run this ADB command...
+
+```sh
+settings put secure amazon_ambient_enabled 0
+```
+
+Then reboot your Fire TV for the setting to take effect.
 
 </details>
 
