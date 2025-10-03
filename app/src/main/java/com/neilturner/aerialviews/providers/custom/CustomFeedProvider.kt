@@ -58,6 +58,11 @@ class CustomFeedProvider(
     }
 
     private suspend fun buildVideoAndMetadata() {
+        if (prefs.urls.isBlank()) {
+            Timber.w("No URLs configured in custom media preferences")
+            return
+        }
+        
         val quality = prefs.quality
         val urls = UrlValidator.parseUrls(prefs.urls)
 
