@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
@@ -179,7 +180,9 @@ object GeneralPrefs : KotprefModel() {
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
 
     // Projectivy sharing
-    val shareProjectivyVideos by stringSetPref(emptySet(), "projectivy_share_videos")
+    val shareProjectivyVideos by stringSetPref("projectivy_share_videos") {
+        context.resources.getStringArray(R.array.projectivy_share_videos_default).toSet()
+    }
 
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")

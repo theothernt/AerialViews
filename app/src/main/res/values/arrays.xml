@@ -956,12 +956,15 @@
     <item>Local/USB Videos</item>
   </string-array>
   <string-array name="projectivy_share_videos_values" translatable="false">
-    <item>apple</item>
-    <item>comm1</item>
-    <item>comm2</item>
-    <item>local</item>
+    <item>APPLE</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+    <item>LOCAL</item>
   </string-array>
   <string-array name="projectivy_share_videos_default" translatable="false">
+    <item>APPLE</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
   </string-array>
 
 </resources>
