@@ -1,15 +1,28 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.net.Uri
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.createBitmap
 import coil3.EventListener
 import coil3.ImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.allowHardware
+import coil3.size.Size
 import coil3.target.ImageViewTarget
+import coil3.toBitmap
+import coil3.transform.Transformation
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -28,27 +41,82 @@ import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.InputStream
+import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
-class ImagePlayerView : AppCompatImageView {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+class BlurTransformation(private val radius: Float = 25f) : Transformation() {
+    
+    override val cacheKey: String = "${BlurTransformation::class.java.name}-$radius"
+    
+    override suspend fun transform(input: Bitmap, size: Size): Bitmap {
+        return applyCanvasBlur(input, radius)
+    }
+    
+    private fun applyCanvasBlur(bitmap: Bitmap, radius: Float): Bitmap {
+        // Simple box blur implementation for older Android versions
+        val width = bitmap.width
+        val height = bitmap.height
+        val blurredBitmap = createBitmap(width, height)
+        val canvas = Canvas(blurredBitmap)
+        
+        // Apply a simple alpha-based blur effect
+        val paint = Paint().apply {
+            alpha = 180 // Make it slightly transparent for a blur-like effect
+            isAntiAlias = true
+        }
+        
+        // Draw multiple slightly offset copies to simulate blur
+        val offset = (radius / 10f).coerceAtMost(5f)
+        for (i in -2..2) {
+            for (j in -2..2) {
+                paint.alpha = (60 + (25 * (3 - abs(i) - abs(j)))).coerceIn(30, 180)
+                canvas.drawBitmap(bitmap, i * offset, j * offset, paint)
+            }
+        }
+        
+        return blurredBitmap
+    }
+}
+
+class ImagePlayerView : FrameLayout {
+    constructor(context: Context) : super(context) {
+        init()
+    }
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+        init()
+    }
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+        init()
+    }
+
+    private lateinit var backgroundImageView: AppCompatImageView
+    private lateinit var foregroundImageView: AppCompatImageView
 
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
     private val ioScope = CoroutineScope(Dispatchers.IO)
     private val mainScope = CoroutineScope(Dispatchers.Main)
-    private var target = ImageViewTarget(this)
+    private lateinit var target: ImageViewTarget
+    private lateinit var backgroundTarget: ImageViewTarget
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
+
+    private fun init() {
+        LayoutInflater.from(context).inflate(R.layout.image_player_view, this, true)
+        backgroundImageView = findViewById(R.id.background_image)
+        foregroundImageView = findViewById(R.id.foreground_image)
+        target = ImageViewTarget(foregroundImageView)
+        backgroundTarget = ImageViewTarget(backgroundImageView)
+    }
 
     fun release() {
         removeCallbacks(finishedRunnable)
@@ -64,6 +132,24 @@ class ImagePlayerView : AppCompatImageView {
             ) {
                 super.onSuccess(request, result)
                 setScaleMode(result.image.width, result.image.height)
+                
+                // Create blurred background from the same bitmap
+                ioScope.launch {
+                    try {
+                        val bitmap = result.image.toBitmap()
+                        val blurredBitmap = BlurTransformation(25f).transform(bitmap, Size(bitmap.width, bitmap.height))
+                        withContext(Dispatchers.Main) {
+                            backgroundImageView.setImageBitmap(blurredBitmap)
+                        }
+                    } catch (e: Exception) {
+                        Timber.e(e, "Error creating blurred background")
+                        // Fallback: just use the original image for background
+                        withContext(Dispatchers.Main) {
+                            backgroundImageView.setImageBitmap(result.image.toBitmap())
+                        }
+                    }
+                }
+                
                 setupFinishedRunnable()
             }
 
@@ -90,7 +176,7 @@ class ImagePlayerView : AppCompatImageView {
     private val imageLoader =
         ImageLoader
             .Builder(context)
-            .memoryCache(null)
+            // .memoryCache(null)
             .logger(logger)
             .eventListener(eventLister)
             .components {
@@ -103,48 +189,73 @@ class ImagePlayerView : AppCompatImageView {
         ioScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
-                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
-                    loadImage(stream)
+                    // Create two separate streams for SAMBA
+                    loadImageWithTwoStreams(media.uri, AerialMediaSource.SAMBA)
                 }
                 AerialMediaSource.WEBDAV -> {
-                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
-                    loadImage(stream)
+                    // Create two separate streams for WebDAV
+                    loadImageWithTwoStreams(media.uri, AerialMediaSource.WEBDAV)
                 }
                 else -> {
-                    loadImage(media.uri)
+                    loadImageFromUri(media.uri)
                 }
             }
         }
     }
 
-    private suspend fun loadImage(data: Any?) {
+    private suspend fun loadImageWithTwoStreams(uri: Uri, source: AerialMediaSource) {
         try {
-            val request =
-                ImageRequest
-                    .Builder(context)
-                    .data(data)
-                    .size(this.width, this.height)
-                    .target(target)
-                    .build()
-            imageLoader.execute(request)
+            val stream = when (source) {
+                AerialMediaSource.SAMBA -> ImagePlayerHelper.streamFromSambaFile(uri)
+                AerialMediaSource.WEBDAV -> ImagePlayerHelper.streamFromWebDavFile(uri)
+                else -> null
+            }
+            
+            if (stream != null) {
+                loadImageFromStream(stream)
+            } else {
+                listener?.onImageError()
+            }
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception while trying to load image: ${ex.message}")
-
-            // Show toast if preference is enabled
+            Timber.e(ex, "Exception while loading image with stream: ${ex.message}")
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
                     val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
                     ToastHelper.show(context, errorMessage)
                 }
             }
-
             listener?.onImageError()
         }
     }
 
+    private suspend fun loadImageFromStream(stream: InputStream) {
+        val request = ImageRequest.Builder(context)
+            .data(stream)
+            .allowHardware(false)
+            .target(target)
+            .size(this.width, this.height)
+            .build()
+        
+        imageLoader.execute(request)
+    }
+    
+    private suspend fun loadImageFromUri(data: Any?) {
+        val request =
+            ImageRequest
+                .Builder(context)
+                .data(data)
+                .allowHardware(false)
+                .target(target)
+                .size(this.width, this.height)
+                .build()
+
+        imageLoader.execute(request)
+    }
+
     fun stop() {
         removeCallbacks(finishedRunnable)
-        setImageBitmap(null)
+        foregroundImageView.setImageBitmap(null)
+        backgroundImageView.setImageBitmap(null)
         pausedTimestamp = 0
         remainingDuration = 0
     }
@@ -173,7 +284,7 @@ class ImagePlayerView : AppCompatImageView {
     ) {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        scaleType =
+        val scaleType =
             when (aspect) {
                 AspectRatio.SQUARE -> {
                     getScaleType(GeneralPrefs.photoScalePortrait)
@@ -187,14 +298,18 @@ class ImagePlayerView : AppCompatImageView {
                     getScaleType(GeneralPrefs.photoScaleLandscape)
                 }
             }
+
+        // Apply scale type to both ImageViews
+        foregroundImageView.scaleType = scaleType
+        backgroundImageView.scaleType = ImageView.ScaleType.CENTER_CROP
     }
 
-    private fun getScaleType(scale: PhotoScale?): ScaleType =
+    private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =
         try {
-            ScaleType.valueOf(scale.toString())
+            ImageView.ScaleType.valueOf(scale.toString())
         } catch (e: Exception) {
             Timber.e(e)
-            ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+            ImageView.ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
         }
 
     private fun setupFinishedRunnable() {
