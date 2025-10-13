@@ -3,6 +3,7 @@
   <string-array name="background_colour_entries">
     <item>Черный</item>
     <item>Белый</item>
+    <item>Размытый</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>Игнорировать действие</item>

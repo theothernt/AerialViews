@@ -3,6 +3,7 @@
   <string-array name="background_colour_entries">
     <item>Чорний</item>
     <item>Білий</item>
+    <item>Розмитий</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>Ігнорувати дію</item>

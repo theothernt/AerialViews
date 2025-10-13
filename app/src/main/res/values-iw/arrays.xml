@@ -3,6 +3,7 @@
   <string-array name="background_colour_entries">
     <item>שחור</item>
     <item>לבן</item>
+    <item>מטושטש</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>התעלם מפעולה</item>

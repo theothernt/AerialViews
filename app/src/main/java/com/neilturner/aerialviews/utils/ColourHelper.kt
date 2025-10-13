@@ -10,4 +10,8 @@ object ColourHelper {
         } catch (e: IllegalArgumentException) {
             Color.BLACK // Default if parsing fails
         }
+    
+    fun isBlurredBackground(colourString: String): Boolean {
+        return colourString == "BLURRED"
+    }
 }
