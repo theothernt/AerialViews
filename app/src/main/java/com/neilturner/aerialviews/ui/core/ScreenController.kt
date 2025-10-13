@@ -122,6 +122,7 @@ class ScreenController(
         imageViewBinding.root.setBackgroundColor(backgroundPhotos)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
+        imagePlayer.setBackgroundPreference(GeneralPrefs.backgroundPhotos)
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
@@ -244,6 +245,9 @@ class ScreenController(
         // Reset pause state when loading new item
         isPaused = false
         pauseStartTime = 0
+        
+        // Clear the last preloaded URI when loading a new item
+        lastPreloadedUri = null
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
@@ -405,6 +409,26 @@ class ScreenController(
 
     private fun showLoadingError() {
         loadingText.text = resources.getString(R.string.loading_error)
+    }
+    
+    private var lastPreloadedUri: String? = null
+    
+    private fun preloadNextImage() {
+        // Get the next image in the playlist
+        val nextMedia = playlist.peekNextItem()
+        Timber.d("preloadNextImage: nextMedia = $nextMedia")
+        if (nextMedia != null && nextMedia.type == AerialMediaType.IMAGE) {
+            // Only preprocess if we haven't already preprocessed this image
+            if (lastPreloadedUri != nextMedia.uri.toString()) {
+                Timber.d("Starting blur preprocessing for next image: ${nextMedia.uri}")
+                lastPreloadedUri = nextMedia.uri.toString()
+                imagePlayer.preprocessNextImage(nextMedia)
+            } else {
+                Timber.d("Already preprocessed this image, skipping")
+            }
+        } else {
+            Timber.d("No next image to preprocess or not an image type")
+        }
     }
 
     private fun hideOverlays(delay: Long = 0L) {
@@ -600,7 +624,11 @@ class ScreenController(
 
     override fun onImageError() = handleError()
 
-    override fun onImagePrepared() = fadeInNextItem()
+    override fun onImagePrepared() {
+        // Disable preprocessing to avoid background mismatch issues
+        // preloadNextImage()
+        fadeInNextItem()
+    }
 
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text

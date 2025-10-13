@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -36,6 +37,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
@@ -45,42 +47,8 @@ import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.InputStream
-import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
-class BlurTransformation(private val radius: Float = 25f) : Transformation() {
-    
-    override val cacheKey: String = "${BlurTransformation::class.java.name}-$radius"
-    
-    override suspend fun transform(input: Bitmap, size: Size): Bitmap {
-        return applyCanvasBlur(input, radius)
-    }
-    
-    private fun applyCanvasBlur(bitmap: Bitmap, radius: Float): Bitmap {
-        // Simple box blur implementation for older Android versions
-        val width = bitmap.width
-        val height = bitmap.height
-        val blurredBitmap = createBitmap(width, height)
-        val canvas = Canvas(blurredBitmap)
-        
-        // Apply a simple alpha-based blur effect
-        val paint = Paint().apply {
-            alpha = 180 // Make it slightly transparent for a blur-like effect
-            isAntiAlias = true
-        }
-        
-        // Draw multiple slightly offset copies to simulate blur
-        val offset = (radius / 10f).coerceAtMost(5f)
-        for (i in -2..2) {
-            for (j in -2..2) {
-                paint.alpha = (60 + (25 * (3 - abs(i) - abs(j)))).coerceIn(30, 180)
-                canvas.drawBitmap(bitmap, i * offset, j * offset, paint)
-            }
-        }
-        
-        return blurredBitmap
-    }
-}
 
 class ImagePlayerView : FrameLayout {
     constructor(context: Context) : super(context) {
@@ -106,6 +74,15 @@ class ImagePlayerView : FrameLayout {
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
+    
+    // Background preference
+    private var backgroundPreference: String = "BLACK" // Default to black
+    
+    // Simple blur preprocessing cache
+    private var preprocessedBlur: Bitmap? = null
+    private var preprocessedUri: String? = null
+    
+    
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
@@ -116,12 +93,20 @@ class ImagePlayerView : FrameLayout {
         foregroundImageView = findViewById(R.id.foreground_image)
         target = ImageViewTarget(foregroundImageView)
         backgroundTarget = ImageViewTarget(backgroundImageView)
+        
+        // Initially hide foreground image until background blur is ready
+        foregroundImageView.visibility = android.view.View.INVISIBLE
     }
 
     fun release() {
         removeCallbacks(finishedRunnable)
         removeCallbacks(errorRunnable)
         listener = null
+    }
+    
+    fun setBackgroundPreference(preference: String) {
+        backgroundPreference = preference
+        Timber.d("Background preference set to: $preference")
     }
 
     private val eventLister =
@@ -131,26 +116,46 @@ class ImagePlayerView : FrameLayout {
                 result: SuccessResult,
             ) {
                 super.onSuccess(request, result)
-                setScaleMode(result.image.width, result.image.height)
                 
-                // Create blurred background from the same bitmap
-                ioScope.launch {
-                    try {
-                        val bitmap = result.image.toBitmap()
-                        val blurredBitmap = BlurTransformation(25f).transform(bitmap, Size(bitmap.width, bitmap.height))
-                        withContext(Dispatchers.Main) {
-                            backgroundImageView.setImageBitmap(blurredBitmap)
+                // Handle different background options
+                if (ColourHelper.isBlurredBackground(backgroundPreference)) {
+                    // Create blurred background
+                    ioScope.launch {
+                        try {
+                            val bitmap = result.image.toBitmap()
+                            val blurredBitmap = GPUBlurTransformation(25f, context).transform(bitmap, Size(bitmap.width, bitmap.height))
+                            
+                            // Set both images simultaneously on main thread
+                            withContext(Dispatchers.Main) {
+                                setScaleMode(result.image.width, result.image.height)
+                                backgroundImageView.setImageBitmap(blurredBitmap)
+                                foregroundImageView.visibility = android.view.View.VISIBLE
+                                setupFinishedRunnable()
+                            }
+                        } catch (e: Exception) {
+                            Timber.e(e, "Error creating blurred background")
+                            // Fallback: just use the original image for background
+                            withContext(Dispatchers.Main) {
+                                setScaleMode(result.image.width, result.image.height)
+                                backgroundImageView.setImageBitmap(result.image.toBitmap())
+                                foregroundImageView.visibility = android.view.View.VISIBLE
+                                setupFinishedRunnable()
+                            }
                         }
-                    } catch (e: Exception) {
-                        Timber.e(e, "Error creating blurred background")
-                        // Fallback: just use the original image for background
+                    }
+                } else {
+                    // Use solid color background (BLACK or WHITE)
+                    val backgroundColor = ColourHelper.colourFromString(backgroundPreference)
+                    ioScope.launch {
                         withContext(Dispatchers.Main) {
-                            backgroundImageView.setImageBitmap(result.image.toBitmap())
+                            setScaleMode(result.image.width, result.image.height)
+                            backgroundImageView.setImageBitmap(null) // Clear any existing background
+                            backgroundImageView.setBackgroundColor(backgroundColor)
+                            foregroundImageView.visibility = android.view.View.VISIBLE
+                            setupFinishedRunnable()
                         }
                     }
                 }
-                
-                setupFinishedRunnable()
             }
 
             override fun onError(
@@ -186,6 +191,24 @@ class ImagePlayerView : FrameLayout {
             }.build()
 
     fun setImage(media: AerialMedia) {
+        Timber.d("setImage called for: ${media.uri}")
+        
+        // Always clear existing images first to prevent recycled bitmap issues
+        backgroundImageView.setImageBitmap(null)
+        foregroundImageView.setImageBitmap(null)
+        foregroundImageView.visibility = android.view.View.INVISIBLE
+        
+        // Disable preprocessing to avoid background mismatch issues
+        // Check if we have preprocessed blur for this exact image
+        // if (preprocessedBlur != null && preprocessedUri == media.uri.toString()) {
+        //     Timber.d("Using preprocessed blur for instant display")
+        //     // Use preprocessed blur - just load the foreground image
+        //     loadImageWithPreprocessedBlur(media)
+        //     return
+        // }
+        Timber.d("Loading image normally (preprocessing disabled)")
+        
+        // Load image normally
         ioScope.launch {
             when (media.source) {
                 AerialMediaSource.SAMBA -> {
@@ -199,6 +222,65 @@ class ImagePlayerView : FrameLayout {
                 else -> {
                     loadImageFromUri(media.uri)
                 }
+            }
+        }
+    }
+    
+    private fun loadImageWithPreprocessedBlur(media: AerialMedia) {
+        val blur = preprocessedBlur ?: return
+        
+        // Load the foreground image normally, but use preprocessed blur for background
+        ioScope.launch {
+            when (media.source) {
+                AerialMediaSource.SAMBA -> {
+                    loadImageWithTwoStreamsAndPreprocessedBlur(media.uri, AerialMediaSource.SAMBA, blur)
+                }
+                AerialMediaSource.WEBDAV -> {
+                    loadImageWithTwoStreamsAndPreprocessedBlur(media.uri, AerialMediaSource.WEBDAV, blur)
+                }
+                else -> {
+                    loadImageFromUriWithPreprocessedBlur(media.uri, blur)
+                }
+            }
+        }
+        
+        // Clear preprocessed data
+        preprocessedBlur = null
+        preprocessedUri = null
+    }
+    
+    fun preprocessNextImage(media: AerialMedia) {
+        Timber.d("preprocessNextImage called for: ${media.uri}")
+        
+        // Only preprocess if using blurred background
+        if (!ColourHelper.isBlurredBackground(backgroundPreference)) {
+            Timber.d("Skipping blur preprocessing - not using blurred background")
+            return
+        }
+        
+        // Start preprocessing the blur for the next image in background
+        ioScope.launch {
+            try {
+                val request = ImageRequest.Builder(context)
+                    .data(media.uri)
+                    .allowHardware(false)
+                    .size(this@ImagePlayerView.width, this@ImagePlayerView.height)
+                    .build()
+                
+                val result = imageLoader.execute(request)
+                if (result is SuccessResult) {
+                    val bitmap = result.image.toBitmap()
+                    val blurredBitmap = GPUBlurTransformation(25f, context).transform(bitmap, Size(bitmap.width, bitmap.height))
+                    
+                    // Cache the preprocessed blur (but don't apply it to background ImageView yet)
+                    preprocessedBlur = blurredBitmap
+                    preprocessedUri = media.uri.toString()
+                    Timber.d("Blur preprocessing completed for: ${media.uri} (cached, not applied)")
+                } else {
+                    Timber.d("Blur preprocessing failed for: ${media.uri}")
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Error preprocessing blur for: ${media.uri}")
             }
         }
     }
@@ -251,11 +333,87 @@ class ImagePlayerView : FrameLayout {
 
         imageLoader.execute(request)
     }
+    
+    private suspend fun loadImageWithTwoStreamsAndPreprocessedBlur(uri: Uri, source: AerialMediaSource, preprocessedBlur: Bitmap) {
+        try {
+            val stream = when (source) {
+                AerialMediaSource.SAMBA -> ImagePlayerHelper.streamFromSambaFile(uri)
+                AerialMediaSource.WEBDAV -> ImagePlayerHelper.streamFromWebDavFile(uri)
+                else -> null
+            }
+            
+            if (stream != null) {
+                loadImageFromStreamWithPreprocessedBlur(stream, preprocessedBlur)
+            } else {
+                Timber.e("Failed to get stream for $source")
+            }
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while loading image with stream: ${ex.message}")
+        }
+    }
+    
+    private suspend fun loadImageFromStreamWithPreprocessedBlur(stream: InputStream, preprocessedBlur: Bitmap) {
+        val request = ImageRequest.Builder(context)
+            .data(stream)
+            .allowHardware(false)
+            .target(object : ImageViewTarget(foregroundImageView) {
+                override fun onSuccess(image: coil3.Image) {
+                    // Set both foreground and preprocessed background simultaneously
+                    setScaleMode(image.width, image.height)
+                    backgroundImageView.setImageBitmap(preprocessedBlur)
+                    foregroundImageView.setImageDrawable(image as Drawable)
+                    foregroundImageView.visibility = android.view.View.VISIBLE
+                    setupFinishedRunnable()
+                }
+                
+                override fun onError(error: coil3.Image?) {
+                    listener?.onImageError()
+                }
+            })
+            .size(this.width, this.height)
+            .build()
+        
+        imageLoader.execute(request)
+    }
+    
+    private suspend fun loadImageFromUriWithPreprocessedBlur(data: Any?, preprocessedBlur: Bitmap) {
+        val request = ImageRequest.Builder(context)
+            .data(data)
+            .allowHardware(false)
+            .target(object : ImageViewTarget(foregroundImageView) {
+                override fun onSuccess(image: coil3.Image) {
+                    // Set both foreground and preprocessed background simultaneously
+                    setScaleMode(image.width, image.height)
+                    backgroundImageView.setImageBitmap(preprocessedBlur)
+                    foregroundImageView.setImageDrawable(image as Drawable)
+                    foregroundImageView.visibility = android.view.View.VISIBLE
+                    setupFinishedRunnable()
+                }
+                
+                override fun onError(error: coil3.Image?) {
+                    listener?.onImageError()
+                }
+            })
+            .size(this.width, this.height)
+            .build()
+
+        imageLoader.execute(request)
+    }
+    
 
     fun stop() {
         removeCallbacks(finishedRunnable)
+        
+        // Clear both images completely
         foregroundImageView.setImageBitmap(null)
         backgroundImageView.setImageBitmap(null)
+        backgroundImageView.setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        foregroundImageView.visibility = android.view.View.INVISIBLE
+        
+        // Clear preprocessed data
+        preprocessedBlur = null
+        preprocessedUri = null
+        
         pausedTimestamp = 0
         remainingDuration = 0
     }

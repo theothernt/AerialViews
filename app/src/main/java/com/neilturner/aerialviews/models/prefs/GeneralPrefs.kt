@@ -130,7 +130,7 @@ object GeneralPrefs : KotprefModel() {
     // Background Colour
     var backgroundLoading by stringPref("BLACK", "background_colour_loading")
     var backgroundVideos by stringPref("BLACK", "background_colour_videos")
-    var backgroundPhotos by stringPref("BLACK", "background_colour_photos")
+    var backgroundPhotos by stringPref("BLACK", "background_colour_photos") // Options: BLACK, WHITE, BLURRED
 
     // Brightness / Dimness
     var videoBrightness by stringPref("100", "video_brightness")
