@@ -109,7 +109,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Magdalena Bay Sunset",
             "title": "",
             "scene": "sea",
@@ -241,7 +241,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunrise",
             "accessibilityLabel": "Morning mist",
             "title": "",
             "scene": "nature",
@@ -265,7 +265,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunrise",
             "accessibilityLabel": "Trona sunrise and beachside blooms",
             "title": "",
             "scene": "nature",
@@ -313,7 +313,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Elephant Sunset",
             "title": "",
             "scene": "nature",
@@ -325,7 +325,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunrise",
             "accessibilityLabel": "Dawn and Dust",
             "title": "",
             "scene": "nature",
@@ -373,7 +373,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Baboons",
             "title": "",
             "scene": "nature",
@@ -397,7 +397,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Flamingo Bay",
             "title": "",
             "scene": "nature",
@@ -781,7 +781,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Cloudy Mountain Sunset",
             "title": "",
             "scene": "nature",
@@ -913,7 +913,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Sunset Beach Bonfire",
             "title": "",
             "scene": "fire",
@@ -937,7 +937,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Sparks Rising",
             "title": "",
             "scene": "fire",
@@ -949,7 +949,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Cozy Evening Fire",
             "title": "",
             "scene": "fire",
@@ -961,7 +961,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Calm Fireplace",
             "title": "",
             "scene": "fire",
@@ -973,7 +973,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Polar Sunset",
             "title": "",
             "scene": "nature",
@@ -997,7 +997,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Vibrant Sunset",
             "title": "",
             "scene": "nature",
@@ -1009,7 +1009,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunrise",
             "accessibilityLabel": "Sunrise Over Water",
             "title": "",
             "scene": "nature",
@@ -1057,7 +1057,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunrise",
             "accessibilityLabel": "Rocky Mountain Sunrise",
             "title": "",
             "scene": "nature",
@@ -1105,7 +1105,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Gentle Moments",
             "title": "",
             "scene": "nature",
@@ -1117,7 +1117,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Aurora Borealis",
             "title": "",
             "scene": "nature",
@@ -1201,7 +1201,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "sunset",
             "accessibilityLabel": "Sunset at the Sydney Opera House",
             "title": "",
             "scene": "city",
@@ -1225,7 +1225,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Neon City",
             "title": "",
             "scene": "city",
@@ -1285,7 +1285,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Shooting Stars Time-lapse",
             "title": "",
             "scene": "space",
@@ -1297,7 +1297,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Planet Earth",
             "title": "",
             "scene": "space",
@@ -1309,7 +1309,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Night Sky Time-lapse",
             "title": "",
             "scene": "space",
@@ -1321,7 +1321,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Galaxy Time-lapse",
             "title": "",
             "scene": "space",
@@ -1333,7 +1333,7 @@
             }
         },
         {
-            "timeOfDay": "day",
+            "timeOfDay": "night",
             "accessibilityLabel": "Earth Meets Sky Time-lapse",
             "title": "",
             "scene": "space",

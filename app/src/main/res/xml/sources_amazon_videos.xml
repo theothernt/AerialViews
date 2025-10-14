@@ -26,9 +26,9 @@
                 <MultiSelectListPreference
                     app:dependency="amazon_videos_enabled"
                     app:disableDependentsState="false"
-                    app:entries="@array/video_scene_type_entries"
-                    app:entryValues="@array/video_scene_type_values"
-                    app:defaultValue="@array/video_scene_type_default"
+                    app:entries="@array/amazon_video_scene_type_entries"
+                    app:entryValues="@array/amazon_video_scene_type_values"
+                    app:defaultValue="@array/amazon_video_scene_type_default"
                     app:key="amazon_videos_scene_type"
                     app:title="@string/apple_videos_scene_type_title"
                     app:dialogTitle="@string/apple_videos_scene_type_title" />

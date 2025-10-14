@@ -64,7 +64,7 @@
     <item>Beach</item>
     <item>City</item>
     <item>Sea</item>
-    <item>Space</item>
+    <item>Outer space</item>
   </string-array>
   <string-array name="video_scene_type_values" translatable="false">
     <item>NATURE</item>
@@ -81,6 +81,35 @@
     <item>CITY</item>
     <item>SEA</item>
     <item>SPACE</item>
+  </string-array>
+
+  <!-- Amazon Video Scene Type -->
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Nature</item>
+    <item>Beach</item>
+    <item>City</item>
+    <item>Sea</item>
+    <item>Space</item>
+    <item>Patterns</item>
+    <item>Fire</item>
+  </string-array>
+  <string-array name="amazon_video_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+    <item>PATTERNS</item>
+    <item>FIRE</item>
+  </string-array>
+  <string-array name="amazon_video_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+    <item>PATTERNS</item>
+    <item>FIRE</item>
   </string-array>
 
   <string-array name="comm2_videos_scene_type_entries">
