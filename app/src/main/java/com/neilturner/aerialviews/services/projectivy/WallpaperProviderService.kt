@@ -79,6 +79,9 @@ class WallpaperProviderService : Service() {
         if (enabledSources.contains("COMM2")) {
             providers.add(Comm2MediaProvider(applicationContext, Comm2VideoPrefs))
         }
+//        if (enabledSources.contains("AMBIENT")) {
+//            providers.add(AmazonMediaProvider(applicationContext, AmazonVideoPrefs))
+//        }
         if (enabledSources.contains("LOCAL")) {
             providers.add(LocalMediaProvider(applicationContext, LocalMediaPrefs))
         }

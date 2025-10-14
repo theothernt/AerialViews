@@ -128,6 +128,9 @@
   <string name="sources_comm2_title">Videos by Robin Fourcade</string>
   <string name="sources_comm2_summary">Stream these community videos using your internet connection</string>
 
+  <string name="sources_amazon_title">Videos by Amazon</string>
+  <string name="sources_amazon_summary">Stream Amazon ambient videos using your internet connection</string>
+
   <string name="sources_custom_title">Videos from a custom feed</string>
   <string name="sources_custom_summary">Use a custom feed of videos with descriptions</string>
 
@@ -157,6 +160,9 @@
 
   <!-- Main / Video Sources / Comm2 videos -->
   <string name="comm2_videos_enabled">Use community videos</string>
+
+  <!-- Main / Video Sources / Amazon videos -->
+  <string name="amazon_videos_enabled">Use Amazon ambient videos</string>
 
   <!-- Main / Video Sources / Custom feeds -->
   <string name="custom_media_enabled">Use custom feeds</string>

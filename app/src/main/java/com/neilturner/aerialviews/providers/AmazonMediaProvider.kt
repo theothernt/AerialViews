@@ -1,0 +1,78 @@
+package com.neilturner.aerialviews.providers
+
+import android.content.Context
+import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.SceneType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
+import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AmazonVideos
+import com.neilturner.aerialviews.utils.JsonHelper.parseJson
+import timber.log.Timber
+
+class AmazonMediaProvider(
+    context: Context,
+    private val prefs: AmazonVideoPrefs,
+) : MediaProvider(context) {
+    override val type = ProviderSourceType.REMOTE
+    val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
+    val videos = mutableListOf<AerialMedia>()
+
+    override val enabled: Boolean
+        get() = prefs.enabled
+
+    override suspend fun fetchTest(): String = ""
+
+    override suspend fun fetchMedia(): List<AerialMedia> {
+        if (metadata.isEmpty()) buildVideoAndMetadata()
+        return videos
+    }
+
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        if (metadata.isEmpty()) buildVideoAndMetadata()
+        return metadata
+    }
+
+    private suspend fun buildVideoAndMetadata() {
+        val quality = prefs.quality
+        val wrapper = parseJson<AmazonVideos>(context, R.raw.fireos8)
+
+        wrapper.assets?.forEach { asset ->
+            val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
+            val scene = SceneType.fromString(asset.scene)
+
+            val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
+            val sceneMatches = prefs.scene.contains(scene.toString())
+
+            if (timeOfDayMatches && sceneMatches && prefs.enabled) {
+                videos.add(
+                    AerialMedia(
+                        asset.uriAtQuality(quality),
+                        type = AerialMediaType.VIDEO,
+                        source = AerialMediaSource.AMAZON,
+                        timeOfDay = timeOfDay,
+                        scene = scene,
+                    ),
+                )
+            } else if (prefs.enabled) {
+                Timber.d("Filtering out video: ${asset.description}")
+            }
+
+            val data =
+                Pair(
+                    asset.description,
+                    asset.pointsOfInterest,
+                )
+            asset.allUrls().forEachIndexed { index, url ->
+                metadata.put(url, data)
+            }
+        }
+
+        Timber.i("${metadata.count()} metadata items found")
+        Timber.i("${videos.count()} $quality videos found")
+    }
+}
+
