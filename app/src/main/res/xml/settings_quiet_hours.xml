@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_quiet_hours">
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:key="quiet_hours_enabled"
+            app:summary="@string/playlist_quiet_hours_enabled_summary"
+            app:title="@string/playlist_quiet_hours_enabled_title" />
+
+        <EditTextPreference
+            app:dependency="quiet_hours_enabled"
+            app:defaultValue="22:00"
+            app:key="quiet_hours_start"
+            app:title="@string/playlist_quiet_hours_start_title"
+            app:summary="@string/playlist_quiet_hours_start_summary"
+            app:dialogTitle="@string/playlist_quiet_hours_start_title"
+            app:dialogMessage="@string/playlist_quiet_hours_time_format_hint" />
+
+        <EditTextPreference
+            app:dependency="quiet_hours_enabled"
+            app:defaultValue="07:00"
+            app:key="quiet_hours_end"
+            app:title="@string/playlist_quiet_hours_end_title"
+            app:summary="@string/playlist_quiet_hours_end_summary"
+            app:dialogTitle="@string/playlist_quiet_hours_end_title"
+            app:dialogMessage="@string/playlist_quiet_hours_time_format_hint" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

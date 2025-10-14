@@ -333,6 +333,9 @@
   <string name="settings_playlist_title">Playlist</string>
   <string name="settings_playlist_summary">Change volume, mute videos, shuffle, video length, looping, etc</string>
 
+  <string name="settings_quiet_hours_title">Quiet Hours</string>
+  <string name="settings_quiet_hours_summary">Automatically turn off the screensaver during specified hours</string>
+
   <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
   <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 
@@ -536,6 +539,16 @@
 
   <string name="playlist_sleep_timer_title">Sleep timer</string>
   <string name="playlist_sleep_timer_summary">Automatically black out the screen after a set time</string>
+
+  <!-- Quiet Hours -->
+  <string name="category_quiet_hours">Quiet Hours</string>
+  <string name="playlist_quiet_hours_enabled_title">Enable quiet hours</string>
+  <string name="playlist_quiet_hours_enabled_summary">Automatically turn off the screensaver during specified hours</string>
+  <string name="playlist_quiet_hours_start_title">Start time</string>
+  <string name="playlist_quiet_hours_start_summary">When quiet hours begin</string>
+  <string name="playlist_quiet_hours_end_title">End time</string>
+  <string name="playlist_quiet_hours_end_summary">When quiet hours end</string>
+  <string name="playlist_quiet_hours_time_format_hint">Enter time in HH:MM format (24-hour)</string>
 
   <string name="playlist_video_volume_title">Video volume</string>
   <string name="playlist_video_volume_summary">Choose a video volume level</string>

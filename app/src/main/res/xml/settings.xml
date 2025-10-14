@@ -18,6 +18,11 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistFragment"/>
 
         <Preference
+            app:title="@string/settings_quiet_hours_title"
+            app:summary="@string/settings_quiet_hours_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.QuietHoursFragment"/>
+
+        <Preference
             app:title="@string/settings_dpad_title"
             app:summary="@string/settings_dpad_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.DpadRemoteFragment"/>

@@ -29,6 +29,14 @@
     <uses-permission
         android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
+    <!-- Alarm permission for quiet hours wake-up -->
+    <uses-permission
+        android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission
+        android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK" />
+
     <queries>
         <intent>
             <action android:name="android.settings.DREAM_SETTINGS" />
@@ -209,5 +217,11 @@
         <meta-data
             android:name="google_analytics_automatic_screen_reporting_enabled"
             android:value="false" />
+
+        <!-- Quiet Hours Wake Receiver -->
+        <receiver
+            android:name=".receivers.QuietHoursWakeReceiver"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 </manifest>

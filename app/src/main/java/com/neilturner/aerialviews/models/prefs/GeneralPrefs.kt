@@ -158,6 +158,11 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    
+    // Quiet Hours
+    var quietHoursEnabled by booleanPref(false, "quiet_hours_enabled")
+    var quietHoursStart by stringPref("22:00", "quiet_hours_start") // Format: HH:MM
+    var quietHoursEnd by stringPref("07:00", "quiet_hours_end") // Format: HH:MM
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")
