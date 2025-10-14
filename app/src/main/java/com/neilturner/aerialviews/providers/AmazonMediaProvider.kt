@@ -75,4 +75,3 @@ class AmazonMediaProvider(
         Timber.i("${videos.count()} $quality videos found")
     }
 }
-

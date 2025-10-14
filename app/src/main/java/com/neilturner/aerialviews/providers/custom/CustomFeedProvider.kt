@@ -62,7 +62,7 @@ class CustomFeedProvider(
             Timber.w("No URLs configured in custom media preferences")
             return
         }
-        
+
         val quality = prefs.quality
         val urls = UrlValidator.parseUrls(prefs.urls)
 

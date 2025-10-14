@@ -31,4 +31,3 @@ class AmazonVideo : AbstractVideo() {
 class AmazonVideos {
     val assets: List<AmazonVideo>? = null
 }
-

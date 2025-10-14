@@ -35,17 +35,18 @@ class WallpaperProviderService : Service() {
                         val enabledProviders = getEnabledProviders()
 
                         // Fetch media from all enabled providers
-                        val aerialMediaList = runBlocking {
-                            enabledProviders
-                                // .filter { it.enabled }
-                                .flatMap { provider ->
-                                    try {
-                                        provider.fetchMedia()
-                                    } catch (ex: Exception) {
-                                        emptyList()
+                        val aerialMediaList =
+                            runBlocking {
+                                enabledProviders
+                                    // .filter { it.enabled }
+                                    .flatMap { provider ->
+                                        try {
+                                            provider.fetchMedia()
+                                        } catch (ex: Exception) {
+                                            emptyList()
+                                        }
                                     }
-                                }
-                        }.shuffled()
+                            }.shuffled()
 
                         // Convert AerialMedia objects to Wallpaper objects
                         aerialMediaList.map { media ->
