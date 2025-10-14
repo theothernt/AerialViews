@@ -14,8 +14,8 @@
 
                 <ListPreference
                     app:defaultValue="@string/background_colour_default"
-                    app:entries="@array/background_colour_entries"
-                    app:entryValues="@array/background_colour_values"
+                    app:entries="@array/background_colour_entries_image"
+                    app:entryValues="@array/background_colour_values_image"
                     app:key="background_colour_photos"
                     app:title="@string/appearance_background_colour_photos_title"
                     app:useSimpleSummaryProvider="true"
