@@ -317,6 +317,8 @@ To change the default timeout use this command with a value in milliseconds. So,
 settings put system screen_off_timeout 600000
 ```
 
+:information_source: On modern Google TV devices (Android TV 12+), the minimum value is 6 minutes or 360000. If you set a value lower than this, the screensaver won't start.
+
 </details>
 
 <details>
