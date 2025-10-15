@@ -432,6 +432,22 @@ intent://#Intent;component=com.neilturner.aerialviews/.ui.screensaver.TestActivi
 
 </details>
 
+<details>
+<summary>How to launch into the screensaver when opening Aerial Views</summary>
+&nbsp;
+
+When Aerial Views is launched, it starts in the Settings menu.
+
+If you want to launch into the screensaver directly, the equivalent of selecting "Test screensaver settings", you must enable to following option:
+
+`Settings > Appearance > Startup > Start screensaver on launch`
+
+Then you must assign an "Exit to settings" action to a d-pad, button press or swipe on one of these screens:
+
+`Settings > D-Pad/Remote, Tap & Swipe Gestures > D-Pad, Button Press, etc`
+
+</details>
+
 ## Weather data
 
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
