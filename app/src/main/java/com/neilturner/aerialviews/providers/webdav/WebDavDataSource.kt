@@ -65,8 +65,8 @@ class WebDavDataSource : BaseDataSource(true) {
         val okHttpClient =
             OkHttpClient
                 .Builder()
-                .callTimeout(5, TimeUnit.SECONDS)
-                .readTimeout(5, TimeUnit.SECONDS)
+                .callTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
                 .build()
 
         client = OkHttpSardine(okHttpClient)
