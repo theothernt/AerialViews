@@ -15,18 +15,29 @@ class AppleVideosFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
+        updateQualityEntriesWithDataUsage()
         updateSummary()
     }
 
-    private fun updateSummary() {
-        val quality = findPreference<ListPreference>("apple_videos_quality")
-        quality?.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _, newValue ->
-                updateDataUsageSummary(quality.findIndexOfValue(newValue as String))
-                true
-            }
-        quality?.findIndexOfValue(quality.value)?.let { updateDataUsageSummary(it) }
+    private fun updateQualityEntriesWithDataUsage() {
+        val quality = findPreference<ListPreference>("apple_videos_quality") ?: return
+        val res = context?.resources ?: return
 
+        val qualityEntries = res.getStringArray(R.array.apple_videos_quality_entries)
+        val dataUsageValues = res.getStringArray(R.array.apple_videos_data_usage_values)
+
+        val combinedEntries = qualityEntries.mapIndexed { index, qualityEntry ->
+            if (index < dataUsageValues.size) {
+                "$qualityEntry (${dataUsageValues[index]} per hour)"
+            } else {
+                qualityEntry
+            }
+        }.toTypedArray()
+
+        quality.entries = combinedEntries
+    }
+
+    private fun updateSummary() {
         val sceneType = findPreference<MultiSelectListPreference>("apple_videos_scene_type")
         sceneType?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
@@ -42,14 +53,6 @@ class AppleVideosFragment : MenuStateFragment() {
                 true
             }
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
-    }
-
-    private fun updateDataUsageSummary(index: Int) {
-        val res = context?.resources ?: return
-        val dataUsage = findPreference<Preference>("apple_videos_data_usage") ?: return
-        val bitrateList = res.getStringArray(R.array.apple_videos_data_usage_values)
-        val bitrate = bitrateList[index]
-        dataUsage.summary = String.format(res.getString(R.string.apple_videos_data_estimate_summary), bitrate)
     }
 
     private fun updateMultiSelectSummary(

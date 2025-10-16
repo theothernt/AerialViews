@@ -38,6 +38,7 @@
   <string name="category_animation">Animation</string>
   <string name="category_about">About</string>
   <string name="category_quality">Quality</string>
+  <string name="category_quality_and_scene_types">Quality &amp; Scene types</string>
   <string name="category_filters">Filters</string>
   <string name="category_scaling">Scaling</string>
   <string name="category_capabilities">Capabilities</string>
