@@ -1,82 +1,40 @@
 package com.neilturner.aerialviews.utils
 
 import android.content.Context
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-abstract class MenuStateFragment : PreferenceFragmentCompat() {
-    private var position = -1
-
-    override fun onResume() {
-        super.onResume()
-
-        if (!DeviceHelper.isTV(requireContext())) {
-            return
-        }
-
-        lifecycleScope.launch {
-            delay(60)
-            tryRequestFocus()
-        }
-    }
-
-    private fun tryRequestFocus() {
-        try {
-            if (position != -1 && listView != null && listView.adapter != null && listView.layoutManager != null) {
-                val item = listView.findViewHolderForAdapterPosition(position)?.itemView
-                item?.requestFocus()
-            }
-        } catch (ex: Exception) {
-            FirebaseHelper.crashlyticsException(ex)
-            Timber.e(ex)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        if (!DeviceHelper.isTV(requireContext())) {
-            return
-        }
-
-        val focusedView = listView.findFocus()
-        focusedView?.let {
-            try {
-                var view = it
-                // Walk up the view hierarchy until we find a view that's a direct child of the RecyclerView
-                while (view.parent != null && view.parent !== listView && view.parent is android.view.View) {
-                    view = view.parent as android.view.View
-                }
-
-                // Only try to get position if the view is a direct child of the RecyclerView
-                if (view.parent === listView) {
-                    position = listView.layoutManager?.getPosition(view) ?: -1
-                }
-            } catch (ex: Exception) {
-                FirebaseHelper.crashlyticsException(ex)
+/**
+ * Helper class for common media preference operations
+ */
+object MediaPreferenceHelper {
 
     /**
      * Updates a quality preference by combining quality entries with data usage values
+     * @param fragment The preference fragment
      * @param qualityPrefKey The preference key for the quality setting
      * @param qualityEntriesArrayId Resource ID for quality entries
      * @param dataUsageValuesArrayId Resource ID for data usage values
+     * @param scope The lifecycle coroutine scope
      * @param onChangeCallback Optional callback when quality changes
      */
-    protected fun setupQualityWithDataUsage(
+    fun setupQualityWithDataUsage(
+        fragment: PreferenceFragmentCompat,
         qualityPrefKey: String,
         qualityEntriesArrayId: Int,
         dataUsageValuesArrayId: Int,
+        scope: LifecycleCoroutineScope,
         onChangeCallback: (() -> Unit)? = null
     ) {
-        val quality = findPreference<ListPreference>(qualityPrefKey) ?: return
-        val res = context?.resources ?: return
+        val quality = fragment.findPreference<ListPreference>(qualityPrefKey) ?: return
+        val res = fragment.context?.resources ?: return
         val qualityEntries = res.getStringArray(qualityEntriesArrayId)
         val dataUsageValues = res.getStringArray(dataUsageValuesArrayId)
 
@@ -93,7 +51,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
         if (onChangeCallback != null) {
             quality.onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _, _ ->
-                    lifecycleScope.launch {
+                    scope.launch {
                         delay(100)
                         onChangeCallback()
                     }
@@ -103,26 +61,30 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
     }
 
     /**
-     * Updates a video count on a preference summary with caching support
+     * Updates a media count on a preference summary with caching support
+     * @param fragment The preference fragment
      * @param targetPrefKey The preference key to update with the count
      * @param countStringId Resource ID for the count string format
+     * @param scope The lifecycle coroutine scope
      * @param getCachedCount Lambda to get the cached count value
      * @param setCachedCount Lambda to set the cached count value
      * @param fetchMediaCount Lambda to fetch the actual media count
      * @param forceRecalculate Whether to force recalculation ignoring cache
      */
-    protected fun updateMediaCount(
+    fun updateMediaCount(
+        fragment: PreferenceFragmentCompat,
         targetPrefKey: String,
         countStringId: Int,
+        scope: LifecycleCoroutineScope,
         getCachedCount: () -> String,
         setCachedCount: (String) -> Unit,
         fetchMediaCount: suspend (Context) -> Int,
         forceRecalculate: Boolean = false
     ) {
-        val targetPref = findPreference<Preference>(targetPrefKey) ?: return
-        val ctx = context ?: return
+        val targetPref = fragment.findPreference<Preference>(targetPrefKey) ?: return
+        val ctx = fragment.context ?: return
 
-        lifecycleScope.launch {
+        scope.launch {
             // Check if we have a valid cached count
             val cachedCount = getCachedCount().toIntOrNull()
             val count = if (!forceRecalculate && cachedCount != null && cachedCount != -1) {
@@ -147,7 +109,3 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
     }
 }
 
-            }
-        }
-    }
-}
