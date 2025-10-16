@@ -3,11 +3,17 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
+import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AppleVideosFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -17,6 +23,7 @@ class AppleVideosFragment : MenuStateFragment() {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
         updateQualityEntriesWithDataUsage()
         updateSummary()
+        updateVideoCount()
     }
 
     private fun updateQualityEntriesWithDataUsage() {
@@ -35,6 +42,17 @@ class AppleVideosFragment : MenuStateFragment() {
         }.toTypedArray()
 
         quality.entries = combinedEntries
+
+        // Update video count when quality changes
+        quality.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, _ ->
+                // Delay to allow preference to update
+                lifecycleScope.launch {
+                    kotlinx.coroutines.delay(100)
+                    updateVideoCount(forceRecalculate = true)
+                }
+                true
+            }
     }
 
     private fun updateSummary() {
@@ -42,6 +60,11 @@ class AppleVideosFragment : MenuStateFragment() {
         sceneType?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
+                // Delay to allow preference to update
+                lifecycleScope.launch {
+                    kotlinx.coroutines.delay(100)
+                    updateVideoCount(forceRecalculate = true)
+                }
                 true
             }
         sceneType?.let { updateMultiSelectSummary(it, it.values) }
@@ -50,9 +73,43 @@ class AppleVideosFragment : MenuStateFragment() {
         timeOfDay?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
+                // Delay to allow preference to update
+                lifecycleScope.launch {
+                    kotlinx.coroutines.delay(100)
+                    updateVideoCount(forceRecalculate = true)
+                }
                 true
             }
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
+    }
+
+    private fun updateVideoCount(forceRecalculate: Boolean = false) {
+        val enabledSwitch = findPreference<Preference>("apple_videos_enabled") ?: return
+        val ctx = context ?: return
+
+        lifecycleScope.launch {
+            // Check if we have a valid cached count
+            val cachedCount = AppleVideoPrefs.count.toIntOrNull()
+            val count = if (!forceRecalculate && cachedCount != null && cachedCount != -1) {
+                // Use cached value
+                cachedCount
+            } else {
+                // Recalculate and cache
+                withContext(Dispatchers.IO) {
+                    try {
+                        val provider = AppleMediaProvider(ctx, AppleVideoPrefs)
+                        val videoCount = provider.fetchMedia().size
+                        // Save to cache
+                        AppleVideoPrefs.count = videoCount.toString()
+                        videoCount
+                    } catch (e: Exception) {
+                        0
+                    }
+                }
+            }
+
+            enabledSwitch.summary = ctx.getString(R.string.apple_videos_count, count)
+        }
     }
 
     private fun updateMultiSelectSummary(

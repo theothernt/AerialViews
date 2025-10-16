@@ -148,6 +148,7 @@
 
   <!-- Main / Video Sources / Apple videos -->
   <string name="apple_videos_enabled">Use Apple videos</string>
+  <string name="apple_videos_count">%1$d videos selected</string>
 
   <string name="apple_videos_data_usage_title">Data usage</string>
   <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>

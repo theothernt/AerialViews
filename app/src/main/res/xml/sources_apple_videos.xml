@@ -20,7 +20,7 @@
                     app:title="@string/videos_quality_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/videos_quality_summary" />
-       
+
                 <MultiSelectListPreference
                     app:dependency="apple_videos_enabled"
                     app:disableDependentsState="false"

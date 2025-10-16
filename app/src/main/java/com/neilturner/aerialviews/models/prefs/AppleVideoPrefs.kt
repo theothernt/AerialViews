@@ -10,6 +10,7 @@ object AppleVideoPrefs : KotprefModel() {
 
     var enabled by booleanPref(true, "apple_videos_enabled")
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "apple_videos_quality")
+    var count by stringPref("-1", "apple_videos_count")
 
     val scene by stringSetPref("apple_videos_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()
