@@ -2,11 +2,16 @@
 <PreferenceScreen
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/category_remote">
+    <PreferenceCategory app:title="@string/category_remote_streaming">
         <Preference
             app:title="@string/sources_apple_title"
             app:summary="@string/sources_apple_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.AppleVideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_amazon_title"
+            app:summary="@string/sources_amazon_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.AmazonVideosFragment"/>
 
         <Preference
             app:title="@string/sources_comm1_title"
@@ -17,23 +22,18 @@
             app:title="@string/sources_comm2_title"
             app:summary="@string/sources_comm2_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
-
-        <Preference
-            app:title="@string/sources_amazon_title"
-            app:summary="@string/sources_amazon_summary"
-            app:fragment="com.neilturner.aerialviews.ui.sources.AmazonVideosFragment"/>
-
-        <Preference
-            app:title="@string/sources_custom_title"
-            app:summary="@string/sources_custom_summary"
-            app:fragment="com.neilturner.aerialviews.ui.sources.CustomMediaFragment"/>
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/category_local">
+    <PreferenceCategory app:title="@string/category_custom_videos_and_feeds">
         <Preference
             app:title="@string/sources_local_title"
             app:summary="@string/sources_local_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.LocalVideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_custom_feed_title"
+            app:summary="@string/sources_custom_feed_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.CustomMediaFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_network">
