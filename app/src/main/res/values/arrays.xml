@@ -16,12 +16,18 @@
     <item>VIDEO_4K_HDR</item>
   </string-array>
   <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+  <!-- Estimated data usage per hour -->
   <string-array name="apple_videos_data_usage_values" translatable="false">
     <item>~3GB</item>
     <item>~2GB</item>
     <item>~3GB</item>
     <item>~4GB</item>
     <item>~5.5GB</item>
+  </string-array>
+  <string-array name="amazon_videos_data_usage_values" translatable="false">
+    <item>~2GB</item>
+    <item>~3GB</item>
   </string-array>
 
   <!-- Video Time of Day -->

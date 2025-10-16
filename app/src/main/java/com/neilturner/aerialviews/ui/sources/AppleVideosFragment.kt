@@ -12,6 +12,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -29,7 +30,6 @@ class AppleVideosFragment : MenuStateFragment() {
     private fun updateQualityEntriesWithDataUsage() {
         val quality = findPreference<ListPreference>("apple_videos_quality") ?: return
         val res = context?.resources ?: return
-
         val qualityEntries = res.getStringArray(R.array.apple_videos_quality_entries)
         val dataUsageValues = res.getStringArray(R.array.apple_videos_data_usage_values)
 
@@ -46,9 +46,8 @@ class AppleVideosFragment : MenuStateFragment() {
         // Update video count when quality changes
         quality.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, _ ->
-                // Delay to allow preference to update
                 lifecycleScope.launch {
-                    kotlinx.coroutines.delay(100)
+                    delay(100)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true
@@ -60,9 +59,8 @@ class AppleVideosFragment : MenuStateFragment() {
         sceneType?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
-                // Delay to allow preference to update
                 lifecycleScope.launch {
-                    kotlinx.coroutines.delay(100)
+                    delay(100)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true
@@ -73,9 +71,8 @@ class AppleVideosFragment : MenuStateFragment() {
         timeOfDay?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
-                // Delay to allow preference to update
                 lifecycleScope.launch {
-                    kotlinx.coroutines.delay(100)
+                    delay(100)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true
@@ -99,7 +96,6 @@ class AppleVideosFragment : MenuStateFragment() {
                     try {
                         val provider = AppleMediaProvider(ctx, AppleVideoPrefs)
                         val videoCount = provider.fetchMedia().size
-                        // Save to cache
                         AppleVideoPrefs.count = videoCount.toString()
                         videoCount
                     } catch (e: Exception) {
