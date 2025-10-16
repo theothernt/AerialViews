@@ -62,7 +62,7 @@ class AppleVideosFragment : MenuStateFragment() {
         MediaPreferenceHelper.updateMediaCount(
             fragment = this,
             targetPrefKey = "apple_videos_enabled",
-            countStringId = R.string.apple_videos_count,
+            countStringId = R.string.videos_count,
             scope = lifecycleScope,
             getCachedCount = { AppleVideoPrefs.count },
             setCachedCount = { AppleVideoPrefs.count = it },

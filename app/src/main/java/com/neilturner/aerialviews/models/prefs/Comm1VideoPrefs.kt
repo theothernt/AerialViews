@@ -10,6 +10,7 @@ object Comm1VideoPrefs : KotprefModel() {
 
     var enabled by booleanPref(true, "comm1_videos_enabled")
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "comm1_videos_quality")
+    var count by stringPref("-1", "comm1_videos_count")
 
     val scene by stringSetPref("comm1_videos_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()

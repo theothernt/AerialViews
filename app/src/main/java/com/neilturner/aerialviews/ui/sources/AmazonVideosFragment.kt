@@ -3,10 +3,16 @@
 package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
+import com.neilturner.aerialviews.providers.AmazonMediaProvider
+import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class AmazonVideosFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -14,7 +20,16 @@ class AmazonVideosFragment : MenuStateFragment() {
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.sources_amazon_videos, rootKey)
+        MediaPreferenceHelper.setupQualityWithDataUsage(
+            fragment = this,
+            qualityPrefKey = "amazon_videos_quality",
+            qualityEntriesArrayId = R.array.amazon_videos_quality_entries,
+            dataUsageValuesArrayId = R.array.amazon_videos_data_usage_values,
+            scope = lifecycleScope,
+            onChangeCallback = { updateVideoCount(forceRecalculate = true) }
+        )
         updateSummary()
+        updateVideoCount()
     }
 
     private fun updateSummary() {
@@ -22,6 +37,10 @@ class AmazonVideosFragment : MenuStateFragment() {
         sceneType?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
+                lifecycleScope.launch {
+                    delay(100)
+                    updateVideoCount(forceRecalculate = true)
+                }
                 true
             }
         sceneType?.let { updateMultiSelectSummary(it, it.values) }
@@ -30,9 +49,29 @@ class AmazonVideosFragment : MenuStateFragment() {
         timeOfDay?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
+                lifecycleScope.launch {
+                    delay(100)
+                    updateVideoCount(forceRecalculate = true)
+                }
                 true
             }
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
+    }
+
+    private fun updateVideoCount(forceRecalculate: Boolean = false) {
+        MediaPreferenceHelper.updateMediaCount(
+            fragment = this,
+            targetPrefKey = "amazon_videos_enabled",
+            countStringId = R.string.videos_count,
+            scope = lifecycleScope,
+            getCachedCount = { AmazonVideoPrefs.count },
+            setCachedCount = { AmazonVideoPrefs.count = it },
+            fetchMediaCount = { ctx ->
+                val provider = AmazonMediaProvider(ctx, AmazonVideoPrefs)
+                provider.fetchMedia().size
+            },
+            forceRecalculate = forceRecalculate
+        )
     }
 
     private fun updateMultiSelectSummary(

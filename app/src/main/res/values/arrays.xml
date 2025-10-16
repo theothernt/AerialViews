@@ -29,6 +29,16 @@
     <item>~2GB</item>
     <item>~3GB</item>
   </string-array>
+  <string-array name="comm1_videos_data_usage_values" translatable="false">
+    <item>~1GB</item>
+    <item>~.8GB</item>
+    <item>~1.5GB</item>
+  </string-array>
+  <string-array name="comm2_videos_data_usage_values" translatable="false">
+    <item>~4GB</item>
+    <item>~3GB</item>
+    <item>~6GB</item>
+  </string-array>
 
   <!-- Video Time of Day -->
   <string-array name="video_time_of_day_entries">
@@ -114,7 +124,6 @@
     <item>CITY</item>
     <item>SEA</item>
     <item>SPACE</item>
-    <item>FIRE</item>
   </string-array>
 
   <string-array name="comm2_videos_scene_type_entries">

@@ -96,8 +96,10 @@
   <string name="videos_quality_summary">Select a video quality</string>
 
   <string name="appearance_description_size_title">Size</string>
-
   <string name="message_media_searching">Searching for media…</string>
+
+  <string name="videos_count">%1$d videos selected</string>
+  <string name="videos_data_estimate_summary">Approx. %1$s per hour</string>
 
   <string name="text_size_title">Size</string>
   <string name="text_weight_title">Weight</string>
@@ -148,10 +150,7 @@
 
   <!-- Main / Video Sources / Apple videos -->
   <string name="apple_videos_enabled">Use Apple videos</string>
-  <string name="apple_videos_count">%1$d videos selected</string>
 
-  <string name="apple_videos_data_usage_title">Data usage</string>
-  <string name="apple_videos_data_estimate_summary">Approx. %1$s per hour</string>
 
   <string name="apple_videos_time_of_day_title">Time of day</string>
   <string name="apple_videos_scene_type_title">Scene types</string>
