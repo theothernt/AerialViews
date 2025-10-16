@@ -26,7 +26,7 @@ class AppleVideosFragment : MenuStateFragment() {
             qualityEntriesArrayId = R.array.apple_videos_quality_entries,
             dataUsageValuesArrayId = R.array.apple_videos_data_usage_values,
             scope = lifecycleScope,
-            onChangeCallback = { updateVideoCount(forceRecalculate = true) }
+            onChangeCallback = { updateVideoCount(forceRecalculate = true) },
         )
         updateSummary()
         updateVideoCount()
@@ -70,7 +70,7 @@ class AppleVideosFragment : MenuStateFragment() {
                 val provider = AppleMediaProvider(ctx, AppleVideoPrefs)
                 provider.fetchMedia().size
             },
-            forceRecalculate = forceRecalculate
+            forceRecalculate = forceRecalculate,
         )
     }
 

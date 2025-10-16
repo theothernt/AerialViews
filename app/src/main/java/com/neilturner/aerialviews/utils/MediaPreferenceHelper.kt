@@ -15,7 +15,6 @@ import timber.log.Timber
  * Helper class for common media preference operations
  */
 object MediaPreferenceHelper {
-
     /**
      * Updates a quality preference by combining quality entries with data usage values
      * @param fragment The preference fragment
@@ -31,20 +30,22 @@ object MediaPreferenceHelper {
         qualityEntriesArrayId: Int,
         dataUsageValuesArrayId: Int,
         scope: LifecycleCoroutineScope,
-        onChangeCallback: (() -> Unit)? = null
+        onChangeCallback: (() -> Unit)? = null,
     ) {
         val quality = fragment.findPreference<ListPreference>(qualityPrefKey) ?: return
         val res = fragment.context?.resources ?: return
         val qualityEntries = res.getStringArray(qualityEntriesArrayId)
         val dataUsageValues = res.getStringArray(dataUsageValuesArrayId)
 
-        val combinedEntries = qualityEntries.mapIndexed { index, qualityEntry ->
-            if (index < dataUsageValues.size) {
-                "$qualityEntry (${dataUsageValues[index]} per hour)"
-            } else {
-                qualityEntry
-            }
-        }.toTypedArray()
+        val combinedEntries =
+            qualityEntries
+                .mapIndexed { index, qualityEntry ->
+                    if (index < dataUsageValues.size) {
+                        "$qualityEntry (${dataUsageValues[index]} per hour)"
+                    } else {
+                        qualityEntry
+                    }
+                }.toTypedArray()
 
         quality.entries = combinedEntries
 
@@ -79,7 +80,7 @@ object MediaPreferenceHelper {
         getCachedCount: () -> String,
         setCachedCount: (String) -> Unit,
         fetchMediaCount: suspend (Context) -> Int,
-        forceRecalculate: Boolean = false
+        forceRecalculate: Boolean = false,
     ) {
         val targetPref = fragment.findPreference<Preference>(targetPrefKey) ?: return
         val ctx = fragment.context ?: return
@@ -87,25 +88,25 @@ object MediaPreferenceHelper {
         scope.launch {
             // Check if we have a valid cached count
             val cachedCount = getCachedCount().toIntOrNull()
-            val count = if (!forceRecalculate && cachedCount != null && cachedCount != -1) {
-                // Use cached value
-                cachedCount
-            } else {
-                // Recalculate and cache
-                withContext(Dispatchers.IO) {
-                    try {
-                        val mediaCount = fetchMediaCount(ctx)
-                        setCachedCount(mediaCount.toString())
-                        mediaCount
-                    } catch (e: Exception) {
-                        Timber.e(e, "Error fetching media count")
-                        0
+            val count =
+                if (!forceRecalculate && cachedCount != null && cachedCount != -1) {
+                    // Use cached value
+                    cachedCount
+                } else {
+                    // Recalculate and cache
+                    withContext(Dispatchers.IO) {
+                        try {
+                            val mediaCount = fetchMediaCount(ctx)
+                            setCachedCount(mediaCount.toString())
+                            mediaCount
+                        } catch (e: Exception) {
+                            Timber.e(e, "Error fetching media count")
+                            0
+                        }
                     }
                 }
-            }
 
             targetPref.summary = ctx.getString(countStringId, count)
         }
     }
 }
-

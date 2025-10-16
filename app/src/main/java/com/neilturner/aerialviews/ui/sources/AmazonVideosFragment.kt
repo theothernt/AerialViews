@@ -26,7 +26,7 @@ class AmazonVideosFragment : MenuStateFragment() {
             qualityEntriesArrayId = R.array.amazon_videos_quality_entries,
             dataUsageValuesArrayId = R.array.amazon_videos_data_usage_values,
             scope = lifecycleScope,
-            onChangeCallback = { updateVideoCount(forceRecalculate = true) }
+            onChangeCallback = { updateVideoCount(forceRecalculate = true) },
         )
         updateSummary()
         updateVideoCount()
@@ -70,7 +70,7 @@ class AmazonVideosFragment : MenuStateFragment() {
                 val provider = AmazonMediaProvider(ctx, AmazonVideoPrefs)
                 provider.fetchMedia().size
             },
-            forceRecalculate = forceRecalculate
+            forceRecalculate = forceRecalculate,
         )
     }
 
