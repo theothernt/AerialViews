@@ -1,13 +1,8 @@
 package com.neilturner.aerialviews.utils
 
-import android.content.Context
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
-import androidx.preference.ListPreference
-import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -61,92 +56,6 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                 }
             } catch (ex: Exception) {
                 FirebaseHelper.crashlyticsException(ex)
-
-    /**
-     * Updates a quality preference by combining quality entries with data usage values
-     * @param qualityPrefKey The preference key for the quality setting
-     * @param qualityEntriesArrayId Resource ID for quality entries
-     * @param dataUsageValuesArrayId Resource ID for data usage values
-     * @param onChangeCallback Optional callback when quality changes
-     */
-    protected fun setupQualityWithDataUsage(
-        qualityPrefKey: String,
-        qualityEntriesArrayId: Int,
-        dataUsageValuesArrayId: Int,
-        onChangeCallback: (() -> Unit)? = null
-    ) {
-        val quality = findPreference<ListPreference>(qualityPrefKey) ?: return
-        val res = context?.resources ?: return
-        val qualityEntries = res.getStringArray(qualityEntriesArrayId)
-        val dataUsageValues = res.getStringArray(dataUsageValuesArrayId)
-
-        val combinedEntries = qualityEntries.mapIndexed { index, qualityEntry ->
-            if (index < dataUsageValues.size) {
-                "$qualityEntry (${dataUsageValues[index]} per hour)"
-            } else {
-                qualityEntry
-            }
-        }.toTypedArray()
-
-        quality.entries = combinedEntries
-
-        if (onChangeCallback != null) {
-            quality.onPreferenceChangeListener =
-                Preference.OnPreferenceChangeListener { _, _ ->
-                    lifecycleScope.launch {
-                        delay(100)
-                        onChangeCallback()
-                    }
-                    true
-                }
-        }
-    }
-
-    /**
-     * Updates a video count on a preference summary with caching support
-     * @param targetPrefKey The preference key to update with the count
-     * @param countStringId Resource ID for the count string format
-     * @param getCachedCount Lambda to get the cached count value
-     * @param setCachedCount Lambda to set the cached count value
-     * @param fetchMediaCount Lambda to fetch the actual media count
-     * @param forceRecalculate Whether to force recalculation ignoring cache
-     */
-    protected fun updateMediaCount(
-        targetPrefKey: String,
-        countStringId: Int,
-        getCachedCount: () -> String,
-        setCachedCount: (String) -> Unit,
-        fetchMediaCount: suspend (Context) -> Int,
-        forceRecalculate: Boolean = false
-    ) {
-        val targetPref = findPreference<Preference>(targetPrefKey) ?: return
-        val ctx = context ?: return
-
-        lifecycleScope.launch {
-            // Check if we have a valid cached count
-            val cachedCount = getCachedCount().toIntOrNull()
-            val count = if (!forceRecalculate && cachedCount != null && cachedCount != -1) {
-                // Use cached value
-                cachedCount
-            } else {
-                // Recalculate and cache
-                withContext(Dispatchers.IO) {
-                    try {
-                        val mediaCount = fetchMediaCount(ctx)
-                        setCachedCount(mediaCount.toString())
-                        mediaCount
-                    } catch (e: Exception) {
-                        Timber.e(e, "Error fetching media count")
-                        0
-                    }
-                }
-            }
-
-            targetPref.summary = ctx.getString(countStringId, count)
-        }
-    }
-}
-
             }
         }
     }
