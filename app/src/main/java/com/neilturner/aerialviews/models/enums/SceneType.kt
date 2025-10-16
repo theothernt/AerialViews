@@ -9,6 +9,8 @@ enum class SceneType {
     CITY,
     SEA,
     SPACE,
+    PATTERNS,
+    FIRE,
     ;
 
     companion object {
@@ -21,6 +23,8 @@ enum class SceneType {
                 "city" -> CITY
                 "sea" -> SEA
                 "space" -> SPACE
+                "patterns" -> PATTERNS
+                "fire" -> FIRE
                 else -> UNKNOWN
             }
     }

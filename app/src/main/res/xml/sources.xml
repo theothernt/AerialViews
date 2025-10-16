@@ -19,6 +19,11 @@
             app:fragment="com.neilturner.aerialviews.ui.sources.Comm2VideosFragment"/>
 
         <Preference
+            app:title="@string/sources_amazon_title"
+            app:summary="@string/sources_amazon_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.AmazonVideosFragment"/>
+
+        <Preference
             app:title="@string/sources_custom_title"
             app:summary="@string/sources_custom_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.CustomMediaFragment"/>

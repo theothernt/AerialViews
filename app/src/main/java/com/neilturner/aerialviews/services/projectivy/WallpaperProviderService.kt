@@ -35,17 +35,18 @@ class WallpaperProviderService : Service() {
                         val enabledProviders = getEnabledProviders()
 
                         // Fetch media from all enabled providers
-                        val aerialMediaList = runBlocking {
-                            enabledProviders
-                                .filter { it.enabled }
-                                .flatMap { provider ->
-                                    try {
-                                        provider.fetchMedia()
-                                    } catch (ex: Exception) {
-                                        emptyList()
+                        val aerialMediaList =
+                            runBlocking {
+                                enabledProviders
+                                    // .filter { it.enabled }
+                                    .flatMap { provider ->
+                                        try {
+                                            provider.fetchMedia()
+                                        } catch (ex: Exception) {
+                                            emptyList()
+                                        }
                                     }
-                                }
-                        }.shuffled()
+                            }.shuffled()
 
                         // Convert AerialMedia objects to Wallpaper objects
                         aerialMediaList.map { media ->
@@ -70,16 +71,19 @@ class WallpaperProviderService : Service() {
         val providers = mutableListOf<MediaProvider>()
         val enabledSources = GeneralPrefs.shareProjectivyVideos
 
-        if (enabledSources.contains("apple")) {
+        if (enabledSources.contains("APPLE")) {
             providers.add(AppleMediaProvider(applicationContext, AppleVideoPrefs))
         }
-        if (enabledSources.contains("comm1")) {
+        if (enabledSources.contains("COMM1")) {
             providers.add(Comm1MediaProvider(applicationContext, Comm1VideoPrefs))
         }
-        if (enabledSources.contains("comm2")) {
+        if (enabledSources.contains("COMM2")) {
             providers.add(Comm2MediaProvider(applicationContext, Comm2VideoPrefs))
         }
-        if (enabledSources.contains("local")) {
+//        if (enabledSources.contains("AMBIENT")) {
+//            providers.add(AmazonMediaProvider(applicationContext, AmazonVideoPrefs))
+//        }
+        if (enabledSources.contains("LOCAL")) {
             providers.add(LocalMediaProvider(applicationContext, LocalMediaPrefs))
         }
 

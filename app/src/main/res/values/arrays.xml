@@ -64,7 +64,7 @@
     <item>Beach</item>
     <item>City</item>
     <item>Sea</item>
-    <item>Space</item>
+    <item>Outer space</item>
   </string-array>
   <string-array name="video_scene_type_values" translatable="false">
     <item>NATURE</item>
@@ -81,6 +81,34 @@
     <item>CITY</item>
     <item>SEA</item>
     <item>SPACE</item>
+  </string-array>
+
+  <!-- Amazon Video Scene Type -->
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Nature</item>
+    <item>Beach</item>
+    <item>City</item>
+    <item>Sea</item>
+    <item>Space</item>
+    <item>Patterns</item>
+    <item>Fire</item>
+  </string-array>
+  <string-array name="amazon_video_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+    <item>PATTERNS</item>
+    <item>FIRE</item>
+  </string-array>
+  <string-array name="amazon_video_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+    <item>FIRE</item>
   </string-array>
 
   <string-array name="comm2_videos_scene_type_entries">
@@ -114,6 +142,17 @@
     <item>VIDEO_4K_SDR</item>
   </string-array>
   <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+  <!-- Amazon Videos -->
+  <string-array name="amazon_videos_quality_entries" translatable="false">
+    <item>1080p HEVC</item>
+    <item>4K HEVC</item>
+  </string-array>
+  <string-array name="amazon_videos_quality_values" translatable="false">
+    <item>VIDEO_1080_SDR</item>
+    <item>VIDEO_4K_SDR</item>
+  </string-array>
+  <string name="amazon_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
   <!-- Clock format -->
   <string-array name="clock_format_entries">
@@ -956,12 +995,15 @@
     <item>Local/USB Videos</item>
   </string-array>
   <string-array name="projectivy_share_videos_values" translatable="false">
-    <item>apple</item>
-    <item>comm1</item>
-    <item>comm2</item>
-    <item>local</item>
+    <item>APPLE</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+    <item>LOCAL</item>
   </string-array>
   <string-array name="projectivy_share_videos_default" translatable="false">
+    <item>APPLE</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
   </string-array>
 
 </resources>

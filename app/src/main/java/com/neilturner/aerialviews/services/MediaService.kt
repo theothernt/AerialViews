@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
@@ -16,6 +17,7 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
@@ -41,6 +43,7 @@ class MediaService(
     init {
         providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
         providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+        providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))

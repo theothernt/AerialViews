@@ -316,7 +316,7 @@ com.neilturner.aerialviews/.ui.screensaver.DreamActivity
 </details>
 
 <details>
-<summary>ADB command - extra command for Fire TV + Fire OS 7.6.9.x</summary>
+<summary>ADB command - extra command for Fire TV + Fire OS 7.6.x.x</summary>
 &nbsp;
 
 Recent updates to Fire OS mean extra commands are required for Aerial Views to function properly as the default screensaver.
@@ -332,6 +332,22 @@ settings put secure screensaver_enabled 1
 </details>
 
 <details>
+<summary>ADB command - extra command for Fire TV + Fire OS 8.1.x.x</summary>
+&nbsp;
+
+Fire OS 8.x introduces a new Ambient Experience screensaver. This must also be disabled for a 3rd party screensaver, like Aerial Views, to run normally.
+
+To disable the Ambient Experience, run this ADB command...
+
+```sh
+settings put secure amazon_ambient_enabled 0
+```
+
+Then reboot your Fire TV for the setting to take effect.
+
+</details>
+
+<details>
 <summary>ADB command - change the screensaver timeout</summary>
 &nbsp;
 
@@ -340,6 +356,8 @@ To change the default timeout use this command with a value in milliseconds. So,
 ```sh
 settings put system screen_off_timeout 600000
 ```
+
+:information_source: On modern Google TV devices (Android TV 12+), the minimum value is 6 minutes or 360000. If you set a value lower than this, the screensaver won't start.
 
 </details>
 
@@ -453,6 +471,22 @@ If you are using Fully Kiosk, try the following...
 ```sh
 intent://#Intent;component=com.neilturner.aerialviews/.ui.screensaver.TestActivity;end
 ```
+
+</details>
+
+<details>
+<summary>How to launch into the screensaver when opening Aerial Views</summary>
+&nbsp;
+
+When Aerial Views is launched, it starts in the Settings menu.
+
+If you want to launch into the screensaver directly, the equivalent of selecting "Test screensaver settings", you must enable to following option:
+
+`Settings > Appearance > Startup > Start screensaver on launch`
+
+Then you must assign an "Exit to settings" action to a d-pad, button press or swipe on one of these screens:
+
+`Settings > D-Pad/Remote, Tap & Swipe Gestures > D-Pad, Button Press, etc`
 
 </details>
 
