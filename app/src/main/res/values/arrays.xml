@@ -42,22 +42,22 @@
 
   <!-- Video Time of Day -->
   <string-array name="video_time_of_day_entries">
-    <item>Day</item>
-    <item>Night</item>
-    <item>Sunset</item>
     <item>Sunrise</item>
+    <item>Day</item>
+    <item>Sunset</item>
+    <item>Night</item>
   </string-array>
   <string-array name="video_time_of_day_values" translatable="false">
-    <item>DAY</item>
-    <item>NIGHT</item>
-    <item>SUNSET</item>
     <item>SUNRISE</item>
+    <item>DAY</item>
+    <item>SUNSET</item>
+    <item>NIGHT</item>
   </string-array>
   <string-array name="video_time_of_day_default" translatable="false">
-    <item>DAY</item>
-    <item>NIGHT</item>
-    <item>SUNSET</item>
     <item>SUNRISE</item>
+    <item>DAY</item>
+    <item>SUNSET</item>
+    <item>NIGHT</item>
   </string-array>
 
   <string-array name="comm2_videos_time_of_day_entries">
@@ -257,6 +257,7 @@
     <item>5</item>
   </string-array>
   <string name="description_folder_level_default" translatable="false">1</string>
+
   <!-- Slots -->
   <string-array name="slot_entries">
     <item>Empty</item>
