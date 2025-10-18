@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.providers.custom
 
 import android.content.Context
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -38,11 +39,34 @@ class CustomFeedProvider(
 
     override suspend fun fetchTest(): String {
         val validationResults = UrlValidator.validateUrlsWithNetworkTest(prefs.urls)
-        val validUrls = validationResults.filter { it.value.isValid && it.value.isAccessible && it.value.containsJson }.keys.toList()
+        val rtspUrls = mutableListOf<String>()
+        val jsonUrls = mutableListOf<String>()
 
-        return if (validUrls.isNotEmpty()) {
+        // Parse URLs to separate RTSP from HTTP/HTTPS
+        val urls = UrlValidator.parseUrls(prefs.urls)
+        urls.forEach { url ->
+            if (url.startsWith("rtsp://", ignoreCase = true)) {
+                rtspUrls.add(url)
+            }
+        }
+
+        val validUrls = validationResults.filter { it.value.isValid && it.value.isAccessible && it.value.containsJson }.keys.toList()
+        jsonUrls.addAll(validUrls)
+
+        return if (jsonUrls.isNotEmpty() || rtspUrls.isNotEmpty()) {
             buildVideoAndMetadata()
-            "${videos.size} videos found from ${validUrls.size} valid URLs."
+            val message = buildString {
+                append("${videos.size} videos found")
+                if (jsonUrls.isNotEmpty()) {
+                    append(" from ${jsonUrls.size} valid JSON URLs")
+                }
+                if (rtspUrls.isNotEmpty()) {
+                    if (jsonUrls.isNotEmpty()) append(" and")
+                    append(" ${rtspUrls.size} RTSP streams")
+                }
+                append(".")
+            }
+            message
         } else {
             val errorSummary =
                 validationResults.entries.joinToString("\n") { (url, result) ->
@@ -97,6 +121,12 @@ class CustomFeedProvider(
         for (url in urls) {
             try {
                 Timber.d("Processing URL: $url")
+
+                // Check if this is an RTSP stream
+                if (url.startsWith("rtsp://", ignoreCase = true)) {
+                    processRtspStream(url)
+                    continue
+                }
 
                 // First try to parse as manifest format
                 val manifestUrls = tryParseAsManifest(customFeedApi, url)
@@ -195,6 +225,39 @@ class CustomFeedProvider(
                 Timber.d("Processed ${customVideos.assets?.size ?: 0} videos from $url")
             } catch (e: Exception) {
                 Timber.w(e, "Failed to parse entries from URL: $url")
+            }
+        }
+    }
+
+    private suspend fun processRtspStream(url: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                Timber.i("Processing RTSP stream: $url")
+
+                // Add RTSP stream directly as a video
+                // RTSP streams don't have time of day or scene metadata, so we add them without filtering
+                val uri = url.toUri()
+                videos.add(
+                    AerialMedia(
+                        uri,
+                        description = "RTSP Stream",
+                        type = AerialMediaType.VIDEO,
+                        source = AerialMediaSource.CUSTOM,
+                        timeOfDay = TimeOfDay.UNKNOWN,
+                        scene = SceneType.UNKNOWN,
+                    ),
+                )
+
+                // Add metadata for the RTSP stream
+                val data = Pair(
+                    "RTSP Stream: $url",
+                    emptyMap<Int, String>()
+                )
+                metadata[url] = data
+
+                Timber.d("Added RTSP stream: $url")
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to process RTSP stream: $url")
             }
         }
     }

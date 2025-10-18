@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
@@ -165,7 +166,20 @@ object UrlValidator {
             ?.filter { it.isNotEmpty() }
             ?.mapNotNull { url ->
                 try {
-                    UrlParser.parseServerUrl(url)
+                    // Check if this is an RTSP URL
+                    if (url.startsWith("rtsp://", ignoreCase = true)) {
+                        // Basic validation for RTSP URLs
+                        val uri = url.toUri()
+                        if (uri.host != null) {
+                            url // Return the RTSP URL as-is if valid
+                        } else {
+                            Timber.w("Invalid RTSP URL skipped: $url - no host")
+                            null
+                        }
+                    } else {
+                        // Use existing parser for HTTP/HTTPS URLs
+                        UrlParser.parseServerUrl(url)
+                    }
                 } catch (e: Exception) {
                     Timber.w("Invalid URL skipped: $url - ${e.message}")
                     null
