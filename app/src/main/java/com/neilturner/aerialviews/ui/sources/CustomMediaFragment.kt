@@ -24,19 +24,6 @@ class CustomMediaFragment : MenuStateFragment() {
         updateSummary()
     }
 
-    override fun onPreferenceTreeClick(preference: Preference): Boolean {
-        if (preference.key.isNullOrEmpty()) {
-            return super.onPreferenceTreeClick(preference)
-        }
-
-        if (preference.key.contains("validate_feeds")) {
-            lifecycleScope.launch { testUrlConnections() }
-            return true
-        }
-
-        return super.onPreferenceTreeClick(preference)
-    }
-
     private suspend fun testUrlConnections() {
         val loadingMessage = getString(R.string.message_media_searching)
         val progressDialog =
@@ -60,8 +47,10 @@ class CustomMediaFragment : MenuStateFragment() {
     private fun updateSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls")
         urls?.onPreferenceChangeListener =
-            Preference.OnPreferenceChangeListener { _, newValue ->
+            Preference.OnPreferenceChangeListener { preference, newValue ->
                 val urlsString = newValue as String
+                val previousValue = (preference as EditTextPreference).text ?: ""
+
                 val (isValid, invalidUrls) = UrlValidator.validateUrls(urlsString)
 
                 if (!isValid) {
@@ -76,6 +65,12 @@ class CustomMediaFragment : MenuStateFragment() {
                 }
 
                 updateUrlsSummary(urlsString)
+
+                // Automatically test the feeds only if URL is not blank and has changed
+                if (urlsString.isNotBlank() && urlsString != previousValue) {
+                    lifecycleScope.launch { testUrlConnections() }
+                }
+
                 true
             }
         urls?.let { updateUrlsSummary(it.text) }

@@ -20,12 +20,6 @@
                     app:key="custom_media_urls"
                     app:title="@string/custom_media_urls_title"
                     app:summary="@string/custom_media_urls_summary" />
-
-                <Preference
-                    app:dependency="custom_media_enabled"
-                    app:disableDependentsState="false"
-                    app:title="@string/custom_media_validate_feeds"
-                    app:key="validate_feeds" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_quality_and_scene_types">
