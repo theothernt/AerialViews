@@ -7,12 +7,12 @@
                     app:defaultValue="true"
                     app:key="custom_media_enabled"
                     app:title="@string/custom_media_enabled" />
+        </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_feed_and_stream_details">
                 <Preference
-                    app:dependency="custom_media_enabled"
-                    app:disableDependentsState="false"
-                    app:title="@string/custom_media_test_connection"
-                    app:key="custom_media_test_connection" />
+                    app:selectable="false"
+                    app:summary="@string/custom_media_feeds_notice" />
 
                 <EditTextPreference
                     app:dependency="custom_media_enabled"
@@ -20,9 +20,17 @@
                     app:key="custom_media_urls"
                     app:title="@string/custom_media_urls_title"
                     app:summary="@string/custom_media_urls_summary" />
+
+                <Preference
+                    app:dependency="custom_media_enabled"
+                    app:disableDependentsState="false"
+                    app:title="@string/custom_media_validate_feeds"
+                    app:key="validate_feeds" />
+
+
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_quality">
+        <PreferenceCategory app:title="@string/category_quality_and_scene_types">
                 <ListPreference
                     app:dependency="custom_media_enabled"
                     app:disableDependentsState="false"
@@ -33,9 +41,7 @@
                     app:title="@string/videos_quality_title"
                     app:useSimpleSummaryProvider="true"
                     app:dialogTitle="@string/videos_quality_summary" />
-        </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_filters">
                 <MultiSelectListPreference
                     app:dependency="custom_media_enabled"
                     app:disableDependentsState="false"
@@ -55,5 +61,6 @@
                     app:key="custom_media_time_of_day"
                     app:title="@string/apple_videos_time_of_day_title"
                     app:dialogTitle="@string/apple_videos_time_of_day_title" />
+
         </PreferenceCategory>
 </PreferenceScreen>

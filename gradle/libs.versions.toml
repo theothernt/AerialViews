@@ -87,6 +87,7 @@ logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-intercep
 
 media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-exoplayer" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-exoplayer" }
+media3-rtsp = { group = "androidx.media3", name = "media3-exoplayer-rtsp", version.ref = "media3-exoplayer" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
@@ -113,7 +114,7 @@ benchmark-junit4 = { group = "androidx.benchmark", name = "benchmark-junit4", ve
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "kotlinx-serialization-json"]
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
-exoplayer = ["media3-exoplayer", "media3-ui"]
+exoplayer = ["media3-exoplayer", "media3-ui", "media3-rtsp"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "logging-interceptor"]

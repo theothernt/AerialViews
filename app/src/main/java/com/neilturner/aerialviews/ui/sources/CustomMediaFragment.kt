@@ -29,7 +29,7 @@ class CustomMediaFragment : MenuStateFragment() {
             return super.onPreferenceTreeClick(preference)
         }
 
-        if (preference.key.contains("custom_media_test_connection")) {
+        if (preference.key.contains("validate_feeds")) {
             lifecycleScope.launch { testUrlConnections() }
             return true
         }
