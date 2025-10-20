@@ -167,7 +167,7 @@
 
   <!-- Main / Video Sources / Custom feeds -->
   <string name="custom_media_enabled">Use custom feeds</string>
-  <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansions videos, Custom feeds (entries.json) and RTSP streams</string>
+  <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansion packs, Custom feeds (entries.json), and RTSP streams</string>
 
   <string name="custom_media_urls_title">Feed URLs</string>
   <string name="custom_media_urls_summary">Separate multiple URLs with a comma</string>

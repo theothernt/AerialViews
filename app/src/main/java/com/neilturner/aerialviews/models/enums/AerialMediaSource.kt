@@ -5,6 +5,7 @@ enum class AerialMediaSource {
     APPLE,
     COMM1,
     COMM2,
+    RTSP,
     AMAZON,
     CUSTOM,
     LOCAL,

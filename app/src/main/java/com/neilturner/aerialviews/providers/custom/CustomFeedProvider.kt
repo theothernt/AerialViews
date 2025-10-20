@@ -240,9 +240,9 @@ class CustomFeedProvider(
                 videos.add(
                     AerialMedia(
                         uri,
-                        description = "RTSP Stream",
+                        description = "",
                         type = AerialMediaType.VIDEO,
-                        source = AerialMediaSource.CUSTOM,
+                        source = AerialMediaSource.RTSP,
                         timeOfDay = TimeOfDay.UNKNOWN,
                         scene = SceneType.UNKNOWN,
                     ),

@@ -26,8 +26,6 @@
                     app:disableDependentsState="false"
                     app:title="@string/custom_media_validate_feeds"
                     app:key="validate_feeds" />
-
-
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_quality_and_scene_types">
@@ -61,6 +59,5 @@
                     app:key="custom_media_time_of_day"
                     app:title="@string/apple_videos_time_of_day_title"
                     app:dialogTitle="@string/apple_videos_time_of_day_title" />
-
         </PreferenceCategory>
 </PreferenceScreen>

@@ -10,6 +10,7 @@ object CustomMediaPrefs : KotprefModel() {
 
     var enabled by booleanPref(false, "custom_media_enabled")
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "custom_media_quality")
+
     var urls by stringPref("", "custom_media_urls")
     var urlsValid by stringPref("", "custom_media_urls_valid")
 

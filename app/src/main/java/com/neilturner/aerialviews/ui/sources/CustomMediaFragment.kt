@@ -110,8 +110,8 @@ class CustomMediaFragment : MenuStateFragment() {
         urls.summary =
             when {
                 validUrls.isEmpty() -> context.getString(R.string.custom_media_urls_invalid)
-                validUrls.size == 1 -> "1 URL configured"
-                else -> "${validUrls.size} URLs configured"
+                validUrls.size == 1 -> "1 URL added"
+                else -> "${validUrls.size} URLs added"
             }
     }
 
