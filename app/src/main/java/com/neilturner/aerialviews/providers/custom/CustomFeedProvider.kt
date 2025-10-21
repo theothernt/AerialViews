@@ -85,48 +85,70 @@ class CustomFeedProvider(
     }
 
     override suspend fun fetchTest(): String {
-        val result = fetchTestValidation()
-
-        // Build formatted string for compatibility with MediaProvider interface
-        val message = if (result.isSuccess) {
-            buildString {
-                append("Found ")
-                if (result.urlCount > 0) {
-                    append("${result.videoCount} video")
-                    if (result.videoCount != 1) append("s")
-                    append(" in ${result.urlCount} URL")
-                    if (result.urlCount != 1) append("s")
-                }
-                if (result.rtspCount > 0) {
-                    if (result.urlCount > 0) append(" and ")
-                    append("${result.rtspCount} RTSP stream")
-                    if (result.rtspCount != 1) append("s")
-                }
-                append(".")
-            }
-        } else {
-            result.errorMessage ?: "No valid URLs found."
+        // Step 1: Simple validation of URLs
+        val simpleValidation = performSimpleValidation()
+        if (simpleValidation.hasErrors) {
+            prefs.urlsSummary = simpleValidation.summary
+            return simpleValidation.message
         }
 
-        // Save summary to preferences
-        prefs.urlsSummary = message
-        return message
+        // Step 2: Advanced validation - fetch and parse each URL
+        val advancedValidation = performAdvancedValidation()
+        prefs.urlsSummary = advancedValidation.summary
+        return advancedValidation.message
     }
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
-        // if (metadata.isEmpty()) buildVideoAndMetadata()
-        return metadata
-    }
+    private fun performSimpleValidation(): ValidationResult {
+        if (prefs.urls.isBlank()) {
+            return ValidationResult(
+                hasErrors = true,
+                message = "❌ No URLs configured",
+                summary = "No URLs"
+            )
+        }
 
-    private suspend fun fetchTestValidation(): CustomFeedValidationResult {
-        // Try simple URL validation first
         val validationResults = UrlValidator.validateUrls(prefs.urls)
-        val invalidUrls = validationResults.filter { !it.first }.map { it.second }
-        if (invalidUrls.isNotEmpty()) {
-            val errorMessage = "Invalid URL format:\n\n" + invalidUrls.joinToString("\n")
-            return CustomFeedValidationResult(errorMessage = errorMessage)
+        val validUrls = validationResults.filter { it.first }
+        val invalidUrls = validationResults.filter { !it.first }
+
+        if (invalidUrls.isEmpty()) {
+            // All URLs are valid format
+            return ValidationResult(
+                hasErrors = false,
+                message = buildString {
+                    append("✅ All URLs have valid format (${validUrls.size})\n\n")
+                    validUrls.forEach { (_, url) ->
+                        append("✅ $url\n")
+                    }
+                },
+                summary = "${validUrls.size} valid URLs"
+            )
         }
 
+        // Some URLs are invalid
+        val message = buildString {
+            append("Invalid URL format detected:\n\n")
+            if (validUrls.isNotEmpty()) {
+                append("Valid URLs (${validUrls.size}):\n")
+                validUrls.forEach { (_, url) ->
+                    append("✅ $url\n")
+                }
+                append("\n")
+            }
+            append("Invalid URLs (${invalidUrls.size}):\n")
+            invalidUrls.forEach { (_, url) ->
+                append("❌ $url\n")
+            }
+        }
+
+        return ValidationResult(
+            hasErrors = true,
+            message = message,
+            summary = "${invalidUrls.size} invalid, ${validUrls.size} valid"
+        )
+    }
+
+    private suspend fun performAdvancedValidation(): ValidationResult {
         val urls = UrlValidator.parseUrls(prefs.urls)
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
@@ -135,7 +157,6 @@ class CustomFeedProvider(
         val okHttpClient =
             OkHttpClient
                 .Builder()
-                // .addInterceptor(logging)
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
@@ -212,26 +233,76 @@ class CustomFeedProvider(
             }
         }
 
-        // Save valid URLs and video count to prefs
+        // Save valid URLs to cache
         val allValidUrls = (validEntriesUrls + validRtspUrls).joinToString(",")
         prefs.urlsCache = allValidUrls
 
-        return if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
-            CustomFeedValidationResult(
-                videoCount = totalVideos,
-                urlCount = validEntriesUrls.size,
-                rtspCount = validRtspUrls.size
+        // Build result message
+        if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
+            val message = buildString {
+                append("✅ Validation successful!\n\n")
+                append("Summary:\n")
+                if (totalVideos > 0) {
+                    append("• $totalVideos videos found\n")
+                }
+                if (validEntriesUrls.isNotEmpty()) {
+                    append("• ${validEntriesUrls.size} video feeds\n")
+                }
+                if (validRtspUrls.isNotEmpty()) {
+                    append("• ${validRtspUrls.size} RTSP streams\n")
+                }
+
+                if (errorMessages.isNotEmpty()) {
+                    append("\n⚠️ Some URLs had issues (${errorMessages.size}):\n")
+                    errorMessages.forEach { (url, error) ->
+                        append("❌ $error\n   $url\n")
+                    }
+                }
+            }
+
+            val summary = buildString {
+                if (totalVideos > 0) append("$totalVideos videos")
+                if (validRtspUrls.isNotEmpty()) {
+                    if (totalVideos > 0) append(", ")
+                    append("${validRtspUrls.size} streams")
+                }
+            }
+
+            return ValidationResult(
+                hasErrors = false,
+                message = message,
+                summary = summary
             )
         } else {
-            val errorSummary =
-                errorMessages.entries.joinToString("\n\n") { (url, error) ->
-                    "$error\n$url"
+            val message = buildString {
+                append("❌ No valid URLs found\n\n")
+                if (errorMessages.isNotEmpty()) {
+                    append("Errors:\n")
+                    errorMessages.forEach { (url, error) ->
+                        append("❌ $error\n   $url\n\n")
+                    }
                 }
-            CustomFeedValidationResult(
-                errorMessage = "No valid URLs found.\n\n$errorSummary"
+            }
+
+            return ValidationResult(
+                hasErrors = true,
+                message = message,
+                summary = "No valid URLs"
             )
         }
     }
+
+    private data class ValidationResult(
+        val hasErrors: Boolean,
+        val message: String,
+        val summary: String
+    )
+
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        // if (metadata.isEmpty()) buildVideoAndMetadata()
+        return metadata
+    }
+
 
     private suspend fun tryParseAsManifest(
         apiService: CustomFeedApi,
