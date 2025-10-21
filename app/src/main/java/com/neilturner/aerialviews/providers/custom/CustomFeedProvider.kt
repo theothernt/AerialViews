@@ -87,8 +87,8 @@ class CustomFeedProvider(
     override suspend fun fetchTest(): String {
         val result = fetchTestValidation()
 
-        // Return formatted string for compatibility with MediaProvider interface
-        return if (result.isSuccess) {
+        // Build formatted string for compatibility with MediaProvider interface
+        val message = if (result.isSuccess) {
             buildString {
                 append("Found ")
                 if (result.urlCount > 0) {
@@ -107,6 +107,11 @@ class CustomFeedProvider(
         } else {
             result.errorMessage ?: "No valid URLs found."
         }
+
+        // Save summary to preferences
+        prefs.urlsSummary = message
+
+        return message
     }
 
     /**

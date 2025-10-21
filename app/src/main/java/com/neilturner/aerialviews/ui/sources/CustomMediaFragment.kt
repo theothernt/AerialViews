@@ -23,29 +23,6 @@ class CustomMediaFragment : MenuStateFragment() {
         updateSummary()
     }
 
-    private suspend fun testUrlConnections() {
-        val loadingMessage = getString(R.string.message_media_searching)
-        val progressDialog =
-            DialogHelper.progressDialog(
-                requireContext(),
-                loadingMessage,
-            )
-        progressDialog.show()
-
-        val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
-        val resultMessage = provider.fetchTest()
-
-        progressDialog.dismiss()
-
-        DialogHelper.showOnMain(
-            requireContext(),
-            resources.getString(R.string.samba_videos_test_results),
-            resultMessage,
-        )
-
-        updateValidatedUrlsSummary()
-    }
-
     private fun updateSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls")
         urls?.onPreferenceChangeListener =
@@ -72,7 +49,7 @@ class CustomMediaFragment : MenuStateFragment() {
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
                     // Save the new value to preferences immediately before testing
                     CustomMediaPrefs.urls = urlsString
-                    lifecycleScope.launch { testUrlConnections() }
+                    lifecycleScope.launch { validateUrls() }
                 }
 
                 true
@@ -102,42 +79,41 @@ class CustomMediaFragment : MenuStateFragment() {
 
         if (urlsString?.isBlank() == true) {
             urls.summary = context.getString(R.string.custom_media_urls_summary)
-            return
         } else {
-            urls.summary = urlsString
+            // Display the stored summary from preferences instead of raw URLs
+            val urlsSummary = CustomMediaPrefs.urlsSummary
+            urls.summary = urlsSummary.ifBlank {
+                context.getString(R.string.custom_media_urls_summary)
+            }
         }
+    }
+
+    private suspend fun validateUrls() {
+        val loadingMessage = getString(R.string.message_media_searching)
+        val progressDialog =
+            DialogHelper.progressDialog(
+                requireContext(),
+                loadingMessage,
+            )
+        progressDialog.show()
+
+        val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
+        val resultMessage = provider.fetchTest()
+        progressDialog.dismiss()
+
+        DialogHelper.showOnMain(
+            requireContext(),
+            resources.getString(R.string.samba_videos_test_results),
+            resultMessage,
+        )
+
+        updateValidatedUrlsSummary()
     }
 
     private fun updateValidatedUrlsSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
-
-        val validatedUrls = CustomMediaPrefs.urlsCache
-        if (validatedUrls.isBlank()) {
-            urls.summary = "No valid URLs found"
-            return
-        }
-
-        val urlList = validatedUrls.split(",").map { it.trim() }.filter { it.isNotBlank() }
-        val rtspCount = urlList.count { it.startsWith("rtsp://", ignoreCase = true) }
-        val entriesCount = urlList.size - rtspCount
-        val videoCount = urlList.count() - rtspCount
-
-        urls.summary = buildString {
-            if (videoCount > 0 && entriesCount > 0) {
-                append("$videoCount video")
-                if (videoCount != 1) append("s")
-                append(" in $entriesCount URL")
-                if (entriesCount != 1) append("s")
-            } else if (entriesCount > 0) {
-                append("$entriesCount entries.json URL")
-                if (entriesCount != 1) append("s")
-            }
-
-            if (rtspCount > 0) {
-                if (entriesCount > 0) append(" and ")
-                append("$rtspCount RTSP stream")
-                if (rtspCount != 1) append("s")
-            }
+        urls.summary = CustomMediaPrefs.urlsSummary.ifBlank {
+            "No valid URLs found"
         }
     }
 
