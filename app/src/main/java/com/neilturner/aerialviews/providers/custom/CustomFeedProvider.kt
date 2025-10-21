@@ -92,11 +92,15 @@ class CustomFeedProvider(
             buildString {
                 append("Found ")
                 if (result.urlCount > 0) {
-                    append("${result.videoCount} video(s) in ${result.urlCount} URL(s)")
+                    append("${result.videoCount} video")
+                    if (result.videoCount != 1) append("s")
+                    append(" in ${result.urlCount} URL")
+                    if (result.urlCount != 1) append("s")
                 }
                 if (result.rtspCount > 0) {
                     if (result.urlCount > 0) append(" and ")
-                    append("${result.rtspCount} RTSP stream(s)")
+                    append("${result.rtspCount} RTSP stream")
+                    if (result.rtspCount != 1) append("s")
                 }
                 append(".")
             }
@@ -105,7 +109,25 @@ class CustomFeedProvider(
         }
     }
 
-    suspend fun fetchTestValidation(): CustomMediaValidationResult {
+    /**
+     * Validates URL format and returns error message if invalid
+     * Returns null if all URLs are valid
+     */
+    fun validateUrlFormat(urlsString: String): String? {
+        if (urlsString.isBlank()) {
+            return null // Empty is valid
+        }
+
+        val (isValid, invalidUrls) = UrlValidator.validateUrls(urlsString)
+
+        return if (!isValid) {
+            invalidUrls.joinToString(", ")
+        } else {
+            null
+        }
+    }
+
+    private suspend fun fetchTestValidation(): CustomMediaValidationResult {
         val urls = UrlValidator.parseUrls(prefs.urls)
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()

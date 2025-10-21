@@ -12,7 +12,6 @@ import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.UrlValidator
 import kotlinx.coroutines.launch
 
 class CustomMediaFragment : MenuStateFragment() {
@@ -34,30 +33,9 @@ class CustomMediaFragment : MenuStateFragment() {
         progressDialog.show()
 
         val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
-        val validationResult = provider.fetchTestValidation()
+        val resultMessage = provider.fetchTest()
 
         progressDialog.dismiss()
-
-        // Build the result message
-        val resultMessage = if (validationResult.isSuccess) {
-            buildString {
-                append("Found ")
-                if (validationResult.urlCount > 0) {
-                    append("${validationResult.videoCount} video")
-                    if (validationResult.videoCount != 1) append("s")
-                    append(" in ${validationResult.urlCount} URL")
-                    if (validationResult.urlCount != 1) append("s")
-                }
-                if (validationResult.rtspCount > 0) {
-                    if (validationResult.urlCount > 0) append(" and ")
-                    append("${validationResult.rtspCount} RTSP stream")
-                    if (validationResult.rtspCount != 1) append("s")
-                }
-                append(".")
-            }
-        } else {
-            validationResult.errorMessage ?: "No valid URLs found."
-        }
 
         DialogHelper.showOnMain(
             requireContext(),
@@ -75,11 +53,11 @@ class CustomMediaFragment : MenuStateFragment() {
                 val urlsString = newValue as String
                 val previousValue = (preference as EditTextPreference).text ?: ""
 
-                val (isValid, invalidUrls) = UrlValidator.validateUrls(urlsString)
+                val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
+                val invalidUrlsText = provider.validateUrlFormat(urlsString)
 
-                if (!isValid) {
+                if (invalidUrlsText != null) {
                     val context = context ?: return@OnPreferenceChangeListener false
-                    val invalidUrlsText = invalidUrls.joinToString(", ")
                     DialogHelper.show(
                         context,
                         context.getString(R.string.custom_media_urls_invalid),
