@@ -200,8 +200,9 @@ class CustomFeedProvider(
                 }
 
                 // For HTTP/HTTPS URLs without entries.json, append /manifest.json if needed
-                val testUrl = if (url.toUri().path.isNullOrBlank() || url.toUri().path == "/") {
-                    "$url/manifest.json"
+                val uri = url.toUri()
+                val testUrl = if (!uri.toString().endsWith("manifest.json", false)) {
+                    "${url.trimEnd('/')}/manifest.json"
                 } else {
                     url
                 }
