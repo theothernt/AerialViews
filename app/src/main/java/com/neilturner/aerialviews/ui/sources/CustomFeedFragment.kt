@@ -8,18 +8,18 @@ import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
+import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.launch
 
-class CustomMediaFragment : MenuStateFragment() {
+class CustomFeedFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.sources_custom_media, rootKey)
+        setPreferencesFromResource(R.xml.sources_custom_feed, rootKey)
         updateSummary()
     }
 
@@ -30,7 +30,7 @@ class CustomMediaFragment : MenuStateFragment() {
                 val urlsString = newValue as String
                 val previousValue = (preference as EditTextPreference).text ?: ""
 
-                val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
+                val provider = CustomFeedProvider(requireContext(), CustomFeedPrefs)
                 val invalidUrlsText = provider.validateUrlFormat(urlsString)
 
                 if (invalidUrlsText != null) {
@@ -48,7 +48,7 @@ class CustomMediaFragment : MenuStateFragment() {
                 // Automatically test the feeds only if URL is not blank and has changed
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
                     // Save the new value to preferences immediately before testing
-                    CustomMediaPrefs.urls = urlsString
+                    CustomFeedPrefs.urls = urlsString
                     lifecycleScope.launch { validateUrls() }
                 }
 
@@ -81,7 +81,7 @@ class CustomMediaFragment : MenuStateFragment() {
             urls.summary = context.getString(R.string.custom_media_urls_summary)
         } else {
             // Display the stored summary from preferences instead of raw URLs
-            val urlsSummary = CustomMediaPrefs.urlsSummary
+            val urlsSummary = CustomFeedPrefs.urlsSummary
             urls.summary = urlsSummary.ifBlank {
                 context.getString(R.string.custom_media_urls_summary)
             }
@@ -97,7 +97,7 @@ class CustomMediaFragment : MenuStateFragment() {
             )
         progressDialog.show()
 
-        val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
+        val provider = CustomFeedProvider(requireContext(), CustomFeedPrefs)
         val resultMessage = provider.fetchTest()
         progressDialog.dismiss()
 
@@ -112,7 +112,7 @@ class CustomMediaFragment : MenuStateFragment() {
 
     private fun updateValidatedUrlsSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
-        urls.summary = CustomMediaPrefs.urlsSummary.ifBlank {
+        urls.summary = CustomFeedPrefs.urlsSummary.ifBlank {
             "No valid URLs found"
         }
     }

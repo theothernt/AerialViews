@@ -8,7 +8,7 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SceneType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.enums.VideoQuality
-import com.neilturner.aerialviews.models.prefs.CustomMediaPrefs
+import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.JsonHelper
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 
 class CustomFeedProvider(
     context: Context,
-    private val prefs: CustomMediaPrefs,
+    private val prefs: CustomFeedPrefs,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
     val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
@@ -132,7 +132,7 @@ class CustomFeedProvider(
         }
     }
 
-    private suspend fun fetchTestValidation(): CustomMediaValidationResult {
+    private suspend fun fetchTestValidation(): CustomFeedValidationResult {
         val urls = UrlValidator.parseUrls(prefs.urls)
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
@@ -223,7 +223,7 @@ class CustomFeedProvider(
         prefs.urlsCache = allValidUrls
 
         return if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
-            CustomMediaValidationResult(
+            CustomFeedValidationResult(
                 videoCount = totalVideos,
                 urlCount = validEntriesUrls.size,
                 rtspCount = validRtspUrls.size
@@ -233,7 +233,7 @@ class CustomFeedProvider(
                 errorMessages.entries.joinToString("\n\n") { (url, error) ->
                     "$error\n$url"
                 }
-            CustomMediaValidationResult(
+            CustomFeedValidationResult(
                 errorMessage = "No valid URLs found.\n\n$errorSummary"
             )
         }

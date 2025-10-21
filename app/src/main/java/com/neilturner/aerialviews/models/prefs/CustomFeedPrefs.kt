@@ -5,7 +5,7 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.VideoQuality
 
-object CustomMediaPrefs : KotprefModel() {
+object CustomFeedPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "custom_media_enabled")
