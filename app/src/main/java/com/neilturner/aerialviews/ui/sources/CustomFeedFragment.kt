@@ -30,31 +30,17 @@ class CustomFeedFragment : MenuStateFragment() {
                 val urlsString = newValue as String
                 val previousValue = (preference as EditTextPreference).text ?: ""
 
-                val provider = CustomFeedProvider(requireContext(), CustomFeedPrefs)
-                val invalidUrlsText = provider.validateUrlFormat(urlsString)
-
-                if (invalidUrlsText != null) {
-                    val context = context ?: return@OnPreferenceChangeListener false
-                    DialogHelper.show(
-                        context,
-                        context.getString(R.string.custom_media_urls_invalid),
-                        invalidUrlsText,
-                    )
-                    return@OnPreferenceChangeListener false
-                }
-
-                updateUrlsSummary(urlsString)
-
-                // Automatically test the feeds only if URL is not blank and has changed
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
-                    // Save the new value to preferences immediately before testing
-                    CustomFeedPrefs.urls = urlsString
                     lifecycleScope.launch { validateUrls() }
+                } else if (urlsString.isBlank()) {
+                    CustomFeedPrefs.urlsCache = ""
+                    CustomFeedPrefs.urlsSummary = ""
+                    updateUrlsSummary()
                 }
 
                 true
             }
-        urls?.let { updateUrlsSummary(it.text) }
+        urls?.let { updateUrlsSummary(CustomFeedPrefs.urlsSummary) }
 
         val sceneType = findPreference<MultiSelectListPreference>("custom_media_scene_type")
         sceneType?.onPreferenceChangeListener =
@@ -73,18 +59,12 @@ class CustomFeedFragment : MenuStateFragment() {
         timeOfDay?.let { updateMultiSelectSummary(it, it.values) }
     }
 
-    private fun updateUrlsSummary(urlsString: String?) {
+    private fun updateUrlsSummary(summary: String = "") {
         val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
         val context = context ?: return
 
-        if (urlsString?.isBlank() == true) {
-            urls.summary = context.getString(R.string.custom_media_urls_summary)
-        } else {
-            // Display the stored summary from preferences instead of raw URLs
-            val urlsSummary = CustomFeedPrefs.urlsSummary
-            urls.summary = urlsSummary.ifBlank {
-                context.getString(R.string.custom_media_urls_summary)
-            }
+        urls.summary = summary.ifBlank {
+            context.getString(R.string.custom_media_urls_summary)
         }
     }
 
@@ -107,14 +87,7 @@ class CustomFeedFragment : MenuStateFragment() {
             resultMessage,
         )
 
-        updateValidatedUrlsSummary()
-    }
-
-    private fun updateValidatedUrlsSummary() {
-        val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
-        urls.summary = CustomFeedPrefs.urlsSummary.ifBlank {
-            "No valid URLs found"
-        }
+        updateUrlsSummary(CustomFeedPrefs.urlsSummary)
     }
 
     private fun updateMultiSelectSummary(

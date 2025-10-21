@@ -33,7 +33,7 @@
         <Preference
             app:title="@string/sources_custom_feed_title"
             app:summary="@string/sources_custom_feed_summary"
-            app:fragment="com.neilturner.aerialviews.ui.sources.CustomMediaFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.sources.CustomFeedFragment"/>
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_network">

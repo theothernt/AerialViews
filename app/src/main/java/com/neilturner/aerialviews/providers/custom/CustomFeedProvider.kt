@@ -114,25 +114,14 @@ class CustomFeedProvider(
         return message
     }
 
-    /**
-     * Validates URL format and returns error message if invalid
-     * Returns null if all URLs are valid
-     */
-    fun validateUrlFormat(urlsString: String): String? {
-        if (urlsString.isBlank()) {
-            return null // Empty is valid
-        }
-
-        val (isValid, invalidUrls) = UrlValidator.validateUrls(urlsString)
-
-        return if (!isValid) {
-            invalidUrls.joinToString(", ")
-        } else {
-            null
-        }
-    }
-
     private suspend fun fetchTestValidation(): CustomFeedValidationResult {
+        // First validate URL format
+        val (isValid, invalidUrls) = UrlValidator.validateUrls(prefs.urls)
+        if (!isValid) {
+            val errorMessage = "Invalid URL format:\n\n" + invalidUrls.joinToString("\n")
+            return CustomFeedValidationResult(errorMessage = errorMessage)
+        }
+
         val urls = UrlValidator.parseUrls(prefs.urls)
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
