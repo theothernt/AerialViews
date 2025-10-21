@@ -114,8 +114,13 @@ class CustomFeedProvider(
         return message
     }
 
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        // if (metadata.isEmpty()) buildVideoAndMetadata()
+        return metadata
+    }
+
     private suspend fun fetchTestValidation(): CustomFeedValidationResult {
-        // First validate URL format
+        // Try simple URL validation first
         val (isValid, invalidUrls) = UrlValidator.validateUrls(prefs.urls)
         if (!isValid) {
             val errorMessage = "Invalid URL format:\n\n" + invalidUrls.joinToString("\n")
@@ -226,16 +231,6 @@ class CustomFeedProvider(
                 errorMessage = "No valid URLs found.\n\n$errorSummary"
             )
         }
-    }
-
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
-        if (metadata.isEmpty()) buildVideoAndMetadata()
-        return metadata
-    }
-
-    private fun buildVideoAndMetadata() {
-        // Deprecated - logic moved to fetchTest and fetchMedia
-        Timber.w("buildVideoAndMetadata is deprecated and should not be called")
     }
 
     private suspend fun tryParseAsManifest(

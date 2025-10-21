@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.utils
 import androidx.core.net.toUri
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import timber.log.Timber
@@ -23,12 +22,6 @@ object UrlValidator {
             .connectTimeout(10, TimeUnit.SECONDS)
             .readTimeout(10, TimeUnit.SECONDS)
             .build()
-
-    private val json =
-        Json {
-            ignoreUnknownKeys = true
-            isLenient = true
-        }
 
     /**
      * Validates a single URL format only
@@ -217,7 +210,7 @@ object UrlValidator {
      */
     private fun isValidJson(jsonString: String): Boolean =
         try {
-            json.parseToJsonElement(jsonString)
+            JsonHelper.json.parseToJsonElement(jsonString)
             true
         } catch (_: Exception) {
             false
