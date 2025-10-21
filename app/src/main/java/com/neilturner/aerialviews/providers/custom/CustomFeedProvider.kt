@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.providers.custom
 
 import android.content.Context
 import androidx.core.net.toUri
-import com.neilturner.aerialviews.providers.custom.CustomMediaValidationResult
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -36,13 +35,13 @@ class CustomFeedProvider(
         videos.clear()
         metadata.clear()
 
-        if (prefs.urlsValid.isBlank()) {
+        if (prefs.urlsCache.isBlank()) {
             Timber.w("No valid URLs configured")
             return emptyList()
         }
 
         val quality = prefs.quality
-        val validUrls = prefs.urlsValid.split(",").map { it.trim() }.filter { it.isNotBlank() }
+        val validUrls = prefs.urlsCache.split(",").map { it.trim() }.filter { it.isNotBlank() }
 
         val okHttpClient =
             OkHttpClient
@@ -194,8 +193,7 @@ class CustomFeedProvider(
 
         // Save valid URLs and video count to prefs
         val allValidUrls = (validEntriesUrls + validRtspUrls).joinToString(",")
-        prefs.urlsValid = allValidUrls
-        prefs.urlsValidVideoCount = totalVideos
+        prefs.urlsCache = allValidUrls
 
         return if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
             CustomMediaValidationResult(

@@ -12,8 +12,8 @@ object CustomMediaPrefs : KotprefModel() {
     var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "custom_media_quality")
 
     var urls by stringPref("", "custom_media_urls")
-    var urlsValid by stringPref("", "custom_media_urls_valid")
-    var urlsValidVideoCount by intPref(0, "custom_media_urls_valid_video_count")
+    var urlsCache by stringPref("", "custom_media_urls_cache")
+    var urlsSummary by stringPref("", "custom_media_urls_summary")
 
     val scene by stringSetPref("custom_media_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()

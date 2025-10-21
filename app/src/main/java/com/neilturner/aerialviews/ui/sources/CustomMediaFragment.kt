@@ -133,7 +133,7 @@ class CustomMediaFragment : MenuStateFragment() {
     private fun updateValidatedUrlsSummary() {
         val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
 
-        val validatedUrls = CustomMediaPrefs.urlsValid
+        val validatedUrls = CustomMediaPrefs.urlsCache
         if (validatedUrls.isBlank()) {
             urls.summary = "No valid URLs found"
             return
@@ -142,7 +142,7 @@ class CustomMediaFragment : MenuStateFragment() {
         val urlList = validatedUrls.split(",").map { it.trim() }.filter { it.isNotBlank() }
         val rtspCount = urlList.count { it.startsWith("rtsp://", ignoreCase = true) }
         val entriesCount = urlList.size - rtspCount
-        val videoCount = CustomMediaPrefs.urlsValidVideoCount
+        val videoCount = urlList.count() - rtspCount
 
         urls.summary = buildString {
             if (videoCount > 0 && entriesCount > 0) {
