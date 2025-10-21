@@ -34,14 +34,38 @@ class CustomMediaFragment : MenuStateFragment() {
         progressDialog.show()
 
         val provider = CustomFeedProvider(requireContext(), CustomMediaPrefs)
-        val result = provider.fetchTest()
+        val validationResult = provider.fetchTestValidation()
 
         progressDialog.dismiss()
+
+        // Build the result message
+        val resultMessage = if (validationResult.isSuccess) {
+            buildString {
+                append("Found ")
+                if (validationResult.urlCount > 0) {
+                    append("${validationResult.videoCount} video")
+                    if (validationResult.videoCount != 1) append("s")
+                    append(" in ${validationResult.urlCount} URL")
+                    if (validationResult.urlCount != 1) append("s")
+                }
+                if (validationResult.rtspCount > 0) {
+                    if (validationResult.urlCount > 0) append(" and ")
+                    append("${validationResult.rtspCount} RTSP stream")
+                    if (validationResult.rtspCount != 1) append("s")
+                }
+                append(".")
+            }
+        } else {
+            validationResult.errorMessage ?: "No valid URLs found."
+        }
+
         DialogHelper.showOnMain(
             requireContext(),
             resources.getString(R.string.samba_videos_test_results),
-            result,
+            resultMessage,
         )
+
+        updateValidatedUrlsSummary()
     }
 
     private fun updateSummary() {
@@ -68,6 +92,8 @@ class CustomMediaFragment : MenuStateFragment() {
 
                 // Automatically test the feeds only if URL is not blank and has changed
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
+                    // Save the new value to preferences immediately before testing
+                    CustomMediaPrefs.urls = urlsString
                     lifecycleScope.launch { testUrlConnections() }
                 }
 
@@ -99,15 +125,42 @@ class CustomMediaFragment : MenuStateFragment() {
         if (urlsString?.isBlank() == true) {
             urls.summary = context.getString(R.string.custom_media_urls_summary)
             return
+        } else {
+            urls.summary = urlsString
+        }
+    }
+
+    private fun updateValidatedUrlsSummary() {
+        val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
+
+        val validatedUrls = CustomMediaPrefs.urlsValid
+        if (validatedUrls.isBlank()) {
+            urls.summary = "No valid URLs found"
+            return
         }
 
-        val validUrls = UrlValidator.parseUrls(urlsString)
-        urls.summary =
-            when {
-                validUrls.isEmpty() -> context.getString(R.string.custom_media_urls_invalid)
-                validUrls.size == 1 -> "1 URL added"
-                else -> "${validUrls.size} URLs added"
+        val urlList = validatedUrls.split(",").map { it.trim() }.filter { it.isNotBlank() }
+        val rtspCount = urlList.count { it.startsWith("rtsp://", ignoreCase = true) }
+        val entriesCount = urlList.size - rtspCount
+        val videoCount = CustomMediaPrefs.urlsValidVideoCount
+
+        urls.summary = buildString {
+            if (videoCount > 0 && entriesCount > 0) {
+                append("$videoCount video")
+                if (videoCount != 1) append("s")
+                append(" in $entriesCount URL")
+                if (entriesCount != 1) append("s")
+            } else if (entriesCount > 0) {
+                append("$entriesCount entries.json URL")
+                if (entriesCount != 1) append("s")
             }
+
+            if (rtspCount > 0) {
+                if (entriesCount > 0) append(" and ")
+                append("$rtspCount RTSP stream")
+                if (rtspCount != 1) append("s")
+            }
+        }
     }
 
     private fun updateMultiSelectSummary(

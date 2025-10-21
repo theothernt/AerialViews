@@ -35,8 +35,16 @@ object UrlValidator {
      */
     fun isValidUrl(url: String): Boolean =
         try {
-            UrlParser.parseServerUrl(url)
-            true
+            // Check if this is an RTSP URL
+            if (url.startsWith("rtsp://", ignoreCase = true)) {
+                // Basic validation for RTSP URLs
+                val uri = url.toUri()
+                uri.host != null
+            } else {
+                // Use existing parser for HTTP/HTTPS URLs
+                UrlParser.parseServerUrl(url)
+                true
+            }
         } catch (_: Exception) {
             false
         }
@@ -47,6 +55,23 @@ object UrlValidator {
     suspend fun validateUrlWithNetworkTest(url: String): UrlValidationResult {
         return withContext(Dispatchers.IO) {
             try {
+                // RTSP URLs cannot be validated with HTTP network tests
+                if (url.startsWith("rtsp://", ignoreCase = true)) {
+                    val uri = url.toUri()
+                    return@withContext if (uri.host != null) {
+                        UrlValidationResult(
+                            isValid = true,
+                            isAccessible = true,
+                            containsJson = false,
+                        )
+                    } else {
+                        UrlValidationResult(
+                            isValid = false,
+                            error = "Invalid RTSP URL: no host",
+                        )
+                    }
+                }
+
                 // First check URL format
                 val parsedUrl = UrlParser.parseServerUrl(url)
 

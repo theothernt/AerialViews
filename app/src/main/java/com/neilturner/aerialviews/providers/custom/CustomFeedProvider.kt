@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.providers.custom
 
 import android.content.Context
 import androidx.core.net.toUri
+import com.neilturner.aerialviews.providers.custom.CustomMediaValidationResult
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
@@ -16,7 +17,6 @@ import com.neilturner.aerialviews.utils.UrlValidator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -33,72 +33,16 @@ class CustomFeedProvider(
         get() = prefs.enabled
 
     override suspend fun fetchMedia(): List<AerialMedia> {
-        if (metadata.isEmpty()) buildVideoAndMetadata()
-        return videos
-    }
+        videos.clear()
+        metadata.clear()
 
-    override suspend fun fetchTest(): String {
-        val validationResults = UrlValidator.validateUrlsWithNetworkTest(prefs.urls)
-        val rtspUrls = mutableListOf<String>()
-        val jsonUrls = mutableListOf<String>()
-
-        // Parse URLs to separate RTSP from HTTP/HTTPS
-        val urls = UrlValidator.parseUrls(prefs.urls)
-        urls.forEach { url ->
-            if (url.startsWith("rtsp://", ignoreCase = true)) {
-                rtspUrls.add(url)
-            }
-        }
-
-        val validUrls = validationResults.filter { it.value.isValid && it.value.isAccessible && it.value.containsJson }.keys.toList()
-        jsonUrls.addAll(validUrls)
-
-        return if (jsonUrls.isNotEmpty() || rtspUrls.isNotEmpty()) {
-            buildVideoAndMetadata()
-            val message = buildString {
-                append("${videos.size} videos found")
-                if (jsonUrls.isNotEmpty()) {
-                    append(" from ${jsonUrls.size} valid JSON URLs")
-                }
-                if (rtspUrls.isNotEmpty()) {
-                    if (jsonUrls.isNotEmpty()) append(" and")
-                    append(" ${rtspUrls.size} RTSP streams")
-                }
-                append(".")
-            }
-            message
-        } else {
-            val errorSummary =
-                validationResults.entries.joinToString("\n") { (url, result) ->
-                    "${result.error ?: "Unknown error"}\n\n$url"
-                }
-            "No valid URLs found.\n\n$errorSummary"
-        }
-    }
-
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
-        if (metadata.isEmpty()) buildVideoAndMetadata()
-        return metadata
-    }
-
-    private suspend fun buildVideoAndMetadata() {
-        if (prefs.urls.isBlank()) {
-            Timber.w("No URLs configured in custom media preferences")
-            return
+        if (prefs.urlsValid.isBlank()) {
+            Timber.w("No valid URLs configured")
+            return emptyList()
         }
 
         val quality = prefs.quality
-        val urls = UrlValidator.parseUrls(prefs.urls)
-
-        if (urls.isEmpty()) {
-            Timber.w("No valid URLs found in custom media preferences")
-            return
-        }
-
-        val logging =
-            HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BASIC
-            }
+        val validUrls = prefs.urlsValid.split(",").map { it.trim() }.filter { it.isNotBlank() }
 
         val okHttpClient =
             OkHttpClient
@@ -118,7 +62,7 @@ class CustomFeedProvider(
 
         val customFeedApi = retrofit.create(CustomFeedApi::class.java)
 
-        for (url in urls) {
+        for (url in validUrls) {
             try {
                 Timber.d("Processing URL: $url")
 
@@ -128,17 +72,8 @@ class CustomFeedProvider(
                     continue
                 }
 
-                // First try to parse as manifest format
-                val manifestUrls = tryParseAsManifest(customFeedApi, url)
-                if (manifestUrls.isNotEmpty()) {
-                    // Process each entries URL from the manifest
-                    for (entriesUrl in manifestUrls) {
-                        processEntriesUrl(customFeedApi, entriesUrl, quality)
-                    }
-                } else {
-                    // Try to parse directly as entries format
-                    processEntriesUrl(customFeedApi, url, quality)
-                }
+                // Process as entries.json URL
+                processEntriesUrl(customFeedApi, url, quality)
             } catch (e: Exception) {
                 Timber.w(e, "Failed to process URL: $url")
             }
@@ -146,6 +81,147 @@ class CustomFeedProvider(
 
         Timber.i("${metadata.count()} metadata items found")
         Timber.i("${videos.count()} $quality videos found")
+
+        return videos
+    }
+
+    override suspend fun fetchTest(): String {
+        val result = fetchTestValidation()
+
+        // Return formatted string for compatibility with MediaProvider interface
+        return if (result.isSuccess) {
+            buildString {
+                append("Found ")
+                if (result.urlCount > 0) {
+                    append("${result.videoCount} video(s) in ${result.urlCount} URL(s)")
+                }
+                if (result.rtspCount > 0) {
+                    if (result.urlCount > 0) append(" and ")
+                    append("${result.rtspCount} RTSP stream(s)")
+                }
+                append(".")
+            }
+        } else {
+            result.errorMessage ?: "No valid URLs found."
+        }
+    }
+
+    suspend fun fetchTestValidation(): CustomMediaValidationResult {
+        val urls = UrlValidator.parseUrls(prefs.urls)
+        val validEntriesUrls = mutableListOf<String>()
+        val validRtspUrls = mutableListOf<String>()
+        val errorMessages = mutableMapOf<String, String>()
+
+        val okHttpClient =
+            OkHttpClient
+                .Builder()
+                // .addInterceptor(logging)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build()
+
+        val retrofit =
+            Retrofit
+                .Builder()
+                .baseUrl("http://example.com")
+                .client(okHttpClient)
+                .addConverterFactory(JsonHelper.buildSerializer())
+                .build()
+
+        val customFeedApi = retrofit.create(CustomFeedApi::class.java)
+
+        for (url in urls) {
+            try {
+                Timber.d("Testing URL: $url")
+
+                // Check if this is an RTSP stream
+                if (url.startsWith("rtsp://", ignoreCase = true)) {
+                    validRtspUrls.add(url)
+                    Timber.i("Valid RTSP stream: $url")
+                    continue
+                }
+
+                // Check if URL ends with entries.json - parse it directly for videos
+                if (url.endsWith("entries.json", ignoreCase = true)) {
+                    try {
+                        val customVideos = customFeedApi.getVideos(url)
+                        val videoCount = customVideos.assets?.size ?: 0
+                        if (videoCount > 0) {
+                            validEntriesUrls.add(url)
+                            Timber.i("Found $videoCount videos in entries.json: $url")
+                        } else {
+                            errorMessages[url] = "entries.json contains no videos"
+                        }
+                    } catch (e: Exception) {
+                        errorMessages[url] = "Failed to parse entries.json: ${e.message}"
+                    }
+                    continue
+                }
+
+                // For HTTP/HTTPS URLs without entries.json, append /manifest.json if needed
+                val testUrl = if (url.toUri().path.isNullOrBlank() || url.toUri().path == "/") {
+                    "$url/manifest.json"
+                } else {
+                    url
+                }
+
+                // Try to parse as manifest to get entries.json URLs
+                val entriesUrls = tryParseAsManifest(customFeedApi, testUrl)
+                if (entriesUrls.isNotEmpty()) {
+                    validEntriesUrls.addAll(entriesUrls)
+                    Timber.i("Found ${entriesUrls.size} entries URLs from manifest: $testUrl")
+                } else {
+                    errorMessages[url] = "URL does not contain a valid manifest.json"
+                }
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to test URL: $url")
+                errorMessages[url] = e.message ?: "Unknown error"
+            }
+        }
+
+        // Count total videos from valid entries.json URLs
+        var totalVideos = 0
+        for (entriesUrl in validEntriesUrls) {
+            try {
+                val customVideos = customFeedApi.getVideos(entriesUrl)
+                val videoCount = customVideos.assets?.size ?: 0
+                totalVideos += videoCount
+                Timber.d("Found $videoCount videos in $entriesUrl")
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to count videos from: $entriesUrl")
+            }
+        }
+
+        // Save valid URLs and video count to prefs
+        val allValidUrls = (validEntriesUrls + validRtspUrls).joinToString(",")
+        prefs.urlsValid = allValidUrls
+        prefs.urlsValidVideoCount = totalVideos
+
+        return if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
+            CustomMediaValidationResult(
+                videoCount = totalVideos,
+                urlCount = validEntriesUrls.size,
+                rtspCount = validRtspUrls.size
+            )
+        } else {
+            val errorSummary =
+                errorMessages.entries.joinToString("\n\n") { (url, error) ->
+                    "$error\n$url"
+                }
+            CustomMediaValidationResult(
+                errorMessage = "No valid URLs found.\n\n$errorSummary"
+            )
+        }
+    }
+
+    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+        if (metadata.isEmpty()) buildVideoAndMetadata()
+        return metadata
+    }
+
+    private fun buildVideoAndMetadata() {
+        // Deprecated - logic moved to fetchTest and fetchMedia
+        Timber.w("buildVideoAndMetadata is deprecated and should not be called")
     }
 
     private suspend fun tryParseAsManifest(

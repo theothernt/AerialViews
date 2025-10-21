@@ -13,6 +13,7 @@ object CustomMediaPrefs : KotprefModel() {
 
     var urls by stringPref("", "custom_media_urls")
     var urlsValid by stringPref("", "custom_media_urls_valid")
+    var urlsValidVideoCount by intPref(0, "custom_media_urls_valid_video_count")
 
     val scene by stringSetPref("custom_media_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()
