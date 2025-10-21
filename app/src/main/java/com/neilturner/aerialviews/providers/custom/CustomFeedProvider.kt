@@ -110,7 +110,6 @@ class CustomFeedProvider(
 
         // Save summary to preferences
         prefs.urlsSummary = message
-
         return message
     }
 
@@ -121,8 +120,9 @@ class CustomFeedProvider(
 
     private suspend fun fetchTestValidation(): CustomFeedValidationResult {
         // Try simple URL validation first
-        val (isValid, invalidUrls) = UrlValidator.validateUrls(prefs.urls)
-        if (!isValid) {
+        val validationResults = UrlValidator.validateUrls(prefs.urls)
+        val invalidUrls = validationResults.filter { !it.first }.map { it.second }
+        if (invalidUrls.isNotEmpty()) {
             val errorMessage = "Invalid URL format:\n\n" + invalidUrls.joinToString("\n")
             return CustomFeedValidationResult(errorMessage = errorMessage)
         }

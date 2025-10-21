@@ -31,6 +31,7 @@ class CustomFeedFragment : MenuStateFragment() {
                 val previousValue = (preference as EditTextPreference).text ?: ""
 
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
+                    CustomFeedPrefs.urls = urlsString
                     lifecycleScope.launch { validateUrls() }
                 } else if (urlsString.isBlank()) {
                     CustomFeedPrefs.urlsCache = ""

@@ -151,23 +151,22 @@ object UrlValidator {
 
     /**
      * Validates a comma-separated list of URLs (format only)
-     * Returns a pair of (isValid, invalidUrls)
+     * Returns a list of pairs where first is isValid boolean and second is the URL
      */
-    fun validateUrls(urlsString: String): Pair<Boolean, List<String>> {
+    fun validateUrls(urlsString: String): List<Pair<Boolean, String>> {
         if (urlsString.isBlank()) {
-            return Pair(true, emptyList()) // Empty is considered valid
+            return emptyList()
         }
 
         val urls = urlsString.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        val invalidUrls = mutableListOf<String>()
+        val results = mutableListOf<Pair<Boolean, String>>()
 
         for (url in urls) {
-            if (!isValidUrl(url)) {
-                invalidUrls.add(url)
-            }
+            val isValid = isValidUrl(url)
+            results.add(Pair(isValid, url))
         }
 
-        return Pair(invalidUrls.isEmpty(), invalidUrls)
+        return results
     }
 
     /**
