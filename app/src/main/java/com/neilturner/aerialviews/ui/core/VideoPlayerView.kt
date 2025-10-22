@@ -44,9 +44,15 @@ class VideoPlayerView
         private var state = VideoState()
 
         private var listener: OnVideoPlayerEventListener? = null
-        private var almostFinishedRunnable = Runnable { listener?.onVideoAlmostFinished() }
+        private var almostFinishedRunnable = Runnable {
+            Timber.d("VIDEO END: Timer expired - almostFinishedRunnable triggered")
+            listener?.onVideoAlmostFinished()
+        }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
-        private var onErrorRunnable = Runnable { listener?.onVideoError() }
+        private var onErrorRunnable = Runnable {
+            Timber.d("VIDEO END: Playback error occurred")
+            listener?.onVideoError()
+        }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
@@ -313,6 +319,7 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0) {
+                Timber.d("VIDEO END SCHEDULED: No start/end position, will finish in 2 seconds")
                 postDelayed(almostFinishedRunnable, 2 * 1000)
                 if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
@@ -343,9 +350,11 @@ class VideoPlayerView
 
             if (!GeneralPrefs.loopUntilSkipped) {
                 Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
+                Timber.d("VIDEO END SCHEDULED: Normal completion timer set for ${durationMinusSpeedAndProgressAndFade.milliseconds}")
                 postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
             } else {
                 Timber.i("The video will only finish when skipped manually")
+                Timber.d("VIDEO END BLOCKED: Loop until skipped is enabled, video will not auto-finish")
             }
         }
 
