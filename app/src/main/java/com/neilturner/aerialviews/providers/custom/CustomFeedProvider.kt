@@ -269,13 +269,14 @@ class CustomFeedProvider(
                     }
                 }
 
+            val totalUrls = validEntriesUrls.size + validRtspUrls.size
             val summary =
                 buildString {
-                    if (totalVideos > 0) append("$totalVideos videos")
-                    if (validRtspUrls.isNotEmpty()) {
-                        if (totalVideos > 0) append(", ")
-                        append("${validRtspUrls.size} streams")
-                    }
+                    append("$totalUrls URL${if (totalUrls != 1) "s" else ""}: ")
+                    val parts = mutableListOf<String>()
+                    if (totalVideos > 0) parts.add("$totalVideos video${if (totalVideos != 1) "s" else ""}")
+                    if (validRtspUrls.isNotEmpty()) parts.add("${validRtspUrls.size} stream${if (validRtspUrls.size != 1) "s" else ""}")
+                    append(parts.joinToString(", "))
                 }
 
             return ValidationResult(
