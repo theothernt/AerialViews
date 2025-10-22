@@ -79,6 +79,7 @@ object DeviceHelper {
         return smallestSize < tabletSize
     }
 
+    @Suppress("SameReturnValue")
     fun isDevice(): Boolean = true
 
     fun isTV(context: Context): Boolean = context.packageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)

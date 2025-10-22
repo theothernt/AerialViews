@@ -1,4 +1,4 @@
-@file:Suppress("UNCHECKED_CAST")
+@file:Suppress("UNCHECKED_CAST", "SameParameterValue")
 
 package com.neilturner.aerialviews.ui.sources
 
