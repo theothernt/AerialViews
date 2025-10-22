@@ -10,6 +10,7 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.rtsp.RtspMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector.Parameters
@@ -130,6 +131,10 @@ object VideoPlayerHelper {
                     ProgressiveMediaSource
                         .Factory(SambaDataSourceFactory())
                         .createMediaSource(mediaItem)
+                player.setMediaSource(mediaSource)
+            }
+            AerialMediaSource.RTSP -> {
+                val mediaSource = RtspMediaSource.Factory().createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
             AerialMediaSource.IMMICH -> {
