@@ -23,6 +23,10 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_quality_and_scene_types">
+                <Preference
+                    app:selectable="false"
+                    app:summary="@string/custom_media_filters_notice" />
+
                 <ListPreference
                     app:dependency="custom_media_enabled"
                     app:disableDependentsState="false"
