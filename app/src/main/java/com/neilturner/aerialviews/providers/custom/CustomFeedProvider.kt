@@ -41,7 +41,11 @@ class CustomFeedProvider(
         }
 
         val quality = prefs.quality
-        val validUrls = prefs.urlsCache.split(",").map { it.trim() }.filter { it.isNotBlank() }
+        val validUrls =
+            prefs.urlsCache
+                .split(",")
+                .map { it.trim() }
+                .filter { it.isNotBlank() }
 
         val okHttpClient =
             OkHttpClient
@@ -103,7 +107,7 @@ class CustomFeedProvider(
             return ValidationResult(
                 hasErrors = true,
                 message = "❌ No URLs configured",
-                summary = "No URLs"
+                summary = "No URLs",
             )
         }
 
@@ -115,36 +119,38 @@ class CustomFeedProvider(
             // All URLs are valid format
             return ValidationResult(
                 hasErrors = false,
-                message = buildString {
-                    append("✅ All URLs have valid format (${validUrls.size})\n\n")
-                    validUrls.forEach { (_, url) ->
-                        append("✅ $url\n")
-                    }
-                },
-                summary = "${validUrls.size} valid URLs"
+                message =
+                    buildString {
+                        append("✅ All URLs have valid format (${validUrls.size})\n\n")
+                        validUrls.forEach { (_, url) ->
+                            append("✅ $url\n")
+                        }
+                    },
+                summary = "${validUrls.size} valid URLs",
             )
         }
 
         // Some URLs are invalid
-        val message = buildString {
-            append("Invalid URL format detected:\n\n")
-            if (validUrls.isNotEmpty()) {
-                append("Valid URLs (${validUrls.size}):\n")
-                validUrls.forEach { (_, url) ->
-                    append("✅ $url\n")
+        val message =
+            buildString {
+                append("Invalid URL format detected:\n\n")
+                if (validUrls.isNotEmpty()) {
+                    append("Valid URLs (${validUrls.size}):\n")
+                    validUrls.forEach { (_, url) ->
+                        append("✅ $url\n")
+                    }
+                    append("\n")
                 }
-                append("\n")
+                append("Invalid URLs (${invalidUrls.size}):\n")
+                invalidUrls.forEach { (_, url) ->
+                    append("❌ $url\n")
+                }
             }
-            append("Invalid URLs (${invalidUrls.size}):\n")
-            invalidUrls.forEach { (_, url) ->
-                append("❌ $url\n")
-            }
-        }
 
         return ValidationResult(
             hasErrors = true,
             message = message,
-            summary = "${invalidUrls.size} invalid, ${validUrls.size} valid"
+            summary = "${invalidUrls.size} invalid, ${validUrls.size} valid",
         )
     }
 
@@ -201,11 +207,12 @@ class CustomFeedProvider(
 
                 // For HTTP/HTTPS URLs without entries.json, append /manifest.json if needed
                 val uri = url.toUri()
-                val testUrl = if (!uri.toString().endsWith("manifest.json", false)) {
-                    "${url.trimEnd('/')}/manifest.json"
-                } else {
-                    url
-                }
+                val testUrl =
+                    if (!uri.toString().endsWith("manifest.json", false)) {
+                        "${url.trimEnd('/')}/manifest.json"
+                    } else {
+                        url
+                    }
 
                 // Try to parse as manifest to get entries.json URLs
                 val entriesUrls = tryParseAsManifest(customFeedApi, testUrl)
@@ -240,55 +247,58 @@ class CustomFeedProvider(
 
         // Build result message
         if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
-            val message = buildString {
-                append("✅ Validation successful!\n\n")
-                append("Summary:\n")
-                if (totalVideos > 0) {
-                    append("• $totalVideos videos found\n")
-                }
-                if (validEntriesUrls.isNotEmpty()) {
-                    append("• ${validEntriesUrls.size} video feeds\n")
-                }
-                if (validRtspUrls.isNotEmpty()) {
-                    append("• ${validRtspUrls.size} RTSP streams\n")
-                }
+            val message =
+                buildString {
+                    append("✅ Validation successful!\n\n")
+                    append("Summary:\n")
+                    if (totalVideos > 0) {
+                        append("• $totalVideos videos found\n")
+                    }
+                    if (validEntriesUrls.isNotEmpty()) {
+                        append("• ${validEntriesUrls.size} video feeds\n")
+                    }
+                    if (validRtspUrls.isNotEmpty()) {
+                        append("• ${validRtspUrls.size} RTSP streams\n")
+                    }
 
-                if (errorMessages.isNotEmpty()) {
-                    append("\n⚠️ Some URLs had issues (${errorMessages.size}):\n")
-                    errorMessages.forEach { (url, error) ->
-                        append("❌ $error\n   $url\n")
+                    if (errorMessages.isNotEmpty()) {
+                        append("\n⚠️ Some URLs had issues (${errorMessages.size}):\n")
+                        errorMessages.forEach { (url, error) ->
+                            append("❌ $error\n   $url\n")
+                        }
                     }
                 }
-            }
 
-            val summary = buildString {
-                if (totalVideos > 0) append("$totalVideos videos")
-                if (validRtspUrls.isNotEmpty()) {
-                    if (totalVideos > 0) append(", ")
-                    append("${validRtspUrls.size} streams")
+            val summary =
+                buildString {
+                    if (totalVideos > 0) append("$totalVideos videos")
+                    if (validRtspUrls.isNotEmpty()) {
+                        if (totalVideos > 0) append(", ")
+                        append("${validRtspUrls.size} streams")
+                    }
                 }
-            }
 
             return ValidationResult(
                 hasErrors = false,
                 message = message,
-                summary = summary
+                summary = summary,
             )
         } else {
-            val message = buildString {
-                append("❌ No valid URLs found\n\n")
-                if (errorMessages.isNotEmpty()) {
-                    append("Errors:\n")
-                    errorMessages.forEach { (url, error) ->
-                        append("❌ $error\n   $url\n\n")
+            val message =
+                buildString {
+                    append("❌ No valid URLs found\n\n")
+                    if (errorMessages.isNotEmpty()) {
+                        append("Errors:\n")
+                        errorMessages.forEach { (url, error) ->
+                            append("❌ $error\n   $url\n\n")
+                        }
                     }
                 }
-            }
 
             return ValidationResult(
                 hasErrors = true,
                 message = message,
-                summary = "No valid URLs"
+                summary = "No valid URLs",
             )
         }
     }
@@ -296,14 +306,13 @@ class CustomFeedProvider(
     private data class ValidationResult(
         val hasErrors: Boolean,
         val message: String,
-        val summary: String
+        val summary: String,
     )
 
     override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
         // if (metadata.isEmpty()) buildVideoAndMetadata()
         return metadata
     }
-
 
     private suspend fun tryParseAsManifest(
         apiService: CustomFeedApi,
@@ -406,10 +415,11 @@ class CustomFeedProvider(
                 )
 
                 // Add metadata for the RTSP stream
-                val data = Pair(
-                    "RTSP Stream: $url",
-                    emptyMap<Int, String>()
-                )
+                val data =
+                    Pair(
+                        "RTSP Stream: $url",
+                        emptyMap<Int, String>(),
+                    )
                 metadata[url] = data
 
                 Timber.d("Added RTSP stream: $url")

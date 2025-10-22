@@ -64,9 +64,10 @@ class CustomFeedFragment : MenuStateFragment() {
         val urls = findPreference<EditTextPreference>("custom_media_urls") ?: return
         val context = context ?: return
 
-        urls.summary = summary.ifBlank {
-            context.getString(R.string.custom_media_urls_summary)
-        }
+        urls.summary =
+            summary.ifBlank {
+                context.getString(R.string.custom_media_urls_summary)
+            }
     }
 
     private suspend fun validateUrls() {
