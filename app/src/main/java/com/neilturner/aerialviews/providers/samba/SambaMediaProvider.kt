@@ -88,7 +88,11 @@ class SambaMediaProvider(
             }
 
         // Create samba URL, add to media list, adding media type
-        sambaMedia.first.forEach { filename ->
+        // Sort by creation time (ascending by default)
+        val sortedFiles = sambaMedia.first.sortedBy { it.second }
+        
+        sortedFiles.forEach { fileInfo ->
+            val filename = fileInfo.first
             var usernamePassword = ""
             if (prefs.userName.isNotEmpty()) {
                 usernamePassword = URLEncoder.encode(prefs.userName, "utf-8")
@@ -125,10 +129,10 @@ class SambaMediaProvider(
         hostName: String,
         shareName: String,
         path: String,
-    ): Pair<List<String>, String> =
+    ): Pair<List<Pair<String, Long>>, String> =
         withContext(Dispatchers.IO) {
             val res = context.resources
-            val selected = mutableListOf<String>()
+            val selected = mutableListOf<Pair<String, Long>>()
             val excluded: Int
             val images: Int
 
@@ -182,7 +186,7 @@ class SambaMediaProvider(
             if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                 selected.addAll(
                     files.filter { item ->
-                        FileHelper.isSupportedVideoType(item)
+                        FileHelper.isSupportedVideoType(item.first)
                     },
                 )
             }
@@ -192,7 +196,7 @@ class SambaMediaProvider(
             if (prefs.mediaType != ProviderMediaType.VIDEOS) {
                 selected.addAll(
                     files.filter { item ->
-                        FileHelper.isSupportedImageType(item)
+                        FileHelper.isSupportedImageType(item.first)
                     },
                 )
             }
@@ -231,8 +235,8 @@ class SambaMediaProvider(
     private fun listFilesAndFoldersRecursively(
         share: DiskShare,
         path: String,
-    ): List<String> {
-        val files = mutableListOf<String>()
+    ): List<Pair<String, Long>> {
+        val files = mutableListOf<Pair<String, Long>>()
         share.list(path).forEach { item ->
             val isFolder =
                 EnumWithValue.EnumUtils.isSet(
@@ -247,7 +251,8 @@ class SambaMediaProvider(
             if (isFolder && prefs.searchSubfolders) {
                 files.addAll(listFilesAndFoldersRecursively(share, "$path/${item.fileName}"))
             } else if (!isFolder) {
-                files.add("$path/${item.fileName}")
+                val creationTime = item.creationTime.toEpochMillis()
+                files.add(Pair("$path/${item.fileName}", creationTime))
             }
         }
         return files
