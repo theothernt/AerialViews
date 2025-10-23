@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Patterns
 import androidx.core.net.toUri
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -54,6 +55,12 @@ object UrlParser {
 class SslHelper {
     fun createOkHttpClient(config: ServerConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
+
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+
+        builder.addInterceptor(logging)
 
         if (!config.validateCertificates) {
             val trustAllCerts =
