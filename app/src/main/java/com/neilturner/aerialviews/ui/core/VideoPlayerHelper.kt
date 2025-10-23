@@ -195,10 +195,17 @@ object VideoPlayerHelper {
     fun calculatePlaybackParameters(
         player: ExoPlayer,
         prefs: GeneralPrefs,
+        type: AerialMediaSource,
     ): Pair<Long, Long> {
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val isLengthLimited = maxVideoLength >= TEN_SECONDS
         val isShortVideo = player.duration < maxVideoLength
+
+        if (type == AerialMediaSource.RTSP) {
+            Timber.i("Calculating RTSP stream length...")
+            val duration = if (isLengthLimited) maxVideoLength else 0
+            return Pair(0, duration)
+        }
 
         if (!isLengthLimited && prefs.randomStartPosition) {
             Timber.i("Calculating random start position...")

@@ -47,13 +47,11 @@ class VideoPlayerView
         private var listener: OnVideoPlayerEventListener? = null
         private var almostFinishedRunnable =
             Runnable {
-                Timber.d("VIDEO END: Timer expired - almostFinishedRunnable triggered")
                 listener?.onVideoAlmostFinished()
             }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
         private var onErrorRunnable =
             Runnable {
-                Timber.d("VIDEO END: Playback error occurred")
                 listener?.onVideoError()
             }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
@@ -183,7 +181,7 @@ class VideoPlayerView
                 Timber.i("Preparing...")
 
                 // Waiting for... https://youtrack.jetbrains.com/issue/KT-19627/Object-name-based-destructuring
-                val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs)
+                val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs, state.type)
                 state.startPosition = result.first
                 state.endPosition = result.second
 
@@ -327,7 +325,6 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
-                Timber.d("VIDEO END SCHEDULED: No start/end position, will finish in 2 seconds")
                 postDelayed(almostFinishedRunnable, 2 * 1000)
                 if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
                 return
@@ -364,12 +361,11 @@ class VideoPlayerView
                 )
             }
 
-            if (!GeneralPrefs.loopUntilSkipped) {
+            if (GeneralPrefs.loopUntilSkipped || (state.type == AerialMediaSource.RTSP && state.endPosition == 0L)) {
+                Timber.i("The video will only finish when skipped manually")
+            } else {
                 Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
                 postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
-            } else {
-                Timber.i("The video will only finish when skipped manually")
-                Timber.d("VIDEO END BLOCKED: Loop until skipped is enabled, video will not auto-finish")
             }
         }
 
