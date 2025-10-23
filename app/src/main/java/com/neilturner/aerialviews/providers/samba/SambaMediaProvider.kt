@@ -88,8 +88,7 @@ class SambaMediaProvider(
             }
 
         // Create samba URL, add to media list, adding media type
-        // Sort by creation time (ascending by default)
-        val sortedFiles = sambaMedia.first.sortedBy { it.second }
+        val sortedFiles = sambaMedia.first.sortedByDescending { it.second }
         
         sortedFiles.forEach { fileInfo ->
             val filename = fileInfo.first
