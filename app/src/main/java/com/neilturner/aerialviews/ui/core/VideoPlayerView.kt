@@ -10,6 +10,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -44,15 +45,17 @@ class VideoPlayerView
         private var state = VideoState()
 
         private var listener: OnVideoPlayerEventListener? = null
-        private var almostFinishedRunnable = Runnable {
-            Timber.d("VIDEO END: Timer expired - almostFinishedRunnable triggered")
-            listener?.onVideoAlmostFinished()
-        }
+        private var almostFinishedRunnable =
+            Runnable {
+                Timber.d("VIDEO END: Timer expired - almostFinishedRunnable triggered")
+                listener?.onVideoAlmostFinished()
+            }
         private var canChangePlaybackSpeedRunnable = Runnable { this.canChangePlaybackSpeed = true }
-        private var onErrorRunnable = Runnable {
-            Timber.d("VIDEO END: Playback error occurred")
-            listener?.onVideoError()
-        }
+        private var onErrorRunnable =
+            Runnable {
+                Timber.d("VIDEO END: Playback error occurred")
+                listener?.onVideoError()
+            }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
         private val mainScope = CoroutineScope(Dispatchers.Main)
         private var canChangePlaybackSpeed = true
@@ -95,6 +98,7 @@ class VideoPlayerView
 
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
+            state.type = media.source
 
             if (GeneralPrefs.philipsDolbyVisionFix) {
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
@@ -196,7 +200,11 @@ class VideoPlayerView
                 if (exoPlayer.isPlaying) {
                     Timber.i("Ready, Playing...")
 
-                    if (GeneralPrefs.refreshRateSwitching && PermissionHelper.hasSystemOverlayPermission(context)) {
+                    if (GeneralPrefs.refreshRateSwitching &&
+                        PermissionHelper.hasSystemOverlayPermission(
+                            context,
+                        )
+                    ) {
                         // VideoPlayerHelper.setRefreshRate(context, exoPlayer.videoFormat?.frameRate)
                         refreshRateHelper.setRefreshRate(exoPlayer.videoFormat?.frameRate)
                     }
@@ -318,7 +326,7 @@ class VideoPlayerView
         private fun setupAlmostFinishedRunnable() {
             removeCallbacks(almostFinishedRunnable)
 
-            if (state.startPosition <= 0 && state.endPosition <= 0) {
+            if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
                 Timber.d("VIDEO END SCHEDULED: No start/end position, will finish in 2 seconds")
                 postDelayed(almostFinishedRunnable, 2 * 1000)
                 if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
@@ -346,11 +354,18 @@ class VideoPlayerView
                 "Duration: ${duration.milliseconds} (at 1x), Delay: ${durationMinusSpeedAndProgressAndFade.milliseconds} (at ${GeneralPrefs.playbackSpeed}x), Curr. position: ${progress.milliseconds}",
             )
 
-            if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, progress, durationMinusSpeed))
+            if (progressBar) {
+                GlobalBus.post(
+                    ProgressBarEvent(
+                        ProgressState.START,
+                        progress,
+                        durationMinusSpeed,
+                    ),
+                )
+            }
 
             if (!GeneralPrefs.loopUntilSkipped) {
                 Timber.i("Video will finish in: ${durationMinusSpeedAndProgressAndFade.milliseconds}")
-                Timber.d("VIDEO END SCHEDULED: Normal completion timer set for ${durationMinusSpeedAndProgressAndFade.milliseconds}")
                 postDelayed(almostFinishedRunnable, durationMinusSpeedAndProgressAndFade)
             } else {
                 Timber.i("The video will only finish when skipped manually")
@@ -376,6 +391,7 @@ class VideoPlayerView
 
 data class VideoState(
     var ready: Boolean = false,
+    var type: AerialMediaSource = AerialMediaSource.UNKNOWN,
     var prepared: Boolean = false,
     var loopCount: Int = 0,
     var startPosition: Long = 0L,

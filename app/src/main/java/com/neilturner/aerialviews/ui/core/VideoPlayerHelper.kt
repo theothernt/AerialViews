@@ -108,7 +108,12 @@ object VideoPlayerHelper {
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (!prefs.muteVideos) player.volume = prefs.videoVolume.toFloat() / 100 else player.volume = 0f
+        if (!prefs.muteVideos) {
+            player.volume =
+                prefs.videoVolume.toFloat() / 100
+        } else {
+            player.volume = 0f
+        }
 
         // https://medium.com/androiddevelopers/prep-your-tv-app-for-android-12-9a859d9bb967
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && prefs.refreshRateSwitching) {
@@ -133,10 +138,17 @@ object VideoPlayerHelper {
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
+
             AerialMediaSource.RTSP -> {
-                val mediaSource = RtspMediaSource.Factory().createMediaSource(mediaItem)
+                val mediaSource =
+                    RtspMediaSource
+                        .Factory()
+                        .setDebugLoggingEnabled(true)
+                        .setForceUseRtpTcp(true)
+                        .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
+
             AerialMediaSource.IMMICH -> {
                 val dataSourceFactory =
                     DefaultHttpDataSource
@@ -165,6 +177,7 @@ object VideoPlayerHelper {
                 player.setMediaSource(mediaSource)
                 Timber.d("Setting up Immich media source with URI: ${media.uri}")
             }
+
             AerialMediaSource.WEBDAV -> {
                 val mediaSource =
                     ProgressiveMediaSource
@@ -172,6 +185,7 @@ object VideoPlayerHelper {
                         .createMediaSource(mediaItem)
                 player.setMediaSource(mediaSource)
             }
+
             else -> {
                 player.setMediaItem(mediaItem)
             }
@@ -211,10 +225,12 @@ object VideoPlayerHelper {
                         }
                     return Pair(0, duration)
                 }
+
                 LimitLongerVideos.SEGMENT -> {
                     Timber.i("Calculating long video type... play random segment")
                     return calculateRandomSegment(player.duration, maxVideoLength)
                 }
+
                 else -> {
                     Timber.i("Calculating long video type... ignore limit, play full video")
                     return Pair(0, player.duration)
@@ -263,8 +279,10 @@ object VideoPlayerHelper {
         val segmentStart = (randomSegment - 1) * length
         val segmentEnd = randomSegment * length
 
-        val message1 = "Video length ${duration.milliseconds}, $numOfSegments segments of ${length.milliseconds}\n"
-        val message2 = "Chose segment $randomSegment, ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
+        val message1 =
+            "Video length ${duration.milliseconds}, $numOfSegments segments of ${length.milliseconds}\n"
+        val message2 =
+            "Chose segment $randomSegment, ${segmentStart.milliseconds} - ${segmentEnd.milliseconds}"
         Timber.i("$message1$message2")
 
         return Pair(segmentStart, segmentEnd)
