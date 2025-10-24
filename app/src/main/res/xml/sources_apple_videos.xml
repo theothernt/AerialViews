@@ -10,6 +10,15 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_quality_and_scene_types">
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="apple_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:selectable="false"
+                    app:key="apple_videos_dolby_vision_notice"
+                    app:summary="@string/apple_videos_dolby_vision_notice_summary"/>
+
                 <ListPreference
                     app:dependency="apple_videos_enabled"
                     app:disableDependentsState="false"

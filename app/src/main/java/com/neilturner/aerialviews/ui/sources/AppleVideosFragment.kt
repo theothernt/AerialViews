@@ -4,32 +4,62 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
+import com.neilturner.aerialviews.services.Display
+import com.neilturner.aerialviews.services.HDRFormat
+import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class AppleVideosFragment : MenuStateFragment() {
+    private lateinit var display: Display
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
+
+        lifecycleScope.launch {
+            display = getDisplay(activity)
+            setupQualityPreference()
+            updateDolbyVisionNoticeVisibility()
+        }
+
+        updateSummary()
+        updateVideoCount()
+    }
+
+    private fun setupQualityPreference() {
         MediaPreferenceHelper.setupQualityWithDataUsage(
             fragment = this,
             qualityPrefKey = "apple_videos_quality",
             qualityEntriesArrayId = R.array.apple_videos_quality_entries,
             dataUsageValuesArrayId = R.array.apple_videos_data_usage_values,
             scope = lifecycleScope,
-            onChangeCallback = { updateVideoCount(forceRecalculate = true) },
+            onChangeCallback = {
+                updateDolbyVisionNoticeVisibility()
+                updateVideoCount(forceRecalculate = true)
+            },
         )
-        updateSummary()
-        updateVideoCount()
+    }
+
+    private fun updateDolbyVisionNoticeVisibility() {
+        val qualityPref = findPreference<ListPreference>("apple_videos_quality")
+        val notice = findPreference<Preference>("apple_videos_dolby_vision_notice")
+
+        val selectedQuality = qualityPref?.value ?: ""
+        val isDolbyVisionSelected = selectedQuality == "VIDEO_1080_HDR" || selectedQuality == "VIDEO_4K_HDR"
+        val deviceSupportsDolbyVision = display.supportsHDR && display.hdrFormats.contains(HDRFormat.DOLBY_VISION)
+
+        notice?.isVisible = isDolbyVisionSelected && !deviceSupportsDolbyVision
     }
 
     private fun updateSummary() {
