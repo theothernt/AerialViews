@@ -545,7 +545,7 @@
   <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
   <string name="playlist_sleep_timer_title">Sleep timer</string>
-  <string name="playlist_sleep_timer_summary">Automatically black out the screen after a set time</string>
+  <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
 
   <string name="playlist_video_volume_title">Video volume</string>
   <string name="playlist_video_volume_summary">Choose a video volume level</string>
@@ -616,8 +616,8 @@
   <string name="dpad_allow_media_button_passthrough_title">Allow media button pass-through</string>
   <string name="dpad_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
-  <string name="dpad_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
-  <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
+  <string name="dpad_wake_on_any_button_press_title">Wake from blackout mode with any d-pad or button press</string>
+  <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to blackout mode will wake from it</string>
 
   <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
 
