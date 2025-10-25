@@ -352,6 +352,11 @@
   <string name="settings_projectivy_title">Projectivy integration</string>
   <string name="settings_projectivy_summary">Share videos to use with Projectivy\'s live wallpapers</string>
 
+  <string name="projectivy_apple_videos_enabled_title">Enable Apple videos</string>
+  <string name="projectivy_apple_videos_enabled_summary">Share Apple videos with Projectivy</string>
+  <string name="projectivy_apple_videos_options_title">Apple videos options</string>
+  <string name="projectivy_apple_videos_options_summary">Configure Apple videos settings</string>
+
   <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
 

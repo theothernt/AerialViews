@@ -4,5 +4,16 @@
 
         <PreferenceCategory app:title="@string/category_video_source">
 
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="projectivy_apple_videos_enabled"
+                    app:title="@string/projectivy_apple_videos_enabled_title"
+                    app:summary="@string/projectivy_apple_videos_enabled_summary" />
+
+                <Preference
+                    app:key="projectivy_apple_videos_options"
+                    app:title="@string/projectivy_apple_videos_options_title"
+                    app:summary="@string/projectivy_apple_videos_options_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyAppleVideosFragment"/>
         </PreferenceCategory>
 </PreferenceScreen>
