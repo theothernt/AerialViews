@@ -346,17 +346,20 @@
   <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
   <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 
-  <string name="settings_capabilities_title">Device Capabilities</string>
-  <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
-
   <string name="settings_advanced_title">Advanced</string>
   <string name="settings_advanced_summary">Performance &amp; debug options for troubleshooting</string>
 
-  <string name="settings_about_title">About</string>
-  <string name="settings_about_summary">Version, build info, etc</string>
+  <string name="settings_projectivy_title">Projectivy integration</string>
+  <string name="settings_projectivy_summary">Share videos to use with Projectivy\'s live wallpapers</string>
+
+  <string name="settings_capabilities_title">Device Capabilities</string>
+  <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
 
   <string name="settings_import_export_settings_title">Import/Export</string>
   <string name="settings_import_export_settings_summary">Import or export settings to the Documents folder</string>
+
+  <string name="settings_about_title">About</string>
+  <string name="settings_about_summary">Version, build info, etc</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
