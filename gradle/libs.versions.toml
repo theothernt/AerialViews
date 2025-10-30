@@ -11,7 +11,7 @@ constraintlayout = "2.2.1"
 appcompat = "1.7.1"
 
 firebase-crashlytics-plugin = "3.0.6"
-firebase-perf-plugin = "2.0.1"
+firebase-perf-plugin = "2.0.2"
 firebase-analytics = "22.5.0"
 firebase-crashlytics = "19.4.4"
 firebase-perf = "21.0.5"
