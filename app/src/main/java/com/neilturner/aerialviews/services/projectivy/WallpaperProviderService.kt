@@ -3,15 +3,15 @@ package com.neilturner.aerialviews.services.projectivy
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
-import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
+import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
-import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import kotlinx.coroutines.runBlocking
 import tv.projectivy.plugin.wallpaperprovider.api.Event
@@ -80,12 +80,13 @@ class WallpaperProviderService : Service() {
         if (enabledSources.contains("COMM2")) {
             providers.add(Comm2MediaProvider(applicationContext, Comm2VideoPrefs))
         }
-//        if (enabledSources.contains("AMBIENT")) {
-//            providers.add(AmazonMediaProvider(applicationContext, AmazonVideoPrefs))
-//        }
-        if (enabledSources.contains("LOCAL")) {
-            providers.add(LocalMediaProvider(applicationContext, LocalMediaPrefs))
+        if (enabledSources.contains("AMAZON")) {
+            providers.add(AmazonMediaProvider(applicationContext, AmazonVideoPrefs))
         }
+
+//        if (enabledSources.contains("LOCAL")) {
+//            providers.add(LocalMediaProvider(applicationContext, LocalMediaPrefs))
+//        }
 
         return providers
     }

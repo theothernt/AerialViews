@@ -6,8 +6,7 @@ import com.neilturner.aerialviews.R
 object ProjectivyPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
-    // Projectivy sharing
-    val sharedProviders by stringSetPref("projectivy_share_videos") {
-        context.resources.getStringArray(R.array.projectivy_share_videos_default).toSet()
+    val sharedProviders by stringSetPref("projectivy_shared_providers") {
+        context.resources.getStringArray(R.array.projectivy_shared_providers_default).toSet()
     }
 }

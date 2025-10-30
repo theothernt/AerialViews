@@ -663,9 +663,6 @@
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
 
-  <string name="advanced_projectivy_share_videos_title">Share videos with Projectivy</string>
-  <string name="advanced_projectivy_share_videos_summary">Select which video sources to share with Projectivy to use as video wallpapers</string>
-
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 

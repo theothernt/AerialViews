@@ -6,9 +6,9 @@
 
                 <MultiSelectListPreference
                     app:key="projectivy_select_videos"
-                    app:entries="@array/projectivy_select_videos_entries"
-                    app:entryValues="@array/projectivy_select_videos_values"
-                    app:defaultValue="@array/projectivy_select_videos_default"
+                    app:entries="@array/projectivy_shared_providers_entries"
+                    app:entryValues="@array/projectivy_shared_providers_values"
+                    app:defaultValue="@array/projectivy_shared_providers_default"
                     app:title="@string/projectivy_select_videos_title"
                     app:summary="@string/projectivy_select_videos_summary" />
 
