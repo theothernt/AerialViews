@@ -24,6 +24,7 @@
   <string name="category_advanced">Advanced</string>
   <string name="category_background_colour">Background colour</string>
   <string name="category_video_source">Video source</string>
+  <string name="category_video_sources">Video sources</string>
   <string name="category_options">Options</string>
   <string name="category_remote_streaming">Remote streaming</string>
   <string name="category_custom_videos_and_feeds">Custom videos and feeds</string>
