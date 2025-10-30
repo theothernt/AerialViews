@@ -356,6 +356,14 @@
   <string name="projectivy_apple_videos_enabled_summary">Share Apple videos with Projectivy</string>
   <string name="projectivy_apple_videos_options_title">Apple videos options</string>
   <string name="projectivy_apple_videos_options_summary">Configure Apple videos settings</string>
+  <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
+  <string name="projectivy_amazon_videos_options_summary">Configure Amazon videos settings</string>
+  <string name="projectivy_comm1_videos_options_title">Jetson Creative videos options</string>
+  <string name="projectivy_comm1_videos_options_summary">Configure Jetson Creative videos settings</string>
+  <string name="projectivy_comm2_videos_options_title">Robin Fourcade videos options</string>
+  <string name="projectivy_comm2_videos_options_summary">Configure Robin Fourcade videos settings</string>
+  <string name="projectivy_select_videos_title">Select video sources</string>
+  <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy</string>
 
   <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>

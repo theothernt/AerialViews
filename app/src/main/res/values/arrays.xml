@@ -1022,4 +1022,24 @@
     <item>COMM2</item>
   </string-array>
 
+  <!-- Projectivy Video Selection -->
+  <string-array name="projectivy_select_videos_entries">
+    <item>Apple Videos</item>
+    <item>Amazon Videos</item>
+    <item>Jetson Creative Videos</item>
+    <item>Robin Fourcade Videos</item>
+  </string-array>
+  <string-array name="projectivy_select_videos_values" translatable="false">
+    <item>APPLE</item>
+    <item>AMAZON</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+  </string-array>
+  <string-array name="projectivy_select_videos_default" translatable="false">
+    <item>APPLE</item>
+    <item>AMAZON</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+  </string-array>
+
 </resources>

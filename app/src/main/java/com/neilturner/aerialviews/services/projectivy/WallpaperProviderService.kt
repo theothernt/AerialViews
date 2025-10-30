@@ -6,8 +6,8 @@ import android.os.IBinder
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
@@ -69,7 +69,7 @@ class WallpaperProviderService : Service() {
 
     private fun getEnabledProviders(): List<MediaProvider> {
         val providers = mutableListOf<MediaProvider>()
-        val enabledSources = GeneralPrefs.shareProjectivyVideos
+        val enabledSources = ProjectivyPrefs.sharedProviders
 
         if (enabledSources.contains("APPLE")) {
             providers.add(AppleMediaProvider(applicationContext, AppleVideoPrefs))

@@ -16,7 +16,7 @@ class ProjectivyFragment :
     ) {
         setPreferencesFromResource(R.xml.settings_projectivy, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        updateAppleVideosOptionsVisibility()
+        updateVideoOptionsVisibility()
     }
 
     override fun onDestroy() {
@@ -28,16 +28,23 @@ class ProjectivyFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        if (key == "projectivy_apple_videos_enabled") {
-            updateAppleVideosOptionsVisibility()
+        if (key == "projectivy_select_videos") {
+            updateVideoOptionsVisibility()
         }
     }
 
-    private fun updateAppleVideosOptionsVisibility() {
-        val appleVideosEnabled = preferenceManager.sharedPreferences
-            ?.getBoolean("projectivy_apple_videos_enabled", false) ?: false
+    private fun updateVideoOptionsVisibility() {
+        val selectedVideos = preferenceManager.sharedPreferences
+            ?.getStringSet("projectivy_select_videos", emptySet()) ?: emptySet()
 
-        val appleVideosOptions = preferenceScreen.findPreference<Preference>("projectivy_apple_videos_options")
-        appleVideosOptions?.isVisible = appleVideosEnabled
+        // Update visibility for each video provider option
+        findPreference<Preference>("projectivy_apple_videos_options")?.isVisible =
+            selectedVideos.contains("APPLE")
+        findPreference<Preference>("projectivy_amazon_videos_options")?.isVisible =
+            selectedVideos.contains("AMAZON")
+        findPreference<Preference>("projectivy_comm1_videos_options")?.isVisible =
+            selectedVideos.contains("COMM1")
+        findPreference<Preference>("projectivy_comm2_videos_options")?.isVisible =
+            selectedVideos.contains("COMM2")
     }
 }
