@@ -127,6 +127,12 @@ Otherwise, the screensaver cannot be started, either automatically, or manually 
 3. Change the `Auto manager` at the top to `Closed` - this allows you to manually select which apps can auto-launch instead of the system deciding automatically
 4. Scroll to __Aerial Views__ and change it to `Opened`
 
+Not all TCL TVs have the same software and features. If the above __Safety Guard__ app does not exist on your TV, the following ADB command might help…
+
+```sh
+appops set com.neilturner.aerialviews APP_AUTO_START allow
+```
+
 </details>
 
 <details>
@@ -317,7 +323,10 @@ To change the default timeout use this command with a value in milliseconds. So,
 settings put system screen_off_timeout 600000
 ```
 
-:information_source: On modern Google TV devices (Android TV 12+), the minimum value is 6 minutes or 360000. If you set a value lower than this, the screensaver won't start.
+:information_source: *On modern Google TV devices (Android TV 12+), the minimum value is 6 minutes or 360000. If you set a value lower than this, the screensaver won't start.*
+
+:information_source: *If you are using Projectivy launcher, make sure to disable: Projectivy Launcher settings > Power > Enable internal idle detection*
+
 
 </details>
 

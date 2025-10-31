@@ -3,10 +3,7 @@
 
   <!-- General -->
   <string name="app_name" translatable="false">Aerial Views</string>
-
-<!--  <string name="plugin_name" translatable="false">Aerial Views</string>-->
   <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
-
   <string name="loading_title">Loading…</string>
   <string name="loading_error">No videos or photos found, please check your settings</string>
 
@@ -24,6 +21,7 @@
   <string name="category_advanced">Advanced</string>
   <string name="category_background_colour">Background colour</string>
   <string name="category_video_source">Video source</string>
+  <string name="category_video_sources">Video sources</string>
   <string name="category_options">Options</string>
   <string name="category_remote_streaming">Remote streaming</string>
   <string name="category_custom_videos_and_feeds">Custom videos and feeds</string>
@@ -152,6 +150,7 @@
   <!-- Main / Video Sources / Apple videos -->
   <string name="apple_videos_enabled">Use Apple videos</string>
 
+  <string name="apple_videos_dolby_vision_notice_summary">Dolby Vision is unsupported on this device. Expect possible color inaccuracies or playback issues.</string>
 
   <string name="apple_videos_time_of_day_title">Time of day</string>
   <string name="apple_videos_scene_type_title">Scene types</string>
@@ -345,17 +344,32 @@
   <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
   <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 
+  <string name="settings_advanced_title">Advanced</string>
+  <string name="settings_advanced_summary">Performance &amp; debug options for troubleshooting</string>
+
+  <string name="settings_projectivy_title">Projectivy Integration</string>
+  <string name="settings_projectivy_summary">Share videos to use with Projectivy\'s live wallpapers</string>
+
+  <string name="projectivy_select_videos_title">Select video sources</string>
+  <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy launcher</string>
+
   <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
 
-  <string name="settings_advanced_title">Advanced</string>
-  <string name="settings_advanced_summary">Performance &amp; debug options for troubleshooting</string>
+  <string name="settings_import_export_settings_title">Import/Export</string>
+  <string name="settings_import_export_settings_summary">Import or export settings to the Documents folder</string>
 
   <string name="settings_about_title">About</string>
   <string name="settings_about_summary">Version, build info, etc</string>
 
-  <string name="settings_import_export_settings_title">Import/Export</string>
-  <string name="settings_import_export_settings_summary">Import or export settings to the Documents folder</string>
+  <!-- Main / Settings / Projectivy Integration -->
+  <string name="projectivy_shuffle_videos_title">Shuffle videos</string>
+  <string name="projectivy_shuffle_videos_summary">Randomize the order of videos</string>
+  <string name="projectivy_apple_videos_options_title">Apple videos options</string>
+  <string name="projectivy_apple_videos_options_summary">Configure video quality and scene types</string>
+  <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
+  <string name="projectivy_comm1_videos_options_title">Jetson Creative videos options</string>
+  <string name="projectivy_comm2_videos_options_title">Robin Fourcade videos options</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
@@ -544,7 +558,7 @@
   <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
 
   <string name="playlist_sleep_timer_title">Sleep timer</string>
-  <string name="playlist_sleep_timer_summary">Automatically black out the screen after a set time</string>
+  <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
 
   <string name="playlist_video_volume_title">Video volume</string>
   <string name="playlist_video_volume_summary">Choose a video volume level</string>
@@ -615,8 +629,8 @@
   <string name="dpad_allow_media_button_passthrough_title">Allow media button pass-through</string>
   <string name="dpad_allow_media_button_passthrough_summary">Passes play, pause, rewind, etc button presses to the background app (eg. music app) without exiting the screensaver</string>
 
-  <string name="dpad_wake_on_any_button_press_title">Wake from black out mode with any d-pad or button press</string>
-  <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to black out mode will wake from it</string>
+  <string name="dpad_wake_on_any_button_press_title">Wake from blackout mode with any d-pad or button press</string>
+  <string name="dpad_wake_on_any_button_press_summary">If disabled, only the d-pad direction or button assigned to blackout mode will wake from it</string>
 
   <string name="dpad_seek_interval_title">Interval for seeking backwards/forwards in a video</string>
 
@@ -645,9 +659,6 @@
   <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
   <string name="advanced_locale_menu_title">Menu text locale</string>
   <string name="advanced_locale_screensaver_title">Screensaver text (clock, description, etc) locale</string>
-
-  <string name="advanced_projectivy_share_videos_title">Share videos with Projectivy</string>
-  <string name="advanced_projectivy_share_videos_summary">Select which video sources to share with Projectivy to use as video wallpapers</string>
 
   <string name="advanced_locale_restart_app_title">Restart App</string>
   <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
