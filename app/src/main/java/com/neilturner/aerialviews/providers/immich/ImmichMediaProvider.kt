@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.providers.immich
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
-import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -113,38 +112,45 @@ class ImmichMediaProvider(
                 getSelectedAlbumFromAPI()
             }
 
-        // Get optional asset sources (API key only)
+        // Filter primary album assets by media type
+        val filteredPrimaryAssets = filterAssetsByMediaType(primaryAlbum.assets)
+
+        // Get optional asset sources (API key only) and filter each by media type
         val favoriteAssets =
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
-                fetchOptionalAssets("favorites") { getFavoriteAssetsFromAPI() }
+                val rawAssets = fetchOptionalAssets("favorites") { getFavoriteAssetsFromAPI() }
+                filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
 
         val ratedAssets =
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
-                fetchOptionalAssets("rated") { getRatedAssetsFromAPI() }
+                val rawAssets = fetchOptionalAssets("rated") { getRatedAssetsFromAPI() }
+                filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
 
         val randomAssets =
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
-                fetchOptionalAssets("random") { getRandomAssetsFromAPI() }
+                val rawAssets = fetchOptionalAssets("random") { getRandomAssetsFromAPI() }
+                filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
 
         val recentAssets =
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
-                fetchOptionalAssets("recent") { getRecentAssetsFromAPI() }
+                val rawAssets = fetchOptionalAssets("recent") { getRecentAssetsFromAPI() }
+                filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
 
-        // Combine and deduplicate all assets
+        // Combine and deduplicate all filtered assets
         val allAssets =
-            (primaryAlbum.assets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
+            (filteredPrimaryAssets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
                 .distinctBy { it.id }
 
         return AssetFetchResults(
@@ -166,6 +172,17 @@ class ImmichMediaProvider(
             Timber.w(e, "Failed to fetch $sourceName assets, continuing without them")
             emptyList()
         }
+
+    private fun filterAssetsByMediaType(assets: List<Asset>): List<Asset> {
+        return assets.filter { asset ->
+            val filename = asset.originalPath
+            when {
+                FileHelper.isSupportedVideoType(filename) -> prefs.mediaType != ProviderMediaType.PHOTOS
+                FileHelper.isSupportedImageType(filename) -> prefs.mediaType != ProviderMediaType.VIDEOS
+                else -> false // Exclude unsupported files
+            }
+        }
+    }
 
     private fun processAssets(assets: List<Asset>): ProcessResults {
         val media = mutableListOf<AerialMedia>()
@@ -238,48 +255,28 @@ class ImmichMediaProvider(
         processResults: ProcessResults,
         assetResults: AssetFetchResults,
     ): String {
-        var message =
-            String.format(
-                context.getString(R.string.immich_media_test_summary1),
-                processResults.media.size.toString(),
-            ) + "\n"
-        message +=
-            String.format(
-                context.getString(R.string.immich_media_test_summary2),
-                processResults.excluded.toString(),
-            ) + "\n"
+        var message = ""
 
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-            message +=
-                String.format(
-                    context.getString(R.string.immich_media_test_summary3),
-                    processResults.videos.toString(),
-                ) + "\n"
-        }
-
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            message +=
-                String.format(
-                    context.getString(R.string.immich_media_test_summary4),
-                    processResults.images.toString(),
-                ) + "\n"
-        }
+        // Show total assets fetched from albums/shared links
+        message += "Album assets: ${assetResults.allAssets.size}\n"
 
         // Add information about different asset sources
         if (prefs.authType == ImmichAuthType.API_KEY) {
             if (prefs.includeRandom != "DISABLED" && assetResults.randomCount > 0) {
-                message += "Random assets fetched: ${assetResults.randomCount}\n"
+                message += "Random assets: ${assetResults.randomCount}\n"
             }
             if (prefs.includeRecent != "DISABLED" && assetResults.recentCount > 0) {
-                message += "Recent assets fetched: ${assetResults.recentCount}\n"
+                message += "Recent assets: ${assetResults.recentCount}\n"
             }
             if (prefs.includeFavorites != "DISABLED" && assetResults.favoriteCount > 0) {
-                message += "Favorite assets fetched: ${assetResults.favoriteCount}\n"
+                message += "Favorite assets: ${assetResults.favoriteCount}\n"
             }
             if (prefs.includeRatings.isNotEmpty() && assetResults.ratedCount > 0) {
-                message += "Rated assets fetched: ${assetResults.ratedCount}\n"
+                message += "Rated assets: ${assetResults.ratedCount}\n"
             }
         }
+
+        message += "\nTotal unique media: ${processResults.media.size}"
 
         return message
     }
