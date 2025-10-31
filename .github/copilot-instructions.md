@@ -177,6 +177,6 @@ The app targets TV devices, which affects development:
 If you need more context about this codebase, ask about:
 - How video metadata from Apple/Community manifests is matched to media
 - The refresh rate switching mechanism for matching content frame rates
-- How the Project Ivy launcher integration works (`projectivyapi/` module)
+- How the ProjectIvy launcher integration works (`projectivyapi/` module)
 - The Ktor server implementation for remote control API
 - Photo slideshow timing and Ken Burns effect implementation
