@@ -5,18 +5,18 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.VideoQuality
 
-object Comm1VideoPrefs : KotprefModel() {
+object Comm1VideoPrefs : KotprefModel(), ProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
-    var enabled by booleanPref(true, "comm1_videos_enabled")
-    var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "comm1_videos_quality")
+    override var enabled by booleanPref(true, "comm1_videos_enabled")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "comm1_videos_quality")
     var count by stringPref("-1", "comm1_videos_count")
 
-    val scene by stringSetPref("comm1_videos_scene_type") {
+    override val scene by stringSetPref("comm1_videos_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()
     }
 
-    val timeOfDay by stringSetPref("comm1_videos_time_of_day") {
+    override val timeOfDay by stringSetPref("comm1_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
 }

@@ -17,15 +17,6 @@
                     app:title ="@string/advanced_refresh_rate_switching_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_3rd_party_apps">
-                <MultiSelectListPreference
-                    app:key="share_projectivy_videos"
-                    app:entries="@array/projectivy_share_videos_entries"
-                    app:entryValues="@array/projectivy_share_videos_values"
-                    app:title="@string/advanced_projectivy_share_videos_title"
-                    app:summary="@string/advanced_projectivy_share_videos_summary" />
-        </PreferenceCategory>
-
         <PreferenceCategory app:title="@string/category_media_render_options">
                 <CheckBoxPreference
                     app:defaultValue="true"

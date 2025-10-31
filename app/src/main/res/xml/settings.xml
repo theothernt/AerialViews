@@ -28,6 +28,11 @@
             app:fragment="com.neilturner.aerialviews.ui.settings.AdvancedFragment"/>
 
         <Preference
+            app:title="@string/settings_projectivy_title"
+            app:summary="@string/settings_projectivy_summary"
+            app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyFragment"/>
+
+        <Preference
             app:title="@string/settings_capabilities_title"
             app:summary="@string/settings_capabilities_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.CapabilitiesFragment"/>

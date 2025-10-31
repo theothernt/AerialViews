@@ -1003,21 +1003,22 @@
   </string-array>
   <string name="sleep_timer_default" translatable="false">0</string>
 
-  <!-- Share Projectivy Videos Options -->
-  <string-array name="projectivy_share_videos_entries">
+  <!-- Projectivy Video Providers -->
+  <string-array name="projectivy_shared_providers_entries">
     <item>Apple Videos</item>
+    <item>Amazon Videos</item>
     <item>Jetson Creative Videos</item>
     <item>Robin Fourcade Videos</item>
-    <item>Local/USB Videos</item>
   </string-array>
-  <string-array name="projectivy_share_videos_values" translatable="false">
+  <string-array name="projectivy_shared_providers_values" translatable="false">
     <item>APPLE</item>
+    <item>AMAZON</item>
     <item>COMM1</item>
     <item>COMM2</item>
-    <item>LOCAL</item>
   </string-array>
-  <string-array name="projectivy_share_videos_default" translatable="false">
+  <string-array name="projectivy_shared_providers_default" translatable="false">
     <item>APPLE</item>
+    <item>AMAZON</item>
     <item>COMM1</item>
     <item>COMM2</item>
   </string-array>
