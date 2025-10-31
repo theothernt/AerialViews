@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
 import com.neilturner.aerialviews.utils.MenuStateFragment
 
 class ProjectivyFragment :
@@ -28,23 +29,21 @@ class ProjectivyFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        if (key == "projectivy_select_videos") {
+        if (key == "projectivy_shared_providers") {
             updateVideoOptionsVisibility()
         }
     }
 
     private fun updateVideoOptionsVisibility() {
-        val selectedVideos = preferenceManager.sharedPreferences
-            ?.getStringSet("projectivy_select_videos", emptySet()) ?: emptySet()
+        val selectedProviders = ProjectivyPrefs.sharedProviders
 
-        // Update visibility for each video provider option
         findPreference<Preference>("projectivy_apple_videos_options")?.isVisible =
-            selectedVideos.contains("APPLE")
+            selectedProviders.contains("APPLE")
         findPreference<Preference>("projectivy_amazon_videos_options")?.isVisible =
-            selectedVideos.contains("AMAZON")
+            selectedProviders.contains("AMAZON")
         findPreference<Preference>("projectivy_comm1_videos_options")?.isVisible =
-            selectedVideos.contains("COMM1")
+            selectedProviders.contains("COMM1")
         findPreference<Preference>("projectivy_comm2_videos_options")?.isVisible =
-            selectedVideos.contains("COMM2")
+            selectedProviders.contains("COMM2")
     }
 }

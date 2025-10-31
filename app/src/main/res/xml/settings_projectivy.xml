@@ -5,7 +5,7 @@
         <PreferenceCategory app:title="@string/category_video_sources">
 
                 <MultiSelectListPreference
-                    app:key="projectivy_select_videos"
+                    app:key="projectivy_shared_providers"
                     app:entries="@array/projectivy_shared_providers_entries"
                     app:entryValues="@array/projectivy_shared_providers_values"
                     app:defaultValue="@array/projectivy_shared_providers_default"
