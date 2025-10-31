@@ -28,6 +28,13 @@ interface ImmichApi {
         @Path("id") albumId: String,
     ): Response<Album>
 
+    @GET("/api/albums/{id}")
+    suspend fun getSharedAlbumById(
+        @Path("id") albumId: String,
+        @Query("key") key: String,
+        @Query("password") password: String? = null,
+    ): Response<Album>
+
     @POST("/api/search/metadata")
     suspend fun getFavoriteAssets(
         @Header("x-api-key") apiKey: String,

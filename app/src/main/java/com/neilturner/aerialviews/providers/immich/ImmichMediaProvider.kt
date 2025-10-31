@@ -260,17 +260,92 @@ class ImmichMediaProvider(
                 if (shared == null) throw Exception("Empty response body")
                 // Cache server-provided key for use in asset URLs
                 resolvedSharedKey = shared.key
-                // Prefer album info if present; otherwise synthesize from assets
-                val album =
-                    shared.album
-                        ?: Album(
+
+                // Handle different shared link types
+                when (shared.type) {
+                    "INDIVIDUAL" -> {
+                        Timber.d("Shared link type is INDIVIDUAL, using assets directly")
+                        return Album(
                             id = "shared-${shared.id}",
                             name = shared.description ?: "Shared Link",
                             description = shared.description ?: "",
                             assetCount = shared.assets.size,
                             assets = shared.assets,
                         )
-                return album
+                    }
+                    "ALBUM" -> {
+                        Timber.d("Shared link type is ALBUM, fetching album details")
+                        if (shared.album == null || shared.album.id.isEmpty()) {
+                            Timber.e("ALBUM type shared link but no album ID provided")
+                            return Album(
+                                id = "shared-${shared.id}",
+                                name = shared.description ?: "Shared Link",
+                                description = "Album information not available",
+                                assetCount = 0,
+                                assets = emptyList(),
+                            )
+                        }
+
+                        // Fetch the full album with assets using the shared key
+                        try {
+                            val albumResponse = immichClient.getSharedAlbumById(
+                                albumId = shared.album.id,
+                                key = shared.key,
+                                password = prefs.password.takeIf { it.isNotEmpty() }
+                            )
+
+                            if (albumResponse.isSuccessful) {
+                                val album = albumResponse.body()
+                                if (album != null) {
+                                    Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                                    return album
+                                } else {
+                                    Timber.e("Received null album from successful response")
+                                    return Album(
+                                        id = "shared-${shared.id}",
+                                        name = shared.description ?: "Shared Link",
+                                        description = "Album data not available",
+                                        assetCount = 0,
+                                        assets = emptyList(),
+                                    )
+                                }
+                            } else {
+                                val errorBody = albumResponse.errorBody()?.string()
+                                Timber.e("Failed to fetch album details. Code: ${albumResponse.code()}, Error: $errorBody")
+                                return Album(
+                                    id = "shared-${shared.id}",
+                                    name = shared.description ?: "Shared Link",
+                                    description = "Failed to load album",
+                                    assetCount = 0,
+                                    assets = emptyList(),
+                                )
+                            }
+                        } catch (e: Exception) {
+                            Timber.e(e, "Exception while fetching album details")
+                            return Album(
+                                id = "shared-${shared.id}",
+                                name = shared.description ?: "Shared Link",
+                                description = "Error loading album",
+                                assetCount = 0,
+                                assets = emptyList(),
+                            )
+                        }
+                    }
+                    else -> {
+                        Timber.w("Unknown shared link type: ${shared.type}, falling back to legacy behavior")
+                        // Fallback to legacy behavior for unknown types
+                        val album =
+                            shared.album
+                                ?: Album(
+                                    id = "shared-${shared.id}",
+                                    name = shared.description ?: "Shared Link",
+                                    description = shared.description ?: "",
+                                    assetCount = shared.assets.size,
+                                    assets = shared.assets,
+                                )
+                        return album
+                    }
+                }
             } else {
                 val errorBody = response.errorBody()?.string()
                 Timber.e("API error: ${response.code()} - ${response.message()}")
