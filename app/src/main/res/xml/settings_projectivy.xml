@@ -24,21 +24,21 @@
                 <Preference
                     app:key="projectivy_amazon_videos_options"
                     app:title="@string/projectivy_amazon_videos_options_title"
-                    app:summary="@string/projectivy_amazon_videos_options_summary"
+                    app:summary="@string/projectivy_apple_videos_options_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyAmazonVideosFragment"
                     app:isPreferenceVisible="false"/>
 
                 <Preference
                     app:key="projectivy_comm1_videos_options"
                     app:title="@string/projectivy_comm1_videos_options_title"
-                    app:summary="@string/projectivy_comm1_videos_options_summary"
+                    app:summary="@string/projectivy_apple_videos_options_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyComm1VideosFragment"
                     app:isPreferenceVisible="false"/>
 
                 <Preference
                     app:key="projectivy_comm2_videos_options"
                     app:title="@string/projectivy_comm2_videos_options_title"
-                    app:summary="@string/projectivy_comm2_videos_options_summary"
+                    app:summary="@string/projectivy_apple_videos_options_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyComm2VideosFragment"
                     app:isPreferenceVisible="false"/>
 

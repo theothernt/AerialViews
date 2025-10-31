@@ -3,10 +3,7 @@
 
   <!-- General -->
   <string name="app_name" translatable="false">Aerial Views</string>
-
-<!--  <string name="plugin_name" translatable="false">Aerial Views</string>-->
   <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
-
   <string name="loading_title">Loading…</string>
   <string name="loading_error">No videos or photos found, please check your settings</string>
 
@@ -350,21 +347,11 @@
   <string name="settings_advanced_title">Advanced</string>
   <string name="settings_advanced_summary">Performance &amp; debug options for troubleshooting</string>
 
-  <string name="settings_projectivy_title">Projectivy integration</string>
+  <string name="settings_projectivy_title">Projectivy Integration</string>
   <string name="settings_projectivy_summary">Share videos to use with Projectivy\'s live wallpapers</string>
 
-  <string name="projectivy_apple_videos_enabled_title">Enable Apple videos</string>
-  <string name="projectivy_apple_videos_enabled_summary">Share Apple videos with Projectivy</string>
-  <string name="projectivy_apple_videos_options_title">Apple videos options</string>
-  <string name="projectivy_apple_videos_options_summary">Configure Apple videos settings</string>
-  <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
-  <string name="projectivy_amazon_videos_options_summary">Configure Amazon videos settings</string>
-  <string name="projectivy_comm1_videos_options_title">Jetson Creative videos options</string>
-  <string name="projectivy_comm1_videos_options_summary">Configure Jetson Creative videos settings</string>
-  <string name="projectivy_comm2_videos_options_title">Robin Fourcade videos options</string>
-  <string name="projectivy_comm2_videos_options_summary">Configure Robin Fourcade videos settings</string>
   <string name="projectivy_select_videos_title">Select video sources</string>
-  <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy</string>
+  <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy launcher</string>
 
   <string name="settings_capabilities_title">Device Capabilities</string>
   <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
@@ -374,6 +361,13 @@
 
   <string name="settings_about_title">About</string>
   <string name="settings_about_summary">Version, build info, etc</string>
+
+  <!-- Main / Settings / Projectivy Integration -->
+  <string name="projectivy_apple_videos_options_title">Apple videos options</string>
+  <string name="projectivy_apple_videos_options_summary">Configure video quality and scene types</string>
+  <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
+  <string name="projectivy_comm1_videos_options_title">Jetson Creative videos options</string>
+  <string name="projectivy_comm2_videos_options_title">Robin Fourcade videos options</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
