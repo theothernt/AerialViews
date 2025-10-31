@@ -8,6 +8,8 @@ import com.neilturner.aerialviews.models.enums.VideoQuality
 object ProjectivyPrefs : KotprefModel() {
     override val kotprefName = "${context.packageName}_preferences"
 
+    var shuffleVideos by booleanPref(true, "projectivy_shuffle_videos")
+
     val sharedProviders by stringSetPref("projectivy_shared_providers") {
         context.resources.getStringArray(R.array.projectivy_shared_providers_default).toSet()
     }

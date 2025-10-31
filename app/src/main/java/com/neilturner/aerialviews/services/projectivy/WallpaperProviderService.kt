@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.models.prefs.ProjectivyAmazonPrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyApplePrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyComm1Prefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyComm2Prefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -44,7 +45,13 @@ class WallpaperProviderService : Service() {
                                             emptyList()
                                         }
                                     }
-                            }.shuffled()
+                            }.let { mediaList ->
+                                if (ProjectivyPrefs.shuffleVideos) {
+                                    mediaList.shuffled()
+                                } else {
+                                    mediaList
+                                }
+                            }
 
                         // Convert AerialMedia objects to Wallpaper objects
                         aerialMediaList.map { media ->

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_video_sources">
-
                 <MultiSelectListPreference
                     app:key="projectivy_shared_providers"
                     app:entries="@array/projectivy_shared_providers_entries"
@@ -14,6 +13,12 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_options">
+                <SwitchPreferenceCompat
+                    app:key="projectivy_shuffle_videos"
+                    app:title="@string/projectivy_shuffle_videos_title"
+                    app:summary="@string/projectivy_shuffle_videos_summary"
+                    app:defaultValue="true" />
+
                 <Preference
                     app:key="projectivy_apple_videos_options"
                     app:title="@string/projectivy_apple_videos_options_title"
@@ -41,6 +46,5 @@
                     app:summary="@string/projectivy_apple_videos_options_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.ProjectivyComm2VideosFragment"
                     app:isPreferenceVisible="false"/>
-
         </PreferenceCategory>
 </PreferenceScreen>

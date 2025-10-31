@@ -363,6 +363,8 @@
   <string name="settings_about_summary">Version, build info, etc</string>
 
   <!-- Main / Settings / Projectivy Integration -->
+  <string name="projectivy_shuffle_videos_title">Shuffle videos</string>
+  <string name="projectivy_shuffle_videos_summary">Randomize the order of videos</string>
   <string name="projectivy_apple_videos_options_title">Apple videos options</string>
   <string name="projectivy_apple_videos_options_summary">Configure video quality and scene types</string>
   <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
