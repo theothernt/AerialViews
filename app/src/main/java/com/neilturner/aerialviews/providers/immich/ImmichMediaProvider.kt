@@ -54,125 +54,132 @@ class ImmichMediaProvider(
 
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
-        var excluded = 0
-        var videos = 0
-        var images = 0
 
-        if (prefs.url.isEmpty()) {
-            return Pair(media, "Hostname and port not specified")
+        // Validate input
+        val validationError = validateInput()
+        if (validationError != null) {
+            return Pair(media, validationError)
         }
 
-        if (prefs.authType == ImmichAuthType.SHARED_LINK) {
-            if (prefs.pathName.isEmpty()) {
-                return Pair(media, "Path name is empty")
-            }
-        } else {
-            if (prefs.apiKey.isEmpty()) {
-                return Pair(media, "API key is empty")
-            }
-        }
-
-        val immichMedia =
+        // Fetch all assets from API
+        val assetResults =
             try {
-                if (prefs.authType == ImmichAuthType.SHARED_LINK) {
-                    getSharedAlbumFromAPI()
-                } else {
-                    getSelectedAlbumFromAPI()
-                }
+                fetchAllAssets()
             } catch (e: Exception) {
                 Timber.e(e)
                 return Pair(emptyList(), e.message.toString())
             }
 
-        // Get favorites if enabled and using API key authentication
-        val favoriteAssets =
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
-                try {
-                    getFavoriteAssetsFromAPI()
-                } catch (e: Exception) {
-                    Timber.w(e, "Failed to fetch favorite assets, continuing without them")
-                    emptyList()
-                }
-            } else {
-                emptyList()
-            }
-
-        // Get rated assets if enabled and using API key authentication
-        val ratedAssets =
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
-                try {
-                    getRatedAssetsFromAPI()
-                } catch (e: Exception) {
-                    Timber.w(e, "Failed to fetch rated assets, continuing without them")
-                    emptyList()
-                }
-            } else {
-                emptyList()
-            }
-
-        // Get random assets if enabled and using API key authentication
-        val randomAssets =
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
-                try {
-                    getRandomAssetsFromAPI()
-                } catch (e: Exception) {
-                    Timber.w(e, "Failed to fetch random assets, continuing without them")
-                    emptyList()
-                }
-            } else {
-                emptyList()
-            }
-
-        // Get recent assets if enabled and using API key authentication
-        val recentAssets =
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
-                try {
-                    getRecentAssetsFromAPI()
-                } catch (e: Exception) {
-                    Timber.w(e, "Failed to fetch recent assets, continuing without them")
-                    emptyList()
-                }
-            } else {
-                emptyList()
-            }
-
-        if (immichMedia.assets.isEmpty() &&
-            favoriteAssets.isEmpty() &&
-            ratedAssets.isEmpty() &&
-            randomAssets.isEmpty() &&
-            recentAssets.isEmpty()
-        ) {
+        // Check if any assets were found
+        if (assetResults.allAssets.isEmpty()) {
             return Pair(media, "No files found")
         }
 
-        // Combine album assets, favorite assets, rated assets, random assets, and recent assets, removing duplicates
-        val allAssets = (immichMedia.assets + favoriteAssets + ratedAssets + randomAssets + recentAssets).distinctBy { it.id }
+        // Process assets and create media list
+        val processResults = processAssets(assetResults.allAssets)
+        media.addAll(processResults.media)
 
-        // Process all assets
-        val processedAssets = allAssets
+        // Build summary message
+        val message = buildSummaryMessage(processResults, assetResults)
 
-        processedAssets.forEach lit@{ asset ->
+        Timber.i("Media found: ${media.size}")
+        return Pair(media, message)
+    }
+
+    private fun validateInput(): String? {
+        if (prefs.url.isEmpty()) {
+            return "Hostname and port not specified"
+        }
+
+        if (prefs.authType == ImmichAuthType.SHARED_LINK) {
+            if (prefs.pathName.isEmpty()) {
+                return "Path name is empty"
+            }
+        } else {
+            if (prefs.apiKey.isEmpty()) {
+                return "API key is empty"
+            }
+        }
+
+        return null
+    }
+
+    private suspend fun fetchAllAssets(): AssetFetchResults {
+        // Get primary assets (album or shared link)
+        val primaryAlbum =
+            if (prefs.authType == ImmichAuthType.SHARED_LINK) {
+                getSharedAlbumFromAPI()
+            } else {
+                getSelectedAlbumFromAPI()
+            }
+
+        // Get optional asset sources (API key only)
+        val favoriteAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
+                fetchOptionalAssets("favorites") { getFavoriteAssetsFromAPI() }
+            } else {
+                emptyList()
+            }
+
+        val ratedAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
+                fetchOptionalAssets("rated") { getRatedAssetsFromAPI() }
+            } else {
+                emptyList()
+            }
+
+        val randomAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
+                fetchOptionalAssets("random") { getRandomAssetsFromAPI() }
+            } else {
+                emptyList()
+            }
+
+        val recentAssets =
+            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
+                fetchOptionalAssets("recent") { getRecentAssetsFromAPI() }
+            } else {
+                emptyList()
+            }
+
+        // Combine and deduplicate all assets
+        val allAssets =
+            (primaryAlbum.assets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
+                .distinctBy { it.id }
+
+        return AssetFetchResults(
+            allAssets = allAssets,
+            favoriteCount = favoriteAssets.size,
+            ratedCount = ratedAssets.size,
+            randomCount = randomAssets.size,
+            recentCount = recentAssets.size,
+        )
+    }
+
+    private suspend fun fetchOptionalAssets(
+        sourceName: String,
+        fetchFn: suspend () -> List<Asset>,
+    ): List<Asset> =
+        try {
+            fetchFn()
+        } catch (e: Exception) {
+            Timber.w(e, "Failed to fetch $sourceName assets, continuing without them")
+            emptyList()
+        }
+
+    private fun processAssets(assets: List<Asset>): ProcessResults {
+        val media = mutableListOf<AerialMedia>()
+        var excluded = 0
+        var videos = 0
+        var images = 0
+
+        assets.forEach { asset ->
             val uri = getAssetUri(asset.id)
-            val poi = mutableMapOf<Int, String>()
+            val poi = extractLocationPoi(asset)
             val description = asset.exifInfo?.description ?: ""
             val filename = asset.originalPath
 
             Timber.i("Description: $description, Filename: $filename")
-
-            try {
-                if (asset.exifInfo?.country != null &&
-                    asset.exifInfo.country.isNotBlank()
-                ) {
-                    Timber.i("fetchImmichMedia: ${asset.id} country = ${asset.exifInfo.country}")
-                    val location =
-                        listOf(
-                            asset.exifInfo.city,
-                        ).filter { !it.isNullOrBlank() }.joinToString(separator = ", ")
-                    poi[poi.size] = location
-                }
-            } catch (e: Exception) {
-                Timber.e(e, "Error parsing location EXIF data")
-            }
 
             val item =
                 AerialMedia(uri, description, poi).apply {
@@ -196,50 +203,101 @@ class ImmichMediaProvider(
                 }
                 else -> {
                     excluded++
-                    return@lit
                 }
             }
         }
 
+        return ProcessResults(
+            media = media,
+            excluded = excluded,
+            videos = videos,
+            images = images,
+        )
+    }
+
+    private fun extractLocationPoi(asset: Asset): MutableMap<Int, String> {
+        val poi = mutableMapOf<Int, String>()
+        try {
+            if (asset.exifInfo?.country != null && asset.exifInfo.country.isNotBlank()) {
+                Timber.i("extractLocationPoi: ${asset.id} country = ${asset.exifInfo.country}")
+                val location =
+                    listOf(asset.exifInfo.city)
+                        .filter { !it.isNullOrBlank() }
+                        .joinToString(separator = ", ")
+                if (location.isNotBlank()) {
+                    poi[poi.size] = location
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Error parsing location EXIF data")
+        }
+        return poi
+    }
+
+    private fun buildSummaryMessage(
+        processResults: ProcessResults,
+        assetResults: AssetFetchResults,
+    ): String {
         var message =
             String.format(
                 context.getString(R.string.immich_media_test_summary1),
-                media.size.toString(),
+                processResults.media.size.toString(),
             ) + "\n"
-        message += String.format(
-            context.getString(R.string.immich_media_test_summary2),
-            excluded.toString(),
-        ) + "\n"
+        message +=
+            String.format(
+                context.getString(R.string.immich_media_test_summary2),
+                processResults.excluded.toString(),
+            ) + "\n"
+
         if (prefs.mediaType != ProviderMediaType.PHOTOS) {
-            message += String.format(
-                context.getString(R.string.immich_media_test_summary3),
-                videos.toString(),
-            ) + "\n"
+            message +=
+                String.format(
+                    context.getString(R.string.immich_media_test_summary3),
+                    processResults.videos.toString(),
+                ) + "\n"
         }
+
         if (prefs.mediaType != ProviderMediaType.VIDEOS) {
-            message += String.format(
-                context.getString(R.string.immich_media_test_summary4),
-                images.toString(),
-            ) + "\n"
+            message +=
+                String.format(
+                    context.getString(R.string.immich_media_test_summary4),
+                    processResults.images.toString(),
+                ) + "\n"
         }
 
         // Add information about different asset sources
-        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
-            message += "Random assets fetched: ${randomAssets.size}\n"
-        }
-        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
-            message += "Recent assets fetched: ${recentAssets.size}\n"
-        }
-        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
-            message += "Favorite assets fetched: ${favoriteAssets.size}\n"
-        }
-        if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
-            message += "Rated assets fetched: ${ratedAssets.size}\n"
+        if (prefs.authType == ImmichAuthType.API_KEY) {
+            if (prefs.includeRandom != "DISABLED" && assetResults.randomCount > 0) {
+                message += "Random assets fetched: ${assetResults.randomCount}\n"
+            }
+            if (prefs.includeRecent != "DISABLED" && assetResults.recentCount > 0) {
+                message += "Recent assets fetched: ${assetResults.recentCount}\n"
+            }
+            if (prefs.includeFavorites != "DISABLED" && assetResults.favoriteCount > 0) {
+                message += "Favorite assets fetched: ${assetResults.favoriteCount}\n"
+            }
+            if (prefs.includeRatings.isNotEmpty() && assetResults.ratedCount > 0) {
+                message += "Rated assets fetched: ${assetResults.ratedCount}\n"
+            }
         }
 
-        Timber.i("Media found: ${media.size}")
-        return Pair(media, message)
+        return message
     }
+
+    private data class AssetFetchResults(
+        val allAssets: List<Asset>,
+        val favoriteCount: Int,
+        val ratedCount: Int,
+        val randomCount: Int,
+        val recentCount: Int,
+    )
+
+    private data class ProcessResults(
+        val media: List<AerialMedia>,
+        val excluded: Int,
+        val videos: Int,
+        val images: Int,
+    )
 
     private suspend fun getSharedAlbumFromAPI(): Album {
         try {
