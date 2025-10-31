@@ -25,10 +25,9 @@ leanback = "1.2.0"
 leanback-preference = "1.2.0"
 preference-ktx = "1.2.1"
 
-sardine-android = "0.0.3"
-logging-interceptor = "5.2.1"
+okhttp = "5.3.0"
 retrofit = "3.0.0"
-okhttp = "5.2.1"
+sardine-android = "0.0.3"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.8.0"
@@ -81,9 +80,9 @@ kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer",
 kotpref-enum-support = { group = "com.chibatching.kotpref", name = "enum-support", version.ref = "kotpref" }
 
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-kotlin-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging-interceptor" }
 
 media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3-exoplayer" }
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-exoplayer" }
@@ -117,7 +116,7 @@ firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui", "media3-rtsp"]
 flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
-retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "logging-interceptor"]
+retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logging"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 
