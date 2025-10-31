@@ -1,3 +1,4 @@
+
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -91,7 +92,12 @@ android {
 
     packaging {
         resources {
-            resources.excludes.add("META-INF/INDEX.LIST")
+            resources {
+                excludes.add("META-INF/INDEX.LIST")
+                excludes.add("META-INF/LICENSE")
+                excludes.add("META-INF/NOTICE")
+                excludes.add("META-INF/*.kotlin_module")
+            }
         }
     }
 
