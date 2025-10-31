@@ -3,11 +3,10 @@ package com.neilturner.aerialviews.services.projectivy
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
-import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
-import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
-import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyAmazonPrefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyApplePrefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyComm1Prefs
+import com.neilturner.aerialviews.models.prefs.ProjectivyComm2Prefs
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -22,7 +21,6 @@ import tv.projectivy.plugin.wallpaperprovider.api.WallpaperType
 
 class WallpaperProviderService : Service() {
     override fun onBind(intent: Intent): IBinder {
-        // Return the interface.
         return binder
     }
 
@@ -38,7 +36,7 @@ class WallpaperProviderService : Service() {
                         val aerialMediaList =
                             runBlocking {
                                 enabledProviders
-                                    // .filter { it.enabled }
+                                    .filter { it.enabled }
                                     .flatMap { provider ->
                                         try {
                                             provider.fetchMedia()
@@ -68,26 +66,11 @@ class WallpaperProviderService : Service() {
         }
 
     private fun getEnabledProviders(): List<MediaProvider> {
-        val providers = mutableListOf<MediaProvider>()
-        val enabledSources = ProjectivyPrefs.sharedProviders
-
-        if (enabledSources.contains("APPLE")) {
-            providers.add(AppleMediaProvider(applicationContext, AppleVideoPrefs))
+        return mutableListOf<MediaProvider>().apply {
+            add(AppleMediaProvider(applicationContext, ProjectivyApplePrefs))
+            add(Comm1MediaProvider(applicationContext, ProjectivyComm1Prefs))
+            add(Comm2MediaProvider(applicationContext, ProjectivyComm2Prefs))
+            add(AmazonMediaProvider(applicationContext, ProjectivyAmazonPrefs))
         }
-        if (enabledSources.contains("COMM1")) {
-            providers.add(Comm1MediaProvider(applicationContext, Comm1VideoPrefs))
-        }
-        if (enabledSources.contains("COMM2")) {
-            providers.add(Comm2MediaProvider(applicationContext, Comm2VideoPrefs))
-        }
-        if (enabledSources.contains("AMAZON")) {
-            providers.add(AmazonMediaProvider(applicationContext, AmazonVideoPrefs))
-        }
-
-//        if (enabledSources.contains("LOCAL")) {
-//            providers.add(LocalMediaProvider(applicationContext, LocalMediaPrefs))
-//        }
-
-        return providers
     }
 }

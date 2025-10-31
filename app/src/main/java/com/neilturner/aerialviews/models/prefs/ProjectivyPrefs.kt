@@ -13,66 +13,66 @@ object ProjectivyPrefs : KotprefModel() {
     }
 }
 
-object ProjectivyApplePrefs : KotprefModel() {
+object ProjectivyApplePrefs : KotprefModel(), ProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
-    var enabled = ProjectivyPrefs.sharedProviders.contains("APPLE")
-    var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_apple_videos_quality")
+    override var enabled = ProjectivyPrefs.sharedProviders.contains("APPLE")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_apple_videos_quality")
     var count by stringPref("-1", "projectivy_apple_videos_count")
 
-    val scene by stringSetPref("projectivy_apple_videos_scene_type") {
+    override val scene by stringSetPref("projectivy_apple_videos_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()
     }
 
-    val timeOfDay by stringSetPref("projectivy_apple_videos_time_of_day") {
+    override val timeOfDay by stringSetPref("projectivy_apple_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
 }
 
-object ProjectivyAmazonPrefs : KotprefModel() {
+object ProjectivyAmazonPrefs : KotprefModel(), ProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
-    var enabled = ProjectivyPrefs.sharedProviders.contains("AMAZON")
-    var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_amazon_videos_quality")
+    override var enabled = ProjectivyPrefs.sharedProviders.contains("AMAZON")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_amazon_videos_quality")
     var count by stringPref("-1", "projectivy_amazon_videos_count")
 
-    val scene by stringSetPref("projectivy_amazon_videos_scene_type") {
+    override val scene by stringSetPref("projectivy_amazon_videos_scene_type") {
         context.resources.getStringArray(R.array.amazon_video_scene_type_default).toSet()
     }
 
-    val timeOfDay by stringSetPref("projectivy_amazon_videos_time_of_day") {
+    override val timeOfDay by stringSetPref("projectivy_amazon_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
 }
 
-object ProjectivyComm1Prefs : KotprefModel() {
+object ProjectivyComm1Prefs : KotprefModel(), ProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
-    var enabled = ProjectivyPrefs.sharedProviders.contains("COMM1")
-    var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_comm1_videos_quality")
+    override var enabled = ProjectivyPrefs.sharedProviders.contains("COMM1")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_comm1_videos_quality")
     var count by stringPref("-1", "projectivy_comm1_videos_count")
 
-    val scene by stringSetPref("projectivy_comm1_videos_scene_type") {
+    override val scene by stringSetPref("projectivy_comm1_videos_scene_type") {
         context.resources.getStringArray(R.array.video_scene_type_default).toSet()
     }
 
-    val timeOfDay by stringSetPref("projectivy_comm1_videos_time_of_day") {
+    override val timeOfDay by stringSetPref("projectivy_comm1_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
 }
 
-object ProjectivyComm2Prefs : KotprefModel() {
+object ProjectivyComm2Prefs : KotprefModel(), ProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
-    var enabled = ProjectivyPrefs.sharedProviders.contains("COMM2")
-    var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_comm2_videos_quality")
+    override var enabled = ProjectivyPrefs.sharedProviders.contains("COMM2")
+    override var quality by nullableEnumValuePref(VideoQuality.VIDEO_1080_SDR, "projectivy_comm2_videos_quality")
     var count by stringPref("-1", "projectivy_comm2_videos_count")
 
-    val scene by stringSetPref("projectivy_comm2_videos_scene_type") {
+    override val scene by stringSetPref("projectivy_comm2_videos_scene_type") {
         context.resources.getStringArray(R.array.comm2_videos_scene_type_default).toSet()
     }
 
-    val timeOfDay by stringSetPref("projectivy_comm2_videos_time_of_day") {
+    override val timeOfDay by stringSetPref("projectivy_comm2_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
 }

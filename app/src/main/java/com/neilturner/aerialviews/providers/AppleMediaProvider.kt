@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SceneType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
-import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
+import com.neilturner.aerialviews.models.prefs.ProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.Apple2018Videos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
@@ -16,7 +16,7 @@ import timber.log.Timber
 
 class AppleMediaProvider(
     context: Context,
-    private val prefs: AppleVideoPrefs,
+    private val prefs: ProviderPreferences,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.REMOTE
     val metadata = mutableMapOf<String, Pair<String, Map<Int, String>>>()
