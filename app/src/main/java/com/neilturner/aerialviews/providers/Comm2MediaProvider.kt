@@ -59,8 +59,6 @@ class Comm2MediaProvider(
                         scene = scene,
                     ),
                 )
-            } else if (prefs.enabled) {
-                Timber.d("Filtering out video: ${asset.description}")
             }
 
             val data =
