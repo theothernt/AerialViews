@@ -16,7 +16,7 @@ firebase-analytics = "22.5.0"
 firebase-crashlytics = "19.4.4"
 firebase-perf = "21.0.5"
 
-ktor = "3.3.1"
+ktor = "3.3.2"
 gradle-doctor = "0.12.1"
 kotlinter-gradle = "5.2.0"
 leakcanary = "2.14"
