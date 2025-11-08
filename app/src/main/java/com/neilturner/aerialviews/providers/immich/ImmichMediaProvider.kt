@@ -564,20 +564,37 @@ class ImmichMediaProvider(
 
     suspend fun fetchAlbums(): Result<List<Album>> =
         try {
-            val response = immichClient.getAlbums(apiKey = prefs.apiKey)
-            if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
+            // Fetch regular albums
+            val regularResponse = immichClient.getAlbums(apiKey = prefs.apiKey)
+            val regularAlbums = if (regularResponse.isSuccessful) {
+                regularResponse.body() ?: emptyList()
             } else {
-                val errorBody = response.errorBody()?.string() ?: ""
+                val errorBody = regularResponse.errorBody()?.string() ?: ""
                 val errorMessage =
                     try {
                         Json.decodeFromString<ErrorResponse>(errorBody).message
                     } catch (e: Exception) {
                         Timber.e(e, "Error parsing error body: $errorBody")
-                        response.message()
+                        regularResponse.message()
                     }
-                Result.failure(Exception("${response.code()} - $errorMessage"))
+                return Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
             }
+
+            // Fetch shared albums
+            val sharedResponse = immichClient.getAlbums(apiKey = prefs.apiKey, shared = true)
+            val sharedAlbums = if (sharedResponse.isSuccessful) {
+                sharedResponse.body() ?: emptyList()
+            } else {
+                // If shared albums fetch fails, log warning but continue with regular albums only
+                Timber.w("Failed to fetch shared albums: ${sharedResponse.code()} - ${sharedResponse.message()}")
+                emptyList()
+            }
+
+            // Combine and deduplicate albums by ID
+            val allAlbums = (regularAlbums + sharedAlbums).distinctBy { it.id }
+            Timber.d("Fetched ${regularAlbums.size} regular albums and ${sharedAlbums.size} shared albums (${allAlbums.size} total unique)")
+
+            Result.success(allAlbums)
         } catch (e: Exception) {
             Result.failure(e)
         }
