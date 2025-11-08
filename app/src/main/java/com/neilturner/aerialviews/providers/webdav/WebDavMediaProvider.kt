@@ -162,7 +162,7 @@ class WebDavMediaProvider(
         client: Sardine,
         url: String = "",
     ): List<String> {
-        val files = mutableListOf<String>()
+        val filesWithDates = mutableListOf<Pair<String, Long>>()
         val directories = ArrayDeque<String>()
 
         // Start with the initial URL
@@ -182,7 +182,8 @@ class WebDavMediaProvider(
                     if (resource.isDirectory && prefs.searchSubfolders) {
                         directories.add("$currentUrl/${resource.name}")
                     } else if (!resource.isDirectory) {
-                        files.add("$currentUrl/${resource.name}")
+                        val modifiedTime = resource.modified?.time ?: 0L
+                        filesWithDates.add(Pair("$currentUrl/${resource.name}", modifiedTime))
                     }
                 }
             } catch (ex: Exception) {
@@ -190,6 +191,8 @@ class WebDavMediaProvider(
             }
         }
 
-        return files
+        return filesWithDates
+            .sortedByDescending { it.second }
+            .map { it.first }
     }
 }
