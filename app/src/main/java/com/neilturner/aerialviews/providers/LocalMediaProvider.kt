@@ -142,7 +142,9 @@ class LocalMediaProvider(
                     }
                 }
             }
-            return@withContext found.map { item -> item.absolutePath }
+            return@withContext found
+                .sortedByDescending { it.lastModified() }
+                .map { item -> item.absolutePath }
         }
 
     private fun listFilesAndFoldersRecursively(directory: File): List<File> {
@@ -237,8 +239,10 @@ class LocalMediaProvider(
                 FileHelper.findLocalVideos(context) +
                     FileHelper.findLocalImages(context)
 
-            return@withContext files.filter { item ->
-                !FileHelper.isDotOrHiddenFile(item)
-            }
+            return@withContext files
+                .filter { item -> !FileHelper.isDotOrHiddenFile(item) }
+                .map { File(it) }
+                .sortedByDescending { it.lastModified() }
+                .map { it.absolutePath }
         }
 }
