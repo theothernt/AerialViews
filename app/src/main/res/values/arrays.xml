@@ -350,7 +350,7 @@
   <string name="text_size_default" translatable="false">18</string>
 
   <!-- Font selection -->
-  <string-array name="text_font_entries">
+  <string-array name="text_font_entries" translatable="false">
     <item>Open Sans*</item>
     <item>Roboto</item>
   </string-array>

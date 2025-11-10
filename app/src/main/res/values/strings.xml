@@ -365,11 +365,11 @@
   <!-- Main / Settings / Projectivy Integration -->
   <string name="projectivy_shuffle_videos_title">Shuffle videos</string>
   <string name="projectivy_shuffle_videos_summary">Randomize the order of videos</string>
-  <string name="projectivy_apple_videos_options_title">Apple videos options</string>
+  <string name="projectivy_apple_videos_options_title">Apple video options</string>
   <string name="projectivy_apple_videos_options_summary">Configure video quality and scene types</string>
-  <string name="projectivy_amazon_videos_options_title">Amazon videos options</string>
-  <string name="projectivy_comm1_videos_options_title">Jetson Creative videos options</string>
-  <string name="projectivy_comm2_videos_options_title">Robin Fourcade videos options</string>
+  <string name="projectivy_amazon_videos_options_title">Amazon video options</string>
+  <string name="projectivy_comm1_videos_options_title">Jetson Creative video options</string>
+  <string name="projectivy_comm2_videos_options_title">Robin Fourcade video options</string>
 
   <!-- Main / Settings / Overlays -->
   <string name="appearance_top_row_title">Top Row</string>
