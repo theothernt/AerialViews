@@ -20,6 +20,7 @@ interface ImmichApi {
     @GET("/api/albums")
     suspend fun getAlbums(
         @Header("x-api-key") apiKey: String,
+        @Query("shared") shared: Boolean? = null,
     ): Response<List<Album>>
 
     @GET("/api/albums/{id}")
