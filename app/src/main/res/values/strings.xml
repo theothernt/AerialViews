@@ -649,8 +649,8 @@
 
   <string name="enable_playback_logging_title">Enable playback logging</string>
   <string name="enable_playback_logging_summary">Show extra playback information in the logs. Useful for troubleshooting.</string>
-  <string name="show_media_error_toasts_title">Show media error toasts</string>
-  <string name="show_media_error_toasts_summary">Display toast messages when media playback errors occur</string>
+  <string name="show_media_error_toasts_title">Show playback error notifications</string>
+  <string name="show_media_error_toasts_summary">Display notifications when media playback errors occur</string>
 
   <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
