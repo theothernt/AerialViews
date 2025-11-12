@@ -92,7 +92,7 @@ Navigate to the Settings menu on your device, then to the About screen. Dependin
 
 Scroll down to __Build__ and select __Build__ several times until you get the message "You are now a developer!"
 
-Return to __Settings__ and look for the newly enabled __Developer options__ page.
+Return to __Settings__ or __Settings > System__ and look for the newly enabled __Developer options__ page.
 
 On the __Developer options__ page, look for the __USB debugging__ option and enable it.
 
