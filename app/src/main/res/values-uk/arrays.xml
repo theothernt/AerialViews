@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Природа</item>
+    <item>Пляж</item>
+    <item>Місто</item>
+    <item>Море</item>
+    <item>Космос</item>
+    <item>Візерунки</item>
+    <item>Полум’я</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>Чорний</item>
     <item>Білий</item>
@@ -25,6 +34,16 @@
     <item>Системний</item>
     <item>12-годинний</item>
     <item>24-годинний</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>Природа</item>
+    <item>Водоспад</item>
+    <item>Пляж</item>
+    <item>Море</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>День</item>
+    <item>Захід сонця</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>Компактний</item>
@@ -166,6 +185,12 @@
     <item>Лише відео</item>
     <item>Лише фотографії</item>
   </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>Відео Apple</item>
+    <item>Відео Amazon</item>
+    <item>Відео від Jetson Creative</item>
+    <item>Відео Робіна Фуркада</item>
+  </string-array>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
     <item>20 сек</item>
@@ -173,6 +198,21 @@
     <item>1 хвилина</item>
     <item>2 хв</item>
     <item>5 хвилин</item>
+  </string-array>
+  <string-array name="sleep_timer_entries">
+    <item>Вимкнено (за замовчуванням)</item>
+    <item>5 хвилин</item>
+    <item>10 хвилин</item>
+    <item>15 хвилин</item>
+    <item>20 хвилин</item>
+    <item>25 хвилин</item>
+    <item>30 хвилин</item>
+    <item>35 хвилин</item>
+    <item>40 хвилин</item>
+    <item>45 хвилин</item>
+    <item>50 хвилин</item>
+    <item>55 хвилин</item>
+    <item>60 хвилин</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>
@@ -203,14 +243,10 @@
     <item>C° / Цельсія</item>
     <item>F° / Фаренгейта</item>
   </string-array>
-  <string-array name="text_font_entries">
-    <item>Open Sans*</item>
-    <item>Roboto</item>
-  </string-array>
   <string-array name="text_weight_entries">
     <item>100/Тонка</item>
     <item>200/Надсвітла</item>
-    <item>300/Світла*</item>
+    <item>300/Світла (за замовчуванням)</item>
     <item>400/Нормальна</item>
     <item>500/Середня</item>
     <item>600/Напівжирна</item>
@@ -221,6 +257,20 @@
   <string-array name="video_scale_entries">
     <item>Заповнення з кадруванням (за замовчуванням)</item>
     <item>Заповнення без кадрування</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>Природа</item>
+    <item>Сільська місцевість</item>
+    <item>Пляж</item>
+    <item>Місто</item>
+    <item>Море</item>
+    <item>Космос</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>День</item>
+    <item>Ніч</item>
+    <item>Захід сонця</item>
+    <item>Схід сонця</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Порожній</item>

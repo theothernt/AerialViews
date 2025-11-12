@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Natura</item>
+    <item>Spiaggia</item>
+    <item>Città</item>
+    <item>Mare</item>
+    <item>Spazio</item>
+    <item>Modelli</item>
+    <item>Fuoco</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>Nero</item>
     <item>Bianco</item>
@@ -25,6 +34,16 @@
     <item>Predefinito</item>
     <item>12-Ore</item>
     <item>24-Ore</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>Natura</item>
+    <item>Cascata</item>
+    <item>Spiaggia</item>
+    <item>Mare</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>Giorno</item>
+    <item>Tramonto</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>Compato</item>
@@ -166,6 +185,12 @@
     <item>Solo video</item>
     <item>Solo immagini</item>
   </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>Video Apple</item>
+    <item>Video di Amazon</item>
+    <item>Video creativi Jetson</item>
+    <item>Video di Robin Fourcade</item>
+  </string-array>
   <string-array name="seek_interval_entries">
     <item>10 secondi</item>
     <item>20 secondi</item>
@@ -173,6 +198,21 @@
     <item>1 minuto</item>
     <item>2 minuti</item>
     <item>5 minuti</item>
+  </string-array>
+  <string-array name="sleep_timer_entries">
+    <item>Disabilitato*</item>
+    <item>5 minuti</item>
+    <item>10 minuti</item>
+    <item>15 minuti</item>
+    <item>20 minuti</item>
+    <item>25 minuti</item>
+    <item>30 minuti</item>
+    <item>35 minuti</item>
+    <item>40 minuti</item>
+    <item>45 minuti</item>
+    <item>50 minuti</item>
+    <item>5 minuti</item>
+    <item>60 minuti</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 secondi</item>
@@ -203,10 +243,6 @@
     <item>C° / Celsius</item>
     <item>F° / Fahrenheit</item>
   </string-array>
-  <string-array name="text_font_entries">
-    <item>Open Sans*</item>
-    <item>Roboto</item>
-  </string-array>
   <string-array name="text_weight_entries">
     <item>100/Thin</item>
     <item>200/Extra Light</item>
@@ -221,6 +257,20 @@
   <string-array name="video_scale_entries">
     <item>Riempimento con ritaglio (predefinito)</item>
     <item>Scala senza coltura</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>Natura</item>
+    <item>Campagna</item>
+    <item>Spiaggia</item>
+    <item>Città</item>
+    <item>Mare</item>
+    <item>Spazio cosmico</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>Alba</item>
+    <item>Giorno</item>
+    <item>Tramonto</item>
+    <item>Alba</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Vuoto</item>

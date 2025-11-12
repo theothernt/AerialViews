@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Природа</item>
+    <item>Пляж</item>
+    <item>Город</item>
+    <item>Море</item>
+    <item>Космос</item>
+    <item>Узоры</item>
+    <item>Огонь</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>Черный</item>
     <item>Белый</item>
@@ -25,6 +34,16 @@
     <item>Системный</item>
     <item>12-часовой</item>
     <item>24-часовой</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>Природа</item>
+    <item>Водопад</item>
+    <item>Пляж</item>
+    <item>Море</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>День</item>
+    <item>Закат</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>Компактный</item>
@@ -166,6 +185,12 @@
     <item>Только видео</item>
     <item>Только фотографии</item>
   </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>Видео Apple</item>
+    <item>Видео Amazon</item>
+    <item>Видео от Jetson Creative</item>
+    <item>Видео Робина Фуркада</item>
+  </string-array>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
     <item>20 сек</item>
@@ -173,6 +198,21 @@
     <item>1 минута</item>
     <item>2 мин</item>
     <item>5 минут</item>
+  </string-array>
+  <string-array name="sleep_timer_entries">
+    <item>Выключено (по умолчанию)</item>
+    <item>5 минут</item>
+    <item>10 минут</item>
+    <item>15 минут</item>
+    <item>20 минут</item>
+    <item>25 минут</item>
+    <item>30 минут</item>
+    <item>35 минут</item>
+    <item>40 минут</item>
+    <item>45 минут</item>
+    <item>50 минут</item>
+    <item>55 минут</item>
+    <item>60 минут</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>
@@ -203,14 +243,10 @@
     <item>C° / Цельсия</item>
     <item>F° / Фаренгейта</item>
   </string-array>
-  <string-array name="text_font_entries">
-    <item>Open Sans*</item>
-    <item>Roboto</item>
-  </string-array>
   <string-array name="text_weight_entries">
     <item>100/Тонкий</item>
     <item>200/Сверхсветлый</item>
-    <item>300/Светлый*</item>
+    <item>300/Светлый (по умолчанию)</item>
     <item>400/Нормальный</item>
     <item>500/Среднее</item>
     <item>600/Полужирный</item>
@@ -221,6 +257,20 @@
   <string-array name="video_scale_entries">
     <item>Заполнение с кадрированием (по умолчанию)</item>
     <item>Заполнение без кадрирования</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>Природа</item>
+    <item>Сельская местность</item>
+    <item>Пляж</item>
+    <item>Город</item>
+    <item>Море</item>
+    <item>Космос</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>День</item>
+    <item>Ночь</item>
+    <item>Закат</item>
+    <item>Восход солнца</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Пустой</item>

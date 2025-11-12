@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>Nature</item>
+    <item>Plage</item>
+    <item>Ville</item>
+    <item>Mer</item>
+    <item>Espace</item>
+    <item>Motifs</item>
+    <item>Feu</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>Noir</item>
     <item>Blanc</item>
@@ -25,6 +34,16 @@
     <item>Défaut du système</item>
     <item>12 heures</item>
     <item>24 heures sur 24</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>Nature</item>
+    <item>Cascade</item>
+    <item>Plage</item>
+    <item>Mer</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>Jour</item>
+    <item>Coucher de soleil</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>Compact</item>
@@ -166,6 +185,12 @@
     <item>Vidéos uniquement</item>
     <item>Photos seulement</item>
   </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>Vidéos Apple</item>
+    <item>Vidéos Amazon</item>
+    <item>Vidéos créatives Jetson</item>
+    <item>Vidéos de Robin Fourcade</item>
+  </string-array>
   <string-array name="seek_interval_entries">
     <item>10 secondes</item>
     <item>20 secondes</item>
@@ -173,6 +198,21 @@
     <item>1 minute</item>
     <item>2 minutes</item>
     <item>5 minutes</item>
+  </string-array>
+  <string-array name="sleep_timer_entries">
+    <item>Désactivé*</item>
+    <item>5 minutes</item>
+    <item>10 minutes</item>
+    <item>15 minutes</item>
+    <item>20 minutes</item>
+    <item>25 minutes</item>
+    <item>30 minutes</item>
+    <item>35 minutes</item>
+    <item>40 minutes</item>
+    <item>45 minutes</item>
+    <item>50 minutes</item>
+    <item>55 minutes</item>
+    <item>60 minutes</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 secondes</item>
@@ -203,10 +243,6 @@
     <item>C° / Celsius</item>
     <item>F° / Fahrenheit</item>
   </string-array>
-  <string-array name="text_font_entries">
-    <item>Open Sans*</item>
-    <item>Roboto</item>
-  </string-array>
   <string-array name="text_weight_entries">
     <item>100/Mince</item>
     <item>200/Extra Léger</item>
@@ -221,6 +257,20 @@
   <string-array name="video_scale_entries">
     <item>Remplir avec du rognage (par défaut)</item>
     <item>Échelle sans culture</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>Nature</item>
+    <item>Campagne</item>
+    <item>Plage</item>
+    <item>Ville</item>
+    <item>Mer</item>
+    <item>l\'espace extra-atmosphérique</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>Lever de soleil</item>
+    <item>Jour</item>
+    <item>Coucher de soleil</item>
+    <item>Lever de soleil</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Vide</item>

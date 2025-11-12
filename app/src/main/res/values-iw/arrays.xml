@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>טבע</item>
+    <item>חוף</item>
+    <item>עיר</item>
+    <item>ים</item>
+    <item>חלל</item>
+    <item>דפוסים</item>
+    <item>אש</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>שחור</item>
     <item>לבן</item>
@@ -25,6 +34,16 @@
     <item>ברירת מחדל מערכת</item>
     <item>12 שעות</item>
     <item>24 שעות</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>טבע</item>
+    <item>מפל</item>
+    <item>חוף</item>
+    <item>ים</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>יום</item>
+    <item>שקיעה</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>קומפקטי</item>
@@ -166,6 +185,12 @@
     <item>סרטונים בלבד</item>
     <item>תמונות בלבד</item>
   </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>סרטוני אפל</item>
+    <item>סרטוני אמזון</item>
+    <item>סרטוני ג׳טסון קריאטיב</item>
+    <item>סרטוני רובין פורקייד</item>
+  </string-array>
   <string-array name="seek_interval_entries">
     <item>10 שניות</item>
     <item>20 שניות</item>
@@ -173,6 +198,21 @@
     <item>דקה אחת</item>
     <item>2 דקות</item>
     <item>5 דקות</item>
+  </string-array>
+  <string-array name="sleep_timer_entries">
+    <item>מבוטל*</item>
+    <item>5 דקות</item>
+    <item>10 דקות</item>
+    <item>15 דקות</item>
+    <item>20 דקות</item>
+    <item>25 דקות</item>
+    <item>30 דקות</item>
+    <item>35 דקות</item>
+    <item>40 דקות</item>
+    <item>45 דקות</item>
+    <item>50 דקות</item>
+    <item>55 דקות</item>
+    <item>60 דקות</item>
   </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 שניות</item>
@@ -203,10 +243,6 @@
     <item>C° / צלזיוס</item>
     <item>F° / פרנהייט</item>
   </string-array>
-  <string-array name="text_font_entries">
-    <item>Open Sans*</item>
-    <item>Roboto</item>
-  </string-array>
   <string-array name="text_weight_entries">
     <item>100/דק</item>
     <item>200/קליל במיוחד</item>
@@ -221,6 +257,20 @@
   <string-array name="video_scale_entries">
     <item>מילוי עם חיתוך (ברירת מחדל)</item>
     <item>שינוי קנה מידה ללא חיתוך</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>טבע</item>
+    <item>אזור כפרי</item>
+    <item>חוף</item>
+    <item>עיר</item>
+    <item>ים</item>
+    <item>החלל החיצון</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>זריחה</item>
+    <item>יום</item>
+    <item>שקיעה</item>
+    <item>זריחה</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>ריק</item>

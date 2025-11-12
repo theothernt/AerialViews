@@ -1,65 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_entries">
+    <item>自然</item>
+    <item>海滩</item>
+    <item>城市</item>
+    <item>海洋</item>
+    <item>太空</item>
+    <item>图案</item>
+    <item>火焰</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>黑色</item>
     <item>白色</item>
   </string-array>
   <string-array name="button_action_entries">
-    <item>忽略行动</item>
-    <item>退出屏幕保护程序</item>
-    <item>跳转到下一个视频/照片</item>
-    <item>跳转到上一个视频/照片</item>
+    <item>忽略操作</item>
+    <item>跳至下一个视频/照片</item>
+    <item>跳至上一个视频/照片</item>
+    <item>跳至下一首歌曲</item>
+    <item>跳至上一首歌曲</item>
     <item>提高视频播放速度</item>
     <item>降低视频播放速度</item>
-    <item>显示叠加（如果隐藏）</item>
-    <item>黑屏、淡出媒体和叠加内容</item>
-    <item>在视频中向后查找</item>
-    <item>黑屏、淡出媒体和叠加内容</item>
-    <item>黑屏、淡出媒体和叠加内容</item>
-    <item>如果隐藏，则显示覆盖层</item>
-    <item>黑屏、淡出媒体和叠加内容</item>
-    <item>切换静音/静音音频</item>
-    <item>暂停/取消视频或照片定时器</item>
+    <item>快退</item>
+    <item>快进</item>
+    <item>退出屏保</item>
+    <item>退出到设置</item>
+    <item>显示隐藏的叠加内容</item>
+    <item>熄屏模式，淡出媒体和叠加内容</item>
+    <item>静音/取消静音</item>
+    <item>暂停/恢复媒体计时器</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>系统默认</item>
     <item>12 小时</item>
     <item>24 小时</item>
   </string-array>
+  <string-array name="comm2_videos_scene_type_entries">
+    <item>自然</item>
+    <item>瀑布</item>
+    <item>海滩</item>
+    <item>海洋</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_entries">
+    <item>日间</item>
+    <item>日落</item>
+  </string-array>
   <string-array name="date_format_entries">
-    <item>紧凑</item>
-    <item>全部</item>
-    <item>定制</item>
+    <item>简洁</item>
+    <item>完整</item>
+    <item>自定义</item>
   </string-array>
   <string-array name="description_filename_entries">
     <item>禁用</item>
     <item>使用格式化文件名</item>
-    <item>原始文件名</item>
     <item>文件夹和文件名</item>
+    <item>仅文件夹名称</item>
   </string-array>
   <string-array name="description_folder_level_entries">
-    <item>意大利/日落\' - 1 级</item>
-    <item>2025 / 意大利 / 日落\' - 2 层</item>
-    <item>风景 / 2025 / 意大利 / 日落\' - 3 级</item>
-    <item>照片 / 风景 / 2025 / 意大利 / 日落\' - 4 级</item>
-    <item>媒体 / 照片 / 风景 / 2025 / 意大利 / 日落\' - 5 级</item>
+    <item>\'Italy / Sunset\' - 1 层</item>
+    <item>\'2025 / Italy / Sunset\' - 2 层</item>
+    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 层</item>
+    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 层</item>
+    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 层</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>禁用</item>
     <item>使用格式化文件名，例如，\"switzerland-zürich_train_station.jpg \"变为 \"瑞士 - 苏黎世火车站\"。</item>
-    <item>按原样使用文件名，例如，\"Japan - Deep snow in Hokkaido.jpg \"变为 \"Japan - Deep snow in Hokkaido\"。</item>
-    <item>按原样使用文件夹和文件名，例如，\"Pictures/Italy/Dolomites.jpg \"变为 \"Italy/Dolomites\"。</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' 变为 \'Italy / Dolomites\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' 变为 \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>禁用</item>
     <item>简要说明</item>
-    <item>动态兴趣点</item>
+    <item>动态景点</item>
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>禁用</item>
     <item>使用格式化文件名，例如，\"japan-mount_fuji.mp4 \"变为 \"Japan - Mount Fuji</item>
-    <item>按原样使用文件名，例如，\"飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山\"。</item>
-    <item>按原样使用文件夹和文件名，例如，\"Videos/Grand Canyon/Sunet.mp4 \"变为 \"Grand Canyon / Sunet\"。</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' 变为 \'Grand Canyon / Sunset\'</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' 变为 \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>禁用</item>
@@ -96,19 +115,19 @@
     <item>随机播放长视频片段</item>
   </string-array>
   <string-array name="limit_Longer_videos_summaries">
-    <item>遵守限制 - 达到限制时跳至下一个视频</item>
-    <item>忽略限制 - 如果视频长度超过设定限制，则会一直播放到结束</item>
-    <item>随机片段 - 如果视频长度超过限制，将随机播放视频的一部分
-(例如，在 2 分钟的限制下，一段 6 分钟的视频可以有 3 个片段—其中一段将随机播放）</item>
+    <item>遵守限制 - 达到时长限制时跳至下一个视频</item>
+    <item>忽略限制 - 若视频时长超过限制，仍将完整播放至结束</item>
+    <item>随机片段 - 若视频时长超出限制，将播放该视频中的任意一个片段
+(例如，时长限制为 2 分钟时，一个 6 分钟的视频可拆分为 3 个片段，随机播放其中一段）</item>
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
     <item>Folder access (legacy)</item>
   </string-array>
   <string-array name="media_type_entries">
-    <item>Videos only</item>
-    <item>Images only</item>
-    <item>Videos &amp; Images</item>
+    <item>仅限视频</item>
+    <item>仅限照片</item>
+    <item>视频和照片</item>
   </string-array>
   <string-array name="nowplaying_format_entries">
     <item>禁用</item>
@@ -118,7 +137,7 @@
     <item>歌曲</item>
   </string-array>
   <string-array name="overlay_auto_hide_entries">
-    <item>从不隐藏（默认）</item>
+    <item>从不隐藏*</item>
     <item>始终隐藏</item>
     <item>2 秒钟</item>
     <item>4 秒钟</item>
@@ -128,17 +147,17 @@
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 秒钟</item>
-    <item>4 秒（默认值）</item>
+    <item>4 秒*</item>
     <item>6 秒钟</item>
     <item>8 秒钟</item>
     <item>10 秒</item>
   </string-array>
   <string-array name="photo_scale_entries">
-    <item>Fill (Default)</item>
-    <item>Center</item>
+    <item>缩放填充*</item>
+    <item>缩放适应</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
-    <item>无限制 (默认)</item>
+    <item>无限制*</item>
     <item>10 秒</item>
     <item>20 秒</item>
     <item>30 秒</item>
@@ -163,8 +182,14 @@
   </string-array>
   <string-array name="progress_bar_type_entries">
     <item>视频和照片</item>
-    <item>Videos only</item>
+    <item>仅限视频</item>
     <item>仅限照片</item>
+  </string-array>
+  <string-array name="projectivy_shared_providers_entries">
+    <item>Apple 视频</item>
+    <item>Amazon 视频</item>
+    <item>Jetson Creative 视频</item>
+    <item>Robin Fourcade 视频</item>
   </string-array>
   <string-array name="seek_interval_entries">
     <item>10 秒</item>
@@ -174,14 +199,29 @@
     <item>2 分钟</item>
     <item>5 分钟</item>
   </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 seconds</item>
-    <item>10 秒</item>
-    <item>30 seconds (Default)</item>
-    <item>1 分钟</item>
-    <item>3 分钟</item>
+  <string-array name="sleep_timer_entries">
+    <item>已禁用*</item>
     <item>5 分钟</item>
     <item>10 分钟</item>
+    <item>15 分钟</item>
+    <item>20 分钟</item>
+    <item>25 分钟</item>
+    <item>30 分钟</item>
+    <item>35 分钟</item>
+    <item>40 分钟</item>
+    <item>45 分钟</item>
+    <item>50 分钟</item>
+    <item>55 分钟</item>
+    <item>60 分钟</item>
+  </string-array>
+  <string-array name="slideshow_speed_entries">
+    <item>5 秒</item>
+    <item>10 秒</item>
+    <item>15 秒</item>
+    <item>20 秒</item>
+    <item>25 秒</item>
+    <item>30 秒*</item>
+    <item>1 分钟</item>
     <item>3 分钟</item>
     <item>5 分钟</item>
     <item>10 分钟</item>
@@ -196,21 +236,17 @@
     <item>日期</item>
     <item>信息 #1</item>
     <item>信息 #2</item>
-    <item>留言 #3</item>
-    <item>留言 #4</item>
+    <item>信息 #3</item>
+    <item>信息 #4</item>
   </string-array>
   <string-array name="temperature_units_entries">
     <item>C°/摄氏度</item>
-    <item>C°/华氏度</item>
-  </string-array>
-  <string-array name="text_font_entries">
-    <item>开放式三色字体*</item>
-    <item>Roboto</item>
+    <item>F°/华氏度</item>
   </string-array>
   <string-array name="text_weight_entries">
     <item>100/淡体</item>
     <item>200/特细</item>
-    <item>300/灯*</item>
+    <item>300/细体*</item>
     <item>400/标准</item>
     <item>500/适中</item>
     <item>600/次粗</item>
@@ -219,19 +255,33 @@
     <item>900/浓体</item>
   </string-array>
   <string-array name="video_scale_entries">
-    <item>用裁剪填充（默认）</item>
-    <item>无作物比例尺</item>
+    <item>缩放填充*</item>
+    <item>缩放适应</item>
+  </string-array>
+  <string-array name="video_scene_type_entries">
+    <item>自然</item>
+    <item>乡村</item>
+    <item>海滩</item>
+    <item>城市</item>
+    <item>海洋</item>
+    <item>外太空</item>
+  </string-array>
+  <string-array name="video_time_of_day_entries">
+    <item>日出</item>
+    <item>日间</item>
+    <item>日落</item>
+    <item>夜晚</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>留空</item>
     <item>城市</item>
     <item>温度</item>
     <item>图标</item>
-    <item>摘要</item>
+    <item>概要</item>
   </string-array>
   <string-array name="weather_type_entries">
     <item>留空</item>
-    <item>预测</item>
+    <item>天气预报</item>
     <item>风</item>
     <item>湿度</item>
     <item>日出</item>
