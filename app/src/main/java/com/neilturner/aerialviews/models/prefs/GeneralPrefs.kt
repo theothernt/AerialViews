@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
-import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType

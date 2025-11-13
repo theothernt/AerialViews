@@ -13,7 +13,6 @@ import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class ProjectivyAppleVideosFragment : MenuStateFragment() {
