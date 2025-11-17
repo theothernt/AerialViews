@@ -244,6 +244,29 @@ Version  35.0.0-11411520
 </details>
 
 <details>
+<summary>Extra steps for Chromecast with Google TV HD &amp; 4K</summary>
+
+Since the update to Android TV 14, the Chromecast with Google TV (CCwGTV) has a bug which affects ADB. Normally, ADB uses port 5555 but on the CCwGTV the port is randomised.
+
+This means the `adb connect <ip_address>` command will likely fail with a 'connection refused' message.
+
+As a work-around, we can use the wireless debugging connection...
+
+1. In `Settings > System > Developer options > Wireless debugging`, select Pair device with pairing code
+
+2. Run the command: `adb pair <ip_address>:<port>`
+
+3. The IP and port are displayed on the TV upon selecting Pair device with pairing code
+
+4. ADB then asks for the pairing code displayed on the screen.
+
+5. Once entered, you should see a message confirming that wireless debugging is connected.
+
+You should be connected to your CCwGTV device with ADB. Now you can run `adb shell` and the other commands in the instructions that follow.
+
+</details>
+
+<details>
 <summary>ADB command - set Aerial Views as the default screensaver</summary>
 &nbsp;
 
