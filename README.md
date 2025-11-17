@@ -264,6 +264,8 @@ As a work-around, we can use the wireless debugging connection...
 
 You should be connected to your CCwGTV device with ADB. Now you can run `adb shell` and the other commands in the instructions that follow.
 
+:information_source: *There are other ways to fix this issue, like using a feature in tvQuickActions Pro. [See TDUK's video for more details.](https://www.youtube.com/watch?v=WVRBXktSw0c)*
+
 </details>
 
 <details>
