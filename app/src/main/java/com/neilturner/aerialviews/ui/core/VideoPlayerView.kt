@@ -168,9 +168,16 @@ class VideoPlayerView
         @OptIn(UnstableApi::class)
         override fun onPlaybackStateChanged(playbackState: Int) {
             when (playbackState) {
-                Player.STATE_IDLE -> Timber.i("Idle...")
-                Player.STATE_ENDED -> Timber.i("Playback ended...")
+                Player.STATE_IDLE -> {
+                    Timber.i("Idle...")
+                }
+
+                Player.STATE_ENDED -> {
+                    Timber.i("Playback ended...")
+                }
+
                 Player.STATE_READY -> {}
+
                 Player.STATE_BUFFERING -> {
                     Timber.i("Buffering...")
                     if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
@@ -224,9 +231,18 @@ class VideoPlayerView
             reason: Int,
         ) {
             when (reason) {
-                Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED -> Timber.i("Reason: Playlist changed")
-                Player.MEDIA_ITEM_TRANSITION_REASON_SEEK -> Timber.i("Reason: Seek to new media item")
-                Player.MEDIA_ITEM_TRANSITION_REASON_AUTO -> Timber.i("Reason: Auto transition")
+                Player.MEDIA_ITEM_TRANSITION_REASON_PLAYLIST_CHANGED -> {
+                    Timber.i("Reason: Playlist changed")
+                }
+
+                Player.MEDIA_ITEM_TRANSITION_REASON_SEEK -> {
+                    Timber.i("Reason: Seek to new media item")
+                }
+
+                Player.MEDIA_ITEM_TRANSITION_REASON_AUTO -> {
+                    Timber.i("Reason: Auto transition")
+                }
+
                 Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
                     state.loopCount++
                     Timber.i("Reason: Looping video, count: ${state.loopCount}")

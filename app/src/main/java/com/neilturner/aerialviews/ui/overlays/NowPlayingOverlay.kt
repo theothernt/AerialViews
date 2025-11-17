@@ -146,21 +146,33 @@ class NowPlayingOverlay : AppCompatTextView {
         val processedSong = if (prefs.nowPlayingShortenTrackName) TrackNameShortener.shortenTrackName(song) else song
 
         return when (format) {
-            NowPlayingFormat.SONG_ARTIST ->
+            NowPlayingFormat.SONG_ARTIST -> {
                 if (processedSong.isNotBlank() && artist.isNotBlank()) {
                     "$processedSong · $artist"
                 } else {
                     processedSong.takeIf { it.isNotBlank() } ?: artist
                 }
-            NowPlayingFormat.ARTIST_SONG ->
+            }
+
+            NowPlayingFormat.ARTIST_SONG -> {
                 if (artist.isNotBlank() && processedSong.isNotBlank()) {
                     "$artist · $processedSong"
                 } else {
                     artist.takeIf { it.isNotBlank() } ?: processedSong
                 }
-            NowPlayingFormat.ARTIST -> artist
-            NowPlayingFormat.SONG -> processedSong
-            else -> ""
+            }
+
+            NowPlayingFormat.ARTIST -> {
+                artist
+            }
+
+            NowPlayingFormat.SONG -> {
+                processedSong
+            }
+
+            else -> {
+                ""
+            }
         }
     }
 }

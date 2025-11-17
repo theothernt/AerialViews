@@ -132,7 +132,9 @@ object InputHelper {
             KeyEvent.KEYCODE_DPAD_UP_LEFT,
             KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
             KeyEvent.KEYCODE_DPAD_UP_RIGHT,
-            -> return true
+            -> {
+                return true
+            }
 
             // Media keys
             KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
@@ -205,7 +207,9 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> return false
+            else -> {
+                return false
+            }
         }
 
         if (action == null) {

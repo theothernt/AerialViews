@@ -161,6 +161,7 @@ class ImmichVideosFragment :
                 includeLimitPreference.isVisible = false
                 includeRecentPreference.isVisible = false
             }
+
             ImmichAuthType.API_KEY -> {
                 pathnamePreference.isVisible = false
                 passwordPreference.isVisible = false

@@ -70,10 +70,17 @@ object WeatherLanguage {
         // Check for special cases with country-specific variants
         when {
             langCode == "zh" && countryCode == "cn" -> return "zh_cn"
+
             langCode == "zh" && countryCode == "tw" -> return "zh_tw"
+
             langCode == "pt" && countryCode == "br" -> return "pt_br"
-            langCode == "iw" -> return "he" // Use he instead of iw
-            langCode == "es" -> return "es" // Use es instead of sp
+
+            langCode == "iw" -> return "he"
+
+            // Use he instead of iw
+            langCode == "es" -> return "es"
+
+            // Use es instead of sp
             langCode == "uk" -> return "uk" // Use uk instead of ua
         }
 

@@ -8,4 +8,3 @@ interface ProviderPreferences {
     val scene: Set<String>
     val timeOfDay: Set<String>
 }
-

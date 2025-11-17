@@ -133,75 +133,97 @@ class OverlayHelper(
 
     private fun getOverlay(overlay: OverlayType): View? {
         return when (overlay) {
-            OverlayType.CLOCK ->
+            OverlayType.CLOCK -> {
                 ClockOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.clockWeight)
                 }
-            OverlayType.LOCATION ->
+            }
+
+            OverlayType.LOCATION -> {
                 LocationOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.descriptionWeight)
                 }
-            OverlayType.WEATHER1 ->
+            }
+
+            OverlayType.WEATHER1 -> {
                 WeatherOverlay(context).apply {
                     type = overlay
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)
                     layout(prefs.weatherForecast)
                 }
-//            OverlayType.WEATHER2 ->
+            }
+
+            //            OverlayType.WEATHER2 ->
 //                WeatherOverlay(context).apply {
 //                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
 //                    // layout(prefs.weatherLine2)
 //                    layout("SUMMARY")
 //                }
-            OverlayType.MUSIC1 ->
+            OverlayType.MUSIC1 -> {
                 NowPlayingOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize1.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight1)
                     type = overlay
                 }
-            OverlayType.MUSIC2 ->
+            }
+
+            OverlayType.MUSIC2 -> {
                 NowPlayingOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.nowPlayingSize2.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.nowPlayingWeight2)
                     type = overlay
                 }
-            OverlayType.DATE ->
+            }
+
+            OverlayType.DATE -> {
                 DateOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.dateSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.dateWeight)
                 }
-            OverlayType.MESSAGE1 ->
+            }
+
+            OverlayType.MESSAGE1 -> {
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine1)
                 }
-            OverlayType.MESSAGE2 ->
+            }
+
+            OverlayType.MESSAGE2 -> {
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine2)
                 }
-            OverlayType.MESSAGE3 ->
+            }
+
+            OverlayType.MESSAGE3 -> {
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine3)
                 }
-            OverlayType.MESSAGE4 ->
+            }
+
+            OverlayType.MESSAGE4 -> {
                 MessageOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.messageSize.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine4)
                 }
-            else -> return null
+            }
+
+            else -> {
+                return null
+            }
         }
     }
 }

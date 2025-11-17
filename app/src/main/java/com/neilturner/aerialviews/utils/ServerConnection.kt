@@ -56,9 +56,10 @@ class SslHelper {
     fun createOkHttpClient(config: ServerConfig): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
-        val logging = HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
-        }
+        val logging =
+            HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 
         builder.addInterceptor(logging)
 

@@ -10,7 +10,6 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 class ProjectivyFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,

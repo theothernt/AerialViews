@@ -70,15 +70,19 @@ object WeatherIcons {
                         in 500..501 -> { // Light
                             if (isNight) R.drawable.weather_rain_light else R.drawable.weather_rain_light
                         }
+
                         in 502..504 -> { // Heavy rain
                             if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
+
                         511 -> { // Freezing rain
                             if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
+
                         521 -> { // Shower rain
                             if (isNight) R.drawable.weather_rain_light else R.drawable.weather_rain_light
                         }
+
                         else -> { // Shower heavy, etc
                             if (isNight) R.drawable.weather_rain_heavy else R.drawable.weather_rain_heavy
                         }
@@ -123,9 +127,11 @@ object WeatherIcons {
                         801 -> { // Few clouds
                             if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }
+
                         802 -> { // Scattered clouds
                             if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }
+
                         else -> { // Broken or overcast clouds
                             if (isNight) R.drawable.weather_cloudy_light else R.drawable.weather_cloudy_light
                         }

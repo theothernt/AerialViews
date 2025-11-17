@@ -114,10 +114,12 @@ class LocalVideosFragment :
                 mediaStoreOptions?.isEnabled = true
                 legacyOptions?.isEnabled = false
             }
+
             SearchType.FOLDER_ACCESS -> {
                 mediaStoreOptions?.isEnabled = false
                 legacyOptions?.isEnabled = true
             }
+
             else -> {
                 mediaStoreOptions?.isEnabled = false
                 legacyOptions?.isEnabled = false

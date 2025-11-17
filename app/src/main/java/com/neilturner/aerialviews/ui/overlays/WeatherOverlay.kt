@@ -126,10 +126,22 @@ class WeatherOverlay
                 try {
                     val forecastType = ForecastType.valueOf(trimmedItem)
                     when (forecastType) {
-                        ForecastType.CITY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.city)
-                        ForecastType.TEMPERATURE -> overlayItems = overlayItems + OverlayItem.TextItem(weather.temperature)
-                        ForecastType.ICON -> overlayItems = overlayItems + OverlayItem.ImageItem(weather.icon)
-                        ForecastType.SUMMARY -> overlayItems = overlayItems + OverlayItem.TextItem(weather.summary)
+                        ForecastType.CITY -> {
+                            overlayItems = overlayItems + OverlayItem.TextItem(weather.city)
+                        }
+
+                        ForecastType.TEMPERATURE -> {
+                            overlayItems = overlayItems + OverlayItem.TextItem(weather.temperature)
+                        }
+
+                        ForecastType.ICON -> {
+                            overlayItems = overlayItems + OverlayItem.ImageItem(weather.icon)
+                        }
+
+                        ForecastType.SUMMARY -> {
+                            overlayItems = overlayItems + OverlayItem.TextItem(weather.summary)
+                        }
+
                         ForecastType.EMPTY -> { /* Do nothing */ }
                     }
                 } catch (e: IllegalArgumentException) {

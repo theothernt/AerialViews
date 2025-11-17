@@ -21,9 +21,7 @@ import tv.projectivy.plugin.wallpaperprovider.api.WallpaperDisplayMode
 import tv.projectivy.plugin.wallpaperprovider.api.WallpaperType
 
 class WallpaperProviderService : Service() {
-    override fun onBind(intent: Intent): IBinder {
-        return binder
-    }
+    override fun onBind(intent: Intent): IBinder = binder
 
     private val binder =
         object : IWallpaperProviderService.Stub() {
@@ -63,7 +61,10 @@ class WallpaperProviderService : Service() {
                             )
                         }
                     }
-                    else -> emptyList() // Returning an empty list won't change the currently displayed wallpaper
+
+                    else -> {
+                        emptyList()
+                    } // Returning an empty list won't change the currently displayed wallpaper
                 }
 
             override fun getPreferences(): String? = null
@@ -72,12 +73,11 @@ class WallpaperProviderService : Service() {
             }
         }
 
-    private fun getEnabledProviders(): List<MediaProvider> {
-        return mutableListOf<MediaProvider>().apply {
+    private fun getEnabledProviders(): List<MediaProvider> =
+        mutableListOf<MediaProvider>().apply {
             add(AppleMediaProvider(applicationContext, ProjectivyApplePrefs))
             add(Comm1MediaProvider(applicationContext, ProjectivyComm1Prefs))
             add(Comm2MediaProvider(applicationContext, ProjectivyComm2Prefs))
             add(AmazonMediaProvider(applicationContext, ProjectivyAmazonPrefs))
         }
-    }
 }

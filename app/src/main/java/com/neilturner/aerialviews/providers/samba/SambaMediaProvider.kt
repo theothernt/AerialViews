@@ -89,7 +89,7 @@ class SambaMediaProvider(
 
         // Create samba URL, add to media list, adding media type
         val sortedFiles = sambaMedia.first.sortedByDescending { it.second }
-        
+
         sortedFiles.forEach { fileInfo ->
             val filename = fileInfo.first
             var usernamePassword = ""
