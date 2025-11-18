@@ -42,7 +42,7 @@
     <item>海洋</item>
   </string-array>
   <string-array name="comm2_videos_time_of_day_entries">
-    <item>日间</item>
+    <item>白天</item>
     <item>日落</item>
   </string-array>
   <string-array name="date_format_entries">
@@ -83,7 +83,7 @@
   <string-array name="description_video_manifest_entries">
     <item>禁用</item>
     <item>简短描述或地点</item>
-    <item>动态兴趣点，有多种语言版本，随着视频播放而变化</item>
+    <item>支持多种语言，播放时自动切换</item>
   </string-array>
   <string-array name="duration_entries">
     <item>禁用</item>
@@ -268,7 +268,7 @@
   </string-array>
   <string-array name="video_time_of_day_entries">
     <item>日出</item>
-    <item>日间</item>
+    <item>白天</item>
     <item>日落</item>
     <item>夜晚</item>
   </string-array>
