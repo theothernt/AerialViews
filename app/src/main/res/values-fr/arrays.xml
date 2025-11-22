@@ -225,6 +225,9 @@
     <item>3 minutes</item>
     <item>5 minutes</item>
     <item>10 minutes</item>
+    <item>20 minutes</item>
+    <item>30 minutes</item>
+    <item>1 heure</item>
   </string-array>
   <string-array name="slot_entries">
     <item>Vide</item>
