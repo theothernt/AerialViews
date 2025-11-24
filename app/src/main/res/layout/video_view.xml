@@ -10,7 +10,7 @@
         android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:controller_layout_id="@null"
+        app:controller_layout_id="@layout/empty_control_view"
         app:use_controller="false" />
 
 </FrameLayout>
