@@ -218,13 +218,16 @@
     <item>5 secondi</item>
     <item>10 secondi</item>
     <item>30 secondi (Predefinito)</item>
-    <item>1 minut0</item>
+    <item>1 minuto</item>
     <item>3 minuti</item>
     <item>5 minuti</item>
     <item>10 minuti</item>
     <item>3 minuti</item>
     <item>5 minuti</item>
     <item>10 minuti</item>
+    <item>20 minuti</item>
+    <item>30 minuti</item>
+    <item>1 ora</item>
   </string-array>
   <string-array name="slot_entries">
     <item>Vuoto</item>
