@@ -68,7 +68,7 @@ class SambaMediaProvider(
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
         } catch (ex: Exception) {
-            Timber.Forest.e(ex)
+            Timber.e(ex)
             return Pair(media, "Failed to parse share name")
         }
 
@@ -83,7 +83,7 @@ class SambaMediaProvider(
                     path,
                 )
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
@@ -117,7 +117,7 @@ class SambaMediaProvider(
             media.add(item)
         }
 
-        Timber.Forest.i("Videos found: ${media.size}")
+        Timber.i("Videos found: ${media.size}")
         return Pair(media, sambaMedia.second)
     }
 
@@ -140,7 +140,7 @@ class SambaMediaProvider(
             try {
                 config = SambaHelper.buildSmbConfig()
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(selected, "Failed to create SMB config")
             }
 
@@ -150,7 +150,7 @@ class SambaMediaProvider(
             try {
                 connection = smbClient.connect(hostName)
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(selected, "Failed to connect, hostname error")
             }
 
@@ -160,7 +160,7 @@ class SambaMediaProvider(
                 val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
                 session = connection.authenticate(authContext)
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Authentication failed. Please check the username and password, or server settings if using anonymous login",
@@ -171,7 +171,7 @@ class SambaMediaProvider(
             try {
                 share = session?.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",

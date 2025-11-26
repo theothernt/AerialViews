@@ -55,7 +55,7 @@ object NetworkHelpers {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val response = chain.proceed(chain.request())
                 val isFromCache = response.cacheResponse != null
-                Timber.Forest.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
+                Timber.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
                 return response
             }
         }
@@ -71,7 +71,7 @@ object NetworkHelpers {
         Interceptor { chain ->
             var request = chain.request()
             if (!isNetworkAvailable(context)) {
-                Timber.Forest.i("Using offline cache...")
+                Timber.i("Using offline cache...")
                 val maxStale = offlineCacheTimeout
                 request =
                     request

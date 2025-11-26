@@ -357,8 +357,8 @@ class CustomFeedProvider(
                 val customVideos = apiService.getVideos(url)
 
                 customVideos.assets?.forEach { asset ->
-                    val timeOfDay = TimeOfDay.Companion.fromString(asset.timeOfDay)
-                    val scene = SceneType.Companion.fromString(asset.scene)
+                    val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
+                    val scene = SceneType.fromString(asset.scene)
 
                     val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
                     val sceneMatches = prefs.scene.contains(scene.toString())

@@ -69,6 +69,6 @@ class InputStreamFetcher(
             data: InputStream,
             options: Options,
             imageLoader: ImageLoader,
-        ): Fetcher? = InputStreamFetcher(data, options)
+        ): Fetcher = InputStreamFetcher(data, options)
     }
 }
