@@ -33,10 +33,11 @@ class OverlayHelper(
 
     fun getOverlaysToFade(): List<View> {
         val result = mutableListOf<View>()
-        if (prefs.fadeBottomLeftCorner) result.addAll(getBottomLeftOverlays())
-        if (prefs.fadeBottomRightCorner) result.addAll(getBottomRightOverlays())
-        if (prefs.fadeTopLeftCorner) result.addAll(getTopLeftOverlays())
-        if (prefs.fadeTopRightCorner) result.addAll(getTopRightOverlays())
+        val fadeCornersSelection = prefs.fadeCornersSelection
+        if (fadeCornersSelection.contains("BOTTOM_LEFT")) result.addAll(getBottomLeftOverlays())
+        if (fadeCornersSelection.contains("BOTTOM_RIGHT")) result.addAll(getBottomRightOverlays())
+        if (fadeCornersSelection.contains("TOP_LEFT")) result.addAll(getTopLeftOverlays())
+        if (fadeCornersSelection.contains("TOP_RIGHT")) result.addAll(getTopRightOverlays())
         return result
     }
 

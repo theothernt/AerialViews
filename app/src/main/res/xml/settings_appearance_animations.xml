@@ -19,25 +19,13 @@
                     app:title="@string/appearance_reveal_for_title"
                     app:useSimpleSummaryProvider="true" />
 
-                <SwitchPreference
-                    app:defaultValue="true"
-                    app:key="fade_top_left_corner"
-                    app:title="@string/appearance_fade_top_left_title" />
-
-                <SwitchPreference
-                    app:defaultValue="true"
-                    app:key="fade_top_right_corner"
-                    app:title="@string/appearance_fade_top_right_title" />
-
-                <SwitchPreference
-                    app:defaultValue="true"
-                    app:key="fade_bottom_left_corner"
-                    app:title="@string/appearance_fade_bottom_left_title" />
-
-                <SwitchPreference
-                    app:defaultValue="true"
-                    app:key="fade_bottom_right_corner"
-                    app:title="@string/appearance_fade_bottom_right_title" />
+                <MultiSelectListPreference
+                    app:defaultValue="@array/fade_corners_default"
+                    app:entries="@array/fade_corners_entries"
+                    app:entryValues="@array/fade_corners_values"
+                    app:key="fade_corners_selection"
+                    app:title="@string/appearance_fade_corners_title"
+                    app:dialogTitle="@string/appearance_fade_corners_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_overlay_animations">

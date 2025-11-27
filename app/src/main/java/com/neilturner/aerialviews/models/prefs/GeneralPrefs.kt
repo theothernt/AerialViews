@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.models.prefs
 
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
@@ -126,11 +127,10 @@ object GeneralPrefs : KotprefModel() {
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
-    // Per-corner fade settings
-    var fadeTopLeftCorner by booleanPref(true, "fade_top_left_corner")
-    var fadeTopRightCorner by booleanPref(true, "fade_top_right_corner")
-    var fadeBottomLeftCorner by booleanPref(true, "fade_bottom_left_corner")
-    var fadeBottomRightCorner by booleanPref(true, "fade_bottom_right_corner")
+    // Per-corner fade settings (which corners should fade when auto-hide is enabled)
+    val fadeCornersSelection by stringSetPref("fade_corners_selection") {
+        context.resources.getStringArray(R.array.fade_corners_default).toSet()
+    }
 
     // Background Colour
     var backgroundLoading by stringPref("BLACK", "background_colour_loading")
