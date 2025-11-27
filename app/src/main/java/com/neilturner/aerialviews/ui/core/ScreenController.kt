@@ -329,19 +329,21 @@ class ScreenController(
 
         // Reset any overlay animations
         if (autoHideOverlayDelay >= 0) {
-            overlayView.animate()?.cancel()
-            overlayView.clearAnimation()
+            overlayHelper.getOverlaysToFade().forEach { view ->
+                view.animate()?.cancel()
+                view.clearAnimation()
+            }
         }
 
         // Hide overlays immediately
         if (autoHideOverlayDelay.toInt() == 0) {
-            overlayView.alpha = 0f
+            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
             canShowOverlays = true
         }
 
         // Hide overlays after a delay
         if (autoHideOverlayDelay > 0) {
-            overlayView.alpha = 1f
+            overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
             hideOverlays(overlayDelay)
         }
 
@@ -408,14 +410,25 @@ class ScreenController(
     }
 
     private fun hideOverlays(delay: Long = 0L) {
-        overlayView
-            .animate()
-            .alpha(0f)
-            .setStartDelay(delay)
-            .setDuration(overlayFadeOut)
-            .withEndAction {
-                canShowOverlays = true
-            }.start()
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+
+        if (overlaysToFade.isEmpty()) {
+            canShowOverlays = true
+            return
+        }
+
+        overlaysToFade.forEachIndexed { index, view ->
+            val animator = view.animate()
+                .alpha(0f)
+                .setStartDelay(delay)
+                .setDuration(overlayFadeOut)
+
+            // Only set the end action on the last overlay
+            if (index == overlaysToFade.lastIndex) {
+                animator.withEndAction { canShowOverlays = true }
+            }
+            animator.start()
+        }
     }
 
     fun showOverlays() {
@@ -430,16 +443,25 @@ class ScreenController(
 
         // Are overlays already visible
         if (!canShowOverlays) return
+
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+
+        if (overlaysToFade.isEmpty()) return
+
         canShowOverlays = false
 
-        overlayView
-            .animate()
-            .alpha(1f)
-            .setStartDelay(0)
-            .setDuration(overlayFadeIn)
-            .withEndAction {
-                hideOverlays(overlayRevealTimeout * 1000)
-            }.start()
+        overlaysToFade.forEachIndexed { index, view ->
+            val animator = view.animate()
+                .alpha(1f)
+                .setStartDelay(0)
+                .setDuration(overlayFadeIn)
+
+            // Only set the end action on the last overlay
+            if (index == overlaysToFade.lastIndex) {
+                animator.withEndAction { hideOverlays(overlayRevealTimeout * 1000) }
+            }
+            animator.start()
+        }
     }
 
     fun stop() {

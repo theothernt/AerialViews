@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
+import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
@@ -25,14 +26,28 @@ class AppearanceAnimationsFragment : MenuStateFragment() {
         val editPref = findPreference<ListPreference>("overlay_auto_hide")
         editPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
-                toggleRevealTimeout(newValue as String)
+                toggleOverlaySettings(newValue as String)
                 true
             }
-        toggleRevealTimeout(editPref?.value as String)
+        toggleOverlaySettings(editPref?.value as String)
     }
 
-    private fun toggleRevealTimeout(value: String) {
+    private fun toggleOverlaySettings(value: String) {
+        val isAutoHideEnabled = value != "-1"
+
+        // Enable/disable reveal timeout
         val revealTimeoutPref = findPreference<ListPreference>("overlay_reveal_timeout")
-        revealTimeoutPref?.isEnabled = value != "-1"
+        revealTimeoutPref?.isEnabled = isAutoHideEnabled
+
+        // Enable/disable per-corner fade settings
+        val fadeTopLeft = findPreference<SwitchPreference>("fade_top_left_corner")
+        val fadeTopRight = findPreference<SwitchPreference>("fade_top_right_corner")
+        val fadeBottomLeft = findPreference<SwitchPreference>("fade_bottom_left_corner")
+        val fadeBottomRight = findPreference<SwitchPreference>("fade_bottom_right_corner")
+
+        fadeTopLeft?.isEnabled = isAutoHideEnabled
+        fadeTopRight?.isEnabled = isAutoHideEnabled
+        fadeBottomLeft?.isEnabled = isAutoHideEnabled
+        fadeBottomRight?.isEnabled = isAutoHideEnabled
     }
 }

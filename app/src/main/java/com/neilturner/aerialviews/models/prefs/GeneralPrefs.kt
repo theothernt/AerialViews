@@ -126,6 +126,12 @@ object GeneralPrefs : KotprefModel() {
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
+    // Per-corner fade settings
+    var fadeTopLeftCorner by booleanPref(true, "fade_top_left_corner")
+    var fadeTopRightCorner by booleanPref(true, "fade_top_right_corner")
+    var fadeBottomLeftCorner by booleanPref(true, "fade_bottom_left_corner")
+    var fadeBottomRightCorner by booleanPref(true, "fade_bottom_right_corner")
+
     // Background Colour
     var backgroundLoading by stringPref("BLACK", "background_colour_loading")
     var backgroundVideos by stringPref("BLACK", "background_colour_videos")
