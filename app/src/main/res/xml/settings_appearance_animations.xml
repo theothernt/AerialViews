@@ -20,10 +20,10 @@
                     app:useSimpleSummaryProvider="true" />
 
                 <MultiSelectListPreference
-                    app:defaultValue="@array/fade_corners_default"
-                    app:entries="@array/fade_corners_entries"
-                    app:entryValues="@array/fade_corners_values"
-                    app:key="fade_corners_selection"
+                    app:defaultValue="@array/overlay_fade_corners_default"
+                    app:entries="@array/overlay_fade_corners_entries"
+                    app:entryValues="@array/overlay_fade_corners_values"
+                    app:key="overlay_fade_corners_selection"
                     app:title="@string/appearance_fade_corners_title"
                     app:dialogTitle="@string/appearance_fade_corners_title" />
         </PreferenceCategory>

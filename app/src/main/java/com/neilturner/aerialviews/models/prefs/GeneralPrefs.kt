@@ -128,8 +128,8 @@ object GeneralPrefs : KotprefModel() {
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Per-corner fade settings (which corners should fade when auto-hide is enabled)
-    val fadeCornersSelection by stringSetPref("fade_corners_selection") {
-        context.resources.getStringArray(R.array.fade_corners_default).toSet()
+    val overlayFadeCornersSelection by stringSetPref("overlay_fade_corners_selection") {
+        context.resources.getStringArray(R.array.overlay_fade_corners_default).toSet()
     }
 
     // Background Colour

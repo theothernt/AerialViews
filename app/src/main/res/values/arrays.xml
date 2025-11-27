@@ -1030,19 +1030,19 @@
   </string-array>
 
   <!-- Overlay Corner Fade Selection -->
-  <string-array name="fade_corners_entries">
+  <string-array name="overlay_fade_corners_entries">
     <item>Top left</item>
     <item>Top right</item>
     <item>Bottom left</item>
     <item>Bottom right</item>
   </string-array>
-  <string-array name="fade_corners_values" translatable="false">
+  <string-array name="overlay_fade_corners_values" translatable="false">
     <item>TOP_LEFT</item>
     <item>TOP_RIGHT</item>
     <item>BOTTOM_LEFT</item>
     <item>BOTTOM_RIGHT</item>
   </string-array>
-  <string-array name="fade_corners_default" translatable="false">
+  <string-array name="overlay_fade_corners_default" translatable="false">
     <item>TOP_LEFT</item>
     <item>TOP_RIGHT</item>
     <item>BOTTOM_LEFT</item>

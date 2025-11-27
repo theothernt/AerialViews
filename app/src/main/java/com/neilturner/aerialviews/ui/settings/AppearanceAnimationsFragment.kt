@@ -32,7 +32,7 @@ class AppearanceAnimationsFragment : MenuStateFragment() {
         toggleOverlaySettings(autoHidePref?.value ?: "-1")
 
         // Setup corner fade preference summary
-        val fadeCornersPref = findPreference<MultiSelectListPreference>("fade_corners_selection")
+        val fadeCornersPref = findPreference<MultiSelectListPreference>("overlay_fade_corners_selection")
         fadeCornersPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 @Suppress("UNCHECKED_CAST")
@@ -50,7 +50,7 @@ class AppearanceAnimationsFragment : MenuStateFragment() {
         revealTimeoutPref?.isEnabled = isAutoHideEnabled
 
         // Enable/disable corner fade selection
-        val fadeCornersPref = findPreference<MultiSelectListPreference>("fade_corners_selection")
+        val fadeCornersPref = findPreference<MultiSelectListPreference>("overlay_fade_corners_selection")
         fadeCornersPref?.isEnabled = isAutoHideEnabled
     }
 
