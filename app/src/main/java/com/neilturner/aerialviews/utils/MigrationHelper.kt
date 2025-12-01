@@ -46,7 +46,7 @@ class MigrationHelper(
         if (lastKnownVersion < 53) release53()
         if (lastKnownVersion < 60) release60()
         if (lastKnownVersion < 61) release61()
-        if (lastKnownVersion < 75) release75()
+        if (lastKnownVersion < 77) release77()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -453,8 +453,8 @@ class MigrationHelper(
         }
     }
 
-    private fun release75() {
-        Timber.i("Migrating settings for release 75")
+    private fun release77() {
+        Timber.i("Migrating settings for release 77")
 
         // Covers case when Apple, etc videos are disabled but Amazon videos are not
         val amazonVideosEnabled = prefs.contains("amazon_videos_enabled")
@@ -462,7 +462,7 @@ class MigrationHelper(
         val comm1VideosEnabled = prefs.getBoolean("comm1_videos_enabled", false)
         val comm2VideosEnabled = prefs.getBoolean("comm2_videos_enabled", false)
 
-        if (!appleVideosEnabled && !comm1VideosEnabled && !comm2VideosEnabled && amazonVideosEnabled) {
+        if (!appleVideosEnabled && !comm1VideosEnabled && !comm2VideosEnabled && !amazonVideosEnabled) {
             Timber.i("Disabling Amazon videos as Apple, Comm1, and Comm2 videos are disabled")
             prefs.edit { putBoolean("amazon_videos_enabled", false) }
         } else {
