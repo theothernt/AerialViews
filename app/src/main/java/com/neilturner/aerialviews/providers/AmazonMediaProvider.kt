@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.models.prefs.ProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AmazonVideos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
+import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import timber.log.Timber
 
 class AmazonMediaProvider(
@@ -38,6 +39,7 @@ class AmazonMediaProvider(
 
     private suspend fun buildVideoAndMetadata() {
         val quality = prefs.quality
+        val strings = parseJsonMap(context, R.raw.fireos8_strings)
         val wrapper = parseJson<AmazonVideos>(context, R.raw.fireos8)
 
         wrapper.assets?.forEach { asset ->
@@ -62,7 +64,9 @@ class AmazonMediaProvider(
             val data =
                 Pair(
                     asset.description,
-                    asset.pointsOfInterest,
+                    asset.pointsOfInterest.mapValues { poi ->
+                        strings[poi.value] ?: asset.description
+                    },
                 )
             asset.allUrls().forEachIndexed { index, url ->
                 metadata.put(url, data)
