@@ -536,6 +536,7 @@
   <!-- Main / Settings / Appearance / Animations -->
   <string name="appearance_auto_hide_title">Auto hide overlays</string>
   <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
 
   <string name="appearance_fade_in_title">Fade in</string>
   <string name="appearance_fade_out_title">Fade out</string>

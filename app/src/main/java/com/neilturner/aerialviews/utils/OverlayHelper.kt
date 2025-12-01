@@ -24,6 +24,23 @@ class OverlayHelper(
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
+    // Get overlays by corner position
+    // Overlay indices: 0-1 = Bottom Left, 2-3 = Bottom Right, 4-5 = Top Left, 6-7 = Top Right
+    fun getBottomLeftOverlays(): List<View> = listOfNotNull(overlays.getOrNull(0), overlays.getOrNull(1))
+    fun getBottomRightOverlays(): List<View> = listOfNotNull(overlays.getOrNull(2), overlays.getOrNull(3))
+    fun getTopLeftOverlays(): List<View> = listOfNotNull(overlays.getOrNull(4), overlays.getOrNull(5))
+    fun getTopRightOverlays(): List<View> = listOfNotNull(overlays.getOrNull(6), overlays.getOrNull(7))
+
+    fun getOverlaysToFade(): List<View> {
+        val result = mutableListOf<View>()
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        if (fadeCornersSelection.contains("BOTTOM_LEFT")) result.addAll(getBottomLeftOverlays())
+        if (fadeCornersSelection.contains("BOTTOM_RIGHT")) result.addAll(getBottomRightOverlays())
+        if (fadeCornersSelection.contains("TOP_LEFT")) result.addAll(getTopLeftOverlays())
+        if (fadeCornersSelection.contains("TOP_RIGHT")) result.addAll(getTopRightOverlays())
+        return result
+    }
+
     // Assign IDs/Overlays to correct Flow - or alternate
     fun assignOverlaysAndIds(
         leftFlow: Flow,
