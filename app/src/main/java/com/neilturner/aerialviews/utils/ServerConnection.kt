@@ -44,6 +44,11 @@ object UrlParser {
             if (!Patterns.WEB_URL.matcher(processedUrl).matches()) {
                 throw IllegalArgumentException("Invalid URL")
             }
+
+            if (processedUrl.endsWith("/")) {
+                processedUrl = processedUrl.dropLast(1)
+            }
+
             return processedUrl
         } catch (e: Exception) {
             Timber.e(e, "URL parsing failed: ${e.message}")
