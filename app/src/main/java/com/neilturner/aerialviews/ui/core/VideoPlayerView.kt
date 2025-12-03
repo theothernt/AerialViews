@@ -94,6 +94,20 @@ class VideoPlayerView
             listener = null
         }
 
+        fun toggleLooping() {
+            if (player?.repeatMode == Player.REPEAT_MODE_ALL) {
+                player?.repeatMode = Player.REPEAT_MODE_OFF
+                mainScope.launch {
+                    ToastHelper.show(context, "Looping disabled")
+                }
+            } else {
+                player?.repeatMode = Player.REPEAT_MODE_ALL
+                mainScope.launch {
+                    ToastHelper.show(context, "Looping enabled")
+                }
+            }
+        }
+
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
             state.type = media.source
