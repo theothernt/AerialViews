@@ -114,6 +114,8 @@ object InputHelper {
             ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
             ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
             ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
+            ButtonType.BRIGHTNESS_INCREASE -> controller?.increaseBrightness()
+            ButtonType.BRIGHTNESS_DECREASE -> controller?.decreaseBrightness()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }

@@ -711,6 +711,8 @@
     <item>Decrease video playback speed</item>
     <item>Seek forwards in a video</item>
     <item>Seek backwards in a video</item>
+    <item>Increase brightness</item>
+    <item>Decrease brightness</item>
     <item>Exit screensaver</item>
     <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
@@ -718,6 +720,7 @@
     <item>Toggle mute/unmute audio</item>
     <item>Pause/unpause video or photo timer</item>
     <item>Toggle looping for current video</item>
+
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -729,6 +732,8 @@
     <item>SPEED_DECREASE</item>
     <item>SEEK_FORWARD</item>
     <item>SEEK_BACKWARD</item>
+    <item>BRIGHTNESS_INCREASE</item>
+    <item>BRIGHTNESS_DECREASE</item>
     <item>EXIT</item>
     <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
@@ -736,6 +741,7 @@
     <item>TOGGLE_MUTE</item>
     <item>TOGGLE_PAUSE</item>
     <item>TOGGLE_LOOPING</item>
+
   </string-array>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>

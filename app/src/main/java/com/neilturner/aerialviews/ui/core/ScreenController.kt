@@ -38,6 +38,7 @@ import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +87,7 @@ class ScreenController(
     private var loadingText: TextView
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
+    private val brightnessView: View
     val view: View
 
     private val topLeftIds: List<Int>
@@ -123,6 +125,8 @@ class ScreenController(
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
 
+        brightnessView = binding.brightnessView
+
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
@@ -155,7 +159,7 @@ class ScreenController(
 
         // Setup brightness/dimness
         if (GeneralPrefs.videoBrightness != "100") {
-            val view = binding.brightnessView
+            val view = brightnessView
             view.setBackgroundColor(Color.BLACK)
             view.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
             view.visibility = View.VISIBLE
@@ -545,6 +549,43 @@ class ScreenController(
     fun toggleLooping() {
         if (videoViewBinding.root.isVisible) {
             videoPlayer.toggleLooping()
+        }
+    }
+
+    fun increaseBrightness() = changeBrightness(true)
+
+    fun decreaseBrightness() = changeBrightness(false)
+
+    private fun changeBrightness(increase: Boolean) {
+        if (blackOutMode) return
+
+        val brightnessValues = resources.getStringArray(R.array.percentage1_values)
+        val currentBrightness = GeneralPrefs.videoBrightness
+        val currentIndex = brightnessValues.indexOf(currentBrightness)
+
+        if (currentIndex == -1) return
+
+        if (increase && currentIndex == brightnessValues.size - 1) return
+        if (!increase && currentIndex == 0) return
+
+        val newIndex = if (increase) currentIndex + 1 else currentIndex - 1
+        val newBrightness = brightnessValues[newIndex]
+
+        GeneralPrefs.videoBrightness = newBrightness
+
+        // Update view
+        val view = brightnessView
+        if (newBrightness == "100") {
+            view.visibility = View.GONE
+        } else {
+            view.setBackgroundColor(Color.BLACK)
+            view.alpha = abs((newBrightness.toFloat() - 100) / 100)
+            view.visibility = View.VISIBLE
+        }
+
+        // Show toast
+        mainScope.launch {
+            ToastHelper.show(context, "Brightness: $newBrightness%")
         }
     }
 

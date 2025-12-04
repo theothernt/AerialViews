@@ -10,6 +10,8 @@ enum class ButtonType {
     SPEED_DECREASE,
     SEEK_FORWARD,
     SEEK_BACKWARD,
+    BRIGHTNESS_INCREASE,
+    BRIGHTNESS_DECREASE,
     EXIT, // Exit screensaver
     EXIT_TO_SETTINGS, // Exit to settings screen if "Start screensaver on launch" is enabled
     SHOW_OVERLAYS, // Show overlays if auto-hide is enabled
