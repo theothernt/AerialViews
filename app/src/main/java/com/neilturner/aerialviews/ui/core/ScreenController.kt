@@ -534,20 +534,22 @@ class ScreenController(
         videoPlayer.seekBackward()
     }
 
-    fun toggleMute() {
-        videoPlayer.toggleMute()
-    }
-
     fun togglePause() {
-        if (blackOutMode) {
-            return
-        }
-
         if (isPaused) {
             resumeMedia()
         } else {
             pauseMedia()
         }
+    }
+
+    fun toggleLooping() {
+        if (videoViewBinding.root.isVisible) {
+            videoPlayer.toggleLooping()
+        }
+    }
+
+    fun toggleMute() {
+        videoPlayer.toggleMute()
     }
 
     private fun pauseMedia() {
