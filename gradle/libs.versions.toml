@@ -9,6 +9,7 @@ core-ktx = "1.17.0"
 activity-ktx = "1.11.0"
 constraintlayout = "2.2.1"
 appcompat = "1.7.1"
+desugar-jdk-libs = "2.1.5"
 
 firebase-crashlytics-plugin = "3.0.6"
 firebase-perf-plugin = "2.0.2"
@@ -108,6 +109,7 @@ profileinstaller = { group = "androidx.profileinstaller", name = "profileinstall
 runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 junit-junit = { group = "junit", name = "junit", version.ref = "junit-version" }
 benchmark-junit4 = { group = "androidx.benchmark", name = "benchmark-junit4", version.ref = "benchmark-junit4" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
 [bundles]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "kotlinx-serialization-json"]

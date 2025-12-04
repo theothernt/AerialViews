@@ -1,4 +1,3 @@
-
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -159,6 +158,10 @@ android {
         getByName("amazon").java.srcDir("src/common/java")
         getByName("fdroid").java.srcDir("src/fdroid/java")
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 dependencies {
@@ -190,6 +193,8 @@ dependencies {
     implementation(libs.profileinstaller)
     "baselineProfile"(project(":baselineprofile"))
     implementation(project(":projectivyapi"))
+
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 tasks.withType<Test>().configureEach {
