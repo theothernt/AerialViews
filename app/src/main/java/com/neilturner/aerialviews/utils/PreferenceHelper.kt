@@ -12,6 +12,8 @@ import java.io.FileOutputStream
 import java.util.Properties
 
 object PreferenceHelper {
+    private const val BACKUP_FILENAME = "backup.avsettings"
+
     private val ignorePrefs =
         listOf(
             "check_for_hevc_support",
@@ -19,12 +21,9 @@ object PreferenceHelper {
 
     fun exportPreferences(context: Context): Boolean =
         try {
-            val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-            if (!documentsFolder.exists()) {
-                documentsFolder.mkdirs()
-            }
+            val outputFile = getOutputFile(context)
+            Timber.d("Export file path: ${outputFile.absolutePath}")
 
-            val outputFile = File(documentsFolder, "backup.avsettings")
             val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
             val properties = Properties()
 
@@ -68,11 +67,39 @@ object PreferenceHelper {
                     "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
                 )
             }
+            Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
             true
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e, "Failed to export settings")
             false
         }
+
+    private fun getOutputFile(context: Context): File {
+        // Try Documents folder first
+        val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+
+        if (!documentsFolder.exists()) {
+            val created = documentsFolder.mkdirs()
+            Timber.d("Documents folder created: $created, path: ${documentsFolder.absolutePath}")
+        }
+
+        // Check if Documents folder is writable
+        if (documentsFolder.exists() && documentsFolder.canWrite()) {
+            Timber.d("Using Documents folder: ${documentsFolder.absolutePath}")
+            return File(documentsFolder, BACKUP_FILENAME)
+        }
+
+        // Fall back to app-specific external storage
+        val appExternalFolder = context.getExternalFilesDir(null)
+        if (appExternalFolder != null && appExternalFolder.canWrite()) {
+            Timber.w("Documents folder not writable, falling back to app storage: ${appExternalFolder.absolutePath}")
+            return File(appExternalFolder, BACKUP_FILENAME)
+        }
+
+        // Last resort: internal app storage
+        Timber.w("External storage not available, falling back to internal storage: ${context.filesDir.absolutePath}")
+        return File(context.filesDir, BACKUP_FILENAME)
+    }
 
     fun importPreferences(
         context: Context,
