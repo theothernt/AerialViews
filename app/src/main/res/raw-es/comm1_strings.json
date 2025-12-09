@@ -1,22 +1,62 @@
 {
-    "video_inspire_alabama_montgomery_countryside_00007_0": "Vuelo a través de la niebla sobre tierras de pastoreo en la zona rural de Alabama",
-    "video_inspire_california_big-sur_2020_00001_0": "Vuelo matutino por la costa de Big Sur",
-    "video_inspire_california_big-sur_bixby_005_0": "Vuelo alrededor del puente Bixby Creek en Big Sur",
-    "video_inspire_california_big-sur_landscape_054_0": "Explorando Big Sur alrededor de Bixby Creek",
-    "video_inspire_california_catalina_00005_0": "Volando sobre el extremo oeste de la Isla Catalina",
-    "video_inspire_california_catalina_avalon_00053_0": "Volando sobre Avalon en la Isla Catalina",
-    "video_inspire_california_santa-barbara_050_0": "Vuelo al atardecer por el muelle de Santa Bárbara",
-    "video_inspire_california_vineyard_sierra-mar_sunrise_110_0": "Vuelo matutino sobre el Viñedo Sierra Mar",
-    "video_inspire_florida_miami_brickell_sunset_00036_0": "Vuelo al atardecer por el centro de Miami",
-    "video_inspire_italy_como_cerano-dintelvi_006_0": "Explorando Como Cerano d'Intelvi, Italia",
-    "video_inspire_nevada_lasvegas_northstrip_021_0": "Volando sobre Las Vegas al atardecer",
-    "video_inspire_oregon_lone-ranch-beach_00001_0": "Explorando la playa Lone Ranch en la costa de Oregón",
-    "video_inspire_oregon_lone-ranch-beach_00015_0": "Volando entre rocas en la costa de Oregón",
-    "video_inspire_oregon_lone-ranch-beach_00021_0": "Volando entre rocas en la costa de Oregón",
-    "video_inspire_oregon_portland_00064_0": "Vuelo al atardecer por el centro de Portland, Oregón",
-    "video_inspire_sanfrancisco_castro_005_0": "Karl the Fog fluye sobre Twin Peaks en San Francisco",
-    "video_inspire_texas_austin_oct2019_evening_00085_0": "Vuelo nocturno por Austin, Texas",
-    "video_inspire_texas_pecos_foggy-landscape_00018_0": "La niebla se aferra al paisaje en el oeste de Texas cerca de Pecos",
-    "video_inspire_uk_edinburgh_arthursseat_010_0": "Volando por Edimburgo alrededor de los riscos de Salisbury",
-    "video_inspire_uk_london_hampstead-heath_003_0": "Volando por Londres desde Hampstead Heath"
+    "video_inspire_alabama_montgomery_countryside_00007_0": {
+        "translation": "Vuelo a través de la niebla sobre tierras de pastoreo en la zona rural de Alabama"
+    },
+    "video_inspire_california_big-sur_2020_00001_0": {
+        "translation": "Vuelo matutino por la costa de Big Sur"
+    },
+    "video_inspire_california_big-sur_bixby_005_0": {
+        "translation": "Vuelo alrededor del puente Bixby Creek en Big Sur"
+    },
+    "video_inspire_california_big-sur_landscape_054_0": {
+        "translation": "Explorando Big Sur alrededor de Bixby Creek"
+    },
+    "video_inspire_california_catalina_00005_0": {
+        "translation": "Volando sobre el extremo oeste de la Isla Catalina"
+    },
+    "video_inspire_california_catalina_avalon_00053_0": {
+        "translation": "Volando sobre Avalon en la Isla Catalina"
+    },
+    "video_inspire_california_santa-barbara_050_0": {
+        "translation": "Vuelo al atardecer por el muelle de Santa Bárbara"
+    },
+    "video_inspire_california_vineyard_sierra-mar_sunrise_110_0": {
+        "translation": "Vuelo matutino sobre el Viñedo Sierra Mar"
+    },
+    "video_inspire_florida_miami_brickell_sunset_00036_0": {
+        "translation": "Vuelo al atardecer por el centro de Miami"
+    },
+    "video_inspire_italy_como_cerano-dintelvi_006_0": {
+        "translation": "Explorando Como Cerano d'Intelvi, Italia"
+    },
+    "video_inspire_nevada_lasvegas_northstrip_021_0": {
+        "translation": "Volando sobre Las Vegas al atardecer"
+    },
+    "video_inspire_oregon_lone-ranch-beach_00001_0": {
+        "translation": "Explorando la playa Lone Ranch en la costa de Oregón"
+    },
+    "video_inspire_oregon_lone-ranch-beach_00015_0": {
+        "translation": "Volando entre rocas en la costa de Oregón"
+    },
+    "video_inspire_oregon_lone-ranch-beach_00021_0": {
+        "translation": "Volando entre rocas en la costa de Oregón"
+    },
+    "video_inspire_oregon_portland_00064_0": {
+        "translation": "Vuelo al atardecer por el centro de Portland, Oregón"
+    },
+    "video_inspire_sanfrancisco_castro_005_0": {
+        "translation": "Karl the Fog fluye sobre Twin Peaks en San Francisco"
+    },
+    "video_inspire_texas_austin_oct2019_evening_00085_0": {
+        "translation": "Vuelo nocturno por Austin, Texas"
+    },
+    "video_inspire_texas_pecos_foggy-landscape_00018_0": {
+        "translation": "La niebla se aferra al paisaje en el oeste de Texas cerca de Pecos"
+    },
+    "video_inspire_uk_edinburgh_arthursseat_010_0": {
+        "translation": "Volando por Edimburgo alrededor de los riscos de Salisbury"
+    },
+    "video_inspire_uk_london_hampstead-heath_003_0": {
+        "translation": "Volando por Londres desde Hampstead Heath"
+    }
 }
