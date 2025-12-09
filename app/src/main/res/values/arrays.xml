@@ -544,6 +544,8 @@
     <item>20 minutes</item>
     <item>30 minutes</item>
     <item>1 hour</item>
+    <item>6 hours</item>
+    <item>12 hours</item>
   </string-array>
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
@@ -559,6 +561,8 @@
     <item>1200</item>
     <item>1800</item>
     <item>3600</item>
+    <item>21600</item>
+    <item>43200</item>
   </string-array>
   <string name="slideshow_speed_default" translatable="false">30</string>
 
@@ -620,12 +624,16 @@
     <item>400ms</item>
     <item>600ms</item>
     <item>800ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
+    <item>1 second</item>
+    <item>1.2 seconds</item>
+    <item>1.4 seconds</item>
+    <item>1.6 seconds</item>
+    <item>1.8 seconds</item>
+    <item>2 seconds</item>
+    <item>4 seconds</item>
+    <item>6 seconds</item>
+    <item>8 seconds</item>
+    <item>10 seconds</item>
   </string-array>
   <string-array name="duration_values" translatable="false">
     <item>0</item>
@@ -639,6 +647,10 @@
     <item>1600</item>
     <item>1800</item>
     <item>2000</item>
+    <item>4000</item>
+    <item>6000</item>
+    <item>8000</item>
+    <item>10000</item>
   </string-array>
   <string name="duration_fade_in_default" translatable="false">600</string>
   <string name="duration_fade_out_default" translatable="false">800</string>
@@ -720,7 +732,6 @@
     <item>Toggle mute/unmute audio</item>
     <item>Pause/unpause video or photo timer</item>
     <item>Toggle looping for current video</item>
-
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
