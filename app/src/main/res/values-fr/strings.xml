@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">Afficher la description ou les points d\'intérêt</string>
   <string name="appearance_exit_to_settings_summary">L\'action \"Quitter les paramètres\" doit être assignée à un bouton ou à une direction du d-pad pour que cette fonction fonctionne</string>
   <string name="appearance_exit_to_settings_title">Attribuer une action</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
   <string name="appearance_fade_in_title">Fondu enchaîné</string>
   <string name="appearance_fade_out_title">Fondu enchaîné</string>
   <string name="appearance_gradient_bottom_summary">Affichage d\'un dégradé derrière les superpositions en bas de l\'écran pour les rendre plus faciles à voir</string>

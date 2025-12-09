@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
+  <string-array name="amazon_video_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+  </string-array>
   <string-array name="amazon_video_scene_type_entries">
     <item>Nature</item>
     <item>Plage</item>
@@ -9,9 +16,55 @@
     <item>Motifs</item>
     <item>Feu</item>
   </string-array>
+  <string-array name="amazon_video_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+    <item>PATTERNS</item>
+    <item>FIRE</item>
+  </string-array>
+  <string-array name="amazon_videos_data_usage_values" translatable="false">
+    <item>~2GB</item>
+    <item>~3GB</item>
+  </string-array>
+  <string-array name="amazon_videos_quality_entries" translatable="false">
+    <item>1080p HEVC</item>
+    <item>4K HEVC</item>
+  </string-array>
+  <string-array name="amazon_videos_quality_values" translatable="false">
+    <item>VIDEO_1080_SDR</item>
+    <item>VIDEO_4K_SDR</item>
+  </string-array>
+  <string-array name="apple_videos_data_usage_values" translatable="false">
+    <item>~3GB</item>
+    <item>~2GB</item>
+    <item>~3GB</item>
+    <item>~4GB</item>
+    <item>~5.5GB</item>
+  </string-array>
+  <string-array name="apple_videos_quality_entries" translatable="false">
+    <item>1080p H.264</item>
+    <item>1080p HEVC</item>
+    <item>1080p HEVC Dolby Vision</item>
+    <item>4K HEVC</item>
+    <item>4K HEVC Dolby Vision</item>
+  </string-array>
+  <string-array name="apple_videos_quality_values" translatable="false">
+    <item>VIDEO_1080_H264</item>
+    <item>VIDEO_1080_SDR</item>
+    <item>VIDEO_1080_HDR</item>
+    <item>VIDEO_4K_SDR</item>
+    <item>VIDEO_4K_HDR</item>
+  </string-array>
   <string-array name="background_colour_entries">
     <item>Noir</item>
     <item>Blanc</item>
+  </string-array>
+  <string-array name="background_colour_values" translatable="false">
+    <item>BLACK</item>
+    <item>WHITE</item>
   </string-array>
   <string-array name="button_action_entries">
     <item>Ignorer l\'action</item>
@@ -29,11 +82,65 @@
     <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
     <item>Activer/désactiver le son</item>
     <item>Pause/désactivation de la minuterie vidéo ou photo</item>
+    <item>Toggle mute/unmute audio</item>
+    <item>Pause/désactivation de la minuterie vidéo ou photo</item>
+    <item>Toggle looping for current video</item>
+  </string-array>
+  <string-array name="button_action_values" translatable="false">
+    <item>IGNORE</item>
+    <item>SKIP_NEXT</item>
+    <item>SKIP_PREVIOUS</item>
+    <item>MUSIC_NEXT</item>
+    <item>MUSIC_PREVIOUS</item>
+    <item>SPEED_INCREASE</item>
+    <item>SPEED_DECREASE</item>
+    <item>SEEK_FORWARD</item>
+    <item>SEEK_BACKWARD</item>
+    <item>BRIGHTNESS_INCREASE</item>
+    <item>BRIGHTNESS_DECREASE</item>
+    <item>EXIT</item>
+    <item>EXIT_TO_SETTINGS</item>
+    <item>SHOW_OVERLAYS</item>
+    <item>BLACK_OUT_MODE</item>
+    <item>TOGGLE_MUTE</item>
+    <item>TOGGLE_PAUSE</item>
+    <item>TOGGLE_LOOPING</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Défaut du système</item>
     <item>12 heures</item>
     <item>24 heures sur 24</item>
+  </string-array>
+  <string-array name="clock_format_values" translatable="false">
+    <item>DEFAULT</item>
+    <item>HOUR_12</item>
+    <item>HOUR_24</item>
+  </string-array>
+  <string-array name="comm1_videos_data_usage_values" translatable="false">
+    <item>~1GB</item>
+    <item>~.8GB</item>
+    <item>~1.5GB</item>
+  </string-array>
+  <string-array name="comm1_videos_quality_entries" translatable="false">
+    <item>1080p H.264</item>
+    <item>1080p HEVC</item>
+    <item>4K HEVC</item>
+  </string-array>
+  <string-array name="comm1_videos_quality_values" translatable="false">
+    <item>VIDEO_1080_H264</item>
+    <item>VIDEO_1080_SDR</item>
+    <item>VIDEO_4K_SDR</item>
+  </string-array>
+  <string-array name="comm2_videos_data_usage_values" translatable="false">
+    <item>~4GB</item>
+    <item>~3GB</item>
+    <item>~6GB</item>
+  </string-array>
+  <string-array name="comm2_videos_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>WATERFALL</item>
+    <item>BEACH</item>
+    <item>SEA</item>
   </string-array>
   <string-array name="comm2_videos_scene_type_entries">
     <item>Nature</item>
@@ -41,14 +148,33 @@
     <item>Plage</item>
     <item>Mer</item>
   </string-array>
+  <string-array name="comm2_videos_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>WATERFALL</item>
+    <item>BEACH</item>
+    <item>SEA</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_default" translatable="false">
+    <item>DAY</item>
+    <item>SUNSET</item>
+  </string-array>
   <string-array name="comm2_videos_time_of_day_entries">
     <item>Jour</item>
     <item>Coucher de soleil</item>
+  </string-array>
+  <string-array name="comm2_videos_time_of_day_values" translatable="false">
+    <item>DAY</item>
+    <item>SUNSET</item>
   </string-array>
   <string-array name="date_format_entries">
     <item>Compact</item>
     <item>Complet</item>
     <item>Sur mesure</item>
+  </string-array>
+  <string-array name="date_format_values" translatable="false">
+    <item>COMPACT</item>
+    <item>FULL</item>
+    <item>CUSTOM</item>
   </string-array>
   <string-array name="description_filename_entries">
     <item>Handicapés</item>
@@ -56,12 +182,25 @@
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
   </string-array>
+  <string-array name="description_filename_values" translatable="false">
+    <item>DISABLED</item>
+    <item>FILENAME</item>
+    <item>LAST_FOLDER_FILENAME</item>
+    <item>LAST_FOLDER_NAME</item>
+  </string-array>
   <string-array name="description_folder_level_entries">
     <item>italie / Coucher de soleil\" - 1 niveau</item>
     <item>2025 / Italie / Coucher de soleil - 2 Niveaux</item>
     <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Niveaux</item>
     <item>photos / Scéniques / 2025 / Italie / Coucher de soleil\' - 4 Niveaux</item>
     <item>media / Photos / Scéniques / 2025 / Italie / Coucher de soleil\' - 5 Niveaux</item>
+  </string-array>
+  <string-array name="description_folder_level_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Handicapés</item>
@@ -85,6 +224,11 @@
     <item>Une brève description ou localisation</item>
     <item>Points d\'intérêt dynamiques, disponibles dans de nombreuses langues, qui changent au fur et à mesure de la lecture de la vidéo</item>
   </string-array>
+  <string-array name="description_video_values" translatable="false">
+    <item>DISABLED</item>
+    <item>TITLE</item>
+    <item>POI</item>
+  </string-array>
   <string-array name="duration_entries">
     <item>Handicapés</item>
     <item>200ms</item>
@@ -97,10 +241,43 @@
     <item>1600ms</item>
     <item>1800ms</item>
     <item>2000ms</item>
+    <item>4 secondes</item>
+    <item>6 secondes</item>
+    <item>8 secondes</item>
+    <item>10 secondes</item>
+  </string-array>
+  <string-array name="duration_values" translatable="false">
+    <item>0</item>
+    <item>200</item>
+    <item>400</item>
+    <item>600</item>
+    <item>800</item>
+    <item>1000</item>
+    <item>1200</item>
+    <item>1400</item>
+    <item>1600</item>
+    <item>1800</item>
+    <item>2000</item>
+    <item>4000</item>
+    <item>6000</item>
+    <item>8000</item>
+    <item>10000</item>
+  </string-array>
+  <string-array name="http_scheme_entries" translatable="false">
+    <item>HTTP</item>
+    <item>HTTPS</item>
+  </string-array>
+  <string-array name="http_scheme_values" translatable="false">
+    <item>HTTP</item>
+    <item>HTTPS</item>
   </string-array>
   <string-array name="immich_auth_type_entries">
     <item>Lien partagé</item>
     <item>Clé API</item>
+  </string-array>
+  <string-array name="immich_auth_type_values" translatable="false">
+    <item>SHARED_LINK</item>
+    <item>API_KEY</item>
   </string-array>
   <string-array name="immich_include_entries">
     <item>Handicapés</item>
@@ -108,6 +285,27 @@
     <item>200 photos</item>
     <item>300 photos</item>
     <item>400 photos</item>
+  </string-array>
+  <string-array name="immich_include_values" translatable="false">
+    <item>DISABLED</item>
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
+  </string-array>
+  <string-array name="immich_rating_entries" translatable="false">
+    <item>1 Star</item>
+    <item>2 Stars</item>
+    <item>3 Stars</item>
+    <item>4 Stars</item>
+    <item>5 Stars</item>
+  </string-array>
+  <string-array name="immich_rating_values" translatable="false">
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Sauter lorsque la limite est atteinte</item>
@@ -120,14 +318,82 @@
     <item>Segment aléatoire - si une vidéo est plus longue que la limite, une partie aléatoire de la vidéo sera lue.
 (par exemple, avec une limite de 2 minutes, une vidéo de 6 minutes peut avoir 3 segments - l\'un d\'entre eux sera joué de manière aléatoire).</item>
   </string-array>
+  <string-array name="limit_Longer_videos_values" translatable="false">
+    <item>LIMIT</item>
+    <item>IGNORE</item>
+    <item>SEGMENT</item>
+  </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>Scanner des médias</item>
     <item>Accès aux dossiers (ancien)</item>
+  </string-array>
+  <string-array name="local_videos_search_type_values" translatable="false">
+    <item>MEDIA_STORE</item>
+    <item>FOLDER_ACCESS</item>
+  </string-array>
+  <string-array name="locale_menu_entries" translatable="false">
+    <item>System locale*</item>
+    <item>English</item>
+    <item>German</item>
+    <item>French</item>
+    <item>Arabic</item>
+    <item>Hebrew (he)</item>
+    <item>Hebrew (iw)</item>
+    <item>Japanese</item>
+    <item>Chinese</item>
+    <item>Russian</item>
+    <item>Ukrainian</item>
+  </string-array>
+  <string-array name="locale_menu_values" translatable="false">
+    <item>default</item>
+    <item>en-IE</item>
+    <item>de-DE</item>
+    <item>fr-FR</item>
+    <item>ar</item>
+    <item>he</item>
+    <item>iw</item>
+    <item>ja-JP</item>
+    <item>zh-CN</item>
+    <item>ru-RU</item>
+    <item>uk-UA</item>
+  </string-array>
+  <string-array name="locale_screensaver_entries" translatable="false">
+    <item>System locale*</item>
+    <item>English</item>
+    <item>German</item>
+    <item>French</item>
+    <item>Arabic</item>
+    <item>Hebrew (he)</item>
+    <item>Hebrew (iw)</item>
+    <item>Japanese</item>
+    <item>Chinese</item>
+    <item>Russian</item>
+    <item>Ukrainian</item>
+    <item>Random</item>
+  </string-array>
+  <string-array name="locale_screensaver_values" translatable="false">
+    <item>default</item>
+    <item>en-IE</item>
+    <item>de-DE</item>
+    <item>fr-FR</item>
+    <item>ar</item>
+    <item>he</item>
+    <item>iw</item>
+    <item>ja-JP</item>
+    <item>zh-CN</item>
+    <item>ru-RU</item>
+    <item>uk-UA</item>
+    <item>random</item>
   </string-array>
   <string-array name="media_type_entries">
     <item>Vidéos uniquement</item>
     <item>Images seulement</item>
     <item>Vidéos et images</item>
+  </string-array>
+  <string-array name="media_type_values" translatable="false">
+    <item>VIDEOS</item>
+    <item>PHOTOS</item>
+    <item>VIDEOS_PHOTOS</item>
   </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Handicapés</item>
@@ -135,6 +401,13 @@
     <item>Artiste - Chanson</item>
     <item>Artiste</item>
     <item>Chanson</item>
+  </string-array>
+  <string-array name="nowplaying_format_values" translatable="false">
+    <item>DISABLED</item>
+    <item>SONG_ARTIST</item>
+    <item>ARTIST_SONG</item>
+    <item>ARTIST</item>
+    <item>SONG</item>
   </string-array>
   <string-array name="overlay_auto_hide_entries">
     <item>Ne jamais cacher (par défaut)</item>
@@ -145,6 +418,33 @@
     <item>8 secondes</item>
     <item>10 secondes</item>
   </string-array>
+  <string-array name="overlay_auto_hide_values" translatable="false">
+    <item>-1</item>
+    <item>0</item>
+    <item>2</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+    <item>10</item>
+  </string-array>
+  <string-array name="overlay_fade_corners_default" translatable="false">
+    <item>TOP_LEFT</item>
+    <item>TOP_RIGHT</item>
+    <item>BOTTOM_LEFT</item>
+    <item>BOTTOM_RIGHT</item>
+  </string-array>
+  <string-array name="overlay_fade_corners_entries">
+    <item>Top left</item>
+    <item>Top right</item>
+    <item>Bottom left</item>
+    <item>Bottom right</item>
+  </string-array>
+  <string-array name="overlay_fade_corners_values" translatable="false">
+    <item>TOP_LEFT</item>
+    <item>TOP_RIGHT</item>
+    <item>BOTTOM_LEFT</item>
+    <item>BOTTOM_RIGHT</item>
+  </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 secondes</item>
     <item>4 secondes (par défaut)</item>
@@ -152,9 +452,106 @@
     <item>8 secondes</item>
     <item>10 secondes</item>
   </string-array>
+  <string-array name="overlay_reveal_timeout_values" translatable="false">
+    <item>2</item>
+    <item>4</item>
+    <item>6</item>
+    <item>8</item>
+    <item>10</item>
+  </string-array>
+  <string-array name="percentage1_entries" translatable="false">
+    <item>5%</item>
+    <item>10%</item>
+    <item>15%</item>
+    <item>20%</item>
+    <item>25%</item>
+    <item>30%</item>
+    <item>35%</item>
+    <item>40%</item>
+    <item>45%</item>
+    <item>50%</item>
+    <item>55%</item>
+    <item>60%</item>
+    <item>65%</item>
+    <item>70%</item>
+    <item>75%</item>
+    <item>80%</item>
+    <item>85%</item>
+    <item>90%</item>
+    <item>95%</item>
+    <item>100%</item>
+  </string-array>
+  <string-array name="percentage1_values" translatable="false">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+    <item>55</item>
+    <item>60</item>
+    <item>65</item>
+    <item>70</item>
+    <item>75</item>
+    <item>80</item>
+    <item>85</item>
+    <item>90</item>
+    <item>95</item>
+    <item>100</item>
+  </string-array>
+  <string-array name="percentage2_entries" translatable="false">
+    <item>5%</item>
+    <item>10%</item>
+    <item>15%</item>
+    <item>20%</item>
+    <item>25%</item>
+    <item>30%</item>
+    <item>35%</item>
+    <item>40%</item>
+    <item>45%</item>
+    <item>50%</item>
+    <item>55%</item>
+    <item>60%</item>
+    <item>65%</item>
+    <item>70%</item>
+    <item>75%</item>
+    <item>80%</item>
+    <item>85%</item>
+    <item>90%</item>
+    <item>95%</item>
+  </string-array>
+  <string-array name="percentage2_values" translatable="false">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+    <item>55</item>
+    <item>60</item>
+    <item>65</item>
+    <item>70</item>
+    <item>75</item>
+    <item>80</item>
+    <item>85</item>
+    <item>90</item>
+    <item>95</item>
+  </string-array>
   <string-array name="photo_scale_entries">
     <item>Remplissage (par défaut)</item>
     <item>Centre</item>
+  </string-array>
+  <string-array name="photo_scale_values" translatable="false">
+    <item>CENTER_CROP</item>
+    <item>FIT_CENTER</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
     <item>Aucune limite (par défaut)</item>
@@ -175,21 +572,104 @@
     <item>30 minutes</item>
     <item>60 minutes</item>
   </string-array>
+  <string-array name="playback_max_video_length_values" translatable="false">
+    <item>0</item>
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>60</item>
+    <item>120</item>
+    <item>180</item>
+    <item>240</item>
+    <item>300</item>
+    <item>360</item>
+    <item>420</item>
+    <item>480</item>
+    <item>540</item>
+    <item>600</item>
+    <item>1200</item>
+    <item>1800</item>
+    <item>3600</item>
+  </string-array>
+  <string-array name="playback_speed_entries" translatable="false">
+    <item>0.2x</item>
+    <item>0.4x</item>
+    <item>0.6x</item>
+    <item>0.8x</item>
+    <item>1x*</item>
+    <item>1.2x</item>
+    <item>1.4x</item>
+    <item>1.6x</item>
+    <item>1.8x</item>
+    <item>2x</item>
+  </string-array>
+  <string-array name="playback_speed_values" translatable="false">
+    <item>0.2</item>
+    <item>0.4</item>
+    <item>0.6</item>
+    <item>0.8</item>
+    <item>1</item>
+    <item>1.2</item>
+    <item>1.4</item>
+    <item>1.6</item>
+    <item>1.8</item>
+    <item>2</item>
+  </string-array>
   <string-array name="progress_bar_location_entries">
     <item>Handicapés</item>
     <item>Haut de l\'écran</item>
     <item>Bas de l\'écran</item>
+  </string-array>
+  <string-array name="progress_bar_location_values" translatable="false">
+    <item>DISABLED</item>
+    <item>TOP</item>
+    <item>BOTTOM</item>
   </string-array>
   <string-array name="progress_bar_type_entries">
     <item>Vidéos et photos</item>
     <item>Vidéos uniquement</item>
     <item>Photos seulement</item>
   </string-array>
+  <string-array name="progress_bar_type_values" translatable="false">
+    <item>BOTH</item>
+    <item>VIDEOS</item>
+    <item>PHOTOS</item>
+  </string-array>
+  <string-array name="projectivy_shared_providers_default" translatable="false">
+    <item>APPLE</item>
+    <item>AMAZON</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+  </string-array>
   <string-array name="projectivy_shared_providers_entries">
     <item>Vidéos Apple</item>
     <item>Vidéos Amazon</item>
     <item>Vidéos créatives Jetson</item>
     <item>Vidéos de Robin Fourcade</item>
+  </string-array>
+  <string-array name="projectivy_shared_providers_values" translatable="false">
+    <item>APPLE</item>
+    <item>AMAZON</item>
+    <item>COMM1</item>
+    <item>COMM2</item>
+  </string-array>
+  <string-array name="samba_videos_smb_dialects_default" translatable="false">
+    <item>SMB_2_1</item>
+    <item>SMB_2_0_2</item>
+  </string-array>
+  <string-array name="samba_videos_smb_dialects_entries" translatable="false">
+    <item>v3.1.1</item>
+    <item>v3.0.2</item>
+    <item>v3.0</item>
+    <item>v2.1</item>
+    <item>v2.0.2</item>
+  </string-array>
+  <string-array name="samba_videos_smb_dialects_values" translatable="false">
+    <item>SMB_3_1_1</item>
+    <item>SMB_3_0_2</item>
+    <item>SMB_3_0</item>
+    <item>SMB_2_1</item>
+    <item>SMB_2_0_2</item>
   </string-array>
   <string-array name="seek_interval_entries">
     <item>10 secondes</item>
@@ -198,6 +678,14 @@
     <item>1 minute</item>
     <item>2 minutes</item>
     <item>5 minutes</item>
+  </string-array>
+  <string-array name="seek_interval_values" translatable="false">
+    <item>10</item>
+    <item>20</item>
+    <item>30</item>
+    <item>60</item>
+    <item>120</item>
+    <item>300</item>
   </string-array>
   <string-array name="sleep_timer_entries">
     <item>Désactivé*</item>
@@ -214,6 +702,21 @@
     <item>55 minutes</item>
     <item>60 minutes</item>
   </string-array>
+  <string-array name="sleep_timer_values" translatable="false">
+    <item>0</item>
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>35</item>
+    <item>40</item>
+    <item>45</item>
+    <item>50</item>
+    <item>55</item>
+    <item>60</item>
+  </string-array>
   <string-array name="slideshow_speed_entries">
     <item>5 secondes</item>
     <item>10 secondes</item>
@@ -227,7 +730,26 @@
     <item>10 minutes</item>
     <item>20 minutes</item>
     <item>30 minutes</item>
-    <item>1 heure</item>
+    <item>1 hour</item>
+    <item>6 hours</item>
+    <item>12 hours</item>
+  </string-array>
+  <string-array name="slideshow_speed_values" translatable="false">
+    <item>5</item>
+    <item>10</item>
+    <item>15</item>
+    <item>20</item>
+    <item>25</item>
+    <item>30</item>
+    <item>60</item>
+    <item>180</item>
+    <item>300</item>
+    <item>600</item>
+    <item>1200</item>
+    <item>1800</item>
+    <item>3600</item>
+    <item>21600</item>
+    <item>43200</item>
   </string-array>
   <string-array name="slot_entries">
     <item>Vide</item>
@@ -242,9 +764,64 @@
     <item>Message #3</item>
     <item>Message #4</item>
   </string-array>
+  <string-array name="slot_values" translatable="false">
+    <item>EMPTY</item>
+    <item>CLOCK</item>
+    <item>LOCATION</item>
+    <item>WEATHER1</item>
+    <item>MUSIC1</item>
+    <item>MUSIC2</item>
+    <item>DATE</item>
+    <item>MESSAGE1</item>
+    <item>MESSAGE2</item>
+    <item>MESSAGE3</item>
+    <item>MESSAGE4</item>
+  </string-array>
   <string-array name="temperature_units_entries">
     <item>C° / Celsius</item>
     <item>F° / Fahrenheit</item>
+  </string-array>
+  <string-array name="temperature_units_values" translatable="false">
+    <item>METRIC</item>
+    <item>IMPERIAL</item>
+  </string-array>
+  <string-array name="text_font_entries" translatable="false">
+    <item>Open Sans*</item>
+    <item>Roboto</item>
+  </string-array>
+  <string-array name="text_font_values" translatable="false">
+    <item>open-sans</item>
+    <item>sans-serif</item>
+  </string-array>
+  <string-array name="text_size_entries" translatable="false">
+    <item>72sp</item>
+    <item>66sp</item>
+    <item>60sp</item>
+    <item>54sp</item>
+    <item>48sp</item>
+    <item>42sp</item>
+    <item>36sp</item>
+    <item>32sp</item>
+    <item>28sp</item>
+    <item>24sp</item>
+    <item>21sp</item>
+    <item>18sp*</item>
+    <item>15sp</item>
+  </string-array>
+  <string-array name="text_size_values" translatable="false">
+    <item>72</item>
+    <item>66</item>
+    <item>60</item>
+    <item>54</item>
+    <item>48</item>
+    <item>42</item>
+    <item>36</item>
+    <item>32</item>
+    <item>28</item>
+    <item>24</item>
+    <item>21</item>
+    <item>18</item>
+    <item>15</item>
   </string-array>
   <string-array name="text_weight_entries">
     <item>100/Mince</item>
@@ -257,9 +834,32 @@
     <item>800/Extra Gras</item>
     <item>900/Lourd</item>
   </string-array>
+  <string-array name="text_weight_values" translatable="false">
+    <item>100</item>
+    <item>200</item>
+    <item>300</item>
+    <item>400</item>
+    <item>500</item>
+    <item>600</item>
+    <item>700</item>
+    <item>800</item>
+    <item>900</item>
+  </string-array>
   <string-array name="video_scale_entries">
     <item>Remplir avec du rognage (par défaut)</item>
     <item>Échelle sans culture</item>
+  </string-array>
+  <string-array name="video_scale_values" translatable="false">
+    <item>SCALE_TO_FIT_WITH_CROPPING</item>
+    <item>SCALE_TO_FIT</item>
+  </string-array>
+  <string-array name="video_scene_type_default" translatable="false">
+    <item>NATURE</item>
+    <item>COUNTRYSIDE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
   </string-array>
   <string-array name="video_scene_type_entries">
     <item>Nature</item>
@@ -269,11 +869,31 @@
     <item>Mer</item>
     <item>l\'espace extra-atmosphérique</item>
   </string-array>
+  <string-array name="video_scene_type_values" translatable="false">
+    <item>NATURE</item>
+    <item>COUNTRYSIDE</item>
+    <item>BEACH</item>
+    <item>CITY</item>
+    <item>SEA</item>
+    <item>SPACE</item>
+  </string-array>
+  <string-array name="video_time_of_day_default" translatable="false">
+    <item>SUNRISE</item>
+    <item>DAY</item>
+    <item>SUNSET</item>
+    <item>NIGHT</item>
+  </string-array>
   <string-array name="video_time_of_day_entries">
     <item>Lever de soleil</item>
     <item>Jour</item>
     <item>Coucher de soleil</item>
     <item>Lever de soleil</item>
+  </string-array>
+  <string-array name="video_time_of_day_values" translatable="false">
+    <item>SUNRISE</item>
+    <item>DAY</item>
+    <item>SUNSET</item>
+    <item>NIGHT</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Vide</item>
@@ -282,11 +902,25 @@
     <item>Icône</item>
     <item>Résumé</item>
   </string-array>
+  <string-array name="weather_forecast_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>CITY</item>
+    <item>TEMPERATURE</item>
+    <item>ICON</item>
+    <item>SUMMARY</item>
+  </string-array>
   <string-array name="weather_type_entries">
     <item>Vide</item>
     <item>Prévisions</item>
     <item>Le vent</item>
     <item>Humidité</item>
     <item>Lever de soleil</item>
+  </string-array>
+  <string-array name="weather_type_values" translatable="false">
+    <item>EMPTY</item>
+    <item>FORECAST</item>
+    <item>WIND</item>
+    <item>HUMIDITY</item>
+    <item>SUNRISE</item>
   </string-array>
 </resources>

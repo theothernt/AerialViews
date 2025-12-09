@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">הצג תיאור או נקודות עניין</string>
   <string name="appearance_exit_to_settings_summary">יש להקצות את הפעולה \"יציאה להגדרות\" ללחצן או לכיוון d-pad כדי שתכונה זו תפעל</string>
   <string name="appearance_exit_to_settings_title">הקצה פעולה</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
   <string name="appearance_fade_in_title">דעיכה פנימה</string>
   <string name="appearance_fade_out_title">דעיכה החוצה</string>
   <string name="appearance_gradient_bottom_summary">הצג מדרון צבעים מאחורי תצוגת העל בתחתית המסך על מנת להקל את תצוגתם</string>

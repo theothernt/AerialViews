@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">Показать описание или достопримечательности</string>
   <string name="appearance_exit_to_settings_summary">Для работы этой функции действие «Выход в настройки» должно быть назначено кнопке или направлению на крестовине</string>
   <string name="appearance_exit_to_settings_title">Назначить действие</string>
+  <string name="appearance_fade_corners_title">Углы потускнеют</string>
   <string name="appearance_fade_in_title">Появление</string>
   <string name="appearance_fade_out_title">Скрытие</string>
   <string name="appearance_gradient_bottom_summary">Отображение градиента за наложениями в нижней части экрана, чтобы их было легче увидеть</string>
@@ -458,7 +459,7 @@
   <string name="sources_comm1_summary">Потоковая передача видео сообщества с помощью подключения к Интернету</string>
   <string name="sources_comm1_title">Видео от Jetson Creative</string>
   <string name="sources_comm2_summary">Потоковая передача видео сообщества с помощью подключения к Интернету</string>
-  <string name="sources_comm2_title">Видео от Robin Fourcade</string>
+  <string name="sources_comm2_title">Видео Робина Фуркада</string>
   <string name="sources_custom_feed_summary">Добавьте пакеты расширений от Jetson Creative или пользовательскую ленту медиафайлов с описаниями</string>
   <string name="sources_custom_feed_title">Пользовательские каналы</string>
   <string name="sources_immich_summary">Воспроизведение видео и фотографий с сервера Immich</string>

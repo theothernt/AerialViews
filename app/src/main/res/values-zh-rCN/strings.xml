@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">显示描述或景点</string>
   <string name="appearance_exit_to_settings_summary">要使此功能生效，必须将“退出到设置”操作分配给一个按键或方向键</string>
   <string name="appearance_exit_to_settings_title">设置操作</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
   <string name="appearance_fade_in_title">淡入</string>
   <string name="appearance_fade_out_title">淡出</string>
   <string name="appearance_gradient_bottom_summary">为屏幕底部叠加内容添加渐变背景，使其更易查看</string>

@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">Zeige Beschreibung oder Sehenswürdigkeiten</string>
   <string name="appearance_exit_to_settings_summary">Die Aktion \"Zurück zu den Einstellungen\" muss einer Taste oder einer D-Pad-Richtung zugewiesen werden damit sie funktioniert</string>
   <string name="appearance_exit_to_settings_title">Eine Aktion zuweisen</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
   <string name="appearance_fade_in_title">Einblenden</string>
   <string name="appearance_fade_out_title">Ausblenden</string>
   <string name="appearance_gradient_bottom_summary">Zeige einen Farbverlauf hinter Overlays am unteren Bildschirmrand an, damit sie leichter zu erkennen sind</string>

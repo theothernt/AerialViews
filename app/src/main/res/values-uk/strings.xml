@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">"Показати опис або пам\'ятки"</string>
   <string name="appearance_exit_to_settings_summary">Для роботи цієї функції дія «Вихід у налаштування» повинна бути призначена кнопці або напрямку на хрестовині</string>
   <string name="appearance_exit_to_settings_title">Призначити дію</string>
+  <string name="appearance_fade_corners_title">Кути потьмяніють</string>
   <string name="appearance_fade_in_title">Поява</string>
   <string name="appearance_fade_out_title">Приховання</string>
   <string name="appearance_gradient_bottom_summary">Показати градієнт за накладками внизу екрана, щоб їх було легше побачити</string>
@@ -458,7 +459,7 @@
   <string name="sources_comm1_summary">Потокове відео спільноти, використовуючи підключення до Інтернету</string>
   <string name="sources_comm1_title">Відео від Jetson Creative</string>
   <string name="sources_comm2_summary">Потокове відео спільноти, використовуючи підключення до Інтернету</string>
-  <string name="sources_comm2_title">Відео від Robin Fourcade</string>
+  <string name="sources_comm2_title">Відео Робіна Фуркада</string>
   <string name="sources_custom_feed_summary">Додайте пакети розширення від Jetson Creative або власну стрічку медіа з описами</string>
   <string name="sources_custom_feed_title">Користувацькі канали</string>
   <string name="sources_immich_summary">Відтворення відео та фотографій із сервера Immich</string>

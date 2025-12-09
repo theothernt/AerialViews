@@ -60,6 +60,7 @@
   <string name="appearance_description_videos_manifest_title">Mostrar descripción o puntos de interés</string>
   <string name="appearance_exit_to_settings_summary">La acción \"Salir a configuración\" debe asignarse a un botón o dirección del d-pad para que esta función funcione</string>
   <string name="appearance_exit_to_settings_title">Asignar una acción</string>
+  <string name="appearance_fade_corners_title">Corners to fade</string>
   <string name="appearance_fade_in_title">Fundido de entrada</string>
   <string name="appearance_fade_out_title">Fundido de salida</string>
   <string name="appearance_gradient_bottom_summary">Muestre un gradiente detrás de las superposiciones en la parte inferior de la pantalla para que sean más fáciles de ver.</string>
