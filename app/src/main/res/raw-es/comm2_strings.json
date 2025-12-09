@@ -1,56 +1,20 @@
 {
-    "french_alps_mont_blanc_202202_0": {
-        "translation": "Volando hacia el Mont Blanc, Megève, Francia"
-    },
-    "french_alps_sea_of_clouds_202202_0": {
-        "translation": "Vuelo sobre un mar de nubes, Megève, Francia"
-    },
-    "french_alps_sea_of_clouds_2_202202_0": {
-        "translation": "Vuelo sobre un mar de nubes, Megève, Francia"
-    },
-    "robinfrcd_capmechant2_202304_0": {
-        "translation": "Volando sobre mar turbulento en Cap Méchant, Réunion, Francia"
-    },
-    "robinfrcd_capmechant_202304_0": {
-        "translation": "Volando sobre mar turbulento en Cap Méchant, Réunion, Francia"
-    },
-    "robinfrcd_grandcoude_202304_0": {
-        "translation": "Volando sobre la ruta Grand Coude, Réunion, Francia"
-    },
-    "robinfrcd_grandetang_202304_0": {
-        "translation": "Volando sobre la ruta Grand Coude, Réunion, Francia"
-    },
-    "robinfrcd_lagon_202304_0": {
-        "translation": "Volando sobre el arrecife de coral de Saint-Leu, Réunion, Francia"
-    },
-    "robinfrcd_mafate_202304_0": {
-        "translation": "Volando hacia un islote en Mafate, Réunion, Francia"
-    },
-    "robinfrcd_pitondesneiges_202304_0": {
-        "translation": "Volando alrededor de Piton des Neiges, Réunion, Francia"
-    },
-    "robinfrcd_pitonfournaise_202304_0": {
-        "translation": "Volando sobre Plaine des Sables, Piton de la Fournaise, Réunion, Francia"
-    },
-    "robinfrcd_trestastar_202304_0": {
-        "translation": "Volando alrededor del naufragio del Tresta Star, Piton de la Fournaise, Réunion, Francia"
-    },
-    "robinfrcd_troudefer_202304_0": {
-        "translation": "Volando sobre Trou de Fer, Réunion, Francia"
-    },
-    "video_aurland_202109_0": {
-        "translation": "Vuelo sobre el fiordo de Aurland, Noruega"
-    },
-    "video_henningsvaer_202109_0": {
-        "translation": "Vuelo sobre el estadio Henningsvaer, Noruega"
-    },
-    "video_nusfjord_202109_0": {
-        "translation": "Vuelo sobre Nusfjord, Lofoten, Noruega"
-    },
-    "video_reine_202109_0": {
-        "translation": "Vuelo sobre Reinevågen, Lofoten, Noruega"
-    },
-    "video_vettisfossen_202109_0": {
-        "translation": "Frente a la cascada Vettisfossen, Noruega"
-    }
+    "french_alps_mont_blanc_202202_0": "Volando hacia el Mont Blanc, Megève, Francia",
+    "french_alps_sea_of_clouds_202202_0": "Vuelo sobre un mar de nubes, Megève, Francia",
+    "french_alps_sea_of_clouds_2_202202_0": "Vuelo sobre un mar de nubes, Megève, Francia",
+    "robinfrcd_capmechant2_202304_0": "Volando sobre mar turbulento en Cap Méchant, Réunion, Francia",
+    "robinfrcd_capmechant_202304_0": "Volando sobre mar turbulento en Cap Méchant, Réunion, Francia",
+    "robinfrcd_grandcoude_202304_0": "Volando sobre la ruta Grand Coude, Réunion, Francia",
+    "robinfrcd_grandetang_202304_0": "Volando sobre la ruta Grand Coude, Réunion, Francia",
+    "robinfrcd_lagon_202304_0": "Volando sobre el arrecife de coral de Saint-Leu, Réunion, Francia",
+    "robinfrcd_mafate_202304_0": "Volando hacia un islote en Mafate, Réunion, Francia",
+    "robinfrcd_pitondesneiges_202304_0": "Volando alrededor de Piton des Neiges, Réunion, Francia",
+    "robinfrcd_pitonfournaise_202304_0": "Volando sobre Plaine des Sables, Piton de la Fournaise, Réunion, Francia",
+    "robinfrcd_trestastar_202304_0": "Volando alrededor del naufragio del Tresta Star, Piton de la Fournaise, Réunion, Francia",
+    "robinfrcd_troudefer_202304_0": "Volando sobre Trou de Fer, Réunion, Francia",
+    "video_aurland_202109_0": "Vuelo sobre el fiordo de Aurland, Noruega",
+    "video_henningsvaer_202109_0": "Vuelo sobre el estadio Henningsvaer, Noruega",
+    "video_nusfjord_202109_0": "Vuelo sobre Nusfjord, Lofoten, Noruega",
+    "video_reine_202109_0": "Vuelo sobre Reinevågen, Lofoten, Noruega",
+    "video_vettisfossen_202109_0": "Frente a la cascada Vettisfossen, Noruega"
 }
