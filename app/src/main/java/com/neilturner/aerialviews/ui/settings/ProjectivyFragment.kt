@@ -44,5 +44,8 @@ class ProjectivyFragment :
             selectedProviders.contains("COMM1")
         findPreference<Preference>("projectivy_comm2_videos_options")?.isVisible =
             selectedProviders.contains("COMM2")
+
+        findPreference<Preference>("projectivy_local_videos_options")?.isVisible =
+            selectedProviders.contains("LOCAL")
     }
 }

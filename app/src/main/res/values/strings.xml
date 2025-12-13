@@ -7,6 +7,10 @@
   <string name="loading_title">Loading…</string>
   <string name="loading_error">No videos or photos found, please check your settings</string>
 
+  <!-- Projectivy Integration -->
+  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
+  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
+
   <!-- Common -->
   <string name="common_default">(default)</string>
 

@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
-import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
+import com.neilturner.aerialviews.models.prefs.LocalMediaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
@@ -18,7 +18,7 @@ import java.io.File
 
 class LocalMediaProvider(
     context: Context,
-    private val prefs: LocalMediaPrefs,
+    private val prefs: LocalMediaProviderPreferences,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
