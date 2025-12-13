@@ -3,13 +3,13 @@ package com.neilturner.aerialviews.services.projectivy
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.prefs.ProjectivyAmazonPrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyApplePrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyComm1Prefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyComm2Prefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.ProjectivyPrefs
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import tv.projectivy.plugin.wallpaperprovider.api.Event
 import tv.projectivy.plugin.wallpaperprovider.api.IWallpaperProviderService
 import tv.projectivy.plugin.wallpaperprovider.api.Wallpaper
@@ -33,6 +34,7 @@ class WallpaperProviderService : Service() {
                     is Event.TimeElapsed -> {
                         // Get enabled providers based on shareProjectivyVideos preference
                         val enabledProviders = getEnabledProviders()
+                        Timber.i("Enabled providers: ${enabledProviders.size}")
 
                         // Fetch media from all enabled providers
                         val aerialMediaList =
@@ -47,6 +49,7 @@ class WallpaperProviderService : Service() {
                                         }
                                     }
                             }.let { mediaList ->
+                                Timber.log(2, "Wallpaper media items: ${mediaList.size}")
                                 if (ProjectivyPrefs.shuffleVideos) {
                                     mediaList.shuffled()
                                 } else {
