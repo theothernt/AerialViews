@@ -2,24 +2,17 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_video_source">
+        <PreferenceCategory app:title="@string/category_media_scanner_options">
                 <ListPreference
-                    app:defaultValue="@string/local_videos_search_type_default"
-                    app:entries="@array/local_videos_search_type_entries"
-                    app:entryValues="@array/local_videos_search_type_values"
-                    app:key="projectivy_local_videos_search_type"
-                    app:title="@string/local_videos_search_type_title"
+                    app:defaultValue="VIDEOS"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="projectivy_local_media_type"
+                    app:title="@string/local_media_type_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <Preference
-                    android:key="projectivy_local_videos_search_test"
-                    android:title="@string/local_videos_search_test" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_media_scanner_options">
-                <Preference
                     app:key="projectivy_local_videos_media_store_notice"
-                    app:enabled="false"
                     app:selectable="false"
                     app:summary="@string/local_videos_media_store_summary"/>
 
@@ -45,29 +38,9 @@
                     android:summary="@string/local_videos_media_store_filter_folder_summary" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_folder_access_options">
+        <PreferenceCategory app:title="@string/category_actions">
                 <Preference
-                    app:key="projectivy_local_videos_legacy_notice"
-                    app:enabled="false"
-                    app:selectable="false"
-                    app:summary="@string/local_videos_legacy_summary"/>
-
-                <ListPreference
-                    app:dependency="projectivy_local_videos_legacy_notice"
-                    app:key="projectivy_local_videos_legacy_volume"
-                    app:title="@string/local_videos_legacy_volume_title"
-                    app:summary="@string/local_videos_legacy_volume_summary" />
-
-                <EditTextPreference
-                    app:dependency="projectivy_local_videos_legacy_notice"
-                    android:key="projectivy_local_videos_legacy_folder"
-                    android:title="@string/local_videos_legacy_folder_title"
-                    android:summary="@string/local_videos_legacy_folder_summary" />
-
-                <SwitchPreferenceCompat
-                    app:dependency="projectivy_local_videos_legacy_notice"
-                    app:key="projectivy_local_videos_legacy_search_subfolders"
-                    app:title="@string/local_videos_legacy_search_subfolders_title"
-                    app:defaultValue="false" />
+                    android:key="projectivy_local_videos_search_test"
+                    android:title="@string/local_videos_search_test" />
         </PreferenceCategory>
 </PreferenceScreen>
