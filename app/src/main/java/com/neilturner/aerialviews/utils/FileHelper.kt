@@ -28,7 +28,7 @@ object FileHelper {
         } catch (ex: Exception) {
             Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
         }
-        Timber.i("ContentResolver found ${videos.size} files")
+        Timber.i("ContentResolver found ${videos.size} videos")
         return videos
     }
 
@@ -54,7 +54,7 @@ object FileHelper {
         } catch (ex: Exception) {
             Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
         }
-        Timber.i("ContentResolver found ${images.size} files")
+        Timber.i("ContentResolver found ${images.size} photos")
         return images
     }
 
