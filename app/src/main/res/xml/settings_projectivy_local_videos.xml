@@ -2,15 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/category_media_scanner_options">
+        <PreferenceCategory app:title="@string/category_video_source">
                 <ListPreference
-                    app:defaultValue="VIDEOS"
+                    app:defaultValue="@string/media_type_default"
                     app:entries="@array/media_type_entries"
                     app:entryValues="@array/media_type_values"
                     app:key="projectivy_local_media_type"
                     app:title="@string/local_media_type_title"
                     app:useSimpleSummaryProvider="true" />
 
+            <Preference
+                android:key="projectivy_local_videos_search_test"
+                android:title="@string/local_videos_search_test" />
+
+        </PreferenceCategory>
+        <PreferenceCategory app:title="@string/category_media_scanner_options">
                 <Preference
                     app:key="projectivy_local_videos_media_store_notice"
                     app:selectable="false"
@@ -36,11 +42,5 @@
                     android:key="projectivy_local_videos_media_store_filter_folder"
                     android:title="@string/local_videos_media_store_filter_folder_title"
                     android:summary="@string/local_videos_media_store_filter_folder_summary" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_actions">
-                <Preference
-                    android:key="projectivy_local_videos_search_test"
-                    android:title="@string/local_videos_search_test" />
         </PreferenceCategory>
 </PreferenceScreen>
