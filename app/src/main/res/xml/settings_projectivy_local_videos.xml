@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_media_scanner_options">
+                <ListPreference
+                    app:defaultValue="VIDEOS"
+                    app:entries="@array/media_type_entries"
+                    app:entryValues="@array/media_type_values"
+                    app:key="projectivy_local_media_type"
+                    app:title="@string/local_media_type_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <Preference
+                    app:key="projectivy_local_videos_media_store_notice"
+                    app:selectable="false"
+                    app:summary="@string/local_videos_media_store_summary"/>
+
+                <Preference
+                    app:isPreferenceVisible="false"
+                    app:dependency="projectivy_local_videos_media_store_notice"
+                    app:selectable="false"
+                    app:key="projectivy_local_videos_shield_notice"
+                    app:title="@string/local_videos_shield_notice_title"
+                    app:summary="@string/local_videos_shield_notice_summary"/>
+
+                <SwitchPreference
+                    app:dependency="projectivy_local_videos_media_store_notice"
+                    app:defaultValue="false"
+                    app:key="projectivy_local_videos_media_store_filter_enabled"
+                    app:title="@string/local_videos_media_store_filter_enabled_title"
+                    app:summary="@string/local_videos_media_store_filter_enabled_summary" />
+
+                <EditTextPreference
+                    app:dependency="projectivy_local_videos_media_store_notice"
+                    android:key="projectivy_local_videos_media_store_filter_folder"
+                    android:title="@string/local_videos_media_store_filter_folder_title"
+                    android:summary="@string/local_videos_media_store_filter_folder_summary" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_actions">
+                <Preference
+                    android:key="projectivy_local_videos_search_test"
+                    android:title="@string/local_videos_search_test" />
+        </PreferenceCategory>
+</PreferenceScreen>
