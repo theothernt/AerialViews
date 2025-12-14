@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
-import timber.log.Timber
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -56,7 +55,7 @@ class DreamActivity : DreamService() {
     }
 
     private fun altWakeUp(exitApp: Boolean) {
-        if (exitApp) safeWakeUp()
+        if (exitApp) wakeUp()
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -66,25 +65,7 @@ class DreamActivity : DreamService() {
             return true
         }
 
-        // DreamService.dispatchKeyEvent() calls wakeUp() internally.
-        // On some devices/states the dream token can be null, which can crash in wakeUp().
-        if (event.action == KeyEvent.ACTION_DOWN) {
-            safeWakeUp()
-        }
-        return true
-    }
-
-    private fun safeWakeUp() {
-        if (window?.decorView?.windowToken == null) {
-            Timber.w("wakeUp skipped: windowToken is null")
-            return
-        }
-
-        try {
-            wakeUp()
-        } catch (e: IllegalArgumentException) {
-            Timber.w(e, "wakeUp failed")
-        }
+        return super.dispatchKeyEvent(event)
     }
 
     override fun onDreamingStopped() {
