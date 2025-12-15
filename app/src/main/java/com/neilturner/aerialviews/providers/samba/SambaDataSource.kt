@@ -77,9 +77,31 @@ class SambaDataSource : BaseDataSource(true) {
         try {
             return readInternal(buffer, offset, readLength)
         } catch (e: Exception) {
-            Timber.e(e)
-            return 0
+            // Check if this is an interruption (happens when ExoPlayer cancels loading)
+            if (isInterruptedException(e)) {
+                Timber.d("SMB read interrupted - likely player stopping or switching media")
+                // Restore interrupted status for the caller
+                Thread.currentThread().interrupt()
+                return 0
+            }
+            Timber.e(e, "SMB read error")
+            return C.RESULT_END_OF_INPUT
         }
+    }
+
+    /**
+     * Check if the exception is caused by thread interruption.
+     * SMBJ wraps InterruptedException in multiple layers of exceptions.
+     */
+    private fun isInterruptedException(e: Throwable?): Boolean {
+        var cause: Throwable? = e
+        while (cause != null) {
+            if (cause is InterruptedException) {
+                return true
+            }
+            cause = cause.cause
+        }
+        return false
     }
 
     @SuppressLint("UnsafeOptInUsageError")
