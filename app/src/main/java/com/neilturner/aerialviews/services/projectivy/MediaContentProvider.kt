@@ -10,6 +10,7 @@ import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
+import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
 import com.neilturner.aerialviews.utils.FileHelper
 import timber.log.Timber
@@ -285,9 +286,15 @@ class MediaContentProvider : ContentProvider() {
         val columns = arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI)
         val cursor = MatrixCursor(columns)
 
-        // Get videos and images using FileHelper
-        val videos = FileHelper.findLocalVideos(ctx)
-        val images = FileHelper.findLocalImages(ctx)
+        val mediaType = ProjectivyLocalMediaPrefs.mediaType
+        val includeVideos = mediaType != ProviderMediaType.PHOTOS
+        val includeImages = mediaType != ProviderMediaType.VIDEOS
+
+        Timber.d("query() - Media type: $mediaType (videos: $includeVideos, images: $includeImages)")
+
+        // Get videos and images using FileHelper based on media type preference
+        val videos = if (includeVideos) FileHelper.findLocalVideos(ctx) else emptyList()
+        val images = if (includeImages) FileHelper.findLocalImages(ctx) else emptyList()
 
         Timber.d("query() - Found ${videos.size} videos and ${images.size} images")
 
