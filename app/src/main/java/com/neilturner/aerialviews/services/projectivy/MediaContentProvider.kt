@@ -122,6 +122,46 @@ class MediaContentProvider : ContentProvider() {
         return true
     }
 
+    /**
+     * Validates if a file is allowed to be accessed based on preferences and file type.
+     *
+     * @param filePath The absolute path to the file
+     * @return true if the file passes all validation checks, false otherwise
+     */
+    private fun isMediaFileValid(filePath: String): Boolean {
+        val file = File(filePath)
+
+        // Check if file exists and is readable
+        if (!file.exists() || !file.canRead()) {
+            return false
+        }
+
+        val filename = file.name
+
+        // Skip hidden files
+        if (FileHelper.isDotOrHiddenFile(filename)) {
+            return false
+        }
+
+        // Check if file type is supported (video or image)
+        if (!FileHelper.isSupportedVideoType(filename) &&
+            !FileHelper.isSupportedImageType(filename)
+        ) {
+            return false
+        }
+
+        // Apply folder filter if enabled
+        if (ProjectivyLocalMediaPrefs.filterEnabled) {
+            val filterFolder = ProjectivyLocalMediaPrefs.filterFolder
+            val fileUri = filePath.toUri()
+            if (FileHelper.shouldFilter(fileUri, filterFolder)) {
+                return false
+            }
+        }
+
+        return true
+    }
+
     override fun getType(uri: Uri): String? {
         Timber.d("getType() called with URI: $uri")
         return when (uriMatcher.match(uri)) {
@@ -164,39 +204,14 @@ class MediaContentProvider : ContentProvider() {
 
                 Timber.d("openFile() - Extracted file path: $filePath")
 
-                val file = File(filePath)
-                if (!file.exists()) {
-                    Timber.e("openFile() - File not found: $filePath")
-                    throw FileNotFoundException("File not found: $filePath")
-                }
-
-                if (!file.canRead()) {
-                    Timber.e("openFile() - Cannot read file: $filePath")
-                    throw SecurityException("Cannot read file: $filePath")
-                }
-
-                // Check if file type is supported (video or image)
-                val filename = file.name
-                if (!FileHelper.isSupportedVideoType(filename) &&
-                    !FileHelper.isSupportedImageType(filename)
-                ) {
-                    Timber.w("openFile() - Rejected: Unsupported file type: $filename")
-                    throw SecurityException("Unsupported file type: $filename")
-                }
-
-                // Apply folder filter if enabled
-                if (ProjectivyLocalMediaPrefs.filterEnabled) {
-                    val filterFolder = ProjectivyLocalMediaPrefs.filterFolder
-                    val fileUri = filePath.toUri()
-                    if (FileHelper.shouldFilter(fileUri, filterFolder)) {
-                        Timber.w("openFile() - Rejected: File filtered out by folder filter: $filePath (filter: $filterFolder)")
-                        throw SecurityException("File does not match folder filter")
-                    }
-                    Timber.d("openFile() - Passed folder filter check (filter: $filterFolder)")
+                // Validate file using shared helper
+                if (!isMediaFileValid(filePath)) {
+                    Timber.w("openFile() - Rejected: File validation failed for: $filePath")
+                    throw SecurityException("File access not allowed: $filePath")
                 }
 
                 Timber.i("openFile() - SUCCESS: Opening file for external access: $filePath")
-                ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
+                ParcelFileDescriptor.open(File(filePath), ParcelFileDescriptor.MODE_READ_ONLY)
             }
             else -> {
                 Timber.e("openFile() - Unknown URI pattern: $uri")
@@ -254,21 +269,6 @@ class MediaContentProvider : ContentProvider() {
                 Timber.d("query() - Fetching local media files")
                 queryLocalMedia(ctx)
             }
-            LOCAL_MEDIA -> {
-                // Single file query - return info about the specific file
-                val filePath = extractFilePath(uri) ?: run {
-                    Timber.w("query() - Failed to extract file path from URI: $uri")
-                    return null
-                }
-
-                val file = File(filePath)
-                if (!file.exists()) {
-                    Timber.w("query() - File not found: $filePath")
-                    return null
-                }
-
-                querySingleFile(file, uri)
-            }
             else -> {
                 Timber.w("query() - Unknown URI pattern: $uri")
                 null
@@ -296,36 +296,23 @@ class MediaContentProvider : ContentProvider() {
         val videos = if (includeVideos) FileHelper.findLocalVideos(ctx) else emptyList()
         val images = if (includeImages) FileHelper.findLocalImages(ctx) else emptyList()
 
+        // Combine all media files into a single list
+        val allMedia = videos + images
+
         Timber.d("query() - Found ${videos.size} videos and ${images.size} images")
 
         var id = 0L
-        val filterEnabled = ProjectivyLocalMediaPrefs.filterEnabled
-        val filterFolder = ProjectivyLocalMediaPrefs.filterFolder
         var videoCount = 0
         var imageCount = 0
 
-        // Process videos
-        for (filePath in videos) {
+        // Process all media files in a single loop
+        for (filePath in allMedia) {
+            // Use shared validation helper
+            if (!isMediaFileValid(filePath)) {
+                continue
+            }
+
             val file = File(filePath)
-
-            // Skip hidden files
-            if (FileHelper.isDotOrHiddenFile(file.name)) {
-                continue
-            }
-
-            // Check if file type is supported
-            if (!FileHelper.isSupportedVideoType(file.name)) {
-                continue
-            }
-
-            // Apply folder filter if enabled
-            if (filterEnabled) {
-                val fileUri = filePath.toUri()
-                if (FileHelper.shouldFilter(fileUri, filterFolder)) {
-                    continue
-                }
-            }
-
             val contentUri = toContentUri(filePath.toUri())
             val mimeType = getMimeType(filePath)
 
@@ -338,65 +325,16 @@ class MediaContentProvider : ContentProvider() {
                     contentUri.toString(),
                 ),
             )
-            videoCount++
-        }
 
-        // Process images
-        for (filePath in images) {
-            val file = File(filePath)
-
-            // Skip hidden files
-            if (FileHelper.isDotOrHiddenFile(file.name)) {
-                continue
+            // Track counts for logging
+            if (FileHelper.isSupportedVideoType(file.name)) {
+                videoCount++
+            } else {
+                imageCount++
             }
-
-            // Check if file type is supported
-            if (!FileHelper.isSupportedImageType(file.name)) {
-                continue
-            }
-
-            // Apply folder filter if enabled
-            if (filterEnabled) {
-                val fileUri = filePath.toUri()
-                if (FileHelper.shouldFilter(fileUri, filterFolder)) {
-                    continue
-                }
-            }
-
-            val contentUri = toContentUri(filePath.toUri())
-            val mimeType = getMimeType(filePath)
-
-            cursor.addRow(
-                arrayOf(
-                    id++,
-                    filePath,
-                    file.name,
-                    mimeType,
-                    contentUri.toString(),
-                ),
-            )
-            imageCount++
         }
 
         Timber.i("query() - Returning $videoCount videos and $imageCount images (${cursor.count} total) after filtering")
-        return cursor
-    }
-
-    private fun querySingleFile(file: File, contentUri: Uri): Cursor {
-        val columns = arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI)
-        val cursor = MatrixCursor(columns)
-
-        val mimeType = getMimeType(file.absolutePath)
-        cursor.addRow(
-            arrayOf(
-                0L,
-                file.absolutePath,
-                file.name,
-                mimeType,
-                contentUri.toString(),
-            ),
-        )
-
         return cursor
     }
 
