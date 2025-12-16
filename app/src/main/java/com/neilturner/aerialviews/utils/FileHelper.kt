@@ -6,56 +6,42 @@ import android.provider.MediaStore
 import timber.log.Timber
 
 object FileHelper {
-    fun findLocalVideos(context: Context): List<String> {
-        val videos = mutableListOf<String>()
-        val uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-        val column = MediaStore.MediaColumns.DATA
-        val projection = arrayOf(column)
-        try {
-            val cursor =
-                context
-                    .contentResolver
-                    .query(uri, projection, null, null, null)
-                    ?: return videos
-            try {
-                while (cursor.moveToNext()) {
-                    videos.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
-                }
-                cursor.close()
-            } catch (ex: Exception) {
-                Timber.e(ex, "Exception in contentResolver cursor: ${ex.message}")
-            }
-        } catch (ex: Exception) {
-            Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
-        }
-        Timber.i("ContentResolver found ${videos.size} videos")
-        return videos
-    }
+    fun findLocalVideos(context: Context): List<String> =
+        findLocalMedia(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "videos")
 
-    fun findLocalImages(context: Context): List<String> {
-        val images = mutableListOf<String>()
-        val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+    fun findLocalImages(context: Context): List<String> =
+        findLocalMedia(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "photos")
+
+    /**
+     * Queries MediaStore for media file paths.
+     *
+     * Note: MediaStore.MediaColumns.DATA is deprecated on Android 10+ (API 29) due to
+     * scoped storage, but it remains the only way to get actual file paths (not content:// URIs).
+     * This still works on Android TV devices which typically have relaxed storage restrictions.
+     */
+    private fun findLocalMedia(
+        context: Context,
+        contentUri: Uri,
+        mediaType: String,
+    ): List<String> {
+        val results = mutableListOf<String>()
+        @Suppress("DEPRECATION")
         val column = MediaStore.MediaColumns.DATA
         val projection = arrayOf(column)
         try {
-            val cursor =
-                context
-                    .contentResolver
-                    .query(uri, projection, null, null, null)
-                    ?: return images
-            try {
-                while (cursor.moveToNext()) {
-                    images.add(cursor.getString(cursor.getColumnIndexOrThrow(column)))
+            context.contentResolver
+                .query(contentUri, projection, null, null, null)
+                ?.use { cursor ->
+                    val columnIndex = cursor.getColumnIndexOrThrow(column)
+                    while (cursor.moveToNext()) {
+                        results.add(cursor.getString(columnIndex))
+                    }
                 }
-                cursor.close()
-            } catch (ex: Exception) {
-                Timber.e(ex, "Exception in contentResolver cursor: ${ex.message}")
-            }
         } catch (ex: Exception) {
-            Timber.e(ex, "Exception in contentResolver query: ${ex.message}")
+            Timber.e(ex, "Exception querying MediaStore for $mediaType: ${ex.message}")
         }
-        Timber.i("ContentResolver found ${images.size} photos")
-        return images
+        Timber.i("ContentResolver found ${results.size} $mediaType")
+        return results
     }
 
     fun isDotOrHiddenFile(filename: String): Boolean = filename.startsWith(".")
@@ -88,7 +74,7 @@ object FileHelper {
         uri: Uri,
         folder: String,
     ): Boolean {
-        if (folder.isEmpty() || folder.isBlank()) {
+        if (folder.isBlank()) {
             return false
         }
 
@@ -125,24 +111,23 @@ object FileHelper {
         }
     }
 
-    @Suppress("NAME_SHADOWING")
     fun fixLegacyFolder(folder: String): String {
-        var folder = folder
-
         if (folder.isEmpty()) {
             return ""
         }
 
-        if (folder.first() != '/') {
-            folder = "/$folder"
+        var result = folder
+
+        if (result.first() != '/') {
+            result = "/$result"
             Timber.i("Fixing folder - adding leading slash")
         }
 
-        if (folder.last() == '/') {
-            folder = folder.dropLast(1)
+        if (result.last() == '/') {
+            result = result.dropLast(1)
             Timber.i("Fixing folder - removing trailing slash")
         }
 
-        return folder
+        return result
     }
 }
