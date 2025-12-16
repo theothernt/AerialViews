@@ -4,8 +4,10 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
+import android.database.MatrixCursor
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
@@ -33,10 +35,20 @@ class MediaContentProvider : ContentProvider() {
     companion object {
         const val AUTHORITY = "com.neilturner.aerialviews.media"
         private const val LOCAL_MEDIA = 1
+        private const val LOCAL_MEDIA_LIST = 2
+
+        // Cursor columns for query results
+        const val COLUMN_ID = MediaStore.MediaColumns._ID
+        const val COLUMN_DATA = MediaStore.MediaColumns.DATA
+        const val COLUMN_DISPLAY_NAME = MediaStore.MediaColumns.DISPLAY_NAME
+        const val COLUMN_MIME_TYPE = MediaStore.MediaColumns.MIME_TYPE
+        const val COLUMN_CONTENT_URI = "content_uri"
 
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
             // Match: content://com.neilturner.aerialviews.media/local/*
             addURI(AUTHORITY, "local/*", LOCAL_MEDIA)
+            // Match: content://com.neilturner.aerialviews.media/local (for listing)
+            addURI(AUTHORITY, "local", LOCAL_MEDIA_LIST)
         }
 
         /**
@@ -223,8 +235,158 @@ class MediaContentProvider : ContentProvider() {
         selectionArgs: Array<out String>?,
         sortOrder: String?,
     ): Cursor? {
-        Timber.d("query() called with URI: $uri (not implemented)")
-        return null
+        Timber.d("query() called with URI: $uri")
+
+        return when (uriMatcher.match(uri)) {
+            LOCAL_MEDIA_LIST -> {
+                // Check if local media provider is enabled
+                if (!ProjectivyLocalMediaPrefs.enabled) {
+                    Timber.w("query() - Local media provider is disabled, returning empty cursor")
+                    return createEmptyCursor()
+                }
+
+                val ctx = context ?: run {
+                    Timber.e("query() - Context is null")
+                    return createEmptyCursor()
+                }
+
+                Timber.d("query() - Fetching local media files")
+                queryLocalMedia(ctx)
+            }
+            LOCAL_MEDIA -> {
+                // Single file query - return info about the specific file
+                val filePath = extractFilePath(uri) ?: run {
+                    Timber.w("query() - Failed to extract file path from URI: $uri")
+                    return null
+                }
+
+                val file = File(filePath)
+                if (!file.exists()) {
+                    Timber.w("query() - File not found: $filePath")
+                    return null
+                }
+
+                querySingleFile(file, uri)
+            }
+            else -> {
+                Timber.w("query() - Unknown URI pattern: $uri")
+                null
+            }
+        }
+    }
+
+    private fun createEmptyCursor(): MatrixCursor {
+        return MatrixCursor(
+            arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI),
+        )
+    }
+
+    private fun queryLocalMedia(ctx: android.content.Context): Cursor {
+        val columns = arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI)
+        val cursor = MatrixCursor(columns)
+
+        // Get videos and images using FileHelper
+        val videos = FileHelper.findLocalVideos(ctx)
+        val images = FileHelper.findLocalImages(ctx)
+
+        Timber.d("query() - Found ${videos.size} videos and ${images.size} images")
+
+        var id = 0L
+        val filterEnabled = ProjectivyLocalMediaPrefs.filterEnabled
+        val filterFolder = ProjectivyLocalMediaPrefs.filterFolder
+
+        // Process videos
+        for (filePath in videos) {
+            val file = File(filePath)
+
+            // Skip hidden files
+            if (FileHelper.isDotOrHiddenFile(file.name)) {
+                continue
+            }
+
+            // Check if file type is supported
+            if (!FileHelper.isSupportedVideoType(file.name)) {
+                continue
+            }
+
+            // Apply folder filter if enabled
+            if (filterEnabled) {
+                val fileUri = filePath.toUri()
+                if (FileHelper.shouldFilter(fileUri, filterFolder)) {
+                    continue
+                }
+            }
+
+            val contentUri = toContentUri(filePath.toUri())
+            val mimeType = getMimeType(filePath)
+
+            cursor.addRow(
+                arrayOf(
+                    id++,
+                    filePath,
+                    file.name,
+                    mimeType,
+                    contentUri.toString(),
+                ),
+            )
+        }
+
+        // Process images
+        for (filePath in images) {
+            val file = File(filePath)
+
+            // Skip hidden files
+            if (FileHelper.isDotOrHiddenFile(file.name)) {
+                continue
+            }
+
+            // Check if file type is supported
+            if (!FileHelper.isSupportedImageType(file.name)) {
+                continue
+            }
+
+            // Apply folder filter if enabled
+            if (filterEnabled) {
+                val fileUri = filePath.toUri()
+                if (FileHelper.shouldFilter(fileUri, filterFolder)) {
+                    continue
+                }
+            }
+
+            val contentUri = toContentUri(filePath.toUri())
+            val mimeType = getMimeType(filePath)
+
+            cursor.addRow(
+                arrayOf(
+                    id++,
+                    filePath,
+                    file.name,
+                    mimeType,
+                    contentUri.toString(),
+                ),
+            )
+        }
+
+        Timber.i("query() - Returning ${cursor.count} media items after filtering")
+        return cursor
+    }
+
+    private fun querySingleFile(file: File, contentUri: Uri): Cursor {
+        val columns = arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI)
+        val cursor = MatrixCursor(columns)
+
+        val mimeType = getMimeType(file.absolutePath)
+        cursor.addRow(
+            arrayOf(
+                0L,
+                file.absolutePath,
+                file.name,
+                mimeType,
+                contentUri.toString(),
+            ),
+        )
+
+        return cursor
     }
 
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
