@@ -1034,14 +1034,14 @@
     <item>Amazon Videos</item>
     <item>Jetson Creative Videos</item>
     <item>Robin Fourcade Videos</item>
-<!--    <item>Local or USB storage</item>-->
+    <item>Local or USB storage</item>
   </string-array>
   <string-array name="projectivy_shared_providers_values" translatable="false">
     <item>APPLE</item>
     <item>AMAZON</item>
     <item>COMM1</item>
     <item>COMM2</item>
-<!--    <item>LOCAL</item>-->
+    <item>LOCAL</item>
   </string-array>
   <string-array name="projectivy_shared_providers_default" translatable="false">
     <item>APPLE</item>
