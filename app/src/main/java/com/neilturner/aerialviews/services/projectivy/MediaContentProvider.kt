@@ -301,6 +301,8 @@ class MediaContentProvider : ContentProvider() {
         var id = 0L
         val filterEnabled = ProjectivyLocalMediaPrefs.filterEnabled
         val filterFolder = ProjectivyLocalMediaPrefs.filterFolder
+        var videoCount = 0
+        var imageCount = 0
 
         // Process videos
         for (filePath in videos) {
@@ -336,6 +338,7 @@ class MediaContentProvider : ContentProvider() {
                     contentUri.toString(),
                 ),
             )
+            videoCount++
         }
 
         // Process images
@@ -372,9 +375,10 @@ class MediaContentProvider : ContentProvider() {
                     contentUri.toString(),
                 ),
             )
+            imageCount++
         }
 
-        Timber.i("query() - Returning ${cursor.count} media items after filtering")
+        Timber.i("query() - Returning $videoCount videos and $imageCount images (${cursor.count} total) after filtering")
         return cursor
     }
 
