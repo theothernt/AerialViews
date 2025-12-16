@@ -177,6 +177,14 @@
                 android:value="1"/>
         </service>
 
+        <!-- ContentProvider for sharing local media with external apps (e.g., Projectivy) -->
+        <provider
+            android:name=".services.projectivy.MediaContentProvider"
+            android:authorities="com.neilturner.aerialviews.media"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            tools:ignore="ExportedContentProvider" />
+
         <!-- Firebase Analytics and Crashlytics options -->
         <meta-data
             android:name="google_analytics_default_allow_analytics_storage"
