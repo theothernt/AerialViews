@@ -27,8 +27,11 @@ class OverlayHelper(
     // Get overlays by corner position
     // Overlay indices: 0-1 = Bottom Left, 2-3 = Bottom Right, 4-5 = Top Left, 6-7 = Top Right
     fun getBottomLeftOverlays(): List<View> = listOfNotNull(overlays.getOrNull(0), overlays.getOrNull(1))
+
     fun getBottomRightOverlays(): List<View> = listOfNotNull(overlays.getOrNull(2), overlays.getOrNull(3))
+
     fun getTopLeftOverlays(): List<View> = listOfNotNull(overlays.getOrNull(4), overlays.getOrNull(5))
+
     fun getTopRightOverlays(): List<View> = listOfNotNull(overlays.getOrNull(6), overlays.getOrNull(7))
 
     fun getOverlaysToFade(): List<View> {
