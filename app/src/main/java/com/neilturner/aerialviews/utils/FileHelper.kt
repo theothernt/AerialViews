@@ -6,11 +6,9 @@ import android.provider.MediaStore
 import timber.log.Timber
 
 object FileHelper {
-    fun findLocalVideos(context: Context): List<String> =
-        findLocalMedia(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "videos")
+    fun findLocalVideos(context: Context): List<String> = findLocalMedia(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "videos")
 
-    fun findLocalImages(context: Context): List<String> =
-        findLocalMedia(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "photos")
+    fun findLocalImages(context: Context): List<String> = findLocalMedia(context, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "photos")
 
     /**
      * Queries MediaStore for media file paths.
@@ -25,6 +23,7 @@ object FileHelper {
         mediaType: String,
     ): List<String> {
         val results = mutableListOf<String>()
+
         @Suppress("DEPRECATION")
         val column = MediaStore.MediaColumns.DATA
         val projection = arrayOf(column)

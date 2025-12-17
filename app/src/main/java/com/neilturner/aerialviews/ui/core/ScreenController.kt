@@ -422,10 +422,12 @@ class ScreenController(
         }
 
         overlaysToFade.forEachIndexed { index, view ->
-            val animator = view.animate()
-                .alpha(0f)
-                .setStartDelay(delay)
-                .setDuration(overlayFadeOut)
+            val animator =
+                view
+                    .animate()
+                    .alpha(0f)
+                    .setStartDelay(delay)
+                    .setDuration(overlayFadeOut)
 
             // Only set the end action on the last overlay
             if (index == overlaysToFade.lastIndex) {
@@ -455,10 +457,12 @@ class ScreenController(
         canShowOverlays = false
 
         overlaysToFade.forEachIndexed { index, view ->
-            val animator = view.animate()
-                .alpha(1f)
-                .setStartDelay(0)
-                .setDuration(overlayFadeIn)
+            val animator =
+                view
+                    .animate()
+                    .alpha(1f)
+                    .setStartDelay(0)
+                    .setDuration(overlayFadeIn)
 
             // Only set the end action on the last overlay
             if (index == overlaysToFade.lastIndex) {
