@@ -129,14 +129,21 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private fun updateText(): Boolean {
+        // Only clear text on explicit STOPPED state, not on empty content
+        if (trackInfo.state == MusicEvent.PlaybackState.STOPPED) {
+            Timber.i("$type: Playback stopped, clearing text")
+            text = null
+            return false
+        }
+
         val updatedText = formatNowPlaying(trackInfo)
         return if (updatedText.isNotBlank()) {
             Timber.i("$type: Set new track info...")
             text = updatedText
             true
         } else {
-            Timber.i("$type: Set text to NULL")
-            text = null
+            Timber.i("$type: No content to display")
+            // Don't clear - keep existing text if new event has no content
             false
         }
     }

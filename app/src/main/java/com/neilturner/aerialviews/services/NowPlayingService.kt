@@ -24,6 +24,7 @@ class NowPlayingService(
     private var activeController: MediaController? = null
     private var metadata: MediaMetadata? = null
     private var active = false
+    private var lastSentEvent: MusicEvent? = null
 
     init {
         if (hasPermission) {
@@ -74,10 +75,17 @@ class NowPlayingService(
         Timber.i("onActiveSessionsChanged")
         unregisterCurrentController()
         activeController = pickController(controllers)
-        activeController?.let {
-            it.registerCallback(this)
-            metadata = it.metadata
-            updateMetadata()
+        if (activeController != null) {
+            activeController?.let {
+                it.registerCallback(this)
+                metadata = it.metadata
+                updateMetadata()
+            }
+        } else {
+            // No active sessions left - clear the display
+            Timber.i("No active sessions remaining")
+            metadata = null
+            postStoppedEvent()
         }
     }
 
@@ -108,7 +116,17 @@ class NowPlayingService(
         Timber.i("onSessionDestroyed")
         activeController = null
         metadata = null
+        postStoppedEvent()
         super.onSessionDestroyed()
+    }
+
+    private fun postStoppedEvent() {
+        val stoppedEvent = MusicEvent(state = MusicEvent.PlaybackState.STOPPED)
+        if (lastSentEvent?.state != MusicEvent.PlaybackState.STOPPED) {
+            Timber.i("Posting STOPPED event")
+            lastSentEvent = stoppedEvent
+            GlobalBus.post(stoppedEvent)
+        }
     }
 
     private fun updateMetadata() {
@@ -117,16 +135,32 @@ class NowPlayingService(
             return
         }
         active = isActive() // Don't remove!
-        val musicEvent =
-            metadata
-                ?.let {
-                    val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
-                    val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
-                    MusicEvent(artist, song)
-                }.takeIf { active } ?: MusicEvent()
 
-        Timber.i("updateMetadata - trying $musicEvent")
-        GlobalBus.post(musicEvent)
+        val musicEvent = if (active) {
+            metadata?.let {
+                val song = it.getString(MediaMetadata.METADATA_KEY_TITLE) ?: ""
+                val artist = it.getString(MediaMetadata.METADATA_KEY_ARTIST) ?: ""
+                // Only send PLAYING event if we have actual content
+                if (artist.isNotBlank() || song.isNotBlank()) {
+                    MusicEvent(artist, song, MusicEvent.PlaybackState.PLAYING)
+                } else {
+                    null
+                }
+            }
+        } else {
+            null
+        }
+
+        // Only post if event is different from last sent (deduplication)
+        if (musicEvent != null && musicEvent != lastSentEvent) {
+            Timber.i("updateMetadata - posting $musicEvent")
+            lastSentEvent = musicEvent
+            GlobalBus.post(musicEvent)
+        } else if (musicEvent == null) {
+            Timber.i("updateMetadata - skipping (no content or not active)")
+        } else {
+            Timber.i("updateMetadata - skipping (duplicate)")
+        }
     }
 
     private fun isActive(controller: MediaController? = activeController): Boolean {
@@ -145,6 +179,7 @@ class NowPlayingService(
         unregisterCurrentController()
         activeController = null
         metadata = null
+        postStoppedEvent()
         sessionManager?.removeOnActiveSessionsChangedListener(this)
     }
 }
@@ -152,4 +187,9 @@ class NowPlayingService(
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
-)
+    val state: PlaybackState = PlaybackState.STOPPED,
+) {
+    enum class PlaybackState { PLAYING, STOPPED }
+
+    fun hasContent() = artist.isNotBlank() || song.isNotBlank()
+}
