@@ -47,7 +47,7 @@ class NowPlayingService(
         activeController?.let {
             it.registerCallback(this)
             metadata = it.metadata
-            updateMetadata()
+            updateMetadata("setupSession", "initial setup")
         }
     }
 
@@ -79,13 +79,13 @@ class NowPlayingService(
             activeController?.let {
                 it.registerCallback(this)
                 metadata = it.metadata
-                updateMetadata()
+                updateMetadata("onActiveSessionsChanged", "new controller: ${it.packageName}")
             }
         } else {
             // No active sessions left - clear the display
             Timber.i("No active sessions remaining")
             metadata = null
-            postStoppedEvent()
+            postStoppedEvent("onActiveSessionsChanged", "no sessions left")
         }
     }
 
@@ -93,45 +93,48 @@ class NowPlayingService(
         event: String,
         extras: Bundle?,
     ) {
-        Timber.i("onSessionEvent")
+        Timber.i("onSessionEvent: $event")
         super.onSessionEvent(event, extras)
-        updateMetadata()
+        updateMetadata("onSessionEvent", "event: $event")
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
         Timber.i("onMetadataChanged")
         super.onMetadataChanged(metadata)
         this.metadata = metadata
-        updateMetadata()
+        updateMetadata("onMetadataChanged", "metadata updated")
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
-        Timber.i("onPlaybackStateChanged")
+        val stateName = state?.state?.let { playbackStateToString(it) } ?: "null"
+        Timber.i("onPlaybackStateChanged: $stateName")
         super.onPlaybackStateChanged(state)
         active = isActive()
-        updateMetadata()
+        updateMetadata("onPlaybackStateChanged", "state: $stateName, active: $active")
     }
 
     override fun onSessionDestroyed() {
         Timber.i("onSessionDestroyed")
         activeController = null
         metadata = null
-        postStoppedEvent()
+        postStoppedEvent("onSessionDestroyed", "session ended")
         super.onSessionDestroyed()
     }
 
-    private fun postStoppedEvent() {
+    private fun postStoppedEvent(caller: String, reason: String) {
         val stoppedEvent = MusicEvent(state = MusicEvent.PlaybackState.STOPPED)
         if (lastSentEvent?.state != MusicEvent.PlaybackState.STOPPED) {
-            Timber.i("Posting STOPPED event")
+            Timber.i("[$caller] Posting STOPPED event ($reason)")
             lastSentEvent = stoppedEvent
             GlobalBus.post(stoppedEvent)
+        } else {
+            Timber.i("[$caller] Skipping STOPPED event - already stopped ($reason)")
         }
     }
 
-    private fun updateMetadata() {
+    private fun updateMetadata(caller: String, reason: String) {
         if (metadata == null) {
-            Timber.i("updateMetadata - null")
+            Timber.i("[$caller] updateMetadata - null metadata ($reason)")
             return
         }
         active = isActive() // Don't remove!
@@ -148,19 +151,36 @@ class NowPlayingService(
                 }
             }
         } else {
-            null
+            // Not active - send STOPPED to clear display
+            MusicEvent(state = MusicEvent.PlaybackState.STOPPED)
         }
 
         // Only post if event is different from last sent (deduplication)
         if (musicEvent != null && musicEvent != lastSentEvent) {
-            Timber.i("updateMetadata - posting $musicEvent")
+            Timber.i("[$caller] Posting $musicEvent ($reason)")
             lastSentEvent = musicEvent
             GlobalBus.post(musicEvent)
         } else if (musicEvent == null) {
-            Timber.i("updateMetadata - skipping (no content or not active)")
+            Timber.i("[$caller] Skipping - no content ($reason)")
         } else {
-            Timber.i("updateMetadata - skipping (duplicate)")
+            Timber.i("[$caller] Skipping - duplicate ($reason)")
         }
+    }
+
+    private fun playbackStateToString(state: Int): String = when (state) {
+        PlaybackState.STATE_NONE -> "NONE"
+        PlaybackState.STATE_STOPPED -> "STOPPED"
+        PlaybackState.STATE_PAUSED -> "PAUSED"
+        PlaybackState.STATE_PLAYING -> "PLAYING"
+        PlaybackState.STATE_FAST_FORWARDING -> "FAST_FORWARDING"
+        PlaybackState.STATE_REWINDING -> "REWINDING"
+        PlaybackState.STATE_BUFFERING -> "BUFFERING"
+        PlaybackState.STATE_ERROR -> "ERROR"
+        PlaybackState.STATE_CONNECTING -> "CONNECTING"
+        PlaybackState.STATE_SKIPPING_TO_PREVIOUS -> "SKIPPING_TO_PREVIOUS"
+        PlaybackState.STATE_SKIPPING_TO_NEXT -> "SKIPPING_TO_NEXT"
+        PlaybackState.STATE_SKIPPING_TO_QUEUE_ITEM -> "SKIPPING_TO_QUEUE_ITEM"
+        else -> "UNKNOWN($state)"
     }
 
     private fun isActive(controller: MediaController? = activeController): Boolean {
@@ -179,7 +199,7 @@ class NowPlayingService(
         unregisterCurrentController()
         activeController = null
         metadata = null
-        postStoppedEvent()
+        postStoppedEvent("stop", "service stopping")
         sessionManager?.removeOnActiveSessionsChangedListener(this)
     }
 }
