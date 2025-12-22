@@ -641,19 +641,20 @@
     <item>COMM1</item>
     <item>COMM2</item>
   </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>Vidéos Apple</item>
-    <item>Vidéos Amazon</item>
-    <item>Vidéos créatives Jetson</item>
-    <item>Vidéos de Robin Fourcade</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_values" translatable="false">
-    <item>APPLE</item>
-    <item>AMAZON</item>
-    <item>COMM1</item>
-    <item>COMM2</item>
-  </string-array>
-  <string-array name="samba_videos_smb_dialects_default" translatable="false">
+    <string-array name="projectivy_shared_providers_entries">
+        <item>Apple Videos</item>
+        <item>Amazon Videos</item>
+        <item>Jetson Creative Videos</item>
+        <item>Robin Fourcade Videos</item>
+        <item>Local or USB storage</item>
+    </string-array>
+    <string-array name="projectivy_shared_providers_values" translatable="false">
+        <item>APPLE</item>
+        <item>AMAZON</item>
+        <item>COMM1</item>
+        <item>COMM2</item>
+        <item>LOCAL</item>
+    </string-array><string-array name="samba_videos_smb_dialects_default" translatable="false">
     <item>SMB_2_1</item>
     <item>SMB_2_0_2</item>
   </string-array>
