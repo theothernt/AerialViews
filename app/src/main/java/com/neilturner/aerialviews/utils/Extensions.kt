@@ -31,7 +31,7 @@ val Uri.filenameWithoutExtension: String
         val filename = this.lastPathSegment.toStringOrEmpty()
         val index = filename.lastIndexOf(".")
         return if (index > 0) {
-            filename.substring(0, index)
+            filename.take(index)
         } else {
             filename
         }

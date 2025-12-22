@@ -75,12 +75,18 @@ class OverlaysDateFragment : MenuStateFragment() {
     ): String {
         val forExample = requireContext().resources.getString(R.string.appearance_date_custom_example)
         val typeEntry = entriesAndValues[type.toString()]
-        return if (type == DateType.CUSTOM && format == null) {
-            "$typeEntry"
-        } else if (type == DateType.CUSTOM) {
-            "$format ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
-        } else {
-            "$typeEntry ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
+        return when (type) {
+            DateType.CUSTOM if format == null -> {
+                "$typeEntry"
+            }
+
+            DateType.CUSTOM -> {
+                "$format ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
+            }
+
+            else -> {
+                "$typeEntry ($forExample ${DateHelper.formatDate(requireContext(), type, format)})"
+            }
         }
     }
 
