@@ -28,6 +28,7 @@ class CountdownOverlay : AppCompatTextView {
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var updateJob: Job? = null
+    private var completedForTargetTime: String? = null
     
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -73,6 +74,16 @@ class CountdownOverlay : AppCompatTextView {
             
             if (targetTime.isEmpty()) {
                 text = null
+                completedForTargetTime = null
+                return
+            }
+
+            if (completedForTargetTime != null && completedForTargetTime != targetTime) {
+                completedForTargetTime = null
+            }
+
+            if (completedForTargetTime == targetTime) {
+                text = targetMessage.ifEmpty { "Time's up!" }
                 return
             }
 
@@ -81,6 +92,7 @@ class CountdownOverlay : AppCompatTextView {
             
             if (target == null) {
                 text = "Invalid time format"
+                completedForTargetTime = null
                 return
             }
 
@@ -89,6 +101,7 @@ class CountdownOverlay : AppCompatTextView {
             if (totalSeconds <= 0) {
                 // Countdown finished, show target message
                 text = targetMessage.ifEmpty { "Time's up!" }
+                completedForTargetTime = targetTime
                 return
             }
 
