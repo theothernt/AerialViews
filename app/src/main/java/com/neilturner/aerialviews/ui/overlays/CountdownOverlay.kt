@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
@@ -26,9 +25,13 @@ class CountdownOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
     
     private val prefs = GeneralPrefs
-    private val mainScope = CoroutineScope(Dispatchers.Main)
+    private val mainScope = CoroutineScope(Dispatchers.Main.immediate)
     private var updateJob: Job? = null
-    private var completedForTargetTime: String? = null
+    
+    private var targetTimeStr: String = ""
+    private var targetMessage: String = ""
+    private var targetDateTime: LocalDateTime? = null
+    private var isCompleted = false
     
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -44,6 +47,7 @@ class CountdownOverlay : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        initCountdown()
         startCountdown()
     }
 
@@ -52,12 +56,27 @@ class CountdownOverlay : AppCompatTextView {
         stopCountdown()
     }
 
+    private fun initCountdown() {
+        targetTimeStr = prefs.countdownTargetTime
+        targetMessage = prefs.countdownTargetMessage.ifEmpty { "Time's up!" }
+        targetDateTime = parseTargetTime(targetTimeStr, LocalDateTime.now())
+        isCompleted = false
+    }
+
     private fun startCountdown() {
         stopCountdown()
+        if (targetTimeStr.isEmpty() || targetDateTime == null) {
+            if (targetTimeStr.isNotEmpty()) {
+                text = "Invalid time format"
+            }
+            return
+        }
+
         updateJob = mainScope.launch {
             while (isActive) {
                 updateCountdown()
-                delay(1000) // Update every second
+                if (isCompleted) break
+                delay(1000)
             }
         }
     }
@@ -69,57 +88,36 @@ class CountdownOverlay : AppCompatTextView {
 
     private fun updateCountdown() {
         try {
-            val targetTime = prefs.countdownTargetTime
-            val targetMessage = prefs.countdownTargetMessage
-            
-            if (targetTime.isEmpty()) {
-                text = null
-                completedForTargetTime = null
-                return
-            }
-
-            if (completedForTargetTime != null && completedForTargetTime != targetTime) {
-                completedForTargetTime = null
-            }
-
-            if (completedForTargetTime == targetTime) {
-                text = targetMessage.ifEmpty { "Time's up!" }
-                return
-            }
-
+            val target = targetDateTime ?: return
             val now = LocalDateTime.now()
-            val target = parseTargetTime(targetTime, now)
             
-            if (target == null) {
-                text = "Invalid time format"
-                completedForTargetTime = null
-                return
-            }
-
             val totalSeconds = ChronoUnit.SECONDS.between(now, target)
             
             if (totalSeconds <= 0) {
-                // Countdown finished, show target message
-                text = targetMessage.ifEmpty { "Time's up!" }
-                completedForTargetTime = targetTime
+                text = targetMessage
+                isCompleted = true
                 return
             }
 
-            val hours = totalSeconds / 3600
-            val minutes = (totalSeconds % 3600) / 60
-            val seconds = totalSeconds % 60
-
-            val countdownText = when {
-                hours > 0 -> "${hours}h ${minutes}m"
-                minutes > 0 -> "${minutes}m ${seconds}s"
-                else -> "${seconds}s"
-            }
-
-            text = countdownText
+            text = formatCountdown(totalSeconds)
 
         } catch (e: Exception) {
             Timber.e("Error updating countdown: $e")
             text = "Error"
+        }
+    }
+
+    private fun formatCountdown(totalSeconds: Long): String {
+        val days = totalSeconds / 86400
+        val hours = (totalSeconds % 86400) / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val seconds = totalSeconds % 60
+
+        return when {
+            days > 0 -> "${days}d ${hours}h ${minutes}m"
+            hours > 0 -> "${hours}h ${minutes}m"
+            minutes > 0 -> "${minutes}m ${seconds}s"
+            else -> "${seconds}s"
         }
     }
 
