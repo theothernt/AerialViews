@@ -725,4 +725,13 @@
   <string name="about_version_title">Version</string>
   <string name="about_date_title">Build Date</string>
 
+    <!-- Advanced - Wake on LAN -->
+    <string name="advanced_wol_category_title">Wake on LAN</string>
+    <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
+    <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
+    <string name="advanced_wol_mac_title">Target MAC Address</string>
+    <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+    <string name="advanced_wol_delay_title">Wake Delay (ms)</string>
+    <string name="advanced_wol_delay_summary">Time to wait after sending WOL packet before connecting</string>
+
 </resources>

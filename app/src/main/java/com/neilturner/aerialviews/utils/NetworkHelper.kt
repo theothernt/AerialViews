@@ -6,6 +6,12 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.net.DatagramPacket
+import java.net.DatagramSocket
+import java.net.InetAddress
 
 object NetworkHelper {
     @Suppress("DEPRECATION")
@@ -38,5 +44,50 @@ object NetworkHelper {
             }
         }
         return result
+    }
+
+    suspend fun sendWakeOnLan(macAddress: String) {
+        if (macAddress.isBlank()) {
+            Timber.e("WOL: MAC address is empty")
+            return
+        }
+
+        try {
+            val macBytes = getMacBytes(macAddress)
+            val bytes = ByteArray(6 + 16 * macBytes.size)
+            for (i in 0..5) {
+                bytes[i] = 0xff.toByte()
+            }
+            for (i in 6 until bytes.size step macBytes.size) {
+                System.arraycopy(macBytes, 0, bytes, i, macBytes.size)
+            }
+
+            val address = InetAddress.getByName("255.255.255.255")
+            val packet = DatagramPacket(bytes, bytes.size, address, 9)
+            val socket = DatagramSocket()
+            withContext(Dispatchers.IO) {
+                socket.send(packet)
+                socket.close()
+            }
+            Timber.i("WOL: Packet sent to $macAddress")
+        } catch (e: Exception) {
+            Timber.e(e, "WOL: Failed to send packet")
+        }
+    }
+
+    private fun getMacBytes(macStr: String): ByteArray {
+        val bytes = ByteArray(6)
+        val hex = macStr.split(":", "-")
+        if (hex.size != 6) {
+            throw IllegalArgumentException("Invalid MAC address")
+        }
+        try {
+            for (i in 0..5) {
+                bytes[i] = Integer.parseInt(hex[i], 16).toByte()
+            }
+        } catch (e: NumberFormatException) {
+            throw IllegalArgumentException("Invalid hex digit in MAC address")
+        }
+        return bytes
     }
 }

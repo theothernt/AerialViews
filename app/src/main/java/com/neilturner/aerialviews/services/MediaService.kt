@@ -30,6 +30,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
+import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -55,6 +56,15 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
+            // Wake on LAN
+            if (GeneralPrefs.wakeOnLanEnabled) {
+                val macAddress = GeneralPrefs.wakeOnLanMacAddress
+                val delayMs = GeneralPrefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
+                NetworkHelper.sendWakeOnLan(macAddress)
+                Timber.i("WOL: Waiting for $delayMs ms")
+                kotlinx.coroutines.delay(delayMs)
+            }
+
             // Build media list from all providers
             val media = buildMediaList(providers)
 
