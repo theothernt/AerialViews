@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
+import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
@@ -238,6 +239,14 @@ class OverlayHelper(
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine4)
+                }
+            }
+
+            OverlayType.COUNTDOWN -> {
+                CountdownOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.countdownSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.countdownWeight)
+                    type = overlay
                 }
             }
 

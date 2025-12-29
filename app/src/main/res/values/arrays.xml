@@ -272,6 +272,7 @@
     <item>Message #2</item>
     <item>Message #3</item>
     <item>Message #4</item>
+    <item>Countdown</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
@@ -286,6 +287,7 @@
     <item>MESSAGE2</item>
     <item>MESSAGE3</item>
     <item>MESSAGE4</item>
+    <item>COUNTDOWN</item>
   </string-array>
 <!--  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>-->
 

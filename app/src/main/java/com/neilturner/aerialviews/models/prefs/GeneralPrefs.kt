@@ -108,6 +108,12 @@ object GeneralPrefs : KotprefModel() {
     var messageApiEnabled by booleanPref(false, "message_api_enabled")
     var messageApiPort by stringPref("8081", "message_api_port")
 
+    // Countdown
+    var countdownTargetTime by stringPref("", "countdown_target_time")
+    var countdownTargetMessage by stringPref("", "countdown_target_message")
+    var countdownSize by stringPref("18", "countdown_size")
+    var countdownWeight by stringPref("300", "countdown_weight")
+
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
 

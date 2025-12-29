@@ -44,5 +44,10 @@
                     app:summary="@string/appearance_message_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageFragment"/>
 
+                <Preference
+                    app:title="@string/appearance_countdown_title"
+                    app:summary="@string/appearance_countdown_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysCountdownFragment"/>
+
         </PreferenceCategory>
 </PreferenceScreen>

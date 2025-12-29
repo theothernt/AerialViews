@@ -61,6 +61,7 @@
   <string name="category_forecast">Forecast</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_message">Message</string>
+  <string name="category_countdown">Countdown</string>
   <string name="category_typography">Typography</string>
   <string name="category_music">Music</string>
   <string name="category_feeds">Feeds</string>
@@ -403,6 +404,9 @@
   <string name="appearance_message_title">Message</string>
   <string name="appearance_message_summary">Display up to 4 lines of custom text</string>
 
+  <string name="appearance_countdown_title">Countdown</string>
+  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
+
   <!-- Main / Settings / Overlays / Rows -->
   <string name="appearance_slot1_title">Lower Slot</string>
   <string name="appearance_slot2_title">Upper Slot</string>
@@ -479,6 +483,12 @@
   <string name="appearance_message_line3_title">Line 3</string>
   <string name="appearance_message_line4_title">Line 4</string>
   <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+
+  <!-- Main / Settings / Appearance / Countdown -->
+  <string name="appearance_countdown_target_time_title">Target Time</string>
+  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
+  <string name="appearance_countdown_target_message_title">Completion Message</string>
+  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. "Happy New Year!")</string>
 
   <string name="appearance_message_api_enabled_title">Enable API</string>
   <string name="appearance_message_api_enabled_summary">Allow remote setting of custom messages via a HTTP API</string>
