@@ -97,6 +97,6 @@
                     app:dependency="samba_videos_enabled"
                     app:disableDependentsState="false"
                     app:title="@string/samba_media_wol_title"
-                    app:fragment="com.neilturner.aerialviews.ui.sources.SambaWolFragment" />
+                    app:fragment="com.neilturner.aerialviews.ui.sources.SambaVideosWolFragment" />
         </PreferenceCategory>
 </PreferenceScreen>

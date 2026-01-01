@@ -13,7 +13,7 @@ import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
-class SambaWolFragment :
+class SambaVideosWolFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
@@ -22,7 +22,7 @@ class SambaWolFragment :
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.sources_samba_wol, rootKey)
+        setPreferencesFromResource(R.xml.sources_samba_videos_wol, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         limitTextInput()
@@ -61,7 +61,7 @@ class SambaWolFragment :
 
         val delay = findPreference<EditTextPreference>("samba_media_wake_on_lan_delay")
         if (delay?.text.toStringOrEmpty().isNotEmpty()) {
-            delay?.summary = "${delay.text} s"
+            delay?.summary = "${delay.text} seconds"
         } else {
             delay?.summary = getString(R.string.advanced_wol_delay_summary)
         }
