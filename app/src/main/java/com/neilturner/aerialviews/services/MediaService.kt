@@ -57,9 +57,9 @@ class MediaService(
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
             // Wake on LAN
-            if (GeneralPrefs.wakeOnLanEnabled) {
-                val macAddress = GeneralPrefs.wakeOnLanMacAddress
-                val delayMs = GeneralPrefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
+            if (SambaMediaPrefs.wakeOnLanEnabled) {
+                val macAddress = SambaMediaPrefs.wakeOnLanMacAddress
+                val delayMs = SambaMediaPrefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
                 NetworkHelper.sendWakeOnLan(macAddress)
                 Timber.i("WOL: Waiting for $delayMs ms")
                 kotlinx.coroutines.delay(delayMs)

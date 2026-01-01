@@ -260,6 +260,8 @@
   <string name="samba_media_test_summary3">Videos found: %1$s</string>
   <string name="samba_media_test_summary4">Photos found: %1$s</string>
   <string name="samba_media_test_summary5">Selected for playback: %1$s</string>
+  <string name="samba_media_wol_title">Wake on LAN settings</string>
+  <string name="samba_media_wol_wake_now">Wake server now</string>
 
   <!-- Main / Video Sources / WebDAV videos -->
   <string name="webdav_media_enabled_title">Use WebDAV share media</string>

@@ -25,4 +25,9 @@ object SambaMediaPrefs : KotprefModel() {
         set
         // Must be sorted descending to get correct order for use in SmbConfig.withDialects(x,y,z)
     }
+
+    // Wake on LAN
+    var wakeOnLanEnabled by booleanPref(false, "samba_media_wake_on_lan_enabled")
+    var wakeOnLanMacAddress by stringPref("", "samba_media_wake_on_lan_mac_address")
+    var wakeOnLanDelay by stringPref("5000", "samba_media_wake_on_lan_delay")
 }

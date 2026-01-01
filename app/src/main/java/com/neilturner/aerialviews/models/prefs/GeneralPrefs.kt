@@ -221,11 +221,6 @@ object GeneralPrefs : KotprefModel() {
     var showMediaErrorToasts by booleanPref(false, "show_media_error_toasts")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
 
-    // Wake on LAN
-    var wakeOnLanEnabled by booleanPref(false, "wake_on_lan_enabled")
-    var wakeOnLanMacAddress by stringPref("", "wake_on_lan_mac_address")
-    var wakeOnLanDelay by stringPref("5000", "wake_on_lan_delay")
-
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")
 }
