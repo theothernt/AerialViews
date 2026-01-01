@@ -52,14 +52,14 @@ class SambaWolFragment :
     }
 
     private fun updateSummary() {
-        val macAddress = findPreference<EditTextPreference>("wake_on_lan_mac_address")
+        val macAddress = findPreference<EditTextPreference>("samba_media_wake_on_lan_mac_address")
         if (macAddress?.text.toStringOrEmpty().isNotEmpty()) {
             macAddress?.summary = macAddress.text
         } else {
             macAddress?.summary = getString(R.string.advanced_wol_mac_summary)
         }
 
-        val delay = findPreference<EditTextPreference>("wake_on_lan_delay")
+        val delay = findPreference<EditTextPreference>("samba_media_wake_on_lan_delay")
         if (delay?.text.toStringOrEmpty().isNotEmpty()) {
             delay?.summary = "${delay.text} ms"
         } else {
@@ -68,7 +68,7 @@ class SambaWolFragment :
     }
 
     private fun limitTextInput() {
-        listOf("wake_on_lan_mac_address", "wake_on_lan_delay").forEach { key ->
+        listOf("samba_media_wake_on_lan_mac_address", "samba_media_wake_on_lan_delay").forEach { key ->
             findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
         }
     }

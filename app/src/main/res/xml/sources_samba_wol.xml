@@ -11,8 +11,8 @@
 
         <Preference
             app:dependency="samba_media_wake_on_lan_enabled"
-            android:title="@string/samba_media_wol_wake_now"
-            android:key="wake_on_lan_now" />
+            app:title="@string/samba_media_wol_wake_now"
+            app:key="wake_on_lan_now" />
     </PreferenceCategory>
 
     <PreferenceCategory app:title="@string/category_settings">
