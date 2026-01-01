@@ -18,8 +18,10 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.net.URLEncoder
@@ -32,6 +34,20 @@ class SambaMediaProvider(
 
     override val enabled: Boolean
         get() = prefs.enabled
+
+    override suspend fun prepare() {
+        if (prefs.wakeOnLanEnabled && prefs.hostName.isNotEmpty()) {
+            val reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
+            if (!reachable) {
+                NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
+                val delayMs = prefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
+                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Waiting for $delayMs ms")
+                delay(delayMs)
+            } else {
+                Timber.i("Samba WOL: Host ${prefs.hostName} is already reachable, skipping WOL")
+            }
+        }
+    }
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchSambaMedia().first
 

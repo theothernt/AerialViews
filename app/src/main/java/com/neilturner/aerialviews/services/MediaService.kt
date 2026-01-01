@@ -33,6 +33,7 @@ import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
 import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -56,14 +57,6 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
-            // Wake on LAN
-            if (SambaMediaPrefs.wakeOnLanEnabled) {
-                val macAddress = SambaMediaPrefs.wakeOnLanMacAddress
-                val delayMs = SambaMediaPrefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
-                NetworkHelper.sendWakeOnLan(macAddress)
-                Timber.i("WOL: Waiting for $delayMs ms")
-                kotlinx.coroutines.delay(delayMs)
-            }
 
             // Build media list from all providers
             val media = buildMediaList(providers)

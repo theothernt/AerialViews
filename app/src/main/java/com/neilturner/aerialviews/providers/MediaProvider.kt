@@ -11,6 +11,8 @@ abstract class MediaProvider(
 
     abstract val enabled: Boolean
 
+    open suspend fun prepare() {}
+
     abstract suspend fun fetchMedia(): List<AerialMedia>
 
     abstract suspend fun fetchTest(): String

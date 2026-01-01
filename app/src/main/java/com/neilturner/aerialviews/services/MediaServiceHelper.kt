@@ -81,6 +81,7 @@ internal object MediaServiceHelper {
             .filter { it.enabled }
             .parallelForEach {
                 try {
+                    it.prepare()
                     val providerMedia = it.fetchMedia()
                     media.addAll(providerMedia)
                 } catch (ex: Exception) {

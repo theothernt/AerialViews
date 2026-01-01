@@ -12,6 +12,8 @@ import timber.log.Timber
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 
 object NetworkHelper {
     @Suppress("DEPRECATION")
@@ -45,6 +47,19 @@ object NetworkHelper {
         }
         return result
     }
+
+    suspend fun isHostReachable(hostname: String, port: Int): Boolean =
+        withContext(Dispatchers.IO) {
+            try {
+                Socket().use { socket ->
+                    socket.connect(InetSocketAddress(hostname, port), 3000)
+                    true
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "ServerCheck: Failed to connect to $hostname")
+                false
+            }
+        }
 
     suspend fun sendWakeOnLan(macAddress: String) {
         if (macAddress.isBlank()) {
