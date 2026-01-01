@@ -61,7 +61,7 @@ class SambaWolFragment :
 
         val delay = findPreference<EditTextPreference>("samba_media_wake_on_lan_delay")
         if (delay?.text.toStringOrEmpty().isNotEmpty()) {
-            delay?.summary = "${delay.text} ms"
+            delay?.summary = "${delay.text} s"
         } else {
             delay?.summary = getString(R.string.advanced_wol_delay_summary)
         }

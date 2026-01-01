@@ -40,9 +40,9 @@ class SambaMediaProvider(
             val reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
             if (!reachable) {
                 NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
-                val delayMs = prefs.wakeOnLanDelay.toLongOrNull() ?: 5000L
-                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Waiting for $delayMs ms")
-                delay(delayMs)
+                val delaySeconds = prefs.wakeOnLanDelay.toLongOrNull() ?: 5L
+                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Waiting for $delaySeconds s")
+                delay(delaySeconds * 1000)
             } else {
                 Timber.i("Samba WOL: Host ${prefs.hostName} is already reachable, skipping WOL")
             }
