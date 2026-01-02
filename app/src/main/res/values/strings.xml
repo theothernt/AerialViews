@@ -743,6 +743,7 @@
     <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
     <string name="advanced_wol_mac_title">Target MAC Address</string>
     <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+    <string name="advanced_wol_mac_error">Invalid MAC address format</string>
     <string name="advanced_wol_delay_title">Wake Delay (seconds)</string>
     <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before connecting</string>
 

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -25,6 +26,16 @@ class SambaVideosWolFragment :
         setPreferencesFromResource(R.xml.sources_samba_videos_wol, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        findPreference<EditTextPreference>("samba_media_wake_on_lan_mac_address")?.setOnPreferenceChangeListener { _, newValue ->
+            val mac = newValue as String
+            if (mac.isNotEmpty() && !NetworkHelper.isValidMacAddress(mac)) {
+                Toast.makeText(requireContext(), R.string.advanced_wol_mac_error, Toast.LENGTH_SHORT).show()
+                false
+            } else {
+                true
+            }
+        }
+
         limitTextInput()
         updateSummary()
     }
@@ -43,8 +54,13 @@ class SambaVideosWolFragment :
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         if (preference.key == "wake_on_lan_now") {
+            val macAddress = SambaMediaPrefs.wakeOnLanMacAddress
+            if (macAddress.isEmpty() || !NetworkHelper.isValidMacAddress(macAddress)) {
+                Toast.makeText(requireContext(), R.string.advanced_wol_mac_error, Toast.LENGTH_SHORT).show()
+                return true
+            }
             lifecycleScope.launch {
-                NetworkHelper.sendWakeOnLan(SambaMediaPrefs.wakeOnLanMacAddress)
+                NetworkHelper.sendWakeOnLan(macAddress)
             }
             return true
         }
@@ -53,8 +69,13 @@ class SambaVideosWolFragment :
 
     private fun updateSummary() {
         val macAddress = findPreference<EditTextPreference>("samba_media_wake_on_lan_mac_address")
-        if (macAddress?.text.toStringOrEmpty().isNotEmpty()) {
-            macAddress?.summary = macAddress.text
+        val macText = macAddress?.text.toStringOrEmpty()
+        if (macText.isNotEmpty()) {
+            if (NetworkHelper.isValidMacAddress(macText)) {
+                macAddress?.summary = macText
+            } else {
+                macAddress?.summary = getString(R.string.advanced_wol_mac_error)
+            }
         } else {
             macAddress?.summary = getString(R.string.advanced_wol_mac_summary)
         }

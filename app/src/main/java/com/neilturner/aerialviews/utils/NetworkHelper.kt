@@ -90,6 +90,15 @@ object NetworkHelper {
         }
     }
 
+    fun isValidMacAddress(macAddress: String): Boolean {
+        return try {
+            getMacBytes(macAddress)
+            true
+        } catch (e: IllegalArgumentException) {
+            false
+        }
+    }
+
     private fun getMacBytes(macStr: String): ByteArray {
         val bytes = ByteArray(6)
         val hex = macStr.split(":", "-")
