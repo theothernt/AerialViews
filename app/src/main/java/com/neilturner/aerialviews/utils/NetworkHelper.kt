@@ -48,7 +48,10 @@ object NetworkHelper {
         return result
     }
 
-    suspend fun isHostReachable(hostname: String, port: Int): Boolean =
+    suspend fun isHostReachable(
+        hostname: String,
+        port: Int,
+    ): Boolean =
         withContext(Dispatchers.IO) {
             try {
                 Socket().use { socket ->
@@ -90,14 +93,13 @@ object NetworkHelper {
         }
     }
 
-    fun isValidMacAddress(macAddress: String): Boolean {
-        return try {
+    fun isValidMacAddress(macAddress: String): Boolean =
+        try {
             getMacBytes(macAddress)
             true
         } catch (e: IllegalArgumentException) {
             false
         }
-    }
 
     private fun getMacBytes(macStr: String): ByteArray {
         val bytes = ByteArray(6)

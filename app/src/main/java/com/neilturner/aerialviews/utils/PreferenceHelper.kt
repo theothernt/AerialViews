@@ -30,11 +30,26 @@ object PreferenceHelper {
             }
 
             when (value) {
-                is Boolean -> properties.setProperty("bool_$key", value.toString())
-                is Float -> properties.setProperty("float_$key", value.toString())
-                is Int -> properties.setProperty("int_$key", value.toString())
-                is Long -> properties.setProperty("long_$key", value.toString())
-                is String -> properties.setProperty("string_$key", value)
+                is Boolean -> {
+                    properties.setProperty("bool_$key", value.toString())
+                }
+
+                is Float -> {
+                    properties.setProperty("float_$key", value.toString())
+                }
+
+                is Int -> {
+                    properties.setProperty("int_$key", value.toString())
+                }
+
+                is Long -> {
+                    properties.setProperty("long_$key", value.toString())
+                }
+
+                is String -> {
+                    properties.setProperty("string_$key", value)
+                }
+
                 is Set<*> -> {
                     val setString = value.joinToString("|||")
                     properties.setProperty("stringset_$key", setString)

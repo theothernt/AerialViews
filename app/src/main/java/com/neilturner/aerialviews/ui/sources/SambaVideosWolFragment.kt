@@ -21,7 +21,6 @@ class SambaVideosWolFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -103,11 +102,12 @@ class SambaVideosWolFragment :
             DialogHelper.showOnMain(
                 requireContext(),
                 getString(R.string.samba_media_wol_title),
-                if (isReachableAfter) "Success: Host is now UP" else "Result: Host is still DOWN"
+                if (isReachableAfter) "Success: Host is now UP" else "Result: Host is still DOWN",
             )
         } else {
             progressDialog.dismiss()
-            AlertDialog.Builder(requireContext())
+            AlertDialog
+                .Builder(requireContext())
                 .setTitle(R.string.samba_media_wol_title)
                 .setMessage("Host is already awake. Send wake up command anyway?")
                 .setPositiveButton(R.string.button_ok) { _, _ ->
@@ -115,8 +115,7 @@ class SambaVideosWolFragment :
                         NetworkHelper.sendWakeOnLan(macAddress)
                         Toast.makeText(requireContext(), "Packet sent", Toast.LENGTH_SHORT).show()
                     }
-                }
-                .setNegativeButton(R.string.button_cancel, null)
+                }.setNegativeButton(R.string.button_cancel, null)
                 .show()
         }
     }

@@ -44,7 +44,10 @@ object DialogHelper {
             .create()
     }
 
-    fun updateProgressMessage(dialog: AlertDialog, message: String) {
+    fun updateProgressMessage(
+        dialog: AlertDialog,
+        message: String,
+    ) {
         dialog.findViewById<android.widget.TextView>(R.id.loading_message)?.text = message
     }
 }

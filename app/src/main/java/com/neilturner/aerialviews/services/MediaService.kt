@@ -57,7 +57,6 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaPlaylist =
         withContext(Dispatchers.IO) {
-
             // Build media list from all providers
             val media = buildMediaList(providers)
 

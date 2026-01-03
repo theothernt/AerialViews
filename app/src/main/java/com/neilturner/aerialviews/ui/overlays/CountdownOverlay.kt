@@ -23,16 +23,16 @@ import java.time.temporal.ChronoUnit
 
 class CountdownOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
-    
+
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main.immediate)
     private var updateJob: Job? = null
-    
+
     private var targetTimeStr: String = ""
     private var targetMessage: String = ""
     private var targetDateTime: LocalDateTime? = null
     private var isCompleted = false
-    
+
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -72,13 +72,14 @@ class CountdownOverlay : AppCompatTextView {
             return
         }
 
-        updateJob = mainScope.launch {
-            while (isActive) {
-                updateCountdown()
-                if (isCompleted) break
-                delay(1000)
+        updateJob =
+            mainScope.launch {
+                while (isActive) {
+                    updateCountdown()
+                    if (isCompleted) break
+                    delay(1000)
+                }
             }
-        }
     }
 
     private fun stopCountdown() {
@@ -90,9 +91,9 @@ class CountdownOverlay : AppCompatTextView {
         try {
             val target = targetDateTime ?: return
             val now = LocalDateTime.now()
-            
+
             val totalSeconds = ChronoUnit.SECONDS.between(now, target)
-            
+
             if (totalSeconds <= 0) {
                 text = targetMessage
                 isCompleted = true
@@ -100,7 +101,6 @@ class CountdownOverlay : AppCompatTextView {
             }
 
             text = formatCountdown(totalSeconds)
-
         } catch (e: Exception) {
             Timber.e("Error updating countdown: $e")
             text = "Error"
@@ -121,8 +121,11 @@ class CountdownOverlay : AppCompatTextView {
         }
     }
 
-    private fun parseTargetTime(timeString: String, currentDateTime: LocalDateTime): LocalDateTime? {
-        return try {
+    private fun parseTargetTime(
+        timeString: String,
+        currentDateTime: LocalDateTime,
+    ): LocalDateTime? =
+        try {
             when {
                 // HH:MM format - same day
                 timeString.matches(Regex("^\\d{1,2}:\\d{2}$")) -> {
@@ -131,30 +134,31 @@ class CountdownOverlay : AppCompatTextView {
                     val minute = parts[1].toInt()
                     val targetTime = LocalTime.of(hour, minute)
                     val targetDate = currentDateTime.toLocalDate()
-                    
+
                     var targetDateTime = LocalDateTime.of(targetDate, targetTime)
-                    
+
                     // If time has passed today, schedule for tomorrow
                     if (targetDateTime.isBefore(currentDateTime)) {
                         targetDateTime = targetDateTime.plusDays(1)
                     }
-                    
+
                     targetDateTime
                 }
-                
+
                 // YYYY-MM-DD HH:MM format
                 timeString.matches(Regex("^\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}$")) -> {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm")
                     LocalDateTime.parse(timeString, formatter)
                 }
-                
-                else -> null
+
+                else -> {
+                    null
+                }
             }
         } catch (e: Exception) {
             Timber.e("Error parsing target time: $e")
             null
         }
-    }
 
     fun applyTextSize(sizeValue: Int) {
         val sizeInSp = sizeValue.toFloat()
