@@ -540,6 +540,7 @@
     <item>25 seconds</item>
     <item>30 seconds*</item>
     <item>1 minute</item>
+    <item>2 minute</item>
     <item>3 minutes</item>
     <item>5 minutes</item>
     <item>10 minutes</item>
@@ -557,6 +558,7 @@
     <item>25</item>
     <item>30</item>
     <item>60</item>
+    <item>120</item>
     <item>180</item>
     <item>300</item>
     <item>600</item>
