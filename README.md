@@ -2,7 +2,7 @@
 
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
-[![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=260k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
+[![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=270k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
 [![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=10k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
@@ -17,8 +17,8 @@ Inspired by Apple TV's beautiful video screensaver!
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
-* Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, or WebDAV
+* Over 250 videos from Apple, Amazon, Jetson Creative and Robin Fourcade
+* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, WebDAV or custom feeds
 * Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
