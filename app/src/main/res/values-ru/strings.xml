@@ -16,10 +16,18 @@
   <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ медиакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Изменять частоту обновления дисплея в соответствии с частотой кадров видео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
+  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
+  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
+  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
+  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
+  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
+  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+  <string name="advanced_wol_mac_title">Target MAC Address</string>
   <string name="all_selected">Все выбранные</string>
   <string name="allow_fallback_decoders_summary">Включает поддержку программных или альтернативных кодеков на некоторых устройствах</string>
   <string name="allow_fallback_decoders_title">Разрешить резервные декодеры</string>
   <string name="amazon_videos_enabled">Используйте окружающие видео Amazon</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Положение наложений меняется слева направо с каждым новым видео или фото</string>
   <string name="appearance_alt_text_position_title">Альтернативное положение наложения</string>
   <string name="appearance_animations_summary">Настройте анимацию, используемую для наложения, а также между видео и фотографиями</string>
@@ -43,6 +51,12 @@
   <string name="appearance_clock_size_title">Размер</string>
   <string name="appearance_clock_summary">Отображение текущего времени</string>
   <string name="appearance_clock_title">Часы</string>
+  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
+  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
+  <string name="appearance_countdown_target_message_title">Completion Message</string>
+  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
+  <string name="appearance_countdown_target_time_title">Target Time</string>
+  <string name="appearance_countdown_title">Countdown</string>
   <string name="appearance_date_custom_error">Неверный пользовательский формат даты!</string>
   <string name="appearance_date_custom_example">напр.</string>
   <string name="appearance_date_custom_title">Укажите собственный формат даты</string>
@@ -173,6 +187,7 @@
   <string name="category_capabilities">Возможности</string>
   <string name="category_clock">Часы</string>
   <string name="category_connection_information">Информация о подключении</string>
+  <string name="category_countdown">Countdown</string>
   <string name="category_custom_format">Свой формат</string>
   <string name="category_custom_videos_and_feeds">Пользовательские видео и каналы</string>
   <string name="category_date">Дата</string>
@@ -224,6 +239,7 @@
   <string name="category_video_source">Источник видео</string>
   <string name="category_video_sources">Источники видео</string>
   <string name="category_videos">Видео</string>
+  <string name="category_wake_on_lan">Wake on LAN</string>
   <string name="category_weather">Погода</string>
   <string name="comm1_videos_enabled">Использовать видео сообщества</string>
   <string name="comm2_videos_enabled">Использовать видео сообщества</string>
@@ -375,6 +391,7 @@
   <string name="playlist_slideshow_speed_title">Скорость показа слайдов</string>
   <string name="playlist_video_volume_summary">Выберите уровень громкости видео</string>
   <string name="playlist_video_volume_title">Громкость видео</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Местоположение</string>
   <string name="progress_bar_opacity_title">Непрозрачность</string>
   <string name="progress_bar_type_title">Показать для типа носителя</string>
@@ -383,6 +400,8 @@
   <string name="projectivy_apple_videos_options_title">Параметры видео Apple</string>
   <string name="projectivy_comm1_videos_options_title">Параметры видео Jetson Creative</string>
   <string name="projectivy_comm2_videos_options_title">Параметры видео Робина Фуркада</string>
+  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
+  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
   <string name="projectivy_select_videos_summary">Выберите поставщиков видео для совместного использования с Projectivy launcher</string>
   <string name="projectivy_select_videos_title">Выбор источников видео</string>
   <string name="projectivy_shuffle_videos_summary">Случайный порядок видео</string>
@@ -393,6 +412,9 @@
   <string name="samba_media_test_summary4">Найдено изображений: %1$s</string>
   <string name="samba_media_test_summary5">Выбрано для воспроизведения: %1$s</string>
   <string name="samba_media_type_title">Выбрать тип медиа</string>
+  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
+  <string name="samba_media_wol_title">Wake on LAN settings</string>
+  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
   <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера. Необязательно</string>
   <string name="samba_videos_domainname_title">Доменное имя</string>
   <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи данных</string>

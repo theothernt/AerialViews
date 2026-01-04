@@ -16,10 +16,18 @@
   <string name="advanced_philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
+  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
+  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
+  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
+  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
+  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
+  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+  <string name="advanced_wol_mac_title">Target MAC Address</string>
   <string name="all_selected">Усі вибрані</string>
   <string name="allow_fallback_decoders_summary">Включає підтримку програмних або альтернативних кодеків на деяких пристроях</string>
   <string name="allow_fallback_decoders_title">Дозволити резервні декодери</string>
   <string name="amazon_videos_enabled">Використовуйте навколишні відео Amazon</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">Положення годинника та розташування змінюються у кожному відео, щоб запобігти вигорянню OLED-дисплеїв</string>
   <string name="appearance_alt_text_position_title">Альтернативна позиція тексту</string>
   <string name="appearance_animations_summary">Налаштуйте анімацію, яка використовується для накладання, а також між відео та фотографіями</string>
@@ -43,6 +51,12 @@
   <string name="appearance_clock_size_title">Розмір</string>
   <string name="appearance_clock_summary">Відображення поточного часу</string>
   <string name="appearance_clock_title">Годинник</string>
+  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
+  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
+  <string name="appearance_countdown_target_message_title">Completion Message</string>
+  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
+  <string name="appearance_countdown_target_time_title">Target Time</string>
+  <string name="appearance_countdown_title">Countdown</string>
   <string name="appearance_date_custom_error">Недійсний спеціальний формат дати!</string>
   <string name="appearance_date_custom_example">напр.</string>
   <string name="appearance_date_custom_title">Укажіть свій формат дати</string>
@@ -173,6 +187,7 @@
   <string name="category_capabilities">Можливості</string>
   <string name="category_clock">Годинник</string>
   <string name="category_connection_information">Інформація про підключення</string>
+  <string name="category_countdown">Countdown</string>
   <string name="category_custom_format">Свій формат</string>
   <string name="category_custom_videos_and_feeds">Користувацькі відео та канали</string>
   <string name="category_date">Дата</string>
@@ -224,6 +239,7 @@
   <string name="category_video_source">Джерело відео</string>
   <string name="category_video_sources">Джерела відео</string>
   <string name="category_videos">Відео</string>
+  <string name="category_wake_on_lan">Wake on LAN</string>
   <string name="category_weather">Погода</string>
   <string name="comm1_videos_enabled">Використовувати відео спільноти</string>
   <string name="comm2_videos_enabled">Використовувати відео спільноти</string>
@@ -375,6 +391,7 @@
   <string name="playlist_slideshow_speed_title">Швидкість показу слайдів</string>
   <string name="playlist_video_volume_summary">Виберіть рівень гучності відео</string>
   <string name="playlist_video_volume_title">Гучність відео</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Місце розташування</string>
   <string name="progress_bar_opacity_title">Непрозорість</string>
   <string name="progress_bar_type_title">Показати для типу носія</string>
@@ -383,6 +400,8 @@
   <string name="projectivy_apple_videos_options_title">Параметри відео Apple</string>
   <string name="projectivy_comm1_videos_options_title">Параметри відео Jetson Creative</string>
   <string name="projectivy_comm2_videos_options_title">Параметри відео Робіна Фуркада</string>
+  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
+  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
   <string name="projectivy_select_videos_summary">Виберіть постачальників відео для спільного використання з Projectivy launcher</string>
   <string name="projectivy_select_videos_title">Вибір джерел відео</string>
   <string name="projectivy_shuffle_videos_summary">Випадковий порядок відео</string>
@@ -393,6 +412,9 @@
   <string name="samba_media_test_summary4">Знайдено зображень: %1$s</string>
   <string name="samba_media_test_summary5">Вибрано для відтворення: %1$s</string>
   <string name="samba_media_type_title">Виберіть тип носія</string>
+  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
+  <string name="samba_media_wol_title">Wake on LAN settings</string>
+  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
   <string name="samba_videos_domainname_summary">"Доменне ім\'я або робоча група сервера"</string>
   <string name="samba_videos_domainname_title">"Доменне ім\'я (необов\'язково)"</string>
   <string name="samba_videos_enable_encryption_summary">"Включає шифрування для SMB-з\'єднань, може знизити загальну швидкість передачі"</string>

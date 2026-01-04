@@ -29,6 +29,7 @@
     <item>~2GB</item>
     <item>~3GB</item>
   </string-array>
+  <string name="amazon_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
   <string-array name="amazon_videos_quality_entries" translatable="false">
     <item>1080p HEVC</item>
     <item>4K HEVC</item>
@@ -44,6 +45,7 @@
     <item>~4GB</item>
     <item>~5.5GB</item>
   </string-array>
+  <string name="apple_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
   <string-array name="apple_videos_quality_entries" translatable="false">
     <item>1080p H.264</item>
     <item>1080p HEVC</item>
@@ -58,6 +60,7 @@
     <item>VIDEO_4K_SDR</item>
     <item>VIDEO_4K_HDR</item>
   </string-array>
+  <string name="background_colour_default" translatable="false">BLACK</string>
   <string-array name="background_colour_entries">
     <item>Черный</item>
     <item>Белый</item>
@@ -66,6 +69,10 @@
     <item>BLACK</item>
     <item>WHITE</item>
   </string-array>
+  <string name="brightness_default" translatable="false">100</string>
+  <string name="button_action_default" translatable="false">IGNORE</string>
+  <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
+  <string name="button_action_default3" translatable="false">SKIP_PREVIOUS</string>
   <string-array name="button_action_entries">
     <item>Игнорировать действие</item>
     <item>Перейти к следующему видео/фото</item>
@@ -106,6 +113,7 @@
     <item>TOGGLE_PAUSE</item>
     <item>TOGGLE_LOOPING</item>
   </string-array>
+  <string name="clock_format_default" translatable="false">DEFAULT</string>
   <string-array name="clock_format_entries">
     <item>Системный</item>
     <item>12-часовой</item>
@@ -121,6 +129,7 @@
     <item>~.8GB</item>
     <item>~1.5GB</item>
   </string-array>
+  <string name="comm1_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
   <string-array name="comm1_videos_quality_entries" translatable="false">
     <item>1080p H.264</item>
     <item>1080p HEVC</item>
@@ -166,6 +175,8 @@
     <item>DAY</item>
     <item>SUNSET</item>
   </string-array>
+  <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
+  <string name="date_format_default" translatable="false">COMPACT</string>
   <string-array name="date_format_entries">
     <item>Компактный</item>
     <item>Полный</item>
@@ -176,6 +187,7 @@
     <item>FULL</item>
     <item>CUSTOM</item>
   </string-array>
+  <string name="description_filename_default" translatable="false">DISABLED</string>
   <string-array name="description_filename_entries">
     <item>Выключено</item>
     <item>Использовать имя файла как есть</item>
@@ -188,6 +200,7 @@
     <item>LAST_FOLDER_FILENAME</item>
     <item>LAST_FOLDER_NAME</item>
   </string-array>
+  <string name="description_folder_level_default" translatable="false">1</string>
   <string-array name="description_folder_level_entries">
     <item>\'Italy / Sunset\' - 1 уровень</item>
     <item>\'2025 / Italy / Sunset\' - 2 уровня</item>
@@ -208,6 +221,7 @@
     <item>Использовать папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
     <item>Использовать только имя папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
   </string-array>
+  <string name="description_video_default" translatable="false">POI</string>
   <string-array name="description_video_entries">
     <item>Выключено</item>
     <item>Краткое описание</item>
@@ -246,6 +260,9 @@
     <item>8 секунд</item>
     <item>10 секунд</item>
   </string-array>
+  <string name="duration_fade_in_default" translatable="false">600</string>
+  <string name="duration_fade_out_default" translatable="false">800</string>
+  <string name="duration_overlay_fade_default" translatable="false">600</string>
   <string-array name="duration_values" translatable="false">
     <item>0</item>
     <item>200</item>
@@ -263,6 +280,7 @@
     <item>8000</item>
     <item>10000</item>
   </string-array>
+  <string name="http_scheme_default" translatable="false">HTTP</string>
   <string-array name="http_scheme_entries" translatable="false">
     <item>HTTP</item>
     <item>HTTPS</item>
@@ -286,6 +304,9 @@
     <item>300 фотографий</item>
     <item>400 фотографий</item>
   </string-array>
+  <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
+  <string name="immich_include_random_default" translatable="false">DISABLED</string>
+  <string name="immich_include_recent_default" translatable="false">DISABLED</string>
   <string-array name="immich_include_values" translatable="false">
     <item>DISABLED</item>
     <item>100</item>
@@ -307,6 +328,7 @@
     <item>4</item>
     <item>5</item>
   </string-array>
+  <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустить при достижении лимита</item>
     <item>Разрешить более длинным видео завершаться</item>
@@ -323,6 +345,7 @@
     <item>IGNORE</item>
     <item>SEGMENT</item>
   </string-array>
+  <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
   <string-array name="local_videos_search_type_entries">
     <item>Медиа-сканер</item>
     <item>Доступ к папкам (устаревший)</item>
@@ -331,6 +354,7 @@
     <item>MEDIA_STORE</item>
     <item>FOLDER_ACCESS</item>
   </string-array>
+  <string name="locale_menu_default" translatable="false">default</string>
   <string-array name="locale_menu_entries" translatable="false">
     <item>System locale*</item>
     <item>English</item>
@@ -357,6 +381,7 @@
     <item>ru-RU</item>
     <item>uk-UA</item>
   </string-array>
+  <string name="locale_screensaver_default" translatable="false">default</string>
   <string-array name="locale_screensaver_entries" translatable="false">
     <item>System locale*</item>
     <item>English</item>
@@ -385,6 +410,7 @@
     <item>uk-UA</item>
     <item>random</item>
   </string-array>
+  <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
   <string-array name="media_type_entries">
     <item>Только видео</item>
     <item>Только изображения</item>
@@ -395,6 +421,8 @@
     <item>PHOTOS</item>
     <item>VIDEOS_PHOTOS</item>
   </string-array>
+  <string name="nowplaying_format_default" translatable="false">SONG_ARTIST</string>
+  <string name="nowplaying_format_default2" translatable="false">DISABLED</string>
   <string-array name="nowplaying_format_entries">
     <item>Выключено</item>
     <item>Песня · Исполнитель</item>
@@ -409,6 +437,7 @@
     <item>ARTIST</item>
     <item>SONG</item>
   </string-array>
+  <string name="overlay_auto_hide_default" translatable="false">-1</string>
   <string-array name="overlay_auto_hide_entries">
     <item>Никогда не скрывать (по умолчанию)</item>
     <item>Всегда скрытый</item>
@@ -445,6 +474,7 @@
     <item>BOTTOM_LEFT</item>
     <item>BOTTOM_RIGHT</item>
   </string-array>
+  <string name="overlay_reveal_timeout_default" translatable="false">4</string>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 секунды</item>
     <item>4 секунды (по умолчанию)</item>
@@ -545,6 +575,7 @@
     <item>90</item>
     <item>95</item>
   </string-array>
+  <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
   <string-array name="photo_scale_entries">
     <item>Заполнение с кадрированием (по умолчанию)</item>
     <item>Заполнение без кадрирования</item>
@@ -553,6 +584,7 @@
     <item>CENTER_CROP</item>
     <item>FIT_CENTER</item>
   </string-array>
+  <string name="playback_max_video_length_default" translatable="false">0</string>
   <string-array name="playback_max_video_length_entries">
     <item>Без ограничений (по умолчанию)</item>
     <item>10 сек</item>
@@ -591,6 +623,7 @@
     <item>1800</item>
     <item>3600</item>
   </string-array>
+  <string name="playback_speed_default" translatable="false">1</string>
   <string-array name="playback_speed_entries" translatable="false">
     <item>0.2x</item>
     <item>0.4x</item>
@@ -615,6 +648,8 @@
     <item>1.8</item>
     <item>2</item>
   </string-array>
+  <string name="progress_bar_default" translatable="false">100</string>
+  <string name="progress_bar_location_default" translatable="false">DISABLED</string>
   <string-array name="progress_bar_location_entries">
     <item>Выключено</item>
     <item>Верхняя часть экрана</item>
@@ -625,6 +660,7 @@
     <item>TOP</item>
     <item>BOTTOM</item>
   </string-array>
+  <string name="progress_bar_type_default" translatable="false">BOTH</string>
   <string-array name="progress_bar_type_entries">
     <item>Видео и фотографии</item>
     <item>Только видео</item>
@@ -653,6 +689,7 @@
     <item>COMM1</item>
     <item>COMM2</item>
   </string-array>
+  <string name="random_start_position_range_default" translatable="false">50</string>
   <string-array name="samba_videos_smb_dialects_default" translatable="false">
     <item>SMB_2_1</item>
     <item>SMB_2_0_2</item>
@@ -671,6 +708,7 @@
     <item>SMB_2_1</item>
     <item>SMB_2_0_2</item>
   </string-array>
+  <string name="seek_interval_default" translatable="false">30</string>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
     <item>20 сек</item>
@@ -687,6 +725,7 @@
     <item>120</item>
     <item>300</item>
   </string-array>
+  <string name="sleep_timer_default" translatable="false">0</string>
   <string-array name="sleep_timer_entries">
     <item>Выключено (по умолчанию)</item>
     <item>5 минут</item>
@@ -717,22 +756,24 @@
     <item>55</item>
     <item>60</item>
   </string-array>
+  <string name="slideshow_speed_default" translatable="false">30</string>
   <string-array name="slideshow_speed_entries">
     <item>5 секунд</item>
     <item>10 секунд</item>
     <item>15 секунд</item>
     <item>20 секунд</item>
     <item>25 секунд</item>
-    <item>30 секунд (по умолчанию)</item>
+    <item>30 секунд*</item>
     <item>1 минута</item>
+    <item>2 мин</item>
     <item>3 минуты</item>
     <item>5 минут</item>
     <item>10 минут</item>
     <item>20 минут</item>
     <item>30 минут</item>
     <item>1 час</item>
-    <item>6 hours</item>
-    <item>12 hours</item>
+    <item>6 часов</item>
+    <item>12 часов</item>
   </string-array>
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
@@ -742,6 +783,7 @@
     <item>25</item>
     <item>30</item>
     <item>60</item>
+    <item>120</item>
     <item>180</item>
     <item>300</item>
     <item>600</item>
@@ -763,6 +805,7 @@
     <item>Сообщение №2</item>
     <item>Сообщение #3</item>
     <item>Сообщение #4</item>
+    <item>Countdown</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
@@ -776,7 +819,9 @@
     <item>MESSAGE2</item>
     <item>MESSAGE3</item>
     <item>MESSAGE4</item>
+    <item>COUNTDOWN</item>
   </string-array>
+  <string name="temperature_units_default" translatable="false">METRIC</string>
   <string-array name="temperature_units_entries">
     <item>C° / Цельсия</item>
     <item>F° / Фаренгейта</item>
@@ -785,6 +830,7 @@
     <item>METRIC</item>
     <item>IMPERIAL</item>
   </string-array>
+  <string name="text_font_default" translatable="false">open-sans</string>
   <string-array name="text_font_entries" translatable="false">
     <item>Open Sans*</item>
     <item>Roboto</item>
@@ -793,6 +839,7 @@
     <item>open-sans</item>
     <item>sans-serif</item>
   </string-array>
+  <string name="text_size_default" translatable="false">18</string>
   <string-array name="text_size_entries" translatable="false">
     <item>72sp</item>
     <item>66sp</item>
@@ -823,6 +870,7 @@
     <item>18</item>
     <item>15</item>
   </string-array>
+  <string name="text_weight_default" translatable="false">300</string>
   <string-array name="text_weight_entries">
     <item>100/Тонкий</item>
     <item>200/Сверхсветлый</item>
@@ -845,6 +893,7 @@
     <item>800</item>
     <item>900</item>
   </string-array>
+  <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
   <string-array name="video_scale_entries">
     <item>Заполнение с кадрированием (по умолчанию)</item>
     <item>Заполнение без кадрирования</item>
@@ -895,6 +944,7 @@
     <item>SUNSET</item>
     <item>NIGHT</item>
   </string-array>
+  <string name="volume_default" translatable="false">100</string>
   <string-array name="weather_forecast_type_entries">
     <item>Пустой</item>
     <item>Город</item>
