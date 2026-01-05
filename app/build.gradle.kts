@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 22 // Android v5
         targetSdk = 36
-        versionCode = 85
+        versionCode = 86
         versionName = "1.8.1"
-        betaVersion = "-beta9"
+        betaVersion = "-beta10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,7 +39,7 @@ android {
         jvmToolchain(21)
 
         sourceSets.configureEach {
-            languageSettings.languageVersion = "2.2"
+            languageSettings.languageVersion = "2.3"
         }
     }
 
@@ -51,7 +51,7 @@ android {
     lint {
         abortOnError = false
     }
-    
+
     bundle {
         // Trying this fix for reported crashes
         // https://stackoverflow.com/questions/50471888/android-app-bundle-introduces-resource-not-found-crash-in-android-app
