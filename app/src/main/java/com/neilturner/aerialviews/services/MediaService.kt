@@ -30,10 +30,8 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
-import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
