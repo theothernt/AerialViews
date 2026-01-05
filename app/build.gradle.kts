@@ -51,11 +51,17 @@ android {
     lint {
         abortOnError = false
     }
-
-    // App bundle (not APK) should contain all languages so 'locale switch'
-    // feature works on Play Store and Amazon Appstore builds
-    // https://stackoverflow.com/a/54862243/247257
+    
     bundle {
+        // Trying this fix for reported crashes
+        // https://stackoverflow.com/questions/50471888/android-app-bundle-introduces-resource-not-found-crash-in-android-app
+        density {
+            @Suppress("UnstableApiUsage")
+            enableSplit = false
+        }
+        // App bundle (not APK) should contain all languages so 'locale switch'
+        // feature works on Play Store and Amazon Appstore builds
+        // https://stackoverflow.com/a/54862243/247257
         language {
             @Suppress("UnstableApiUsage")
             enableSplit = false
