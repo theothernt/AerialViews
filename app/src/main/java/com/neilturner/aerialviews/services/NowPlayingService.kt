@@ -8,6 +8,12 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Bundle
 import androidx.core.content.getSystemService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import com.neilturner.aerialviews.utils.PermissionHelper
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -24,6 +30,10 @@ class NowPlayingService(
     private var activeController: MediaController? = null
     private var metadata: MediaMetadata? = null
     private var active = false
+    private var lastMusicEvent: MusicEvent? = null
+    private val serviceJob = SupervisorJob()
+    private val scope = CoroutineScope(Dispatchers.Main + serviceJob)
+    private var updateActiveSessionJob: Job? = null
 
     init {
         if (hasPermission) {
@@ -42,7 +52,16 @@ class NowPlayingService(
         sessionManager = context.getSystemService<MediaSessionManager>()
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
         val controllers = sessionManager?.getActiveSessions(notificationListener)
-        activeController = pickController(controllers)
+        updateActiveSession(controllers)
+    }
+
+    private fun updateActiveSession(controllers: MutableList<MediaController>?) {
+        val selectedController = pickController(controllers)
+        if (selectedController?.sessionToken == activeController?.sessionToken) {
+            return
+        }
+        unregisterCurrentController()
+        activeController = selectedController
         activeController?.let {
             it.registerCallback(this)
             metadata = it.metadata
@@ -57,10 +76,6 @@ class NowPlayingService(
                 return it
             }
         }
-        if (controllers?.isNotEmpty() == true) {
-            Timber.i("No controller playing music, trying first one")
-            return controllers.first()
-        }
 
         Timber.i("No controllers found.")
         return null
@@ -72,12 +87,17 @@ class NowPlayingService(
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         Timber.i("onActiveSessionsChanged")
-        unregisterCurrentController()
-        activeController = pickController(controllers)
-        activeController?.let {
-            it.registerCallback(this)
-            metadata = it.metadata
-            updateMetadata()
+        updateActiveSession(controllers)
+        
+        updateActiveSessionJob?.cancel()
+        updateActiveSessionJob = scope.launch {
+            // Check every 500ms for 3 seconds (6 times)
+            repeat(6) {
+                delay(500)
+                Timber.i("Delayed check for active sessions")
+                val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                updateActiveSession(freshControllers)
+            }
         }
     }
 
@@ -85,20 +105,20 @@ class NowPlayingService(
         event: String,
         extras: Bundle?,
     ) {
-        Timber.i("onSessionEvent")
+        Timber.i("onSessionEvent: $event")
         super.onSessionEvent(event, extras)
         updateMetadata()
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
-        Timber.i("onMetadataChanged")
+        Timber.i("onMetadataChanged: $metadata")
         super.onMetadataChanged(metadata)
         this.metadata = metadata
         updateMetadata()
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
-        Timber.i("onPlaybackStateChanged")
+        Timber.i("onPlaybackStateChanged: ${stateToString(state?.state ?: -1)}")
         super.onPlaybackStateChanged(state)
         active = isActive()
         updateMetadata()
@@ -116,7 +136,7 @@ class NowPlayingService(
             Timber.i("updateMetadata - null")
             return
         }
-        active = isActive() // Don't remove!
+        active = isActive()
         val musicEvent =
             metadata
                 ?.let {
@@ -125,23 +145,46 @@ class NowPlayingService(
                     MusicEvent(artist, song)
                 }.takeIf { active } ?: MusicEvent()
 
+        if (musicEvent == lastMusicEvent) {
+            return
+        }
+        lastMusicEvent = musicEvent
         Timber.i("updateMetadata - trying $musicEvent")
         GlobalBus.post(musicEvent)
     }
 
     private fun isActive(controller: MediaController? = activeController): Boolean {
         val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
-        return state == PlaybackState.STATE_PLAYING ||
+        Timber.i("Playback state for ${controller?.packageName}: ${stateToString(state)}")
+        return state == PlaybackState.STATE_PLAYING /*||
             state == PlaybackState.STATE_BUFFERING ||
             state == PlaybackState.STATE_FAST_FORWARDING ||
-            state == PlaybackState.STATE_REWINDING
+            state == PlaybackState.STATE_REWINDING */
     }
+
+    private fun stateToString(state: Int): String =
+        when (state) {
+            PlaybackState.STATE_NONE -> "STATE_NONE"
+            PlaybackState.STATE_STOPPED -> "STATE_STOPPED"
+            PlaybackState.STATE_PAUSED -> "STATE_PAUSED"
+            PlaybackState.STATE_PLAYING -> "STATE_PLAYING"
+            PlaybackState.STATE_FAST_FORWARDING -> "STATE_FAST_FORWARDING"
+            PlaybackState.STATE_REWINDING -> "STATE_REWINDING"
+            PlaybackState.STATE_BUFFERING -> "STATE_BUFFERING"
+            PlaybackState.STATE_ERROR -> "STATE_ERROR"
+            PlaybackState.STATE_CONNECTING -> "STATE_CONNECTING"
+            PlaybackState.STATE_SKIPPING_TO_PREVIOUS -> "STATE_SKIPPING_TO_PREVIOUS"
+            PlaybackState.STATE_SKIPPING_TO_NEXT -> "STATE_SKIPPING_TO_NEXT"
+            PlaybackState.STATE_SKIPPING_TO_QUEUE_ITEM -> "STATE_SKIPPING_TO_QUEUE_ITEM"
+            else -> "UNKNOWN ($state)"
+        }
 
     fun nextTrack() = activeController?.transportControls?.skipToNext()
 
     fun previousTrack() = activeController?.transportControls?.skipToPrevious()
 
     fun stop() {
+        serviceJob.cancel()
         unregisterCurrentController()
         activeController = null
         metadata = null
