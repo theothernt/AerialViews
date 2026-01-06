@@ -127,6 +127,8 @@ class ScreenController(
 
         brightnessView = binding.brightnessView
 
+        GlobalBus.dropAll() // Clear any old events
+
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
             loadingText.apply {
