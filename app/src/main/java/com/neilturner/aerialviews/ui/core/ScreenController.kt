@@ -88,6 +88,8 @@ class ScreenController(
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
+    private val gradientTopView: View
+    private val gradientBottomView: View
     val view: View
 
     private val topLeftIds: List<Int>
@@ -114,6 +116,8 @@ class ScreenController(
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
+        gradientTopView = overlayViewBinding.gradientTop
+        gradientBottomView = overlayViewBinding.gradientBottom
 
         videoViewBinding = binding.videoView
         videoViewBinding.root.setBackgroundColor(backgroundVideos)
@@ -172,17 +176,15 @@ class ScreenController(
             WindowHelper.resetSystemAnimationDuration(context)
         }
 
-        // Gradients
+        // Gradients - set up backgrounds but visibility will be managed with overlays
         if (GeneralPrefs.showTopGradient) {
-            val gradientView = overlayViewBinding.gradientTop
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
-            gradientView.visibility = View.VISIBLE
+            gradientTopView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+            gradientTopView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            val gradientView = overlayViewBinding.gradientBottom
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
-            gradientView.visibility = View.VISIBLE
+            gradientBottomView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+            gradientBottomView.visibility = View.VISIBLE
         }
 
         mainScope.launch {
@@ -344,12 +346,27 @@ class ScreenController(
         // Hide overlays immediately
         if (autoHideOverlayDelay.toInt() == 0) {
             overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+            // Also hide gradients immediately if they have fading overlays
+            // AND no persistent overlays
+            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                gradientTopView.alpha = 0f
+            }
+            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                gradientBottomView.alpha = 0f
+            }
             canShowOverlays = true
         }
 
         // Hide overlays after a delay
         if (autoHideOverlayDelay > 0) {
             overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+            // Also show gradients initially if they have fading overlays
+            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                gradientTopView.alpha = 1f
+            }
+            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                gradientBottomView.alpha = 1f
+            }
             hideOverlays(overlayDelay)
         }
 
@@ -437,6 +454,23 @@ class ScreenController(
             }
             animator.start()
         }
+
+        // Fade out gradients if their corresponding region has fading overlays
+        // AND no persistent overlays (otherwise gradient should stay visible)
+        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+            gradientTopView.animate()
+                .alpha(0f)
+                .setStartDelay(delay)
+                .setDuration(overlayFadeOut)
+                .start()
+        }
+        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+            gradientBottomView.animate()
+                .alpha(0f)
+                .setStartDelay(delay)
+                .setDuration(overlayFadeOut)
+                .start()
+        }
     }
 
     fun showOverlays() {
@@ -471,6 +505,22 @@ class ScreenController(
                 animator.withEndAction { hideOverlays(overlayRevealTimeout * 1000) }
             }
             animator.start()
+        }
+
+        // Fade in gradients if their corresponding region has fading overlays
+        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+            gradientTopView.animate()
+                .alpha(1f)
+                .setStartDelay(0)
+                .setDuration(overlayFadeIn)
+                .start()
+        }
+        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+            gradientBottomView.animate()
+                .alpha(1f)
+                .setStartDelay(0)
+                .setDuration(overlayFadeIn)
+                .start()
         }
     }
 

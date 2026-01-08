@@ -45,6 +45,38 @@ class OverlayHelper(
         return result
     }
 
+    // Check if any top overlays should fade (based on user's fade corners selection)
+    fun hasTopOverlaysToFade(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasTopLeft = fadeCornersSelection.contains("TOP_LEFT") && getTopLeftOverlays().isNotEmpty()
+        val hasTopRight = fadeCornersSelection.contains("TOP_RIGHT") && getTopRightOverlays().isNotEmpty()
+        return hasTopLeft || hasTopRight
+    }
+
+    // Check if any bottom overlays should fade
+    fun hasBottomOverlaysToFade(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasBottomLeft = fadeCornersSelection.contains("BOTTOM_LEFT") && getBottomLeftOverlays().isNotEmpty()
+        val hasBottomRight = fadeCornersSelection.contains("BOTTOM_RIGHT") && getBottomRightOverlays().isNotEmpty()
+        return hasBottomLeft || hasBottomRight
+    }
+
+    // Check if any top overlays should persist (NOT fade)
+    fun hasTopPersistentOverlays(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasTopLeft = !fadeCornersSelection.contains("TOP_LEFT") && getTopLeftOverlays().isNotEmpty()
+        val hasTopRight = !fadeCornersSelection.contains("TOP_RIGHT") && getTopRightOverlays().isNotEmpty()
+        return hasTopLeft || hasTopRight
+    }
+
+    // Check if any bottom overlays should persist (NOT fade)
+    fun hasBottomPersistentOverlays(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasBottomLeft = !fadeCornersSelection.contains("BOTTOM_LEFT") && getBottomLeftOverlays().isNotEmpty()
+        val hasBottomRight = !fadeCornersSelection.contains("BOTTOM_RIGHT") && getBottomRightOverlays().isNotEmpty()
+        return hasBottomLeft || hasBottomRight
+    }
+
     // Assign IDs/Overlays to correct Flow - or alternate
     fun assignOverlaysAndIds(
         leftFlow: Flow,
