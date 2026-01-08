@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.utils.CountdownTimeParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -17,8 +18,6 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 class CountdownOverlay : AppCompatTextView {
@@ -124,41 +123,7 @@ class CountdownOverlay : AppCompatTextView {
     private fun parseTargetTime(
         timeString: String,
         currentDateTime: LocalDateTime,
-    ): LocalDateTime? =
-        try {
-            when {
-                // HH:MM format - same day
-                timeString.matches(Regex("^\\d{1,2}:\\d{2}$")) -> {
-                    val parts = timeString.split(":")
-                    val hour = parts[0].toInt()
-                    val minute = parts[1].toInt()
-                    val targetTime = LocalTime.of(hour, minute)
-                    val targetDate = currentDateTime.toLocalDate()
-
-                    var targetDateTime = LocalDateTime.of(targetDate, targetTime)
-
-                    // If time has passed today, schedule for tomorrow
-                    if (targetDateTime.isBefore(currentDateTime)) {
-                        targetDateTime = targetDateTime.plusDays(1)
-                    }
-
-                    targetDateTime
-                }
-
-                // YYYY-MM-DD HH:MM format
-                timeString.matches(Regex("^\\d{4}-\\d{2}-\\d{2} \\d{1,2}:\\d{2}$")) -> {
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm")
-                    LocalDateTime.parse(timeString, formatter)
-                }
-
-                else -> {
-                    null
-                }
-            }
-        } catch (e: Exception) {
-            Timber.e("Error parsing target time: $e")
-            null
-        }
+    ): LocalDateTime? = CountdownTimeParser.parseTargetTime(timeString, currentDateTime)
 
     fun applyTextSize(sizeValue: Int) {
         val sizeInSp = sizeValue.toFloat()
