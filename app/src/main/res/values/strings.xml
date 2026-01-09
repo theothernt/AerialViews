@@ -171,7 +171,7 @@
 
     <!-- Main / Video Sources / Custom feeds -->
     <string name="custom_media_enabled">Use custom feeds</string>
-    <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansion packs, Custom feeds (entries.json), and RTSP streams</string>
+    <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansion packs, custom feeds (entries.json), HLS, and RTSP streams</string>
 
     <string name="custom_media_filters_notice">Filters will work with Jetson Creative expansion packs. Custom feeds can support the filters by adding extra metadata.</string>
 
