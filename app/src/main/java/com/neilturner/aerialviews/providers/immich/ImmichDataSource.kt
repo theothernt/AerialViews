@@ -60,7 +60,7 @@ class ImmichDataSource : BaseDataSource(true) {
                 throw IOException("Unexpected code ${response.code}")
             }
 
-            inputStream = response.body?.byteStream()
+            inputStream = response.body.byteStream()
             opened = true
             transferStarted(dataSpec)
         } catch (e: IOException) {
