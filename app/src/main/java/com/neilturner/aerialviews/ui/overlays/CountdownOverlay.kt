@@ -2,13 +2,11 @@ package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.CountdownTimeParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -125,12 +123,4 @@ class CountdownOverlay : AppCompatTextView {
         currentDateTime: LocalDateTime,
     ): LocalDateTime? = CountdownTimeParser.parseTargetTime(timeString, currentDateTime)
 
-    fun applyTextSize(sizeValue: Int) {
-        val sizeInSp = sizeValue.toFloat()
-        setTextSize(TypedValue.COMPLEX_UNIT_SP, sizeInSp)
-    }
-
-    fun applyTextWeight(weightValue: Int) {
-        typeface = FontHelper.getTypeface(context, prefs.fontTypeface, weightValue)
-    }
 }
