@@ -22,7 +22,7 @@ android {
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 22 // Android v5
+        minSdk = 23 // Android v6
         targetSdk = 36
         versionCode = 89
         versionName = "1.8.1"
