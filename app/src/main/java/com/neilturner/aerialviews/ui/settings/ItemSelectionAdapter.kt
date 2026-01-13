@@ -12,8 +12,7 @@ import com.neilturner.aerialviews.R
 data class SelectableItem(
     val id: Int,
     val name: String,
-    var isSelected: Boolean = false,
-    var sortOrder: Int = -1
+    var isSelected: Boolean = false
 )
 
 class ItemSelectionAdapter(
@@ -27,7 +26,6 @@ class ItemSelectionAdapter(
         val selectionArea: View = view.findViewById(R.id.selection_area)
         val checkbox: CheckBox = view.findViewById(R.id.item_checkbox)
         val name: TextView = view.findViewById(R.id.item_name)
-        val position: TextView = view.findViewById(R.id.item_position)
         val moveUpButton: Button = view.findViewById(R.id.button_move_up)
         val moveDownButton: Button = view.findViewById(R.id.button_move_down)
     }
@@ -40,80 +38,74 @@ class ItemSelectionAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        
+
         holder.name.text = item.name
         holder.checkbox.isChecked = item.isSelected
-        
-        // Show position and buttons only for selected items
+
         // Show buttons for all items
         holder.moveUpButton.visibility = View.VISIBLE
         holder.moveDownButton.visibility = View.VISIBLE
-        
+
         // Enable/Disable based on list position
         holder.moveUpButton.isEnabled = position > 0
         holder.moveDownButton.isEnabled = position < items.size - 1
-        
+
         // Handle selection area click to toggle checkbox
         holder.selectionArea.setOnClickListener {
-            toggleSelection(position)
+            toggleSelection(holder.bindingAdapterPosition)
         }
-        
-        // Handle checkbox clicks (just in case, though usually handled by parent)
+
+        // Handle checkbox clicks
         holder.checkbox.setOnClickListener {
-            toggleSelection(position)
+            toggleSelection(holder.bindingAdapterPosition)
         }
-        
+
         // Handle move buttons
         holder.moveUpButton.setOnClickListener {
             onMoveUp(holder.bindingAdapterPosition)
         }
-        
+
         holder.moveDownButton.setOnClickListener {
             onMoveDown(holder.bindingAdapterPosition)
         }
     }
 
     private fun toggleSelection(position: Int) {
+        if (position == RecyclerView.NO_POSITION) return
         val item = items[position]
-        // Removed limit check
         item.isSelected = !item.isSelected
-
         onSelectionChanged()
         notifyItemChanged(position)
     }
 
     fun moveUp(position: Int) {
         if (position <= 0) return
-        
+
         val item = items[position]
         val prevItem = items[position - 1]
-        
+
         // Swap in list
         items[position] = prevItem
         items[position - 1] = item
-        
+
         // Notify adapter
         notifyItemMoved(position, position - 1)
-        
-        // Update the items that swapped to ensure arrows are updated (e.g. if one moved to top/bottom)
         notifyItemChanged(position)
         notifyItemChanged(position - 1)
     }
 
     fun moveDown(position: Int) {
         if (position >= items.size - 1) return
-        
+
         val item = items[position]
         val nextItem = items[position + 1]
-        
+
         // Swap in list
         items[position] = nextItem
         items[position + 1] = item
-        
+
         // Notify adapter
         notifyItemMoved(position, position + 1)
-        
-        // Update the items that swapped
         notifyItemChanged(position)
         notifyItemChanged(position + 1)
     }

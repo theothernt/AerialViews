@@ -384,10 +384,8 @@
     <string name="settings_about_title">About</string>
     <string name="settings_about_summary">Version, build info, etc</string>
 
-    <string name="settings_item_selection_title">Item Selection &amp; Sorting</string>
-    <string name="settings_item_selection_summary">Select and arrange items with d-pad</string>
-
-    <string name="immich_media_description_title">Select &amp; Sort Items</string>
+    <string name="immich_media_description_title">Select which metadata to show</string>
+    <string name="immich_media_description_summary">Choose which metadata to show in an overlay</string>
     <string name="immich_media_description_message">Use ▲/▼ buttons to reorder selected items.</string>
 
     <!-- Main / Settings / Projectivy Integration -->

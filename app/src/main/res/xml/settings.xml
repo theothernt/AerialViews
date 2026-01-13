@@ -52,10 +52,10 @@
             app:entryValues="@array/exif_tags_values"
             app:entries="@array/exif_tags_entries"
             app:defaultValue="@array/exif_tags_default"
-            app:dialogTitle="title"
-            app:dialogMessage="message"
-            app:title="@string/settings_item_selection_title"
-            app:summary="@string/settings_item_selection_summary" />
+            app:title="@string/immich_media_description_title"
+            app:summary="@string/immich_media_description_summary"
+            app:dialogMessage="@string/immich_media_description_message"
+            />
 
     </PreferenceCategory>
 </PreferenceScreen>
