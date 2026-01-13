@@ -16,10 +16,18 @@
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
+  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
+  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
+  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
+  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
+  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
+  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+  <string name="advanced_wol_mac_title">Target MAC Address</string>
   <string name="all_selected">Todos seleccionados</string>
   <string name="allow_fallback_decoders_summary">Habilita el soporte de decodificación por software o códecs alternativos en algunos dispositivos</string>
   <string name="allow_fallback_decoders_title">Permitir decodificadores alternativos</string>
   <string name="amazon_videos_enabled">Utiliza los vídeos ambientales de Amazon</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">La posición del reloj y la ubicación cambian en cada vídeo para ayudar a prevenir el desgaste de OLED</string>
   <string name="appearance_alt_text_position_title">Posición alternativa del texto</string>
   <string name="appearance_animations_summary">Configura las animaciones utilizadas para las superposiciones entre vídeos y fotos</string>
@@ -43,6 +51,12 @@
   <string name="appearance_clock_size_title">Tamaño</string>
   <string name="appearance_clock_summary">Mostrar la hora actual</string>
   <string name="appearance_clock_title">Reloj</string>
+  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
+  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
+  <string name="appearance_countdown_target_message_title">Completion Message</string>
+  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
+  <string name="appearance_countdown_target_time_title">Target Time</string>
+  <string name="appearance_countdown_title">Countdown</string>
   <string name="appearance_date_custom_error">¡Formato de fecha personalizado no válido!</string>
   <string name="appearance_date_custom_example">Ejemplo</string>
   <string name="appearance_date_custom_title">Especificar un formato de fecha personalizado</string>
@@ -173,6 +187,7 @@
   <string name="category_capabilities">Capacidades</string>
   <string name="category_clock">Reloj</string>
   <string name="category_connection_information">Información de conexión</string>
+  <string name="category_countdown">Countdown</string>
   <string name="category_custom_format">Formato personalizado</string>
   <string name="category_custom_videos_and_feeds">Vídeos y fuentes personalizados</string>
   <string name="category_date">Fecha</string>
@@ -224,6 +239,7 @@
   <string name="category_video_source">Fuente del Vídeo</string>
   <string name="category_video_sources">Fuentes de vídeos</string>
   <string name="category_videos">Vídeos</string>
+  <string name="category_wake_on_lan">Wake on LAN</string>
   <string name="category_weather">Clima</string>
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
@@ -375,6 +391,7 @@
   <string name="playlist_slideshow_speed_title">Velocidad de presentación</string>
   <string name="playlist_video_volume_summary">Elige un nivel de volumen del vídeo</string>
   <string name="playlist_video_volume_title">Volumen de vídeo</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Ubicación</string>
   <string name="progress_bar_opacity_title">Opacidad</string>
   <string name="progress_bar_type_title">Mostrar</string>
@@ -383,6 +400,8 @@
   <string name="projectivy_apple_videos_options_title">Opciones de vídeo de Apple</string>
   <string name="projectivy_comm1_videos_options_title">Opciones de vídeo de Jetson Creative</string>
   <string name="projectivy_comm2_videos_options_title">Opciones de vídeo de Robin Fourcade</string>
+  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
+  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
   <string name="projectivy_select_videos_summary">Elige qué proveedores de vídeo compartir con Projectivy</string>
   <string name="projectivy_select_videos_title">Seleccionar fuentes de vídeos</string>
   <string name="projectivy_shuffle_videos_summary">Aleatoriza el orden de los vídeos.</string>
@@ -393,6 +412,9 @@
   <string name="samba_media_test_summary4">Fotos encontradas: %1$s</string>
   <string name="samba_media_test_summary5">Seleccionado para reproducción: %1$s</string>
   <string name="samba_media_type_title">Elija el tipo de medio</string>
+  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
+  <string name="samba_media_wol_title">Wake on LAN settings</string>
+  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
   <string name="samba_videos_domainname_summary">El nombre de dominio o grupo de trabajo del servidor. Opcional</string>
   <string name="samba_videos_domainname_title">Nombre de Dominio</string>
   <string name="samba_videos_enable_encryption_summary">Permite el cifrado para conexiones SMB, puede reducir la velocidad promedio de transferencia</string>

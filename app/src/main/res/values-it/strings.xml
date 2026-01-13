@@ -16,10 +16,18 @@
   <string name="advanced_philips_dolby_vision_fix_title">Usa analisi alternativa dei MediaCodec</string>
   <string name="advanced_refresh_rate_switching_summary">Cambia la frequenza di aggiornamento del display per adattarla alla frequenza dei fotogrammi del video.</string>
   <string name="advanced_refresh_rate_switching_title">Switch automatico della frequenza di aggiornamento</string>
+  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
+  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
+  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
+  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
+  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
+  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
+  <string name="advanced_wol_mac_title">Target MAC Address</string>
   <string name="all_selected">Tutti selezionati</string>
   <string name="allow_fallback_decoders_summary">Abilita il supporto di codec alternativi o basati su software su alcuni dispositivi.</string>
   <string name="allow_fallback_decoders_title">Consenti il fallback dei decodificatori</string>
   <string name="amazon_videos_enabled">Utilizza i video ambientali di Amazon</string>
+  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">L\'orologio e la posizione cambiano a ogni video per aiutare a prevenire il burn-in dell\'OLED</string>
   <string name="appearance_alt_text_position_title">Alterna la posizione del testo</string>
   <string name="appearance_animations_summary">Configura le animazioni utilizzate per gli overlay e tra video e foto</string>
@@ -43,6 +51,12 @@
   <string name="appearance_clock_size_title">Dimensione</string>
   <string name="appearance_clock_summary">Visualizza l\'ora corrente</string>
   <string name="appearance_clock_title">Orologio</string>
+  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
+  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
+  <string name="appearance_countdown_target_message_title">Completion Message</string>
+  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
+  <string name="appearance_countdown_target_time_title">Target Time</string>
+  <string name="appearance_countdown_title">Countdown</string>
   <string name="appearance_date_custom_error">Formato data non valido!</string>
   <string name="appearance_date_custom_example">es.</string>
   <string name="appearance_date_custom_title">Specifica il formato della data</string>
@@ -173,6 +187,7 @@
   <string name="category_capabilities">Caratteristiche</string>
   <string name="category_clock">Orologio</string>
   <string name="category_connection_information">Informazioni sulla connessione</string>
+  <string name="category_countdown">Countdown</string>
   <string name="category_custom_format">Formato personalizzato</string>
   <string name="category_custom_videos_and_feeds">Video e feed personalizzati</string>
   <string name="category_date">Data</string>
@@ -224,6 +239,7 @@
   <string name="category_video_source">Sorgente Video</string>
   <string name="category_video_sources">Fonti video</string>
   <string name="category_videos">Video</string>
+  <string name="category_wake_on_lan">Wake on LAN</string>
   <string name="category_weather">Meteo</string>
   <string name="comm1_videos_enabled">Utilizza i video della comunità</string>
   <string name="comm2_videos_enabled">Utilizza i video della comunità</string>
@@ -375,6 +391,7 @@
   <string name="playlist_slideshow_speed_title">Velocità slideshow</string>
   <string name="playlist_video_volume_summary">Scegli il livello di volume del video</string>
   <string name="playlist_video_volume_title">Volume video</string>
+  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">Luogo</string>
   <string name="progress_bar_opacity_title">Opacità</string>
   <string name="progress_bar_type_title">Mostra in</string>
@@ -383,6 +400,8 @@
   <string name="projectivy_apple_videos_options_title">Opzioni video Apple</string>
   <string name="projectivy_comm1_videos_options_title">Opzioni video Jetson Creative</string>
   <string name="projectivy_comm2_videos_options_title">Opzioni video Robin Fourcade</string>
+  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
+  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
   <string name="projectivy_select_videos_summary">Scegli quali provider video condividere con il launcher Projectivy</string>
   <string name="projectivy_select_videos_title">Seleziona le sorgenti video</string>
   <string name="projectivy_shuffle_videos_summary">Ordine dei video casuale</string>
@@ -393,6 +412,9 @@
   <string name="samba_media_test_summary4">Immagini trovate: %1$s</string>
   <string name="samba_media_test_summary5">Selezionati per la riproduzione: %1$s</string>
   <string name="samba_media_type_title">Scegli il tipo di supporto</string>
+  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
+  <string name="samba_media_wol_title">Wake on LAN settings</string>
+  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
   <string name="samba_videos_domainname_summary">Il nome del dominio o del gruppo di lavoro del server. Opzionale</string>
   <string name="samba_videos_domainname_title">Nome di dominio</string>
   <string name="samba_videos_enable_encryption_summary">Abilita la crittografia per le connessioni SMB, può ridurre la velocità di trasferimento complessiva.</string>

@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
+import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
@@ -42,6 +43,38 @@ class OverlayHelper(
         if (fadeCornersSelection.contains("TOP_LEFT")) result.addAll(getTopLeftOverlays())
         if (fadeCornersSelection.contains("TOP_RIGHT")) result.addAll(getTopRightOverlays())
         return result
+    }
+
+    // Check if any top overlays should fade (based on user's fade corners selection)
+    fun hasTopOverlaysToFade(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasTopLeft = fadeCornersSelection.contains("TOP_LEFT") && getTopLeftOverlays().isNotEmpty()
+        val hasTopRight = fadeCornersSelection.contains("TOP_RIGHT") && getTopRightOverlays().isNotEmpty()
+        return hasTopLeft || hasTopRight
+    }
+
+    // Check if any bottom overlays should fade
+    fun hasBottomOverlaysToFade(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasBottomLeft = fadeCornersSelection.contains("BOTTOM_LEFT") && getBottomLeftOverlays().isNotEmpty()
+        val hasBottomRight = fadeCornersSelection.contains("BOTTOM_RIGHT") && getBottomRightOverlays().isNotEmpty()
+        return hasBottomLeft || hasBottomRight
+    }
+
+    // Check if any top overlays should persist (NOT fade)
+    fun hasTopPersistentOverlays(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasTopLeft = !fadeCornersSelection.contains("TOP_LEFT") && getTopLeftOverlays().isNotEmpty()
+        val hasTopRight = !fadeCornersSelection.contains("TOP_RIGHT") && getTopRightOverlays().isNotEmpty()
+        return hasTopLeft || hasTopRight
+    }
+
+    // Check if any bottom overlays should persist (NOT fade)
+    fun hasBottomPersistentOverlays(): Boolean {
+        val fadeCornersSelection = prefs.overlayFadeCornersSelection
+        val hasBottomLeft = !fadeCornersSelection.contains("BOTTOM_LEFT") && getBottomLeftOverlays().isNotEmpty()
+        val hasBottomRight = !fadeCornersSelection.contains("BOTTOM_RIGHT") && getBottomRightOverlays().isNotEmpty()
+        return hasBottomLeft || hasBottomRight
     }
 
     // Assign IDs/Overlays to correct Flow - or alternate
@@ -238,6 +271,14 @@ class OverlayHelper(
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.messageWeight)
                     type = overlay
                     message(prefs.messageLine4)
+                }
+            }
+
+            OverlayType.COUNTDOWN -> {
+                CountdownOverlay(context).apply {
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.countdownSize.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.countdownWeight)
+                    type = overlay
                 }
             }
 

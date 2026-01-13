@@ -69,9 +69,16 @@ class CustomFeedProvider(
             try {
                 Timber.d("Processing URL: $url")
 
+
                 // Check if this is an RTSP stream
                 if (url.startsWith("rtsp://", ignoreCase = true)) {
                     processRtspStream(url)
+                    continue
+                }
+
+                // Check if this is an HLS stream
+                if (url.endsWith(".m3u8", ignoreCase = true) || url.contains(".m3u8?", ignoreCase = true)) {
+                    processHlsStream(url)
                     continue
                 }
 
@@ -158,6 +165,7 @@ class CustomFeedProvider(
         val urls = UrlValidator.parseUrls(prefs.urls)
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
+        val validHlsUrls = mutableListOf<String>()
         val errorMessages = mutableMapOf<String, String>()
 
         val okHttpClient =
@@ -185,6 +193,13 @@ class CustomFeedProvider(
                 if (url.startsWith("rtsp://", ignoreCase = true)) {
                     validRtspUrls.add(url)
                     Timber.i("Valid RTSP stream: $url")
+                    continue
+                }
+
+                // Check if this is an HLS stream
+                if (url.endsWith(".m3u8", ignoreCase = true) || url.contains(".m3u8?", ignoreCase = true)) {
+                    validHlsUrls.add(url)
+                    Timber.i("Valid HLS stream: $url")
                     continue
                 }
 
@@ -242,11 +257,11 @@ class CustomFeedProvider(
         }
 
         // Save valid URLs to cache
-        val allValidUrls = (validEntriesUrls + validRtspUrls).joinToString(",")
+        val allValidUrls = (validEntriesUrls + validRtspUrls + validHlsUrls).joinToString(",")
         prefs.urlsCache = allValidUrls
 
         // Build result message
-        if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty()) {
+        if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty() || validHlsUrls.isNotEmpty()) {
             val message =
                 buildString {
                     append("✅ Validation successful!\n\n")
@@ -260,6 +275,9 @@ class CustomFeedProvider(
                     if (validRtspUrls.isNotEmpty()) {
                         append("• ${validRtspUrls.size} RTSP streams\n")
                     }
+                    if (validHlsUrls.isNotEmpty()) {
+                        append("• ${validHlsUrls.size} HLS streams\n")
+                    }
 
                     if (errorMessages.isNotEmpty()) {
                         append("\n⚠️ Some URLs had issues (${errorMessages.size}):\n")
@@ -269,13 +287,14 @@ class CustomFeedProvider(
                     }
                 }
 
-            val totalUrls = validEntriesUrls.size + validRtspUrls.size
+            val totalUrls = validEntriesUrls.size + validRtspUrls.size + validHlsUrls.size
             val summary =
                 buildString {
                     append("$totalUrls URL${if (totalUrls != 1) "s" else ""}: ")
                     val parts = mutableListOf<String>()
                     if (totalVideos > 0) parts.add("$totalVideos video${if (totalVideos != 1) "s" else ""}")
-                    if (validRtspUrls.isNotEmpty()) parts.add("${validRtspUrls.size} stream${if (validRtspUrls.size != 1) "s" else ""}")
+                    if (validRtspUrls.isNotEmpty()) parts.add("${validRtspUrls.size} RTSP stream${if (validRtspUrls.size != 1) "s" else ""}")
+                    if (validHlsUrls.isNotEmpty()) parts.add("${validHlsUrls.size} HLS stream${if (validHlsUrls.size != 1) "s" else ""}")
                     append(parts.joinToString(", "))
                 }
 
@@ -426,6 +445,37 @@ class CustomFeedProvider(
                 Timber.d("Added RTSP stream: $url")
             } catch (e: Exception) {
                 Timber.w(e, "Failed to process RTSP stream: $url")
+            }
+        }
+    }
+
+    private suspend fun processHlsStream(url: String) {
+        withContext(Dispatchers.IO) {
+            try {
+                Timber.i("Processing HLS stream: $url")
+
+                val uri = url.toUri()
+                videos.add(
+                    AerialMedia(
+                        uri,
+                        description = "",
+                        type = AerialMediaType.VIDEO,
+                        source = AerialMediaSource.HLS,
+                        timeOfDay = TimeOfDay.UNKNOWN,
+                        scene = SceneType.UNKNOWN,
+                    ),
+                )
+
+                val data =
+                    Pair(
+                        "HLS Stream: $url",
+                        emptyMap<Int, String>(),
+                    )
+                metadata[url] = data
+
+                Timber.d("Added HLS stream: $url")
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to process HLS stream: $url")
             }
         }
     }

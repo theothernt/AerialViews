@@ -78,14 +78,14 @@ class ImportExportFragment :
     }
 
     private fun exportSettings() {
-        val success = PreferenceHelper.exportPreferences(requireContext())
+        val exportPath = PreferenceHelper.exportPreferences(requireContext())
         val res = requireContext().resources
-        if (success) {
+        if (exportPath != null) {
             DialogHelper
                 .show(
                     requireContext(),
                     "",
-                    res.getString(R.string.settings_export_successful),
+                    "${res.getString(R.string.settings_export_successful)}\n\n$exportPath",
                 )
         } else {
             DialogHelper

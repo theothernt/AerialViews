@@ -22,11 +22,11 @@ android {
     var betaVersion = ""
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
-        minSdk = 22 // Android v5
+        minSdk = 23 // Android v6
         targetSdk = 36
-        versionCode = 80
+        versionCode = 89
         versionName = "1.8.1"
-        betaVersion = "-beta4"
+        betaVersion = "-beta13"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,7 +39,7 @@ android {
         jvmToolchain(21)
 
         sourceSets.configureEach {
-            languageSettings.languageVersion = "2.2"
+            languageSettings.languageVersion = "2.3"
         }
     }
 
@@ -52,10 +52,16 @@ android {
         abortOnError = false
     }
 
-    // App bundle (not APK) should contain all languages so 'locale switch'
-    // feature works on Play Store and Amazon Appstore builds
-    // https://stackoverflow.com/a/54862243/247257
     bundle {
+        // Trying this fix for reported crashes
+        // https://stackoverflow.com/questions/50471888/android-app-bundle-introduces-resource-not-found-crash-in-android-app
+        density {
+            @Suppress("UnstableApiUsage")
+            enableSplit = false
+        }
+        // App bundle (not APK) should contain all languages so 'locale switch'
+        // feature works on Play Store and Amazon Appstore builds
+        // https://stackoverflow.com/a/54862243/247257
         language {
             @Suppress("UnstableApiUsage")
             enableSplit = false

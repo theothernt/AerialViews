@@ -19,86 +19,93 @@ object PreferenceHelper {
             "check_for_hevc_support",
         )
 
-    fun exportPreferences(context: Context): Boolean =
-        try {
-            val outputFile = getOutputFile(context)
-            Timber.d("Export file path: ${outputFile.absolutePath}")
+    fun exportPreferences(context: Context): String? {
+        val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
+        val properties = Properties()
 
-            val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
-            val properties = Properties()
-
-            prefs.all.forEach { (key, value) ->
-                if (ignorePrefs.contains(key)) {
-                    Timber.i("Ignoring key: $key")
-                    return@forEach
-                }
-
-                when (value) {
-                    is Boolean -> {
-                        properties.setProperty("bool_$key", value.toString())
-                    }
-
-                    is Float -> {
-                        properties.setProperty("float_$key", value.toString())
-                    }
-
-                    is Int -> {
-                        properties.setProperty("int_$key", value.toString())
-                    }
-
-                    is Long -> {
-                        properties.setProperty("long_$key", value.toString())
-                    }
-
-                    is String -> {
-                        properties.setProperty("string_$key", value)
-                    }
-
-                    is Set<*> -> {
-                        val setString = value.joinToString("|||")
-                        properties.setProperty("stringset_$key", setString)
-                    }
-                }
+        prefs.all.forEach { (key, value) ->
+            if (ignorePrefs.contains(key)) {
+                Timber.i("Ignoring key: $key")
+                return@forEach
             }
 
-            FileOutputStream(outputFile).use { fos ->
-                properties.store(
-                    fos,
-                    "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
-                )
+            when (value) {
+                is Boolean -> {
+                    properties.setProperty("bool_$key", value.toString())
+                }
+
+                is Float -> {
+                    properties.setProperty("float_$key", value.toString())
+                }
+
+                is Int -> {
+                    properties.setProperty("int_$key", value.toString())
+                }
+
+                is Long -> {
+                    properties.setProperty("long_$key", value.toString())
+                }
+
+                is String -> {
+                    properties.setProperty("string_$key", value)
+                }
+
+                is Set<*> -> {
+                    val setString = value.joinToString("|||")
+                    properties.setProperty("stringset_$key", setString)
+                }
             }
-            Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
-            true
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to export settings")
-            false
         }
 
-    private fun getOutputFile(context: Context): File {
-        // Try Documents folder first
+        val candidates = mutableListOf<File>()
+
+        // 1. Try public Documents folder
         val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        candidates.add(documentsFolder)
 
-        if (!documentsFolder.exists()) {
-            val created = documentsFolder.mkdirs()
-            Timber.d("Documents folder created: $created, path: ${documentsFolder.absolutePath}")
-        }
-
-        // Check if Documents folder is writable
-        if (documentsFolder.exists() && documentsFolder.canWrite()) {
-            Timber.d("Using Documents folder: ${documentsFolder.absolutePath}")
-            return File(documentsFolder, BACKUP_FILENAME)
-        }
-
-        // Fall back to app-specific external storage
+        // 2. Try App-Specific External Storage
         val appExternalFolder = context.getExternalFilesDir(null)
-        if (appExternalFolder != null && appExternalFolder.canWrite()) {
-            Timber.w("Documents folder not writable, falling back to app storage: ${appExternalFolder.absolutePath}")
-            return File(appExternalFolder, BACKUP_FILENAME)
+        if (appExternalFolder != null) {
+            candidates.add(appExternalFolder)
         }
 
-        // Last resort: internal app storage
-        Timber.w("External storage not available, falling back to internal storage: ${context.filesDir.absolutePath}")
-        return File(context.filesDir, BACKUP_FILENAME)
+        // 3. Try App-Specific Internal Storage (Files Dir)
+        candidates.add(context.filesDir)
+
+        for (folder in candidates) {
+            try {
+                if (!folder.exists()) {
+                    folder.mkdirs()
+                }
+
+                if (folder.canWrite()) {
+                    val outputFile = File(folder, BACKUP_FILENAME)
+                    // If file exists, try to delete it first to avoid EEXIST if that was part of the issue
+                    // though FileOutputStream usually overwrites.
+                    if (outputFile.exists()) {
+                        outputFile.delete()
+                    }
+
+                    FileOutputStream(outputFile).use { fos ->
+                        properties.store(
+                            fos,
+                            "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
+                        )
+                    }
+
+                    Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
+                    return outputFile.absolutePath
+                } else {
+                    Timber.w("Directory not writable: ${folder.absolutePath}")
+                }
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to export settings to: ${folder.absolutePath}")
+                // Continue to next candidate
+            }
+        }
+
+        Timber.e("Failed to export settings to any location.")
+        return null
     }
 
     fun importPreferences(
