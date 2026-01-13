@@ -47,5 +47,15 @@
             app:summary="@string/settings_about_summary"
             app:fragment="com.neilturner.aerialviews.ui.settings.AboutFragment"/>
 
+        <com.neilturner.aerialviews.ui.settings.ItemSelectionPreference
+            app:key="item_selection"
+            app:entryValues="@array/exif_tags_values"
+            app:entries="@array/exif_tags_entries"
+            app:defaultValue="@array/exif_tags_default"
+            app:dialogTitle="title"
+            app:dialogMessage="message"
+            app:title="@string/settings_item_selection_title"
+            app:summary="@string/settings_item_selection_summary" />
+
     </PreferenceCategory>
 </PreferenceScreen>

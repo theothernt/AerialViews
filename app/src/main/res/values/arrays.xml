@@ -1074,4 +1074,24 @@
     <item>BOTTOM_RIGHT</item>
   </string-array>
 
+    <string-array name="exif_tags_entries">
+        <item>City</item>
+        <item>City, State</item>
+        <item>City, Country</item>
+        <item>City, State, Country</item>
+        <item>Country</item>
+        <item>Date Taken</item>
+    </string-array>
+    <string-array name="exif_tags_values" translatable="false">
+        <item>CITY</item>
+        <item>CITY_STATE</item>
+        <item>CITY_COUNTRY</item>
+        <item>CITY_STATE_COUNTRY</item>
+        <item>COUNTRY</item>
+        <item>DATE_TAKEN</item>
+    </string-array>
+    <string-array name="exif_tags_default" translatable="false">
+        <item>CITY</item>
+    </string-array>
+
 </resources>

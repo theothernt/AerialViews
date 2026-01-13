@@ -265,7 +265,6 @@
     <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
 
     <!-- Main / Video Sources / Samba videos / Wake on LAN -->
-
     <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
     <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
 
@@ -384,6 +383,12 @@
 
     <string name="settings_about_title">About</string>
     <string name="settings_about_summary">Version, build info, etc</string>
+
+    <string name="settings_item_selection_title">Item Selection &amp; Sorting</string>
+    <string name="settings_item_selection_summary">Select and arrange items with d-pad</string>
+
+    <string name="immich_media_description_title">Select &amp; Sort Items</string>
+    <string name="immich_media_description_message">Use ▲/▼ buttons to reorder selected items.</string>
 
     <!-- Main / Settings / Projectivy Integration -->
     <string name="projectivy_shuffle_videos_title">Shuffle videos</string>
