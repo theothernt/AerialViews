@@ -35,7 +35,7 @@ class ItemSelectionPreference @JvmOverloads constructor(
             }
         }
         loadState()
-        updateSummary()
+
     }
 
     override fun onClick() {
@@ -86,7 +86,7 @@ class ItemSelectionPreference @JvmOverloads constructor(
             .setView(container)
             .setPositiveButton(R.string.button_ok) { _, _ ->
                 saveState()
-                updateSummary()
+
             }
             .setNegativeButton(R.string.button_cancel) { _, _ ->
                 loadState()
@@ -136,13 +136,5 @@ class ItemSelectionPreference @JvmOverloads constructor(
         items.addAll(newItemsList)
     }
 
-    private fun updateSummary() {
-        val selectedItems = items.filter { it.isSelected }
 
-        summary = when {
-            selectedItems.isEmpty() -> "No items selected. Tap to select items."
-            selectedItems.size == items.size -> "All items selected: " + selectedItems.joinToString(" → ") { it.name }
-            else -> "Selected: " + selectedItems.joinToString(" → ") { it.name }
-        }
-    }
 }
