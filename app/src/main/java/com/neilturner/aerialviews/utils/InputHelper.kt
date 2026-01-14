@@ -103,16 +103,19 @@ object InputHelper {
         when (action) {
             ButtonType.SKIP_NEXT -> controller?.skipItem()
             ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
             ButtonType.MUSIC_NEXT -> controller?.nextTrack()
             ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
+            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
             ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
             ButtonType.SEEK_FORWARD -> controller?.seekForward()
             ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
+            ButtonType.BRIGHTNESS_INCREASE -> controller?.increaseBrightness()
+            ButtonType.BRIGHTNESS_DECREASE -> controller?.decreaseBrightness()
             ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
             ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
             ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
             ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
+            ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }
@@ -132,7 +135,9 @@ object InputHelper {
             KeyEvent.KEYCODE_DPAD_UP_LEFT,
             KeyEvent.KEYCODE_DPAD_DOWN_RIGHT,
             KeyEvent.KEYCODE_DPAD_UP_RIGHT,
-            -> return true
+            -> {
+                return true
+            }
 
             // Media keys
             KeyEvent.KEYCODE_MEDIA_FAST_FORWARD,
@@ -205,7 +210,9 @@ object InputHelper {
             }
 
             // Any other button press will close the screensaver
-            else -> return false
+            else -> {
+                return false
+            }
         }
 
         if (action == null) {
@@ -262,16 +269,19 @@ object InputHelper {
             when (action) {
                 ButtonType.SKIP_NEXT -> controller?.skipItem()
                 ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-                ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
                 ButtonType.MUSIC_NEXT -> controller?.nextTrack()
                 ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
+                ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
                 ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
                 ButtonType.SEEK_FORWARD -> controller?.seekForward()
                 ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
+                ButtonType.BRIGHTNESS_INCREASE -> controller?.increaseBrightness()
+                ButtonType.BRIGHTNESS_DECREASE -> controller?.decreaseBrightness()
                 ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
                 ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
                 ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
                 ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
+                ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
                 else -> exit(true)
             }

@@ -104,12 +104,18 @@ class ImmichVideosFragment :
 
     private fun updateSummary() {
         // Server URL
-        urlPreference.summary =
-            if (urlPreference.text.isNullOrEmpty()) {
-                getString(R.string.immich_media_url_summary)
+        val url = urlPreference.text
+        if (!url.isNullOrEmpty()) {
+            if (url.endsWith("/")) {
+                val newUrl = url.dropLast(1)
+                urlPreference.text = newUrl
+                urlPreference.summary = newUrl
             } else {
-                urlPreference.text
+                urlPreference.summary = url
             }
+        } else {
+            urlPreference.summary = getString(R.string.immich_media_url_summary)
+        }
 
         // Shared Link Password
         passwordPreference.summary =
@@ -161,6 +167,7 @@ class ImmichVideosFragment :
                 includeLimitPreference.isVisible = false
                 includeRecentPreference.isVisible = false
             }
+
             ImmichAuthType.API_KEY -> {
                 pathnamePreference.isVisible = false
                 passwordPreference.isVisible = false

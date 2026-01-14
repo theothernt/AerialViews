@@ -8,7 +8,6 @@ import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
 import java.io.File
@@ -51,13 +50,11 @@ object NetworkHelpers {
     }
 
     private val cacheStatusInterceptor by lazy {
-        object : Interceptor {
-            override fun intercept(chain: Interceptor.Chain): Response {
-                val response = chain.proceed(chain.request())
-                val isFromCache = response.cacheResponse != null
-                Timber.Forest.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
-                return response
-            }
+        Interceptor { chain ->
+            val response = chain.proceed(chain.request())
+            val isFromCache = response.cacheResponse != null
+            Timber.i("Cache status: ${if (isFromCache) "from cache" else "from network"}")
+            response
         }
     }
 
@@ -71,7 +68,7 @@ object NetworkHelpers {
         Interceptor { chain ->
             var request = chain.request()
             if (!isNetworkAvailable(context)) {
-                Timber.Forest.i("Using offline cache...")
+                Timber.i("Using offline cache...")
                 val maxStale = offlineCacheTimeout
                 request =
                     request

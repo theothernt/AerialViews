@@ -69,7 +69,7 @@ class Comm1MediaProvider(
                     },
                 )
             asset.allUrls().forEachIndexed { index, url ->
-                metadata.put(url, data)
+                metadata[url] = data
             }
         }
 

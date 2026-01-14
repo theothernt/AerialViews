@@ -272,6 +272,7 @@
     <item>Message #2</item>
     <item>Message #3</item>
     <item>Message #4</item>
+    <item>Countdown</item>
   </string-array>
   <string-array name="slot_values" translatable="false">
     <item>EMPTY</item>
@@ -286,6 +287,7 @@
     <item>MESSAGE2</item>
     <item>MESSAGE3</item>
     <item>MESSAGE4</item>
+    <item>COUNTDOWN</item>
   </string-array>
 <!--  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>-->
 
@@ -350,7 +352,7 @@
   <string name="text_size_default" translatable="false">18</string>
 
   <!-- Font selection -->
-  <string-array name="text_font_entries">
+  <string-array name="text_font_entries" translatable="false">
     <item>Open Sans*</item>
     <item>Roboto</item>
   </string-array>
@@ -538,9 +540,15 @@
     <item>25 seconds</item>
     <item>30 seconds*</item>
     <item>1 minute</item>
+    <item>2 minutes</item>
     <item>3 minutes</item>
     <item>5 minutes</item>
     <item>10 minutes</item>
+    <item>20 minutes</item>
+    <item>30 minutes</item>
+    <item>1 hour</item>
+    <item>6 hours</item>
+    <item>12 hours</item>
   </string-array>
   <string-array name="slideshow_speed_values" translatable="false">
     <item>5</item>
@@ -550,9 +558,15 @@
     <item>25</item>
     <item>30</item>
     <item>60</item>
+    <item>120</item>
     <item>180</item>
     <item>300</item>
     <item>600</item>
+    <item>1200</item>
+    <item>1800</item>
+    <item>3600</item>
+    <item>21600</item>
+    <item>43200</item>
   </string-array>
   <string name="slideshow_speed_default" translatable="false">30</string>
 
@@ -614,12 +628,16 @@
     <item>400ms</item>
     <item>600ms</item>
     <item>800ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
+    <item>1 second</item>
+    <item>1.2 seconds</item>
+    <item>1.4 seconds</item>
+    <item>1.6 seconds</item>
+    <item>1.8 seconds</item>
+    <item>2 seconds</item>
+    <item>4 seconds</item>
+    <item>6 seconds</item>
+    <item>8 seconds</item>
+    <item>10 seconds</item>
   </string-array>
   <string-array name="duration_values" translatable="false">
     <item>0</item>
@@ -633,6 +651,10 @@
     <item>1600</item>
     <item>1800</item>
     <item>2000</item>
+    <item>4000</item>
+    <item>6000</item>
+    <item>8000</item>
+    <item>10000</item>
   </string-array>
   <string name="duration_fade_in_default" translatable="false">600</string>
   <string name="duration_fade_out_default" translatable="false">800</string>
@@ -705,12 +727,15 @@
     <item>Decrease video playback speed</item>
     <item>Seek forwards in a video</item>
     <item>Seek backwards in a video</item>
+    <item>Increase brightness</item>
+    <item>Decrease brightness</item>
     <item>Exit screensaver</item>
     <item>Exit to settings screen</item>
     <item>Show overlays, if hidden</item>
     <item>Blackout screen, fade out media and overlays</item>
     <item>Toggle mute/unmute audio</item>
     <item>Pause/unpause video or photo timer</item>
+    <item>Toggle looping for current video</item>
   </string-array>
   <string-array name="button_action_values" translatable="false">
     <item>IGNORE</item>
@@ -722,12 +747,16 @@
     <item>SPEED_DECREASE</item>
     <item>SEEK_FORWARD</item>
     <item>SEEK_BACKWARD</item>
+    <item>BRIGHTNESS_INCREASE</item>
+    <item>BRIGHTNESS_DECREASE</item>
     <item>EXIT</item>
     <item>EXIT_TO_SETTINGS</item>
     <item>SHOW_OVERLAYS</item>
     <item>BLACK_OUT_MODE</item>
     <item>TOGGLE_MUTE</item>
     <item>TOGGLE_PAUSE</item>
+    <item>TOGGLE_LOOPING</item>
+
   </string-array>
   <string name="button_action_default" translatable="false">IGNORE</string>
   <string name="button_action_default2" translatable="false">SKIP_NEXT</string>
@@ -1009,18 +1038,40 @@
     <item>Amazon Videos</item>
     <item>Jetson Creative Videos</item>
     <item>Robin Fourcade Videos</item>
+<!--    <item>Local or USB storage</item>-->
   </string-array>
   <string-array name="projectivy_shared_providers_values" translatable="false">
     <item>APPLE</item>
     <item>AMAZON</item>
     <item>COMM1</item>
     <item>COMM2</item>
+<!--    <item>LOCAL</item>-->
   </string-array>
   <string-array name="projectivy_shared_providers_default" translatable="false">
     <item>APPLE</item>
     <item>AMAZON</item>
     <item>COMM1</item>
     <item>COMM2</item>
+  </string-array>
+
+  <!-- Overlay Corner Fade Selection -->
+  <string-array name="overlay_fade_corners_entries">
+    <item>Top left</item>
+    <item>Top right</item>
+    <item>Bottom left</item>
+    <item>Bottom right</item>
+  </string-array>
+  <string-array name="overlay_fade_corners_values" translatable="false">
+    <item>TOP_LEFT</item>
+    <item>TOP_RIGHT</item>
+    <item>BOTTOM_LEFT</item>
+    <item>BOTTOM_RIGHT</item>
+  </string-array>
+  <string-array name="overlay_fade_corners_default" translatable="false">
+    <item>TOP_LEFT</item>
+    <item>TOP_RIGHT</item>
+    <item>BOTTOM_LEFT</item>
+    <item>BOTTOM_RIGHT</item>
   </string-array>
 
 </resources>

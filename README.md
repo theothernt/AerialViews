@@ -1,9 +1,9 @@
 # Aerial Views
 
 [![Latest GitHub release](https://img.shields.io/github/v/release/theothernt/AerialViews.svg?logo=github&label=GitHub&cacheSeconds=3600)](https://github.com/theothernt/AerialViews/releases/latest)
+[![Google Play Downloads](https://playbadges.pavi2410.com/badge/downloads?id=com.neilturner.aerialviews&pretty)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
 [![GitHub Downloads](https://img.shields.io/github/downloads/theothernt/AerialViews/total?color=blue&label=Downloads&logo=github)](https://github.com/theothernt/AerialViews/releases/latest)
-[![Google Play Downloads](https://img.shields.io/static/v1?style=flat&color=brightgreen&logo=google-play&logoColor=FFFFFF&label=Downloads&message=221k%2B)](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews)
-[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&logo=Amazon&logoColor=FFFFFF&label=Downloads&message=9k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
+[![Amazon Fire TV](https://img.shields.io/static/v1?style=flat&color=FC4C02&label=Amazon%20Appstore&message=10k%2B)](https://www.amazon.com/gp/product/B0B4PPSNT6)
 
 [![API](https://img.shields.io/badge/API-22%2B-lightgrey.svg?style=flat)](https://android-arsenal.com/api?level=22)
 [![License](https://img.shields.io/:license-gpl%20v3-lightgrey.svg?style=flat)](https://raw.githubusercontent.com/theothernt/AerialViews/master/LICENSE)
@@ -17,8 +17,8 @@ Inspired by Apple TV's beautiful video screensaver!
 ## Features include...
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
-* Over 150 videos from Apple, Jetson Creative and Robin Fourcade
-* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, or WebDAV
+* Over 250 videos from Apple, Amazon, Jetson Creative and Robin Fourcade
+* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, WebDAV or custom feeds
 * Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
@@ -92,7 +92,7 @@ Navigate to the Settings menu on your device, then to the About screen. Dependin
 
 Scroll down to __Build__ and select __Build__ several times until you get the message "You are now a developer!"
 
-Return to __Settings__ and look for the newly enabled __Developer options__ page.
+Return to __Settings__ or __Settings > System__ and look for the newly enabled __Developer options__ page.
 
 On the __Developer options__ page, look for the __USB debugging__ option and enable it.
 
@@ -240,6 +240,31 @@ After pressing return, you should see something like this
 Android Debug Bridge version 1.0.41
 Version  35.0.0-11411520
 ```
+
+</details>
+
+<details>
+<summary>Extra steps for Chromecast with Google TV HD &amp; 4K</summary>
+
+Since the update to Android TV 14, the Chromecast with Google TV (CCwGTV) has a bug which affects ADB. Normally, ADB uses port 5555 but on the CCwGTV the port is randomised.
+
+This means the `adb connect <ip_address>` command will likely fail with a 'connection refused' message.
+
+As a work-around, we can use the wireless debugging connection...
+
+1. In `Settings > System > Developer options > Wireless debugging`, select Pair device with pairing code
+
+2. Run the command: `adb pair <ip_address>:<port>`
+
+3. The IP and port are displayed on the TV upon selecting Pair device with pairing code
+
+4. ADB then asks for the pairing code displayed on the screen.
+
+5. Once entered, you should see a message confirming that wireless debugging is connected.
+
+You should be connected to your CCwGTV device with ADB. Now you can run `adb shell` and the other commands in the instructions that follow.
+
+:information_source: *There are other ways to fix this issue, like using a feature in tvQuickActions Pro. [See TDUK's video for more details.](https://www.youtube.com/watch?v=WVRBXktSw0c)*
 
 </details>
 

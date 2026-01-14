@@ -14,4 +14,5 @@ enum class OverlayType {
     MESSAGE2,
     MESSAGE3,
     MESSAGE4,
+    COUNTDOWN,
 }

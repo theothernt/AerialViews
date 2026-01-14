@@ -173,8 +173,8 @@ class ImmichMediaProvider(
             emptyList()
         }
 
-    private fun filterAssetsByMediaType(assets: List<Asset>): List<Asset> {
-        return assets.filter { asset ->
+    private fun filterAssetsByMediaType(assets: List<Asset>): List<Asset> =
+        assets.filter { asset ->
             val filename = asset.originalPath
             when {
                 FileHelper.isSupportedVideoType(filename) -> prefs.mediaType != ProviderMediaType.PHOTOS
@@ -182,7 +182,6 @@ class ImmichMediaProvider(
                 else -> false // Exclude unsupported files
             }
         }
-    }
 
     private fun processAssets(assets: List<Asset>): ProcessResults {
         val media = mutableListOf<AerialMedia>()
@@ -211,6 +210,7 @@ class ImmichMediaProvider(
                         media.add(item)
                     }
                 }
+
                 FileHelper.isSupportedImageType(filename) -> {
                     item.type = AerialMediaType.IMAGE
                     images++
@@ -218,6 +218,7 @@ class ImmichMediaProvider(
                         media.add(item)
                     }
                 }
+
                 else -> {
                     excluded++
                 }
@@ -328,6 +329,7 @@ class ImmichMediaProvider(
                             assets = shared.assets,
                         )
                     }
+
                     "ALBUM" -> {
                         Timber.d("Shared link type is ALBUM, fetching album details")
                         if (shared.album == null || shared.album.id.isEmpty()) {
@@ -343,11 +345,12 @@ class ImmichMediaProvider(
 
                         // Fetch the full album with assets using the shared key
                         try {
-                            val albumResponse = immichClient.getSharedAlbumById(
-                                albumId = shared.album.id,
-                                key = shared.key,
-                                password = prefs.password.takeIf { it.isNotEmpty() }
-                            )
+                            val albumResponse =
+                                immichClient.getSharedAlbumById(
+                                    albumId = shared.album.id,
+                                    key = shared.key,
+                                    password = prefs.password.takeIf { it.isNotEmpty() },
+                                )
 
                             if (albumResponse.isSuccessful) {
                                 val album = albumResponse.body()
@@ -386,6 +389,7 @@ class ImmichMediaProvider(
                             )
                         }
                     }
+
                     else -> {
                         Timber.w("Unknown shared link type: ${shared.type}, falling back to legacy behavior")
                         // Fallback to legacy behavior for unknown types
@@ -564,20 +568,39 @@ class ImmichMediaProvider(
 
     suspend fun fetchAlbums(): Result<List<Album>> =
         try {
-            val response = immichClient.getAlbums(apiKey = prefs.apiKey)
-            if (response.isSuccessful) {
-                Result.success(response.body() ?: emptyList())
-            } else {
-                val errorBody = response.errorBody()?.string() ?: ""
-                val errorMessage =
-                    try {
-                        Json.decodeFromString<ErrorResponse>(errorBody).message
-                    } catch (e: Exception) {
-                        Timber.e(e, "Error parsing error body: $errorBody")
-                        response.message()
-                    }
-                Result.failure(Exception("${response.code()} - $errorMessage"))
-            }
+            // Fetch regular albums
+            val regularResponse = immichClient.getAlbums(apiKey = prefs.apiKey)
+            val regularAlbums =
+                if (regularResponse.isSuccessful) {
+                    regularResponse.body() ?: emptyList()
+                } else {
+                    val errorBody = regularResponse.errorBody()?.string() ?: ""
+                    val errorMessage =
+                        try {
+                            Json.decodeFromString<ErrorResponse>(errorBody).message
+                        } catch (e: Exception) {
+                            Timber.e(e, "Error parsing error body: $errorBody")
+                            regularResponse.message()
+                        }
+                    return Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
+                }
+
+            // Fetch shared albums
+            val sharedResponse = immichClient.getAlbums(apiKey = prefs.apiKey, shared = true)
+            val sharedAlbums =
+                if (sharedResponse.isSuccessful) {
+                    sharedResponse.body() ?: emptyList()
+                } else {
+                    // If shared albums fetch fails, log warning but continue with regular albums only
+                    Timber.w("Failed to fetch shared albums: ${sharedResponse.code()} - ${sharedResponse.message()}")
+                    emptyList()
+                }
+
+            // Combine and deduplicate albums by ID
+            val allAlbums = (regularAlbums + sharedAlbums).distinctBy { it.id }
+            Timber.d("Fetched ${regularAlbums.size} regular albums and ${sharedAlbums.size} shared albums (${allAlbums.size} total unique)")
+
+            Result.success(allAlbums)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -602,8 +625,14 @@ class ImmichMediaProvider(
                 val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
                 url.toUri()
             }
-            ImmichAuthType.API_KEY -> "$server/api/assets/$id/original".toUri()
-            null -> throw IllegalStateException("Invalid authentication type")
+
+            ImmichAuthType.API_KEY -> {
+                "$server/api/assets/$id/original".toUri()
+            }
+
+            null -> {
+                throw IllegalStateException("Invalid authentication type")
+            }
         }
     }
 }

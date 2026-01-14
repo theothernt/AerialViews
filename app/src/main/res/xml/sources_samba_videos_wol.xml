@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_wake_on_lan">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="samba_media_wake_on_lan_enabled"
+            app:summary="@string/advanced_wol_enable_summary"
+            app:title="@string/advanced_wol_enable_title" />
+
+        <Preference
+            app:dependency="samba_media_wake_on_lan_enabled"
+            app:title="@string/samba_media_wol_wake_now"
+            app:key="wake_on_lan_now" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_settings">
+        <EditTextPreference
+            app:dependency="samba_media_wake_on_lan_enabled"
+            app:key="samba_media_wake_on_lan_mac_address"
+            app:summary="@string/advanced_wol_mac_summary"
+            app:title="@string/advanced_wol_mac_title" />
+
+        <EditTextPreference
+            app:dependency="samba_media_wake_on_lan_enabled"
+            app:defaultValue="5"
+            app:key="samba_media_wake_on_lan_delay"
+            app:summary="@string/advanced_wol_delay_summary"
+            app:title="@string/advanced_wol_delay_title" />
+    </PreferenceCategory>
+</PreferenceScreen>

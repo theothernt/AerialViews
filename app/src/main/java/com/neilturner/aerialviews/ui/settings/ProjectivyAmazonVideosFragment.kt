@@ -11,7 +11,6 @@ import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 
 class ProjectivyAmazonVideosFragment : MenuStateFragment() {
-
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -79,4 +78,3 @@ class ProjectivyAmazonVideosFragment : MenuStateFragment() {
             }
     }
 }
-

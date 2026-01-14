@@ -174,7 +174,12 @@ class KtorServer(
             val actionType = if (isClearing) "cleared" else "received"
             Timber.i("Message $messageNumber $actionType - Text: '$text', Duration: ${duration}s, Size: $textSize, Weight: $textWeight")
 
-            val successMessage = if (isClearing) "Message $messageNumber cleared successfully" else "Message $messageNumber processed successfully"
+            val successMessage =
+                if (isClearing) {
+                    "Message $messageNumber cleared successfully"
+                } else {
+                    "Message $messageNumber processed successfully"
+                }
             call.respond(HttpStatusCode.OK, SuccessResponse(message = successMessage))
         } catch (e: Exception) {
             Timber.e(e, "Error processing message $messageNumber request")

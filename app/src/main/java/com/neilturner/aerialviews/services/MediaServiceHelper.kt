@@ -56,16 +56,19 @@ internal object MediaServiceHelper {
                     item.description = item.uri.filenameWithoutExtension
                 }
             }
+
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
                 media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
                 }
             }
+
             DescriptionFilenameType.LAST_FOLDER_NAME -> {
                 media.parallelForEach { item ->
                     item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
                 }
             }
+
             else -> { /* Do nothing */ }
         }
         return media
@@ -78,6 +81,7 @@ internal object MediaServiceHelper {
             .filter { it.enabled }
             .parallelForEach {
                 try {
+                    it.prepare()
                     val providerMedia = it.fetchMedia()
                     media.addAll(providerMedia)
                 } catch (ex: Exception) {

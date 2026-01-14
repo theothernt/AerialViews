@@ -48,9 +48,9 @@ android {
 
     testOptions.managedDevices.allDevices {
         @Suppress("UnstableApiUsage")
-        create<ManagedVirtualDevice>("pixel9Api34") {
-            device = "Pixel 9"
-            apiLevel = 34
+        create<ManagedVirtualDevice>("androidTvApi36") {
+            device = "Television (1080p)"
+            apiLevel = 36
             systemImageSource = "google_apis_playstore"
         }
     }
@@ -59,7 +59,7 @@ android {
 // This is the configuration block for the Baseline Profile plugin.
 // You can specify to run the generators on a managed devices or connected devices.
 baselineProfile {
-    managedDevices += "pixel9Api34"
+    managedDevices += "androidTvApi36"
     useConnectedDevices = false
 }
 

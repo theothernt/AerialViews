@@ -39,18 +39,21 @@ class ProgressBar : View {
                     animateWidth(event.position, event.duration)
                     Timber.i("Starting progress bar animation: ${event.position / 1000}s, ${event.duration / 1000}s")
                 }
+
                 ProgressState.PAUSE -> {
                     if (animator?.isRunning == true) {
                         animator?.pause()
                     }
                     Timber.i("Pausing progress bar animation")
                 }
+
                 ProgressState.RESUME -> {
                     if (animator?.isPaused == true) {
                         animator?.resume()
                     }
                     Timber.i("Resuming progress bar animation")
                 }
+
                 else -> {
                     Timber.i("Reset progress bar animation")
                     animator?.cancel()

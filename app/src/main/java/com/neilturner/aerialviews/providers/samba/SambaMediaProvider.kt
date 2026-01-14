@@ -18,8 +18,10 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.net.URLEncoder
@@ -32,6 +34,20 @@ class SambaMediaProvider(
 
     override val enabled: Boolean
         get() = prefs.enabled
+
+    override suspend fun prepare() {
+        if (prefs.wakeOnLanEnabled && prefs.hostName.isNotEmpty()) {
+            val reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
+            if (!reachable) {
+                NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
+                val delaySeconds = prefs.wakeOnLanDelay.toLongOrNull() ?: 5L
+                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Waiting for $delaySeconds s")
+                delay(delaySeconds * 1000)
+            } else {
+                Timber.i("Samba WOL: Host ${prefs.hostName} is already reachable, skipping WOL")
+            }
+        }
+    }
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchSambaMedia().first
 
@@ -68,7 +84,7 @@ class SambaMediaProvider(
             shareName = shareNameAndPath.first
             path = shareNameAndPath.second
         } catch (ex: Exception) {
-            Timber.Forest.e(ex)
+            Timber.e(ex)
             return Pair(media, "Failed to parse share name")
         }
 
@@ -83,13 +99,13 @@ class SambaMediaProvider(
                     path,
                 )
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return Pair(emptyList(), ex.message.toString())
             }
 
         // Create samba URL, add to media list, adding media type
         val sortedFiles = sambaMedia.first.sortedByDescending { it.second }
-        
+
         sortedFiles.forEach { fileInfo ->
             val filename = fileInfo.first
             var usernamePassword = ""
@@ -117,7 +133,7 @@ class SambaMediaProvider(
             media.add(item)
         }
 
-        Timber.Forest.i("Videos found: ${media.size}")
+        Timber.i("Videos found: ${media.size}")
         return Pair(media, sambaMedia.second)
     }
 
@@ -140,7 +156,7 @@ class SambaMediaProvider(
             try {
                 config = SambaHelper.buildSmbConfig()
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(selected, "Failed to create SMB config")
             }
 
@@ -150,7 +166,7 @@ class SambaMediaProvider(
             try {
                 connection = smbClient.connect(hostName)
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(selected, "Failed to connect, hostname error")
             }
 
@@ -160,7 +176,7 @@ class SambaMediaProvider(
                 val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
                 session = connection.authenticate(authContext)
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Authentication failed. Please check the username and password, or server settings if using anonymous login",
@@ -171,7 +187,7 @@ class SambaMediaProvider(
             try {
                 share = session?.connectShare(shareName) as DiskShare
             } catch (ex: Exception) {
-                Timber.Forest.e(ex)
+                Timber.e(ex)
                 return@withContext Pair(
                     selected,
                     "Unable to connect to share: $shareName. Please check the spelling of the share name or the server permissions",

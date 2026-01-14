@@ -38,6 +38,7 @@ import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -86,6 +87,9 @@ class ScreenController(
     private var loadingText: TextView
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
+    private val brightnessView: View
+    private val gradientTopView: View
+    private val gradientBottomView: View
     val view: View
 
     private val topLeftIds: List<Int>
@@ -112,6 +116,8 @@ class ScreenController(
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
+        gradientTopView = overlayViewBinding.gradientTop
+        gradientBottomView = overlayViewBinding.gradientBottom
 
         videoViewBinding = binding.videoView
         videoViewBinding.root.setBackgroundColor(backgroundVideos)
@@ -122,6 +128,10 @@ class ScreenController(
         imageViewBinding.root.setBackgroundColor(backgroundPhotos)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
+
+        brightnessView = binding.brightnessView
+
+        GlobalBus.dropAll() // Clear any old events
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
@@ -155,7 +165,7 @@ class ScreenController(
 
         // Setup brightness/dimness
         if (GeneralPrefs.videoBrightness != "100") {
-            val view = binding.brightnessView
+            val view = brightnessView
             view.setBackgroundColor(Color.BLACK)
             view.alpha = abs((GeneralPrefs.videoBrightness.toFloat() - 100) / 100)
             view.visibility = View.VISIBLE
@@ -166,17 +176,15 @@ class ScreenController(
             WindowHelper.resetSystemAnimationDuration(context)
         }
 
-        // Gradients
+        // Gradients - set up backgrounds but visibility will be managed with overlays
         if (GeneralPrefs.showTopGradient) {
-            val gradientView = overlayViewBinding.gradientTop
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
-            gradientView.visibility = View.VISIBLE
+            gradientTopView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+            gradientTopView.visibility = View.VISIBLE
         }
 
         if (GeneralPrefs.showBottomGradient) {
-            val gradientView = overlayViewBinding.gradientBottom
-            gradientView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
-            gradientView.visibility = View.VISIBLE
+            gradientBottomView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+            gradientBottomView.visibility = View.VISIBLE
         }
 
         mainScope.launch {
@@ -329,19 +337,36 @@ class ScreenController(
 
         // Reset any overlay animations
         if (autoHideOverlayDelay >= 0) {
-            overlayView.animate()?.cancel()
-            overlayView.clearAnimation()
+            overlayHelper.getOverlaysToFade().forEach { view ->
+                view.animate()?.cancel()
+                view.clearAnimation()
+            }
         }
 
         // Hide overlays immediately
         if (autoHideOverlayDelay.toInt() == 0) {
-            overlayView.alpha = 0f
+            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+            // Also hide gradients immediately if they have fading overlays
+            // AND no persistent overlays
+            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                gradientTopView.alpha = 0f
+            }
+            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                gradientBottomView.alpha = 0f
+            }
             canShowOverlays = true
         }
 
         // Hide overlays after a delay
         if (autoHideOverlayDelay > 0) {
-            overlayView.alpha = 1f
+            overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+            // Also show gradients initially if they have fading overlays
+            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                gradientTopView.alpha = 1f
+            }
+            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                gradientBottomView.alpha = 1f
+            }
             hideOverlays(overlayDelay)
         }
 
@@ -408,14 +433,44 @@ class ScreenController(
     }
 
     private fun hideOverlays(delay: Long = 0L) {
-        overlayView
-            .animate()
-            .alpha(0f)
-            .setStartDelay(delay)
-            .setDuration(overlayFadeOut)
-            .withEndAction {
-                canShowOverlays = true
-            }.start()
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+
+        if (overlaysToFade.isEmpty()) {
+            canShowOverlays = true
+            return
+        }
+
+        overlaysToFade.forEachIndexed { index, view ->
+            val animator =
+                view
+                    .animate()
+                    .alpha(0f)
+                    .setStartDelay(delay)
+                    .setDuration(overlayFadeOut)
+
+            // Only set the end action on the last overlay
+            if (index == overlaysToFade.lastIndex) {
+                animator.withEndAction { canShowOverlays = true }
+            }
+            animator.start()
+        }
+
+        // Fade out gradients if their corresponding region has fading overlays
+        // AND no persistent overlays (otherwise gradient should stay visible)
+        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+            gradientTopView.animate()
+                .alpha(0f)
+                .setStartDelay(delay)
+                .setDuration(overlayFadeOut)
+                .start()
+        }
+        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+            gradientBottomView.animate()
+                .alpha(0f)
+                .setStartDelay(delay)
+                .setDuration(overlayFadeOut)
+                .start()
+        }
     }
 
     fun showOverlays() {
@@ -430,16 +485,43 @@ class ScreenController(
 
         // Are overlays already visible
         if (!canShowOverlays) return
+
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+
+        if (overlaysToFade.isEmpty()) return
+
         canShowOverlays = false
 
-        overlayView
-            .animate()
-            .alpha(1f)
-            .setStartDelay(0)
-            .setDuration(overlayFadeIn)
-            .withEndAction {
-                hideOverlays(overlayRevealTimeout * 1000)
-            }.start()
+        overlaysToFade.forEachIndexed { index, view ->
+            val animator =
+                view
+                    .animate()
+                    .alpha(1f)
+                    .setStartDelay(0)
+                    .setDuration(overlayFadeIn)
+
+            // Only set the end action on the last overlay
+            if (index == overlaysToFade.lastIndex) {
+                animator.withEndAction { hideOverlays(overlayRevealTimeout * 1000) }
+            }
+            animator.start()
+        }
+
+        // Fade in gradients if their corresponding region has fading overlays
+        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+            gradientTopView.animate()
+                .alpha(1f)
+                .setStartDelay(0)
+                .setDuration(overlayFadeIn)
+                .start()
+        }
+        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+            gradientBottomView.animate()
+                .alpha(1f)
+                .setStartDelay(0)
+                .setDuration(overlayFadeIn)
+                .start()
+        }
     }
 
     fun stop() {
@@ -512,20 +594,59 @@ class ScreenController(
         videoPlayer.seekBackward()
     }
 
-    fun toggleMute() {
-        videoPlayer.toggleMute()
-    }
-
     fun togglePause() {
-        if (blackOutMode) {
-            return
-        }
-
         if (isPaused) {
             resumeMedia()
         } else {
             pauseMedia()
         }
+    }
+
+    fun toggleLooping() {
+        if (videoViewBinding.root.isVisible) {
+            videoPlayer.toggleLooping()
+        }
+    }
+
+    fun increaseBrightness() = changeBrightness(true)
+
+    fun decreaseBrightness() = changeBrightness(false)
+
+    private fun changeBrightness(increase: Boolean) {
+        if (blackOutMode) return
+
+        val brightnessValues = resources.getStringArray(R.array.percentage1_values)
+        val currentBrightness = GeneralPrefs.videoBrightness
+        val currentIndex = brightnessValues.indexOf(currentBrightness)
+
+        if (currentIndex == -1) return
+
+        if (increase && currentIndex == brightnessValues.size - 1) return
+        if (!increase && currentIndex == 0) return
+
+        val newIndex = if (increase) currentIndex + 1 else currentIndex - 1
+        val newBrightness = brightnessValues[newIndex]
+
+        GeneralPrefs.videoBrightness = newBrightness
+
+        // Update view
+        val view = brightnessView
+        if (newBrightness == "100") {
+            view.visibility = View.GONE
+        } else {
+            view.setBackgroundColor(Color.BLACK)
+            view.alpha = abs((newBrightness.toFloat() - 100) / 100)
+            view.visibility = View.VISIBLE
+        }
+
+        // Show toast
+        mainScope.launch {
+            ToastHelper.show(context, "Brightness: $newBrightness%")
+        }
+    }
+
+    fun toggleMute() {
+        videoPlayer.toggleMute()
     }
 
     private fun pauseMedia() {

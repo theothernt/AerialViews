@@ -58,16 +58,19 @@ class WeatherService(
                 response.isSuccessful -> {
                     response.body() ?: emptyList()
                 }
+
                 response.code() == 401 -> {
                     Timber.e("Unauthorized access to weather API - invalid API key")
                     delay(errorDelay)
                     emptyList()
                 }
+
                 response.code() in 500..599 -> {
                     Timber.e("Server error (${response.code()}) while fetching location data")
                     delay(errorDelay)
                     emptyList()
                 }
+
                 else -> {
                     Timber.e("Failed to fetch location data - HTTP ${response.code()}: ${response.message()}")
                     delay(errorDelay)
@@ -94,16 +97,19 @@ class WeatherService(
                 response.isSuccessful -> {
                     response.body() ?: emptyList()
                 }
+
                 response.code() == 401 -> {
                     Timber.e("Unauthorized access to weather API - invalid API key")
                     delay(errorDelay)
                     emptyList()
                 }
+
                 response.code() in 500..599 -> {
                     Timber.e("Server error (${response.code()}) while fetching location data")
                     delay(errorDelay)
                     emptyList()
                 }
+
                 else -> {
                     Timber.e("Failed to fetch location data - HTTP ${response.code()}: ${response.message()}")
                     delay(errorDelay)
@@ -164,6 +170,7 @@ class WeatherService(
                         WeatherEvent()
                     }
                 }
+
                 response.code() == 401 -> {
                     val error = "Unauthorized access to weather API - cancelling weather updates"
                     Timber.e(error)
@@ -171,6 +178,7 @@ class WeatherService(
                     FirebaseHelper.crashlyticsLogMessage(error)
                     WeatherEvent()
                 }
+
                 response.code() in 500..599 -> {
                     Timber.w("Server error (${response.code()}) - attempt ${retryCount + 1}/$maxRetries")
                     if (retryCount < maxRetries) {
@@ -185,6 +193,7 @@ class WeatherService(
                         WeatherEvent()
                     }
                 }
+
                 response.code() == 429 -> {
                     val error = "Rate limit exceeded - backing off"
                     Timber.w(error)
@@ -192,6 +201,7 @@ class WeatherService(
                     delay(rateLimitDelay) // Back off for rate limiting
                     WeatherEvent()
                 }
+
                 else -> {
                     val error = "Failed to fetch weather data - HTTP ${response.code()}: ${response.message()}"
                     Timber.e(error)

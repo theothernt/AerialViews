@@ -74,7 +74,8 @@ class LocationOverlay : AppCompatTextView {
             // If new string and not fading in/out + loading new video
             if (shouldUpdate && !isFadingOutMedia) {
                 // Set new string and fade in
-                lastPoi = newPoi
+                @Suppress("AssignedValueIsNeverRead")
+                lastPoi = newPoi // Compiler bug?
                 this
                     .animate()
                     .alpha(0f)

@@ -1,20 +1,56 @@
 {
-    "french_alps_mont_blanc_202202_0": "טסים לכיוון מון בלאן, מז'ב, צרפת",
-    "french_alps_sea_of_clouds_202202_0": "טיסה מעל ים עננים, מז׳ב, צרפת",
-    "french_alps_sea_of_clouds_2_202202_0": "טיסה מעל ים עננים, מז׳ב, צרפת",
-    "robinfrcd_capmechant2_202304_0": "טיסה מעל ים סוער בקפ משאנט, ראוניון, צרפת",
-    "robinfrcd_capmechant_202304_0": "טיסה מעל ים סוער בקפ משאנט, ראוניון, צרפת",
-    "robinfrcd_grandcoude_202304_0": "טיסה מעל דרך גראנד קוד, ראוניון, צרפת",
-    "robinfrcd_grandetang_202304_0": "טיסה מעל גראנד אטאנג, ראוניון, צרפת",
-    "robinfrcd_lagon_202304_0": "טיסה מעל שונית האלמוגים סיינט לו, ראוניון, צרפת",
-    "robinfrcd_mafate_202304_0": "טיסה לעבר איון במפאטה, ראוניון, צרפת",
-    "robinfrcd_pitondesneiges_202304_0": "טיסה מסביב לפיטון דה נייגס, ראוניון, צרפת",
-    "robinfrcd_pitonfournaise_202304_0": "טיסה מעל מישור סייבל, פיטון דה לה פורנז, ראוניון, צרפת",
-    "robinfrcd_trestastar_202304_0": "טיסה מסביב לטרסטה סטאר טרסה, פיטון דה לה פורנז, ראוניון, צרפת",
-    "robinfrcd_troudefer_202304_0": "טיסה מעל טרו דה פר, ראוניון, צרפת",
-    "video_aurland_202109_0": "טיסה מעל פיורד אורלנד, נורווגיה",
-    "video_henningsvaer_202109_0": "טיסה מעל אצטדיון הנינגסוואר, נורווגיה",
-    "video_nusfjord_202109_0": "טיסה מעל נוספיורד, לופוטן, נורווגיה",
-    "video_reine_202109_0": "טיסה מעל ריינבאגן, לופוטן, נורווגיה",
-    "video_vettisfossen_202109_0": "מול מפל ווטיספוסן, נורבגיה"
+    "french_alps_mont_blanc_202202_0": {
+        "translation": "טסים לכיוון מון בלאן, מז'ב, צרפת"
+    },
+    "french_alps_sea_of_clouds_202202_0": {
+        "translation": "טיסה מעל ים עננים, מז׳ב, צרפת"
+    },
+    "french_alps_sea_of_clouds_2_202202_0": {
+        "translation": "טיסה מעל ים עננים, מז׳ב, צרפת"
+    },
+    "robinfrcd_capmechant2_202304_0": {
+        "translation": "טיסה מעל ים סוער בקפ משאנט, ראוניון, צרפת"
+    },
+    "robinfrcd_capmechant_202304_0": {
+        "translation": "טיסה מעל ים סוער בקפ משאנט, ראוניון, צרפת"
+    },
+    "robinfrcd_grandcoude_202304_0": {
+        "translation": "טיסה מעל דרך גראנד קוד, ראוניון, צרפת"
+    },
+    "robinfrcd_grandetang_202304_0": {
+        "translation": "טיסה מעל גראנד אטאנג, ראוניון, צרפת"
+    },
+    "robinfrcd_lagon_202304_0": {
+        "translation": "טיסה מעל שונית האלמוגים סיינט לו, ראוניון, צרפת"
+    },
+    "robinfrcd_mafate_202304_0": {
+        "translation": "טיסה לעבר איון במפאטה, ראוניון, צרפת"
+    },
+    "robinfrcd_pitondesneiges_202304_0": {
+        "translation": "טיסה מסביב לפיטון דה נייגס, ראוניון, צרפת"
+    },
+    "robinfrcd_pitonfournaise_202304_0": {
+        "translation": "טיסה מעל מישור סייבל, פיטון דה לה פורנז, ראוניון, צרפת"
+    },
+    "robinfrcd_trestastar_202304_0": {
+        "translation": "טיסה מסביב לטרסטה סטאר טרסה, פיטון דה לה פורנז, ראוניון, צרפת"
+    },
+    "robinfrcd_troudefer_202304_0": {
+        "translation": "טיסה מעל טרו דה פר, ראוניון, צרפת"
+    },
+    "video_aurland_202109_0": {
+        "translation": "טיסה מעל פיורד אורלנד, נורווגיה"
+    },
+    "video_henningsvaer_202109_0": {
+        "translation": "טיסה מעל אצטדיון הנינגסוואר, נורווגיה"
+    },
+    "video_nusfjord_202109_0": {
+        "translation": "טיסה מעל נוספיורד, לופוטן, נורווגיה"
+    },
+    "video_reine_202109_0": {
+        "translation": "טיסה מעל ריינבאגן, לופוטן, נורווגיה"
+    },
+    "video_vettisfossen_202109_0": {
+        "translation": "מול מפל ווטיספוסן, נורבגיה"
+    }
 }

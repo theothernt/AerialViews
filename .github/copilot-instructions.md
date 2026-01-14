@@ -4,16 +4,16 @@
 Aerial Views is an Android screensaver app for TV devices (Android TV, Google TV, Fire TV, Nvidia Shield) that displays beautiful videos and photos. It's inspired by Apple TV's screensavers and supports 4K HDR content from multiple sources.
 
 **Key characteristics:**
-- **Target platform:** Android TV (API 22+, targeting API 36) with Leanback UI
-- **Language:** Kotlin 2.2.21 with JVM target 21
-- **Build system:** Gradle with Kotlin DSL
+- **Target platform:** Android TV (minSdk 24, targetSdk 36) with Leanback UI
+- **Language:** Kotlin 2.2 with JVM target 21
+- **Build system:** Gradle with Kotlin DSL, version catalog (`gradle/libs.versions.toml`)
 - **Architecture:** Provider-based media fetching, coroutine-driven async operations, FlowBus for event communication
 
 ## Architecture Overview
 
 ### Multi-Flavor Build System
 The project uses **product flavors** to target different app stores with conditional dependencies:
-- **Flavors:** `github`, `beta`, `googleplay`, `googleplaybeta`, `amazon`, `fdroid`
+- **Flavors:** `github`, `beta` (default), `googleplay`, `googleplaybeta`, `amazon`, `fdroid`
 - **Build types:** `debug`, `release`
 - **Flavor dimension:** `version`
 
@@ -26,13 +26,13 @@ sourceSets {
 }
 ```
 
-When adding Firebase/proprietary code, implement in `src/common/java` with matching no-op interface in `src/fdroid/java`.
+When adding Firebase/proprietary code, implement in `src/common/java/utils/FirebaseHelper.kt` with matching no-op stub in `src/fdroid/java/utils/FirebaseHelper.kt`.
 
 ### Core Components
 
-#### 1. Provider Pattern (`app/src/main/java/com/neilturner/aerialviews/providers/`)
+#### 1. Provider Pattern (`providers/`)
 All media sources implement the `MediaProvider` abstract class:
-- **Local providers:** `LocalMediaProvider` (USB/internal storage), `SambaMediaProvider` (SMB shares), `WebDavMediaProvider`
+- **Local providers:** `LocalMediaProvider`, `SambaMediaProvider` (SMBJ), `WebDavMediaProvider` (Sardine)
 - **Remote providers:** `AppleMediaProvider`, `AmazonMediaProvider`, `Comm1MediaProvider`, `Comm2MediaProvider`, `ImmichMediaProvider`, `CustomFeedProvider`
 - Each provider implements `fetchMedia()`, `fetchTest()`, and `fetchMetadata()`
 - Providers are sorted by type (LOCAL first, then REMOTE) in `MediaService.init()`
@@ -42,7 +42,6 @@ All media sources implement the `MediaProvider` abstract class:
 - **Main settings:** `GeneralPrefs` object in `models/prefs/GeneralPrefs.kt`
 - **Provider settings:** Individual objects like `AppleVideoPrefs`, `LocalMediaPrefs`, etc.
 - **Convention:** All Kotpref objects use `kotprefName = "${context.packageName}_preferences"`
-- **Property delegates:** Use `by booleanPref()`, `by stringPref()`, `by nullableEnumValuePref()`, etc.
 
 **Example pattern:**
 ```kotlin
@@ -53,25 +52,25 @@ object GeneralPrefs : KotprefModel() {
 }
 ```
 
-To add new settings: Create property in appropriate Prefs object, add UI in corresponding XML under `app/src/main/res/xml/settings_*.xml`.
+To add new settings: Create property in appropriate `*Prefs` object, add UI in corresponding XML under `res/xml/settings_*.xml` or `res/xml/sources_*.xml`.
 
 #### 3. Screensaver Entry Points
-- **DreamService:** `ui/screensaver/DreamActivity.kt` - System-launched screensaver
+- **DreamService:** `ui/screensaver/DreamActivity.kt` - System-launched screensaver (extends `DreamService`)
 - **Test Activity:** `ui/screensaver/TestActivity.kt` - User-testable screensaver from settings
 - Both delegate to `ScreenController` for playback logic
 
 #### 4. Event Communication (FlowBus)
 **Global event bus pattern** for cross-component communication:
-- Services post events: `GlobalBus.post(WeatherUpdateEvent(...))`
-- Overlays subscribe: `private val eventsReceiver = subscribe<WeatherUpdateEvent> { ... }`
-- **Common events:** `MessageEvent`, `WeatherUpdateEvent`, `ProgressBarEvent`, `MusicEvent`
+- Services post events: `GlobalBus.post(WeatherEvent(...))` or `GlobalBus.post(MusicEvent(...))`
+- Overlays subscribe: `receiver.subscribe<WeatherEvent> { weather -> updateWeather(weather) }`
+- **Common events:** `MessageEvent`, `WeatherEvent`, `ProgressBarEvent`, `MusicEvent`
 - Preferred over direct coupling between services and UI components
 
 #### 5. Media Playback (`ui/core/`)
-- **ScreenController:** Orchestrates media playback, overlay management, and user input
-- **VideoPlayerView:** ExoPlayer wrapper for video playback
-- **ImagePlayerView:** Coil-based photo display with Ken Burns effect
-- Uses coroutines with `CoroutineScope(Dispatchers.Main)` for lifecycle management
+- **ScreenController:** Orchestrates media playback, overlay management, user input, and services (Weather, NowPlaying, Ktor)
+- **VideoPlayerView:** ExoPlayer (media3) wrapper for video playback
+- **ImagePlayerView:** Coil 3-based photo display with Ken Burns effect
+- Uses `CoroutineScope(Dispatchers.Main)` for lifecycle management
 
 ## Development Workflows
 
@@ -88,9 +87,12 @@ To add new settings: Create property in appropriate Prefs object, add UI in corr
 
 # Run tests
 .\gradlew testBetaDebug
+
+# Lint check (Kotlinter/ktlint)
+.\gradlew lintKotlin
 ```
 
-**Note:** Uses `libs.versions.toml` for centralized dependency management. Version bumps happen there, not in build.gradle files.
+**Note:** Uses `gradle/libs.versions.toml` for centralized dependency management. Version bumps happen there, not in build.gradle files.
 
 ### Testing Strategy
 - **Unit tests:** JUnit Jupiter (JUnit 5) in `app/src/test/` - see `TrackNameShortenerTest.kt` for examples

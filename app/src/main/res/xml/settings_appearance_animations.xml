@@ -18,6 +18,14 @@
                     app:key="overlay_reveal_timeout"
                     app:title="@string/appearance_reveal_for_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <MultiSelectListPreference
+                    app:defaultValue="@array/overlay_fade_corners_default"
+                    app:entries="@array/overlay_fade_corners_entries"
+                    app:entryValues="@array/overlay_fade_corners_values"
+                    app:key="overlay_fade_corners_selection"
+                    app:title="@string/appearance_fade_corners_title"
+                    app:dialogTitle="@string/appearance_fade_corners_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_overlay_animations">

@@ -108,6 +108,12 @@ object GeneralPrefs : KotprefModel() {
     var messageApiEnabled by booleanPref(false, "message_api_enabled")
     var messageApiPort by stringPref("8081", "message_api_port")
 
+    // Countdown
+    var countdownTargetTime by stringPref("", "countdown_target_time")
+    var countdownTargetMessage by stringPref("", "countdown_target_message")
+    var countdownSize by stringPref("18", "countdown_size")
+    var countdownWeight by stringPref("300", "countdown_weight")
+
     // Other
     var alternateTextPosition by booleanPref(true, "alt_text_position")
 
@@ -126,6 +132,11 @@ object GeneralPrefs : KotprefModel() {
     // Overlay Auto hide/reveal
     var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
+
+    // Per-corner fade settings (which corners should fade when auto-hide is enabled)
+    val overlayFadeCornersSelection by stringSetPref("overlay_fade_corners_selection") {
+        context.resources.getStringArray(R.array.overlay_fade_corners_default).toSet()
+    }
 
     // Background Colour
     var backgroundLoading by stringPref("BLACK", "background_colour_loading")

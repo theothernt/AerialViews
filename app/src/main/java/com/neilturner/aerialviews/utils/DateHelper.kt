@@ -20,9 +20,11 @@ object DateHelper {
             DateType.FULL -> {
                 DateFormat.getDateInstance(DateFormat.FULL).format(Date())
             }
+
             DateType.COMPACT -> {
                 DateFormat.getDateInstance(DateFormat.SHORT).format(Date())
             }
+
             else -> {
                 try {
                     val today = Calendar.getInstance().time

@@ -106,10 +106,12 @@ class ImagePlayerView : AppCompatImageView {
                     val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
                     loadImage(stream)
                 }
+
                 AerialMediaSource.WEBDAV -> {
                     val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
                     loadImage(stream)
                 }
+
                 else -> {
                     loadImage(media.uri)
                 }

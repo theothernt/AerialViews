@@ -47,7 +47,7 @@ class NowPlayingOverlay : AppCompatTextView {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        receiver.subscribe(skipRetained = true) { newTrackInfo: MusicEvent ->
+        receiver.subscribe { newTrackInfo: MusicEvent ->
             Timber.i("$type: Subscribed for music updates...")
             if (trackInfo != newTrackInfo) {
                 trackInfo = newTrackInfo
@@ -89,7 +89,7 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private fun animateOverlays() {
-        val layout: ConstraintLayout? = parent as ConstraintLayout
+        val layout: ConstraintLayout = parent as ConstraintLayout
 
         TransitionManager.beginDelayedTransition(
             layout,
@@ -146,21 +146,33 @@ class NowPlayingOverlay : AppCompatTextView {
         val processedSong = if (prefs.nowPlayingShortenTrackName) TrackNameShortener.shortenTrackName(song) else song
 
         return when (format) {
-            NowPlayingFormat.SONG_ARTIST ->
+            NowPlayingFormat.SONG_ARTIST -> {
                 if (processedSong.isNotBlank() && artist.isNotBlank()) {
                     "$processedSong · $artist"
                 } else {
                     processedSong.takeIf { it.isNotBlank() } ?: artist
                 }
-            NowPlayingFormat.ARTIST_SONG ->
+            }
+
+            NowPlayingFormat.ARTIST_SONG -> {
                 if (artist.isNotBlank() && processedSong.isNotBlank()) {
                     "$artist · $processedSong"
                 } else {
                     artist.takeIf { it.isNotBlank() } ?: processedSong
                 }
-            NowPlayingFormat.ARTIST -> artist
-            NowPlayingFormat.SONG -> processedSong
-            else -> ""
+            }
+
+            NowPlayingFormat.ARTIST -> {
+                artist
+            }
+
+            NowPlayingFormat.SONG -> {
+                processedSong
+            }
+
+            else -> {
+                ""
+            }
         }
     }
 }

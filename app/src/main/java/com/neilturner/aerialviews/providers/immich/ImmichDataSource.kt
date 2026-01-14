@@ -40,10 +40,14 @@ class ImmichDataSource : BaseDataSource(true) {
                 .addHeader("Range", "bytes=${dataSpec.position}-")
                 .also { builder ->
                     when (ImmichMediaPrefs.authType) {
-                        ImmichAuthType.API_KEY -> builder.addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                        ImmichAuthType.API_KEY -> {
+                            builder.addHeader("X-API-Key", ImmichMediaPrefs.apiKey)
+                        }
+
                         ImmichAuthType.SHARED_LINK -> {
                             // Add any necessary headers for shared link authentication
                         }
+
                         null -> {
                             // No authentication
                         }
@@ -56,7 +60,7 @@ class ImmichDataSource : BaseDataSource(true) {
                 throw IOException("Unexpected code ${response.code}")
             }
 
-            inputStream = response.body?.byteStream()
+            inputStream = response.body.byteStream()
             opened = true
             transferStarted(dataSpec)
         } catch (e: IOException) {
