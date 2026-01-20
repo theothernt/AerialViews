@@ -4,7 +4,6 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -157,12 +156,12 @@ android {
 
     // Using this method https://stackoverflow.com/a/30548238/247257
     sourceSets {
-        getByName("github").java.srcDir("src/common/java")
-        getByName("beta").java.srcDir("src/common/java")
-        getByName("googleplay").java.srcDir("src/common/java")
-        getByName("googleplaybeta").java.srcDir("src/common/java")
-        getByName("amazon").java.srcDir("src/common/java")
-        getByName("fdroid").java.srcDir("src/fdroid/java")
+        getByName("github").kotlin.directories.add("src/common/java")
+        getByName("beta").kotlin.directories.add("src/common/java")
+        getByName("googleplay").kotlin.directories.add("src/common/java")
+        getByName("googleplaybeta").kotlin.directories.add("src/common/java")
+        getByName("amazon").kotlin.directories.add("src/common/java")
+        getByName("fdroid").kotlin.directories.add("src/fdroid/java")
     }
 
     compileOptions {
