@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 class CountdownTimeParserTest {
-
     @Test
     fun `parseTargetTime handles time format`() {
         val now = LocalDateTime.of(2023, 1, 1, 10, 0) // 10:00

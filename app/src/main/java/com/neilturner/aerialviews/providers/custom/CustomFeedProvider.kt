@@ -69,7 +69,6 @@ class CustomFeedProvider(
             try {
                 Timber.d("Processing URL: $url")
 
-
                 // Check if this is an RTSP stream
                 if (url.startsWith("rtsp://", ignoreCase = true)) {
                     processRtspStream(url)
@@ -293,7 +292,11 @@ class CustomFeedProvider(
                     append("$totalUrls URL${if (totalUrls != 1) "s" else ""}: ")
                     val parts = mutableListOf<String>()
                     if (totalVideos > 0) parts.add("$totalVideos video${if (totalVideos != 1) "s" else ""}")
-                    if (validRtspUrls.isNotEmpty()) parts.add("${validRtspUrls.size} RTSP stream${if (validRtspUrls.size != 1) "s" else ""}")
+                    if (validRtspUrls.isNotEmpty()) {
+                        parts.add(
+                            "${validRtspUrls.size} RTSP stream${if (validRtspUrls.size != 1) "s" else ""}",
+                        )
+                    }
                     if (validHlsUrls.isNotEmpty()) parts.add("${validHlsUrls.size} HLS stream${if (validHlsUrls.size != 1) "s" else ""}")
                     append(parts.joinToString(", "))
                 }
