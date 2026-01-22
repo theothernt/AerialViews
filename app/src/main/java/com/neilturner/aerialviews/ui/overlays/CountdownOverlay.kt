@@ -122,5 +122,4 @@ class CountdownOverlay : AppCompatTextView {
         timeString: String,
         currentDateTime: LocalDateTime,
     ): LocalDateTime? = CountdownTimeParser.parseTargetTime(timeString, currentDateTime)
-
 }

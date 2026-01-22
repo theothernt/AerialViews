@@ -351,7 +351,9 @@ class ScreenController(
             if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
                 gradientTopView.alpha = 0f
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
+                !overlayHelper.hasBottomPersistentOverlays()
+            ) {
                 gradientBottomView.alpha = 0f
             }
             canShowOverlays = true
@@ -458,14 +460,16 @@ class ScreenController(
         // Fade out gradients if their corresponding region has fading overlays
         // AND no persistent overlays (otherwise gradient should stay visible)
         if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-            gradientTopView.animate()
+            gradientTopView
+                .animate()
                 .alpha(0f)
                 .setStartDelay(delay)
                 .setDuration(overlayFadeOut)
                 .start()
         }
         if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
-            gradientBottomView.animate()
+            gradientBottomView
+                .animate()
                 .alpha(0f)
                 .setStartDelay(delay)
                 .setDuration(overlayFadeOut)
@@ -509,14 +513,16 @@ class ScreenController(
 
         // Fade in gradients if their corresponding region has fading overlays
         if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-            gradientTopView.animate()
+            gradientTopView
+                .animate()
                 .alpha(1f)
                 .setStartDelay(0)
                 .setDuration(overlayFadeIn)
                 .start()
         }
         if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-            gradientBottomView.animate()
+            gradientBottomView
+                .animate()
                 .alpha(1f)
                 .setStartDelay(0)
                 .setDuration(overlayFadeIn)
