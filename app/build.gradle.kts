@@ -19,6 +19,7 @@ android {
     compileSdk = 36
 
     var betaVersion = ""
+    val keyProps = loadProperties("secrets.properties")
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
@@ -32,6 +33,10 @@ android {
         manifestPlaceholders["analyticsCollectionEnabled"] = false
         manifestPlaceholders["crashlyticsCollectionEnabled"] = false
         manifestPlaceholders["performanceCollectionEnabled"] = false
+
+        val openWeather = keyProps.getProperty("openWeatherDebug", "")
+        buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
+        buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
     }
 
     kotlin {
@@ -67,23 +72,14 @@ android {
         }
     }
 
-    val keyProps = loadProperties("secrets.properties")
     buildTypes {
         debug {
-            val openWeather = keyProps["openWeatherDebug"] as String?
-            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
-            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
-
             applicationIdSuffix = ".debug"
             isDebuggable = true
             isMinifyEnabled = false
             // isPseudoLocalesEnabled = true
         }
         release {
-            val openWeather = keyProps["openWeather"] as String?
-            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
-            buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
-
             isMinifyEnabled = true
             isShrinkResources = true
             // isDebuggable = true
@@ -212,10 +208,10 @@ tasks.withType<Test>().configureEach {
 }
 
 fun loadProperties(fileName: String): Properties {
-    val properties = Properties()
-    val propertiesFile = rootProject.file(fileName)
-    if (propertiesFile.exists()) {
-        properties.load(FileInputStream(propertiesFile))
+    return Properties().apply {
+        val propertiesFile = rootProject.file(fileName)
+        if (propertiesFile.exists()) {
+            load(FileInputStream(propertiesFile))
+        }
     }
-    return properties
 }
