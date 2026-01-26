@@ -1002,6 +1002,10 @@
   <!-- Sleep timer -->
   <string-array name="sleep_timer_entries">
     <item>Disabled*</item>
+    <item>1 minutes</item>
+    <item>2 minutes</item>
+    <item>3 minutes</item>
+    <item>4 minutes</item>
     <item>5 minutes</item>
     <item>10 minutes</item>
     <item>15 minutes</item>
@@ -1017,6 +1021,10 @@
   </string-array>
   <string-array name="sleep_timer_values" translatable="false">
     <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
     <item>5</item>
     <item>10</item>
     <item>15</item>
@@ -1048,10 +1056,6 @@
     <item>LOCAL</item>
   </string-array>
   <string-array name="projectivy_shared_providers_default" translatable="false">
-    <item>APPLE</item>
-    <item>AMAZON</item>
-    <item>COMM1</item>
-    <item>COMM2</item>
   </string-array>
 
   <!-- Overlay Corner Fade Selection -->
