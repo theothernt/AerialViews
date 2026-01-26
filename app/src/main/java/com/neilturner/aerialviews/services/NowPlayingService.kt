@@ -8,13 +8,13 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Bundle
 import androidx.core.content.getSystemService
+import com.neilturner.aerialviews.utils.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.neilturner.aerialviews.utils.PermissionHelper
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 
@@ -88,17 +88,18 @@ class NowPlayingService(
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         Timber.i("onActiveSessionsChanged")
         updateActiveSession(controllers)
-        
+
         updateActiveSessionJob?.cancel()
-        updateActiveSessionJob = scope.launch {
-            // Check every 500ms for 3 seconds (6 times)
-            repeat(6) {
-                delay(500)
-                Timber.i("Delayed check for active sessions")
-                val freshControllers = sessionManager?.getActiveSessions(notificationListener)
-                updateActiveSession(freshControllers)
+        updateActiveSessionJob =
+            scope.launch {
+                // Check every 500ms for 3 seconds (6 times)
+                repeat(6) {
+                    delay(500)
+                    Timber.i("Delayed check for active sessions")
+                    val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                    updateActiveSession(freshControllers)
+                }
             }
-        }
     }
 
     override fun onSessionEvent(

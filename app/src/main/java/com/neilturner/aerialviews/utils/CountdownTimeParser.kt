@@ -1,11 +1,10 @@
 package com.neilturner.aerialviews.utils
 
+import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.LocalTime
-import timber.log.Timber
 
 object CountdownTimeParser {
-
     private val TIME_REGEX = Regex("""^(\d{1,2}):(\d{2})$""")
     private val DATE_TIME_REGEX = Regex("""^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{2})$""")
 
@@ -22,7 +21,7 @@ object CountdownTimeParser {
                 TIME_REGEX.matches(timeString) -> {
                     val matchResult = TIME_REGEX.find(timeString) ?: return null
                     val (hourStr, minuteStr) = matchResult.destructured
-                    
+
                     val hour = hourStr.toInt()
                     val minute = minuteStr.toInt()
 
@@ -60,14 +59,16 @@ object CountdownTimeParser {
                     }
 
                     try {
-                         LocalDateTime.of(year, month, day, hour, minute)
+                        LocalDateTime.of(year, month, day, hour, minute)
                     } catch (e: Exception) {
                         // Build-in java.time validation failed (e.g. Feb 30)
                         null
                     }
                 }
 
-                else -> null
+                else -> {
+                    null
+                }
             }
         } catch (e: Exception) {
             Timber.e("Error parsing target time: $e")
