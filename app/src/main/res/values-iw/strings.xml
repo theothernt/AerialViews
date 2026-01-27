@@ -16,18 +16,17 @@
   <string name="advanced_philips_dolby_vision_fix_title">השתמש במנתח מדיית וידאו חלופית</string>
   <string name="advanced_refresh_rate_switching_summary">שנה את קצב הרענון של התצוגה כך שיתאים לקצב פריימים של הווידאו</string>
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
-  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
-  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
-  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
-  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
-  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
-  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
-  <string name="advanced_wol_mac_title">Target MAC Address</string>
+  <string name="advanced_wol_delay_summary">זמן ההמתנה (בשניות) לאחר שליחת חבילת WOL לפני ניסיון לשלוף מדיה</string>
+  <string name="advanced_wol_delay_title">השהיית התעוררות (שניות)</string>
+  <string name="advanced_wol_enable_summary">שלח חבילת Wake on LAN לפני שליפת מדיה</string>
+  <string name="advanced_wol_enable_title">הפעלת התעוררות ברשת מקומית (WoL)</string>
+  <string name="advanced_wol_mac_error">פורמט כתובת MAC לא חוקי</string>
+  <string name="advanced_wol_mac_summary">כתובת ה-MAC של המכשיר שיש להעיר (לדוגמה, AA:BB:CC:DD:EE:FF)</string>
+  <string name="advanced_wol_mac_title">כתובת MAC יעד</string>
   <string name="all_selected">כל הנבחרים</string>
   <string name="allow_fallback_decoders_summary">הפעל תמיכה לפורמט וידאו מבוסס תוכנה או חלופי על מספר מכשירים</string>
   <string name="allow_fallback_decoders_title">הרשה חזרת מחדל למפענחי וידאו</string>
   <string name="amazon_videos_enabled">השתמש בסרטוני אווירה של אמזון</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">מיקום שכבות העל משתנה משמאל לימין עם כל סרטון או תמונה חדשים</string>
   <string name="appearance_alt_text_position_title">החלף לסירוגין מיקום שכבת על</string>
   <string name="appearance_animations_summary">הגדר את האנימציות המשמשות לשכבות-על ובין סרטונים ותמונות</string>
@@ -51,12 +50,12 @@
   <string name="appearance_clock_size_title">גודל</string>
   <string name="appearance_clock_summary">הצג את השעה הנוכחית</string>
   <string name="appearance_clock_title">שעון</string>
-  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
-  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
-  <string name="appearance_countdown_target_message_title">Completion Message</string>
-  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
-  <string name="appearance_countdown_target_time_title">Target Time</string>
-  <string name="appearance_countdown_title">Countdown</string>
+  <string name="appearance_countdown_summary">הצגת ספירה לאחור לשעה מסוימת</string>
+  <string name="appearance_countdown_target_message_summary">הודעה שתוצג כאשר הספירה לאחור מגיעה לאפס (למשל \"שנה טובה!\")</string>
+  <string name="appearance_countdown_target_message_title">הודעת השלמה</string>
+  <string name="appearance_countdown_target_time_summary">הזן את השעה בפורמט HH:MM או YYYY-MM-DD HH:MM לתאריך ספציפי</string>
+  <string name="appearance_countdown_target_time_title">זמן יעד</string>
+  <string name="appearance_countdown_title">ספירה לאחור</string>
   <string name="appearance_date_custom_error">תבנית תאריך מותאמת אישית לא חוקית!</string>
   <string name="appearance_date_custom_example">למשל</string>
   <string name="appearance_date_custom_title">ציון תבנית תאריך מותאמת אישית</string>
@@ -74,7 +73,7 @@
   <string name="appearance_description_videos_manifest_title">הצג תיאור או נקודות עניין</string>
   <string name="appearance_exit_to_settings_summary">יש להקצות את הפעולה \"יציאה להגדרות\" ללחצן או לכיוון d-pad כדי שתכונה זו תפעל</string>
   <string name="appearance_exit_to_settings_title">הקצה פעולה</string>
-  <string name="appearance_fade_corners_title">Corners to fade</string>
+  <string name="appearance_fade_corners_title">פינות לדהייה</string>
   <string name="appearance_fade_in_title">דעיכה פנימה</string>
   <string name="appearance_fade_out_title">דעיכה החוצה</string>
   <string name="appearance_gradient_bottom_summary">הצג מדרון צבעים מאחורי תצוגת העל בתחתית המסך על מנת להקל את תצוגתם</string>
@@ -187,7 +186,7 @@
   <string name="category_capabilities">יכולות</string>
   <string name="category_clock">שעון</string>
   <string name="category_connection_information">מידע על חיבור</string>
-  <string name="category_countdown">Countdown</string>
+  <string name="category_countdown">ספירה לאחור</string>
   <string name="category_custom_format">עיצוב מותאם אישית</string>
   <string name="category_custom_videos_and_feeds">סרטונים והזנות מותאמים אישית</string>
   <string name="category_date">תאריך</string>
@@ -239,7 +238,7 @@
   <string name="category_video_source">מקור וידאו</string>
   <string name="category_video_sources">מקורות וידאו</string>
   <string name="category_videos">סרטונים</string>
-  <string name="category_wake_on_lan">Wake on LAN</string>
+  <string name="category_wake_on_lan">התעוררות ברשת מקומית</string>
   <string name="category_weather">מזג אוויר</string>
   <string name="comm1_videos_enabled">השתמש בסרטוני קהילה</string>
   <string name="comm2_videos_enabled">השתמש בסרטוני קהילה</string>
@@ -391,7 +390,6 @@
   <string name="playlist_slideshow_speed_title">מהירות מצגת</string>
   <string name="playlist_video_volume_summary">בחירת עוצמת קול של וידאו</string>
   <string name="playlist_video_volume_title">עוצמת וידאו</string>
-  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">מיקום</string>
   <string name="progress_bar_opacity_title">אטימות</string>
   <string name="progress_bar_type_title">הצג עבור סוג מדיה</string>
@@ -400,8 +398,8 @@
   <string name="projectivy_apple_videos_options_title">אפשרויות וידאו של אפל</string>
   <string name="projectivy_comm1_videos_options_title">אפשרויות וידאו של ג׳טסון קריאטיב</string>
   <string name="projectivy_comm2_videos_options_title">אפשרויות וידאו של רובין פורקייד</string>
-  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
-  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
+  <string name="projectivy_local_videos_options_summary">הגדר היכן יימצאו סרטונים מקומיים עבור Projectivy</string>
+  <string name="projectivy_local_videos_options_title">אפשרויות אחסון מקומי או USB</string>
   <string name="projectivy_select_videos_summary">בחר אילו ספקי וידאו לשתף עם מפעיל Projectivy</string>
   <string name="projectivy_select_videos_title">בחירת מקורות וידאו</string>
   <string name="projectivy_shuffle_videos_summary">הפעל את הסרטונים באופן אקראי</string>
@@ -412,9 +410,9 @@
   <string name="samba_media_test_summary4">תמונות שנמצאו: %1$s</string>
   <string name="samba_media_test_summary5">נבחר לניגון: %1$s</string>
   <string name="samba_media_type_title">בחר סוג מדיה</string>
-  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
-  <string name="samba_media_wol_title">Wake on LAN settings</string>
-  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
+  <string name="samba_media_wol_summary">הערת השרת בעת ניסיון לשלוף מדיה</string>
+  <string name="samba_media_wol_title">הגדרות התעוררות ברשת מקומית (WoL)</string>
+  <string name="samba_media_wol_wake_now">בדיקת הגדרות Wake on LAN</string>
   <string name="samba_videos_domainname_summary">שם הדומיין או קבוצת העבודה של השרת. אופציונאלי</string>
   <string name="samba_videos_domainname_title">שם דומיין</string>
   <string name="samba_videos_enable_encryption_summary">מאפשר הצפנה עבור חיבורי SMB, יכול להפחית את מהירות ההעברה הכוללת</string>
