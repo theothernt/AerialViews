@@ -190,38 +190,35 @@ class ImmichMediaProvider(
         var images = 0
 
         assets.forEach { asset ->
-            val uri = getAssetUri(asset.id)
             val poi = extractLocationPoi(asset)
             val description = asset.exifInfo?.description ?: ""
             val filename = asset.originalPath
 
             Timber.i("Description: $description, Filename: $filename")
 
-            val item =
-                AerialMedia(uri, description, poi).apply {
+            val isVideo = FileHelper.isSupportedVideoType(filename)
+            val isImage = FileHelper.isSupportedImageType(filename)
+
+            if (isVideo || isImage) {
+                val uri = getAssetUri(asset.id, isVideo)
+                val item = AerialMedia(uri, description, poi).apply {
                     source = AerialMediaSource.IMMICH
+                    type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
                 }
 
-            when {
-                FileHelper.isSupportedVideoType(filename) -> {
-                    item.type = AerialMediaType.VIDEO
+                if (isVideo) {
                     videos++
                     if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                         media.add(item)
                     }
-                }
-
-                FileHelper.isSupportedImageType(filename) -> {
-                    item.type = AerialMediaType.IMAGE
+                } else {
                     images++
                     if (prefs.mediaType != ProviderMediaType.VIDEOS) {
                         media.add(item)
                     }
                 }
-
-                else -> {
-                    excluded++
-                }
+            } else {
+                excluded++
             }
         }
 
@@ -621,20 +618,31 @@ class ImmichMediaProvider(
         return trimmed.startsWith("s/")
     }
 
-    private fun getAssetUri(id: String): Uri {
+    private fun getAssetUri(
+        id: String,
+        isVideo: Boolean,
+    ): Uri {
         val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
             ImmichAuthType.SHARED_LINK -> {
-                val base = "$server/api/assets/$id/original?key=$cleanedKey"
+                val base =
+                    if (isVideo) {
+                        "$server/api/assets/$id/video/playback?key=$cleanedKey"
+                    } else {
+                        "$server/api/assets/$id/thumbnail?size=preview&key=$cleanedKey"
+                    }
                 val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
                 url.toUri()
             }
 
-            // this should be a setting but i have no idea how to implement it
             // "fullsize" will use fullsize or reencoded pic as configured within Immich
             // "preview" will use preview-reencoded pic as configured within Immich, 1440p by default
             ImmichAuthType.API_KEY -> {
-                "$server/api/assets/$id/thumbnail?size=preview".toUri()
+                if (isVideo) {
+                    "$server/api/assets/$id/video/playback".toUri()
+                } else {
+                    "$server/api/assets/$id/thumbnail?size=preview".toUri()
+                }
             }
 
             null -> {
