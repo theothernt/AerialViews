@@ -530,9 +530,11 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, count = count)
+            val searchRequest = SearchMetadataRequest(size = count)
+            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
-                val assets = response.body() ?: emptyList()
+                val searchResponse = response.body()
+                val assets = searchResponse?.assets?.items ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} random assets")
                 return assets
             } else {
@@ -550,9 +552,11 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, count = count)
+            val searchRequest = SearchMetadataRequest(size = count, order = "desc")
+            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
-                val assets = response.body() ?: emptyList()
+                val searchResponse = response.body()
+                val assets = searchResponse?.assets?.items ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} recent assets")
                 return assets
             } else {
@@ -626,8 +630,11 @@ class ImmichMediaProvider(
                 url.toUri()
             }
 
+            // this should be a setting but i have no idea how to implement it
+            // "fullsize" will use fullsize or reencoded pic as configured within Immich
+            // "preview" will use preview-reencoded pic as configured within Immich, 1440p by default
             ImmichAuthType.API_KEY -> {
-                "$server/api/assets/$id/original".toUri()
+                "$server/api/assets/$id/thumbnail?size=preview".toUri()
             }
 
             null -> {
