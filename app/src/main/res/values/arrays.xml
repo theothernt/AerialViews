@@ -1056,10 +1056,6 @@
 <!--    <item>LOCAL</item>-->
   </string-array>
   <string-array name="projectivy_shared_providers_default" translatable="false">
-    <item>APPLE</item>
-    <item>AMAZON</item>
-    <item>COMM1</item>
-    <item>COMM2</item>
   </string-array>
 
   <!-- Overlay Corner Fade Selection -->
