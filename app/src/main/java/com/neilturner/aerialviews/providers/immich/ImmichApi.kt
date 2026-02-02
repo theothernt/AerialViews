@@ -42,18 +42,17 @@ interface ImmichApi {
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
 
-    @GET("/api/assets/random")
+    @POST("/api/search/random")
     suspend fun getRandomAssets(
         @Header("x-api-key") apiKey: String,
-        @Query("count") count: Int,
-    ): Response<List<Asset>>
+        @Body searchRequest: SearchMetadataRequest,
+    ): Response<SearchAssetsResponse>
 
-    @GET("/api/assets")
+    @POST("/api/search/metadata")
     suspend fun getRecentAssets(
         @Header("x-api-key") apiKey: String,
-        @Query("take") count: Int,
-        @Query("order") order: String = "desc",
-    ): Response<List<Asset>>
+        @Body searchRequest: SearchMetadataRequest,
+    ): Response<SearchAssetsResponse>
 }
 
 @Serializable
@@ -70,6 +69,8 @@ data class AssetsResult(
 data class SearchMetadataRequest(
     val isFavorite: Boolean? = null,
     val rating: Int? = null,
+    val order: String? = null,
+    val size: Int? = null,
 )
 
 @Serializable
