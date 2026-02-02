@@ -46,7 +46,7 @@ interface ImmichApi {
     suspend fun getRandomAssets(
         @Header("x-api-key") apiKey: String,
         @Body searchRequest: SearchMetadataRequest,
-    ): Response<SearchAssetsResponse>
+    ): Response<List<Asset>>
 
     @POST("/api/search/metadata")
     suspend fun getRecentAssets(

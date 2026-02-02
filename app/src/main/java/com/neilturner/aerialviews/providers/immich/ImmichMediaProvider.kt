@@ -530,8 +530,7 @@ class ImmichMediaProvider(
             val searchRequest = SearchMetadataRequest(size = count)
             val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
-                val searchResponse = response.body()
-                val assets = searchResponse?.assets?.items ?: emptyList()
+                val assets = response.body() ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} random assets")
                 return assets
             } else {
