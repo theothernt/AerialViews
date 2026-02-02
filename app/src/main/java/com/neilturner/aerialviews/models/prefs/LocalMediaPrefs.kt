@@ -5,7 +5,7 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.SearchType
 
-object LocalMediaPrefs : KotprefModel(), LocalMediaProviderPreferences {
+object LocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
     override var enabled by booleanPref(false, "local_videos_enabled")
