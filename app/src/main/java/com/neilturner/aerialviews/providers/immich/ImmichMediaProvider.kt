@@ -6,6 +6,8 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
+import com.neilturner.aerialviews.models.enums.ImmichImageType
+import com.neilturner.aerialviews.models.enums.ImmichVideoType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
@@ -626,9 +628,18 @@ class ImmichMediaProvider(
             ImmichAuthType.SHARED_LINK -> {
                 val base =
                     if (isVideo) {
-                        "$server/api/assets/$id/video/playback?key=$cleanedKey"
+                        if (prefs.videoType == ImmichVideoType.TRANSCODED) {
+                            "$server/api/assets/$id/video/playback?key=$cleanedKey"
+                        } else {
+                            "$server/api/assets/$id/original?key=$cleanedKey"
+                        }
                     } else {
-                        "$server/api/assets/$id/thumbnail?size=preview&key=$cleanedKey"
+                        if (prefs.imageType == ImmichImageType.ORIGINAL) {
+                            "$server/api/assets/$id/original?key=$cleanedKey"
+                        } else {
+                            val size = if (prefs.imageType == ImmichImageType.FULLSIZE) "fullsize" else "preview"
+                            "$server/api/assets/$id/thumbnail?size=$size&key=$cleanedKey"
+                        }
                     }
                 val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
                 url.toUri()
@@ -638,9 +649,18 @@ class ImmichMediaProvider(
             // "preview" will use preview-reencoded pic as configured within Immich, 1440p by default
             ImmichAuthType.API_KEY -> {
                 if (isVideo) {
-                    "$server/api/assets/$id/video/playback".toUri()
+                    if (prefs.videoType == ImmichVideoType.TRANSCODED) {
+                        "$server/api/assets/$id/video/playback".toUri()
+                    } else {
+                        "$server/api/assets/$id/original".toUri()
+                    }
                 } else {
-                    "$server/api/assets/$id/thumbnail?size=preview".toUri()
+                    if (prefs.imageType == ImmichImageType.ORIGINAL) {
+                        "$server/api/assets/$id/original".toUri()
+                    } else {
+                        val size = if (prefs.imageType == ImmichImageType.FULLSIZE) "fullsize" else "preview"
+                        "$server/api/assets/$id/thumbnail?size=$size".toUri()
+                    }
                 }
             }
 
