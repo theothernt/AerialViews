@@ -3,6 +3,8 @@ package com.neilturner.aerialviews.models.prefs
 import com.chibatching.kotpref.KotprefModel
 import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
+import com.neilturner.aerialviews.models.enums.ImmichImageType
+import com.neilturner.aerialviews.models.enums.ImmichVideoType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 
 object ImmichMediaPrefs : KotprefModel() {
@@ -21,4 +23,6 @@ object ImmichMediaPrefs : KotprefModel() {
     val includeRatings by stringSetPref(emptySet(), "immich_media_include_ratings")
     var includeRandom by stringPref("DISABLED", "immich_media_include_random")
     var includeRecent by stringPref("DISABLED", "immich_media_include_recent")
+    var imageType by nullableEnumValuePref(ImmichImageType.PREVIEW, "immich_media_image_type")
+    var videoType by nullableEnumValuePref(ImmichVideoType.TRANSCODED, "immich_media_video_type")
 }

@@ -126,4 +126,26 @@
                     app:title="@string/immich_media_include_recent_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_advanced">
+                <ListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/immich_image_type_default"
+                    app:entries="@array/immich_image_type_entries"
+                    app:entryValues="@array/immich_image_type_values"
+                    app:key="immich_media_image_type"
+                    app:title="Image type"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:dependency="immich_media_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="@string/immich_video_type_default"
+                    app:entries="@array/immich_video_type_entries"
+                    app:entryValues="@array/immich_video_type_values"
+                    app:key="immich_media_video_type"
+                    app:title="Video type"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
 </PreferenceScreen>

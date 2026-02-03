@@ -16,18 +16,17 @@
   <string name="advanced_philips_dolby_vision_fix_title">使用备用 MediaCodec 解析</string>
   <string name="advanced_refresh_rate_switching_summary">更改显示器的刷新率以匹配视频帧速率</string>
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
-  <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
-  <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
-  <string name="advanced_wol_enable_summary">Send a Wake on LAN packet before fetching media</string>
-  <string name="advanced_wol_enable_title">Enable Wake on LAN</string>
-  <string name="advanced_wol_mac_error">Invalid MAC address format</string>
-  <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
-  <string name="advanced_wol_mac_title">Target MAC Address</string>
+  <string name="advanced_wol_delay_summary">发送 WOL 数据包后尝试获取媒体前的等待时间（秒</string>
+  <string name="advanced_wol_delay_title">唤醒延迟（秒）</string>
+  <string name="advanced_wol_enable_summary">获取介质前发送 \"唤醒局域网 \"数据包</string>
+  <string name="advanced_wol_enable_title">启用局域网唤醒</string>
+  <string name="advanced_wol_mac_error">MAC 地址格式无效</string>
+  <string name="advanced_wol_mac_summary">要唤醒设备的 MAC 地址（例如，AA:BB:CC:DD:EE:FF）</string>
+  <string name="advanced_wol_mac_title">目标 MAC 地址</string>
   <string name="all_selected">全选</string>
   <string name="allow_fallback_decoders_summary">启用软件解码器或备用解码器支持（部分设备生效）</string>
   <string name="allow_fallback_decoders_title">允许备用解码器</string>
   <string name="amazon_videos_enabled">使用 Amazon 氛围视频</string>
-  <string name="app_name" translatable="false">Aerial Views</string>
   <string name="appearance_alt_text_position_summary">每个新视频或照片的叠加内容会从左到右变化</string>
   <string name="appearance_alt_text_position_title">备用文本位置</string>
   <string name="appearance_animations_summary">配置叠加内容及媒体切换的动画效果</string>
@@ -51,12 +50,12 @@
   <string name="appearance_clock_size_title">字号</string>
   <string name="appearance_clock_summary">显示当前时间</string>
   <string name="appearance_clock_title">时钟</string>
-  <string name="appearance_countdown_summary">Show a countdown to a specific time</string>
-  <string name="appearance_countdown_target_message_summary">Message to show when countdown reaches zero (e.g. \"Happy New Year!\")</string>
-  <string name="appearance_countdown_target_message_title">Completion Message</string>
-  <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
-  <string name="appearance_countdown_target_time_title">Target Time</string>
-  <string name="appearance_countdown_title">Countdown</string>
+  <string name="appearance_countdown_summary">显示特定时间的倒计时</string>
+  <string name="appearance_countdown_target_message_summary">倒计时归零时显示的信息（如 \"新年快乐！\"）</string>
+  <string name="appearance_countdown_target_message_title">完成信息</string>
+  <string name="appearance_countdown_target_time_summary">以 HH:MM 格式输入时间，或以 YYYY-MM-DD HH:MM 格式输入具体日期</string>
+  <string name="appearance_countdown_target_time_title">目标时间</string>
+  <string name="appearance_countdown_title">倒计时</string>
   <string name="appearance_date_custom_error">自定义日期格式无效！</string>
   <string name="appearance_date_custom_example">例如</string>
   <string name="appearance_date_custom_title">指定自定义日期格式</string>
@@ -74,7 +73,7 @@
   <string name="appearance_description_videos_manifest_title">显示描述或景点</string>
   <string name="appearance_exit_to_settings_summary">要使此功能生效，必须将“退出到设置”操作分配给一个按键或方向键</string>
   <string name="appearance_exit_to_settings_title">设置操作</string>
-  <string name="appearance_fade_corners_title">Corners to fade</string>
+  <string name="appearance_fade_corners_title">边角褪色</string>
   <string name="appearance_fade_in_title">淡入</string>
   <string name="appearance_fade_out_title">淡出</string>
   <string name="appearance_gradient_bottom_summary">为屏幕底部叠加内容添加渐变背景，使其更易查看</string>
@@ -187,7 +186,7 @@
   <string name="category_capabilities">规格详情</string>
   <string name="category_clock">时钟</string>
   <string name="category_connection_information">连接信息</string>
-  <string name="category_countdown">Countdown</string>
+  <string name="category_countdown">倒计时</string>
   <string name="category_custom_format">自定义格式</string>
   <string name="category_custom_videos_and_feeds">本地与订阅</string>
   <string name="category_date">日期</string>
@@ -239,7 +238,7 @@
   <string name="category_video_source">视频源</string>
   <string name="category_video_sources">视频来源</string>
   <string name="category_videos">视频</string>
-  <string name="category_wake_on_lan">Wake on LAN</string>
+  <string name="category_wake_on_lan">局域网唤醒</string>
   <string name="category_weather">天气</string>
   <string name="comm1_videos_enabled">使用社区视频</string>
   <string name="comm2_videos_enabled">使用社区视频</string>
@@ -391,7 +390,6 @@
   <string name="playlist_slideshow_speed_title">幻灯片播放速度</string>
   <string name="playlist_video_volume_summary">选择视频音量大小</string>
   <string name="playlist_video_volume_title">视频音量</string>
-  <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
   <string name="progress_bar_location_title">屏幕显示位置</string>
   <string name="progress_bar_opacity_title">不透明度</string>
   <string name="progress_bar_type_title">显示媒体类型</string>
@@ -400,8 +398,8 @@
   <string name="projectivy_apple_videos_options_title">Apple 视频选项</string>
   <string name="projectivy_comm1_videos_options_title">Jetson Creative 视频选项</string>
   <string name="projectivy_comm2_videos_options_title">Robin Fourcade 视频选项</string>
-  <string name="projectivy_local_videos_options_summary">Configure where local videos are found for Projectivy</string>
-  <string name="projectivy_local_videos_options_title">Local or USB storage options</string>
+  <string name="projectivy_local_videos_options_summary">为 Projectivy 配置查找本地视频的位置</string>
+  <string name="projectivy_local_videos_options_title">本地或 USB 存储选项</string>
   <string name="projectivy_select_videos_summary">选择与 Projectivy 启动器共享的视频提供商</string>
   <string name="projectivy_select_videos_title">选择视频来源</string>
   <string name="projectivy_shuffle_videos_summary">随机调整视频顺序</string>
@@ -412,9 +410,9 @@
   <string name="samba_media_test_summary4">照片数量：%1$s</string>
   <string name="samba_media_test_summary5">待播放项目：%1$s</string>
   <string name="samba_media_type_title">选择媒体类型</string>
-  <string name="samba_media_wol_summary">Wake the server when trying to fetch media</string>
-  <string name="samba_media_wol_title">Wake on LAN settings</string>
-  <string name="samba_media_wol_wake_now">Test Wake on LAN settings</string>
+  <string name="samba_media_wol_summary">尝试获取媒体时唤醒服务器</string>
+  <string name="samba_media_wol_title">局域网唤醒设置</string>
+  <string name="samba_media_wol_wake_now">测试局域网唤醒设置</string>
   <string name="samba_videos_domainname_summary">服务器域名或工作组（可选）</string>
   <string name="samba_videos_domainname_title">域名</string>
   <string name="samba_videos_enable_encryption_summary">启用 SMB 加密连接，可能会降低整体传输速度</string>
