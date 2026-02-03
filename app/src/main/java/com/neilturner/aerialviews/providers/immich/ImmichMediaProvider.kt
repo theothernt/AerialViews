@@ -6,6 +6,8 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
+import com.neilturner.aerialviews.models.enums.ImmichImageType
+import com.neilturner.aerialviews.models.enums.ImmichVideoType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
@@ -190,38 +192,35 @@ class ImmichMediaProvider(
         var images = 0
 
         assets.forEach { asset ->
-            val uri = getAssetUri(asset.id)
             val poi = extractLocationPoi(asset)
             val description = asset.exifInfo?.description ?: ""
             val filename = asset.originalPath
 
             Timber.i("Description: $description, Filename: $filename")
 
-            val item =
-                AerialMedia(uri, description, poi).apply {
+            val isVideo = FileHelper.isSupportedVideoType(filename)
+            val isImage = FileHelper.isSupportedImageType(filename)
+
+            if (isVideo || isImage) {
+                val uri = getAssetUri(asset.id, isVideo)
+                val item = AerialMedia(uri, description, poi).apply {
                     source = AerialMediaSource.IMMICH
+                    type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
                 }
 
-            when {
-                FileHelper.isSupportedVideoType(filename) -> {
-                    item.type = AerialMediaType.VIDEO
+                if (isVideo) {
                     videos++
                     if (prefs.mediaType != ProviderMediaType.PHOTOS) {
                         media.add(item)
                     }
-                }
-
-                FileHelper.isSupportedImageType(filename) -> {
-                    item.type = AerialMediaType.IMAGE
+                } else {
                     images++
                     if (prefs.mediaType != ProviderMediaType.VIDEOS) {
                         media.add(item)
                     }
                 }
-
-                else -> {
-                    excluded++
-                }
+            } else {
+                excluded++
             }
         }
 
@@ -530,7 +529,8 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, count = count)
+            val searchRequest = SearchMetadataRequest(size = count)
+            val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} random assets")
@@ -550,9 +550,11 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, count = count)
+            val searchRequest = SearchMetadataRequest(size = count, order = "desc")
+            val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
-                val assets = response.body() ?: emptyList()
+                val searchResponse = response.body()
+                val assets = searchResponse?.assets?.items ?: emptyList()
                 Timber.d("Successfully fetched ${assets.size} recent assets")
                 return assets
             } else {
@@ -617,17 +619,49 @@ class ImmichMediaProvider(
         return trimmed.startsWith("s/")
     }
 
-    private fun getAssetUri(id: String): Uri {
+    private fun getAssetUri(
+        id: String,
+        isVideo: Boolean,
+    ): Uri {
         val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
         return when (prefs.authType) {
             ImmichAuthType.SHARED_LINK -> {
-                val base = "$server/api/assets/$id/original?key=$cleanedKey"
+                val base =
+                    if (isVideo) {
+                        if (prefs.videoType == ImmichVideoType.TRANSCODED) {
+                            "$server/api/assets/$id/video/playback?key=$cleanedKey"
+                        } else {
+                            "$server/api/assets/$id/original?key=$cleanedKey"
+                        }
+                    } else {
+                        if (prefs.imageType == ImmichImageType.ORIGINAL) {
+                            "$server/api/assets/$id/original?key=$cleanedKey"
+                        } else {
+                            val size = if (prefs.imageType == ImmichImageType.FULLSIZE) "fullsize" else "preview"
+                            "$server/api/assets/$id/thumbnail?size=$size&key=$cleanedKey"
+                        }
+                    }
                 val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
                 url.toUri()
             }
 
+            // "fullsize" will use fullsize or reencoded pic as configured within Immich
+            // "preview" will use preview-reencoded pic as configured within Immich, 1440p by default
             ImmichAuthType.API_KEY -> {
-                "$server/api/assets/$id/original".toUri()
+                if (isVideo) {
+                    if (prefs.videoType == ImmichVideoType.TRANSCODED) {
+                        "$server/api/assets/$id/video/playback".toUri()
+                    } else {
+                        "$server/api/assets/$id/original".toUri()
+                    }
+                } else {
+                    if (prefs.imageType == ImmichImageType.ORIGINAL) {
+                        "$server/api/assets/$id/original".toUri()
+                    } else {
+                        val size = if (prefs.imageType == ImmichImageType.FULLSIZE) "fullsize" else "preview"
+                        "$server/api/assets/$id/thumbnail?size=$size".toUri()
+                    }
+                }
             }
 
             null -> {

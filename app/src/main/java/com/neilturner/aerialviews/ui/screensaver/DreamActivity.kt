@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.annotation.SuppressLint
 import android.service.dreams.DreamService
 import android.view.KeyEvent
+import android.view.MotionEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -67,6 +68,15 @@ class DreamActivity : DreamService() {
 
         return super.dispatchKeyEvent(event)
     }
+
+	override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+		return try {
+			super.dispatchGenericMotionEvent(event)
+		} catch (e: SecurityException) {
+			// Ignore the restricted setting access error
+			false
+		}
+	}
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
