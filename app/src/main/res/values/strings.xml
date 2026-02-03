@@ -607,6 +607,10 @@
 
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
+    <string name="playlist_auto_time_of_day_title">Automated time-of-day filtering</string>
+    <string name="playlist_auto_time_of_day_summary">Only play videos matching current time of day (morning/day or night/sunset)</string>
+    <string name="playlist_set_location_title">Set location</string>
+    <string name="playlist_set_location_summary">Current location: %1$s</string>
 
     <string name="playlist_max_video_length_title">Limit video length</string>
 

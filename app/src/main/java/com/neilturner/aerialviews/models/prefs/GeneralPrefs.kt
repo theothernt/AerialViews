@@ -74,7 +74,6 @@ object GeneralPrefs : KotprefModel() {
     var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
 
     var weatherHumidity by stringPref("", "weather_humidity")
-    var weatherSunrise by stringPref("", "weather_sunrise")
 
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(
@@ -169,6 +168,10 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
+    var playlistLocationName by stringPref("", "playlist_location_name")
+    var playlistLocationLat by stringPref("", "playlist_location_lat")
+    var playlistLocationLon by stringPref("", "playlist_location_lon")
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")

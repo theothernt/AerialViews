@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -30,6 +31,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
+import com.neilturner.aerialviews.utils.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -114,6 +116,26 @@ class MediaService(
             }
 
             var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
+
+            if (GeneralPrefs.autoTimeOfDay) {
+                val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
+                Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
+                filteredMedia = filteredMedia.filter { media ->
+                    if (media.type == AerialMediaType.VIDEO) {
+                        if (currentTimePeriod == TimeOfDay.DAY) {
+                            media.timeOfDay == TimeOfDay.DAY || media.timeOfDay == TimeOfDay.UNKNOWN
+                        } else {
+                            media.timeOfDay == TimeOfDay.NIGHT ||
+                            media.timeOfDay == TimeOfDay.SUNSET ||
+                            media.timeOfDay == TimeOfDay.SUNRISE ||
+                            media.timeOfDay == TimeOfDay.UNKNOWN
+                        }
+                    } else {
+                        true // Keep photos as is for now
+                    }
+                }
+                Timber.i("Media items after time filtering: ${filteredMedia.size}")
+            }
 
             if (GeneralPrefs.shuffleVideos) {
                 filteredMedia = filteredMedia.shuffled()
