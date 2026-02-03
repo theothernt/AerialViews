@@ -123,12 +123,11 @@ class MediaService(
                 filteredMedia = filteredMedia.filter { media ->
                     if (media.type == AerialMediaType.VIDEO) {
                         if (currentTimePeriod == TimeOfDay.DAY) {
-                            media.timeOfDay == TimeOfDay.DAY || media.timeOfDay == TimeOfDay.UNKNOWN
+                            media.timeOfDay == TimeOfDay.DAY ||
+                            media.timeOfDay == TimeOfDay.SUNRISE
                         } else {
-                            media.timeOfDay == TimeOfDay.NIGHT ||
-                            media.timeOfDay == TimeOfDay.SUNSET ||
-                            media.timeOfDay == TimeOfDay.SUNRISE ||
-                            media.timeOfDay == TimeOfDay.UNKNOWN
+	                        media.timeOfDay == TimeOfDay.SUNSET ||
+                            media.timeOfDay == TimeOfDay.NIGHT
                         }
                     } else {
                         true // Keep photos as is for now
