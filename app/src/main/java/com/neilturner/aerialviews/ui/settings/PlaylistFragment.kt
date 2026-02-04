@@ -44,6 +44,15 @@ class PlaylistFragment : MenuStateFragment() {
         toggleControls(maxLengthPref?.value as String)
         setupSummaryUpdater("limit_longer_videos", R.array.limit_Longer_videos_summaries)
 
+        val autoTimeOfDayPref = findPreference<CheckBoxPreference>("playlist_auto_time_of_day")
+        autoTimeOfDayPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                updateLocationEnabledState(newValue as Boolean)
+                true
+            }
+
+        updateLocationEnabledState(autoTimeOfDayPref?.isChecked ?: false)
+
         val randomStartPref = findPreference<ListPreference>("random_start_position_range")
         randomStartPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
@@ -53,6 +62,11 @@ class PlaylistFragment : MenuStateFragment() {
         randomStartPref?.summary = "0%% - ${randomStartPref.value}%%"
 
         setupLocationPreference()
+    }
+
+    private fun updateLocationEnabledState(enabled: Boolean) {
+        val locationPreference = findPreference<Preference>("playlist_location_name")
+        locationPreference?.isEnabled = enabled
     }
 
     private fun setupLocationPreference() {
@@ -66,22 +80,22 @@ class PlaylistFragment : MenuStateFragment() {
 
     private fun updateLocationSummary() {
         val locationPreference = findPreference<Preference>("playlist_location_name")
-        locationPreference?.summary = getString(R.string.playlist_set_location_summary, GeneralPrefs.playlistLocationName.ifEmpty { "Not set" })
+        locationPreference?.summary = getString(R.string.playlist_set_location_summary, GeneralPrefs.playlistLocationName.ifEmpty { getString(R.string.location_not_set) })
     }
 
     private fun showLocationSearchDialog() {
         val binding = DialogLocationSearchBinding.inflate(layoutInflater)
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Search for a location or enter GPS coordinates")
+            .setTitle(R.string.location_search_dialog_title)
             .setView(binding.root)
-            .setPositiveButton("Search") { _, _ ->
+            .setPositiveButton(R.string.button_search) { _, _ ->
                 val query = binding.editLocationSearch.text.toString().trim()
                 if (query.isNotEmpty()) {
                     searchLocation(query)
                 }
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.button_cancel, null)
             .show()
     }
 
@@ -114,19 +128,19 @@ class PlaylistFragment : MenuStateFragment() {
                 }
                 progressDialog.dismiss()
                 if (addresses.isNullOrEmpty()) {
-                    DialogHelper.show(requireContext(), "No Results", "No locations found matching your search.")
+                    DialogHelper.show(requireContext(), getString(R.string.dialog_no_results_title), getString(R.string.dialog_no_results_message))
                 } else {
                     showLocationSelectionDialogFromAddresses(addresses)
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
-                DialogHelper.show(requireContext(), "Error", "Failed to search for location: ${e.message}")
+                DialogHelper.show(requireContext(), getString(R.string.dialog_error_title), getString(R.string.dialog_error_search_message, e.message))
             }
         }
     }
 
     private fun searchLocationByCoordinates(lat: Double, lon: Double) {
-        val loadingMessage = "Looking up location for coordinates..."
+        val loadingMessage = getString(R.string.location_lookup_coordinates)
         val progressDialog = DialogHelper.progressDialog(requireContext(), loadingMessage)
         progressDialog.show()
 
@@ -138,13 +152,13 @@ class PlaylistFragment : MenuStateFragment() {
                 }
                 progressDialog.dismiss()
                 if (addresses.isNullOrEmpty()) {
-                    saveLocation(lat, lon, "Custom Location ($lat, $lon)")
+                    saveLocation(lat, lon, getString(R.string.location_custom_name, lat.toString(), lon.toString()))
                 } else {
                     showLocationSelectionDialogFromAddresses(addresses)
                 }
             } catch (e: Exception) {
                 progressDialog.dismiss()
-                saveLocation(lat, lon, "Custom Location ($lat, $lon)")
+                saveLocation(lat, lon, getString(R.string.location_custom_name, lat.toString(), lon.toString()))
             }
         }
     }
@@ -157,7 +171,7 @@ class PlaylistFragment : MenuStateFragment() {
                 if (i < address.maxAddressLineIndex) sb.append(", ")
             }
             if (sb.isEmpty()) {
-                val city = address.locality ?: address.subAdminArea ?: address.adminArea ?: address.countryName ?: "Unknown"
+                val city = address.locality ?: address.subAdminArea ?: address.adminArea ?: address.countryName ?: getString(R.string.location_unknown)
                 sb.append(city)
                 if (address.countryName != null && city != address.countryName) {
                     sb.append(", ").append(address.countryName)
@@ -167,12 +181,12 @@ class PlaylistFragment : MenuStateFragment() {
         }.toTypedArray()
 
         AlertDialog.Builder(requireContext())
-            .setTitle("Select Location")
+            .setTitle(R.string.location_selection_title)
             .setItems(locationNames) { _, which ->
                 val selectedAddress = addresses[which]
                 saveLocation(selectedAddress.latitude, selectedAddress.longitude, locationNames[which])
             }
-            .setNegativeButton("Cancel", null)
+            .setNegativeButton(R.string.button_cancel, null)
             .show()
     }
 

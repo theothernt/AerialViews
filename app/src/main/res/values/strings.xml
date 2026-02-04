@@ -612,6 +612,20 @@
     <string name="playlist_set_location_title">Set location</string>
     <string name="playlist_set_location_summary">Current location: %1$s</string>
 
+    <!-- To rename/reorganise -->
+    <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>
+    <string name="button_search">Search</string>
+    <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
+    <string name="dialog_no_results_title">No Results</string>
+    <string name="dialog_no_results_message">No locations found matching your search.</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_error_search_message">Failed to search for location: %1$s</string>
+    <string name="location_selection_title">Select Location</string>
+    <string name="location_custom_name">Custom Location (%1$s, %2$s)</string>
+    <string name="location_not_set">Not set</string>
+    <string name="location_unknown">Unknown</string>
+    <!-- -->
+
     <string name="playlist_max_video_length_title">Limit video length</string>
 
     <string name="playlist_loop_until_skipped_title">Loop video until skipped</string>
