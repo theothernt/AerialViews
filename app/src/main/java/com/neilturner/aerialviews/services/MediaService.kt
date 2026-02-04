@@ -120,18 +120,29 @@ class MediaService(
             if (GeneralPrefs.autoTimeOfDay) {
                 val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
                 Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
+                val originalMedia = filteredMedia
                 filteredMedia = filteredMedia.filter { media ->
                     if (media.type == AerialMediaType.VIDEO) {
-                        if (currentTimePeriod == TimeOfDay.DAY) {
-                            media.timeOfDay == TimeOfDay.DAY ||
-                            media.timeOfDay == TimeOfDay.SUNRISE
-                        } else {
-	                        media.timeOfDay == TimeOfDay.SUNSET ||
-                            media.timeOfDay == TimeOfDay.NIGHT
+                        when (currentTimePeriod) {
+                            TimeOfDay.DAY ->
+                                media.timeOfDay == TimeOfDay.DAY ||
+                                    media.timeOfDay == TimeOfDay.SUNRISE ||
+                                    media.timeOfDay == TimeOfDay.UNKNOWN
+                            TimeOfDay.NIGHT ->
+                                media.timeOfDay == TimeOfDay.SUNSET ||
+                                    media.timeOfDay == TimeOfDay.NIGHT ||
+                                    media.timeOfDay == TimeOfDay.UNKNOWN
+                            else -> true
                         }
                     } else {
-                        true // Keep photos as is for now
+                        true
                     }
+                }
+
+                val remainingVideos = filteredMedia.count { it.type == AerialMediaType.VIDEO }
+                if (remainingVideos == 0) {
+                    Timber.w("Auto time-of-day filtering removed all videos; falling back to unfiltered media")
+                    filteredMedia = originalMedia
                 }
                 Timber.i("Media items after time filtering: ${filteredMedia.size}")
             }
