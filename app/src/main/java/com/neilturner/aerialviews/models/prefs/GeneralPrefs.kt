@@ -56,6 +56,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Weather
     var weatherLocationName by stringPref("", "weather_location_name")
+    var weatherLocationCustomName by stringPref("", "weather_location_custom_name")
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
 

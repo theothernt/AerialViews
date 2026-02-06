@@ -47,14 +47,10 @@ class LocationFragment : MenuStateFragment() {
             }
         }
 
-        if (text.isNotEmpty()) {
-            locationPreference?.summary = text
-        } else {
-            locationPreference?.summary =
-                GeneralPrefs.weatherLocationName.ifEmpty {
-                    getString(R.string.location_not_set)
-                }
-        }
+        locationPreference?.summary =
+            GeneralPrefs.weatherLocationName.ifEmpty {
+                getString(R.string.location_not_set)
+            }
     }
 
     private fun showLocationSearchDialog() {

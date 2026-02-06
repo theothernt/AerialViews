@@ -3,4 +3,10 @@
     <Preference
         app:key="weather_location_name"
         app:title="@string/weather_location_title" />
+
+    <EditTextPreference
+        app:key="weather_location_custom_name"
+        app:title="@string/weather_location_custom_title"
+        app:summary="@string/weather_location_custom_summary"
+        app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>

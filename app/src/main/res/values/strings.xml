@@ -456,6 +456,8 @@
 
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
+    <string name="weather_location_custom_title">Custom name (optional)</string>
+    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
     <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
     <string name="weather_location_searching">Searching for locations…</string>
 
