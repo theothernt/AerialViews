@@ -5,7 +5,8 @@
         <PreferenceCategory app:title="@string/category_weather">
               <Preference
                   app:key="weather_location_name"
-                  app:title="@string/weather_location_title" />
+                  app:title="@string/weather_location_title"
+                  app:fragment="com.neilturner.aerialviews.ui.settings.LocationFragment" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_forecast">

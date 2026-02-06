@@ -169,9 +169,6 @@ object GeneralPrefs : KotprefModel() {
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
     var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
-    var playlistLocationName by stringPref("", "playlist_location_name")
-    var playlistLocationLat by stringPref("", "playlist_location_lat")
-    var playlistLocationLon by stringPref("", "playlist_location_lon")
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")

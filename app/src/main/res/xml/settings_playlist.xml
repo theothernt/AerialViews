@@ -34,8 +34,9 @@
                     app:title="@string/playlist_auto_time_of_day_title" />
 
                 <Preference
-                    app:key="playlist_location_name"
-                    app:title="@string/playlist_set_location_title" />
+                    app:key="weather_location_name"
+                    app:title="@string/playlist_set_location_title"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.LocationFragment" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_photos">

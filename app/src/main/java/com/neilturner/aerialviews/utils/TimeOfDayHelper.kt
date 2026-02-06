@@ -12,8 +12,8 @@ object TimeOfDayHelper {
      * Uses the stored latitude and longitude from GeneralPrefs.
      */
     fun getCurrentTimePeriod(): TimeOfDay {
-        val lat = GeneralPrefs.playlistLocationLat.toDoubleOrNull() ?: return fallback()
-        val lon = GeneralPrefs.playlistLocationLon.toDoubleOrNull() ?: return fallback()
+        val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull() ?: return fallback()
+        val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull() ?: return fallback()
 
         val now = Calendar.getInstance()
         val sunriseMinutes = calculateSunriseSunset(now, lat, lon, true)
