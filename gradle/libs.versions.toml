@@ -31,7 +31,7 @@ retrofit = "3.0.0"
 sardine-android = "0.0.3"
 
 smbj = "0.13.0"
-media3-exoplayer = "1.9.1"
+media3-exoplayer = "1.9.2"
 flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.3.0"
