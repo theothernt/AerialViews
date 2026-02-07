@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-    <Preference
-        app:key="weather_location_name"
-        app:title="@string/weather_location_title" />
+    <PreferenceCategory app:title="@string/category_location">
+        <Preference
+            app:selectable="false"
+            app:summary="@string/location_summary"
+            />
 
-    <EditTextPreference
-        app:key="weather_location_custom_name"
-        app:title="@string/weather_location_custom_title"
-        app:summary="@string/weather_location_custom_summary"
-        app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:key="weather_location_name"
+            app:title="@string/weather_location_title" />
+
+        <Preference
+            app:selectable="false"
+            app:summary="@string/weather_location_custom_name_summary"
+            />
+
+        <EditTextPreference
+            app:key="weather_location_custom_name"
+            app:title="@string/weather_location_custom_title"
+            app:summary="@string/weather_location_custom_summary"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

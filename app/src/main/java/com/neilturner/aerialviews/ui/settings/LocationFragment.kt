@@ -91,7 +91,7 @@ class LocationFragment : MenuStateFragment() {
                     DialogHelper.show(
                         requireContext(),
                         getString(R.string.dialog_error_title),
-                        "Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.",
+                        getString(R.string.location_error_invalid_coordinates),
                     )
                     return
                 }
@@ -99,7 +99,7 @@ class LocationFragment : MenuStateFragment() {
                 DialogHelper.show(
                     requireContext(),
                     getString(R.string.dialog_error_title),
-                    "Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)",
+                    getString(R.string.location_error_format),
                 )
                 return
             }
@@ -165,7 +165,7 @@ class LocationFragment : MenuStateFragment() {
                     // If no location found via API, create a custom location with coordinates
                     val coordinateLocation =
                         LocationResponse(
-                            name = "Custom Location",
+                            name = getString(R.string.location_custom_name_default),
                             lat = lat,
                             lon = lon,
                             country = "",
@@ -187,7 +187,7 @@ class LocationFragment : MenuStateFragment() {
                 // Fallback: create a custom location if API fails
                 val coordinateLocation =
                     LocationResponse(
-                        name = "Custom Location",
+                        name = getString(R.string.location_custom_name_default),
                         lat = lat,
                         lon = lon,
                         country = "",
