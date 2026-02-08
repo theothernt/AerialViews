@@ -66,7 +66,11 @@ class PlaylistFragment : MenuStateFragment() {
 
     private fun updateLocationSummary() {
         val locationPreference = findPreference<Preference>("weather_location_name")
-        locationPreference?.summary = getString(R.string.playlist_set_location_summary, GeneralPrefs.weatherLocationName.ifEmpty { getString(R.string.location_not_set) })
+        locationPreference?.summary =
+            getString(
+                R.string.playlist_set_location_summary,
+                GeneralPrefs.weatherLocationName.ifEmpty { getString(R.string.location_not_set) },
+            )
     }
 
     private fun toggleControls(value: String) {

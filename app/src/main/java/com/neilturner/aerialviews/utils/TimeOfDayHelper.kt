@@ -39,7 +39,12 @@ object TimeOfDayHelper {
      * Calculates sunrise or sunset time in minutes from the start of the day.
      * Algorithm based on "Solar Calculation" by NOAA.
      */
-    private fun calculateSunriseSunset(calendar: Calendar, latitude: Double, longitude: Double, isSunrise: Boolean): Int? {
+    private fun calculateSunriseSunset(
+        calendar: Calendar,
+        latitude: Double,
+        longitude: Double,
+        isSunrise: Boolean,
+    ): Int? {
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
         val zenith = 90.8333 // Official zenith for sunrise/sunset
 

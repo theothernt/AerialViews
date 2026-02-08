@@ -69,14 +69,13 @@ class DreamActivity : DreamService() {
         return super.dispatchKeyEvent(event)
     }
 
-	override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-		return try {
-			super.dispatchGenericMotionEvent(event)
-		} catch (e: SecurityException) {
-			// Ignore the restricted setting access error
-			false
-		}
-	}
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
+        try {
+            super.dispatchGenericMotionEvent(event)
+        } catch (e: SecurityException) {
+            // Ignore the restricted setting access error
+            false
+        }
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()

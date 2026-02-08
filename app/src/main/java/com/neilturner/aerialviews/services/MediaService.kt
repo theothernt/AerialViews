@@ -121,23 +121,30 @@ class MediaService(
                 val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
                 Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
                 val originalMedia = filteredMedia
-                filteredMedia = filteredMedia.filter { media ->
-                    if (media.type == AerialMediaType.VIDEO) {
-                        when (currentTimePeriod) {
-                            TimeOfDay.DAY ->
-                                media.timeOfDay == TimeOfDay.DAY ||
-                                    media.timeOfDay == TimeOfDay.SUNRISE ||
-                                    media.timeOfDay == TimeOfDay.UNKNOWN
-                            TimeOfDay.NIGHT ->
-                                media.timeOfDay == TimeOfDay.SUNSET ||
-                                    media.timeOfDay == TimeOfDay.NIGHT ||
-                                    media.timeOfDay == TimeOfDay.UNKNOWN
-                            else -> true
+                filteredMedia =
+                    filteredMedia.filter { media ->
+                        if (media.type == AerialMediaType.VIDEO) {
+                            when (currentTimePeriod) {
+                                TimeOfDay.DAY -> {
+                                    media.timeOfDay == TimeOfDay.DAY ||
+                                        media.timeOfDay == TimeOfDay.SUNRISE ||
+                                        media.timeOfDay == TimeOfDay.UNKNOWN
+                                }
+
+                                TimeOfDay.NIGHT -> {
+                                    media.timeOfDay == TimeOfDay.SUNSET ||
+                                        media.timeOfDay == TimeOfDay.NIGHT ||
+                                        media.timeOfDay == TimeOfDay.UNKNOWN
+                                }
+
+                                else -> {
+                                    true
+                                }
+                            }
+                        } else {
+                            true
                         }
-                    } else {
-                        true
                     }
-                }
 
                 val remainingVideos = filteredMedia.count { it.type == AerialMediaType.VIDEO }
                 if (remainingVideos == 0) {

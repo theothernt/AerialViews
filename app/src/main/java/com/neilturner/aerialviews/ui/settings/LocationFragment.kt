@@ -135,7 +135,11 @@ class LocationFragment : MenuStateFragment() {
             } catch (e: Exception) {
                 Timber.e(e, "Failed to search for location")
                 progressDialog.dismiss()
-                DialogHelper.show(requireContext(), getString(R.string.dialog_error_title), getString(R.string.dialog_error_search_message, e.message))
+                DialogHelper.show(
+                    requireContext(),
+                    getString(R.string.dialog_error_title),
+                    getString(R.string.dialog_error_search_message, e.message),
+                )
             }
         }
     }
