@@ -12,17 +12,18 @@ import com.neilturner.aerialviews.R
 data class SelectableItem(
     val id: Int,
     val name: String,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
 )
 
 class ItemSelectionAdapter(
     private val items: MutableList<SelectableItem>,
     private val onSelectionChanged: () -> Unit,
     private val onMoveUp: (Int) -> Unit,
-    private val onMoveDown: (Int) -> Unit
+    private val onMoveDown: (Int) -> Unit,
 ) : RecyclerView.Adapter<ItemSelectionAdapter.ViewHolder>() {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(
+        view: View,
+    ) : RecyclerView.ViewHolder(view) {
         val selectionArea: View = view.findViewById(R.id.selection_area)
         val checkbox: CheckBox = view.findViewById(R.id.item_checkbox)
         val name: TextView = view.findViewById(R.id.item_name)
@@ -30,13 +31,21 @@ class ItemSelectionAdapter(
         val moveDownButton: Button = view.findViewById(R.id.button_move_down)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_selection_row, parent, false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ViewHolder {
+        val view =
+            LayoutInflater
+                .from(parent.context)
+                .inflate(R.layout.item_selection_row, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ViewHolder,
+        position: Int,
+    ) {
         val item = items[position]
 
         holder.name.text = item.name
