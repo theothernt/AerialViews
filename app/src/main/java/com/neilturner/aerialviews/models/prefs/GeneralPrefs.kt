@@ -56,6 +56,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Weather
     var weatherLocationName by stringPref("", "weather_location_name")
+    var weatherLocationCustomName by stringPref("", "weather_location_custom_name")
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
 
@@ -74,7 +75,6 @@ object GeneralPrefs : KotprefModel() {
     var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
 
     var weatherHumidity by stringPref("", "weather_humidity")
-    var weatherSunrise by stringPref("", "weather_sunrise")
 
     // Location
     var descriptionVideoManifestStyle by nullableEnumValuePref(
@@ -169,6 +169,7 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")

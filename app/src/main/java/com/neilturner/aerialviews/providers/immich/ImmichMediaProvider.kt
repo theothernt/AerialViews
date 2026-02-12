@@ -203,10 +203,11 @@ class ImmichMediaProvider(
 
             if (isVideo || isImage) {
                 val uri = getAssetUri(asset.id, isVideo)
-                val item = AerialMedia(uri, description, poi).apply {
-                    source = AerialMediaSource.IMMICH
-                    type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
-                }
+                val item =
+                    AerialMedia(uri, description, poi).apply {
+                        source = AerialMediaSource.IMMICH
+                        type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
+                    }
 
                 if (isVideo) {
                     videos++

@@ -26,6 +26,7 @@
     <string name="category_video_source">Video source</string>
     <string name="category_video_sources">Video sources</string>
     <string name="category_options">Options</string>
+    <string name="category_location">Location</string>
     <string name="category_remote_streaming">Remote streaming</string>
     <string name="category_custom_videos_and_feeds">Custom videos and feeds</string>
     <string name="category_feed_and_stream_details">Feed and stream details</string>
@@ -459,8 +460,12 @@
 
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
+    <string name="weather_location_custom_title">Custom name (optional)</string>
+    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
     <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
     <string name="weather_location_searching">Searching for locations…</string>
+    <string name="location_summary">Your location is only used for weather forecasts and automatic time-of-day filtering</string>
+    <string name="weather_location_custom_name_summary">Use a custom name if the location used by the weather overlay isn\'t correct</string>
 
     <string name="weather_forecast_title">Configure Current Forecast</string>
     <string name="weather_forecast_temperature_units_title">Temperature units</string>
@@ -610,6 +615,27 @@
 
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
+    <string name="playlist_auto_time_of_day_title">Automated time-of-day filtering</string>
+    <string name="playlist_auto_time_of_day_summary">Only play videos matching current time of day (morning/day or night/sunset)</string>
+    <string name="playlist_set_location_title">Set location</string>
+    <string name="playlist_set_location_summary">Current location: %1$s</string>
+
+    <!-- To rename/reorganise -->
+    <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>
+    <string name="button_search">Search</string>
+    <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
+    <string name="dialog_no_results_title">No Results</string>
+    <string name="dialog_no_results_message">No locations found matching your search.</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_error_search_message">Failed to search for location: %1$s</string>
+    <string name="location_selection_title">Select Location</string>
+    <string name="location_custom_name">Custom Location (%1$s, %2$s)</string>
+    <string name="location_custom_name_default">Custom Location</string>
+    <string name="location_not_set">Not set</string>
+    <string name="location_unknown">Unknown</string>
+    <string name="location_error_invalid_coordinates">Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.</string>
+    <string name="location_error_format">Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)</string>
+    <!-- -->
 
     <string name="playlist_max_video_length_title">Limit video length</string>
 
