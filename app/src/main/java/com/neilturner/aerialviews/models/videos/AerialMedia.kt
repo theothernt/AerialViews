@@ -14,4 +14,5 @@ data class AerialMedia(
     var source: AerialMediaSource = AerialMediaSource.UNKNOWN,
     var timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
     var scene: SceneType = SceneType.UNKNOWN,
+    var exif: Map<String, String> = emptyMap(),
 )

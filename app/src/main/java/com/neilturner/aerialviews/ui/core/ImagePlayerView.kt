@@ -30,6 +30,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.BufferedInputStream
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : AppCompatImageView {
@@ -101,9 +102,20 @@ class ImagePlayerView : AppCompatImageView {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            val stream = ImagePlayerHelper.streamFromMedia(context, media)
-            if (stream == null) {
+            val rawStream = ImagePlayerHelper.streamFromMedia(context, media)
+            if (rawStream == null) {
                 loadImage(media.uri)
+                return@launch
+            }
+            val stream =
+                if (rawStream.markSupported()) {
+                    rawStream
+                } else {
+                    BufferedInputStream(rawStream, 16 * 1024)
+                }
+
+            if (isGifStream(stream)) {
+                loadImage(stream)
                 return@launch
             }
 
@@ -116,6 +128,18 @@ class ImagePlayerView : AppCompatImageView {
                 return@launch
             }
 
+            val exifMap = mutableMapOf<String, String>()
+            bitmapResult.metadata.date?.let { exifMap["date"] = it }
+            bitmapResult.metadata.offset?.let { exifMap["offset"] = it }
+            bitmapResult.metadata.latitude?.let { exifMap["latitude"] = it.toString() }
+            bitmapResult.metadata.longitude?.let { exifMap["longitude"] = it.toString() }
+            if (bitmapResult.metadata.orientation > 0) {
+                exifMap["orientation"] = bitmapResult.metadata.orientation.toString()
+            }
+            if (exifMap.isNotEmpty()) {
+                media.exif = exifMap
+            }
+
             Timber.d(
                 "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s",
                 bitmapResult.metadata.date,
@@ -125,6 +149,24 @@ class ImagePlayerView : AppCompatImageView {
             )
 
             loadImage(bitmapResult.imageBytes)
+        }
+    }
+
+    private fun isGifStream(stream: java.io.InputStream): Boolean {
+        return try {
+            stream.mark(6)
+            val header = ByteArray(6)
+            val read = stream.read(header)
+            stream.reset()
+            if (read < 6) return false
+            header[0] == 'G'.code.toByte() &&
+                header[1] == 'I'.code.toByte() &&
+                header[2] == 'F'.code.toByte() &&
+                header[3] == '8'.code.toByte() &&
+                (header[4] == '7'.code.toByte() || header[4] == '9'.code.toByte()) &&
+                header[5] == 'a'.code.toByte()
+        } catch (_: Exception) {
+            false
         }
     }
 

@@ -28,7 +28,7 @@ object BitmapHelper {
         inputStream: InputStream,
         targetWidth: Int,
         targetHeight: Int,
-        quality: Int = 90,
+        quality: Int = 85,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             try {
