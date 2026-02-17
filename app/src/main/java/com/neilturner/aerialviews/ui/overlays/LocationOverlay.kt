@@ -7,6 +7,7 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
+import com.neilturner.aerialviews.ui.overlays.state.LocationOverlayState
 
 class LocationOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
@@ -56,6 +57,13 @@ class LocationOverlay : AppCompatTextView {
             // POI is off or empty, so disable handler
             currentPositionProgressHandler = null
         }
+    }
+
+    fun render(
+        state: LocationOverlayState,
+        player: VideoPlayerView,
+    ) {
+        updateLocationData(state.text, state.poi, state.descriptionManifestType, player)
     }
 
     private fun updatePointsOfInterest(

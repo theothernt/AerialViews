@@ -23,16 +23,19 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.overlays.LocationOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
-import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
+import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
+import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FontHelper
@@ -46,9 +49,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -64,6 +67,8 @@ class ScreenController(
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
+    private val overlayStateStore = OverlayStateStore()
+    private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -93,6 +98,7 @@ class ScreenController(
     private val brightnessView: View
     private val gradientTopView: View
     private val gradientBottomView: View
+    private val progressBarView: ProgressBar
     val view: View
 
     private val topLeftIds: List<Int>
@@ -133,8 +139,7 @@ class ScreenController(
         imagePlayer.setOnPlayerListener(this)
 
         brightnessView = binding.brightnessView
-
-        GlobalBus.dropAll() // Clear any old events
+        progressBarView = binding.progressBar
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
@@ -153,17 +158,19 @@ class ScreenController(
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
+        bindOverlayState()
+        overlayEventBridge.start()
 
         // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
-            (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
+            (progressBarView.layoutParams as FrameLayout.LayoutParams).gravity = gravity
 
             val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
-            binding.progressBar.alpha = alpha
+            progressBarView.alpha = alpha
             Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
 
-            binding.progressBar.visibility = View.VISIBLE
+            progressBarView.visibility = View.VISIBLE
         }
 
         // Setup brightness/dimness
@@ -222,9 +229,6 @@ class ScreenController(
                     }
             }
 
-            GlobalBus.getFlow<MessageEvent>(MessageEvent::class.java).collect {
-                Timber.i("ScreenController: Message ${it.text}")
-            }
         }
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
@@ -256,6 +260,7 @@ class ScreenController(
         isPaused = false
         pauseStartTime = 0
         currentMedia = media
+        overlayStateStore.resetForNextMedia()
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
@@ -305,7 +310,7 @@ class ScreenController(
 
         // Best to rest progress bar (if enabled) before media playback
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+            overlayStateStore.setProgress(ProgressState.RESET)
         }
 
         videoPlayer.start()
@@ -530,6 +535,7 @@ class ScreenController(
 
     fun stop() {
         RefreshRateHelper.restoreOriginalMode(context)
+        overlayEventBridge.stop()
         videoPlayer.release()
         imagePlayer.release()
         ktorServer?.stop()
@@ -671,7 +677,7 @@ class ScreenController(
 
         // Pause progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+            overlayStateStore.setProgress(ProgressState.PAUSE)
         }
     }
 
@@ -693,7 +699,7 @@ class ScreenController(
 
         // Resume progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
+            overlayStateStore.setProgress(ProgressState.RESUME)
         }
     }
 
@@ -726,27 +732,23 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateLocationOverlayData(media: AerialMedia) {
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
-            val locationType = GeneralPrefs.descriptionVideoManifestStyle
-            if (locationType != null) {
-                if (media.type == AerialMediaType.IMAGE) {
-                    val exifDate = media.exif["date"]
-                    val exifOffset = media.exif["offset"]
-                    val exifText =
-                        if (!exifDate.isNullOrBlank()) {
-                            DateHelper.formatExifDateTime(exifDate, exifOffset)
-                        } else {
-                            null
-                        }
-                    val overlayText = exifText ?: media.description
-                    val usedExif = !exifText.isNullOrBlank()
-                    val hasOffset = !exifOffset.isNullOrBlank()
-                    Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
-                    it.updateLocationData(overlayText, emptyMap(), DescriptionManifestType.TITLE, videoPlayer)
+        val locationType = GeneralPrefs.descriptionVideoManifestStyle ?: return
+        if (media.type == AerialMediaType.IMAGE) {
+            val exifDate = media.exif["date"]
+            val exifOffset = media.exif["offset"]
+            val exifText =
+                if (!exifDate.isNullOrBlank()) {
+                    DateHelper.formatExifDateTime(exifDate, exifOffset)
                 } else {
-                    it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
+                    null
                 }
-            }
+            val overlayText = exifText ?: media.description
+            val usedExif = !exifText.isNullOrBlank()
+            val hasOffset = !exifOffset.isNullOrBlank()
+            Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
+            overlayStateStore.setLocation(overlayText, emptyMap(), DescriptionManifestType.TITLE)
+        } else {
+            overlayStateStore.setLocation(media.description, media.poi, locationType)
         }
     }
 
@@ -755,6 +757,37 @@ class ScreenController(
             ?.takeIf { it.type == AerialMediaType.IMAGE }
             ?.let { updateLocationOverlayData(it) }
         fadeInNextItem()
+    }
+
+    private fun bindOverlayState() {
+        mainScope.launch {
+            overlayStateStore.uiState.collectLatest { state ->
+                renderOverlayState(state)
+            }
+        }
+    }
+
+    private fun renderOverlayState(state: OverlayUiState) {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
+            it.render(state.location, videoPlayer)
+        }
+
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach {
+            it.render(state.nowPlaying)
+        }
+
+        overlayHelper.findOverlay<WeatherOverlay>().forEach {
+            it.render(state.weather)
+        }
+
+        overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
+            val messageState = state.message[overlay.type]
+            if (messageState != null) {
+                overlay.render(messageState)
+            }
+        }
+
+        progressBarView.render(state.progress)
     }
 
     companion object {
