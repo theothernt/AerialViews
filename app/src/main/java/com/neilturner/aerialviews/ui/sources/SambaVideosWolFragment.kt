@@ -67,7 +67,8 @@ class SambaVideosWolFragment :
     private suspend fun testWolConnection() {
         val macAddress = SambaMediaPrefs.wakeOnLanMacAddress
         val hostName = SambaMediaPrefs.hostName
-        val delaySeconds = (SambaMediaPrefs.wakeOnLanDelay.toLongOrNull() ?: 5L) * 1_000L
+        val maxWaitSeconds = (SambaMediaPrefs.wakeOnLanTimeout.toLongOrNull() ?: 120L).coerceAtLeast(0L)
+        val pollIntervalSeconds = 5L
         val smallDelay = 1_000L
 
         if (hostName.isEmpty()) {
@@ -91,12 +92,19 @@ class SambaVideosWolFragment :
             delay(smallDelay)
             NetworkHelper.sendWakeOnLan(macAddress)
 
-            DialogHelper.updateProgressMessage(progressDialog, "Waiting for host to wake up...")
-            delay(delaySeconds)
-
-            DialogHelper.updateProgressMessage(progressDialog, "Checking host status again...")
-            delay(smallDelay)
-            val isReachableAfter = NetworkHelper.isHostReachable(hostName, 445)
+            var waitedSeconds = 0L
+            var isReachableAfter = false
+            while (waitedSeconds < maxWaitSeconds) {
+                val sleepSeconds = minOf(pollIntervalSeconds, maxWaitSeconds - waitedSeconds)
+                DialogHelper.updateProgressMessage(
+                    progressDialog,
+                    "Waiting for host to wake up... (${waitedSeconds}s/${maxWaitSeconds}s)",
+                )
+                delay(sleepSeconds * 1_000L)
+                waitedSeconds += sleepSeconds
+                isReachableAfter = NetworkHelper.isHostReachable(hostName, 445)
+                if (isReachableAfter) break
+            }
 
             progressDialog.dismiss()
             DialogHelper.showOnMain(
@@ -133,16 +141,16 @@ class SambaVideosWolFragment :
             macAddress?.summary = getString(R.string.advanced_wol_mac_summary)
         }
 
-        val delay = findPreference<EditTextPreference>("samba_media_wake_on_lan_delay")
-        if (delay?.text.toStringOrEmpty().isNotEmpty()) {
-            delay?.summary = "${delay.text} seconds"
+        val timeout = findPreference<EditTextPreference>("samba_media_wake_on_lan_timeout")
+        if (timeout?.text.toStringOrEmpty().isNotEmpty()) {
+            timeout?.summary = "${timeout.text} seconds"
         } else {
-            delay?.summary = getString(R.string.advanced_wol_delay_summary)
+            timeout?.summary = getString(R.string.advanced_wol_timeout_summary)
         }
     }
 
     private fun limitTextInput() {
-        listOf("samba_media_wake_on_lan_mac_address", "samba_media_wake_on_lan_delay").forEach { key ->
+        listOf("samba_media_wake_on_lan_mac_address", "samba_media_wake_on_lan_timeout").forEach { key ->
             findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
         }
     }
