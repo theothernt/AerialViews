@@ -160,9 +160,9 @@ android {
         getByName("fdroid").kotlin.directories.add("src/fdroid/java")
     }
 
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
-    }
+//    compileOptions {
+//        isCoreLibraryDesugaringEnabled = true
+//    }
 }
 
 dependencies {
@@ -195,7 +195,7 @@ dependencies {
     "baselineProfile"(project(":baselineprofile"))
     implementation(project(":projectivyapi"))
 
-    coreLibraryDesugaring(libs.desugar.jdk.libs)
+    // coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 tasks.withType<Test>().configureEach {
