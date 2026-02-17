@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -33,6 +34,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.utils.ColourHelper
+import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -78,6 +80,7 @@ class ScreenController(
     private var isPaused = false
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
+    private var currentMedia: AerialMedia? = null
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -252,6 +255,7 @@ class ScreenController(
         // Reset pause state when loading new item
         isPaused = false
         pauseStartTime = 0
+        currentMedia = media
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
@@ -262,13 +266,7 @@ class ScreenController(
             Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
         }
 
-        // Set overlay data for current video
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
-            val locationType = GeneralPrefs.descriptionVideoManifestStyle
-            if (locationType != null) {
-                it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
-            }
-        }
+        updateLocationOverlayData(media)
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
@@ -727,7 +725,37 @@ class ScreenController(
 
     override fun onImageError() = handleError()
 
-    override fun onImagePrepared() = fadeInNextItem()
+    private fun updateLocationOverlayData(media: AerialMedia) {
+        overlayHelper.findOverlay<LocationOverlay>().forEach {
+            val locationType = GeneralPrefs.descriptionVideoManifestStyle
+            if (locationType != null) {
+                if (media.type == AerialMediaType.IMAGE) {
+                    val exifDate = media.exif["date"]
+                    val exifOffset = media.exif["offset"]
+                    val exifText =
+                        if (!exifDate.isNullOrBlank()) {
+                            DateHelper.formatExifDateTime(exifDate, exifOffset)
+                        } else {
+                            null
+                        }
+                    val overlayText = exifText ?: media.description
+                    val usedExif = !exifText.isNullOrBlank()
+                    val hasOffset = !exifOffset.isNullOrBlank()
+                    Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
+                    it.updateLocationData(overlayText, emptyMap(), DescriptionManifestType.TITLE, videoPlayer)
+                } else {
+                    it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
+                }
+            }
+        }
+    }
+
+    override fun onImagePrepared() {
+        currentMedia
+            ?.takeIf { it.type == AerialMediaType.IMAGE }
+            ?.let { updateLocationOverlayData(it) }
+        fadeInNextItem()
+    }
 
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
