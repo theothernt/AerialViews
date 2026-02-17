@@ -10,7 +10,6 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
-import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
@@ -21,6 +20,7 @@ import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
+import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -101,21 +101,30 @@ class ImagePlayerView : AppCompatImageView {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            when (media.source) {
-                AerialMediaSource.SAMBA -> {
-                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
-                    loadImage(stream)
-                }
-
-                AerialMediaSource.WEBDAV -> {
-                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
-                    loadImage(stream)
-                }
-
-                else -> {
-                    loadImage(media.uri)
-                }
+            val stream = ImagePlayerHelper.streamFromMedia(context, media)
+            if (stream == null) {
+                loadImage(media.uri)
+                return@launch
             }
+
+            val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
+            val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
+
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(stream, targetWidth, targetHeight)
+            if (bitmapResult == null) {
+                loadImage(media.uri)
+                return@launch
+            }
+
+            Timber.d(
+                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s",
+                bitmapResult.metadata.date,
+                bitmapResult.metadata.offset,
+                bitmapResult.metadata.latitude,
+                bitmapResult.metadata.longitude,
+            )
+
+            loadImage(bitmapResult.imageBytes)
         }
     }
 
