@@ -170,6 +170,12 @@ object GeneralPrefs : KotprefModel() {
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
     var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
+    val playlistTimeOfDayDayIncludes by stringSetPref("playlist_time_of_day_day_includes") {
+        setOf("SUNRISE")
+    }
+    val playlistTimeOfDayNightIncludes by stringSetPref("playlist_time_of_day_night_includes") {
+        setOf("SUNSET")
+    }
 
     // Playlist - Videos
     var muteVideos by booleanPref(true, "mute_videos")
