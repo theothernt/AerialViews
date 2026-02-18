@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.controls
 
 import android.app.AlertDialog
 import android.content.Context

@@ -624,7 +624,7 @@
     <string name="playlist_auto_time_of_day_summary">Only play videos matching current time of day (morning/day or night/sunset)</string>
 
     <string name="playlist_time_of_day_boundaries_title">Sunrise and sunset assignment</string>
-    <string name="playlist_time_of_day_boundaries_summary">Choose what Day and Night include.</string>
+    <string name="playlist_time_of_day_boundaries_summary">Choose what Day and Night include</string>
 
     <string name="playlist_set_location_title">Set location</string>
     <string name="playlist_set_location_summary">Current location: %1$s</string>

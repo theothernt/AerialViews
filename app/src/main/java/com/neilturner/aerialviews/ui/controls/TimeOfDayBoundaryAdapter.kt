@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.controls
 
 import android.view.LayoutInflater
 import android.view.View

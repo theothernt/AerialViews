@@ -33,7 +33,7 @@
                     app:summary="@string/playlist_auto_time_of_day_summary"
                     app:title="@string/playlist_auto_time_of_day_title" />
 
-                <com.neilturner.aerialviews.ui.settings.TimeOfDayBoundaryDialogPreference
+                <com.neilturner.aerialviews.ui.controls.TimeOfDayBoundaryDialogPreference
                     app:key="playlist_time_of_day_boundaries"
                     app:title="@string/playlist_time_of_day_boundaries_title"
                     app:summary="@string/playlist_time_of_day_boundaries_summary" />
