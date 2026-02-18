@@ -18,6 +18,13 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_import">Import</string>
     <string name="button_export">Export</string>
+    <string name="button_search">Search</string>
+
+    <!-- Dialog -->
+    <string name="dialog_no_results_title">No Results</string>
+    <string name="dialog_no_results_message">No locations found matching your search.</string>
+    <string name="dialog_error_title">Error</string>
+    <string name="dialog_error_search_message">Failed to search for location: %1$s</string>
 
     <!-- All Categories -->
     <string name="category_actions">Actions</string>
@@ -612,33 +619,19 @@
 
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
+
     <string name="playlist_auto_time_of_day_title">Automated time-of-day filtering</string>
     <string name="playlist_auto_time_of_day_summary">Only play videos matching current time of day (morning/day or night/sunset)</string>
+
     <string name="playlist_time_of_day_boundaries_title">Sunrise and sunset assignment</string>
     <string name="playlist_time_of_day_boundaries_summary">Choose what Day and Night include.</string>
+
     <string name="playlist_set_location_title">Set location</string>
     <string name="playlist_set_location_summary">Current location: %1$s</string>
-    <string name="time_of_day_heading_day">Day</string>
-    <string name="time_of_day_heading_night">Night</string>
-    <string name="time_of_day_option_sunrise">Sunrise</string>
-    <string name="time_of_day_option_sunset">Sunset</string>
-
-    <!-- To rename/reorganise -->
-    <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>
-    <string name="button_search">Search</string>
-    <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
-    <string name="dialog_no_results_title">No Results</string>
-    <string name="dialog_no_results_message">No locations found matching your search.</string>
-    <string name="dialog_error_title">Error</string>
-    <string name="dialog_error_search_message">Failed to search for location: %1$s</string>
-    <string name="location_selection_title">Select Location</string>
-    <string name="location_custom_name">Custom Location (%1$s, %2$s)</string>
-    <string name="location_custom_name_default">Custom Location</string>
-    <string name="location_not_set">Not set</string>
-    <string name="location_unknown">Unknown</string>
-    <string name="location_error_invalid_coordinates">Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.</string>
-    <string name="location_error_format">Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)</string>
-    <!-- -->
+    <string name="playlist_time_of_day_heading_day">Day</string>
+    <string name="playlist_time_of_day_heading_night">Night</string>
+    <string name="playlist_time_of_day_option_sunrise">Sunrise</string>
+    <string name="playlist_time_of_day_option_sunset">Sunset</string>
 
     <string name="playlist_max_video_length_title">Limit video length</string>
 
@@ -659,6 +652,17 @@
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
     <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+
+    <!-- Weather + Time of Day Location -->
+    <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
+    <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>
+    <string name="location_selection_title">Select Location</string>
+    <string name="location_custom_name">Custom Location (%1$s, %2$s)</string>
+    <string name="location_custom_name_default">Custom Location</string>
+    <string name="location_not_set">Not set</string>
+    <string name="location_unknown">Unknown</string>
+    <string name="location_error_invalid_coordinates">Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.</string>
+    <string name="location_error_format">Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="dpad_button_press_title">D-Pad or Button Press</string>

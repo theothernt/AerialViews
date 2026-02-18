@@ -27,30 +27,30 @@ class TimeOfDayBoundaryDialogPreference
 
         val rows =
             mutableListOf(
-                TimeOfDayRow.Header(context.getString(R.string.time_of_day_heading_day)),
+                TimeOfDayRow.Header(context.getString(R.string.playlist_time_of_day_heading_day)),
                 TimeOfDayRow.Option(
                     group = TimeOfDayGroup.DAY,
                     value = VALUE_SUNRISE,
-                    label = context.getString(R.string.time_of_day_option_sunrise),
+                    label = context.getString(R.string.playlist_time_of_day_option_sunrise),
                     isSelected = dayIncludes.contains(VALUE_SUNRISE),
                 ),
                 TimeOfDayRow.Option(
                     group = TimeOfDayGroup.DAY,
                     value = VALUE_SUNSET,
-                    label = context.getString(R.string.time_of_day_option_sunset),
+                    label = context.getString(R.string.playlist_time_of_day_option_sunset),
                     isSelected = dayIncludes.contains(VALUE_SUNSET),
                 ),
-                TimeOfDayRow.Header(context.getString(R.string.time_of_day_heading_night)),
+                TimeOfDayRow.Header(context.getString(R.string.playlist_time_of_day_heading_night)),
                 TimeOfDayRow.Option(
                     group = TimeOfDayGroup.NIGHT,
                     value = VALUE_SUNRISE,
-                    label = context.getString(R.string.time_of_day_option_sunrise),
+                    label = context.getString(R.string.playlist_time_of_day_option_sunrise),
                     isSelected = nightIncludes.contains(VALUE_SUNRISE),
                 ),
                 TimeOfDayRow.Option(
                     group = TimeOfDayGroup.NIGHT,
                     value = VALUE_SUNSET,
-                    label = context.getString(R.string.time_of_day_option_sunset),
+                    label = context.getString(R.string.playlist_time_of_day_option_sunset),
                     isSelected = nightIncludes.contains(VALUE_SUNSET),
                 ),
             )
