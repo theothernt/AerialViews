@@ -90,13 +90,11 @@ object GeneralPrefs : KotprefModel() {
         "description_photo_filename_style",
     ) // Filename - Photos
 
-    // Filename + Folder depth
-    var descriptionVideoFolderLevel by stringPref("1", "description_video_folder_levels")
-    var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
-
     // Metadata
     var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
     var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
+    var overlayMetadata1VideosFolderLevel by stringPref("1", "overlay_metadata1_videos_folder_level")
+    var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photos_folder_level")
 
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight") // Message
