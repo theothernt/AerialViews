@@ -22,15 +22,6 @@
         <Preference
             app:key="system_options"
             app:title="@string/settings_system_options" />
-
-        <com.neilturner.aerialviews.ui.controls.SortableItemPreference
-            app:key="test_exif_sortable_fields"
-            app:title="@string/test_exif_sortable_fields_title"
-            app:summary="@string/test_exif_sortable_fields_summary"
-            app:dialogTitle="@string/test_exif_sortable_fields_title"
-            app:entries="@array/test_exif_sortable_field_entries"
-            app:entryValues="@array/test_exif_sortable_field_values"
-            app:defaultValue="datetime_original,gps_latitude,gps_longitude,camera_model,lens_model,iso,f_number,exposure_time,focal_length,altitude" />
     </PreferenceCategory>
 
 </PreferenceScreen>
