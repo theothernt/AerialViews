@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.controls
 
 import android.app.AlertDialog
 import android.content.Context
@@ -20,15 +20,14 @@ class SortableItemPreference
         private val items = mutableListOf<SelectableItem>()
 
         init {
-            context.obtainStyledAttributes(attrs, R.styleable.ItemSelectionPreference, defStyleAttr, 0).apply {
+            context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.ListPreference, defStyleAttr, 0).apply {
                 try {
-                    val entries = getTextArray(R.styleable.ItemSelectionPreference_entries)
-                    val entryValues = getTextArray(R.styleable.ItemSelectionPreference_entryValues)
+                    val entries = getTextArray(androidx.preference.R.styleable.ListPreference_entries)
+                    val entryValues = getTextArray(androidx.preference.R.styleable.ListPreference_entryValues)
 
                     if (entries != null && entryValues != null && entries.size == entryValues.size) {
                         for (i in entries.indices) {
-                            val idStr = entryValues[i].toString()
-                            val id = idStr.toIntOrNull() ?: i
+                            val id = entryValues[i].toString()
                             items.add(SelectableItem(id, entries[i].toString()))
                         }
                     }
@@ -101,9 +100,10 @@ class SortableItemPreference
             val selectedIds =
                 items
                     .filter { it.isSelected }
-                    .joinToString(",") { it.id.toString() }
+                    .joinToString(",") { it.id }
 
             persistString(selectedIds)
+            notifyChanged()
         }
 
         private fun loadState() {
@@ -120,7 +120,7 @@ class SortableItemPreference
 
             // 1. Add selected items in saved order
             if (savedIds.isNotEmpty()) {
-                val idList = savedIds.split(",").mapNotNull { it.toIntOrNull() }
+                val idList = savedIds.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                 idList.forEach { id ->
                     itemsMap[id]?.let { item ->
                         item.isSelected = true

@@ -1099,4 +1099,29 @@
         <item>BOTTOM_RIGHT</item>
     </string-array>
 
+    <string-array name="test_exif_sortable_field_entries">
+        <item>Date/Time Taken</item>
+        <item>GPS Latitude</item>
+        <item>GPS Longitude</item>
+        <item>Camera Model</item>
+        <item>Lens Model</item>
+        <item>ISO</item>
+        <item>F Number</item>
+        <item>Exposure Time</item>
+        <item>Focal Length</item>
+        <item>GPS Altitude</item>
+    </string-array>
+    <string-array name="test_exif_sortable_field_values" translatable="false">
+        <item>datetime_original</item>
+        <item>gps_latitude</item>
+        <item>gps_longitude</item>
+        <item>camera_model</item>
+        <item>lens_model</item>
+        <item>iso</item>
+        <item>f_number</item>
+        <item>exposure_time</item>
+        <item>focal_length</item>
+        <item>altitude</item>
+    </string-array>
+
 </resources>

@@ -128,6 +128,8 @@
 
     <string name="settings_preview_screensaver">Test screensaver settings</string>
     <string name="settings_system_options">Open system screensaver options</string>
+    <string name="test_exif_sortable_fields_title">Test EXIF display order</string>
+    <string name="test_exif_sortable_fields_summary">Select and reorder EXIF fields for quick control testing</string>
 
     <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
     <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>

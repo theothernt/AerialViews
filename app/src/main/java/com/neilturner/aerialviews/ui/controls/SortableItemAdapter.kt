@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.controls
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.neilturner.aerialviews.R
 
 data class SelectableItem(
-    val id: Int,
+    val id: String,
     val name: String,
     var isSelected: Boolean = false,
 )
