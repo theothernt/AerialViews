@@ -25,24 +25,6 @@ class PlaylistFragment : MenuStateFragment() {
         updateAllSummaries()
     }
 
-    override fun onDisplayPreferenceDialog(preference: Preference) {
-        if (preference is TimeOfDayBoundaryDialogPreference) {
-            val existingDialog =
-                parentFragmentManager.findFragmentByTag(TIME_OF_DAY_DIALOG_TAG)
-            if (existingDialog != null) {
-                return
-            }
-
-            val dialog = TimeOfDayBoundaryPreferenceDialogFragment.newInstance(preference.key)
-            @Suppress("DEPRECATION")
-            dialog.setTargetFragment(this, 0)
-            dialog.show(parentFragmentManager, TIME_OF_DAY_DIALOG_TAG)
-            return
-        }
-
-        super.onDisplayPreferenceDialog(preference)
-    }
-
     private fun updateAllSummaries() {
         val maxLengthPref = findPreference<ListPreference>("playback_max_video_length")
         maxLengthPref?.onPreferenceChangeListener =
@@ -132,9 +114,5 @@ class PlaylistFragment : MenuStateFragment() {
         val summaries = res?.getStringArray(entries)
         val summary = summaries?.elementAtOrNull(index) ?: ""
         pref?.summary = summary
-    }
-
-    companion object {
-        private const val TIME_OF_DAY_DIALOG_TAG = "androidx.preference.PreferenceFragment.DIALOG"
     }
 }
