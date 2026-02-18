@@ -8,14 +8,14 @@ import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 
 data class OverlayUiState(
-    val location: LocationOverlayState = LocationOverlayState(),
+    val location: MetadataOverlayState = MetadataOverlayState(),
     val message: Map<OverlayType, MessageOverlayState> = emptyMap(),
     val nowPlaying: NowPlayingOverlayState = NowPlayingOverlayState(),
     val weather: WeatherOverlayState = WeatherOverlayState(),
     val progress: ProgressOverlayState = ProgressOverlayState(),
 )
 
-data class LocationOverlayState(
+data class MetadataOverlayState(
     val text: String = "",
     val poi: Map<Int, String> = emptyMap(),
     val descriptionManifestType: DescriptionManifestType = DescriptionManifestType.TITLE,

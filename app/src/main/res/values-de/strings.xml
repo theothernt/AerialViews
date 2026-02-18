@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">Zeigt beim Erstellen der Medien-Wiedergabeliste eine Lademeldung an</string>
   <string name="appearance_loading_show_title">Lademeldung anzeigen</string>
   <string name="appearance_location_summary">Zeige Ort, Beschreibung oder Sehenswürdigkeiten an</string>
-  <string name="appearance_location_title">Ort / Beschreibung</string>
+  <string name="appearance_metadata_title">Ort / Beschreibung</string>
   <string name="appearance_message_api_enabled_summary">Ermöglicht die Ferneinstellung von benutzerdefinierten Nachrichten über eine HTTP-API</string>
   <string name="appearance_message_api_enabled_title">API aktivieren</string>
   <string name="appearance_message_api_port_title">Anschlussnummer (Standard: 8081)</string>

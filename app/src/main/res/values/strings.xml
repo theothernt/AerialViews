@@ -417,8 +417,8 @@
     <string name="appearance_clock_title">Clock</string>
     <string name="appearance_clock_summary">Display the current time</string>
 
-    <string name="appearance_location_title">Location / Description</string>
-    <string name="appearance_location_summary">Display location, description, or points of interest</string>
+    <string name="appearance_metadata_title">Metadata</string>
+    <string name="appearance_metadata_summary">Display metadata, description, or points of interest</string>
 
     <string name="appearance_date_title">Date</string>
     <string name="appearance_date_summary">Display the current date</string>

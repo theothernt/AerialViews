@@ -15,9 +15,9 @@
 
         <PreferenceCategory app:title="@string/category_overlays">
                 <Preference
-                    app:title="@string/appearance_location_title"
-                    app:summary="@string/appearance_location_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysLocationFragment"/>
+                    app:title="@string/appearance_metadata_title"
+                    app:summary="@string/appearance_metadata_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMetadataFragment"/>
 
                 <Preference
                     app:title="@string/appearance_clock_title"

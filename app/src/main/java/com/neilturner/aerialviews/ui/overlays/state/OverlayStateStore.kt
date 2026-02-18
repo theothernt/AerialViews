@@ -22,7 +22,7 @@ class OverlayStateStore {
         _uiState.update {
             it.copy(
                 location =
-                    LocationOverlayState(
+                    MetadataOverlayState(
                         text = text,
                         poi = poi,
                         descriptionManifestType = descriptionManifestType,
@@ -68,7 +68,7 @@ class OverlayStateStore {
     fun resetForNextMedia() {
         _uiState.update {
             it.copy(
-                location = LocationOverlayState(),
+                location = MetadataOverlayState(),
                 progress = ProgressOverlayState(),
             )
         }

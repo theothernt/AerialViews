@@ -7,9 +7,9 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
-import com.neilturner.aerialviews.ui.overlays.state.LocationOverlayState
+import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 
-class LocationOverlay : AppCompatTextView {
+class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val textAlpha = 1f // start + end values?
@@ -60,7 +60,7 @@ class LocationOverlay : AppCompatTextView {
     }
 
     fun render(
-        state: LocationOverlayState,
+        state: MetadataOverlayState,
         player: VideoPlayerView,
     ) {
         updateLocationData(state.text, state.poi, state.descriptionManifestType, player)

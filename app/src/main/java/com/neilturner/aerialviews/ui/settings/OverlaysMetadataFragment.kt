@@ -8,17 +8,17 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import timber.log.Timber
 
-class OverlaysLocationFragment : MenuStateFragment() {
+class OverlaysMetadataFragment : MenuStateFragment() {
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_overlays_location, rootKey)
+        setPreferencesFromResource(R.xml.settings_overlays_metadata, rootKey)
     }
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.analyticsScreenView("Location", this)
+        FirebaseHelper.analyticsScreenView("Metadata", this)
         updateAllSummaries()
     }
 

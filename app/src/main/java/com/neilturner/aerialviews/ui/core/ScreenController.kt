@@ -27,7 +27,7 @@ import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
-import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
@@ -271,7 +271,7 @@ class ScreenController(
             Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
         }
 
-        updateLocationOverlayData(media)
+        updateMetadataOverlayData(media)
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
@@ -393,7 +393,7 @@ class ScreenController(
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
         }
 
@@ -731,7 +731,7 @@ class ScreenController(
 
     override fun onImageError() = handleError()
 
-    private fun updateLocationOverlayData(media: AerialMedia) {
+    private fun updateMetadataOverlayData(media: AerialMedia) {
         val locationType = GeneralPrefs.descriptionVideoManifestStyle ?: return
         if (media.type == AerialMediaType.IMAGE) {
             val exifDate = media.exif["date"]
@@ -755,7 +755,7 @@ class ScreenController(
     override fun onImagePrepared() {
         currentMedia
             ?.takeIf { it.type == AerialMediaType.IMAGE }
-            ?.let { updateLocationOverlayData(it) }
+            ?.let { updateMetadataOverlayData(it) }
         fadeInNextItem()
     }
 
@@ -768,7 +768,7 @@ class ScreenController(
     }
 
     private fun renderOverlayState(state: OverlayUiState) {
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.render(state.location, videoPlayer)
         }
 

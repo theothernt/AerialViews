@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">Visualizza il testo “Caricamento…” durante l\'avvio dell\'applicazione.</string>
   <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
   <string name="appearance_location_summary">Visualizza la posizione o i punti di interesse</string>
-  <string name="appearance_location_title">Posizione</string>
+  <string name="appearance_metadata_title">Posizione</string>
   <string name="appearance_message_api_enabled_summary">Permetti l\'impostazione remota di messaggi personalizzati tramite l\'API HTTP</string>
   <string name="appearance_message_api_enabled_title">Abilita API</string>
   <string name="appearance_message_api_port_title">Numero di porta (predefinito: 8081)</string>

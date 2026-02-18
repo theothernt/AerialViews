@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">建立媒体播放列表时显示加载提示</string>
   <string name="appearance_loading_show_title">显示加载提示</string>
   <string name="appearance_location_summary">显示位置、描述或景点</string>
-  <string name="appearance_location_title">地点/描述</string>
+  <string name="appearance_metadata_title">地点/描述</string>
   <string name="appearance_message_api_enabled_summary">允许通过 HTTP API 远程设置自定义信息</string>
   <string name="appearance_message_api_enabled_title">启用 API 接口</string>
   <string name="appearance_message_api_port_title">端口号（默认：8081）</string>

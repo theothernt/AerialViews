@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">Відображає текст \" Завантаження…\" під час завантаження програми</string>
   <string name="appearance_loading_show_title">Показувати текст завантаження</string>
   <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
-  <string name="appearance_location_title">Місце розташування</string>
+  <string name="appearance_metadata_title">Місце розташування</string>
   <string name="appearance_message_api_enabled_summary">Дозволити віддалене налаштування користувацьких повідомлень через HTTP API</string>
   <string name="appearance_message_api_enabled_title">Увімкнути API</string>
   <string name="appearance_message_api_port_title">Номер порту (за замовчуванням: 8081)</string>
