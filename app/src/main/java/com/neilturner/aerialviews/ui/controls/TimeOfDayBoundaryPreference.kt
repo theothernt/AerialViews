@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 
-class TimeOfDayBoundaryDialogPreference
+class TimeOfDayBoundaryPreference
     @JvmOverloads
     constructor(
         context: Context,

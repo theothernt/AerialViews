@@ -66,7 +66,7 @@ class TimeOfDayBoundaryAdapter(
                 val view =
                     LayoutInflater
                         .from(parent.context)
-                        .inflate(R.layout.dialog_time_of_day_selection, parent, false)
+                        .inflate(R.layout.dialog_time_of_day_row, parent, false)
                 OptionViewHolder(view)
             }
         }
