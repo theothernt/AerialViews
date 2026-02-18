@@ -119,6 +119,12 @@ class MediaService(
 
             if (GeneralPrefs.autoTimeOfDay) {
                 val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
+                val dayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes
+                val nightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes
+                val dayIncludesSunrise = dayIncludes.contains("SUNRISE")
+                val dayIncludesSunset = dayIncludes.contains("SUNSET")
+                val nightIncludesSunrise = nightIncludes.contains("SUNRISE")
+                val nightIncludesSunset = nightIncludes.contains("SUNSET")
                 Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
                 val originalMedia = filteredMedia
                 filteredMedia =
@@ -127,12 +133,14 @@ class MediaService(
                             when (currentTimePeriod) {
                                 TimeOfDay.DAY -> {
                                     media.timeOfDay == TimeOfDay.DAY ||
-                                        media.timeOfDay == TimeOfDay.SUNRISE ||
+                                        (dayIncludesSunrise && media.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (dayIncludesSunset && media.timeOfDay == TimeOfDay.SUNSET) ||
                                         media.timeOfDay == TimeOfDay.UNKNOWN
                                 }
 
                                 TimeOfDay.NIGHT -> {
-                                    media.timeOfDay == TimeOfDay.SUNSET ||
+                                    (nightIncludesSunrise && media.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (nightIncludesSunset && media.timeOfDay == TimeOfDay.SUNSET) ||
                                         media.timeOfDay == TimeOfDay.NIGHT ||
                                         media.timeOfDay == TimeOfDay.UNKNOWN
                                 }

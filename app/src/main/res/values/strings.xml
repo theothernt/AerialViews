@@ -276,9 +276,9 @@
     <string name="advanced_wol_mac_summary">MAC address of the device to wake (e.g., AA:BB:CC:DD:EE:FF)</string>
 
     <string name="advanced_wol_mac_error">Invalid MAC address format</string>
-    <string name="advanced_wol_delay_title">Wake delay (seconds)</string>
+    <string name="advanced_wol_timeout_title">Wake timeout (seconds)</string>
 
-    <string name="advanced_wol_delay_summary">Time to wait (in seconds) after sending WOL packet before trying to fetch media</string>
+    <string name="advanced_wol_timeout_summary">Maximum time (in seconds) to keep checking for the server after sending a WOL packet</string>
 
     <!-- Main / Video Sources / WebDAV videos -->
     <string name="webdav_media_enabled_title">Use WebDAV share media</string>
@@ -614,8 +614,14 @@
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
     <string name="playlist_auto_time_of_day_title">Automated time-of-day filtering</string>
     <string name="playlist_auto_time_of_day_summary">Only play videos matching current time of day (morning/day or night/sunset)</string>
+    <string name="playlist_time_of_day_boundaries_title">Sunrise and sunset assignment</string>
+    <string name="playlist_time_of_day_boundaries_summary">Choose what Day and Night include.</string>
     <string name="playlist_set_location_title">Set location</string>
     <string name="playlist_set_location_summary">Current location: %1$s</string>
+    <string name="time_of_day_heading_day">Day</string>
+    <string name="time_of_day_heading_night">Night</string>
+    <string name="time_of_day_option_sunrise">Sunrise</string>
+    <string name="time_of_day_option_sunset">Sunset</string>
 
     <!-- To rename/reorganise -->
     <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>

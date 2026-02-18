@@ -29,5 +29,5 @@ object SambaMediaPrefs : KotprefModel() {
     // Wake on LAN
     var wakeOnLanEnabled by booleanPref(false, "samba_media_wake_on_lan_enabled")
     var wakeOnLanMacAddress by stringPref("", "samba_media_wake_on_lan_mac_address")
-    var wakeOnLanDelay by stringPref("5", "samba_media_wake_on_lan_delay")
+    var wakeOnLanTimeout by stringPref("120", "samba_media_wake_on_lan_timeout")
 }

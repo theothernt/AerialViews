@@ -37,12 +37,30 @@ class SambaMediaProvider(
 
     override suspend fun prepare() {
         if (prefs.wakeOnLanEnabled && prefs.hostName.isNotEmpty()) {
-            val reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
+            val maxWaitSeconds = (prefs.wakeOnLanTimeout.toLongOrNull() ?: 120L).coerceAtLeast(0L)
+            val pollIntervalSeconds = 5L
+            var waitedSeconds = 0L
+
+            var reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
             if (!reachable) {
                 NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
-                val delaySeconds = prefs.wakeOnLanDelay.toLongOrNull() ?: 5L
-                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Waiting for $delaySeconds s")
-                delay(delaySeconds * 1000)
+                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Checking every $pollIntervalSeconds s for up to $maxWaitSeconds s")
+
+                while (waitedSeconds < maxWaitSeconds) {
+                    val sleepSeconds = minOf(pollIntervalSeconds, maxWaitSeconds - waitedSeconds)
+                    delay(sleepSeconds * 1000)
+                    waitedSeconds += sleepSeconds
+
+                    reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
+                    if (reachable) {
+                        Timber.i("Samba WOL: Host ${prefs.hostName} is reachable after $waitedSeconds s")
+                        break
+                    }
+                }
+
+                if (!reachable) {
+                    Timber.w("Samba WOL: Host ${prefs.hostName} still unreachable after $maxWaitSeconds s, giving up")
+                }
             } else {
                 Timber.i("Samba WOL: Host ${prefs.hostName} is already reachable, skipping WOL")
             }

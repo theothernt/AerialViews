@@ -57,7 +57,9 @@ class PlaylistFragment : MenuStateFragment() {
 
     private fun updateLocationEnabledState(enabled: Boolean) {
         val locationPreference = findPreference<Preference>("weather_location_name")
+        val boundariesPreference = findPreference<Preference>("playlist_time_of_day_boundaries")
         locationPreference?.isEnabled = enabled
+        boundariesPreference?.isEnabled = enabled
     }
 
     private fun setupLocationPreference() {
