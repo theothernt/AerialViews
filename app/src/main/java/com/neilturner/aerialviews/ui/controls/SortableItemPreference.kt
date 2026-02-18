@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.controls
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -9,6 +10,7 @@ import androidx.preference.DialogPreference
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.neilturner.aerialviews.R
+import java.util.Locale
 
 class SortableItemPreference
     @JvmOverloads
@@ -18,6 +20,7 @@ class SortableItemPreference
         defStyleAttr: Int = androidx.preference.R.attr.dialogPreferenceStyle,
     ) : DialogPreference(context, attrs, defStyleAttr) {
         private val items = mutableListOf<SelectableItem>()
+        private var defaultSelection = ""
 
         init {
             context.obtainStyledAttributes(attrs, androidx.preference.R.styleable.ListPreference, defStyleAttr, 0).apply {
@@ -35,7 +38,27 @@ class SortableItemPreference
                     recycle()
                 }
             }
-            loadState()
+        }
+
+        override fun onGetDefaultValue(
+            a: TypedArray,
+            index: Int,
+        ): Any {
+            a.getString(index)?.let { return it }
+
+            val resourceId = a.peekValue(index)?.resourceId ?: 0
+            if (resourceId != 0) {
+                return runCatching {
+                    a.resources.getStringArray(resourceId).joinToString(",")
+                }.getOrDefault("")
+            }
+
+            return ""
+        }
+
+        override fun onSetInitialValue(defaultValue: Any?) {
+            defaultSelection = (defaultValue as? String).orEmpty()
+            loadState(getPersistedString(defaultSelection).orEmpty())
         }
 
         override fun onClick() {
@@ -92,7 +115,7 @@ class SortableItemPreference
                 .setPositiveButton(R.string.button_ok) { _, _ ->
                     saveState()
                 }.setNegativeButton(R.string.button_cancel) { _, _ ->
-                    loadState()
+                    loadState(getPersistedString(defaultSelection).orEmpty())
                 }.show()
         }
 
@@ -106,23 +129,21 @@ class SortableItemPreference
             notifyChanged()
         }
 
-        private fun loadState() {
-            val savedIds = getPersistedString("") ?: ""
-
+        private fun loadState(savedIds: String) {
             // Reset all items first
             items.forEach {
                 it.isSelected = false
             }
 
-            // Create a map for quick lookup
-            val itemsMap = items.associateBy { it.id }
+            // Build a case-insensitive lookup map so XML/default casing is not strict.
+            val itemsMap = items.associateBy { it.id.lowercase(Locale.ROOT) }
             val newItemsList = mutableListOf<SelectableItem>()
 
             // 1. Add selected items in saved order
             if (savedIds.isNotEmpty()) {
                 val idList = savedIds.split(",").map { it.trim() }.filter { it.isNotEmpty() }
                 idList.forEach { id ->
-                    itemsMap[id]?.let { item ->
+                    itemsMap[id.lowercase(Locale.ROOT)]?.let { item ->
                         item.isSelected = true
                         newItemsList.add(item)
                     }

@@ -1102,29 +1102,35 @@
         <item>BOTTOM_RIGHT</item>
     </string-array>
 
-    <string-array name="test_exif_sortable_field_entries">
-        <item>Date/Time Taken</item>
-        <item>GPS Latitude</item>
-        <item>GPS Longitude</item>
-        <item>Camera Model</item>
-        <item>Lens Model</item>
-        <item>ISO</item>
-        <item>F Number</item>
-        <item>Exposure Time</item>
-        <item>Focal Length</item>
-        <item>GPS Altitude</item>
+    <string-array name="overlay_metadata_videos_entries">
+        <item>Dynamic Points of Interest</item>
+        <item>Short Description</item>
+        <item>Use filename as-is</item>
+        <item>Folder &amp; filename</item>
+        <item>Folder name only</item>
     </string-array>
-    <string-array name="test_exif_sortable_field_values" translatable="false">
-        <item>datetime_original</item>
-        <item>gps_latitude</item>
-        <item>gps_longitude</item>
-        <item>camera_model</item>
-        <item>lens_model</item>
-        <item>iso</item>
-        <item>f_number</item>
-        <item>exposure_time</item>
-        <item>focal_length</item>
-        <item>altitude</item>
+    <string-array name="overlay_metadata_videos_values" translatable="false">
+        <item>POI</item>
+        <item>DESC</item>
+        <item>FILENAME</item>
+        <item>FOLDER_FILENAME</item>
+        <item>FOLDER_ONLY</item>
     </string-array>
+    <string name="overlay_metadata_videos_default" translatable="false">POI</string>
 
+    <string-array name="overlay_metadata_photos_entries">
+        <item>Location (EXIF)</item>
+        <item>Date Taken (EXIF)</item>
+        <item>Use filename as-is</item>
+        <item>Folder &amp; filename</item>
+        <item>Folder name only</item>
+    </string-array>
+    <string-array name="overlay_metadata_photos_values" translatable="false">
+        <item>LOCATION</item>
+        <item>DATE_TAKEN</item>
+        <item>FILENAME</item>
+        <item>FOLDER_FILENAME</item>
+        <item>FOLDER_ONLY</item>
+    </string-array>
+    <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN</string>
 </resources>

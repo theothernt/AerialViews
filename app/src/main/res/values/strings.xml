@@ -128,8 +128,12 @@
 
     <string name="settings_preview_screensaver">Test screensaver settings</string>
     <string name="settings_system_options">Open system screensaver options</string>
-    <string name="test_exif_sortable_fields_title">Test EXIF display order</string>
-    <string name="test_exif_sortable_fields_summary">Select and reorder EXIF fields for quick control testing</string>
+
+    <string name="overlay_metadata_videos_title">Video metadata</string>
+    <string name="overlay_metadata_videos_summary">Select and reorder metadata shown for videos</string>
+
+    <string name="overlay_metadata_photos_title">Photo metadata</string>
+    <string name="overlay_metadata_photos_summary">Select and reorder metadata shown for photos</string>
 
     <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
     <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
@@ -419,6 +423,7 @@
 
     <string name="appearance_metadata_title">Metadata</string>
     <string name="appearance_metadata_summary">Display location, description, points of interest, or other metadata</string>
+
     <string name="appearance_metadata_slot_title">Metadata fields</string>
     <string name="appearance_metadata_slot_summary">Select and reorder metadata fields</string>
 

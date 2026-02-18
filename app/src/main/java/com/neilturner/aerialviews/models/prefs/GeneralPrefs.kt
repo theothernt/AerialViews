@@ -94,6 +94,10 @@ object GeneralPrefs : KotprefModel() {
     var descriptionVideoFolderLevel by stringPref("1", "description_video_folder_levels")
     var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
 
+    // Metadata
+    var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
+
+
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight") // Message
 

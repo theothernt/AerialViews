@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/appearance_metadata_slot_title">
                 <com.neilturner.aerialviews.ui.controls.SortableItemPreference
-                    app:key="test_exif_sortable_fields"
-                    app:title="@string/test_exif_sortable_fields_title"
-                    app:summary="@string/test_exif_sortable_fields_summary"
-                    app:dialogTitle="@string/test_exif_sortable_fields_title"
-                    app:entries="@array/test_exif_sortable_field_entries"
-                    app:entryValues="@array/test_exif_sortable_field_values"
-                    app:defaultValue="datetime_original,gps_latitude,gps_longitude,camera_model,lens_model,iso,f_number,exposure_time,focal_length,altitude" />
+                    app:key="overlay_metadata1_videos"
+                    app:title="@string/overlay_metadata_videos_title"
+                    app:summary="@string/overlay_metadata_videos_summary"
+                    app:dialogTitle="@string/overlay_metadata_videos_summary"
+                    app:entries="@array/overlay_metadata_videos_entries"
+                    app:entryValues="@array/overlay_metadata_videos_values"
+                    app:defaultValue="@string/overlay_metadata_videos_default" />
+
+                <com.neilturner.aerialviews.ui.controls.SortableItemPreference
+                    app:key="overlay_metadata1_photos"
+                    app:title="@string/overlay_metadata_photos_title"
+                    app:summary="@string/overlay_metadata_photos_summary"
+                    app:dialogTitle="@string/overlay_metadata_photos_summary"
+                    app:entries="@array/overlay_metadata_photos_entries"
+                    app:entryValues="@array/overlay_metadata_photos_values"
+                    app:defaultValue="@string/overlay_metadata_photos_default" />
         </PreferenceCategory>
 
 </PreferenceScreen>
