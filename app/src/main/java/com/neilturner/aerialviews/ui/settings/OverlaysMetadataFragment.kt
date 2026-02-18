@@ -9,6 +9,8 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 import timber.log.Timber
 
 class OverlaysMetadataFragment : MenuStateFragment() {
+    private val folderLevelVisibleValues = setOf("FOLDER_FILENAME", "FOLDER_ONLY", "LAST_FOLDER_FILENAME", "LAST_FOLDER_NAME")
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
@@ -67,12 +69,12 @@ class OverlaysMetadataFragment : MenuStateFragment() {
     ) {
         if (pref.key == "description_video_filename_style") {
             findPreference<ListPreference>("description_video_folder_levels")
-                ?.isVisible = (value.contains("LAST_FOLDER"))
+                ?.isVisible = folderLevelVisibleValues.contains(value)
         }
 
         if (pref.key == "description_photo_filename_style") {
             findPreference<ListPreference>("description_photo_folder_levels")
-                ?.isVisible = (value.contains("LAST_FOLDER"))
+                ?.isVisible = folderLevelVisibleValues.contains(value)
         }
         Timber.i("control: ${pref.key}, value: $value")
     }

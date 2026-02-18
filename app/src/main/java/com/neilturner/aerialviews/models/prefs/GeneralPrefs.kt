@@ -96,7 +96,7 @@ object GeneralPrefs : KotprefModel() {
 
     // Metadata
     var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
-
+    var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
 
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight") // Message

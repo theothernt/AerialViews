@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory app:title="@string/appearance_metadata_slot_title">
+        <PreferenceCategory app:title="@string/category_media">
                 <com.neilturner.aerialviews.ui.controls.SortableItemPreference
                     app:key="overlay_metadata1_videos"
                     app:title="@string/overlay_metadata_videos_title"
@@ -11,6 +11,15 @@
                     app:entryValues="@array/overlay_metadata_videos_values"
                     app:defaultValue="@string/overlay_metadata_videos_default" />
 
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/description_folder_level_default"
+                    app:entries="@array/description_folder_level_entries"
+                    app:entryValues="@array/description_folder_level_values"
+                    app:key="description_video_folder_levels"
+                    app:title="How many folder levels to show"
+                    app:useSimpleSummaryProvider="true" />
+
                 <com.neilturner.aerialviews.ui.controls.SortableItemPreference
                     app:key="overlay_metadata1_photos"
                     app:title="@string/overlay_metadata_photos_title"
@@ -19,6 +28,33 @@
                     app:entries="@array/overlay_metadata_photos_entries"
                     app:entryValues="@array/overlay_metadata_photos_values"
                     app:defaultValue="@string/overlay_metadata_photos_default" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/description_folder_level_default"
+                    app:entries="@array/description_folder_level_entries"
+                    app:entryValues="@array/description_folder_level_values"
+                    app:key="description_photo_folder_levels"
+                    app:title="How many folder levels to show"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_typography">
+                <ListPreference
+                    app:defaultValue="@string/text_size_default"
+                    app:entries="@array/text_size_entries"
+                    app:entryValues="@array/text_size_values"
+                    app:key="description_size"
+                    app:title="@string/text_size_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="@string/text_weight_default"
+                    app:entries="@array/text_weight_entries"
+                    app:entryValues="@array/text_weight_values"
+                    app:key="description_weight"
+                    app:title="@string/text_weight_title"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
 </PreferenceScreen>

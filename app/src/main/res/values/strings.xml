@@ -29,6 +29,7 @@
     <!-- All Categories -->
     <string name="category_actions">Actions</string>
     <string name="category_advanced">Advanced</string>
+    <string name="category_media">Media</string>
     <string name="category_background_colour">Background colour</string>
     <string name="category_video_source">Video source</string>
     <string name="category_video_sources">Video sources</string>
@@ -424,8 +425,8 @@
     <string name="appearance_metadata_title">Metadata</string>
     <string name="appearance_metadata_summary">Display location, description, points of interest, or other metadata</string>
 
-    <string name="appearance_metadata_slot_title">Metadata fields</string>
-    <string name="appearance_metadata_slot_summary">Select and reorder metadata fields</string>
+    <string name="appearance_metadata_slot1_title">Metadata Slot 1</string>
+    <string name="appearance_metadata_slot1_summary">Select and reorder metadata fields</string>
 
     <string name="appearance_date_title">Date</string>
     <string name="appearance_date_summary">Display the current date</string>
