@@ -266,9 +266,9 @@ class ScreenController(
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Timber.i("Loading: ${media.description} - $url (${media.poi})")
+            Timber.i("Loading: ${media.metadata.description} - $url (${media.metadata.poi})")
         } else {
-            Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
+            Timber.i("Loading: ${media.metadata.description} - ${media.uri} (${media.metadata.poi})")
         }
 
         updateMetadataOverlayData(media)
@@ -734,21 +734,21 @@ class ScreenController(
     private fun updateMetadataOverlayData(media: AerialMedia) {
         val locationType = GeneralPrefs.descriptionVideoManifestStyle ?: return
         if (media.type == AerialMediaType.IMAGE) {
-            val exifDate = media.exif["date"]
-            val exifOffset = media.exif["offset"]
+            val exifDate = media.metadata.exif.date
+            val exifOffset = media.metadata.exif.offset
             val exifText =
                 if (!exifDate.isNullOrBlank()) {
                     DateHelper.formatExifDateTime(exifDate, exifOffset)
                 } else {
                     null
                 }
-            val overlayText = exifText ?: media.description
+            val overlayText = exifText ?: media.metadata.description
             val usedExif = !exifText.isNullOrBlank()
             val hasOffset = !exifOffset.isNullOrBlank()
             Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
             overlayStateStore.setLocation(overlayText, emptyMap(), DescriptionManifestType.TITLE)
         } else {
-            overlayStateStore.setLocation(media.description, media.poi, locationType)
+            overlayStateStore.setLocation(media.metadata.description, media.metadata.poi, locationType)
         }
     }
 

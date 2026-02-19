@@ -33,8 +33,8 @@ internal object MediaServiceHelper {
             val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
             if (data != null) {
                 if (description != DescriptionManifestType.DISABLED) {
-                    video.description = data.first
-                    video.poi = data.second
+                    video.metadata.description = data.first
+                    video.metadata.poi = data.second
                 }
                 matched.add(video)
             } else {
@@ -53,19 +53,19 @@ internal object MediaServiceHelper {
         when (description) {
             DescriptionFilenameType.FILENAME -> {
                 media.parallelForEach { item ->
-                    item.description = item.uri.filenameWithoutExtension
+                    item.metadata.description = item.uri.filenameWithoutExtension
                 }
             }
 
             DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
                 media.parallelForEach { item ->
-                    item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
+                    item.metadata.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
                 }
             }
 
             DescriptionFilenameType.LAST_FOLDER_NAME -> {
                 media.parallelForEach { item ->
-                    item.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
+                    item.metadata.description = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
                 }
             }
 

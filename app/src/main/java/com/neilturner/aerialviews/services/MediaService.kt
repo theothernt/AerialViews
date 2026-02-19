@@ -132,17 +132,17 @@ class MediaService(
                         if (media.type == AerialMediaType.VIDEO) {
                             when (currentTimePeriod) {
                                 TimeOfDay.DAY -> {
-                                    media.timeOfDay == TimeOfDay.DAY ||
-                                        (dayIncludesSunrise && media.timeOfDay == TimeOfDay.SUNRISE) ||
-                                        (dayIncludesSunset && media.timeOfDay == TimeOfDay.SUNSET) ||
-                                        media.timeOfDay == TimeOfDay.UNKNOWN
+                                    media.metadata.timeOfDay == TimeOfDay.DAY ||
+                                        (dayIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (dayIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
+                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
                                 }
 
                                 TimeOfDay.NIGHT -> {
-                                    (nightIncludesSunrise && media.timeOfDay == TimeOfDay.SUNRISE) ||
-                                        (nightIncludesSunset && media.timeOfDay == TimeOfDay.SUNSET) ||
-                                        media.timeOfDay == TimeOfDay.NIGHT ||
-                                        media.timeOfDay == TimeOfDay.UNKNOWN
+                                    (nightIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (nightIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
+                                        media.metadata.timeOfDay == TimeOfDay.NIGHT ||
+                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
                                 }
 
                                 else -> {

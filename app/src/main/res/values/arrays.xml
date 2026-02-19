@@ -1121,6 +1121,7 @@
     <string-array name="overlay_metadata_photos_entries">
         <item>Location (EXIF)</item>
         <item>Date Taken (EXIF)</item>
+        <item>Description (EXIF)</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>
@@ -1128,9 +1129,10 @@
     <string-array name="overlay_metadata_photos_values" translatable="false">
         <item>LOCATION</item>
         <item>DATE_TAKEN</item>
+        <item>DESCRIPTION</item>
         <item>FILENAME</item>
         <item>FOLDER_FILENAME</item>
         <item>FOLDER_ONLY</item>
     </string-array>
-    <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN</string>
+    <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN,DESCRIPTION</string>
 </resources>

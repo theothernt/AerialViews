@@ -11,6 +11,7 @@ import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AspectRatio
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -128,16 +129,11 @@ class ImagePlayerView : AppCompatImageView {
                 return@launch
             }
 
-            val exifMap = mutableMapOf<String, String>()
-            bitmapResult.metadata.date?.let { exifMap["date"] = it }
-            bitmapResult.metadata.offset?.let { exifMap["offset"] = it }
-            bitmapResult.metadata.latitude?.let { exifMap["latitude"] = it.toString() }
-            bitmapResult.metadata.longitude?.let { exifMap["longitude"] = it.toString() }
-            if (bitmapResult.metadata.orientation > 0) {
-                exifMap["orientation"] = bitmapResult.metadata.orientation.toString()
-            }
-            if (exifMap.isNotEmpty()) {
-                media.exif = exifMap
+            if (media.source != AerialMediaSource.IMMICH) {
+                media.metadata.exif.date = bitmapResult.metadata.date
+                media.metadata.exif.offset = bitmapResult.metadata.offset
+                media.metadata.exif.latitude = bitmapResult.metadata.latitude
+                media.metadata.exif.longitude = bitmapResult.metadata.longitude
             }
 
             Timber.d(

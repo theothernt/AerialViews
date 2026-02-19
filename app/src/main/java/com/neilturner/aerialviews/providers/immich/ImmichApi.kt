@@ -79,6 +79,16 @@ data class ExifInfo(
     val country: String? = null,
     val state: String? = null,
     val city: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    @SerialName("dateTimeOriginal")
+    val dateTimeOriginal: String? = null,
+    @SerialName("dateTime")
+    val dateTime: String? = null,
+    @SerialName("offsetTimeOriginal")
+    val offsetTimeOriginal: String? = null,
+    @SerialName("offsetTime")
+    val offsetTime: String? = null,
 )
 
 @Serializable

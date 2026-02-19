@@ -11,7 +11,9 @@ import com.neilturner.aerialviews.models.enums.ImmichVideoType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
@@ -194,6 +196,7 @@ class ImmichMediaProvider(
         assets.forEach { asset ->
             val poi = extractLocationPoi(asset)
             val description = asset.exifInfo?.description ?: ""
+            val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
 
             Timber.i("Description: $description, Filename: $filename")
@@ -204,7 +207,15 @@ class ImmichMediaProvider(
             if (isVideo || isImage) {
                 val uri = getAssetUri(asset.id, isVideo)
                 val item =
-                    AerialMedia(uri, description, poi).apply {
+                    AerialMedia(
+                        uri,
+                        metadata =
+                            AerialMediaMetadata(
+                                description = description,
+                                poi = poi,
+                                exif = exif,
+                            ),
+                    ).apply {
                         source = AerialMediaSource.IMMICH
                         type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
                     }
@@ -250,6 +261,17 @@ class ImmichMediaProvider(
             Timber.e(e, "Error parsing location EXIF data")
         }
         return poi
+    }
+
+    private fun extractExifMetadata(asset: Asset): AerialExifMetadata {
+        val exifInfo = asset.exifInfo
+        return AerialExifMetadata(
+            date = exifInfo?.dateTimeOriginal ?: exifInfo?.dateTime,
+            offset = exifInfo?.offsetTimeOriginal ?: exifInfo?.offsetTime,
+            latitude = exifInfo?.latitude,
+            longitude = exifInfo?.longitude,
+            description = exifInfo?.description,
+        )
     }
 
     private fun buildSummaryMessage(
