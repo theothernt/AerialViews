@@ -59,7 +59,14 @@ class ItemSelectionAdapter(
         holder.moveUpButton.isEnabled = position > 0
         holder.moveDownButton.isEnabled = position < items.size - 1
 
-        // Handle selection area click to toggle checkbox
+        // Mirror selection area focus to the whole row for full-width highlight.
+        holder.itemView.isActivated = holder.selectionArea.hasFocus()
+        holder.selectionArea.onFocusChangeListener =
+            View.OnFocusChangeListener { _, hasFocus ->
+                holder.itemView.isActivated = hasFocus
+            }
+
+        // Toggle selection from the selection area.
         holder.selectionArea.setOnClickListener {
             toggleSelection(holder.bindingAdapterPosition)
         }
