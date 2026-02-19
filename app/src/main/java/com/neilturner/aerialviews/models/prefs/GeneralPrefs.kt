@@ -76,25 +76,14 @@ object GeneralPrefs : KotprefModel() {
 
     var weatherHumidity by stringPref("", "weather_humidity")
 
-    // Location
-    var descriptionVideoManifestStyle by nullableEnumValuePref(
-        DescriptionManifestType.POI,
-        "description_video_manifest_style",
-    ) // Title or POI
-    var descriptionVideoFilenameStyle by nullableEnumValuePref(
-        DescriptionFilenameType.DISABLED,
-        "description_video_filename_style",
-    ) // Filename - Videos
-    var descriptionPhotoFilenameStyle by nullableEnumValuePref(
-        DescriptionFilenameType.DISABLED,
-        "description_photo_filename_style",
-    ) // Filename - Photos
-
     // Metadata
     var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
-    var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
     var overlayMetadata1VideosFolderLevel by stringPref("1", "overlay_metadata1_videos_folder_level")
+
+    var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN,DESCRIPTION", "overlay_metadata1_photos")
     var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photos_folder_level")
+    var overlayMetadata1PhotosLocationType by stringPref("CITY", "overlay_metadata1_photo_location_type")
+    var overlayMetadata1PhotosDateFormat by stringPref("yyyy-MM-dd", "overlay_metadata1_photo_date_format")
 
     var descriptionSize by stringPref("18", "description_size")
     var descriptionWeight by stringPref("300", "description_weight") // Message

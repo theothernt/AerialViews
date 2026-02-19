@@ -37,6 +37,23 @@
                     app:key="overlay_metadata1_photo_folder_levels"
                     app:title="@string/overlay_metadata_folder_levels_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/overlay_metadata_photo_location_default"
+                    app:entries="@array/overlay_metadata_photo_location_entries"
+                    app:entryValues="@array/overlay_metadata_photo_location_values"
+                    app:key="overlay_metadata1_photo_location_type"
+                    app:title="@string/overlay_metadata_photo_location_title"
+                    app:summary="@string/overlay_metadata_photo_location_summary"
+                    app:useSimpleSummaryProvider="true" />
+
+                <EditTextPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/date_custom_default"
+                    app:key="overlay_metadata1_photo_date_format"
+                    app:title="@string/overlay_metadata_photo_date_format_title"
+                    app:summary="@string/overlay_metadata_photo_date_format_summary" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_typography">

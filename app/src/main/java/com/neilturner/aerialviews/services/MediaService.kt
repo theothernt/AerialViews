@@ -88,7 +88,7 @@ class MediaService(
             }
 
             // Try to match videos with Apple, Community metadata for location/description
-            val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
+            val manifestDescriptionStyle = DescriptionManifestType.DISABLED // GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
             var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers, manifestDescriptionStyle)
             Timber.i("FeedManifests Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
@@ -103,13 +103,13 @@ class MediaService(
             }
 
             // Unmatched videos can have their filename added as a description
-            val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
+            val videoDescriptionStyle = DescriptionFilenameType.FILENAME //GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
             if (videoDescriptionStyle != DescriptionFilenameType.DISABLED) {
                 val videoPathDepth = 1 //GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
                 unmatchedVideos = addFilenameAsDescriptionToMedia(unmatchedVideos, videoDescriptionStyle, videoPathDepth)
             }
 
-            val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
+            val photoDescriptionStyle = DescriptionFilenameType.FILENAME //GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
             if (photoDescriptionStyle != DescriptionFilenameType.DISABLED) {
                 val photoPathDepth = 1 //GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
                 unmatchedPhotos = addFilenameAsDescriptionToMedia(unmatchedPhotos, photoDescriptionStyle, photoPathDepth)

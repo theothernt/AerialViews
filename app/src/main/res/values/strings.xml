@@ -492,6 +492,10 @@
     <string name="overlay_metadata_photos_summary">Select and reorder metadata shown for photos</string>
 
     <string name="overlay_metadata_folder_levels_title">How many folder levels to show</string>
+    <string name="overlay_metadata_photo_location_title">Location format</string>
+    <string name="overlay_metadata_photo_location_summary">Choose which location field to display for photos</string>
+    <string name="overlay_metadata_photo_date_format_title">Date Taken format</string>
+    <string name="overlay_metadata_photo_date_format_summary">Specify a custom date format for photo EXIF dates</string>
 
     <!-- Main / Settings / Overlays / Clock -->
     <string name="appearance_clock_format_title">Clock format</string>

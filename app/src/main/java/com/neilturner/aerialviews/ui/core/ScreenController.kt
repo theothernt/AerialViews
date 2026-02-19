@@ -732,7 +732,7 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateMetadataOverlayData(media: AerialMedia) {
-        val locationType = GeneralPrefs.descriptionVideoManifestStyle ?: return
+        val locationType = DescriptionManifestType.POI //GeneralPrefs.descriptionVideoManifestStyle ?: return
         if (media.type == AerialMediaType.IMAGE) {
             val exifDate = media.metadata.exif.date
             val exifOffset = media.metadata.exif.offset

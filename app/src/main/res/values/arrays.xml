@@ -1135,4 +1135,20 @@
         <item>FOLDER_ONLY</item>
     </string-array>
     <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN,DESCRIPTION</string>
+
+    <string-array name="overlay_metadata_photo_location_entries">
+        <item>City</item>
+        <item>City, State</item>
+        <item>City, Country</item>
+        <item>City, State, Country</item>
+        <item>Country</item>
+    </string-array>
+    <string-array name="overlay_metadata_photo_location_values" translatable="false">
+        <item>CITY</item>
+        <item>CITY_STATE</item>
+        <item>CITY_COUNTRY</item>
+        <item>CITY_STATE_COUNTRY</item>
+        <item>COUNTRY</item>
+    </string-array>
+    <string name="overlay_metadata_photo_location_default" translatable="false">CITY_COUNTRY</string>
 </resources>
