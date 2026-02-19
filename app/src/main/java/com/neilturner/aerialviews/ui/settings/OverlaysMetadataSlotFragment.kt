@@ -26,7 +26,7 @@ class OverlaysMetadataSlotFragment : MenuStateFragment() {
 
     override fun onResume() {
         super.onResume()
-        FirebaseHelper.analyticsScreenView("Metadata Slot", this)
+        FirebaseHelper.analyticsScreenView("Metadata Slot 1", this)
         preferenceManager.sharedPreferences?.let {
             updateFolderLevelVisibility(it)
             it.registerOnSharedPreferenceChangeListener(prefChangeListener)
@@ -42,9 +42,9 @@ class OverlaysMetadataSlotFragment : MenuStateFragment() {
         val videoSelection = sharedPreferences.getString("overlay_metadata1_videos", "").orEmpty()
         val photoSelection = sharedPreferences.getString("overlay_metadata1_photos", "").orEmpty()
 
-        findPreference<ListPreference>("description_video_folder_levels")
+        findPreference<ListPreference>("overlay_metadata1_video_folder_levels")
             ?.isVisible = containsFolderLevelValue(videoSelection)
-        findPreference<ListPreference>("description_photo_folder_levels")
+        findPreference<ListPreference>("overlay_metadata1_photo_folder_levels")
             ?.isVisible = containsFolderLevelValue(photoSelection)
     }
 

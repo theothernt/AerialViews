@@ -13,11 +13,11 @@
 
                 <ListPreference
                     app:isPreferenceVisible="false"
-                    app:defaultValue="@string/description_folder_level_default"
-                    app:entries="@array/description_folder_level_entries"
-                    app:entryValues="@array/description_folder_level_values"
-                    app:key="description_video_folder_levels"
-                    app:title="How many folder levels to show"
+                    app:defaultValue="@string/metadata_folder_level_default"
+                    app:entries="@array/metadata_folder_level_entries"
+                    app:entryValues="@array/metadata_folder_level_values"
+                    app:key="overlay_metadata1_video_folder_levels"
+                    app:title="@string/overlay_metadata_folder_levels_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <com.neilturner.aerialviews.ui.controls.SortableItemPreference
@@ -31,11 +31,11 @@
 
                 <ListPreference
                     app:isPreferenceVisible="false"
-                    app:defaultValue="@string/description_folder_level_default"
-                    app:entries="@array/description_folder_level_entries"
-                    app:entryValues="@array/description_folder_level_values"
-                    app:key="description_photo_folder_levels"
-                    app:title="How many folder levels to show"
+                    app:defaultValue="@string/metadata_folder_level_default"
+                    app:entries="@array/metadata_folder_level_entries"
+                    app:entryValues="@array/metadata_folder_level_values"
+                    app:key="overlay_metadata1_photo_folder_levels"
+                    app:title="@string/overlay_metadata_folder_levels_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 

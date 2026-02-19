@@ -130,12 +130,6 @@
     <string name="settings_preview_screensaver">Test screensaver settings</string>
     <string name="settings_system_options">Open system screensaver options</string>
 
-    <string name="overlay_metadata_videos_title">Video metadata</string>
-    <string name="overlay_metadata_videos_summary">Select and reorder metadata shown for videos</string>
-
-    <string name="overlay_metadata_photos_title">Photo metadata</string>
-    <string name="overlay_metadata_photos_summary">Select and reorder metadata shown for photos</string>
-
     <string name="settings_system_options_error">Unable to open your device\'s screensaver options</string>
     <string name="settings_system_options_removed">This feature was removed by the manufacturer\nPlease visit the Aerial Views website for more details</string>
 
@@ -425,9 +419,6 @@
     <string name="appearance_metadata_title">Metadata</string>
     <string name="appearance_metadata_summary">Display location, description, points of interest, or other metadata</string>
 
-    <string name="appearance_metadata_slot1_title">Metadata Slot 1</string>
-    <string name="appearance_metadata_slot1_summary">Select and reorder metadata fields</string>
-
     <string name="appearance_date_title">Date</string>
     <string name="appearance_date_summary">Display the current date</string>
 
@@ -490,15 +481,17 @@
     <string name="weather_forecast_slot3">Slot 3</string>
     <string name="weather_forecast_slot4">Slot 4</string>
 
-    <!-- Main / Settings / Appearance / Location -->
-    <string name="appearance_description_videos_manifest_summary">Apple and Community videos only - streamed, stored locally or from a network share</string>
-    <string name="appearance_description_videos_manifest_title">Show description or points of interest</string>
+    <!-- Main / Settings / Overlays / Metadata -->
+    <string name="appearance_metadata_slot1_title">Metadata Slot 1</string>
+    <string name="appearance_metadata_slot1_summary">Select and reorder metadata fields</string>
 
-    <string name="appearance_description_videos_filename_summary">Your videos - stored locally or a network share</string>
-    <string name="appearance_description_videos_filename_title">Use filename/folder for description</string>
+    <string name="overlay_metadata_videos_title">Video metadata</string>
+    <string name="overlay_metadata_videos_summary">Select and reorder metadata shown for videos</string>
 
-    <string name="appearance_description_photos_filename_summary">Your photos - stored locally or a network share</string>
-    <string name="appearance_description_photos_filename_title">Use filename/folder for description</string>
+    <string name="overlay_metadata_photos_title">Photo metadata</string>
+    <string name="overlay_metadata_photos_summary">Select and reorder metadata shown for photos</string>
+
+    <string name="overlay_metadata_folder_levels_title">How many folder levels to show</string>
 
     <!-- Main / Settings / Overlays / Clock -->
     <string name="appearance_clock_format_title">Clock format</string>
@@ -508,7 +501,7 @@
 
     <string name="appearance_clock_size_title">Size</string>
 
-    <!-- Main / Settings / Appearance / Date -->
+    <!-- Main / Settings / Overlays / Date -->
     <string name="appearance_date_format_title">Date format</string>
     <string name="appearance_date_custom_title">Specify a custom date format</string>
     <string name="appearance_date_notice_summary">For more information on date formats, search for \'Android SimpleDateFormat\'</string>
@@ -517,14 +510,14 @@
     <string name="appearance_date_custom_error">Invalid custom date format!</string>
     <string name="appearance_date_custom_example">e.g.</string>
 
-    <!-- Main / Settings / Appearance / Message -->
+    <!-- Main / Settings / Overlays / Message -->
     <string name="appearance_message_line1_title">Line 1</string>
     <string name="appearance_message_line2_title">Line 2</string>
     <string name="appearance_message_line3_title">Line 3</string>
     <string name="appearance_message_line4_title">Line 4</string>
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
 
-    <!-- Main / Settings / Appearance / Countdown -->
+    <!-- Main / Settings / Overlays / Countdown -->
     <string name="appearance_countdown_target_time_title">Target Time</string>
     <string name="appearance_countdown_target_time_summary">Enter time in HH:MM format or YYYY-MM-DD HH:MM for specific date</string>
     <string name="appearance_countdown_target_message_title">Completion Message</string>
