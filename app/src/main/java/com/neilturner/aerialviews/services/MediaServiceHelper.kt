@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
@@ -15,7 +14,6 @@ internal object MediaServiceHelper {
     suspend fun addMetadataToManifestVideos(
         media: List<AerialMedia>,
         providers: List<MediaProvider>,
-        description: DescriptionManifestType,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
         val metadata = ConcurrentHashMap<String, Pair<String, Map<Int, String>>>()
         val matched = CopyOnWriteArrayList<AerialMedia>()
@@ -32,10 +30,8 @@ internal object MediaServiceHelper {
         media.parallelForEach { video ->
             val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
             if (data != null) {
-                if (description != DescriptionManifestType.DISABLED) {
-                    video.metadata.shortDescription = data.first
-                    video.metadata.pointsOfInterest = data.second
-                }
+                video.metadata.shortDescription = data.first
+                video.metadata.pointsOfInterest = data.second
                 matched.add(video)
             } else {
                 unmatched.add(video)

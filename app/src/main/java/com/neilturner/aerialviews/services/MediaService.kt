@@ -5,7 +5,6 @@ import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
@@ -88,31 +87,17 @@ class MediaService(
             }
 
             // Try to match videos with Apple, Community metadata for location/description
-            val manifestDescriptionStyle = DescriptionManifestType.DISABLED // GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
-            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers, manifestDescriptionStyle)
+            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers)
             Timber.i("FeedManifests Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
             // Split photos in those with metadata and those without
-            var (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }
+            val (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }
             Timber.i("Photos with metadata: matched ${matchedPhotos.size}, unmatched ${unmatchedPhotos.size}")
 
             // Discard unmatched manifest videos
             if (GeneralPrefs.ignoreNonManifestVideos) {
                 Timber.i("Removing ${unmatchedVideos.size} non-manifest videos")
                 unmatchedVideos = emptyList()
-            }
-
-            // Unmatched videos can have their filename added as a description
-            val videoDescriptionStyle = DescriptionFilenameType.FILENAME //GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            if (videoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                val videoPathDepth = 1 //GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
-                unmatchedVideos = addFilenameAsDescriptionToMedia(unmatchedVideos, videoDescriptionStyle, videoPathDepth)
-            }
-
-            val photoDescriptionStyle = DescriptionFilenameType.FILENAME //GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            if (photoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                val photoPathDepth = 1 //GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
-                unmatchedPhotos = addFilenameAsDescriptionToMedia(unmatchedPhotos, photoDescriptionStyle, photoPathDepth)
             }
 
             var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
