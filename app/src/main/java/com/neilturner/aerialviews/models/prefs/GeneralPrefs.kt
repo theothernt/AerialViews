@@ -6,11 +6,10 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -82,12 +81,12 @@ object GeneralPrefs : KotprefModel() {
 
     var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN,DESCRIPTION", "overlay_metadata1_photos")
     var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photos_folder_level")
-    var overlayMetadata1PhotosLocationType by stringPref("CITY", "overlay_metadata1_photo_location_type")
-    var overlayMetadata1PhotosDateType by stringPref("COMPACT", "overlay_metadata1_photo_date_type")
+    var overlayMetadata1PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata1_photo_location_type")
+    var overlayMetadata1PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata1_photo_date_type")
     var overlayMetadata1PhotosDateCustom by stringPref("yyyy-MM-dd", "overlay_metadata1_photo_date_custom")
 
-    var descriptionSize by stringPref("18", "description_size")
-    var descriptionWeight by stringPref("300", "description_weight") // Message
+    var overlayMetadata1Size by stringPref("18", "overlay_metadata1_size")
+    var overlayMetadata1Weight by stringPref("300", "overlay_metadata1_weight") // Message
 
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")

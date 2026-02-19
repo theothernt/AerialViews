@@ -1120,7 +1120,7 @@
 
     <string-array name="overlay_metadata_photos_entries">
         <item>Location (EXIF)</item>
-        <item>Date Taken (EXIF)</item>
+        <item>Date taken (EXIF)</item>
         <item>Description (EXIF)</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>

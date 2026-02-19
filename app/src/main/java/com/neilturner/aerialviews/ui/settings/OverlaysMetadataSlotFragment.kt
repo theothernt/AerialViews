@@ -6,10 +6,10 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import timber.log.Timber
 
 class OverlaysMetadataSlotFragment : MenuStateFragment() {
     private val folderFieldValues = setOf("FOLDER_FILENAME", "FOLDER_ONLY")
@@ -51,9 +51,8 @@ class OverlaysMetadataSlotFragment : MenuStateFragment() {
     private fun updateConditionalPreferenceVisibility(sharedPreferences: SharedPreferences) {
         val videoSelection = sharedPreferences.getString("overlay_metadata1_videos", "").orEmpty()
         val photoSelection = sharedPreferences.getString("overlay_metadata1_photos", "").orEmpty()
-        val dateTypeValue = sharedPreferences.getString("overlay_metadata1_photo_date_type", DateType.COMPACT.toString()).orEmpty()
         val showDatePrefs = containsFieldValue(photoSelection, dateTakenFieldValue)
-        val dateType = getDateType(dateTypeValue)
+        val dateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: DateType.COMPACT
 
         findPreference<ListPreference>("overlay_metadata1_video_folder_levels")
             ?.isVisible = containsFolderLevelValue(videoSelection)
@@ -68,9 +67,8 @@ class OverlaysMetadataSlotFragment : MenuStateFragment() {
     }
 
     private fun updatePhotoDateFormatSummary(sharedPreferences: SharedPreferences) {
-        val typeValue = sharedPreferences.getString("overlay_metadata1_photo_date_type", DateType.COMPACT.toString()).orEmpty()
         val customValue = sharedPreferences.getString("overlay_metadata1_photo_date_custom", "yyyy-MM-dd").orEmpty()
-        val dateType = getDateType(typeValue)
+        val dateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: DateType.COMPACT
 
         findPreference<ListPreference>("overlay_metadata1_photo_date_type")
             ?.summary = dateTypeSummary(dateType, customValue)
@@ -104,14 +102,6 @@ class OverlaysMetadataSlotFragment : MenuStateFragment() {
         val prefix = getString(R.string.appearance_date_custom_example)
         return "$prefix $example ($format)"
     }
-
-    private fun getDateType(value: String): DateType =
-        try {
-            DateType.valueOf(value)
-        } catch (e: Exception) {
-            Timber.e(e)
-            DateType.COMPACT
-        }
 
     private fun findEntriesAndValues(
         valuesId: Int,
