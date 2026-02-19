@@ -437,7 +437,7 @@ class CustomFeedProvider(
                         source = AerialMediaSource.RTSP,
                         metadata =
                             AerialMediaMetadata(
-                                description = "",
+                                shortDescription = "",
                                 timeOfDay = TimeOfDay.UNKNOWN,
                                 scene = SceneType.UNKNOWN,
                             ),
@@ -472,7 +472,7 @@ class CustomFeedProvider(
                         source = AerialMediaSource.HLS,
                         metadata =
                             AerialMediaMetadata(
-                                description = "",
+                                shortDescription = "",
                                 timeOfDay = TimeOfDay.UNKNOWN,
                                 scene = SceneType.UNKNOWN,
                             ),

@@ -68,7 +68,7 @@ class WallpaperProviderService : Service() {
                                 media.uri.toString(),
                                 wallpaperType,
                                 WallpaperDisplayMode.DEFAULT,
-                                title = media.metadata.description,
+                                title = media.metadata.shortDescription,
                             )
                         }
                     }

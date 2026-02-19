@@ -211,8 +211,8 @@ class ImmichMediaProvider(
                         uri,
                         metadata =
                             AerialMediaMetadata(
-                                description = description,
-                                poi = poi,
+                                shortDescription = description,
+                                pointsOfInterest = poi,
                                 exif = exif,
                             ),
                     ).apply {

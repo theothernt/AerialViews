@@ -266,9 +266,9 @@ class ScreenController(
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Timber.i("Loading: ${media.metadata.description} - $url (${media.metadata.poi})")
+            Timber.i("Loading: ${media.metadata.shortDescription} - $url (${media.metadata.pointsOfInterest})")
         } else {
-            Timber.i("Loading: ${media.metadata.description} - ${media.uri} (${media.metadata.poi})")
+            Timber.i("Loading: ${media.metadata.shortDescription} - ${media.uri} (${media.metadata.pointsOfInterest})")
         }
 
         updateMetadataOverlayData(media)
@@ -742,13 +742,13 @@ class ScreenController(
                 } else {
                     null
                 }
-            val overlayText = exifText ?: media.metadata.description
+            val overlayText = exifText ?: media.metadata.shortDescription
             val usedExif = !exifText.isNullOrBlank()
             val hasOffset = !exifOffset.isNullOrBlank()
             Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
             overlayStateStore.setLocation(overlayText, emptyMap(), DescriptionManifestType.TITLE)
         } else {
-            overlayStateStore.setLocation(media.metadata.description, media.metadata.poi, locationType)
+            overlayStateStore.setLocation(media.metadata.shortDescription, media.metadata.pointsOfInterest, locationType)
         }
     }
 

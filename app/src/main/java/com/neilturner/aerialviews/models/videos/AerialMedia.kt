@@ -14,8 +14,8 @@ data class AerialMedia(
 )
 
 data class AerialMediaMetadata(
-    var description: String = "",
-    var poi: Map<Int, String> = emptyMap(),
+    var shortDescription: String = "",
+    var pointsOfInterest: Map<Int, String> = emptyMap(),
     var timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
     var scene: SceneType = SceneType.UNKNOWN,
     var exif: AerialExifMetadata = AerialExifMetadata(),
