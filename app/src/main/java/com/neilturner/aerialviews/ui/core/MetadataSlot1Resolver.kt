@@ -232,15 +232,26 @@ internal class MetadataSlot1Resolver(
         context: Context,
         media: AerialMedia,
     ): PhotoLocationResolution {
+        val locationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: LocationType.CITY_COUNTRY
+        val modelLocation =
+            GeocoderHelper.GeocodedLocation(
+                city = media.metadata.exif.city,
+                state = media.metadata.exif.state,
+                country = media.metadata.exif.country,
+            )
+
+        val fromModel = formatLocation(modelLocation, locationType)
+        if (!fromModel.isNullOrBlank()) {
+            return PhotoLocationResolution.Resolved(fromModel)
+        }
+
         val latitude = media.metadata.exif.latitude
         val longitude = media.metadata.exif.longitude
-
         if (latitude == null || longitude == null) {
             return PhotoLocationResolution.ContinueFallback
         }
 
         val location = geocoderHelper.reverseGeocode(context, latitude, longitude) ?: return PhotoLocationResolution.StopWithBlank
-        val locationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: LocationType.CITY_COUNTRY
         val formatted = formatLocation(location, locationType)
 
         return if (formatted.isNullOrBlank()) {
