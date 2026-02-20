@@ -11,6 +11,7 @@ import java.util.Date
 import java.util.Locale
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
@@ -81,6 +82,51 @@ object DateHelper {
             }
         } catch (_: Exception) {
             date
+        }
+    }
+
+    fun formatExifDate(
+        date: String,
+        offset: String?,
+        type: DateType,
+        custom: String?,
+    ): String? {
+        val parsedDate = parseExifDate(date, offset) ?: return null
+        return when (type) {
+            DateType.FULL -> {
+                DateFormat.getDateInstance(DateFormat.FULL).format(parsedDate)
+            }
+
+            DateType.COMPACT -> {
+                DateFormat.getDateInstance(DateFormat.SHORT).format(parsedDate)
+            }
+
+            DateType.CUSTOM -> {
+                try {
+                    val pattern = custom?.ifBlank { "yyyy-MM-dd" } ?: "yyyy-MM-dd"
+                    SimpleDateFormat(pattern, Locale.getDefault()).format(parsedDate)
+                } catch (_: Exception) {
+                    null
+                }
+            }
+        }
+    }
+
+    private fun parseExifDate(
+        date: String,
+        offset: String?,
+    ): Date? {
+        val formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT)
+        return try {
+            if (!offset.isNullOrBlank()) {
+                val parsed = OffsetDateTime.parse("$date$offset", DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ssXXX", Locale.ROOT))
+                Date.from(parsed.toInstant())
+            } else {
+                val parsed = LocalDateTime.parse(date, formatter)
+                Date.from(parsed.atZone(ZoneId.systemDefault()).toInstant())
+            }
+        } catch (_: Exception) {
+            null
         }
     }
 }

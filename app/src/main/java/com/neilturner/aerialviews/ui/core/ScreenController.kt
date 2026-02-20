@@ -37,7 +37,6 @@ import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
-import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
@@ -69,6 +68,7 @@ class ScreenController(
     private var ktorServer: KtorServer? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
+    private val metadataSlot1Resolver = MetadataSlot1Resolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -85,6 +85,7 @@ class ScreenController(
     private var isPaused = false
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
+    private var metadataOverlayJob: Job? = null
     private var currentMedia: AerialMedia? = null
 
     private val videoViewBinding: VideoViewBinding
@@ -542,6 +543,7 @@ class ScreenController(
         nowPlayingService?.stop()
         weatherService?.stop()
         sleepTimerJob?.cancel()
+        metadataOverlayJob?.cancel()
         mainScope.cancel()
     }
 
@@ -732,24 +734,25 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateMetadataOverlayData(media: AerialMedia) {
-        val locationType = DescriptionManifestType.POI //GeneralPrefs.descriptionVideoManifestStyle ?: return
-        if (media.type == AerialMediaType.IMAGE) {
-            val exifDate = media.metadata.exif.date
-            val exifOffset = media.metadata.exif.offset
-            val exifText =
-                if (!exifDate.isNullOrBlank()) {
-                    DateHelper.formatExifDateTime(exifDate, exifOffset)
-                } else {
-                    null
+        metadataOverlayJob?.cancel()
+        metadataOverlayJob =
+            mainScope.launch {
+                try {
+                    val resolved = metadataSlot1Resolver.resolve(context, media)
+                    if (currentMedia !== media) return@launch
+
+                    overlayStateStore.setLocation(
+                        resolved.text,
+                        resolved.poi,
+                        resolved.descriptionManifestType,
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e, "Metadata slot resolver failed")
+                    if (currentMedia === media) {
+                        overlayStateStore.setLocation("", emptyMap(), DescriptionManifestType.TITLE)
+                    }
                 }
-            val overlayText = exifText ?: media.metadata.shortDescription
-            val usedExif = !exifText.isNullOrBlank()
-            val hasOffset = !exifOffset.isNullOrBlank()
-            Timber.d("Photo overlay metadata: photo_exif_used=$usedExif has_offset=$hasOffset")
-            overlayStateStore.setLocation(overlayText, emptyMap(), DescriptionManifestType.TITLE)
-        } else {
-            overlayStateStore.setLocation(media.metadata.shortDescription, media.metadata.pointsOfInterest, locationType)
-        }
+            }
     }
 
     override fun onImagePrepared() {
