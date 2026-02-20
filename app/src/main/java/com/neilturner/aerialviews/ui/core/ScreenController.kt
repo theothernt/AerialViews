@@ -17,7 +17,7 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -744,12 +744,12 @@ class ScreenController(
                     overlayStateStore.setLocation(
                         resolved.text,
                         resolved.poi,
-                        resolved.descriptionManifestType,
+                        resolved.metadataType,
                     )
                 } catch (e: Exception) {
                     Timber.e(e, "Metadata slot resolver failed")
                     if (currentMedia === media) {
-                        overlayStateStore.setLocation("", emptyMap(), DescriptionManifestType.TITLE)
+                        overlayStateStore.setLocation("", emptyMap(), MetadataType.STATIC)
                     }
                 }
             }

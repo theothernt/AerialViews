@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.ui.overlays.state
 
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.services.weather.WeatherEvent
@@ -17,7 +17,7 @@ class OverlayStateStore {
     fun setLocation(
         text: String,
         poi: Map<Int, String>,
-        descriptionManifestType: DescriptionManifestType,
+        metadataType: MetadataType,
     ) {
         _uiState.update {
             it.copy(
@@ -25,7 +25,7 @@ class OverlayStateStore {
                     MetadataOverlayState(
                         text = text,
                         poi = poi,
-                        descriptionManifestType = descriptionManifestType,
+                        metadataType = metadataType,
                     ),
             )
         }

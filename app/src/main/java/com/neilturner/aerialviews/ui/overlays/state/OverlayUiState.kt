@@ -1,6 +1,6 @@
 package com.neilturner.aerialviews.ui.overlays.state
 
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.MusicEvent
@@ -18,7 +18,7 @@ data class OverlayUiState(
 data class MetadataOverlayState(
     val text: String = "",
     val poi: Map<Int, String> = emptyMap(),
-    val descriptionManifestType: DescriptionManifestType = DescriptionManifestType.TITLE,
+    val metadataType: MetadataType = MetadataType.STATIC,
 )
 
 data class MessageOverlayState(

@@ -199,7 +199,22 @@ class ImmichMediaProvider(
             val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
 
-            Timber.i("Description: $description, Filename: $filename")
+            val rawExif = asset.exifInfo
+            Timber.i(
+                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s dateTime=%s offsetTimeOriginal=%s offsetTime=%s lat=%s lon=%s city=%s state=%s country=%s",
+                asset.id,
+                filename,
+                rawExif?.description,
+                rawExif?.dateTimeOriginal,
+                rawExif?.dateTime,
+                rawExif?.offsetTimeOriginal,
+                rawExif?.offsetTime,
+                rawExif?.latitude,
+                rawExif?.longitude,
+                rawExif?.city,
+                rawExif?.state,
+                rawExif?.country,
+            )
 
             val isVideo = FileHelper.isSupportedVideoType(filename)
             val isImage = FileHelper.isSupportedImageType(filename)

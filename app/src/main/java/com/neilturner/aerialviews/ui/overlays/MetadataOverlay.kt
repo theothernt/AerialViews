@@ -5,7 +5,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 
@@ -31,7 +31,7 @@ class MetadataOverlay : AppCompatTextView {
     fun updateLocationData(
         location: String,
         poi: Map<Int, String>,
-        descriptionManifestType: DescriptionManifestType,
+        metadataType: MetadataType,
         player: VideoPlayerView,
     ) {
         isFadingOutMedia = false
@@ -39,7 +39,7 @@ class MetadataOverlay : AppCompatTextView {
 
         // If POI, set POI text, if empty use location, or else use location
         this.text =
-            if (descriptionManifestType == DescriptionManifestType.POI) {
+            if (metadataType == MetadataType.DYNAMIC) {
                 poi[0]?.replace("\n", " ") ?: location
             } else {
                 location
@@ -51,7 +51,7 @@ class MetadataOverlay : AppCompatTextView {
         }
 
         // If set to POI, set timer to update text when interval is reached
-        if (descriptionManifestType == DescriptionManifestType.POI && poi.size > 1) { // everything else is static anyways
+        if (metadataType == MetadataType.DYNAMIC && poi.size > 1) { // everything else is static anyways
             updatePointsOfInterest(poi, player)
         } else {
             // POI is off or empty, so disable handler
@@ -63,7 +63,7 @@ class MetadataOverlay : AppCompatTextView {
         state: MetadataOverlayState,
         player: VideoPlayerView,
     ) {
-        updateLocationData(state.text, state.poi, state.descriptionManifestType, player)
+        updateLocationData(state.text, state.poi, state.metadataType, player)
     }
 
     private fun updatePointsOfInterest(

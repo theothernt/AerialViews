@@ -2,9 +2,9 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
+import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.DateHelper
@@ -19,7 +19,7 @@ internal class MetadataSlot1Resolver(
     data class ResolvedMetadata(
         val text: String,
         val poi: Map<Int, String>,
-        val descriptionManifestType: DescriptionManifestType,
+        val metadataType: MetadataType,
     )
 
     suspend fun resolve(
@@ -43,7 +43,7 @@ internal class MetadataSlot1Resolver(
                         return ResolvedMetadata(
                             text = media.metadata.shortDescription,
                             poi = media.metadata.pointsOfInterest,
-                            descriptionManifestType = DescriptionManifestType.POI,
+                            metadataType = MetadataType.DYNAMIC,
                         )
                     }
                 }
@@ -56,7 +56,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -69,7 +69,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -83,7 +83,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -97,7 +97,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -107,7 +107,7 @@ internal class MetadataSlot1Resolver(
         return ResolvedMetadata(
             text = "",
             poi = emptyMap(),
-            descriptionManifestType = DescriptionManifestType.TITLE,
+            metadataType = MetadataType.STATIC,
         )
     }
 
@@ -126,7 +126,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = location.text,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
 
@@ -138,7 +138,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = "",
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                     }
@@ -159,7 +159,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = formatted,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                     }
@@ -173,7 +173,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -186,7 +186,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -200,7 +200,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -214,7 +214,7 @@ internal class MetadataSlot1Resolver(
                             return ResolvedMetadata(
                                 text = it,
                                 poi = emptyMap(),
-                                descriptionManifestType = DescriptionManifestType.TITLE,
+                                metadataType = MetadataType.STATIC,
                             )
                         }
                 }
@@ -224,7 +224,7 @@ internal class MetadataSlot1Resolver(
         return ResolvedMetadata(
             text = "",
             poi = emptyMap(),
-            descriptionManifestType = DescriptionManifestType.TITLE,
+            metadataType = MetadataType.STATIC,
         )
     }
 
@@ -294,7 +294,7 @@ internal class MetadataSlot1Resolver(
     }
 
     private fun hasUsablePoi(media: AerialMedia): Boolean =
-        media.metadata.pointsOfInterest.values.any { !it.isNullOrBlank() }
+        media.metadata.pointsOfInterest.values.any { it.isNotBlank() }
 
     private fun parseSelection(value: String): List<String> =
         value
