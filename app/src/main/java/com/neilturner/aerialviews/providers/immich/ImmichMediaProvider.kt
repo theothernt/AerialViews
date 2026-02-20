@@ -201,12 +201,11 @@ class ImmichMediaProvider(
 
             val rawExif = asset.exifInfo
             Timber.i(
-                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s timeZone=%s city=%s state=%s country=%s",
+                "Immich EXIF: id=%s path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
                 asset.id,
                 filename,
+                asset.localDateTime,
                 rawExif?.description,
-                rawExif?.dateTimeOriginal,
-                rawExif?.timeZone,
                 rawExif?.city,
                 rawExif?.state,
                 rawExif?.country,
@@ -277,13 +276,36 @@ class ImmichMediaProvider(
     private fun extractExifMetadata(asset: Asset): AerialExifMetadata {
         val exifInfo = asset.exifInfo
         return AerialExifMetadata(
-            date = exifInfo?.dateTimeOriginal,
-            offset = exifInfo?.timeZone,
+            date = asset.localDateTime?.let(::normalizeImmichLocalDateTime),
+            offset = null,
             city = exifInfo?.city,
             state = exifInfo?.state,
             country = exifInfo?.country,
             description = exifInfo?.description,
         )
+    }
+
+    private fun normalizeImmichLocalDateTime(value: String): String {
+        var normalized = value.trim()
+        if (normalized.endsWith("Z", ignoreCase = true)) {
+            normalized = normalized.dropLast(1)
+        }
+
+        val tIndex = normalized.indexOf('T')
+        if (tIndex > -1) {
+            val timePortion = normalized.substring(tIndex + 1)
+            val plusIndex = timePortion.indexOf('+')
+            val minusIndex = timePortion.indexOf('-')
+            val zoneIndex =
+                listOf(plusIndex, minusIndex)
+                    .filter { it >= 0 }
+                    .minOrNull()
+            if (zoneIndex != null) {
+                normalized = normalized.substring(0, tIndex + 1 + zoneIndex)
+            }
+        }
+
+        return normalized
     }
 
     private fun buildSummaryMessage(

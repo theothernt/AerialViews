@@ -18,6 +18,7 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
+import java.util.TimeZone
 
 object DateHelper {
     fun formatDate(
@@ -94,20 +95,38 @@ object DateHelper {
         type: DateType,
         custom: String?,
     ): String? {
+        val parsedOffset = parseZoneOffset(offset)
         val parsedDate = parseExifDate(date, offset) ?: return null
         return when (type) {
             DateType.FULL -> {
-                DateFormat.getDateInstance(DateFormat.FULL).format(parsedDate)
+                DateFormat
+                    .getDateInstance(DateFormat.FULL)
+                    .apply {
+                        if (parsedOffset != null) {
+                            timeZone = TimeZone.getTimeZone(parsedOffset)
+                        }
+                    }.format(parsedDate)
             }
 
             DateType.COMPACT -> {
-                DateFormat.getDateInstance(DateFormat.SHORT).format(parsedDate)
+                DateFormat
+                    .getDateInstance(DateFormat.SHORT)
+                    .apply {
+                        if (parsedOffset != null) {
+                            timeZone = TimeZone.getTimeZone(parsedOffset)
+                        }
+                    }.format(parsedDate)
             }
 
             DateType.CUSTOM -> {
                 try {
                     val pattern = custom?.ifBlank { "yyyy-MM-dd" } ?: "yyyy-MM-dd"
-                    SimpleDateFormat(pattern, Locale.getDefault()).format(parsedDate)
+                    SimpleDateFormat(pattern, Locale.getDefault())
+                        .apply {
+                            if (parsedOffset != null) {
+                                timeZone = TimeZone.getTimeZone(parsedOffset)
+                            }
+                        }.format(parsedDate)
                 } catch (_: Exception) {
                     null
                 }
@@ -121,13 +140,14 @@ object DateHelper {
     ): Date? {
         val trimmedDate = date.trim()
         val trimmedOffset = offset?.trim()
+        val parsedOffset = parseZoneOffset(trimmedOffset)
 
         val exifLocalFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT)
         val exifWithOffsetFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ssXXX", Locale.ROOT)
 
-        if (!trimmedOffset.isNullOrBlank()) {
+        if (parsedOffset != null) {
             try {
-                val parsed = OffsetDateTime.parse("$trimmedDate$trimmedOffset", exifWithOffsetFormatter)
+                val parsed = OffsetDateTime.parse("$trimmedDate${parsedOffset.id}", exifWithOffsetFormatter)
                 return Date.from(parsed.toInstant())
             } catch (_: Exception) {
                 // Keep trying other formats below.
@@ -135,8 +155,7 @@ object DateHelper {
 
             try {
                 val parsed = LocalDateTime.parse(trimmedDate, exifLocalFormatter)
-                val zoneOffset = ZoneOffset.of(trimmedOffset)
-                return Date.from(parsed.toInstant(zoneOffset))
+                return Date.from(parsed.toInstant(parsedOffset))
             } catch (_: Exception) {
                 // Keep trying other formats below.
             }
@@ -150,13 +169,27 @@ object DateHelper {
         }
 
         try {
-            return Date.from(OffsetDateTime.parse(trimmedDate).toInstant())
+            val parsed = OffsetDateTime.parse(trimmedDate)
+            return Date.from(
+                if (parsedOffset != null) {
+                    parsed.toLocalDateTime().toInstant(parsedOffset)
+                } else {
+                    parsed.toInstant()
+                },
+            )
         } catch (_: Exception) {
             // Keep trying.
         }
 
         try {
-            return Date.from(ZonedDateTime.parse(trimmedDate).toInstant())
+            val parsed = ZonedDateTime.parse(trimmedDate)
+            return Date.from(
+                if (parsedOffset != null) {
+                    parsed.toLocalDateTime().toInstant(parsedOffset)
+                } else {
+                    parsed.toInstant()
+                },
+            )
         } catch (_: Exception) {
             // Keep trying.
         }
@@ -169,9 +202,27 @@ object DateHelper {
 
         try {
             val parsed = LocalDateTime.parse(trimmedDate)
-            return Date.from(parsed.atZone(ZoneId.systemDefault()).toInstant())
+            return Date.from(
+                if (parsedOffset != null) {
+                    parsed.toInstant(parsedOffset)
+                } else {
+                    parsed.atZone(ZoneId.systemDefault()).toInstant()
+                },
+            )
         } catch (_: Exception) {
             return null
+        }
+    }
+
+    private fun parseZoneOffset(offset: String?): ZoneOffset? {
+        if (offset.isNullOrBlank()) {
+            return null
+        }
+
+        return try {
+            ZoneOffset.of(offset.trim())
+        } catch (_: Exception) {
+            null
         }
     }
 }

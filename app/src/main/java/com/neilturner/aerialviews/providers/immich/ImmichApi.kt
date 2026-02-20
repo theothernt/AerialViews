@@ -80,8 +80,6 @@ data class ExifInfo(
     val country: String? = null,
     val state: String? = null,
     val city: String? = null,
-    val dateTimeOriginal: String? = null,
-    val timeZone: String? = null,
 )
 
 @Serializable
@@ -89,6 +87,7 @@ data class Asset(
     val id: String = "",
     val type: String = "",
     val originalPath: String = "",
+    val localDateTime: String? = null,
     val exifInfo: ExifInfo? = null,
 )
 

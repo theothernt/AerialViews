@@ -83,7 +83,7 @@ object GeneralPrefs : KotprefModel() {
     var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photo_folder_levels")
     var overlayMetadata1PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata1_photo_location_type")
     var overlayMetadata1PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata1_photo_date_type")
-    var overlayMetadata1PhotosDateCustom by stringPref("yyyy-MM-dd", "overlay_metadata1_photo_date_custom")
+    var overlayMetadata1PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata1_photo_date_custom")
 
     var overlayMetadata1Size by stringPref("18", "overlay_metadata1_size")
     var overlayMetadata1Weight by stringPref("300", "overlay_metadata1_weight") // Message
