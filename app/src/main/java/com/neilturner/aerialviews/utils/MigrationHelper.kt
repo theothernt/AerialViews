@@ -47,6 +47,7 @@ class MigrationHelper(
         if (lastKnownVersion < 60) release60()
         if (lastKnownVersion < 61) release61()
         if (lastKnownVersion < 77) release77()
+        if (lastKnownVersion < 91) release91()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -467,6 +468,30 @@ class MigrationHelper(
             prefs.edit { putBoolean("amazon_videos_enabled", false) }
         } else {
             Timber.i("Leaving Amazon videos enabled")
+        }
+    }
+
+    private fun release91() {
+        Timber.i("Migrating settings for release 91")
+
+        val slotKeys =
+            listOf(
+                "slot_top_left1",
+                "slot_top_left2",
+                "slot_top_right1",
+                "slot_top_right2",
+                "slot_bottom_left1",
+                "slot_bottom_left2",
+                "slot_bottom_right1",
+                "slot_bottom_right2",
+            )
+
+        slotKeys.forEach { key ->
+            val value = prefs.getString(key, null)
+            if (value == "LOCATION") {
+                Timber.i("Updating $key from LOCATION to METADATA1")
+                prefs.edit { putString(key, "METADATA1") }
+            }
         }
     }
 

@@ -29,7 +29,7 @@ object GeneralPrefs : KotprefModel() {
     // Overlays - Bottom
     var slotBottomLeft1 by nullableEnumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
     var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-    var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
+    var slotBottomRight1 by nullableEnumValuePref(OverlayType.METADATA1, "slot_bottom_right1")
     var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
 
     // Clock
