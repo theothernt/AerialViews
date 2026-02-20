@@ -47,7 +47,7 @@ class MigrationHelper(
         if (lastKnownVersion < 60) release60()
         if (lastKnownVersion < 61) release61()
         if (lastKnownVersion < 77) release77()
-        if (lastKnownVersion < 91) release91()
+        if (lastKnownVersion < 92) release92()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -471,8 +471,8 @@ class MigrationHelper(
         }
     }
 
-    private fun release91() {
-        Timber.i("Migrating settings for release 91")
+    private fun release92() {
+        Timber.i("Migrating settings for release 92")
 
         val slotKeys =
             listOf(
@@ -486,12 +486,71 @@ class MigrationHelper(
                 "slot_bottom_right2",
             )
 
+        // Migrate slot name
         slotKeys.forEach { key ->
             val value = prefs.getString(key, null)
             if (value == "LOCATION") {
                 Timber.i("Updating $key from LOCATION to METADATA1")
                 prefs.edit { putString(key, "METADATA1") }
             }
+        }
+
+        // Old keys
+        val oldVideoManifest = prefs.getString("description_video_manifest_style", null)
+        val oldVideoFilename = prefs.getString("description_video_filename_style", null)
+        val oldPhotoFilename = prefs.getString("description_photo_filename_style", null)
+        val oldVideoFolderDepth = prefs.getString("description_video_folder_levels", null)
+        val oldPhotoFolderDepth = prefs.getString("description_photo_folder_levels", null)
+        val oldSize = prefs.getString("description_size", null)
+        val oldWeight = prefs.getString("description_weight", null)
+
+        // New key defaults if old values are not present
+        val defaultVideoSelection = "POI"
+        val defaultPhotoSelection = "DESCRIPTION,LOCATION,DATE_TAKEN,"
+
+        val videoItems = mutableListOf<String>()
+        when (oldVideoManifest) {
+            "POI" -> videoItems.add("POI")
+            "TITLE" -> videoItems.add("DESC")
+        }
+
+        when (oldVideoFilename) {
+            "FILENAME" -> videoItems.add("FILENAME")
+            "LAST_FOLDER_FILENAME" -> videoItems.add("FOLDER_FILENAME")
+            "LAST_FOLDER_NAME" -> videoItems.add("FOLDER_ONLY")
+        }
+
+        val migratedVideoSelection =
+            if (videoItems.isEmpty()) {
+                defaultVideoSelection
+            } else {
+                videoItems.joinToString(",")
+            }
+
+        val migratedPhotoSelection =
+            when (oldPhotoFilename) {
+                "FILENAME" -> "FILENAME"
+                "LAST_FOLDER_FILENAME" -> "FOLDER_FILENAME"
+                "LAST_FOLDER_NAME" -> "FOLDER_ONLY"
+                else -> defaultPhotoSelection
+            }
+
+        prefs.edit {
+            putString("overlay_metadata1_videos", migratedVideoSelection)
+            putString("overlay_metadata1_photos", migratedPhotoSelection)
+
+            oldVideoFolderDepth?.let { putString("overlay_metadata1_video_folder_levels", it) }
+            oldPhotoFolderDepth?.let { putString("overlay_metadata1_photo_folder_levels", it) }
+            oldSize?.let { putString("overlay_metadata1_size", it) }
+            oldWeight?.let { putString("overlay_metadata1_weight", it) }
+
+            remove("description_video_manifest_style")
+            remove("description_video_filename_style")
+            remove("description_photo_filename_style")
+            remove("description_video_folder_levels")
+            remove("description_photo_folder_levels")
+            remove("description_size")
+            remove("description_weight")
         }
     }
 

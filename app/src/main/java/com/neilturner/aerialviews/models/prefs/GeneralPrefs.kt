@@ -79,7 +79,7 @@ object GeneralPrefs : KotprefModel() {
     var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
     var overlayMetadata1VideosFolderLevel by stringPref("1", "overlay_metadata1_video_folder_levels")
 
-    var overlayMetadata1Photos by stringPref("LOCATION,DATE_TAKEN,DESCRIPTION", "overlay_metadata1_photos")
+    var overlayMetadata1Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
     var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photo_folder_levels")
     var overlayMetadata1PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata1_photo_location_type")
     var overlayMetadata1PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata1_photo_date_type")
