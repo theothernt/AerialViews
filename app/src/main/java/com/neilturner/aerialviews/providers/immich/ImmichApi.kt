@@ -80,17 +80,7 @@ data class ExifInfo(
     val country: String? = null,
     val state: String? = null,
     val city: String? = null,
-    @SerialName("dateTimeOriginal")
     val dateTimeOriginal: String? = null,
-    @SerialName("dateTime")
-    val dateTime: String? = null,
-    @SerialName("modifyDate")
-    val modifyDate: String? = null,
-    @SerialName("offsetTimeOriginal")
-    val offsetTimeOriginal: String? = null,
-    @SerialName("offsetTime")
-    val offsetTime: String? = null,
-    @SerialName("timeZone")
     val timeZone: String? = null,
 )
 

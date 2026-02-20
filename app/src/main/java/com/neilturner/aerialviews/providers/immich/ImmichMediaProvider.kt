@@ -201,15 +201,11 @@ class ImmichMediaProvider(
 
             val rawExif = asset.exifInfo
             Timber.i(
-                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s dateTime=%s modifyDate=%s offsetTimeOriginal=%s offsetTime=%s timeZone=%s city=%s state=%s country=%s",
+                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s timeZone=%s city=%s state=%s country=%s",
                 asset.id,
                 filename,
                 rawExif?.description,
                 rawExif?.dateTimeOriginal,
-                rawExif?.dateTime,
-                rawExif?.modifyDate,
-                rawExif?.offsetTimeOriginal,
-                rawExif?.offsetTime,
                 rawExif?.timeZone,
                 rawExif?.city,
                 rawExif?.state,
@@ -282,7 +278,7 @@ class ImmichMediaProvider(
         val exifInfo = asset.exifInfo
         return AerialExifMetadata(
             date = exifInfo?.dateTimeOriginal,
-            offset = exifInfo?.offsetTimeOriginal ?: exifInfo?.offsetTime ?: exifInfo?.timeZone,
+            offset = exifInfo?.timeZone,
             city = exifInfo?.city,
             state = exifInfo?.state,
             country = exifInfo?.country,
