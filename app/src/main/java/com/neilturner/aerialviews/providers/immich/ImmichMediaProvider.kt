@@ -201,14 +201,16 @@ class ImmichMediaProvider(
 
             val rawExif = asset.exifInfo
             Timber.i(
-                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s dateTime=%s offsetTimeOriginal=%s offsetTime=%s lat=%s lon=%s city=%s state=%s country=%s",
+                "Immich EXIF: id=%s path=%s description=%s dateTimeOriginal=%s dateTime=%s modifyDate=%s offsetTimeOriginal=%s offsetTime=%s timeZone=%s lat=%s lon=%s city=%s state=%s country=%s",
                 asset.id,
                 filename,
                 rawExif?.description,
                 rawExif?.dateTimeOriginal,
                 rawExif?.dateTime,
+                rawExif?.modifyDate,
                 rawExif?.offsetTimeOriginal,
                 rawExif?.offsetTime,
+                rawExif?.timeZone,
                 rawExif?.latitude,
                 rawExif?.longitude,
                 rawExif?.city,
@@ -281,8 +283,8 @@ class ImmichMediaProvider(
     private fun extractExifMetadata(asset: Asset): AerialExifMetadata {
         val exifInfo = asset.exifInfo
         return AerialExifMetadata(
-            date = exifInfo?.dateTimeOriginal ?: exifInfo?.dateTime,
-            offset = exifInfo?.offsetTimeOriginal ?: exifInfo?.offsetTime,
+            date = exifInfo?.dateTimeOriginal,
+            offset = exifInfo?.offsetTimeOriginal ?: exifInfo?.offsetTime ?: exifInfo?.timeZone,
             latitude = exifInfo?.latitude,
             longitude = exifInfo?.longitude,
             description = exifInfo?.description,
@@ -353,6 +355,9 @@ class ImmichMediaProvider(
                 if (shared == null) throw Exception("Empty response body")
                 // Cache server-provided key for use in asset URLs
                 resolvedSharedKey = shared.key
+                if (!shared.showMetadata) {
+                    Timber.w("Immich shared link has showMetadata=false; EXIF/metadata may be absent in API responses")
+                }
 
                 // Handle different shared link types
                 when (shared.type) {
@@ -518,7 +523,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeFavorites.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching up to $count favorite assets")
-            val searchRequest = SearchMetadataRequest(isFavorite = true)
+            val searchRequest = SearchMetadataRequest(isFavorite = true, withExif = true)
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -544,7 +549,7 @@ class ImmichMediaProvider(
             if (ratings.isNotEmpty()) {
                 for (rating in ratings) {
                     Timber.d("Fetching rated assets with rating: $rating")
-                    val searchRequest = SearchMetadataRequest(rating = rating.toInt())
+                    val searchRequest = SearchMetadataRequest(rating = rating.toInt(), withExif = true)
                     val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
                     if (response.isSuccessful) {
                         val searchResponse = response.body()
@@ -567,7 +572,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val searchRequest = SearchMetadataRequest(size = count)
+            val searchRequest = SearchMetadataRequest(size = count, withExif = true)
             val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
@@ -588,7 +593,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val searchRequest = SearchMetadataRequest(size = count, order = "desc")
+            val searchRequest = SearchMetadataRequest(size = count, order = "desc", withExif = true)
             val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()

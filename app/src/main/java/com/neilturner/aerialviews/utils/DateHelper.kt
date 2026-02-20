@@ -11,7 +11,10 @@ import java.util.Date
 import java.util.Locale
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.Instant
 import java.time.ZoneId
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
@@ -116,17 +119,59 @@ object DateHelper {
         date: String,
         offset: String?,
     ): Date? {
-        val formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT)
-        return try {
-            if (!offset.isNullOrBlank()) {
-                val parsed = OffsetDateTime.parse("$date$offset", DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ssXXX", Locale.ROOT))
-                Date.from(parsed.toInstant())
-            } else {
-                val parsed = LocalDateTime.parse(date, formatter)
-                Date.from(parsed.atZone(ZoneId.systemDefault()).toInstant())
+        val trimmedDate = date.trim()
+        val trimmedOffset = offset?.trim()
+
+        val exifLocalFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT)
+        val exifWithOffsetFormatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ssXXX", Locale.ROOT)
+
+        if (!trimmedOffset.isNullOrBlank()) {
+            try {
+                val parsed = OffsetDateTime.parse("$trimmedDate$trimmedOffset", exifWithOffsetFormatter)
+                return Date.from(parsed.toInstant())
+            } catch (_: Exception) {
+                // Keep trying other formats below.
             }
+
+            try {
+                val parsed = LocalDateTime.parse(trimmedDate, exifLocalFormatter)
+                val zoneOffset = ZoneOffset.of(trimmedOffset)
+                return Date.from(parsed.toInstant(zoneOffset))
+            } catch (_: Exception) {
+                // Keep trying other formats below.
+            }
+        }
+
+        try {
+            val parsed = LocalDateTime.parse(trimmedDate, exifLocalFormatter)
+            return Date.from(parsed.atZone(ZoneId.systemDefault()).toInstant())
         } catch (_: Exception) {
-            null
+            // Keep trying ISO-8601 variants below.
+        }
+
+        try {
+            return Date.from(OffsetDateTime.parse(trimmedDate).toInstant())
+        } catch (_: Exception) {
+            // Keep trying.
+        }
+
+        try {
+            return Date.from(ZonedDateTime.parse(trimmedDate).toInstant())
+        } catch (_: Exception) {
+            // Keep trying.
+        }
+
+        try {
+            return Date.from(Instant.parse(trimmedDate))
+        } catch (_: Exception) {
+            // Keep trying.
+        }
+
+        try {
+            val parsed = LocalDateTime.parse(trimmedDate)
+            return Date.from(parsed.atZone(ZoneId.systemDefault()).toInstant())
+        } catch (_: Exception) {
+            return null
         }
     }
 }

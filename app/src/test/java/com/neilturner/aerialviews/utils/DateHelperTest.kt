@@ -38,6 +38,20 @@ internal class DateHelperTest {
     }
 
     @Test
+    @DisplayName("Should parse ISO date from Immich")
+    fun testFormatExifDateIso() {
+        val result =
+            DateHelper.formatExifDate(
+                date = "2024-01-15T19:30:00.000Z",
+                offset = null,
+                type = DateType.CUSTOM,
+                custom = "yyyy-MM-dd",
+            )
+
+        assertEquals("2024-01-15", result)
+    }
+
+    @Test
     @DisplayName("Should return null for invalid EXIF date")
     fun testFormatExifDateInvalidDate() {
         val result =
