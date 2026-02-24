@@ -103,27 +103,33 @@ class ImagePlayerView : AppCompatImageView {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            val rawStream = ImagePlayerHelper.streamFromMedia(context, media)
-            if (rawStream == null) {
+            val openSourceStream: () -> java.io.InputStream? = {
+                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
+                if (mediaStream == null) {
+                    null
+                } else if (mediaStream.markSupported()) {
+                    mediaStream
+                } else {
+                    BufferedInputStream(mediaStream, 16 * 1024)
+                }
+            }
+
+            val stream = openSourceStream()
+            if (stream == null) {
                 loadImage(media.uri)
                 return@launch
             }
-            val stream =
-                if (rawStream.markSupported()) {
-                    rawStream
-                } else {
-                    BufferedInputStream(rawStream, 16 * 1024)
-                }
 
             if (isGifStream(stream)) {
                 loadImage(stream)
                 return@launch
             }
+            runCatching { stream.close() }
 
             val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
             val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
 
-            val bitmapResult = BitmapHelper.loadResizedImageBytes(stream, targetWidth, targetHeight)
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight)
             if (bitmapResult == null) {
                 loadImage(media.uri)
                 return@launch

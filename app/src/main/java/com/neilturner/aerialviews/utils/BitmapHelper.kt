@@ -6,7 +6,6 @@ import android.graphics.Matrix
 import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -25,23 +24,23 @@ data class BitmapResult(
 
 object BitmapHelper {
     suspend fun loadResizedImageBytes(
-        inputStream: InputStream,
+        openInputStream: () -> InputStream?,
         targetWidth: Int,
         targetHeight: Int,
         quality: Int = 85,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             try {
-                val sourceBytes = inputStream.use { it.readBytes() }
-                if (sourceBytes.isEmpty()) {
-                    return@withContext null
-                }
-
-                val metadata = extractMetadata(sourceBytes)
+                val metadata = extractMetadata(openInputStream)
 
                 val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                BitmapFactory.decodeByteArray(sourceBytes, 0, sourceBytes.size, boundsOptions)
-                if (boundsOptions.outWidth <= 0 || boundsOptions.outHeight <= 0) {
+                val hasValidBounds =
+                    openInputStream()?.use { stream ->
+                        BitmapFactory.decodeStream(stream, null, boundsOptions)
+                        boundsOptions.outWidth > 0 && boundsOptions.outHeight > 0
+                    } ?: false
+
+                if (!hasValidBounds) {
                     return@withContext null
                 }
 
@@ -52,8 +51,9 @@ object BitmapHelper {
                     }
 
                 val decodedBitmap =
-                    BitmapFactory.decodeByteArray(sourceBytes, 0, sourceBytes.size, decodeOptions)
-                        ?: return@withContext null
+                    openInputStream()?.use { stream ->
+                        BitmapFactory.decodeStream(stream, null, decodeOptions)
+                    } ?: return@withContext null
 
                 val rotatedBitmap = applyExifTransform(decodedBitmap, metadata.orientation)
 
@@ -81,16 +81,21 @@ object BitmapHelper {
             }
         }
 
-    private fun extractMetadata(sourceBytes: ByteArray): ExifMetadata {
-        val exif = ExifInterface(ByteArrayInputStream(sourceBytes))
-        return ExifMetadata(
-            date = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_DATETIME),
-            offset = exif.getAttribute(ExifInterface.TAG_OFFSET_TIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_OFFSET_TIME),
-            latitude = exif.latLong?.getOrNull(0),
-            longitude = exif.latLong?.getOrNull(1),
-            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED),
-        )
-    }
+    private fun extractMetadata(openInputStream: () -> InputStream?): ExifMetadata =
+        try {
+            openInputStream()?.use { stream ->
+                val exif = ExifInterface(stream)
+                ExifMetadata(
+                    date = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_DATETIME),
+                    offset = exif.getAttribute(ExifInterface.TAG_OFFSET_TIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_OFFSET_TIME),
+                    latitude = exif.latLong?.getOrNull(0),
+                    longitude = exif.latLong?.getOrNull(1),
+                    orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED),
+                )
+            } ?: ExifMetadata()
+        } catch (_: Exception) {
+            ExifMetadata()
+        }
 
     private fun calculateInSampleSize(
         options: BitmapFactory.Options,
@@ -102,13 +107,11 @@ object BitmapHelper {
         var sampleSize = 1
 
         if (height > reqHeight || width > reqWidth) {
-            var halfHeight = height / 2
-            var halfWidth = width / 2
+            val halfHeight = height / 2
+            val halfWidth = width / 2
 
             while (halfHeight / sampleSize >= reqHeight && halfWidth / sampleSize >= reqWidth) {
                 sampleSize *= 2
-                halfHeight = height / 2
-                halfWidth = width / 2
             }
         }
 
