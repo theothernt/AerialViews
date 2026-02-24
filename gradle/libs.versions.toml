@@ -10,6 +10,7 @@ activity-ktx = "1.12.4"
 constraintlayout = "2.2.1"
 appcompat = "1.7.1"
 exifinterface = "1.4.2"
+desugar-jdk-libs = "2.1.5"
 
 firebase-crashlytics-plugin = "3.0.6"
 firebase-perf-plugin = "2.0.2"
@@ -60,6 +61,7 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebase-crashlytics" }
