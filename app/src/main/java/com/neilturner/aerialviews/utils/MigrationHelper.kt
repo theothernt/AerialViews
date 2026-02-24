@@ -506,7 +506,7 @@ class MigrationHelper(
 
         // New key defaults if old values are not present
         val defaultVideoSelection = "POI"
-        val defaultPhotoSelection = "DESCRIPTION,LOCATION,DATE_TAKEN,"
+        val defaultPhotoSelection = "DESCRIPTION,LOCATION,DATE_TAKEN"
 
         val videoItems = mutableListOf<String>()
         when (oldVideoManifest) {
