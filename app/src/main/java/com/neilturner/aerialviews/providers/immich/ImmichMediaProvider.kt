@@ -286,26 +286,8 @@ class ImmichMediaProvider(
     }
 
     private fun normalizeImmichLocalDateTime(value: String): String {
-        var normalized = value.trim()
-        if (normalized.endsWith("Z", ignoreCase = true)) {
-            normalized = normalized.dropLast(1)
-        }
-
-        val tIndex = normalized.indexOf('T')
-        if (tIndex > -1) {
-            val timePortion = normalized.substring(tIndex + 1)
-            val plusIndex = timePortion.indexOf('+')
-            val minusIndex = timePortion.indexOf('-')
-            val zoneIndex =
-                listOf(plusIndex, minusIndex)
-                    .filter { it >= 0 }
-                    .minOrNull()
-            if (zoneIndex != null) {
-                normalized = normalized.substring(0, tIndex + 1 + zoneIndex)
-            }
-        }
-
-        return normalized
+        val normalized = value.trim()
+        return normalized.replace(Regex("(?i)(?:z|[+-]\\d{2}:?\\d{2})$"), "")
     }
 
     private fun buildSummaryMessage(

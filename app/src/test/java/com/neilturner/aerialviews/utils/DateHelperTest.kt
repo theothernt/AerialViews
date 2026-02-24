@@ -52,6 +52,20 @@ internal class DateHelperTest {
     }
 
     @Test
+    @DisplayName("Should parse ISO date with negative offset from Immich")
+    fun testFormatExifDateIsoNegativeOffset() {
+        val result =
+            DateHelper.formatExifDate(
+                date = "2024-01-15T10:30:00.000-05:00",
+                offset = "-05:00",
+                type = DateType.CUSTOM,
+                custom = "yyyy-MM-dd HH:mm",
+            )
+
+        assertEquals("2024-01-15 10:30", result)
+    }
+
+    @Test
     @DisplayName("Should return null for invalid EXIF date")
     fun testFormatExifDateInvalidDate() {
         val result =
