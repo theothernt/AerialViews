@@ -29,6 +29,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import timber.log.Timber
+import java.io.FilterInputStream
 import java.io.InputStream
 import java.util.EnumSet
 import java.util.concurrent.TimeUnit
@@ -113,26 +114,11 @@ internal object ImagePlayerHelper {
                 response.close()
                 return null
             }
-            object : InputStream() {
-                private val wrappedStream = response.body.byteStream()
-
-                override fun read(): Int = wrappedStream.read()
-
-                override fun read(b: ByteArray): Int = wrappedStream.read(b)
-
-                override fun read(
-                    b: ByteArray,
-                    off: Int,
-                    len: Int,
-                ): Int = wrappedStream.read(b, off, len)
-
-                override fun skip(n: Long): Long = wrappedStream.skip(n)
-
-                override fun available(): Int = wrappedStream.available()
-
+            val responseBody = response.body
+            object : FilterInputStream(responseBody.byteStream()) {
                 override fun close() {
                     try {
-                        wrappedStream.close()
+                        super.close()
                     } finally {
                         response.close()
                     }
