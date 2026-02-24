@@ -31,6 +31,7 @@ import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
+import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
@@ -51,6 +52,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -311,7 +313,7 @@ class ScreenController(
 
         // Best to rest progress bar (if enabled) before media playback
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            overlayStateStore.setProgress(ProgressState.RESET)
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
         }
 
         videoPlayer.start()
@@ -679,7 +681,7 @@ class ScreenController(
 
         // Pause progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            overlayStateStore.setProgress(ProgressState.PAUSE)
+            GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
         }
     }
 
@@ -701,7 +703,7 @@ class ScreenController(
 
         // Resume progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            overlayStateStore.setProgress(ProgressState.RESUME)
+            GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
         }
     }
 
