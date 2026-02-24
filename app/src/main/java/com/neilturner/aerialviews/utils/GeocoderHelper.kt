@@ -8,11 +8,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.LinkedHashMap
 import java.util.Locale
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.resume
 
 object GeocoderHelper {
+    private const val MAX_CACHE_ENTRIES = 500
+
     data class GeocodedLocation(
         val city: String?,
         val state: String?,
@@ -23,7 +25,11 @@ object GeocoderHelper {
         val value: GeocodedLocation?,
     )
 
-    private val cache = ConcurrentHashMap<String, CacheEntry>()
+    private val cacheLock = Any()
+    private val cache =
+        object : LinkedHashMap<String, CacheEntry>(MAX_CACHE_ENTRIES + 1, 0.75f, true) {
+            override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, CacheEntry>?): Boolean = size > MAX_CACHE_ENTRIES
+        }
 
     suspend fun reverseGeocode(
         context: Context,
@@ -31,10 +37,14 @@ object GeocoderHelper {
         longitude: Double,
     ): GeocodedLocation? {
         val key = cacheKey(latitude, longitude)
-        cache[key]?.let { return it.value }
+        synchronized(cacheLock) {
+            cache[key]?.let { return it.value }
+        }
 
         val result = reverseGeocodeUncached(context, latitude, longitude)
-        cache[key] = CacheEntry(result)
+        synchronized(cacheLock) {
+            cache[key] = CacheEntry(result)
+        }
         return result
     }
 
