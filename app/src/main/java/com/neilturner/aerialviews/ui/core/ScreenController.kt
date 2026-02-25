@@ -18,6 +18,7 @@ import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.MetadataType
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -71,6 +72,7 @@ class ScreenController(
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataSlot1Resolver = MetadataSlot1Resolver()
+    private val metadataSlot2Resolver = MetadataSlot2Resolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -88,6 +90,7 @@ class ScreenController(
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
     private var metadataOverlayJob: Job? = null
+    private var metadataOverlayJob2: Job? = null
     private var currentMedia: AerialMedia? = null
 
     private val videoViewBinding: VideoViewBinding
@@ -546,6 +549,7 @@ class ScreenController(
         weatherService?.stop()
         sleepTimerJob?.cancel()
         metadataOverlayJob?.cancel()
+        metadataOverlayJob2?.cancel()
         mainScope.cancel()
     }
 
@@ -749,9 +753,29 @@ class ScreenController(
                         resolved.metadataType,
                     )
                 } catch (e: Exception) {
-                    Timber.e(e, "Metadata slot resolver failed")
+                    Timber.e(e, "Metadata slot 1 resolver failed")
                     if (currentMedia === media) {
                         overlayStateStore.setLocation("", emptyMap(), MetadataType.STATIC)
+                    }
+                }
+            }
+
+        metadataOverlayJob2?.cancel()
+        metadataOverlayJob2 =
+            mainScope.launch {
+                try {
+                    val resolved = metadataSlot2Resolver.resolve(context, media)
+                    if (currentMedia !== media) return@launch
+
+                    overlayStateStore.setLocation2(
+                        resolved.text,
+                        resolved.poi,
+                        resolved.metadataType,
+                    )
+                } catch (e: Exception) {
+                    Timber.e(e, "Metadata slot 2 resolver failed")
+                    if (currentMedia === media) {
+                        overlayStateStore.setLocation2("", emptyMap(), MetadataType.STATIC)
                     }
                 }
             }
@@ -773,8 +797,9 @@ class ScreenController(
     }
 
     private fun renderOverlayState(state: OverlayUiState) {
-        overlayHelper.findOverlay<MetadataOverlay>().forEach {
-            it.render(state.location, videoPlayer)
+        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
+            val locationState = if (overlay.type == OverlayType.METADATA2) state.location2 else state.location
+            overlay.render(locationState, videoPlayer)
         }
 
         overlayHelper.findOverlay<NowPlayingOverlay>().forEach {

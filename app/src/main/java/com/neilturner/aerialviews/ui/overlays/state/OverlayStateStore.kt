@@ -31,6 +31,23 @@ class OverlayStateStore {
         }
     }
 
+    fun setLocation2(
+        text: String,
+        poi: Map<Int, String>,
+        metadataType: MetadataType,
+    ) {
+        _uiState.update {
+            it.copy(
+                location2 =
+                    MetadataOverlayState(
+                        text = text,
+                        poi = poi,
+                        metadataType = metadataType,
+                    ),
+            )
+        }
+    }
+
     fun setMessage(
         type: OverlayType,
         state: MessageOverlayState,
@@ -69,6 +86,7 @@ class OverlayStateStore {
         _uiState.update {
             it.copy(
                 location = MetadataOverlayState(),
+                location2 = MetadataOverlayState(),
                 progress = ProgressOverlayState(),
             )
         }

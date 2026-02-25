@@ -88,6 +88,18 @@ object GeneralPrefs : KotprefModel() {
     var overlayMetadata1Size by stringPref("18", "overlay_metadata1_size")
     var overlayMetadata1Weight by stringPref("300", "overlay_metadata1_weight") // Message
 
+    var overlayMetadata2Videos by stringPref("POI", "overlay_metadata2_videos")
+    var overlayMetadata2VideosFolderLevel by stringPref("1", "overlay_metadata2_video_folder_levels")
+
+    var overlayMetadata2Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata2_photos")
+    var overlayMetadata2PhotosFolderLevel by stringPref("1", "overlay_metadata2_photo_folder_levels")
+    var overlayMetadata2PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata2_photo_location_type")
+    var overlayMetadata2PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata2_photo_date_type")
+    var overlayMetadata2PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata2_photo_date_custom")
+
+    var overlayMetadata2Size by stringPref("18", "overlay_metadata2_size")
+    var overlayMetadata2Weight by stringPref("300", "overlay_metadata2_weight") // Message
+
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
     var messageLine3 by stringPref("", "message_line3")

@@ -195,8 +195,17 @@ class OverlayHelper(
 
             OverlayType.METADATA1 -> {
                 MetadataOverlay(context).apply {
+                    type = overlay
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata1Size.toFloat())
                     typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata1Weight)
+                }
+            }
+
+            OverlayType.METADATA2 -> {
+                MetadataOverlay(context).apply {
+                    type = overlay
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata2Size.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata2Weight)
                 }
             }
 

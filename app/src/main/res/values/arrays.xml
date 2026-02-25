@@ -262,7 +262,8 @@
     <string-array name="slot_entries">
         <item>Empty</item>
         <item>Clock</item>
-        <item>Metadata</item>
+        <item>Metadata #1</item>
+        <item>Metadata #2</item>
         <item>Weather #1</item>
         <!--    <item>Weather #2</item>-->
         <item>Now Playing #1</item>
@@ -278,6 +279,7 @@
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>METADATA1</item>
+        <item>METADATA2</item>
         <item>WEATHER1</item>
         <!--    <item>WEATHER2</item>-->
         <item>MUSIC1</item>

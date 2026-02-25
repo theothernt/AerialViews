@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MetadataType
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 
@@ -14,6 +15,7 @@ class MetadataOverlay : AppCompatTextView {
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val textAlpha = 1f // start + end values?
     var isFadingOutMedia = false // Stops POI change + fade as video is ending
+    var type: OverlayType = OverlayType.METADATA1
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)

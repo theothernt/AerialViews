@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 
 data class OverlayUiState(
     val location: MetadataOverlayState = MetadataOverlayState(),
+    val location2: MetadataOverlayState = MetadataOverlayState(),
     val message: Map<OverlayType, MessageOverlayState> = emptyMap(),
     val nowPlaying: NowPlayingOverlayState = NowPlayingOverlayState(),
     val weather: WeatherOverlayState = WeatherOverlayState(),

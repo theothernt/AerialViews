@@ -7,6 +7,11 @@
                     app:title="@string/appearance_metadata_slot1_title"
                     app:summary="@string/appearance_metadata_slot1_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMetadataSlotFragment" />
+
+                <Preference
+                    app:title="@string/appearance_metadata_slot2_title"
+                    app:summary="@string/appearance_metadata_slot2_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMetadataSlot2Fragment" />
         </PreferenceCategory>
 
 </PreferenceScreen>
