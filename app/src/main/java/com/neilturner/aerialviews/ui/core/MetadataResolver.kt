@@ -5,7 +5,6 @@ import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.DateHelper
 import com.neilturner.aerialviews.utils.FileHelper
@@ -13,7 +12,7 @@ import com.neilturner.aerialviews.utils.GeocoderHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import java.util.Locale
 
-internal class MetadataSlot2Resolver(
+internal class MetadataResolver(
     private val geocoderHelper: GeocoderHelper = GeocoderHelper,
 ) {
     data class ResolvedMetadata(
@@ -22,21 +21,31 @@ internal class MetadataSlot2Resolver(
         val metadataType: MetadataType,
     )
 
+    data class Preferences(
+        val videoSelection: String,
+        val videoFolderDepth: Int,
+        val photoSelection: String,
+        val photoFolderDepth: Int,
+        val photoLocationType: LocationType,
+        val photoDateType: DateType,
+        val photoDateCustom: String,
+    )
+
     suspend fun resolve(
         context: Context,
         media: AerialMedia,
+        preferences: Preferences,
     ): ResolvedMetadata =
         if (media.type == AerialMediaType.IMAGE) {
-            resolvePhoto(context, media)
+            resolvePhoto(context, media, preferences)
         } else {
-            resolveVideo(media)
+            resolveVideo(media, preferences)
         }
 
-    private fun resolveVideo(media: AerialMedia): ResolvedMetadata {
-        val preferences = parseSelection(GeneralPrefs.overlayMetadata2Videos)
-        val videoFolderDepth = parseFolderDepth(GeneralPrefs.overlayMetadata2VideosFolderLevel)
+    private fun resolveVideo(media: AerialMedia, preferences: Preferences): ResolvedMetadata {
+        val selection = parseSelection(preferences.videoSelection)
 
-        for (entry in preferences) {
+        for (entry in selection) {
             when (entry) {
                 "POI" -> {
                     if (hasUsablePoi(media)) {
@@ -76,7 +85,7 @@ internal class MetadataSlot2Resolver(
 
                 "FOLDER_FILENAME" -> {
                     FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = videoFolderDepth)
+                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = preferences.videoFolderDepth)
                         .trim()
                         .takeIf { it.isNotBlank() }
                         ?.let {
@@ -90,7 +99,7 @@ internal class MetadataSlot2Resolver(
 
                 "FOLDER_ONLY" -> {
                     FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = videoFolderDepth)
+                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = preferences.videoFolderDepth)
                         .trim()
                         .takeIf { it.isNotBlank() }
                         ?.let {
@@ -114,14 +123,14 @@ internal class MetadataSlot2Resolver(
     private suspend fun resolvePhoto(
         context: Context,
         media: AerialMedia,
+        preferences: Preferences,
     ): ResolvedMetadata {
-        val preferences = parseSelection(GeneralPrefs.overlayMetadata2Photos)
-        val photoFolderDepth = parseFolderDepth(GeneralPrefs.overlayMetadata2PhotosFolderLevel)
+        val selection = parseSelection(preferences.photoSelection)
 
-        for (entry in preferences) {
+        for (entry in selection) {
             when (entry) {
                 "LOCATION" -> {
-                    when (val location = resolvePhotoLocation(context, media)) {
+                    when (val location = resolvePhotoLocation(context, media, preferences.photoLocationType)) {
                         is PhotoLocationResolution.Resolved -> {
                             return ResolvedMetadata(
                                 text = location.text,
@@ -147,13 +156,12 @@ internal class MetadataSlot2Resolver(
                 "DATE_TAKEN" -> {
                     val exifDate = media.metadata.exif.date
                     if (!exifDate.isNullOrBlank()) {
-                        val dateType = GeneralPrefs.overlayMetadata2PhotosDateType ?: DateType.COMPACT
                         val formatted =
                             DateHelper.formatExifDate(
                                 date = exifDate,
                                 offset = media.metadata.exif.offset,
-                                type = dateType,
-                                custom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
+                                type = preferences.photoDateType,
+                                custom = preferences.photoDateCustom,
                             )
                         if (!formatted.isNullOrBlank()) {
                             return ResolvedMetadata(
@@ -193,7 +201,7 @@ internal class MetadataSlot2Resolver(
 
                 "FOLDER_FILENAME" -> {
                     FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = photoFolderDepth)
+                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = preferences.photoFolderDepth)
                         .trim()
                         .takeIf { it.isNotBlank() }
                         ?.let {
@@ -207,7 +215,7 @@ internal class MetadataSlot2Resolver(
 
                 "FOLDER_ONLY" -> {
                     FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = photoFolderDepth)
+                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = preferences.photoFolderDepth)
                         .trim()
                         .takeIf { it.isNotBlank() }
                         ?.let {
@@ -231,8 +239,8 @@ internal class MetadataSlot2Resolver(
     private suspend fun resolvePhotoLocation(
         context: Context,
         media: AerialMedia,
+        locationType: LocationType,
     ): PhotoLocationResolution {
-        val locationType = GeneralPrefs.overlayMetadata2PhotosLocationType ?: LocationType.CITY_COUNTRY
         val modelLocation =
             GeocoderHelper.GeocodedLocation(
                 city = media.metadata.exif.city,
@@ -312,8 +320,6 @@ internal class MetadataSlot2Resolver(
             .split(",")
             .map { it.trim().uppercase(Locale.ROOT) }
             .filter { it.isNotBlank() }
-
-    private fun parseFolderDepth(value: String): Int = value.toIntOrNull()?.coerceIn(1, 5) ?: 1
 
     private sealed class PhotoLocationResolution {
         data object ContinueFallback : PhotoLocationResolution()

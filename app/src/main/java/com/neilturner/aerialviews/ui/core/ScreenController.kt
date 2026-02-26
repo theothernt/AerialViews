@@ -71,8 +71,7 @@ class ScreenController(
     private var ktorServer: KtorServer? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
-    private val metadataSlot1Resolver = MetadataSlot1Resolver()
-    private val metadataSlot2Resolver = MetadataSlot2Resolver()
+    private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -89,8 +88,7 @@ class ScreenController(
     private var isPaused = false
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
-    private var metadataOverlayJob: Job? = null
-    private var metadataOverlayJob2: Job? = null
+    private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
 
     private val videoViewBinding: VideoViewBinding
@@ -548,8 +546,8 @@ class ScreenController(
         nowPlayingService?.stop()
         weatherService?.stop()
         sleepTimerJob?.cancel()
-        metadataOverlayJob?.cancel()
-        metadataOverlayJob2?.cancel()
+        metadataJobs.values.forEach { it.cancel() }
+        metadataJobs.clear()
         mainScope.cancel()
     }
 
@@ -740,46 +738,55 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateMetadataOverlayData(media: AerialMedia) {
-        metadataOverlayJob?.cancel()
-        metadataOverlayJob =
-            mainScope.launch {
-                try {
-                    val resolved = metadataSlot1Resolver.resolve(context, media)
-                    if (currentMedia !== media) return@launch
+        val metadataSlots = listOf(OverlayType.METADATA1, OverlayType.METADATA2)
 
-                    overlayStateStore.setLocation(
-                        resolved.text,
-                        resolved.poi,
-                        resolved.metadataType,
-                    )
-                } catch (e: Exception) {
-                    Timber.e(e, "Metadata slot 1 resolver failed")
-                    if (currentMedia === media) {
-                        overlayStateStore.setLocation("", emptyMap(), MetadataType.STATIC)
+        metadataSlots.forEach { slot ->
+            metadataJobs[slot]?.cancel()
+            metadataJobs[slot] =
+                mainScope.launch {
+                    try {
+                        val preferences = getMetadataPreferences(slot)
+                        val resolved = metadataResolver.resolve(context, media, preferences)
+                        if (currentMedia !== media) return@launch
+
+                        overlayStateStore.setMetadata(
+                            slot,
+                            resolved.text,
+                            resolved.poi,
+                            resolved.metadataType,
+                        )
+                    } catch (e: Exception) {
+                        Timber.e(e, "Metadata slot $slot resolver failed")
+                        if (currentMedia === media) {
+                            overlayStateStore.setMetadata(slot, "", emptyMap(), MetadataType.STATIC)
+                        }
                     }
                 }
-            }
-
-        metadataOverlayJob2?.cancel()
-        metadataOverlayJob2 =
-            mainScope.launch {
-                try {
-                    val resolved = metadataSlot2Resolver.resolve(context, media)
-                    if (currentMedia !== media) return@launch
-
-                    overlayStateStore.setLocation2(
-                        resolved.text,
-                        resolved.poi,
-                        resolved.metadataType,
-                    )
-                } catch (e: Exception) {
-                    Timber.e(e, "Metadata slot 2 resolver failed")
-                    if (currentMedia === media) {
-                        overlayStateStore.setLocation2("", emptyMap(), MetadataType.STATIC)
-                    }
-                }
-            }
+        }
     }
+
+    private fun getMetadataPreferences(slot: OverlayType): MetadataResolver.Preferences =
+        if (slot == OverlayType.METADATA1) {
+            MetadataResolver.Preferences(
+                videoSelection = GeneralPrefs.overlayMetadata1Videos,
+                videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
+                photoSelection = GeneralPrefs.overlayMetadata1Photos,
+                photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
+                photoLocationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoDateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
+            )
+        } else {
+            MetadataResolver.Preferences(
+                videoSelection = GeneralPrefs.overlayMetadata2Videos,
+                videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
+                photoSelection = GeneralPrefs.overlayMetadata2Photos,
+                photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
+                photoLocationType = GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoDateType = GeneralPrefs.overlayMetadata2PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
+            )
+        }
 
     override fun onImagePrepared() {
         currentMedia
@@ -798,8 +805,10 @@ class ScreenController(
 
     private fun renderOverlayState(state: OverlayUiState) {
         overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
-            val locationState = if (overlay.type == OverlayType.METADATA2) state.location2 else state.location
-            overlay.render(locationState, videoPlayer)
+            val locationState = state.metadata[overlay.type]
+            if (locationState != null) {
+                overlay.render(locationState, videoPlayer)
+            }
         }
 
         overlayHelper.findOverlay<NowPlayingOverlay>().forEach {

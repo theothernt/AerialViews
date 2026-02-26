@@ -14,36 +14,25 @@ class OverlayStateStore {
     private val _uiState = MutableStateFlow(OverlayUiState())
     val uiState: StateFlow<OverlayUiState> = _uiState.asStateFlow()
 
-    fun setLocation(
+    fun setMetadata(
+        type: OverlayType,
         text: String,
         poi: Map<Int, String>,
         metadataType: MetadataType,
     ) {
         _uiState.update {
             it.copy(
-                location =
-                    MetadataOverlayState(
-                        text = text,
-                        poi = poi,
-                        metadataType = metadataType,
-                    ),
-            )
-        }
-    }
-
-    fun setLocation2(
-        text: String,
-        poi: Map<Int, String>,
-        metadataType: MetadataType,
-    ) {
-        _uiState.update {
-            it.copy(
-                location2 =
-                    MetadataOverlayState(
-                        text = text,
-                        poi = poi,
-                        metadataType = metadataType,
-                    ),
+                metadata =
+                    it.metadata.toMutableMap().apply {
+                        put(
+                            type,
+                            MetadataOverlayState(
+                                text = text,
+                                poi = poi,
+                                metadataType = metadataType,
+                            ),
+                        )
+                    },
             )
         }
     }
@@ -85,8 +74,7 @@ class OverlayStateStore {
     fun resetForNextMedia() {
         _uiState.update {
             it.copy(
-                location = MetadataOverlayState(),
-                location2 = MetadataOverlayState(),
+                metadata = emptyMap(),
                 progress = ProgressOverlayState(),
             )
         }
