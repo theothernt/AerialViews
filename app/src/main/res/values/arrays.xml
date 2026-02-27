@@ -1121,9 +1121,9 @@
     <string name="overlay_metadata_videos_default" translatable="false">POI</string>
 
     <string-array name="overlay_metadata_photos_entries">
-        <item>Location (EXIF)</item>
-        <item>Date taken (EXIF)</item>
-        <item>Description (EXIF)</item>
+        <item>Location (EXIF/Immich)</item>
+        <item>Date taken (EXIF/Immich)</item>
+        <item>Description (EXIF/Immich)</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>

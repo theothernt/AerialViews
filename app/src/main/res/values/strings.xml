@@ -482,11 +482,11 @@
     <string name="weather_forecast_slot4">Slot 4</string>
 
     <!-- Main / Settings / Overlays / Metadata -->
-    <string name="appearance_metadata_slot1_title">Metadata Slot 1</string>
+    <string name="appearance_metadata_slot1_title">Metadata #1</string>
     <string name="appearance_metadata_slot1_summary">Select and reorder metadata fields</string>
-
-    <string name="appearance_metadata_slot2_title">Metadata Slot 2</string>
+    <string name="appearance_metadata_slot2_title">Metadata #2</string>
     <string name="appearance_metadata_slot2_summary">Select and reorder metadata fields</string>
+    <string name="appearance_metadata_fields_title">Configure fields</string>
 
     <string name="overlay_metadata_videos_title">Video metadata</string>
     <string name="overlay_metadata_videos_summary">Select and reorder metadata shown for videos</string>
