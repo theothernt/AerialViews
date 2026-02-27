@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">Отображает текст \"Загрузка…\" во время загрузки приложения</string>
   <string name="appearance_loading_show_title">Показывать текст загрузки</string>
   <string name="appearance_location_summary">Отображение местоположения, описания или достопримечательностей</string>
-  <string name="appearance_location_title">Местоположение / Описание</string>
+  <string name="appearance_metadata_title">Местоположение / Описание</string>
   <string name="appearance_message_api_enabled_summary">Разрешить удаленную настройку пользовательских сообщений через HTTP API</string>
   <string name="appearance_message_api_enabled_title">Включить API</string>
   <string name="appearance_message_api_port_title">Номер порта (по умолчанию: 8081)</string>

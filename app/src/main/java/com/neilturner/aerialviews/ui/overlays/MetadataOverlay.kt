@@ -5,14 +5,17 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
+import com.neilturner.aerialviews.models.enums.MetadataType
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
+import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
 
-class LocationOverlay : AppCompatTextView {
+class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var currentPositionProgressHandler: (() -> Unit)? = null
     private val textAlpha = 1f // start + end values?
     var isFadingOutMedia = false // Stops POI change + fade as video is ending
+    var type: OverlayType = OverlayType.METADATA1
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -30,7 +33,7 @@ class LocationOverlay : AppCompatTextView {
     fun updateLocationData(
         location: String,
         poi: Map<Int, String>,
-        descriptionManifestType: DescriptionManifestType,
+        metadataType: MetadataType,
         player: VideoPlayerView,
     ) {
         isFadingOutMedia = false
@@ -38,7 +41,7 @@ class LocationOverlay : AppCompatTextView {
 
         // If POI, set POI text, if empty use location, or else use location
         this.text =
-            if (descriptionManifestType == DescriptionManifestType.POI) {
+            if (metadataType == MetadataType.DYNAMIC) {
                 poi[0]?.replace("\n", " ") ?: location
             } else {
                 location
@@ -50,12 +53,19 @@ class LocationOverlay : AppCompatTextView {
         }
 
         // If set to POI, set timer to update text when interval is reached
-        if (descriptionManifestType == DescriptionManifestType.POI && poi.size > 1) { // everything else is static anyways
+        if (metadataType == MetadataType.DYNAMIC && poi.size > 1) { // everything else is static anyways
             updatePointsOfInterest(poi, player)
         } else {
             // POI is off or empty, so disable handler
             currentPositionProgressHandler = null
         }
+    }
+
+    fun render(
+        state: MetadataOverlayState,
+        player: VideoPlayerView,
+    ) {
+        updateLocationData(state.text, state.poi, state.metadataType, player)
     }
 
     private fun updatePointsOfInterest(

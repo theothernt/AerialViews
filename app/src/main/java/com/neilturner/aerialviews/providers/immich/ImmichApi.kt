@@ -71,6 +71,7 @@ data class SearchMetadataRequest(
     val rating: Int? = null,
     val order: String? = null,
     val size: Int? = null,
+    val withExif: Boolean? = null,
 )
 
 @Serializable
@@ -86,6 +87,7 @@ data class Asset(
     val id: String = "",
     val type: String = "",
     val originalPath: String = "",
+    val localDateTime: String? = null,
     val exifInfo: ExifInfo? = null,
 )
 

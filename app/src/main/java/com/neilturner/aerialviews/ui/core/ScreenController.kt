@@ -17,21 +17,27 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.MetadataType
+import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
-import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
+import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
+import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
+import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
 import com.neilturner.aerialviews.utils.GradientHelper
@@ -44,6 +50,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
@@ -62,6 +69,9 @@ class ScreenController(
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
+    private val overlayStateStore = OverlayStateStore()
+    private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
+    private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -78,6 +88,8 @@ class ScreenController(
     private var isPaused = false
     private var pauseStartTime: Long = 0
     private var sleepTimerJob: Job? = null
+    private val metadataJobs = mutableMapOf<OverlayType, Job>()
+    private var currentMedia: AerialMedia? = null
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -90,6 +102,7 @@ class ScreenController(
     private val brightnessView: View
     private val gradientTopView: View
     private val gradientBottomView: View
+    private val progressBarView: ProgressBar
     val view: View
 
     private val topLeftIds: List<Int>
@@ -130,8 +143,7 @@ class ScreenController(
         imagePlayer.setOnPlayerListener(this)
 
         brightnessView = binding.brightnessView
-
-        GlobalBus.dropAll() // Clear any old events
+        progressBarView = binding.progressBar
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
@@ -150,17 +162,19 @@ class ScreenController(
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
+        bindOverlayState()
+        overlayEventBridge.start()
 
         // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
             val gravity = if (GeneralPrefs.progressBarLocation == ProgressBarLocation.TOP) Gravity.TOP else Gravity.BOTTOM
-            (binding.progressBar.layoutParams as FrameLayout.LayoutParams).gravity = gravity
+            (progressBarView.layoutParams as FrameLayout.LayoutParams).gravity = gravity
 
             val alpha = GeneralPrefs.progressBarOpacity.toFloat() / 100
-            binding.progressBar.alpha = alpha
+            progressBarView.alpha = alpha
             Timber.i("Progress bar: $alpha, ${GeneralPrefs.progressBarLocation}")
 
-            binding.progressBar.visibility = View.VISIBLE
+            progressBarView.visibility = View.VISIBLE
         }
 
         // Setup brightness/dimness
@@ -219,9 +233,6 @@ class ScreenController(
                     }
             }
 
-            GlobalBus.getFlow<MessageEvent>(MessageEvent::class.java).collect {
-                Timber.i("ScreenController: Message ${it.text}")
-            }
         }
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
@@ -252,23 +263,19 @@ class ScreenController(
         // Reset pause state when loading new item
         isPaused = false
         pauseStartTime = 0
+        currentMedia = media
+        overlayStateStore.resetForNextMedia()
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
             val replacement = "$1****:****@****/"
             val url = pattern.replace(media.uri.toString(), replacement)
-            Timber.i("Loading: ${media.description} - $url (${media.poi})")
+            Timber.i("Loading: ${media.metadata.shortDescription} - $url (${media.metadata.pointsOfInterest})")
         } else {
-            Timber.i("Loading: ${media.description} - ${media.uri} (${media.poi})")
+            Timber.i("Loading: ${media.metadata.shortDescription} - ${media.uri} (${media.metadata.pointsOfInterest})")
         }
 
-        // Set overlay data for current video
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
-            val locationType = GeneralPrefs.descriptionVideoManifestStyle
-            if (locationType != null) {
-                it.updateLocationData(media.description, media.poi, locationType, videoPlayer)
-            }
-        }
+        updateMetadataOverlayData(media)
 
         // Set overlay positions
         overlayHelper.assignOverlaysAndIds(
@@ -390,7 +397,7 @@ class ScreenController(
         if (!canSkip) return
         canSkip = false
 
-        overlayHelper.findOverlay<LocationOverlay>().forEach {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
         }
 
@@ -532,12 +539,15 @@ class ScreenController(
 
     fun stop() {
         RefreshRateHelper.restoreOriginalMode(context)
+        overlayEventBridge.stop()
         videoPlayer.release()
         imagePlayer.release()
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
         sleepTimerJob?.cancel()
+        metadataJobs.values.forEach { it.cancel() }
+        metadataJobs.clear()
         mainScope.cancel()
     }
 
@@ -727,7 +737,97 @@ class ScreenController(
 
     override fun onImageError() = handleError()
 
-    override fun onImagePrepared() = fadeInNextItem()
+    private fun updateMetadataOverlayData(media: AerialMedia) {
+        val metadataSlots = listOf(OverlayType.METADATA1, OverlayType.METADATA2)
+
+        metadataSlots.forEach { slot ->
+            metadataJobs[slot]?.cancel()
+            metadataJobs[slot] =
+                mainScope.launch {
+                    try {
+                        val preferences = getMetadataPreferences(slot)
+                        val resolved = metadataResolver.resolve(context, media, preferences)
+                        if (currentMedia !== media) return@launch
+
+                        overlayStateStore.setMetadata(
+                            slot,
+                            resolved.text,
+                            resolved.poi,
+                            resolved.metadataType,
+                        )
+                    } catch (e: Exception) {
+                        Timber.e(e, "Metadata slot $slot resolver failed")
+                        if (currentMedia === media) {
+                            overlayStateStore.setMetadata(slot, "", emptyMap(), MetadataType.STATIC)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getMetadataPreferences(slot: OverlayType): MetadataResolver.Preferences =
+        if (slot == OverlayType.METADATA1) {
+            MetadataResolver.Preferences(
+                videoSelection = GeneralPrefs.overlayMetadata1Videos,
+                videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
+                photoSelection = GeneralPrefs.overlayMetadata1Photos,
+                photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
+                photoLocationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoDateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
+            )
+        } else {
+            MetadataResolver.Preferences(
+                videoSelection = GeneralPrefs.overlayMetadata2Videos,
+                videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
+                photoSelection = GeneralPrefs.overlayMetadata2Photos,
+                photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
+                photoLocationType = GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoDateType = GeneralPrefs.overlayMetadata2PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
+            )
+        }
+
+    override fun onImagePrepared() {
+        currentMedia
+            ?.takeIf { it.type == AerialMediaType.IMAGE }
+            ?.let { updateMetadataOverlayData(it) }
+        fadeInNextItem()
+    }
+
+    private fun bindOverlayState() {
+        mainScope.launch {
+            overlayStateStore.uiState.collectLatest { state ->
+                renderOverlayState(state)
+            }
+        }
+    }
+
+    private fun renderOverlayState(state: OverlayUiState) {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
+            val locationState = state.metadata[overlay.type]
+            if (locationState != null) {
+                overlay.render(locationState, videoPlayer)
+            }
+        }
+
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach {
+            it.render(state.nowPlaying)
+        }
+
+        overlayHelper.findOverlay<WeatherOverlay>().forEach {
+            it.render(state.weather)
+        }
+
+        overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
+            val messageState = state.message[overlay.type]
+            if (messageState != null) {
+                overlay.render(messageState)
+            }
+        }
+
+        progressBarView.render(state.progress)
+    }
 
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text

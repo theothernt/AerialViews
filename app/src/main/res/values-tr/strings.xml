@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">Medya oynatma listesi oluşturulurken yükleme mesajı görüntülenir</string>
   <string name="appearance_loading_show_title">Yükleme mesajını göster</string>
   <string name="appearance_location_summary">Konumu, açıklamayı veya ilgi noktalarını görüntüle</string>
-  <string name="appearance_location_title">Konum / Açıklama</string>
+  <string name="appearance_metadata_title">Konum / Açıklama</string>
   <string name="appearance_message_api_enabled_summary">HTTP API aracılığıyla uzaktan özel mesaj ayarları yapılmasına olanak tanıyın</string>
   <string name="appearance_message_api_enabled_title">API\'yi etkinleştirin</string>
   <string name="appearance_message_api_port_title">Bağlantı noktası numarası (varsayılan: 8081)</string>

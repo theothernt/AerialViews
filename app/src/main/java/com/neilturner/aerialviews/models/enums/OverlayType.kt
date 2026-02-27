@@ -3,7 +3,8 @@ package com.neilturner.aerialviews.models.enums
 enum class OverlayType {
     EMPTY,
     CLOCK,
-    LOCATION,
+    METADATA1,
+    METADATA2,
     WEATHER1,
 
     // WEATHER2,

@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.content.Context
 import android.net.Uri
 import android.os.Build.VERSION.SDK_INT
 import coil3.decode.Decoder
@@ -13,6 +14,8 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
@@ -24,7 +27,9 @@ import com.neilturner.aerialviews.utils.SslHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import timber.log.Timber
+import java.io.FilterInputStream
 import java.io.InputStream
 import java.util.EnumSet
 import java.util.concurrent.TimeUnit
@@ -87,6 +92,54 @@ internal object ImagePlayerHelper {
             return null
         }
     }
+
+    fun streamFromLocalFile(
+        context: Context,
+        uri: Uri,
+    ): InputStream? =
+        try {
+            context.contentResolver.openInputStream(uri)
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while opening local file: ${ex.message}")
+            FirebaseHelper.crashlyticsException(ex)
+            null
+        }
+
+    fun streamFromImmichFile(uri: Uri): InputStream? =
+        try {
+            val client = buildOkHttpClient()
+            val request = Request.Builder().url(uri.toString()).build()
+            val response = client.newCall(request).execute()
+            if (!response.isSuccessful) {
+                response.close()
+                return null
+            }
+            val responseBody = response.body
+            object : FilterInputStream(responseBody.byteStream()) {
+                override fun close() {
+                    try {
+                        super.close()
+                    } finally {
+                        response.close()
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while opening Immich file: ${ex.message}")
+            FirebaseHelper.crashlyticsException(ex)
+            null
+        }
+
+    fun streamFromMedia(
+        context: Context,
+        media: AerialMedia,
+    ): InputStream? =
+        when (media.source) {
+            AerialMediaSource.SAMBA -> streamFromSambaFile(media.uri)
+            AerialMediaSource.WEBDAV -> streamFromWebDavFile(media.uri)
+            AerialMediaSource.IMMICH -> streamFromImmichFile(media.uri)
+            else -> streamFromLocalFile(context, media.uri)
+        }
 
     fun streamFromSambaFile(uri: Uri): InputStream? {
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)

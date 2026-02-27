@@ -9,6 +9,7 @@ import com.neilturner.aerialviews.models.enums.SceneType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.ProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.models.videos.AmazonVideos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
@@ -55,8 +56,11 @@ class AmazonMediaProvider(
                         asset.uriAtQuality(quality),
                         type = AerialMediaType.VIDEO,
                         source = AerialMediaSource.AMAZON,
-                        timeOfDay = timeOfDay,
-                        scene = scene,
+                        metadata =
+                            AerialMediaMetadata(
+                                timeOfDay = timeOfDay,
+                                scene = scene,
+                            ),
                     ),
                 )
             }

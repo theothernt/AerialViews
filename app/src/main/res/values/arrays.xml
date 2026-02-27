@@ -242,27 +242,28 @@
     </string-array>
 
     <!-- Description Folder levels -->
-    <string-array name="description_folder_level_entries">
+    <string-array name="metadata_folder_level_entries">
         <item>\'Italy / Sunset\' - 1 Level</item>
         <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
         <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
         <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
         <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
     </string-array>
-    <string-array name="description_folder_level_values" translatable="false">
+    <string-array name="metadata_folder_level_values" translatable="false">
         <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>
     </string-array>
-    <string name="description_folder_level_default" translatable="false">1</string>
+    <string name="metadata_folder_level_default" translatable="false">1</string>
 
     <!-- Slots -->
     <string-array name="slot_entries">
         <item>Empty</item>
         <item>Clock</item>
-        <item>Location</item>
+        <item>Metadata #1</item>
+        <item>Metadata #2</item>
         <item>Weather #1</item>
         <!--    <item>Weather #2</item>-->
         <item>Now Playing #1</item>
@@ -277,7 +278,8 @@
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
-        <item>LOCATION</item>
+        <item>METADATA1</item>
+        <item>METADATA2</item>
         <item>WEATHER1</item>
         <!--    <item>WEATHER2</item>-->
         <item>MUSIC1</item>
@@ -1077,7 +1079,10 @@
         <item>COMM2</item>
         <!--    <item>LOCAL</item>-->
     </string-array>
-    <string-array name="projectivy_shared_providers_default" translatable="false"></string-array>
+    <string-array name="projectivy_shared_providers_default" translatable="false">
+        <item>AMAZON</item>
+        <item>COMM1</item>
+    </string-array>
 
     <!-- Overlay Corner Fade Selection -->
     <string-array name="overlay_fade_corners_entries">
@@ -1099,4 +1104,53 @@
         <item>BOTTOM_RIGHT</item>
     </string-array>
 
+    <string-array name="overlay_metadata_videos_entries">
+        <item>Dynamic Points of Interest</item>
+        <item>Short Description</item>
+        <item>Use filename as-is</item>
+        <item>Folder &amp; filename</item>
+        <item>Folder name only</item>
+    </string-array>
+    <string-array name="overlay_metadata_videos_values" translatable="false">
+        <item>POI</item>
+        <item>DESC</item>
+        <item>FILENAME</item>
+        <item>FOLDER_FILENAME</item>
+        <item>FOLDER_ONLY</item>
+    </string-array>
+    <string name="overlay_metadata_videos_default" translatable="false">POI</string>
+
+    <string-array name="overlay_metadata_photos_entries">
+        <item>Location (EXIF/Immich)</item>
+        <item>Date taken (EXIF/Immich)</item>
+        <item>Description (EXIF/Immich)</item>
+        <item>Use filename as-is</item>
+        <item>Folder &amp; filename</item>
+        <item>Folder name only</item>
+    </string-array>
+    <string-array name="overlay_metadata_photos_values" translatable="false">
+        <item>LOCATION</item>
+        <item>DATE_TAKEN</item>
+        <item>DESCRIPTION</item>
+        <item>FILENAME</item>
+        <item>FOLDER_FILENAME</item>
+        <item>FOLDER_ONLY</item>
+    </string-array>
+    <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN,DESCRIPTION</string>
+
+    <string-array name="overlay_metadata_photo_location_entries">
+        <item>City</item>
+        <item>City, State</item>
+        <item>City, Country</item>
+        <item>City, State, Country</item>
+        <item>Country</item>
+    </string-array>
+    <string-array name="overlay_metadata_photo_location_values" translatable="false">
+        <item>CITY</item>
+        <item>CITY_STATE</item>
+        <item>CITY_COUNTRY</item>
+        <item>CITY_STATE_COUNTRY</item>
+        <item>COUNTRY</item>
+    </string-array>
+    <string name="overlay_metadata_photo_location_default" translatable="false">CITY_COUNTRY</string>
 </resources>

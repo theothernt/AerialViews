@@ -12,7 +12,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
 import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
-import com.neilturner.aerialviews.ui.overlays.LocationOverlay
+import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
@@ -193,10 +193,19 @@ class OverlayHelper(
                 }
             }
 
-            OverlayType.LOCATION -> {
-                LocationOverlay(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.descriptionSize.toFloat())
-                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.descriptionWeight)
+            OverlayType.METADATA1 -> {
+                MetadataOverlay(context).apply {
+                    type = overlay
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata1Size.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata1Weight)
+                }
+            }
+
+            OverlayType.METADATA2 -> {
+                MetadataOverlay(context).apply {
+                    type = overlay
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata2Size.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata2Weight)
                 }
             }
 

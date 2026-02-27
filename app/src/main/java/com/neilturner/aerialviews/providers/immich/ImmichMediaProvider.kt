@@ -11,7 +11,9 @@ import com.neilturner.aerialviews.models.enums.ImmichVideoType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
@@ -194,9 +196,20 @@ class ImmichMediaProvider(
         assets.forEach { asset ->
             val poi = extractLocationPoi(asset)
             val description = asset.exifInfo?.description ?: ""
+            val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
 
-            Timber.i("Description: $description, Filename: $filename")
+            val rawExif = asset.exifInfo
+            Timber.i(
+                "Immich EXIF: id=%s path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
+                asset.id,
+                filename,
+                asset.localDateTime,
+                rawExif?.description,
+                rawExif?.city,
+                rawExif?.state,
+                rawExif?.country,
+            )
 
             val isVideo = FileHelper.isSupportedVideoType(filename)
             val isImage = FileHelper.isSupportedImageType(filename)
@@ -204,7 +217,15 @@ class ImmichMediaProvider(
             if (isVideo || isImage) {
                 val uri = getAssetUri(asset.id, isVideo)
                 val item =
-                    AerialMedia(uri, description, poi).apply {
+                    AerialMedia(
+                        uri,
+                        metadata =
+                            AerialMediaMetadata(
+                                shortDescription = description,
+                                pointsOfInterest = poi,
+                                exif = exif,
+                            ),
+                    ).apply {
                         source = AerialMediaSource.IMMICH
                         type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE
                     }
@@ -250,6 +271,23 @@ class ImmichMediaProvider(
             Timber.e(e, "Error parsing location EXIF data")
         }
         return poi
+    }
+
+    private fun extractExifMetadata(asset: Asset): AerialExifMetadata {
+        val exifInfo = asset.exifInfo
+        return AerialExifMetadata(
+            date = asset.localDateTime?.let(::normalizeImmichLocalDateTime),
+            offset = null,
+            city = exifInfo?.city,
+            state = exifInfo?.state,
+            country = exifInfo?.country,
+            description = exifInfo?.description,
+        )
+    }
+
+    private fun normalizeImmichLocalDateTime(value: String): String {
+        val normalized = value.trim()
+        return normalized.replace(Regex("(?i)(?:z|[+-]\\d{2}:?\\d{2})$"), "")
     }
 
     private fun buildSummaryMessage(
@@ -316,6 +354,9 @@ class ImmichMediaProvider(
                 if (shared == null) throw Exception("Empty response body")
                 // Cache server-provided key for use in asset URLs
                 resolvedSharedKey = shared.key
+                if (!shared.showMetadata) {
+                    Timber.w("Immich shared link has showMetadata=false; EXIF/metadata may be absent in API responses")
+                }
 
                 // Handle different shared link types
                 when (shared.type) {
@@ -481,7 +522,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeFavorites.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching up to $count favorite assets")
-            val searchRequest = SearchMetadataRequest(isFavorite = true)
+            val searchRequest = SearchMetadataRequest(isFavorite = true, withExif = true)
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -507,7 +548,7 @@ class ImmichMediaProvider(
             if (ratings.isNotEmpty()) {
                 for (rating in ratings) {
                     Timber.d("Fetching rated assets with rating: $rating")
-                    val searchRequest = SearchMetadataRequest(rating = rating.toInt())
+                    val searchRequest = SearchMetadataRequest(rating = rating.toInt(), withExif = true)
                     val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
                     if (response.isSuccessful) {
                         val searchResponse = response.body()
@@ -530,7 +571,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val searchRequest = SearchMetadataRequest(size = count)
+            val searchRequest = SearchMetadataRequest(size = count, withExif = true)
             val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
@@ -551,7 +592,7 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val searchRequest = SearchMetadataRequest(size = count, order = "desc")
+            val searchRequest = SearchMetadataRequest(size = count, order = "desc", withExif = true)
             val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()

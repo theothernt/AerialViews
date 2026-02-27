@@ -85,7 +85,7 @@
   <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען…״ בזמן טעינת האפליקציה</string>
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
   <string name="appearance_location_summary">הצג מיקום, תיאור או נקודות עניין</string>
-  <string name="appearance_location_title">מיקום / תאור</string>
+  <string name="appearance_metadata_title">מיקום / תאור</string>
   <string name="appearance_message_api_enabled_summary">אפשר הגדרה מרחוק של הודעות מותאמות אישית באמצעות HTTP API</string>
   <string name="appearance_message_api_enabled_title">הפעלת API</string>
   <string name="appearance_message_api_port_title">מספר יציאה (ברירת מחדל: 8081)</string>

@@ -6,11 +6,10 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -30,7 +29,7 @@ object GeneralPrefs : KotprefModel() {
     // Overlays - Bottom
     var slotBottomLeft1 by nullableEnumValuePref(OverlayType.CLOCK, "slot_bottom_left1")
     var slotBottomLeft2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_left2")
-    var slotBottomRight1 by nullableEnumValuePref(OverlayType.LOCATION, "slot_bottom_right1")
+    var slotBottomRight1 by nullableEnumValuePref(OverlayType.METADATA1, "slot_bottom_right1")
     var slotBottomRight2 by nullableEnumValuePref(OverlayType.EMPTY, "slot_bottom_right2")
 
     // Clock
@@ -76,26 +75,30 @@ object GeneralPrefs : KotprefModel() {
 
     var weatherHumidity by stringPref("", "weather_humidity")
 
-    // Location
-    var descriptionVideoManifestStyle by nullableEnumValuePref(
-        DescriptionManifestType.POI,
-        "description_video_manifest_style",
-    ) // Title or POI
-    var descriptionVideoFilenameStyle by nullableEnumValuePref(
-        DescriptionFilenameType.DISABLED,
-        "description_video_filename_style",
-    ) // Filename - Videos
-    var descriptionPhotoFilenameStyle by nullableEnumValuePref(
-        DescriptionFilenameType.DISABLED,
-        "description_photo_filename_style",
-    ) // Filename - Photos
+    // Metadata
+    var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
+    var overlayMetadata1VideosFolderLevel by stringPref("1", "overlay_metadata1_video_folder_levels")
 
-    // Filename + Folder depth
-    var descriptionVideoFolderLevel by stringPref("1", "description_video_folder_levels")
-    var descriptionPhotoFolderLevel by stringPref("1", "description_photo_folder_levels")
+    var overlayMetadata1Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
+    var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photo_folder_levels")
+    var overlayMetadata1PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata1_photo_location_type")
+    var overlayMetadata1PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata1_photo_date_type")
+    var overlayMetadata1PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata1_photo_date_custom")
 
-    var descriptionSize by stringPref("18", "description_size")
-    var descriptionWeight by stringPref("300", "description_weight") // Message
+    var overlayMetadata1Size by stringPref("18", "overlay_metadata1_size")
+    var overlayMetadata1Weight by stringPref("300", "overlay_metadata1_weight") // Message
+
+    var overlayMetadata2Videos by stringPref("POI", "overlay_metadata2_videos")
+    var overlayMetadata2VideosFolderLevel by stringPref("1", "overlay_metadata2_video_folder_levels")
+
+    var overlayMetadata2Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata2_photos")
+    var overlayMetadata2PhotosFolderLevel by stringPref("1", "overlay_metadata2_photo_folder_levels")
+    var overlayMetadata2PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata2_photo_location_type")
+    var overlayMetadata2PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata2_photo_date_type")
+    var overlayMetadata2PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata2_photo_date_custom")
+
+    var overlayMetadata2Size by stringPref("18", "overlay_metadata2_size")
+    var overlayMetadata2Weight by stringPref("300", "overlay_metadata2_weight") // Message
 
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")

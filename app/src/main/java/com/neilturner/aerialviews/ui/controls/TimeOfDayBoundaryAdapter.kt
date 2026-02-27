@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.settings
+package com.neilturner.aerialviews.ui.controls
 
 import android.view.LayoutInflater
 import android.view.View
@@ -66,7 +66,7 @@ class TimeOfDayBoundaryAdapter(
                 val view =
                     LayoutInflater
                         .from(parent.context)
-                        .inflate(R.layout.dialog_time_of_day_selection, parent, false)
+                        .inflate(R.layout.dialog_time_of_day_row, parent, false)
                 OptionViewHolder(view)
             }
         }

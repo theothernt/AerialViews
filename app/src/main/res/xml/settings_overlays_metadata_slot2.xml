@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <PreferenceCategory app:title="@string/category_videos">
+                <com.neilturner.aerialviews.ui.controls.SortableItemPreference
+                    app:key="overlay_metadata2_videos"
+                    app:title="@string/overlay_metadata_videos_title"
+                    app:summary="@string/overlay_metadata_videos_summary"
+                    app:dialogTitle="@string/overlay_metadata_videos_summary"
+                    app:entries="@array/overlay_metadata_videos_entries"
+                    app:entryValues="@array/overlay_metadata_videos_values"
+                    app:defaultValue="@string/overlay_metadata_videos_default" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/metadata_folder_level_default"
+                    app:entries="@array/metadata_folder_level_entries"
+                    app:entryValues="@array/metadata_folder_level_values"
+                    app:key="overlay_metadata2_video_folder_levels"
+                    app:title="@string/overlay_metadata_folder_levels_title"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+        <PreferenceCategory app:title="@string/category_photos">
+                <com.neilturner.aerialviews.ui.controls.SortableItemPreference
+                    app:key="overlay_metadata2_photos"
+                    app:title="@string/overlay_metadata_photos_title"
+                    app:summary="@string/overlay_metadata_photos_summary"
+                    app:dialogTitle="@string/overlay_metadata_photos_summary"
+                    app:entries="@array/overlay_metadata_photos_entries"
+                    app:entryValues="@array/overlay_metadata_photos_values"
+                    app:defaultValue="@string/overlay_metadata_photos_default" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/metadata_folder_level_default"
+                    app:entries="@array/metadata_folder_level_entries"
+                    app:entryValues="@array/metadata_folder_level_values"
+                    app:key="overlay_metadata2_photo_folder_levels"
+                    app:title="@string/overlay_metadata_folder_levels_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/overlay_metadata_photo_location_default"
+                    app:entries="@array/overlay_metadata_photo_location_entries"
+                    app:entryValues="@array/overlay_metadata_photo_location_values"
+                    app:key="overlay_metadata2_photo_location_type"
+                    app:title="@string/overlay_metadata_photo_location_title"
+                    app:summary="@string/overlay_metadata_photo_location_summary"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/date_format_default"
+                    app:entries="@array/date_format_entries"
+                    app:entryValues="@array/date_format_values"
+                    app:key="overlay_metadata2_photo_date_type"
+                    app:title="@string/overlay_metadata_photo_date_format_title" />
+
+                <EditTextPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/date_custom_default"
+                    app:key="overlay_metadata2_photo_date_custom"
+                    app:title="@string/appearance_date_custom_title"
+                    app:summary="@string/overlay_metadata_photo_date_format_summary" />
+        </PreferenceCategory>
+
+
+</PreferenceScreen>

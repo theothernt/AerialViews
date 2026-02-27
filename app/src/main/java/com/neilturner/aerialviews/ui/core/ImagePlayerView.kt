@@ -10,8 +10,8 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
-import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -21,6 +21,7 @@ import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
+import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
@@ -30,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.BufferedInputStream
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : AppCompatImageView {
@@ -101,21 +103,72 @@ class ImagePlayerView : AppCompatImageView {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            when (media.source) {
-                AerialMediaSource.SAMBA -> {
-                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
-                    loadImage(stream)
-                }
-
-                AerialMediaSource.WEBDAV -> {
-                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
-                    loadImage(stream)
-                }
-
-                else -> {
-                    loadImage(media.uri)
+            val openSourceStream: () -> java.io.InputStream? = {
+                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
+                if (mediaStream == null) {
+                    null
+                } else if (mediaStream.markSupported()) {
+                    mediaStream
+                } else {
+                    BufferedInputStream(mediaStream, 16 * 1024)
                 }
             }
+
+            val stream = openSourceStream()
+            if (stream == null) {
+                loadImage(media.uri)
+                return@launch
+            }
+
+            if (isGifStream(stream)) {
+                loadImage(stream)
+                return@launch
+            }
+            runCatching { stream.close() }
+
+            val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
+            val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
+
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight)
+            if (bitmapResult == null) {
+                loadImage(media.uri)
+                return@launch
+            }
+
+            if (media.source != AerialMediaSource.IMMICH) {
+                media.metadata.exif.date = bitmapResult.metadata.date
+                media.metadata.exif.offset = bitmapResult.metadata.offset
+                media.metadata.exif.latitude = bitmapResult.metadata.latitude
+                media.metadata.exif.longitude = bitmapResult.metadata.longitude
+            }
+
+            Timber.d(
+                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s",
+                bitmapResult.metadata.date,
+                bitmapResult.metadata.offset,
+                bitmapResult.metadata.latitude,
+                bitmapResult.metadata.longitude,
+            )
+
+            loadImage(bitmapResult.imageBytes)
+        }
+    }
+
+    private fun isGifStream(stream: java.io.InputStream): Boolean {
+        return try {
+            stream.mark(6)
+            val header = ByteArray(6)
+            val read = stream.read(header)
+            stream.reset()
+            if (read < 6) return false
+            header[0] == 'G'.code.toByte() &&
+                header[1] == 'I'.code.toByte() &&
+                header[2] == 'F'.code.toByte() &&
+                header[3] == '8'.code.toByte() &&
+                (header[4] == '7'.code.toByte() || header[4] == '9'.code.toByte()) &&
+                header[5] == 'a'.code.toByte()
+        } catch (_: Exception) {
+            false
         }
     }
 
