@@ -99,6 +99,19 @@ internal class MetadataResolver(
                         }
                 }
 
+                "DESCRIPTION" -> {
+                    media.metadata.exif.description
+                        ?.trim()
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let {
+                            return ResolvedMetadata(
+                                text = it,
+                                poi = emptyMap(),
+                                metadataType = MetadataType.STATIC,
+                            )
+                        }
+                }
+
                 "FILENAME" -> {
                     media.uri.filenameWithoutExtension
                         .trim()

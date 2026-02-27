@@ -88,6 +88,7 @@ data class Asset(
     val type: String = "",
     val originalPath: String = "",
     val localDateTime: String? = null,
+    val description: String? = null,
     val exifInfo: ExifInfo? = null,
 )
 

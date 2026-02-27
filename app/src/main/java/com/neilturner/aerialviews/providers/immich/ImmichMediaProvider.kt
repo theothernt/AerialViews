@@ -195,7 +195,7 @@ class ImmichMediaProvider(
 
         assets.forEach { asset ->
             val poi = extractLocationPoi(asset)
-            val description = asset.exifInfo?.description ?: ""
+            val description = asset.description ?: asset.exifInfo?.description ?: ""
             val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
 
@@ -205,7 +205,7 @@ class ImmichMediaProvider(
                 asset.id,
                 filename,
                 asset.localDateTime,
-                rawExif?.description,
+                asset.description ?: rawExif?.description,
                 rawExif?.city,
                 rawExif?.state,
                 rawExif?.country,
@@ -281,7 +281,7 @@ class ImmichMediaProvider(
             city = exifInfo?.city,
             state = exifInfo?.state,
             country = exifInfo?.country,
-            description = exifInfo?.description,
+            description = asset.description ?: exifInfo?.description,
         )
     }
 
