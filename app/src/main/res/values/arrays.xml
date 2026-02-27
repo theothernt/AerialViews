@@ -1107,6 +1107,7 @@
     <string-array name="overlay_metadata_videos_entries">
         <item>Dynamic Points of Interest</item>
         <item>Short Description</item>
+        <item>Location (EXIF/Immich)</item>
         <item>Use filename as-is</item>
         <item>Folder &amp; filename</item>
         <item>Folder name only</item>
@@ -1114,6 +1115,7 @@
     <string-array name="overlay_metadata_videos_values" translatable="false">
         <item>POI</item>
         <item>DESC</item>
+        <item>LOCATION</item>
         <item>FILENAME</item>
         <item>FOLDER_FILENAME</item>
         <item>FOLDER_ONLY</item>

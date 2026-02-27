@@ -140,6 +140,7 @@ class ImagePlayerView : AppCompatImageView {
                 media.metadata.exif.offset = bitmapResult.metadata.offset
                 media.metadata.exif.latitude = bitmapResult.metadata.latitude
                 media.metadata.exif.longitude = bitmapResult.metadata.longitude
+                media.metadata.exif.description = bitmapResult.metadata.description
             }
 
             Timber.d(

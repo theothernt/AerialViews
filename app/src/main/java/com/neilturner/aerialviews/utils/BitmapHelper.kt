@@ -14,6 +14,7 @@ data class ExifMetadata(
     val offset: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
+    val description: String? = null,
     val orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
 )
 
@@ -90,6 +91,15 @@ object BitmapHelper {
                     offset = exif.getAttribute(ExifInterface.TAG_OFFSET_TIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_OFFSET_TIME),
                     latitude = exif.latLong?.getOrNull(0),
                     longitude = exif.latLong?.getOrNull(1),
+                    description =
+                        exif
+                            .getAttribute(ExifInterface.TAG_IMAGE_DESCRIPTION)
+                            ?.trim()
+                            ?.takeIf { it.isNotBlank() }
+                            ?: exif
+                                .getAttribute(ExifInterface.TAG_USER_COMMENT)
+                                ?.trim()
+                                ?.takeIf { it.isNotBlank() },
                     orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED),
                 )
             } ?: ExifMetadata()

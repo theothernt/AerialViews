@@ -770,6 +770,7 @@ class ScreenController(
             MetadataResolver.Preferences(
                 videoSelection = GeneralPrefs.overlayMetadata1Videos,
                 videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
+                videoLocationType = GeneralPrefs.overlayMetadata1VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoSelection = GeneralPrefs.overlayMetadata1Photos,
                 photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
                 photoLocationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
@@ -780,6 +781,7 @@ class ScreenController(
             MetadataResolver.Preferences(
                 videoSelection = GeneralPrefs.overlayMetadata2Videos,
                 videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
+                videoLocationType = GeneralPrefs.overlayMetadata2VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoSelection = GeneralPrefs.overlayMetadata2Photos,
                 photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
                 photoLocationType = GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,

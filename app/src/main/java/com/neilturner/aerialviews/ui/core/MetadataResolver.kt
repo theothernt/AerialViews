@@ -24,6 +24,7 @@ internal class MetadataResolver(
     data class Preferences(
         val videoSelection: String,
         val videoFolderDepth: Int,
+        val videoLocationType: LocationType,
         val photoSelection: String,
         val photoFolderDepth: Int,
         val photoLocationType: LocationType,
@@ -39,10 +40,14 @@ internal class MetadataResolver(
         if (media.type == AerialMediaType.IMAGE) {
             resolvePhoto(context, media, preferences)
         } else {
-            resolveVideo(media, preferences)
+            resolveVideo(context, media, preferences)
         }
 
-    private fun resolveVideo(media: AerialMedia, preferences: Preferences): ResolvedMetadata {
+    private suspend fun resolveVideo(
+        context: Context,
+        media: AerialMedia,
+        preferences: Preferences,
+    ): ResolvedMetadata {
         val selection = parseSelection(preferences.videoSelection)
 
         for (entry in selection) {
@@ -54,6 +59,30 @@ internal class MetadataResolver(
                             poi = media.metadata.pointsOfInterest,
                             metadataType = MetadataType.DYNAMIC,
                         )
+                    }
+                }
+
+                "LOCATION" -> {
+                    when (val location = resolveMediaLocation(context, media, preferences.videoLocationType)) {
+                        is MediaLocationResolution.Resolved -> {
+                            return ResolvedMetadata(
+                                text = location.text,
+                                poi = emptyMap(),
+                                metadataType = MetadataType.STATIC,
+                            )
+                        }
+
+                        MediaLocationResolution.ContinueFallback -> {
+                            continue
+                        }
+
+                        MediaLocationResolution.StopWithBlank -> {
+                            return ResolvedMetadata(
+                                text = "",
+                                poi = emptyMap(),
+                                metadataType = MetadataType.STATIC,
+                            )
+                        }
                     }
                 }
 
@@ -130,8 +159,8 @@ internal class MetadataResolver(
         for (entry in selection) {
             when (entry) {
                 "LOCATION" -> {
-                    when (val location = resolvePhotoLocation(context, media, preferences.photoLocationType)) {
-                        is PhotoLocationResolution.Resolved -> {
+                    when (val location = resolveMediaLocation(context, media, preferences.photoLocationType)) {
+                        is MediaLocationResolution.Resolved -> {
                             return ResolvedMetadata(
                                 text = location.text,
                                 poi = emptyMap(),
@@ -139,11 +168,11 @@ internal class MetadataResolver(
                             )
                         }
 
-                        PhotoLocationResolution.ContinueFallback -> {
+                        MediaLocationResolution.ContinueFallback -> {
                             continue
                         }
 
-                        PhotoLocationResolution.StopWithBlank -> {
+                        MediaLocationResolution.StopWithBlank -> {
                             return ResolvedMetadata(
                                 text = "",
                                 poi = emptyMap(),
@@ -236,11 +265,11 @@ internal class MetadataResolver(
         )
     }
 
-    private suspend fun resolvePhotoLocation(
+    private suspend fun resolveMediaLocation(
         context: Context,
         media: AerialMedia,
         locationType: LocationType,
-    ): PhotoLocationResolution {
+    ): MediaLocationResolution {
         val modelLocation =
             GeocoderHelper.GeocodedLocation(
                 city = media.metadata.exif.city,
@@ -250,22 +279,22 @@ internal class MetadataResolver(
 
         val fromModel = formatLocation(modelLocation, locationType)
         if (!fromModel.isNullOrBlank()) {
-            return PhotoLocationResolution.Resolved(fromModel)
+            return MediaLocationResolution.Resolved(fromModel)
         }
 
         val latitude = media.metadata.exif.latitude
         val longitude = media.metadata.exif.longitude
         if (latitude == null || longitude == null) {
-            return PhotoLocationResolution.ContinueFallback
+            return MediaLocationResolution.ContinueFallback
         }
 
-        val location = geocoderHelper.reverseGeocode(context, latitude, longitude) ?: return PhotoLocationResolution.StopWithBlank
+        val location = geocoderHelper.reverseGeocode(context, latitude, longitude) ?: return MediaLocationResolution.StopWithBlank
         val formatted = formatLocation(location, locationType)
 
         return if (formatted.isNullOrBlank()) {
-            PhotoLocationResolution.StopWithBlank
+            MediaLocationResolution.StopWithBlank
         } else {
-            PhotoLocationResolution.Resolved(formatted)
+            MediaLocationResolution.Resolved(formatted)
         }
     }
 
@@ -321,13 +350,13 @@ internal class MetadataResolver(
             .map { it.trim().uppercase(Locale.ROOT) }
             .filter { it.isNotBlank() }
 
-    private sealed class PhotoLocationResolution {
-        data object ContinueFallback : PhotoLocationResolution()
+    private sealed class MediaLocationResolution {
+        data object ContinueFallback : MediaLocationResolution()
 
-        data object StopWithBlank : PhotoLocationResolution()
+        data object StopWithBlank : MediaLocationResolution()
 
         data class Resolved(
             val text: String,
-        ) : PhotoLocationResolution()
+        ) : MediaLocationResolution()
     }
 }
