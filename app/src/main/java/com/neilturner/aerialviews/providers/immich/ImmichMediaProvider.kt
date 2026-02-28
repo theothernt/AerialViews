@@ -194,12 +194,10 @@ class ImmichMediaProvider(
         var images = 0
 
         assets.forEach { asset ->
-            val poi = extractLocationPoi(asset)
-            val description = asset.description ?: asset.exifInfo?.description ?: ""
             val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
-
             val rawExif = asset.exifInfo
+
             Timber.i(
                 "Immich EXIF: id=%s path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
                 asset.id,
@@ -221,8 +219,6 @@ class ImmichMediaProvider(
                         uri,
                         metadata =
                             AerialMediaMetadata(
-                                shortDescription = description,
-                                pointsOfInterest = poi,
                                 exif = exif,
                             ),
                     ).apply {
@@ -252,27 +248,6 @@ class ImmichMediaProvider(
             videos = videos,
             images = images,
         )
-    }
-
-    private fun extractLocationPoi(asset: Asset): MutableMap<Int, String> {
-        val poi = mutableMapOf<Int, String>()
-        try {
-            if (asset.exifInfo?.country != null && asset.exifInfo.country.isNotBlank()) {
-                Timber.i("extractLocationPoi: ${asset.id} country = ${asset.exifInfo.country}")
-                val location =
-                    listOfNotNull(
-                        asset.exifInfo.city?.takeIf { it.isNotBlank() },
-                        asset.exifInfo.state?.takeIf { it.isNotBlank() },
-                        asset.exifInfo.country?.takeIf { it.isNotBlank() },
-                    ).joinToString(separator = ", ")
-                if (location.isNotBlank()) {
-                    poi[poi.size] = location
-                }
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Error parsing location EXIF data")
-        }
-        return poi
     }
 
     private fun extractExifMetadata(asset: Asset): AerialExifMetadata {
