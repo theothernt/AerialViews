@@ -1,8 +1,11 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.exifinterface.media.ExifInterface
 import coil3.EventListener
 import coil3.ImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -143,14 +146,15 @@ class ImagePlayerView : AppCompatImageView {
             }
 
             Timber.d(
-                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s",
+                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
                 bitmapResult.metadata.date,
                 bitmapResult.metadata.offset,
                 bitmapResult.metadata.latitude,
                 bitmapResult.metadata.longitude,
+                bitmapResult.metadata.orientation,
             )
 
-            loadImage(bitmapResult.imageBytes)
+            loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
         }
     }
 
@@ -172,7 +176,10 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
-    private suspend fun loadImage(data: Any?) {
+    private suspend fun loadImage(
+        data: Any?,
+        orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
+    ) {
         try {
             val request =
                 ImageRequest
@@ -182,6 +189,7 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
+            applyExifRotation(orientation)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
 
@@ -197,9 +205,38 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
+    private fun applyExifRotation(orientation: Int) {
+        rotation = 0f
+        scaleX = 1f
+
+        val rotationAngle = when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90,
+            ExifInterface.ORIENTATION_TRANSPOSE,
+            ExifInterface.ORIENTATION_TRANSVERSE,
+            -> 90f
+
+            ExifInterface.ORIENTATION_ROTATE_180,
+            ExifInterface.ORIENTATION_FLIP_VERTICAL,
+            -> 180f
+
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
+                scaleX = -1f
+                0f
+            }
+
+            else -> 0f
+        }
+
+        this.rotation = rotationAngle
+    }
+
     fun stop() {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
+        rotation = 0f
+        scaleX = 1f
         pausedTimestamp = 0
         remainingDuration = 0
     }
