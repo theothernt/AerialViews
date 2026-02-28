@@ -199,8 +199,7 @@ class ImmichMediaProvider(
             val rawExif = asset.exifInfo
 
             Timber.i(
-                "Immich EXIF: id=%s path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
-                asset.id,
+                "Immich EXIF: path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
                 filename,
                 asset.localDateTime,
                 asset.description ?: rawExif?.description,
@@ -495,11 +494,23 @@ class ImmichMediaProvider(
         }
     }
 
+    private fun getTypeFilter(): String? =
+        when (prefs.mediaType) {
+            ProviderMediaType.VIDEOS -> "VIDEO"
+            ProviderMediaType.PHOTOS -> "IMAGE"
+            ProviderMediaType.VIDEOS_PHOTOS -> null
+            else -> null
+        }
+
     private suspend fun getFavoriteAssetsFromAPI(): List<Asset> {
         try {
             val count = prefs.includeFavorites.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching up to $count favorite assets")
-            val searchRequest = SearchMetadataRequest(isFavorite = true, withExif = true)
+            val searchRequest = SearchMetadataRequest(
+                isFavorite = true,
+                withExif = true,
+                type = getTypeFilter(),
+            )
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -525,7 +536,11 @@ class ImmichMediaProvider(
             if (ratings.isNotEmpty()) {
                 for (rating in ratings) {
                     Timber.d("Fetching rated assets with rating: $rating")
-                    val searchRequest = SearchMetadataRequest(rating = rating.toInt(), withExif = true)
+                    val searchRequest = SearchMetadataRequest(
+                        rating = rating.toInt(),
+                        withExif = true,
+                        type = getTypeFilter(),
+                    )
                     val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
                     if (response.isSuccessful) {
                         val searchResponse = response.body()
@@ -548,7 +563,11 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val searchRequest = SearchMetadataRequest(size = count, withExif = true)
+            val searchRequest = SearchMetadataRequest(
+                size = count,
+                withExif = true,
+                type = getTypeFilter(),
+            )
             val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
@@ -569,7 +588,12 @@ class ImmichMediaProvider(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val searchRequest = SearchMetadataRequest(size = count, order = "desc", withExif = true)
+            val searchRequest = SearchMetadataRequest(
+                size = count,
+                order = "desc",
+                withExif = true,
+                type = getTypeFilter(),
+            )
             val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()

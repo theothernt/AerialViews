@@ -72,6 +72,7 @@ data class SearchMetadataRequest(
     val order: String? = null,
     val size: Int? = null,
     val withExif: Boolean? = null,
+    val type: String? = null,
 )
 
 @Serializable
