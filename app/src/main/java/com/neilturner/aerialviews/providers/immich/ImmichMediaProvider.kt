@@ -260,9 +260,11 @@ class ImmichMediaProvider(
             if (asset.exifInfo?.country != null && asset.exifInfo.country.isNotBlank()) {
                 Timber.i("extractLocationPoi: ${asset.id} country = ${asset.exifInfo.country}")
                 val location =
-                    listOf(asset.exifInfo.city)
-                        .filter { !it.isNullOrBlank() }
-                        .joinToString(separator = ", ")
+                    listOfNotNull(
+                        asset.exifInfo.city?.takeIf { it.isNotBlank() },
+                        asset.exifInfo.state?.takeIf { it.isNotBlank() },
+                        asset.exifInfo.country?.takeIf { it.isNotBlank() },
+                    ).joinToString(separator = ", ")
                 if (location.isNotBlank()) {
                     poi[poi.size] = location
                 }
