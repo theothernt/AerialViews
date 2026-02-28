@@ -1,8 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.exifinterface.media.ExifInterface
@@ -13,8 +11,8 @@ import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.target.ImageViewTarget
-import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
+import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -24,14 +22,15 @@ import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
-import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.BufferedInputStream
@@ -189,7 +188,9 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
-            applyExifRotation(orientation)
+            withContext(Dispatchers.Main) {
+                applyExifRotation(orientation)
+            }
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
 
