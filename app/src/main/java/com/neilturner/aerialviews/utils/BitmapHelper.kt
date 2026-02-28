@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -22,6 +23,8 @@ data class BitmapResult(
 )
 
 object BitmapHelper {
+    private const val HEADER_BUFFER_SIZE = 512 * 1024 // 512KB - enough for EXIF and image header
+
     suspend fun loadResizedImageBytes(
         openInputStream: () -> InputStream?,
         targetWidth: Int,
@@ -30,11 +33,21 @@ object BitmapHelper {
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             try {
-                val metadata = extractMetadata(openInputStream)
+                // Read header bytes once - used for EXIF and bounds checking
+                val headerBytes = ByteArray(HEADER_BUFFER_SIZE)
+                val headerLength = openInputStream()?.use { stream ->
+                    stream.read(headerBytes)
+                } ?: return@withContext null
 
+                val headerStream = { ByteArrayInputStream(headerBytes, 0, headerLength) }
+
+                // Extract metadata from header
+                val metadata = extractMetadata(headerStream)
+
+                // Get bounds from header to calculate sample size
                 val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
                 val hasValidBounds =
-                    openInputStream()?.use { stream ->
+                    headerStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, boundsOptions)
                         boundsOptions.outWidth > 0 && boundsOptions.outHeight > 0
                     } ?: false
@@ -49,6 +62,7 @@ object BitmapHelper {
                         inPreferredConfig = Bitmap.Config.RGB_565
                     }
 
+                // 2nd open: Full stream for actual bitmap decode
                 val decodedBitmap =
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
