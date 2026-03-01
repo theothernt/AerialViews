@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">Використовуйте альтернативний синтаксичний аналіз медіакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Змініть частоту оновлення дисплея відповідно до частоти кадрів відео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматичне перемикання частоти оновлення</string>
-  <string name="advanced_wol_delay_summary">Час очікування (у секундах) після відправлення пакета WOL перед спробою отримання медіафайлів</string>
-  <string name="advanced_wol_delay_title">Затримка пробудження (секунди)</string>
   <string name="advanced_wol_enable_summary">Надіслати пакет Wake on LAN перед отриманням медіафайлів</string>
   <string name="advanced_wol_enable_title">Увімкнути функцію пробудження по локальній мережі</string>
   <string name="advanced_wol_mac_error">Недійсний формат MAC-адреси</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">Налаштуйте розмір тексту дати</string>
   <string name="appearance_date_summary">Відображення поточної дати</string>
   <string name="appearance_date_title">Дата</string>
-  <string name="appearance_description_photos_filename_summary">Ваші фотографії з локального сховища або мережевого ресурсу</string>
-  <string name="appearance_description_photos_filename_title">"Використовуйте ім\'я файлу/папки для опису"</string>
   <string name="appearance_description_size_title">Розмір</string>
-  <string name="appearance_description_videos_filename_summary">Ваші відео з локального сховища або спільного мережевого ресурсу</string>
-  <string name="appearance_description_videos_filename_title">"Використовуйте ім\'я файлу/папки для опису"</string>
-  <string name="appearance_description_videos_manifest_summary">Відеоролики Apple і спільноти - транслюються в потоковому режимі, що зберігаються локально або в загальному мережевому ресурсі.</string>
-  <string name="appearance_description_videos_manifest_title">"Показати опис або пам\'ятки"</string>
   <string name="appearance_exit_to_settings_summary">Для роботи цієї функції дія «Вихід у налаштування» повинна бути призначена кнопці або напрямку на хрестовині</string>
   <string name="appearance_exit_to_settings_title">Призначити дію</string>
   <string name="appearance_fade_corners_title">Кути потьмяніють</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">Показати верхній градієнт</string>
   <string name="appearance_loading_show_summary">Відображає текст \" Завантаження…\" під час завантаження програми</string>
   <string name="appearance_loading_show_title">Показувати текст завантаження</string>
-  <string name="appearance_location_summary">Відображення місця розташування або точок інтересу</string>
-  <string name="appearance_metadata_title">Місце розташування</string>
   <string name="appearance_message_api_enabled_summary">Дозволити віддалене налаштування користувацьких повідомлень через HTTP API</string>
   <string name="appearance_message_api_enabled_title">Увімкнути API</string>
   <string name="appearance_message_api_port_title">Номер порту (за замовчуванням: 8081)</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">Імпорт налаштувань</string>
   <string name="category_line1">Рядок 1</string>
   <string name="category_line2">Лінія 2</string>
+  <string name="category_location">Місце розташування</string>
   <string name="category_media_render_options">Параметри медіа та рендерингу</string>
   <string name="category_media_scanner_options">Опції сканера мультимедіа</string>
   <string name="category_message">Повідомлення</string>
@@ -388,6 +379,10 @@
   <string name="playlist_sleep_timer_title">Таймер сну</string>
   <string name="playlist_slideshow_speed_summary">Оберіть тривалість</string>
   <string name="playlist_slideshow_speed_title">Швидкість показу слайдів</string>
+  <string name="playlist_time_of_day_heading_day">День</string>
+  <string name="playlist_time_of_day_heading_night">Ніч</string>
+  <string name="playlist_time_of_day_option_sunrise">Схід сонця</string>
+  <string name="playlist_time_of_day_option_sunset">Захід сонця</string>
   <string name="playlist_video_volume_summary">Виберіть рівень гучності відео</string>
   <string name="playlist_video_volume_title">Гучність відео</string>
   <string name="progress_bar_location_title">Місце розташування</string>

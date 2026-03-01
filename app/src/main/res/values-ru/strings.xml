@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ медиакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Изменять частоту обновления дисплея в соответствии с частотой кадров видео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
-  <string name="advanced_wol_delay_summary">Время ожидания (в секундах) после отправки пакета WOL перед попыткой получения медиафайлов</string>
-  <string name="advanced_wol_delay_title">Задержка пробуждения (секунды)</string>
   <string name="advanced_wol_enable_summary">Перед получением медиафайлов отправьте пакет Wake on LAN</string>
   <string name="advanced_wol_enable_title">Включить функцию пробуждения по локальной сети</string>
   <string name="advanced_wol_mac_error">Неверный формат MAC-адреса</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">Отрегулируйте размер текста даты</string>
   <string name="appearance_date_summary">Отображение текущей даты</string>
   <string name="appearance_date_title">Дата</string>
-  <string name="appearance_description_photos_filename_summary">Ваши фотографии из локального хранилища или сетевого доступа</string>
-  <string name="appearance_description_photos_filename_title">Использовать имя файла/папки для описания</string>
   <string name="appearance_description_size_title">Размер</string>
-  <string name="appearance_description_videos_filename_summary">Ваши видео из локального хранилища или сетевого ресурса</string>
-  <string name="appearance_description_videos_filename_title">Использовать имя файла/папки для описания</string>
-  <string name="appearance_description_videos_manifest_summary">Видео Apple и сообщества - потоковое, локальное или из общего сетевого доступа</string>
-  <string name="appearance_description_videos_manifest_title">Показать описание или достопримечательности</string>
   <string name="appearance_exit_to_settings_summary">Для работы этой функции действие «Выход в настройки» должно быть назначено кнопке или направлению на крестовине</string>
   <string name="appearance_exit_to_settings_title">Назначить действие</string>
   <string name="appearance_fade_corners_title">Углы потускнеют</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">Показать верхний градиент</string>
   <string name="appearance_loading_show_summary">Отображает текст \"Загрузка…\" во время загрузки приложения</string>
   <string name="appearance_loading_show_title">Показывать текст загрузки</string>
-  <string name="appearance_location_summary">Отображение местоположения, описания или достопримечательностей</string>
-  <string name="appearance_metadata_title">Местоположение / Описание</string>
   <string name="appearance_message_api_enabled_summary">Разрешить удаленную настройку пользовательских сообщений через HTTP API</string>
   <string name="appearance_message_api_enabled_title">Включить API</string>
   <string name="appearance_message_api_port_title">Номер порта (по умолчанию: 8081)</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">Импорт настроек</string>
   <string name="category_line1">Строка 1</string>
   <string name="category_line2">Строка 2</string>
+  <string name="category_location">Местоположение</string>
   <string name="category_media_render_options">Параметры медиа и рендеринга</string>
   <string name="category_media_scanner_options">Опции сканера мультимедиа</string>
   <string name="category_message">Сообщение</string>
@@ -388,6 +379,10 @@
   <string name="playlist_sleep_timer_title">Таймер сна</string>
   <string name="playlist_slideshow_speed_summary">Выберите продолжительность</string>
   <string name="playlist_slideshow_speed_title">Скорость показа слайдов</string>
+  <string name="playlist_time_of_day_heading_day">День</string>
+  <string name="playlist_time_of_day_heading_night">Ночь</string>
+  <string name="playlist_time_of_day_option_sunrise">Восход солнца</string>
+  <string name="playlist_time_of_day_option_sunset">Закат</string>
   <string name="playlist_video_volume_summary">Выберите уровень громкости видео</string>
   <string name="playlist_video_volume_title">Громкость видео</string>
   <string name="progress_bar_location_title">Местоположение</string>

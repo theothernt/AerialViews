@@ -59,13 +59,6 @@
     <item>Klasör ve dosya adı</item>
     <item>Sadece klasör adı</item>
   </string-array>
-  <string-array name="description_folder_level_entries">
-    <item>\'İtalya / Gün Batımı\' - 1. Seviye</item>
-    <item>\'2025 / İtalya / Gün Batımı\' - 2 Seviye</item>
-    <item>\'Manzaralı / 2025 / İtalya / Gün Batımı\' - 3 Seviye</item>
-    <item>\'Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 4 Seviye</item>
-    <item>\'Medya / Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 5 Seviye</item>
-  </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Devre dışı</item>
     <item>\'Japan - Deep snow in Hokkaido.jpg\' \'Japan - Deep snow in Hokkaido\' haline geliyor</item>
@@ -135,6 +128,13 @@
     <item>Sadece fotoğraflar</item>
     <item>Videolar ve Fotoğraflar</item>
   </string-array>
+  <string-array name="metadata_folder_level_entries">
+    <item>\'İtalya / Gün Batımı\' - 1. Seviye</item>
+    <item>\'2025 / İtalya / Gün Batımı\' - 2 Seviye</item>
+    <item>\'Manzaralı / 2025 / İtalya / Gün Batımı\' - 3 Seviye</item>
+    <item>\'Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 4 Seviye</item>
+    <item>\'Medya / Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 5 Seviye</item>
+  </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Devre dışı</item>
     <item>Şarkı · Sanatçı</item>
@@ -156,6 +156,19 @@
     <item>Sağ üstte</item>
     <item>Sol alt</item>
     <item>Sağ alt</item>
+  </string-array>
+  <string-array name="overlay_metadata_photo_location_entries">
+    <item>Şehir</item>
+  </string-array>
+  <string-array name="overlay_metadata_photos_entries">
+    <item>Dosya adını olduğu gibi kullanın</item>
+    <item>Klasör ve dosya adı</item>
+    <item>Sadece klasör adı</item>
+  </string-array>
+  <string-array name="overlay_metadata_videos_entries">
+    <item>Dosya adını olduğu gibi kullanın</item>
+    <item>Klasör ve dosya adı</item>
+    <item>Sadece klasör adı</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 saniye</item>
@@ -251,7 +264,8 @@
   <string-array name="slot_entries">
     <item>Boş</item>
     <item>Saat</item>
-    <item>Konum</item>
+    <item>Metadata #1</item>
+    <item>Metadata #2</item>
     <item>Hava Durumu #1</item>
     <item>Şimdi Çalıyor #1</item>
     <item>Şimdi Oynatılıyor #2</item>

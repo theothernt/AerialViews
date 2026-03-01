@@ -26,7 +26,7 @@
     <item>Esci dallo screensaver</item>
     <item>Visualizza Impostazioni</item>
     <item>Mostra overlay, quando nascosto</item>
-    <item>Oscura lo schermo, rimuovendo video e overlay</item>
+    <item>Visualizza impostazioni</item>
     <item>Attiva/disattiva l\'audio</item>
     <item>Pausa/riprendi il timer video o foto</item>
     <item>Attiva/disattiva il loop per il video corrente</item>
@@ -58,13 +58,6 @@
     <item>Usa nome file formattato</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
-  </string-array>
-  <string-array name="description_folder_level_entries">
-    <item>\'Italia / Tramonto\' - 1 Livello</item>
-    <item>\'2025 / Italia / Tramonto\' - 2 livelli</item>
-    <item>\'Scenico / 2025 / Italia / Tramonto\' - 3 livelli</item>
-    <item>\'Foto / Scenico / 2025 / Italia / Tramonto\' - 4 livelli</item>
-    <item>\'Media / Foto / Scenico / 2025 / Italia / Tramonto\' - 5 livelli</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabilitato</item>
@@ -136,6 +129,13 @@
     <item>Solo immagini</item>
     <item>Video e immagini</item>
   </string-array>
+  <string-array name="metadata_folder_level_entries">
+    <item>\'Italia / Tramonto\' - 1 Livello</item>
+    <item>\'2025 / Italia / Tramonto\' - 2 livelli</item>
+    <item>\'Scenico / 2025 / Italia / Tramonto\' - 3 livelli</item>
+    <item>\'Foto / Scenico / 2025 / Italia / Tramonto\' - 4 livelli</item>
+    <item>\'Media / Foto / Scenico / 2025 / Italia / Tramonto\' - 5 livelli</item>
+  </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Disabilitato</item>
     <item>Canzone · Artista</item>
@@ -157,6 +157,19 @@
     <item>In alto a destra</item>
     <item>In basso a sinistra</item>
     <item>In basso a destra</item>
+  </string-array>
+  <string-array name="overlay_metadata_photo_location_entries">
+    <item>Città</item>
+  </string-array>
+  <string-array name="overlay_metadata_photos_entries">
+    <item>Usa il nome del file</item>
+    <item>Cartella e nome file</item>
+    <item>Solo nome cartella</item>
+  </string-array>
+  <string-array name="overlay_metadata_videos_entries">
+    <item>Usa il nome del file</item>
+    <item>Cartella e nome file</item>
+    <item>Solo nome cartella</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 secondi</item>
@@ -252,7 +265,8 @@
   <string-array name="slot_entries">
     <item>Vuoto</item>
     <item>Orologio</item>
-    <item>Luogo</item>
+    <item>Metadati #1</item>
+    <item>Metadati #2</item>
     <item>Meteo #1</item>
     <item>In riproduzione #1</item>
     <item>In riproduzione #2</item>
