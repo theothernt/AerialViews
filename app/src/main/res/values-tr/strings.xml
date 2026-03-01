@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">Alternatif MediaCodec ayrıştırmasını kullanın</string>
   <string name="advanced_refresh_rate_switching_summary">Ekranın yenileme hızını video kare hızıyla eşleşecek şekilde değiştirin</string>
   <string name="advanced_refresh_rate_switching_title">Otomatik yenileme hızı değiştirme</string>
-  <string name="advanced_wol_delay_summary">WOL paketi gönderildikten sonra medyayı almaya çalışmadan önce beklenecek süre (saniye cinsinden)</string>
-  <string name="advanced_wol_delay_title">Uyandırma gecikmesi (saniye)</string>
   <string name="advanced_wol_enable_summary">Ortamı almadan önce Wake on LAN paketi gönderin</string>
   <string name="advanced_wol_enable_title">Wake on LAN\'ı etkinleştirin</string>
   <string name="advanced_wol_mac_error">Geçersiz MAC adresi formatı</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">Boyut</string>
   <string name="appearance_date_summary">Geçerli tarihi göster</string>
   <string name="appearance_date_title">Tarih</string>
-  <string name="appearance_description_photos_filename_summary">Fotoğraflarınız - yerel olarak veya ağ paylaşımında saklanıyor</string>
-  <string name="appearance_description_photos_filename_title">Açıklama için dosya adını/klasörü kullanın</string>
   <string name="appearance_description_size_title">Boyut</string>
-  <string name="appearance_description_videos_filename_summary">Videolarınız - yerel olarak veya ağ paylaşımında saklanıyor olabilir</string>
-  <string name="appearance_description_videos_filename_title">Açıklama için dosya adını/klasörü kullanın</string>
-  <string name="appearance_description_videos_manifest_summary">Yalnızca Apple ve Topluluk videoları - yayınlanan, yerel olarak depolanan veya ağ paylaşımından alınan videolar</string>
-  <string name="appearance_description_videos_manifest_title">Açıklama veya ilgi noktalarını göster</string>
   <string name="appearance_exit_to_settings_summary">Bu özelliğin çalışması için \"Ayarlara çık\" eyleminin bir düğmeye veya yön tuşuna atanması gerekir</string>
   <string name="appearance_exit_to_settings_title">Bir eylem atayın</string>
   <string name="appearance_fade_corners_title">Köşelerin solması</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">En üst gradyanı göster</string>
   <string name="appearance_loading_show_summary">Medya oynatma listesi oluşturulurken yükleme mesajı görüntülenir</string>
   <string name="appearance_loading_show_title">Yükleme mesajını göster</string>
-  <string name="appearance_location_summary">Konumu, açıklamayı veya ilgi noktalarını görüntüle</string>
-  <string name="appearance_metadata_title">Konum / Açıklama</string>
   <string name="appearance_message_api_enabled_summary">HTTP API aracılığıyla uzaktan özel mesaj ayarları yapılmasına olanak tanıyın</string>
   <string name="appearance_message_api_enabled_title">API\'yi etkinleştirin</string>
   <string name="appearance_message_api_port_title">Bağlantı noktası numarası (varsayılan: 8081)</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">İçe aktarma ayarları</string>
   <string name="category_line1">1. satır</string>
   <string name="category_line2">2. satır</string>
+  <string name="category_location">Konum</string>
   <string name="category_media_render_options">Medya ve oluşturma seçenekleri</string>
   <string name="category_media_scanner_options">Medya tarayıcı seçenekleri</string>
   <string name="category_message">Mesaj</string>
@@ -387,6 +378,10 @@
   <string name="playlist_sleep_timer_title">Uyku zamanlayıcısı</string>
   <string name="playlist_slideshow_speed_summary">Bir süre seçin</string>
   <string name="playlist_slideshow_speed_title">Slayt gösterisi hızı</string>
+  <string name="playlist_time_of_day_heading_day">Gün</string>
+  <string name="playlist_time_of_day_heading_night">Gece</string>
+  <string name="playlist_time_of_day_option_sunrise">Gün doğumu</string>
+  <string name="playlist_time_of_day_option_sunset">Gün batımı</string>
   <string name="playlist_video_volume_summary">Video ses seviyesini seçin</string>
   <string name="playlist_video_volume_title">Video ses seviyesi</string>
   <string name="progress_bar_location_title">Ekrandaki konum</string>

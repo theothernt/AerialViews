@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">使用备用 MediaCodec 解析</string>
   <string name="advanced_refresh_rate_switching_summary">更改显示器的刷新率以匹配视频帧速率</string>
   <string name="advanced_refresh_rate_switching_title">自动切换刷新率</string>
-  <string name="advanced_wol_delay_summary">发送 WOL 数据包后尝试获取媒体前的等待时间（秒</string>
-  <string name="advanced_wol_delay_title">唤醒延迟（秒）</string>
   <string name="advanced_wol_enable_summary">获取介质前发送 \"唤醒局域网 \"数据包</string>
   <string name="advanced_wol_enable_title">启用局域网唤醒</string>
   <string name="advanced_wol_mac_error">MAC 地址格式无效</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">字号</string>
   <string name="appearance_date_summary">显示当前日期</string>
   <string name="appearance_date_title">日期</string>
-  <string name="appearance_description_photos_filename_summary">个人照片 - 本地存储或网络共享</string>
-  <string name="appearance_description_photos_filename_title">使用文件名/文件夹进行描述</string>
   <string name="appearance_description_size_title">字号</string>
-  <string name="appearance_description_videos_filename_summary">个人视频 - 本地存储或网络共享</string>
-  <string name="appearance_description_videos_filename_title">使用文件名/文件夹进行描述</string>
-  <string name="appearance_description_videos_manifest_summary">仅限 Apple 和社区视频 - 流媒体、本地存储或网络共享</string>
-  <string name="appearance_description_videos_manifest_title">显示描述或景点</string>
   <string name="appearance_exit_to_settings_summary">要使此功能生效，必须将“退出到设置”操作分配给一个按键或方向键</string>
   <string name="appearance_exit_to_settings_title">设置操作</string>
   <string name="appearance_fade_corners_title">边角褪色</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">显示顶部渐变</string>
   <string name="appearance_loading_show_summary">建立媒体播放列表时显示加载提示</string>
   <string name="appearance_loading_show_title">显示加载提示</string>
-  <string name="appearance_location_summary">显示位置、描述或景点</string>
-  <string name="appearance_metadata_title">地点/描述</string>
   <string name="appearance_message_api_enabled_summary">允许通过 HTTP API 远程设置自定义信息</string>
   <string name="appearance_message_api_enabled_title">启用 API 接口</string>
   <string name="appearance_message_api_port_title">端口号（默认：8081）</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">导入设置</string>
   <string name="category_line1">第 1 行</string>
   <string name="category_line2">第 2 行</string>
+  <string name="category_location">地点</string>
   <string name="category_media_render_options">媒体和渲染选项</string>
   <string name="category_media_scanner_options">媒体扫描仪选项</string>
   <string name="category_message">信息</string>
@@ -388,6 +379,10 @@
   <string name="playlist_sleep_timer_title">睡眠定时</string>
   <string name="playlist_slideshow_speed_summary">选择持续时间</string>
   <string name="playlist_slideshow_speed_title">幻灯片播放速度</string>
+  <string name="playlist_time_of_day_heading_day">白天</string>
+  <string name="playlist_time_of_day_heading_night">夜晚</string>
+  <string name="playlist_time_of_day_option_sunrise">日出</string>
+  <string name="playlist_time_of_day_option_sunset">日落</string>
   <string name="playlist_video_volume_summary">选择视频音量大小</string>
   <string name="playlist_video_volume_title">视频音量</string>
   <string name="progress_bar_location_title">屏幕显示位置</string>

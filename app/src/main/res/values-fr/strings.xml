@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">Utiliser une autre analyse MediaCodec</string>
   <string name="advanced_refresh_rate_switching_summary">Modifier la fréquence de rafraîchissement de l\'écran pour qu\'elle corresponde à la fréquence d\'images vidéo</string>
   <string name="advanced_refresh_rate_switching_title">Commutation automatique de la fréquence de rafraîchissement</string>
-  <string name="advanced_wol_delay_summary">Délai d\'attente (en secondes) après l\'envoi du paquet WOL avant de tenter de récupérer le média</string>
-  <string name="advanced_wol_delay_title">Délai de réveil (secondes)</string>
   <string name="advanced_wol_enable_summary">Envoyer un paquet Wake on LAN avant de récupérer le média</string>
   <string name="advanced_wol_enable_title">Activer le Wake on LAN</string>
   <string name="advanced_wol_mac_error">Format d\'adresse MAC invalide</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">Ajuster la taille du texte de la date</string>
   <string name="appearance_date_summary">Afficher la date du jour</string>
   <string name="appearance_date_title">Date</string>
-  <string name="appearance_description_photos_filename_summary">Vos photos à partir d\'un espace de stockage local ou d\'un réseau partagé</string>
-  <string name="appearance_description_photos_filename_title">Utiliser le nom de fichier/dossier pour la description</string>
   <string name="appearance_description_size_title">Taille</string>
-  <string name="appearance_description_videos_filename_summary">Vos photos à partir d\'un espace de stockage local ou d\'un réseau partagé</string>
-  <string name="appearance_description_videos_filename_title">Utiliser le nom de fichier/dossier pour la description</string>
-  <string name="appearance_description_videos_manifest_summary">Vidéos Apple et communautaires - diffusées en continu, stockées localement ou partagées sur le réseau</string>
-  <string name="appearance_description_videos_manifest_title">Afficher la description ou les points d\'intérêt</string>
   <string name="appearance_exit_to_settings_summary">L\'action \"Quitter les paramètres\" doit être assignée à un bouton ou à une direction du d-pad pour que cette fonction fonctionne</string>
   <string name="appearance_exit_to_settings_title">Attribuer une action</string>
   <string name="appearance_fade_corners_title">Coins à décolorer</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">Afficher le dégradé supérieur</string>
   <string name="appearance_loading_show_summary">Affiche le texte \"Loading…\" pendant le chargement de l\'application</string>
   <string name="appearance_loading_show_title">Afficher le texte de chargement</string>
-  <string name="appearance_location_summary">Affichage de la localisation ou des points d\'intérêt</string>
-  <string name="appearance_metadata_title">Localisation</string>
   <string name="appearance_message_api_enabled_summary">Permettre la définition à distance de messages personnalisés via une API HTTP</string>
   <string name="appearance_message_api_enabled_title">Activer l\'API</string>
   <string name="appearance_message_api_port_title">Numéro de port (par défaut : 8081)</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">Paramètres d\'importation</string>
   <string name="category_line1">Ligne 1</string>
   <string name="category_line2">Ligne 2</string>
+  <string name="category_location">Localisation</string>
   <string name="category_media_render_options">Options de médias et de rendu</string>
   <string name="category_media_scanner_options">Options du scanner de médias</string>
   <string name="category_message">Message</string>
@@ -388,6 +379,9 @@
   <string name="playlist_sleep_timer_title">Minuteur de sommeil</string>
   <string name="playlist_slideshow_speed_summary">Choisir une durée</string>
   <string name="playlist_slideshow_speed_title">Vitesse du diaporama</string>
+  <string name="playlist_time_of_day_heading_day">Jour</string>
+  <string name="playlist_time_of_day_option_sunrise">Lever de soleil</string>
+  <string name="playlist_time_of_day_option_sunset">Coucher de soleil</string>
   <string name="playlist_video_volume_summary">Choisir un niveau de volume vidéo</string>
   <string name="playlist_video_volume_title">Volume de la vidéo</string>
   <string name="progress_bar_location_title">Localisation</string>

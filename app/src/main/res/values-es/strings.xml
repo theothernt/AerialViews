@@ -16,10 +16,8 @@
   <string name="advanced_philips_dolby_vision_fix_title">Utilice análisis de MediaCodec alternativo</string>
   <string name="advanced_refresh_rate_switching_summary">Cambie la frecuencia de actualización de la pantalla para que coincida con la velocidad de cuadros del video</string>
   <string name="advanced_refresh_rate_switching_title">Cambio automático de frecuencia de actualización</string>
-  <string name="advanced_wol_delay_summary">Tiempo de espera (en segundos) después de enviar el paquete WOL antes de intentar recuperar los medios</string>
-  <string name="advanced_wol_delay_title">Retraso de activación (segundos)</string>
   <string name="advanced_wol_enable_summary">Enviar un paquete Wake on LAN antes de obtener el medio</string>
-  <string name="advanced_wol_enable_title">Habilitar Wake on LAN</string>
+  <string name="advanced_wol_enable_title">Activar Wake on LAN</string>
   <string name="advanced_wol_mac_error">Formato de dirección MAC no válido</string>
   <string name="advanced_wol_mac_summary">Dirección MAC del dispositivo a activar (por ejemplo, AA:BB:CC:DD:EE:FF)</string>
   <string name="advanced_wol_mac_title">Dirección MAC de destino</string>
@@ -53,9 +51,9 @@
   <string name="appearance_countdown_summary">Mostrar una cuenta regresiva hasta un tiempo específico</string>
   <string name="appearance_countdown_target_message_summary">Mensaje para mostrar cuando la cuenta regresiva llega a cero (por ejemplo, \"¡Feliz Año Nuevo!\")</string>
   <string name="appearance_countdown_target_message_title">Mensaje de finalización</string>
-  <string name="appearance_countdown_target_time_summary">Ingrese la hora en formato HH:MM o AAAA-MM-DD HH:MM para una fecha específica</string>
-  <string name="appearance_countdown_target_time_title">Tiempo objetivo</string>
-  <string name="appearance_countdown_title">Cuenta atrás</string>
+  <string name="appearance_countdown_target_time_summary">Introduzca la hora en formato HH:MM o AAAA-MM-DD HH:MM para una fecha específica</string>
+  <string name="appearance_countdown_target_time_title">Tiempo deseado</string>
+  <string name="appearance_countdown_title">Cuenta regresiva</string>
   <string name="appearance_date_custom_error">¡Formato de fecha personalizado no válido!</string>
   <string name="appearance_date_custom_example">Ejemplo</string>
   <string name="appearance_date_custom_title">Especificar un formato de fecha personalizado</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">Ajustar el tamaño del texto de la fecha</string>
   <string name="appearance_date_summary">Mostrar la fecha actual</string>
   <string name="appearance_date_title">Fecha</string>
-  <string name="appearance_description_photos_filename_summary">Tus fotos desde el almacenamiento local o red</string>
-  <string name="appearance_description_photos_filename_title">Utilice el nombre de archivo/carpeta para la descripción</string>
   <string name="appearance_description_size_title">Tamaño</string>
-  <string name="appearance_description_videos_filename_summary">Tus vídeos desde el almacenamiento local o red</string>
-  <string name="appearance_description_videos_filename_title">Utilice el nombre de archivo/carpeta para la descripción</string>
-  <string name="appearance_description_videos_manifest_summary">Vídeos de Apple y de la comunidad, ya sea transmitidos, almacenados localmente o compartidos en red</string>
-  <string name="appearance_description_videos_manifest_title">Mostrar descripción o puntos de interés</string>
   <string name="appearance_exit_to_settings_summary">La acción \"Salir a configuración\" debe asignarse a un botón o dirección del d-pad para que esta función funcione</string>
   <string name="appearance_exit_to_settings_title">Asignar una acción</string>
   <string name="appearance_fade_corners_title">Esquinas para desvanecerse</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">Mostrar gradiente superior</string>
   <string name="appearance_loading_show_summary">Muestra el texto \"Cargando…\" mientras se carga la aplicación.</string>
   <string name="appearance_loading_show_title">Mostrar texto de \"Cargando\"</string>
-  <string name="appearance_location_summary">Mostrar ubicación o puntos de interés</string>
-  <string name="appearance_metadata_title">Ubicación</string>
   <string name="appearance_message_api_enabled_summary">Permitir la configuración remota de mensajes personalizados a través de una API HTTP</string>
   <string name="appearance_message_api_enabled_title">Habilitar API</string>
   <string name="appearance_message_api_port_title">Número de puerto (predeterminado: 8081)</string>
@@ -186,7 +176,7 @@
   <string name="category_capabilities">Capacidades</string>
   <string name="category_clock">Reloj</string>
   <string name="category_connection_information">Información de conexión</string>
-  <string name="category_countdown">Cuenta atrás</string>
+  <string name="category_countdown">Cuenta regresiva</string>
   <string name="category_custom_format">Formato personalizado</string>
   <string name="category_custom_videos_and_feeds">Vídeos y fuentes personalizados</string>
   <string name="category_date">Fecha</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">Ajustes de importación</string>
   <string name="category_line1">Línea 1</string>
   <string name="category_line2">Línea 2</string>
+  <string name="category_location">Ubicación</string>
   <string name="category_media_render_options">Opciones de medios y renderizado</string>
   <string name="category_media_scanner_options">Opciones de escaneo de medios</string>
   <string name="category_message">Mensaje</string>
@@ -238,7 +229,7 @@
   <string name="category_video_source">Fuente del Vídeo</string>
   <string name="category_video_sources">Fuentes de vídeos</string>
   <string name="category_videos">Vídeos</string>
-  <string name="category_wake_on_lan">Activación en LAN</string>
+  <string name="category_wake_on_lan">Wake on LAN</string>
   <string name="category_weather">Clima</string>
   <string name="comm1_videos_enabled">Usar vídeos de la comunidad</string>
   <string name="comm2_videos_enabled">Usar vídeos de la comunidad</string>
@@ -388,6 +379,10 @@
   <string name="playlist_sleep_timer_title">Temporizador</string>
   <string name="playlist_slideshow_speed_summary">Elige una duración</string>
   <string name="playlist_slideshow_speed_title">Velocidad de presentación</string>
+  <string name="playlist_time_of_day_heading_day">Día</string>
+  <string name="playlist_time_of_day_heading_night">Noche</string>
+  <string name="playlist_time_of_day_option_sunrise">Amanecer</string>
+  <string name="playlist_time_of_day_option_sunset">Atardecer</string>
   <string name="playlist_video_volume_summary">Elige un nivel de volumen del vídeo</string>
   <string name="playlist_video_volume_title">Volumen de vídeo</string>
   <string name="progress_bar_location_title">Ubicación</string>

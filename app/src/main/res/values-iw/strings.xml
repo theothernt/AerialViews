@@ -16,8 +16,6 @@
   <string name="advanced_philips_dolby_vision_fix_title">השתמש במנתח מדיית וידאו חלופית</string>
   <string name="advanced_refresh_rate_switching_summary">שנה את קצב הרענון של התצוגה כך שיתאים לקצב פריימים של הווידאו</string>
   <string name="advanced_refresh_rate_switching_title">החלפת קצב רענון אוטומטי</string>
-  <string name="advanced_wol_delay_summary">זמן ההמתנה (בשניות) לאחר שליחת חבילת WOL לפני ניסיון לשלוף מדיה</string>
-  <string name="advanced_wol_delay_title">השהיית התעוררות (שניות)</string>
   <string name="advanced_wol_enable_summary">שלח חבילת Wake on LAN לפני שליפת מדיה</string>
   <string name="advanced_wol_enable_title">הפעלת התעוררות ברשת מקומית (WoL)</string>
   <string name="advanced_wol_mac_error">פורמט כתובת MAC לא חוקי</string>
@@ -64,13 +62,7 @@
   <string name="appearance_date_size_title">גודל</string>
   <string name="appearance_date_summary">הצג את התאריך הנוכחי</string>
   <string name="appearance_date_title">תאריך</string>
-  <string name="appearance_description_photos_filename_summary">התמונות שלך ממקור אחסון מקומי או שיתוף רשת</string>
-  <string name="appearance_description_photos_filename_title">השתמש בשם הקובץ/התיקייה עבור התיאור</string>
   <string name="appearance_description_size_title">גודל</string>
-  <string name="appearance_description_videos_filename_summary">הסרטונים שלך ממקור אחסון מקומי או שיתוף רשת</string>
-  <string name="appearance_description_videos_filename_title">השתמש בשם הקובץ/התיקייה עבור התיאור</string>
-  <string name="appearance_description_videos_manifest_summary">אפל וסרטוני קהילה - בהזרמה, שמורים מקומית או מהרשת</string>
-  <string name="appearance_description_videos_manifest_title">הצג תיאור או נקודות עניין</string>
   <string name="appearance_exit_to_settings_summary">יש להקצות את הפעולה \"יציאה להגדרות\" ללחצן או לכיוון d-pad כדי שתכונה זו תפעל</string>
   <string name="appearance_exit_to_settings_title">הקצה פעולה</string>
   <string name="appearance_fade_corners_title">פינות לדהייה</string>
@@ -84,8 +76,6 @@
   <string name="appearance_gradient_top_title">הצג מדרון צבעים בחלק העליון של המסך</string>
   <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען…״ בזמן טעינת האפליקציה</string>
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
-  <string name="appearance_location_summary">הצג מיקום, תיאור או נקודות עניין</string>
-  <string name="appearance_metadata_title">מיקום / תאור</string>
   <string name="appearance_message_api_enabled_summary">אפשר הגדרה מרחוק של הודעות מותאמות אישית באמצעות HTTP API</string>
   <string name="appearance_message_api_enabled_title">הפעלת API</string>
   <string name="appearance_message_api_port_title">מספר יציאה (ברירת מחדל: 8081)</string>
@@ -202,6 +192,7 @@
   <string name="category_import_settings">ייבוא הגדרות</string>
   <string name="category_line1">שורה 1</string>
   <string name="category_line2">שורה 2</string>
+  <string name="category_location">מיקום</string>
   <string name="category_media_render_options">אפשרויות מדיה ורינדור</string>
   <string name="category_media_scanner_options">אפשרויות סורק מדיה</string>
   <string name="category_message">הודעה</string>
@@ -388,6 +379,9 @@
   <string name="playlist_sleep_timer_title">טיימר שינה</string>
   <string name="playlist_slideshow_speed_summary">בחר משך</string>
   <string name="playlist_slideshow_speed_title">מהירות מצגת</string>
+  <string name="playlist_time_of_day_heading_day">יום</string>
+  <string name="playlist_time_of_day_option_sunrise">זריחה</string>
+  <string name="playlist_time_of_day_option_sunset">שקיעה</string>
   <string name="playlist_video_volume_summary">בחירת עוצמת קול של וידאו</string>
   <string name="playlist_video_volume_title">עוצמת וידאו</string>
   <string name="progress_bar_location_title">מיקום</string>
