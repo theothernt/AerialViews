@@ -24,6 +24,7 @@ class DateOverlay : AppCompatTextView {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         refreshDateHandler = null
+        removeCallbacks(null)
     }
 
     fun updateFormat(
