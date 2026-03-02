@@ -11,7 +11,6 @@ import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
@@ -104,8 +103,9 @@ class SambaDataSource : BaseDataSource(true) {
         val uri = dataSpec.uri
         hostName = uri.host.toStringOrEmpty()
 
-        userName = SambaMediaPrefs.userName
-        password = SambaMediaPrefs.password
+        val userInfo = SambaHelper.parseUserInfo(uri)
+        userName = userInfo.first
+        password = userInfo.second
 
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         shareName = shareNameAndPath.first
@@ -113,8 +113,7 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     private fun openSambaFile(): File {
-        val config = SambaHelper.buildSmbConfig()
-        smbClient = SMBClient(config)
+        smbClient = SMBClient(SambaHelper.buildSmbConfig())
         val connection = smbClient?.connect(hostName)
         val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)

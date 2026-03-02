@@ -6,8 +6,8 @@ import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
-import com.neilturner.aerialviews.models.enums.DescriptionManifestType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -29,10 +29,10 @@ import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
-import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -89,12 +89,11 @@ class MediaService(
             }
 
             // Try to match videos with Apple, Community metadata for location/description
-            val manifestDescriptionStyle = GeneralPrefs.descriptionVideoManifestStyle ?: DescriptionManifestType.DISABLED
-            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers, manifestDescriptionStyle)
+            var (matchedVideos, unmatchedVideos) = addMetadataToManifestVideos(videos, providers)
             Timber.i("FeedManifests Videos: matched ${matchedVideos.size}, unmatched ${unmatchedVideos.size}")
 
             // Split photos in those with metadata and those without
-            var (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }
+            val (matchedPhotos, unmatchedPhotos) = photos.partition { it.source == AerialMediaSource.IMMICH }
             Timber.i("Photos with metadata: matched ${matchedPhotos.size}, unmatched ${unmatchedPhotos.size}")
 
             // Discard unmatched manifest videos
@@ -103,20 +102,52 @@ class MediaService(
                 unmatchedVideos = emptyList()
             }
 
-            // Unmatched videos can have their filename added as a description
-            val videoDescriptionStyle = GeneralPrefs.descriptionVideoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            if (videoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                val videoPathDepth = GeneralPrefs.descriptionVideoFolderLevel.toIntOrNull() ?: 1
-                unmatchedVideos = addFilenameAsDescriptionToMedia(unmatchedVideos, videoDescriptionStyle, videoPathDepth)
-            }
-
-            val photoDescriptionStyle = GeneralPrefs.descriptionPhotoFilenameStyle ?: DescriptionFilenameType.DISABLED
-            if (photoDescriptionStyle != DescriptionFilenameType.DISABLED) {
-                val photoPathDepth = GeneralPrefs.descriptionPhotoFolderLevel.toIntOrNull() ?: 1
-                unmatchedPhotos = addFilenameAsDescriptionToMedia(unmatchedPhotos, photoDescriptionStyle, photoPathDepth)
-            }
-
             var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
+
+            if (GeneralPrefs.autoTimeOfDay) {
+                val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
+                val dayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes
+                val nightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes
+                val dayIncludesSunrise = dayIncludes.contains("SUNRISE")
+                val dayIncludesSunset = dayIncludes.contains("SUNSET")
+                val nightIncludesSunrise = nightIncludes.contains("SUNRISE")
+                val nightIncludesSunset = nightIncludes.contains("SUNSET")
+                Timber.i("Applying auto time-of-day filtering for period: $currentTimePeriod")
+                val originalMedia = filteredMedia
+                filteredMedia =
+                    filteredMedia.filter { media ->
+                        if (media.type == AerialMediaType.VIDEO) {
+                            when (currentTimePeriod) {
+                                TimeOfDay.DAY -> {
+                                    media.metadata.timeOfDay == TimeOfDay.DAY ||
+                                        (dayIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (dayIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
+                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
+                                }
+
+                                TimeOfDay.NIGHT -> {
+                                    (nightIncludesSunrise && media.metadata.timeOfDay == TimeOfDay.SUNRISE) ||
+                                        (nightIncludesSunset && media.metadata.timeOfDay == TimeOfDay.SUNSET) ||
+                                        media.metadata.timeOfDay == TimeOfDay.NIGHT ||
+                                        media.metadata.timeOfDay == TimeOfDay.UNKNOWN
+                                }
+
+                                else -> {
+                                    true
+                                }
+                            }
+                        } else {
+                            true
+                        }
+                    }
+
+                val remainingVideos = filteredMedia.count { it.type == AerialMediaType.VIDEO }
+                if (remainingVideos == 0) {
+                    Timber.w("Auto time-of-day filtering removed all videos; falling back to unfiltered media")
+                    filteredMedia = originalMedia
+                }
+                Timber.i("Media items after time filtering: ${filteredMedia.size}")
+            }
 
             if (GeneralPrefs.shuffleVideos) {
                 filteredMedia = filteredMedia.shuffled()

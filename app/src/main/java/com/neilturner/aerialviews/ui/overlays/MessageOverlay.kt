@@ -8,22 +8,19 @@ import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.services.MessageEvent
+import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.utils.FontHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
 class MessageOverlay : AppCompatTextView {
     var type = OverlayType.EMPTY
 
-    private val receiver = EventsReceiver()
-    private var currentMessage = MessageEvent(OverlayType.EMPTY, "")
+    private var currentMessage = MessageOverlayState()
     private val prefs = GeneralPrefs
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private var clearJob: Job? = null
@@ -40,35 +37,20 @@ class MessageOverlay : AppCompatTextView {
         TextViewCompat.setTextAppearance(this, R.style.OverlayText)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        receiver
-            .subscribe { message: MessageEvent ->
-                Timber.i("$type: Received message event for slot ${message.type}")
-
-                // TODO: add throttling
-                // https://github.com/Kotlin/kotlinx.coroutines/issues/1446#issuecomment-1198103541
-
-                // Only process messages for this overlay's message number
-                if (message.type == type) {
-                    Timber.i("Processing message for $type")
-                    if (currentMessage != message) {
-                        currentMessage = message
-                        updateMessage()
-                    }
-                }
-            }
-    }
-
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        receiver.unsubscribe()
         clearJob?.cancel()
     }
 
     fun message(message: String) {
         text = message
+    }
+
+    fun render(state: MessageOverlayState) {
+        if (currentMessage != state) {
+            currentMessage = state
+            updateMessage()
+        }
     }
 
     private fun updateMessage() {

@@ -1,62 +1,22 @@
 {
-    "video_inspire_alabama_montgomery_countryside_00007_0": {
-        "translation": "飞越阿拉巴马州农村牧场上空的浓雾"
-    },
-    "video_inspire_california_big-sur_2020_00001_0": {
-        "translation": "沿着大苏尔海岸的晨间飞行"
-    },
-    "video_inspire_california_big-sur_bixby_005_0": {
-        "translation": "绕着大苏尔的比克斯比溪桥飞行"
-    },
-    "video_inspire_california_big-sur_landscape_054_0": {
-        "translation": "探索比克斯比溪附近的大苏尔"
-    },
-    "video_inspire_california_catalina_00005_0": {
-        "translation": "飞越卡塔利娜岛的西端"
-    },
-    "video_inspire_california_catalina_avalon_00053_0": {
-        "translation": "飞越卡特琳娜岛的阿瓦隆上空"
-    },
-    "video_inspire_california_santa-barbara_050_0": {
-        "translation": "环绕圣巴巴拉码头的日落飞行"
-    },
-    "video_inspire_california_vineyard_sierra-mar_sunrise_110_0": {
-        "translation": "晨间俯瞰 Sierra Mar 葡萄园"
-    },
-    "video_inspire_florida_miami_brickell_sunset_00036_0": {
-        "translation": "俯瞰夕阳下的迈阿密市中心"
-    },
-    "video_inspire_italy_como_cerano-dintelvi_006_0": {
-        "translation": "俯瞰意大利切拉诺丁泰尔维"
-    },
-    "video_inspire_nevada_lasvegas_northstrip_021_0": {
-        "translation": "日落时分缓缓上升，俯瞰拉斯维加斯"
-    },
-    "video_inspire_oregon_lone-ranch-beach_00001_0": {
-        "translation": "俯瞰俄勒冈海岸的孤独牧场海滩"
-    },
-    "video_inspire_oregon_lone-ranch-beach_00015_0": {
-        "translation": "俯瞰俄勒冈海岸的岩石"
-    },
-    "video_inspire_oregon_lone-ranch-beach_00021_0": {
-        "translation": "绕着俄勒冈海岸的岩石飞行"
-    },
-    "video_inspire_oregon_portland_00064_0": {
-        "translation": "俄勒冈州波特兰市中心的日落飞行"
-    },
-    "video_inspire_sanfrancisco_castro_005_0": {
-        "translation": "卡尔雾在旧金山的双峰上流淌"
-    },
-    "video_inspire_texas_austin_oct2019_evening_00085_0": {
-        "translation": "傍晚飞越德克萨斯州奥斯汀"
-    },
-    "video_inspire_texas_pecos_foggy-landscape_00018_0": {
-        "translation": "德克萨斯州西部佩科斯附近的雾气笼罩着大地"
-    },
-    "video_inspire_uk_edinburgh_arthursseat_010_0": {
-        "translation": "爱丁堡上空绕着索尔兹伯里峭壁飞行"
-    },
-    "video_inspire_uk_london_hampstead-heath_003_0": {
-        "translation": "从汉普斯特德希思飞越伦敦"
-    }
+    "video_inspire_alabama_montgomery_countryside_00007_0": "飞越阿拉巴马州农村牧场上空的浓雾",
+    "video_inspire_california_big-sur_2020_00001_0": "沿着大苏尔海岸的晨间飞行",
+    "video_inspire_california_big-sur_bixby_005_0": "绕着大苏尔的比克斯比溪桥飞行",
+    "video_inspire_california_big-sur_landscape_054_0": "探索比克斯比溪附近的大苏尔",
+    "video_inspire_california_catalina_00005_0": "飞越卡塔利娜岛的西端",
+    "video_inspire_california_catalina_avalon_00053_0": "飞越卡特琳娜岛的阿瓦隆上空",
+    "video_inspire_california_santa-barbara_050_0": "环绕圣巴巴拉码头的日落飞行",
+    "video_inspire_california_vineyard_sierra-mar_sunrise_110_0": "晨间俯瞰 Sierra Mar 葡萄园",
+    "video_inspire_florida_miami_brickell_sunset_00036_0": "俯瞰夕阳下的迈阿密市中心",
+    "video_inspire_italy_como_cerano-dintelvi_006_0": "俯瞰意大利切拉诺丁泰尔维",
+    "video_inspire_nevada_lasvegas_northstrip_021_0": "日落时分缓缓上升，俯瞰拉斯维加斯",
+    "video_inspire_oregon_lone-ranch-beach_00001_0": "俯瞰俄勒冈海岸的孤独牧场海滩",
+    "video_inspire_oregon_lone-ranch-beach_00015_0": "俯瞰俄勒冈海岸的岩石",
+    "video_inspire_oregon_lone-ranch-beach_00021_0": "绕着俄勒冈海岸的岩石飞行",
+    "video_inspire_oregon_portland_00064_0": "俄勒冈州波特兰市中心的日落飞行",
+    "video_inspire_sanfrancisco_castro_005_0": "卡尔雾在旧金山的双峰上流淌",
+    "video_inspire_texas_austin_oct2019_evening_00085_0": "傍晚飞越德克萨斯州奥斯汀",
+    "video_inspire_texas_pecos_foggy-landscape_00018_0": "德克萨斯州西部佩科斯附近的雾气笼罩着大地",
+    "video_inspire_uk_edinburgh_arthursseat_010_0": "爱丁堡上空绕着索尔兹伯里峭壁飞行",
+    "video_inspire_uk_london_hampstead-heath_003_0": "从汉普斯特德希思飞越伦敦"
 }
