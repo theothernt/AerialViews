@@ -5,7 +5,7 @@ import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.utils.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Headers
 import okhttp3.OkHttpClient
@@ -70,7 +70,8 @@ class WebDavDataSource : BaseDataSource(true) {
                 .build()
 
         client = OkHttpSardine(okHttpClient)
-        client?.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password, true)
+        val (userName, password) = SambaHelper.parseUserInfo(dataSpec.uri)
+        client?.setCredentials(userName, password, true)
 
         val resource = client?.list(url)
         if (resource?.isNotEmpty() == true) {
