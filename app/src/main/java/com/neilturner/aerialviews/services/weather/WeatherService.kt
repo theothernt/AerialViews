@@ -231,12 +231,13 @@ class WeatherService(
         val code = response.weather.first().id
         val type = response.weather.first().main
         val icon = response.weather.first().icon
+        val city = GeneralPrefs.weatherLocationCustomName.ifEmpty { response.name }
 
         return WeatherEvent(
             temperature = temperature,
             icon = getWeatherIcon(code, type, icon),
             summary = description,
-            city = response.name,
+            city = city,
             wind = "$wind km/h",
             humidity = "$humidity%",
         )

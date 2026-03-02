@@ -129,8 +129,28 @@ Otherwise, the screensaver cannot be started, either automatically, or manually 
 
 Not all TCL TVs have the same software and features. If the above __Safety Guard__ app does not exist on your TV, the following ADB command might help…
 
+Android <v14:
+
 ```sh
 appops set com.neilturner.aerialviews APP_AUTO_START allow
+```
+
+Androind >=v14
+
+```sh
+appops set com.neilturner.aerialviews AUTO_START allow
+```
+
+You can confirm the available options:
+
+```sh
+appops get com.neilturner.aerialviews
+
+# Returns
+WAKE_LOCK: allow; time=+5m55s466ms ago; duration=+2s889ms
+READ_MEDIA_IMAGES: allow; time=+1m43s406ms ago
+READ_MEDIA_VISUAL_USER_SELECTED: allow; time=+1m43s408ms ago
+AUTO_START: ignore; rejectTime=+7m6s72ms ago
 ```
 
 </details>

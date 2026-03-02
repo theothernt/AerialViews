@@ -7,8 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
+import com.neilturner.aerialviews.ui.overlays.state.ProgressOverlayState
 import timber.log.Timber
 
 class ProgressBar : View {
@@ -23,7 +22,6 @@ class ProgressBar : View {
     private val paint: Paint = Paint()
     private var parentWidth: Int = 0
     private var animator: ValueAnimator? = null
-    private val receiver = EventsReceiver()
 
     init {
         paint.style = Paint.Style.FILL
@@ -31,41 +29,37 @@ class ProgressBar : View {
         setBackgroundColor(Color.WHITE)
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        receiver.subscribe<ProgressBarEvent> { event ->
-            when (event.state) {
-                ProgressState.START -> {
-                    animateWidth(event.position, event.duration)
-                    Timber.i("Starting progress bar animation: ${event.position / 1000}s, ${event.duration / 1000}s")
-                }
+    fun render(state: ProgressOverlayState) {
+        when (state.state) {
+            ProgressState.START -> {
+                animateWidth(state.position, state.duration)
+                Timber.i("Starting progress bar animation: ${state.position / 1000}s, ${state.duration / 1000}s")
+            }
 
-                ProgressState.PAUSE -> {
-                    if (animator?.isRunning == true) {
-                        animator?.pause()
-                    }
-                    Timber.i("Pausing progress bar animation")
+            ProgressState.PAUSE -> {
+                if (animator?.isRunning == true) {
+                    animator?.pause()
                 }
+                Timber.i("Pausing progress bar animation")
+            }
 
-                ProgressState.RESUME -> {
-                    if (animator?.isPaused == true) {
-                        animator?.resume()
-                    }
-                    Timber.i("Resuming progress bar animation")
+            ProgressState.RESUME -> {
+                if (animator?.isPaused == true) {
+                    animator?.resume()
                 }
+                Timber.i("Resuming progress bar animation")
+            }
 
-                else -> {
-                    Timber.i("Reset progress bar animation")
-                    animator?.cancel()
-                    layoutParams.width = 0
-                }
+            else -> {
+                Timber.i("Reset progress bar animation")
+                animator?.cancel()
+                layoutParams.width = 0
             }
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        receiver.unsubscribe()
         animator?.cancel()
     }
 

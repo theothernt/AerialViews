@@ -15,21 +15,25 @@ import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.MusicEvent
+import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
 import com.neilturner.aerialviews.utils.TrackNameShortener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class NowPlayingOverlay : AppCompatTextView {
     var type = OverlayType.MUSIC1
     var format = NowPlayingFormat.DISABLED
 
-    private val receiver = EventsReceiver()
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
     private val prefs = GeneralPrefs
+    private var scopeJob = SupervisorJob()
+    private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
@@ -46,23 +50,27 @@ class NowPlayingOverlay : AppCompatTextView {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
-        receiver.subscribe { newTrackInfo: MusicEvent ->
-            Timber.i("$type: Subscribed for music updates...")
-            if (trackInfo != newTrackInfo) {
-                trackInfo = newTrackInfo
-                if (!isUpdating) {
-                    updateNowPlaying()
-                } else {
-                    shouldUpdate = true
-                }
-            }
+        if (scopeJob.isCancelled) {
+            scopeJob = SupervisorJob()
+            mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
         }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        receiver.unsubscribe()
+        scopeJob.cancel()
+    }
+
+    fun render(state: NowPlayingOverlayState) {
+        val newTrackInfo = state.event
+        if (trackInfo != newTrackInfo) {
+            trackInfo = newTrackInfo
+            if (!isUpdating) {
+                mainScope.launch { updateNowPlaying() }
+            } else {
+                shouldUpdate = true
+            }
+        }
     }
 
     private suspend fun updateNowPlaying() {

@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui.core
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.exifinterface.media.ExifInterface
 import coil3.EventListener
 import coil3.ImageLoader
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -23,13 +24,16 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.BufferedInputStream
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : AppCompatImageView {
@@ -101,25 +105,81 @@ class ImagePlayerView : AppCompatImageView {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            when (media.source) {
-                AerialMediaSource.SAMBA -> {
-                    val stream = ImagePlayerHelper.streamFromSambaFile(media.uri)
-                    loadImage(stream)
-                }
-
-                AerialMediaSource.WEBDAV -> {
-                    val stream = ImagePlayerHelper.streamFromWebDavFile(media.uri)
-                    loadImage(stream)
-                }
-
-                else -> {
-                    loadImage(media.uri)
+            val openSourceStream: () -> java.io.InputStream? = {
+                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
+                if (mediaStream == null) {
+                    null
+                } else if (mediaStream.markSupported()) {
+                    mediaStream
+                } else {
+                    BufferedInputStream(mediaStream, 16 * 1024)
                 }
             }
+
+            val stream = openSourceStream()
+            if (stream == null) {
+                loadImage(media.uri)
+                return@launch
+            }
+
+            if (isGifStream(stream)) {
+                loadImage(stream)
+                return@launch
+            }
+            runCatching { stream.close() }
+
+            val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
+            val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
+
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight)
+            if (bitmapResult == null) {
+                loadImage(media.uri)
+                return@launch
+            }
+
+            if (media.source != AerialMediaSource.IMMICH) {
+                media.metadata.exif.date = bitmapResult.metadata.date
+                media.metadata.exif.offset = bitmapResult.metadata.offset
+                media.metadata.exif.latitude = bitmapResult.metadata.latitude
+                media.metadata.exif.longitude = bitmapResult.metadata.longitude
+                media.metadata.exif.description = bitmapResult.metadata.description
+            }
+
+            Timber.d(
+                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
+                bitmapResult.metadata.date,
+                bitmapResult.metadata.offset,
+                bitmapResult.metadata.latitude,
+                bitmapResult.metadata.longitude,
+                bitmapResult.metadata.orientation,
+            )
+
+            loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
         }
     }
 
-    private suspend fun loadImage(data: Any?) {
+    private fun isGifStream(stream: java.io.InputStream): Boolean {
+        return try {
+            stream.mark(6)
+            val header = ByteArray(6)
+            val read = stream.read(header)
+            stream.reset()
+            if (read < 6) return false
+            header[0] == 'G'.code.toByte() &&
+                header[1] == 'I'.code.toByte() &&
+                header[2] == 'F'.code.toByte() &&
+                header[3] == '8'.code.toByte() &&
+                (header[4] == '7'.code.toByte() || header[4] == '9'.code.toByte()) &&
+                header[5] == 'a'.code.toByte()
+        } catch (_: Exception) {
+            false
+        }
+    }
+
+    private suspend fun loadImage(
+        data: Any?,
+        orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
+    ) {
         try {
             val request =
                 ImageRequest
@@ -129,6 +189,9 @@ class ImagePlayerView : AppCompatImageView {
                     .target(target)
                     .build()
             imageLoader.execute(request)
+            withContext(Dispatchers.Main) {
+                applyExifRotation(orientation)
+            }
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
 
@@ -144,9 +207,38 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
+    private fun applyExifRotation(orientation: Int) {
+        rotation = 0f
+        scaleX = 1f
+
+        val rotationAngle = when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90,
+            ExifInterface.ORIENTATION_TRANSPOSE,
+            ExifInterface.ORIENTATION_TRANSVERSE,
+            -> 90f
+
+            ExifInterface.ORIENTATION_ROTATE_180,
+            ExifInterface.ORIENTATION_FLIP_VERTICAL,
+            -> 180f
+
+            ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+
+            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
+                scaleX = -1f
+                0f
+            }
+
+            else -> 0f
+        }
+
+        this.rotation = rotationAngle
+    }
+
     fun stop() {
         removeCallbacks(finishedRunnable)
         setImageBitmap(null)
+        rotation = 0f
+        scaleX = 1f
         pausedTimestamp = 0
         remainingDuration = 0
     }

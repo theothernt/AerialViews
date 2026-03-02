@@ -59,13 +59,6 @@
     <item>Ordner- &amp; Dateiname</item>
     <item>Nur Ordnername</item>
   </string-array>
-  <string-array name="description_folder_level_entries">
-    <item>\'Italien / Sonnenuntergang\' - 1 Ebene</item>
-    <item>\'2025 / Italien / Sonnenuntergang\' - 2 Ebenen</item>
-    <item>\'Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 3 Ebenen</item>
-    <item>\'Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 4 Ebenen</item>
-    <item>\'Medien / Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 5 Ebenen</item>
-  </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Deaktiviert</item>
     <item>Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
@@ -135,6 +128,13 @@
     <item>Nur Fotos</item>
     <item>Fotos &amp; Videos</item>
   </string-array>
+  <string-array name="metadata_folder_level_entries">
+    <item>\'Italien / Sonnenuntergang\' - 1 Ebene</item>
+    <item>\'2025 / Italien / Sonnenuntergang\' - 2 Ebenen</item>
+    <item>\'Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 3 Ebenen</item>
+    <item>\'Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 4 Ebenen</item>
+    <item>\'Medien / Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 5 Ebenen</item>
+  </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Deaktiviert</item>
     <item>Lied · Interpret</item>
@@ -156,6 +156,19 @@
     <item>Oben rechts</item>
     <item>Unten links</item>
     <item>Unten rechts</item>
+  </string-array>
+  <string-array name="overlay_metadata_photo_location_entries">
+    <item>Stadt</item>
+  </string-array>
+  <string-array name="overlay_metadata_photos_entries">
+    <item>Dateinamen unverändert verwenden</item>
+    <item>Ordner- &amp; Dateiname</item>
+    <item>Nur Ordnername</item>
+  </string-array>
+  <string-array name="overlay_metadata_videos_entries">
+    <item>Dateinamen unverändert verwenden</item>
+    <item>Ordner- &amp; Dateiname</item>
+    <item>Nur Ordnername</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 Sekunden</item>
@@ -250,8 +263,9 @@
   </string-array>
   <string-array name="slot_entries">
     <item>Leer</item>
-    <item>Uhrzeit</item>
-    <item>Ort</item>
+    <item>Uhr</item>
+    <item>Metadaten #1</item>
+    <item>Metadaten #2</item>
     <item>Wetter #1</item>
     <item>Jetzt läuft #1</item>
     <item>Jetzt läuft #2</item>

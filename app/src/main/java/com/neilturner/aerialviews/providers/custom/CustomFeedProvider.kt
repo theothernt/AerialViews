@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.UrlValidator
@@ -391,8 +392,11 @@ class CustomFeedProvider(
                                 asset.uriAtQuality(quality),
                                 type = AerialMediaType.VIDEO,
                                 source = AerialMediaSource.CUSTOM,
-                                timeOfDay = timeOfDay,
-                                scene = scene,
+                                metadata =
+                                    AerialMediaMetadata(
+                                        timeOfDay = timeOfDay,
+                                        scene = scene,
+                                    ),
                             ),
                         )
                     } else if (prefs.enabled) {
@@ -429,11 +433,14 @@ class CustomFeedProvider(
                 videos.add(
                     AerialMedia(
                         uri,
-                        description = "",
                         type = AerialMediaType.VIDEO,
                         source = AerialMediaSource.RTSP,
-                        timeOfDay = TimeOfDay.UNKNOWN,
-                        scene = SceneType.UNKNOWN,
+                        metadata =
+                            AerialMediaMetadata(
+                                shortDescription = "",
+                                timeOfDay = TimeOfDay.UNKNOWN,
+                                scene = SceneType.UNKNOWN,
+                            ),
                     ),
                 )
 
@@ -461,11 +468,14 @@ class CustomFeedProvider(
                 videos.add(
                     AerialMedia(
                         uri,
-                        description = "",
                         type = AerialMediaType.VIDEO,
                         source = AerialMediaSource.HLS,
-                        timeOfDay = TimeOfDay.UNKNOWN,
-                        scene = SceneType.UNKNOWN,
+                        metadata =
+                            AerialMediaMetadata(
+                                shortDescription = "",
+                                timeOfDay = TimeOfDay.UNKNOWN,
+                                scene = SceneType.UNKNOWN,
+                            ),
                     ),
                 )
 

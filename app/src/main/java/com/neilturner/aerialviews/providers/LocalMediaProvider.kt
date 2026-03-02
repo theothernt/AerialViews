@@ -17,8 +17,8 @@ import kotlinx.coroutines.withContext
 import java.io.File
 
 class LocalMediaProvider(
-	context: Context,
-	private val prefs: LocalProviderPreferences,
+    context: Context,
+    private val prefs: LocalProviderPreferences,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 

@@ -59,13 +59,6 @@
     <item>Usar el nombre de archivo como está</item>
     <item>Carpeta y nombre de archivo</item>
   </string-array>
-  <string-array name="description_folder_level_entries">
-    <item>\'Italia / Puesta de sol\' - 1 nivel</item>
-    <item>\'2025 / Italia / Puesta de sol\' - 2 Niveles</item>
-    <item>\'Paisajes / 2025 / Italia / Puesta de sol\' - 3 niveles</item>
-    <item>\'Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 4 niveles</item>
-    <item>\'Medios / Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 5 niveles</item>
-  </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Desactivado</item>
     <item>Utilice un nombre de archivo formateado, por ejemplo. \'switzerland-zürich_train_station.jpg\' se convierte en \'Switzerland - Zürich Train Station\'</item>
@@ -136,6 +129,13 @@
     <item>Sólo imágenes</item>
     <item>Vídeos &amp; Imágenes</item>
   </string-array>
+  <string-array name="metadata_folder_level_entries">
+    <item>\'Italia / Puesta de sol\' - 1 nivel</item>
+    <item>\'2025 / Italia / Puesta de sol\' - 2 Niveles</item>
+    <item>\'Paisajes / 2025 / Italia / Puesta de sol\' - 3 niveles</item>
+    <item>\'Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 4 niveles</item>
+    <item>\'Medios / Fotos / Paisajes / 2025 / Italia / Puesta de sol\' - 5 niveles</item>
+  </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Desactivado</item>
     <item>Canción · Artista</item>
@@ -157,6 +157,19 @@
     <item>Arriba a la derecha</item>
     <item>Abajo a la izquierda</item>
     <item>Abajo a la derecha</item>
+  </string-array>
+  <string-array name="overlay_metadata_photo_location_entries">
+    <item>Ciudad</item>
+  </string-array>
+  <string-array name="overlay_metadata_photos_entries">
+    <item>Usar el nombre de archivo como está</item>
+    <item>Carpeta y nombre de archivo</item>
+    <item>Solo el nombre de la carpeta</item>
+  </string-array>
+  <string-array name="overlay_metadata_videos_entries">
+    <item>Usar el nombre de archivo como está</item>
+    <item>Carpeta y nombre de archivo</item>
+    <item>Solo el nombre de la carpeta</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 segundos</item>
@@ -252,7 +265,8 @@
   <string-array name="slot_entries">
     <item>Vacío</item>
     <item>Reloj</item>
-    <item>Ubicación</item>
+    <item>Metadatos #1</item>
+    <item>Metadatos #2</item>
     <item>Clima #1</item>
     <item>Reproduciendo #1</item>
     <item>Reproduciendo #2</item>
@@ -261,7 +275,7 @@
     <item>Mensaje #2</item>
     <item>Mensaje #3</item>
     <item>Mensaje #4</item>
-    <item>Cuenta atrás</item>
+    <item>Cuenta regresiva</item>
   </string-array>
   <string-array name="temperature_units_entries">
     <item>C° / Celsius</item>

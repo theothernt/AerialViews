@@ -13,9 +13,8 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
+import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
 import com.neilturner.aerialviews.utils.FontHelper
-import me.kosert.flowbus.EventsReceiver
-import me.kosert.flowbus.subscribe
 import timber.log.Timber
 
 class WeatherOverlay
@@ -26,7 +25,6 @@ class WeatherOverlay
         defStyleAttr: Int = 0,
     ) : LinearLayout(context, attrs, defStyleAttr) {
         var type = OverlayType.WEATHER1
-        private val receiver = EventsReceiver()
         private var overlayItems: List<OverlayItem> = emptyList()
         private var layout = ""
         private var previousWeather: WeatherEvent? = null
@@ -65,17 +63,9 @@ class WeatherOverlay
             this.layout = layout
         }
 
-        override fun onAttachedToWindow() {
-            super.onAttachedToWindow()
-            receiver.subscribe { weather: WeatherEvent ->
-                Timber.d("$weather")
-                updateWeather(weather)
-            }
-        }
-
-        override fun onDetachedFromWindow() {
-            super.onDetachedFromWindow()
-            receiver.unsubscribe()
+        fun render(state: WeatherOverlayState) {
+            Timber.d("${state.event}")
+            updateWeather(state.event)
         }
 
         private fun updateWeather(weather: WeatherEvent) {
