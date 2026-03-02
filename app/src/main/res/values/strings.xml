@@ -495,6 +495,8 @@
     <string name="overlay_metadata_photos_summary">Select and reorder metadata shown for photos</string>
 
     <string name="overlay_metadata_folder_levels_title">Folder levels to show</string>
+    <string name="overlay_metadata_video_location_title">Location format</string>
+    <string name="overlay_metadata_video_location_summary">Choose which location field to display for videos</string>
     <string name="overlay_metadata_photo_location_title">Location format</string>
     <string name="overlay_metadata_photo_location_summary">Choose which location field to display for photos</string>
     <string name="overlay_metadata_photo_date_format_title">Date taken format</string>

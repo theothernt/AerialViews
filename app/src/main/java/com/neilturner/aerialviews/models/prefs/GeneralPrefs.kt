@@ -78,6 +78,7 @@ object GeneralPrefs : KotprefModel() {
     // Metadata
     var overlayMetadata1Videos by stringPref("POI", "overlay_metadata1_videos")
     var overlayMetadata1VideosFolderLevel by stringPref("1", "overlay_metadata1_video_folder_levels")
+    var overlayMetadata1VideosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata1_video_location_type")
 
     var overlayMetadata1Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata1_photos")
     var overlayMetadata1PhotosFolderLevel by stringPref("1", "overlay_metadata1_photo_folder_levels")
@@ -90,6 +91,7 @@ object GeneralPrefs : KotprefModel() {
 
     var overlayMetadata2Videos by stringPref("POI", "overlay_metadata2_videos")
     var overlayMetadata2VideosFolderLevel by stringPref("1", "overlay_metadata2_video_folder_levels")
+    var overlayMetadata2VideosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata2_video_location_type")
 
     var overlayMetadata2Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata2_photos")
     var overlayMetadata2PhotosFolderLevel by stringPref("1", "overlay_metadata2_photo_folder_levels")

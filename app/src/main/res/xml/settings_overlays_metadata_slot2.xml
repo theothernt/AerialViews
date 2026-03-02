@@ -19,6 +19,16 @@
                     app:key="overlay_metadata2_video_folder_levels"
                     app:title="@string/overlay_metadata_folder_levels_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:isPreferenceVisible="false"
+                    app:defaultValue="@string/overlay_metadata_photo_location_default"
+                    app:entries="@array/overlay_metadata_photo_location_entries"
+                    app:entryValues="@array/overlay_metadata_photo_location_values"
+                    app:key="overlay_metadata2_video_location_type"
+                    app:title="@string/overlay_metadata_video_location_title"
+                    app:summary="@string/overlay_metadata_video_location_summary"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
         <PreferenceCategory app:title="@string/category_photos">
                 <com.neilturner.aerialviews.ui.controls.SortableItemPreference

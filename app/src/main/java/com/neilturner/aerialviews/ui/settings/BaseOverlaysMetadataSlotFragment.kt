@@ -19,6 +19,7 @@ abstract class BaseOverlaysMetadataSlotFragment : MenuStateFragment() {
     protected abstract val analyticsScreenName: String
     protected abstract val prefKeyVideoSelection: String
     protected abstract val prefKeyVideoFolderLevel: String
+    protected abstract val prefKeyVideoLocationType: String
     protected abstract val prefKeyPhotoSelection: String
     protected abstract val prefKeyPhotoFolderLevel: String
     protected abstract val prefKeyPhotoLocationType: String
@@ -68,6 +69,8 @@ abstract class BaseOverlaysMetadataSlotFragment : MenuStateFragment() {
 
         findPreference<ListPreference>(prefKeyVideoFolderLevel)
             ?.isVisible = containsFolderLevelValue(videoSelection)
+        findPreference<ListPreference>(prefKeyVideoLocationType)
+            ?.isVisible = containsFieldValue(videoSelection, locationFieldValue)
         findPreference<ListPreference>(prefKeyPhotoFolderLevel)
             ?.isVisible = containsFolderLevelValue(photoSelection)
         findPreference<ListPreference>(prefKeyPhotoLocationType)

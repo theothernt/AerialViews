@@ -8,6 +8,7 @@ class OverlaysMetadataSlot2Fragment : BaseOverlaysMetadataSlotFragment() {
     override val analyticsScreenName = "Metadata Slot 2"
     override val prefKeyVideoSelection = "overlay_metadata2_videos"
     override val prefKeyVideoFolderLevel = "overlay_metadata2_video_folder_levels"
+    override val prefKeyVideoLocationType = "overlay_metadata2_video_location_type"
     override val prefKeyPhotoSelection = "overlay_metadata2_photos"
     override val prefKeyPhotoFolderLevel = "overlay_metadata2_photo_folder_levels"
     override val prefKeyPhotoLocationType = "overlay_metadata2_photo_location_type"
