@@ -5,7 +5,6 @@ import androidx.core.os.bundleOf
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
@@ -169,7 +168,7 @@ class MediaService(
         // Build parameters with individual source counts
         val params = mutableListOf<Pair<String, String>>()
         
-        // Add count for each source (generalized)
+        // Add count for each source (generalised)
         sourcesCounts.forEach { (source, count) ->
             if (source != AerialMediaSource.UNKNOWN) {
                 params.add(Pair("source_${source.name.lowercase()}", generalizeCount(count)))
@@ -180,7 +179,7 @@ class MediaService(
         val videoCount = media.count { it.type == AerialMediaType.VIDEO }
         val photoCount = media.count { it.type == AerialMediaType.IMAGE }
 
-        // Add generalized video and photo counts
+        // Add generalised video and photo counts
         params.add(Pair("total_videos", generalizeCount(videoCount)))
         params.add(Pair("total_photos", generalizeCount(photoCount)))
         params.add(Pair("total_sources", sourcesCounts.size.toString()))
@@ -191,7 +190,7 @@ class MediaService(
             bundleOf(*params.toTypedArray()),
         )
 
-        Timber.i("Media usage tracked: ${params.joinToString(", ") { "${it.first}=${it.second}" }}")
+        Timber.d("Media usage tracked: ${params.joinToString(", ") { "${it.first}=${it.second}" }}")
     }
 
     private fun generalizeCount(count: Int): String =
