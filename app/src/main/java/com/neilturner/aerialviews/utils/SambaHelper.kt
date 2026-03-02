@@ -24,6 +24,11 @@ object SambaHelper {
             Timber.i("Fixing ShareName - replacing back slashes with forward slashes in sharename")
         }
 
+        // Handle double forward slashes (can occur from input or after backslash conversion)
+        while (shareName.contains("//")) {
+            shareName = shareName.replace("//", "/")
+        }
+
         if (shareName.contains("smb:/", true)) {
             shareName = shareName.replace("smb:/", "", true)
             Timber.i("Fixing ShareName - removing smb:/ from sharename")
@@ -41,26 +46,41 @@ object SambaHelper {
         return shareName
     }
 
+    /**
+     * Parse user info from URI.
+     * @param uri the SMB URI to parse
+     * @return Pair of username and password
+     */
     fun parseUserInfo(uri: Uri): Pair<String, String> {
-        var userName = ""
-        var password = ""
-
-        // TODO fix this
-        // .userInfo seems to return user+pass string but it is decoded differently than expected
-        // "hello+world" is return as "hello+world" and not "hello world"
-        // encoding url vs encoding url parameters ?!
-
         // If none (ie. anonymous) return early
-        val userInfo = uri.userInfo ?: return Pair(userName, password)
+        val userInfo = uri.userInfo ?: return Pair("", "")
 
         val parts = userInfo.split(":")
-        if (parts.isNotEmpty()) {
-            userName = parts.elementAtOrElse(0) { "" }
-            password = parts.elementAtOrElse(1) { "" }
-        }
+        val userName = parts.elementAtOrElse(0) { "" }
+        val password = parts.elementAtOrElse(1) { "" }
         return Pair(userName, password)
     }
 
+    /**
+     * Parse user info from URI string.
+     * This overload is useful for testing without Android dependencies.
+     * @param uriString the SMB URI string to parse
+     * @return Pair of username and password
+     */
+    fun parseUserInfo(uriString: String): Pair<String, String> {
+        val userInfo = extractUserInfo(uriString) ?: return Pair("", "")
+
+        val parts = userInfo.split(":")
+        val userName = parts.elementAtOrElse(0) { "" }
+        val password = parts.elementAtOrElse(1) { "" }
+        return Pair(userName, password)
+    }
+
+    /**
+     * Parse share name and path from URI.
+     * @param uri the SMB URI to parse
+     * @return Pair of share name and path
+     */
     fun parseShareAndPathName(uri: Uri): Pair<String, String> {
         val segments = uri.pathSegments.toMutableList()
         val shareName = segments.removeAt(0)
@@ -70,6 +90,42 @@ object SambaHelper {
             path = segments.joinToString("/")
         }
         return Pair(shareName, path)
+    }
+
+    /**
+     * Parse share name and path from URI string.
+     * This overload is useful for testing without Android dependencies.
+     * @param uriString the SMB URI string to parse
+     * @return Pair of share name and path
+     */
+    fun parseShareAndPathName(uriString: String): Pair<String, String> {
+        val pathPart = extractPathAfterHost(uriString)
+        val segments = pathPart.trim('/').split("/").toMutableList()
+        
+        if (segments.isEmpty()) {
+            return Pair("", "")
+        }
+        
+        val shareName = segments.removeAt(0)
+        val path = if (segments.isNotEmpty()) segments.joinToString("/") else ""
+        return Pair(shareName, path)
+    }
+
+    /**
+     * Extract user info from URI string.
+     */
+    private fun extractUserInfo(uriString: String): String? {
+        val withoutScheme = uriString.removePrefix("smb://")
+        val authority = withoutScheme.substringBefore("/")
+        return if ("@" in authority) authority.substringBefore("@") else null
+    }
+
+    /**
+     * Extract path portion after host from URI string.
+     */
+    private fun extractPathAfterHost(uriString: String): String {
+        val withoutScheme = uriString.removePrefix("smb://")
+        return withoutScheme.substringAfter("/", "")
     }
 
     fun buildAuthContext(
