@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.utils.UrlParser
 import timber.log.Timber
 
 class ImmichMediaProvider(
@@ -16,7 +17,8 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    private val urlBuilder = ImmichUrlBuilder(prefs.url, prefs)
+    private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
+    private val urlBuilder = ImmichUrlBuilder(serverUrl, prefs)
     private val repository = ImmichRepository(prefs, urlBuilder)
     private val mapper = ImmichAssetMapper(prefs, urlBuilder)
 
@@ -34,11 +36,6 @@ class ImmichMediaProvider(
         if (validationError != null) {
             return Pair(media, validationError)
         }
-
-        // Initialize server in UrlBuilder before fetching
-        urlBuilder.getAssetUri("ignored", false) // Just to trigger server url initialization if needed.
-        // Actually ImmichRepository initializing lazy client handles `server` inside it, but we need
-        // to make sure UrlBuilder gets the correct server url. Let's do that differently below.
 
         // Fetch all assets from API
         val assetResults =

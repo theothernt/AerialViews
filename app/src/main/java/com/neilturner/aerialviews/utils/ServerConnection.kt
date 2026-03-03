@@ -1,11 +1,10 @@
 package com.neilturner.aerialviews.utils
 
 import android.annotation.SuppressLint
-import android.util.Patterns
-import androidx.core.net.toUri
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import timber.log.Timber
+import java.net.URI
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
@@ -33,15 +32,15 @@ object UrlParser {
         }
 
         try {
-            val uri = processedUrl.toUri()
+            val uri = URI(processedUrl)
 
             // Validate basic URL components
             if (uri.host == null) {
                 throw IllegalArgumentException("Invalid URL")
             }
 
-            // Do more validation
-            if (!Patterns.WEB_URL.matcher(processedUrl).matches()) {
+            // Ensure only supported protocols are accepted
+            if (uri.scheme !in setOf("http", "https")) {
                 throw IllegalArgumentException("Invalid URL")
             }
 
