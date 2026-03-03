@@ -70,9 +70,24 @@ object BitmapHelper {
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null
 
-                // If filtering is requested, perform high-quality scale to exact target dimensions
+                // If filtering is requested, perform high-quality scale while preserving aspect ratio
                 if (filter && (decodedBitmap.width != targetWidth || decodedBitmap.height != targetHeight)) {
-                    val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, targetWidth, targetHeight, true)
+                    // Calculate scaled dimensions that preserve the original aspect ratio
+                    val aspectRatio = decodedBitmap.width.toFloat() / decodedBitmap.height.toFloat()
+                    val scaledWidth: Int
+                    val scaledHeight: Int
+
+                    if (targetWidth.toFloat() / targetHeight.toFloat() > aspectRatio) {
+                        // Target is wider than source - fit to height
+                        scaledHeight = targetHeight
+                        scaledWidth = (targetHeight * aspectRatio).toInt()
+                    } else {
+                        // Target is taller than source - fit to width
+                        scaledWidth = targetWidth
+                        scaledHeight = (targetWidth / aspectRatio).toInt()
+                    }
+
+                    val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, scaledWidth, scaledHeight, true)
                     if (scaledBitmap != decodedBitmap) {
                         decodedBitmap.recycle()
                         decodedBitmap = scaledBitmap
