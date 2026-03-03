@@ -1,12 +1,13 @@
 package com.neilturner.aerialviews.providers.immich
 
-import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import com.neilturner.aerialviews.utils.UrlParser
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
 import timber.log.Timber
@@ -155,11 +156,11 @@ class ImmichRepository(
         }
     }
 
-    suspend fun getSelectedAlbumFromAPI(): Album {
+    suspend fun getSelectedAlbumFromAPI(): Album = coroutineScope {
         try {
             val selectedAlbumIds = prefs.selectedAlbumIds
             if (selectedAlbumIds.isEmpty()) {
-                return Album(
+                return@coroutineScope Album(
                     id = "combined", // Use a special ID for the combined album
                     name = "",
                     description = "No albums selected",
@@ -173,8 +174,14 @@ class ImmichRepository(
             val allAssets = mutableListOf<Asset>()
             var combinedAlbumName = ""
 
-            for ((index, albumId) in selectedAlbumIds.withIndex()) {
-                val response = immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId)
+            val albumDeferreds = selectedAlbumIds.map { albumId ->
+                async {
+                    Pair(albumId, immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId))
+                }
+            }
+
+            for ((index, deferred) in albumDeferreds.withIndex()) {
+                val (albumId, response) = deferred.await()
                 Timber.d("API Request for album $albumId - URL: ${response.raw().request.url}")
 
                 if (response.isSuccessful) {
@@ -202,7 +209,7 @@ class ImmichRepository(
             Timber.d("Combined ${allAssets.size} assets from ${selectedAlbumIds.size} albums, ${uniqueAssets.size} unique assets")
 
             // Return a combined album with all assets
-            return Album(
+            return@coroutineScope Album(
                 id = "combined", // Use a special ID for the combined album
                 name = combinedAlbumName,
                 description = "Combined album from ${selectedAlbumIds.size} selected albums",
@@ -250,19 +257,25 @@ class ImmichRepository(
         }
     }
 
-    suspend fun getRatedAssetsFromAPI(): List<Asset> {
+    suspend fun getRatedAssetsFromAPI(): List<Asset> = coroutineScope {
         val ratedAssets = mutableListOf<Asset>()
         try {
             val ratings = prefs.includeRatings
             if (ratings.isNotEmpty()) {
-                for (rating in ratings) {
-                    Timber.d("Fetching rated assets with rating: $rating")
-                    val searchRequest = SearchMetadataRequest(
-                        rating = rating.toInt(),
-                        withExif = true,
-                        type = getTypeFilter(),
-                    )
-                    val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                val ratedDeferreds = ratings.map { rating ->
+                    async {
+                        Timber.d("Fetching rated assets with rating: $rating")
+                        val searchRequest = SearchMetadataRequest(
+                            rating = rating.toInt(),
+                            withExif = true,
+                            type = getTypeFilter(),
+                        )
+                        immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                    }
+                }
+
+                for (deferred in ratedDeferreds) {
+                    val response = deferred.await()
                     if (response.isSuccessful) {
                         val searchResponse = response.body()
                         val assets = searchResponse?.assets?.items ?: emptyList()
@@ -277,7 +290,7 @@ class ImmichRepository(
         } catch (e: Exception) {
             Timber.e(e, "Exception while fetching rated assets")
         }
-        return ratedAssets
+        return@coroutineScope ratedAssets
     }
 
     suspend fun getRandomAssetsFromAPI(): List<Asset> {
@@ -332,10 +345,13 @@ class ImmichRepository(
         }
     }
 
-    suspend fun fetchAlbums(): Result<List<Album>> =
+    suspend fun fetchAlbums(): Result<List<Album>> = coroutineScope {
         try {
+            val regularDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey) }
+            val sharedDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey, shared = true) }
+
             // Fetch regular albums
-            val regularResponse = immichClient.getAlbums(apiKey = prefs.apiKey)
+            val regularResponse = regularDeferred.await()
             val regularAlbums =
                 if (regularResponse.isSuccessful) {
                     regularResponse.body() ?: emptyList()
@@ -348,11 +364,11 @@ class ImmichRepository(
                             Timber.e(e, "Error parsing error body: $errorBody")
                             regularResponse.message()
                         }
-                    return Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
+                    return@coroutineScope Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
                 }
 
             // Fetch shared albums
-            val sharedResponse = immichClient.getAlbums(apiKey = prefs.apiKey, shared = true)
+            val sharedResponse = sharedDeferred.await()
             val sharedAlbums =
                 if (sharedResponse.isSuccessful) {
                     sharedResponse.body() ?: emptyList()
@@ -370,6 +386,7 @@ class ImmichRepository(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
 
     private fun cleanSharedLinkKey(input: String): String {
         return input

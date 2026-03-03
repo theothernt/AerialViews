@@ -7,6 +7,8 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.UrlParser
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 class ImmichMediaProvider(
@@ -80,7 +82,7 @@ class ImmichMediaProvider(
         return null
     }
 
-    private suspend fun fetchAllAssets(): AssetFetchResults {
+    private suspend fun fetchAllAssets(): AssetFetchResults = coroutineScope {
         // Get primary assets (album or shared link)
         val primaryAlbum =
             if (prefs.authType == ImmichAuthType.SHARED_LINK) {
@@ -93,44 +95,53 @@ class ImmichMediaProvider(
         val filteredPrimaryAssets = mapper.filterAssetsByMediaType(primaryAlbum.assets)
 
         // Get optional asset sources (API key only) and filter each by media type
-        val favoriteAssets =
+        val favoriteDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("favorites") { repository.getFavoriteAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val ratedAssets =
+        val ratedDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
                 val rawAssets = fetchOptionalAssets("rated") { repository.getRatedAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val randomAssets =
+        val randomDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("random") { repository.getRandomAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val recentAssets =
+        val recentDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("recent") { repository.getRecentAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
+
+        val favoriteAssets = favoriteDeferred.await()
+        val ratedAssets = ratedDeferred.await()
+        val randomAssets = randomDeferred.await()
+        val recentAssets = recentDeferred.await()
 
         // Combine and deduplicate all filtered assets
         val allAssets =
             (filteredPrimaryAssets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
                 .distinctBy { it.id }
 
-        return AssetFetchResults(
+        return@coroutineScope AssetFetchResults(
             allAssets = allAssets,
             favoriteCount = favoriteAssets.size,
             ratedCount = ratedAssets.size,
