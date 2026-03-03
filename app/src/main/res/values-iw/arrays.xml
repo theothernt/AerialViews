@@ -167,6 +167,10 @@
     <item>שם התיקיה בלבד</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>נקודות עניין דינמיות</item>
+    <item>תיאור קצר</item>
+    <item>מיקום (אימיך)</item>
+    <item>תיאור (אימיך)</item>
     <item>השתמש בשם הקובץ כמו שהוא</item>
     <item>התיקייה והקובץ</item>
     <item>שם התיקיה בלבד</item>

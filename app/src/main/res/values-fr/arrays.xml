@@ -167,6 +167,10 @@
     <item>Nom du dossier uniquement</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Points d\'intérêt dynamiques</item>
+    <item>Brève description</item>
+    <item>Lieu (Immich)</item>
+    <item>Description (Immich)</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
     <item>Nom du dossier uniquement</item>

@@ -166,6 +166,10 @@
     <item>Sadece klasör adı</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Dinamik İlgi Çekici Noktalar</item>
+    <item>Kısa Açıklama</item>
+    <item>Konum (Immich)</item>
+    <item>Açıklama (Immich)</item>
     <item>Dosya adını olduğu gibi kullanın</item>
     <item>Klasör ve dosya adı</item>
     <item>Sadece klasör adı</item>

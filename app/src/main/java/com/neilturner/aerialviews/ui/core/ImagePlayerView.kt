@@ -131,7 +131,7 @@ class ImagePlayerView : AppCompatImageView {
             val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
             val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
 
-            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight)
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight, filter = GeneralPrefs.photoBilinearFiltering)
             if (bitmapResult == null) {
                 loadImage(media.uri)
                 return@launch

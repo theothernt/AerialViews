@@ -19,6 +19,11 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceProgressBarFragment"/>
 
                 <Preference
+                    app:title="@string/appearance_scaling_title"
+                    app:summary="@string/appearance_scaling_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceScalingFragment"/>
+
+                <Preference
                     app:title="@string/appearance_gradient_title"
                     app:summary="@string/appearance_gradient_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceGradientFragment"/>
@@ -37,11 +42,6 @@
                     app:title="@string/appearance_brightness_title"
                     app:summary="@string/appearance_brightness_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceBrightnessFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_scaling_title"
-                    app:summary="@string/appearance_scaling_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.AppearanceScalingFragment"/>
 
                 <Preference
                     app:title="@string/appearance_typography_title"

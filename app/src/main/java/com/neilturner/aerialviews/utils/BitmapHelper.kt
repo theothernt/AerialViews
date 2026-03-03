@@ -31,6 +31,7 @@ object BitmapHelper {
         targetWidth: Int,
         targetHeight: Int,
         quality: Int = 85,
+        filter: Boolean = false,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             try {
@@ -64,10 +65,34 @@ object BitmapHelper {
                     }
 
                 // 2nd open: Full stream for actual bitmap decode
-                val decodedBitmap =
+                var decodedBitmap =
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null
+
+                // If filtering is requested, perform high-quality scale while preserving aspect ratio
+                if (filter && (decodedBitmap.width != targetWidth || decodedBitmap.height != targetHeight)) {
+                    // Calculate scaled dimensions that preserve the original aspect ratio
+                    val aspectRatio = decodedBitmap.width.toFloat() / decodedBitmap.height.toFloat()
+                    val scaledWidth: Int
+                    val scaledHeight: Int
+
+                    if (targetWidth.toFloat() / targetHeight.toFloat() > aspectRatio) {
+                        // Target is wider than source - fit to height
+                        scaledHeight = targetHeight
+                        scaledWidth = (targetHeight * aspectRatio).toInt()
+                    } else {
+                        // Target is taller than source - fit to width
+                        scaledWidth = targetWidth
+                        scaledHeight = (targetWidth / aspectRatio).toInt()
+                    }
+
+                    val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, scaledWidth, scaledHeight, true)
+                    if (scaledBitmap != decodedBitmap) {
+                        decodedBitmap.recycle()
+                        decodedBitmap = scaledBitmap
+                    }
+                }
 
                 val outputStream = ByteArrayOutputStream()
                 val compressed = decodedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
