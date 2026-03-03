@@ -62,30 +62,6 @@ internal class MetadataResolver(
                     }
                 }
 
-                "LOCATION" -> {
-                    when (val location = resolveMediaLocation(context, media, preferences.videoLocationType)) {
-                        is MediaLocationResolution.Resolved -> {
-                            return ResolvedMetadata(
-                                text = location.text,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-
-                        MediaLocationResolution.ContinueFallback -> {
-                            continue
-                        }
-
-                        MediaLocationResolution.StopWithBlank -> {
-                            return ResolvedMetadata(
-                                text = "",
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                    }
-                }
-
                 "DESC" -> {
                     media.metadata.shortDescription
                         .trim()
@@ -99,58 +75,11 @@ internal class MetadataResolver(
                         }
                 }
 
-                "DESCRIPTION" -> {
-                    media.metadata.exif.description
-                        ?.trim()
-                        ?.takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FILENAME" -> {
-                    media.uri.filenameWithoutExtension
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FOLDER_FILENAME" -> {
-                    FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = preferences.videoFolderDepth)
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FOLDER_ONLY" -> {
-                    FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = preferences.videoFolderDepth)
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
+                else -> {
+                    val common = resolveSharedMetadata(context, media, entry, preferences.videoLocationType, preferences.videoFolderDepth)
+                    if (common != null) {
+                        return common
+                    }
                 }
             }
         }
@@ -171,30 +100,6 @@ internal class MetadataResolver(
 
         for (entry in selection) {
             when (entry) {
-                "LOCATION" -> {
-                    when (val location = resolveMediaLocation(context, media, preferences.photoLocationType)) {
-                        is MediaLocationResolution.Resolved -> {
-                            return ResolvedMetadata(
-                                text = location.text,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-
-                        MediaLocationResolution.ContinueFallback -> {
-                            continue
-                        }
-
-                        MediaLocationResolution.StopWithBlank -> {
-                            return ResolvedMetadata(
-                                text = "",
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                    }
-                }
-
                 "DATE_TAKEN" -> {
                     val exifDate = media.metadata.exif.date
                     if (!exifDate.isNullOrBlank()) {
@@ -215,58 +120,11 @@ internal class MetadataResolver(
                     }
                 }
 
-                "DESCRIPTION" -> {
-                    media.metadata.exif.description
-                        ?.trim()
-                        ?.takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FILENAME" -> {
-                    media.uri.filenameWithoutExtension
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FOLDER_FILENAME" -> {
-                    FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = preferences.photoFolderDepth)
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                }
-
-                "FOLDER_ONLY" -> {
-                    FileHelper
-                        .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = preferences.photoFolderDepth)
-                        .trim()
-                        .takeIf { it.isNotBlank() }
-                        ?.let {
-                            return ResolvedMetadata(
-                                text = it,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
+                else -> {
+                    val common = resolveSharedMetadata(context, media, entry, preferences.photoLocationType, preferences.photoFolderDepth)
+                    if (common != null) {
+                        return common
+                    }
                 }
             }
         }
@@ -277,6 +135,91 @@ internal class MetadataResolver(
             metadataType = MetadataType.STATIC,
         )
     }
+
+    private suspend fun resolveSharedMetadata(
+        context: Context,
+        media: AerialMedia,
+        entry: String,
+        locationType: LocationType,
+        folderDepth: Int,
+    ): ResolvedMetadata? =
+        when (entry) {
+            "LOCATION" -> {
+                when (val location = resolveMediaLocation(context, media, locationType)) {
+                    is MediaLocationResolution.Resolved -> {
+                        ResolvedMetadata(
+                            text = location.text,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+                    MediaLocationResolution.StopWithBlank -> {
+                        ResolvedMetadata(
+                            text = "",
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+                    is MediaLocationResolution.ContinueFallback -> null
+                }
+            }
+
+            "DESCRIPTION" -> {
+                media.metadata.exif.description
+                    ?.trim()
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+            }
+
+            "FILENAME" -> {
+                media.uri.filenameWithoutExtension
+                    .trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+            }
+
+            "FOLDER_FILENAME" -> {
+                FileHelper
+                    .formatFolderAndFilenameFromUri(media.uri, includeFilename = true, pathDepth = folderDepth)
+                    .trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+            }
+
+            "FOLDER_ONLY" -> {
+                FileHelper
+                    .formatFolderAndFilenameFromUri(media.uri, includeFilename = false, pathDepth = folderDepth)
+                    .trim()
+                    .takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+            }
+            
+            else -> null
+        }
 
     private suspend fun resolveMediaLocation(
         context: Context,
