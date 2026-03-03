@@ -166,6 +166,10 @@
     <item>Nur Ordnername</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Dynamische Punkte von Interesse</item>
+    <item>Kurzbeschreibung</item>
+    <item>Standort (Immich)</item>
+    <item>Beschreibung (Immich)</item>
     <item>Dateinamen unverändert verwenden</item>
     <item>Ordner- &amp; Dateiname</item>
     <item>Nur Ordnername</item>

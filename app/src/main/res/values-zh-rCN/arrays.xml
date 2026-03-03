@@ -167,6 +167,10 @@
     <item>仅文件夹名称</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>动态兴趣点</item>
+    <item>简要说明</item>
+    <item>地点（伊米奇）</item>
+    <item>说明（伊米奇）</item>
     <item>原始文件名</item>
     <item>文件夹和文件名</item>
     <item>仅文件夹名称</item>
