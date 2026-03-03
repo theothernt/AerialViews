@@ -102,12 +102,21 @@
     <item>Спільне посилання</item>
     <item>Ключ API</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Попередній перегляд</item>
+    <item>Повнорозмірний</item>
+    <item>Оригінал</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Вимкнено</item>
     <item>100 фотографій</item>
     <item>200 фотографій</item>
     <item>300 фотографій</item>
     <item>400 фотографій</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Перекодовано</item>
+    <item>Оригінал</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустити при досягненні ліміту</item>
@@ -160,16 +169,27 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Місто</item>
+    <item>Місто, штат</item>
+    <item>Місто, країна</item>
+    <item>Місто, штат, країна</item>
+    <item>Країна</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Місцезнаходження (EXIF/Immich)</item>
+    <item>Дата зйомки (EXIF/Immich)</item>
+    <item>Опис (EXIF/Immich)</item>
     <item>Використовувати ім\'я файлу як є</item>
     <item>"Ім\'я папки та файлу"</item>
     <item>"Тільки ім\'я папки"</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Динамічні пам\'ятки</item>
+    <item>Короткий опис</item>
+    <item>Місцезнаходження (Immich)</item>
+    <item>Опис (Immich)</item>
     <item>Використовувати ім\'я файлу як є</item>
-    <item>"Ім\'я папки та файлу"</item>
-    <item>"Тільки ім\'я папки"</item>
+    <item>Ім\'я папки та файлу</item>
+    <item>Тільки ім\'я папки</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 секунди</item>

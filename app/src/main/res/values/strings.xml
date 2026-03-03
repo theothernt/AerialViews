@@ -601,6 +601,8 @@
     <string name="appearance_video_scale_title">Video scaling</string>
     <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
     <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
+    <string name="appearance_photo_bilinear_filtering_title">Bilinear Filtering</string>
+    <string name="appearance_photo_bilinear_filtering_summary">Applies high-quality filtering when resizing photos to reduce aliasing (jagged edges)</string>
 
     <!-- Main / Settings / Appearance / Progress Bar -->
     <string name="progress_bar_location_title">Location on screen</string>

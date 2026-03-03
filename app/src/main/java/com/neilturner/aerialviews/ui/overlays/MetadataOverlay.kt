@@ -4,15 +4,21 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.ui.core.VideoPlayerView
 import com.neilturner.aerialviews.ui.overlays.state.MetadataOverlayState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
-    private var currentPositionProgressHandler: (() -> Unit)? = null
+    private var poiJob: Job? = null
     private val textAlpha = 1f // start + end values?
     var isFadingOutMedia = false // Stops POI change + fade as video is ending
     var type: OverlayType = OverlayType.METADATA1
@@ -27,7 +33,8 @@ class MetadataOverlay : AppCompatTextView {
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        currentPositionProgressHandler = null
+        poiJob?.cancel()
+        poiJob = null
     }
 
     fun updateLocationData(
@@ -57,7 +64,8 @@ class MetadataOverlay : AppCompatTextView {
             updatePointsOfInterest(poi, player)
         } else {
             // POI is off or empty, so disable handler
-            currentPositionProgressHandler = null
+            poiJob?.cancel()
+            poiJob = null
         }
     }
 
@@ -75,38 +83,39 @@ class MetadataOverlay : AppCompatTextView {
         val poiTimes = poi.keys.sorted() // sort ahead of time?
         var lastPoi = 0
 
-        currentPositionProgressHandler = {
-            // Find POI string at current position/time
-            val time = player.currentPosition / 1000 // player current position
-            val newPoi = poiTimes.findLast { it <= time } ?: 0
-            val shouldUpdate = newPoi != lastPoi
+        poiJob?.cancel()
+        poiJob = findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            delay(1000)
+            while (isActive) {
+                // Find POI string at current position/time
+                val time = player.currentPosition / 1000 // player current position
+                val newPoi = poiTimes.findLast { it <= time } ?: 0
+                val shouldUpdate = newPoi != lastPoi
 
-            // If new string and not fading in/out + loading new video
-            if (shouldUpdate && !isFadingOutMedia) {
-                // Set new string and fade in
-                @Suppress("AssignedValueIsNeverRead")
-                lastPoi = newPoi // Compiler bug?
-                this
-                    .animate()
-                    .alpha(0f)
-                    .setDuration(1000)
-                    .withEndAction {
-                        this.text = poi[newPoi]?.replace("\n", " ")
-                        this
-                            .animate()
-                            .alpha(textAlpha)
-                            .setDuration(1000)
-                            .start()
-                    }.start()
+                // If new string and not fading in/out + loading new video
+                if (shouldUpdate && !isFadingOutMedia) {
+                    // Set new string and fade in
+                    @Suppress("AssignedValueIsNeverRead")
+                    lastPoi = newPoi // Compiler bug?
+                    this@MetadataOverlay
+                        .animate()
+                        .alpha(0f)
+                        .setDuration(1000)
+                        .withEndAction {
+                            this@MetadataOverlay.text = poi[newPoi]?.replace("\n", " ")
+                            this@MetadataOverlay
+                                .animate()
+                                .alpha(textAlpha)
+                                .setDuration(1000)
+                                .start()
+                        }.start()
+                }
+
+                // Set new interval for POI string update
+                // Longer is a new string has just been set
+                val interval = if (shouldUpdate) 3000L else 1000L
+                delay(interval)
             }
-
-            // Set new interval for POI string update
-            // Longer is a new string has just been set
-            val interval = if (shouldUpdate) 3000 else 1000
-            this.postDelayed({ currentPositionProgressHandler?.let { it() } }, interval.toLong())
         }
-
-        // Set initial delay for this method
-        this.postDelayed({ currentPositionProgressHandler?.let { it() } }, 1000)
     }
 }

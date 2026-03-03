@@ -167,6 +167,10 @@
     <item>Solo nome cartella</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Punti di interesse dinamici</item>
+    <item>Descrizione breve</item>
+    <item>Posizione (Immich)</item>
+    <item>Descrizione (Immich)</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
     <item>Solo nome cartella</item>

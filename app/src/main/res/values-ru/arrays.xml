@@ -102,12 +102,21 @@
     <item>Общая ссылка</item>
     <item>Ключ API</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Предварительный просмотр</item>
+    <item>Полноразмерный</item>
+    <item>Оригинал</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Выключено</item>
     <item>100 фотографий</item>
     <item>200 фотографий</item>
     <item>300 фотографий</item>
     <item>400 фотографий</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Транскодированный</item>
+    <item>Оригинал</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Пропустить при достижении лимита</item>
@@ -160,13 +169,24 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Город</item>
+    <item>Город, штат</item>
+    <item>Город, страна</item>
+    <item>Город, штат, страна</item>
+    <item>Страна</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Местоположение (EXIF/Immich)</item>
+    <item>Дата съемки (EXIF/Immich)</item>
+    <item>Описание (EXIF/Immich)</item>
     <item>Использовать имя файла как есть</item>
     <item>Папка и имя файла</item>
     <item>Только имя папки</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
+    <item>Динамические точки интереса</item>
+    <item>Краткое описание</item>
+    <item>Местонахождение (Immich)</item>
+    <item>Описание (Immich)</item>
     <item>Использовать имя файла как есть</item>
     <item>Папка и имя файла</item>
     <item>Только имя папки</item>

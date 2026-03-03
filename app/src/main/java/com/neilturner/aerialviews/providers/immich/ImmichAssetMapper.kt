@@ -38,24 +38,24 @@ class ImmichAssetMapper(
         var images = 0
 
         assets.forEach { asset ->
-            val exif = extractExifMetadata(asset)
             val filename = asset.originalPath
-            val rawExif = asset.exifInfo
-
-            Timber.i(
-                "Immich EXIF: path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
-                filename,
-                asset.localDateTime,
-                asset.description ?: rawExif?.description,
-                rawExif?.city,
-                rawExif?.state,
-                rawExif?.country,
-            )
-
             val isVideo = FileHelper.isSupportedVideoType(filename)
             val isImage = FileHelper.isSupportedImageType(filename)
 
             if (isVideo || isImage) {
+                val rawExif = asset.exifInfo
+
+                Timber.i(
+                    "Immich EXIF: path=%s localDateTime=%s description=%s city=%s state=%s country=%s",
+                    filename,
+                    asset.localDateTime,
+                    asset.description ?: rawExif?.description,
+                    rawExif?.city,
+                    rawExif?.state,
+                    rawExif?.country,
+                )
+
+                val exif = extractExifMetadata(asset)
                 val uri = urlBuilder.getAssetUri(asset.id, isVideo)
                 val item =
                     AerialMedia(

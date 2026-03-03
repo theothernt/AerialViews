@@ -6,6 +6,9 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.utils.UrlParser
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
 
 class ImmichMediaProvider(
@@ -16,7 +19,8 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    private val urlBuilder = ImmichUrlBuilder(prefs.url, prefs)
+    private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
+    private val urlBuilder = ImmichUrlBuilder(serverUrl, prefs)
     private val repository = ImmichRepository(prefs, urlBuilder)
     private val mapper = ImmichAssetMapper(prefs, urlBuilder)
 
@@ -34,11 +38,6 @@ class ImmichMediaProvider(
         if (validationError != null) {
             return Pair(media, validationError)
         }
-
-        // Initialize server in UrlBuilder before fetching
-        urlBuilder.getAssetUri("ignored", false) // Just to trigger server url initialization if needed.
-        // Actually ImmichRepository initializing lazy client handles `server` inside it, but we need
-        // to make sure UrlBuilder gets the correct server url. Let's do that differently below.
 
         // Fetch all assets from API
         val assetResults =
@@ -83,7 +82,7 @@ class ImmichMediaProvider(
         return null
     }
 
-    private suspend fun fetchAllAssets(): AssetFetchResults {
+    private suspend fun fetchAllAssets(): AssetFetchResults = coroutineScope {
         // Get primary assets (album or shared link)
         val primaryAlbum =
             if (prefs.authType == ImmichAuthType.SHARED_LINK) {
@@ -96,44 +95,53 @@ class ImmichMediaProvider(
         val filteredPrimaryAssets = mapper.filterAssetsByMediaType(primaryAlbum.assets)
 
         // Get optional asset sources (API key only) and filter each by media type
-        val favoriteAssets =
+        val favoriteDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("favorites") { repository.getFavoriteAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val ratedAssets =
+        val ratedDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
                 val rawAssets = fetchOptionalAssets("rated") { repository.getRatedAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val randomAssets =
+        val randomDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("random") { repository.getRandomAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
 
-        val recentAssets =
+        val recentDeferred = async {
             if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
                 val rawAssets = fetchOptionalAssets("recent") { repository.getRecentAssetsFromAPI() }
                 mapper.filterAssetsByMediaType(rawAssets)
             } else {
                 emptyList()
             }
+        }
+
+        val favoriteAssets = favoriteDeferred.await()
+        val ratedAssets = ratedDeferred.await()
+        val randomAssets = randomDeferred.await()
+        val recentAssets = recentDeferred.await()
 
         // Combine and deduplicate all filtered assets
         val allAssets =
             (filteredPrimaryAssets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
                 .distinctBy { it.id }
 
-        return AssetFetchResults(
+        return@coroutineScope AssetFetchResults(
             allAssets = allAssets,
             favoriteCount = favoriteAssets.size,
             ratedCount = ratedAssets.size,
