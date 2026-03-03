@@ -388,18 +388,6 @@ class ImmichRepository(
         }
     }
 
-    private fun cleanSharedLinkKey(input: String): String {
-        return input
-            .trim()
-            .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
-            .replace(Regex("^(share|s)/"), "") // Support both "/share/<key>" and "/s/<slug>" formats
-    }
-
-    private fun isSlugFormat(input: String): Boolean {
-        val trimmed = input.trim().replace(Regex("^/+"), "")
-        return trimmed.startsWith("s/")
-    }
-
     // Moved this to be available earlier for initial connection string
     fun getServerUrl(): String {
         if (!this::server.isInitialized) {

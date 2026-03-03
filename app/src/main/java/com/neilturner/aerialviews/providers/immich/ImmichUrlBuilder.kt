@@ -16,13 +16,6 @@ class ImmichUrlBuilder(
         resolvedSharedKey = key
     }
 
-    private fun cleanSharedLinkKey(input: String): String {
-        return input
-            .trim()
-            .replace(Regex("^/+|/+$"), "") // Remove leading and trailing slashes
-            .replace(Regex("^(share|s)/"), "") // Support both "/share/<key>" and "/s/<slug>" formats
-    }
-
     fun getAssetUri(
         id: String,
         isVideo: Boolean,
