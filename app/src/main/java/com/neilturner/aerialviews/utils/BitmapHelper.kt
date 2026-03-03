@@ -31,6 +31,7 @@ object BitmapHelper {
         targetWidth: Int,
         targetHeight: Int,
         quality: Int = 85,
+        filter: Boolean = false,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             try {
@@ -64,10 +65,19 @@ object BitmapHelper {
                     }
 
                 // 2nd open: Full stream for actual bitmap decode
-                val decodedBitmap =
+                var decodedBitmap =
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null
+
+                // If filtering is requested, perform high-quality scale to exact target dimensions
+                if (filter && (decodedBitmap.width != targetWidth || decodedBitmap.height != targetHeight)) {
+                    val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, targetWidth, targetHeight, true)
+                    if (scaledBitmap != decodedBitmap) {
+                        decodedBitmap.recycle()
+                        decodedBitmap = scaledBitmap
+                    }
+                }
 
                 val outputStream = ByteArrayOutputStream()
                 val compressed = decodedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)

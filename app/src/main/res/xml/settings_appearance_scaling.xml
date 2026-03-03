@@ -26,5 +26,11 @@
                     app:key="photo_scale_portrait"
                     app:title="@string/appearance_photo_scale_portrait_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <SwitchPreferenceCompat
+                    app:defaultValue="true"
+                    app:key="photo_bilinear_filtering"
+                    app:title="@string/appearance_photo_bilinear_filtering_title"
+                    app:summary="@string/appearance_photo_bilinear_filtering_summary" />
         </PreferenceCategory>
 </PreferenceScreen>
