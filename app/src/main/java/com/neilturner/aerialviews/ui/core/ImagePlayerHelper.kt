@@ -142,6 +142,7 @@ internal object ImagePlayerHelper {
         }
 
     fun streamFromSambaFile(uri: Uri): InputStream? {
+        val startTime = System.currentTimeMillis()
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
@@ -155,9 +156,13 @@ internal object ImagePlayerHelper {
             )
 
         try {
+            val connectStartTime = System.currentTimeMillis()
             val connection = smbClient.connect(SambaMediaPrefs.hostName)
             val session = connection?.authenticate(authContext)
             val share = session?.connectShare(shareName) as DiskShare
+            Timber.d("SAMBA: Connected and authenticated in ${System.currentTimeMillis() - connectStartTime}ms")
+            
+            val openStartTime = System.currentTimeMillis()
             val shareAccess = hashSetOf<SMB2ShareAccess>()
             shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
             val file =
@@ -169,6 +174,7 @@ internal object ImagePlayerHelper {
                     SMB2CreateDisposition.FILE_OPEN,
                     null,
                 )
+            Timber.d("SAMBA: Opened file in ${System.currentTimeMillis() - openStartTime}ms. Total setup time: ${System.currentTimeMillis() - startTime}ms")
 
             return object : InputStream() {
                 private val wrappedStream = file.inputStream

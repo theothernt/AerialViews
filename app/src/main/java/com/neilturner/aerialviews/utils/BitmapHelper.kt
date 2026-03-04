@@ -2,9 +2,11 @@ package com.neilturner.aerialviews.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import androidx.core.graphics.scale
 import androidx.exifinterface.media.ExifInterface
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
@@ -34,17 +36,23 @@ object BitmapHelper {
         filter: Boolean = false,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
+            val totalStartTime = System.currentTimeMillis()
             try {
                 // Read header bytes once - used for EXIF and bounds checking
+                val headerStartTime = System.currentTimeMillis()
                 val headerBytes = ByteArray(HEADER_BUFFER_SIZE)
                 val headerLength = openInputStream()?.use { stream ->
                     stream.read(headerBytes)
                 } ?: return@withContext null
+                Timber.d("BitmapHelper: Read header in ${System.currentTimeMillis() - headerStartTime}ms")
 
                 val headerStream = { ByteArrayInputStream(headerBytes, 0, headerLength) }
 
                 // Extract metadata from header
+                val exifStartTime = System.currentTimeMillis()
                 val metadata = extractMetadata(headerStream)
+                Timber.d("BitmapHelper: Extracted EXIF in ${System.currentTimeMillis() - exifStartTime}ms (orientation=${metadata.orientation})")
+                
                 val isSwapped = metadata.orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
                         metadata.orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
                         metadata.orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
@@ -65,20 +73,38 @@ object BitmapHelper {
                     return@withContext null
                 }
 
+                val targetAspect = effectiveTargetWidth.toFloat() / effectiveTargetHeight.toFloat()
+                val sourceAspect = boundsOptions.outWidth.toFloat() / boundsOptions.outHeight.toFloat()
+                val decodeTargetWidth: Int
+                val decodeTargetHeight: Int
+                if (targetAspect > sourceAspect) {
+                    decodeTargetHeight = effectiveTargetHeight
+                    decodeTargetWidth = (effectiveTargetHeight * sourceAspect).toInt().coerceAtLeast(1)
+                } else {
+                    decodeTargetWidth = effectiveTargetWidth
+                    decodeTargetHeight = (effectiveTargetWidth / sourceAspect).toInt().coerceAtLeast(1)
+                }
+
                 val decodeOptions =
                     BitmapFactory.Options().apply {
-                        inSampleSize = calculateInSampleSize(boundsOptions, effectiveTargetWidth, effectiveTargetHeight)
+                        inSampleSize = calculateInSampleSize(boundsOptions, decodeTargetWidth, decodeTargetHeight)
                         inPreferredConfig = Bitmap.Config.RGB_565
                     }
 
                 // 2nd open: Full stream for actual bitmap decode
+                val decodeStartTime = System.currentTimeMillis()
                 var decodedBitmap =
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null
+                Timber.d("BitmapHelper: Decoded bitmap in ${System.currentTimeMillis() - decodeStartTime}ms (sampleSize=${decodeOptions.inSampleSize})")
+                Timber.d(
+                    "BitmapHelper: Decoded dimensions ${decodedBitmap.width}x${decodedBitmap.height}, target=${effectiveTargetWidth}x${effectiveTargetHeight}, decodeTarget=${decodeTargetWidth}x${decodeTargetHeight}",
+                )
 
                 // If filtering is requested, perform high-quality scale while preserving aspect ratio
                 if (filter && (decodedBitmap.width != effectiveTargetWidth || decodedBitmap.height != effectiveTargetHeight)) {
+                    val scaleStartTime = System.currentTimeMillis()
                     // Calculate scaled dimensions that preserve the original aspect ratio
                     val aspectRatio = decodedBitmap.width.toFloat() / decodedBitmap.height.toFloat()
                     val scaledWidth: Int
@@ -94,13 +120,15 @@ object BitmapHelper {
                         scaledHeight = (effectiveTargetWidth / aspectRatio).toInt()
                     }
 
-                    val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, scaledWidth, scaledHeight, true)
+                    val scaledBitmap = decodedBitmap.scale(scaledWidth, scaledHeight, filter)
                     if (scaledBitmap != decodedBitmap) {
                         decodedBitmap.recycle()
                         decodedBitmap = scaledBitmap
                     }
+                    Timber.d("BitmapHelper: Scaled bitmap in ${System.currentTimeMillis() - scaleStartTime}ms to ${scaledWidth}x${scaledHeight}")
                 }
 
+                val compressStartTime = System.currentTimeMillis()
                 val outputStream = ByteArrayOutputStream()
                 val compressed = decodedBitmap.compress(Bitmap.CompressFormat.JPEG, quality, outputStream)
                 if (!compressed) {
@@ -109,12 +137,14 @@ object BitmapHelper {
                 }
 
                 decodedBitmap.recycle()
-
-                BitmapResult(
+                val result = BitmapResult(
                     imageBytes = outputStream.toByteArray(),
                     metadata = metadata,
                 )
-            } catch (_: Exception) {
+                Timber.d("BitmapHelper: Compressed to JPEG in ${System.currentTimeMillis() - compressStartTime}ms. Total loadResizedImageBytes time: ${System.currentTimeMillis() - totalStartTime}ms")
+                result
+            } catch (ex: Exception) {
+                Timber.e(ex, "BitmapHelper: Exception in loadResizedImageBytes: ${ex.message}")
                 null
             }
         }
@@ -151,17 +181,15 @@ object BitmapHelper {
     ): Int {
         val width = options.outWidth
         val height = options.outHeight
-        var sampleSize = 1
 
-        if (height > reqHeight || width > reqWidth) {
-            val halfHeight = height / 2
-            val halfWidth = width / 2
-
-            while (halfHeight / sampleSize >= reqHeight && halfWidth / sampleSize >= reqWidth) {
-                sampleSize *= 2
-            }
+        if (reqWidth <= 0 || reqHeight <= 0 || width <= 0 || height <= 0) {
+            return 1
         }
 
-        return sampleSize.coerceAtLeast(1)
+        // Use a direct ratio so the decode lands closer to target dimensions.
+        // This avoids expensive post-scale work when power-of-two sampling undershoots.
+        val widthRatio = width / reqWidth
+        val heightRatio = height / reqHeight
+        return minOf(widthRatio, heightRatio).coerceAtLeast(1)
     }
 }

@@ -133,6 +133,7 @@ class ImagePlayerView : FrameLayout {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
+            val totalStartTime = System.currentTimeMillis()
             val openSourceStream: () -> InputStream? = {
                 ImagePlayerHelper.streamFromMedia(context, media)
 //                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
@@ -175,7 +176,7 @@ class ImagePlayerView : FrameLayout {
             }
 
             Timber.d(
-                "Loaded image bytes for display. exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
+                "ImagePlayerView: Loaded image bytes for display in ${System.currentTimeMillis() - totalStartTime}ms. source=${media.source} exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
                 bitmapResult.metadata.date,
                 bitmapResult.metadata.offset,
                 bitmapResult.metadata.latitude,
@@ -322,6 +323,7 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun applyExifRotation(view: ImageView, orientation: Int) {
+        val startTime = System.currentTimeMillis()
         view.rotation = 0f
         view.scaleX = 1f
         view.scaleY = 1f
@@ -365,6 +367,7 @@ class ImagePlayerView : FrameLayout {
                 }
             }
         }
+        Timber.d("ImagePlayerView: Applied rotation ($orientation -> ${view.rotation}deg) in ${System.currentTimeMillis() - startTime}ms. View=${if (view == foregroundImageView) "Foreground" else "Background"}")
     }
 
     fun stop() {
