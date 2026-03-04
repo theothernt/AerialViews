@@ -791,6 +791,7 @@ class ScreenController(
         }
 
     override fun onImagePrepared() {
+        Timber.d("onImagePrepared")
         currentMedia
             ?.takeIf { it.type == AerialMediaType.IMAGE }
             ?.let { updateMetadataOverlayData(it) }

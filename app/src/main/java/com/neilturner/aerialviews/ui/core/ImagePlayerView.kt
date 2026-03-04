@@ -69,6 +69,7 @@ class ImagePlayerView : FrameLayout {
         visibility = GONE
     }
     private var target = ImageViewTarget(foregroundImageView)
+    private var currentOrientation: Int = ExifInterface.ORIENTATION_UNDEFINED
 
 
     private val progressBar =
@@ -97,8 +98,10 @@ class ImagePlayerView : FrameLayout {
                 result: SuccessResult,
             ) {
                 super.onSuccess(request, result)
-                setScaleMode(result.image.width, result.image.height)
-                setupFinishedRunnable()
+                if (result.request.target == target) {
+                    setScaleMode(result.image.width, result.image.height, currentOrientation)
+                    setupFinishedRunnable()
+                }
             }
 
             override fun onError(
@@ -188,7 +191,7 @@ class ImagePlayerView : FrameLayout {
 
             // Load blurred background if enabled
             if (GeneralPrefs.photoBackgroundBlurEnabled) {
-                loadBlurredBackground(bitmapResult.imageBytes)
+                loadBlurredBackground(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
             } else {
                 clearBlurredBackground()
             }
@@ -218,6 +221,7 @@ class ImagePlayerView : FrameLayout {
         orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
     ) {
         try {
+            currentOrientation = orientation
             val request =
                 ImageRequest
                     .Builder(context)
@@ -227,7 +231,7 @@ class ImagePlayerView : FrameLayout {
                     .build()
             imageLoader.execute(request)
             withContext(Dispatchers.Main) {
-                applyExifRotation(orientation)
+                applyExifRotation(foregroundImageView, orientation)
             }
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
@@ -244,7 +248,7 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private suspend fun loadBlurredBackground(imageBytes: ByteArray) {
+    private suspend fun loadBlurredBackground(imageBytes: ByteArray, orientation: Int) {
         Timber.d("loadBlurredBackground: Starting request with blur opacity ${GeneralPrefs.photoBackgroundBlurOpacity}")
         try {
             val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
@@ -270,6 +274,7 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { _, _ ->
                             Timber.d("loadBlurredBackground: Coil request succeeded")
+                            applyExifRotation(backgroundImageView, orientation)
                             if (isApi31Plus) {
                                 applyRenderEffectBlur()
                             }
@@ -320,9 +325,15 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private fun applyExifRotation(orientation: Int) {
-        foregroundImageView.rotation = 0f
-        foregroundImageView.scaleX = 1f
+    private fun applyExifRotation(view: ImageView, orientation: Int) {
+        view.rotation = 0f
+        view.scaleX = 1f
+        view.scaleY = 1f
+
+        val isSwapped = orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+                orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
+                orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
+                orientation == ExifInterface.ORIENTATION_TRANSVERSE
 
         val rotationAngle = when (orientation) {
             ExifInterface.ORIENTATION_ROTATE_90,
@@ -337,14 +348,27 @@ class ImagePlayerView : FrameLayout {
             ExifInterface.ORIENTATION_ROTATE_270 -> 270f
 
             ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
-                foregroundImageView.scaleX = -1f
+                view.scaleX = -1f
                 0f
             }
 
             else -> 0f
         }
 
-        foregroundImageView.rotation = rotationAngle
+        view.rotation = rotationAngle
+
+        if (isSwapped) {
+            val parentWidth = if (width > 0) width.toFloat() else resources.displayMetrics.widthPixels.toFloat()
+            val parentHeight = if (height > 0) height.toFloat() else resources.displayMetrics.heightPixels.toFloat()
+            if (parentWidth > 0 && parentHeight > 0) {
+                // If the view is rotated 90/270, we need to scale it to cover the parent gaps.
+                val scale = maxOf(parentWidth / parentHeight, parentHeight / parentWidth)
+                if (view == backgroundImageView || view.scaleType == ImageView.ScaleType.CENTER_CROP) {
+                    view.scaleX *= scale
+                    view.scaleY = scale
+                }
+            }
+        }
     }
 
     fun stop() {
@@ -352,9 +376,14 @@ class ImagePlayerView : FrameLayout {
         foregroundImageView.setImageBitmap(null)
         foregroundImageView.rotation = 0f
         foregroundImageView.scaleX = 1f
+        foregroundImageView.scaleY = 1f
         pausedTimestamp = 0
         remainingDuration = 0
+        currentOrientation = ExifInterface.ORIENTATION_UNDEFINED
         backgroundImageView.setImageBitmap(null)
+        backgroundImageView.rotation = 0f
+        backgroundImageView.scaleX = 1f
+        backgroundImageView.scaleY = 1f
         backgroundImageView.visibility = GONE
         clearRenderEffectIfSupported()
     }
@@ -380,8 +409,16 @@ class ImagePlayerView : FrameLayout {
     private fun setScaleMode(
         width: Int,
         height: Int,
+        orientation: Int,
     ) {
-        val aspect = AspectRatio.fromDimensions(width, height)
+        val isSwapped = orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+                orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
+                orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
+                orientation == ExifInterface.ORIENTATION_TRANSVERSE
+        val finalWidth = if (isSwapped) height else width
+        val finalHeight = if (isSwapped) width else height
+
+        val aspect = AspectRatio.fromDimensions(finalWidth, finalHeight)
         Timber.i("Aspect ratio: $aspect")
         foregroundImageView.scaleType =
             when (aspect) {
@@ -397,6 +434,7 @@ class ImagePlayerView : FrameLayout {
                     getScaleType(GeneralPrefs.photoScaleLandscape)
                 }
             }
+        applyExifRotation(foregroundImageView, orientation)
     }
 
     private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =

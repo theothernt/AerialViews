@@ -45,6 +45,13 @@ object BitmapHelper {
 
                 // Extract metadata from header
                 val metadata = extractMetadata(headerStream)
+                val isSwapped = metadata.orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+                        metadata.orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
+                        metadata.orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
+                        metadata.orientation == ExifInterface.ORIENTATION_TRANSVERSE
+
+                val effectiveTargetWidth = if (isSwapped) targetHeight else targetWidth
+                val effectiveTargetHeight = if (isSwapped) targetWidth else targetHeight
 
                 // Get bounds from header to calculate sample size
                 val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
@@ -60,7 +67,7 @@ object BitmapHelper {
 
                 val decodeOptions =
                     BitmapFactory.Options().apply {
-                        inSampleSize = calculateInSampleSize(boundsOptions, targetWidth, targetHeight)
+                        inSampleSize = calculateInSampleSize(boundsOptions, effectiveTargetWidth, effectiveTargetHeight)
                         inPreferredConfig = Bitmap.Config.RGB_565
                     }
 
@@ -71,20 +78,20 @@ object BitmapHelper {
                     } ?: return@withContext null
 
                 // If filtering is requested, perform high-quality scale while preserving aspect ratio
-                if (filter && (decodedBitmap.width != targetWidth || decodedBitmap.height != targetHeight)) {
+                if (filter && (decodedBitmap.width != effectiveTargetWidth || decodedBitmap.height != effectiveTargetHeight)) {
                     // Calculate scaled dimensions that preserve the original aspect ratio
                     val aspectRatio = decodedBitmap.width.toFloat() / decodedBitmap.height.toFloat()
                     val scaledWidth: Int
                     val scaledHeight: Int
 
-                    if (targetWidth.toFloat() / targetHeight.toFloat() > aspectRatio) {
+                    if (effectiveTargetWidth.toFloat() / effectiveTargetHeight.toFloat() > aspectRatio) {
                         // Target is wider than source - fit to height
-                        scaledHeight = targetHeight
-                        scaledWidth = (targetHeight * aspectRatio).toInt()
+                        scaledHeight = effectiveTargetHeight
+                        scaledWidth = (effectiveTargetHeight * aspectRatio).toInt()
                     } else {
                         // Target is taller than source - fit to width
-                        scaledWidth = targetWidth
-                        scaledHeight = (targetWidth / aspectRatio).toInt()
+                        scaledWidth = effectiveTargetWidth
+                        scaledHeight = (effectiveTargetWidth / aspectRatio).toInt()
                     }
 
                     val scaledBitmap = Bitmap.createScaledBitmap(decodedBitmap, scaledWidth, scaledHeight, true)
