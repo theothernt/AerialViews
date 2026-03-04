@@ -141,7 +141,6 @@ class ScreenController(
         imageViewBinding.root.setBackgroundColor(backgroundPhotos)
         imagePlayer = imageViewBinding.imagePlayer
         imagePlayer.setOnPlayerListener(this)
-        imagePlayer.setBackgroundImageView(imageViewBinding.imageBackground)
 
         brightnessView = binding.brightnessView
         progressBarView = binding.progressBar

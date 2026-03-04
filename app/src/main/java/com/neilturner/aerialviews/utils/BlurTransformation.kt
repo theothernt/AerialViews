@@ -9,8 +9,8 @@ import timber.log.Timber
 /**
  * A Coil3 [Transformation] that applies a blur to a bitmap.
  *
- * On API 31+ (Android 12+) uses [android.graphics.RenderEffect] for GPU-accelerated blur.
- * On API 30 and below, uses [FastBlurCompat] (CPU-based box blur) as a fallback.
+ * This transformation is used for software blur on pre-Android 12 devices.
+ * On Android 12+ the app applies blur with [android.graphics.RenderEffect] at the View layer.
  *
  * For performance, the image is first downscaled by [downscaleFactor] before blurring,
  * then upscaled back. This also produces a stronger blur effect.

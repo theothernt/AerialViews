@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
 
-    <ImageView
-        android:id="@+id/image_background"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:visibility="gone" />
-
     <com.neilturner.aerialviews.ui.core.ImagePlayerView
         android:id="@+id/image_player"
         android:layout_width="match_parent"
