@@ -603,6 +603,10 @@
     <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
     <string name="appearance_photo_bilinear_filtering_title">Bilinear Filtering</string>
     <string name="appearance_photo_bilinear_filtering_summary">Applies high-quality filtering when resizing photos to reduce aliasing (jagged edges)</string>
+    <string name="category_background_blur">Background blur</string>
+    <string name="appearance_photo_background_blur_title">Enable background blur</string>
+    <string name="appearance_photo_background_blur_summary">Show a blurred version of the photo behind the foreground image to fill empty areas</string>
+    <string name="appearance_photo_background_blur_opacity_title">Blur opacity</string>
 
     <!-- Main / Settings / Appearance / Progress Bar -->
     <string name="progress_bar_location_title">Location on screen</string>

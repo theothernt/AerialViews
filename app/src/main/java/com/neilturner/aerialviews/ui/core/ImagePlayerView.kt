@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.exifinterface.media.ExifInterface
 import coil3.EventListener
@@ -10,6 +12,8 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.allowHardware
+import coil3.request.transformations
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
@@ -25,6 +29,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
+import com.neilturner.aerialviews.utils.BlurTransformation
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
@@ -50,9 +55,14 @@ class ImagePlayerView : AppCompatImageView {
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
+    private var backgroundImageView: ImageView? = null
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
+
+    fun setBackgroundImageView(view: ImageView) {
+        backgroundImageView = view
+    }
 
     fun release() {
         removeCallbacks(finishedRunnable)
@@ -155,6 +165,11 @@ class ImagePlayerView : AppCompatImageView {
             )
 
             loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
+
+            // Load blurred background if enabled
+            if (GeneralPrefs.photoBackgroundBlurEnabled) {
+                loadBlurredBackground(bitmapResult.imageBytes)
+            }
         }
     }
 
@@ -207,6 +222,50 @@ class ImagePlayerView : AppCompatImageView {
         }
     }
 
+    private suspend fun loadBlurredBackground(imageBytes: ByteArray) {
+        val bgView = backgroundImageView ?: run {
+            Timber.w("loadBlurredBackground: backgroundImageView is null")
+            return
+        }
+        
+        Timber.d("loadBlurredBackground: Starting request with blur opacity ${GeneralPrefs.photoBackgroundBlurOpacity}")
+        try {
+            val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
+            
+            withContext(Dispatchers.Main) {
+                if (bgView.visibility != VISIBLE) {
+                    bgView.alpha = 0f
+                    bgView.visibility = VISIBLE
+                }
+            }
+            
+            val request =
+                ImageRequest
+                    .Builder(context)
+                    .data(imageBytes)
+                    .allowHardware(false)
+                    .size(this.width, this.height)
+                    .transformations(listOf(BlurTransformation()))
+                    .target(ImageViewTarget(bgView))
+                    .listener(
+                        onError = { _, result -> 
+                            Timber.e("loadBlurredBackground: Coil request failed: ${result.throwable.message}")
+                        },
+                        onSuccess = { _, _ ->
+                            Timber.d("loadBlurredBackground: Coil request succeeded")
+                        }
+                    )
+                    .build()
+            imageLoader.execute(request)
+            withContext(Dispatchers.Main) {
+                bgView.alpha = opacity
+                Timber.d("loadBlurredBackground: Updated background view alpha to $opacity")
+            }
+        } catch (ex: Exception) {
+            Timber.e(ex, "Exception while loading blurred background: ${ex.message}")
+        }
+    }
+
     private fun applyExifRotation(orientation: Int) {
         rotation = 0f
         scaleX = 1f
@@ -241,6 +300,8 @@ class ImagePlayerView : AppCompatImageView {
         scaleX = 1f
         pausedTimestamp = 0
         remainingDuration = 0
+        backgroundImageView?.setImageBitmap(null)
+        backgroundImageView?.visibility = GONE
     }
 
     fun pauseTimer() {

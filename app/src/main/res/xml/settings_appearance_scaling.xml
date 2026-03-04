@@ -34,4 +34,20 @@
                     app:title="@string/appearance_photo_bilinear_filtering_title"
                     app:summary="@string/appearance_photo_bilinear_filtering_summary" />
         </PreferenceCategory>
+        <PreferenceCategory app:title="@string/category_background_blur">
+                <SwitchPreferenceCompat
+                    app:defaultValue="false"
+                    app:key="photo_background_blur_enabled"
+                    app:title="@string/appearance_photo_background_blur_title"
+                    app:summary="@string/appearance_photo_background_blur_summary" />
+                <ListPreference
+                    app:defaultValue="100"
+                    app:entries="@array/percentage1_entries"
+                    app:entryValues="@array/percentage1_values"
+                    app:key="photo_background_blur_opacity"
+                    app:title="@string/appearance_photo_background_blur_opacity_title"
+                    app:useSimpleSummaryProvider="true"
+                    app:dependency="photo_background_blur_enabled" />
+        </PreferenceCategory>
+
 </PreferenceScreen>
