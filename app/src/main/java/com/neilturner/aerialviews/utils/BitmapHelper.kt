@@ -63,11 +63,8 @@ object BitmapHelper {
 
                 // Get bounds from header to calculate sample size
                 val boundsOptions = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-                val hasValidBounds =
-                    headerStream().use { stream ->
-                        BitmapFactory.decodeStream(stream, null, boundsOptions)
-                        boundsOptions.outWidth > 0 && boundsOptions.outHeight > 0
-                    }
+                BitmapFactory.decodeByteArray(headerBytes, 0, headerBytes.size, boundsOptions)
+                val hasValidBounds = boundsOptions.outWidth > 0 && boundsOptions.outHeight > 0
 
                 if (!hasValidBounds) {
                     return@withContext null
