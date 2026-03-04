@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
@@ -186,12 +187,12 @@ class ImagePlayerView : FrameLayout {
 
             // Load blurred background if enabled
             if (GeneralPrefs.photoBackgroundBlurEnabled) {
-                loadBlurredBackground(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
+                loadBlurredBackground(bitmapResult.bitmap, bitmapResult.metadata.orientation)
             } else {
                 clearBlurredBackground()
             }
 
-            loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
+            loadImage(bitmapResult.bitmap, bitmapResult.metadata.orientation)
         }
     }
 
@@ -245,7 +246,7 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private suspend fun loadBlurredBackground(imageBytes: ByteArray, orientation: Int) {
+    private suspend fun loadBlurredBackground(bitmap: Bitmap, orientation: Int) {
         Timber.d("loadBlurredBackground: Starting request with blur opacity ${GeneralPrefs.photoBackgroundBlurOpacity}")
         try {
             val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
@@ -261,7 +262,7 @@ class ImagePlayerView : FrameLayout {
             val requestBuilder =
                 ImageRequest
                     .Builder(context)
-                    .data(imageBytes)
+                    .data(bitmap)
                     .size(this.width, this.height)
                     .target(ImageViewTarget(backgroundImageView))
                     .listener(
