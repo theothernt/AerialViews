@@ -15,11 +15,11 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.ServerConfig
@@ -163,14 +163,12 @@ internal object ImagePlayerHelper {
             Timber.d("SAMBA: Connected and authenticated in ${System.currentTimeMillis() - connectStartTime}ms")
             
             val openStartTime = System.currentTimeMillis()
-            val shareAccess = hashSetOf<SMB2ShareAccess>()
-            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
             val file =
                 share.openFile(
                     path,
                     EnumSet.of(AccessMask.GENERIC_READ),
                     null,
-                    shareAccess,
+                    EnumSet.of(SMB2ShareAccess.FILE_SHARE_READ),
                     SMB2CreateDisposition.FILE_OPEN,
                     null,
                 )
