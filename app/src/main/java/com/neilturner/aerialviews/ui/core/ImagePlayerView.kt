@@ -5,18 +5,15 @@ import android.graphics.RenderEffect
 import android.graphics.Shader
 import android.os.Build
 import android.util.AttributeSet
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.exifinterface.media.ExifInterface
 import coil3.EventListener
 import coil3.ImageLoader
-import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
-import coil3.request.allowHardware
 import coil3.request.transformations
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -28,8 +25,6 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
-import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.logger
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
@@ -42,7 +37,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
-import java.io.BufferedInputStream
+import java.io.InputStream
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : FrameLayout {
@@ -128,25 +123,26 @@ class ImagePlayerView : FrameLayout {
         ImageLoader
             .Builder(context)
             .memoryCache(null)
-            .logger(logger)
+            //.logger(logger)
             .eventListener(eventLister)
             .components {
-                add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
-                add(InputStreamFetcher.Factory())
-                add(buildGifDecoder())
+                // add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
+                add(InputStreamFetcher.Factory()) // GIF
+                add(buildGifDecoder()) // GIF
             }.build()
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            val openSourceStream: () -> java.io.InputStream? = {
-                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
-                if (mediaStream == null) {
-                    null
-                } else if (mediaStream.markSupported()) {
-                    mediaStream
-                } else {
-                    BufferedInputStream(mediaStream, 16 * 1024)
-                }
+            val openSourceStream: () -> InputStream? = {
+                ImagePlayerHelper.streamFromMedia(context, media)
+//                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
+//                if (mediaStream == null) {
+//                    null
+//                } else if (mediaStream.markSupported()) {
+//                    mediaStream
+//                } else {
+//                    BufferedInputStream(mediaStream, 16 * 1024)
+//                }
             }
 
             val stream = openSourceStream()
@@ -187,18 +183,18 @@ class ImagePlayerView : FrameLayout {
                 bitmapResult.metadata.orientation,
             )
 
-            loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
-
             // Load blurred background if enabled
             if (GeneralPrefs.photoBackgroundBlurEnabled) {
                 loadBlurredBackground(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
             } else {
                 clearBlurredBackground()
             }
+
+            loadImage(bitmapResult.imageBytes, bitmapResult.metadata.orientation)
         }
     }
 
-    private fun isGifStream(stream: java.io.InputStream): Boolean {
+    private fun isGifStream(stream: InputStream): Boolean {
         return try {
             stream.mark(6)
             val header = ByteArray(6)
