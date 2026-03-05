@@ -31,7 +31,6 @@ object BitmapHelper {
         openInputStream: () -> InputStream?,
         targetWidth: Int,
         targetHeight: Int,
-        filter: Boolean = false,
     ): BitmapResult? =
         withContext(Dispatchers.IO) {
             val totalStartTime = System.currentTimeMillis()

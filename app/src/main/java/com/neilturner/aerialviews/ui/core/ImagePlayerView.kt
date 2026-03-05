@@ -137,14 +137,6 @@ class ImagePlayerView : FrameLayout {
             val totalStartTime = System.currentTimeMillis()
             val openSourceStream: () -> InputStream? = {
                 ImagePlayerHelper.streamFromMedia(context, media)
-//                val mediaStream = ImagePlayerHelper.streamFromMedia(context, media)
-//                if (mediaStream == null) {
-//                    null
-//                } else if (mediaStream.markSupported()) {
-//                    mediaStream
-//                } else {
-//                    BufferedInputStream(mediaStream, 16 * 1024)
-//                }
             }
 
             val stream = openSourceStream()
@@ -162,7 +154,7 @@ class ImagePlayerView : FrameLayout {
             val targetWidth = if (this@ImagePlayerView.width > 0) this@ImagePlayerView.width else resources.displayMetrics.widthPixels
             val targetHeight = if (this@ImagePlayerView.height > 0) this@ImagePlayerView.height else resources.displayMetrics.heightPixels
 
-            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight, filter = GeneralPrefs.photoBilinearFiltering)
+            val bitmapResult = BitmapHelper.loadResizedImageBytes(openSourceStream, targetWidth, targetHeight)
             if (bitmapResult == null) {
                 loadImage(media.uri)
                 return@launch
@@ -177,7 +169,7 @@ class ImagePlayerView : FrameLayout {
             }
 
             Timber.d(
-                "ImagePlayerView: Loaded image bytes for display in ${System.currentTimeMillis() - totalStartTime}ms. source=${media.source} exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
+                "ImagePlayerView: Loaded bitmap for display in ${System.currentTimeMillis() - totalStartTime}ms. source=${media.source} exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
                 bitmapResult.metadata.date,
                 bitmapResult.metadata.offset,
                 bitmapResult.metadata.latitude,
