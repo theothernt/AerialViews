@@ -21,8 +21,9 @@ import timber.log.Timber
 class BlurTransformation(
     private val radius: Int = 25,
     private val downscaleFactor: Float = 4f,
+    private val useBilinearFiltering: Boolean = true,
 ) : Transformation() {
-    override val cacheKey: String = "${BlurTransformation::class.java.name}-$radius-$downscaleFactor"
+    override val cacheKey: String = "${BlurTransformation::class.java.name}-$radius-$downscaleFactor-$useBilinearFiltering"
 
     override suspend fun transform(
         input: Bitmap,
@@ -33,7 +34,7 @@ class BlurTransformation(
         val scaledHeight = maxOf(1, (input.height / downscaleFactor).toInt())
 
         // Downscale for performance (and stronger-looking blur)
-        val downscaled = input.scale(scaledWidth, scaledHeight)
+        val downscaled = input.scale(scaledWidth, scaledHeight, useBilinearFiltering)
 
         // Convert to ARGB_8888 if needed for pixel manipulation
         val workBitmap =

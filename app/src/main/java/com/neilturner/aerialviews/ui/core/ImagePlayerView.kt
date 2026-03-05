@@ -275,7 +275,7 @@ class ImagePlayerView : FrameLayout {
                 clearRenderEffectIfSupported()
             } else {
                 requestBuilder
-                    .transformations(listOf(BlurTransformation()))
+                    .transformations(listOf(BlurTransformation(useBilinearFiltering = GeneralPrefs.photoBilinearFiltering)))
             }
 
             val request = requestBuilder.build()
