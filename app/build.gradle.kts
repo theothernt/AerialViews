@@ -185,6 +185,7 @@ dependencies {
     implementation(libs.sardine.android)
     implementation(libs.smbj)
     implementation(libs.timber)
+    implementation(libs.slf4j.simple)
 
     debugImplementation(libs.leakcanary)
 
