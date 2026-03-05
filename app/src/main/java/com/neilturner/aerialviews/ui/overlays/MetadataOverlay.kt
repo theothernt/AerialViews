@@ -20,6 +20,7 @@ class MetadataOverlay : AppCompatTextView {
     // replace with https://juliensalvi.medium.com/safe-delay-in-android-views-goodbye-handlers-hello-coroutines-cd47f53f0fbf
     private var poiJob: Job? = null
     private val textAlpha = 1f // start + end values?
+    private val minVisibleAlphaForPoiFade = 0.95f
     var isFadingOutMedia = false // Stops POI change + fade as video is ending
     var type: OverlayType = OverlayType.METADATA1
 
@@ -94,15 +95,25 @@ class MetadataOverlay : AppCompatTextView {
 
                 // If new string and not fading in/out + loading new video
                 if (shouldUpdate && !isFadingOutMedia) {
-                    // Set new string and fade in
+                    val nextText = poi[newPoi]?.replace("\n", " ") ?: ""
                     @Suppress("AssignedValueIsNeverRead")
                     lastPoi = newPoi // Compiler bug?
+
+                    // If auto-hide has already faded this overlay out, update text silently.
+                    // Do not animate alpha back to 1f.
+                    if (this@MetadataOverlay.alpha < minVisibleAlphaForPoiFade) {
+                        this@MetadataOverlay.text = nextText
+                        delay(1000)
+                        continue
+                    }
+
+                    // Set new string and fade in
                     this@MetadataOverlay
                         .animate()
                         .alpha(0f)
                         .setDuration(1000)
                         .withEndAction {
-                            this@MetadataOverlay.text = poi[newPoi]?.replace("\n", " ")
+                            this@MetadataOverlay.text = nextText
                             this@MetadataOverlay
                                 .animate()
                                 .alpha(textAlpha)

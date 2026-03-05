@@ -31,6 +31,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
+    private val minVisibleAlphaForFade = 0.95f
     private val prefs = GeneralPrefs
     private var scopeJob = SupervisorJob()
     private var mainScope = CoroutineScope(Dispatchers.Main + scopeJob)
@@ -76,14 +77,14 @@ class NowPlayingOverlay : AppCompatTextView {
     private suspend fun updateNowPlaying() {
         isUpdating = true
 
-        if (alpha != 0f) {
+        if (alpha >= minVisibleAlphaForFade) {
             fadeOut()
         }
 
         shouldUpdate = false
         val shouldFadeIn = updateText()
 
-        if (shouldFadeIn) {
+        if (shouldFadeIn && alpha >= minVisibleAlphaForFade) {
             fadeIn()
         }
 

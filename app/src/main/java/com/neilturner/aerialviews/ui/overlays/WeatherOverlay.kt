@@ -29,6 +29,7 @@ class WeatherOverlay
         private var layout = ""
         private var previousWeather: WeatherEvent? = null
         private val fadeAnimationDuration = 300L
+        private val minVisibleAlphaForFade = 0.95f
 
         private var font = ""
         private var size = 0f
@@ -72,6 +73,8 @@ class WeatherOverlay
             if (layout.isEmpty()) return
             if (weather.temperature.isEmpty()) return
 
+            val allowFadeAnimation = alpha >= minVisibleAlphaForFade
+
             // Check if the new weather data is the same as the previous data
             if (previousWeather == weather) {
                 Timber.d("Weather data unchanged, skipping UI update")
@@ -82,10 +85,12 @@ class WeatherOverlay
             if (previousWeather == null) {
                 previousWeather = weather
                 updateOverlayContent(weather)
-                animate()
-                    .alpha(1f)
-                    .setDuration(fadeAnimationDuration)
-                    .start()
+                if (allowFadeAnimation) {
+                    animate()
+                        .alpha(1f)
+                        .setDuration(fadeAnimationDuration)
+                        .start()
+                }
                 return
             }
 
@@ -93,6 +98,11 @@ class WeatherOverlay
             previousWeather = weather
 
             // Fade out
+            if (!allowFadeAnimation) {
+                updateOverlayContent(weather)
+                return
+            }
+
             animate()
                 .alpha(0f)
                 .setDuration(fadeAnimationDuration)
