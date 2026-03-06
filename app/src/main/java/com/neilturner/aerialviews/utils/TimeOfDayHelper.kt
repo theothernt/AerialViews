@@ -2,9 +2,17 @@ package com.neilturner.aerialviews.utils
 
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import java.lang.Math.toDegrees
+import java.lang.Math.toRadians
 import java.util.Calendar
 import java.util.TimeZone
-import kotlin.math.*
+import kotlin.math.acos
+import kotlin.math.asin
+import kotlin.math.atan
+import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.sin
+import kotlin.math.tan
 
 object TimeOfDayHelper {
     /**
@@ -49,59 +57,59 @@ object TimeOfDayHelper {
         val zenith = 90.8333 // Official zenith for sunrise/sunset
 
         // 1. first calculate the day of the year
-        val N = dayOfYear.toDouble()
+        val n = dayOfYear.toDouble()
 
         // 2. convert the longitude to hour value and calculate an approximate time
         val lngHour = longitude / 15.0
-        val t = if (isSunrise) N + ((6.0 - lngHour) / 24.0) else N + ((18.0 - lngHour) / 24.0)
+        val t = if (isSunrise) n + ((6.0 - lngHour) / 24.0) else n + ((18.0 - lngHour) / 24.0)
 
         // 3. calculate the Sun's mean anomaly
-        val M = (0.9856 * t) - 3.289
+        val m = (0.9856 * t) - 3.289
 
         // 4. calculate the Sun's true longitude
-        var L = M + (1.916 * sin(Math.toRadians(M))) + (0.020 * sin(Math.toRadians(2 * M))) + 282.634
-        L = L % 360
-        if (L < 0) L += 360
+        var l = m + (1.916 * sin(toRadians(m))) + (0.020 * sin(toRadians(2 * m))) + 282.634
+        l %= 360
+        if (l < 0) l += 360
 
         // 5. calculate the Sun's right ascension
-        var RA = Math.toDegrees(atan(0.91764 * tan(Math.toRadians(L))))
-        RA = RA % 360
-        if (RA < 0) RA += 360
+        var ra = toDegrees(atan(tan(toRadians(l)) * 0.91764))
+        ra %= 360
+        if (ra < 0) ra += 360
 
         // 5b. right ascension value needs to be in the same quadrant as L
-        val Lquadrant = floor(L / 90.0) * 90.0
-        val RAquadrant = floor(RA / 90.0) * 90.0
-        RA = RA + (Lquadrant - RAquadrant)
+        val lQuadrant = floor(l / 90.0) * 90.0
+        val raQuadrant = floor(ra / 90.0) * 90.0
+        ra += (lQuadrant - raQuadrant)
 
         // 5c. right ascension value needs to be converted into hours
-        RA = RA / 15.0
+        ra /= 15.0
 
         // 6. calculate the Sun's declination
-        val sinDec = 0.39782 * sin(Math.toRadians(L))
+        val sinDec = 0.39782 * sin(toRadians(l))
         val cosDec = cos(asin(sinDec))
 
         // 7. calculate the Sun's local hour angle
-        val cosH = (cos(Math.toRadians(zenith)) - (sinDec * sin(Math.toRadians(latitude)))) / (cosDec * cos(Math.toRadians(latitude)))
+        val cosH = (cos(toRadians(zenith)) - (sinDec * sin(toRadians(latitude)))) / (cosDec * cos(toRadians(latitude)))
 
         if (cosH > 1) return if (isSunrise) null else null // always night
         if (cosH < -1) return if (isSunrise) 0 else 1439 // always day
 
         // 8. finish calculating H and convert into hours
-        var H = if (isSunrise) 360.0 - Math.toDegrees(acos(cosH)) else Math.toDegrees(acos(cosH))
-        H = H / 15.0
+        var h = if (isSunrise) 360.0 - toDegrees(acos(cosH)) else toDegrees(acos(cosH))
+        h /= 15.0
 
         // 9. calculate local mean time of rising/setting
-        val T = H + RA - (0.06571 * t) - 6.622
+        val tTime = h + ra - (0.06571 * t) - 6.622
 
         // 10. adjust back to UTC
-        var UT = T - lngHour
-        UT = UT % 24
-        if (UT < 0) UT += 24
+        var ut = tTime - lngHour
+        ut %= 24
+        if (ut < 0) ut += 24
 
         // 11. convert UT value to local time zone of latitude/longitude
         val localOffset = TimeZone.getDefault().getOffset(calendar.timeInMillis) / 3600000.0
-        var localT = UT + localOffset
-        localT = localT % 24
+        var localT = ut + localOffset
+        localT %= 24
         if (localT < 0) localT += 24
 
         return (localT * 60).toInt()
