@@ -596,6 +596,8 @@
     <string name="appearance_gradient_bottom_summary">Display a gradient behind overlays at the bottom of the screen making them easier to see</string>
 
     <!-- Main / Settings / Appearance / Animations -->
+    <string name="appearance_auto_hide_options_title">Auto hide options</string>
+    <string name="appearance_auto_hide_options_summary">Configure when and how overlays are automatically hidden</string>
     <string name="appearance_auto_hide_title">Auto hide overlays</string>
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
     <string name="appearance_fade_corners_title">Corners to fade</string>

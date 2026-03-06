@@ -13,16 +13,25 @@
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysRowBottomFragment"/>
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_options">
+                <Preference
+                    app:title="@string/appearance_auto_hide_options_title"
+                    app:summary="@string/appearance_auto_hide_options_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysAutoHideFragment"/>
+
+                <CheckBoxPreference
+                    app:defaultValue="true"
+                    app:key="alt_text_position"
+                    app:summary="@string/appearance_alt_text_position_summary"
+                    app:title="@string/appearance_alt_text_position_title" />
+
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_overlays">
                 <Preference
                     app:title="@string/appearance_metadata_title"
                     app:summary="@string/appearance_metadata_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMetadataFragment"/>
-
-                <Preference
-                    app:title="@string/appearance_clock_title"
-                    app:summary="@string/appearance_clock_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysClockFragment"/>
 
                 <Preference
                     app:title="@string/appearance_weather_title"
@@ -43,6 +52,11 @@
                     app:title="@string/appearance_message_title"
                     app:summary="@string/appearance_message_summary"
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageFragment"/>
+
+                <Preference
+                    app:title="@string/appearance_clock_title"
+                    app:summary="@string/appearance_clock_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysClockFragment"/>
 
                 <Preference
                     app:title="@string/appearance_countdown_title"
