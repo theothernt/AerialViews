@@ -74,7 +74,7 @@ internal class MetadataResolverTest {
         )
 
     @Test
-    fun `resolve video with POI uses dynamic metadata`() =
+    fun `resolve video with POI uses dynamic metadata`(): Unit =
         runTest {
             val media =
                 createMedia(
@@ -90,7 +90,7 @@ internal class MetadataResolverTest {
         }
 
     @Test
-    fun `resolve video with empty POI falls back`() =
+    fun `resolve video with empty POI falls back`(): Unit =
         runTest {
             val media =
                 createMedia(
@@ -106,7 +106,7 @@ internal class MetadataResolverTest {
         }
 
     @Test
-    fun `resolve photo with location uses city state country`() =
+    fun `resolve photo with location uses city state country`(): Unit =
         runTest {
             val media =
                 createMedia(
@@ -124,7 +124,7 @@ internal class MetadataResolverTest {
         }
 
     @Test
-    fun `resolve photo with relative date`() =
+    fun `resolve photo with relative date`(): Unit =
         runTest {
             val media =
                 createMedia(

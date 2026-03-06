@@ -4,6 +4,7 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
+import androidx.annotation.RequiresApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -69,6 +70,7 @@ object GeocoderHelper {
         return address?.let(::toGeocodedLocation)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private suspend fun geocodeModern(
         geocoder: Geocoder,
         latitude: Double,

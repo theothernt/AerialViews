@@ -140,14 +140,13 @@ internal object FastBlurCompat {
             // Left clamped region
             while (x < radius) {
                 val base = rowStart + x
-                val baseLeft = rowStart
                 val baseRight = base + radius + 1
                 dst[base] =
                     (sumsByChannel[0] / kernelSize) or
                     (sumsByChannel[1] / kernelSize shl 8) or
                     (sumsByChannel[2] / kernelSize shl 16) or
                     (sumsByChannel[3] / kernelSize shl 24)
-                val left = src[baseLeft]
+                val left = src[rowStart]
                 val right = src[baseRight]
                 sumsByChannel[0] += -(left and 0xff) + (right and 0xff)
                 sumsByChannel[1] += -((left shr 8) and 0xff) + ((right shr 8) and 0xff)

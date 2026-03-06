@@ -116,11 +116,7 @@ internal object ImagePlayerHelper {
             val responseBody = response.body
             object : FilterInputStream(responseBody.byteStream()) {
                 override fun close() {
-                    try {
-                        super.close()
-                    } finally {
-                        response.close()
-                    }
+                    response.use { super.close() }
                 }
             }
         } catch (ex: Exception) {

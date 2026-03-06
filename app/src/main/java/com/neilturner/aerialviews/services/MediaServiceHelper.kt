@@ -28,7 +28,7 @@ internal object MediaServiceHelper {
         }
 
         media.parallelForEach { video ->
-            val data = metadata.get(video.uri.filenameWithoutExtension.lowercase())
+            val data = metadata[video.uri.filenameWithoutExtension.lowercase()]
             if (data != null) {
                 video.metadata.shortDescription = data.first
                 video.metadata.pointsOfInterest = data.second

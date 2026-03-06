@@ -9,7 +9,6 @@ import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-@Suppress("unused")
 object SambaHelper {
     @Suppress("NAME_SHADOWING")
     fun fixShareName(shareName: String): String {

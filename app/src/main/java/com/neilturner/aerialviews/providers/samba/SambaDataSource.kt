@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.providers.samba
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
@@ -84,7 +85,7 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     @SuppressLint("UnsafeOptInUsageError")
-    override fun getUri() = dataSpec.uri
+    override fun getUri(): Uri? = dataSpec.uri
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun close() {

@@ -95,7 +95,7 @@ object BitmapHelper {
 
                 // 2nd open: Full stream for actual bitmap decode
                 val decodeStartTime = System.currentTimeMillis()
-                var decodedBitmap =
+                val decodedBitmap =
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null

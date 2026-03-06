@@ -8,6 +8,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.exifinterface.media.ExifInterface
 import coil3.EventListener
@@ -301,6 +302,7 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun Bitmap.toSoftwareBitmap(): Bitmap =
         if (config == Bitmap.Config.HARDWARE) {
             copy(Bitmap.Config.ARGB_8888, false)

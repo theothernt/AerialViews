@@ -48,10 +48,6 @@ class AdvancedFragment :
     }
 
     private fun openSystemOverlaySettings() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return
-        }
-
         try {
             val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
             startActivity(intent)
@@ -61,10 +57,6 @@ class AdvancedFragment :
     }
 
     private fun checkPermission() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return
-        }
-
         val toggle = preferenceScreen.findPreference<SwitchPreference>("application_overlay_permission")
         val hasPermission = PermissionHelper.hasSystemOverlayPermission(requireContext())
 

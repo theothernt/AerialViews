@@ -97,7 +97,6 @@ class MetadataOverlay : AppCompatTextView {
                     // If new string and not fading in/out + loading new video
                     if (shouldUpdate && !isFadingOutMedia) {
                         val nextText = poi[newPoi]?.replace("\n", " ") ?: ""
-                        @Suppress("AssignedValueIsNeverRead")
                         lastPoi = newPoi // Compiler bug?
 
                         // If auto-hide has already faded this overlay out, update text silently.

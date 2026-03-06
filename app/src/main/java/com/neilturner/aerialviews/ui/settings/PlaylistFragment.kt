@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
-import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
@@ -9,7 +8,6 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import kotlinx.coroutines.launch
 
 class PlaylistFragment : MenuStateFragment() {
     override fun onCreatePreferences(
