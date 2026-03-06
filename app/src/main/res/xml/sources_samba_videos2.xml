@@ -6,17 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="samba_videos2_enabled"
-                    app:title="@string/samba_videos_enabled_title" />
-
-                <ListPreference
-                    app:dependency="samba_videos2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default"
-                    app:entries="@array/media_type_entries"
-                    app:entryValues="@array/media_type_values"
-                    app:key="samba_media2_type"
-                    app:title="@string/samba_media_type_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:title="@string/samba_videos2_enabled_title" />
 
                 <Preference
                     app:dependency="samba_videos2_enabled"
@@ -25,7 +15,7 @@
                     android:key="samba_videos2_test_connection" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_server_details">
+        <PreferenceCategory app:title="@string/category_authentication_details">
                 <EditTextPreference
                     app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
@@ -63,34 +53,5 @@
                     android:summary="@string/samba_videos_password_summary"
                     android:key="samba_videos2_password"
                     android:title="@string/samba_videos_password_title" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_advanced">
-                <CheckBoxPreference
-                    app:dependency="samba_videos2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="false"
-                    app:key="samba_videos2_search_subfolders"
-                    app:title="@string/samba_videos_search_subfolders_title"
-                    app:summary="@string/samba_videos_search_subfolders_summary" />
-
-                <CheckBoxPreference
-                    app:dependency="samba_videos2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="false"
-                    app:key="samba_videos2_enable_encryption"
-                    app:summary="@string/samba_videos_enable_encryption_summary"
-                    app:title="@string/samba_videos_enable_encryption_title" />
-
-                <MultiSelectListPreference
-                    app:dependency="samba_videos2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@array/samba_videos_smb_dialects_default"
-                    app:key="samba_videos2_smb_dialects"
-                    app:entries="@array/samba_videos_smb_dialects_entries"
-                    app:entryValues="@array/samba_videos_smb_dialects_values"
-                    app:title="@string/samba_videos_smb_dialects_title"
-                    app:summary="@string/samba_videos_smb_dialects_summary"
-                    app:dialogTitle="@string/samba_videos_smb_dialects_title" />
         </PreferenceCategory>
 </PreferenceScreen>

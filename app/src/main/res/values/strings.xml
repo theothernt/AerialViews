@@ -236,10 +236,11 @@
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="samba_videos_enabled_title">Use SMB/Samba share media</string>
+    <string name="samba_videos2_enabled_title">Use secondary SMB/Samba credentials</string>
     <string name="samba_media_type_title">Choose media type</string>
     <string name="samba_videos_test_connection">Test connection settings</string>
-    <string name="samba_videos2_options_title">Account 2 settings</string>
-    <string name="samba_videos2_options_summary">Configure a second SMB/Samba account</string>
+    <string name="samba_videos2_options_title">Second Account</string>
+    <string name="samba_videos2_options_summary">Configure secondary SMB/Samba credentials</string>
 
     <string name="samba_videos_hostname_title">Hostname</string>
     <string name="samba_videos_hostname_summary">IP address of the server</string>
@@ -292,10 +293,11 @@
 
     <!-- Main / Video Sources / WebDAV videos -->
     <string name="webdav_media_enabled_title">Use WebDAV share media</string>
+    <string name="webdav_media2_enabled_title">Use secondary WebDAV credentials</string>
     <string name="webdav_media_type_title">Choose media type</string>
     <string name="webdav_media_test_connection">Test connection settings</string>
-    <string name="webdav_media2_options_title">Account 2 settings</string>
-    <string name="webdav_media2_options_summary">Configure a second WebDAV account</string>
+    <string name="webdav_media2_options_title">Second Account</string>
+    <string name="webdav_media2_options_summary">Configure secondary WebDAV credentials</string>
 
     <string name="webdav_media_scheme_title">Scheme</string>
     <string name="webdav_media_hostname_title">Hostname &amp; port</string>

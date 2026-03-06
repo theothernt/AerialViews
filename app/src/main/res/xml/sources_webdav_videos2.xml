@@ -6,17 +6,7 @@
                 <SwitchPreference
                     app:defaultValue="false"
                     app:key="webdav_media2_enabled"
-                    app:title="@string/webdav_media_enabled_title" />
-
-                <ListPreference
-                    app:dependency="webdav_media2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default"
-                    app:entries="@array/media_type_entries"
-                    app:entryValues="@array/media_type_values"
-                    app:key="webdav_media2_type"
-                    app:title="@string/webdav_media_type_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:title="@string/webdav_media2_enabled_title" />
 
                 <Preference
                     app:dependency="webdav_media2_enabled"
@@ -25,7 +15,7 @@
                     android:key="webdav_media2_test_connection" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_server_details">
+        <PreferenceCategory app:title="@string/category_authentication_details">
                 <ListPreference
                     app:dependency="webdav_media2_enabled"
                     app:disableDependentsState="false"
@@ -65,16 +55,6 @@
                     android:summary="@string/webdav_media_password_summary"
                     android:key="webdav_media2_password"
                     android:title="@string/webdav_media_password_title" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_advanced">
-                <CheckBoxPreference
-                    app:dependency="webdav_media2_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="false"
-                    app:key="webdav_media2_search_subfolders"
-                    app:title="@string/webdav_media_search_subfolders_title"
-                    app:summary="@string/webdav_media_search_subfolders_summary" />
         </PreferenceCategory>
 
 </PreferenceScreen>

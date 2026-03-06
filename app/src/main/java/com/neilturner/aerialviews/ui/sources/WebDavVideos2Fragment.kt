@@ -57,31 +57,33 @@ class WebDavVideos2Fragment :
 
     private fun updateSummary() {
         val hostname = findPreference<EditTextPreference>("webdav_media2_hostname")
-        if (hostname?.text.toStringOrEmpty().isNotEmpty()) {
-            hostname?.summary = hostname.text
+        if (WebDavMediaPrefs2.hostName.isNotEmpty()) {
+            hostname?.summary = WebDavMediaPrefs2.hostName
         } else {
             hostname?.summary = getString(R.string.webdav_media_hostname_summary)
         }
 
         val pathname = findPreference<EditTextPreference>("webdav_media2_pathname")
-        if (pathname?.text.toStringOrEmpty().isNotEmpty()) {
+        if (pathname?.text.toStringOrEmpty().isNotEmpty() || WebDavMediaPrefs2.pathName.isNotEmpty()) {
             val fixedShareName = SambaHelper.fixShareName(WebDavMediaPrefs2.pathName)
             WebDavMediaPrefs2.pathName = fixedShareName
             pathname?.summary = fixedShareName
-            pathname?.text = fixedShareName
+            if (pathname?.text.toStringOrEmpty().isNotEmpty()) {
+                pathname?.text = fixedShareName
+            }
         } else {
             pathname?.summary = getString(R.string.webdav_media_pathname_summary)
         }
 
         val username = findPreference<EditTextPreference>("webdav_media2_username")
-        if (username?.text.toStringOrEmpty().isNotEmpty()) {
-            username?.summary = username.text
+        if (WebDavMediaPrefs2.userName.isNotEmpty()) {
+            username?.summary = WebDavMediaPrefs2.userName
         } else {
             username?.summary = getString(R.string.webdav_media_username_summary)
         }
 
         val password = findPreference<EditTextPreference>("webdav_media2_password")
-        if (password?.text.toStringOrEmpty().isNotEmpty()) {
+        if (WebDavMediaPrefs2.password.isNotEmpty()) {
             password?.summary = "*".repeat(WebDavMediaPrefs2.password.length)
         } else {
             password?.summary = getString(R.string.webdav_media_password_summary)
