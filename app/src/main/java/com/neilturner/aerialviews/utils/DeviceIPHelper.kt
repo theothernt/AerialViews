@@ -30,7 +30,6 @@ object DeviceIPHelper {
         return getNetworkInterfaceIPAddress()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getIPAddressModern(context: Context): String {
         try {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

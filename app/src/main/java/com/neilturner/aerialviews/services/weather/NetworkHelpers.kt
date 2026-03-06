@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.services.weather
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
