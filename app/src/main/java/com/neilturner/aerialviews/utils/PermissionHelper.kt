@@ -75,7 +75,4 @@ object PermissionHelper {
         NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)
 
     fun hasSystemOverlayPermission(context: Context): Boolean = Settings.canDrawOverlays(context)
-
-    @Suppress("SameReturnValue")
-    fun getReadDocumentPermission(): String = Manifest.permission.READ_EXTERNAL_STORAGE
 }

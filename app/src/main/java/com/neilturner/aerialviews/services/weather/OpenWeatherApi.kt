@@ -24,15 +24,6 @@ interface OpenWeatherApi {
         @Query("lang") language: String = "en",
     ): Response<CurrentWeatherResponse>
 
-    @GET("data/2.5/forecast")
-    suspend fun getFiveDayForecast(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric",
-        @Query("lang") language: String = "en",
-    ): Response<FiveDayForecastResponse>
-
     @GET("geo/1.0/direct")
     suspend fun getLocationByName(
         @Query("q") locationName: String,

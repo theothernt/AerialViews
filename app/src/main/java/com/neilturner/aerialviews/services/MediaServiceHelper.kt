@@ -41,35 +41,6 @@ internal object MediaServiceHelper {
         return Pair(matched, unmatched)
     }
 
-    suspend fun addFilenameAsDescriptionToMedia(
-        media: List<AerialMedia>,
-        description: DescriptionFilenameType,
-        pathDepth: Int,
-    ): List<AerialMedia> {
-        when (description) {
-            DescriptionFilenameType.FILENAME -> {
-                media.parallelForEach { item ->
-                    item.metadata.shortDescription = item.uri.filenameWithoutExtension
-                }
-            }
-
-            DescriptionFilenameType.LAST_FOLDER_FILENAME -> {
-                media.parallelForEach { item ->
-                    item.metadata.shortDescription = FileHelper.formatFolderAndFilenameFromUri(item.uri, true, pathDepth)
-                }
-            }
-
-            DescriptionFilenameType.LAST_FOLDER_NAME -> {
-                media.parallelForEach { item ->
-                    item.metadata.shortDescription = FileHelper.formatFolderAndFilenameFromUri(item.uri, false, pathDepth)
-                }
-            }
-
-            else -> { /* Do nothing */ }
-        }
-        return media
-    }
-
     suspend fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
         val media = CopyOnWriteArrayList<AerialMedia>()
 

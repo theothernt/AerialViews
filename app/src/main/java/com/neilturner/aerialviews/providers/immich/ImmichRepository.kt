@@ -398,12 +398,4 @@ class ImmichRepository(
                 Result.failure(e)
             }
         }
-
-    // Moved this to be available earlier for initial connection string
-    fun getServerUrl(): String {
-        if (!this::server.isInitialized) {
-            server = UrlParser.parseServerUrl(prefs.url)
-        }
-        return server
-    }
 }
