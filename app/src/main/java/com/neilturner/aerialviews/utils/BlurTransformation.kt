@@ -47,8 +47,17 @@ class BlurTransformation(
 
         Timber.d("BlurTransformation: Using FastBlurCompat")
         FastBlurCompat.applyBlur(workBitmap, radius)
-        
+
+        val outputBitmap =
+            if (workBitmap.width == input.width && workBitmap.height == input.height) {
+                workBitmap
+            } else {
+                val upscaled = workBitmap.scale(input.width, input.height, useBilinearFiltering)
+                workBitmap.recycle()
+                upscaled
+            }
+
         Timber.d("BlurTransformation: Finished transform")
-        return workBitmap
+        return outputBitmap
     }
 }

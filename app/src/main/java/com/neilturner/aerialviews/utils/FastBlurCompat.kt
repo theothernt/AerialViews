@@ -23,11 +23,16 @@ internal object FastBlurCompat {
         if (radius < 1) return
         val width = bitmap.width
         val height = bitmap.height
+        if (width < 2 || height < 2) return
+
+        val safeRadius = minOf(radius, width - 1, height - 1)
+        if (safeRadius < 1) return
+
         val pixels = IntArray(width * height)
         bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
         val scratch = IntArray(width * height)
         val rect = Rect(0, 0, width, height)
-        blurPass(pixels, scratch, width * 4, rect, radius)
+        blurPass(pixels, scratch, width * 4, rect, safeRadius)
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height)
     }
 
@@ -38,7 +43,7 @@ internal object FastBlurCompat {
         rect: Rect,
         radius: Int,
     ) {
-        val kernelSize = 2 * radius - 1
+        val kernelSize = 2 * radius + 1
         val stride = byteStride / 4
         if (rect.width() >= kernelSize) {
             horizontalPass(pixelsInOut, scratch, stride, rect, radius)
