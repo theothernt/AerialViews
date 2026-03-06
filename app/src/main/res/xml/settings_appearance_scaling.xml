@@ -45,6 +45,35 @@
                     app:dependency="photo_background_blur_enabled" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_background_colour">
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_videos"
+                    app:title="@string/appearance_background_colour_videos_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_photos"
+                    app:title="@string/appearance_background_colour_photos_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+
+                <ListPreference
+                    app:defaultValue="@string/background_colour_default"
+                    app:entries="@array/background_colour_entries"
+                    app:entryValues="@array/background_colour_values"
+                    app:key="background_colour_loading"
+                    app:title="@string/appearance_background_colour_loading_title"
+                    app:useSimpleSummaryProvider="true"
+                    />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_quality">
                 <SwitchPreferenceCompat
                     app:defaultValue="true"

@@ -561,8 +561,8 @@
     <string name="appearance_brightness_title">Brightness / Dimness</string>
     <string name="appearance_brightness_summary">Control the overall brightness of videos &amp; photos</string>
 
-    <string name="appearance_scaling_title">Scaling / Cropping</string>
-    <string name="appearance_scaling_summary">Change scaling and cropping options for videos &amp; photos</string>
+    <string name="appearance_scaling_title">Scaling, Cropping and Backgrounds</string>
+    <string name="appearance_scaling_summary">Change scaling, cropping, background colour and blur options</string>
 
     <string name="appearance_animations_title">Animations</string>
     <string name="appearance_animations_summary">Configure the animations used for overlays and between videos &amp; photos</string>
