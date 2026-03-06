@@ -85,48 +85,49 @@ class MetadataOverlay : AppCompatTextView {
         var lastPoi = 0
 
         poiJob?.cancel()
-        poiJob = findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-            delay(1000)
-            while (isActive) {
-                // Find POI string at current position/time
-                val time = player.currentPosition / 1000 // player current position
-                val newPoi = poiTimes.findLast { it <= time } ?: 0
-                val shouldUpdate = newPoi != lastPoi
+        poiJob =
+            findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+                delay(1000)
+                while (isActive) {
+                    // Find POI string at current position/time
+                    val time = player.currentPosition / 1000 // player current position
+                    val newPoi = poiTimes.findLast { it <= time } ?: 0
+                    val shouldUpdate = newPoi != lastPoi
 
-                // If new string and not fading in/out + loading new video
-                if (shouldUpdate && !isFadingOutMedia) {
-                    val nextText = poi[newPoi]?.replace("\n", " ") ?: ""
-                    @Suppress("AssignedValueIsNeverRead")
-                    lastPoi = newPoi // Compiler bug?
+                    // If new string and not fading in/out + loading new video
+                    if (shouldUpdate && !isFadingOutMedia) {
+                        val nextText = poi[newPoi]?.replace("\n", " ") ?: ""
+                        @Suppress("AssignedValueIsNeverRead")
+                        lastPoi = newPoi // Compiler bug?
 
-                    // If auto-hide has already faded this overlay out, update text silently.
-                    // Do not animate alpha back to 1f.
-                    if (this@MetadataOverlay.alpha < minVisibleAlphaForPoiFade) {
-                        this@MetadataOverlay.text = nextText
-                        delay(1000)
-                        continue
+                        // If auto-hide has already faded this overlay out, update text silently.
+                        // Do not animate alpha back to 1f.
+                        if (this@MetadataOverlay.alpha < minVisibleAlphaForPoiFade) {
+                            this@MetadataOverlay.text = nextText
+                            delay(1000)
+                            continue
+                        }
+
+                        // Set new string and fade in
+                        this@MetadataOverlay
+                            .animate()
+                            .alpha(0f)
+                            .setDuration(1000)
+                            .withEndAction {
+                                this@MetadataOverlay.text = nextText
+                                this@MetadataOverlay
+                                    .animate()
+                                    .alpha(textAlpha)
+                                    .setDuration(1000)
+                                    .start()
+                            }.start()
                     }
 
-                    // Set new string and fade in
-                    this@MetadataOverlay
-                        .animate()
-                        .alpha(0f)
-                        .setDuration(1000)
-                        .withEndAction {
-                            this@MetadataOverlay.text = nextText
-                            this@MetadataOverlay
-                                .animate()
-                                .alpha(textAlpha)
-                                .setDuration(1000)
-                                .start()
-                        }.start()
+                    // Set new interval for POI string update
+                    // Longer is a new string has just been set
+                    val interval = if (shouldUpdate) 3000L else 1000L
+                    delay(interval)
                 }
-
-                // Set new interval for POI string update
-                // Longer is a new string has just been set
-                val interval = if (shouldUpdate) 3000L else 1000L
-                delay(interval)
             }
-        }
     }
 }

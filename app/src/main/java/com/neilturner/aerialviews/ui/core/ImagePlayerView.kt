@@ -57,17 +57,18 @@ class ImagePlayerView : FrameLayout {
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
 
-    private val foregroundImageView = AppCompatImageView(context).apply {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-    }
-    private val backgroundImageView = AppCompatImageView(context).apply {
-        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        scaleType = ImageView.ScaleType.CENTER_CROP
-        visibility = GONE
-    }
+    private val foregroundImageView =
+        AppCompatImageView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        }
+    private val backgroundImageView =
+        AppCompatImageView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            visibility = GONE
+        }
     private var target = ImageViewTarget(foregroundImageView)
     private var currentOrientation: Int = ExifInterface.ORIENTATION_UNDEFINED
-
 
     private val progressBar =
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
@@ -125,7 +126,7 @@ class ImagePlayerView : FrameLayout {
         ImageLoader
             .Builder(context)
             .memoryCache(null)
-            //.logger(logger)
+            // .logger(logger)
             .eventListener(eventLister)
             .components {
                 // add(OkHttpNetworkFetcherFactory(buildOkHttpClient()))
@@ -239,7 +240,10 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private suspend fun loadBlurredBackground(bitmap: Bitmap, orientation: Int) {
+    private suspend fun loadBlurredBackground(
+        bitmap: Bitmap,
+        orientation: Int,
+    ) {
         Timber.d("loadBlurredBackground: Starting request with blur opacity ${GeneralPrefs.photoBackgroundBlurOpacity}")
         try {
             val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
@@ -275,7 +279,7 @@ class ImagePlayerView : FrameLayout {
                             if (isApi31Plus) {
                                 applyRenderEffectBlur()
                             }
-                        }
+                        },
                     )
 
             if (isApi31Plus) {
@@ -330,36 +334,49 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private fun applyExifRotation(view: ImageView, orientation: Int) {
+    private fun applyExifRotation(
+        view: ImageView,
+        orientation: Int,
+    ) {
         val startTime = System.currentTimeMillis()
         view.rotation = 0f
         view.scaleX = 1f
         view.scaleY = 1f
 
-        val isSwapped = orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+        val isSwapped =
+            orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
                 orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
                 orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
                 orientation == ExifInterface.ORIENTATION_TRANSVERSE
 
-        val rotationAngle = when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90,
-            ExifInterface.ORIENTATION_TRANSPOSE,
-            ExifInterface.ORIENTATION_TRANSVERSE,
-            -> 90f
+        val rotationAngle =
+            when (orientation) {
+                ExifInterface.ORIENTATION_ROTATE_90,
+                ExifInterface.ORIENTATION_TRANSPOSE,
+                ExifInterface.ORIENTATION_TRANSVERSE,
+                -> {
+                    90f
+                }
 
-            ExifInterface.ORIENTATION_ROTATE_180,
-            ExifInterface.ORIENTATION_FLIP_VERTICAL,
-            -> 180f
+                ExifInterface.ORIENTATION_ROTATE_180,
+                ExifInterface.ORIENTATION_FLIP_VERTICAL,
+                -> {
+                    180f
+                }
 
-            ExifInterface.ORIENTATION_ROTATE_270 -> 270f
+                ExifInterface.ORIENTATION_ROTATE_270 -> {
+                    270f
+                }
 
-            ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
-                view.scaleX = -1f
-                0f
+                ExifInterface.ORIENTATION_FLIP_HORIZONTAL -> {
+                    view.scaleX = -1f
+                    0f
+                }
+
+                else -> {
+                    0f
+                }
             }
-
-            else -> 0f
-        }
 
         view.rotation = rotationAngle
 
@@ -375,7 +392,9 @@ class ImagePlayerView : FrameLayout {
                 }
             }
         }
-        Timber.d("ImagePlayerView: Applied rotation ($orientation -> ${view.rotation}deg) in ${System.currentTimeMillis() - startTime}ms. View=${if (view == foregroundImageView) "Foreground" else "Background"}")
+        Timber.d(
+            "ImagePlayerView: Applied rotation ($orientation -> ${view.rotation}deg) in ${System.currentTimeMillis() - startTime}ms. View=${if (view == foregroundImageView) "Foreground" else "Background"}",
+        )
     }
 
     fun stop() {
@@ -418,7 +437,8 @@ class ImagePlayerView : FrameLayout {
         height: Int,
         orientation: Int,
     ) {
-        val isSwapped = orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+        val isSwapped =
+            orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
                 orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
                 orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
                 orientation == ExifInterface.ORIENTATION_TRANSVERSE

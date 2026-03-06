@@ -44,7 +44,9 @@ class SambaMediaProvider(
             var reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
             if (!reachable) {
                 NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
-                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Checking every $pollIntervalSeconds s for up to $maxWaitSeconds s")
+                Timber.i(
+                    "Samba WOL: Server not reachable, sent WOL packet. Checking every $pollIntervalSeconds s for up to $maxWaitSeconds s",
+                )
 
                 while (waitedSeconds < maxWaitSeconds) {
                     val sleepSeconds = minOf(pollIntervalSeconds, maxWaitSeconds - waitedSeconds)

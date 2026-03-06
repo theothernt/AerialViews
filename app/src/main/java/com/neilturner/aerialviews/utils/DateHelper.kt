@@ -6,18 +6,18 @@ import com.neilturner.aerialviews.models.enums.DateType
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 object DateHelper {

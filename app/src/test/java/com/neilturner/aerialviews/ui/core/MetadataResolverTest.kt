@@ -18,7 +18,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 internal class MetadataResolverTest {
-
     private lateinit var context: Context
     private lateinit var geocoderHelper: GeocoderHelper
     private lateinit var resolver: MetadataResolver
@@ -42,92 +41,102 @@ internal class MetadataResolverTest {
         state: String? = null,
         country: String? = null,
         description: String? = null,
-        date: String? = null
-    ): AerialMedia {
-        return AerialMedia(
+        date: String? = null,
+    ): AerialMedia =
+        AerialMedia(
             uri = uri,
             type = type,
-            metadata = AerialMediaMetadata(
-                shortDescription = shortDesc,
-                pointsOfInterest = poi,
-                exif = AerialExifMetadata(
-                    city = city,
-                    state = state,
-                    country = country,
-                    description = description,
-                    date = date
+            metadata =
+                AerialMediaMetadata(
+                    shortDescription = shortDesc,
+                    pointsOfInterest = poi,
+                    exif =
+                        AerialExifMetadata(
+                            city = city,
+                            state = state,
+                            country = country,
+                            description = description,
+                            date = date,
+                        ),
+                ),
+        )
+
+    private val defaultPrefs =
+        MetadataResolver.Preferences(
+            videoSelection = "POI,LOCATION,DESC,FILENAME",
+            videoFolderDepth = 1,
+            videoLocationType = LocationType.CITY_STATE,
+            photoSelection = "LOCATION,DATE_TAKEN,DESCRIPTION,FILENAME",
+            photoFolderDepth = 1,
+            photoLocationType = LocationType.CITY_STATE_COUNTRY,
+            photoDateType = DateType.RELATIVE,
+            photoDateCustom = "",
+        )
+
+    @Test
+    fun `resolve video with POI uses dynamic metadata`() =
+        runTest {
+            val media =
+                createMedia(
+                    poi = mapOf(0 to "Intro", 10 to "Main Scene"),
                 )
-            )
-        )
-    }
+            val prefs = defaultPrefs.copy(videoSelection = "POI")
 
-    private val defaultPrefs = MetadataResolver.Preferences(
-        videoSelection = "POI,LOCATION,DESC,FILENAME",
-        videoFolderDepth = 1,
-        videoLocationType = LocationType.CITY_STATE,
-        photoSelection = "LOCATION,DATE_TAKEN,DESCRIPTION,FILENAME",
-        photoFolderDepth = 1,
-        photoLocationType = LocationType.CITY_STATE_COUNTRY,
-        photoDateType = DateType.RELATIVE,
-        photoDateCustom = ""
-    )
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Intro", result.text)
+            assertEquals(2, result.poi.size)
+            assertEquals(MetadataType.DYNAMIC, result.metadataType)
+        }
 
     @Test
-    fun `resolve video with POI uses dynamic metadata`() = runTest {
-        val media = createMedia(
-            poi = mapOf(0 to "Intro", 10 to "Main Scene")
-        )
-        val prefs = defaultPrefs.copy(videoSelection = "POI")
+    fun `resolve video with empty POI falls back`() =
+        runTest {
+            val media =
+                createMedia(
+                    poi = emptyMap(),
+                    shortDesc = "Fallback Desc",
+                )
+            val prefs = defaultPrefs.copy(videoSelection = "POI,DESC")
 
-        val result = resolver.resolve(context, media, prefs)
+            val result = resolver.resolve(context, media, prefs)
 
-        assertEquals("Intro", result.text)
-        assertEquals(2, result.poi.size)
-        assertEquals(MetadataType.DYNAMIC, result.metadataType)
-    }
-
-    @Test
-    fun `resolve video with empty POI falls back`() = runTest {
-        val media = createMedia(
-            poi = emptyMap(),
-            shortDesc = "Fallback Desc"
-        )
-        val prefs = defaultPrefs.copy(videoSelection = "POI,DESC")
-
-        val result = resolver.resolve(context, media, prefs)
-
-        assertEquals("Fallback Desc", result.text)
-        assertEquals(MetadataType.STATIC, result.metadataType)
-    }
+            assertEquals("Fallback Desc", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
 
     @Test
-    fun `resolve photo with location uses city state country`() = runTest {
-        val media = createMedia(
-            type = AerialMediaType.IMAGE,
-            city = "Paris",
-            state = "Ile-de-France",
-            country = "France"
-        )
-        val prefs = defaultPrefs.copy(photoSelection = "LOCATION", photoLocationType = LocationType.CITY_STATE_COUNTRY)
+    fun `resolve photo with location uses city state country`() =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    city = "Paris",
+                    state = "Ile-de-France",
+                    country = "France",
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "LOCATION", photoLocationType = LocationType.CITY_STATE_COUNTRY)
 
-        val result = resolver.resolve(context, media, prefs)
+            val result = resolver.resolve(context, media, prefs)
 
-        assertEquals("Paris, Ile-de-France, France", result.text)
-        assertEquals(MetadataType.STATIC, result.metadataType)
-    }
+            assertEquals("Paris, Ile-de-France, France", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
 
     @Test
-    fun `resolve photo with relative date`() = runTest {
-        val media = createMedia(
-            type = AerialMediaType.IMAGE,
-            date = "2023:01:01 12:00:00"
-        )
-        val prefs = defaultPrefs.copy(photoSelection = "DATE_TAKEN", photoDateType = DateType.RELATIVE)
+    fun `resolve photo with relative date`() =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    date = "2023:01:01 12:00:00",
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "DATE_TAKEN", photoDateType = DateType.RELATIVE)
 
-        val result = resolver.resolve(context, media, prefs)
-        
-        // Date formatting checks could result differently depending on system time.
-        // We assert it is at least resolved as static type.
-        assertEquals(MetadataType.STATIC, result.metadataType)
-    }
+            val result = resolver.resolve(context, media, prefs)
+
+            // Date formatting checks could result differently depending on system time.
+            // We assert it is at least resolved as static type.
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
 }

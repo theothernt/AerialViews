@@ -10,7 +10,7 @@ import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 class ImmichUrlBuilder(
     private val server: String,
     private val prefs: ImmichMediaPrefs,
-    private var resolvedSharedKey: String? = null
+    private var resolvedSharedKey: String? = null,
 ) {
     fun setResolvedSharedKey(key: String?) {
         resolvedSharedKey = key

@@ -102,11 +102,11 @@ object SambaHelper {
     fun parseShareAndPathName(uriString: String): Pair<String, String> {
         val pathPart = extractPathAfterHost(uriString)
         val segments = pathPart.trim('/').split("/").toMutableList()
-        
+
         if (segments.isEmpty()) {
             return Pair("", "")
         }
-        
+
         val shareName = segments.removeAt(0)
         val path = if (segments.isNotEmpty()) segments.joinToString("/") else ""
         return Pair(shareName, path)
@@ -146,9 +146,8 @@ object SambaHelper {
         return AuthenticationContext(userName, password.toCharArray(), domainName)
     }
 
-    fun buildSmbConfig(prefs: SambaProviderPreferences = SambaMediaPrefs): SmbConfig {
-        return buildSmbConfig(prefs.enableEncryption, prefs.smbDialects)
-    }
+    fun buildSmbConfig(prefs: SambaProviderPreferences = SambaMediaPrefs): SmbConfig =
+        buildSmbConfig(prefs.enableEncryption, prefs.smbDialects)
 
     fun buildSmbConfig(
         enableEncryption: Boolean,

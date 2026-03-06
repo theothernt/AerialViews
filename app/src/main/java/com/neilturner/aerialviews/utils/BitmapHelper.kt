@@ -38,9 +38,10 @@ object BitmapHelper {
                 // Read header bytes once - used for EXIF and bounds checking
                 val headerStartTime = System.currentTimeMillis()
                 val headerBytes = ByteArray(HEADER_BUFFER_SIZE)
-                val headerLength = openInputStream()?.use { stream ->
-                    stream.read(headerBytes)
-                } ?: return@withContext null
+                val headerLength =
+                    openInputStream()?.use { stream ->
+                        stream.read(headerBytes)
+                    } ?: return@withContext null
                 Timber.d("BitmapHelper: Read header in ${System.currentTimeMillis() - headerStartTime}ms")
 
                 val headerStream = { ByteArrayInputStream(headerBytes, 0, headerLength) }
@@ -48,9 +49,12 @@ object BitmapHelper {
                 // Extract metadata from header
                 val exifStartTime = System.currentTimeMillis()
                 val metadata = extractMetadata(headerStream)
-                Timber.d("BitmapHelper: Extracted EXIF in ${System.currentTimeMillis() - exifStartTime}ms (orientation=${metadata.orientation})")
-                
-                val isSwapped = metadata.orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
+                Timber.d(
+                    "BitmapHelper: Extracted EXIF in ${System.currentTimeMillis() - exifStartTime}ms (orientation=${metadata.orientation})",
+                )
+
+                val isSwapped =
+                    metadata.orientation == ExifInterface.ORIENTATION_ROTATE_90 ||
                         metadata.orientation == ExifInterface.ORIENTATION_ROTATE_270 ||
                         metadata.orientation == ExifInterface.ORIENTATION_TRANSPOSE ||
                         metadata.orientation == ExifInterface.ORIENTATION_TRANSVERSE
@@ -81,7 +85,7 @@ object BitmapHelper {
 
                 val decodeOptions =
                     BitmapFactory.Options().apply {
-                        inSampleSize =  calculateInSampleSize(boundsOptions, decodeTargetWidth, decodeTargetHeight)
+                        inSampleSize = calculateInSampleSize(boundsOptions, decodeTargetWidth, decodeTargetHeight)
                         inPreferredConfig = Bitmap.Config.ARGB_8888
                     }
 
@@ -95,16 +99,21 @@ object BitmapHelper {
                     openInputStream()?.use { stream ->
                         BitmapFactory.decodeStream(stream, null, decodeOptions)
                     } ?: return@withContext null
-                Timber.d("BitmapHelper: Decoded bitmap in ${System.currentTimeMillis() - decodeStartTime}ms (sampleSize=${decodeOptions.inSampleSize})")
                 Timber.d(
-                    "BitmapHelper: Decoded dimensions ${decodedBitmap.width}x${decodedBitmap.height}, target=${effectiveTargetWidth}x${effectiveTargetHeight}, decodeTarget=${decodeTargetWidth}x${decodeTargetHeight}",
+                    "BitmapHelper: Decoded bitmap in ${System.currentTimeMillis() - decodeStartTime}ms (sampleSize=${decodeOptions.inSampleSize})",
+                )
+                Timber.d(
+                    "BitmapHelper: Decoded dimensions ${decodedBitmap.width}x${decodedBitmap.height}, target=${effectiveTargetWidth}x$effectiveTargetHeight, decodeTarget=${decodeTargetWidth}x$decodeTargetHeight",
                 )
 
-                val result = BitmapResult(
-                    bitmap = decodedBitmap,
-                    metadata = metadata,
+                val result =
+                    BitmapResult(
+                        bitmap = decodedBitmap,
+                        metadata = metadata,
+                    )
+                Timber.d(
+                    "BitmapHelper: Returning bitmap. Total loadResizedImageBytes time: ${System.currentTimeMillis() - totalStartTime}ms",
                 )
-                Timber.d("BitmapHelper: Returning bitmap. Total loadResizedImageBytes time: ${System.currentTimeMillis() - totalStartTime}ms")
                 result
             } catch (ex: Exception) {
                 Timber.e(ex, "BitmapHelper: Exception in loadResizedImageBytes: ${ex.message}")

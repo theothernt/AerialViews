@@ -1,9 +1,9 @@
 package com.neilturner.aerialviews.utils
 
 import android.graphics.Bitmap
+import androidx.core.graphics.scale
 import coil3.size.Size
 import coil3.transform.Transformation
-import androidx.core.graphics.scale
 import timber.log.Timber
 
 /**

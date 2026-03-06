@@ -5,5 +5,5 @@ enum class LocationType {
     CITY_STATE,
     CITY_COUNTRY,
     CITY_STATE_COUNTRY,
-    COUNTRY
+    COUNTRY,
 }

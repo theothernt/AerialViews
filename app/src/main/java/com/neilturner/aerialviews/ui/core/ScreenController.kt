@@ -28,8 +28,8 @@ import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
-import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
+import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
@@ -50,8 +50,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -232,7 +232,6 @@ class ScreenController(
                         startUpdates()
                     }
             }
-
         }
         // 1. Load playlist
         // 2. load video, setup location/POI, start playback call
@@ -770,10 +769,12 @@ class ScreenController(
             MetadataResolver.Preferences(
                 videoSelection = GeneralPrefs.overlayMetadata1Videos,
                 videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
-                videoLocationType = GeneralPrefs.overlayMetadata1VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                videoLocationType =
+                    GeneralPrefs.overlayMetadata1VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoSelection = GeneralPrefs.overlayMetadata1Photos,
                 photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
-                photoLocationType = GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoLocationType =
+                    GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoDateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
                 photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
             )
@@ -781,10 +782,12 @@ class ScreenController(
             MetadataResolver.Preferences(
                 videoSelection = GeneralPrefs.overlayMetadata2Videos,
                 videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
-                videoLocationType = GeneralPrefs.overlayMetadata2VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                videoLocationType =
+                    GeneralPrefs.overlayMetadata2VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoSelection = GeneralPrefs.overlayMetadata2Photos,
                 photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
-                photoLocationType = GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                photoLocationType =
+                    GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
                 photoDateType = GeneralPrefs.overlayMetadata2PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
                 photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
             )

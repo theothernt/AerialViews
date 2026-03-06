@@ -144,9 +144,9 @@ internal object FastBlurCompat {
                 val baseRight = base + radius + 1
                 dst[base] =
                     (sumsByChannel[0] / kernelSize) or
-                        (sumsByChannel[1] / kernelSize shl 8) or
-                        (sumsByChannel[2] / kernelSize shl 16) or
-                        (sumsByChannel[3] / kernelSize shl 24)
+                    (sumsByChannel[1] / kernelSize shl 8) or
+                    (sumsByChannel[2] / kernelSize shl 16) or
+                    (sumsByChannel[3] / kernelSize shl 24)
                 val left = src[baseLeft]
                 val right = src[baseRight]
                 sumsByChannel[0] += -(left and 0xff) + (right and 0xff)
@@ -181,9 +181,9 @@ internal object FastBlurCompat {
                 val baseLeft = base - radius
                 dst[base] =
                     (sumsByChannel[0] / kernelSize) or
-                        (sumsByChannel[1] / kernelSize shl 8) or
-                        (sumsByChannel[2] / kernelSize shl 16) or
-                        (sumsByChannel[3] / kernelSize shl 24)
+                    (sumsByChannel[1] / kernelSize shl 8) or
+                    (sumsByChannel[2] / kernelSize shl 16) or
+                    (sumsByChannel[3] / kernelSize shl 24)
                 val left = src[baseLeft]
                 val right = src[lastPixel]
                 sumsByChannel[0] += -(left and 0xff) + (right and 0xff)
@@ -281,9 +281,9 @@ internal object FastBlurCompat {
                 val baseBottom = base + (radius + 1) * stride
                 dst[base] =
                     (sumsByChannel[0] / kernelSize) or
-                        (sumsByChannel[1] / kernelSize shl 8) or
-                        (sumsByChannel[2] / kernelSize shl 16) or
-                        (sumsByChannel[3] / kernelSize shl 24)
+                    (sumsByChannel[1] / kernelSize shl 8) or
+                    (sumsByChannel[2] / kernelSize shl 16) or
+                    (sumsByChannel[3] / kernelSize shl 24)
                 val top = src[columnStart]
                 val bottom = src[baseBottom]
                 sumsByChannel[0] += -(top and 0xff) + (bottom and 0xff)
@@ -317,9 +317,9 @@ internal object FastBlurCompat {
                 val baseTop = base + (-radius) * stride
                 dst[base] =
                     (sumsByChannel[0] / kernelSize) or
-                        (sumsByChannel[1] / kernelSize shl 8) or
-                        (sumsByChannel[2] / kernelSize shl 16) or
-                        (sumsByChannel[3] / kernelSize shl 24)
+                    (sumsByChannel[1] / kernelSize shl 8) or
+                    (sumsByChannel[2] / kernelSize shl 16) or
+                    (sumsByChannel[3] / kernelSize shl 24)
                 val top = src[baseTop]
                 val bottom = src[lastPixel]
                 sumsByChannel[0] += -(top and 0xff) + (bottom and 0xff)

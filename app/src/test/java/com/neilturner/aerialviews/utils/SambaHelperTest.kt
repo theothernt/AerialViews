@@ -8,11 +8,9 @@ import org.junit.jupiter.api.Test
 
 @DisplayName("SambaHelper Tests")
 internal class SambaHelperTest {
-
     @Nested
     @DisplayName("parseUserInfo Tests")
     inner class ParseUserInfoTests {
-
         @Test
         @DisplayName("Should parse username without password")
         fun testParseUserInfoUsernameOnly() {
@@ -167,7 +165,6 @@ internal class SambaHelperTest {
     @Nested
     @DisplayName("parseShareAndPathName Tests")
     inner class ParseShareAndPathNameTests {
-
         @Test
         @DisplayName("Should parse share name without path")
         fun testParseShareAndPathNameShareOnly() {
@@ -244,7 +241,6 @@ internal class SambaHelperTest {
     @Nested
     @DisplayName("fixShareName Tests")
     inner class FixShareNameTests {
-
         @Test
         @DisplayName("Should return empty string for empty input")
         fun testFixShareNameEmpty() {
@@ -316,7 +312,6 @@ internal class SambaHelperTest {
     @Nested
     @DisplayName("URL Encoding Tests")
     inner class UrlEncodingTests {
-
         @Test
         @DisplayName("Should verify spaces are encoded in URL")
         fun testUrlEncodingSpaces() {
@@ -369,7 +364,6 @@ internal class SambaHelperTest {
     @Nested
     @DisplayName("Integration Tests - Full URL Parsing")
     inner class IntegrationTests {
-
         @Test
         @DisplayName("Should parse complete SMB URL with all components")
         fun testFullUrlParsing() {
