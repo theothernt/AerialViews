@@ -15,6 +15,7 @@ import coil3.ImageLoader
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.allowHardware
 import coil3.request.transformations
 import coil3.target.ImageViewTarget
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -243,6 +244,12 @@ class ImagePlayerView : FrameLayout {
         try {
             val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
             val isApi31Plus = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+            val requestData =
+                if (isApi31Plus) {
+                    bitmap
+                } else {
+                    bitmap.toSoftwareBitmap()
+                }
 
             withContext(Dispatchers.Main) {
                 if (backgroundImageView.visibility != VISIBLE) {
@@ -254,7 +261,7 @@ class ImagePlayerView : FrameLayout {
             val requestBuilder =
                 ImageRequest
                     .Builder(context)
-                    .data(bitmap)
+                    .data(requestData)
                     .size(this.width, this.height)
                     .target(ImageViewTarget(backgroundImageView))
                     .listener(
@@ -275,6 +282,7 @@ class ImagePlayerView : FrameLayout {
                 clearRenderEffectIfSupported()
             } else {
                 requestBuilder
+                    .allowHardware(false)
                     .transformations(listOf(BlurTransformation(useBilinearFiltering = GeneralPrefs.photoBilinearFiltering)))
             }
 
@@ -288,6 +296,13 @@ class ImagePlayerView : FrameLayout {
             Timber.e(ex, "Exception while loading blurred background: ${ex.message}")
         }
     }
+
+    private fun Bitmap.toSoftwareBitmap(): Bitmap =
+        if (config == Bitmap.Config.HARDWARE) {
+            copy(Bitmap.Config.ARGB_8888, false)
+        } else {
+            this
+        }
 
     private suspend fun clearBlurredBackground() {
         withContext(Dispatchers.Main) {
