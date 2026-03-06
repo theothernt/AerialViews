@@ -5,104 +5,92 @@
         <PreferenceCategory app:title="@string/category_video_source">
                 <SwitchPreference
                     app:defaultValue="false"
-                    app:key="samba_videos_enabled"
+                    app:key="samba_videos2_enabled"
                     app:title="@string/samba_videos_enabled_title" />
 
                 <ListPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="@string/media_type_default"
                     app:entries="@array/media_type_entries"
                     app:entryValues="@array/media_type_values"
-                    app:key="samba_media_type"
+                    app:key="samba_media2_type"
                     app:title="@string/samba_media_type_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <Preference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:title="@string/samba_videos_test_connection"
-                    android:key="samba_videos_test_connection" />
-
-                <Preference
-                    app:title="@string/samba_videos2_options_title"
-                    app:summary="@string/samba_videos2_options_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.sources.SambaVideos2Fragment" />
+                    android:key="samba_videos2_test_connection" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_server_details">
                 <EditTextPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_hostname_summary"
-                    android:key="samba_videos_hostname"
+                    android:key="samba_videos2_hostname"
                     android:selectAllOnFocus="true"
                     android:title="@string/samba_videos_hostname_title" />
 
                 <EditTextPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_domainname_summary"
-                    android:key="samba_videos_domainname"
+                    android:key="samba_videos2_domainname"
                     android:selectAllOnFocus="true"
                     android:title="@string/samba_videos_domainname_title" />
 
                 <EditTextPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_sharename_summary"
-                    android:key="samba_videos_sharename"
+                    android:key="samba_videos2_sharename"
                     android:selectAllOnFocus="true"
                     android:title="@string/samba_videos_sharename_title" />
 
                 <EditTextPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_username_summary"
-                    android:key="samba_videos_username"
+                    android:key="samba_videos2_username"
                     android:title="@string/samba_videos_username_title" />
 
                 <EditTextPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     android:summary="@string/samba_videos_password_summary"
-                    android:key="samba_videos_password"
+                    android:key="samba_videos2_password"
                     android:title="@string/samba_videos_password_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_advanced">
                 <CheckBoxPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="false"
-                    app:key="samba_videos_search_subfolders"
+                    app:key="samba_videos2_search_subfolders"
                     app:title="@string/samba_videos_search_subfolders_title"
                     app:summary="@string/samba_videos_search_subfolders_summary" />
 
                 <CheckBoxPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="false"
-                    app:key="samba_videos_enable_encryption"
+                    app:key="samba_videos2_enable_encryption"
                     app:summary="@string/samba_videos_enable_encryption_summary"
                     app:title="@string/samba_videos_enable_encryption_title" />
 
                 <MultiSelectListPreference
-                    app:dependency="samba_videos_enabled"
+                    app:dependency="samba_videos2_enabled"
                     app:disableDependentsState="false"
                     app:defaultValue="@array/samba_videos_smb_dialects_default"
-                    app:key="samba_videos_smb_dialects"
+                    app:key="samba_videos2_smb_dialects"
                     app:entries="@array/samba_videos_smb_dialects_entries"
                     app:entryValues="@array/samba_videos_smb_dialects_values"
                     app:title="@string/samba_videos_smb_dialects_title"
                     app:summary="@string/samba_videos_smb_dialects_summary"
                     app:dialogTitle="@string/samba_videos_smb_dialects_title" />
-
-                <Preference
-                    app:dependency="samba_videos_enabled"
-                    app:disableDependentsState="false"
-                    app:title="@string/samba_media_wol_title"
-                    app:summary="@string/samba_media_wol_summary"
-                    app:fragment="com.neilturner.aerialviews.ui.sources.SambaVideosWolFragment" />
         </PreferenceCategory>
 </PreferenceScreen>

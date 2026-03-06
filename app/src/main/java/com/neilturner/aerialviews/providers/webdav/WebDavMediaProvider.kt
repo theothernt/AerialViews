@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
@@ -17,10 +17,11 @@ import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.net.URLEncoder
 
 class WebDavMediaProvider(
     context: Context,
-    private val prefs: WebDavMediaPrefs,
+    private val prefs: WebDavProviderPreferences,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
@@ -63,7 +64,7 @@ class WebDavMediaProvider(
 
         // Create WebDAV URL, add to media list, adding media type
         webDavMedia.first.forEach { url ->
-            val uri = url.toUri()
+            val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
             val item = AerialMedia(uri)
 
             if (FileHelper.isSupportedVideoType(url)) {
@@ -194,5 +195,27 @@ class WebDavMediaProvider(
         return filesWithDates
             .sortedByDescending { it.second }
             .map { it.first }
+    }
+
+    private fun addCredentialsToUrl(
+        url: String,
+        userName: String,
+        password: String,
+    ): String {
+        if (userName.isEmpty()) {
+            return url
+        }
+
+        val encodedUser = URLEncoder.encode(userName, "utf-8")
+        val encodedPass = if (password.isNotEmpty()) ":" + URLEncoder.encode(password, "utf-8") else ""
+        val userInfo = "$encodedUser$encodedPass@"
+        val schemeSeparatorIndex = url.indexOf("://")
+        if (schemeSeparatorIndex == -1) {
+            return url
+        }
+
+        val prefix = url.substring(0, schemeSeparatorIndex + 3)
+        val suffix = url.substring(schemeSeparatorIndex + 3)
+        return prefix + userInfo + suffix
     }
 }

@@ -5,6 +5,7 @@ import com.hierynomus.mssmb2.SMB2Dialect
 import com.hierynomus.smbj.SmbConfig
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -145,14 +146,20 @@ object SambaHelper {
         return AuthenticationContext(userName, password.toCharArray(), domainName)
     }
 
-    fun buildSmbConfig(): SmbConfig {
-        val dialectStrings = SambaMediaPrefs.smbDialects
+    fun buildSmbConfig(prefs: SambaProviderPreferences = SambaMediaPrefs): SmbConfig {
+        return buildSmbConfig(prefs.enableEncryption, prefs.smbDialects)
+    }
+
+    fun buildSmbConfig(
+        enableEncryption: Boolean,
+        dialectStrings: Set<String>,
+    ): SmbConfig {
         val config =
             SmbConfig
                 .builder()
                 .withTimeout(30, TimeUnit.SECONDS)
                 .withReadTimeout(30, TimeUnit.SECONDS)
-                .withEncryptData(SambaMediaPrefs.enableEncryption)
+                .withEncryptData(enableEncryption)
                 .withNegotiatedBufferSize()
         if (dialectStrings.isNotEmpty()) {
             Timber.i("Using SMB dialects: ${dialectStrings.joinToString(",")}")

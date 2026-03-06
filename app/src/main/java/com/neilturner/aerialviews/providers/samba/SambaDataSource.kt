@@ -30,7 +30,9 @@ class SambaDataSource : BaseDataSource(true) {
     private var password = ""
     private var hostName = ""
     private var shareName = ""
-    private val domainName = "WORKGROUP"
+    private var domainName = "WORKGROUP"
+    private var enableEncryption = false
+    private var smbDialects: Set<String> = emptySet()
     private var path = ""
 
     private var smbClient: SMBClient? = null
@@ -106,6 +108,15 @@ class SambaDataSource : BaseDataSource(true) {
         val userInfo = SambaHelper.parseUserInfo(uri)
         userName = userInfo.first
         password = userInfo.second
+        domainName = uri.getQueryParameter("domain").orEmpty().ifEmpty { "WORKGROUP" }
+        enableEncryption = uri.getQueryParameter("enc")?.toBooleanStrictOrNull() ?: false
+        smbDialects =
+            uri
+                .getQueryParameter("dialects")
+                .orEmpty()
+                .split(",")
+                .filter { it.isNotBlank() }
+                .toSet()
 
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         shareName = shareNameAndPath.first
@@ -113,7 +124,7 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     private fun openSambaFile(): File {
-        smbClient = SMBClient(SambaHelper.buildSmbConfig())
+        smbClient = SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
         val connection = smbClient?.connect(hostName)
         val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
