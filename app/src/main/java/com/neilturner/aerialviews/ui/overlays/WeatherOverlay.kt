@@ -47,7 +47,9 @@ class WeatherOverlay
 
         init {
             orientation = HORIZONTAL
-            alpha = 0f
+            // Start visible by default. ScreenController owns auto-hide and will
+            // fade this view when that feature is enabled.
+            alpha = 1f
         }
 
         fun style(
