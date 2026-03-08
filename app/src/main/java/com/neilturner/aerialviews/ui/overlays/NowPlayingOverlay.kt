@@ -84,7 +84,7 @@ class NowPlayingOverlay : AppCompatTextView {
         shouldUpdate = false
         val shouldFadeIn = updateText()
 
-        if (shouldFadeIn && alpha >= minVisibleAlphaForFade) {
+        if (shouldFadeIn && alpha < minVisibleAlphaForFade) {
             fadeIn()
         }
 
