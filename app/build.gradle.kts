@@ -39,12 +39,9 @@ android {
         buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
     }
 
-    kotlin {
-        jvmToolchain(21)
-
-        sourceSets.configureEach {
-            languageSettings.languageVersion = "2.3"
-        }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
 
     buildFeatures {
