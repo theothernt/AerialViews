@@ -4,7 +4,6 @@ import android.content.Context
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.DescriptionFilenameType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
@@ -16,7 +15,9 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -27,7 +28,6 @@ import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
-import com.neilturner.aerialviews.services.MediaServiceHelper.addFilenameAsDescriptionToMedia
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
 import com.neilturner.aerialviews.utils.TimeOfDayHelper
@@ -47,7 +47,9 @@ class MediaService(
         providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
+        providers.add(SambaMediaProvider(context, SambaMediaPrefs2))
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
+        providers.add(WebDavMediaProvider(context, WebDavMediaPrefs2))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         providers.add(CustomFeedProvider(context, CustomFeedPrefs))

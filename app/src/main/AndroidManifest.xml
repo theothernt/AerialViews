@@ -61,7 +61,7 @@
         android:theme="@style/DefaultTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="DataExtractionRules,MediaCapabilities"
-        tools:targetApi="m">
+        >
 
         <!-- Default launch point -->
         <activity

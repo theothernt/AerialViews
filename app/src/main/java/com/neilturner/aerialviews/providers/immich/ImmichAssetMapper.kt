@@ -12,7 +12,7 @@ import timber.log.Timber
 
 class ImmichAssetMapper(
     private val prefs: ImmichMediaPrefs,
-    private val urlBuilder: ImmichUrlBuilder
+    private val urlBuilder: ImmichUrlBuilder,
 ) {
     data class ProcessResults(
         val media: List<AerialMedia>,

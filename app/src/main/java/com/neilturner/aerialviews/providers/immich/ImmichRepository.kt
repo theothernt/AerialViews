@@ -14,7 +14,7 @@ import timber.log.Timber
 
 class ImmichRepository(
     private val prefs: ImmichMediaPrefs,
-    private val urlBuilder: ImmichUrlBuilder
+    private val urlBuilder: ImmichUrlBuilder,
 ) {
     lateinit var server: String
 
@@ -156,71 +156,73 @@ class ImmichRepository(
         }
     }
 
-    suspend fun getSelectedAlbumFromAPI(): Album = coroutineScope {
-        try {
-            val selectedAlbumIds = prefs.selectedAlbumIds
-            if (selectedAlbumIds.isEmpty()) {
+    suspend fun getSelectedAlbumFromAPI(): Album =
+        coroutineScope {
+            try {
+                val selectedAlbumIds = prefs.selectedAlbumIds
+                if (selectedAlbumIds.isEmpty()) {
+                    return@coroutineScope Album(
+                        id = "combined", // Use a special ID for the combined album
+                        name = "",
+                        description = "No albums selected",
+                    )
+                }
+
+                Timber.d("Attempting to fetch ${selectedAlbumIds.size} selected albums")
+                Timber.d("Selected Album IDs: $selectedAlbumIds")
+                Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
+
+                val allAssets = mutableListOf<Asset>()
+                var combinedAlbumName = ""
+
+                val albumDeferreds =
+                    selectedAlbumIds.map { albumId ->
+                        async {
+                            Pair(albumId, immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId))
+                        }
+                    }
+
+                for ((index, deferred) in albumDeferreds.withIndex()) {
+                    val (albumId, response) = deferred.await()
+                    Timber.d("API Request for album $albumId - URL: ${response.raw().request.url}")
+
+                    if (response.isSuccessful) {
+                        val album = response.body()
+                        if (album != null) {
+                            Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                            allAssets.addAll(album.assets)
+                            combinedAlbumName += if (index == 0) album.name else ", ${album.name}"
+                        } else {
+                            Timber.e("Received null album from successful response for album ID: $albumId")
+                        }
+                    } else {
+                        val errorBody = response.errorBody()?.string()
+                        Timber.e("Failed to fetch album $albumId. Code: ${response.code()}, Error: $errorBody")
+                        // Continue with other albums instead of failing completely
+                    }
+                }
+
+                if (allAssets.isEmpty()) {
+                    throw Exception("No assets found in any of the selected albums")
+                }
+
+                // Remove duplicate assets based on ID
+                val uniqueAssets = allAssets.distinctBy { it.id }
+                Timber.d("Combined ${allAssets.size} assets from ${selectedAlbumIds.size} albums, ${uniqueAssets.size} unique assets")
+
+                // Return a combined album with all assets
                 return@coroutineScope Album(
                     id = "combined", // Use a special ID for the combined album
-                    name = "",
-                    description = "No albums selected",
+                    name = combinedAlbumName,
+                    description = "Combined album from ${selectedAlbumIds.size} selected albums",
+                    assetCount = uniqueAssets.size,
+                    assets = uniqueAssets,
                 )
+            } catch (e: Exception) {
+                Timber.e(e, "Exception while fetching selected albums")
+                throw Exception("Failed to fetch selected albums", e)
             }
-
-            Timber.d("Attempting to fetch ${selectedAlbumIds.size} selected albums")
-            Timber.d("Selected Album IDs: $selectedAlbumIds")
-            Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
-
-            val allAssets = mutableListOf<Asset>()
-            var combinedAlbumName = ""
-
-            val albumDeferreds = selectedAlbumIds.map { albumId ->
-                async {
-                    Pair(albumId, immichClient.getAlbum(apiKey = prefs.apiKey, albumId = albumId))
-                }
-            }
-
-            for ((index, deferred) in albumDeferreds.withIndex()) {
-                val (albumId, response) = deferred.await()
-                Timber.d("API Request for album $albumId - URL: ${response.raw().request.url}")
-
-                if (response.isSuccessful) {
-                    val album = response.body()
-                    if (album != null) {
-                        Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
-                        allAssets.addAll(album.assets)
-                        combinedAlbumName += if (index == 0) album.name else ", ${album.name}"
-                    } else {
-                        Timber.e("Received null album from successful response for album ID: $albumId")
-                    }
-                } else {
-                    val errorBody = response.errorBody()?.string()
-                    Timber.e("Failed to fetch album $albumId. Code: ${response.code()}, Error: $errorBody")
-                    // Continue with other albums instead of failing completely
-                }
-            }
-
-            if (allAssets.isEmpty()) {
-                throw Exception("No assets found in any of the selected albums")
-            }
-
-            // Remove duplicate assets based on ID
-            val uniqueAssets = allAssets.distinctBy { it.id }
-            Timber.d("Combined ${allAssets.size} assets from ${selectedAlbumIds.size} albums, ${uniqueAssets.size} unique assets")
-
-            // Return a combined album with all assets
-            return@coroutineScope Album(
-                id = "combined", // Use a special ID for the combined album
-                name = combinedAlbumName,
-                description = "Combined album from ${selectedAlbumIds.size} selected albums",
-                assetCount = uniqueAssets.size,
-                assets = uniqueAssets,
-            )
-        } catch (e: Exception) {
-            Timber.e(e, "Exception while fetching selected albums")
-            throw Exception("Failed to fetch selected albums", e)
         }
-    }
 
     private fun getTypeFilter(): String? =
         when (prefs.mediaType) {
@@ -234,11 +236,12 @@ class ImmichRepository(
         try {
             val count = prefs.includeFavorites.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching up to $count favorite assets")
-            val searchRequest = SearchMetadataRequest(
-                isFavorite = true,
-                withExif = true,
-                type = getTypeFilter(),
-            )
+            val searchRequest =
+                SearchMetadataRequest(
+                    isFavorite = true,
+                    withExif = true,
+                    type = getTypeFilter(),
+                )
             val response = immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -257,51 +260,55 @@ class ImmichRepository(
         }
     }
 
-    suspend fun getRatedAssetsFromAPI(): List<Asset> = coroutineScope {
-        val ratedAssets = mutableListOf<Asset>()
-        try {
-            val ratings = prefs.includeRatings
-            if (ratings.isNotEmpty()) {
-                val ratedDeferreds = ratings.map { rating ->
-                    async {
-                        Timber.d("Fetching rated assets with rating: $rating")
-                        val searchRequest = SearchMetadataRequest(
-                            rating = rating.toInt(),
-                            withExif = true,
-                            type = getTypeFilter(),
-                        )
-                        immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
-                    }
-                }
+    suspend fun getRatedAssetsFromAPI(): List<Asset> =
+        coroutineScope {
+            val ratedAssets = mutableListOf<Asset>()
+            try {
+                val ratings = prefs.includeRatings
+                if (ratings.isNotEmpty()) {
+                    val ratedDeferreds =
+                        ratings.map { rating ->
+                            async {
+                                Timber.d("Fetching rated assets with rating: $rating")
+                                val searchRequest =
+                                    SearchMetadataRequest(
+                                        rating = rating.toInt(),
+                                        withExif = true,
+                                        type = getTypeFilter(),
+                                    )
+                                immichClient.getFavoriteAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
+                            }
+                        }
 
-                for (deferred in ratedDeferreds) {
-                    val response = deferred.await()
-                    if (response.isSuccessful) {
-                        val searchResponse = response.body()
-                        val assets = searchResponse?.assets?.items ?: emptyList()
-                        Timber.d("Successfully fetched ${assets.size} rated assets")
-                        ratedAssets.addAll(assets)
-                    } else {
-                        val errorBody = response.errorBody()?.string()
-                        Timber.e("Failed to fetch rated assets. Code: ${response.code()}, Error: $errorBody")
+                    for (deferred in ratedDeferreds) {
+                        val response = deferred.await()
+                        if (response.isSuccessful) {
+                            val searchResponse = response.body()
+                            val assets = searchResponse?.assets?.items ?: emptyList()
+                            Timber.d("Successfully fetched ${assets.size} rated assets")
+                            ratedAssets.addAll(assets)
+                        } else {
+                            val errorBody = response.errorBody()?.string()
+                            Timber.e("Failed to fetch rated assets. Code: ${response.code()}, Error: $errorBody")
+                        }
                     }
                 }
+            } catch (e: Exception) {
+                Timber.e(e, "Exception while fetching rated assets")
             }
-        } catch (e: Exception) {
-            Timber.e(e, "Exception while fetching rated assets")
+            return@coroutineScope ratedAssets
         }
-        return@coroutineScope ratedAssets
-    }
 
     suspend fun getRandomAssetsFromAPI(): List<Asset> {
         try {
             val count = prefs.includeRandom.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count random assets")
-            val searchRequest = SearchMetadataRequest(
-                size = count,
-                withExif = true,
-                type = getTypeFilter(),
-            )
+            val searchRequest =
+                SearchMetadataRequest(
+                    size = count,
+                    withExif = true,
+                    type = getTypeFilter(),
+                )
             val response = immichClient.getRandomAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val assets = response.body() ?: emptyList()
@@ -322,12 +329,13 @@ class ImmichRepository(
         try {
             val count = prefs.includeRecent.toIntOrNull() ?: return emptyList()
             Timber.d("Fetching $count recent assets")
-            val searchRequest = SearchMetadataRequest(
-                size = count,
-                order = "desc",
-                withExif = true,
-                type = getTypeFilter(),
-            )
+            val searchRequest =
+                SearchMetadataRequest(
+                    size = count,
+                    order = "desc",
+                    withExif = true,
+                    type = getTypeFilter(),
+                )
             val response = immichClient.getRecentAssets(apiKey = prefs.apiKey, searchRequest = searchRequest)
             if (response.isSuccessful) {
                 val searchResponse = response.body()
@@ -345,54 +353,49 @@ class ImmichRepository(
         }
     }
 
-    suspend fun fetchAlbums(): Result<List<Album>> = coroutineScope {
-        try {
-            val regularDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey) }
-            val sharedDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey, shared = true) }
+    suspend fun fetchAlbums(): Result<List<Album>> =
+        coroutineScope {
+            try {
+                val regularDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey) }
+                val sharedDeferred = async { immichClient.getAlbums(apiKey = prefs.apiKey, shared = true) }
 
-            // Fetch regular albums
-            val regularResponse = regularDeferred.await()
-            val regularAlbums =
-                if (regularResponse.isSuccessful) {
-                    regularResponse.body() ?: emptyList()
-                } else {
-                    val errorBody = regularResponse.errorBody()?.string() ?: ""
-                    val errorMessage =
-                        try {
-                            Json.decodeFromString<ErrorResponse>(errorBody).message
-                        } catch (e: Exception) {
-                            Timber.e(e, "Error parsing error body: $errorBody")
-                            regularResponse.message()
-                        }
-                    return@coroutineScope Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
-                }
+                // Fetch regular albums
+                val regularResponse = regularDeferred.await()
+                val regularAlbums =
+                    if (regularResponse.isSuccessful) {
+                        regularResponse.body() ?: emptyList()
+                    } else {
+                        val errorBody = regularResponse.errorBody()?.string() ?: ""
+                        val errorMessage =
+                            try {
+                                Json.decodeFromString<ErrorResponse>(errorBody).message
+                            } catch (e: Exception) {
+                                Timber.e(e, "Error parsing error body: $errorBody")
+                                regularResponse.message()
+                            }
+                        return@coroutineScope Result.failure(Exception("${regularResponse.code()} - $errorMessage"))
+                    }
 
-            // Fetch shared albums
-            val sharedResponse = sharedDeferred.await()
-            val sharedAlbums =
-                if (sharedResponse.isSuccessful) {
-                    sharedResponse.body() ?: emptyList()
-                } else {
-                    // If shared albums fetch fails, log warning but continue with regular albums only
-                    Timber.w("Failed to fetch shared albums: ${sharedResponse.code()} - ${sharedResponse.message()}")
-                    emptyList()
-                }
+                // Fetch shared albums
+                val sharedResponse = sharedDeferred.await()
+                val sharedAlbums =
+                    if (sharedResponse.isSuccessful) {
+                        sharedResponse.body() ?: emptyList()
+                    } else {
+                        // If shared albums fetch fails, log warning but continue with regular albums only
+                        Timber.w("Failed to fetch shared albums: ${sharedResponse.code()} - ${sharedResponse.message()}")
+                        emptyList()
+                    }
 
-            // Combine and deduplicate albums by ID
-            val allAlbums = (regularAlbums + sharedAlbums).distinctBy { it.id }
-            Timber.d("Fetched ${regularAlbums.size} regular albums and ${sharedAlbums.size} shared albums (${allAlbums.size} total unique)")
+                // Combine and deduplicate albums by ID
+                val allAlbums = (regularAlbums + sharedAlbums).distinctBy { it.id }
+                Timber.d(
+                    "Fetched ${regularAlbums.size} regular albums and ${sharedAlbums.size} shared albums (${allAlbums.size} total unique)",
+                )
 
-            Result.success(allAlbums)
-        } catch (e: Exception) {
-            Result.failure(e)
+                Result.success(allAlbums)
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
         }
-    }
-
-    // Moved this to be available earlier for initial connection string
-    fun getServerUrl(): String {
-        if (!this::server.isInitialized) {
-            server = UrlParser.parseServerUrl(prefs.url)
-        }
-        return server
-    }
 }

@@ -12,8 +12,8 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
 import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay
-import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
+import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 
@@ -292,7 +292,7 @@ class OverlayHelper(
             }
 
             else -> {
-                return null
+	            null
             }
         }
     }

@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 
 @DisplayName("UrlParser Tests")
 internal class UrlParserTest {
-
     @Test
     @DisplayName("Parses local IP host without protocol")
     fun parsesLocalIpWithoutProtocol() {

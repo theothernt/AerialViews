@@ -16,6 +16,7 @@ import timber.log.Timber
 class AerialApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        configureLogging()
 
         if (BuildConfig.DEBUG || BuildConfig.FLAVOR.contains("beta", false)) {
             Timber.plant(Timber.DebugTree())
@@ -36,6 +37,21 @@ class AerialApp : Application() {
 
             GeneralPrefs.checkForHevcSupport = true
         }
+    }
+
+    private fun configureLogging() {
+        val debugLogging = BuildConfig.DEBUG
+
+        // Current backend for SMBJ logs is slf4j-simple.
+        System.setProperty("org.slf4j.simpleLogger.showDateTime", "true")
+        System.setProperty("org.slf4j.simpleLogger.showThreadName", "true")
+        System.setProperty("org.slf4j.simpleLogger.showLogName", "true")
+        System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", if (debugLogging) "info" else "warn")
+        System.setProperty("org.slf4j.simpleLogger.log.com.hierynomus", if (debugLogging) "debug" else "warn")
+        System.setProperty("org.slf4j.simpleLogger.log.org.apache.sshd", if (debugLogging) "debug" else "warn")
+
+        // If Log4j is reintroduced as backend, keep status logging debug-only.
+        System.setProperty("log4j2.debug", debugLogging.toString())
     }
 
     private fun changeVideoQuality() {

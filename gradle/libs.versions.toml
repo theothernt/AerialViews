@@ -37,6 +37,7 @@ flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.4.0"
 timber = "5.0.1"
+slf4j = "2.0.17"
 
 junit-jupiter = "6.0.3"
 junit5 = "2.0.1"
@@ -101,6 +102,7 @@ smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }

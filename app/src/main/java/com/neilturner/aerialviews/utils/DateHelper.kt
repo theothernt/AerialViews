@@ -6,18 +6,18 @@ import com.neilturner.aerialviews.models.enums.DateType
 import timber.log.Timber
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.Instant
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.time.temporal.TemporalAccessor
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 object DateHelper {
@@ -46,48 +46,6 @@ object DateHelper {
                 }
             }
         }
-
-    fun formatExifDateTime(
-        date: String,
-        offset: String? = null,
-    ): String {
-        val formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT)
-
-        val parsed: TemporalAccessor? =
-            try {
-                if (!offset.isNullOrBlank()) {
-                    OffsetDateTime.parse("$date$offset", DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ssXXX", Locale.ROOT))
-                } else {
-                    LocalDateTime.parse(date, formatter)
-                }
-            } catch (_: Exception) {
-                null
-            }
-
-        return try {
-            when (parsed) {
-                is OffsetDateTime -> {
-                    DateTimeFormatter
-                        .ofLocalizedDateTime(FormatStyle.MEDIUM)
-                        .withLocale(Locale.getDefault())
-                        .format(parsed)
-                }
-
-                is LocalDateTime -> {
-                    DateTimeFormatter
-                        .ofLocalizedDateTime(FormatStyle.MEDIUM)
-                        .withLocale(Locale.getDefault())
-                        .format(parsed)
-                }
-
-                else -> {
-                    date
-                }
-            }
-        } catch (_: Exception) {
-            date
-        }
-    }
 
     fun formatExifDate(
         date: String,

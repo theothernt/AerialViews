@@ -153,6 +153,7 @@ internal class MetadataResolver(
                             metadataType = MetadataType.STATIC,
                         )
                     }
+
                     MediaLocationResolution.StopWithBlank -> {
                         ResolvedMetadata(
                             text = "",
@@ -160,7 +161,10 @@ internal class MetadataResolver(
                             metadataType = MetadataType.STATIC,
                         )
                     }
-                    is MediaLocationResolution.ContinueFallback -> null
+
+                    is MediaLocationResolution.ContinueFallback -> {
+                        null
+                    }
                 }
             }
 
@@ -217,8 +221,10 @@ internal class MetadataResolver(
                         )
                     }
             }
-            
-            else -> null
+
+            else -> {
+                null
+            }
         }
 
     private suspend fun resolveMediaLocation(
@@ -298,7 +304,8 @@ internal class MetadataResolver(
     }
 
     private fun hasUsablePoi(media: AerialMedia): Boolean =
-        media.metadata.pointsOfInterest.values.any { it.isNotBlank() }
+        media.metadata.pointsOfInterest.values
+            .any { it.isNotBlank() }
 
     private fun parseSelection(value: String): List<String> =
         value

@@ -38,7 +38,7 @@ class LocationFragment : MenuStateFragment() {
         FirebaseHelper.analyticsScreenView("Location", this)
     }
 
-    private fun updateSummary(text: String = "") {
+    private fun updateSummary() {
         if (locationPreference == null) {
             locationPreference = findPreference("weather_location_name")
             locationPreference?.setOnPreferenceClickListener {
@@ -221,6 +221,6 @@ class LocationFragment : MenuStateFragment() {
         prefs.weatherLocationName = location.getDisplayName()
         prefs.weatherLocationLat = location.lat.toString()
         prefs.weatherLocationLon = location.lon.toString()
-        updateSummary(location.getDisplayName())
+        updateSummary()
     }
 }

@@ -82,73 +82,78 @@ class ImmichMediaProvider(
         return null
     }
 
-    private suspend fun fetchAllAssets(): AssetFetchResults = coroutineScope {
-        // Get primary assets (album or shared link)
-        val primaryAlbum =
-            if (prefs.authType == ImmichAuthType.SHARED_LINK) {
-                repository.getSharedAlbumFromAPI()
-            } else {
-                repository.getSelectedAlbumFromAPI()
-            }
+    private suspend fun fetchAllAssets(): AssetFetchResults =
+        coroutineScope {
+            // Get primary assets (album or shared link)
+            val primaryAlbum =
+                if (prefs.authType == ImmichAuthType.SHARED_LINK) {
+                    repository.getSharedAlbumFromAPI()
+                } else {
+                    repository.getSelectedAlbumFromAPI()
+                }
 
-        // Filter primary album assets by media type
-        val filteredPrimaryAssets = mapper.filterAssetsByMediaType(primaryAlbum.assets)
+            // Filter primary album assets by media type
+            val filteredPrimaryAssets = mapper.filterAssetsByMediaType(primaryAlbum.assets)
 
-        // Get optional asset sources (API key only) and filter each by media type
-        val favoriteDeferred = async {
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
-                val rawAssets = fetchOptionalAssets("favorites") { repository.getFavoriteAssetsFromAPI() }
-                mapper.filterAssetsByMediaType(rawAssets)
-            } else {
-                emptyList()
-            }
+            // Get optional asset sources (API key only) and filter each by media type
+            val favoriteDeferred =
+                async {
+                    if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeFavorites != "DISABLED") {
+                        val rawAssets = fetchOptionalAssets("favorites") { repository.getFavoriteAssetsFromAPI() }
+                        mapper.filterAssetsByMediaType(rawAssets)
+                    } else {
+                        emptyList()
+                    }
+                }
+
+            val ratedDeferred =
+                async {
+                    if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
+                        val rawAssets = fetchOptionalAssets("rated") { repository.getRatedAssetsFromAPI() }
+                        mapper.filterAssetsByMediaType(rawAssets)
+                    } else {
+                        emptyList()
+                    }
+                }
+
+            val randomDeferred =
+                async {
+                    if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
+                        val rawAssets = fetchOptionalAssets("random") { repository.getRandomAssetsFromAPI() }
+                        mapper.filterAssetsByMediaType(rawAssets)
+                    } else {
+                        emptyList()
+                    }
+                }
+
+            val recentDeferred =
+                async {
+                    if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
+                        val rawAssets = fetchOptionalAssets("recent") { repository.getRecentAssetsFromAPI() }
+                        mapper.filterAssetsByMediaType(rawAssets)
+                    } else {
+                        emptyList()
+                    }
+                }
+
+            val favoriteAssets = favoriteDeferred.await()
+            val ratedAssets = ratedDeferred.await()
+            val randomAssets = randomDeferred.await()
+            val recentAssets = recentDeferred.await()
+
+            // Combine and deduplicate all filtered assets
+            val allAssets =
+                (filteredPrimaryAssets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
+                    .distinctBy { it.id }
+
+            return@coroutineScope AssetFetchResults(
+                allAssets = allAssets,
+                favoriteCount = favoriteAssets.size,
+                ratedCount = ratedAssets.size,
+                randomCount = randomAssets.size,
+                recentCount = recentAssets.size,
+            )
         }
-
-        val ratedDeferred = async {
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRatings.isNotEmpty()) {
-                val rawAssets = fetchOptionalAssets("rated") { repository.getRatedAssetsFromAPI() }
-                mapper.filterAssetsByMediaType(rawAssets)
-            } else {
-                emptyList()
-            }
-        }
-
-        val randomDeferred = async {
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRandom != "DISABLED") {
-                val rawAssets = fetchOptionalAssets("random") { repository.getRandomAssetsFromAPI() }
-                mapper.filterAssetsByMediaType(rawAssets)
-            } else {
-                emptyList()
-            }
-        }
-
-        val recentDeferred = async {
-            if (prefs.authType == ImmichAuthType.API_KEY && prefs.includeRecent != "DISABLED") {
-                val rawAssets = fetchOptionalAssets("recent") { repository.getRecentAssetsFromAPI() }
-                mapper.filterAssetsByMediaType(rawAssets)
-            } else {
-                emptyList()
-            }
-        }
-
-        val favoriteAssets = favoriteDeferred.await()
-        val ratedAssets = ratedDeferred.await()
-        val randomAssets = randomDeferred.await()
-        val recentAssets = recentDeferred.await()
-
-        // Combine and deduplicate all filtered assets
-        val allAssets =
-            (filteredPrimaryAssets + favoriteAssets + ratedAssets + randomAssets + recentAssets)
-                .distinctBy { it.id }
-
-        return@coroutineScope AssetFetchResults(
-            allAssets = allAssets,
-            favoriteCount = favoriteAssets.size,
-            ratedCount = ratedAssets.size,
-            randomCount = randomAssets.size,
-            recentCount = recentAssets.size,
-        )
-    }
 
     private suspend fun fetchOptionalAssets(
         sourceName: String,
@@ -198,8 +203,6 @@ class ImmichMediaProvider(
         val randomCount: Int,
         val recentCount: Int,
     )
-    
-    suspend fun fetchAlbums(): Result<List<Album>> {
-        return repository.fetchAlbums()
-    }
+
+    suspend fun fetchAlbums(): Result<List<Album>> = repository.fetchAlbums()
 }
