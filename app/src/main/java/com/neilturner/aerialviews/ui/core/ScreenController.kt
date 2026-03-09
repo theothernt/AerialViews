@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -132,7 +133,26 @@ class ScreenController(
         gradientTopView = overlayViewBinding.gradientTop
         gradientBottomView = overlayViewBinding.gradientBottom
 
-        videoViewBinding = binding.videoView
+        val initialVideoRoot = binding.videoView.root
+        val videoParent = initialVideoRoot.parent as? ViewGroup
+        val videoLayoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) {
+                R.layout.video_view_texture
+            } else {
+                R.layout.video_view
+            }
+
+        videoViewBinding =
+            if (videoParent != null) {
+                val index = videoParent.indexOfChild(initialVideoRoot)
+                videoParent.removeView(initialVideoRoot)
+                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
+                videoParent.addView(replacementVideoRoot, index)
+                VideoViewBinding.bind(replacementVideoRoot)
+            } else {
+                binding.videoView
+            }
+
         videoViewBinding.root.setBackgroundColor(backgroundVideos)
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)

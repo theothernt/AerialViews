@@ -47,6 +47,12 @@
                     app:key="philips_dolby_vision_fix"
                     app:summary="@string/advanced_philips_dolby_vision_fix_summary"
                     app:title="@string/advanced_philips_dolby_vision_fix_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="use_texture_view_for_video"
+                    app:summary="@string/advanced_use_texture_view_summary"
+                    app:title="@string/advanced_use_texture_view_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_animation">

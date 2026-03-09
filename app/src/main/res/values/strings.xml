@@ -749,6 +749,8 @@
 
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+    <string name="advanced_use_texture_view_title">Use TextureView for video</string>
+    <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>

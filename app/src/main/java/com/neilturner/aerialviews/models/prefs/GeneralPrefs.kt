@@ -235,6 +235,7 @@ object GeneralPrefs : KotprefModel() {
     var enablePlaybackLogging by booleanPref(false, "enable_playback_logging")
     var showMediaErrorToasts by booleanPref(false, "show_media_error_toasts")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
+    var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
 
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")
