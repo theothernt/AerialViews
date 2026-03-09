@@ -11,7 +11,6 @@ import android.os.Build
 import android.view.Display
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
 import com.neilturner.aerialviews.BuildConfig
 import timber.log.Timber
 
@@ -22,11 +21,6 @@ class RefreshRateHelper(
     private val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
 
     fun setRefreshRate(fps: Float?) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            Timber.e("Android TV version too old for AFR...")
-            return
-        }
-
         if (fps == null || fps == 0f) {
             Timber.e("Unable to get video frame rate...")
             return
@@ -96,7 +90,6 @@ class RefreshRateHelper(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getModesForResolution(
         supportedModes: List<Display.Mode>,
         activeMode: Display.Mode,
@@ -120,10 +113,6 @@ class RefreshRateHelper(
         private var windowManager: WindowManager? = null
 
         fun restoreOriginalMode(context: Context) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                return
-            }
-
             originalMode
                 ?.let { mode ->
                     Timber.d("Restoring original mode: ${mode.modeId}")
@@ -136,7 +125,6 @@ class RefreshRateHelper(
                 }
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         private fun changeRefreshRate(
             context: Context,
             mode: Display.Mode,
@@ -148,7 +136,6 @@ class RefreshRateHelper(
             }
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         private fun useWindow(
             context: Context,
             mode: Int,
@@ -160,7 +147,6 @@ class RefreshRateHelper(
             window.attributes = layoutParams
         }
 
-        @RequiresApi(Build.VERSION_CODES.M)
         private fun useOverlay(
             context: Context,
             mode: Int,

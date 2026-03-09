@@ -16,8 +16,10 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -48,7 +50,9 @@ class MediaService(
         providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
         providers.add(LocalMediaProvider(context, LocalMediaPrefs))
         providers.add(SambaMediaProvider(context, SambaMediaPrefs))
+        providers.add(SambaMediaProvider(context, SambaMediaPrefs2))
         providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
+        providers.add(WebDavMediaProvider(context, WebDavMediaPrefs2))
         providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
         providers.add(AppleMediaProvider(context, AppleVideoPrefs))
         providers.add(CustomFeedProvider(context, CustomFeedPrefs))

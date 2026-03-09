@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 internal class ImmichUrlBuilderTest {
-
     private val server = "http://example.com"
     private lateinit var prefs: ImmichMediaPrefs
     private lateinit var builder: ImmichUrlBuilder
@@ -27,7 +26,7 @@ internal class ImmichUrlBuilderTest {
     fun setup() {
         prefs = mockk(relaxed = true)
         builder = ImmichUrlBuilder(server, prefs)
-        
+
         mockUri = mockk()
         mockkStatic("androidx.core.net.UriKt")
         every { any<String>().toUri() } answers {
@@ -103,14 +102,14 @@ internal class ImmichUrlBuilderTest {
         val result = builder.getAssetUri("asset5", isVideo = false)
         assertEquals("$server/api/assets/asset5/thumbnail?size=preview", result.toString())
     }
-    
+
     @Test
     fun `resolved shared key overrides pathname`() {
         every { prefs.authType } returns ImmichAuthType.SHARED_LINK
         every { prefs.pathName } returns "share/12345"
         every { prefs.videoType } returns ImmichVideoType.TRANSCODED
         every { prefs.password } returns ""
-        
+
         builder.setResolvedSharedKey("resolved999")
 
         val result = builder.getAssetUri("asset6", isVideo = true)

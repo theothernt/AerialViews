@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.FileHelper
@@ -28,7 +28,7 @@ import java.net.URLEncoder
 
 class SambaMediaProvider(
     context: Context,
-    private val prefs: SambaMediaPrefs,
+    private val prefs: SambaProviderPreferences,
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
@@ -44,7 +44,9 @@ class SambaMediaProvider(
             var reachable = NetworkHelper.isHostReachable(prefs.hostName, 445)
             if (!reachable) {
                 NetworkHelper.sendWakeOnLan(prefs.wakeOnLanMacAddress)
-                Timber.i("Samba WOL: Server not reachable, sent WOL packet. Checking every $pollIntervalSeconds s for up to $maxWaitSeconds s")
+                Timber.i(
+                    "Samba WOL: Server not reachable, sent WOL packet. Checking every $pollIntervalSeconds s for up to $maxWaitSeconds s",
+                )
 
                 while (waitedSeconds < maxWaitSeconds) {
                     val sleepSeconds = minOf(pollIntervalSeconds, maxWaitSeconds - waitedSeconds)
@@ -136,10 +138,13 @@ class SambaMediaProvider(
 
                 usernamePassword += "@"
             }
-            // smb://username@host/sharename/path
-            // smb://username:password@host/sharename
-
-            val uri = "smb://$usernamePassword${prefs.hostName}/$shareName/$filename".toUri()
+            // smb://username@host/sharename/path?domain=WORKGROUP&enc=false&dialects=SMB_3_1_1,SMB_3_0_2
+            val domain = URLEncoder.encode(prefs.domainName, "utf-8")
+            val dialects = prefs.smbDialects.joinToString(",")
+            val dialectsEncoded = URLEncoder.encode(dialects, "utf-8")
+            val uri =
+                "smb://$usernamePassword${prefs.hostName}/$shareName/$filename?domain=$domain&enc=${prefs.enableEncryption}&dialects=$dialectsEncoded"
+                    .toUri()
             val item = AerialMedia(uri)
 
             if (FileHelper.isSupportedVideoType(filename)) {
@@ -172,7 +177,7 @@ class SambaMediaProvider(
             // SMB Config
             val config: SmbConfig
             try {
-                config = SambaHelper.buildSmbConfig()
+                config = SambaHelper.buildSmbConfig(prefs)
             } catch (ex: Exception) {
                 Timber.e(ex)
                 return@withContext Pair(selected, "Failed to create SMB config")

@@ -15,11 +15,9 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
-import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.SambaHelper
 import com.neilturner.aerialviews.utils.ServerConfig
@@ -83,8 +81,9 @@ internal object ImagePlayerHelper {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
         val client = OkHttpSardine(okHttpClient)
+        val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
-            client.setCredentials(WebDavMediaPrefs.userName, WebDavMediaPrefs.password)
+            client.setCredentials(userName, password)
             return client.get(uri.toString())
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
@@ -117,11 +116,7 @@ internal object ImagePlayerHelper {
             val responseBody = response.body
             object : FilterInputStream(responseBody.byteStream()) {
                 override fun close() {
-                    try {
-                        super.close()
-                    } finally {
-                        response.close()
-                    }
+                    response.use { super.close() }
                 }
             }
         } catch (ex: Exception) {
@@ -142,33 +137,50 @@ internal object ImagePlayerHelper {
         }
 
     fun streamFromSambaFile(uri: Uri): InputStream? {
+        val startTime = System.currentTimeMillis()
+        val hostName = uri.host.orEmpty()
+        val (userName, password) = SambaHelper.parseUserInfo(uri)
+        val domainName = uri.getQueryParameter("domain").orEmpty().ifEmpty { "WORKGROUP" }
+        val useEncryption = uri.getQueryParameter("enc")?.toBooleanStrictOrNull() ?: false
+        val smbDialects =
+            uri
+                .getQueryParameter("dialects")
+                .orEmpty()
+                .split(",")
+                .filter { it.isNotBlank() }
+                .toSet()
         val shareNameAndPath = SambaHelper.parseShareAndPathName(uri)
         val shareName = shareNameAndPath.first
         val path = shareNameAndPath.second
-        val config = SambaHelper.buildSmbConfig()
+        val config = SambaHelper.buildSmbConfig(useEncryption, smbDialects)
         val smbClient = SMBClient(config)
         val authContext =
             SambaHelper.buildAuthContext(
-                SambaMediaPrefs.userName,
-                SambaMediaPrefs.password,
-                SambaMediaPrefs.domainName,
+                userName,
+                password,
+                domainName,
             )
 
         try {
-            val connection = smbClient.connect(SambaMediaPrefs.hostName)
+            val connectStartTime = System.currentTimeMillis()
+            val connection = smbClient.connect(hostName)
             val session = connection?.authenticate(authContext)
             val share = session?.connectShare(shareName) as DiskShare
-            val shareAccess = hashSetOf<SMB2ShareAccess>()
-            shareAccess.add(SMB2ShareAccess.ALL.iterator().next())
+            Timber.d("SAMBA: Connected and authenticated in ${System.currentTimeMillis() - connectStartTime}ms")
+
+            val openStartTime = System.currentTimeMillis()
             val file =
                 share.openFile(
                     path,
                     EnumSet.of(AccessMask.GENERIC_READ),
                     null,
-                    shareAccess,
+                    EnumSet.of(SMB2ShareAccess.FILE_SHARE_READ),
                     SMB2CreateDisposition.FILE_OPEN,
                     null,
                 )
+            Timber.d(
+                "SAMBA: Opened file in ${System.currentTimeMillis() - openStartTime}ms. Total setup time: ${System.currentTimeMillis() - startTime}ms",
+            )
 
             return object : InputStream() {
                 private val wrappedStream = file.inputStream

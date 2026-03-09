@@ -5,7 +5,6 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -18,33 +17,19 @@ import java.net.Socket
 object NetworkHelper {
     @Suppress("DEPRECATION")
     fun isInternetAvailable(context: Context): Boolean {
-        var result = false
-        val connectivityManager =
+        var result: Boolean
+	    val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val networkCapabilities = connectivityManager.activeNetwork ?: return false
-            val actNw =
-                connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-            result =
-                when {
-                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                    actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
-                    else -> false
-                }
-        } else {
-            connectivityManager.run {
-                connectivityManager.activeNetworkInfo?.run {
-                    result =
-                        when (type) {
-                            ConnectivityManager.TYPE_WIFI -> true
-                            ConnectivityManager.TYPE_MOBILE -> true
-                            ConnectivityManager.TYPE_ETHERNET -> true
-                            else -> false
-                        }
-                }
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw =
+            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        result =
+            when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                else -> false
             }
-        }
         return result
     }
 
@@ -71,21 +56,21 @@ object NetworkHelper {
         }
 
         try {
-            val macBytes = getMacBytes(macAddress)
-            val bytes = ByteArray(6 + 16 * macBytes.size)
-            for (i in 0..5) {
-                bytes[i] = 0xff.toByte()
-            }
-            for (i in 6 until bytes.size step macBytes.size) {
-                System.arraycopy(macBytes, 0, bytes, i, macBytes.size)
-            }
-
-            val address = InetAddress.getByName("255.255.255.255")
-            val packet = DatagramPacket(bytes, bytes.size, address, 9)
-            val socket = DatagramSocket()
             withContext(Dispatchers.IO) {
-                socket.send(packet)
-                socket.close()
+                val macBytes = getMacBytes(macAddress)
+                val bytes = ByteArray(6 + 16 * macBytes.size)
+                for (i in 0..5) {
+                    bytes[i] = 0xff.toByte()
+                }
+                for (i in 6 until bytes.size step macBytes.size) {
+                    System.arraycopy(macBytes, 0, bytes, i, macBytes.size)
+                }
+
+                val address = InetAddress.getByName("255.255.255.255")
+                val packet = DatagramPacket(bytes, bytes.size, address, 9)
+                DatagramSocket().use { socket ->
+                    socket.send(packet)
+                }
             }
             Timber.i("WOL: Packet sent to $macAddress")
         } catch (e: Exception) {

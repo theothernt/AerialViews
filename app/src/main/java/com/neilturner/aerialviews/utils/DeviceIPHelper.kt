@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
 import android.os.Build
-import androidx.annotation.RequiresApi
 import java.net.Inet4Address
 import java.net.NetworkInterface
 import java.util.Locale
@@ -30,7 +29,6 @@ object DeviceIPHelper {
         return getNetworkInterfaceIPAddress()
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun getIPAddressModern(context: Context): String {
         try {
             val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

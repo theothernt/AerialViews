@@ -7,9 +7,9 @@ import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.enums.ClockType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.PhotoScale
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
@@ -202,6 +202,8 @@ object GeneralPrefs : KotprefModel() {
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
     var photoBilinearFiltering by booleanPref(true, "photo_bilinear_filtering")
+    var photoBackgroundBlurEnabled by booleanPref(true, "photo_background_blur_enabled")
+    var photoBackgroundBlurOpacity by stringPref("30", "photo_background_blur_opacity")
 
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")

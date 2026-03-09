@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.providers.webdav
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
@@ -44,7 +45,7 @@ class WebDavDataSource : BaseDataSource(true) {
         readLength: Int,
     ): Int = readInternal(buffer, offset, readLength)
 
-    override fun getUri() = dataSpec.uri
+    override fun getUri(): Uri? = dataSpec.uri
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun close() {

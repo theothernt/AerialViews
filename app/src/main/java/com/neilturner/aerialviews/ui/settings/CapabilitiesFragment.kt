@@ -3,7 +3,6 @@ package com.neilturner.aerialviews.ui.settings
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
@@ -61,13 +60,11 @@ class CapabilitiesFragment : MenuStateFragment() {
         resolution?.summary = buildResolutionSummary()
         permissions?.summary = buildPermissionsSummary()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            resolutions?.summary = buildResolutionsSummary()
-            refreshRates?.summary = buildRefreshRatesSummary()
+        resolutions?.summary = buildResolutionsSummary()
+        refreshRates?.summary = buildRefreshRatesSummary()
 
-            resolutions?.isVisible = true
-            refreshRates?.isVisible = true
-        }
+        resolutions?.isVisible = true
+        refreshRates?.isVisible = true
     }
 
     private fun buildDeviceSummary(): String {
@@ -104,7 +101,6 @@ class CapabilitiesFragment : MenuStateFragment() {
         return summary
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun buildRefreshRatesSummary(): String {
         val activeMode = display.mode
         val sortedModes = display.supportedModes.sortedByDescending { it.refreshRate }
@@ -201,10 +197,8 @@ class CapabilitiesFragment : MenuStateFragment() {
         lines.add(String.format(resources.getString(R.string.capabilities_permission_internet), granted))
 
         // Overlay permission (special)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val overlayGranted = if (PermissionHelper.hasSystemOverlayPermission(ctx)) granted else denied
-            lines.add(String.format(resources.getString(R.string.capabilities_permission_overlay), overlayGranted))
-        }
+        val overlayGranted = if (PermissionHelper.hasSystemOverlayPermission(ctx)) granted else denied
+        lines.add(String.format(resources.getString(R.string.capabilities_permission_overlay), overlayGranted))
 
         // Notification listener access (special)
         val notificationAccess = if (PermissionHelper.hasNotificationListenerPermission(ctx)) granted else denied

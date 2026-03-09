@@ -23,6 +23,7 @@
                     app:disableDependentsState="false"
                     android:title="@string/webdav_media_test_connection"
                     android:key="webdav_media_test_connection" />
+
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_server_details">
@@ -75,6 +76,10 @@
                     app:key="webdav_media_search_subfolders"
                     app:title="@string/webdav_media_search_subfolders_title"
                     app:summary="@string/webdav_media_search_subfolders_summary" />
-        </PreferenceCategory>
 
+                <Preference
+                    app:title="@string/webdav_media2_options_title"
+                    app:summary="@string/webdav_media2_options_summary"
+                    app:fragment="com.neilturner.aerialviews.ui.sources.WebDavVideos2Fragment" />
+        </PreferenceCategory>
 </PreferenceScreen>

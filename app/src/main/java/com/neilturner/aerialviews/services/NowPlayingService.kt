@@ -157,10 +157,7 @@ class NowPlayingService(
     private fun isActive(controller: MediaController? = activeController): Boolean {
         val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
         Timber.i("Playback state for ${controller?.packageName}: ${stateToString(state)}")
-        return state == PlaybackState.STATE_PLAYING /*||
-            state == PlaybackState.STATE_BUFFERING ||
-            state == PlaybackState.STATE_FAST_FORWARDING ||
-            state == PlaybackState.STATE_REWINDING */
+        return state == PlaybackState.STATE_PLAYING
     }
 
     private fun stateToString(state: Int): String =

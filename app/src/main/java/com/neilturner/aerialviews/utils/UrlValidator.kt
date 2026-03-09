@@ -132,24 +132,6 @@ object UrlValidator {
     }
 
     /**
-     * Validates multiple URLs with network testing
-     */
-    suspend fun validateUrlsWithNetworkTest(urlsString: String): Map<String, UrlValidationResult> {
-        if (urlsString.isBlank()) {
-            return emptyMap()
-        }
-
-        val urls = urlsString.split(",").map { it.trim() }.filter { it.isNotEmpty() }
-        val results = mutableMapOf<String, UrlValidationResult>()
-
-        for (url in urls) {
-            results[url] = validateUrlWithNetworkTest(url)
-        }
-
-        return results
-    }
-
-    /**
      * Validates a comma-separated list of URLs (format only)
      * Returns a list of pairs where first is isValid boolean and second is the URL
      */

@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.ui.controls
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.TypedArray
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.neilturner.aerialviews.R
 import java.util.Locale
 
+@SuppressLint("PrivateResource")
 class SortableItemPreference
     @JvmOverloads
     constructor(
