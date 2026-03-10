@@ -10,6 +10,8 @@ import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import timber.log.Timber
+import java.net.ConnectException
+import java.net.UnknownHostException
 
 class ImmichMediaProvider(
     context: Context,
@@ -30,6 +32,39 @@ class ImmichMediaProvider(
 
     override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
 
+    /**
+     * Cleans up exception messages for display to users, making them more readable.
+     */
+    private fun formatErrorMessage(e: Exception): String {
+        val originalMessage = e.message ?: "Unknown error"
+
+        return when (e) {
+            is ConnectException -> {
+                // Extract host:port from messages like:
+                // "Failed to connect to /192.168.1.3:2283" or
+                // "failed to connect to /10.0.2.16 (port 45578) from /192.168.1.3 (port 2283)"
+                val hostPortRegex = Regex("""/([\d.]+):(\d+)""")
+                val match = hostPortRegex.find(originalMessage)
+                if (match != null) {
+                    val host = match.groupValues[1]
+                    val port = match.groupValues[2]
+                    "Cannot connect to $host:$port - Connection refused. Is the server running?"
+                } else {
+                    "Cannot connect to server - Connection refused. Is the server running?"
+                }
+            }
+
+            is UnknownHostException -> {
+                "Cannot resolve server hostname. Please check the address."
+            }
+
+            else -> {
+                // For other errors, show the original message but clean up any socket address formatting
+                originalMessage.replace(Regex("""/([\d.]+):(\d+)"""), "$1:$2")
+            }
+        }
+    }
+
     private suspend fun fetchImmichMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
 
@@ -45,7 +80,7 @@ class ImmichMediaProvider(
                 fetchAllAssets()
             } catch (e: Exception) {
                 Timber.e(e)
-                return Pair(emptyList(), e.message.toString())
+                return Pair(emptyList(), formatErrorMessage(e))
             }
 
         // Check if any assets were found
