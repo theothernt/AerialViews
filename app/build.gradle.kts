@@ -187,6 +187,8 @@ dependencies {
     debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)

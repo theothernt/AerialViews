@@ -5,12 +5,13 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ImmichImageType
 import com.neilturner.aerialviews.models.enums.ImmichVideoType
-import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichUrlPrefs
 
 class ImmichUrlBuilder(
     private val server: String,
-    private val prefs: ImmichMediaPrefs,
+    private val prefs: ImmichUrlPrefs,
     private var resolvedSharedKey: String? = null,
+    private val uriFactory: (String) -> Uri = { it.toUri() },
 ) {
     fun setResolvedSharedKey(key: String?) {
         resolvedSharedKey = key
@@ -21,7 +22,7 @@ class ImmichUrlBuilder(
         isVideo: Boolean,
     ): Uri {
         val cleanedKey = resolvedSharedKey ?: cleanSharedLinkKey(prefs.pathName)
-        return when (prefs.authType) {
+        val url = when (prefs.authType) {
             ImmichAuthType.SHARED_LINK -> {
                 val base =
                     if (isVideo) {
@@ -38,8 +39,7 @@ class ImmichUrlBuilder(
                             "$server/api/assets/$id/thumbnail?size=$size&key=$cleanedKey"
                         }
                     }
-                val url = if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
-                url.toUri()
+                if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
             }
 
             // "fullsize" will use fullsize or reencoded pic as configured within Immich
@@ -47,16 +47,16 @@ class ImmichUrlBuilder(
             ImmichAuthType.API_KEY -> {
                 if (isVideo) {
                     if (prefs.videoType == ImmichVideoType.TRANSCODED) {
-                        "$server/api/assets/$id/video/playback".toUri()
+                        "$server/api/assets/$id/video/playback"
                     } else {
-                        "$server/api/assets/$id/original".toUri()
+                        "$server/api/assets/$id/original"
                     }
                 } else {
                     if (prefs.imageType == ImmichImageType.ORIGINAL) {
-                        "$server/api/assets/$id/original".toUri()
+                        "$server/api/assets/$id/original"
                     } else {
                         val size = if (prefs.imageType == ImmichImageType.FULLSIZE) "fullsize" else "preview"
-                        "$server/api/assets/$id/thumbnail?size=$size".toUri()
+                        "$server/api/assets/$id/thumbnail?size=$size"
                     }
                 }
             }
@@ -65,5 +65,6 @@ class ImmichUrlBuilder(
                 throw IllegalStateException("Invalid authentication type")
             }
         }
+        return uriFactory(url)
     }
 }
