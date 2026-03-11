@@ -512,7 +512,7 @@ Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data 
 
 ## About
 
-Aerial Views is based on [Aerial Dream](https://github.com/cachapa/AerialDream), which was created by Daniel Cachapa in late 2015.
+Aerial Views is primarily developed by Neil Turner. It is based on [Aerial Dream](https://github.com/cachapa/AerialDream), which was created by Daniel Cachapa in late 2015.
 
 Aerial Views started in early 2020 as a fork with a couple of fixes and features to improve the experience on an old Sony Android TV. Around this time, Aerial Dream was not in active development anymore.
 
