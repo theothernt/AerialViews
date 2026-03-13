@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.graphics.drawable.toBitmap
 import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -26,6 +27,7 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
+import com.neilturner.aerialviews.utils.FastBlurCompat
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
@@ -50,6 +52,7 @@ class ImagePlayerView : FrameLayout {
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
+    private var backgroundJobToken: Long = 0
 
     private val foregroundImageView =
         AppCompatImageView(context).apply {
@@ -67,6 +70,8 @@ class ImagePlayerView : FrameLayout {
     companion object {
         private const val BACKGROUND_BLUR_RADIUS = 32f
         private const val BACKGROUND_BLUR_ALPHA = 0.5f
+        private const val LEGACY_BLUR_RADIUS = 12
+        private const val LEGACY_DOWNSCALE_FACTOR = 4
     }
 
     init {
@@ -151,11 +156,6 @@ class ImagePlayerView : FrameLayout {
                             foregroundImageView.setImageDrawable(drawable)
                             updateBackgroundImage(drawable)
                         },
-                        onError = { errorImage ->
-                            val errorDrawable = errorImage?.asDrawable(resources)
-                            foregroundImageView.setImageDrawable(errorDrawable)
-                            updateBackgroundImage(errorDrawable)
-                        },
                     ).listener(
                         onSuccess = { _, result ->
                             setScaleMode(result.image.width, result.image.height)
@@ -190,19 +190,20 @@ class ImagePlayerView : FrameLayout {
 
     private fun updateBackgroundImage(drawable: Drawable?) {
         if (drawable != null) {
-            val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
-            backgroundImageView.setImageDrawable(backgroundDrawable)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
+                backgroundImageView.setImageDrawable(backgroundDrawable)
                 applyBackgroundBlur()
                 backgroundImageView.alpha = BACKGROUND_BLUR_ALPHA
+                if (backgroundImageView.visibility != VISIBLE) {
+                    backgroundImageView.visibility = VISIBLE
+                }
             } else {
                 clearBackgroundBlur()
-                backgroundImageView.alpha = 1f
-            }
-            if (backgroundImageView.visibility != VISIBLE) {
-                backgroundImageView.visibility = VISIBLE
+                applyLegacyBackgroundBlur(drawable)
             }
         } else {
+            backgroundJobToken++
             backgroundImageView.setImageDrawable(null)
             backgroundImageView.visibility = GONE
             clearBackgroundBlur()
@@ -227,6 +228,38 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
+    private fun applyLegacyBackgroundBlur(drawable: Drawable) {
+        val token = ++backgroundJobToken
+        val (targetWidth, targetHeight) = resolveTargetSize()
+        val downscaledWidth = maxOf(1, targetWidth / LEGACY_DOWNSCALE_FACTOR)
+        val downscaledHeight = maxOf(1, targetHeight / LEGACY_DOWNSCALE_FACTOR)
+
+        ioScope.launch {
+            val downscaled =
+                drawable.toBitmap(
+                    width = downscaledWidth,
+                    height = downscaledHeight,
+                    config = android.graphics.Bitmap.Config.ARGB_8888,
+                )
+            val mutable = downscaled.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
+            if (mutable !== downscaled) downscaled.recycle()
+
+            FastBlurCompat.applyBlur(mutable, LEGACY_BLUR_RADIUS)
+
+            mainScope.launch {
+                if (token != backgroundJobToken) {
+                    mutable.recycle()
+                    return@launch
+                }
+                backgroundImageView.setImageBitmap(mutable)
+                backgroundImageView.alpha = 1f
+                if (backgroundImageView.visibility != VISIBLE) {
+                    backgroundImageView.visibility = VISIBLE
+                }
+            }
+        }
+    }
+
     private fun handleImageError(throwable: Throwable) {
         Timber.e(throwable, "Exception while loading image: ${throwable.message}")
         FirebaseHelper.crashlyticsException(throwable)
@@ -246,6 +279,7 @@ class ImagePlayerView : FrameLayout {
         foregroundImageView.setImageBitmap(null)
         pausedTimestamp = 0
         remainingDuration = 0
+        backgroundJobToken++
         backgroundImageView.setImageBitmap(null)
         backgroundImageView.visibility = GONE
         clearBackgroundBlur()
