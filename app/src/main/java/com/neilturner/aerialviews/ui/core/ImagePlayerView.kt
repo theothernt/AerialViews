@@ -1,8 +1,10 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.RenderEffect
 import android.graphics.Shader
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -232,14 +234,12 @@ class ImagePlayerView : FrameLayout {
         val downscaledHeight = maxOf(1, targetHeight / LEGACY_DOWNSCALE_FACTOR)
 
         ioScope.launch {
-            val downscaled =
-                drawable.toBitmap(
-                    width = downscaledWidth,
-                    height = downscaledHeight,
-                    config = android.graphics.Bitmap.Config.ARGB_8888,
-                )
-            val mutable = downscaled.copy(android.graphics.Bitmap.Config.ARGB_8888, true)
-            if (mutable !== downscaled) downscaled.recycle()
+            val (sourceBitmap, recycleSource) = drawableToSoftwareBitmap(drawable, downscaledWidth, downscaledHeight)
+            // Always blur a mutable copy to avoid mutating shared bitmaps.
+            val mutable = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true)
+            if (mutable !== sourceBitmap && recycleSource) {
+                sourceBitmap.recycle()
+            }
 
             FastBlurCompat.applyBlur(mutable, LEGACY_BLUR_RADIUS)
 
@@ -253,6 +253,31 @@ class ImagePlayerView : FrameLayout {
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
+            }
+        }
+    }
+
+    private fun drawableToSoftwareBitmap(
+        drawable: Drawable,
+        width: Int,
+        height: Int,
+    ): Pair<Bitmap, Boolean> {
+        return when (drawable) {
+            is BitmapDrawable -> {
+                val bitmap = drawable.bitmap
+                if (bitmap.config == Bitmap.Config.HARDWARE) {
+                    val copied = bitmap.copy(Bitmap.Config.ARGB_8888, false)
+                    Pair(copied, true)
+                } else if (bitmap.width != width || bitmap.height != height) {
+                    val scaled = Bitmap.createScaledBitmap(bitmap, width, height, true)
+                    Pair(scaled, true)
+                } else {
+                    Pair(bitmap, false)
+                }
+            }
+            else -> {
+                val bitmap = drawable.toBitmap(width = width, height = height, config = Bitmap.Config.ARGB_8888)
+                Pair(bitmap, true)
             }
         }
     }
