@@ -27,6 +27,23 @@ data class BitmapResult(
 object BitmapHelper {
     private const val HEADER_BUFFER_SIZE = 512 * 1024 // 512KB - enough for EXIF and image header
 
+    suspend fun extractExifMetadata(openInputStream: () -> InputStream?): ExifMetadata =
+        withContext(Dispatchers.IO) {
+            try {
+                val headerBytes = ByteArray(HEADER_BUFFER_SIZE)
+                val headerLength =
+                    openInputStream()?.use { stream ->
+                        stream.read(headerBytes)
+                    } ?: return@withContext ExifMetadata()
+
+                val headerStream = { ByteArrayInputStream(headerBytes, 0, headerLength) }
+                extractMetadata(headerStream)
+            } catch (ex: Exception) {
+                Timber.e(ex, "BitmapHelper: Exception in extractExifMetadata: ${ex.message}")
+                ExifMetadata()
+            }
+        }
+
     suspend fun loadResizedImageBytes(
         openInputStream: () -> InputStream?,
         targetWidth: Int,
