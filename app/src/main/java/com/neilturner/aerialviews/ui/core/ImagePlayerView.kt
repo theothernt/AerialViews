@@ -199,7 +199,6 @@ class ImagePlayerView : FrameLayout {
                     backgroundImageView.visibility = VISIBLE
                 }
             } else {
-                clearBackgroundBlur()
                 applyLegacyBackgroundBlur(drawable)
             }
         } else {
@@ -223,9 +222,7 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun clearBackgroundBlur() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            backgroundImageView.setRenderEffect(null)
-        }
+        // No-op: RenderEffect is only used on Android 12+ and stays enabled for the session.
     }
 
     private fun applyLegacyBackgroundBlur(drawable: Drawable) {
@@ -252,7 +249,7 @@ class ImagePlayerView : FrameLayout {
                     return@launch
                 }
                 backgroundImageView.setImageBitmap(mutable)
-                backgroundImageView.alpha = 1f
+                backgroundImageView.alpha = BACKGROUND_BLUR_ALPHA
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
