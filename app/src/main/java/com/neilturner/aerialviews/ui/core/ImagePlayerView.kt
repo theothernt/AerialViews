@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.RenderEffect
+import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.AttributeSet
@@ -63,8 +65,8 @@ class ImagePlayerView : FrameLayout {
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
     companion object {
-        // Tuned to visually approximate the current software blur on TV devices.
-        private const val RENDER_EFFECT_BLUR_RADIUS = 32f
+        private const val BACKGROUND_BLUR_RADIUS = 32f
+        private const val BACKGROUND_BLUR_ALPHA = 0.5f
     }
 
     init {
@@ -185,21 +187,43 @@ class ImagePlayerView : FrameLayout {
         val height = if (this.height > 0) this.height else resources.displayMetrics.heightPixels
         return Pair(width, height)
     }
-    
+
     private fun updateBackgroundImage(drawable: Drawable?) {
-        if (GeneralPrefs.photoBackgroundBlurEnabled && drawable != null) {
-            val opacity = (GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 100) / 100f
-            clearRenderEffectIfSupported()
+        if (drawable != null) {
             val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
             backgroundImageView.setImageDrawable(backgroundDrawable)
-            backgroundImageView.alpha = opacity
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                applyBackgroundBlur()
+                backgroundImageView.alpha = BACKGROUND_BLUR_ALPHA
+            } else {
+                clearBackgroundBlur()
+                backgroundImageView.alpha = 1f
+            }
             if (backgroundImageView.visibility != VISIBLE) {
                 backgroundImageView.visibility = VISIBLE
             }
         } else {
             backgroundImageView.setImageDrawable(null)
             backgroundImageView.visibility = GONE
-            clearRenderEffectIfSupported()
+            clearBackgroundBlur()
+        }
+    }
+
+    private fun applyBackgroundBlur() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            backgroundImageView.setRenderEffect(
+                RenderEffect.createBlurEffect(
+                    BACKGROUND_BLUR_RADIUS,
+                    BACKGROUND_BLUR_RADIUS,
+                    Shader.TileMode.CLAMP,
+                ),
+            )
+        }
+    }
+
+    private fun clearBackgroundBlur() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            backgroundImageView.setRenderEffect(null)
         }
     }
 
@@ -217,12 +241,6 @@ class ImagePlayerView : FrameLayout {
         onPlayerError()
     }
 
-    private fun clearRenderEffectIfSupported() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            backgroundImageView.setRenderEffect(null)
-        }
-    }
-
     fun stop() {
         removeCallbacks(finishedRunnable)
         foregroundImageView.setImageBitmap(null)
@@ -230,7 +248,7 @@ class ImagePlayerView : FrameLayout {
         remainingDuration = 0
         backgroundImageView.setImageBitmap(null)
         backgroundImageView.visibility = GONE
-        clearRenderEffectIfSupported()
+        clearBackgroundBlur()
     }
 
     fun pauseTimer() {
