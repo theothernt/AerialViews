@@ -208,6 +208,7 @@
   <string name="category_photos">Photos</string>
   <string name="category_playlist">Liste de lecture</string>
   <string name="category_progress_bar">Barre de progression</string>
+  <string name="category_quality">Qualité</string>
   <string name="category_quality_and_scene_types">Types de qualité et de scène</string>
   <string name="category_refresh_rate_options">Options de taux de rafraîchissement</string>
   <string name="category_remote_streaming">diffusion à distance</string>

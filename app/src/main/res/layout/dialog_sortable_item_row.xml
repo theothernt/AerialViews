@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/row_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -36,7 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Item Name" />
+            android:text="Item Name"
+            tools:ignore="HardcodedText" />
             
     </LinearLayout>
     <LinearLayout
@@ -64,7 +66,8 @@
             android:textSize="14sp"
             android:visibility="gone"
             android:focusable="true"
-            android:clickable="true" />
+            android:clickable="true"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/button_move_down"
@@ -75,6 +78,7 @@
             android:textSize="14sp"
             android:visibility="gone"
             android:focusable="true"
-            android:clickable="true" />
+            android:clickable="true"
+            tools:ignore="HardcodedText" />
     </LinearLayout>
 </LinearLayout>

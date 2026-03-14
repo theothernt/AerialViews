@@ -102,12 +102,21 @@
     <item>Paylaşılan Bağlantı</item>
     <item>API Anahtarı</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Önizleme</item>
+    <item>Tam boyutlu</item>
+    <item>Orijinal</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Devre dışı</item>
     <item>100 fotoğraf</item>
     <item>200 fotoğraf</item>
     <item>300 fotoğraf</item>
     <item>400 fotoğraf</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Dönüştürülmüş</item>
+    <item>Orijinal</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Sınır aşıldığında atla</item>
@@ -159,8 +168,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Şehir</item>
+    <item>Şehir, Eyalet</item>
+    <item>Şehir, Ülke</item>
+    <item>Şehir, Eyalet, Ülke</item>
+    <item>Ülke</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Konum (EXIF/Immich)</item>
+    <item>Çekim tarihi (EXIF/Immich)</item>
+    <item>Açıklama (EXIF/Immich)</item>
     <item>Dosya adını olduğu gibi kullanın</item>
     <item>Klasör ve dosya adı</item>
     <item>Sadece klasör adı</item>
@@ -270,8 +286,8 @@
     <item>Saat</item>
     <item>Metadata #1</item>
     <item>Metadata #2</item>
-    <item>Metadata #3</item>
-    <item>Metadata #4</item>
+    <item>Meta Veri #3</item>
+    <item>Meta Veri #4</item>
     <item>Hava Durumu #1</item>
     <item>Şimdi Çalıyor #1</item>
     <item>Şimdi Oynatılıyor #2</item>

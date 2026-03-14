@@ -102,12 +102,21 @@
     <item>קישור משותף</item>
     <item>מפתח API</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>תצוגה מקדימה</item>
+    <item>גודל מלא</item>
+    <item>מקורי</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>מבוטל</item>
     <item>100 תמונות</item>
     <item>200 תמונות</item>
     <item>300 תמונות</item>
     <item>400 תמונות</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>קידוד מומר</item>
+    <item>מקורי</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>דלג כשמגיעים למגבלה</item>
@@ -160,8 +169,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>עיר</item>
+    <item>עיר, מדינה</item>
+    <item>עיר, ארץ</item>
+    <item>עיר, מדינה, ארץ</item>
+    <item>ארץ</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>מיקום (EXIF/Immich)</item>
+    <item>תאריך צילום (EXIF/Immich)</item>
+    <item>תיאור (EXIF/Immich)</item>
     <item>השתמש בשם הקובץ כמו שהוא</item>
     <item>התיקייה והקובץ</item>
     <item>שם התיקיה בלבד</item>
@@ -269,10 +285,10 @@
   <string-array name="slot_entries">
     <item>ריק</item>
     <item>שעון</item>
-    <item>מטא-דאטה #1</item>
-    <item>מטא-נתונים #2</item>
-    <item>מטא-נתונים #3</item>
-    <item>מטא-נתונים #4</item>
+    <item>מידע #1</item>
+    <item>מידע #2</item>
+    <item>מידע #3</item>
+    <item>מידע #4</item>
     <item>מזג אוויר מספר 1</item>
     <item>מנגן כעת מס\' 1</item>
     <item>מנגן כעת מס\' 2</item>

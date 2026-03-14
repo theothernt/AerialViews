@@ -102,12 +102,21 @@
     <item>Collegamento condiviso</item>
     <item>API Key</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Anteprima</item>
+    <item>DImensioni Reali</item>
+    <item>Originale</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Disabilitato</item>
     <item>100 foto</item>
     <item>200 foto</item>
     <item>300 foto</item>
     <item>400 foto</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Transcodificato</item>
+    <item>Originale</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Salta quando viene raggiunto il limite</item>
@@ -160,8 +169,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Città</item>
+    <item>Città, Stato</item>
+    <item>Città, Paese</item>
+    <item>CIttà, Stato, Paese</item>
+    <item>Paese</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Luogo (EXIF/immich)</item>
+    <item>Data (EXIF/immich)</item>
+    <item>Descrizione (EXIF/immich)</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
     <item>Solo nome cartella</item>
@@ -172,8 +188,8 @@
     <item>Posizione (Immich)</item>
     <item>Descrizione (Immich)</item>
     <item>Usa il nome del file</item>
-    <item>Cartella e nome file</item>
-    <item>Solo nome cartella</item>
+    <item>Cartella &amp; nome del file</item>
+    <item>Solo nome della cartella</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 secondi</item>

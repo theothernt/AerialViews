@@ -16,6 +16,8 @@
   <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ медиакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Изменять частоту обновления дисплея в соответствии с частотой кадров видео</string>
   <string name="advanced_refresh_rate_switching_title">Автоматическое переключение частоты обновления</string>
+  <string name="advanced_use_texture_view_summary">Используйте TextureView вместо SurfaceView для рендеринга видео</string>
+  <string name="advanced_use_texture_view_title">Использовать TextureView для видео</string>
   <string name="advanced_wol_enable_summary">Перед получением медиафайлов отправьте пакет Wake on LAN</string>
   <string name="advanced_wol_enable_title">Включить функцию пробуждения по локальной сети</string>
   <string name="advanced_wol_mac_error">Неверный формат MAC-адреса</string>
@@ -31,6 +33,8 @@
   <string name="appearance_alt_text_position_title">Альтернативное положение наложения</string>
   <string name="appearance_animations_summary">Настройте анимацию, используемую для наложения, а также между видео и фотографиями</string>
   <string name="appearance_animations_title">Анимация</string>
+  <string name="appearance_auto_hide_options_summary">Настройте, когда и как наложения будут автоматически скрываться</string>
+  <string name="appearance_auto_hide_options_title">Параметры автоматического скрытия</string>
   <string name="appearance_auto_hide_title">Автоматическое скрытие наложений</string>
   <string name="appearance_background_colour_loading_title">Экран загрузки</string>
   <string name="appearance_background_colour_photos_title">Проигрыватель фотографий</string>
@@ -101,6 +105,13 @@
   <string name="appearance_metadata_title">Метаданные</string>
   <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
   <string name="appearance_music_title">Музыка</string>
+  <string name="appearance_photo_background_blur_intensity_summary">Настраивает радиус размытия для современного и старого размытия</string>
+  <string name="appearance_photo_background_blur_intensity_title">Интенсивность размытия</string>
+  <string name="appearance_photo_background_blur_opacity_title">Непрозрачность размытия</string>
+  <string name="appearance_photo_background_blur_summary">Показывать размытую версию фотографии за изображением на переднем плане, чтобы заполнить пустые области</string>
+  <string name="appearance_photo_background_blur_title">Включить размытие фона</string>
+  <string name="appearance_photo_bilinear_filtering_summary">Применять высококачественную фильтрацию при изменении размера фотографий для уменьшения эффекта сглаживания (неровных краев)</string>
+  <string name="appearance_photo_bilinear_filtering_title">Билинейная фильтрация</string>
   <string name="appearance_photo_scale_landscape_title">Масштабирование альбомных фотографий</string>
   <string name="appearance_photo_scale_portrait_title">Масштабирование портретных фотографий</string>
   <string name="appearance_progress_bar_summary">Показывать ход воспроизведения видео или фотографий в верхней или нижней части экрана</string>
@@ -182,6 +193,7 @@
   <string name="category_appearance">Внешний вид</string>
   <string name="category_apple_and_community_videos">Видеоролики Apple и сообществ</string>
   <string name="category_authentication_details">Детали аутентификации</string>
+  <string name="category_background_blur">Размытие фона</string>
   <string name="category_background_colour">Цвет фона</string>
   <string name="category_bottom_row">Нижний ряд</string>
   <string name="category_bottom_row_left">Внизу слева</string>
@@ -223,6 +235,7 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогресс-бар</string>
+  <string name="category_quality">Качество</string>
   <string name="category_quality_and_scene_types">Качество и типы сцен</string>
   <string name="category_refresh_rate_options">Параметры частоты обновления</string>
   <string name="category_remote_streaming">Удаленная потоковая передача</string>
@@ -453,6 +466,9 @@
   <string name="samba_media_wol_summary">Пробуждение сервера при попытке получить медиафайлы</string>
   <string name="samba_media_wol_title">Настройки пробуждения по локальной сети</string>
   <string name="samba_media_wol_wake_now">Проверьте настройки пробуждения по локальной сети</string>
+  <string name="samba_videos2_enabled_title">Использовать дополнительные учетные данные SMB/Samba</string>
+  <string name="samba_videos2_options_summary">Настройте дополнительные учетные данные SMB/Samba</string>
+  <string name="samba_videos2_options_title">Вторая учетная запись</string>
   <string name="samba_videos_domainname_summary">Доменное имя или рабочая группа сервера. Необязательно</string>
   <string name="samba_videos_domainname_title">Доменное имя</string>
   <string name="samba_videos_enable_encryption_summary">Включает шифрование для SMB-соединений, может снизить общую скорость передачи данных</string>
@@ -549,6 +565,9 @@
   <string name="weather_location_search_hint">Введите название города (например, Токио) или GPS-координаты</string>
   <string name="weather_location_searching">Поиск локации…</string>
   <string name="weather_location_title">Местоположение</string>
+  <string name="webdav_media2_enabled_title">Использовать дополнительные учетные данные WebDAV</string>
+  <string name="webdav_media2_options_summary">Настройте дополнительные учетные данные WebDAV</string>
+  <string name="webdav_media2_options_title">Вторая учетная запись</string>
   <string name="webdav_media_enabled_title">Использовать WebDAV для обмена медиа</string>
   <string name="webdav_media_hostname_summary">IP-адрес и порт сервера, например, 192.168.1.2:5005</string>
   <string name="webdav_media_hostname_title">Имя хоста и порт</string>
