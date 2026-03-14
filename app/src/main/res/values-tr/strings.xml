@@ -110,8 +110,6 @@
   <string name="appearance_photo_background_blur_opacity_title">Bulanıklık opaklığı</string>
   <string name="appearance_photo_background_blur_summary">Ön plandaki görüntünün arkasında, boş alanları doldurmak için fotoğrafın bulanık bir versiyonunu gösterin</string>
   <string name="appearance_photo_background_blur_title">Arka plan bulanıklığını etkinleştir</string>
-  <string name="appearance_photo_bilinear_filtering_summary">Fotoğrafları yeniden boyutlandırırken kenar bozulmasını (tırtıklı kenarları) azaltmak için yüksek kaliteli filtreleme uygular</string>
-  <string name="appearance_photo_bilinear_filtering_title">Bilinear Filtreleme</string>
   <string name="appearance_photo_scale_landscape_title">Manzara Fotoğrafı ölçeklendirme</string>
   <string name="appearance_photo_scale_portrait_title">Portre Fotoğrafı ölçeklendirme</string>
   <string name="appearance_progress_bar_summary">Video veya fotoğrafların ilerleme durumunu ekranın üst veya alt kısmında gösterin</string>
@@ -235,7 +233,6 @@
   <string name="category_photos">Fotoğraflar</string>
   <string name="category_playlist">Çalma listesi</string>
   <string name="category_progress_bar">İlerleme çubuğu</string>
-  <string name="category_quality">Kalite</string>
   <string name="category_quality_and_scene_types">Kalite ve Sahne türleri</string>
   <string name="category_refresh_rate_options">Yenileme hızı seçenekleri</string>
   <string name="category_remote_streaming">Uzaktan yayın</string>

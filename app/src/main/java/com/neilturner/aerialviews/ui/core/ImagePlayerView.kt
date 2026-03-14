@@ -57,6 +57,8 @@ class ImagePlayerView : FrameLayout {
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
     private var backgroundJobToken: Long = 0
+    private var backgroundReadyToken: Long = -1
+    private var pendingSetupToken: Long = -1
 
     private val foregroundImageView =
         AppCompatImageView(context).apply {
@@ -74,7 +76,8 @@ class ImagePlayerView : FrameLayout {
     companion object {
         private const val BASE_BACKGROUND_BLUR_RADIUS = 32f
         private const val BASE_LEGACY_BLUR_RADIUS = 12
-        private const val LEGACY_DOWNSCALE_FACTOR = 4
+        private const val LEGACY_DOWNSCALE_FACTOR = 6
+        private const val LEGACY_MAX_BLUR_DIM = 480
         private const val BLUR_INTENSITY_DEFAULT = 50
         private const val BLUR_INTENSITY_MIN = 5
         private const val BLUR_INTENSITY_MAX = 100
@@ -159,8 +162,8 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            foregroundImageView.setImageDrawable(drawable)
                             updateBackgroundImage(drawable)
+                            foregroundImageView.setImageDrawable(drawable)
                         },
                     ).listener(
                         onSuccess = { _, result ->
@@ -195,6 +198,9 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun updateBackgroundImage(drawable: Drawable?) {
+        val token = ++backgroundJobToken
+        backgroundReadyToken = -1
+
         if (drawable != null && GeneralPrefs.photoBackgroundBlurEnabled) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
@@ -204,13 +210,14 @@ class ImagePlayerView : FrameLayout {
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
+                markBackgroundReady(token)
             } else {
-                applyLegacyBackgroundBlur(drawable)
+                applyLegacyBackgroundBlur(drawable, token)
             }
         } else {
-            backgroundJobToken++
             backgroundImageView.setImageDrawable(null)
             backgroundImageView.visibility = GONE
+            markBackgroundReady(token)
         }
     }
 
@@ -227,11 +234,11 @@ class ImagePlayerView : FrameLayout {
         }
     }
 
-    private fun applyLegacyBackgroundBlur(drawable: Drawable) {
-        val token = ++backgroundJobToken
-        val (targetWidth, targetHeight) = resolveTargetSize()
-        val downscaledWidth = maxOf(1, targetWidth / LEGACY_DOWNSCALE_FACTOR)
-        val downscaledHeight = maxOf(1, targetHeight / LEGACY_DOWNSCALE_FACTOR)
+    private fun applyLegacyBackgroundBlur(
+        drawable: Drawable,
+        token: Long,
+    ) {
+        val (downscaledWidth, downscaledHeight) = resolveLegacyBlurTargetSize()
 
         ioScope.launch {
             val (sourceBitmap, recycleSource) = drawableToSoftwareBitmap(drawable, downscaledWidth, downscaledHeight)
@@ -253,6 +260,7 @@ class ImagePlayerView : FrameLayout {
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
+                markBackgroundReady(token)
             }
         }
     }
@@ -282,6 +290,21 @@ class ImagePlayerView : FrameLayout {
                 Pair(bitmap, true)
             }
         }
+    }
+
+    private fun resolveLegacyBlurTargetSize(): Pair<Int, Int> {
+        val (targetWidth, targetHeight) = resolveTargetSize()
+        var downscaledWidth = maxOf(1, targetWidth / LEGACY_DOWNSCALE_FACTOR)
+        var downscaledHeight = maxOf(1, targetHeight / LEGACY_DOWNSCALE_FACTOR)
+
+        val maxDim = maxOf(downscaledWidth, downscaledHeight)
+        if (maxDim > LEGACY_MAX_BLUR_DIM) {
+            val scale = LEGACY_MAX_BLUR_DIM.toFloat() / maxDim.toFloat()
+            downscaledWidth = maxOf(1, (downscaledWidth * scale).toInt())
+            downscaledHeight = maxOf(1, (downscaledHeight * scale).toInt())
+        }
+
+        return Pair(downscaledWidth, downscaledHeight)
     }
 
     private fun resolveBlurIntensityFactor(): Float {
@@ -379,6 +402,15 @@ class ImagePlayerView : FrameLayout {
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
+        val token = backgroundJobToken
+        if (backgroundReadyToken == token) {
+            runSetupFinishedRunnable()
+        } else {
+            pendingSetupToken = token
+        }
+    }
+
+    private fun runSetupFinishedRunnable() {
         listener?.onImagePrepared()
 
         val duration = GeneralPrefs.slideshowSpeed.toLong() * 1000
@@ -391,6 +423,14 @@ class ImagePlayerView : FrameLayout {
         Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
         postDelayed(finishedRunnable, durationMinusFade)
+    }
+
+    private fun markBackgroundReady(token: Long) {
+        backgroundReadyToken = token
+        if (pendingSetupToken == token) {
+            pendingSetupToken = -1
+            runSetupFinishedRunnable()
+        }
     }
 
     private fun onPlayerError() {

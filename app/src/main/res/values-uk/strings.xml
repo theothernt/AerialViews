@@ -110,8 +110,6 @@
   <string name="appearance_photo_background_blur_opacity_title">Непрозорість розмиття</string>
   <string name="appearance_photo_background_blur_summary">Показувати розмиту версію фотографії на передньому плані, щоб заповнити порожні області</string>
   <string name="appearance_photo_background_blur_title">Увімкнути розмиття фону</string>
-  <string name="appearance_photo_bilinear_filtering_summary">Застосовувати високоякісну фільтрацію при зміні розміру фотографій для зменшення ефекту згладжування (нерівних країв)</string>
-  <string name="appearance_photo_bilinear_filtering_title">Білінійна фільтрація</string>
   <string name="appearance_photo_scale_landscape_title">Масштабування альбомних фотографій</string>
   <string name="appearance_photo_scale_portrait_title">Масштабування портретних фотографій</string>
   <string name="appearance_progress_bar_summary">Показувати хід відтворення відео або фотографій у верхній або нижній частині екрана</string>
@@ -235,7 +233,6 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогрес-бар</string>
-  <string name="category_quality">Якість</string>
   <string name="category_quality_and_scene_types">Якість і типи сцен</string>
   <string name="category_refresh_rate_options">Параметри частоти оновлення</string>
   <string name="category_remote_streaming">Віддалена потокова передача</string>
