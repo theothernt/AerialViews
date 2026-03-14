@@ -265,7 +265,9 @@ class ImagePlayerView : FrameLayout {
         return when (drawable) {
             is BitmapDrawable -> {
                 val bitmap = drawable.bitmap
-                if (bitmap.config == Bitmap.Config.HARDWARE) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+                    bitmap.config == Bitmap.Config.HARDWARE
+                ) {
                     val copied = bitmap.copy(Bitmap.Config.ARGB_8888, false)
                     Pair(copied, true)
                 } else if (bitmap.width != width || bitmap.height != height) {
