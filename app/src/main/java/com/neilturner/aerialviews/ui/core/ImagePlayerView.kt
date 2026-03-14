@@ -38,6 +38,7 @@ import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.InputStream
+import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : FrameLayout {
@@ -70,10 +71,12 @@ class ImagePlayerView : FrameLayout {
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
     companion object {
-        private const val BACKGROUND_BLUR_RADIUS = 32f
-        private const val BACKGROUND_BLUR_ALPHA = 0.5f
-        private const val LEGACY_BLUR_RADIUS = 12
+        private const val BASE_BACKGROUND_BLUR_RADIUS = 32f
+        private const val BASE_LEGACY_BLUR_RADIUS = 12
         private const val LEGACY_DOWNSCALE_FACTOR = 4
+        private const val BLUR_INTENSITY_DEFAULT = 50
+        private const val BLUR_INTENSITY_MIN = 5
+        private const val BLUR_INTENSITY_MAX = 100
     }
 
     init {
@@ -191,12 +194,12 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun updateBackgroundImage(drawable: Drawable?) {
-        if (drawable != null) {
+        if (drawable != null && GeneralPrefs.photoBackgroundBlurEnabled) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
                 backgroundImageView.setImageDrawable(backgroundDrawable)
                 applyBackgroundBlur()
-                backgroundImageView.alpha = BACKGROUND_BLUR_ALPHA
+                backgroundImageView.alpha = resolveBackgroundBlurAlpha()
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
@@ -213,10 +216,11 @@ class ImagePlayerView : FrameLayout {
 
     private fun applyBackgroundBlur() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val radius = resolveBackgroundBlurRadius()
             backgroundImageView.setRenderEffect(
                 RenderEffect.createBlurEffect(
-                    BACKGROUND_BLUR_RADIUS,
-                    BACKGROUND_BLUR_RADIUS,
+                    radius,
+                    radius,
                     Shader.TileMode.CLAMP,
                 ),
             )
@@ -241,7 +245,7 @@ class ImagePlayerView : FrameLayout {
                 sourceBitmap.recycle()
             }
 
-            FastBlurCompat.applyBlur(mutable, LEGACY_BLUR_RADIUS)
+            FastBlurCompat.applyBlur(mutable, resolveLegacyBlurRadius())
 
             mainScope.launch {
                 if (token != backgroundJobToken) {
@@ -249,7 +253,7 @@ class ImagePlayerView : FrameLayout {
                     return@launch
                 }
                 backgroundImageView.setImageBitmap(mutable)
-                backgroundImageView.alpha = BACKGROUND_BLUR_ALPHA
+                backgroundImageView.alpha = resolveBackgroundBlurAlpha()
                 if (backgroundImageView.visibility != VISIBLE) {
                     backgroundImageView.visibility = VISIBLE
                 }
@@ -280,6 +284,27 @@ class ImagePlayerView : FrameLayout {
                 Pair(bitmap, true)
             }
         }
+    }
+
+    private fun resolveBlurIntensityFactor(): Float {
+        val rawValue = GeneralPrefs.photoBackgroundBlurIntensity.toIntOrNull() ?: BLUR_INTENSITY_DEFAULT
+        val clamped = rawValue.coerceIn(BLUR_INTENSITY_MIN, BLUR_INTENSITY_MAX)
+        return clamped / BLUR_INTENSITY_DEFAULT.toFloat()
+    }
+
+    private fun resolveBackgroundBlurAlpha(): Float {
+        val rawValue = GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 30
+        val clamped = rawValue.coerceIn(0, 100)
+        return clamped / 100f
+    }
+
+    private fun resolveBackgroundBlurRadius(): Float {
+        return BASE_BACKGROUND_BLUR_RADIUS * resolveBlurIntensityFactor()
+    }
+
+    private fun resolveLegacyBlurRadius(): Int {
+        val radius = BASE_LEGACY_BLUR_RADIUS * resolveBlurIntensityFactor()
+        return maxOf(1, radius.roundToInt())
     }
 
     private fun handleImageError(throwable: Throwable) {

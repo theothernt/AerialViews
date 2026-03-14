@@ -219,7 +219,6 @@
   <string name="category_photos">Фото</string>
   <string name="category_playlist">Плейлист</string>
   <string name="category_progress_bar">Прогрес-бар</string>
-  <string name="category_quality">Якість</string>
   <string name="category_quality_and_scene_types">Якість і типи сцен</string>
   <string name="category_refresh_rate_options">Параметри частоти оновлення</string>
   <string name="category_remote_streaming">Віддалена потокова передача</string>

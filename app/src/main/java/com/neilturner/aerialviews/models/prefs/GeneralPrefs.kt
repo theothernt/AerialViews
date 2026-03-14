@@ -201,9 +201,9 @@ object GeneralPrefs : KotprefModel() {
     var slideshowSpeed by stringPref("30", "slideshow_speed")
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
-    var photoBilinearFiltering by booleanPref(true, "photo_bilinear_filtering")
     var photoBackgroundBlurEnabled by booleanPref(true, "photo_background_blur_enabled")
-    var photoBackgroundBlurOpacity by stringPref("30", "photo_background_blur_opacity")
+    var photoBackgroundBlurOpacity by stringPref("40", "photo_background_blur_opacity")
+    var photoBackgroundBlurIntensity by stringPref("80", "photo_background_blur_intensity")
 
     // D-pad
     var buttonLeftPress by nullableEnumValuePref(ButtonType.SKIP_PREVIOUS, "button_left_press")
