@@ -264,6 +264,8 @@
         <item>Clock</item>
         <item>Metadata #1</item>
         <item>Metadata #2</item>
+        <item>Metadata #3</item>
+        <item>Metadata #4</item>
         <item>Weather #1</item>
         <!--    <item>Weather #2</item>-->
         <item>Now Playing #1</item>
@@ -280,6 +282,8 @@
         <item>CLOCK</item>
         <item>METADATA1</item>
         <item>METADATA2</item>
+        <item>METADATA3</item>
+        <item>METADATA4</item>
         <item>WEATHER1</item>
         <!--    <item>WEATHER2</item>-->
         <item>MUSIC1</item>

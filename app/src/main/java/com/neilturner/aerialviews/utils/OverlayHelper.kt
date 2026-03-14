@@ -209,6 +209,22 @@ class OverlayHelper(
                 }
             }
 
+            OverlayType.METADATA3 -> {
+                MetadataOverlay(context).apply {
+                    type = overlay
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata3Size.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata3Weight)
+                }
+            }
+
+            OverlayType.METADATA4 -> {
+                MetadataOverlay(context).apply {
+                    type = overlay
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.overlayMetadata4Size.toFloat())
+                    typeface = FontHelper.getTypeface(context, prefs.fontTypeface, prefs.overlayMetadata4Weight)
+                }
+            }
+
             OverlayType.WEATHER1 -> {
                 WeatherOverlay(context).apply {
                     type = overlay

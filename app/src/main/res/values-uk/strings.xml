@@ -93,6 +93,10 @@
   <string name="appearance_metadata_slot1_title">Метадані #1</string>
   <string name="appearance_metadata_slot2_summary">Вибір та зміна порядку полів метаданих</string>
   <string name="appearance_metadata_slot2_title">Метадані #2</string>
+  <string name="appearance_metadata_slot3_summary">Вибір та зміна порядку полів метаданих</string>
+  <string name="appearance_metadata_slot3_title">Метадані #3</string>
+  <string name="appearance_metadata_slot4_summary">Вибір та зміна порядку полів метаданих</string>
+  <string name="appearance_metadata_slot4_title">Метадані #4</string>
   <string name="appearance_metadata_summary">Відображати місцезнаходження, опис, цікаві місця або інші метадані</string>
   <string name="appearance_metadata_title">Метадані</string>
   <string name="appearance_music_summary">Відображення відтворюваної в даний момент пісні</string>

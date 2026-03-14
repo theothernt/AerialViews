@@ -102,6 +102,32 @@ object GeneralPrefs : KotprefModel() {
     var overlayMetadata2Size by stringPref("18", "overlay_metadata2_size")
     var overlayMetadata2Weight by stringPref("300", "overlay_metadata2_weight") // Message
 
+    var overlayMetadata3Videos by stringPref("POI", "overlay_metadata3_videos")
+    var overlayMetadata3VideosFolderLevel by stringPref("1", "overlay_metadata3_video_folder_levels")
+    var overlayMetadata3VideosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata3_video_location_type")
+
+    var overlayMetadata3Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata3_photos")
+    var overlayMetadata3PhotosFolderLevel by stringPref("1", "overlay_metadata3_photo_folder_levels")
+    var overlayMetadata3PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata3_photo_location_type")
+    var overlayMetadata3PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata3_photo_date_type")
+    var overlayMetadata3PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata3_photo_date_custom")
+
+    var overlayMetadata3Size by stringPref("18", "overlay_metadata3_size")
+    var overlayMetadata3Weight by stringPref("300", "overlay_metadata3_weight") // Message
+
+    var overlayMetadata4Videos by stringPref("POI", "overlay_metadata4_videos")
+    var overlayMetadata4VideosFolderLevel by stringPref("1", "overlay_metadata4_video_folder_levels")
+    var overlayMetadata4VideosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata4_video_location_type")
+
+    var overlayMetadata4Photos by stringPref("DESCRIPTION,LOCATION,DATE_TAKEN", "overlay_metadata4_photos")
+    var overlayMetadata4PhotosFolderLevel by stringPref("1", "overlay_metadata4_photo_folder_levels")
+    var overlayMetadata4PhotosLocationType by nullableEnumValuePref(LocationType.CITY_COUNTRY, "overlay_metadata4_photo_location_type")
+    var overlayMetadata4PhotosDateType by nullableEnumValuePref(DateType.COMPACT, "overlay_metadata4_photo_date_type")
+    var overlayMetadata4PhotosDateCustom by stringPref("yyyy-MM-dd HH:mm", "overlay_metadata4_photo_date_custom")
+
+    var overlayMetadata4Size by stringPref("18", "overlay_metadata4_size")
+    var overlayMetadata4Weight by stringPref("300", "overlay_metadata4_weight") // Message
+
     var messageLine1 by stringPref("", "message_line1")
     var messageLine2 by stringPref("", "message_line2")
     var messageLine3 by stringPref("", "message_line3")

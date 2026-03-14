@@ -93,6 +93,10 @@
   <string name="appearance_metadata_slot1_title">Метаданные #1</string>
   <string name="appearance_metadata_slot2_summary">Выбор и изменение порядка полей метаданных</string>
   <string name="appearance_metadata_slot2_title">Метаданные #2</string>
+  <string name="appearance_metadata_slot3_summary">Выбор и изменение порядка полей метаданных</string>
+  <string name="appearance_metadata_slot3_title">Метаданные #3</string>
+  <string name="appearance_metadata_slot4_summary">Выбор и изменение порядка полей метаданных</string>
+  <string name="appearance_metadata_slot4_title">Метаданные #4</string>
   <string name="appearance_metadata_summary">Отображение местоположения, описания, точек интереса и других метаданных</string>
   <string name="appearance_metadata_title">Метаданные</string>
   <string name="appearance_music_summary">Отображение воспроизводимой в данный момент песни</string>
