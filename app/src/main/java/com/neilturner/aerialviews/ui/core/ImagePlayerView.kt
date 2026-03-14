@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.scale
 import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -210,7 +211,6 @@ class ImagePlayerView : FrameLayout {
             backgroundJobToken++
             backgroundImageView.setImageDrawable(null)
             backgroundImageView.visibility = GONE
-            clearBackgroundBlur()
         }
     }
 
@@ -225,10 +225,6 @@ class ImagePlayerView : FrameLayout {
                 ),
             )
         }
-    }
-
-    private fun clearBackgroundBlur() {
-        // No-op: RenderEffect is only used on Android 12+ and stays enabled for the session.
     }
 
     private fun applyLegacyBackgroundBlur(drawable: Drawable) {
@@ -273,7 +269,7 @@ class ImagePlayerView : FrameLayout {
                     val copied = bitmap.copy(Bitmap.Config.ARGB_8888, false)
                     Pair(copied, true)
                 } else if (bitmap.width != width || bitmap.height != height) {
-                    val scaled = Bitmap.createScaledBitmap(bitmap, width, height, true)
+                    val scaled = bitmap.scale(width, height)
                     Pair(scaled, true)
                 } else {
                     Pair(bitmap, false)
@@ -329,7 +325,6 @@ class ImagePlayerView : FrameLayout {
         backgroundJobToken++
         backgroundImageView.setImageBitmap(null)
         backgroundImageView.visibility = GONE
-        clearBackgroundBlur()
     }
 
     fun pauseTimer() {
