@@ -160,6 +160,10 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>城市</item>
+    <item>城市、州</item>
+    <item>城市、国家</item>
+    <item>城市、州、国家</item>
+    <item>国家</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
     <item>位置（EXIF/Immich）</item>
