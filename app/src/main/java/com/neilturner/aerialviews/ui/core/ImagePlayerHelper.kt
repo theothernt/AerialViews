@@ -97,7 +97,20 @@ internal object ImagePlayerHelper {
         uri: Uri,
     ): InputStream? =
         try {
-            context.contentResolver.openInputStream(uri)
+            // Handle file:// URIs directly, content:// URIs via ContentResolver
+            return when (uri.scheme) {
+                "file" -> {
+                    val path = uri.path ?: return null
+                    java.io.File(path).inputStream()
+                }
+                "content" -> {
+                    context.contentResolver.openInputStream(uri)
+                }
+                else -> {
+                    Timber.e("Unsupported URI scheme: ${uri.scheme}")
+                    null
+                }
+            }
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while opening local file: ${ex.message}")
             FirebaseHelper.crashlyticsException(ex)
