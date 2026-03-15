@@ -159,6 +159,10 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Stadt</item>
+    <item>Stadt, Staat</item>
+    <item>Stadt, Land</item>
+    <item>Stadt, Staat, Land</item>
+    <item>Land</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
     <item>Standort (EXIF/Immich)</item>

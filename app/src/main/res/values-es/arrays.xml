@@ -160,6 +160,10 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Ciudad</item>
+    <item>Ciudad, Estado</item>
+    <item>Ciudad, País</item>
+    <item>Ciudad, Estado, País</item>
+    <item>País</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
     <item>Ubicación (EXIF/Immich)</item>
