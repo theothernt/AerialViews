@@ -162,6 +162,9 @@
     <item>城市</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>位置（EXIF/Immich）</item>
+    <item>拍摄日期（EXIF/Immich）</item>
+    <item>描述（EXIF/Immich）</item>
     <item>原始文件名</item>
     <item>文件夹和文件名</item>
     <item>仅文件夹名称</item>

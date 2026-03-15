@@ -110,6 +110,8 @@
   <string name="appearance_photo_background_blur_opacity_title">Opacità della sfocatura</string>
   <string name="appearance_photo_background_blur_summary">Mostra una versione sfocata della foto dietro all\'immagine in primo piano per riempire gi spazi vuoti</string>
   <string name="appearance_photo_background_blur_title">Abilita sfondo sfocato</string>
+  <string name="appearance_photo_bilinear_filtering_summary">Applica un filtro di alta qualità quando le foto vengono ridimensionate per ridurre l\'aliasing</string>
+  <string name="appearance_photo_bilinear_filtering_title">Filtro Bilineare</string>
   <string name="appearance_photo_scale_landscape_title">Ridimensionamento foto orrizzontali</string>
   <string name="appearance_photo_scale_portrait_title">Ridimensionamento foto verticali</string>
   <string name="appearance_progress_bar_summary">Mostra l\'avanzamento di un video o di una foto nella parte superiore o inferiore dello schermo</string>
@@ -233,6 +235,7 @@
   <string name="category_photos">Foto</string>
   <string name="category_playlist">Playlist</string>
   <string name="category_progress_bar">Barra di avanzamento</string>
+  <string name="category_quality">Qualità</string>
   <string name="category_quality_and_scene_types">Qualità e tipi di scena</string>
   <string name="category_refresh_rate_options">Opzioni frequenza di aggiornamento</string>
   <string name="category_remote_streaming">Streaming remoto</string>

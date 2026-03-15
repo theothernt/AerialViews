@@ -162,6 +162,9 @@
     <item>Ville</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Localisation (EXIF/Immich)</item>
+    <item>Date de prise de vue (EXIF/Immich)</item>
+    <item>Description (EXIF/Immich)</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
     <item>Nom du dossier uniquement</item>

@@ -208,6 +208,7 @@
   <string name="category_photos">照片</string>
   <string name="category_playlist">播放列表</string>
   <string name="category_progress_bar">进度条</string>
+  <string name="category_quality">画质</string>
   <string name="category_quality_and_scene_types">画质与场景</string>
   <string name="category_refresh_rate_options">刷新率选项</string>
   <string name="category_remote_streaming">在线流媒体</string>

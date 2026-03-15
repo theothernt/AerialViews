@@ -161,6 +161,9 @@
     <item>Stadt</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Standort (EXIF/Immich)</item>
+    <item>Aufnahmedatum (EXIF/Immich)</item>
+    <item>Beschreibung (EXIF/Immich)</item>
     <item>Dateinamen unverändert verwenden</item>
     <item>Ordner- &amp; Dateiname</item>
     <item>Nur Ordnername</item>

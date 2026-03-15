@@ -110,6 +110,8 @@
   <string name="appearance_photo_background_blur_opacity_title">אטימות טשטוש</string>
   <string name="appearance_photo_background_blur_summary">הצג גרסה מטושטשת של התמונה מאחורי תמונת החזית כדי למלא אזורים ריקים</string>
   <string name="appearance_photo_background_blur_title">הפעל טשטוש רקע</string>
+  <string name="appearance_photo_bilinear_filtering_summary">מחיל סינון באיכות גבוהה בעת שינוי גודל תמונות כדי להפחית aliasing (קצוות משוננים)</string>
+  <string name="appearance_photo_bilinear_filtering_title">סינון דו-לינארי</string>
   <string name="appearance_photo_scale_landscape_title">קנה מידה לתמונת נוף</string>
   <string name="appearance_photo_scale_portrait_title">קנה מידה לתמונת דיוקן</string>
   <string name="appearance_progress_bar_summary">הצג את ההתקדמות של סרטון או תמונות בחלק העליון או התחתון של המסך</string>
@@ -233,6 +235,7 @@
   <string name="category_photos">תמונות</string>
   <string name="category_playlist">רשימת השמעה</string>
   <string name="category_progress_bar">סרגל התקדמות</string>
+  <string name="category_quality">איכות</string>
   <string name="category_quality_and_scene_types">איכות וסוגי סצנות</string>
   <string name="category_refresh_rate_options">אפשרויות קצב רענון</string>
   <string name="category_remote_streaming">סטרימינג מרחוק</string>

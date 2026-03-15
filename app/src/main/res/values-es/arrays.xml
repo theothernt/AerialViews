@@ -162,6 +162,9 @@
     <item>Ciudad</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Ubicación (EXIF/Immich)</item>
+    <item>Fecha de toma (EXIF/Immich)</item>
+    <item>Descripción (EXIF/Immich)</item>
     <item>Usar el nombre de archivo como está</item>
     <item>Carpeta y nombre de archivo</item>
     <item>Solo el nombre de la carpeta</item>
