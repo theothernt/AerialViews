@@ -39,12 +39,13 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `shared link video transcoded`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.SHARED_LINK,
-            pathName = "share/12345",
-            videoType = ImmichVideoType.TRANSCODED,
-            password = "",
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "share/12345",
+                videoType = ImmichVideoType.TRANSCODED,
+                password = "",
+            )
 
         val result = builder.getAssetUri("asset1", isVideo = true)
         assertEquals("$server/api/assets/asset1/video/playback?key=12345", result.toString())
@@ -52,12 +53,13 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `shared link video original with password`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.SHARED_LINK,
-            pathName = "/s/slug678/",
-            videoType = ImmichVideoType.ORIGINAL,
-            password = "secret",
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "/s/slug678/",
+                videoType = ImmichVideoType.ORIGINAL,
+                password = "secret",
+            )
 
         val result = builder.getAssetUri("asset2", isVideo = true)
         assertEquals("$server/api/assets/asset2/original?key=slug678&password=secret", result.toString())
@@ -65,12 +67,13 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `shared link image fullsize`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.SHARED_LINK,
-            pathName = "12345",
-            imageType = ImmichImageType.FULLSIZE,
-            password = "",
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "12345",
+                imageType = ImmichImageType.FULLSIZE,
+                password = "",
+            )
 
         val result = builder.getAssetUri("asset3", isVideo = false)
         assertEquals("$server/api/assets/asset3/thumbnail?size=fullsize&key=12345", result.toString())
@@ -78,12 +81,13 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `shared link image original`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.SHARED_LINK,
-            pathName = "12345",
-            imageType = ImmichImageType.ORIGINAL,
-            password = "",
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "12345",
+                imageType = ImmichImageType.ORIGINAL,
+                password = "",
+            )
 
         val result = builder.getAssetUri("asset4", isVideo = false)
         assertEquals("$server/api/assets/asset4/original?key=12345", result.toString())
@@ -91,10 +95,11 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `api key video original`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.API_KEY,
-            videoType = ImmichVideoType.ORIGINAL,
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.API_KEY,
+                videoType = ImmichVideoType.ORIGINAL,
+            )
 
         val result = builder.getAssetUri("asset4", isVideo = true)
         assertEquals("$server/api/assets/asset4/original", result.toString())
@@ -102,10 +107,11 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `api key image preview`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.API_KEY,
-            imageType = ImmichImageType.PREVIEW,
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.API_KEY,
+                imageType = ImmichImageType.PREVIEW,
+            )
 
         val result = builder.getAssetUri("asset5", isVideo = false)
         assertEquals("$server/api/assets/asset5/thumbnail?size=preview", result.toString())
@@ -113,12 +119,13 @@ internal class ImmichUrlBuilderTest {
 
     @Test
     fun `resolved shared key overrides pathname`() {
-        val builder = createBuilder(
-            authType = ImmichAuthType.SHARED_LINK,
-            pathName = "share/12345",
-            videoType = ImmichVideoType.TRANSCODED,
-            password = "",
-        )
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "share/12345",
+                videoType = ImmichVideoType.TRANSCODED,
+                password = "",
+            )
 
         builder.setResolvedSharedKey("resolved999")
 

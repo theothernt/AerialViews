@@ -158,7 +158,7 @@ class ImagePlayerView : FrameLayout {
                     .size(targetWidth, targetHeight)
                     .target(
                         onStart = {
-                            //resetImageTransforms()
+                            // resetImageTransforms()
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
@@ -173,8 +173,7 @@ class ImagePlayerView : FrameLayout {
                         onError = { _, result ->
                             handleImageError(result.throwable)
                         },
-                    )
-                    .build()
+                    ).build()
             imageLoader.enqueue(request)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
@@ -269,8 +268,8 @@ class ImagePlayerView : FrameLayout {
         drawable: Drawable,
         width: Int,
         height: Int,
-    ): Pair<Bitmap, Boolean> {
-        return when (drawable) {
+    ): Pair<Bitmap, Boolean> =
+        when (drawable) {
             is BitmapDrawable -> {
                 val bitmap = drawable.bitmap
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
@@ -285,12 +284,12 @@ class ImagePlayerView : FrameLayout {
                     Pair(bitmap, false)
                 }
             }
+
             else -> {
                 val bitmap = drawable.toBitmap(width = width, height = height, config = Bitmap.Config.ARGB_8888)
                 Pair(bitmap, true)
             }
         }
-    }
 
     private fun resolveLegacyBlurTargetSize(): Pair<Int, Int> {
         val (targetWidth, targetHeight) = resolveTargetSize()
@@ -319,9 +318,7 @@ class ImagePlayerView : FrameLayout {
         return clamped / 100f
     }
 
-    private fun resolveBackgroundBlurRadius(): Float {
-        return BASE_BACKGROUND_BLUR_RADIUS * resolveBlurIntensityFactor()
-    }
+    private fun resolveBackgroundBlurRadius(): Float = BASE_BACKGROUND_BLUR_RADIUS * resolveBlurIntensityFactor()
 
     private fun resolveLegacyBlurRadius(): Int {
         val radius = BASE_LEGACY_BLUR_RADIUS * resolveBlurIntensityFactor()

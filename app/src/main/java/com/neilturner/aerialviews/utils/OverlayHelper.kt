@@ -184,8 +184,8 @@ class OverlayHelper(
         return Pair(leftIds, rightIds)
     }
 
-    private fun getOverlay(overlay: OverlayType): View? {
-        return when (overlay) {
+    private fun getOverlay(overlay: OverlayType): View? =
+        when (overlay) {
             OverlayType.CLOCK -> {
                 ClockOverlay(context).apply {
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, prefs.clockSize.toFloat())
@@ -308,8 +308,7 @@ class OverlayHelper(
             }
 
             else -> {
-	            null
+                null
             }
         }
-    }
 }

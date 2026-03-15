@@ -18,6 +18,8 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
@@ -757,12 +759,13 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateMetadataOverlayData(media: AerialMedia) {
-        val metadataSlots = listOf(
-            OverlayType.METADATA1,
-            OverlayType.METADATA2,
-            OverlayType.METADATA3,
-            OverlayType.METADATA4,
-        )
+        val metadataSlots =
+            listOf(
+                OverlayType.METADATA1,
+                OverlayType.METADATA2,
+                OverlayType.METADATA3,
+                OverlayType.METADATA4,
+            )
 
         metadataSlots.forEach { slot ->
             metadataJobs[slot]?.cancel()
@@ -791,65 +794,69 @@ class ScreenController(
 
     private fun getMetadataPreferences(slot: OverlayType): MetadataResolver.Preferences =
         when (slot) {
-            OverlayType.METADATA1 ->
+            OverlayType.METADATA1 -> {
                 MetadataResolver.Preferences(
                     videoSelection = GeneralPrefs.overlayMetadata1Videos,
                     videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
                     videoLocationType =
-                        GeneralPrefs.overlayMetadata1VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata1VideosLocationType ?: LocationType.CITY_COUNTRY,
                     photoSelection = GeneralPrefs.overlayMetadata1Photos,
                     photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
                     photoLocationType =
-                        GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata1PhotosLocationType ?: LocationType.CITY_COUNTRY,
                     photoDateType =
-                        GeneralPrefs.overlayMetadata1PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                        GeneralPrefs.overlayMetadata1PhotosDateType ?: DateType.COMPACT,
                     photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
                 )
+            }
 
-            OverlayType.METADATA2 ->
+            OverlayType.METADATA2 -> {
                 MetadataResolver.Preferences(
                     videoSelection = GeneralPrefs.overlayMetadata2Videos,
                     videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
                     videoLocationType =
-                        GeneralPrefs.overlayMetadata2VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata2VideosLocationType ?: LocationType.CITY_COUNTRY,
                     photoSelection = GeneralPrefs.overlayMetadata2Photos,
                     photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
                     photoLocationType =
-                        GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata2PhotosLocationType ?: LocationType.CITY_COUNTRY,
                     photoDateType =
-                        GeneralPrefs.overlayMetadata2PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                        GeneralPrefs.overlayMetadata2PhotosDateType ?: DateType.COMPACT,
                     photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
                 )
+            }
 
-            OverlayType.METADATA3 ->
+            OverlayType.METADATA3 -> {
                 MetadataResolver.Preferences(
                     videoSelection = GeneralPrefs.overlayMetadata3Videos,
                     videoFolderDepth = GeneralPrefs.overlayMetadata3VideosFolderLevel.toIntOrNull() ?: 1,
                     videoLocationType =
-                        GeneralPrefs.overlayMetadata3VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata3VideosLocationType ?: LocationType.CITY_COUNTRY,
                     photoSelection = GeneralPrefs.overlayMetadata3Photos,
                     photoFolderDepth = GeneralPrefs.overlayMetadata3PhotosFolderLevel.toIntOrNull() ?: 1,
                     photoLocationType =
-                        GeneralPrefs.overlayMetadata3PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata3PhotosLocationType ?: LocationType.CITY_COUNTRY,
                     photoDateType =
-                        GeneralPrefs.overlayMetadata3PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                        GeneralPrefs.overlayMetadata3PhotosDateType ?: DateType.COMPACT,
                     photoDateCustom = GeneralPrefs.overlayMetadata3PhotosDateCustom,
                 )
+            }
 
-            else ->
+            else -> {
                 MetadataResolver.Preferences(
                     videoSelection = GeneralPrefs.overlayMetadata4Videos,
                     videoFolderDepth = GeneralPrefs.overlayMetadata4VideosFolderLevel.toIntOrNull() ?: 1,
                     videoLocationType =
-                        GeneralPrefs.overlayMetadata4VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata4VideosLocationType ?: LocationType.CITY_COUNTRY,
                     photoSelection = GeneralPrefs.overlayMetadata4Photos,
                     photoFolderDepth = GeneralPrefs.overlayMetadata4PhotosFolderLevel.toIntOrNull() ?: 1,
                     photoLocationType =
-                        GeneralPrefs.overlayMetadata4PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
+                        GeneralPrefs.overlayMetadata4PhotosLocationType ?: LocationType.CITY_COUNTRY,
                     photoDateType =
-                        GeneralPrefs.overlayMetadata4PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
+                        GeneralPrefs.overlayMetadata4PhotosDateType ?: DateType.COMPACT,
                     photoDateCustom = GeneralPrefs.overlayMetadata4PhotosDateCustom,
                 )
+            }
         }
 
     override fun onImagePrepared() {

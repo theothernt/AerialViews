@@ -103,9 +103,11 @@ internal object ImagePlayerHelper {
                     val path = uri.path ?: return null
                     java.io.File(path).inputStream()
                 }
+
                 "content" -> {
                     context.contentResolver.openInputStream(uri)
                 }
+
                 else -> {
                     Timber.e("Unsupported URI scheme: ${uri.scheme}")
                     null
