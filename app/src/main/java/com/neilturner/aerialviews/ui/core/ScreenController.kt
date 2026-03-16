@@ -422,6 +422,10 @@ class ScreenController(
             it.isFadingOutMedia = true
         }
 
+        if (currentMedia?.type == AerialMediaType.VIDEO) {
+            videoPlayer.fadeOutAudio(mediaFadeOut)
+        }
+
         // Fade in LoadView (ie. black screen)
         loadingView
             .animate()
