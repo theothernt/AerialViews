@@ -31,7 +31,9 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import java.io.BufferedInputStream
 import java.io.InputStream
+import java.io.PushbackInputStream
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : FrameLayout {
@@ -43,7 +45,6 @@ class ImagePlayerView : FrameLayout {
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
 
-    // Fix 5: Jobs allow cancellation of both scopes in release() to prevent coroutine leaks.
     private val ioJob = SupervisorJob()
     private val mainJob = SupervisorJob()
     private val ioScope = CoroutineScope(Dispatchers.IO + ioJob)
@@ -81,7 +82,6 @@ class ImagePlayerView : FrameLayout {
         GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED &&
             GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
-    // Fix 8: Blur state and logic live in BackgroundBlurHelper; ImagePlayerView only holds the sync gate.
     private val blurHelper =
         BackgroundBlurHelper(
             backgroundImageView = backgroundImageView,
@@ -97,7 +97,6 @@ class ImagePlayerView : FrameLayout {
     }
 
     fun release() {
-        // Fix 5: Cancel scopes so in-flight blur or load coroutines don't outlive the view.
         ioJob.cancel()
         mainJob.cancel()
         removeCallbacks(finishedRunnable)
@@ -119,14 +118,29 @@ class ImagePlayerView : FrameLayout {
     fun setImage(media: AerialMedia) {
         ioScope.launch {
             val totalStartTime = System.currentTimeMillis()
-            val openSourceStream: () -> InputStream? = {
-                ImagePlayerHelper.streamFromMedia(context, media)
+
+            val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
+            if (baseStream == null) {
+                loadImage(media.uri)
+                return@launch
             }
 
-            // Fix 6: Removed the redundant probe open (open→close just to check nullability).
-            // extractExifMetadata opens the stream itself via the lambda and returns empty
-            // ExifMetadata gracefully if the stream is unavailable.
-            val exifMetadata = BitmapHelper.extractExifMetadata(openSourceStream)
+            val stream =
+                PushbackInputStream(
+                    BufferedInputStream(baseStream, STREAM_BUFFER_SIZE),
+                    BitmapHelper.HEADER_BUFFER_SIZE,
+                )
+
+            val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
+            val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
+            if (headerLength <= 0) {
+                stream.close()
+                loadImage(media.uri)
+                return@launch
+            }
+            stream.unread(headerBytes, 0, headerLength)
+
+            val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
 
             if (media.source != AerialMediaSource.IMMICH) {
                 media.metadata.exif.date = exifMetadata.date
@@ -145,17 +159,11 @@ class ImagePlayerView : FrameLayout {
                 exifMetadata.orientation,
             )
 
-            val imageStream = openSourceStream()
-            if (imageStream == null) {
-                loadImage(media.uri)
-                return@launch
-            }
-            loadImage(imageStream)
+            loadImage(stream)
         }
     }
 
     private fun loadImage(data: Any?) {
-        // Fix 10: This try/catch guards only the synchronous request-builder code below.
         // Errors from the actual async network/disk load are delivered via onError, not here.
         try {
             val (targetWidth, targetHeight) = resolveTargetSize()
@@ -186,6 +194,14 @@ class ImagePlayerView : FrameLayout {
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while trying to load image: ${ex.message}")
 
+            if (data is InputStream) {
+                try {
+                    data.close()
+                } catch (_: Exception) {
+                    // ignore
+                }
+            }
+
             // Show toast if preference is enabled
             if (GeneralPrefs.showMediaErrorToasts) {
                 mainScope.launch {
@@ -196,6 +212,25 @@ class ImagePlayerView : FrameLayout {
 
             listener?.onImageError()
         }
+    }
+
+    private fun readUpTo(
+        stream: InputStream,
+        buffer: ByteArray,
+        maxBytes: Int,
+    ): Int {
+        var total = 0
+        val limit = minOf(maxBytes, buffer.size)
+        while (total < limit) {
+            val read = stream.read(buffer, total, limit - total)
+            if (read <= 0) break
+            total += read
+        }
+        return total
+    }
+
+    companion object {
+        private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
 
     private fun resolveTargetSize(): Pair<Int, Int> {
@@ -250,7 +285,6 @@ class ImagePlayerView : FrameLayout {
     ) {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        // Fix 7: SQUARE and PORTRAIT share the same scale preference; combined into one branch.
         foregroundImageView.scaleType =
             when (aspect) {
                 AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
