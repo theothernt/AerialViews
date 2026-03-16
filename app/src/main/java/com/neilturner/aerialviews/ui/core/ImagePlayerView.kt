@@ -117,14 +117,18 @@ class ImagePlayerView : FrameLayout {
 
     fun setImage(media: AerialMedia) {
         ioScope.launch {
-            val totalStartTime = System.currentTimeMillis()
-
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media.uri)
+                loadImage(media.uri) // Pointless?
                 return@launch
             }
 
+            if (media.source == AerialMediaSource.IMMICH) {
+                loadImage(baseStream)
+                return@launch
+            }
+
+            val totalStartTime = System.currentTimeMillis()
             val stream =
                 PushbackInputStream(
                     BufferedInputStream(baseStream, STREAM_BUFFER_SIZE),
