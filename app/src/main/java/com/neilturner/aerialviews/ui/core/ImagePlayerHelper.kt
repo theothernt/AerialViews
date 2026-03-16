@@ -75,12 +75,8 @@ internal object ImagePlayerHelper {
     }
 
     fun streamFromWebDavFile(uri: Uri): InputStream? {
-        val okHttpClient =
-            OkHttpClient
-                .Builder()
-                .callTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS)
-                .build()
+        val baseClient = buildOkHttpClient()
+        val okHttpClient = baseClient.newBuilder().build()
         val client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
