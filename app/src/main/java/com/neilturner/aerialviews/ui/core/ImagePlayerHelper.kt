@@ -12,6 +12,7 @@ import com.hierynomus.msdtyp.AccessMask
 import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
+import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -166,8 +167,6 @@ internal object ImagePlayerHelper {
                         file.close()
                         share.close()
                         session.close()
-                        // connection.close()
-                        // smbClient.close()
                     } catch (ex: Exception) {
                         Timber.e(ex, "Error closing SMB resources: ${ex.message}")
                     }
@@ -185,7 +184,7 @@ internal object ImagePlayerHelper {
         val hostName: String,
         val shareName: String,
         val path: String,
-        val authContext: com.hierynomus.smbj.auth.AuthenticationContext,
+        val authContext: AuthenticationContext,
         val config: com.hierynomus.smbj.SmbConfig,
     )
 
@@ -211,7 +210,7 @@ internal object ImagePlayerHelper {
         smbClient: SMBClient,
         hostName: String,
         shareName: String,
-        authContext: com.hierynomus.smbj.auth.AuthenticationContext,
+        authContext: AuthenticationContext,
         startTime: Long,
     ): Pair<com.hierynomus.smbj.session.Session, DiskShare> {
         val connectStartTime = System.currentTimeMillis()

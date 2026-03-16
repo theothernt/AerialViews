@@ -1,18 +1,11 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.RenderEffect
-import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.scale
 import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
@@ -30,16 +23,15 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
-import com.neilturner.aerialviews.utils.FastBlurCompat
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import java.io.InputStream
-import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 class ImagePlayerView : FrameLayout {
@@ -50,13 +42,28 @@ class ImagePlayerView : FrameLayout {
     private var listener: OnImagePlayerEventListener? = null
     private var finishedRunnable = Runnable { listener?.onImageFinished() }
     private var errorRunnable = Runnable { listener?.onImageError() }
-    private val ioScope = CoroutineScope(Dispatchers.IO)
-    private val mainScope = CoroutineScope(Dispatchers.Main)
+
+    // Fix 5: Jobs allow cancellation of both scopes in release() to prevent coroutine leaks.
+    private val ioJob = SupervisorJob()
+    private val mainJob = SupervisorJob()
+    private val ioScope = CoroutineScope(Dispatchers.IO + ioJob)
+    private val mainScope = CoroutineScope(Dispatchers.Main + mainJob)
 
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
-    private var backgroundJobToken: Long = 0
+
+    /**
+     * Two-token sync gate: ensures [runSetupFinishedRunnable] fires only after *both*
+     * the foreground image load (Coil onSuccess) and the background blur (potentially
+     * async on pre-S devices) have completed for the same image request.
+     *
+     * - [backgroundReadyToken] is set by [markBackgroundReady] when [BackgroundBlurHelper]
+     *   reports its background job is done.
+     * - [pendingSetupToken] is set by [setupFinishedRunnable] when the foreground load
+     *   finishes but the background isn't ready yet.
+     * - [runSetupFinishedRunnable] fires when both tokens agree on the same value.
+     */
     private var backgroundReadyToken: Long = -1
     private var pendingSetupToken: Long = -1
 
@@ -71,17 +78,18 @@ class ImagePlayerView : FrameLayout {
             visibility = GONE
         }
     private val progressBar =
-        GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
+        GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED &&
+            GeneralPrefs.progressBarType != ProgressBarType.VIDEOS
 
-    companion object {
-        private const val BASE_BACKGROUND_BLUR_RADIUS = 32f
-        private const val BASE_LEGACY_BLUR_RADIUS = 12
-        private const val LEGACY_DOWNSCALE_FACTOR = 6
-        private const val LEGACY_MAX_BLUR_DIM = 480
-        private const val BLUR_INTENSITY_DEFAULT = 50
-        private const val BLUR_INTENSITY_MIN = 5
-        private const val BLUR_INTENSITY_MAX = 100
-    }
+    // Fix 8: Blur state and logic live in BackgroundBlurHelper; ImagePlayerView only holds the sync gate.
+    private val blurHelper =
+        BackgroundBlurHelper(
+            backgroundImageView = backgroundImageView,
+            ioScope = ioScope,
+            mainScope = mainScope,
+            resolveTargetSize = ::resolveTargetSize,
+            onReady = ::markBackgroundReady,
+        )
 
     init {
         addView(backgroundImageView)
@@ -89,6 +97,9 @@ class ImagePlayerView : FrameLayout {
     }
 
     fun release() {
+        // Fix 5: Cancel scopes so in-flight blur or load coroutines don't outlive the view.
+        ioJob.cancel()
+        mainJob.cancel()
         removeCallbacks(finishedRunnable)
         removeCallbacks(errorRunnable)
         listener = null
@@ -112,14 +123,9 @@ class ImagePlayerView : FrameLayout {
                 ImagePlayerHelper.streamFromMedia(context, media)
             }
 
-            val stream = openSourceStream()
-            if (stream == null) {
-                loadImage(media.uri)
-                return@launch
-            }
-
-            runCatching { stream.close() }
-
+            // Fix 6: Removed the redundant probe open (open→close just to check nullability).
+            // extractExifMetadata opens the stream itself via the lambda and returns empty
+            // ExifMetadata gracefully if the stream is unavailable.
             val exifMetadata = BitmapHelper.extractExifMetadata(openSourceStream)
 
             if (media.source != AerialMediaSource.IMMICH) {
@@ -149,6 +155,8 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun loadImage(data: Any?) {
+        // Fix 10: This try/catch guards only the synchronous request-builder code below.
+        // Errors from the actual async network/disk load are delivered via onError, not here.
         try {
             val (targetWidth, targetHeight) = resolveTargetSize()
             val request =
@@ -162,7 +170,7 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            updateBackgroundImage(drawable)
+                            blurHelper.update(drawable)
                             foregroundImageView.setImageDrawable(drawable)
                         },
                     ).listener(
@@ -196,135 +204,6 @@ class ImagePlayerView : FrameLayout {
         return Pair(width, height)
     }
 
-    private fun updateBackgroundImage(drawable: Drawable?) {
-        val token = ++backgroundJobToken
-        backgroundReadyToken = -1
-
-        if (drawable != null && GeneralPrefs.photoBackgroundBlurEnabled) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                val backgroundDrawable = drawable.constantState?.newDrawable()?.mutate() ?: drawable
-                backgroundImageView.setImageDrawable(backgroundDrawable)
-                applyBackgroundBlur()
-                backgroundImageView.alpha = resolveBackgroundBlurAlpha()
-                if (backgroundImageView.visibility != VISIBLE) {
-                    backgroundImageView.visibility = VISIBLE
-                }
-                markBackgroundReady(token)
-            } else {
-                applyLegacyBackgroundBlur(drawable, token)
-            }
-        } else {
-            backgroundImageView.setImageDrawable(null)
-            backgroundImageView.visibility = GONE
-            markBackgroundReady(token)
-        }
-    }
-
-    private fun applyBackgroundBlur() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val radius = resolveBackgroundBlurRadius()
-            backgroundImageView.setRenderEffect(
-                RenderEffect.createBlurEffect(
-                    radius,
-                    radius,
-                    Shader.TileMode.CLAMP,
-                ),
-            )
-        }
-    }
-
-    private fun applyLegacyBackgroundBlur(
-        drawable: Drawable,
-        token: Long,
-    ) {
-        val (downscaledWidth, downscaledHeight) = resolveLegacyBlurTargetSize()
-
-        ioScope.launch {
-            val (sourceBitmap, recycleSource) = drawableToSoftwareBitmap(drawable, downscaledWidth, downscaledHeight)
-            // Always blur a mutable copy to avoid mutating shared bitmaps.
-            val mutable = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true)
-            if (mutable !== sourceBitmap && recycleSource) {
-                sourceBitmap.recycle()
-            }
-
-            FastBlurCompat.applyBlur(mutable, resolveLegacyBlurRadius())
-
-            mainScope.launch {
-                if (token != backgroundJobToken) {
-                    mutable.recycle()
-                    return@launch
-                }
-                backgroundImageView.setImageBitmap(mutable)
-                backgroundImageView.alpha = resolveBackgroundBlurAlpha()
-                if (backgroundImageView.visibility != VISIBLE) {
-                    backgroundImageView.visibility = VISIBLE
-                }
-                markBackgroundReady(token)
-            }
-        }
-    }
-
-    private fun drawableToSoftwareBitmap(
-        drawable: Drawable,
-        width: Int,
-        height: Int,
-    ): Pair<Bitmap, Boolean> =
-        when (drawable) {
-            is BitmapDrawable -> {
-                val bitmap = drawable.bitmap
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    bitmap.config == Bitmap.Config.HARDWARE
-                ) {
-                    val copied = bitmap.copy(Bitmap.Config.ARGB_8888, false)
-                    Pair(copied, true)
-                } else if (bitmap.width != width || bitmap.height != height) {
-                    val scaled = bitmap.scale(width, height)
-                    Pair(scaled, true)
-                } else {
-                    Pair(bitmap, false)
-                }
-            }
-
-            else -> {
-                val bitmap = drawable.toBitmap(width = width, height = height, config = Bitmap.Config.ARGB_8888)
-                Pair(bitmap, true)
-            }
-        }
-
-    private fun resolveLegacyBlurTargetSize(): Pair<Int, Int> {
-        val (targetWidth, targetHeight) = resolveTargetSize()
-        var downscaledWidth = maxOf(1, targetWidth / LEGACY_DOWNSCALE_FACTOR)
-        var downscaledHeight = maxOf(1, targetHeight / LEGACY_DOWNSCALE_FACTOR)
-
-        val maxDim = maxOf(downscaledWidth, downscaledHeight)
-        if (maxDim > LEGACY_MAX_BLUR_DIM) {
-            val scale = LEGACY_MAX_BLUR_DIM.toFloat() / maxDim.toFloat()
-            downscaledWidth = maxOf(1, (downscaledWidth * scale).toInt())
-            downscaledHeight = maxOf(1, (downscaledHeight * scale).toInt())
-        }
-
-        return Pair(downscaledWidth, downscaledHeight)
-    }
-
-    private fun resolveBlurIntensityFactor(): Float {
-        val rawValue = GeneralPrefs.photoBackgroundBlurIntensity.toIntOrNull() ?: BLUR_INTENSITY_DEFAULT
-        val clamped = rawValue.coerceIn(BLUR_INTENSITY_MIN, BLUR_INTENSITY_MAX)
-        return clamped / BLUR_INTENSITY_DEFAULT.toFloat()
-    }
-
-    private fun resolveBackgroundBlurAlpha(): Float {
-        val rawValue = GeneralPrefs.photoBackgroundBlurOpacity.toIntOrNull() ?: 30
-        val clamped = rawValue.coerceIn(0, 100)
-        return clamped / 100f
-    }
-
-    private fun resolveBackgroundBlurRadius(): Float = BASE_BACKGROUND_BLUR_RADIUS * resolveBlurIntensityFactor()
-
-    private fun resolveLegacyBlurRadius(): Int {
-        val radius = BASE_LEGACY_BLUR_RADIUS * resolveBlurIntensityFactor()
-        return maxOf(1, radius.roundToInt())
-    }
-
     private fun handleImageError(throwable: Throwable) {
         Timber.e(throwable, "Exception while loading image: ${throwable.message}")
         FirebaseHelper.crashlyticsException(throwable)
@@ -344,9 +223,7 @@ class ImagePlayerView : FrameLayout {
         foregroundImageView.setImageBitmap(null)
         pausedTimestamp = 0
         remainingDuration = 0
-        backgroundJobToken++
-        backgroundImageView.setImageBitmap(null)
-        backgroundImageView.visibility = GONE
+        blurHelper.cancel()
     }
 
     fun pauseTimer() {
@@ -373,19 +250,11 @@ class ImagePlayerView : FrameLayout {
     ) {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
+        // Fix 7: SQUARE and PORTRAIT share the same scale preference; combined into one branch.
         foregroundImageView.scaleType =
             when (aspect) {
-                AspectRatio.SQUARE -> {
-                    getScaleType(GeneralPrefs.photoScalePortrait)
-                }
-
-                AspectRatio.PORTRAIT -> {
-                    getScaleType(GeneralPrefs.photoScalePortrait)
-                }
-
-                AspectRatio.LANDSCAPE -> {
-                    getScaleType(GeneralPrefs.photoScaleLandscape)
-                }
+                AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
+                AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
             }
     }
 
@@ -399,7 +268,7 @@ class ImagePlayerView : FrameLayout {
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
-        val token = backgroundJobToken
+        val token = blurHelper.currentToken
         if (backgroundReadyToken == token) {
             runSetupFinishedRunnable()
         } else {
