@@ -31,7 +31,6 @@ import timber.log.Timber
 import java.io.FilterInputStream
 import java.io.InputStream
 import java.util.EnumSet
-import java.util.concurrent.TimeUnit
 
 internal object ImagePlayerHelper {
     val logger: Logger? = if (BuildConfig.DEBUG) DebugLogger() else null

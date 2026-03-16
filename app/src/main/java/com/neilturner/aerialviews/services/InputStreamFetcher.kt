@@ -12,7 +12,6 @@ import kotlinx.coroutines.withContext
 import okio.buffer
 import okio.source
 import timber.log.Timber
-import java.io.BufferedInputStream
 import java.io.InputStream
 
 class InputStreamFetcher(
@@ -22,26 +21,8 @@ class InputStreamFetcher(
     override suspend fun fetch(): FetchResult =
         withContext(Dispatchers.IO) {
             try {
-                val bufferedStream =
-                    when {
-                        inputStream.markSupported() -> {
-                            Timber.i("InputStream already supports mark/reset")
-                            inputStream
-                        }
-
-                        inputStream is BufferedInputStream -> {
-                            Timber.i("InputStream is already a BufferedInputStream")
-                            inputStream
-                        }
-
-                        else -> {
-                            Timber.i("Wrapping InputStream in BufferedInputStream")
-                            BufferedInputStream(inputStream, BUFFER_SIZE)
-                        }
-                    }
-
                 // Use Okio to create a source from the buffered stream
-                val source = bufferedStream.source().buffer()
+                val source = inputStream.source().buffer()
 
                 // Create a SourceResult with the buffered stream
                 SourceFetchResult(
@@ -59,10 +40,6 @@ class InputStreamFetcher(
                 throw e
             }
         }
-
-    companion object {
-        private const val BUFFER_SIZE = 8 * 1024 // 8KB buffer
-    }
 
     class Factory : Fetcher.Factory<InputStream> {
         override fun create(

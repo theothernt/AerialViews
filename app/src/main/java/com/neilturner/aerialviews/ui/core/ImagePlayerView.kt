@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
