@@ -1,6 +1,6 @@
 [versions]
 agp = "9.1.0"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 kotlin-serialization = "1.10.0"
 google-services = "4.4.4"
 ksp = "2.3.6"
@@ -32,7 +32,7 @@ retrofit = "3.0.0"
 sardine-android = "0.0.3"
 
 smbj = "0.13.0"
-media3-exoplayer = "1.9.2"
+media3-exoplayer = "1.9.3"
 flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.4.0"
