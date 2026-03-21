@@ -24,6 +24,12 @@
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_advanced">
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="message_animate_changes"
+                    app:title="@string/appearance_message_animate_changes_title"
+                    app:summary="@string/appearance_message_animate_changes_summary" />
+
                 <Preference
                     app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysMessageApiFragment"
                     app:key="message_api_settings"

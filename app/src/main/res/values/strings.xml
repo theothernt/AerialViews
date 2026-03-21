@@ -534,6 +534,8 @@
     <string name="appearance_message_line3_title">Line 3</string>
     <string name="appearance_message_line4_title">Line 4</string>
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+    <string name="appearance_message_animate_changes_title">Animate message changes</string>
+    <string name="appearance_message_animate_changes_summary">Fade message updates in and out instead of switching instantly</string>
 
     <!-- Main / Settings / Overlays / Countdown -->
     <string name="appearance_countdown_target_time_title">Target Time</string>

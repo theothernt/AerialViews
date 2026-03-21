@@ -135,6 +135,7 @@ object GeneralPrefs : KotprefModel() {
 
     var messageSize by stringPref("18", "message_size")
     var messageWeight by stringPref("300", "message_weight")
+    var messageAnimateChanges by booleanPref(false, "message_animate_changes")
 
     var messageApiEnabled by booleanPref(false, "message_api_enabled")
     var messageApiPort by stringPref("8081", "message_api_port")

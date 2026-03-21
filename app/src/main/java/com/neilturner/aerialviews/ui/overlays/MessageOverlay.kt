@@ -92,6 +92,19 @@ class MessageOverlay : AppCompatTextView {
         clearJob = null
         shouldUpdate = false
 
+        if (!prefs.messageAnimateChanges) {
+            animate().cancel()
+            clearAnimation()
+            updateTextAndStyle()
+            applyVisibilityImmediate()
+            scheduleAutoClear()
+            isUpdating = false
+            if (shouldUpdate) {
+                updateMessage()
+            }
+            return
+        }
+
         if (isGone) {
             alpha = 0f
         } else if (alpha >= minVisibleAlphaForFade) {
@@ -105,8 +118,15 @@ class MessageOverlay : AppCompatTextView {
         }
 
         animateOverlays()
+        scheduleAutoClear()
 
-        // Schedule auto-clear if duration is specified
+        isUpdating = false
+        if (shouldUpdate) {
+            updateMessage()
+        }
+    }
+
+    private fun scheduleAutoClear() {
         val durationSeconds = currentMessage.duration
         if (!text.isNullOrBlank() && durationSeconds != null && durationSeconds > 0) {
             clearJob =
@@ -119,11 +139,6 @@ class MessageOverlay : AppCompatTextView {
                         requestUpdate()
                     }
                 }
-        }
-
-        isUpdating = false
-        if (shouldUpdate) {
-            updateMessage()
         }
     }
 
@@ -183,6 +198,16 @@ class MessageOverlay : AppCompatTextView {
         } else {
             Timber.i("$type: Clearing message")
             text = null
+        }
+    }
+
+    private fun applyVisibilityImmediate() {
+        if (text.isNullOrBlank()) {
+            alpha = 0f
+            visibility = GONE
+        } else {
+            alpha = 1f
+            visibility = VISIBLE
         }
     }
 
