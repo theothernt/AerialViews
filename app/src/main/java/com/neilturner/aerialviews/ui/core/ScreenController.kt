@@ -39,6 +39,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
@@ -896,10 +897,7 @@ class ScreenController(
         }
 
         overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
-            val messageState = state.message[overlay.type]
-            if (messageState != null) {
-                overlay.render(messageState)
-            }
+            overlay.render(state.message[overlay.type] ?: MessageOverlayState())
         }
 
         progressBarView.render(state.progress)

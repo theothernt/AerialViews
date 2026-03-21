@@ -75,6 +75,7 @@ class OverlayStateStore {
         _uiState.update {
             it.copy(
                 metadata = emptyMap(),
+                message = emptyMap(),
                 progress = ProgressOverlayState(),
             )
         }
