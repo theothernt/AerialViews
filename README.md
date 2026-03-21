@@ -24,6 +24,7 @@ Inspired by Apple TV's beautiful video screensaver!
 * Many playlist options to limit media length or loop certain videos
 * Use the D-Pad or swipe (on phones, tablets, etc) to skip media, skip songs, change speed, seek, pause and more
 * Refresh rate switching for 24fps, 50fps content
+* **Message API** - Send custom messages to display on your TV from any device on your network
 
 ## Support the project
 
@@ -501,6 +502,163 @@ If you want to launch into the screensaver directly, the equivalent of selecting
 Then you must assign an "Exit to settings" action to a d-pad, button press or swipe on one of these screens:
 
 `Settings > D-Pad/Remote, Tap & Swipe Gestures > D-Pad, Button Press, etc`
+
+</details>
+
+## Message API
+
+Aerial Views includes a built-in HTTP API that allows you to display custom messages on your TV from any device on your network. This is useful for showing notifications, status updates, or integrating with home automation systems.
+
+<details>
+<summary>Enabling the Message API</summary>
+&nbsp;
+
+1. Open Aerial Views settings on your TV
+2. Navigate to **Overlays** → **Message Overlay**
+3. Enable **Message API** and configure the port (default: `8081`)
+4. Note the IP address of your TV device (found in network settings)
+
+</details>
+
+<details>
+<summary>API Endpoints</summary>
+&nbsp;
+
+#### Check API Status
+
+Verify the API is running:
+
+```bash
+curl http://<tv-ip-address>:8081/status
+```
+
+**Response:**
+```
+Aerial Views message API is running
+```
+
+#### Send a Message
+
+Display a message on the screen:
+
+```bash
+curl -X POST http://<tv-ip-address>:8081/message/1 \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "Hello World!",
+    "duration": 5,
+    "textSize": 18,
+    "textWeight": 300
+  }'
+```
+
+**Request Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `text` | string | Yes | The message text to display (empty string clears the message) |
+| `duration` | integer | No | Auto-clear message after N seconds |
+| `textSize` | integer | No | Font size in sp (default: 18) |
+| `textWeight` | integer | No | Font weight 100-900 (default: 300) |
+
+**Response (Success):**
+```json
+{
+  "success": true,
+  "message": "Message 1 processed successfully"
+}
+```
+
+**Response (Error):**
+```json
+{
+  "success": false,
+  "error": "Invalid textSize value: 50. Valid values are: [12, 14, 16, 18, 20, 22, 24]"
+}
+```
+
+#### Clear a Message
+
+Clear the message by sending an empty text:
+
+```bash
+curl -X POST http://<tv-ip-address>:8081/message/1 \
+  -H "Content-Type: application/json" \
+  -d '{"text": ""}'
+```
+
+</details>
+
+<details>
+<summary>Examples</summary>
+&nbsp;
+
+**Python:**
+```python
+import urllib.request
+import json
+
+url = "http://192.168.1.100:8081/message/1"
+data = {
+    "text": "Welcome Home!",
+    "duration": 10
+}
+req = urllib.request.Request(
+    url,
+    data=json.dumps(data).encode("utf-8"),
+    method="POST",
+    headers={"Content-Type": "application/json"}
+)
+with urllib.request.urlopen(req) as response:
+    print(response.read().decode("utf-8"))
+```
+
+**Node.js:**
+```javascript
+fetch('http://192.168.1.100:8081/message/1', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        text: 'Doorbell pressed!',
+        duration: 5
+    })
+})
+.then(res => res.json())
+.then(console.log);
+```
+
+**Home Assistant (REST Command):**
+```yaml
+rest_command:
+  aerial_views_message:
+    url: "http://192.168.1.100:8081/message/1"
+    method: "post"
+    content_type: "application/json"
+    payload: '{"text": "{{ message }}", "duration": {{ duration | default(5) }} }'
+```
+
+**Bash/Shell:**
+```bash
+#!/bin/bash
+TV_IP="192.168.1.100"
+MESSAGE="Meeting starts in 5 minutes"
+
+curl -X POST "http://$TV_IP:8081/message/1" \
+  -H "Content-Type: application/json" \
+  -d "{\"text\": \"$MESSAGE\", \"duration\": 10}"
+```
+
+</details>
+
+<details>
+<summary>Notes</summary>
+&nbsp;
+
+- Message number (`1` in `/message/1`) refers to the overlay slot (1-4 available)
+- Messages fade in/out smoothly with 300ms transitions
+- If `duration` is specified, the message auto-clears after that many seconds
+- Valid `textSize` values: `[12, 14, 16, 18, 20, 22, 24]`
+- Valid `textWeight` values: `[100, 200, 300, 400, 500, 600, 700, 800, 900]`
 
 </details>
 
