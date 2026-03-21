@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
         targetSdk = 36
-        versionCode = 106
+        versionCode = 107
         versionName = "1.8.2"
-        betaVersion = "-beta16"
+        betaVersion = "-beta17"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
