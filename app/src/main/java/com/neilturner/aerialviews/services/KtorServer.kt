@@ -24,17 +24,19 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
-import java.io.IOException
 import java.net.BindException
-import java.net.ServerSocket
 
 class KtorServer(
-    val context: Context,
+    context: Context,
+    private val onMessageReceived: (MessageEvent) -> Unit,
 ) {
+    private val appContext = context.applicationContext
+    private val serverScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var server: EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration>? = null
     private var validTextSizes: List<Int> = emptyList()
     private var validTextWeights: List<Int> = emptyList()
@@ -48,11 +50,11 @@ class KtorServer(
     private fun loadValidationArrays() {
         try {
             // Load text size values from XML
-            val textSizeArray = context.resources.getStringArray(R.array.text_size_values)
+            val textSizeArray = appContext.resources.getStringArray(R.array.text_size_values)
             validTextSizes = textSizeArray.mapNotNull { it.toIntOrNull() }
 
             // Load text weight values from XML
-            val textWeightArray = context.resources.getStringArray(R.array.text_weight_values)
+            val textWeightArray = appContext.resources.getStringArray(R.array.text_weight_values)
             validTextWeights = textWeightArray.mapNotNull { it.toIntOrNull() }
 
             Timber.d("Loaded text size & weight values")
@@ -62,14 +64,10 @@ class KtorServer(
     }
 
     fun start() {
-        CoroutineScope(Dispatchers.IO).launch {
+        serverScope.launch {
             Timber.i("Attempting to start Ktor server...")
 
             val port = GeneralPrefs.messageApiPort.toIntOrNull() ?: 8080
-            if (!isPortAvailable(port)) {
-                Timber.e("Failed to start server: Port $port already in use")
-                return@launch
-            }
 
             try {
                 server =
@@ -87,17 +85,13 @@ class KtorServer(
     }
 
     fun stop() {
-        server?.stop(1000, 3000)
-        server = null
-        Timber.i("Ktor server stopped")
-    }
-
-    private fun isPortAvailable(port: Int): Boolean =
-        try {
-            ServerSocket(port).use { true }
-        } catch (_: IOException) {
-            false
+        serverScope.launch {
+            server?.stop(1000, 3000)
+            server = null
+            Timber.i("Ktor server stopped")
+            serverScope.cancel()
         }
+    }
 
     private fun Application.configureRouting() {
         routing {
@@ -169,7 +163,7 @@ class KtorServer(
                     textSize,
                     textWeight,
                 )
-            GlobalBus.post(messageEvent)
+            onMessageReceived(messageEvent)
 
             val actionType = if (isClearing) "cleared" else "received"
             Timber.i("Message $messageNumber $actionType - Text: '$text', Duration: ${duration}s, Size: $textSize, Weight: $textWeight")
