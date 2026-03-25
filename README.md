@@ -19,12 +19,12 @@ Inspired by Apple TV's beautiful video screensaver!
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 250 videos from Apple, Amazon, Jetson Creative and Robin Fourcade
 * Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, WebDAV or custom feeds
-* Place overlays in the corners of the screen such as clock, description/location, music playing, date, custom message
+* Place overlays in the corners of the screen such as metadata from videos and photos like location or date taken, clock, music playing, date, countdown timer
+* Message overlay API - Send custom messages to display on your TV from any device on your network (eg. Home Assistant)
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
 * Use the D-Pad or swipe (on phones, tablets, etc) to skip media, skip songs, change speed, seek, pause and more
 * Refresh rate switching for 24fps, 50fps content
-* **Message API** - Send custom messages to display on your TV from any device on your network
 
 ## Support the project
 
@@ -655,7 +655,6 @@ curl -X POST "http://$TV_IP:8081/message/1" \
 &nbsp;
 
 - Message number (`1` in `/message/1`) refers to the overlay slot (1-4 available)
-- Messages fade in/out smoothly with 300ms transitions
 - If `duration` is specified, the message auto-clears after that many seconds
 - Valid `textSize` values: `[12, 14, 16, 18, 20, 22, 24]`
 - Valid `textWeight` values: `[100, 200, 300, 400, 500, 600, 700, 800, 900]`
