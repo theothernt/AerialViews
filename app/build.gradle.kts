@@ -82,6 +82,9 @@ android {
             // isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
 
+            val openWeather = keyProps.getProperty("openWeather", "")
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
+
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
             manifestPlaceholders["performanceCollectionEnabled"] = true
