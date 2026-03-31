@@ -112,8 +112,6 @@
   <string name="appearance_photo_background_blur_opacity_title">Opacité du flou</string>
   <string name="appearance_photo_background_blur_summary">Afficher une version floue de la photo en arrière-plan de l\'image au premier plan pour combler les zones vides.</string>
   <string name="appearance_photo_background_blur_title">Activer le flou d\'arrière-plan</string>
-  <string name="appearance_photo_bilinear_filtering_summary">Applique un filtrage de haute qualité lors du redimensionnement des photos afin de réduire l\'aliasing (bords crénelés).</string>
-  <string name="appearance_photo_bilinear_filtering_title">Filtrage bilinéaire</string>
   <string name="appearance_photo_scale_landscape_title">Mise à l\'échelle des photos de paysage</string>
   <string name="appearance_photo_scale_portrait_title">Portrait Mise à l\'échelle de la photo</string>
   <string name="appearance_progress_bar_summary">Afficher la progression d\'une vidéo ou de photos en haut ou en bas de l\'écran</string>
@@ -237,7 +235,6 @@
   <string name="category_photos">Photos</string>
   <string name="category_playlist">Liste de lecture</string>
   <string name="category_progress_bar">Barre de progression</string>
-  <string name="category_quality">Qualité</string>
   <string name="category_quality_and_scene_types">Types de qualité et de scène</string>
   <string name="category_refresh_rate_options">Options de taux de rafraîchissement</string>
   <string name="category_remote_streaming">diffusion à distance</string>

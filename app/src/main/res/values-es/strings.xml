@@ -112,8 +112,6 @@
   <string name="appearance_photo_background_blur_opacity_title">Opacidad de desenfoque</string>
   <string name="appearance_photo_background_blur_summary">Muestra una versión borrosa de la foto que se encuentra detrás de la imagen en primer plano para rellenar las áreas vacías.</string>
   <string name="appearance_photo_background_blur_title">Habilitar desenfoque de fondo</string>
-  <string name="appearance_photo_bilinear_filtering_summary">Aplica filtros de alta calidad al redimensionar fotos para reducir el aliasing (bordes dentados).</string>
-  <string name="appearance_photo_bilinear_filtering_title">Filtrado bilineal</string>
   <string name="appearance_photo_scale_landscape_title">Escalado de fotografías horizontales</string>
   <string name="appearance_photo_scale_portrait_title">Escalado de fotografías verticales</string>
   <string name="appearance_progress_bar_summary">Mostrar el progreso de un vídeo o fotos en la parte superior o inferior de la pantalla</string>
@@ -237,7 +235,6 @@
   <string name="category_photos">Fotos</string>
   <string name="category_playlist">Lista de reproducción</string>
   <string name="category_progress_bar">Barra de progreso</string>
-  <string name="category_quality">Calidad</string>
   <string name="category_quality_and_scene_types">Calidad y tipos de escena</string>
   <string name="category_refresh_rate_options">Opciones de frecuencia de actualización</string>
   <string name="category_remote_streaming">Transmisión remota</string>

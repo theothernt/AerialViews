@@ -112,8 +112,6 @@
   <string name="appearance_photo_background_blur_opacity_title">模糊不透明度</string>
   <string name="appearance_photo_background_blur_summary">在前景图像后面显示照片的模糊版本，以填补空白区域</string>
   <string name="appearance_photo_background_blur_title">启用背景模糊</string>
-  <string name="appearance_photo_bilinear_filtering_summary">调整照片大小时应用高质量滤波技术，减少锯齿（边缘不平整）现象</string>
-  <string name="appearance_photo_bilinear_filtering_title">双线性滤波</string>
   <string name="appearance_photo_scale_landscape_title">横屏照片缩放</string>
   <string name="appearance_photo_scale_portrait_title">竖屏照片缩放</string>
   <string name="appearance_progress_bar_summary">在屏幕顶部或底部显示视频或照片的进度</string>
@@ -237,7 +235,6 @@
   <string name="category_photos">照片</string>
   <string name="category_playlist">播放列表</string>
   <string name="category_progress_bar">进度条</string>
-  <string name="category_quality">画质</string>
   <string name="category_quality_and_scene_types">画质与场景</string>
   <string name="category_refresh_rate_options">刷新率选项</string>
   <string name="category_remote_streaming">在线流媒体</string>

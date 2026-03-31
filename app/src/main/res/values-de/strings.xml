@@ -112,8 +112,6 @@
   <string name="appearance_photo_background_blur_opacity_title">Unschärfe Deckkraft</string>
   <string name="appearance_photo_background_blur_summary">Um leere Bereiche zu füllen, soll eine verschwommene Version des Fotos hinter dem Vordergrundbild angezeigt werden.</string>
   <string name="appearance_photo_background_blur_title">Hintergrundunschärfe aktivieren</string>
-  <string name="appearance_photo_bilinear_filtering_summary">Wendet beim Skalieren von Fotos hochwertige Filter an, um Aliasing (gezackte Kanten) zu reduzieren.</string>
-  <string name="appearance_photo_bilinear_filtering_title">Bilineare Filterung</string>
   <string name="appearance_photo_scale_landscape_title">Skalierung von Landschaftsbildern</string>
   <string name="appearance_photo_scale_portrait_title">Porträtfoto-Skalierung</string>
   <string name="appearance_progress_bar_summary">Zeige den Fortschritt eines Fotos oder Videos am oberen oder unteren Bildschirmrand an</string>
@@ -237,7 +235,6 @@
   <string name="category_photos">Fotos</string>
   <string name="category_playlist">Wiedergabeliste</string>
   <string name="category_progress_bar">Fortschrittsbalken</string>
-  <string name="category_quality">Qualität</string>
   <string name="category_quality_and_scene_types">Qualität &amp; Szenentypen</string>
   <string name="category_refresh_rate_options">Optionen für die Bildwiederholfrequenz</string>
   <string name="category_remote_streaming">Remote-Streaming</string>
