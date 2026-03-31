@@ -82,6 +82,8 @@
   <string name="appearance_gradient_top_title">הצג מדרון צבעים בחלק העליון של המסך</string>
   <string name="appearance_loading_show_summary">מציג את הטקסט ״טוען…״ בזמן טעינת האפליקציה</string>
   <string name="appearance_loading_show_title">הצג טקסט טעינה</string>
+  <string name="appearance_message_animate_changes_summary">דהייה של עדכוני הודעות במקום מעבר מיידי</string>
+  <string name="appearance_message_animate_changes_title">הנפשת שינויים בהודעה</string>
   <string name="appearance_message_api_enabled_summary">אפשר הגדרה מרחוק של הודעות מותאמות אישית באמצעות HTTP API</string>
   <string name="appearance_message_api_enabled_title">הפעלת API</string>
   <string name="appearance_message_api_port_title">מספר יציאה (ברירת מחדל: 8081)</string>

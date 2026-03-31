@@ -54,16 +54,16 @@
     <item>Gelenek</item>
   </string-array>
   <string-array name="description_filename_entries">
-    <item>Devre dışı</item>
-    <item>Dosya adını olduğu gibi kullanın</item>
+    <item>Engelli</item>
+    <item>Dosya adını olduğu gibi kullanın.</item>
     <item>Klasör ve dosya adı</item>
     <item>Sadece klasör adı</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Devre dışı</item>
-    <item>\'Japan - Deep snow in Hokkaido.jpg\' \'Japan - Deep snow in Hokkaido\' haline geliyor</item>
-    <item>\'Photos/Italy/Dolomites.jpg\' dosyası \'Italy / Dolomites\' olarak değiştirilir</item>
-    <item>\'Photos/Dublin/Temple Bar.png\' yolu \'Dublin’ olarak değiştirilir</item>
+    <item>Engelli</item>
+    <item>\'Japan - Deep snow in Hokkaido.jpg\' \'Japan - Deep snow in Hokkaido\' haline geliyor.</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' dosyası \'Italy / Dolomites\' olarak değiştirilir.</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' \'Dublin\' haline geliyor.</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Devre dışı</item>
@@ -71,10 +71,10 @@
     <item>Dinamik ilgi noktaları</item>
   </string-array>
   <string-array name="description_video_filename_entries">
-    <item>Devre dışı</item>
-    <item>\'Flying towards Mount Pilatus.mp4\' dosyası \'Flying towards Mount Pilatus\' haline geliyor</item>
-    <item>\'Videos/Grand Canyon/Sunset.mp4\' dosyası \'Grand Canyon / Sunset\' olarak değiştirildi</item>
-    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' dosyası \'Ireland\' olarak değiştirildi</item>
+    <item>Engelli</item>
+    <item>\'Flying towards Mount Pilatus.mp4\' dosyası \'Flying towards Mount Pilatus\' haline geliyor.</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' dosyası \'Grand Canyon / Sunset\' olarak değiştirildi.</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' dosyası \'Ireland\' olarak değiştirildi.</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Devre dışı</item>
@@ -162,7 +162,7 @@
   </string-array>
   <string-array name="overlay_fade_corners_entries">
     <item>Sol üst</item>
-    <item>Sağ üstte</item>
+    <item>Sağ üst</item>
     <item>Sol alt</item>
     <item>Sağ alt</item>
   </string-array>
@@ -284,12 +284,12 @@
   <string-array name="slot_entries">
     <item>Boş</item>
     <item>Saat</item>
-    <item>Metadata #1</item>
-    <item>Metadata #2</item>
+    <item>Meta Veri #1</item>
+    <item>Meta Veri #2</item>
     <item>Meta Veri #3</item>
     <item>Meta Veri #4</item>
     <item>Hava Durumu #1</item>
-    <item>Şimdi Çalıyor #1</item>
+    <item>Şimdi Oynatılıyor #1</item>
     <item>Şimdi Oynatılıyor #2</item>
     <item>Tarih</item>
     <item>Mesaj #1</item>
@@ -340,7 +340,7 @@
   </string-array>
   <string-array name="weather_type_entries">
     <item>Boş</item>
-    <item>Tahmin etmek</item>
+    <item>Tahmin</item>
     <item>Rüzgâr</item>
     <item>Nem</item>
     <item>Gün doğumu</item>

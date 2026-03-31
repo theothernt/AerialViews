@@ -15,22 +15,22 @@
   </string-array>
   <string-array name="button_action_entries">
     <item>Aktion ignorieren</item>
-    <item>Zum nächsten Foto / Video springen</item>
-    <item>Zum vorherigen Foto / Video springen</item>
+    <item>Zum nächsten Video/Foto springen</item>
+    <item>Zum vorherigen Video/Foto springen</item>
     <item>Zum nächsten Musiktitel springen</item>
     <item>Zum vorherigen Musiktitel springen</item>
-    <item>Geschwindigkeit der Videowiedergabe erhöhen</item>
-    <item>Geschwindigkeit der Videowiedergabe verringern</item>
-    <item>In einem Video vorwärts suchen</item>
-    <item>In einem Video rückwärts suchen</item>
-    <item>Bildschirmschoner verlassen</item>
-    <item>Zurück zum Einstellungsbildschirm</item>
-    <item>Ausgeblendete Overlays anzeigen</item>
-    <item>Bildschirm Schwärzen, Medien und Overlays ausblenden</item>
-    <item>Audio stummschalten/stummschalten aufheben</item>
-    <item>Video- oder Foto-Timer pausieren/unpausieren</item>
+    <item>Videowiedergabegeschwindigkeit erhöhen</item>
+    <item>Videowiedergabegeschwindigkeit verringern</item>
+    <item>In einem Video vorwärts spulen</item>
+    <item>In einem Video zurückspulen</item>
+    <item>Helligkeit erhöhen</item>
+    <item>Helligkeit verringern</item>
+    <item>Bildschirmschoner beenden</item>
+    <item>Zum Einstellungsbildschirm zurückkehren</item>
+    <item>Overlays anzeigen, falls ausgeblendet</item>
+    <item>Blackout-Bildschirm, Ausblenden von Medien und Overlays</item>
     <item>Audio stummschalten/Stummschaltung aufheben</item>
-    <item>Video- oder Foto-Timer pausieren/unpausieren</item>
+    <item>Video- oder Fototimer pausieren/fortsetzen</item>
     <item>Wiedergabewiederholung für aktuelles Video umschalten</item>
   </string-array>
   <string-array name="clock_format_entries">
@@ -102,12 +102,21 @@
     <item>Freigegebener Link</item>
     <item>API-Schlüssel</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Vorschau</item>
+    <item>Originalgröße</item>
+    <item>Original</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Deaktiviert</item>
     <item>100 Fotos</item>
     <item>200 Fotos</item>
     <item>300 Fotos</item>
     <item>400 Fotos</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Transkodiert</item>
+    <item>Original</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Überspringen, wenn das Limit erreicht ist</item>
@@ -317,10 +326,10 @@
     <item>Weltraum</item>
   </string-array>
   <string-array name="video_time_of_day_entries">
-    <item>Tag</item>
-    <item>Nacht</item>
-    <item>Sonnenuntergang</item>
     <item>Sonnenaufgang</item>
+    <item>Tag</item>
+    <item>Sonnenuntergang</item>
+    <item>Nacht</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Leer</item>

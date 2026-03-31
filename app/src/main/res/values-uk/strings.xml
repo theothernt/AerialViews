@@ -82,6 +82,8 @@
   <string name="appearance_gradient_top_title">Показати верхній градієнт</string>
   <string name="appearance_loading_show_summary">Відображає текст \" Завантаження…\" під час завантаження програми</string>
   <string name="appearance_loading_show_title">Показувати текст завантаження</string>
+  <string name="appearance_message_animate_changes_summary">Плавна поява та зникнення оновлень повідомлень замість миттєвого перемикання</string>
+  <string name="appearance_message_animate_changes_title">Анімація змін у повідомленні</string>
   <string name="appearance_message_api_enabled_summary">Дозволити віддалене налаштування користувацьких повідомлень через HTTP API</string>
   <string name="appearance_message_api_enabled_title">Увімкнути API</string>
   <string name="appearance_message_api_port_title">Номер порту (за замовчуванням: 8081)</string>

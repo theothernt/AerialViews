@@ -14,21 +14,21 @@
     <item>לבן</item>
   </string-array>
   <string-array name="button_action_entries">
-    <item>התעלם מפעולה</item>
-    <item>צא משומר מסך</item>
-    <item>דלג לסרטון/תמונה הבאה</item>
-    <item>דלג לסרטון/תמונה קודמים</item>
-    <item>הגדל את מהירות הפעלת הווידאו</item>
+    <item>התעלם מהפעולה</item>
+    <item>דלג לסרטון/תמונה הבא</item>
+    <item>דלג לסרטון/תמונה הקודם</item>
+    <item>דלג לרצועת המוזיקה הבאה</item>
+    <item>דלג לרצועת המוזיקה הקודמת</item>
+    <item>הגברת מהירות הפעלת הווידאו</item>
     <item>הפחת את מהירות הפעלת הווידאו</item>
-    <item>הצג שכבות-על (אם מוסתרות)</item>
-    <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>חפש לאחור בסרטון</item>
-    <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>הצג שכבות-על, אם הן מוסתרות</item>
-    <item>מסך שחור, עמעום מדיה ושכבות-על</item>
-    <item>החלפת מצב השתקה/ביטול השתקה של שמע</item>
-    <item>השהיה/ביטול השהיה של טיימר וידאו או תמונה</item>
+    <item>חיפוש קדימה בסרטון</item>
+    <item>חיפוש אחורה בסרטון</item>
+    <item>הגברת הבהירות</item>
+    <item>הפחתת הבהירות</item>
+    <item>יציאה משומר המסך</item>
+    <item>יציאה למסך ההגדרות</item>
+    <item>הצג שכבות-על, אם מוסתרות</item>
+    <item>מסך חושך, מדיה דהייה ושכבות-על</item>
     <item>החלפת/ביטול השתקה של אודיו</item>
     <item>השהיה/ביטול השהיה של טיימר וידאו או תמונה</item>
     <item>הפעל/י לולאה עבור הסרטון הנוכחי</item>
@@ -82,17 +82,17 @@
     <item>נקודות עניין דינמיות, זמינות בהרבה שפות, שמתעדכנות בזמן ניגון הוידאו</item>
   </string-array>
   <string-array name="duration_entries">
-    <item>מבוטל</item>
-    <item>200 אלפיות השנייה</item>
-    <item>400 אלפיות השנייה</item>
-    <item>600 אלפיות השנייה</item>
-    <item>800 אלפיות השנייה</item>
-    <item>1000 אלפיות השנייה</item>
-    <item>1200ms</item>
-    <item>1400 אלפיות השנייה</item>
-    <item>1600 אלפיות השנייה</item>
-    <item>1800 אלפיות השנייה</item>
-    <item>2000 אלפיות השנייה</item>
+    <item>נָכֶה</item>
+    <item>200ms</item>
+    <item>400ms</item>
+    <item>600ms</item>
+    <item>800ms</item>
+    <item>שנייה אחת</item>
+    <item>1.2 שניות</item>
+    <item>1.4 שניות</item>
+    <item>1.6 שניות</item>
+    <item>1.8 שניות</item>
+    <item>2 שניות</item>
     <item>4 שניות</item>
     <item>6 שניות</item>
     <item>8 שניות</item>
@@ -178,18 +178,18 @@
     <item>מיקום (EXIF/Immich)</item>
     <item>תאריך צילום (EXIF/Immich)</item>
     <item>תיאור (EXIF/Immich)</item>
-    <item>השתמש בשם הקובץ כמו שהוא</item>
-    <item>התיקייה והקובץ</item>
-    <item>שם התיקיה בלבד</item>
+    <item>השתמש בשם הקובץ כפי שהוא</item>
+    <item>תיקייה ושם קובץ</item>
+    <item>שם התיקייה בלבד</item>
   </string-array>
   <string-array name="overlay_metadata_videos_entries">
     <item>נקודות עניין דינמיות</item>
     <item>תיאור קצר</item>
     <item>מיקום (אימיך)</item>
     <item>תיאור (אימיך)</item>
-    <item>השתמש בשם הקובץ כמו שהוא</item>
-    <item>התיקייה והקובץ</item>
-    <item>שם התיקיה בלבד</item>
+    <item>השתמש בשם הקובץ כפי שהוא</item>
+    <item>תיקייה ושם קובץ</item>
+    <item>שם התיקייה בלבד</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 שניות</item>
@@ -283,21 +283,21 @@
     <item>12 שעות</item>
   </string-array>
   <string-array name="slot_entries">
-    <item>ריק</item>
-    <item>שעון</item>
-    <item>מידע #1</item>
-    <item>מידע #2</item>
-    <item>מידע #3</item>
-    <item>מידע #4</item>
+    <item>רֵיק</item>
+    <item>שָׁעוֹן</item>
+    <item>מטא-נתונים #1</item>
+    <item>מטא-דאטה #2</item>
+    <item>מטא-דאטה #3</item>
+    <item>מטא-דאטה #4</item>
     <item>מזג אוויר מספר 1</item>
-    <item>מנגן כעת מס\' 1</item>
-    <item>מנגן כעת מס\' 2</item>
-    <item>תאריך</item>
+    <item>עכשיו מתנגן #1</item>
+    <item>עכשיו מתנגן #2</item>
+    <item>תַאֲרִיך</item>
     <item>הודעה מס\' 1</item>
     <item>הודעה מס\' 2</item>
     <item>הודעה מס\' 3</item>
     <item>הודעה מס\' 4</item>
-    <item>ספירה לאחור</item>
+    <item>סְפִירָה לְאָחוֹר</item>
   </string-array>
   <string-array name="temperature_units_entries">
     <item>C° / צלזיוס</item>
@@ -327,10 +327,10 @@
     <item>החלל החיצון</item>
   </string-array>
   <string-array name="video_time_of_day_entries">
-    <item>זריחה</item>
-    <item>יום</item>
-    <item>שקיעה</item>
-    <item>זריחה</item>
+    <item>זְרִיחָה</item>
+    <item>יְוֹם</item>
+    <item>שְׁקִיעַת הַשֶׁמֶשׁ</item>
+    <item>לַיְלָה</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>ריק</item>

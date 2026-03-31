@@ -82,6 +82,8 @@
   <string name="appearance_gradient_top_title">Mostra gradiente superiore</string>
   <string name="appearance_loading_show_summary">Visualizza il testo “Caricamento…” durante l\'avvio dell\'applicazione.</string>
   <string name="appearance_loading_show_title">Mostra testo di caricamento</string>
+  <string name="appearance_message_animate_changes_summary">I messaggi vengono visualizzati gradualmente, apparendo e scomparendo invece di passare istantaneamente.</string>
+  <string name="appearance_message_animate_changes_title">Animare le modifiche del messaggio</string>
   <string name="appearance_message_api_enabled_summary">Permetti l\'impostazione remota di messaggi personalizzati tramite l\'API HTTP</string>
   <string name="appearance_message_api_enabled_title">Abilita API</string>
   <string name="appearance_message_api_port_title">Numero di porta (predefinito: 8081)</string>

@@ -17,21 +17,21 @@
     <item>Ігнорувати дію</item>
     <item>Перейти до наступного відео/фото</item>
     <item>Перейти до попереднього відео/фото</item>
-    <item>Перейти до наступної музичної композиції</item>
-    <item>Перейти до попередньої музичної композиції</item>
-    <item>Збільшення швидкості відтворення відео</item>
+    <item>Перейти до наступного музичного треку</item>
+    <item>Перейти до попереднього музичного треку</item>
+    <item>Збільшити швидкість відтворення відео</item>
     <item>Зменшити швидкість відтворення відео</item>
-    <item>Перемотати вперед відео</item>
-    <item>Перемотати відео назад</item>
-    <item>Вийти із заставки</item>
+    <item>Перемотування вперед у відео</item>
+    <item>Перемотування назад у відео</item>
+    <item>Збільшити яскравість</item>
+    <item>Зменшити яскравість</item>
+    <item>Вихід із заставки</item>
     <item>Вихід на екран налаштувань</item>
-    <item>Показати накладання, якщо приховано</item>
-    <item>Затемнення екрану, загасання мультимедіа і накладень</item>
-    <item>Увімкнення/вимкнення звуку</item>
-    <item>Таймер паузи/відновлення відео або фотографій</item>
-    <item>Увімкнути зациклювання для поточного відео</item>
-    <item>Таймер паузи/відновлення відео або фотографій</item>
-    <item>Увімкнути зациклювання для поточного відео</item>
+    <item>Показувати накладання, якщо вони приховані</item>
+    <item>Затемнення екрана, поступове затьмарення медіа та накладок</item>
+    <item>Вимкнути/увімкнути звук</item>
+    <item>Призупинити/відновити таймер відео або фото</item>
+    <item>Увімкнути/вимкнути цикл для поточного відео</item>
   </string-array>
   <string-array name="clock_format_entries">
     <item>Системний</item>
@@ -61,9 +61,9 @@
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Вимкнено</item>
-    <item>Використовуйте форматоване ім\'я файлу, наприклад: \'switzerland-zürich_train_station.jpg\' стає \'Switzerland - Zürich Train Station\'</item>
-    <item>Використовуйте ім\'я файлу як є, наприклад: \'Japan - Deep snow in Hokkaido.jpg\' стає \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Використовуйте папку та ім\'я файлу як є, наприклад: \'Pictures/Italy/Dolomites.jpg\' стає \'Italy / Dolomites\'</item>
+    <item>\"Японія - Глибокий сніг на Хоккайдо.jpg\" стає \"Японія - Глибокий сніг на Хоккайдо</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' стане \'Італія/Доломіти\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' стає \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Вимкнено</item>
@@ -72,9 +72,9 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Вимкнено</item>
-    <item>"Використовуйте форматоване ім\'я файлу, наприклад: \'japan-mount_fuji.mp4\' стає \'Japan - Mount Fuji\'"</item>
-    <item>"Використовуйте ім\'я файлу як є, наприклад: \'Flying towards Mount Pilatus.mp4\' стає \'Flying towards Mount Pilatus\'"</item>
-    <item>"Використовуйте папку та ім\'я файлу як є, наприклад: \'Videos/Grand Canyon/Sunet.mp4\' стає \'Grand Canyon / Sunet\'"</item>
+    <item>\"Політ до гори Пілат.mp4\" стає \"Політ до гори Пілат</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' стане \'Grand Canyon / Sunset.mp4\'</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'.</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Вимкнено</item>
@@ -139,11 +139,11 @@
     <item>Відео та зображення</item>
   </string-array>
   <string-array name="metadata_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 рівень</item>
-    <item>\'2025 / Italy / Sunset\' - 2 рівня</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 рівня</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 рівня</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 рівнів</item>
+    <item>\"Італія / Захід сонця\" - 1 рівень</item>
+    <item>\"2025 / Італія / Захід сонця\" - 2 рівні</item>
+    <item>\"Мальовничий / 2025 / Італія / Захід сонця\" - 3 рівні</item>
+    <item>\'Фото / Пейзаж / 2025 / Італія / Захід сонця\' - 4 рівні</item>
+    <item>\'Медіа / Фото / Мальовничі / 2025 / Італія / Захід сонця\' - 5 рівнів</item>
   </string-array>
   <string-array name="nowplaying_format_entries">
     <item>Вимкнено</item>
@@ -203,20 +203,20 @@
     <item>Центр</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
-    <item>Без обмеження (за замовчуванням)</item>
-    <item>10 сек</item>
-    <item>20 сек</item>
-    <item>30 сек</item>
-    <item>1 хв</item>
-    <item>2 хв</item>
-    <item>3 хв</item>
-    <item>4 хв</item>
-    <item>5 хв</item>
-    <item>6 хв</item>
-    <item>7 хв</item>
-    <item>8 хв</item>
-    <item>9 хв</item>
-    <item>10 хв</item>
+    <item>Без обмежень*</item>
+    <item>10 секунд</item>
+    <item>20 секунд</item>
+    <item>30 секунд</item>
+    <item>1 хвилина</item>
+    <item>2 хвилини</item>
+    <item>3 хвилини</item>
+    <item>4 хвилини</item>
+    <item>5 хвилин</item>
+    <item>6 хвилин</item>
+    <item>7 хвилин</item>
+    <item>8 хвилин</item>
+    <item>9 хвилин</item>
+    <item>10 хвилин</item>
     <item>20 хвилин</item>
     <item>30 хвилин</item>
     <item>60 хвилин</item>
@@ -239,10 +239,10 @@
   </string-array>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
-    <item>20 сек</item>
-    <item>30 сек</item>
+    <item>20 секунд</item>
+    <item>30 секунд</item>
     <item>1 хвилина</item>
-    <item>2 хв</item>
+    <item>2 хвилини</item>
     <item>5 хвилин</item>
   </string-array>
   <string-array name="sleep_timer_entries">
@@ -305,13 +305,13 @@
   </string-array>
   <string-array name="text_weight_entries">
     <item>100/Тонка</item>
-    <item>200/Надсвітла</item>
-    <item>300/Світла (за замовчуванням)</item>
+    <item>200/Надлегкий</item>
+    <item>300/Світло*</item>
     <item>400/Нормальна</item>
     <item>500/Середня</item>
     <item>600/Напівжирна</item>
     <item>700/Жирна</item>
-    <item>800/Наджирна</item>
+    <item>800/Додатковий жирний</item>
     <item>900/Важка</item>
   </string-array>
   <string-array name="video_scale_entries">
@@ -327,10 +327,10 @@
     <item>Космос</item>
   </string-array>
   <string-array name="video_time_of_day_entries">
-    <item>День</item>
-    <item>Ніч</item>
-    <item>Захід сонця</item>
     <item>Схід сонця</item>
+    <item>День</item>
+    <item>Захід сонця</item>
+    <item>Ніч</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Порожній</item>

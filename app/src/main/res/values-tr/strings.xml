@@ -82,6 +82,8 @@
   <string name="appearance_gradient_top_title">En üst gradyanı göster</string>
   <string name="appearance_loading_show_summary">Medya oynatma listesi oluşturulurken yükleme mesajı görüntülenir</string>
   <string name="appearance_loading_show_title">Yükleme mesajını göster</string>
+  <string name="appearance_message_animate_changes_summary">Anında geçiş yapmak yerine mesaj güncellemelerini soluklaştırma</string>
+  <string name="appearance_message_animate_changes_title">Mesaj değişikliklerini canlandırın</string>
   <string name="appearance_message_api_enabled_summary">HTTP API aracılığıyla uzaktan özel mesaj ayarları yapılmasına olanak tanıyın</string>
   <string name="appearance_message_api_enabled_title">API\'yi etkinleştirin</string>
   <string name="appearance_message_api_port_title">Bağlantı noktası numarası (varsayılan: 8081)</string>
