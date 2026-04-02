@@ -16,15 +16,6 @@ interface OpenWeatherApi {
         @Query("lang") language: String = "en",
     ): Response<FiveDayForecastResponse>
 
-    @GET("data/2.5/weather")
-    suspend fun getCurrentWeather(
-        @Query("lat") lat: Double,
-        @Query("lon") lon: Double,
-        @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric",
-        @Query("lang") language: String = "en",
-    ): Response<CurrentWeatherResponse>
-
     @GET("geo/1.0/direct")
     suspend fun getLocationByName(
         @Query("q") locationName: String,
@@ -60,17 +51,7 @@ data class LocationResponse(
         }
 }
 
-// Current Weather
-@Serializable
-data class CurrentWeatherResponse(
-    val weather: List<Weather>,
-    val main: MainWeatherData,
-    val dt: Long,
-    val name: String,
-    val sys: SysInfo,
-    val wind: Wind,
-)
-
+// Weather (shared by current and forecast)
 @Serializable
 data class MainWeatherData(
     val temp: Double,
@@ -90,17 +71,9 @@ data class Weather(
 )
 
 @Serializable
-data class SysInfo(
-    val country: String,
-    val sunrise: Long,
-    val sunset: Long,
-)
-
-@Serializable
 data class Wind(
     val speed: Double,
     val deg: Int,
-    // val gust: Double,
 )
 
 // 5 Day Forecast
@@ -115,6 +88,7 @@ data class ForecastItem(
     val dt: Long,
     val main: MainWeatherData,
     val weather: List<Weather>,
+    val wind: Wind,
     @SerialName("dt_txt") val dtTxt: String,
 )
 

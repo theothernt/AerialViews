@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.overlays
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
@@ -28,7 +29,7 @@ class WeatherForecastOverlay
         private var previousDays: List<ForecastDay>? = null
         private val fadeAnimationDuration = 300L
         private val minVisibleAlphaForFade = 0.95f
-        private val cellSpacing = 48 // dp between forecast cells
+        private val cellSpacing = 24 // dp between day columns
 
         private var font = ""
         private var size = 0f
@@ -36,7 +37,7 @@ class WeatherForecastOverlay
 
         init {
             orientation = HORIZONTAL
-            gravity = Gravity.CENTER_VERTICAL
+            gravity = Gravity.CENTER
             alpha = 1f
         }
 
@@ -94,11 +95,12 @@ class WeatherForecastOverlay
             removeAllViews()
 
             val iconSize = calculateIconSize(size)
-            val spacingPx = (cellSpacing * resources.displayMetrics.density).toInt()
+            val density = resources.displayMetrics.density
+            val spacingPx = (cellSpacing * density).toInt()
 
             days.forEachIndexed { index, day ->
-                val cell = createForecastCell(day, iconSize)
-                addView(cell)
+                val column = createDayColumn(day, iconSize)
+                addView(column)
 
                 if (index < days.size - 1) {
                     val spacer =
@@ -109,18 +111,33 @@ class WeatherForecastOverlay
                 }
             }
 
-            Timber.d("Forecast content updated: ${days.size} cells, iconSize=$iconSize, spacing=$spacingPx")
+            Timber.d("Forecast content updated: ${days.size} columns, iconSize=$iconSize")
         }
 
-        private fun createForecastCell(
+        private fun createDayColumn(
             day: ForecastDay,
             iconSize: Int,
         ): LinearLayout {
-            val cell = LinearLayout(context).apply {
-                orientation = HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-                layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            }
+            val column =
+                LinearLayout(context).apply {
+                    orientation = VERTICAL
+                    gravity = Gravity.CENTER_HORIZONTAL
+                    layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+                }
+
+            val dayLabel =
+                TextView(context).apply {
+                    text = day.dayName
+                    gravity = Gravity.CENTER
+                }
+            TextViewCompat.setTextAppearance(dayLabel, R.style.OverlayText)
+            dayLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.7f)
+            dayLabel.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            dayLabel.setTextColor(Color.argb(200, 255, 255, 255))
+            val labelParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+            labelParams.bottomMargin = 4
+            dayLabel.layoutParams = labelParams
+            column.addView(dayLabel)
 
             if (day.icon > 0) {
                 val iconView =
@@ -128,28 +145,52 @@ class WeatherForecastOverlay
                         setSvgResource(day.icon)
                     }
                 val iconParams = LayoutParams(iconSize, iconSize)
-                iconParams.gravity = Gravity.CENTER_VERTICAL
+                iconParams.gravity = Gravity.CENTER_HORIZONTAL
+                iconParams.bottomMargin = 4
                 iconView.layoutParams = iconParams
                 iconView.scaleType = ImageView.ScaleType.FIT_CENTER
-                cell.addView(iconView)
+                column.addView(iconView)
             }
 
-            val tempText = "${day.tempHigh}/${day.tempLow}"
-            val textView =
-                TextView(context).apply {
-                    text = tempText
+            val tempContainer =
+                LinearLayout(context).apply {
+                    orientation = HORIZONTAL
+                    gravity = Gravity.CENTER
+                    layoutParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 }
-            TextViewCompat.setTextAppearance(textView, R.style.OverlayText)
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, size)
-            textView.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
 
-            val textParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            textParams.gravity = Gravity.CENTER_VERTICAL
-            textParams.leftMargin = 8
-            textView.layoutParams = textParams
-            cell.addView(textView)
+            val highTemp =
+                TextView(context).apply {
+                    text = day.tempHigh
+                    gravity = Gravity.CENTER
+                }
+            TextViewCompat.setTextAppearance(highTemp, R.style.OverlayText)
+            highTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.8f)
+            highTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            highTemp.setTextColor(Color.argb(230, 255, 255, 255))
+            tempContainer.addView(highTemp)
 
-            return cell
+            val separator =
+                TextView(context).apply {
+                    text = " "
+                    gravity = Gravity.CENTER
+                }
+            tempContainer.addView(separator)
+
+            val lowTemp =
+                TextView(context).apply {
+                    text = day.tempLow
+                    gravity = Gravity.CENTER
+                }
+            TextViewCompat.setTextAppearance(lowTemp, R.style.OverlayText)
+            lowTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.8f)
+            lowTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
+            lowTemp.setTextColor(Color.argb(140, 255, 255, 255))
+            tempContainer.addView(lowTemp)
+
+            column.addView(tempContainer)
+
+            return column
         }
 
         private fun calculateIconSize(size: Float): Int {
@@ -161,7 +202,7 @@ class WeatherForecastOverlay
                     }.paint
 
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
-            val iconSize = textHeight * 1.3f
+            val iconSize = textHeight * 1.1f
             return iconSize.toInt()
         }
     }
