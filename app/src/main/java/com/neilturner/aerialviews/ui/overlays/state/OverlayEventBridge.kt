@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.overlays.state
 
 import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.MusicEvent
+import com.neilturner.aerialviews.services.weather.ForecastEvent
 import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import me.kosert.flowbus.EventsReceiver
@@ -18,6 +19,9 @@ class OverlayEventBridge(
         }
         receiver.subscribe<WeatherEvent> { event ->
             store.setWeather(event)
+        }
+        receiver.subscribe<ForecastEvent> { event ->
+            store.setForecast(event)
         }
         receiver.subscribe<MessageEvent> { event ->
             store.setMessage(event.type, event.toState())

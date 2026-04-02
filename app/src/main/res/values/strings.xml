@@ -67,6 +67,7 @@
     <string name="category_photos">Photos</string>
     <string name="category_weather">Weather</string>
     <string name="category_forecast">Forecast</string>
+    <string name="category_forecast_overlay">Forecast Overlay</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_message">Message</string>
     <string name="category_countdown">Countdown</string>
@@ -485,6 +486,9 @@
     <string name="weather_forecast_slot2">Slot 2</string>
     <string name="weather_forecast_slot3">Slot 3</string>
     <string name="weather_forecast_slot4">Slot 4</string>
+
+    <string name="weather_forecast_days_title">Forecast days</string>
+    <string name="weather_forecast_days_summary">Number of days to show in the forecast overlay</string>
 
     <!-- Main / Settings / Overlays / Metadata -->
     <string name="appearance_metadata_slot1_title">Metadata #1</string>

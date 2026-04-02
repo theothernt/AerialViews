@@ -68,6 +68,9 @@ object GeneralPrefs : KotprefModel() {
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
     var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
+    var weatherForecastDays by stringPref("5", "weather_forecast_days")
+    var weatherForecastSize by stringPref("18", "weather_forecast_size")
+    var weatherForecastWeight by stringPref("300", "weather_forecast_weight")
     var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
 
     var weatherWind by stringPref("", "weather_wind")

@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 
 class OverlayHelper(
@@ -231,6 +232,13 @@ class OverlayHelper(
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)
                     layout(prefs.weatherForecast)
+                }
+            }
+
+            OverlayType.WEATHER_FORECAST -> {
+                WeatherForecastOverlay(context).apply {
+                    type = overlay
+                    style(prefs.fontTypeface, prefs.weatherForecastSize.toFloat(), prefs.weatherForecastWeight)
                 }
             }
 

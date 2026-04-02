@@ -37,6 +37,7 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
@@ -251,7 +252,9 @@ class ScreenController(
             }
 
             // Setup weather service
-            if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
+            val hasWeatherOverlay = overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()
+            val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
+            if (hasWeatherOverlay || hasForecastOverlay) {
                 weatherService =
                     WeatherService(context).apply {
                         startUpdates()
@@ -896,6 +899,10 @@ class ScreenController(
 
         overlayHelper.findOverlay<WeatherOverlay>().forEach {
             it.render(state.weather)
+        }
+
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach {
+            it.render(state.forecast)
         }
 
         overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->

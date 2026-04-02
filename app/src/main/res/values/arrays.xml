@@ -268,6 +268,7 @@
         <item>Metadata #4</item>
         <item>Weather #1</item>
         <!--    <item>Weather #2</item>-->
+        <item>Weather Forecast</item>
         <item>Now Playing #1</item>
         <item>Now Playing #2</item>
         <item>Date</item>
@@ -286,6 +287,7 @@
         <item>METADATA4</item>
         <item>WEATHER1</item>
         <!--    <item>WEATHER2</item>-->
+        <item>WEATHER_FORECAST</item>
         <item>MUSIC1</item>
         <item>MUSIC2</item>
         <item>DATE</item>
@@ -1014,6 +1016,16 @@
         <item>TEMPERATURE</item>
         <item>ICON</item>
         <item>SUMMARY</item>
+    </string-array>
+
+    <!-- Weather Forecast Days -->
+    <string-array name="forecast_days_entries">
+        <item>3 days</item>
+        <item>5 days</item>
+    </string-array>
+    <string-array name="forecast_days_values" translatable="false">
+        <item>3</item>
+        <item>5</item>
     </string-array>
 
     <!-- Background Colors -->

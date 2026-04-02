@@ -18,6 +18,11 @@ import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import retrofit2.Retrofit
 import timber.log.Timber
+import java.time.Instant
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.TextStyle
+import java.util.Locale
 import kotlin.math.round
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.minutes
@@ -128,15 +133,21 @@ class WeatherService(
         updateJob =
             CoroutineScope(Dispatchers.IO).launch {
                 while (isActive) {
-                    val update = forecastUpdate()
+                    val update = currentWeatherUpdate()
                     GlobalBus.post(update)
                     Timber.i("Next weather update in ${updateDelay.inWholeMinutes} minutes")
+
+                    val forecastUpdate = dailyForecastUpdate()
+                    if (forecastUpdate != null) {
+                        GlobalBus.post(forecastUpdate)
+                    }
+
                     delay(updateDelay)
                 }
             }
     }
 
-    private suspend fun forecastUpdate(): WeatherEvent {
+    private suspend fun currentWeatherUpdate(): WeatherEvent {
         return try {
             val key = BuildConfig.OPEN_WEATHER
             val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
@@ -184,7 +195,7 @@ class WeatherService(
                     if (retryCount < maxRetries) {
                         retryCount++
                         delay(retryDelay) // Wait before retry
-                        return forecastUpdate() // Retry
+                        return currentWeatherUpdate() // Retry
                     } else {
                         val error = "Max retries reached for server error - giving up"
                         Timber.e(error)
@@ -243,6 +254,113 @@ class WeatherService(
         )
     }
 
+    private suspend fun dailyForecastUpdate(): ForecastEvent? {
+        return try {
+            val key = BuildConfig.OPEN_WEATHER
+            val lat = GeneralPrefs.weatherLocationLat.toDoubleOrNull()
+            val lon = GeneralPrefs.weatherLocationLon.toDoubleOrNull()
+            val units =
+                if (GeneralPrefs.weatherTemperatureUnits == null) {
+                    "metric"
+                } else {
+                    GeneralPrefs.weatherTemperatureUnits.toString().lowercase()
+                }
+            val language = WeatherLanguage.getLanguageCode(context)
+
+            if (key.isEmpty() || lat == null || lon == null) {
+                Timber.e("Invalid location coordinates for forecast")
+                return null
+            }
+
+            val response = openWeatherClient.getForecast(lat, lon, key, units, language)
+            when {
+                response.isSuccessful -> {
+                    val forecastData = response.body()
+                    if (forecastData != null) {
+                        processForecastResponse(forecastData)
+                    } else {
+                        Timber.e("Received successful forecast response but body was null")
+                        null
+                    }
+                }
+
+                response.code() == 401 -> {
+                    Timber.e("Unauthorized access to forecast API - invalid API key")
+                    null
+                }
+
+                response.code() in 500..599 -> {
+                    Timber.e("Server error (${response.code()}) fetching forecast")
+                    null
+                }
+
+                response.code() == 429 -> {
+                    Timber.w("Rate limit exceeded on forecast API")
+                    null
+                }
+
+                else -> {
+                    Timber.e("Failed to fetch forecast - HTTP ${response.code()}: ${response.message()}")
+                    null
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to fetch and parse forecast data")
+            null
+        }
+    }
+
+    private fun processForecastResponse(response: FiveDayForecastResponse): ForecastEvent {
+        val timezoneOffset = response.city.timezone.toLong()
+        val today = ZonedDateTime.now(ZoneId.ofOffset("UTC", java.time.ZoneOffset.ofTotalSeconds(timezoneOffset.toInt()))).toLocalDate()
+
+        val forecastDays = aggregateForecastByDay(response.list, today, timezoneOffset)
+        val maxDays = GeneralPrefs.weatherForecastDays.toIntOrNull() ?: 5
+        val limitedDays = forecastDays.take(maxDays)
+
+        Timber.i("Processed forecast: ${limitedDays.size} days for ${response.city.name}")
+        return ForecastEvent(
+            days = limitedDays,
+            city = GeneralPrefs.weatherLocationCustomName.ifEmpty { response.city.name },
+        )
+    }
+
+    private fun aggregateForecastByDay(
+        items: List<ForecastItem>,
+        today: java.time.LocalDate,
+        timezoneOffset: Long,
+    ): List<ForecastDay> {
+        val zoneOffset = java.time.ZoneOffset.ofTotalSeconds(timezoneOffset.toInt())
+
+        return items
+            .groupBy { item ->
+                Instant.ofEpochSecond(item.dt).atOffset(zoneOffset).toLocalDate()
+            }
+            .filterKeys { it.isAfter(today) }
+            .toSortedMap()
+            .map { (date, dayItems) ->
+                val tempHigh = dayItems.maxOf { it.main.tempMax }.roundToInt()
+                val tempLow = dayItems.minOf { it.main.tempMin }.roundToInt()
+
+                val middayItem =
+                    dayItems.minByOrNull { item ->
+                        val hour = Instant.ofEpochSecond(item.dt).atOffset(zoneOffset).hour
+                        kotlin.math.abs(hour - 12)
+                    } ?: dayItems.first()
+
+                val weatherInfo = middayItem.weather.first()
+                val icon = getWeatherIcon(weatherInfo.id, weatherInfo.main, weatherInfo.icon)
+                val dayName = date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+
+                ForecastDay(
+                    dayName = dayName,
+                    icon = icon,
+                    tempHigh = "$tempHigh°",
+                    tempLow = "$tempLow°",
+                )
+            }
+    }
+
     fun getWeatherIcon(
         code: Int,
         type: String,
@@ -269,4 +387,16 @@ data class WeatherEvent(
     val city: String = "",
     val wind: String = "",
     val humidity: String = "",
+)
+
+data class ForecastDay(
+    val dayName: String = "",
+    val icon: Int = -1,
+    val tempHigh: String = "",
+    val tempLow: String = "",
+)
+
+data class ForecastEvent(
+    val days: List<ForecastDay> = emptyList(),
+    val city: String = "",
 )
