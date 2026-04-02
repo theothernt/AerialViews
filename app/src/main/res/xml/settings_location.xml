@@ -3,7 +3,7 @@
     <PreferenceCategory app:title="@string/category_location">
         <Preference
             app:selectable="false"
-            app:summary="@string/location_summary"
+            app:summary="@string/weather_location_summary"
             />
 
         <Preference
@@ -20,6 +20,5 @@
             app:title="@string/weather_location_custom_title"
             app:summary="@string/weather_location_custom_summary"
             app:useSimpleSummaryProvider="true" />
-
     </PreferenceCategory>
 </PreferenceScreen>

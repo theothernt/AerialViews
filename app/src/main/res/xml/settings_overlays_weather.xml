@@ -7,21 +7,21 @@
                   app:key="weather_location_name"
                   app:title="@string/weather_location_title"
                   app:fragment="com.neilturner.aerialviews.ui.settings.LocationFragment" />
-        </PreferenceCategory>
-
-        <PreferenceCategory app:title="@string/category_forecast">
-            <Preference
-                app:title="@string/weather_forecast_title"
-                app:summary="@string/weather_forecast_summary"
-                app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysWeatherForecastFragment"/>
 
             <ListPreference
                 app:defaultValue="@string/temperature_units_default"
                 app:entries="@array/temperature_units_entries"
                 app:entryValues="@array/temperature_units_values"
                 app:key="weather_temperature_units"
-                app:title="@string/weather_forecast_temperature_units_title"
+                app:title="@string/weather_temperature_units_title"
                 app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_current_weather">
+            <Preference
+                app:title="@string/weather_current_title"
+                app:summary="@string/weather_current_summary"
+                app:fragment="com.neilturner.aerialviews.ui.settings.OverlaysWeatherForecastFragment"/>
 
             <ListPreference
                 app:defaultValue="@string/text_size_default"
@@ -40,12 +40,12 @@
                 app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_forecast_overlay">
+        <PreferenceCategory app:title="@string/category_weather_forecast">
             <ListPreference
                 app:defaultValue="5"
-                app:entries="@array/forecast_days_entries"
-                app:entryValues="@array/forecast_days_values"
-                app:key="weather_forecast_days"
+                app:entries="@array/weather_forecast_days_entries"
+                app:entryValues="@array/weather_forecast_days_values"
+                app:key="weather_line2_days"
                 app:title="@string/weather_forecast_days_title"
                 app:summary="@string/weather_forecast_days_summary"
                 app:useSimpleSummaryProvider="true" />
@@ -54,7 +54,7 @@
                 app:defaultValue="@string/text_size_default"
                 app:entries="@array/text_size_entries"
                 app:entryValues="@array/text_size_values"
-                app:key="weather_forecast_size"
+                app:key="weather_line2_size"
                 app:title="@string/appearance_clock_size_title"
                 app:useSimpleSummaryProvider="true" />
 
@@ -62,7 +62,7 @@
                 app:defaultValue="@string/text_weight_default"
                 app:entries="@array/text_weight_entries"
                 app:entryValues="@array/text_weight_values"
-                app:key="weather_forecast_weight"
+                app:key="weather_line2_weight"
                 app:title="@string/text_weight_title"
                 app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>

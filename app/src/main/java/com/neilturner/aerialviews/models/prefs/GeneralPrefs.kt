@@ -59,23 +59,18 @@ object GeneralPrefs : KotprefModel() {
     var weatherLocationLat by stringPref("", "weather_location_lat")
     var weatherLocationLon by stringPref("", "weather_location_lon")
 
-    var weatherLine1 by stringPref("FORECAST", "weather_line1")
+    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
+
+    var weatherLine1Layout by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast") // FIX
     var weatherLine1Size by stringPref("18", "weather_line1_size")
     var weatherLine1Weight by stringPref("300", "weather_line1_weight")
 
-    var weatherLine2 by stringPref("WIND", "weather_line2")
+    var weatherLine2Days by stringPref("5", "weather_line2_days")
     var weatherLine2Size by stringPref("18", "weather_line2_size")
     var weatherLine2Weight by stringPref("300", "weather_line2_weight")
 
-    var weatherForecast by stringPref("TEMPERATURE,ICON,SUMMARY", "weather_forecast")
-    var weatherForecastDays by stringPref("5", "weather_forecast_days")
-    var weatherForecastSize by stringPref("18", "weather_forecast_size")
-    var weatherForecastWeight by stringPref("300", "weather_forecast_weight")
-    var weatherTemperatureUnits by nullableEnumValuePref(TemperatureUnit.METRIC, "weather_temperature_units")
-
     var weatherWind by stringPref("", "weather_wind")
     var weatherWindUnits by nullableEnumValuePref(WindSpeedUnit.METERS, "weather_temperature_units")
-
     var weatherHumidity by stringPref("", "weather_humidity")
 
     // Metadata

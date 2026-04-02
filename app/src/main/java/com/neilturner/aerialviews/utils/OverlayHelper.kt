@@ -16,7 +16,7 @@ import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
 
 class OverlayHelper(
     private val context: Context,
@@ -227,23 +227,23 @@ class OverlayHelper(
             }
 
             OverlayType.WEATHER1 -> {
-                WeatherOverlay(context).apply {
+                WeatherCurrentOverlay(context).apply {
                     type = overlay
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)
-                    layout(prefs.weatherForecast)
+                    layout(prefs.weatherLine1Layout)
                 }
             }
 
-            OverlayType.WEATHER_FORECAST -> {
+            OverlayType.WEATHER2 -> {
                 WeatherForecastOverlay(context).apply {
                     type = overlay
-                    style(prefs.fontTypeface, prefs.weatherForecastSize.toFloat(), prefs.weatherForecastWeight)
+                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
                 }
             }
 
             //            OverlayType.WEATHER2 ->
-//                WeatherOverlay(context).apply {
+//                WeatherCurrentOverlay(context).apply {
 //                    style(prefs.fontTypeface, prefs.weatherLine2Size.toFloat(), prefs.weatherLine2Weight)
 //                    // layout(prefs.weatherLine2)
 //                    layout("SUMMARY")

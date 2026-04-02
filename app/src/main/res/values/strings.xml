@@ -66,8 +66,9 @@
     <string name="category_videos">Videos</string>
     <string name="category_photos">Photos</string>
     <string name="category_weather">Weather</string>
-    <string name="category_forecast">Forecast</string>
-    <string name="category_forecast_overlay">Forecast Overlay</string>
+    <string name="category_weather_forecast">Weather Forecast</string>
+    <string name="category_current_weather">Current Weather</string>
+    <string name="category_customise_layout">Customise Layout</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_message">Message</string>
     <string name="category_countdown">Countdown</string>
@@ -471,16 +472,10 @@
 
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
-    <string name="weather_location_custom_title">Custom name (optional)</string>
-    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
-    <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
-    <string name="weather_location_searching">Searching for locations…</string>
-    <string name="location_summary">Your location is only used for weather forecasts and automatic time-of-day filtering</string>
-    <string name="weather_location_custom_name_summary">Use a custom name if the location used by the weather overlay isn\'t correct</string>
+    <string name="weather_temperature_units_title">Units</string>
 
-    <string name="weather_forecast_title">Configure Current Forecast</string>
-    <string name="weather_forecast_temperature_units_title">Temperature units</string>
-    <string name="weather_forecast_summary">Change the layout of the forecast information</string>
+    <string name="weather_current_title">Configure layout</string>
+    <string name="weather_current_summary">Change the layout of the current forecast information</string>
 
     <string name="weather_forecast_slot1">Slot 1</string>
     <string name="weather_forecast_slot2">Slot 2</string>
@@ -489,6 +484,15 @@
 
     <string name="weather_forecast_days_title">Forecast days</string>
     <string name="weather_forecast_days_summary">Number of days to show in the forecast overlay</string>
+
+    <!-- Main / Settings / Overlays / Weather / Location -->
+
+    <string name="weather_location_summary">Your location is only used for weather forecasts and automatic time-of-day filtering</string>
+    <string name="weather_location_custom_title">Custom name (optional)</string>
+    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
+    <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
+    <string name="weather_location_searching">Searching for locations…</string>
+    <string name="weather_location_custom_name_summary">Use a custom name if the location used by the weather overlay is not correct</string>
 
     <!-- Main / Settings / Overlays / Metadata -->
     <string name="appearance_metadata_slot1_title">Metadata #1</string>

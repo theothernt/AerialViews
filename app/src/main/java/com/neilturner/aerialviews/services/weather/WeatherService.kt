@@ -226,7 +226,7 @@ class WeatherService(
 
         val weatherEvent = buildCurrentWeather(response.list, city)
         val forecastDays = aggregateForecastByDay(response.list, today, timezoneOffset)
-        val maxDays = GeneralPrefs.weatherForecastDays.toIntOrNull() ?: 5
+        val maxDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 5
         val limitedDays = forecastDays.take(maxDays)
 
         Timber.i("Processed forecast: ${limitedDays.size} days for ${response.city.name}")
@@ -270,7 +270,7 @@ class WeatherService(
             .groupBy { item ->
                 Instant.ofEpochSecond(item.dt).atOffset(zoneOffset).toLocalDate()
             }
-            .filterKeys { it.isAfter(today) }
+            .filterKeys { !it.isBefore(today) }
             .toSortedMap()
             .map { (date, dayItems) ->
                 val tempHigh = dayItems.maxOf { it.main.tempMax }.roundToInt()

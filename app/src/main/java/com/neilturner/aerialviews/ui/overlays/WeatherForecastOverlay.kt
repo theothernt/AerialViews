@@ -25,11 +25,24 @@ class WeatherForecastOverlay
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
     ) : LinearLayout(context, attrs, defStyleAttr) {
-        var type = OverlayType.WEATHER_FORECAST
+        var type = OverlayType.WEATHER2
         private var previousDays: List<ForecastDay>? = null
+
+        // Layout constants
         private val fadeAnimationDuration = 300L
         private val minVisibleAlphaForFade = 0.95f
         private val cellSpacing = 24 // dp between day columns
+        private val elementMargin = 4 // dp between label/icon/temp
+        private val iconScale = 1.1f // multiplier relative to text height
+
+        // Text size multipliers (relative to base size)
+        private val dayLabelSizeRatio = 0.8f
+        private val tempSizeRatio = 0.8f
+
+        // Text alpha (0-255)
+        private val dayLabelAlpha = 200
+        private val highTempAlpha = 230
+        private val lowTempAlpha = 140
 
         private var font = ""
         private var size = 0f
@@ -131,11 +144,11 @@ class WeatherForecastOverlay
                     gravity = Gravity.CENTER
                 }
             TextViewCompat.setTextAppearance(dayLabel, R.style.OverlayText)
-            dayLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.7f)
+            dayLabel.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * dayLabelSizeRatio)
             dayLabel.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
-            dayLabel.setTextColor(Color.argb(200, 255, 255, 255))
+            dayLabel.setTextColor(Color.argb(dayLabelAlpha, 255, 255, 255))
             val labelParams = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
-            labelParams.bottomMargin = 4
+            labelParams.bottomMargin = elementMargin
             dayLabel.layoutParams = labelParams
             column.addView(dayLabel)
 
@@ -146,7 +159,7 @@ class WeatherForecastOverlay
                     }
                 val iconParams = LayoutParams(iconSize, iconSize)
                 iconParams.gravity = Gravity.CENTER_HORIZONTAL
-                iconParams.bottomMargin = 4
+                iconParams.bottomMargin = elementMargin
                 iconView.layoutParams = iconParams
                 iconView.scaleType = ImageView.ScaleType.FIT_CENTER
                 column.addView(iconView)
@@ -165,9 +178,9 @@ class WeatherForecastOverlay
                     gravity = Gravity.CENTER
                 }
             TextViewCompat.setTextAppearance(highTemp, R.style.OverlayText)
-            highTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.8f)
+            highTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * tempSizeRatio)
             highTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
-            highTemp.setTextColor(Color.argb(230, 255, 255, 255))
+            highTemp.setTextColor(Color.argb(highTempAlpha, 255, 255, 255))
             tempContainer.addView(highTemp)
 
             val separator =
@@ -183,9 +196,9 @@ class WeatherForecastOverlay
                     gravity = Gravity.CENTER
                 }
             TextViewCompat.setTextAppearance(lowTemp, R.style.OverlayText)
-            lowTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * 0.8f)
+            lowTemp.setTextSize(TypedValue.COMPLEX_UNIT_SP, size * tempSizeRatio)
             lowTemp.typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, weight)
-            lowTemp.setTextColor(Color.argb(140, 255, 255, 255))
+            lowTemp.setTextColor(Color.argb(lowTempAlpha, 255, 255, 255))
             tempContainer.addView(lowTemp)
 
             column.addView(tempContainer)
@@ -202,7 +215,7 @@ class WeatherForecastOverlay
                     }.paint
 
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
-            val iconSize = textHeight * 1.1f
+            val iconSize = textHeight * iconScale
             return iconSize.toInt()
         }
     }

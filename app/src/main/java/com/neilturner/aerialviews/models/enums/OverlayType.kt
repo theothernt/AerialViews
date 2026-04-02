@@ -8,9 +8,7 @@ enum class OverlayType {
     METADATA3,
     METADATA4,
     WEATHER1,
-    WEATHER_FORECAST,
-
-    // WEATHER2,
+    WEATHER2,
     MUSIC1,
     MUSIC2,
     DATE,
