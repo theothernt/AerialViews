@@ -257,7 +257,10 @@ class ScreenController(
             if (hasWeatherCurrentOverlay || hasForecastOverlay) {
                 weatherService =
                     WeatherService(context).apply {
-                        startUpdates()
+                        startUpdates(
+                            fetchCurrentWeather = hasWeatherCurrentOverlay,
+                            fetchForecast = hasForecastOverlay,
+                        )
                     }
             }
         }
