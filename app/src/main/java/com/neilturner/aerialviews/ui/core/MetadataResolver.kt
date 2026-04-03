@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
@@ -172,6 +173,19 @@ internal class MetadataResolver(
                 media.metadata.exif.description
                     ?.trim()
                     ?.takeIf { it.isNotBlank() }
+                    ?.let {
+                        ResolvedMetadata(
+                            text = it,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    }
+            }
+
+            "ALBUM_NAME" -> {
+                media.metadata.albumName
+                    .trim()
+                    .takeIf { it.isNotBlank() && media.source == AerialMediaSource.IMMICH }
                     ?.let {
                         ResolvedMetadata(
                             text = it,

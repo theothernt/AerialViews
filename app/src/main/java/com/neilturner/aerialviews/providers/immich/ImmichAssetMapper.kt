@@ -62,6 +62,7 @@ class ImmichAssetMapper(
                         uri,
                         metadata =
                             AerialMediaMetadata(
+                                albumName = asset.albumName.orEmpty(),
                                 exif = exif,
                             ),
                     ).apply {

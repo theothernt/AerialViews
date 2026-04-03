@@ -19,6 +19,7 @@ data class AerialMediaMetadata(
     var timeOfDay: TimeOfDay = TimeOfDay.UNKNOWN,
     var scene: SceneType = SceneType.UNKNOWN,
     var exif: AerialExifMetadata = AerialExifMetadata(),
+    var albumName: String = "",
 )
 
 data class AerialExifMetadata(

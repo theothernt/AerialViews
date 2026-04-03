@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.net.Uri
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
@@ -42,12 +43,16 @@ internal class MetadataResolverTest {
         country: String? = null,
         description: String? = null,
         date: String? = null,
+        albumName: String = "",
+        source: AerialMediaSource = AerialMediaSource.UNKNOWN,
     ): AerialMedia =
         AerialMedia(
             uri = uri,
             type = type,
+            source = source,
             metadata =
                 AerialMediaMetadata(
+                    albumName = albumName,
                     shortDescription = shortDesc,
                     pointsOfInterest = poi,
                     exif =
@@ -138,6 +143,75 @@ internal class MetadataResolverTest {
 
             // Date formatting checks could result differently depending on system time.
             // We assert it is at least resolved as static type.
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve photo with immich album name`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    source = AerialMediaSource.IMMICH,
+                    albumName = "Summer Trip",
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "ALBUM_NAME,DESCRIPTION")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Summer Trip", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve video with immich album name`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    source = AerialMediaSource.IMMICH,
+                    albumName = "Highlights",
+                )
+            val prefs = defaultPrefs.copy(videoSelection = "ALBUM_NAME,DESC")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Highlights", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve album name falls through when blank`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    source = AerialMediaSource.IMMICH,
+                    albumName = "",
+                    description = "Fallback Description",
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "ALBUM_NAME,DESCRIPTION")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Fallback Description", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve album name does not apply to non immich media`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    source = AerialMediaSource.UNKNOWN,
+                    albumName = "Summer Trip",
+                    description = "Fallback Description",
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "ALBUM_NAME,DESCRIPTION")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Fallback Description", result.text)
             assertEquals(MetadataType.STATIC, result.metadataType)
         }
 }

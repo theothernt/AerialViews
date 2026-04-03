@@ -1355,6 +1355,7 @@
     <string name="overlay_meta_vid_short_desc">Short Description</string>
     <string name="overlay_meta_vid_location">Location (Immich)</string>
     <string name="overlay_meta_vid_description">Description (Immich)</string>
+    <string name="overlay_meta_vid_album_name">Album Name (Immich)</string>
     <string name="overlay_meta_vid_filename">Use filename as-is</string>
     <string name="overlay_meta_vid_folder_filename">Folder &amp; filename</string>
     <string name="overlay_meta_vid_folder_only">Folder name only</string>
@@ -1363,6 +1364,7 @@
         <item>@string/overlay_meta_vid_short_desc</item>
         <item>@string/overlay_meta_vid_location</item>
         <item>@string/overlay_meta_vid_description</item>
+        <item>@string/overlay_meta_vid_album_name</item>
         <item>@string/overlay_meta_vid_filename</item>
         <item>@string/overlay_meta_vid_folder_filename</item>
         <item>@string/overlay_meta_vid_folder_only</item>
@@ -1372,6 +1374,7 @@
         <item>DESC</item>
         <item>LOCATION</item>
         <item>DESCRIPTION</item>
+        <item>ALBUM_NAME</item>
         <item>FILENAME</item>
         <item>FOLDER_FILENAME</item>
         <item>FOLDER_ONLY</item>
@@ -1381,6 +1384,7 @@
     <string name="overlay_meta_photo_location">Location (EXIF/Immich)</string>
     <string name="overlay_meta_photo_date">Date taken (EXIF/Immich)</string>
     <string name="overlay_meta_photo_description">Description (EXIF/Immich)</string>
+    <string name="overlay_meta_photo_album_name">Album Name (Immich)</string>
     <string name="overlay_meta_photo_filename">Use filename as-is</string>
     <string name="overlay_meta_photo_folder_filename">Folder &amp; filename</string>
     <string name="overlay_meta_photo_folder_only">Folder name only</string>
@@ -1388,6 +1392,7 @@
         <item>@string/overlay_meta_photo_location</item>
         <item>@string/overlay_meta_photo_date</item>
         <item>@string/overlay_meta_photo_description</item>
+        <item>@string/overlay_meta_photo_album_name</item>
         <item>@string/overlay_meta_photo_filename</item>
         <item>@string/overlay_meta_photo_folder_filename</item>
         <item>@string/overlay_meta_photo_folder_only</item>
@@ -1396,6 +1401,7 @@
         <item>LOCATION</item>
         <item>DATE_TAKEN</item>
         <item>DESCRIPTION</item>
+        <item>ALBUM_NAME</item>
         <item>FILENAME</item>
         <item>FOLDER_FILENAME</item>
         <item>FOLDER_ONLY</item>
