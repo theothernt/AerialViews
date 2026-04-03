@@ -243,20 +243,6 @@
     <item>COMM1</item>
     <item>COMM2</item>
   </string-array>
-    <string-array name="projectivy_shared_providers_entries">
-        <item>Apple Videos</item>
-        <item>Amazon Videos</item>
-        <item>Jetson Creative Videos</item>
-        <item>Robin Fourcade Videos</item>
-        <item>Local or USB storage</item>
-    </string-array>
-    <string-array name="projectivy_shared_providers_values" translatable="false">
-        <item>APPLE</item>
-        <item>AMAZON</item>
-        <item>COMM1</item>
-        <item>COMM2</item>
-        <item>LOCAL</item>
-    </string-array>
   <string name="random_start_position_range_default" translatable="false">50</string>
     <string-array name="samba_videos_smb_dialects_default" translatable="false">
     <item>SMB_2_1</item>
@@ -379,13 +365,6 @@
     <item>Jour</item>
     <item>Coucher de soleil</item>
     <item>Nuit</item>
-  </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>Vide</item>
-    <item>Ville</item>
-    <item>Température</item>
-    <item>Icône</item>
-    <item>Résumé</item>
   </string-array>
   <string-array name="weather_type_entries">
     <item>Vide</item>
