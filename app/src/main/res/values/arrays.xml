@@ -265,8 +265,8 @@
     <string name="slot_metadata_2">Metadata #2</string>
     <string name="slot_metadata_3">Metadata #3</string>
     <string name="slot_metadata_4">Metadata #4</string>
-    <string name="slot_weather_now">Weather Now</string>
-    <string name="slot_weather_forecast">Weather Forecast</string>
+    <string name="slot_weather_1">Weather: Now</string>
+    <string name="slot_weather_2">Weather: Forecast</string>
     <string name="slot_now_playing_1">Now Playing #1</string>
     <string name="slot_now_playing_2">Now Playing #2</string>
     <string name="slot_date">Date</string>
@@ -282,8 +282,8 @@
         <item>@string/slot_metadata_2</item>
         <item>@string/slot_metadata_3</item>
         <item>@string/slot_metadata_4</item>
-        <item>@string/slot_weather_now</item>
-        <item>@string/slot_weather_forecast</item>
+        <item>@string/slot_weather_1</item>
+        <item>@string/slot_weather_2</item>
         <item>@string/slot_now_playing_1</item>
         <item>@string/slot_now_playing_2</item>
         <item>@string/slot_date</item>
