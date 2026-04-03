@@ -52,24 +52,46 @@ class NowPlayingService(
         sessionManager = context.getSystemService<MediaSessionManager>()
         sessionManager?.addOnActiveSessionsChangedListener(this, notificationListener)
         val controllers = sessionManager?.getActiveSessions(notificationListener)
+        logControllers("setupSession", controllers)
         updateActiveSession(controllers)
     }
 
     private fun updateActiveSession(controllers: MutableList<MediaController>?) {
         val selectedController = pickController(controllers)
+        Timber.i(
+            "updateActiveSession current=%s selected=%s",
+            activeController.describeController(),
+            selectedController.describeController(),
+        )
         if (selectedController?.sessionToken == activeController?.sessionToken) {
+            if (selectedController == null) {
+                clearNowPlaying("no active controller available")
+            }
             return
         }
         unregisterCurrentController()
         activeController = selectedController
+        if (activeController == null) {
+            metadata = null
+            clearNowPlaying("active controller changed to null")
+            return
+        }
+
         activeController?.let {
             it.registerCallback(this)
             metadata = it.metadata
+            Timber.i(
+                "Registered callback for %s with playback=%s metadata=%s",
+                it.describeController(),
+                stateToString(it.playbackState?.state ?: -1),
+                metadataSummary(it.metadata),
+            )
             updateMetadata()
         }
     }
 
     private fun pickController(controllers: MutableList<MediaController>?): MediaController? {
+        logControllers("pickController", controllers)
         controllers?.forEach {
             if (isActive(it)) {
                 Timber.i("Using controller: ${it.packageName}")
@@ -87,6 +109,7 @@ class NowPlayingService(
 
     override fun onActiveSessionsChanged(controllers: MutableList<MediaController>?) {
         Timber.i("onActiveSessionsChanged")
+        logControllers("onActiveSessionsChanged", controllers)
         updateActiveSession(controllers)
 
         updateActiveSessionJob?.cancel()
@@ -97,6 +120,7 @@ class NowPlayingService(
                     delay(500)
                     Timber.i("Delayed check for active sessions")
                     val freshControllers = sessionManager?.getActiveSessions(notificationListener)
+                    logControllers("delayedCheck[$it]", freshControllers)
                     updateActiveSession(freshControllers)
                 }
             }
@@ -112,29 +136,36 @@ class NowPlayingService(
     }
 
     override fun onMetadataChanged(metadata: MediaMetadata?) {
-        Timber.i("onMetadataChanged: $metadata")
+        Timber.i("onMetadataChanged: ${metadataSummary(metadata)}")
         super.onMetadataChanged(metadata)
         this.metadata = metadata
         updateMetadata()
     }
 
     override fun onPlaybackStateChanged(state: PlaybackState?) {
-        Timber.i("onPlaybackStateChanged: ${stateToString(state?.state ?: -1)}")
+        Timber.i(
+            "onPlaybackStateChanged: %s actions=%s activeController=%s",
+            stateToString(state?.state ?: -1),
+            state?.actions ?: 0,
+            activeController.describeController(),
+        )
         super.onPlaybackStateChanged(state)
         active = isActive()
         updateMetadata()
     }
 
     override fun onSessionDestroyed() {
-        Timber.i("onSessionDestroyed")
+        Timber.i("onSessionDestroyed for ${activeController.describeController()}")
         activeController = null
         metadata = null
+        clearNowPlaying("session destroyed")
         super.onSessionDestroyed()
     }
 
     private fun updateMetadata() {
         if (metadata == null) {
-            Timber.i("updateMetadata - null")
+            Timber.i("updateMetadata - null metadata for ${activeController.describeController()}")
+            clearNowPlaying("metadata became null")
             return
         }
         active = isActive()
@@ -147,17 +178,59 @@ class NowPlayingService(
                 }.takeIf { active } ?: MusicEvent()
 
         if (musicEvent == lastMusicEvent) {
+            Timber.i("updateMetadata - unchanged event: $musicEvent")
             return
         }
-        lastMusicEvent = musicEvent
-        Timber.i("updateMetadata - trying $musicEvent")
-        GlobalBus.post(musicEvent)
+        postMusicEvent(musicEvent, "updateMetadata active=$active metadata=${metadataSummary(metadata)}")
     }
 
     private fun isActive(controller: MediaController? = activeController): Boolean {
         val state = controller?.playbackState?.state ?: PlaybackState.STATE_NONE
         Timber.i("Playback state for ${controller?.packageName}: ${stateToString(state)}")
         return state == PlaybackState.STATE_PLAYING
+    }
+
+    private fun clearNowPlaying(reason: String) {
+        postMusicEvent(MusicEvent(), "clearNowPlaying reason=$reason")
+    }
+
+    private fun postMusicEvent(
+        event: MusicEvent,
+        reason: String,
+    ) {
+        if (event == lastMusicEvent) {
+            Timber.i("Skipping duplicate music event ($reason): $event")
+            return
+        }
+        lastMusicEvent = event
+        Timber.i("Posting music event ($reason): $event")
+        GlobalBus.post(event)
+    }
+
+    private fun logControllers(
+        source: String,
+        controllers: List<MediaController>?,
+    ) {
+        if (controllers.isNullOrEmpty()) {
+            Timber.i("$source controllers: []")
+            return
+        }
+        val summary = controllers.joinToString(" | ") { it.describeController() }
+        Timber.i("$source controllers(${controllers.size}): $summary")
+    }
+
+    private fun MediaController?.describeController(): String {
+        if (this == null) return "null"
+        val state = playbackState?.state ?: PlaybackState.STATE_NONE
+        return "${packageName}[${stateToString(state)}]"
+    }
+
+    private fun metadataSummary(metadata: MediaMetadata?): String {
+        if (metadata == null) return "null"
+        val title = metadata.getString(MediaMetadata.METADATA_KEY_TITLE).orEmpty()
+        val artist = metadata.getString(MediaMetadata.METADATA_KEY_ARTIST).orEmpty()
+        val album = metadata.getString(MediaMetadata.METADATA_KEY_ALBUM).orEmpty()
+        return "title='$title', artist='$artist', album='$album'"
     }
 
     private fun stateToString(state: Int): String =

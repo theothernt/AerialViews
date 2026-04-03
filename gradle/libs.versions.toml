@@ -1,12 +1,12 @@
 [versions]
 agp = "9.1.0"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 kotlin-serialization = "1.10.0"
 google-services = "4.4.4"
 ksp = "2.3.6"
 coroutines = "1.10.2"
-core-ktx = "1.17.0"
-activity-ktx = "1.12.4"
+core-ktx = "1.18.0"
+activity-ktx = "1.13.0"
 constraintlayout = "2.2.1"
 appcompat = "1.7.1"
 exifinterface = "1.4.2"
@@ -18,7 +18,7 @@ firebase-analytics = "22.5.0"
 firebase-crashlytics = "19.4.4"
 firebase-perf = "21.0.5"
 
-ktor = "3.4.1"
+ktor = "3.4.2"
 gradle-doctor = "0.12.1"
 kotlinter-gradle = "5.4.2"
 leakcanary = "3.0-alpha-8"
@@ -32,7 +32,7 @@ retrofit = "3.0.0"
 sardine-android = "0.0.3"
 
 smbj = "0.13.0"
-media3-exoplayer = "1.9.2"
+media3-exoplayer = "1.10.0"
 flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.4.0"
@@ -41,11 +41,12 @@ slf4j = "2.0.17"
 
 junit-jupiter = "6.0.3"
 junit5 = "2.0.1"
+mockk = "1.14.9"
 junit = "1.3.0"
 espresso-core = "3.7.0"
 uiautomator = "2.3.0"
 benchmark-macro-junit4 = "1.4.1"
-baselineprofile = "1.5.0-alpha03"
+baselineprofile = "1.5.0-alpha05"
 profileinstaller = "1.4.1"
 benchmark = "1.4.1"
 runner = "1.7.0"
@@ -58,6 +59,7 @@ kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib-jdk8", v
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin-serialization" }
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
@@ -104,6 +106,7 @@ sardine-android = { group = "com.github.nova-video-player", name = "sardine-andr
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }

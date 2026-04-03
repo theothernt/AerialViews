@@ -4,6 +4,7 @@ import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.MusicEvent
+import com.neilturner.aerialviews.services.weather.ForecastEvent
 import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 
@@ -12,6 +13,7 @@ data class OverlayUiState(
     val message: Map<OverlayType, MessageOverlayState> = emptyMap(),
     val nowPlaying: NowPlayingOverlayState = NowPlayingOverlayState(),
     val weather: WeatherOverlayState = WeatherOverlayState(),
+    val forecast: ForecastOverlayState = ForecastOverlayState(),
     val progress: ProgressOverlayState = ProgressOverlayState(),
 )
 
@@ -34,6 +36,10 @@ data class NowPlayingOverlayState(
 
 data class WeatherOverlayState(
     val event: WeatherEvent = WeatherEvent(),
+)
+
+data class ForecastOverlayState(
+    val event: ForecastEvent = ForecastEvent(),
 )
 
 data class ProgressOverlayState(

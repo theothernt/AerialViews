@@ -259,29 +259,49 @@
     <string name="metadata_folder_level_default" translatable="false">1</string>
 
     <!-- Slots -->
-    <string-array name="slot_entries">
-        <item>Empty</item>
-        <item>Clock</item>
-        <item>Metadata #1</item>
-        <item>Metadata #2</item>
-        <item>Weather #1</item>
-        <!--    <item>Weather #2</item>-->
-        <item>Now Playing #1</item>
-        <item>Now Playing #2</item>
-        <item>Date</item>
-        <item>Message #1</item>
-        <item>Message #2</item>
-        <item>Message #3</item>
-        <item>Message #4</item>
-        <item>Countdown</item>
+    <string name="slot_empty">Empty</string>
+    <string name="slot_clock">Clock</string>
+    <string name="slot_metadata_1">Metadata #1</string>
+    <string name="slot_metadata_2">Metadata #2</string>
+    <string name="slot_metadata_3">Metadata #3</string>
+    <string name="slot_metadata_4">Metadata #4</string>
+    <string name="slot_weather_1">Weather: Now</string>
+    <string name="slot_weather_2">Weather: Forecast</string>
+    <string name="slot_now_playing_1">Now Playing #1</string>
+    <string name="slot_now_playing_2">Now Playing #2</string>
+    <string name="slot_date">Date</string>
+    <string name="slot_message_1">Message #1</string>
+    <string name="slot_message_2">Message #2</string>
+    <string name="slot_message_3">Message #3</string>
+    <string name="slot_message_4">Message #4</string>
+    <string name="slot_countdown">Countdown</string>
+    <string-array name="slot_entries" translatable="false">
+        <item>@string/slot_empty</item>
+        <item>@string/slot_clock</item>
+        <item>@string/slot_metadata_1</item>
+        <item>@string/slot_metadata_2</item>
+        <item>@string/slot_metadata_3</item>
+        <item>@string/slot_metadata_4</item>
+        <item>@string/slot_weather_1</item>
+        <item>@string/slot_weather_2</item>
+        <item>@string/slot_now_playing_1</item>
+        <item>@string/slot_now_playing_2</item>
+        <item>@string/slot_date</item>
+        <item>@string/slot_message_1</item>
+        <item>@string/slot_message_2</item>
+        <item>@string/slot_message_3</item>
+        <item>@string/slot_message_4</item>
+        <item>@string/slot_countdown</item>
     </string-array>
     <string-array name="slot_values" translatable="false">
         <item>EMPTY</item>
         <item>CLOCK</item>
         <item>METADATA1</item>
         <item>METADATA2</item>
+        <item>METADATA3</item>
+        <item>METADATA4</item>
         <item>WEATHER1</item>
-        <!--    <item>WEATHER2</item>-->
+        <item>WEATHER2</item>
         <item>MUSIC1</item>
         <item>MUSIC2</item>
         <item>DATE</item>
@@ -291,7 +311,6 @@
         <item>MESSAGE4</item>
         <item>COUNTDOWN</item>
     </string-array>
-    <!--  <string name="slot_default" translatable="false" tools:ignore="UnusedResources">EMPTY</string>-->
 
     <!-- Playback speed -->
     <string-array name="playback_speed_entries" translatable="false">
@@ -997,20 +1016,31 @@
     </string-array>
 
     <!-- Forecast Type Options -->
-    <string-array name="weather_forecast_type_entries">
+    <string-array name="weather_detail_type_entries">
         <item>Empty</item>
         <item>City</item>
         <item>Temperature</item>
         <item>Icon</item>
         <item>Summary</item>
     </string-array>
-    <string-array name="weather_forecast_type_values" translatable="false">
+    <string-array name="weather_detail_type_values" translatable="false">
         <item>EMPTY</item>
         <item>CITY</item>
         <item>TEMPERATURE</item>
         <item>ICON</item>
         <item>SUMMARY</item>
     </string-array>
+
+    <!-- Weather Forecast Days -->
+    <string-array name="weather_forecast_days_entries">
+        <item>3 days</item>
+        <item>5 days</item>
+    </string-array>
+    <string-array name="weather_forecast_days_values" translatable="false">
+        <item>3</item>
+        <item>5</item>
+    </string-array>
+    <string name="weather_forecast_days_default" translatable="false">3</string>
 
     <!-- Background Colors -->
     <string-array name="background_colour_entries">

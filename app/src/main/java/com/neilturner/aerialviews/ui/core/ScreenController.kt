@@ -6,6 +6,7 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +18,8 @@ import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
@@ -34,8 +37,10 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.WeatherOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
@@ -132,7 +137,26 @@ class ScreenController(
         gradientTopView = overlayViewBinding.gradientTop
         gradientBottomView = overlayViewBinding.gradientBottom
 
-        videoViewBinding = binding.videoView
+        val initialVideoRoot = binding.videoView.root
+        val videoParent = initialVideoRoot.parent as? ViewGroup
+        val videoLayoutRes =
+            if (GeneralPrefs.useTextureViewForVideo) {
+                R.layout.video_view_texture
+            } else {
+                R.layout.video_view
+            }
+
+        videoViewBinding =
+            if (videoParent != null) {
+                val index = videoParent.indexOfChild(initialVideoRoot)
+                videoParent.removeView(initialVideoRoot)
+                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
+                videoParent.addView(replacementVideoRoot, index)
+                VideoViewBinding.bind(replacementVideoRoot)
+            } else {
+                binding.videoView
+            }
+
         videoViewBinding.root.setBackgroundColor(backgroundVideos)
         videoPlayer = videoViewBinding.videoPlayer
         videoPlayer.setOnPlayerListener(this)
@@ -210,7 +234,9 @@ class ScreenController(
 
             if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
                 ktorServer =
-                    KtorServer(context).apply {
+                    KtorServer(context) { messageEvent ->
+                        GlobalBus.post(messageEvent)
+                    }.apply {
                         start()
                     }
             }
@@ -226,10 +252,15 @@ class ScreenController(
             }
 
             // Setup weather service
-            if (overlayHelper.findOverlay<WeatherOverlay>().isNotEmpty()) {
+            val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
+            val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
+            if (hasWeatherCurrentOverlay || hasForecastOverlay) {
                 weatherService =
                     WeatherService(context).apply {
-                        startUpdates()
+                        startUpdates(
+                            fetchCurrentWeather = hasWeatherCurrentOverlay,
+                            fetchForecast = hasForecastOverlay,
+                        )
                     }
             }
         }
@@ -398,6 +429,10 @@ class ScreenController(
 
         overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
+        }
+
+        if (currentMedia?.type == AerialMediaType.VIDEO) {
+            videoPlayer.fadeOutAudio(mediaFadeOut)
         }
 
         // Fade in LoadView (ie. black screen)
@@ -737,7 +772,13 @@ class ScreenController(
     override fun onImageError() = handleError()
 
     private fun updateMetadataOverlayData(media: AerialMedia) {
-        val metadataSlots = listOf(OverlayType.METADATA1, OverlayType.METADATA2)
+        val metadataSlots =
+            listOf(
+                OverlayType.METADATA1,
+                OverlayType.METADATA2,
+                OverlayType.METADATA3,
+                OverlayType.METADATA4,
+            )
 
         metadataSlots.forEach { slot ->
             metadataJobs[slot]?.cancel()
@@ -765,32 +806,70 @@ class ScreenController(
     }
 
     private fun getMetadataPreferences(slot: OverlayType): MetadataResolver.Preferences =
-        if (slot == OverlayType.METADATA1) {
-            MetadataResolver.Preferences(
-                videoSelection = GeneralPrefs.overlayMetadata1Videos,
-                videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
-                videoLocationType =
-                    GeneralPrefs.overlayMetadata1VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
-                photoSelection = GeneralPrefs.overlayMetadata1Photos,
-                photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
-                photoLocationType =
-                    GeneralPrefs.overlayMetadata1PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
-                photoDateType = GeneralPrefs.overlayMetadata1PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
-                photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
-            )
-        } else {
-            MetadataResolver.Preferences(
-                videoSelection = GeneralPrefs.overlayMetadata2Videos,
-                videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
-                videoLocationType =
-                    GeneralPrefs.overlayMetadata2VideosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
-                photoSelection = GeneralPrefs.overlayMetadata2Photos,
-                photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
-                photoLocationType =
-                    GeneralPrefs.overlayMetadata2PhotosLocationType ?: com.neilturner.aerialviews.models.enums.LocationType.CITY_COUNTRY,
-                photoDateType = GeneralPrefs.overlayMetadata2PhotosDateType ?: com.neilturner.aerialviews.models.enums.DateType.COMPACT,
-                photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
-            )
+        when (slot) {
+            OverlayType.METADATA1 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata1Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata1VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata1Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata1PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata1PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
+                )
+            }
+
+            OverlayType.METADATA2 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata2Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata2VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata2Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata2PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata2PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
+                )
+            }
+
+            OverlayType.METADATA3 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata3Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata3VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata3VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata3Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata3PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata3PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata3PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata3PhotosDateCustom,
+                )
+            }
+
+            else -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata4Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata4VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata4VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata4Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata4PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata4PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata4PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata4PhotosDateCustom,
+                )
+            }
         }
 
     override fun onImagePrepared() {
@@ -821,15 +900,16 @@ class ScreenController(
             it.render(state.nowPlaying)
         }
 
-        overlayHelper.findOverlay<WeatherOverlay>().forEach {
+        overlayHelper.findOverlay<WeatherCurrentOverlay>().forEach {
             it.render(state.weather)
         }
 
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach {
+            it.render(state.forecast)
+        }
+
         overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
-            val messageState = state.message[overlay.type]
-            if (messageState != null) {
-                overlay.render(messageState)
-            }
+            overlay.render(state.message[overlay.type] ?: MessageOverlayState())
         }
 
         progressBarView.render(state.progress)

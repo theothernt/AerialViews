@@ -15,20 +15,20 @@
   </string-array>
   <string-array name="button_action_entries">
     <item>Ignorer l\'action</item>
-    <item>Quitter l\'économiseur d\'écran</item>
     <item>Passer à la vidéo/photo suivante</item>
     <item>Passer à la vidéo/photo précédente</item>
+    <item>Passer au morceau suivant</item>
+    <item>Passer au morceau précédent</item>
     <item>Augmenter la vitesse de lecture des vidéos</item>
     <item>Diminuer la vitesse de lecture de la vidéo</item>
-    <item>Afficher les recouvrements (s\'ils sont cachés)</item>
-    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
+    <item>Cherchez à avancer dans une vidéo</item>
     <item>Recherche à l\'envers dans une vidéo</item>
-    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
-    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
+    <item>Augmenter la luminosité</item>
+    <item>Diminuer la luminosité</item>
+    <item>Quitter l\'économiseur d\'écran</item>
+    <item>Retour à l\'écran des paramètres</item>
     <item>Afficher les recouvrements, s\'ils sont cachés</item>
-    <item>Extinction de l\'écran, fondu des médias et des superpositions</item>
-    <item>Activer/désactiver le son</item>
-    <item>Pause/désactivation de la minuterie vidéo ou photo</item>
+    <item>Écran noir, fondu enchaîné des médias et des superpositions</item>
     <item>Activer/désactiver le son</item>
     <item>Pause/désactivation de la minuterie vidéo ou photo</item>
     <item>Boucle de la vidéo en cours</item>
@@ -54,45 +54,45 @@
     <item>Sur mesure</item>
   </string-array>
   <string-array name="description_filename_entries">
-    <item>Handicapés</item>
-    <item>Utiliser un nom de fichier formaté</item>
+    <item>Désactivé</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
+    <item>Nom du dossier uniquement</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Handicapés</item>
-    <item>Utilisez un nom de fichier formaté, par exemple \"switzerland-zürich_train_station.jpg\" devient \"Suisse - Gare de Zürich\".</item>
-    <item>Utiliser le nom de fichier tel quel, par exemple \"Japon - Neige épaisse à Hokkaido.jpg\" devient \"Japon - Neige épaisse à Hokkaido\".</item>
-    <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Pictures/Italy/Dolomites.jpg\" devient \"Italy / Dolomites\".</item>
+    <item>Désactivé</item>
+    <item>\'Japon - Neige épaisse à Hokkaido.jpg\' devient \'Japon - Neige épaisse à Hokkaido\'.</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' devient \'Italie / Dolomites\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' devient \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
-    <item>Handicapés</item>
+    <item>Désactivé</item>
     <item>Brève description</item>
     <item>Points d\'intérêt dynamiques</item>
   </string-array>
   <string-array name="description_video_filename_entries">
-    <item>Handicapés</item>
-    <item>Utiliser un nom de fichier formaté, par exemple \"japan-mount_fuji.mp4\" devient \"Japon - Mont Fuji\".</item>
-    <item>Utiliser le nom de fichier tel quel, par exemple \"Flying towards Mount Pilatus.mp4\" devient \"Flying towards Mount Pilatus\".</item>
-    <item>Utilisez le dossier et le nom de fichier tels quels, par exemple \"Videos/Grand Canyon/Sunet.mp4\" devient \"Grand Canyon / Sunet\".</item>
+    <item>Désactivé</item>
+    <item>l\'article \'Flying towards Mount Pilatus.mp4\' devient \'Flying towards Mount Pilatus\'.</item>
+    <item>videos/Grand Canyon/Sunset.mp4\' devient \'Grand Canyon / Sunset\'.</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' devient \'Irlande\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
-    <item>Handicapés</item>
+    <item>Désactivé</item>
     <item>Une brève description ou localisation</item>
     <item>Points d\'intérêt dynamiques, disponibles dans de nombreuses langues, qui changent au fur et à mesure de la lecture de la vidéo</item>
   </string-array>
   <string-array name="duration_entries">
-    <item>Handicapés</item>
-    <item>200ms</item>
-    <item>400ms</item>
+    <item>Désactivé</item>
+    <item>200 ms</item>
+    <item>400 ms</item>
     <item>600 ms</item>
     <item>800 ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
+    <item>1 seconde</item>
+    <item>1,2 seconde</item>
+    <item>1,4 seconde</item>
+    <item>1,6 seconde</item>
+    <item>1,8 seconde</item>
+    <item>2 secondes</item>
     <item>4 secondes</item>
     <item>6 secondes</item>
     <item>8 secondes</item>
@@ -102,12 +102,21 @@
     <item>Lien partagé</item>
     <item>Clé API</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Aperçu</item>
+    <item>Taille réelle</item>
+    <item>Original</item>
+  </string-array>
   <string-array name="immich_include_entries">
-    <item>Handicapés</item>
+    <item>Désactivé</item>
     <item>100 photos</item>
     <item>200 photos</item>
     <item>300 photos</item>
     <item>400 photos</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Transcodé</item>
+    <item>Original</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Sauter lorsque la limite est atteinte</item>
@@ -130,14 +139,14 @@
     <item>Vidéos et images</item>
   </string-array>
   <string-array name="metadata_folder_level_entries">
-    <item>italie / Coucher de soleil\" - 1 niveau</item>
-    <item>2025 / Italie / Coucher de soleil - 2 Niveaux</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Niveaux</item>
-    <item>photos / Scéniques / 2025 / Italie / Coucher de soleil\' - 4 Niveaux</item>
-    <item>media / Photos / Scéniques / 2025 / Italie / Coucher de soleil\' - 5 Niveaux</item>
+    <item>\'Italie / Coucher de soleil\' - Niveau 1</item>
+    <item>\'2025 / Italie / Coucher de soleil\' - 2 niveaux</item>
+    <item>\'Scannique / 2025 / Italie / Coucher de soleil\' - 3 niveaux</item>
+    <item>\'Photos / Paysages / 2025 / Italie / Coucher de soleil\' - 4 niveaux</item>
+    <item>\'Médias / Photos / Paysages / 2025 / Italie / Coucher de soleil\' - 5 niveaux</item>
   </string-array>
   <string-array name="nowplaying_format_entries">
-    <item>Handicapés</item>
+    <item>Désactivé</item>
     <item>Chanson - Artiste</item>
     <item>Artiste - Chanson</item>
     <item>Artiste</item>
@@ -160,8 +169,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Ville</item>
+    <item>Ville, État</item>
+    <item>Ville, Pays</item>
+    <item>Ville, État, Pays</item>
+    <item>Pays</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Localisation (EXIF/Immich)</item>
+    <item>Date de prise de vue (EXIF/Immich)</item>
+    <item>Description (EXIF/Immich)</item>
     <item>Utiliser le nom de fichier tel quel</item>
     <item>Dossier et nom de fichier</item>
     <item>Nom du dossier uniquement</item>
@@ -206,7 +222,7 @@
     <item>60 minutes</item>
   </string-array>
   <string-array name="progress_bar_location_entries">
-    <item>Handicapés</item>
+    <item>Désactivé</item>
     <item>Haut de l\'écran</item>
     <item>Bas de l\'écran</item>
   </string-array>
@@ -271,6 +287,8 @@
     <item>Horloge</item>
     <item>Métadonnées #1</item>
     <item>Métadonnées #2</item>
+    <item>Métadonnées #3</item>
+    <item>Métadonnées #4</item>
     <item>Météo #1</item>
     <item>En cours de lecture #1</item>
     <item>En cours de lecture #2</item>
@@ -312,7 +330,7 @@
     <item>Lever de soleil</item>
     <item>Jour</item>
     <item>Coucher de soleil</item>
-    <item>Lever de soleil</item>
+    <item>Nuit</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Vide</item>

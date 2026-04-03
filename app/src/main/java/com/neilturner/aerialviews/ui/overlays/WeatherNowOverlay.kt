@@ -17,7 +17,7 @@ import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
 import com.neilturner.aerialviews.utils.FontHelper
 import timber.log.Timber
 
-class WeatherOverlay
+class WeatherCurrentOverlay
     @JvmOverloads
     constructor(
         context: Context,
@@ -28,8 +28,12 @@ class WeatherOverlay
         private var overlayItems: List<OverlayItem> = emptyList()
         private var layout = ""
         private var previousWeather: WeatherEvent? = null
+
+        // Layout constants
         private val fadeAnimationDuration = 300L
         private val minVisibleAlphaForFade = 0.95f
+        private val itemMargin = 16 // dp between text items
+        private val iconScale = 1.3f // multiplier relative to text height
 
         private var font = ""
         private var size = 0f
@@ -158,7 +162,6 @@ class WeatherOverlay
             removeAllViews()
 
             val iconSize = calculateIconSize(size)
-            val itemMargin = 16
 
             overlayItems.forEach { item ->
                 when (item) {
@@ -222,7 +225,7 @@ class WeatherOverlay
             val textHeight = textPaint.fontMetrics.let { it.descent - it.ascent }
 
             // Use text height directly for icon size to maintain visual balance
-            val iconSize = textHeight * 1.3f
+            val iconSize = textHeight * iconScale
             Timber.d("Text size: ${size}sp, Text height: $textHeight, Icon size: $iconSize")
             return iconSize.toInt()
         }

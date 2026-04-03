@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
         targetSdk = 36
-        versionCode = 101
-        versionName = "1.8.2"
-        betaVersion = "-beta11"
+        versionCode = 111
+        versionName = "1.8.3"
+        betaVersion = "-beta1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -81,6 +81,9 @@ android {
             isShrinkResources = true
             // isDebuggable = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+
+            val openWeather = keyProps.getProperty("openWeather", "")
+            buildConfigField("String", "OPEN_WEATHER", "\"$openWeather\"")
 
             manifestPlaceholders["analyticsCollectionEnabled"] = true
             manifestPlaceholders["crashlyticsCollectionEnabled"] = true
@@ -187,6 +190,8 @@ dependencies {
     debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
     testRuntimeOnly(libs.junit.jupiter.engine)
 
     implementation(libs.profileinstaller)
