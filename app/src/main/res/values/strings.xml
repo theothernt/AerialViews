@@ -39,6 +39,7 @@
     <string name="category_custom_videos_and_feeds">Custom videos and feeds</string>
     <string name="category_feed_and_stream_details">Feed and stream details</string>
     <string name="category_network">Network</string>
+    <string name="category_time_of_day">Time of Day</string>
     <string name="category_progress_bar">Progress bar</string>
     <string name="category_media_scanner_options">Media scanner options</string>
     <string name="category_folder_access_options">Folder access options</string>
