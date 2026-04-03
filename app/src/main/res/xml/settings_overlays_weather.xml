@@ -42,7 +42,7 @@
 
         <PreferenceCategory app:title="@string/category_weather_forecast">
             <ListPreference
-                app:defaultValue="5"
+                app:defaultValue="@string/weather_forecast_days_default"
                 app:entries="@array/weather_forecast_days_entries"
                 app:entryValues="@array/weather_forecast_days_values"
                 app:key="weather_line2_days"

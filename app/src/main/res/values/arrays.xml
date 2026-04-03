@@ -1040,6 +1040,7 @@
         <item>3</item>
         <item>5</item>
     </string-array>
+    <string name="weather_forecast_days_default" translatable="false">3</string>
 
     <!-- Background Colors -->
     <string-array name="background_colour_entries">
