@@ -41,11 +41,15 @@
     </string-array>
 
     <!-- Video Time of Day -->
+    <string name="time_of_day_sunrise">Sunrise</string>
+    <string name="time_of_day_day">Day</string>
+    <string name="time_of_day_sunset">Sunset</string>
+    <string name="time_of_day_night">Night</string>
     <string-array name="video_time_of_day_entries">
-        <item>Sunrise</item>
-        <item>Day</item>
-        <item>Sunset</item>
-        <item>Night</item>
+        <item>@string/time_of_day_sunrise</item>
+        <item>@string/time_of_day_day</item>
+        <item>@string/time_of_day_sunset</item>
+        <item>@string/time_of_day_night</item>
     </string-array>
     <string-array name="video_time_of_day_values" translatable="false">
         <item>SUNRISE</item>
@@ -60,9 +64,11 @@
         <item>NIGHT</item>
     </string-array>
 
-    <string-array name="comm2_videos_time_of_day_entries">
-        <item>Day</item>
-        <item>Sunset</item>
+    <string name="comm2_time_of_day_day">Day</string>
+    <string name="comm2_time_of_day_sunset">Sunset</string>
+    <string-array name="comm2_videos_time_of_day_entries" translatable="false">
+        <item>@string/comm2_time_of_day_day</item>
+        <item>@string/comm2_time_of_day_sunset</item>
     </string-array>
     <string-array name="comm2_videos_time_of_day_values" translatable="false">
         <item>DAY</item>
@@ -74,13 +80,19 @@
     </string-array>
 
     <!-- Video Scene Type -->
-    <string-array name="video_scene_type_entries">
-        <item>Nature</item>
-        <item>Countryside</item>
-        <item>Beach</item>
-        <item>City</item>
-        <item>Sea</item>
-        <item>Outer space</item>
+    <string name="scene_nature">Nature</string>
+    <string name="scene_countryside">Countryside</string>
+    <string name="scene_beach">Beach</string>
+    <string name="scene_city">City</string>
+    <string name="scene_sea">Sea</string>
+    <string name="scene_space">Outer space</string>
+    <string-array name="video_scene_type_entries" translatable="false">
+        <item>@string/scene_nature</item>
+        <item>@string/scene_countryside</item>
+        <item>@string/scene_beach</item>
+        <item>@string/scene_city</item>
+        <item>@string/scene_sea</item>
+        <item>@string/scene_space</item>
     </string-array>
     <string-array name="video_scene_type_values" translatable="false">
         <item>NATURE</item>
@@ -100,14 +112,21 @@
     </string-array>
 
     <!-- Amazon Video Scene Type -->
-    <string-array name="amazon_video_scene_type_entries">
-        <item>Nature</item>
-        <item>Beach</item>
-        <item>City</item>
-        <item>Sea</item>
-        <item>Space</item>
-        <item>Patterns</item>
-        <item>Fire</item>
+    <string name="amazon_scene_nature">Nature</string>
+    <string name="amazon_scene_beach">Beach</string>
+    <string name="amazon_scene_city">City</string>
+    <string name="amazon_scene_sea">Sea</string>
+    <string name="amazon_scene_space">Space</string>
+    <string name="amazon_scene_patterns">Patterns</string>
+    <string name="amazon_scene_fire">Fire</string>
+    <string-array name="amazon_video_scene_type_entries" translatable="false">
+        <item>@string/amazon_scene_nature</item>
+        <item>@string/amazon_scene_beach</item>
+        <item>@string/amazon_scene_city</item>
+        <item>@string/amazon_scene_sea</item>
+        <item>@string/amazon_scene_space</item>
+        <item>@string/amazon_scene_patterns</item>
+        <item>@string/amazon_scene_fire</item>
     </string-array>
     <string-array name="amazon_video_scene_type_values" translatable="false">
         <item>NATURE</item>
@@ -126,11 +145,15 @@
         <item>SPACE</item>
     </string-array>
 
-    <string-array name="comm2_videos_scene_type_entries">
-        <item>Nature</item>
-        <item>Waterfall</item>
-        <item>Beach</item>
-        <item>Sea</item>
+    <string name="comm2_scene_nature">Nature</string>
+    <string name="comm2_scene_waterfall">Waterfall</string>
+    <string name="comm2_scene_beach">Beach</string>
+    <string name="comm2_scene_sea">Sea</string>
+    <string-array name="comm2_videos_scene_type_entries" translatable="false">
+        <item>@string/comm2_scene_nature</item>
+        <item>@string/comm2_scene_waterfall</item>
+        <item>@string/comm2_scene_beach</item>
+        <item>@string/comm2_scene_sea</item>
     </string-array>
     <string-array name="comm2_videos_scene_type_values" translatable="false">
         <item>NATURE</item>
@@ -170,10 +193,13 @@
     <string name="amazon_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
     <!-- Clock format -->
-    <string-array name="clock_format_entries">
-        <item>System default</item>
-        <item>12-Hour</item>
-        <item>24-Hour</item>
+    <string name="clock_system_default">System default</string>
+    <string name="clock_12hour">12-Hour</string>
+    <string name="clock_24hour">24-Hour</string>
+    <string-array name="clock_format_entries" translatable="false">
+        <item>@string/clock_system_default</item>
+        <item>@string/clock_12hour</item>
+        <item>@string/clock_24hour</item>
     </string-array>
     <string-array name="clock_format_values" translatable="false">
         <item>DEFAULT</item>
@@ -183,10 +209,13 @@
     <string name="clock_format_default" translatable="false">DEFAULT</string>
 
     <!-- Date format -->
-    <string-array name="date_format_entries">
-        <item>Compact</item>
-        <item>Full</item>
-        <item>Custom</item>
+    <string name="date_compact">Compact</string>
+    <string name="date_full">Full</string>
+    <string name="date_custom">Custom</string>
+    <string-array name="date_format_entries" translatable="false">
+        <item>@string/date_compact</item>
+        <item>@string/date_full</item>
+        <item>@string/date_custom</item>
     </string-array>
     <string-array name="date_format_values" translatable="false">
         <item>COMPACT</item>
@@ -197,10 +226,13 @@
     <string name="date_custom_default" translatable="false">yyyy-MM-dd</string>
 
     <!-- Use POI/Title as description -->
-    <string-array name="description_video_entries">
-        <item>Disabled</item>
-        <item>Short description</item>
-        <item>Dynamic points of interest</item>
+    <string name="desc_disabled">Disabled</string>
+    <string name="desc_short">Short description</string>
+    <string name="desc_poi">Dynamic points of interest</string>
+    <string-array name="description_video_entries" translatable="false">
+        <item>@string/desc_disabled</item>
+        <item>@string/desc_short</item>
+        <item>@string/desc_poi</item>
     </string-array>
     <string-array name="description_video_values" translatable="false">
         <item>DISABLED</item>
@@ -215,11 +247,15 @@
     </string-array>
 
     <!-- Use filename as description -->
-    <string-array name="description_filename_entries">
-        <item>Disabled</item>
-        <item>Use filename as-is</item>
-        <item>Folder &amp; filename</item>
-        <item>Folder name only</item>
+    <string name="filename_disabled">Disabled</string>
+    <string name="filename_as_is">Use filename as-is</string>
+    <string name="filename_folder_and_file">Folder &amp; filename</string>
+    <string name="filename_folder_only">Folder name only</string>
+    <string-array name="description_filename_entries" translatable="false">
+        <item>@string/filename_disabled</item>
+        <item>@string/filename_as_is</item>
+        <item>@string/filename_folder_and_file</item>
+        <item>@string/filename_folder_only</item>
     </string-array>
     <string-array name="description_filename_values" translatable="false">
         <item>DISABLED</item>
@@ -228,26 +264,38 @@
         <item>LAST_FOLDER_NAME</item>
     </string-array>
     <string name="description_filename_default" translatable="false">DISABLED</string>
-    <string-array name="description_video_filename_entries">
-        <item>Disabled</item>
-        <item>\'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</item>
-        <item>\'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</item>
-        <item>\'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</item>
+    <string name="desc_filename_disabled">Disabled</string>
+    <string name="desc_filename_video_1">\'Flying towards Mount Pilatus.mp4\' becomes \'Flying towards Mount Pilatus\'</string>
+    <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' becomes \'Grand Canyon / Sunset\'</string>
+    <string name="desc_filename_video_3">\'Videos/Ireland/Cliffs of Moher.mp4\' becomes \'Ireland\'</string>
+    <string-array name="description_video_filename_entries" translatable="false">
+        <item>@string/desc_filename_disabled</item>
+        <item>@string/desc_filename_video_1</item>
+        <item>@string/desc_filename_video_2</item>
+        <item>@string/desc_filename_video_3</item>
     </string-array>
-    <string-array name="description_photo_filename_entries">
-        <item>Disabled</item>
-        <item>\'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</item>
-        <item>\'Photos/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</item>
-        <item>\'Photos/Dublin/Temple Bar.png\' becomes \'Dublin\'</item>
+    <string name="desc_filename_photo_1">\'Japan - Deep snow in Hokkaido.jpg\' becomes \'Japan - Deep snow in Hokkaido\'</string>
+    <string name="desc_filename_photo_2">\'Photos/Italy/Dolomites.jpg\' becomes \'Italy / Dolomites\'</string>
+    <string name="desc_filename_photo_3">\'Photos/Dublin/Temple Bar.png\' becomes \'Dublin\'</string>
+    <string-array name="description_photo_filename_entries" translatable="false">
+        <item>@string/desc_filename_disabled</item>
+        <item>@string/desc_filename_photo_1</item>
+        <item>@string/desc_filename_photo_2</item>
+        <item>@string/desc_filename_photo_3</item>
     </string-array>
 
     <!-- Description Folder levels -->
-    <string-array name="metadata_folder_level_entries">
-        <item>\'Italy / Sunset\' - 1 Level</item>
-        <item>\'2025 / Italy / Sunset\' - 2 Levels</item>
-        <item>\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</item>
-        <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</item>
-        <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</item>
+    <string name="folder_level_1">\'Italy / Sunset\' - 1 Level</string>
+    <string name="folder_level_2">\'2025 / Italy / Sunset\' - 2 Levels</string>
+    <string name="folder_level_3">\'Scenic / 2025 / Italy / Sunset\' - 3 Levels</string>
+    <string name="folder_level_4">\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 Levels</string>
+    <string name="folder_level_5">\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 Levels</string>
+    <string-array name="metadata_folder_level_entries" translatable="false">
+        <item>@string/folder_level_1</item>
+        <item>@string/folder_level_2</item>
+        <item>@string/folder_level_3</item>
+        <item>@string/folder_level_4</item>
+        <item>@string/folder_level_5</item>
     </string-array>
     <string-array name="metadata_folder_level_values" translatable="false">
         <item>1</item>
@@ -384,16 +432,25 @@
     <string name="text_font_default" translatable="false">open-sans</string>
 
     <!-- Font weight -->
-    <string-array name="text_weight_entries">
-        <item>100/Thin</item>
-        <item>200/Extra Light</item>
-        <item>300/Light*</item>
-        <item>400/Normal</item>
-        <item>500/Medium</item>
-        <item>600/Semi Bold</item>
-        <item>700/Bold</item>
-        <item>800/Extra Bold</item>
-        <item>900/Heavy</item>
+    <string name="weight_100_thin">100/Thin</string>
+    <string name="weight_200_extra_light">200/Extra Light</string>
+    <string name="weight_300_light">300/Light*</string>
+    <string name="weight_400_normal">400/Normal</string>
+    <string name="weight_500_medium">500/Medium</string>
+    <string name="weight_600_semi_bold">600/Semi Bold</string>
+    <string name="weight_700_bold">700/Bold</string>
+    <string name="weight_800_extra_bold">800/Extra Bold</string>
+    <string name="weight_900_heavy">900/Heavy</string>
+    <string-array name="text_weight_entries" translatable="false">
+        <item>@string/weight_100_thin</item>
+        <item>@string/weight_200_extra_light</item>
+        <item>@string/weight_300_light</item>
+        <item>@string/weight_400_normal</item>
+        <item>@string/weight_500_medium</item>
+        <item>@string/weight_600_semi_bold</item>
+        <item>@string/weight_700_bold</item>
+        <item>@string/weight_800_extra_bold</item>
+        <item>@string/weight_900_heavy</item>
     </string-array>
     <string-array name="text_weight_values" translatable="false">
         <item>100</item>
@@ -409,24 +466,41 @@
     <string name="text_weight_default" translatable="false">300</string>
 
     <!-- Max. video length -->
-    <string-array name="playback_max_video_length_entries">
-        <item>No limit*</item>
-        <item>10 seconds</item>
-        <item>20 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
-        <item>4 minutes</item>
-        <item>5 minutes</item>
-        <item>6 minutes</item>
-        <item>7 minutes</item>
-        <item>8 minutes</item>
-        <item>9 minutes</item>
-        <item>10 minutes</item>
-        <item>20 minutes</item>
-        <item>30 minutes</item>
-        <item>60 minutes</item>
+    <string name="maxvid_no_limit">No limit*</string>
+    <string name="maxvid_10_sec">10 seconds</string>
+    <string name="maxvid_20_sec">20 seconds</string>
+    <string name="maxvid_30_sec">30 seconds</string>
+    <string name="maxvid_1_min">1 minute</string>
+    <string name="maxvid_2_min">2 minutes</string>
+    <string name="maxvid_3_min">3 minutes</string>
+    <string name="maxvid_4_min">4 minutes</string>
+    <string name="maxvid_5_min">5 minutes</string>
+    <string name="maxvid_6_min">6 minutes</string>
+    <string name="maxvid_7_min">7 minutes</string>
+    <string name="maxvid_8_min">8 minutes</string>
+    <string name="maxvid_9_min">9 minutes</string>
+    <string name="maxvid_10_min">10 minutes</string>
+    <string name="maxvid_20_min">20 minutes</string>
+    <string name="maxvid_30_min">30 minutes</string>
+    <string name="maxvid_60_min">60 minutes</string>
+    <string-array name="playback_max_video_length_entries" translatable="false">
+        <item>@string/maxvid_no_limit</item>
+        <item>@string/maxvid_10_sec</item>
+        <item>@string/maxvid_20_sec</item>
+        <item>@string/maxvid_30_sec</item>
+        <item>@string/maxvid_1_min</item>
+        <item>@string/maxvid_2_min</item>
+        <item>@string/maxvid_3_min</item>
+        <item>@string/maxvid_4_min</item>
+        <item>@string/maxvid_5_min</item>
+        <item>@string/maxvid_6_min</item>
+        <item>@string/maxvid_7_min</item>
+        <item>@string/maxvid_8_min</item>
+        <item>@string/maxvid_9_min</item>
+        <item>@string/maxvid_10_min</item>
+        <item>@string/maxvid_20_min</item>
+        <item>@string/maxvid_30_min</item>
+        <item>@string/maxvid_60_min</item>
     </string-array>
     <string-array name="playback_max_video_length_values" translatable="false">
         <item>0</item>
@@ -450,9 +524,11 @@
     <string name="playback_max_video_length_default" translatable="false">0</string>
 
     <!-- Local Video Options -->
-    <string-array name="local_videos_search_type_entries">
-        <item>Media scanner</item>
-        <item>Folder access</item>
+    <string name="local_search_media_scanner">Media scanner</string>
+    <string name="local_search_folder_access">Folder access</string>
+    <string-array name="local_videos_search_type_entries" translatable="false">
+        <item>@string/local_search_media_scanner</item>
+        <item>@string/local_search_folder_access</item>
     </string-array>
     <string-array name="local_videos_search_type_values" translatable="false">
         <item>MEDIA_STORE</item>
@@ -461,10 +537,13 @@
     <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
 
     <!-- Media type -->
-    <string-array name="media_type_entries">
-        <item>Videos only</item>
-        <item>Photos only</item>
-        <item>Videos &amp; Photos</item>
+    <string name="media_videos_only">Videos only</string>
+    <string name="media_photos_only">Photos only</string>
+    <string name="media_videos_photos">Videos &amp; Photos</string>
+    <string-array name="media_type_entries" translatable="false">
+        <item>@string/media_videos_only</item>
+        <item>@string/media_photos_only</item>
+        <item>@string/media_videos_photos</item>
     </string-array>
     <string-array name="media_type_values" translatable="false">
         <item>VIDEOS</item>
@@ -553,23 +632,39 @@
     <string name="locale_screensaver_default" translatable="false">default</string>
 
     <!-- Slideshow speed -->
-    <string-array name="slideshow_speed_entries">
-        <item>5 seconds</item>
-        <item>10 seconds</item>
-        <item>15 seconds</item>
-        <item>20 seconds</item>
-        <item>25 seconds</item>
-        <item>30 seconds*</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>20 minutes</item>
-        <item>30 minutes</item>
-        <item>1 hour</item>
-        <item>6 hours</item>
-        <item>12 hours</item>
+    <string name="slideshow_5s">5 seconds</string>
+    <string name="slideshow_10s">10 seconds</string>
+    <string name="slideshow_15s">15 seconds</string>
+    <string name="slideshow_20s">20 seconds</string>
+    <string name="slideshow_25s">25 seconds</string>
+    <string name="slideshow_30s">30 seconds*</string>
+    <string name="slideshow_1m">1 minute</string>
+    <string name="slideshow_2m">2 minutes</string>
+    <string name="slideshow_3m">3 minutes</string>
+    <string name="slideshow_5m">5 minutes</string>
+    <string name="slideshow_10m">10 minutes</string>
+    <string name="slideshow_20m">20 minutes</string>
+    <string name="slideshow_30m">30 minutes</string>
+    <string name="slideshow_1h">1 hour</string>
+    <string name="slideshow_6h">6 hours</string>
+    <string name="slideshow_12h">12 hours</string>
+    <string-array name="slideshow_speed_entries" translatable="false">
+        <item>@string/slideshow_5s</item>
+        <item>@string/slideshow_10s</item>
+        <item>@string/slideshow_15s</item>
+        <item>@string/slideshow_20s</item>
+        <item>@string/slideshow_25s</item>
+        <item>@string/slideshow_30s</item>
+        <item>@string/slideshow_1m</item>
+        <item>@string/slideshow_2m</item>
+        <item>@string/slideshow_3m</item>
+        <item>@string/slideshow_5m</item>
+        <item>@string/slideshow_10m</item>
+        <item>@string/slideshow_20m</item>
+        <item>@string/slideshow_30m</item>
+        <item>@string/slideshow_1h</item>
+        <item>@string/slideshow_6h</item>
+        <item>@string/slideshow_12h</item>
     </string-array>
     <string-array name="slideshow_speed_values" translatable="false">
         <item>5</item>
@@ -592,9 +687,11 @@
     <string name="slideshow_speed_default" translatable="false">30</string>
 
     <!-- Photo scale/fill options -->
-    <string-array name="photo_scale_entries">
-        <item>Fill with crop*</item>
-        <item>Scale without crop</item>
+    <string name="photo_scale_fill_crop">Fill with crop*</string>
+    <string name="photo_scale_no_crop">Scale without crop</string>
+    <string-array name="photo_scale_entries" translatable="false">
+        <item>@string/photo_scale_fill_crop</item>
+        <item>@string/photo_scale_no_crop</item>
     </string-array>
     <string-array name="photo_scale_values" translatable="false">
         <item>CENTER_CROP</item>
@@ -603,9 +700,11 @@
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
     <!-- Video scale/fill options -->
-    <string-array name="video_scale_entries">
-        <item>Fill with crop*</item>
-        <item>Scale without crop</item>
+    <string name="video_scale_fill_crop">Fill with crop*</string>
+    <string name="video_scale_no_crop">Scale without crop</string>
+    <string-array name="video_scale_entries" translatable="false">
+        <item>@string/video_scale_fill_crop</item>
+        <item>@string/video_scale_no_crop</item>
     </string-array>
     <string-array name="video_scale_values" translatable="false">
         <item>SCALE_TO_FIT_WITH_CROPPING</item>
@@ -614,12 +713,17 @@
     <string name="video_scale_default" translatable="false">SCALE_TO_FIT_WITH_CROPPING</string>
 
     <!-- Now Playing -->
-    <string-array name="nowplaying_format_entries">
-        <item>Disabled</item>
-        <item>Song · Artist</item>
-        <item>Artist · Song</item>
-        <item>Artist</item>
-        <item>Song</item>
+    <string name="nowplaying_disabled">Disabled</string>
+    <string name="nowplaying_song_artist">Song · Artist</string>
+    <string name="nowplaying_artist_song">Artist · Song</string>
+    <string name="nowplaying_artist">Artist</string>
+    <string name="nowplaying_song">Song</string>
+    <string-array name="nowplaying_format_entries" translatable="false">
+        <item>@string/nowplaying_disabled</item>
+        <item>@string/nowplaying_song_artist</item>
+        <item>@string/nowplaying_artist_song</item>
+        <item>@string/nowplaying_artist</item>
+        <item>@string/nowplaying_song</item>
     </string-array>
     <string-array name="nowplaying_format_values" translatable="false">
         <item>DISABLED</item>
@@ -643,22 +747,37 @@
     <string name="http_scheme_default" translatable="false">HTTP</string>
 
     <!-- Duration timings -->
-    <string-array name="duration_entries">
-        <item>Disabled</item>
-        <item>200ms</item>
-        <item>400ms</item>
-        <item>600ms</item>
-        <item>800ms</item>
-        <item>1 second</item>
-        <item>1.2 seconds</item>
-        <item>1.4 seconds</item>
-        <item>1.6 seconds</item>
-        <item>1.8 seconds</item>
-        <item>2 seconds</item>
-        <item>4 seconds</item>
-        <item>6 seconds</item>
-        <item>8 seconds</item>
-        <item>10 seconds</item>
+    <string name="duration_disabled">Disabled</string>
+    <string name="duration_200ms">200ms</string>
+    <string name="duration_400ms">400ms</string>
+    <string name="duration_600ms">600ms</string>
+    <string name="duration_800ms">800ms</string>
+    <string name="duration_1s">1 second</string>
+    <string name="duration_1_2s">1.2 seconds</string>
+    <string name="duration_1_4s">1.4 seconds</string>
+    <string name="duration_1_6s">1.6 seconds</string>
+    <string name="duration_1_8s">1.8 seconds</string>
+    <string name="duration_2s">2 seconds</string>
+    <string name="duration_4s">4 seconds</string>
+    <string name="duration_6s">6 seconds</string>
+    <string name="duration_8s">8 seconds</string>
+    <string name="duration_10s">10 seconds</string>
+    <string-array name="duration_entries" translatable="false">
+        <item>@string/duration_disabled</item>
+        <item>@string/duration_200ms</item>
+        <item>@string/duration_400ms</item>
+        <item>@string/duration_600ms</item>
+        <item>@string/duration_800ms</item>
+        <item>@string/duration_1s</item>
+        <item>@string/duration_1_2s</item>
+        <item>@string/duration_1_4s</item>
+        <item>@string/duration_1_6s</item>
+        <item>@string/duration_1_8s</item>
+        <item>@string/duration_2s</item>
+        <item>@string/duration_4s</item>
+        <item>@string/duration_6s</item>
+        <item>@string/duration_8s</item>
+        <item>@string/duration_10s</item>
     </string-array>
     <string-array name="duration_values" translatable="false">
         <item>0</item>
@@ -682,10 +801,13 @@
     <string name="duration_overlay_fade_default" translatable="false">600</string>
 
     <!-- Longer videos limit -->
-    <string-array name="limit_Longer_videos_entries">
-        <item>Skip when limit is reached</item>
-        <item>Allow longer videos to finish</item>
-        <item>Play random segments of long videos</item>
+    <string name="longervideo_skip">Skip when limit is reached</string>
+    <string name="longervideo_finish">Allow longer videos to finish</string>
+    <string name="longervideo_segments">Play random segments of long videos</string>
+    <string-array name="limit_Longer_videos_entries" translatable="false">
+        <item>@string/longervideo_skip</item>
+        <item>@string/longervideo_finish</item>
+        <item>@string/longervideo_segments</item>
     </string-array>
     <string-array name="limit_Longer_videos_values" translatable="false">
         <item>LIMIT</item>
@@ -700,14 +822,21 @@
     </string-array>
 
     <!-- Overlay auto hide -->
-    <string-array name="overlay_auto_hide_entries">
-        <item>Never hide*</item>
-        <item>Always hidden</item>
-        <item>2 seconds</item>
-        <item>4 seconds</item>
-        <item>6 seconds</item>
-        <item>8 seconds</item>
-        <item>10 seconds</item>
+    <string name="overlay_hide_never">Never hide*</string>
+    <string name="overlay_hide_always">Always hidden</string>
+    <string name="overlay_hide_2s">2 seconds</string>
+    <string name="overlay_hide_4s">4 seconds</string>
+    <string name="overlay_hide_6s">6 seconds</string>
+    <string name="overlay_hide_8s">8 seconds</string>
+    <string name="overlay_hide_10s">10 seconds</string>
+    <string-array name="overlay_auto_hide_entries" translatable="false">
+        <item>@string/overlay_hide_never</item>
+        <item>@string/overlay_hide_always</item>
+        <item>@string/overlay_hide_2s</item>
+        <item>@string/overlay_hide_4s</item>
+        <item>@string/overlay_hide_6s</item>
+        <item>@string/overlay_hide_8s</item>
+        <item>@string/overlay_hide_10s</item>
     </string-array>
     <string-array name="overlay_auto_hide_values" translatable="false">
         <item>-1</item>
@@ -721,12 +850,17 @@
     <string name="overlay_auto_hide_default" translatable="false">-1</string>
 
     <!-- Overlay reveal timeout -->
-    <string-array name="overlay_reveal_timeout_entries">
-        <item>2 seconds</item>
-        <item>4 seconds*</item>
-        <item>6 seconds</item>
-        <item>8 seconds</item>
-        <item>10 seconds</item>
+    <string name="overlay_reveal_2s">2 seconds</string>
+    <string name="overlay_reveal_4s">4 seconds*</string>
+    <string name="overlay_reveal_6s">6 seconds</string>
+    <string name="overlay_reveal_8s">8 seconds</string>
+    <string name="overlay_reveal_10s">10 seconds</string>
+    <string-array name="overlay_reveal_timeout_entries" translatable="false">
+        <item>@string/overlay_reveal_2s</item>
+        <item>@string/overlay_reveal_4s</item>
+        <item>@string/overlay_reveal_6s</item>
+        <item>@string/overlay_reveal_8s</item>
+        <item>@string/overlay_reveal_10s</item>
     </string-array>
     <string-array name="overlay_reveal_timeout_values" translatable="false">
         <item>2</item>
@@ -738,25 +872,43 @@
     <string name="overlay_reveal_timeout_default" translatable="false">4</string>
 
     <!-- Dpad/button actions -->
-    <string-array name="button_action_entries">
-        <item>Ignore action</item>
-        <item>Skip to next video/photo</item>
-        <item>Skip to previous video/photo</item>
-        <item>Skip to next music track</item>
-        <item>Skip to previous music track</item>
-        <item>Increase video playback speed</item>
-        <item>Decrease video playback speed</item>
-        <item>Seek forwards in a video</item>
-        <item>Seek backwards in a video</item>
-        <item>Increase brightness</item>
-        <item>Decrease brightness</item>
-        <item>Exit screensaver</item>
-        <item>Exit to settings screen</item>
-        <item>Show overlays, if hidden</item>
-        <item>Blackout screen, fade out media and overlays</item>
-        <item>Toggle mute/unmute audio</item>
-        <item>Pause/unpause video or photo timer</item>
-        <item>Toggle looping for current video</item>
+    <string name="btn_ignore">Ignore action</string>
+    <string name="btn_skip_next">Skip to next video/photo</string>
+    <string name="btn_skip_previous">Skip to previous video/photo</string>
+    <string name="btn_music_next">Skip to next music track</string>
+    <string name="btn_music_previous">Skip to previous music track</string>
+    <string name="btn_speed_increase">Increase video playback speed</string>
+    <string name="btn_speed_decrease">Decrease video playback speed</string>
+    <string name="btn_seek_forward">Seek forwards in a video</string>
+    <string name="btn_seek_backward">Seek backwards in a video</string>
+    <string name="btn_brightness_increase">Increase brightness</string>
+    <string name="btn_brightness_decrease">Decrease brightness</string>
+    <string name="btn_exit">Exit screensaver</string>
+    <string name="btn_exit_settings">Exit to settings screen</string>
+    <string name="btn_show_overlays">Show overlays, if hidden</string>
+    <string name="btn_blackout">Blackout screen, fade out media and overlays</string>
+    <string name="btn_toggle_mute">Toggle mute/unmute audio</string>
+    <string name="btn_toggle_pause">Pause/unpause video or photo timer</string>
+    <string name="btn_toggle_looping">Toggle looping for current video</string>
+    <string-array name="button_action_entries" translatable="false">
+        <item>@string/btn_ignore</item>
+        <item>@string/btn_skip_next</item>
+        <item>@string/btn_skip_previous</item>
+        <item>@string/btn_music_next</item>
+        <item>@string/btn_music_previous</item>
+        <item>@string/btn_speed_increase</item>
+        <item>@string/btn_speed_decrease</item>
+        <item>@string/btn_seek_forward</item>
+        <item>@string/btn_seek_backward</item>
+        <item>@string/btn_brightness_increase</item>
+        <item>@string/btn_brightness_decrease</item>
+        <item>@string/btn_exit</item>
+        <item>@string/btn_exit_settings</item>
+        <item>@string/btn_show_overlays</item>
+        <item>@string/btn_blackout</item>
+        <item>@string/btn_toggle_mute</item>
+        <item>@string/btn_toggle_pause</item>
+        <item>@string/btn_toggle_looping</item>
     </string-array>
     <string-array name="button_action_values" translatable="false">
         <item>IGNORE</item>
@@ -878,9 +1030,11 @@
     <string name="random_start_position_range_default" translatable="false">50</string>
 
     <!-- Immich -->
-    <string-array name="immich_auth_type_entries">
-        <item>Shared Link</item>
-        <item>API Key</item>
+    <string name="immich_auth_shared_link">Shared Link</string>
+    <string name="immich_auth_api_key">API Key</string>
+    <string-array name="immich_auth_type_entries" translatable="false">
+        <item>@string/immich_auth_shared_link</item>
+        <item>@string/immich_auth_api_key</item>
     </string-array>
     <string-array name="immich_auth_type_values" translatable="false">
         <item>SHARED_LINK</item>
@@ -904,12 +1058,17 @@
     </string-array>
 
     <!-- Immich include photos -->
-    <string-array name="immich_include_entries">
-        <item>Disabled</item>
-        <item>100 photos</item>
-        <item>200 photos</item>
-        <item>300 photos</item>
-        <item>400 photos</item>
+    <string name="immich_include_disabled">Disabled</string>
+    <string name="immich_include_100">100 photos</string>
+    <string name="immich_include_200">200 photos</string>
+    <string name="immich_include_300">300 photos</string>
+    <string name="immich_include_400">400 photos</string>
+    <string-array name="immich_include_entries" translatable="false">
+        <item>@string/immich_include_disabled</item>
+        <item>@string/immich_include_100</item>
+        <item>@string/immich_include_200</item>
+        <item>@string/immich_include_300</item>
+        <item>@string/immich_include_400</item>
     </string-array>
     <string-array name="immich_include_values" translatable="false">
         <item>DISABLED</item>
@@ -922,10 +1081,13 @@
     <string name="immich_include_recent_default" translatable="false">DISABLED</string>
     <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
 
-    <string-array name="immich_image_type_entries">
-        <item>Preview</item>
-        <item>Fullsize</item>
-        <item>Original</item>
+    <string name="immich_img_preview">Preview</string>
+    <string name="immich_img_fullsize">Fullsize</string>
+    <string name="immich_img_original">Original</string>
+    <string-array name="immich_image_type_entries" translatable="false">
+        <item>@string/immich_img_preview</item>
+        <item>@string/immich_img_fullsize</item>
+        <item>@string/immich_img_original</item>
     </string-array>
     <string-array name="immich_image_type_values" translatable="false">
         <item>PREVIEW</item>
@@ -934,9 +1096,11 @@
     </string-array>
     <string name="immich_image_type_default" translatable="false">PREVIEW</string>
 
-    <string-array name="immich_video_type_entries">
-        <item>Transcoded</item>
-        <item>Original</item>
+    <string name="immich_vid_transcoded">Transcoded</string>
+    <string name="immich_vid_original">Original</string>
+    <string-array name="immich_video_type_entries" translatable="false">
+        <item>@string/immich_vid_transcoded</item>
+        <item>@string/immich_vid_original</item>
     </string-array>
     <string-array name="immich_video_type_values" translatable="false">
         <item>TRANSCODED</item>
@@ -945,10 +1109,13 @@
     <string name="immich_video_type_default" translatable="false">TRANSCODED</string>
 
     <!-- Progress Bar -->
-    <string-array name="progress_bar_location_entries">
-        <item>Disabled</item>
-        <item>Top of the screen</item>
-        <item>Bottom of the screen</item>
+    <string name="progressbar_loc_disabled">Disabled</string>
+    <string name="progressbar_loc_top">Top of the screen</string>
+    <string name="progressbar_loc_bottom">Bottom of the screen</string>
+    <string-array name="progress_bar_location_entries" translatable="false">
+        <item>@string/progressbar_loc_disabled</item>
+        <item>@string/progressbar_loc_top</item>
+        <item>@string/progressbar_loc_bottom</item>
     </string-array>
     <string-array name="progress_bar_location_values" translatable="false">
         <item>DISABLED</item>
@@ -957,10 +1124,13 @@
     </string-array>
     <string name="progress_bar_location_default" translatable="false">DISABLED</string>
 
-    <string-array name="progress_bar_type_entries">
-        <item>Videos &amp; Photos</item>
-        <item>Videos only</item>
-        <item>Photos only</item>
+    <string name="progressbar_type_videos_photos">Videos &amp; Photos</string>
+    <string name="progressbar_type_videos_only">Videos only</string>
+    <string name="progressbar_type_photos_only">Photos only</string>
+    <string-array name="progress_bar_type_entries" translatable="false">
+        <item>@string/progressbar_type_videos_photos</item>
+        <item>@string/progressbar_type_videos_only</item>
+        <item>@string/progressbar_type_photos_only</item>
     </string-array>
     <string-array name="progress_bar_type_values" translatable="false">
         <item>BOTH</item>
@@ -970,13 +1140,19 @@
     <string name="progress_bar_type_default" translatable="false">BOTH</string>
 
     <!-- Seek intervals -->
-    <string-array name="seek_interval_entries">
-        <item>10 seconds</item>
-        <item>20 seconds</item>
-        <item>30 seconds</item>
-        <item>1 minute</item>
-        <item>2 minutes</item>
-        <item>5 minutes</item>
+    <string name="seek_10_seconds">10 seconds</string>
+    <string name="seek_20_seconds">20 seconds</string>
+    <string name="seek_30_seconds">30 seconds</string>
+    <string name="seek_1_minute">1 minute</string>
+    <string name="seek_2_minutes">2 minutes</string>
+    <string name="seek_5_minutes">5 minutes</string>
+    <string-array name="seek_interval_entries" translatable="false">
+        <item>@string/seek_10_seconds</item>
+        <item>@string/seek_20_seconds</item>
+        <item>@string/seek_30_seconds</item>
+        <item>@string/seek_1_minute</item>
+        <item>@string/seek_2_minutes</item>
+        <item>@string/seek_5_minutes</item>
     </string-array>
     <string-array name="seek_interval_values" translatable="false">
         <item>10</item>
@@ -989,9 +1165,11 @@
     <string name="seek_interval_default" translatable="false">30</string>
 
     <!-- Temperature units -->
-    <string-array name="temperature_units_entries">
-        <item>C° / Celsius</item>
-        <item>F° / Fahrenheit</item>
+    <string name="temp_celsius">Celsius / C</string>
+    <string name="temp_fahrenheit">Fahrenheit / F</string>
+    <string-array name="temperature_units_entries" translatable="false">
+        <item>@string/temp_celsius</item>
+        <item>@string/temp_fahrenheit</item>
     </string-array>
     <string-array name="temperature_units_values" translatable="false">
         <item>METRIC</item>
@@ -1000,12 +1178,17 @@
     <string name="temperature_units_default" translatable="false">METRIC</string>
 
     <!-- Weather Type Options -->
-    <string-array name="weather_type_entries">
-        <item>Empty</item>
-        <item>Forecast</item>
-        <item>Wind</item>
-        <item>Humidity</item>
-        <item>Sunrise</item>
+    <string name="weather_empty">Empty</string>
+    <string name="weather_forecast">Forecast</string>
+    <string name="weather_wind">Wind</string>
+    <string name="weather_humidity">Humidity</string>
+    <string name="weather_sunrise">Sunrise</string>
+    <string-array name="weather_type_entries" translatable="false">
+        <item>@string/weather_empty</item>
+        <item>@string/weather_forecast</item>
+        <item>@string/weather_wind</item>
+        <item>@string/weather_humidity</item>
+        <item>@string/weather_sunrise</item>
     </string-array>
     <string-array name="weather_type_values" translatable="false">
         <item>EMPTY</item>
@@ -1016,12 +1199,17 @@
     </string-array>
 
     <!-- Forecast Type Options -->
-    <string-array name="weather_detail_type_entries">
-        <item>Empty</item>
-        <item>City</item>
-        <item>Temperature</item>
-        <item>Icon</item>
-        <item>Summary</item>
+    <string name="weather_detail_empty">Empty</string>
+    <string name="weather_detail_city">City</string>
+    <string name="weather_detail_temperature">Temperature</string>
+    <string name="weather_detail_icon">Icon</string>
+    <string name="weather_detail_summary">Summary</string>
+    <string-array name="weather_detail_type_entries" translatable="false">
+        <item>@string/weather_detail_empty</item>
+        <item>@string/weather_detail_city</item>
+        <item>@string/weather_detail_temperature</item>
+        <item>@string/weather_detail_icon</item>
+        <item>@string/weather_detail_summary</item>
     </string-array>
     <string-array name="weather_detail_type_values" translatable="false">
         <item>EMPTY</item>
@@ -1032,9 +1220,11 @@
     </string-array>
 
     <!-- Weather Forecast Days -->
-    <string-array name="weather_forecast_days_entries">
-        <item>3 days</item>
-        <item>5 days</item>
+    <string name="weather_days_3">3 days</string>
+    <string name="weather_days_5">5 days</string>
+    <string-array name="weather_forecast_days_entries" translatable="false">
+        <item>@string/weather_days_3</item>
+        <item>@string/weather_days_5</item>
     </string-array>
     <string-array name="weather_forecast_days_values" translatable="false">
         <item>3</item>
@@ -1043,9 +1233,11 @@
     <string name="weather_forecast_days_default" translatable="false">3</string>
 
     <!-- Background Colors -->
-    <string-array name="background_colour_entries">
-        <item>Black</item>
-        <item>White</item>
+    <string name="bg_color_black">Black</string>
+    <string name="bg_color_white">White</string>
+    <string-array name="background_colour_entries" translatable="false">
+        <item>@string/bg_color_black</item>
+        <item>@string/bg_color_white</item>
     </string-array>
     <string-array name="background_colour_values" translatable="false">
         <item>BLACK</item>
@@ -1054,24 +1246,41 @@
     <string name="background_colour_default" translatable="false">BLACK</string>
 
     <!-- Sleep timer -->
-    <string-array name="sleep_timer_entries">
-        <item>Disabled*</item>
-        <item>1 minutes</item>
-        <item>2 minutes</item>
-        <item>3 minutes</item>
-        <item>4 minutes</item>
-        <item>5 minutes</item>
-        <item>10 minutes</item>
-        <item>15 minutes</item>
-        <item>20 minutes</item>
-        <item>25 minutes</item>
-        <item>30 minutes</item>
-        <item>35 minutes</item>
-        <item>40 minutes</item>
-        <item>45 minutes</item>
-        <item>50 minutes</item>
-        <item>55 minutes</item>
-        <item>60 minutes</item>
+    <string name="sleep_disabled">Disabled*</string>
+    <string name="sleep_1_min">1 minutes</string>
+    <string name="sleep_2_min">2 minutes</string>
+    <string name="sleep_3_min">3 minutes</string>
+    <string name="sleep_4_min">4 minutes</string>
+    <string name="sleep_5_min">5 minutes</string>
+    <string name="sleep_10_min">10 minutes</string>
+    <string name="sleep_15_min">15 minutes</string>
+    <string name="sleep_20_min">20 minutes</string>
+    <string name="sleep_25_min">25 minutes</string>
+    <string name="sleep_30_min">30 minutes</string>
+    <string name="sleep_35_min">35 minutes</string>
+    <string name="sleep_40_min">40 minutes</string>
+    <string name="sleep_45_min">45 minutes</string>
+    <string name="sleep_50_min">50 minutes</string>
+    <string name="sleep_55_min">55 minutes</string>
+    <string name="sleep_60_min">60 minutes</string>
+    <string-array name="sleep_timer_entries" translatable="false">
+        <item>@string/sleep_disabled</item>
+        <item>@string/sleep_1_min</item>
+        <item>@string/sleep_2_min</item>
+        <item>@string/sleep_3_min</item>
+        <item>@string/sleep_4_min</item>
+        <item>@string/sleep_5_min</item>
+        <item>@string/sleep_10_min</item>
+        <item>@string/sleep_15_min</item>
+        <item>@string/sleep_20_min</item>
+        <item>@string/sleep_25_min</item>
+        <item>@string/sleep_30_min</item>
+        <item>@string/sleep_35_min</item>
+        <item>@string/sleep_40_min</item>
+        <item>@string/sleep_45_min</item>
+        <item>@string/sleep_50_min</item>
+        <item>@string/sleep_55_min</item>
+        <item>@string/sleep_60_min</item>
     </string-array>
     <string-array name="sleep_timer_values" translatable="false">
         <item>0</item>
@@ -1095,11 +1304,15 @@
     <string name="sleep_timer_default" translatable="false">0</string>
 
     <!-- Projectivy Video Providers -->
-    <string-array name="projectivy_shared_providers_entries">
-        <item>Apple Videos</item>
-        <item>Amazon Videos</item>
-        <item>Jetson Creative Videos</item>
-        <item>Robin Fourcade Videos</item>
+    <string name="projectivy_apple">Apple Videos</string>
+    <string name="projectivy_amazon">Amazon Videos</string>
+    <string name="projectivy_jetson">Jetson Creative Videos</string>
+    <string name="projectivy_robin">Robin Fourcade Videos</string>
+    <string-array name="projectivy_shared_providers_entries" translatable="false">
+        <item>@string/projectivy_apple</item>
+        <item>@string/projectivy_amazon</item>
+        <item>@string/projectivy_jetson</item>
+        <item>@string/projectivy_robin</item>
         <!--    <item>Local or USB storage</item>-->
     </string-array>
     <string-array name="projectivy_shared_providers_values" translatable="false">
@@ -1115,11 +1328,15 @@
     </string-array>
 
     <!-- Overlay Corner Fade Selection -->
-    <string-array name="overlay_fade_corners_entries">
-        <item>Top left</item>
-        <item>Top right</item>
-        <item>Bottom left</item>
-        <item>Bottom right</item>
+    <string name="fade_corner_top_left">Top left</string>
+    <string name="fade_corner_top_right">Top right</string>
+    <string name="fade_corner_bottom_left">Bottom left</string>
+    <string name="fade_corner_bottom_right">Bottom right</string>
+    <string-array name="overlay_fade_corners_entries" translatable="false">
+        <item>@string/fade_corner_top_left</item>
+        <item>@string/fade_corner_top_right</item>
+        <item>@string/fade_corner_bottom_left</item>
+        <item>@string/fade_corner_bottom_right</item>
     </string-array>
     <string-array name="overlay_fade_corners_values" translatable="false">
         <item>TOP_LEFT</item>
@@ -1134,14 +1351,21 @@
         <item>BOTTOM_RIGHT</item>
     </string-array>
 
-    <string-array name="overlay_metadata_videos_entries">
-        <item>Dynamic Points of Interest</item>
-        <item>Short Description</item>
-        <item>Location (Immich)</item>
-        <item>Description (Immich)</item>
-        <item>Use filename as-is</item>
-        <item>Folder &amp; filename</item>
-        <item>Folder name only</item>
+    <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
+    <string name="overlay_meta_vid_short_desc">Short Description</string>
+    <string name="overlay_meta_vid_location">Location (Immich)</string>
+    <string name="overlay_meta_vid_description">Description (Immich)</string>
+    <string name="overlay_meta_vid_filename">Use filename as-is</string>
+    <string name="overlay_meta_vid_folder_filename">Folder &amp; filename</string>
+    <string name="overlay_meta_vid_folder_only">Folder name only</string>
+    <string-array name="overlay_metadata_videos_entries" translatable="false">
+        <item>@string/overlay_meta_vid_poi</item>
+        <item>@string/overlay_meta_vid_short_desc</item>
+        <item>@string/overlay_meta_vid_location</item>
+        <item>@string/overlay_meta_vid_description</item>
+        <item>@string/overlay_meta_vid_filename</item>
+        <item>@string/overlay_meta_vid_folder_filename</item>
+        <item>@string/overlay_meta_vid_folder_only</item>
     </string-array>
     <string-array name="overlay_metadata_videos_values" translatable="false">
         <item>POI</item>
@@ -1154,13 +1378,19 @@
     </string-array>
     <string name="overlay_metadata_videos_default" translatable="false">POI</string>
 
-    <string-array name="overlay_metadata_photos_entries">
-        <item>Location (EXIF/Immich)</item>
-        <item>Date taken (EXIF/Immich)</item>
-        <item>Description (EXIF/Immich)</item>
-        <item>Use filename as-is</item>
-        <item>Folder &amp; filename</item>
-        <item>Folder name only</item>
+    <string name="overlay_meta_photo_location">Location (EXIF/Immich)</string>
+    <string name="overlay_meta_photo_date">Date taken (EXIF/Immich)</string>
+    <string name="overlay_meta_photo_description">Description (EXIF/Immich)</string>
+    <string name="overlay_meta_photo_filename">Use filename as-is</string>
+    <string name="overlay_meta_photo_folder_filename">Folder &amp; filename</string>
+    <string name="overlay_meta_photo_folder_only">Folder name only</string>
+    <string-array name="overlay_metadata_photos_entries" translatable="false">
+        <item>@string/overlay_meta_photo_location</item>
+        <item>@string/overlay_meta_photo_date</item>
+        <item>@string/overlay_meta_photo_description</item>
+        <item>@string/overlay_meta_photo_filename</item>
+        <item>@string/overlay_meta_photo_folder_filename</item>
+        <item>@string/overlay_meta_photo_folder_only</item>
     </string-array>
     <string-array name="overlay_metadata_photos_values" translatable="false">
         <item>LOCATION</item>
@@ -1172,12 +1402,17 @@
     </string-array>
     <string name="overlay_metadata_photos_default" translatable="false">LOCATION,DATE_TAKEN,DESCRIPTION</string>
 
-    <string-array name="overlay_metadata_photo_location_entries">
-        <item>City</item>
-        <item>City, State</item>
-        <item>City, Country</item>
-        <item>City, State, Country</item>
-        <item>Country</item>
+    <string name="overlay_meta_loc_city">City</string>
+    <string name="overlay_meta_loc_city_state">City, State</string>
+    <string name="overlay_meta_loc_city_country">City, Country</string>
+    <string name="overlay_meta_loc_city_state_country">City, State, Country</string>
+    <string name="overlay_meta_loc_country">Country</string>
+    <string-array name="overlay_metadata_photo_location_entries" translatable="false">
+        <item>@string/overlay_meta_loc_city</item>
+        <item>@string/overlay_meta_loc_city_state</item>
+        <item>@string/overlay_meta_loc_city_country</item>
+        <item>@string/overlay_meta_loc_city_state_country</item>
+        <item>@string/overlay_meta_loc_country</item>
     </string-array>
     <string-array name="overlay_metadata_photo_location_values" translatable="false">
         <item>CITY</item>
