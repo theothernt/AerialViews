@@ -23,13 +23,13 @@
     <item>Diminuire la velocità di riproduzione del video</item>
     <item>Salta avanti nel video</item>
     <item>Salta indetro nel video</item>
+    <item>Aumenta la luminosità</item>
+    <item>diminuire la luminosità</item>
     <item>Esci dallo screensaver</item>
-    <item>Visualizza Impostazioni</item>
-    <item>Mostra overlay, quando nascosto</item>
     <item>Visualizza impostazioni</item>
+    <item>Mostra overlay, quando nascosto</item>
+    <item>Oscura lo schermo, rimuovendo video e overlay</item>
     <item>Attiva/disattiva l\'audio</item>
-    <item>Pausa/riprendi il timer video o foto</item>
-    <item>Attiva/disattiva il loop per il video corrente</item>
     <item>Pausa/riprendi il timer video o foto</item>
     <item>Attiva/disattiva il loop per il video corrente</item>
   </string-array>
@@ -49,7 +49,7 @@
     <item>Tramonto</item>
   </string-array>
   <string-array name="date_format_entries">
-    <item>Compato</item>
+    <item>Compatto</item>
     <item>Esteso</item>
     <item>Personalizzato</item>
   </string-array>
@@ -61,9 +61,9 @@
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>Disabilitato</item>
-    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
-    <item>Usa il nome del file, ad es. \'Japan - Deep snow in Hokkaido.jpg\' diventa \'Japan - Deep snow in Hokkaido\'</item>
-    <item>Usa la cartella e il nome del file, ad es. \'Pictures/Italy/Dolomites.jpg\' diventa \'Italy / Dolomites\'</item>
+    <item>\'Giappone - Neve alta a Hokkaido.jpg\' diventa \'Giappone - Neve alta a Hokkaido\'</item>
+    <item>\'Foto/Italia/Dolomiti.jpg\' diventa \'Italia / Dolomiti\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' diventa \'Dublin\'</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Disabilitato</item>
@@ -72,9 +72,9 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>Disabilitato</item>
-    <item>Usa il nome del file formattato, ad es. \'switzerland-zürich_train_station.jpg\' diventa \'Switzerland - Zürich Train Station\'</item>
-    <item>Usa il nome del file così com\'è, ad es. \'Flying towards Mount Pilatus.mp4\' diventa \'Flying towards Mount Pilatus\'</item>
-    <item>Usa la cartella e il nome del file, ad es. \'Videos/Grand Canyon/Sunet.mp4\' diventa \'Grand Canyon / Sunet\'</item>
+    <item>\'Volo verso il Monte Pilatus.mp4\' diventa \'Volo verso il Monte Pilatus\'</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' diventa \'Grand Canyon / Tramonto\'</item>
+    <item>\'Video/Irlanda/Scogliere di Moher.mp4\' diventa \'Irlanda\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Disabilitato</item>
@@ -102,12 +102,21 @@
     <item>Collegamento condiviso</item>
     <item>API Key</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>Anteprima</item>
+    <item>Dimensioni complete</item>
+    <item>Originale</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>Disabilitato</item>
     <item>100 foto</item>
     <item>200 foto</item>
     <item>300 foto</item>
     <item>400 foto</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>Transcodificato</item>
+    <item>Originale</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>Salta quando viene raggiunto il limite</item>
@@ -160,8 +169,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>Città</item>
+    <item>Città, Stato</item>
+    <item>Città, Paese</item>
+    <item>Città, Stato, Paese</item>
+    <item>Paese</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>Luogo (EXIF/immich)</item>
+    <item>Data (EXIF/immich)</item>
+    <item>Descrizione (EXIF/immich)</item>
     <item>Usa il nome del file</item>
     <item>Cartella e nome file</item>
     <item>Solo nome cartella</item>
@@ -172,8 +188,8 @@
     <item>Posizione (Immich)</item>
     <item>Descrizione (Immich)</item>
     <item>Usa il nome del file</item>
-    <item>Cartella e nome file</item>
-    <item>Solo nome cartella</item>
+    <item>Cartella &amp; nome del file</item>
+    <item>Solo nome della cartella</item>
   </string-array>
   <string-array name="overlay_reveal_timeout_entries">
     <item>2 secondi</item>
@@ -271,6 +287,8 @@
     <item>Orologio</item>
     <item>Metadati #1</item>
     <item>Metadati #2</item>
+    <item>Metadati #3</item>
+    <item>Metadati #4</item>
     <item>Meteo #1</item>
     <item>In riproduzione #1</item>
     <item>In riproduzione #2</item>
@@ -286,19 +304,19 @@
     <item>F° / Fahrenheit</item>
   </string-array>
   <string-array name="text_weight_entries">
-    <item>100/Thin</item>
+    <item>100/Sottile</item>
     <item>200/Extra Light</item>
-    <item>300/Light*</item>
-    <item>400/Normal</item>
-    <item>500/Medium</item>
-    <item>600/Semi Bold</item>
-    <item>700/Bold</item>
+    <item>300/Luce*</item>
+    <item>400/Normale</item>
+    <item>500/Medio</item>
+    <item>600/Semi Grassetto</item>
+    <item>700/Grassetto</item>
     <item>800/Extra Bold</item>
-    <item>900/Heavy</item>
+    <item>900/Pesante</item>
   </string-array>
   <string-array name="video_scale_entries">
-    <item>Riempimento con ritaglio (predefinito)</item>
-    <item>Scala senza coltura</item>
+    <item>Riempire con il raccolto*</item>
+    <item>Scala senza ritaglio</item>
   </string-array>
   <string-array name="video_scene_type_entries">
     <item>Natura</item>

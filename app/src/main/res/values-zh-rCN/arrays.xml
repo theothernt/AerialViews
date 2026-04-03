@@ -23,12 +23,12 @@
     <item>降低视频播放速度</item>
     <item>快退</item>
     <item>快进</item>
+    <item>增加亮度</item>
+    <item>降低亮度</item>
     <item>退出屏保</item>
     <item>退出到设置</item>
     <item>显示隐藏的叠加内容</item>
     <item>熄屏模式，淡出媒体和叠加内容</item>
-    <item>静音/取消静音</item>
-    <item>暂停/恢复媒体计时器</item>
     <item>切换静音/静音音频</item>
     <item>暂停/恢复媒体计时器</item>
     <item>切换当前视频的循环播放</item>
@@ -61,9 +61,9 @@
   </string-array>
   <string-array name="description_photo_filename_entries">
     <item>禁用</item>
-    <item>使用格式化文件名，例如，\"switzerland-zürich_train_station.jpg \"变为 \"瑞士 - 苏黎世火车站\"。</item>
-    <item>\'Photos/Italy/Dolomites.jpg\' 变为 \'Italy / Dolomites\'</item>
-    <item>\'Photos/Dublin/Temple Bar.png\' 变为 \'Dublin\'</item>
+    <item>日本 - 北海道的深雪.jpg \"变为 \"日本 - 北海道的深雪</item>
+    <item>照片/意大利/多洛米蒂.jpg \"变为 \"意大利/多洛米蒂</item>
+    <item>照片/都柏林/圣殿酒吧.png \"变为 \"都柏林</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>禁用</item>
@@ -72,9 +72,9 @@
   </string-array>
   <string-array name="description_video_filename_entries">
     <item>禁用</item>
-    <item>使用格式化文件名，例如，\"japan-mount_fuji.mp4 \"变为 \"Japan - Mount Fuji</item>
-    <item>\'Videos/Grand Canyon/Sunset.mp4\' 变为 \'Grand Canyon / Sunset\'</item>
-    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' 变为 \'Ireland\'</item>
+    <item>飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山</item>
+    <item>视频/大峡谷/日落.mp4 \"变为 \"大峡谷/日落</item>
+    <item>视频/爱尔兰/莫赫悬崖.mp4 \"变为 \"爱尔兰</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>禁用</item>
@@ -87,12 +87,12 @@
     <item>400 毫秒</item>
     <item>600 毫秒</item>
     <item>800 毫秒</item>
-    <item>1000 毫秒</item>
-    <item>1200 毫秒</item>
-    <item>1400 毫秒</item>
-    <item>1600 毫秒</item>
-    <item>1800 毫秒</item>
-    <item>2000 毫秒</item>
+    <item>1 秒钟</item>
+    <item>1.2 秒钟</item>
+    <item>1.4 秒钟</item>
+    <item>1.6 秒钟</item>
+    <item>1.8 秒钟</item>
+    <item>2 秒钟</item>
     <item>4 秒钟</item>
     <item>6 秒钟</item>
     <item>8 秒钟</item>
@@ -102,12 +102,21 @@
     <item>共享链接</item>
     <item>API 密钥</item>
   </string-array>
+  <string-array name="immich_image_type_entries">
+    <item>预览</item>
+    <item>全尺寸</item>
+    <item>原创</item>
+  </string-array>
   <string-array name="immich_include_entries">
     <item>禁用</item>
     <item>100 张照片</item>
     <item>200 张照片</item>
     <item>300 张照片</item>
     <item>400 张照片</item>
+  </string-array>
+  <string-array name="immich_video_type_entries">
+    <item>转码</item>
+    <item>原创</item>
   </string-array>
   <string-array name="limit_Longer_videos_entries">
     <item>达到上限时跳过</item>
@@ -122,7 +131,7 @@
   </string-array>
   <string-array name="local_videos_search_type_entries">
     <item>媒体扫描仪</item>
-    <item>Folder access (legacy)</item>
+    <item>文件夹访问</item>
   </string-array>
   <string-array name="media_type_entries">
     <item>仅限视频</item>
@@ -160,8 +169,15 @@
   </string-array>
   <string-array name="overlay_metadata_photo_location_entries">
     <item>城市</item>
+    <item>城市、州</item>
+    <item>城市、国家</item>
+    <item>城市、州、国家</item>
+    <item>国家</item>
   </string-array>
   <string-array name="overlay_metadata_photos_entries">
+    <item>位置（EXIF/Immich）</item>
+    <item>拍摄日期（EXIF/Immich）</item>
+    <item>描述（EXIF/Immich）</item>
     <item>原始文件名</item>
     <item>文件夹和文件名</item>
     <item>仅文件夹名称</item>
@@ -231,6 +247,10 @@
   </string-array>
   <string-array name="sleep_timer_entries">
     <item>已禁用*</item>
+    <item>1分钟</item>
+    <item>2 分钟</item>
+    <item>3 分钟</item>
+    <item>4 分钟</item>
     <item>5 分钟</item>
     <item>10 分钟</item>
     <item>15 分钟</item>
@@ -239,10 +259,6 @@
     <item>30 分钟</item>
     <item>35 分钟</item>
     <item>40 分钟</item>
-    <item>45 分钟</item>
-    <item>50 分钟</item>
-    <item>55 分钟</item>
-    <item>60 分钟</item>
     <item>45 分钟</item>
     <item>50 分钟</item>
     <item>55 分钟</item>
@@ -256,11 +272,11 @@
     <item>25 秒</item>
     <item>30 秒*</item>
     <item>1 分钟</item>
+    <item>2 分钟</item>
     <item>3 分钟</item>
     <item>5 分钟</item>
     <item>10 分钟</item>
     <item>20 分钟</item>
-    <item>30 分钟</item>
     <item>30 分钟</item>
     <item>1 小时</item>
     <item>6小时</item>
@@ -271,6 +287,8 @@
     <item>时钟</item>
     <item>元数据 #1</item>
     <item>元数据 #2</item>
+    <item>元数据 #3</item>
+    <item>元数据 #4</item>
     <item>天气 #1</item>
     <item>正在播放 #1</item>
     <item>正在播放 #2</item>

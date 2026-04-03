@@ -39,6 +39,7 @@
     <string name="category_custom_videos_and_feeds">Custom videos and feeds</string>
     <string name="category_feed_and_stream_details">Feed and stream details</string>
     <string name="category_network">Network</string>
+    <string name="category_time_of_day">Time of Day</string>
     <string name="category_progress_bar">Progress bar</string>
     <string name="category_media_scanner_options">Media scanner options</string>
     <string name="category_folder_access_options">Folder access options</string>
@@ -48,7 +49,6 @@
     <string name="category_brightness">Brightness</string>
     <string name="category_animation">Animation</string>
     <string name="category_about">About</string>
-    <string name="category_quality">Quality</string>
     <string name="category_quality_and_scene_types">Quality &amp; Scene types</string>
     <string name="category_filters">Filters</string>
     <string name="category_scaling">Scaling</string>
@@ -67,7 +67,9 @@
     <string name="category_videos">Videos</string>
     <string name="category_photos">Photos</string>
     <string name="category_weather">Weather</string>
-    <string name="category_forecast">Forecast</string>
+    <string name="category_weather_forecast">Weather Forecast</string>
+    <string name="category_current_weather">Current Weather</string>
+    <string name="category_customise_layout">Customise Layout</string>
     <string name="category_playlist">Playlist</string>
     <string name="category_message">Message</string>
     <string name="category_countdown">Countdown</string>
@@ -471,27 +473,37 @@
 
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
-    <string name="weather_location_custom_title">Custom name (optional)</string>
-    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
-    <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
-    <string name="weather_location_searching">Searching for locations…</string>
-    <string name="location_summary">Your location is only used for weather forecasts and automatic time-of-day filtering</string>
-    <string name="weather_location_custom_name_summary">Use a custom name if the location used by the weather overlay isn\'t correct</string>
+    <string name="weather_temperature_units_title">Units</string>
 
-    <string name="weather_forecast_title">Configure Current Forecast</string>
-    <string name="weather_forecast_temperature_units_title">Temperature units</string>
-    <string name="weather_forecast_summary">Change the layout of the forecast information</string>
+    <string name="weather_current_title">Configure layout</string>
+    <string name="weather_current_summary">Change the layout of the current forecast information</string>
 
     <string name="weather_forecast_slot1">Slot 1</string>
     <string name="weather_forecast_slot2">Slot 2</string>
     <string name="weather_forecast_slot3">Slot 3</string>
     <string name="weather_forecast_slot4">Slot 4</string>
 
+    <string name="weather_forecast_days_title">Forecast days</string>
+    <string name="weather_forecast_days_summary">Number of days to show in the forecast overlay</string>
+
+    <!-- Main / Settings / Overlays / Weather / Location -->
+
+    <string name="weather_location_summary">Your location is only used for weather forecasts and automatic time-of-day filtering</string>
+    <string name="weather_location_custom_title">Custom name (optional)</string>
+    <string name="weather_location_custom_summary">Custom name for the location (e.g. Dublin). If left blank, the name from the search will be used.</string>
+    <string name="weather_location_search_hint">Enter a city name (e.g. Tokyo) or GPS coordinates</string>
+    <string name="weather_location_searching">Searching for locations…</string>
+    <string name="weather_location_custom_name_summary">Use a custom name if the location used by the weather overlay is not correct</string>
+
     <!-- Main / Settings / Overlays / Metadata -->
     <string name="appearance_metadata_slot1_title">Metadata #1</string>
     <string name="appearance_metadata_slot1_summary">Select and reorder metadata fields</string>
     <string name="appearance_metadata_slot2_title">Metadata #2</string>
     <string name="appearance_metadata_slot2_summary">Select and reorder metadata fields</string>
+    <string name="appearance_metadata_slot3_title">Metadata #3</string>
+    <string name="appearance_metadata_slot3_summary">Select and reorder metadata fields</string>
+    <string name="appearance_metadata_slot4_title">Metadata #4</string>
+    <string name="appearance_metadata_slot4_summary">Select and reorder metadata fields</string>
     <string name="appearance_metadata_fields_title">Configure fields</string>
 
     <string name="overlay_metadata_videos_title">Video metadata</string>
@@ -531,6 +543,8 @@
     <string name="appearance_message_line3_title">Line 3</string>
     <string name="appearance_message_line4_title">Line 4</string>
     <string name="appearance_message_line1_summary">Enter text to display, including emoji</string>
+    <string name="appearance_message_animate_changes_title">Animate message changes</string>
+    <string name="appearance_message_animate_changes_summary">Fade message updates in and out instead of switching instantly</string>
 
     <!-- Main / Settings / Overlays / Countdown -->
     <string name="appearance_countdown_target_time_title">Target Time</string>
@@ -609,12 +623,12 @@
     <string name="appearance_video_scale_title">Video scaling</string>
     <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
     <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
-    <string name="appearance_photo_bilinear_filtering_title">Bilinear Filtering</string>
-    <string name="appearance_photo_bilinear_filtering_summary">Applies high-quality filtering when resizing photos to reduce aliasing (jagged edges)</string>
     <string name="category_background_blur">Background blur</string>
     <string name="appearance_photo_background_blur_title">Enable background blur</string>
     <string name="appearance_photo_background_blur_summary">Show a blurred version of the photo behind the foreground image to fill empty areas</string>
     <string name="appearance_photo_background_blur_opacity_title">Blur opacity</string>
+    <string name="appearance_photo_background_blur_intensity_title">Blur intensity</string>
+    <string name="appearance_photo_background_blur_intensity_summary">Adjusts the blur radius for both modern and legacy blur</string>
 
     <!-- Main / Settings / Appearance / Progress Bar -->
     <string name="progress_bar_location_title">Location on screen</string>
@@ -749,6 +763,8 @@
 
     <string name="advanced_philips_dolby_vision_fix_title">Use alternate MediaCodec parsing</string>
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
+    <string name="advanced_use_texture_view_title">Use TextureView for video</string>
+    <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>

@@ -69,7 +69,7 @@ internal class MetadataResolverTest {
             photoSelection = "LOCATION,DATE_TAKEN,DESCRIPTION,FILENAME",
             photoFolderDepth = 1,
             photoLocationType = LocationType.CITY_STATE_COUNTRY,
-            photoDateType = DateType.RELATIVE,
+            photoDateType = DateType.COMPACT,
             photoDateCustom = "",
         )
 
@@ -79,6 +79,7 @@ internal class MetadataResolverTest {
             val media =
                 createMedia(
                     poi = mapOf(0 to "Intro", 10 to "Main Scene"),
+                    shortDesc = "Intro",
                 )
             val prefs = defaultPrefs.copy(videoSelection = "POI")
 
@@ -131,7 +132,7 @@ internal class MetadataResolverTest {
                     type = AerialMediaType.IMAGE,
                     date = "2023:01:01 12:00:00",
                 )
-            val prefs = defaultPrefs.copy(photoSelection = "DATE_TAKEN", photoDateType = DateType.RELATIVE)
+            val prefs = defaultPrefs.copy(photoSelection = "DATE_TAKEN", photoDateType = DateType.COMPACT)
 
             val result = resolver.resolve(context, media, prefs)
 

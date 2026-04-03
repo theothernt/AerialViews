@@ -14,23 +14,23 @@
     <item>Белый</item>
   </string-array>
   <string-array name="button_action_entries">
-    <item>Игнорировать действие</item>
-    <item>Перейти к следующему видео/фото</item>
+    <item>Игнорировать действия</item>
+    <item>Переход к следующему видео/фото</item>
     <item>Перейти к предыдущему видео/фото</item>
-    <item>Перейти к следующему музыкальному треку</item>
-    <item>Перейти к предыдущему музыкальному треку</item>
-    <item>Увеличить скорость воспроизведения видео</item>
-    <item>Уменьшить скорость воспроизведения видео</item>
-    <item>Перемотка вперед в видео</item>
-    <item>Перемотка назад по видео</item>
-    <item>Выйти из заставки</item>
+    <item>Переход к следующей музыкальной дорожке</item>
+    <item>Переход к предыдущей музыкальной дорожке</item>
+    <item>Увеличение скорости воспроизведения видео</item>
+    <item>Уменьшение скорости воспроизведения видео</item>
+    <item>Искать вперед в видео</item>
+    <item>Просмотр видео в обратном направлении</item>
+    <item>Увеличить яркость</item>
+    <item>Уменьшить яркость</item>
+    <item>Выход из экранной заставки</item>
     <item>Выход на экран настроек</item>
-    <item>Показывать наложения, если они скрыты</item>
-    <item>Затемнение экрана, затухание мультимедиа и наложений</item>
-    <item>Включение/отключение звука</item>
-    <item>Таймер паузы/возобновления видео или фотографий</item>
-    <item>Включить зацикливание для текущего видео</item>
-    <item>Таймер паузы/возобновления видео или фотографий</item>
+    <item>Показать накладки, если они скрыты</item>
+    <item>Затемнение экрана, затухание мультимедиа и накладки</item>
+    <item>Отключение/включение звука</item>
+    <item>Таймер паузы/отключения видео- или фотосъемки</item>
     <item>Включить зацикливание для текущего видео</item>
   </string-array>
   <string-array name="clock_format_entries">
@@ -54,16 +54,16 @@
     <item>Свой</item>
   </string-array>
   <string-array name="description_filename_entries">
-    <item>Выключено</item>
+    <item>Неполноценный</item>
     <item>Использовать имя файла как есть</item>
     <item>Папка и имя файла</item>
     <item>Только имя папки</item>
   </string-array>
   <string-array name="description_photo_filename_entries">
-    <item>Выключено</item>
-    <item>Использовать имя файла как есть, например: \"Japan - Deep snow in Hokkaido.jpg\" становится \"Japan - Deep snow in Hokkaido\"</item>
-    <item>Использовать папку и имя файла как есть, например: \'Pictures/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
-    <item>Использовать только имя папки, например: \'Pictures/Dublin/Temple Bar.png\' становится \'Dublin\'</item>
+    <item>Инвалид</item>
+    <item>\'Japan - Deep snow in Hokkaido.jpg\' становится \'Japan - Deep snow in Hokkaido\'.</item>
+    <item>\'Photos/Italy/Dolomites.jpg\' становится \'Italy / Dolomites\'</item>
+    <item>\'Photos/Dublin/Temple Bar.png\' становится \'Dublin\'.</item>
   </string-array>
   <string-array name="description_video_entries">
     <item>Выключено</item>
@@ -71,10 +71,10 @@
     <item>Динамичные достопримечательности</item>
   </string-array>
   <string-array name="description_video_filename_entries">
-    <item>Выключено</item>
-    <item>Использовать имя файла как есть, например: \'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'</item>
-    <item>Использовать папку и имя файла как есть, например: \'Videos/Grand Canyon/Sunset.mp4\' становится \'Grand Canyon / Sunset\'</item>
-    <item>Использовать только имя папки, например: \'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
+    <item>Инвалид</item>
+    <item>\'Flying towards Mount Pilatus.mp4\' становится \'Flying towards Mount Pilatus\'.</item>
+    <item>\'Videos/Grand Canyon/Sunset.mp4\' становится \'Grand Canyon / Sunset\'.</item>
+    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' становится \'Ireland\'</item>
   </string-array>
   <string-array name="description_video_manifest_entries">
     <item>Выключено</item>
@@ -203,20 +203,20 @@
     <item>Заполнение без кадрирования</item>
   </string-array>
   <string-array name="playback_max_video_length_entries">
-    <item>Без ограничений (по умолчанию)</item>
-    <item>10 сек</item>
-    <item>20 сек</item>
-    <item>30 сек</item>
-    <item>1 мин</item>
-    <item>2 мин</item>
-    <item>3 мин</item>
-    <item>4 мин</item>
-    <item>5 мин</item>
-    <item>6 мин</item>
-    <item>7 мин</item>
-    <item>8 мин</item>
-    <item>9 мин</item>
-    <item>10 мин</item>
+    <item>Без ограничений*</item>
+    <item>10 секунд</item>
+    <item>20 секунд</item>
+    <item>30 секунд</item>
+    <item>1 минута</item>
+    <item>2 минуты</item>
+    <item>3 минуты</item>
+    <item>4 минуты</item>
+    <item>5 минут</item>
+    <item>6 минут</item>
+    <item>7 минут</item>
+    <item>8 минут</item>
+    <item>9 минут</item>
+    <item>10 минут</item>
     <item>20 минут</item>
     <item>30 минут</item>
     <item>60 минут</item>
@@ -239,10 +239,10 @@
   </string-array>
   <string-array name="seek_interval_entries">
     <item>10 секунд</item>
-    <item>20 сек</item>
-    <item>30 сек</item>
+    <item>20 секунд</item>
+    <item>30 секунд</item>
     <item>1 минута</item>
-    <item>2 мин</item>
+    <item>2 минуты</item>
     <item>5 минут</item>
   </string-array>
   <string-array name="sleep_timer_entries">
@@ -272,7 +272,7 @@
     <item>25 секунд</item>
     <item>30 секунд*</item>
     <item>1 минута</item>
-    <item>2 мин</item>
+    <item>2 минуты</item>
     <item>3 минуты</item>
     <item>5 минут</item>
     <item>10 минут</item>
@@ -287,6 +287,8 @@
     <item>Часы</item>
     <item>Метаданные #1</item>
     <item>Метаданные #2</item>
+    <item>Метаданные #3</item>
+    <item>Метаданные #4</item>
     <item>Погода #1</item>
     <item>Сейчас играет #1</item>
     <item>Сейчас играет #2</item>
@@ -325,10 +327,10 @@
     <item>Космос</item>
   </string-array>
   <string-array name="video_time_of_day_entries">
-    <item>День</item>
-    <item>Ночь</item>
-    <item>Закат</item>
     <item>Восход солнца</item>
+    <item>День</item>
+    <item>Закат</item>
+    <item>Ночь</item>
   </string-array>
   <string-array name="weather_forecast_type_entries">
     <item>Пустой</item>

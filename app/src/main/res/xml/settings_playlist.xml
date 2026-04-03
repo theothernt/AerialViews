@@ -26,7 +26,7 @@
                     app:dialogTitle="@string/playlist_sleep_timer_title" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="Time of Day">
+        <PreferenceCategory app:title="@string/category_time_of_day">
                 <CheckBoxPreference
                     app:defaultValue="false"
                     app:key="playlist_auto_time_of_day"

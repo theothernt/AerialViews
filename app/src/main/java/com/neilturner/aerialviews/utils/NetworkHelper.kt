@@ -18,7 +18,7 @@ object NetworkHelper {
     @Suppress("DEPRECATION")
     fun isInternetAvailable(context: Context): Boolean {
         var result: Boolean
-	    val connectivityManager =
+        val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkCapabilities = connectivityManager.activeNetwork ?: return false
         val actNw =
