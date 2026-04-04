@@ -80,4 +80,18 @@
                     app:title="@string/advanced_locale_screensaver_title"
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_log_capture">
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="enable_log_capture"
+                    app:title="@string/advanced_log_capture_title"
+                    app:summary="@string/advanced_log_capture_summary" />
+
+                <Preference
+                    app:key="save_logs"
+                    app:title="@string/advanced_save_logs_title"
+                    app:summary="@string/advanced_save_logs_summary"
+                    app:dependency="enable_log_capture" />
+        </PreferenceCategory>
 </PreferenceScreen>
