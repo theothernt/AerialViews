@@ -9,6 +9,7 @@ object SambaMediaPrefs : KotprefModel(), SambaProviderPreferences {
     override val kotprefName = "${context.packageName}_preferences"
 
     override var enabled by booleanPref(false, "samba_videos_enabled")
+    override var musicEnabled by booleanPref(false, "samba_videos_music_enabled")
     override var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "samba_media_type")
     override var hostName by stringPref("", "samba_videos_hostname")
     override var domainName by stringPref("WORKGROUP", "samba_videos_domainname")
@@ -42,6 +43,7 @@ object SambaMediaPrefs2 : KotprefModel(), SambaProviderPreferences {
     private var passwordRaw by stringPref("", "samba_videos2_password")
 
     override var enabled by booleanPref(false, "samba_videos2_enabled")
+    override var musicEnabled by booleanPref(false, "samba_videos2_music_enabled")
     override var mediaType: ProviderMediaType?
         get() = SambaMediaPrefs.mediaType
         set(value) {

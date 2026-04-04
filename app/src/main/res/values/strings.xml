@@ -193,6 +193,9 @@
     <!-- Main / Video Sources / Local+USB videos -->
     <string name="local_videos_enabled_title">Use Local or USB storage media</string>
 
+    <string name="local_music_enabled_title">Include music from this source</string>
+    <string name="local_music_enabled_summary">Audio files from local storage will be played during the screensaver</string>
+
     <string name="local_media_type_title">Choose media type</string>
 
     <string name="local_videos_search_type_title">Choose how media is found</string>
@@ -238,6 +241,8 @@
 
     <!-- Main / Video Sources / Samba videos -->
     <string name="samba_videos_enabled_title">Use SMB/Samba share media</string>
+    <string name="samba_music_enabled_title">Include music from this source</string>
+    <string name="samba_music_enabled_summary">Audio files from SMB share will be played during the screensaver</string>
     <string name="samba_videos2_enabled_title">Use secondary SMB/Samba credentials</string>
     <string name="samba_media_type_title">Choose media type</string>
     <string name="samba_videos_test_connection">Test connection settings</string>

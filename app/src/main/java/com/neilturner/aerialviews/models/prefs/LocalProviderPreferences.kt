@@ -8,6 +8,8 @@ interface LocalProviderPreferences {
     var searchType: SearchType?
     var mediaType: ProviderMediaType?
 
+    var musicEnabled: Boolean
+
     var filterEnabled: Boolean
     var filterFolder: String
 

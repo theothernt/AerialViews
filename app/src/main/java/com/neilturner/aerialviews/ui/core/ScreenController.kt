@@ -27,6 +27,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.MusicService
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
@@ -74,6 +75,7 @@ class ScreenController(
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
+    private var musicService: MusicService? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataResolver = MetadataResolver()
@@ -251,6 +253,9 @@ class ScreenController(
                 showLoadingError()
             }
 
+            // Setup music service
+            setupMusicService()
+
             // Setup weather service
             val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
             val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
@@ -287,6 +292,28 @@ class ScreenController(
                     toggleBlackOutMode()
                 }
             }
+    }
+
+    private fun setupMusicService() {
+        val localMusicEnabled = com.neilturner.aerialviews.models.prefs.LocalMediaPrefs.musicEnabled
+        val sambaMusicEnabled = com.neilturner.aerialviews.models.prefs.SambaMediaPrefs.musicEnabled ||
+            com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2.musicEnabled
+
+        if (!localMusicEnabled && !sambaMusicEnabled) {
+            Timber.i("MusicService: no music providers enabled, skipping")
+            return
+        }
+
+        musicService = MusicService(context)
+        musicService?.preparePlaylist { trackCount ->
+            if (trackCount > 0) {
+                val player = musicService?.createPlayer()
+                musicService?.start()
+                Timber.i("MusicService: started with $trackCount tracks")
+            } else {
+                Timber.i("MusicService: no tracks available after preparation")
+            }
+        }
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -579,6 +606,7 @@ class ScreenController(
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        musicService?.release()
         sleepTimerJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
@@ -609,11 +637,21 @@ class ScreenController(
     }
 
     fun nextTrack() {
-        nowPlayingService?.nextTrack()
+        val music = musicService
+        if (music != null && music.hasMusic()) {
+            music.nextTrack()
+        } else {
+            nowPlayingService?.nextTrack()
+        }
     }
 
     fun previousTrack() {
-        nowPlayingService?.previousTrack()
+        val music = musicService
+        if (music != null && music.hasMusic()) {
+            music.previousTrack()
+        } else {
+            nowPlayingService?.previousTrack()
+        }
     }
 
     fun increaseSpeed() {

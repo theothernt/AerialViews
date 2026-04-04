@@ -63,6 +63,26 @@ object VideoPlayerHelper {
         }
 
     @OptIn(UnstableApi::class)
+    fun buildAudioPlayer(
+        context: Context,
+    ): ExoPlayer {
+        val loadControl =
+            DefaultLoadControl
+                .Builder()
+                .setBufferDurationsMs(
+                    10_000,
+                    20_000,
+                    3_000,
+                    5_000,
+                ).build()
+
+        return ExoPlayer
+            .Builder(context)
+            .setLoadControl(loadControl)
+            .build()
+    }
+
+    @OptIn(UnstableApi::class)
     fun buildPlayer(
         context: Context,
         prefs: GeneralPrefs,

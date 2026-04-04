@@ -12,6 +12,8 @@ object LocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
     override var searchType by nullableEnumValuePref(SearchType.MEDIA_STORE, "local_videos_search_type")
     override var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "local_media_type")
 
+    override var musicEnabled by booleanPref(false, "local_music_enabled")
+
     override var filterEnabled by booleanPref(false, "local_videos_media_store_filter_enabled")
     override var filterFolder by stringPref("", "local_videos_media_store_filter_folder")
 

@@ -5,6 +5,9 @@ import com.neilturner.aerialviews.models.enums.ProviderMediaType
 interface SambaProviderPreferences {
     var enabled: Boolean
     var mediaType: ProviderMediaType?
+
+    var musicEnabled: Boolean
+
     var hostName: String
     var domainName: String
     var shareName: String

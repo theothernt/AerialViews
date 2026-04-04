@@ -8,6 +8,14 @@
                     app:key="samba_videos_enabled"
                     app:title="@string/samba_videos_enabled_title" />
 
+                <CheckBoxPreference
+                    app:dependency="samba_videos_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="false"
+                    app:key="samba_videos_music_enabled"
+                    app:title="@string/samba_music_enabled_title"
+                    app:summary="@string/samba_music_enabled_summary" />
+
                 <ListPreference
                     app:dependency="samba_videos_enabled"
                     app:disableDependentsState="false"
