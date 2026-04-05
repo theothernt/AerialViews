@@ -94,7 +94,9 @@ object VideoPlayerHelper {
                     20_000, // Maximum buffer duration
                     3_000, // Buffer before initial playback
                     5_000, // Buffer after rebuffering
-                ).build()
+                )
+                .setTargetBufferBytes(C.LENGTH_UNSET)
+                .build()
 
         val player =
             ExoPlayer
