@@ -42,8 +42,8 @@ class WeatherService(
     private val retryDelay = 30.seconds // Delay before retrying after an error
 
     private val openWeatherClient by lazy {
-        apiOverride ?:
-            Retrofit
+        apiOverride
+            ?: Retrofit
                 .Builder()
                 .baseUrl("https://api.openweathermap.org/")
                 .client(buildOkHttpClient(context))
@@ -445,8 +445,7 @@ class WeatherService(
         return items
             .groupBy { item ->
                 Instant.ofEpochSecond(item.dt).atOffset(zoneOffset).toLocalDate()
-            }
-            .filterKeys { !it.isBefore(today) }
+            }.filterKeys { !it.isBefore(today) }
             .toSortedMap()
             .map { (date, dayItems) ->
                 val tempHigh = dayItems.maxOf { it.main.tempMax }.roundToInt()

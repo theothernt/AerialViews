@@ -33,7 +33,12 @@ internal class ImmichAssetMapperTest {
             )
 
         assertEquals(1, results.media.size)
-        assertEquals("Italy", results.media.single().metadata.albumName)
+        assertEquals(
+            "Italy",
+            results.media
+                .single()
+                .metadata.albumName,
+        )
         assertEquals(AerialMediaSource.IMMICH, results.media.single().source)
         assertEquals(AerialMediaType.IMAGE, results.media.single().type)
     }

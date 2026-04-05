@@ -160,9 +160,7 @@ class WeatherCurrentOverlay
 
         private fun setupViews() {
             removeAllViews()
-
             val iconSize = calculateIconSize(size)
-
             overlayItems.forEach { item ->
                 when (item) {
                     is OverlayItem.TextItem -> {
