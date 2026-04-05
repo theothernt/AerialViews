@@ -240,12 +240,13 @@ class VideoPlayerView
                 state.startPosition = result.first
                 state.endPosition = result.second
 
+                state.prepared = true
+
                 if (state.startPosition > 0) {
                     Timber.i("Seeking to ${state.startPosition.milliseconds}")
                     player?.seekTo(state.startPosition)
+                    return // Let the next STATE_READY (post-seek) handle the rest
                 }
-
-                state.prepared = true
             }
 
             // Video is buffered, ready to play
