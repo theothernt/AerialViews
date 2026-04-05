@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -318,7 +319,7 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
-        override fun onMediaMetadataChanged(mediaMetadata: androidx.media3.common.MediaMetadata) {
+        override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
             listener?.onVideoMetadataExtracted(mediaMetadata)
         }

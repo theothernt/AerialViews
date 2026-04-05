@@ -1353,8 +1353,9 @@
 
     <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
     <string name="overlay_meta_vid_short_desc">Short Description</string>
-    <string name="overlay_meta_vid_location">Location (Media/Immich)</string>
+    <string name="overlay_meta_vid_location">Location (Immich)</string>
     <string name="overlay_meta_vid_date">Date taken (Media/Immich)</string>
+    <string name="overlay_meta_vid_title">Title (Media)</string>
     <string name="overlay_meta_vid_description">Description (Media/Immich)</string>
     <string name="overlay_meta_vid_album_name">Album Name (Immich)</string>
     <string name="overlay_meta_vid_filename">Use filename as-is</string>
@@ -1365,6 +1366,7 @@
         <item>@string/overlay_meta_vid_short_desc</item>
         <item>@string/overlay_meta_vid_location</item>
         <item>@string/overlay_meta_vid_date</item>
+        <item>@string/overlay_meta_vid_title</item>
         <item>@string/overlay_meta_vid_description</item>
         <item>@string/overlay_meta_vid_album_name</item>
         <item>@string/overlay_meta_vid_filename</item>
@@ -1376,6 +1378,7 @@
         <item>DESC</item>
         <item>LOCATION</item>
         <item>DATE_TAKEN</item>
+        <item>TITLE</item>
         <item>DESCRIPTION</item>
         <item>ALBUM_NAME</item>
         <item>FILENAME</item>

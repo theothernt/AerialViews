@@ -76,6 +76,19 @@ internal class MetadataResolver(
                         }
                 }
 
+                "TITLE" -> {
+                    media.metadata.title
+                        .trim()
+                        .takeIf { it.isNotBlank() && supportsEmbeddedVideoFileMetadata(media) }
+                        ?.let {
+                            return ResolvedMetadata(
+                                text = it,
+                                poi = emptyMap(),
+                                metadataType = MetadataType.STATIC,
+                            )
+                        }
+                }
+
                 else -> {
                     val common = resolveSharedMetadata(context, media, entry, preferences)
                     if (common != null) {
@@ -128,6 +141,9 @@ internal class MetadataResolver(
 
         return when (entry) {
             "LOCATION" -> {
+                if (media.type == AerialMediaType.VIDEO && media.source != AerialMediaSource.IMMICH) {
+                    return null
+                }
                 when (val location = resolveMediaLocation(context, media, locationType)) {
                     is MediaLocationResolution.Resolved -> {
                         ResolvedMetadata(

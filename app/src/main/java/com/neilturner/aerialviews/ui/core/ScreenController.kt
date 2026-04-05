@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.media3.common.MediaMetadata
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -767,22 +768,10 @@ class ScreenController(
 
     override fun onVideoError() = handleError()
 
-    override fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata) {
+    override fun onVideoMetadataExtracted(mediaMetadata: MediaMetadata) {
         val media = currentMedia ?: return
-        var changed = false
-
-        if (!mediaMetadata.title.isNullOrBlank()) {
-            media.metadata.exif.description = mediaMetadata.title.toString()
-            changed = true
-        }
-
-        if (mediaMetadata.recordingYear != null) {
-            val y = mediaMetadata.recordingYear
-            val m = mediaMetadata.recordingMonth?.toString()?.padStart(2, '0') ?: "01"
-            val d = mediaMetadata.recordingDay?.toString()?.padStart(2, '0') ?: "01"
-            media.metadata.exif.date = "$y:$m:$d 00:00:00"
-            changed = true
-        }
+        Timber.i("Video metadata: %s", formatVideoMetadataForLog(mediaMetadata))
+        val changed = applyVideoMetadataToMedia(media, mediaMetadata)
 
         if (changed) {
             updateMetadataOverlayData(media)
