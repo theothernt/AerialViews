@@ -1,349 +1,273 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="amazon_video_scene_type_entries">
-    <item>自然</item>
-    <item>海滩</item>
-    <item>城市</item>
-    <item>海洋</item>
-    <item>太空</item>
-    <item>图案</item>
-    <item>火焰</item>
-  </string-array>
-  <string-array name="background_colour_entries">
-    <item>黑色</item>
-    <item>白色</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>忽略操作</item>
-    <item>跳至下一个视频/照片</item>
-    <item>跳至上一个视频/照片</item>
-    <item>跳至下一首歌曲</item>
-    <item>跳至上一首歌曲</item>
-    <item>提高视频播放速度</item>
-    <item>降低视频播放速度</item>
-    <item>快退</item>
-    <item>快进</item>
-    <item>增加亮度</item>
-    <item>降低亮度</item>
-    <item>退出屏保</item>
-    <item>退出到设置</item>
-    <item>显示隐藏的叠加内容</item>
-    <item>熄屏模式，淡出媒体和叠加内容</item>
-    <item>切换静音/静音音频</item>
-    <item>暂停/恢复媒体计时器</item>
-    <item>切换当前视频的循环播放</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>系统默认</item>
-    <item>12 小时</item>
-    <item>24 小时</item>
-  </string-array>
-  <string-array name="comm2_videos_scene_type_entries">
-    <item>自然</item>
-    <item>瀑布</item>
-    <item>海滩</item>
-    <item>海洋</item>
-  </string-array>
-  <string-array name="comm2_videos_time_of_day_entries">
-    <item>白天</item>
-    <item>日落</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>简洁</item>
-    <item>完整</item>
-    <item>自定义</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>禁用</item>
-    <item>使用格式化文件名</item>
-    <item>文件夹和文件名</item>
-    <item>仅文件夹名称</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>禁用</item>
-    <item>日本 - 北海道的深雪.jpg \"变为 \"日本 - 北海道的深雪</item>
-    <item>照片/意大利/多洛米蒂.jpg \"变为 \"意大利/多洛米蒂</item>
-    <item>照片/都柏林/圣殿酒吧.png \"变为 \"都柏林</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>禁用</item>
-    <item>简要说明</item>
-    <item>动态景点</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>禁用</item>
-    <item>飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山</item>
-    <item>视频/大峡谷/日落.mp4 \"变为 \"大峡谷/日落</item>
-    <item>视频/爱尔兰/莫赫悬崖.mp4 \"变为 \"爱尔兰</item>
-  </string-array>
+  <string name="amazon_scene_beach">海滩</string>
+  <string name="amazon_scene_city">城市</string>
+  <string name="amazon_scene_fire">火焰</string>
+  <string name="amazon_scene_nature">自然</string>
+  <string name="amazon_scene_patterns">图案</string>
+  <string name="amazon_scene_sea">海洋</string>
+  <string name="amazon_scene_space">太空</string>
+  <string name="bg_color_black">黑色</string>
+  <string name="bg_color_white">白色</string>
+  <string name="btn_blackout">熄屏模式，淡出媒体和叠加内容</string>
+  <string name="btn_brightness_decrease">降低亮度</string>
+  <string name="btn_brightness_increase">增加亮度</string>
+  <string name="btn_exit">退出屏保</string>
+  <string name="btn_exit_settings">退出到设置</string>
+  <string name="btn_ignore">忽略操作</string>
+  <string name="btn_music_next">跳至下一首歌曲</string>
+  <string name="btn_music_previous">跳至上一首歌曲</string>
+  <string name="btn_seek_backward">快进</string>
+  <string name="btn_seek_forward">快退</string>
+  <string name="btn_show_overlays">显示隐藏的叠加内容</string>
+  <string name="btn_skip_next">跳至下一个视频/照片</string>
+  <string name="btn_skip_previous">跳至上一个视频/照片</string>
+  <string name="btn_speed_decrease">降低视频播放速度</string>
+  <string name="btn_speed_increase">提高视频播放速度</string>
+  <string name="btn_toggle_looping">切换当前视频的循环播放</string>
+  <string name="btn_toggle_mute">切换静音/静音音频</string>
+  <string name="btn_toggle_pause">暂停/恢复媒体计时器</string>
+  <string name="clock_12hour">12 小时</string>
+  <string name="clock_24hour">24 小时</string>
+  <string name="clock_system_default">系统默认</string>
+  <string name="comm2_scene_beach">海滩</string>
+  <string name="comm2_scene_nature">自然</string>
+  <string name="comm2_scene_sea">海洋</string>
+  <string name="comm2_scene_waterfall">瀑布</string>
+  <string name="comm2_time_of_day_day">白天</string>
+  <string name="comm2_time_of_day_sunset">日落</string>
+  <string name="date_compact">简洁</string>
+  <string name="date_custom">自定义</string>
+  <string name="date_full">完整</string>
+  <string name="desc_disabled">禁用</string>
+  <string name="desc_filename_disabled">禁用</string>
+  <string name="desc_filename_photo_1">日本 - 北海道的深雪.jpg \"变为 \"日本 - 北海道的深雪</string>
+  <string name="desc_filename_photo_2">照片/意大利/多洛米蒂.jpg \"变为 \"意大利/多洛米蒂</string>
+  <string name="desc_filename_photo_3">照片/都柏林/圣殿酒吧.png \"变为 \"都柏林</string>
+  <string name="desc_filename_video_1">飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山</string>
+  <string name="desc_filename_video_2">视频/大峡谷/日落.mp4 \"变为 \"大峡谷/日落</string>
+  <string name="desc_filename_video_3">视频/爱尔兰/莫赫悬崖.mp4 \"变为 \"爱尔兰</string>
+  <string name="desc_poi">动态景点</string>
+  <string name="desc_short">简要说明</string>
   <string-array name="description_video_manifest_entries">
     <item>禁用</item>
     <item>简短描述或地点</item>
     <item>支持多种语言，播放时自动切换</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>禁用</item>
-    <item>200 毫秒</item>
-    <item>400 毫秒</item>
-    <item>600 毫秒</item>
-    <item>800 毫秒</item>
-    <item>1 秒钟</item>
-    <item>1.2 秒钟</item>
-    <item>1.4 秒钟</item>
-    <item>1.6 秒钟</item>
-    <item>1.8 秒钟</item>
-    <item>2 秒钟</item>
-    <item>4 秒钟</item>
-    <item>6 秒钟</item>
-    <item>8 秒钟</item>
-    <item>10 秒</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item>共享链接</item>
-    <item>API 密钥</item>
-  </string-array>
-  <string-array name="immich_image_type_entries">
-    <item>预览</item>
-    <item>全尺寸</item>
-    <item>原创</item>
-  </string-array>
-  <string-array name="immich_include_entries">
-    <item>禁用</item>
-    <item>100 张照片</item>
-    <item>200 张照片</item>
-    <item>300 张照片</item>
-    <item>400 张照片</item>
-  </string-array>
-  <string-array name="immich_video_type_entries">
-    <item>转码</item>
-    <item>原创</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>达到上限时跳过</item>
-    <item>让较长的视频播放完毕</item>
-    <item>随机播放长视频片段</item>
-  </string-array>
+  <string name="duration_10s">10 秒</string>
+  <string name="duration_1_2s">1.2 秒钟</string>
+  <string name="duration_1_4s">1.4 秒钟</string>
+  <string name="duration_1_6s">1.6 秒钟</string>
+  <string name="duration_1_8s">1.8 秒钟</string>
+  <string name="duration_1s">1 秒钟</string>
+  <string name="duration_200ms">200 毫秒</string>
+  <string name="duration_2s">2 秒钟</string>
+  <string name="duration_400ms">400 毫秒</string>
+  <string name="duration_4s">4 秒钟</string>
+  <string name="duration_600ms">600 毫秒</string>
+  <string name="duration_6s">6 秒钟</string>
+  <string name="duration_800ms">800 毫秒</string>
+  <string name="duration_8s">8 秒钟</string>
+  <string name="duration_disabled">禁用</string>
+  <string name="fade_corner_bottom_left">左下角</string>
+  <string name="fade_corner_bottom_right">右下角</string>
+  <string name="fade_corner_top_left">左上角</string>
+  <string name="fade_corner_top_right">右上角</string>
+  <string name="filename_as_is">原始文件名</string>
+  <string name="filename_disabled">禁用</string>
+  <string name="filename_folder_and_file">文件夹和文件名</string>
+  <string name="filename_folder_only">仅文件夹名称</string>
+  <string name="folder_level_1">\'Italy / Sunset\' - 1 层</string>
+  <string name="folder_level_2">\'2025 / Italy / Sunset\' - 2 层</string>
+  <string name="folder_level_3">\'Scenic / 2025 / Italy / Sunset\' - 3 层</string>
+  <string name="folder_level_4">\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 层</string>
+  <string name="folder_level_5">\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 层</string>
+  <string name="immich_auth_api_key">API 密钥</string>
+  <string name="immich_auth_shared_link">共享链接</string>
+  <string name="immich_img_fullsize">全尺寸</string>
+  <string name="immich_img_original">原创</string>
+  <string name="immich_img_preview">预览</string>
+  <string name="immich_include_100">100 张照片</string>
+  <string name="immich_include_200">200 张照片</string>
+  <string name="immich_include_300">300 张照片</string>
+  <string name="immich_include_400">400 张照片</string>
+  <string name="immich_include_disabled">禁用</string>
+  <string name="immich_vid_original">原创</string>
+  <string name="immich_vid_transcoded">转码</string>
   <string-array name="limit_Longer_videos_summaries">
     <item>遵守限制 - 达到时长限制时跳至下一个视频</item>
     <item>忽略限制 - 若视频时长超过限制，仍将完整播放至结束</item>
     <item>随机片段 - 若视频时长超出限制，将播放该视频中的任意一个片段
 (例如，时长限制为 2 分钟时，一个 6 分钟的视频可拆分为 3 个片段，随机播放其中一段）</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>媒体扫描仪</item>
-    <item>文件夹访问</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>仅限视频</item>
-    <item>仅限照片</item>
-    <item>视频和照片</item>
-  </string-array>
-  <string-array name="metadata_folder_level_entries">
-    <item>\'Italy / Sunset\' - 1 层</item>
-    <item>\'2025 / Italy / Sunset\' - 2 层</item>
-    <item>\'Scenic / 2025 / Italy / Sunset\' - 3 层</item>
-    <item>\'Photos / Scenic / 2025 / Italy / Sunset\' - 4 层</item>
-    <item>\'Media / Photos / Scenic / 2025 / Italy / Sunset\' - 5 层</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>禁用</item>
-    <item>歌曲 - 艺术家</item>
-    <item>艺术家 - 歌曲</item>
-    <item>艺术家</item>
-    <item>歌曲</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>从不隐藏*</item>
-    <item>始终隐藏</item>
-    <item>2 秒钟</item>
-    <item>4 秒钟</item>
-    <item>6 秒钟</item>
-    <item>8 秒钟</item>
-    <item>10 秒</item>
-  </string-array>
-  <string-array name="overlay_fade_corners_entries">
-    <item>左上角</item>
-    <item>右上角</item>
-    <item>左下角</item>
-    <item>右下角</item>
-  </string-array>
-  <string-array name="overlay_metadata_photo_location_entries">
-    <item>城市</item>
-    <item>城市、州</item>
-    <item>城市、国家</item>
-    <item>城市、州、国家</item>
-    <item>国家</item>
-  </string-array>
-  <string-array name="overlay_metadata_photos_entries">
-    <item>位置（EXIF/Immich）</item>
-    <item>拍摄日期（EXIF/Immich）</item>
-    <item>描述（EXIF/Immich）</item>
-    <item>原始文件名</item>
-    <item>文件夹和文件名</item>
-    <item>仅文件夹名称</item>
-  </string-array>
-  <string-array name="overlay_metadata_videos_entries">
-    <item>动态兴趣点</item>
-    <item>简要说明</item>
-    <item>地点（伊米奇）</item>
-    <item>说明（伊米奇）</item>
-    <item>原始文件名</item>
-    <item>文件夹和文件名</item>
-    <item>仅文件夹名称</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 秒钟</item>
-    <item>4 秒*</item>
-    <item>6 秒钟</item>
-    <item>8 秒钟</item>
-    <item>10 秒</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>缩放填充*</item>
-    <item>缩放适应</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>无限制*</item>
-    <item>10 秒</item>
-    <item>20 秒</item>
-    <item>30 秒</item>
-    <item>1 分钟</item>
-    <item>2 分钟</item>
-    <item>3 分钟</item>
-    <item>4 分钟</item>
-    <item>5 分钟</item>
-    <item>6 分钟</item>
-    <item>7 分钟</item>
-    <item>8 分钟</item>
-    <item>9 分钟</item>
-    <item>10 分钟</item>
-    <item>20 分钟</item>
-    <item>30 分钟</item>
-    <item>60 分钟</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>禁用</item>
-    <item>屏幕顶部</item>
-    <item>屏幕底部</item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>视频和照片</item>
-    <item>仅限视频</item>
-    <item>仅限照片</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>Apple 视频</item>
-    <item>Amazon 视频</item>
-    <item>Jetson Creative 视频</item>
-    <item>Robin Fourcade 视频</item>
-  </string-array>
-  <string-array name="seek_interval_entries">
-    <item>10 秒</item>
-    <item>20 秒</item>
-    <item>30 秒</item>
-    <item>1 分钟</item>
-    <item>2 分钟</item>
-    <item>5 分钟</item>
-  </string-array>
-  <string-array name="sleep_timer_entries">
-    <item>已禁用*</item>
-    <item>1分钟</item>
-    <item>2 分钟</item>
-    <item>3 分钟</item>
-    <item>4 分钟</item>
-    <item>5 分钟</item>
-    <item>10 分钟</item>
-    <item>15 分钟</item>
-    <item>20 分钟</item>
-    <item>25 分钟</item>
-    <item>30 分钟</item>
-    <item>35 分钟</item>
-    <item>40 分钟</item>
-    <item>45 分钟</item>
-    <item>50 分钟</item>
-    <item>55 分钟</item>
-    <item>60 分钟</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 秒</item>
-    <item>10 秒</item>
-    <item>15 秒</item>
-    <item>20 秒</item>
-    <item>25 秒</item>
-    <item>30 秒*</item>
-    <item>1 分钟</item>
-    <item>2 分钟</item>
-    <item>3 分钟</item>
-    <item>5 分钟</item>
-    <item>10 分钟</item>
-    <item>20 分钟</item>
-    <item>30 分钟</item>
-    <item>1 小时</item>
-    <item>6小时</item>
-    <item>12小时</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>空</item>
-    <item>时钟</item>
-    <item>元数据 #1</item>
-    <item>元数据 #2</item>
-    <item>元数据 #3</item>
-    <item>元数据 #4</item>
-    <item>天气 #1</item>
-    <item>正在播放 #1</item>
-    <item>正在播放 #2</item>
-    <item>日期</item>
-    <item>信息 #1</item>
-    <item>信息 #2</item>
-    <item>信息 #3</item>
-    <item>信息 #4</item>
-    <item>倒计时</item>
-  </string-array>
-  <string-array name="temperature_units_entries">
-    <item>C°/摄氏度</item>
-    <item>F°/华氏度</item>
-  </string-array>
-  <string-array name="text_weight_entries">
-    <item>100/淡体</item>
-    <item>200/特细</item>
-    <item>300/细体*</item>
-    <item>400/标准</item>
-    <item>500/适中</item>
-    <item>600/次粗</item>
-    <item>700/粗体</item>
-    <item>800/特粗</item>
-    <item>900/浓体</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>缩放填充*</item>
-    <item>缩放适应</item>
-  </string-array>
-  <string-array name="video_scene_type_entries">
-    <item>自然</item>
-    <item>乡村</item>
-    <item>海滩</item>
-    <item>城市</item>
-    <item>海洋</item>
-    <item>外太空</item>
-  </string-array>
+  <string name="local_search_folder_access">文件夹访问</string>
+  <string name="local_search_media_scanner">媒体扫描仪</string>
+  <string name="longervideo_finish">让较长的视频播放完毕</string>
+  <string name="longervideo_segments">随机播放长视频片段</string>
+  <string name="longervideo_skip">达到上限时跳过</string>
+  <string name="maxvid_10_min">10 分钟</string>
+  <string name="maxvid_10_sec">10 秒</string>
+  <string name="maxvid_1_min">1 分钟</string>
+  <string name="maxvid_20_min">20 分钟</string>
+  <string name="maxvid_20_sec">20 秒</string>
+  <string name="maxvid_2_min">2 分钟</string>
+  <string name="maxvid_30_min">30 分钟</string>
+  <string name="maxvid_30_sec">30 秒</string>
+  <string name="maxvid_3_min">3 分钟</string>
+  <string name="maxvid_4_min">4 分钟</string>
+  <string name="maxvid_5_min">5 分钟</string>
+  <string name="maxvid_60_min">60 分钟</string>
+  <string name="maxvid_6_min">6 分钟</string>
+  <string name="maxvid_7_min">7 分钟</string>
+  <string name="maxvid_8_min">8 分钟</string>
+  <string name="maxvid_9_min">9 分钟</string>
+  <string name="maxvid_no_limit">无限制*</string>
+  <string name="media_photos_only">仅限照片</string>
+  <string name="media_videos_only">仅限视频</string>
+  <string name="media_videos_photos">视频和照片</string>
+  <string name="nowplaying_artist">艺术家</string>
+  <string name="nowplaying_artist_song">艺术家 - 歌曲</string>
+  <string name="nowplaying_disabled">禁用</string>
+  <string name="nowplaying_song">歌曲</string>
+  <string name="nowplaying_song_artist">歌曲 - 艺术家</string>
+  <string name="overlay_hide_10s">10 秒</string>
+  <string name="overlay_hide_2s">2 秒钟</string>
+  <string name="overlay_hide_4s">4 秒钟</string>
+  <string name="overlay_hide_6s">6 秒钟</string>
+  <string name="overlay_hide_8s">8 秒钟</string>
+  <string name="overlay_hide_always">始终隐藏</string>
+  <string name="overlay_hide_never">从不隐藏*</string>
+  <string name="overlay_meta_loc_city">城市</string>
+  <string name="overlay_meta_loc_city_country">城市、国家</string>
+  <string name="overlay_meta_loc_city_state">城市、州</string>
+  <string name="overlay_meta_loc_city_state_country">城市、州、国家</string>
+  <string name="overlay_meta_loc_country">国家</string>
+  <string name="overlay_meta_photo_album_name">专辑名称 (Immich)</string>
+  <string name="overlay_meta_photo_date">拍摄日期（EXIF/Immich）</string>
+  <string name="overlay_meta_photo_description">描述（EXIF/Immich）</string>
+  <string name="overlay_meta_photo_filename">原始文件名</string>
+  <string name="overlay_meta_photo_folder_filename">文件夹和文件名</string>
+  <string name="overlay_meta_photo_folder_only">仅文件夹名称</string>
+  <string name="overlay_meta_photo_location">位置（EXIF/Immich）</string>
+  <string name="overlay_meta_vid_album_name">专辑名称 (Immich)</string>
+  <string name="overlay_meta_vid_description">说明（伊米奇）</string>
+  <string name="overlay_meta_vid_filename">原始文件名</string>
+  <string name="overlay_meta_vid_folder_filename">文件夹和文件名</string>
+  <string name="overlay_meta_vid_folder_only">仅文件夹名称</string>
+  <string name="overlay_meta_vid_location">地点（伊米奇）</string>
+  <string name="overlay_meta_vid_poi">动态兴趣点</string>
+  <string name="overlay_meta_vid_short_desc">简要说明</string>
+  <string name="overlay_reveal_10s">10 秒</string>
+  <string name="overlay_reveal_2s">2 秒钟</string>
+  <string name="overlay_reveal_4s">4 秒*</string>
+  <string name="overlay_reveal_6s">6 秒钟</string>
+  <string name="overlay_reveal_8s">8 秒钟</string>
+  <string name="photo_scale_fill_crop">缩放填充*</string>
+  <string name="photo_scale_no_crop">缩放适应</string>
+  <string name="progressbar_loc_bottom">屏幕底部</string>
+  <string name="progressbar_loc_disabled">禁用</string>
+  <string name="progressbar_loc_top">屏幕顶部</string>
+  <string name="progressbar_type_photos_only">仅限照片</string>
+  <string name="progressbar_type_videos_only">仅限视频</string>
+  <string name="progressbar_type_videos_photos">视频和照片</string>
+  <string name="projectivy_amazon">Amazon 视频</string>
+  <string name="projectivy_apple">Apple 视频</string>
+  <string name="projectivy_jetson">Jetson Creative 视频</string>
+  <string name="projectivy_robin">Robin Fourcade 视频</string>
+  <string name="scene_beach">海滩</string>
+  <string name="scene_city">城市</string>
+  <string name="scene_countryside">乡村</string>
+  <string name="scene_nature">自然</string>
+  <string name="scene_sea">海洋</string>
+  <string name="scene_space">外太空</string>
+  <string name="seek_10_seconds">10 秒</string>
+  <string name="seek_1_minute">1 分钟</string>
+  <string name="seek_20_seconds">20 秒</string>
+  <string name="seek_2_minutes">2 分钟</string>
+  <string name="seek_30_seconds">30 秒</string>
+  <string name="seek_5_minutes">5 分钟</string>
+  <string name="sleep_10_min">10 分钟</string>
+  <string name="sleep_15_min">15 分钟</string>
+  <string name="sleep_1_min">1分钟</string>
+  <string name="sleep_20_min">20 分钟</string>
+  <string name="sleep_25_min">25 分钟</string>
+  <string name="sleep_2_min">2 分钟</string>
+  <string name="sleep_30_min">30 分钟</string>
+  <string name="sleep_35_min">35 分钟</string>
+  <string name="sleep_3_min">3 分钟</string>
+  <string name="sleep_40_min">40 分钟</string>
+  <string name="sleep_45_min">45 分钟</string>
+  <string name="sleep_4_min">4 分钟</string>
+  <string name="sleep_50_min">50 分钟</string>
+  <string name="sleep_55_min">55 分钟</string>
+  <string name="sleep_5_min">5 分钟</string>
+  <string name="sleep_60_min">60 分钟</string>
+  <string name="sleep_disabled">已禁用*</string>
+  <string name="slideshow_10m">10 分钟</string>
+  <string name="slideshow_10s">10 秒</string>
+  <string name="slideshow_12h">12小时</string>
+  <string name="slideshow_15s">15 秒</string>
+  <string name="slideshow_1h">1 小时</string>
+  <string name="slideshow_1m">1 分钟</string>
+  <string name="slideshow_20m">20 分钟</string>
+  <string name="slideshow_20s">20 秒</string>
+  <string name="slideshow_25s">25 秒</string>
+  <string name="slideshow_2m">2 分钟</string>
+  <string name="slideshow_30m">30 分钟</string>
+  <string name="slideshow_30s">30 秒*</string>
+  <string name="slideshow_3m">3 分钟</string>
+  <string name="slideshow_5m">5 分钟</string>
+  <string name="slideshow_5s">5 秒</string>
+  <string name="slideshow_6h">6小时</string>
+  <string name="slot_clock">时钟</string>
+  <string name="slot_countdown">倒计时</string>
+  <string name="slot_date">日期</string>
+  <string name="slot_empty">空</string>
+  <string name="slot_message_1">信息 #1</string>
+  <string name="slot_message_2">信息 #2</string>
+  <string name="slot_message_3">信息 #3</string>
+  <string name="slot_message_4">信息 #4</string>
+  <string name="slot_metadata_1">元数据 #1</string>
+  <string name="slot_metadata_2">元数据 #2</string>
+  <string name="slot_metadata_3">元数据 #3</string>
+  <string name="slot_metadata_4">元数据 #4</string>
+  <string name="slot_now_playing_1">正在播放 #1</string>
+  <string name="slot_now_playing_2">正在播放 #2</string>
+  <string name="slot_weather_1">天气现在</string>
+  <string name="slot_weather_2">天气天气预报</string>
+  <string name="temp_celsius">摄氏 / C</string>
+  <string name="temp_fahrenheit">华氏 / F</string>
+  <string name="time_of_day_day">白天</string>
+  <string name="time_of_day_night">夜晚</string>
+  <string name="time_of_day_sunrise">日出</string>
+  <string name="time_of_day_sunset">日落</string>
+  <string name="video_scale_fill_crop">缩放填充*</string>
+  <string name="video_scale_no_crop">缩放适应</string>
   <string-array name="video_time_of_day_entries">
     <item>日出</item>
     <item>白天</item>
     <item>日落</item>
     <item>夜晚</item>
   </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>留空</item>
-    <item>城市</item>
-    <item>温度</item>
-    <item>图标</item>
-    <item>概要</item>
-  </string-array>
-  <string-array name="weather_type_entries">
-    <item>留空</item>
-    <item>天气预报</item>
-    <item>风</item>
-    <item>湿度</item>
-    <item>日出</item>
-  </string-array>
+  <string name="weather_days_3">3 天</string>
+  <string name="weather_days_5">5 天</string>
+  <string name="weather_detail_city">城市</string>
+  <string name="weather_detail_empty">空</string>
+  <string name="weather_detail_icon">图标</string>
+  <string name="weather_detail_summary">概要</string>
+  <string name="weather_detail_temperature">温度</string>
+  <string name="weather_empty">空</string>
+  <string name="weather_forecast">天气预报</string>
+  <string name="weather_humidity">湿度</string>
+  <string name="weather_sunrise">日出</string>
+  <string name="weather_wind">风</string>
+  <string name="weight_100_thin">100/淡体</string>
+  <string name="weight_200_extra_light">200/特细</string>
+  <string name="weight_300_light">300/细体*</string>
+  <string name="weight_400_normal">400/标准</string>
+  <string name="weight_500_medium">500/适中</string>
+  <string name="weight_600_semi_bold">600/次粗</string>
+  <string name="weight_700_bold">700/粗体</string>
+  <string name="weight_800_extra_bold">800/特粗</string>
+  <string name="weight_900_heavy">900/浓体</string>
 </resources>

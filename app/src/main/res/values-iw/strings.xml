@@ -12,6 +12,7 @@
   <string name="advanced_locale_restart_app_summary">יש לאתחל את האפליקציה כדי לשנות את שפת התפריט</string>
   <string name="advanced_locale_restart_app_title">אתחל את האפליקציה</string>
   <string name="advanced_locale_screensaver_title">שפת טקסט שומר מסך (שעון, תיאור, וכד׳)</string>
+  <string name="advanced_log_capture_error_title">שגיאה</string>
   <string name="advanced_philips_dolby_vision_fix_summary">תיקון ניגון דולבי וויז׳ן על מספר טלוויזיות פיליפס ישנות</string>
   <string name="advanced_philips_dolby_vision_fix_title">השתמש במנתח מדיית וידאו חלופית</string>
   <string name="advanced_refresh_rate_switching_summary">שנה את קצב הרענון של התצוגה כך שיתאים לקצב פריימים של הווידאו</string>
@@ -213,7 +214,6 @@
   <string name="category_feeds">הזנות</string>
   <string name="category_filters">מסננים</string>
   <string name="category_folder_access_options">אפשרויות גישה לתיקיות</string>
-  <string name="category_forecast">תחזית</string>
   <string name="category_gradient">מדרון צבעים</string>
   <string name="category_import_settings">ייבוא הגדרות</string>
   <string name="category_line1">שורה 1</string>
@@ -381,7 +381,6 @@
   <string name="location_not_set">לא מוגדר</string>
   <string name="location_search_dialog_title">חפש מיקום או הזן קואורדינטות GPS</string>
   <string name="location_selection_title">בחר מיקום</string>
-  <string name="location_summary">המיקום שלך משמש רק לתחזיות מזג אוויר ולסינון אוטומטי של שעות ביום</string>
   <string name="location_unknown">לא ידוע</string>
   <string name="message_media_searching">מחפש מדיה...</string>
   <string name="none_selected">אף אחד לא נבחר</string>
@@ -555,14 +554,12 @@
   <string name="weather_forecast_slot2">חריץ 2</string>
   <string name="weather_forecast_slot3">חריץ 3</string>
   <string name="weather_forecast_slot4">חריץ 4</string>
-  <string name="weather_forecast_summary">שינוי הפריסה של מידע התחזית</string>
-  <string name="weather_forecast_temperature_units_title">יחידות טמפרטורה</string>
-  <string name="weather_forecast_title">תחזית נוכחית</string>
   <string name="weather_location_custom_name_summary">השתמש בשם מותאם אישית אם המיקום בו משתמשת שכבת-העל של מזג האוויר אינו נכון</string>
   <string name="weather_location_custom_summary">שם מותאם אישית למיקום (לדוגמה, דבלין). אם נותר ריק, ייעשה שימוש בשם מהחיפוש.</string>
   <string name="weather_location_custom_title">שם מותאם אישית (אופציונלי)</string>
   <string name="weather_location_search_hint">הזן שם עיר, למשל טוקיו או בואנוס איירס</string>
   <string name="weather_location_searching">מחפש מיקומים...</string>
+  <string name="weather_location_summary">המיקום שלך משמש רק לתחזיות מזג אוויר ולסינון אוטומטי של שעות ביום</string>
   <string name="weather_location_title">מיקום</string>
   <string name="webdav_media2_enabled_title">השתמש באישורי WebDAV משניים</string>
   <string name="webdav_media2_options_summary">הגדרת אישורי WebDAV משניים</string>
