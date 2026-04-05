@@ -577,27 +577,29 @@
         <item>System locale*</item>
         <item>English</item>
         <item>German</item>
+        <item>Spanish</item>
         <item>French</item>
-        <item>Arabic</item>
-        <item>Hebrew (he)</item>
-        <item>Hebrew (iw)</item>
-        <item>Japanese</item>
-        <item>Chinese</item>
+        <item>Italian</item>
+        <item>Hebrew</item>
+        <item>Romanian</item>
         <item>Russian</item>
+        <item>Turkish</item>
         <item>Ukrainian</item>
+        <item>Simplified Chinese</item>
     </string-array>
     <string-array name="locale_menu_values" translatable="false">
         <item>default</item>
-        <item>en-IE</item>
-        <item>de-DE</item>
-        <item>fr-FR</item>
-        <item>ar</item>
+        <item>en</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>it</item>
         <item>he</item>
-        <item>iw</item>
-        <item>ja-JP</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>uk</item>
         <item>zh-CN</item>
-        <item>ru-RU</item>
-        <item>uk-UA</item>
     </string-array>
     <string name="locale_menu_default" translatable="false">default</string>
 
@@ -605,28 +607,30 @@
         <item>System locale*</item>
         <item>English</item>
         <item>German</item>
+        <item>Spanish</item>
         <item>French</item>
-        <item>Arabic</item>
-        <item>Hebrew (he)</item>
-        <item>Hebrew (iw)</item>
-        <item>Japanese</item>
-        <item>Chinese</item>
+        <item>Italian</item>
+        <item>Hebrew</item>
+        <item>Romanian</item>
         <item>Russian</item>
+        <item>Turkish</item>
         <item>Ukrainian</item>
+        <item>Simplified Chinese</item>
         <item>Random</item>
     </string-array>
     <string-array name="locale_screensaver_values" translatable="false">
         <item>default</item>
-        <item>en-IE</item>
-        <item>de-DE</item>
-        <item>fr-FR</item>
-        <item>ar</item>
+        <item>en</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>it</item>
         <item>he</item>
-        <item>iw</item>
-        <item>ja-JP</item>
+        <item>ro</item>
+        <item>ru</item>
+        <item>tr</item>
+        <item>uk</item>
         <item>zh-CN</item>
-        <item>ru-RU</item>
-        <item>uk-UA</item>
         <item>random</item>
     </string-array>
     <string name="locale_screensaver_default" translatable="false">default</string>
