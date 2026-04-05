@@ -14,6 +14,9 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.DialogHelper
+import com.neilturner.aerialviews.utils.LogcatCapture
 import timber.log.Timber
 
 class AdvancedFragment :
@@ -31,6 +34,7 @@ class AdvancedFragment :
         FirebaseHelper.analyticsScreenView("Advanced", this)
         restartOnLanguageChange()
         checkPermission()
+        setupLogCapture()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -65,6 +69,43 @@ class AdvancedFragment :
             return
         } else {
             toggle?.isChecked = false
+        }
+    }
+
+    private fun setupLogCapture() {
+        val toggle = findPreference<SwitchPreference>("enable_log_capture")
+        toggle?.isChecked = GeneralPrefs.enableLogCapture
+
+        toggle?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue as Boolean) {
+                LogcatCapture.start(requireContext())
+            } else {
+                LogcatCapture.stop()
+            }
+            true
+        }
+
+        val saveLogs = findPreference<Preference>("save_logs")
+        saveLogs?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+            LogcatCapture.stop()
+            toggle?.isChecked = false
+            GeneralPrefs.enableLogCapture = false
+
+            val savedFile = LogcatCapture.saveToDocuments(requireContext())
+            if (savedFile != null) {
+                DialogHelper.show(
+                    requireContext(),
+                    getString(R.string.advanced_log_capture_saved_title),
+                    getString(R.string.advanced_log_capture_saved_message, savedFile.absolutePath)
+                )
+            } else {
+                DialogHelper.show(
+                    requireContext(),
+                    getString(R.string.advanced_log_capture_error_title),
+                    getString(R.string.advanced_log_capture_error_message)
+                )
+            }
+            true
         }
     }
 

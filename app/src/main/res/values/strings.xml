@@ -105,6 +105,7 @@
     <string name="category_swipe_gestures">Swipe gestures</string>
     <string name="category_tap_gestures">Tap gestures</string>
     <string name="category_albums">Albums</string>
+    <string name="category_log_capture">Log capture</string>
 
     <!-- Common Prefs/Options -->
     <string name="videos_quality_title">Video quality</string>
@@ -773,6 +774,16 @@
 
     <string name="advanced_locale_restart_app_title">Restart App</string>
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
+
+    <string name="advanced_log_capture_title">Enable log capture</string>
+    <string name="advanced_log_capture_summary">Capture all app logs via a background service. Logs are saved when stopped.</string>
+    <string name="advanced_save_logs_title">Save logs</string>
+    <string name="advanced_save_logs_summary">Stop capture and save the log file to the Documents folder</string>
+    <string name="advanced_log_capture_saved_title">Logs Saved</string>
+    <string name="advanced_log_capture_saved_message">Log file saved to:\n%1$s</string>
+    <string name="advanced_log_capture_error_title">Error</string>
+    <string name="advanced_log_capture_error_message">Failed to save log file</string>
+    <string name="advanced_log_capture_notification_title">Log capture running</string>
 
     <!-- Main / Settings / Device capabilities -->
     <string name="capabilities_device_title">Device</string>
