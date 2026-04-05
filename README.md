@@ -554,12 +554,12 @@ curl -X POST http://<tv-ip-address>:8081/message/1 \
 
 **Request Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `text` | string | Yes | The message text to display (empty string clears the message) |
-| `duration` | integer | No | Auto-clear message after N seconds |
-| `textSize` | integer | No | Font size in sp (default: 18) |
-| `textWeight` | integer | No | Font weight 100-900 (default: 300) |
+| Parameter    | Type    | Required | Description                                                   |
+|--------------|---------|----------|---------------------------------------------------------------|
+| `text`       | string  | Yes      | The message text to display (empty string clears the message) |
+| `duration`   | integer | No       | Auto-clear message after N seconds                            |
+| `textSize`   | integer | No       | Font size in sp (default: 18)                                 |
+| `textWeight` | integer | No       | Font weight 100-900 (default: 300)                            |
 
 **Response (Success):**
 ```json
