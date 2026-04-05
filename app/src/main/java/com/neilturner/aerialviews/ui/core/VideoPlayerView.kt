@@ -318,6 +318,11 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
+        override fun onMediaMetadataChanged(mediaMetadata: androidx.media3.common.MediaMetadata) {
+            super.onMediaMetadataChanged(mediaMetadata)
+            listener?.onVideoMetadataExtracted(mediaMetadata)
+        }
+
         private fun seek(backward: Boolean = false) {
             val interval = GeneralPrefs.seekInterval.toLong() * 1000
             val position = exoPlayer.currentPosition
@@ -445,6 +450,8 @@ class VideoPlayerView
             fun onVideoPrepared()
 
             fun onVideoPlaybackSpeedChanged()
+
+            fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata)
         }
 
         companion object {

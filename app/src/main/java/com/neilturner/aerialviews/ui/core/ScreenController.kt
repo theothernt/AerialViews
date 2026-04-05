@@ -767,6 +767,28 @@ class ScreenController(
 
     override fun onVideoError() = handleError()
 
+    override fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata) {
+        val media = currentMedia ?: return
+        var changed = false
+
+        if (!mediaMetadata.title.isNullOrBlank()) {
+            media.metadata.exif.description = mediaMetadata.title.toString()
+            changed = true
+        }
+
+        if (mediaMetadata.recordingYear != null) {
+            val y = mediaMetadata.recordingYear
+            val m = mediaMetadata.recordingMonth?.toString()?.padStart(2, '0') ?: "01"
+            val d = mediaMetadata.recordingDay?.toString()?.padStart(2, '0') ?: "01"
+            media.metadata.exif.date = "$y:$m:$d 00:00:00"
+            changed = true
+        }
+
+        if (changed) {
+            updateMetadataOverlayData(media)
+        }
+    }
+
     override fun onImageFinished() = fadeOutCurrentItem()
 
     override fun onImageError() = handleError()

@@ -77,7 +77,7 @@ internal class MetadataResolver(
                 }
 
                 else -> {
-                    val common = resolveSharedMetadata(context, media, entry, preferences.videoLocationType, preferences.videoFolderDepth)
+                    val common = resolveSharedMetadata(context, media, entry, preferences)
                     if (common != null) {
                         return common
                     }
@@ -101,28 +101,8 @@ internal class MetadataResolver(
 
         for (entry in selection) {
             when (entry) {
-                "DATE_TAKEN" -> {
-                    val exifDate = media.metadata.exif.date
-                    if (!exifDate.isNullOrBlank()) {
-                        val formatted =
-                            DateHelper.formatExifDate(
-                                date = exifDate,
-                                offset = media.metadata.exif.offset,
-                                type = preferences.photoDateType,
-                                custom = preferences.photoDateCustom,
-                            )
-                        if (!formatted.isNullOrBlank()) {
-                            return ResolvedMetadata(
-                                text = formatted,
-                                poi = emptyMap(),
-                                metadataType = MetadataType.STATIC,
-                            )
-                        }
-                    }
-                }
-
                 else -> {
-                    val common = resolveSharedMetadata(context, media, entry, preferences.photoLocationType, preferences.photoFolderDepth)
+                    val common = resolveSharedMetadata(context, media, entry, preferences)
                     if (common != null) {
                         return common
                     }
@@ -141,10 +121,12 @@ internal class MetadataResolver(
         context: Context,
         media: AerialMedia,
         entry: String,
-        locationType: LocationType,
-        folderDepth: Int,
-    ): ResolvedMetadata? =
-        when (entry) {
+        preferences: Preferences,
+    ): ResolvedMetadata? {
+        val locationType = if (media.type == AerialMediaType.IMAGE) preferences.photoLocationType else preferences.videoLocationType
+        val folderDepth = if (media.type == AerialMediaType.IMAGE) preferences.photoFolderDepth else preferences.videoFolderDepth
+
+        return when (entry) {
             "LOCATION" -> {
                 when (val location = resolveMediaLocation(context, media, locationType)) {
                     is MediaLocationResolution.Resolved -> {
@@ -168,6 +150,27 @@ internal class MetadataResolver(
                     }
                 }
             }
+
+            "DATE_TAKEN" -> {
+                val exifDate = media.metadata.exif.date
+                if (!exifDate.isNullOrBlank()) {
+                    val formatted =
+                        DateHelper.formatExifDate(
+                            date = exifDate,
+                            offset = media.metadata.exif.offset,
+                            type = preferences.photoDateType,
+                            custom = preferences.photoDateCustom,
+                        )
+                    if (!formatted.isNullOrBlank()) {
+                        ResolvedMetadata(
+                            text = formatted,
+                            poi = emptyMap(),
+                            metadataType = MetadataType.STATIC,
+                        )
+                    } else null
+                } else null
+            }
+
 
             "DESCRIPTION" -> {
                 media.metadata.exif.description
@@ -240,6 +243,7 @@ internal class MetadataResolver(
                 null
             }
         }
+    }
 
     private suspend fun resolveMediaLocation(
         context: Context,
