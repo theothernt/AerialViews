@@ -121,7 +121,7 @@ class VideoPlayerView
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
-            VideoPlayerHelper.setupMediaSource(exoPlayer, media)
+            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
 
             val shouldMute = GeneralPrefs.muteVideos || isMuted
             if (shouldMute) {

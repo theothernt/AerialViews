@@ -6,6 +6,7 @@ import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
@@ -128,6 +129,7 @@ object VideoPlayerHelper {
 
     @OptIn(UnstableApi::class)
     fun setupMediaSource(
+        context: Context,
         player: ExoPlayer,
         media: AerialMedia,
     ) {
@@ -189,7 +191,12 @@ object VideoPlayerHelper {
             }
 
             else -> {
-                player.setMediaItem(mediaItem)
+                val dataSourceFactory = DefaultDataSource.Factory(context)
+                val mediaSource =
+                    ProgressiveMediaSource
+                        .Factory(dataSourceFactory)
+                        .createMediaSource(mediaItem)
+                player.setMediaSource(mediaSource)
             }
         }
     }
