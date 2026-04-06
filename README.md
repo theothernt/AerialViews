@@ -41,7 +41,9 @@ Or [download the APK from the Releases page](https://github.com/theothernt/Aeria
 
 ## Want to Contribute?
 
-Aerial Views is an open-source project — contributions are welcome! Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
+Aerial Views is an open-source project - contributions are welcome! 
+
+Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
 
 And please get in contact before submitting pull requests, thanks!
 
