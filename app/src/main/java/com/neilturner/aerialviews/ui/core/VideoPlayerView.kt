@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -120,7 +121,7 @@ class VideoPlayerView
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
-            VideoPlayerHelper.setupMediaSource(exoPlayer, media)
+            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
 
             val shouldMute = GeneralPrefs.muteVideos || isMuted
             if (shouldMute) {
@@ -239,12 +240,13 @@ class VideoPlayerView
                 state.startPosition = result.first
                 state.endPosition = result.second
 
+                state.prepared = true
+
                 if (state.startPosition > 0) {
                     Timber.i("Seeking to ${state.startPosition.milliseconds}")
                     player?.seekTo(state.startPosition)
+                    return // Let the next STATE_READY (post-seek) handle the rest
                 }
-
-                state.prepared = true
             }
 
             // Video is buffered, ready to play
@@ -316,6 +318,11 @@ class VideoPlayerView
         override fun onPlayerErrorChanged(error: PlaybackException?) {
             super.onPlayerErrorChanged(error)
             error?.let { Timber.e(it) }
+        }
+
+        override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+            super.onMediaMetadataChanged(mediaMetadata)
+            listener?.onVideoMetadataExtracted(mediaMetadata)
         }
 
         private fun seek(backward: Boolean = false) {
@@ -445,6 +452,8 @@ class VideoPlayerView
             fun onVideoPrepared()
 
             fun onVideoPlaybackSpeedChanged()
+
+            fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata)
         }
 
         companion object {

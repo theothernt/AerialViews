@@ -1,348 +1,272 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="amazon_video_scene_type_entries">
-    <item>Natur</item>
-    <item>Strand</item>
-    <item>Stadt</item>
-    <item>Meer</item>
-    <item>Weltraum</item>
-    <item>Muster</item>
-    <item>Feuer</item>
-  </string-array>
-  <string-array name="background_colour_entries">
-    <item>Schwarz</item>
-    <item>Weiß</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>Aktion ignorieren</item>
-    <item>Zum nächsten Video/Foto springen</item>
-    <item>Zum vorherigen Video/Foto springen</item>
-    <item>Zum nächsten Musiktitel springen</item>
-    <item>Zum vorherigen Musiktitel springen</item>
-    <item>Videowiedergabegeschwindigkeit erhöhen</item>
-    <item>Videowiedergabegeschwindigkeit verringern</item>
-    <item>In einem Video vorwärts spulen</item>
-    <item>In einem Video zurückspulen</item>
-    <item>Helligkeit erhöhen</item>
-    <item>Helligkeit verringern</item>
-    <item>Bildschirmschoner beenden</item>
-    <item>Zum Einstellungsbildschirm zurückkehren</item>
-    <item>Overlays anzeigen, falls ausgeblendet</item>
-    <item>Blackout-Bildschirm, Ausblenden von Medien und Overlays</item>
-    <item>Audio stummschalten/Stummschaltung aufheben</item>
-    <item>Video- oder Fototimer pausieren/fortsetzen</item>
-    <item>Wiedergabewiederholung für aktuelles Video umschalten</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>Systemstandard</item>
-    <item>12-Stunden</item>
-    <item>24-Stunden</item>
-  </string-array>
-  <string-array name="comm2_videos_scene_type_entries">
-    <item>Natur</item>
-    <item>Wasserfall</item>
-    <item>Strand</item>
-    <item>Meer</item>
-  </string-array>
-  <string-array name="comm2_videos_time_of_day_entries">
-    <item>Tag</item>
-    <item>Sonnenuntergang</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>Kompakt</item>
-    <item>Voll</item>
-    <item>Angepasst</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>Deaktiviert</item>
-    <item>Dateinamen unverändert verwenden</item>
-    <item>Ordner- &amp; Dateiname</item>
-    <item>Nur Ordnername</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>Deaktiviert</item>
-    <item>Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</item>
-    <item>\'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</item>
-    <item>\'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>Deaktiviert</item>
-    <item>Kurze Beschreibung</item>
-    <item>Dynamische Sehenswürdigkeiten</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Deaktiviert</item>
-    <item>\'Flug in Richtung Mount Pilatus.mp4\' wird zu \'Flug in Richtung Mount Pilatus\'</item>
-    <item>\'Videos/Grand Canyon/Sonnenuntergang.mp4\' wird zu \'Grand Canyon/Sonnenuntergang\'</item>
-    <item>\'Videos/Irland/Klippen von Moher.mp4\' wird zu \'Irland\'</item>
-  </string-array>
+  <string name="amazon_scene_beach">Strand</string>
+  <string name="amazon_scene_city">Stadt</string>
+  <string name="amazon_scene_fire">Feuer</string>
+  <string name="amazon_scene_nature">Natur</string>
+  <string name="amazon_scene_patterns">Muster</string>
+  <string name="amazon_scene_sea">Meer</string>
+  <string name="amazon_scene_space">Weltraum</string>
+  <string name="bg_color_black">Schwarz</string>
+  <string name="bg_color_white">Weiß</string>
+  <string name="btn_blackout">Blackout-Bildschirm, Ausblenden von Medien und Overlays</string>
+  <string name="btn_brightness_decrease">Helligkeit verringern</string>
+  <string name="btn_brightness_increase">Helligkeit erhöhen</string>
+  <string name="btn_exit">Bildschirmschoner beenden</string>
+  <string name="btn_exit_settings">Zum Einstellungsbildschirm zurückkehren</string>
+  <string name="btn_ignore">Aktion ignorieren</string>
+  <string name="btn_music_next">Zum nächsten Musiktitel springen</string>
+  <string name="btn_music_previous">Zum vorherigen Musiktitel springen</string>
+  <string name="btn_seek_backward">In einem Video zurückspulen</string>
+  <string name="btn_seek_forward">In einem Video vorwärts spulen</string>
+  <string name="btn_show_overlays">Overlays anzeigen, falls ausgeblendet</string>
+  <string name="btn_skip_next">Zum nächsten Video/Foto springen</string>
+  <string name="btn_skip_previous">Zum vorherigen Video/Foto springen</string>
+  <string name="btn_speed_decrease">Videowiedergabegeschwindigkeit verringern</string>
+  <string name="btn_speed_increase">Videowiedergabegeschwindigkeit erhöhen</string>
+  <string name="btn_toggle_looping">Wiedergabewiederholung für aktuelles Video umschalten</string>
+  <string name="btn_toggle_mute">Audio stummschalten/Stummschaltung aufheben</string>
+  <string name="btn_toggle_pause">Video- oder Fototimer pausieren/fortsetzen</string>
+  <string name="clock_12hour">12-Stunden</string>
+  <string name="clock_24hour">24-Stunden</string>
+  <string name="clock_system_default">Systemstandard</string>
+  <string name="comm2_scene_beach">Strand</string>
+  <string name="comm2_scene_nature">Natur</string>
+  <string name="comm2_scene_sea">Meer</string>
+  <string name="comm2_scene_waterfall">Wasserfall</string>
+  <string name="comm2_time_of_day_day">Tag</string>
+  <string name="comm2_time_of_day_sunset">Sonnenuntergang</string>
+  <string name="date_compact">Kompakt</string>
+  <string name="date_custom">Angepasst</string>
+  <string name="date_full">Voll</string>
+  <string name="desc_disabled">Deaktiviert</string>
+  <string name="desc_filename_disabled">Deaktiviert</string>
+  <string name="desc_filename_photo_1">Japan - Tiefschnee in Hokkaido.jpg\' wird zu \'Japan - Tiefschnee in Hokkaido\'</string>
+  <string name="desc_filename_photo_2">\'Bilder/Italien/Dolomiten.jpg\' wird zu \'Italien/Dolomiten\'</string>
+  <string name="desc_filename_photo_3">\'Bilder/Dublin/Temple Bar.png\' wird zu \'Dublin\'</string>
+  <string name="desc_filename_video_1">\'Flug in Richtung Mount Pilatus.mp4\' wird zu \'Flug in Richtung Mount Pilatus\'</string>
+  <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sonnenuntergang.mp4\' wird zu \'Grand Canyon/Sonnenuntergang\'</string>
+  <string name="desc_filename_video_3">\'Videos/Irland/Klippen von Moher.mp4\' wird zu \'Irland\'</string>
+  <string name="desc_poi">Dynamische Sehenswürdigkeiten</string>
+  <string name="desc_short">Kurze Beschreibung</string>
   <string-array name="description_video_manifest_entries">
     <item>Deaktiviert</item>
     <item>Eine kurze Beschreibung oder ein Standort</item>
     <item>Verfügbar in vielen Sprachen, ändern sich während der Wiedergabe</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>Deaktiviert</item>
-    <item>200 ms</item>
-    <item>400 ms</item>
-    <item>600ms</item>
-    <item>800ms</item>
-    <item>1000ms</item>
-    <item>1200ms</item>
-    <item>1400 ms</item>
-    <item>1600ms</item>
-    <item>1800ms</item>
-    <item>2000ms</item>
-    <item>4 Sekunden</item>
-    <item>6 Sekunden</item>
-    <item>8 Sekunden</item>
-    <item>10 Sekunden</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item>Freigegebener Link</item>
-    <item>API-Schlüssel</item>
-  </string-array>
-  <string-array name="immich_image_type_entries">
-    <item>Vorschau</item>
-    <item>Originalgröße</item>
-    <item>Original</item>
-  </string-array>
-  <string-array name="immich_include_entries">
-    <item>Deaktiviert</item>
-    <item>100 Fotos</item>
-    <item>200 Fotos</item>
-    <item>300 Fotos</item>
-    <item>400 Fotos</item>
-  </string-array>
-  <string-array name="immich_video_type_entries">
-    <item>Transkodiert</item>
-    <item>Original</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>Überspringen, wenn das Limit erreicht ist</item>
-    <item>Längere Videos beenden lassen</item>
-    <item>Zufallsabschnitte langer Videos abspielen</item>
-  </string-array>
+  <string name="duration_10s">10 Sekunden</string>
+  <string name="duration_1_2s">1,2 Sekunden</string>
+  <string name="duration_1_4s">1,4 Sekunden</string>
+  <string name="duration_1_6s">1,6 Sekunden</string>
+  <string name="duration_1_8s">1,8 Sekunden</string>
+  <string name="duration_1s">1 Sekunde</string>
+  <string name="duration_200ms">200 ms</string>
+  <string name="duration_2s">2 Sekunden</string>
+  <string name="duration_400ms">400 ms</string>
+  <string name="duration_4s">4 Sekunden</string>
+  <string name="duration_600ms">600ms</string>
+  <string name="duration_6s">6 Sekunden</string>
+  <string name="duration_800ms">800ms</string>
+  <string name="duration_8s">8 Sekunden</string>
+  <string name="duration_disabled">Deaktiviert</string>
+  <string name="fade_corner_bottom_left">Unten links</string>
+  <string name="fade_corner_bottom_right">Unten rechts</string>
+  <string name="fade_corner_top_left">Oben links</string>
+  <string name="fade_corner_top_right">Oben rechts</string>
+  <string name="filename_as_is">Dateinamen unverändert verwenden</string>
+  <string name="filename_disabled">Deaktiviert</string>
+  <string name="filename_folder_and_file">Ordner- &amp; Dateiname</string>
+  <string name="filename_folder_only">Nur Ordnername</string>
+  <string name="folder_level_1">\'Italien / Sonnenuntergang\' - 1 Ebene</string>
+  <string name="folder_level_2">\'2025 / Italien / Sonnenuntergang\' - 2 Ebenen</string>
+  <string name="folder_level_3">\'Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 3 Ebenen</string>
+  <string name="folder_level_4">\'Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 4 Ebenen</string>
+  <string name="folder_level_5">\'Medien / Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 5 Ebenen</string>
+  <string name="immich_auth_api_key">API-Schlüssel</string>
+  <string name="immich_auth_shared_link">Freigegebener Link</string>
+  <string name="immich_img_fullsize">Originalgröße</string>
+  <string name="immich_img_original">Original</string>
+  <string name="immich_img_preview">Vorschau</string>
+  <string name="immich_include_100">100 Fotos</string>
+  <string name="immich_include_200">200 Fotos</string>
+  <string name="immich_include_300">300 Fotos</string>
+  <string name="immich_include_400">400 Fotos</string>
+  <string name="immich_include_disabled">Deaktiviert</string>
+  <string name="immich_vid_original">Original</string>
+  <string name="immich_vid_transcoded">Transkodiert</string>
   <string-array name="limit_Longer_videos_summaries">
     <item>Limit einhalten - zum nächsten Video springen, wenn das Limit erreicht ist</item>
     <item>Limit ignorieren - wenn ein Video länger als das eingestellte Limit ist, wird es bis zum Ende abgespielt</item>
     <item>Zufälliges Segment – wenn ein Video länger als das Limit ist, wird ein zufälliger Videoteil abgespielt (z. B. kann ein 6-minütiges Video mit einem 2-Minuten-Limit 3 Segmente haben – eines wird zufällig abgespielt)</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>Medien-Scanner</item>
-    <item>Ordnerzugriff (Veraltet)</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>Nur Videos</item>
-    <item>Nur Fotos</item>
-    <item>Fotos &amp; Videos</item>
-  </string-array>
-  <string-array name="metadata_folder_level_entries">
-    <item>\'Italien / Sonnenuntergang\' - 1 Ebene</item>
-    <item>\'2025 / Italien / Sonnenuntergang\' - 2 Ebenen</item>
-    <item>\'Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 3 Ebenen</item>
-    <item>\'Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 4 Ebenen</item>
-    <item>\'Medien / Fotos / Landschaftlich / 2025 / Italien / Sonnenuntergang\' - 5 Ebenen</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>Deaktiviert</item>
-    <item>Lied · Interpret</item>
-    <item>Interpret · Lied</item>
-    <item>Interpret</item>
-    <item>Lied</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>Nie ausblenden (Standard)</item>
-    <item>Immer ausgeblendet</item>
-    <item>2 Sekunden</item>
-    <item>4 Sekunden</item>
-    <item>6 Sekunden</item>
-    <item>8 Sekunden</item>
-    <item>10 Sekunden</item>
-  </string-array>
-  <string-array name="overlay_fade_corners_entries">
-    <item>Oben links</item>
-    <item>Oben rechts</item>
-    <item>Unten links</item>
-    <item>Unten rechts</item>
-  </string-array>
-  <string-array name="overlay_metadata_photo_location_entries">
-    <item>Stadt</item>
-    <item>Stadt, Staat</item>
-    <item>Stadt, Land</item>
-    <item>Stadt, Staat, Land</item>
-    <item>Land</item>
-  </string-array>
-  <string-array name="overlay_metadata_photos_entries">
-    <item>Standort (EXIF/Immich)</item>
-    <item>Aufnahmedatum (EXIF/Immich)</item>
-    <item>Beschreibung (EXIF/Immich)</item>
-    <item>Dateinamen unverändert verwenden</item>
-    <item>Ordner- &amp; Dateiname</item>
-    <item>Nur Ordnername</item>
-  </string-array>
-  <string-array name="overlay_metadata_videos_entries">
-    <item>Dynamische Punkte von Interesse</item>
-    <item>Kurzbeschreibung</item>
-    <item>Standort (Immich)</item>
-    <item>Beschreibung (Immich)</item>
-    <item>Dateinamen unverändert verwenden</item>
-    <item>Ordner- &amp; Dateiname</item>
-    <item>Nur Ordnername</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 Sekunden</item>
-    <item>4 Sekunden (Standard)</item>
-    <item>6 Sekunden</item>
-    <item>8 Sekunden</item>
-    <item>10 Sekunden</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Füllen mit Zuschneiden (Standard)</item>
-    <item>Skalieren ohne Zuschneiden</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>Kein Limit (Standard)</item>
-    <item>10 Sekunden</item>
-    <item>20 Sekunden</item>
-    <item>30 Sekunden</item>
-    <item>1 Minute</item>
-    <item>2 Minuten</item>
-    <item>3 Minuten</item>
-    <item>4 Minuten</item>
-    <item>5 Minuten</item>
-    <item>6 Minuten</item>
-    <item>7 Minuten</item>
-    <item>8 Minuten</item>
-    <item>9 Minuten</item>
-    <item>10 Minuten</item>
-    <item>20 Minuten</item>
-    <item>30 Minuten</item>
-    <item>60 Minuten</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>Deaktiviert</item>
-    <item>Oberer Bildschirmrand</item>
-    <item>Unterer Bildschirmrand</item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>Fotos &amp; Videos</item>
-    <item>Nur Videos</item>
-    <item>Nur Fotos</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>Videos von Apple</item>
-    <item>Amazon Videos</item>
-    <item>Videos von Jetson Creative</item>
-    <item>Videos von Robin Fourcade</item>
-  </string-array>
-  <string-array name="seek_interval_entries">
-    <item>10 Sekunden</item>
-    <item>20 Sekunden</item>
-    <item>30 Sekunden</item>
-    <item>1 Minute</item>
-    <item>2 Minuten</item>
-    <item>5 Minuten</item>
-  </string-array>
-  <string-array name="sleep_timer_entries">
-    <item>Deaktiviert*</item>
-    <item>1 Minute</item>
-    <item>2 Minuten</item>
-    <item>3 Minuten</item>
-    <item>4 Minuten</item>
-    <item>5 Minuten</item>
-    <item>10 Minuten</item>
-    <item>15 Minuten</item>
-    <item>20 Minuten</item>
-    <item>25 Minuten</item>
-    <item>30 Minuten</item>
-    <item>35 Minuten</item>
-    <item>40 Minuten</item>
-    <item>45 Minuten</item>
-    <item>50 Minuten</item>
-    <item>55 Minuten</item>
-    <item>60 Minuten</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 Sekunden</item>
-    <item>10 Sekunden</item>
-    <item>15 Sekunden</item>
-    <item>20 Sekunden</item>
-    <item>25 Sekunden</item>
-    <item>30 Sekunden*</item>
-    <item>1 Minute</item>
-    <item>2 Minuten</item>
-    <item>3 Minuten</item>
-    <item>5 Minuten</item>
-    <item>10 Minuten</item>
-    <item>20 Minuten</item>
-    <item>30 Minuten</item>
-    <item>1 Stunde</item>
-    <item>6 Stunden</item>
-    <item>12 Stunden</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>Leer</item>
-    <item>Uhr</item>
-    <item>Metadaten #1</item>
-    <item>Metadaten #2</item>
-    <item>Metadaten #3</item>
-    <item>Metadaten #4</item>
-    <item>Wetter #1</item>
-    <item>Jetzt läuft #1</item>
-    <item>Jetzt läuft #2</item>
-    <item>Datum</item>
-    <item>Nachricht #1</item>
-    <item>Nachricht #2</item>
-    <item>Nachricht #3</item>
-    <item>Nachricht #4</item>
-    <item>Countdown</item>
-  </string-array>
-  <string-array name="temperature_units_entries">
-    <item>C° / Celsius</item>
-    <item>F° / Fahrenheit</item>
-  </string-array>
-  <string-array name="text_weight_entries">
-    <item>100 / Dünn</item>
-    <item>200 / Extraleicht</item>
-    <item>300/Licht*</item>
-    <item>400 / Normal</item>
-    <item>500 / Mittel</item>
-    <item>600 / Halbfett</item>
-    <item>700 / Fett</item>
-    <item>800 / Extrafett</item>
-    <item>900 / Schwer</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>Füllen mit Zuschneiden (Standard)</item>
-    <item>Skalieren ohne Zuschneiden</item>
-  </string-array>
-  <string-array name="video_scene_type_entries">
-    <item>Natur</item>
-    <item>Landschaft</item>
-    <item>Strand</item>
-    <item>Stadt</item>
-    <item>Meer</item>
-    <item>Weltraum</item>
-  </string-array>
+  <string name="local_search_folder_access">Ordnerzugriff</string>
+  <string name="local_search_media_scanner">Medien-Scanner</string>
+  <string name="longervideo_finish">Längere Videos beenden lassen</string>
+  <string name="longervideo_segments">Zufallsabschnitte langer Videos abspielen</string>
+  <string name="longervideo_skip">Überspringen, wenn das Limit erreicht ist</string>
+  <string name="maxvid_10_min">10 Minuten</string>
+  <string name="maxvid_10_sec">10 Sekunden</string>
+  <string name="maxvid_1_min">1 Minute</string>
+  <string name="maxvid_20_min">20 Minuten</string>
+  <string name="maxvid_20_sec">20 Sekunden</string>
+  <string name="maxvid_2_min">2 Minuten</string>
+  <string name="maxvid_30_min">30 Minuten</string>
+  <string name="maxvid_30_sec">30 Sekunden</string>
+  <string name="maxvid_3_min">3 Minuten</string>
+  <string name="maxvid_4_min">4 Minuten</string>
+  <string name="maxvid_5_min">5 Minuten</string>
+  <string name="maxvid_60_min">60 Minuten</string>
+  <string name="maxvid_6_min">6 Minuten</string>
+  <string name="maxvid_7_min">7 Minuten</string>
+  <string name="maxvid_8_min">8 Minuten</string>
+  <string name="maxvid_9_min">9 Minuten</string>
+  <string name="maxvid_no_limit">Keine Begrenzung*</string>
+  <string name="media_photos_only">Nur Fotos</string>
+  <string name="media_videos_only">Nur Videos</string>
+  <string name="media_videos_photos">Fotos &amp; Videos</string>
+  <string name="nowplaying_artist">Interpret</string>
+  <string name="nowplaying_artist_song">Interpret · Lied</string>
+  <string name="nowplaying_disabled">Deaktiviert</string>
+  <string name="nowplaying_song">Lied</string>
+  <string name="nowplaying_song_artist">Lied · Interpret</string>
+  <string name="overlay_hide_10s">10 Sekunden</string>
+  <string name="overlay_hide_2s">2 Sekunden</string>
+  <string name="overlay_hide_4s">4 Sekunden</string>
+  <string name="overlay_hide_6s">6 Sekunden</string>
+  <string name="overlay_hide_8s">8 Sekunden</string>
+  <string name="overlay_hide_always">Immer ausgeblendet</string>
+  <string name="overlay_hide_never">Niemals verstecken*</string>
+  <string name="overlay_meta_loc_city">Stadt</string>
+  <string name="overlay_meta_loc_city_country">Stadt, Land</string>
+  <string name="overlay_meta_loc_city_state">Stadt, Staat</string>
+  <string name="overlay_meta_loc_city_state_country">Stadt, Staat, Land</string>
+  <string name="overlay_meta_loc_country">Land</string>
+  <string name="overlay_meta_photo_album_name">Albumname (Immich)</string>
+  <string name="overlay_meta_photo_date">Aufnahmedatum (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_description">Beschreibung (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_filename">Dateinamen unverändert verwenden</string>
+  <string name="overlay_meta_photo_folder_filename">Ordner- &amp; Dateiname</string>
+  <string name="overlay_meta_photo_folder_only">Nur Ordnername</string>
+  <string name="overlay_meta_photo_location">Standort (EXIF/Immich)</string>
+  <string name="overlay_meta_vid_album_name">Albumname (Immich)</string>
+  <string name="overlay_meta_vid_description">Beschreibung (Immich)</string>
+  <string name="overlay_meta_vid_filename">Dateinamen unverändert verwenden</string>
+  <string name="overlay_meta_vid_folder_filename">Ordner- &amp; Dateiname</string>
+  <string name="overlay_meta_vid_folder_only">Nur Ordnername</string>
+  <string name="overlay_meta_vid_location">Standort (Immich)</string>
+  <string name="overlay_meta_vid_poi">Dynamische Punkte von Interesse</string>
+  <string name="overlay_meta_vid_short_desc">Kurzbeschreibung</string>
+  <string name="overlay_reveal_10s">10 Sekunden</string>
+  <string name="overlay_reveal_2s">2 Sekunden</string>
+  <string name="overlay_reveal_4s">4 Sekunden*</string>
+  <string name="overlay_reveal_6s">6 Sekunden</string>
+  <string name="overlay_reveal_8s">8 Sekunden</string>
+  <string name="photo_scale_fill_crop">Mit Ernte füllen*</string>
+  <string name="photo_scale_no_crop">Skalieren ohne Zuschneiden</string>
+  <string name="progressbar_loc_bottom">Unterer Bildschirmrand</string>
+  <string name="progressbar_loc_disabled">Deaktiviert</string>
+  <string name="progressbar_loc_top">Oberer Bildschirmrand</string>
+  <string name="progressbar_type_photos_only">Nur Fotos</string>
+  <string name="progressbar_type_videos_only">Nur Videos</string>
+  <string name="progressbar_type_videos_photos">Fotos &amp; Videos</string>
+  <string name="projectivy_amazon">Amazon Videos</string>
+  <string name="projectivy_apple">Videos von Apple</string>
+  <string name="projectivy_jetson">Videos von Jetson Creative</string>
+  <string name="projectivy_robin">Videos von Robin Fourcade</string>
+  <string name="scene_beach">Strand</string>
+  <string name="scene_city">Stadt</string>
+  <string name="scene_countryside">Landschaft</string>
+  <string name="scene_nature">Natur</string>
+  <string name="scene_sea">Meer</string>
+  <string name="scene_space">Weltraum</string>
+  <string name="seek_10_seconds">10 Sekunden</string>
+  <string name="seek_1_minute">1 Minute</string>
+  <string name="seek_20_seconds">20 Sekunden</string>
+  <string name="seek_2_minutes">2 Minuten</string>
+  <string name="seek_30_seconds">30 Sekunden</string>
+  <string name="seek_5_minutes">5 Minuten</string>
+  <string name="sleep_10_min">10 Minuten</string>
+  <string name="sleep_15_min">15 Minuten</string>
+  <string name="sleep_1_min">1 Minute</string>
+  <string name="sleep_20_min">20 Minuten</string>
+  <string name="sleep_25_min">25 Minuten</string>
+  <string name="sleep_2_min">2 Minuten</string>
+  <string name="sleep_30_min">30 Minuten</string>
+  <string name="sleep_35_min">35 Minuten</string>
+  <string name="sleep_3_min">3 Minuten</string>
+  <string name="sleep_40_min">40 Minuten</string>
+  <string name="sleep_45_min">45 Minuten</string>
+  <string name="sleep_4_min">4 Minuten</string>
+  <string name="sleep_50_min">50 Minuten</string>
+  <string name="sleep_55_min">55 Minuten</string>
+  <string name="sleep_5_min">5 Minuten</string>
+  <string name="sleep_60_min">60 Minuten</string>
+  <string name="sleep_disabled">Deaktiviert*</string>
+  <string name="slideshow_10m">10 Minuten</string>
+  <string name="slideshow_10s">10 Sekunden</string>
+  <string name="slideshow_12h">12 Stunden</string>
+  <string name="slideshow_15s">15 Sekunden</string>
+  <string name="slideshow_1h">1 Stunde</string>
+  <string name="slideshow_1m">1 Minute</string>
+  <string name="slideshow_20m">20 Minuten</string>
+  <string name="slideshow_20s">20 Sekunden</string>
+  <string name="slideshow_25s">25 Sekunden</string>
+  <string name="slideshow_2m">2 Minuten</string>
+  <string name="slideshow_30m">30 Minuten</string>
+  <string name="slideshow_30s">30 Sekunden*</string>
+  <string name="slideshow_3m">3 Minuten</string>
+  <string name="slideshow_5m">5 Minuten</string>
+  <string name="slideshow_5s">5 Sekunden</string>
+  <string name="slideshow_6h">6 Stunden</string>
+  <string name="slot_clock">Uhr</string>
+  <string name="slot_countdown">Countdown</string>
+  <string name="slot_date">Datum</string>
+  <string name="slot_empty">Leer</string>
+  <string name="slot_message_1">Nachricht #1</string>
+  <string name="slot_message_2">Nachricht #2</string>
+  <string name="slot_message_3">Nachricht #3</string>
+  <string name="slot_message_4">Nachricht #4</string>
+  <string name="slot_metadata_1">Metadaten #1</string>
+  <string name="slot_metadata_2">Metadaten #2</string>
+  <string name="slot_metadata_3">Metadaten #3</string>
+  <string name="slot_metadata_4">Metadaten #4</string>
+  <string name="slot_now_playing_1">Jetzt läuft #1</string>
+  <string name="slot_now_playing_2">Jetzt läuft #2</string>
+  <string name="slot_weather_1">Wetter: Jetzt</string>
+  <string name="slot_weather_2">Wettervorhersage</string>
+  <string name="temp_celsius">Celsius / C</string>
+  <string name="temp_fahrenheit">Fahrenheit / F</string>
+  <string name="time_of_day_day">Tag</string>
+  <string name="time_of_day_night">Nacht</string>
+  <string name="time_of_day_sunrise">Sonnenaufgang</string>
+  <string name="time_of_day_sunset">Sonnenuntergang</string>
+  <string name="video_scale_fill_crop">Mit Ernte füllen*</string>
+  <string name="video_scale_no_crop">Skalieren ohne Zuschneiden</string>
   <string-array name="video_time_of_day_entries">
     <item>Sonnenaufgang</item>
     <item>Tag</item>
     <item>Sonnenuntergang</item>
     <item>Nacht</item>
   </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>Leer</item>
-    <item>Stadt</item>
-    <item>Temperatur</item>
-    <item>Symbol</item>
-    <item>Zusammenfassung</item>
-  </string-array>
-  <string-array name="weather_type_entries">
-    <item>Leer</item>
-    <item>Vorhersage</item>
-    <item>Wind</item>
-    <item>Luftfeuchtigkeit</item>
-    <item>Sonnenaufgang</item>
-  </string-array>
+  <string name="weather_days_3">3 Tage</string>
+  <string name="weather_days_5">5 Tage</string>
+  <string name="weather_detail_city">Stadt</string>
+  <string name="weather_detail_empty">Leer</string>
+  <string name="weather_detail_icon">Symbol</string>
+  <string name="weather_detail_summary">Zusammenfassung</string>
+  <string name="weather_detail_temperature">Temperatur</string>
+  <string name="weather_empty">Leer</string>
+  <string name="weather_forecast">Vorhersage</string>
+  <string name="weather_humidity">Luftfeuchtigkeit</string>
+  <string name="weather_sunrise">Sonnenaufgang</string>
+  <string name="weather_wind">Wind</string>
+  <string name="weight_100_thin">100 / Dünn</string>
+  <string name="weight_200_extra_light">200 / Extraleicht</string>
+  <string name="weight_300_light">300/Licht*</string>
+  <string name="weight_400_normal">400 / Normal</string>
+  <string name="weight_500_medium">500 / Mittel</string>
+  <string name="weight_600_semi_bold">600 / Halbfett</string>
+  <string name="weight_700_bold">700 / Fett</string>
+  <string name="weight_800_extra_bold">800 / Extrafett</string>
+  <string name="weight_900_heavy">900 / Schwer</string>
 </resources>

@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.media3.common.MediaMetadata
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -38,10 +39,10 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
-import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
+import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
@@ -804,6 +805,16 @@ class ScreenController(
     override fun onVideoPrepared() = fadeInNextItem()
 
     override fun onVideoError() = handleError()
+
+    override fun onVideoMetadataExtracted(mediaMetadata: MediaMetadata) {
+        val media = currentMedia ?: return
+        Timber.i("Video metadata: %s", formatVideoMetadataForLog(mediaMetadata))
+        val changed = applyVideoMetadataToMedia(media, mediaMetadata)
+
+        if (changed) {
+            updateMetadataOverlayData(media)
+        }
+    }
 
     override fun onImageFinished() = fadeOutCurrentItem()
 

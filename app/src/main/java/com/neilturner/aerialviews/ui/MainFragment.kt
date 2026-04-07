@@ -98,14 +98,14 @@ class MainFragment :
                 Intent.ACTION_MAIN,
             ).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
         intents += Intent(SCREENSAVER_SETTINGS)
-        intents += Intent(SETTINGS)
+        // intents += Intent(SETTINGS)
 
         intents.forEach { intent ->
             if (intentAvailable(intent)) {
                 try {
                     Timber.i("Trying... $intent")
                     startActivity(intent)
-                    return
+                    // return
                 } catch (ex: Exception) {
                     Timber.e(ex)
                 }

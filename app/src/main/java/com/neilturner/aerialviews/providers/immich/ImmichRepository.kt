@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.utils.ServerConfig
 import com.neilturner.aerialviews.utils.SslHelper
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import kotlinx.serialization.json.Json
 import retrofit2.Retrofit
@@ -189,7 +190,7 @@ class ImmichRepository(
                         }
                     }
 
-                val albumResponses = albumDeferreds.map { it.await() }
+                val albumResponses = albumDeferreds.awaitAll()
 
                 for ((index, albumResponse) in albumResponses.withIndex()) {
                     val albumId = albumResponse.first

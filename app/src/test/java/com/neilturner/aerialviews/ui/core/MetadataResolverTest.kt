@@ -38,6 +38,7 @@ internal class MetadataResolverTest {
         type: AerialMediaType = AerialMediaType.VIDEO,
         poi: Map<Int, String> = emptyMap(),
         shortDesc: String = "",
+        title: String = "",
         city: String? = null,
         state: String? = null,
         country: String? = null,
@@ -54,6 +55,7 @@ internal class MetadataResolverTest {
                 AerialMediaMetadata(
                     albumName = albumName,
                     shortDescription = shortDesc,
+                    title = title,
                     pointsOfInterest = poi,
                     exif =
                         AerialExifMetadata(
@@ -68,7 +70,7 @@ internal class MetadataResolverTest {
 
     private val defaultPrefs =
         MetadataResolver.Preferences(
-            videoSelection = "POI,LOCATION,DESC,FILENAME",
+            videoSelection = "POI,LOCATION,DESC,TITLE,FILENAME",
             videoFolderDepth = 1,
             videoLocationType = LocationType.CITY_STATE,
             photoSelection = "LOCATION,DATE_TAKEN,DESCRIPTION,FILENAME",
@@ -176,6 +178,55 @@ internal class MetadataResolverTest {
             val result = resolver.resolve(context, media, prefs)
 
             assertEquals("Highlights", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve video with file title uses title field`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    source = AerialMediaSource.UNKNOWN,
+                    title = "Sea Cliffs",
+                )
+            val prefs = defaultPrefs.copy(videoSelection = "TITLE,FILENAME")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("Sea Cliffs", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve video description applies to file media`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    source = AerialMediaSource.UNKNOWN,
+                    description = "From File Metadata",
+                )
+            val prefs = defaultPrefs.copy(videoSelection = "DESCRIPTION,FILENAME")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("From File Metadata", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
+
+    @Test
+    fun `resolve video location does not apply to file media`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    source = AerialMediaSource.UNKNOWN,
+                    city = "Paris",
+                    state = "Ile-de-France",
+                )
+            val prefs = defaultPrefs.copy(videoSelection = "LOCATION,FILENAME")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("video", result.text)
             assertEquals(MetadataType.STATIC, result.metadataType)
         }
 
