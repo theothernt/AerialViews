@@ -63,6 +63,7 @@ class VideoPlayerView
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
         private var volumeFadeAnimator: ValueAnimator? = null
+        private var forcedMuted = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
@@ -122,21 +123,17 @@ class VideoPlayerView
             }
 
             VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
-
-            val shouldMute = GeneralPrefs.muteVideos || isMuted
-            if (shouldMute) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
-                exoPlayer.volume = 0f
-            } else {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
-                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
-            }
-            isMuted = shouldMute
+            applyMuteState()
 
             // Disable subtitles/text tracks by default
             VideoPlayerHelper.disableTextTrack(exoPlayer)
 
             player?.prepare()
+        }
+
+        fun setForcedMute(enabled: Boolean) {
+            forcedMuted = enabled
+            applyMuteState()
         }
 
         fun increaseSpeed() = changeSpeed(true)
@@ -149,6 +146,10 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
+            if (forcedMuted) {
+                applyMuteState()
+                return
+            }
             if (isMuted) {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
@@ -161,7 +162,7 @@ class VideoPlayerView
         }
 
         fun fadeOutAudio(duration: Long) {
-            if (isMuted) return
+            if (isMuted || forcedMuted) return
             val startVolume = exoPlayer.volume
             if (startVolume <= 0f) return
 
@@ -180,6 +181,18 @@ class VideoPlayerView
                     }
                     start()
                 }
+        }
+
+        private fun applyMuteState() {
+            val shouldMute = forcedMuted || GeneralPrefs.muteVideos || isMuted
+            if (shouldMute) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                exoPlayer.volume = 0f
+            } else {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
+            }
+            isMuted = shouldMute
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {

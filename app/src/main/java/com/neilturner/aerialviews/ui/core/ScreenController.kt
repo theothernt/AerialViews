@@ -304,16 +304,20 @@ class ScreenController(
 
         if (!localMusicEnabled && !sambaMusicEnabled && !webDavMusicEnabled) {
             Timber.i("MusicService: no music providers enabled, skipping")
+            videoPlayer.setForcedMute(false)
             return
         }
 
+        videoPlayer.setForcedMute(true)
         musicService = MusicService(context)
         musicService?.preparePlaylist { trackCount ->
             if (trackCount > 0) {
+                videoPlayer.setForcedMute(true)
                 musicService?.createPlayer()
                 musicService?.start()
                 Timber.i("MusicService: started with $trackCount tracks")
             } else {
+                videoPlayer.setForcedMute(false)
                 Timber.i("MusicService: no tracks available after preparation")
             }
         }
