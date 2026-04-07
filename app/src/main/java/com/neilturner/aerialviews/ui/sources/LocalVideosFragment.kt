@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
@@ -20,6 +21,7 @@ import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.StorageHelper
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
@@ -52,6 +54,7 @@ class LocalVideosFragment :
             limitTextInput()
             showNvidiaShieldNoticeIfNeeded()
             updateEnabledOptions()
+            updateMediaSelectionSummary()
             updateVolumeAndFolderSummary()
             findVolumeList()
         }
@@ -95,6 +98,7 @@ class LocalVideosFragment :
         }
 
         updateEnabledOptions()
+        updateMediaSelectionSummary()
     }
 
     private fun updateEnabledOptions() {
@@ -135,6 +139,12 @@ class LocalVideosFragment :
         preferenceScreen
             .findPreference<EditTextPreference>("local_videos_legacy_folder")
             ?.setOnBindEditTextListener { it.setSingleLine() }
+    }
+
+    private fun updateMediaSelectionSummary() {
+        preferenceScreen
+            .findPreference<MultiSelectListPreference>("local_media_selection")
+            ?.setSummaryFromValues(LocalMediaPrefs.mediaSelection)
     }
 
     private suspend fun testLocalVideosFilter() =

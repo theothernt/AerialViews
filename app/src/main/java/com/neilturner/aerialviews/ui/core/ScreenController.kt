@@ -299,8 +299,10 @@ class ScreenController(
         val localMusicEnabled = com.neilturner.aerialviews.models.prefs.LocalMediaPrefs.musicEnabled
         val sambaMusicEnabled = com.neilturner.aerialviews.models.prefs.SambaMediaPrefs.musicEnabled ||
             com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2.musicEnabled
+        val webDavMusicEnabled = com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs.musicEnabled ||
+            com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2.musicEnabled
 
-        if (!localMusicEnabled && !sambaMusicEnabled) {
+        if (!localMusicEnabled && !sambaMusicEnabled && !webDavMusicEnabled) {
             Timber.i("MusicService: no music providers enabled, skipping")
             return
         }
@@ -308,7 +310,7 @@ class ScreenController(
         musicService = MusicService(context)
         musicService?.preparePlaylist { trackCount ->
             if (trackCount > 0) {
-                val player = musicService?.createPlayer()
+                musicService?.createPlayer()
                 musicService?.start()
                 Timber.i("MusicService: started with $trackCount tracks")
             } else {

@@ -88,9 +88,34 @@ object ProjectivyLocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
         get() = ProjectivyPrefs.sharedProviders.contains("LOCAL")
 
     override var searchType by nullableEnumValuePref(SearchType.MEDIA_STORE, "projectivy_local_videos_search_type")
-    override var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS, "projectivy_local_media_type")
+    private var mediaTypeRaw by nullableEnumValuePref(ProviderMediaType.VIDEOS, "projectivy_local_media_type")
+    private var musicEnabledRaw by booleanPref(false, "projectivy_local_music_enabled")
+    override val mediaSelection: Set<String>
+        get() {
+            val selection = mutableSetOf<String>()
+            when (mediaTypeRaw) {
+                ProviderMediaType.VIDEOS -> selection.add(MediaSelection.VIDEOS)
+                ProviderMediaType.PHOTOS -> selection.add(MediaSelection.PHOTOS)
+                ProviderMediaType.VIDEOS_PHOTOS -> {
+                    selection.add(MediaSelection.VIDEOS)
+                    selection.add(MediaSelection.PHOTOS)
+                }
 
-    override var musicEnabled by booleanPref(false, "projectivy_local_music_enabled")
+                null -> Unit
+            }
+            if (musicEnabledRaw) {
+                selection.add(MediaSelection.MUSIC)
+            }
+            return selection
+        }
+    override val mediaType: ProviderMediaType?
+        get() = mediaTypeRaw
+    override val musicEnabled: Boolean
+        get() = musicEnabledRaw
+    override val includeVideos: Boolean
+        get() = MediaSelection.includesVideos(mediaSelection)
+    override val includePhotos: Boolean
+        get() = MediaSelection.includesPhotos(mediaSelection)
 
     override var filterEnabled by booleanPref(false, "projectivy_local_videos_media_store_filter_enabled")
     override var filterFolder by stringPref("", "projectivy_local_videos_media_store_filter_folder")

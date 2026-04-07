@@ -8,23 +8,15 @@
                     app:key="local_videos_enabled"
                     app:title="@string/local_videos_enabled_title" />
 
-                <CheckBoxPreference
+                <MultiSelectListPreference
                     app:dependency="local_videos_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="false"
-                    app:key="local_music_enabled"
-                    app:title="@string/local_music_enabled_title"
-                    app:summary="@string/local_music_enabled_summary" />
-
-                <ListPreference
-                    app:dependency="local_videos_enabled"
-                    app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default"
-                    app:entries="@array/media_type_entries"
-                    app:entryValues="@array/media_type_values"
-                    app:key="local_media_type"
+                    app:defaultValue="@array/media_selection_default"
+                    app:entries="@array/media_selection_entries"
+                    app:entryValues="@array/media_selection_values"
+                    app:key="local_media_selection"
                     app:title="@string/local_media_type_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:dialogTitle="@string/local_media_type_title" />
 
                 <ListPreference
                     app:dependency="local_videos_enabled"

@@ -5,7 +5,6 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -110,7 +109,7 @@ class WebDavMediaProvider(
             val files = listFilesAndFoldersRecursively(client, baseUrl)
 
             // Only pick videos
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedVideoType(item)
@@ -120,7 +119,7 @@ class WebDavMediaProvider(
             val videos = selected.size
 
             // Only pick images
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedImageType(item)
@@ -139,13 +138,13 @@ class WebDavMediaProvider(
                 res.getString(R.string.webdav_media_test_summary2),
                 excluded.toString(),
             ) + "\n"
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 message += String.format(
                     res.getString(R.string.webdav_media_test_summary3),
                     videos.toString(),
                 ) + "\n"
             }
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 message += String.format(
                     res.getString(R.string.webdav_media_test_summary4),
                     images.toString(),

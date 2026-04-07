@@ -537,20 +537,23 @@
     <string name="local_videos_search_type_default" translatable="false">MEDIA_STORE</string>
 
     <!-- Media type -->
-    <string name="media_videos_only">Videos only</string>
-    <string name="media_photos_only">Photos only</string>
-    <string name="media_videos_photos">Videos &amp; Photos</string>
-    <string-array name="media_type_entries" translatable="false">
-        <item>@string/media_videos_only</item>
-        <item>@string/media_photos_only</item>
-        <item>@string/media_videos_photos</item>
+    <string name="media_videos">Videos</string>
+    <string name="media_photos">Photos</string>
+    <string name="media_music">Music</string>
+    <string-array name="media_selection_entries" translatable="false">
+        <item>@string/media_videos</item>
+        <item>@string/media_photos</item>
+        <item>@string/media_music</item>
     </string-array>
-    <string-array name="media_type_values" translatable="false">
+    <string-array name="media_selection_values" translatable="false">
         <item>VIDEOS</item>
         <item>PHOTOS</item>
-        <item>VIDEOS_PHOTOS</item>
+        <item>MUSIC</item>
     </string-array>
-    <string name="media_type_default" translatable="false">VIDEOS_PHOTOS</string>
+    <string-array name="media_selection_default" translatable="false">
+        <item>VIDEOS</item>
+        <item>PHOTOS</item>
+    </string-array>
 
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">

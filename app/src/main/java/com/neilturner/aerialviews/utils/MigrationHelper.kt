@@ -48,6 +48,7 @@ class MigrationHelper(
         if (lastKnownVersion < 61) release61()
         if (lastKnownVersion < 77) release77()
         if (lastKnownVersion < 92) release92()
+        if (lastKnownVersion < 113) release113()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -551,6 +552,57 @@ class MigrationHelper(
             remove("description_photo_folder_levels")
             remove("description_size")
             remove("description_weight")
+        }
+    }
+
+    private fun release113() {
+        Timber.i("Migrating settings for release 113")
+
+        migrateCombinedMediaSelection(
+            selectionKey = "local_media_selection",
+            mediaTypeKey = "local_media_type",
+            musicEnabledKeys = listOf("local_music_enabled"),
+        )
+        migrateCombinedMediaSelection(
+            selectionKey = "samba_media_selection",
+            mediaTypeKey = "samba_media_type",
+            musicEnabledKeys = listOf("samba_videos_music_enabled", "samba_videos2_music_enabled"),
+        )
+        migrateCombinedMediaSelection(
+            selectionKey = "webdav_media_selection",
+            mediaTypeKey = "webdav_media_type",
+            musicEnabledKeys = emptyList(),
+        )
+    }
+
+    private fun migrateCombinedMediaSelection(
+        selectionKey: String,
+        mediaTypeKey: String,
+        musicEnabledKeys: List<String>,
+    ) {
+        if (prefs.contains(selectionKey)) {
+            return
+        }
+
+        if (!prefs.contains(mediaTypeKey) && musicEnabledKeys.none { prefs.contains(it) }) {
+            return
+        }
+
+        val selection =
+            when (prefs.getString(mediaTypeKey, "VIDEOS_PHOTOS")) {
+                "VIDEOS" -> mutableSetOf("VIDEOS")
+                "PHOTOS" -> mutableSetOf("PHOTOS")
+                else -> mutableSetOf("VIDEOS", "PHOTOS")
+            }
+
+        if (musicEnabledKeys.any { prefs.getBoolean(it, false) }) {
+            selection.add("MUSIC")
+        }
+
+        prefs.edit {
+            putStringSet(selectionKey, selection)
+            remove(mediaTypeKey)
+            musicEnabledKeys.forEach { remove(it) }
         }
     }
 

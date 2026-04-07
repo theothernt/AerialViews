@@ -6,9 +6,11 @@ import com.neilturner.aerialviews.models.enums.SearchType
 interface LocalProviderPreferences {
     val enabled: Boolean
     var searchType: SearchType?
-    var mediaType: ProviderMediaType?
-
-    var musicEnabled: Boolean
+    val mediaSelection: Set<String>
+    val mediaType: ProviderMediaType?
+    val musicEnabled: Boolean
+    val includeVideos: Boolean
+    val includePhotos: Boolean
 
     var filterEnabled: Boolean
     var filterFolder: String

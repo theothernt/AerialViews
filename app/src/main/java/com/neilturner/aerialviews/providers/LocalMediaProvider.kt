@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalProviderPreferences
@@ -63,7 +62,7 @@ class LocalMediaProvider(
         }
 
         // Only pick videos
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -73,7 +72,7 @@ class LocalMediaProvider(
         val videos = selected.size
 
         // Only pick images
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -97,10 +96,10 @@ class LocalMediaProvider(
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary6), media.size.toString())
@@ -182,7 +181,7 @@ class LocalMediaProvider(
         val files = mediaStoreVideosAndImages()
 
         // Add video
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -192,7 +191,7 @@ class LocalMediaProvider(
         videos = selected.size
 
         // Add images
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -222,10 +221,10 @@ class LocalMediaProvider(
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary5), filtered.toString()) + "\n"

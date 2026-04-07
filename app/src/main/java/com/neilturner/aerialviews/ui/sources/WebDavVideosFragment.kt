@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
@@ -12,6 +13,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
@@ -56,6 +58,9 @@ class WebDavVideosFragment :
     }
 
     private fun updateSummary() {
+        val mediaSelection = findPreference<MultiSelectListPreference>("webdav_media_selection")
+        mediaSelection?.setSummaryFromValues(WebDavMediaPrefs.mediaSelection)
+
         // Host name
         val hostname = findPreference<EditTextPreference>("webdav_media_hostname")
         if (hostname?.text.toStringOrEmpty().isNotEmpty()) {

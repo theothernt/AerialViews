@@ -12,7 +12,6 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -221,7 +220,7 @@ class SambaMediaProvider(
             smbClient.close()
 
             // Only pick videos
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedVideoType(item.first)
@@ -231,7 +230,7 @@ class SambaMediaProvider(
             val videos = selected.size
 
             // Only pick images
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedImageType(item.first)
@@ -250,13 +249,13 @@ class SambaMediaProvider(
                 res.getString(R.string.samba_media_test_summary2),
                 excluded.toString(),
             ) + "\n"
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 message += String.format(
                     res.getString(R.string.samba_media_test_summary3),
                     videos.toString(),
                 ) + "\n"
             }
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 message += String.format(
                     res.getString(R.string.samba_media_test_summary4),
                     images.toString(),

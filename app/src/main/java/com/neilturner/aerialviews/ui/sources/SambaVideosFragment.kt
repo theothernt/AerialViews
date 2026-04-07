@@ -59,6 +59,9 @@ class SambaVideosFragment :
     }
 
     private fun updateSummary() {
+        val mediaSelection = findPreference<MultiSelectListPreference>("samba_media_selection")
+        mediaSelection?.setSummaryFromValues(SambaMediaPrefs.mediaSelection)
+
         val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
         dialects?.setSummaryFromValues(dialects.values)
 

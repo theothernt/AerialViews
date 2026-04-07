@@ -8,7 +8,7 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.connection.Connection
 import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
-import com.neilturner.aerialviews.providers.music.MusicProvider
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.utils.FileHelper
@@ -52,6 +52,7 @@ class SambaMusicProvider(
 
                 MusicTrack(
                     uri = uri,
+                    source = AerialMediaSource.SAMBA,
                     title = title,
                 )
             }

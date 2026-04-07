@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
@@ -10,9 +9,12 @@ import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.MusicPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.providers.music.LocalMusicProvider
 import com.neilturner.aerialviews.providers.music.MusicProvider
 import com.neilturner.aerialviews.providers.music.SambaMusicProvider
+import com.neilturner.aerialviews.providers.music.WebDavMusicProvider
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,7 +37,7 @@ class MusicService(
         // Build list of enabled music providers
         if (LocalMediaPrefs.musicEnabled) {
             musicProviders.add(
-                LocalMusicProvider(context) { LocalMediaPrefs.musicEnabled },
+                LocalMusicProvider(context, LocalMediaPrefs),
             )
         }
 
@@ -45,6 +47,14 @@ class MusicService(
 
         if (SambaMediaPrefs2.musicEnabled) {
             musicProviders.add(SambaMusicProvider(context, SambaMediaPrefs2))
+        }
+
+        if (WebDavMediaPrefs.musicEnabled) {
+            musicProviders.add(WebDavMusicProvider(context, WebDavMediaPrefs))
+        }
+
+        if (WebDavMediaPrefs2.musicEnabled) {
+            musicProviders.add(WebDavMusicProvider(context, WebDavMediaPrefs2))
         }
 
         Timber.i("MusicService: ${musicProviders.size} music provider(s) enabled")
@@ -184,9 +194,7 @@ class MusicService(
     }
 
     private fun loadTrack(player: ExoPlayer, track: MusicTrack) {
-        val mediaItem = MediaItem.fromUri(track.uri)
-        player.setMediaItem(mediaItem)
-        player.prepare()
+        VideoPlayerHelper.setupAudioSource(context, player, track)
         player.playWhenReady = true
         Timber.i("MusicService: loading track - ${track.title} by ${track.artist}")
     }
