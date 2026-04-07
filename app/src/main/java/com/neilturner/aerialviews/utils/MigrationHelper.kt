@@ -573,6 +573,16 @@ class MigrationHelper(
             mediaTypeKey = "webdav_media_type",
             musicEnabledKeys = emptyList(),
         )
+        migrateCombinedMediaSelection(
+            selectionKey = "immich_media_selection",
+            mediaTypeKey = "immich_media_type",
+            musicEnabledKeys = emptyList(),
+        )
+        migrateCombinedMediaSelection(
+            selectionKey = "projectivy_local_media_selection",
+            mediaTypeKey = "projectivy_local_media_type",
+            musicEnabledKeys = listOf("projectivy_local_music_enabled"),
+        )
     }
 
     private fun migrateCombinedMediaSelection(

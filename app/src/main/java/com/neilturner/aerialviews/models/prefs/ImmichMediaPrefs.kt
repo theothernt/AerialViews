@@ -5,7 +5,6 @@ import com.chibatching.kotpref.enumpref.nullableEnumValuePref
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.ImmichImageType
 import com.neilturner.aerialviews.models.enums.ImmichVideoType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 
 interface ImmichUrlPrefs {
     val pathName: String
@@ -19,7 +18,15 @@ object ImmichMediaPrefs : KotprefModel(), ImmichUrlPrefs {
     override val kotprefName = "${context.packageName}_preferences"
 
     var enabled by booleanPref(false, "immich_media_enabled")
-    var mediaType by nullableEnumValuePref(ProviderMediaType.VIDEOS_PHOTOS, "immich_media_type")
+    val mediaSelection by stringSetPref("immich_media_selection") {
+        MediaSelection.defaultSelection
+    }
+    val mediaType
+        get() = MediaSelection.toMediaType(mediaSelection)
+    val includeVideos: Boolean
+        get() = MediaSelection.includesVideos(mediaSelection)
+    val includePhotos: Boolean
+        get() = MediaSelection.includesPhotos(mediaSelection)
     override var pathName by stringPref("", "immich_media_pathname")
     override var password by stringPref("", "immich_media_password")
     var url by stringPref("", "immich_media_url")

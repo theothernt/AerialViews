@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <PreferenceCategory app:title="@string/category_video_source">
-                <ListPreference
-                    app:defaultValue="@string/media_type_default"
-                    app:entries="@array/media_type_entries"
-                    app:entryValues="@array/media_type_values"
-                    app:key="projectivy_local_media_type"
+                <MultiSelectListPreference
+                    app:defaultValue="@array/media_selection_default"
+                    app:entries="@array/media_selection_entries"
+                    app:entryValues="@array/media_selection_values"
+                    app:key="projectivy_local_media_selection"
                     app:title="@string/local_media_type_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:dialogTitle="@string/local_media_type_title" />
 
             <Preference
                 android:key="projectivy_local_videos_search_test"

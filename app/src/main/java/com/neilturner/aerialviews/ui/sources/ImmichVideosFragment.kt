@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
@@ -15,6 +16,7 @@ import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,6 +24,7 @@ class ImmichVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var urlPreference: EditTextPreference
+    private lateinit var mediaSelectionPreference: MultiSelectListPreference
     private lateinit var authTypePreference: ListPreference
     private lateinit var validateSslPreference: Preference
     private lateinit var passwordPreference: EditTextPreference
@@ -41,6 +44,7 @@ class ImmichVideosFragment :
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
         urlPreference = findPreference("immich_media_url")!!
+        mediaSelectionPreference = findPreference("immich_media_selection")!!
         authTypePreference = findPreference("immich_media_auth_type")!!
         validateSslPreference = findPreference("immich_media_validate_ssl")!!
         passwordPreference = findPreference("immich_media_password")!!
@@ -103,6 +107,8 @@ class ImmichVideosFragment :
     }
 
     private fun updateSummary() {
+        mediaSelectionPreference.setSummaryFromValues(ImmichMediaPrefs.mediaSelection)
+
         // Server URL
         val url = urlPreference.text
         if (!url.isNullOrEmpty()) {

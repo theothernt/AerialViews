@@ -88,30 +88,13 @@ object ProjectivyLocalMediaPrefs : KotprefModel(), LocalProviderPreferences {
         get() = ProjectivyPrefs.sharedProviders.contains("LOCAL")
 
     override var searchType by nullableEnumValuePref(SearchType.MEDIA_STORE, "projectivy_local_videos_search_type")
-    private var mediaTypeRaw by nullableEnumValuePref(ProviderMediaType.VIDEOS, "projectivy_local_media_type")
-    private var musicEnabledRaw by booleanPref(false, "projectivy_local_music_enabled")
-    override val mediaSelection: Set<String>
-        get() {
-            val selection = mutableSetOf<String>()
-            when (mediaTypeRaw) {
-                ProviderMediaType.VIDEOS -> selection.add(MediaSelection.VIDEOS)
-                ProviderMediaType.PHOTOS -> selection.add(MediaSelection.PHOTOS)
-                ProviderMediaType.VIDEOS_PHOTOS -> {
-                    selection.add(MediaSelection.VIDEOS)
-                    selection.add(MediaSelection.PHOTOS)
-                }
-
-                null -> Unit
-            }
-            if (musicEnabledRaw) {
-                selection.add(MediaSelection.MUSIC)
-            }
-            return selection
-        }
+    override val mediaSelection by stringSetPref("projectivy_local_media_selection") {
+        setOf(MediaSelection.VIDEOS)
+    }
     override val mediaType: ProviderMediaType?
-        get() = mediaTypeRaw
+        get() = MediaSelection.toMediaType(mediaSelection)
     override val musicEnabled: Boolean
-        get() = musicEnabledRaw
+        get() = MediaSelection.includesMusic(mediaSelection)
     override val includeVideos: Boolean
         get() = MediaSelection.includesVideos(mediaSelection)
     override val includePhotos: Boolean

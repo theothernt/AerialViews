@@ -6,6 +6,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
@@ -16,6 +17,7 @@ import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
@@ -50,6 +52,7 @@ class ProjectivyLocalVideosFragment :
             limitTextInput()
             showNvidiaShieldNoticeIfNeeded()
             enableMediaStoreOptions()
+            updateMediaSelectionSummary()
         }
 
         checkForMediaPermission()
@@ -77,7 +80,7 @@ class ProjectivyLocalVideosFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        // No dynamic enable/disable for legacy options (removed).
+        updateMediaSelectionSummary()
     }
 
     private fun enableMediaStoreOptions() {
@@ -89,6 +92,12 @@ class ProjectivyLocalVideosFragment :
         preferenceScreen
             .findPreference<EditTextPreference>("projectivy_local_videos_media_store_filter_folder")
             ?.setOnBindEditTextListener { it.setSingleLine() }
+    }
+
+    private fun updateMediaSelectionSummary() {
+        preferenceScreen
+            .findPreference<MultiSelectListPreference>("projectivy_local_media_selection")
+            ?.setSummaryFromValues(ProjectivyLocalMediaPrefs.mediaSelection)
     }
 
     private suspend fun testLocalVideosFilter() =
