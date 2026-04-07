@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -24,6 +26,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
+import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -118,12 +121,12 @@ class ImagePlayerView : FrameLayout {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media.uri) // Pointless?
+                loadImage(media, media.uri) // Pointless?
                 return@launch
             }
 
             if (media.source == AerialMediaSource.IMMICH) {
-                loadImage(baseStream)
+                loadImage(media, baseStream)
                 return@launch
             }
 
@@ -138,7 +141,7 @@ class ImagePlayerView : FrameLayout {
             val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
             if (headerLength <= 0) {
                 stream.close()
-                loadImage(media.uri)
+                loadImage(media, media.uri)
                 return@launch
             }
             stream.unread(headerBytes, 0, headerLength)
@@ -162,11 +165,14 @@ class ImagePlayerView : FrameLayout {
                 exifMetadata.orientation,
             )
 
-            loadImage(stream)
+            loadImage(media, stream)
         }
     }
 
-    private fun loadImage(data: Any?) {
+    private fun loadImage(
+        media: AerialMedia,
+        data: Any?,
+    ) {
         // Errors from the actual async network/disk load are delivered via onError, not here.
         try {
             val (targetWidth, targetHeight) = resolveTargetSize()
@@ -181,8 +187,8 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            blurHelper.update(drawable)
-                            foregroundImageView.setImageDrawable(drawable)
+                            blurHelper.update(drawable.takeUnless { shouldSkipBlurBackground(media, it) })
+                            setForegroundDrawable(drawable)
                         },
                     ).listener(
                         onSuccess = { _, result ->
@@ -232,6 +238,17 @@ class ImagePlayerView : FrameLayout {
         return total
     }
 
+    private fun setForegroundDrawable(drawable: Drawable?) {
+        (foregroundImageView.drawable as? Animatable)?.stop()
+        foregroundImageView.setImageDrawable(drawable)
+        (drawable as? Animatable)?.start()
+    }
+
+    private fun shouldSkipBlurBackground(
+        media: AerialMedia,
+        drawable: Drawable,
+    ): Boolean = media.uri.filename.endsWith(".gif", ignoreCase = true) || drawable is Animatable
+
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
@@ -258,7 +275,7 @@ class ImagePlayerView : FrameLayout {
 
     fun stop() {
         removeCallbacks(finishedRunnable)
-        foregroundImageView.setImageBitmap(null)
+        setForegroundDrawable(null)
         pausedTimestamp = 0
         remainingDuration = 0
         blurHelper.cancel()
