@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.providers
 
 import android.content.Context
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
 
 abstract class MediaProvider(
@@ -14,6 +15,8 @@ abstract class MediaProvider(
     open suspend fun prepare() {}
 
     abstract suspend fun fetchMedia(): List<AerialMedia>
+
+    open suspend fun fetchMusic(): List<MusicTrack> = emptyList()
 
     abstract suspend fun fetchTest(): String
 

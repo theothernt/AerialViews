@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.services
 
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
@@ -39,21 +40,22 @@ internal object MediaServiceHelper {
         return Pair(matched, unmatched)
     }
 
-    suspend fun buildMediaList(providers: List<MediaProvider>): List<AerialMedia> {
+    suspend fun buildProviderContent(providers: List<MediaProvider>): Pair<List<AerialMedia>, List<MusicTrack>> {
         val media = CopyOnWriteArrayList<AerialMedia>()
+        val tracks = CopyOnWriteArrayList<MusicTrack>()
 
         providers
             .filter { it.enabled }
             .parallelForEach {
                 try {
                     it.prepare()
-                    val providerMedia = it.fetchMedia()
-                    media.addAll(providerMedia)
+                    media.addAll(it.fetchMedia())
+                    tracks.addAll(it.fetchMusic())
                 } catch (ex: Exception) {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")
                     // FirebaseHelper.logExceptionIfRecent(ex)
                 }
             }
-        return media
+        return Pair(media, tracks)
     }
 }

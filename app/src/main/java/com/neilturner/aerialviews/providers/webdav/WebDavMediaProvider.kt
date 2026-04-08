@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
@@ -28,6 +29,36 @@ class WebDavMediaProvider(
         get() = prefs.enabled
 
     override suspend fun fetchMedia(): List<AerialMedia> = fetchWebDavMedia().first
+
+    override suspend fun fetchMusic(): List<MusicTrack> {
+        if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.pathName.isEmpty()) {
+            return emptyList()
+        }
+
+        return withContext(Dispatchers.IO) {
+            val client =
+                try {
+                    OkHttpSardine().apply {
+                        setCredentials(prefs.userName, prefs.password, true)
+                    }
+                } catch (ex: Exception) {
+                    Timber.e(ex, "WebDavMediaProvider: failed to create WebDAV client for music")
+                    return@withContext emptyList<MusicTrack>()
+                }
+
+            val baseUrl = prefs.scheme.toString().lowercase() + "://" + prefs.hostName + prefs.pathName
+            listFilesAndFoldersRecursively(client, baseUrl)
+                .filter { FileHelper.isSupportedAudioType(it.first) }
+                .map { fileInfo ->
+                    val url = fileInfo.first
+                    MusicTrack(
+                        uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri(),
+                        source = AerialMediaSource.WEBDAV,
+                        title = FileHelper.stripAudioFileExtension(url.substringAfterLast('/')),
+                    )
+                }
+        }
+    }
 
     override suspend fun fetchTest(): String = fetchWebDavMedia().second
 
@@ -106,7 +137,7 @@ class WebDavMediaProvider(
             }
 
             val baseUrl = scheme.lowercase() + "://" + hostName + pathName
-            val files = listFilesAndFoldersRecursively(client, baseUrl)
+            val files = listFilesAndFoldersRecursively(client, baseUrl).map { it.first }
 
             // Only pick videos
             if (prefs.includeVideos) {
@@ -161,7 +192,7 @@ class WebDavMediaProvider(
     private fun listFilesAndFoldersRecursively(
         client: Sardine,
         url: String = "",
-    ): List<String> {
+    ): List<Pair<String, Long>> {
         val filesWithDates = mutableListOf<Pair<String, Long>>()
         val directories = ArrayDeque<String>()
 
@@ -191,9 +222,7 @@ class WebDavMediaProvider(
             }
         }
 
-        return filesWithDates
-            .sortedByDescending { it.second }
-            .map { it.first }
+        return filesWithDates.sortedByDescending { it.second }
     }
 
     private fun addCredentialsToUrl(
