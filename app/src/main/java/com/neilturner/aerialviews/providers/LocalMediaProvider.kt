@@ -290,7 +290,6 @@ class LocalMediaProvider(
                                 MusicTrack(
                                     uri = uri,
                                     source = AerialMediaSource.LOCAL,
-                                    title = FileHelper.stripAudioFileExtension(filePath.substringAfterLast('/')),
                                 ),
                             )
                         }
@@ -344,7 +343,6 @@ class LocalMediaProvider(
                     MusicTrack(
                         uri = file.toUri(),
                         source = AerialMediaSource.LOCAL,
-                        title = FileHelper.stripAudioFileExtension(file.name),
                     )
                 }
         }

@@ -103,7 +103,6 @@ class SambaMediaProvider(
                     MusicTrack(
                         uri = uri,
                         source = AerialMediaSource.SAMBA,
-                        title = FileHelper.stripAudioFileExtension(filename.substringAfterLast('/')),
                     )
                 }
         }

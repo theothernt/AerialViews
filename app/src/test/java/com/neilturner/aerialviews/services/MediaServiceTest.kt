@@ -48,7 +48,7 @@ internal class MediaServiceTest {
                             FakeMediaProvider(
                                 context = context,
                                 media = listOf(AerialMedia(mockk(relaxed = true))),
-                                tracks = listOf(MusicTrack(uri = mockk(relaxed = true), title = "Track 1")),
+                                tracks = listOf(MusicTrack(uri = mockk(relaxed = true))),
                             ),
                         ),
                     config = defaultConfig(),

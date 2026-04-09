@@ -54,7 +54,6 @@ class WebDavMediaProvider(
                     MusicTrack(
                         uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri(),
                         source = AerialMediaSource.WEBDAV,
-                        title = FileHelper.stripAudioFileExtension(url.substringAfterLast('/')),
                     )
                 }
         }

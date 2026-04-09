@@ -63,11 +63,6 @@ object FileHelper {
             filename.endsWith(".wma", true) ||
             filename.endsWith(".opus", true)
 
-    fun stripAudioFileExtension(filename: String): String {
-        val lastDot = filename.lastIndexOf('.')
-        return if (lastDot > 0) filename.substring(0, lastDot) else filename
-    }
-
     fun isSupportedImageType(filename: String): Boolean {
         if (filename.endsWith(".avif", true) &&
             DeviceHelper.hasAvifSupport()
