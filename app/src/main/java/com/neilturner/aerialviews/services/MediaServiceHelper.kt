@@ -3,10 +3,9 @@ package com.neilturner.aerialviews.services
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
-import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.parallelForEach
 import timber.log.Timber
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
 internal object MediaServiceHelper {
@@ -14,23 +13,22 @@ internal object MediaServiceHelper {
         media: List<AerialMedia>,
         providers: List<MediaProvider>,
     ): Pair<List<AerialMedia>, List<AerialMedia>> {
-        val metadata = ConcurrentHashMap<String, Pair<String, Map<Int, String>>>()
         val matched = CopyOnWriteArrayList<AerialMedia>()
         val unmatched = CopyOnWriteArrayList<AerialMedia>()
 
+        // Let each provider enrich the media list with metadata
+        var enrichedMedia = media
         providers.forEach {
             try {
-                metadata.putAll(it.fetchMetadata())
+                enrichedMedia = it.fetchMetadata(enrichedMedia)
             } catch (ex: Exception) {
                 Timber.e(ex, "Exception while fetching metadata")
             }
         }
 
-        media.parallelForEach { video ->
-            val data = metadata[video.uri.filenameWithoutExtension.lowercase()]
-            if (data != null) {
-                video.metadata.shortDescription = data.first
-                video.metadata.pointsOfInterest = data.second
+        // Split into matched (has metadata) and unmatched
+        enrichedMedia.forEach { video ->
+            if (video.metadata.shortDescription.isNotEmpty() || video.metadata.pointsOfInterest.isNotEmpty()) {
                 matched.add(video)
             } else {
                 unmatched.add(video)
@@ -49,7 +47,11 @@ internal object MediaServiceHelper {
             .parallelForEach {
                 try {
                     it.prepare()
-                    media.addAll(it.fetchMedia())
+                    val result = it.fetch()
+                    when (result) {
+                        is ProviderFetchResult.Success -> media.addAll(result.media)
+                        is ProviderFetchResult.Error -> Timber.w("Provider ${it.type} returned error: ${result.message}")
+                    }
                     tracks.addAll(it.fetchMusic())
                 } catch (ex: Exception) {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")

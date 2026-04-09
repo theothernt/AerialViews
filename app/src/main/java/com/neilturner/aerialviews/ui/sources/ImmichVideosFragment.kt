@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.providers.immich.Album
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.UrlParser
@@ -207,10 +208,14 @@ class ImmichVideosFragment :
         progressDialog.show()
 
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-        val result = provider.fetchTest()
+        val result = provider.fetch()
+        val message = when (result) {
+            is ProviderFetchResult.Success -> result.summary
+            is ProviderFetchResult.Error -> result.message
+        }
 
         progressDialog.dismiss()
-        DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), result)
+        DialogHelper.showOnMain(requireContext(), getString(R.string.immich_media_test_results), message)
     }
 
     private suspend fun pickAlbums() {
