@@ -1,12 +1,11 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import androidx.annotation.OptIn
 import androidx.media3.common.Player
-import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
+import com.neilturner.aerialviews.utils.VolumeHelper
 import timber.log.Timber
 
 class MusicPlayer(
@@ -14,16 +13,21 @@ class MusicPlayer(
     private val playlist: MusicPlaylist,
 ) {
     private var player: ExoPlayer? = null
+    private val volumeHelper = VolumeHelper(
+        getVolume = { player?.volume ?: 0f },
+        setVolume = { v -> player?.volume = v },
+    )
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context)
         return player!!
     }
 
-	@OptIn(UnstableApi::class)
-	fun start() {
+    fun getPlayer(): ExoPlayer? = player
+
+    fun play() {
         val player = player ?: run {
-            Timber.w("MusicPlayer: start() called but player not created")
+            Timber.w("MusicPlayer: play() called but player not created")
             return
         }
 
@@ -42,13 +46,19 @@ class MusicPlayer(
                 Player.REPEAT_MODE_OFF
             }
 
+        player.volume = 0f
         player.play()
-        Timber.i("MusicPlayer: started with ${playlist.size} tracks, repeat=${playlist.repeat}")
+        volumeHelper.fadeIn(durationMs = 500)
+        Timber.i("MusicPlayer: playing ${playlist.size} tracks, repeat=${playlist.repeat}")
     }
 
     fun pause() {
-        player?.pause()
-        Timber.i("MusicPlayer: playback paused")
+        // Won't do anything unless we delay shutting down of screensaver
+        // onWakeUp or onStop - delay less than 1 second or be killed by OS
+        volumeHelper.fadeOut(durationMs = 500) {
+            player?.pause()
+        }
+        Timber.i("MusicPlayer: pausing")
     }
 
     fun nextTrack() {
@@ -64,6 +74,7 @@ class MusicPlayer(
     }
 
     fun release() {
+        volumeHelper.cancel()
         player?.release()
         player = null
         Timber.i("MusicPlayer: released")

@@ -1,6 +1,5 @@
 package com.neilturner.aerialviews.ui.core
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
@@ -25,6 +24,7 @@ import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.ToastHelper
+import com.neilturner.aerialviews.utils.VolumeHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,7 +62,10 @@ class VideoPlayerView
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
-        private var volumeFadeAnimator: ValueAnimator? = null
+        private val volumeHelper = VolumeHelper(
+            getVolume = { exoPlayer.volume },
+            setVolume = { v -> exoPlayer.volume = v },
+        )
         private var forcedMuted = false
 
         private val progressBar =
@@ -163,24 +166,7 @@ class VideoPlayerView
 
         fun fadeOutAudio(duration: Long) {
             if (isMuted || forcedMuted) return
-            val startVolume = exoPlayer.volume
-            if (startVolume <= 0f) return
-
-            cancelVolumeFade()
-
-            if (duration <= 0L) {
-                exoPlayer.volume = 0f
-                return
-            }
-
-            volumeFadeAnimator =
-                ValueAnimator.ofFloat(startVolume, 0f).apply {
-                    this.duration = duration
-                    addUpdateListener { animator ->
-                        exoPlayer.volume = animator.animatedValue as Float
-                    }
-                    start()
-                }
+            volumeHelper.fadeOut(durationMs = duration)
         }
 
         private fun applyMuteState() {
@@ -405,8 +391,7 @@ class VideoPlayerView
         }
 
         private fun cancelVolumeFade() {
-            volumeFadeAnimator?.cancel()
-            volumeFadeAnimator = null
+            volumeHelper.cancel()
         }
 
         private fun setupAlmostFinishedRunnable() {

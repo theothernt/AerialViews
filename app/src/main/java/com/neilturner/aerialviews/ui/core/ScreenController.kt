@@ -306,8 +306,8 @@ class ScreenController(
         videoPlayer.setForcedMute(true)
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
-        musicPlayer?.start()
-        Timber.i("MusicPlayer: started with ${musicPlaylist.size} tracks")
+        musicPlayer?.play()
+        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -600,6 +600,7 @@ class ScreenController(
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        musicPlayer?.pause()
         musicPlayer?.release()
         sleepTimerJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
