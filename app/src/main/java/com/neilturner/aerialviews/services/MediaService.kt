@@ -189,7 +189,7 @@ class MediaService(
                     ?.let { availableTracks ->
                         val orderedTracks = if (config.shuffleMusic) availableTracks.shuffled() else availableTracks
                         MusicPlaylist(
-                            _tracks = orderedTracks,
+                            tracks = orderedTracks,
                             shuffle = config.shuffleMusic,
                             repeat = config.repeatMusic,
                         )

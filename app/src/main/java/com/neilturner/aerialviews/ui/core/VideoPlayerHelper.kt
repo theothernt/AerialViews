@@ -168,6 +168,12 @@ object VideoPlayerHelper {
     }
 
     @OptIn(UnstableApi::class)
+    fun createAudioMediaSource(
+        context: Context,
+        track: MusicTrack,
+    ) = createMediaSource(context, MediaItem.fromUri(track.uri), track.source)
+
+    @OptIn(UnstableApi::class)
     private fun createMediaSource(
         context: Context,
         mediaItem: MediaItem,

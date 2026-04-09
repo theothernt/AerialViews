@@ -1,10 +1,11 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import androidx.annotation.OptIn
 import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
-import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import timber.log.Timber
 
@@ -19,20 +20,30 @@ class MusicPlayer(
         return player!!
     }
 
-    fun getPlayer(): ExoPlayer? = player
-
-    fun start() {
+	@OptIn(UnstableApi::class)
+	fun start() {
         val player = player ?: run {
             Timber.w("MusicPlayer: start() called but player not created")
             return
         }
 
-        if (player.playbackState == Player.STATE_IDLE || player.currentMediaItem == null) {
-            loadNextTrack()
+        // Load all tracks into ExoPlayer's queue with correct data source per track
+        playlist.tracks.forEach { track ->
+            val mediaSource = VideoPlayerHelper.createAudioMediaSource(context, track)
+            player.addMediaSource(mediaSource)
         }
+        player.prepare()
+
+        // Apply repeat mode
+        player.repeatMode =
+            if (playlist.repeat) {
+                Player.REPEAT_MODE_ALL
+            } else {
+                Player.REPEAT_MODE_OFF
+            }
 
         player.play()
-        Timber.i("MusicPlayer: playback started")
+        Timber.i("MusicPlayer: started with ${playlist.size} tracks, repeat=${playlist.repeat}")
     }
 
     fun pause() {
@@ -41,12 +52,14 @@ class MusicPlayer(
     }
 
     fun nextTrack() {
-        loadNextTrack()
+        val player = player ?: return
+        player.seekToNextMediaItem()
         Timber.i("MusicPlayer: skipped to next track")
     }
 
     fun previousTrack() {
-        loadPreviousTrack()
+        val player = player ?: return
+        player.seekToPreviousMediaItem()
         Timber.i("MusicPlayer: skipped to previous track")
     }
 
@@ -57,23 +70,4 @@ class MusicPlayer(
     }
 
     fun hasMusic(): Boolean = playlist.size > 0
-
-    private fun loadNextTrack() {
-        val player = player ?: return
-        loadTrack(player, playlist.nextTrack())
-    }
-
-    private fun loadPreviousTrack() {
-        val player = player ?: return
-        loadTrack(player, playlist.previousTrack())
-    }
-
-    private fun loadTrack(
-        player: ExoPlayer,
-        track: MusicTrack,
-    ) {
-        VideoPlayerHelper.setupAudioSource(context, player, track)
-        player.playWhenReady = true
-        Timber.i("MusicPlayer: loading track - ${track.title} by ${track.artist}")
-    }
 }
