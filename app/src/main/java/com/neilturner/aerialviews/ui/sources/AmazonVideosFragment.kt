@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.delay
@@ -68,7 +69,10 @@ class AmazonVideosFragment : MenuStateFragment() {
             setCachedCount = { AmazonVideoPrefs.count = it },
             fetchMediaCount = { ctx ->
                 val provider = AmazonMediaProvider(ctx, AmazonVideoPrefs)
-                provider.fetchMedia().size
+                when (val result = provider.fetch()) {
+                    is ProviderFetchResult.Success -> result.media.size
+                    is ProviderFetchResult.Error -> 0
+                }
             },
             forceRecalculate = forceRecalculate,
         )

@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
 import com.neilturner.aerialviews.models.prefs.MediaSelection
 import com.neilturner.aerialviews.providers.LocalMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.FileHelper
@@ -179,9 +180,13 @@ class LocalVideosFragment :
     private suspend fun testLocalVideosFilter() =
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
-            val result = provider.fetchTest()
+            val result = provider.fetch()
+            val message = when (result) {
+                is ProviderFetchResult.Success -> result.summary
+                is ProviderFetchResult.Error -> result.message
+            }
             ensureActive()
-            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), result)
+            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), message)
         }
 
     private fun checkForMediaPermission() {

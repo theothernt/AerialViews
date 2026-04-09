@@ -5,6 +5,7 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -91,13 +92,11 @@ internal class MediaServiceTest {
         override val type: ProviderSourceType = ProviderSourceType.LOCAL
         override val enabled: Boolean = true
 
-        override suspend fun fetchMedia(): List<AerialMedia> = media
+        override suspend fun fetch(): ProviderFetchResult = ProviderFetchResult.Success(media = media, summary = "")
 
         override suspend fun fetchMusic(): List<MusicTrack> = tracks
 
-        override suspend fun fetchTest(): String = ""
-
-        override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+        override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
     }
 
     private fun defaultConfig() =

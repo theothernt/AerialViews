@@ -13,6 +13,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -27,12 +28,15 @@ class LocalMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> =
-        if (prefs.searchType == SearchType.MEDIA_STORE) {
-            mediaStoreFetch().first
-        } else {
-            folderAccessFetch().first
-        }
+    override suspend fun fetch(): ProviderFetchResult {
+        val result =
+            if (prefs.searchType == SearchType.MEDIA_STORE) {
+                mediaStoreFetch()
+            } else {
+                folderAccessFetch()
+            }
+        return ProviderFetchResult.Success(media = result.first, summary = result.second)
+    }
 
     override suspend fun fetchMusic(): List<MusicTrack> {
         if (!prefs.musicEnabled) {
@@ -46,14 +50,7 @@ class LocalMediaProvider(
         }
     }
 
-    override suspend fun fetchTest(): String =
-        if (prefs.searchType == SearchType.MEDIA_STORE) {
-            mediaStoreFetch().second
-        } else {
-            folderAccessFetch().second
-        }
-
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources

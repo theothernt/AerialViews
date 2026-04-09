@@ -9,6 +9,7 @@ import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -107,9 +108,13 @@ class WebDavVideos2Fragment :
         progressDialog.show()
 
         val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs2)
-        val result = provider.fetchTest()
+        val result = provider.fetch()
+        val message = when (result) {
+            is ProviderFetchResult.Success -> result.summary
+            is ProviderFetchResult.Error -> result.message
+        }
 
         progressDialog.dismiss()
-        DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), result)
+        DialogHelper.showOnMain(requireContext(), resources.getString(R.string.webdav_media_test_results), message)
     }
 }

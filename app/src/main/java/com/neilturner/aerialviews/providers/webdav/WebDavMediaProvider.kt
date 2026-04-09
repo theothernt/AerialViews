@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import com.thegrizzlylabs.sardineandroid.Sardine
@@ -28,7 +29,10 @@ class WebDavMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> = fetchWebDavMedia().first
+    override suspend fun fetch(): ProviderFetchResult {
+        val result = fetchWebDavMedia()
+        return ProviderFetchResult.Success(media = result.first, summary = result.second)
+    }
 
     override suspend fun fetchMusic(): List<MusicTrack> {
         if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.pathName.isEmpty()) {
@@ -59,9 +63,7 @@ class WebDavMediaProvider(
         }
     }
 
-    override suspend fun fetchTest(): String = fetchWebDavMedia().second
-
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
     private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()

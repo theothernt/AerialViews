@@ -12,8 +12,10 @@ import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.JsonHelper
 import com.neilturner.aerialviews.utils.UrlValidator
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -32,13 +34,13 @@ class CustomFeedProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> {
+    override suspend fun fetch(): ProviderFetchResult {
         videos.clear()
         metadata.clear()
 
         if (prefs.urlsCache.isBlank()) {
             Timber.w("No valid URLs configured")
-            return emptyList()
+            return ProviderFetchResult.Success(media = emptyList(), summary = "")
         }
 
         val quality = prefs.quality
@@ -92,10 +94,10 @@ class CustomFeedProvider(
         Timber.i("${metadata.count()} metadata items found")
         Timber.i("${videos.count()} $quality videos found")
 
-        return videos
+        return ProviderFetchResult.Success(media = videos, summary = "")
     }
 
-    override suspend fun fetchTest(): String {
+    suspend fun fetchTest(): String {
         // Step 1: Simple validation of URLs
         val simpleValidation = performSimpleValidation()
         if (simpleValidation.hasErrors) {
@@ -333,9 +335,16 @@ class CustomFeedProvider(
         val summary: String,
     )
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
-        // if (metadata.isEmpty()) buildVideoAndMetadata()
-        return metadata
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> {
+        val metadataMap = metadata
+        return media.map { item ->
+            val data = metadataMap[item.uri.filenameWithoutExtension.lowercase()]
+            if (data != null) {
+                item.metadata.shortDescription = data.first
+                item.metadata.pointsOfInterest = data.second
+            }
+            item
+        }
     }
 
     private suspend fun tryParseAsManifest(
