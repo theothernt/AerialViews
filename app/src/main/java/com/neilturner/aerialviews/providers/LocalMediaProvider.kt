@@ -267,10 +267,6 @@ class LocalMediaProvider(
             val projection =
                 arrayOf(
                     android.provider.MediaStore.Audio.Media.DATA,
-                    android.provider.MediaStore.Audio.Media.TITLE,
-                    android.provider.MediaStore.Audio.Media.ARTIST,
-                    android.provider.MediaStore.Audio.Media.ALBUM,
-                    android.provider.MediaStore.Audio.Media.DURATION,
                 )
 
             try {
@@ -278,10 +274,6 @@ class LocalMediaProvider(
                     .query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null)
                     ?.use { cursor ->
                         val dataIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.DATA)
-                        val titleIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.TITLE)
-                        val artistIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.ARTIST)
-                        val albumIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.ALBUM)
-                        val durationIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.DURATION)
 
                         while (cursor.moveToNext()) {
                             val filePath = cursor.getString(dataIndex)
@@ -294,20 +286,11 @@ class LocalMediaProvider(
                                 continue
                             }
 
-                            val title =
-                                cursor
-                                    .getString(titleIndex)
-                                    .takeIf { it.isNotBlank() }
-                                    ?: FileHelper.stripAudioFileExtension(filePath.substringAfterLast('/'))
-
                             tracks.add(
                                 MusicTrack(
                                     uri = uri,
                                     source = AerialMediaSource.LOCAL,
-                                    title = title,
-                                    artist = cursor.getString(artistIndex).orEmpty(),
-                                    album = cursor.getString(albumIndex).orEmpty(),
-                                    duration = cursor.getLong(durationIndex),
+                                    title = FileHelper.stripAudioFileExtension(filePath.substringAfterLast('/')),
                                 ),
                             )
                         }
