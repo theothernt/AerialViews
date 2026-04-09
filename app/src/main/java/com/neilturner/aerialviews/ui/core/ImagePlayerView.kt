@@ -11,6 +11,8 @@ import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ImageRequest
+import com.hierynomus.protocol.transport.TransportException
+import com.hierynomus.smbj.common.SMBRuntimeException
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -121,7 +123,7 @@ class ImagePlayerView : FrameLayout {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media, media.uri) // Pointless?
+                loadImage(media, media.uri)
                 return@launch
             }
 
@@ -137,35 +139,44 @@ class ImagePlayerView : FrameLayout {
                     BitmapHelper.HEADER_BUFFER_SIZE,
                 )
 
-            val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
-            val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
-            if (headerLength <= 0) {
+            try {
+                val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
+                val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
+                if (headerLength <= 0) {
+                    stream.close()
+                    loadImage(media, media.uri)
+                    return@launch
+                }
+                stream.unread(headerBytes, 0, headerLength)
+
+                val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
+
+                if (media.source != AerialMediaSource.IMMICH) {
+                    media.metadata.exif.date = exifMetadata.date
+                    media.metadata.exif.offset = exifMetadata.offset
+                    media.metadata.exif.latitude = exifMetadata.latitude
+                    media.metadata.exif.longitude = exifMetadata.longitude
+                    media.metadata.exif.description = exifMetadata.description
+                }
+
+                Timber.d(
+                    "ImagePlayerView: Extracted EXIF in ${System.currentTimeMillis() - totalStartTime}ms...",
+                )
+
+                loadImage(media, stream)
+            } catch (e: TransportException) {
+                Timber.e(e, "SMB transport dropped while reading image header")
                 stream.close()
-                loadImage(media, media.uri)
-                return@launch
+                onPlayerError()
+            } catch (e: SMBRuntimeException) {
+                Timber.e(e, "SMB runtime error while reading image header")
+                stream.close()
+                onPlayerError()
+            } catch (e: Exception) {
+                Timber.e(e, "Unexpected error reading image stream")
+                stream.close()
+                onPlayerError()
             }
-            stream.unread(headerBytes, 0, headerLength)
-
-            val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
-
-            if (media.source != AerialMediaSource.IMMICH) {
-                media.metadata.exif.date = exifMetadata.date
-                media.metadata.exif.offset = exifMetadata.offset
-                media.metadata.exif.latitude = exifMetadata.latitude
-                media.metadata.exif.longitude = exifMetadata.longitude
-                media.metadata.exif.description = exifMetadata.description
-            }
-
-            Timber.d(
-                "ImagePlayerView: Extracted EXIF in ${System.currentTimeMillis() - totalStartTime}ms. source=${media.source} exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
-                exifMetadata.date,
-                exifMetadata.offset,
-                exifMetadata.latitude,
-                exifMetadata.longitude,
-                exifMetadata.orientation,
-            )
-
-            loadImage(media, stream)
         }
     }
 
