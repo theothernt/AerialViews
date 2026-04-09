@@ -12,12 +12,13 @@ object PermissionHelper {
     // TIRAMISU / 33 / 13
     // R / 30 / 11
 
-    // Images + Videos = Read permission
+    // Images + Videos + Audio = Read permission
 
     fun hasMediaReadPermission(context: Context): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_VIDEO) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED
+                ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_AUDIO) == PackageManager.PERMISSION_GRANTED
         } else {
             ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
         }
@@ -27,6 +28,7 @@ object PermissionHelper {
             arrayOf(
                 Manifest.permission.READ_MEDIA_VIDEO,
                 Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.READ_MEDIA_AUDIO,
             )
         } else {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -35,7 +37,8 @@ object PermissionHelper {
     fun isReadMediaPermissionGranted(results: Map<String, Boolean>): Boolean =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             results.getOrDefault(Manifest.permission.READ_MEDIA_VIDEO, false) &&
-                results.getOrDefault(Manifest.permission.READ_MEDIA_IMAGES, false)
+                results.getOrDefault(Manifest.permission.READ_MEDIA_IMAGES, false) &&
+                results.getOrDefault(Manifest.permission.READ_MEDIA_AUDIO, false)
         } else {
             try {
                 results.getValue(Manifest.permission.READ_EXTERNAL_STORAGE)
