@@ -12,8 +12,8 @@ appcompat = "1.7.1"
 exifinterface = "1.4.2"
 desugar-jdk-libs = "2.1.5"
 
-firebase-bom = "34.11.0"
-firebase-crashlytics-plugin = "3.0.6"
+firebase-bom = "34.12.0"
+firebase-crashlytics-plugin = "3.0.7"
 firebase-perf-plugin = "2.0.2"
 
 ktor = "3.4.2"
