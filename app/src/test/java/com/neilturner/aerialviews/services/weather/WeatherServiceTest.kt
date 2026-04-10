@@ -236,9 +236,9 @@ private class FakeOpenWeatherApi : OpenWeatherApi {
             FiveDayForecastResponse(
                 list =
                     listOf(
-                        fakeForecastItem("2026-04-03T12:00:00", 15.0, 9.0),
-                        fakeForecastItem("2026-04-04T12:00:00", 17.0, 10.0),
-                        fakeForecastItem("2026-04-05T12:00:00", 14.0, 8.0),
+                        fakeForecastItem("2026-04-13T12:00:00", 15.0, 9.0),
+                        fakeForecastItem("2026-04-14T12:00:00", 17.0, 10.0),
+                        fakeForecastItem("2026-04-15T12:00:00", 14.0, 8.0),
                     ),
                 city = City(name = "Dublin", country = "IE", timezone = 0),
             ),

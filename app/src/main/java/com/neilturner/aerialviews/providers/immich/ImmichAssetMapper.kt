@@ -2,15 +2,15 @@ package com.neilturner.aerialviews.providers.immich
 
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichAssetPrefs
 import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import timber.log.Timber
-
+ 
 class ImmichAssetMapper(
-    private val prefs: ImmichMediaPrefs,
+    private val prefs: ImmichAssetPrefs,
     private val urlBuilder: ImmichUrlBuilder,
 ) {
     data class ProcessResults(
