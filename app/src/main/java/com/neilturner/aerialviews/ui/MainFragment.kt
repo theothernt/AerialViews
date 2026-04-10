@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceManager
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
@@ -29,8 +31,14 @@ class MainFragment :
         setMenuLocale()
         setPreferencesFromResource(R.xml.main, rootKey)
         lifecycleScope.launch {
+            updateAppNameWithVersion()
             resetLocalPermissionIfNeeded()
         }
+    }
+
+    private fun updateAppNameWithVersion() {
+        findPreference<PreferenceCategory>("app_name_category")
+            ?.title = "${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}"
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
