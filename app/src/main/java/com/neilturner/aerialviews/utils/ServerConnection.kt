@@ -22,12 +22,20 @@ object UrlParser {
 
         var processedUrl = input.trim()
 
-        // Strip any number of leading protocol prefixes, then re-add one
-        // Handles cases like "http://http://...", "http://ttp//...", "https://https://..." etc.
-        processedUrl = processedUrl.replace(Regex("^(https?://?)+", RegexOption.IGNORE_CASE), "")
+        // Check if the original URL had https before stripping
+        val originallyHttps = processedUrl.startsWith("https://", ignoreCase = true) ||
+                processedUrl.startsWith("https:/", ignoreCase = true) ||
+                processedUrl.startsWith("https:", ignoreCase = true)
 
-        // Now determine the correct protocol to prepend
-        processedUrl = if (processedUrl.startsWith("https", ignoreCase = true)) {
+        // Strip any number of leading protocol prefixes, including mangled ones
+        // Handles cases like "http://http://...", "http://ttp//...", "https://https://..." etc.
+        // First strip well-formed protocols, then strip any remaining partial protocol
+        processedUrl = processedUrl.replace(Regex("^(https?://?)+", RegexOption.IGNORE_CASE), "")
+        // Also handle mangled protocols like "http://ttp//", "https://tps//", etc.
+        processedUrl = processedUrl.replace(Regex("^(https?://)?[a-z]*//+", RegexOption.IGNORE_CASE), "")
+
+        // Now determine the correct protocol to prepend based on original URL
+        processedUrl = if (originallyHttps) {
             "https://$processedUrl"
         } else {
             "http://$processedUrl"
