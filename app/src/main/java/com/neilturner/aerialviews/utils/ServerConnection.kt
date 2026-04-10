@@ -20,26 +20,26 @@ object UrlParser {
     fun parseServerUrl(input: String): String {
         if (input.isBlank()) return ""
 
-        // Remove any leading/trailing whitespace
         var processedUrl = input.trim()
 
-        // Check if the URL starts with a protocol
-        if (!processedUrl.startsWith("http://", ignoreCase = true) &&
-            !processedUrl.startsWith("https://", ignoreCase = true)
-        ) {
-            // If no protocol is specified, prepend http://
-            processedUrl = "http://$processedUrl"
+        // Strip any number of leading protocol prefixes, then re-add one
+        // Handles cases like "http://http://...", "http://ttp//...", "https://https://..." etc.
+        processedUrl = processedUrl.replace(Regex("^(https?://?)+", RegexOption.IGNORE_CASE), "")
+
+        // Now determine the correct protocol to prepend
+        processedUrl = if (processedUrl.startsWith("https", ignoreCase = true)) {
+            "https://$processedUrl"
+        } else {
+            "http://$processedUrl"
         }
 
         try {
             val uri = URI(processedUrl)
 
-            // Validate basic URL components
             if (uri.host == null) {
                 throw IllegalArgumentException("Invalid URL")
             }
 
-            // Ensure only supported protocols are accepted
             if (uri.scheme !in setOf("http", "https")) {
                 throw IllegalArgumentException("Invalid URL")
             }
