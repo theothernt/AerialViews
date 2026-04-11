@@ -8,15 +8,15 @@
                     app:key="webdav_media_enabled"
                     app:title="@string/webdav_media_enabled_title" />
 
-                <ListPreference
+                <MultiSelectListPreference
                     app:dependency="webdav_media_enabled"
                     app:disableDependentsState="false"
-                    app:defaultValue="@string/media_type_default"
-                    app:entries="@array/media_type_entries"
-                    app:entryValues="@array/media_type_values"
-                    app:key="webdav_media_type"
+                    app:defaultValue="@array/media_selection_default"
+                    app:entries="@array/media_selection_entries"
+                    app:entryValues="@array/media_selection_values"
+                    app:key="webdav_media_selection"
                     app:title="@string/webdav_media_type_title"
-                    app:useSimpleSummaryProvider="true" />
+                    app:dialogTitle="@string/webdav_media_type_title" />
 
                 <Preference
                     app:dependency="webdav_media_enabled"

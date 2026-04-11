@@ -12,11 +12,12 @@ import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.NetworkHelper
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -69,11 +70,49 @@ class SambaMediaProvider(
         }
     }
 
-    override suspend fun fetchMedia(): List<AerialMedia> = fetchSambaMedia().first
+    override suspend fun fetch(): ProviderFetchResult {
+        val result = fetchSambaMedia()
+        return ProviderFetchResult.Success(media = result.first, summary = result.second)
+    }
 
-    override suspend fun fetchTest(): String = fetchSambaMedia().second
+    override suspend fun fetchMusic(): List<MusicTrack> {
+        if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.shareName.isEmpty()) {
+            return emptyList()
+        }
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+        return withContext(Dispatchers.IO) {
+            val shareNameAndPath =
+                try {
+                    SambaHelper.parseShareAndPathName(prefs.shareName.toUri())
+                } catch (ex: Exception) {
+                    Timber.e(ex, "SambaMediaProvider: failed to parse share name for music")
+                    return@withContext emptyList<MusicTrack>()
+                }
+
+            val (shareName, path) = shareNameAndPath
+            val files = findSambaFiles(shareName, path).first
+
+            files
+                .filter { FileHelper.isSupportedAudioType(it.first) }
+                .sortedByDescending { it.second }
+                .map { fileInfo ->
+                    val filename = fileInfo.first
+                    val usernamePassword = buildCredentials()
+                    val domain = URLEncoder.encode(prefs.domainName, "utf-8")
+                    val dialectsEncoded = URLEncoder.encode(prefs.smbDialects.joinToString(","), "utf-8")
+                    val uri =
+                        "smb://$usernamePassword${prefs.hostName}/$shareName/$filename?domain=$domain&enc=${prefs.enableEncryption}&dialects=$dialectsEncoded"
+                            .toUri()
+
+                    MusicTrack(
+                        uri = uri,
+                        source = AerialMediaSource.SAMBA,
+                    )
+                }
+        }
+    }
+
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
     private suspend fun fetchSambaMedia(): Pair<List<AerialMedia>, String> {
         val media = mutableListOf<AerialMedia>()
@@ -110,11 +149,7 @@ class SambaMediaProvider(
 
         val sambaMedia =
             try {
-                findSambaMedia(
-                    prefs.userName,
-                    prefs.password,
-                    prefs.domainName,
-                    prefs.hostName,
+                findSambaFiles(
                     shareName,
                     path,
                 )
@@ -160,11 +195,7 @@ class SambaMediaProvider(
         return Pair(media, sambaMedia.second)
     }
 
-    private suspend fun findSambaMedia(
-        userName: String,
-        password: String,
-        domainName: String,
-        hostName: String,
+    private suspend fun findSambaFiles(
         shareName: String,
         path: String,
     ): Pair<List<Pair<String, Long>>, String> =
@@ -187,7 +218,7 @@ class SambaMediaProvider(
             val smbClient = SMBClient(config)
             val connection: Connection
             try {
-                connection = smbClient.connect(hostName)
+                connection = smbClient.connect(prefs.hostName)
             } catch (ex: Exception) {
                 Timber.e(ex)
                 return@withContext Pair(selected, "Failed to connect, hostname error")
@@ -196,7 +227,7 @@ class SambaMediaProvider(
             // SMB Auth + session
             val session: Session?
             try {
-                val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
+                val authContext = SambaHelper.buildAuthContext(prefs.userName, prefs.password, prefs.domainName)
                 session = connection.authenticate(authContext)
             } catch (ex: Exception) {
                 Timber.e(ex)
@@ -221,7 +252,7 @@ class SambaMediaProvider(
             smbClient.close()
 
             // Only pick videos
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedVideoType(item.first)
@@ -231,7 +262,7 @@ class SambaMediaProvider(
             val videos = selected.size
 
             // Only pick images
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 selected.addAll(
                     files.filter { item ->
                         FileHelper.isSupportedImageType(item.first)
@@ -250,13 +281,13 @@ class SambaMediaProvider(
                 res.getString(R.string.samba_media_test_summary2),
                 excluded.toString(),
             ) + "\n"
-            if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+            if (prefs.includeVideos) {
                 message += String.format(
                     res.getString(R.string.samba_media_test_summary3),
                     videos.toString(),
                 ) + "\n"
             }
-            if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+            if (prefs.includePhotos) {
                 message += String.format(
                     res.getString(R.string.samba_media_test_summary4),
                     images.toString(),
@@ -269,6 +300,18 @@ class SambaMediaProvider(
                 )
             return@withContext Pair(selected, message)
         }
+
+    private fun buildCredentials(): String {
+        if (prefs.userName.isEmpty()) {
+            return ""
+        }
+
+        var creds = URLEncoder.encode(prefs.userName, "utf-8")
+        if (prefs.password.isNotEmpty()) {
+            creds += ":" + URLEncoder.encode(prefs.password, "utf-8")
+        }
+        return "$creds@"
+    }
 
     private fun listFilesAndFoldersRecursively(
         share: DiskShare,

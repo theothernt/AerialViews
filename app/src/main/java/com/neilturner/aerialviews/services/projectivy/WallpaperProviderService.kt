@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.providers.Comm1MediaProvider
 import com.neilturner.aerialviews.providers.Comm2MediaProvider
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import tv.projectivy.plugin.wallpaperprovider.api.Event
@@ -43,7 +44,10 @@ class WallpaperProviderService : Service() {
                                     .filter { it.enabled }
                                     .flatMap { provider ->
                                         try {
-                                            provider.fetchMedia()
+                                            when (val result = provider.fetch()) {
+                                                is ProviderFetchResult.Success -> result.media
+                                                is ProviderFetchResult.Error -> emptyList()
+                                            }
                                         } catch (ex: Exception) {
                                             emptyList()
                                         }

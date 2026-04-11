@@ -10,6 +10,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getDisplay
@@ -98,7 +99,10 @@ class AppleVideosFragment : MenuStateFragment() {
             setCachedCount = { AppleVideoPrefs.count = it },
             fetchMediaCount = { ctx ->
                 val provider = AppleMediaProvider(ctx, AppleVideoPrefs)
-                provider.fetchMedia().size
+                when (val result = provider.fetch()) {
+                    is ProviderFetchResult.Success -> result.media.size
+                    is ProviderFetchResult.Error -> 0
+                }
             },
             forceRecalculate = forceRecalculate,
         )

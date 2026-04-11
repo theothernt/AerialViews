@@ -8,10 +8,14 @@
     <!-- Read videos+images -->
     <uses-permission
         android:name="android.permission.READ_MEDIA_VIDEO"
-        tools:ignore="SelectedPhotoAccess" />
+        tools:ignore="PhotoAndVideoPolicy,SelectedPhotoAccess" />
 
     <uses-permission
         android:name="android.permission.READ_MEDIA_IMAGES"
+        tools:ignore="PhotoAndVideoPolicy,SelectedPhotoAccess" />
+
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_AUDIO"
         tools:ignore="SelectedPhotoAccess" />
 
     <uses-permission

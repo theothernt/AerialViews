@@ -41,7 +41,9 @@ Or [download the APK from the Releases page](https://github.com/theothernt/Aeria
 
 ## Want to Contribute?
 
-Aerial Views is an open-source project — contributions are welcome! Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
+Aerial Views is an open-source project - contributions are welcome! 
+
+Whether it’s a bug fix, new feature, or improving translations, feel free to [open an issue](https://github.com/theothernt/AerialViews/issues) or submit a pull request.
 
 And please get in contact before submitting pull requests, thanks!
 
@@ -554,12 +556,12 @@ curl -X POST http://<tv-ip-address>:8081/message/1 \
 
 **Request Parameters:**
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `text` | string | Yes | The message text to display (empty string clears the message) |
-| `duration` | integer | No | Auto-clear message after N seconds |
-| `textSize` | integer | No | Font size in sp (default: 18) |
-| `textWeight` | integer | No | Font weight 100-900 (default: 300) |
+| Parameter    | Type    | Required | Description                                                   |
+|--------------|---------|----------|---------------------------------------------------------------|
+| `text`       | string  | Yes      | The message text to display (empty string clears the message) |
+| `duration`   | integer | No       | Auto-clear message after N seconds                            |
+| `textSize`   | integer | No       | Font size in sp (default: 18)                                 |
+| `textWeight` | integer | No       | Font weight 100-900 (default: 300)                            |
 
 **Response (Success):**
 ```json

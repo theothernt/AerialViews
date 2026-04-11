@@ -262,6 +262,9 @@ object GeneralPrefs : KotprefModel() {
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
 
+    // Advanced
+    var enableLogCapture by booleanPref(false, "enable_log_capture")
+
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")
 }

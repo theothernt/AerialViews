@@ -9,6 +9,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.delay
@@ -68,7 +69,10 @@ class Comm1VideosFragment : MenuStateFragment() {
             setCachedCount = { Comm1VideoPrefs.count = it },
             fetchMediaCount = { ctx ->
                 val provider = Comm1MediaProvider(ctx, Comm1VideoPrefs)
-                provider.fetchMedia().size
+                when (val result = provider.fetch()) {
+                    is ProviderFetchResult.Success -> result.media.size
+                    is ProviderFetchResult.Error -> 0
+                }
             },
             forceRecalculate = forceRecalculate,
         )

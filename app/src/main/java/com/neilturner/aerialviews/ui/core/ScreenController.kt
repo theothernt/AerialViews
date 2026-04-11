@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.media3.common.MediaMetadata
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -27,6 +28,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
+import com.neilturner.aerialviews.services.MusicPlayer
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
@@ -37,10 +39,10 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
-import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
+import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
@@ -74,6 +76,7 @@ class ScreenController(
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
+    private var musicPlayer: MusicPlayer? = null
     private val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataResolver = MetadataResolver()
@@ -242,7 +245,8 @@ class ScreenController(
             }
 
             // Build playlist and start screensaver
-            playlist = MediaService(context).fetchMedia()
+            val mediaResult = MediaService(context).fetchMedia()
+            playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
@@ -250,6 +254,9 @@ class ScreenController(
             } else {
                 showLoadingError()
             }
+
+            // Setup music service
+            setupMusicPlayer(mediaResult.musicPlaylist)
 
             // Setup weather service
             val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
@@ -287,6 +294,20 @@ class ScreenController(
                     toggleBlackOutMode()
                 }
             }
+    }
+
+    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?) {
+        if (musicPlaylist == null || musicPlaylist.size == 0) {
+            Timber.i("MusicPlayer: no music playlist available, skipping")
+            videoPlayer.setForcedMute(false)
+            return
+        }
+
+        videoPlayer.setForcedMute(true)
+        musicPlayer = MusicPlayer(context, musicPlaylist)
+        musicPlayer?.createPlayer()
+        musicPlayer?.play()
+        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
 
     private fun loadItem(media: AerialMedia) {
@@ -579,6 +600,8 @@ class ScreenController(
         ktorServer?.stop()
         nowPlayingService?.stop()
         weatherService?.stop()
+        musicPlayer?.pause()
+        musicPlayer?.release()
         sleepTimerJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
@@ -609,11 +632,21 @@ class ScreenController(
     }
 
     fun nextTrack() {
-        nowPlayingService?.nextTrack()
+        val music = musicPlayer
+        if (music != null && music.hasMusic()) {
+            music.nextTrack()
+        } else {
+            nowPlayingService?.nextTrack()
+        }
     }
 
     fun previousTrack() {
-        nowPlayingService?.previousTrack()
+        val music = musicPlayer
+        if (music != null && music.hasMusic()) {
+            music.previousTrack()
+        } else {
+            nowPlayingService?.previousTrack()
+        }
     }
 
     fun increaseSpeed() {
@@ -766,6 +799,16 @@ class ScreenController(
     override fun onVideoPrepared() = fadeInNextItem()
 
     override fun onVideoError() = handleError()
+
+    override fun onVideoMetadataExtracted(mediaMetadata: MediaMetadata) {
+        val media = currentMedia ?: return
+        Timber.i("Video metadata: %s", formatVideoMetadataForLog(mediaMetadata))
+        val changed = applyVideoMetadataToMedia(media, mediaMetadata)
+
+        if (changed) {
+            updateMetadataOverlayData(media)
+        }
+    }
 
     override fun onImageFinished() = fadeOutCurrentItem()
 

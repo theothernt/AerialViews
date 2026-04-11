@@ -222,7 +222,7 @@ class NowPlayingService(
     private fun MediaController?.describeController(): String {
         if (this == null) return "null"
         val state = playbackState?.state ?: PlaybackState.STATE_NONE
-        return "${packageName}[${stateToString(state)}]"
+        return "$packageName[${stateToString(state)}]"
     }
 
     private fun metadataSummary(metadata: MediaMetadata?): String {

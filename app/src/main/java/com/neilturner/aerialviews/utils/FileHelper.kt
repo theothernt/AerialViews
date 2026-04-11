@@ -53,6 +53,16 @@ object FileHelper {
             filename.endsWith(".mkv", true) ||
             filename.endsWith(".ts", true)
 
+    fun isSupportedAudioType(filename: String): Boolean =
+        filename.endsWith(".mp3", true) ||
+            filename.endsWith(".flac", true) ||
+            filename.endsWith(".ogg", true) ||
+            filename.endsWith(".wav", true) ||
+            filename.endsWith(".m4a", true) ||
+            filename.endsWith(".aac", true) ||
+            filename.endsWith(".wma", true) ||
+            filename.endsWith(".opus", true)
+
     fun isSupportedImageType(filename: String): Boolean {
         if (filename.endsWith(".avif", true) &&
             DeviceHelper.hasAvifSupport()

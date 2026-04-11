@@ -1,21 +1,25 @@
-package com.neilturner.aerialviews.ui.settings
-
+import android.Manifest
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
+import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.SearchType
+import com.neilturner.aerialviews.models.prefs.MediaSelection
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
 import com.neilturner.aerialviews.providers.LocalMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
@@ -26,6 +30,10 @@ class ProjectivyLocalVideosFragment :
     PreferenceManager.OnPreferenceTreeClickListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     private lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
+    private lateinit var requestAudioPermission: ActivityResultLauncher<String>
+
+    // Track previous selection to detect when music is added
+    private var previousMediaSelection: Set<String> = ProjectivyLocalMediaPrefs.mediaSelection
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -41,15 +49,25 @@ class ProjectivyLocalVideosFragment :
             registerForActivityResult(
                 ActivityResultContracts.RequestMultiplePermissions(),
             ) { permissions ->
-                // If permission isn’t granted, MediaStore scans will return no items.
+                // If permission isn't granted, MediaStore scans will return no items.
                 // Keep the UI as-is; user can switch to Folder access instead.
-                PermissionHelper.isReadMediaPermissionGranted(permissions)
+                PermissionHelper.isVideoImagePermissionGranted(permissions)
+            }
+
+        requestAudioPermission =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission(),
+            ) { granted ->
+                if (!granted) {
+                    removeMusicFromSelection()
+                }
             }
 
         lifecycleScope.launch {
             limitTextInput()
             showNvidiaShieldNoticeIfNeeded()
             enableMediaStoreOptions()
+            updateMediaSelectionSummary()
         }
 
         checkForMediaPermission()
@@ -77,7 +95,17 @@ class ProjectivyLocalVideosFragment :
         sharedPreferences: SharedPreferences,
         key: String?,
     ) {
-        // No dynamic enable/disable for legacy options (removed).
+        // Detect when music is added to the selection and request audio permission
+        if (key == "projectivy_local_media_selection") {
+            val current = ProjectivyLocalMediaPrefs.mediaSelection
+            val addedMusic = MediaSelection.MUSIC in current && MediaSelection.MUSIC !in previousMediaSelection
+            if (addedMusic && !PermissionHelper.hasAudioReadPermission(requireContext())) {
+                requestAudioPermissionForMusic()
+            }
+            previousMediaSelection = current
+        }
+
+        updateMediaSelectionSummary()
     }
 
     private fun enableMediaStoreOptions() {
@@ -91,20 +119,47 @@ class ProjectivyLocalVideosFragment :
             ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
+    private fun updateMediaSelectionSummary() {
+        preferenceScreen
+            .findPreference<MultiSelectListPreference>("projectivy_local_media_selection")
+            ?.setSummaryFromValues(ProjectivyLocalMediaPrefs.mediaSelection)
+    }
+
     private suspend fun testLocalVideosFilter() =
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), ProjectivyLocalMediaPrefs)
-            val result = provider.fetchTest()
+            val result = provider.fetch()
+            val message = when (result) {
+                is ProviderFetchResult.Success -> result.summary
+                is ProviderFetchResult.Error -> result.message
+            }
             ensureActive()
-            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), result)
+            DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), message)
         }
 
     private fun checkForMediaPermission() {
-        if (PermissionHelper.hasMediaReadPermission(requireContext())) {
+        if (PermissionHelper.hasVideoImagePermission(requireContext())) {
             return
         }
 
         requestMultiplePermissions.launch(PermissionHelper.getReadMediaPermissions())
+    }
+
+    private fun requestAudioPermissionForMusic() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return
+        }
+        requestAudioPermission.launch(Manifest.permission.READ_MEDIA_AUDIO)
+    }
+
+    // Kotpref's stringSetPref is read-only (val), so we modify SharedPreferences directly.
+    private fun removeMusicFromSelection() {
+        val current = ProjectivyLocalMediaPrefs.mediaSelection
+        if (MediaSelection.MUSIC in current) {
+            val updated = (current - MediaSelection.MUSIC).toMutableSet()
+            ProjectivyLocalMediaPrefs.preferences.edit().putStringSet("projectivy_local_media_selection", updated).apply()
+            updateMediaSelectionSummary()
+        }
     }
 
     private fun showNvidiaShieldNoticeIfNeeded() {

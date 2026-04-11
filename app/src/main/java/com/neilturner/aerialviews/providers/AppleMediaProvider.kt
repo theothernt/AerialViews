@@ -13,6 +13,8 @@ import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.models.videos.Apple2018Videos
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import timber.log.Timber
 
 class AppleMediaProvider(
@@ -26,16 +28,22 @@ class AppleMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchTest(): String = ""
-
-    override suspend fun fetchMedia(): List<AerialMedia> {
+    override suspend fun fetch(): ProviderFetchResult {
         if (metadata.isEmpty()) buildVideoAndMetadata()
-        return videos
+        return ProviderFetchResult.Success(media = videos, summary = "")
     }
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> {
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> {
         if (metadata.isEmpty()) buildVideoAndMetadata()
-        return metadata
+        val metadataMap = metadata
+        return media.map { item ->
+            val data = metadataMap[item.uri.filenameWithoutExtension.lowercase()]
+            if (data != null) {
+                item.metadata.shortDescription = data.first
+                item.metadata.pointsOfInterest = data.second
+            }
+            item
+        }
     }
 
     private suspend fun buildVideoAndMetadata() {

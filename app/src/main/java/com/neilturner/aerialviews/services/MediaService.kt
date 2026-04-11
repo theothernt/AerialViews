@@ -2,11 +2,13 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import androidx.core.os.bundleOf
+import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.TimeOfDay
+import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
@@ -15,11 +17,12 @@ import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
+import com.neilturner.aerialviews.models.prefs.MusicPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
-import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.Comm1MediaProvider
@@ -31,7 +34,7 @@ import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
-import com.neilturner.aerialviews.services.MediaServiceHelper.buildMediaList
+import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
@@ -41,35 +44,61 @@ import timber.log.Timber
 
 class MediaService(
     val context: Context,
+    private val providers: MutableList<MediaProvider> = mutableListOf(),
+    private val config: Config = Config.fromPreferences(),
 ) {
-    private val providers = mutableListOf<MediaProvider>()
+    data class Config(
+        val removeDuplicates: Boolean,
+        val ignoreNonManifestVideos: Boolean,
+        val autoTimeOfDay: Boolean,
+        val playlistTimeOfDayDayIncludes: Set<String>,
+        val playlistTimeOfDayNightIncludes: Set<String>,
+        val shuffleVideos: Boolean,
+        val shuffleMusic: Boolean,
+        val repeatMusic: Boolean,
+    ) {
+        companion object {
+            fun fromPreferences() =
+                Config(
+                    removeDuplicates = GeneralPrefs.removeDuplicates,
+                    ignoreNonManifestVideos = GeneralPrefs.ignoreNonManifestVideos,
+                    autoTimeOfDay = GeneralPrefs.autoTimeOfDay,
+                    playlistTimeOfDayDayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes,
+                    playlistTimeOfDayNightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes,
+                    shuffleVideos = GeneralPrefs.shuffleVideos,
+                    shuffleMusic = MusicPrefs.shuffle,
+                    repeatMusic = MusicPrefs.repeat,
+                )
+        }
+    }
 
     init {
-        providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
-        providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
-        providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
-        providers.add(LocalMediaProvider(context, LocalMediaPrefs))
-        providers.add(SambaMediaProvider(context, SambaMediaPrefs))
-        providers.add(SambaMediaProvider(context, SambaMediaPrefs2))
-        providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
-        providers.add(WebDavMediaProvider(context, WebDavMediaPrefs2))
-        providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
-        providers.add(AppleMediaProvider(context, AppleVideoPrefs))
-        providers.add(CustomFeedProvider(context, CustomFeedPrefs))
+        if (providers.isEmpty()) {
+            providers.add(Comm1MediaProvider(context, Comm1VideoPrefs))
+            providers.add(Comm2MediaProvider(context, Comm2VideoPrefs))
+            providers.add(AmazonMediaProvider(context, AmazonVideoPrefs))
+            providers.add(LocalMediaProvider(context, LocalMediaPrefs))
+            providers.add(SambaMediaProvider(context, SambaMediaPrefs))
+            providers.add(SambaMediaProvider(context, SambaMediaPrefs2))
+            providers.add(WebDavMediaProvider(context, WebDavMediaPrefs))
+            providers.add(WebDavMediaProvider(context, WebDavMediaPrefs2))
+            providers.add(ImmichMediaProvider(context, ImmichMediaPrefs))
+            providers.add(AppleMediaProvider(context, AppleVideoPrefs))
+            providers.add(CustomFeedProvider(context, CustomFeedPrefs))
+        }
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaPlaylist =
+    suspend fun fetchMedia(): MediaFetchResult =
         withContext(Dispatchers.IO) {
-            // Build media list from all providers
-            val media = buildMediaList(providers)
+            val (media, tracks) = buildProviderContent(providers)
 
             // Split into videos and photos
             var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
             Timber.i("Total media items: ${media.size}, videos ${videos.size}, photos ${photos.size}")
 
             // Remove duplicates based on filename (with extension!)
-            if (GeneralPrefs.removeDuplicates) {
+            if (config.removeDuplicates) {
                 val numVideos = videos.size
                 val numPhotos = photos.size
                 videos =
@@ -100,17 +129,17 @@ class MediaService(
             Timber.i("Photos with metadata: matched ${matchedPhotos.size}, unmatched ${unmatchedPhotos.size}")
 
             // Discard unmatched manifest videos
-            if (GeneralPrefs.ignoreNonManifestVideos) {
+            if (config.ignoreNonManifestVideos) {
                 Timber.i("Removing ${unmatchedVideos.size} non-manifest videos")
                 unmatchedVideos = emptyList()
             }
 
             var filteredMedia = unmatchedVideos + matchedVideos + unmatchedPhotos + matchedPhotos
 
-            if (GeneralPrefs.autoTimeOfDay) {
+            if (config.autoTimeOfDay) {
                 val currentTimePeriod = TimeOfDayHelper.getCurrentTimePeriod()
-                val dayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes
-                val nightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes
+                val dayIncludes = config.playlistTimeOfDayDayIncludes
+                val nightIncludes = config.playlistTimeOfDayNightIncludes
                 val dayIncludesSunrise = dayIncludes.contains("SUNRISE")
                 val dayIncludesSunset = dayIncludes.contains("SUNSET")
                 val nightIncludesSunrise = nightIncludes.contains("SUNRISE")
@@ -152,17 +181,32 @@ class MediaService(
                 Timber.i("Media items after time filtering: ${filteredMedia.size}")
             }
 
-            if (GeneralPrefs.shuffleVideos) {
+            if (config.shuffleVideos) {
                 filteredMedia = filteredMedia.shuffled()
                 Timber.i("Shuffling media items")
             }
+
+            val musicPlaylist =
+                tracks
+                    .takeIf { it.isNotEmpty() }
+                    ?.let { availableTracks ->
+                        val orderedTracks = if (config.shuffleMusic) availableTracks.shuffled() else availableTracks
+                        MusicPlaylist(
+                            tracks = orderedTracks,
+                            shuffle = config.shuffleMusic,
+                            repeat = config.repeatMusic,
+                        )
+                    }
 
             Timber.i("Total media items: ${filteredMedia.size}")
 
             // Track enabled media sources and media counts
             trackMediaUsage(filteredMedia)
 
-            return@withContext MediaPlaylist(filteredMedia)
+            return@withContext MediaFetchResult(
+                mediaPlaylist = MediaPlaylist(filteredMedia),
+                musicPlaylist = musicPlaylist,
+            )
         }
 
     private fun trackMediaUsage(media: List<AerialMedia>) {

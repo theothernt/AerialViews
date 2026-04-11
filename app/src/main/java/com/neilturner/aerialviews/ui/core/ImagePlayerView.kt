@@ -1,6 +1,8 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.graphics.drawable.Animatable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -9,6 +11,8 @@ import coil3.ImageLoader
 import coil3.asDrawable
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.ImageRequest
+import com.hierynomus.protocol.transport.TransportException
+import com.hierynomus.smbj.common.SMBRuntimeException
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AspectRatio
 import com.neilturner.aerialviews.models.enums.PhotoScale
@@ -24,6 +28,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.ToastHelper
+import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -118,12 +123,12 @@ class ImagePlayerView : FrameLayout {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media.uri) // Pointless?
+                loadImage(media, media.uri)
                 return@launch
             }
 
             if (media.source == AerialMediaSource.IMMICH) {
-                loadImage(baseStream)
+                loadImage(media, baseStream)
                 return@launch
             }
 
@@ -134,39 +139,51 @@ class ImagePlayerView : FrameLayout {
                     BitmapHelper.HEADER_BUFFER_SIZE,
                 )
 
-            val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
-            val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
-            if (headerLength <= 0) {
+            try {
+                val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
+                val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
+                if (headerLength <= 0) {
+                    stream.close()
+                    loadImage(media, media.uri)
+                    return@launch
+                }
+                stream.unread(headerBytes, 0, headerLength)
+
+                val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
+
+                if (media.source != AerialMediaSource.IMMICH) {
+                    media.metadata.exif.date = exifMetadata.date
+                    media.metadata.exif.offset = exifMetadata.offset
+                    media.metadata.exif.latitude = exifMetadata.latitude
+                    media.metadata.exif.longitude = exifMetadata.longitude
+                    media.metadata.exif.description = exifMetadata.description
+                }
+
+                Timber.d(
+                    "ImagePlayerView: Extracted EXIF in ${System.currentTimeMillis() - totalStartTime}ms...",
+                )
+
+                loadImage(media, stream)
+            } catch (e: TransportException) {
+                Timber.e(e, "SMB transport dropped while reading image header")
                 stream.close()
-                loadImage(media.uri)
-                return@launch
+                onPlayerError()
+            } catch (e: SMBRuntimeException) {
+                Timber.e(e, "SMB runtime error while reading image header")
+                stream.close()
+                onPlayerError()
+            } catch (e: Exception) {
+                Timber.e(e, "Unexpected error reading image stream")
+                stream.close()
+                onPlayerError()
             }
-            stream.unread(headerBytes, 0, headerLength)
-
-            val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
-
-            if (media.source != AerialMediaSource.IMMICH) {
-                media.metadata.exif.date = exifMetadata.date
-                media.metadata.exif.offset = exifMetadata.offset
-                media.metadata.exif.latitude = exifMetadata.latitude
-                media.metadata.exif.longitude = exifMetadata.longitude
-                media.metadata.exif.description = exifMetadata.description
-            }
-
-            Timber.d(
-                "ImagePlayerView: Extracted EXIF in ${System.currentTimeMillis() - totalStartTime}ms. source=${media.source} exifDate=%s exifOffset=%s lat=%s lon=%s orientation=%d",
-                exifMetadata.date,
-                exifMetadata.offset,
-                exifMetadata.latitude,
-                exifMetadata.longitude,
-                exifMetadata.orientation,
-            )
-
-            loadImage(stream)
         }
     }
 
-    private fun loadImage(data: Any?) {
+    private fun loadImage(
+        media: AerialMedia,
+        data: Any?,
+    ) {
         // Errors from the actual async network/disk load are delivered via onError, not here.
         try {
             val (targetWidth, targetHeight) = resolveTargetSize()
@@ -181,8 +198,8 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            blurHelper.update(drawable)
-                            foregroundImageView.setImageDrawable(drawable)
+                            blurHelper.update(drawable.takeIf { shouldShowBlurBackground(media, it) })
+                            setForegroundDrawable(drawable)
                         },
                     ).listener(
                         onSuccess = { _, result ->
@@ -232,6 +249,51 @@ class ImagePlayerView : FrameLayout {
         return total
     }
 
+    private fun setForegroundDrawable(drawable: Drawable?) {
+        (foregroundImageView.drawable as? Animatable)?.stop()
+        foregroundImageView.setImageDrawable(drawable)
+        (drawable as? Animatable)?.start()
+    }
+
+    private fun shouldSkipBlurBackground(
+        media: AerialMedia,
+        drawable: Drawable,
+    ): Boolean = media.uri.filename.endsWith(".gif", ignoreCase = true) || drawable is Animatable
+
+    private fun shouldShowBlurBackground(
+        media: AerialMedia,
+        drawable: Drawable,
+    ): Boolean {
+        if (shouldSkipBlurBackground(media, drawable)) {
+            return false
+        }
+
+        val imageWidth = drawable.intrinsicWidth
+        val imageHeight = drawable.intrinsicHeight
+        if (imageWidth <= 0 || imageHeight <= 0) {
+            return false
+        }
+
+        if (resolveForegroundScaleType(imageWidth, imageHeight) != ImageView.ScaleType.FIT_CENTER) {
+            return false
+        }
+
+        val (containerWidth, containerHeight) = resolveTargetSize()
+        if (containerWidth <= 0 || containerHeight <= 0) {
+            return false
+        }
+
+        val scale = minOf(
+            containerWidth.toFloat() / imageWidth.toFloat(),
+            containerHeight.toFloat() / imageHeight.toFloat(),
+        )
+        val displayedWidth = imageWidth * scale
+        val displayedHeight = imageHeight * scale
+        val epsilon = 0.5f
+
+        return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
+    }
+
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
@@ -258,7 +320,7 @@ class ImagePlayerView : FrameLayout {
 
     fun stop() {
         removeCallbacks(finishedRunnable)
-        foregroundImageView.setImageBitmap(null)
+        setForegroundDrawable(null)
         pausedTimestamp = 0
         remainingDuration = 0
         blurHelper.cancel()
@@ -286,13 +348,19 @@ class ImagePlayerView : FrameLayout {
         width: Int,
         height: Int,
     ) {
+        foregroundImageView.scaleType = resolveForegroundScaleType(width, height)
+    }
+
+    private fun resolveForegroundScaleType(
+        width: Int,
+        height: Int,
+    ): ImageView.ScaleType {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        foregroundImageView.scaleType =
-            when (aspect) {
-                AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
-                AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
-            }
+        return when (aspect) {
+            AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
+            AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
+        }
     }
 
     private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =

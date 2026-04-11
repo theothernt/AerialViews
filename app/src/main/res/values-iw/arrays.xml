@@ -1,349 +1,253 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="amazon_video_scene_type_entries">
-    <item>טבע</item>
-    <item>חוף</item>
-    <item>עיר</item>
-    <item>ים</item>
-    <item>חלל</item>
-    <item>דפוסים</item>
-    <item>אש</item>
-  </string-array>
-  <string-array name="background_colour_entries">
-    <item>שחור</item>
-    <item>לבן</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>התעלם מהפעולה</item>
-    <item>דלג לסרטון/תמונה הבא</item>
-    <item>דלג לסרטון/תמונה הקודם</item>
-    <item>דלג לרצועת המוזיקה הבאה</item>
-    <item>דלג לרצועת המוזיקה הקודמת</item>
-    <item>הגברת מהירות הפעלת הווידאו</item>
-    <item>הפחת את מהירות הפעלת הווידאו</item>
-    <item>חיפוש קדימה בסרטון</item>
-    <item>חיפוש אחורה בסרטון</item>
-    <item>הגברת הבהירות</item>
-    <item>הפחתת הבהירות</item>
-    <item>יציאה משומר המסך</item>
-    <item>יציאה למסך ההגדרות</item>
-    <item>הצג שכבות-על, אם מוסתרות</item>
-    <item>מסך חושך, מדיה דהייה ושכבות-על</item>
-    <item>החלפת/ביטול השתקה של אודיו</item>
-    <item>השהיה/ביטול השהיה של טיימר וידאו או תמונה</item>
-    <item>הפעל/י לולאה עבור הסרטון הנוכחי</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>ברירת מחדל מערכת</item>
-    <item>12 שעות</item>
-    <item>24 שעות</item>
-  </string-array>
-  <string-array name="comm2_videos_scene_type_entries">
-    <item>טבע</item>
-    <item>מפל</item>
-    <item>חוף</item>
-    <item>ים</item>
-  </string-array>
-  <string-array name="comm2_videos_time_of_day_entries">
-    <item>יום</item>
-    <item>שקיעה</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>קומפקטי</item>
-    <item>מלא</item>
-    <item>התאמה אישית</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>מבוטל</item>
-    <item>השתמש בשם הקובץ בתבנית מותאמת</item>
-    <item>השתמש בשם הקובץ כמו שהוא</item>
-    <item>התיקייה והקובץ</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>מבוטל</item>
-    <item>השתמש בשם הקובץ בתבנית מותאמת, לדוגמה: ׳הכותל-המערבי_תפילת_ערב.png׳ יהיה ׳הכותל - המערבי תפילת ערב׳</item>
-    <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.png׳ יהיה ׳הכותל המערבי׳</item>
-    <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.png׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>מבוטל</item>
-    <item>תיאור קצר</item>
-    <item>נקודות עניין דינמיות</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>מבוטל</item>
-    <item>השתמש בשם הקובץ בתבנית מותאמת, לדוגמה: ׳הכותל-המערבי_תפילת_ערב.mp4׳ יהיה ׳הכותל - המערבי תפילת ערב׳</item>
-    <item>השתמש בשם הקובץ כמו שהוא, לדוגמה: ׳הכותל המערבי.mp4׳ יהיה ׳הכותל המערבי׳</item>
-    <item>השתמש בשם התיקייה והקובץ כמו שהם, לדוגמה: ׳תמונות/ירושלים/הכותל המערבי.mp4׳ יהיה ׳ירושלים / הכותל המערבי׳</item>
-  </string-array>
+  <string name="amazon_scene_beach">חוף</string>
+  <string name="amazon_scene_city">עיר</string>
+  <string name="amazon_scene_fire">אש</string>
+  <string name="amazon_scene_nature">טבע</string>
+  <string name="amazon_scene_patterns">דפוסים</string>
+  <string name="amazon_scene_sea">ים</string>
+  <string name="amazon_scene_space">חלל</string>
+  <string name="bg_color_black">שחור</string>
+  <string name="bg_color_white">לבן</string>
+  <string name="btn_blackout">מסך חושך, מדיה דהייה ושכבות-על</string>
+  <string name="btn_brightness_decrease">הפחתת הבהירות</string>
+  <string name="btn_brightness_increase">הגברת הבהירות</string>
+  <string name="btn_exit">יציאה משומר המסך</string>
+  <string name="btn_exit_settings">יציאה למסך ההגדרות</string>
+  <string name="btn_ignore">התעלם מהפעולה</string>
+  <string name="btn_music_next">דלג לרצועת המוזיקה הבאה</string>
+  <string name="btn_music_previous">דלג לרצועת המוזיקה הקודמת</string>
+  <string name="btn_seek_backward">חיפוש אחורה בסרטון</string>
+  <string name="btn_seek_forward">חיפוש קדימה בסרטון</string>
+  <string name="btn_show_overlays">הצג שכבות-על, אם מוסתרות</string>
+  <string name="btn_skip_next">דלג לסרטון/תמונה הבא</string>
+  <string name="btn_skip_previous">דלג לסרטון/תמונה הקודם</string>
+  <string name="btn_speed_decrease">הפחת את מהירות הפעלת הווידאו</string>
+  <string name="btn_speed_increase">הגברת מהירות הפעלת הווידאו</string>
+  <string name="btn_toggle_looping">הפעל/י לולאה עבור הסרטון הנוכחי</string>
+  <string name="btn_toggle_mute">החלפת/ביטול השתקה של אודיו</string>
+  <string name="btn_toggle_pause">השהיה/ביטול השהיה של טיימר וידאו או תמונה</string>
+  <string name="clock_12hour">12 שעות</string>
+  <string name="clock_24hour">24 שעות</string>
+  <string name="clock_system_default">ברירת מחדל מערכת</string>
+  <string name="comm2_scene_beach">חוף</string>
+  <string name="comm2_scene_nature">טבע</string>
+  <string name="comm2_scene_sea">ים</string>
+  <string name="comm2_scene_waterfall">מפל</string>
+  <string name="comm2_time_of_day_day">יְוֹם</string>
+  <string name="comm2_time_of_day_sunset">שְׁקִיעַת הַשֶׁמֶשׁ</string>
+  <string name="date_compact">קומפקטי</string>
+  <string name="date_custom">התאמה אישית</string>
+  <string name="date_full">מלא</string>
+  <string name="desc_disabled">נָכֶה</string>
+  <string name="desc_filename_disabled">נָכֶה</string>
+  <string name="desc_poi">נקודות עניין דינמיות</string>
+  <string name="desc_short">תיאור קצר</string>
   <string-array name="description_video_manifest_entries">
     <item>מבוטל</item>
     <item>תיאור קצר או מיקום</item>
     <item>נקודות עניין דינמיות, זמינות בהרבה שפות, שמתעדכנות בזמן ניגון הוידאו</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>נָכֶה</item>
-    <item>200ms</item>
-    <item>400ms</item>
-    <item>600ms</item>
-    <item>800ms</item>
-    <item>שנייה אחת</item>
-    <item>1.2 שניות</item>
-    <item>1.4 שניות</item>
-    <item>1.6 שניות</item>
-    <item>1.8 שניות</item>
-    <item>2 שניות</item>
-    <item>4 שניות</item>
-    <item>6 שניות</item>
-    <item>8 שניות</item>
-    <item>10 שניות</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item>קישור משותף</item>
-    <item>מפתח API</item>
-  </string-array>
-  <string-array name="immich_image_type_entries">
-    <item>תצוגה מקדימה</item>
-    <item>גודל מלא</item>
-    <item>מקורי</item>
-  </string-array>
-  <string-array name="immich_include_entries">
-    <item>מבוטל</item>
-    <item>100 תמונות</item>
-    <item>200 תמונות</item>
-    <item>300 תמונות</item>
-    <item>400 תמונות</item>
-  </string-array>
-  <string-array name="immich_video_type_entries">
-    <item>קידוד מומר</item>
-    <item>מקורי</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>דלג כשמגיעים למגבלה</item>
-    <item>אפשר לסרטונים ארוכים יותר להסתיים</item>
-    <item>הפעל קטעים אקראיים של סרטונים ארוכים</item>
-  </string-array>
+  <string name="duration_10s">10 שניות</string>
+  <string name="duration_1_2s">1.2 שניות</string>
+  <string name="duration_1_4s">1.4 שניות</string>
+  <string name="duration_1_6s">1.6 שניות</string>
+  <string name="duration_1_8s">1.8 שניות</string>
+  <string name="duration_1s">שנייה אחת</string>
+  <string name="duration_200ms">200ms</string>
+  <string name="duration_2s">2 שניות</string>
+  <string name="duration_400ms">400ms</string>
+  <string name="duration_4s">4 שניות</string>
+  <string name="duration_600ms">600ms</string>
+  <string name="duration_6s">6 שניות</string>
+  <string name="duration_800ms">800ms</string>
+  <string name="duration_8s">8 שניות</string>
+  <string name="duration_disabled">נָכֶה</string>
+  <string name="fade_corner_bottom_left">שמאלי תחתון</string>
+  <string name="fade_corner_bottom_right">ימיני תחתון</string>
+  <string name="fade_corner_top_left">שמאלי עליון</string>
+  <string name="fade_corner_top_right">ימיני עליון</string>
+  <string name="filename_as_is">השתמש בשם הקובץ כפי שהוא</string>
+  <string name="filename_disabled">נָכֶה</string>
+  <string name="filename_folder_and_file">תיקייה ושם קובץ</string>
+  <string name="filename_folder_only">שם התיקייה בלבד</string>
+  <string name="folder_level_1">\'איטליה / שקיעה\' - רמה אחת</string>
+  <string name="folder_level_2">\'2025 / איטליה / שקיעה\' - 2 רמות</string>
+  <string name="folder_level_3">\'נוף / 2025 / איטליה / שקיעה\' - 3 רמות</string>
+  <string name="folder_level_4">\'תמונות / נוף / 2025 / איטליה / שקיעה\' - 4 רמות</string>
+  <string name="folder_level_5">\'מדיה / תמונות / נוף / 2025 / איטליה / שקיעה\' - 5 רמות</string>
+  <string name="immich_auth_api_key">מפתח API</string>
+  <string name="immich_auth_shared_link">קישור משותף</string>
+  <string name="immich_img_fullsize">גודל מלא</string>
+  <string name="immich_img_original">מקורי</string>
+  <string name="immich_img_preview">תצוגה מקדימה</string>
+  <string name="immich_include_100">100 תמונות</string>
+  <string name="immich_include_200">200 תמונות</string>
+  <string name="immich_include_300">300 תמונות</string>
+  <string name="immich_include_400">400 תמונות</string>
+  <string name="immich_include_disabled">נָכֶה</string>
+  <string name="immich_vid_original">מקורי</string>
+  <string name="immich_vid_transcoded">קידוד מומר</string>
   <string-array name="limit_Longer_videos_summaries">
     <item>ציית למגבלה - דלג לסרטון הבא כאשר מגיעים למגבלה</item>
     <item>התעלם ממגבלה - אם סרטון ארוך מהמגבלה שהוגדרה, הוא יופעל עד סופו</item>
     <item>קטע אקראי - אם הסרטון ארוך מהמגבלה, יופעל חלק אקראי מהסרטון
 (למשל, עם מגבלה של 2 דקות, סרטון של 6 דקות יכול להכיל 3 קטעים - אחד יושמע באופן אקראי)</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>סורק מדיה</item>
-    <item>גישה לתיקייה (מדור קודם)</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>סרטונים בלבד</item>
-    <item>תמונות בלבד</item>
-    <item>סרטונים ותמונות</item>
-  </string-array>
-  <string-array name="metadata_folder_level_entries">
-    <item>\'איטליה / שקיעה\' - רמה אחת</item>
-    <item>\'2025 / איטליה / שקיעה\' - 2 רמות</item>
-    <item>\'נוף / 2025 / איטליה / שקיעה\' - 3 רמות</item>
-    <item>\'תמונות / נוף / 2025 / איטליה / שקיעה\' - 4 רמות</item>
-    <item>\'מדיה / תמונות / נוף / 2025 / איטליה / שקיעה\' - 5 רמות</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>מבוטל</item>
-    <item>שיר · אמן</item>
-    <item>אמן · שיר</item>
-    <item>אמן</item>
-    <item>שיר</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>לעולם אל תסתיר (ברירת מחדל)</item>
-    <item>תמיד מוסתר</item>
-    <item>2 שניות</item>
-    <item>4 שניות</item>
-    <item>6 שניות</item>
-    <item>8 שניות</item>
-    <item>10 שניות</item>
-  </string-array>
-  <string-array name="overlay_fade_corners_entries">
-    <item>שמאלי עליון</item>
-    <item>ימיני עליון</item>
-    <item>שמאלי תחתון</item>
-    <item>ימיני תחתון</item>
-  </string-array>
-  <string-array name="overlay_metadata_photo_location_entries">
-    <item>עיר</item>
-    <item>עיר, מדינה</item>
-    <item>עיר, ארץ</item>
-    <item>עיר, מדינה, ארץ</item>
-    <item>ארץ</item>
-  </string-array>
-  <string-array name="overlay_metadata_photos_entries">
-    <item>מיקום (EXIF/Immich)</item>
-    <item>תאריך צילום (EXIF/Immich)</item>
-    <item>תיאור (EXIF/Immich)</item>
-    <item>השתמש בשם הקובץ כפי שהוא</item>
-    <item>תיקייה ושם קובץ</item>
-    <item>שם התיקייה בלבד</item>
-  </string-array>
-  <string-array name="overlay_metadata_videos_entries">
-    <item>נקודות עניין דינמיות</item>
-    <item>תיאור קצר</item>
-    <item>מיקום (אימיך)</item>
-    <item>תיאור (אימיך)</item>
-    <item>השתמש בשם הקובץ כפי שהוא</item>
-    <item>תיקייה ושם קובץ</item>
-    <item>שם התיקייה בלבד</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 שניות</item>
-    <item>4 שניות (ברירת מחדל)</item>
-    <item>6 שניות</item>
-    <item>8 שניות</item>
-    <item>10 שניות</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>מלא (ברירת מחדל)</item>
-    <item>מרכז</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>ללא הגבלה (ברירת מחדל)</item>
-    <item>10 שניות</item>
-    <item>20 שניות</item>
-    <item>30 שניות</item>
-    <item>דקה אחת</item>
-    <item>2 דקות</item>
-    <item>3 דקות</item>
-    <item>4 דקות</item>
-    <item>5 דקות</item>
-    <item>6 דקות</item>
-    <item>7 דקות</item>
-    <item>8 דקות</item>
-    <item>9 דקות</item>
-    <item>10 דקות</item>
-    <item>20 דקות</item>
-    <item>30 דקות</item>
-    <item>60 דקות</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>מבוטל</item>
-    <item>החלק העליון של המסך</item>
-    <item>תחתית המסך</item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>סרטונים ותמונות</item>
-    <item>סרטונים בלבד</item>
-    <item>תמונות בלבד</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>סרטוני אפל</item>
-    <item>סרטוני אמזון</item>
-    <item>סרטוני ג׳טסון קריאטיב</item>
-    <item>סרטוני רובין פורקייד</item>
-  </string-array>
-  <string-array name="seek_interval_entries">
-    <item>10 שניות</item>
-    <item>20 שניות</item>
-    <item>30 שניות</item>
-    <item>דקה אחת</item>
-    <item>2 דקות</item>
-    <item>5 דקות</item>
-  </string-array>
-  <string-array name="sleep_timer_entries">
-    <item>מבוטל*</item>
-    <item>דקה אחת</item>
-    <item>2 דקות</item>
-    <item>3 דקות</item>
-    <item>4 דקות</item>
-    <item>5 דקות</item>
-    <item>10 דקות</item>
-    <item>15 דקות</item>
-    <item>20 דקות</item>
-    <item>25 דקות</item>
-    <item>30 דקות</item>
-    <item>35 דקות</item>
-    <item>40 דקות</item>
-    <item>45 דקות</item>
-    <item>50 דקות</item>
-    <item>55 דקות</item>
-    <item>60 דקות</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 שניות</item>
-    <item>10 שניות</item>
-    <item>15 שניות</item>
-    <item>20 שניות</item>
-    <item>25 שניות</item>
-    <item>30 שניות*</item>
-    <item>דקה אחת</item>
-    <item>2 דקות</item>
-    <item>3 דקות</item>
-    <item>5 דקות</item>
-    <item>10 דקות</item>
-    <item>20 דקות</item>
-    <item>30 דקות</item>
-    <item>שעה אחת</item>
-    <item>6 שעות</item>
-    <item>12 שעות</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>רֵיק</item>
-    <item>שָׁעוֹן</item>
-    <item>מטא-נתונים #1</item>
-    <item>מטא-דאטה #2</item>
-    <item>מטא-דאטה #3</item>
-    <item>מטא-דאטה #4</item>
-    <item>מזג אוויר מספר 1</item>
-    <item>עכשיו מתנגן #1</item>
-    <item>עכשיו מתנגן #2</item>
-    <item>תַאֲרִיך</item>
-    <item>הודעה מס\' 1</item>
-    <item>הודעה מס\' 2</item>
-    <item>הודעה מס\' 3</item>
-    <item>הודעה מס\' 4</item>
-    <item>סְפִירָה לְאָחוֹר</item>
-  </string-array>
-  <string-array name="temperature_units_entries">
-    <item>C° / צלזיוס</item>
-    <item>F° / פרנהייט</item>
-  </string-array>
-  <string-array name="text_weight_entries">
-    <item>100/דק</item>
-    <item>200/קליל במיוחד</item>
-    <item>300/קליל</item>
-    <item>400/רגיל</item>
-    <item>500/בינוני</item>
-    <item>600/חצי מודגש</item>
-    <item>700/מודגש</item>
-    <item>800/מודגש במיוחד</item>
-    <item>900/כבד</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>מילוי עם חיתוך (ברירת מחדל)</item>
-    <item>שינוי קנה מידה ללא חיתוך</item>
-  </string-array>
-  <string-array name="video_scene_type_entries">
-    <item>טבע</item>
-    <item>אזור כפרי</item>
-    <item>חוף</item>
-    <item>עיר</item>
-    <item>ים</item>
-    <item>החלל החיצון</item>
-  </string-array>
+  <string name="local_search_media_scanner">סורק מדיה</string>
+  <string name="longervideo_finish">אפשר לסרטונים ארוכים יותר להסתיים</string>
+  <string name="longervideo_segments">הפעל קטעים אקראיים של סרטונים ארוכים</string>
+  <string name="longervideo_skip">דלג כשמגיעים למגבלה</string>
+  <string name="maxvid_10_min">10 דקות</string>
+  <string name="maxvid_10_sec">10 שניות</string>
+  <string name="maxvid_1_min">דקה אחת</string>
+  <string name="maxvid_20_min">20 דקות</string>
+  <string name="maxvid_20_sec">20 שניות</string>
+  <string name="maxvid_2_min">2 דקות</string>
+  <string name="maxvid_30_min">30 דקות</string>
+  <string name="maxvid_30_sec">30 שניות</string>
+  <string name="maxvid_3_min">3 דקות</string>
+  <string name="maxvid_4_min">4 דקות</string>
+  <string name="maxvid_5_min">5 דקות</string>
+  <string name="maxvid_60_min">60 דקות</string>
+  <string name="maxvid_6_min">6 דקות</string>
+  <string name="maxvid_7_min">7 דקות</string>
+  <string name="maxvid_8_min">8 דקות</string>
+  <string name="maxvid_9_min">9 דקות</string>
+  <string name="media_photos_only">תמונות בלבד</string>
+  <string name="media_videos_only">סרטונים בלבד</string>
+  <string name="media_videos_photos">סרטונים ותמונות</string>
+  <string name="nowplaying_artist">אמן</string>
+  <string name="nowplaying_artist_song">אמן · שיר</string>
+  <string name="nowplaying_disabled">נָכֶה</string>
+  <string name="nowplaying_song">שיר</string>
+  <string name="nowplaying_song_artist">שיר · אמן</string>
+  <string name="overlay_hide_10s">10 שניות</string>
+  <string name="overlay_hide_2s">2 שניות</string>
+  <string name="overlay_hide_4s">4 שניות</string>
+  <string name="overlay_hide_6s">6 שניות</string>
+  <string name="overlay_hide_8s">8 שניות</string>
+  <string name="overlay_hide_always">תמיד מוסתר</string>
+  <string name="overlay_meta_loc_city">עיר</string>
+  <string name="overlay_meta_loc_city_country">עיר, ארץ</string>
+  <string name="overlay_meta_loc_city_state">עיר, מדינה</string>
+  <string name="overlay_meta_loc_city_state_country">עיר, מדינה, ארץ</string>
+  <string name="overlay_meta_loc_country">ארץ</string>
+  <string name="overlay_meta_photo_date">תאריך צילום (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_description">תיאור (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_filename">השתמש בשם הקובץ כפי שהוא</string>
+  <string name="overlay_meta_photo_folder_filename">תיקייה ושם קובץ</string>
+  <string name="overlay_meta_photo_folder_only">שם התיקייה בלבד</string>
+  <string name="overlay_meta_photo_location">מיקום (EXIF/Immich)</string>
+  <string name="overlay_meta_vid_description">תיאור (אימיך)</string>
+  <string name="overlay_meta_vid_filename">השתמש בשם הקובץ כפי שהוא</string>
+  <string name="overlay_meta_vid_folder_filename">תיקייה ושם קובץ</string>
+  <string name="overlay_meta_vid_folder_only">שם התיקייה בלבד</string>
+  <string name="overlay_meta_vid_location">מיקום (אימיך)</string>
+  <string name="overlay_meta_vid_poi">נקודות עניין דינמיות</string>
+  <string name="overlay_meta_vid_short_desc">תיאור קצר</string>
+  <string name="overlay_reveal_10s">10 שניות</string>
+  <string name="overlay_reveal_2s">2 שניות</string>
+  <string name="overlay_reveal_6s">6 שניות</string>
+  <string name="overlay_reveal_8s">8 שניות</string>
+  <string name="photo_scale_no_crop">שינוי קנה מידה ללא חיתוך</string>
+  <string name="progressbar_loc_bottom">תחתית המסך</string>
+  <string name="progressbar_loc_disabled">נָכֶה</string>
+  <string name="progressbar_loc_top">החלק העליון של המסך</string>
+  <string name="progressbar_type_photos_only">תמונות בלבד</string>
+  <string name="progressbar_type_videos_only">סרטונים בלבד</string>
+  <string name="progressbar_type_videos_photos">סרטונים ותמונות</string>
+  <string name="projectivy_amazon">סרטוני אמזון</string>
+  <string name="projectivy_apple">סרטוני אפל</string>
+  <string name="projectivy_jetson">סרטוני ג׳טסון קריאטיב</string>
+  <string name="projectivy_robin">סרטוני רובין פורקייד</string>
+  <string name="scene_beach">חוף</string>
+  <string name="scene_city">עיר</string>
+  <string name="scene_countryside">אזור כפרי</string>
+  <string name="scene_nature">טבע</string>
+  <string name="scene_sea">ים</string>
+  <string name="scene_space">החלל החיצון</string>
+  <string name="seek_10_seconds">10 שניות</string>
+  <string name="seek_1_minute">דקה אחת</string>
+  <string name="seek_20_seconds">20 שניות</string>
+  <string name="seek_2_minutes">2 דקות</string>
+  <string name="seek_30_seconds">30 שניות</string>
+  <string name="seek_5_minutes">5 דקות</string>
+  <string name="sleep_10_min">10 דקות</string>
+  <string name="sleep_15_min">15 דקות</string>
+  <string name="sleep_1_min">דקה אחת</string>
+  <string name="sleep_20_min">20 דקות</string>
+  <string name="sleep_25_min">25 דקות</string>
+  <string name="sleep_2_min">2 דקות</string>
+  <string name="sleep_30_min">30 דקות</string>
+  <string name="sleep_35_min">35 דקות</string>
+  <string name="sleep_3_min">3 דקות</string>
+  <string name="sleep_40_min">40 דקות</string>
+  <string name="sleep_45_min">45 דקות</string>
+  <string name="sleep_4_min">4 דקות</string>
+  <string name="sleep_50_min">50 דקות</string>
+  <string name="sleep_55_min">55 דקות</string>
+  <string name="sleep_5_min">5 דקות</string>
+  <string name="sleep_60_min">60 דקות</string>
+  <string name="sleep_disabled">מבוטל*</string>
+  <string name="slideshow_10m">10 דקות</string>
+  <string name="slideshow_10s">10 שניות</string>
+  <string name="slideshow_12h">12 שעות</string>
+  <string name="slideshow_15s">15 שניות</string>
+  <string name="slideshow_1h">שעה אחת</string>
+  <string name="slideshow_1m">דקה אחת</string>
+  <string name="slideshow_20m">20 דקות</string>
+  <string name="slideshow_20s">20 שניות</string>
+  <string name="slideshow_25s">25 שניות</string>
+  <string name="slideshow_2m">2 דקות</string>
+  <string name="slideshow_30m">30 דקות</string>
+  <string name="slideshow_30s">30 שניות*</string>
+  <string name="slideshow_3m">3 דקות</string>
+  <string name="slideshow_5m">5 דקות</string>
+  <string name="slideshow_5s">5 שניות</string>
+  <string name="slideshow_6h">6 שעות</string>
+  <string name="slot_clock">שָׁעוֹן</string>
+  <string name="slot_countdown">סְפִירָה לְאָחוֹר</string>
+  <string name="slot_date">תַאֲרִיך</string>
+  <string name="slot_empty">רֵיק</string>
+  <string name="slot_message_1">הודעה מס\' 1</string>
+  <string name="slot_message_2">הודעה מס\' 2</string>
+  <string name="slot_message_3">הודעה מס\' 3</string>
+  <string name="slot_message_4">הודעה מס\' 4</string>
+  <string name="slot_metadata_1">מטא-נתונים #1</string>
+  <string name="slot_metadata_2">מטא-דאטה #2</string>
+  <string name="slot_metadata_3">מטא-דאטה #3</string>
+  <string name="slot_metadata_4">מטא-דאטה #4</string>
+  <string name="slot_now_playing_1">עכשיו מתנגן #1</string>
+  <string name="slot_now_playing_2">עכשיו מתנגן #2</string>
+  <string name="time_of_day_day">יְוֹם</string>
+  <string name="time_of_day_night">לַיְלָה</string>
+  <string name="time_of_day_sunrise">זְרִיחָה</string>
+  <string name="time_of_day_sunset">שְׁקִיעַת הַשֶׁמֶשׁ</string>
+  <string name="video_scale_no_crop">שינוי קנה מידה ללא חיתוך</string>
   <string-array name="video_time_of_day_entries">
     <item>זְרִיחָה</item>
     <item>יְוֹם</item>
     <item>שְׁקִיעַת הַשֶׁמֶשׁ</item>
     <item>לַיְלָה</item>
   </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>ריק</item>
-    <item>עיר</item>
-    <item>טמפרטורה</item>
-    <item>סמל</item>
-    <item>תקציר</item>
-  </string-array>
-  <string-array name="weather_type_entries">
-    <item>ריק</item>
-    <item>תחזית</item>
-    <item>רוח</item>
-    <item>לחות</item>
-    <item>זריחה</item>
-  </string-array>
+  <string name="weather_detail_city">עיר</string>
+  <string name="weather_detail_empty">רֵיק</string>
+  <string name="weather_detail_icon">סמל</string>
+  <string name="weather_detail_summary">תקציר</string>
+  <string name="weather_detail_temperature">טמפרטורה</string>
+  <string name="weather_empty">רֵיק</string>
+  <string name="weather_forecast">תחזית</string>
+  <string name="weather_humidity">לחות</string>
+  <string name="weather_sunrise">זְרִיחָה</string>
+  <string name="weather_wind">רוח</string>
+  <string name="weight_100_thin">100/דק</string>
+  <string name="weight_200_extra_light">200/קליל במיוחד</string>
+  <string name="weight_300_light">300/קליל</string>
+  <string name="weight_400_normal">400/רגיל</string>
+  <string name="weight_500_medium">500/בינוני</string>
+  <string name="weight_600_semi_bold">600/חצי מודגש</string>
+  <string name="weight_700_bold">700/מודגש</string>
+  <string name="weight_800_extra_bold">800/מודגש במיוחד</string>
+  <string name="weight_900_heavy">900/כבד</string>
 </resources>
