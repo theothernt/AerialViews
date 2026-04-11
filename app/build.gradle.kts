@@ -166,26 +166,14 @@ android {
 }
 
 dependencies {
+    // Support all favors except F-Droid
     val firebaseFlavors = listOf(
         "github", "beta", "googleplay", "googleplaybeta", "amazon"
     )
-
     firebaseFlavors.forEach { flavor ->
         "${flavor}Implementation"(platform(libs.firebase.bom))
         "${flavor}Implementation"(libs.bundles.firebase)
     }
-    // Support all favors except F-Droid
-//    "githubImplementation"(platform(libs.firebase.bom))
-//    "betaImplementation"(platform(libs.firebase.bom))
-//    "googleplayImplementation"(platform(libs.firebase.bom))
-//    "googleplaybetaImplementation"(platform(libs.firebase.bom))
-//    "amazonImplementation"(platform(libs.firebase.bom))
-//
-//    "githubImplementation"(libs.bundles.firebase)
-//    "betaImplementation"(libs.bundles.firebase)
-//    "googleplayImplementation"(libs.bundles.firebase)
-//    "googleplaybetaImplementation"(libs.bundles.firebase)
-//    "amazonImplementation"(libs.bundles.firebase)
 
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.androidx)
