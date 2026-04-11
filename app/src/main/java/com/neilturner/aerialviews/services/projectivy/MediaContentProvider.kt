@@ -32,7 +32,6 @@ import java.io.FileNotFoundException
  * - filterEnabled/filterFolder: Filters files by path containing a specific folder name
  */
 class MediaContentProvider : ContentProvider() {
-
     companion object {
         const val AUTHORITY = "com.neilturner.aerialviews.media"
         private const val LOCAL_MEDIA = 1
@@ -45,12 +44,13 @@ class MediaContentProvider : ContentProvider() {
         const val COLUMN_MIME_TYPE = MediaStore.MediaColumns.MIME_TYPE
         const val COLUMN_CONTENT_URI = "content_uri"
 
-        private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
-            // Match: content://com.neilturner.aerialviews.media/local/*
-            addURI(AUTHORITY, "local/*", LOCAL_MEDIA)
-            // Match: content://com.neilturner.aerialviews.media/local (for listing)
-            addURI(AUTHORITY, "local", LOCAL_MEDIA_LIST)
-        }
+        private val uriMatcher =
+            UriMatcher(UriMatcher.NO_MATCH).apply {
+                // Match: content://com.neilturner.aerialviews.media/local/*
+                addURI(AUTHORITY, "local/*", LOCAL_MEDIA)
+                // Match: content://com.neilturner.aerialviews.media/local (for listing)
+                addURI(AUTHORITY, "local", LOCAL_MEDIA_LIST)
+            }
 
         /**
          * Converts a local file:// URI to a content:// URI that can be shared with other apps.
@@ -61,10 +61,11 @@ class MediaContentProvider : ContentProvider() {
         fun toContentUri(fileUri: Uri): Uri {
             Timber.d("toContentUri() called with: $fileUri")
 
-            val path = fileUri.path ?: run {
-                Timber.d("toContentUri() - No path found, returning original URI")
-                return fileUri
-            }
+            val path =
+                fileUri.path ?: run {
+                    Timber.d("toContentUri() - No path found, returning original URI")
+                    return fileUri
+                }
 
             // Only convert file:// URIs, leave http/https as-is
             if (fileUri.scheme != "file" && fileUri.scheme != null) {
@@ -73,17 +74,20 @@ class MediaContentProvider : ContentProvider() {
             }
 
             // Base64 encode the path to handle special characters safely
-            val encodedPath = android.util.Base64.encodeToString(
-                path.toByteArray(Charsets.UTF_8),
-                android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP,
-            )
+            val encodedPath =
+                android.util.Base64.encodeToString(
+                    path.toByteArray(Charsets.UTF_8),
+                    android.util.Base64.URL_SAFE or android.util.Base64.NO_WRAP,
+                )
 
-            val contentUri = Uri.Builder()
-                .scheme("content")
-                .authority(AUTHORITY)
-                .appendPath("local")
-                .appendPath(encodedPath)
-                .build()
+            val contentUri =
+                Uri
+                    .Builder()
+                    .scheme("content")
+                    .authority(AUTHORITY)
+                    .appendPath("local")
+                    .appendPath(encodedPath)
+                    .build()
 
             Timber.d("toContentUri() - Converted to: $contentUri")
             return contentUri
@@ -166,14 +170,16 @@ class MediaContentProvider : ContentProvider() {
         Timber.d("getType() called with URI: $uri")
         return when (uriMatcher.match(uri)) {
             LOCAL_MEDIA -> {
-                val filePath = extractFilePath(uri) ?: run {
-                    Timber.w("getType() - Failed to extract file path from URI: $uri")
-                    return null
-                }
+                val filePath =
+                    extractFilePath(uri) ?: run {
+                        Timber.w("getType() - Failed to extract file path from URI: $uri")
+                        return null
+                    }
                 val mimeType = getMimeType(filePath)
                 Timber.d("getType() - Returning MIME type: $mimeType for path: $filePath")
                 mimeType
             }
+
             else -> {
                 Timber.w("getType() - Unknown URI pattern: $uri")
                 null
@@ -181,7 +187,10 @@ class MediaContentProvider : ContentProvider() {
         }
     }
 
-    override fun openFile(uri: Uri, mode: String): ParcelFileDescriptor? {
+    override fun openFile(
+        uri: Uri,
+        mode: String,
+    ): ParcelFileDescriptor? {
         Timber.d("openFile() called with URI: $uri, mode: $mode")
 
         if (mode != "r") {
@@ -197,10 +206,11 @@ class MediaContentProvider : ContentProvider() {
                     throw SecurityException("Local media provider is disabled")
                 }
 
-                val filePath = extractFilePath(uri)
-                    ?: throw FileNotFoundException("Invalid URI: $uri").also {
-                        Timber.e("openFile() - Failed to extract file path from URI: $uri")
-                    }
+                val filePath =
+                    extractFilePath(uri)
+                        ?: throw FileNotFoundException("Invalid URI: $uri").also {
+                            Timber.e("openFile() - Failed to extract file path from URI: $uri")
+                        }
 
                 Timber.d("openFile() - Extracted file path: $filePath")
 
@@ -213,6 +223,7 @@ class MediaContentProvider : ContentProvider() {
                 Timber.i("openFile() - SUCCESS: Opening file for external access: $filePath")
                 ParcelFileDescriptor.open(File(filePath), ParcelFileDescriptor.MODE_READ_ONLY)
             }
+
             else -> {
                 Timber.e("openFile() - Unknown URI pattern: $uri")
                 throw FileNotFoundException("Unknown URI: $uri")
@@ -227,17 +238,28 @@ class MediaContentProvider : ContentProvider() {
         return mimeType ?: when (extension) {
             // Video types
             "mp4", "m4v" -> "video/mp4"
+
             "mov" -> "video/quicktime"
+
             "webm" -> "video/webm"
+
             "mkv" -> "video/x-matroska"
+
             "ts" -> "video/mp2t"
+
             // Image types
             "jpg", "jpeg" -> "image/jpeg"
+
             "png" -> "image/png"
+
             "gif" -> "image/gif"
+
             "webp" -> "image/webp"
+
             "heic" -> "image/heic"
+
             "avif" -> "image/avif"
+
             else -> "application/octet-stream"
         }
     }
@@ -261,14 +283,16 @@ class MediaContentProvider : ContentProvider() {
                     return createEmptyCursor()
                 }
 
-                val ctx = context ?: run {
-                    Timber.e("query() - Context is null")
-                    return createEmptyCursor()
-                }
+                val ctx =
+                    context ?: run {
+                        Timber.e("query() - Context is null")
+                        return createEmptyCursor()
+                    }
 
                 Timber.d("query() - Fetching local media files")
                 queryLocalMedia(ctx)
             }
+
             else -> {
                 Timber.w("query() - Unknown URI pattern: $uri")
                 null
@@ -276,11 +300,10 @@ class MediaContentProvider : ContentProvider() {
         }
     }
 
-    private fun createEmptyCursor(): MatrixCursor {
-        return MatrixCursor(
+    private fun createEmptyCursor(): MatrixCursor =
+        MatrixCursor(
             arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI),
         )
-    }
 
     private fun queryLocalMedia(ctx: android.content.Context): Cursor {
         val columns = arrayOf(COLUMN_ID, COLUMN_DATA, COLUMN_DISPLAY_NAME, COLUMN_MIME_TYPE, COLUMN_CONTENT_URI)
@@ -338,7 +361,10 @@ class MediaContentProvider : ContentProvider() {
         return cursor
     }
 
-    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+    override fun insert(
+        uri: Uri,
+        values: ContentValues?,
+    ): Uri? {
         Timber.d("insert() called with URI: $uri (not implemented)")
         return null
     }
@@ -353,7 +379,11 @@ class MediaContentProvider : ContentProvider() {
         return 0
     }
 
-    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
+    override fun delete(
+        uri: Uri,
+        selection: String?,
+        selectionArgs: Array<out String>?,
+    ): Int {
         Timber.d("delete() called with URI: $uri (not implemented)")
         return 0
     }

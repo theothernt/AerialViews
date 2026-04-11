@@ -11,10 +11,10 @@ import com.neilturner.aerialviews.models.prefs.ProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.models.videos.Comm1Videos
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.JsonHelper.parseJson
 import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
-import com.neilturner.aerialviews.providers.ProviderFetchResult
 import timber.log.Timber
 
 class Comm1MediaProvider(

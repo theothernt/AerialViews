@@ -79,12 +79,16 @@ class SambaDataSource : BaseDataSource(true) {
     }
 
     @SuppressLint("UnsafeOptInUsageError")
-    override fun read(buffer: ByteArray, offset: Int, readLength: Int): Int {
-        return try {
+    override fun read(
+        buffer: ByteArray,
+        offset: Int,
+        readLength: Int,
+    ): Int =
+        try {
             readInternal(buffer, offset, readLength)
         } catch (e: TransportException) {
             Timber.e(e, "SMB transport dropped during read")
-            C.RESULT_END_OF_INPUT  // not 0 — avoids infinite retry loop
+            C.RESULT_END_OF_INPUT // not 0 — avoids infinite retry loop
         } catch (e: SMBRuntimeException) {
             Timber.e(e, "SMB runtime error during read")
             C.RESULT_END_OF_INPUT
@@ -92,7 +96,6 @@ class SambaDataSource : BaseDataSource(true) {
             Timber.e(e, "Unexpected read error")
             C.RESULT_END_OF_INPUT
         }
-    }
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun getUri(): Uri = dataSpec.uri

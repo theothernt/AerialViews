@@ -62,10 +62,11 @@ class VideoPlayerView
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
-        private val volumeHelper = VolumeHelper(
-            getVolume = { exoPlayer.volume },
-            setVolume = { v -> exoPlayer.volume = v },
-        )
+        private val volumeHelper =
+            VolumeHelper(
+                getVolume = { exoPlayer.volume },
+                setVolume = { v -> exoPlayer.volume = v },
+            )
         private var forcedMuted = false
 
         private val progressBar =

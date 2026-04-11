@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Test
  */
 @DisplayName("MediaContentProvider Tests")
 internal class MediaContentProviderTest {
-
     @Nested
     @DisplayName("MIME Type Detection")
     inner class MimeTypeTests {
-
         @Test
         @DisplayName("Should return video/mp4 for .mp4 files")
         fun testMp4MimeType() {
@@ -181,7 +179,6 @@ internal class MediaContentProviderTest {
     @Nested
     @DisplayName("URI Authority")
     inner class AuthorityTests {
-
         @Test
         @DisplayName("Authority should match expected value")
         fun testAuthority() {
@@ -192,16 +189,17 @@ internal class MediaContentProviderTest {
     @Nested
     @DisplayName("Base64 Encoding Logic")
     inner class Base64EncodingTests {
-
         @Test
         @DisplayName("Encoded path should be URL-safe")
         fun testUrlSafeEncoding() {
             // Test that we're using URL-safe Base64 flags
             // URL-safe Base64 uses - and _ instead of + and /
             val testPath = "/storage/emulated/0/Movies/video.mp4"
-            val encoded = java.util.Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(testPath.toByteArray(Charsets.UTF_8))
+            val encoded =
+                java.util.Base64
+                    .getUrlEncoder()
+                    .withoutPadding()
+                    .encodeToString(testPath.toByteArray(Charsets.UTF_8))
 
             // Verify no unsafe characters
             assertEquals(false, encoded.contains("+"))
@@ -213,13 +211,18 @@ internal class MediaContentProviderTest {
         @DisplayName("Encoding should be reversible")
         fun testEncodingReversible() {
             val testPath = "/storage/emulated/0/My Movies/vacation video (2024).mp4"
-            val encoded = java.util.Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(testPath.toByteArray(Charsets.UTF_8))
-            val decoded = String(
-                java.util.Base64.getUrlDecoder().decode(encoded),
-                Charsets.UTF_8,
-            )
+            val encoded =
+                java.util.Base64
+                    .getUrlEncoder()
+                    .withoutPadding()
+                    .encodeToString(testPath.toByteArray(Charsets.UTF_8))
+            val decoded =
+                String(
+                    java.util.Base64
+                        .getUrlDecoder()
+                        .decode(encoded),
+                    Charsets.UTF_8,
+                )
 
             assertEquals(testPath, decoded)
         }
@@ -228,13 +231,18 @@ internal class MediaContentProviderTest {
         @DisplayName("Special characters should survive round-trip")
         fun testSpecialCharactersRoundTrip() {
             val testPath = "/storage/[brackets]/path (parentheses)/file's name.mp4"
-            val encoded = java.util.Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(testPath.toByteArray(Charsets.UTF_8))
-            val decoded = String(
-                java.util.Base64.getUrlDecoder().decode(encoded),
-                Charsets.UTF_8,
-            )
+            val encoded =
+                java.util.Base64
+                    .getUrlEncoder()
+                    .withoutPadding()
+                    .encodeToString(testPath.toByteArray(Charsets.UTF_8))
+            val decoded =
+                String(
+                    java.util.Base64
+                        .getUrlDecoder()
+                        .decode(encoded),
+                    Charsets.UTF_8,
+                )
 
             assertEquals(testPath, decoded)
         }
@@ -243,13 +251,18 @@ internal class MediaContentProviderTest {
         @DisplayName("Unicode characters should survive round-trip")
         fun testUnicodeRoundTrip() {
             val testPath = "/storage/日本語/中文/video.mp4"
-            val encoded = java.util.Base64.getUrlEncoder()
-                .withoutPadding()
-                .encodeToString(testPath.toByteArray(Charsets.UTF_8))
-            val decoded = String(
-                java.util.Base64.getUrlDecoder().decode(encoded),
-                Charsets.UTF_8,
-            )
+            val encoded =
+                java.util.Base64
+                    .getUrlEncoder()
+                    .withoutPadding()
+                    .encodeToString(testPath.toByteArray(Charsets.UTF_8))
+            val decoded =
+                String(
+                    java.util.Base64
+                        .getUrlDecoder()
+                        .decode(encoded),
+                    Charsets.UTF_8,
+                )
 
             assertEquals(testPath, decoded)
         }
@@ -258,7 +271,6 @@ internal class MediaContentProviderTest {
     @Nested
     @DisplayName("Cursor Column Constants")
     inner class CursorColumnTests {
-
         @Test
         @DisplayName("COLUMN_ID should match MediaStore._ID")
         fun testColumnId() {
@@ -293,7 +305,6 @@ internal class MediaContentProviderTest {
     @Nested
     @DisplayName("File Type Support Logic")
     inner class FileTypeSupportTests {
-
         @Test
         @DisplayName("Should identify supported video types")
         fun testSupportedVideoTypes() {
@@ -378,7 +389,6 @@ internal class MediaContentProviderTest {
     @Nested
     @DisplayName("Folder Filter Logic")
     inner class FolderFilterTests {
-
         @Test
         @DisplayName("Should not filter when folder is empty")
         fun testEmptyFolderNoFilter() {
@@ -430,7 +440,10 @@ internal class MediaContentProviderTest {
         /**
          * Helper method mirroring FileHelper.shouldFilter() logic
          */
-        private fun shouldFilterForTest(filePath: String, folder: String): Boolean {
+        private fun shouldFilterForTest(
+            filePath: String,
+            folder: String,
+        ): Boolean {
             if (folder.isEmpty() || folder.isBlank()) {
                 return false
             }

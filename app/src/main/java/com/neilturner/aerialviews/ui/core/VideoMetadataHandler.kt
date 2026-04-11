@@ -21,7 +21,9 @@ internal fun applyVideoMetadataToMedia(
     }
 
     val shouldIgnoreFileDate =
-        media.source == AerialMediaSource.IMMICH && !media.metadata.exif.date.isNullOrBlank()
+        media.source == AerialMediaSource.IMMICH &&
+            !media.metadata.exif.date
+                .isNullOrBlank()
     if (supportsEmbeddedVideoFileMetadata(media) && !shouldIgnoreFileDate) {
         buildMetadataDate(
             year = mediaMetadata.recordingYear,
