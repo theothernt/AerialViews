@@ -1,349 +1,254 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="amazon_video_scene_type_entries">
-    <item>Природа</item>
-    <item>Пляж</item>
-    <item>Місто</item>
-    <item>Море</item>
-    <item>Космос</item>
-    <item>Візерунки</item>
-    <item>Полум’я</item>
-  </string-array>
-  <string-array name="background_colour_entries">
-    <item>Чорний</item>
-    <item>Білий</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>Ігнорувати дію</item>
-    <item>Перейти до наступного відео/фото</item>
-    <item>Перейти до попереднього відео/фото</item>
-    <item>Перейти до наступного музичного треку</item>
-    <item>Перейти до попереднього музичного треку</item>
-    <item>Збільшити швидкість відтворення відео</item>
-    <item>Зменшити швидкість відтворення відео</item>
-    <item>Перемотування вперед у відео</item>
-    <item>Перемотування назад у відео</item>
-    <item>Збільшити яскравість</item>
-    <item>Зменшити яскравість</item>
-    <item>Вихід із заставки</item>
-    <item>Вихід на екран налаштувань</item>
-    <item>Показувати накладання, якщо вони приховані</item>
-    <item>Затемнення екрана, поступове затьмарення медіа та накладок</item>
-    <item>Вимкнути/увімкнути звук</item>
-    <item>Призупинити/відновити таймер відео або фото</item>
-    <item>Увімкнути/вимкнути цикл для поточного відео</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>Системний</item>
-    <item>12-годинний</item>
-    <item>24-годинний</item>
-  </string-array>
-  <string-array name="comm2_videos_scene_type_entries">
-    <item>Природа</item>
-    <item>Водоспад</item>
-    <item>Пляж</item>
-    <item>Море</item>
-  </string-array>
-  <string-array name="comm2_videos_time_of_day_entries">
-    <item>День</item>
-    <item>Захід сонця</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>Компактний</item>
-    <item>Повний</item>
-    <item>Свій</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>Вимкнено</item>
-    <item>"Використовуйте відформатоване ім\'я файлу"</item>
-    <item>Використовувати ім\'я файлу як є</item>
-    <item>"Ім\'я папки та файлу"</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>Вимкнено</item>
-    <item>\"Японія - Глибокий сніг на Хоккайдо.jpg\" стає \"Японія - Глибокий сніг на Хоккайдо</item>
-    <item>\'Photos/Italy/Dolomites.jpg\' стане \'Італія/Доломіти\'</item>
-    <item>\'Photos/Dublin/Temple Bar.png\' стає \'Dublin\'</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>Вимкнено</item>
-    <item>Короткий опис</item>
-    <item>"Динамічні пам\'ятки"</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Вимкнено</item>
-    <item>\"Політ до гори Пілат.mp4\" стає \"Політ до гори Пілат</item>
-    <item>\'Videos/Grand Canyon/Sunset.mp4\' стане \'Grand Canyon / Sunset.mp4\'</item>
-    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'.</item>
-  </string-array>
+  <string name="amazon_scene_beach">Пляж</string>
+  <string name="amazon_scene_city">Місто</string>
+  <string name="amazon_scene_fire">Полум’я</string>
+  <string name="amazon_scene_nature">Природа</string>
+  <string name="amazon_scene_patterns">Візерунки</string>
+  <string name="amazon_scene_sea">Море</string>
+  <string name="amazon_scene_space">Космос</string>
+  <string name="bg_color_black">Чорний</string>
+  <string name="bg_color_white">Білий</string>
+  <string name="btn_blackout">Затемнення екрана, поступове затьмарення медіа та накладок</string>
+  <string name="btn_brightness_decrease">Зменшити яскравість</string>
+  <string name="btn_brightness_increase">Збільшити яскравість</string>
+  <string name="btn_exit">Вихід із заставки</string>
+  <string name="btn_exit_settings">Вихід на екран налаштувань</string>
+  <string name="btn_ignore">Ігнорувати дію</string>
+  <string name="btn_music_next">Перейти до наступного музичного треку</string>
+  <string name="btn_music_previous">Перейти до попереднього музичного треку</string>
+  <string name="btn_seek_backward">Перемотування назад у відео</string>
+  <string name="btn_seek_forward">Перемотування вперед у відео</string>
+  <string name="btn_show_overlays">Показувати накладання, якщо вони приховані</string>
+  <string name="btn_skip_next">Перейти до наступного відео/фото</string>
+  <string name="btn_skip_previous">Перейти до попереднього відео/фото</string>
+  <string name="btn_speed_decrease">Зменшити швидкість відтворення відео</string>
+  <string name="btn_speed_increase">Збільшити швидкість відтворення відео</string>
+  <string name="btn_toggle_looping">Увімкнути/вимкнути цикл для поточного відео</string>
+  <string name="btn_toggle_mute">Вимкнути/увімкнути звук</string>
+  <string name="btn_toggle_pause">Призупинити/відновити таймер відео або фото</string>
+  <string name="clock_12hour">12-годинний</string>
+  <string name="clock_24hour">24-годинний</string>
+  <string name="clock_system_default">Системний</string>
+  <string name="comm2_scene_beach">Пляж</string>
+  <string name="comm2_scene_nature">Природа</string>
+  <string name="comm2_scene_sea">Море</string>
+  <string name="comm2_scene_waterfall">Водоспад</string>
+  <string name="comm2_time_of_day_day">День</string>
+  <string name="comm2_time_of_day_sunset">Захід сонця</string>
+  <string name="date_compact">Компактний</string>
+  <string name="date_custom">Свій</string>
+  <string name="date_full">Повний</string>
+  <string name="desc_disabled">Вимкнено</string>
+  <string name="desc_filename_disabled">Вимкнено</string>
+  <string name="desc_filename_photo_1">\"Японія - Глибокий сніг на Хоккайдо.jpg\" стає \"Японія - Глибокий сніг на Хоккайдо</string>
+  <string name="desc_filename_photo_2">\'Photos/Italy/Dolomites.jpg\' стане \'Італія/Доломіти\'</string>
+  <string name="desc_filename_photo_3">\'Photos/Dublin/Temple Bar.png\' стає \'Dublin\'</string>
+  <string name="desc_filename_video_1">\"Політ до гори Пілат.mp4\" стає \"Політ до гори Пілат</string>
+  <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' стане \'Grand Canyon / Sunset.mp4\'</string>
+  <string name="desc_filename_video_3">\'Videos/Ireland/Cliffs of Moher.mp4\' стає \'Ireland\'.</string>
+  <string name="desc_poi">"Динамічні пам\'ятки"</string>
+  <string name="desc_short">Короткий опис</string>
   <string-array name="description_video_manifest_entries">
     <item>Вимкнено</item>
     <item>Короткий опис або місцезнаходження</item>
     <item>"Динамічні пам\'ятки, доступні багатьма мовами, які змінюються під час відтворення відео"</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>Вимкнено</item>
-    <item>200 мс</item>
-    <item>400 мс</item>
-    <item>600 мс</item>
-    <item>800 мс</item>
-    <item>1000 мс</item>
-    <item>1200 мс</item>
-    <item>1400 мс</item>
-    <item>1600 мс</item>
-    <item>1800 мс</item>
-    <item>2000 мс</item>
-    <item>4 секунди</item>
-    <item>6 секунд</item>
-    <item>8 секунд</item>
-    <item>10 секунд</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item>Спільне посилання</item>
-    <item>Ключ API</item>
-  </string-array>
-  <string-array name="immich_image_type_entries">
-    <item>Попередній перегляд</item>
-    <item>Повнорозмірний</item>
-    <item>Оригінал</item>
-  </string-array>
-  <string-array name="immich_include_entries">
-    <item>Вимкнено</item>
-    <item>100 фотографій</item>
-    <item>200 фотографій</item>
-    <item>300 фотографій</item>
-    <item>400 фотографій</item>
-  </string-array>
-  <string-array name="immich_video_type_entries">
-    <item>Перекодовано</item>
-    <item>Оригінал</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>Пропустити при досягненні ліміту</item>
-    <item>Дозвольте завершити довші відео</item>
-    <item>Відтворення випадкових фрагментів довгих відеороликів</item>
-  </string-array>
+  <string name="duration_10s">10 секунд</string>
+  <string name="duration_200ms">200 мс</string>
+  <string name="duration_2s">2 секунди</string>
+  <string name="duration_400ms">400 мс</string>
+  <string name="duration_4s">4 секунди</string>
+  <string name="duration_600ms">600 мс</string>
+  <string name="duration_6s">6 секунд</string>
+  <string name="duration_800ms">800 мс</string>
+  <string name="duration_8s">8 секунд</string>
+  <string name="duration_disabled">Вимкнено</string>
+  <string name="fade_corner_bottom_left">Внизу ліворуч</string>
+  <string name="fade_corner_bottom_right">Внизу праворуч</string>
+  <string name="fade_corner_top_left">Вгорі ліворуч</string>
+  <string name="fade_corner_top_right">Вгорі праворуч</string>
+  <string name="filename_as_is">Використовувати ім\'я файлу як є</string>
+  <string name="filename_disabled">Вимкнено</string>
+  <string name="filename_folder_and_file">Ім\'я папки та файлу</string>
+  <string name="filename_folder_only">Тільки ім\'я папки</string>
+  <string name="folder_level_1">\"Італія / Захід сонця\" - 1 рівень</string>
+  <string name="folder_level_2">\"2025 / Італія / Захід сонця\" - 2 рівні</string>
+  <string name="folder_level_3">\"Мальовничий / 2025 / Італія / Захід сонця\" - 3 рівні</string>
+  <string name="folder_level_4">\'Фото / Пейзаж / 2025 / Італія / Захід сонця\' - 4 рівні</string>
+  <string name="folder_level_5">\'Медіа / Фото / Мальовничі / 2025 / Італія / Захід сонця\' - 5 рівнів</string>
+  <string name="immich_auth_api_key">Ключ API</string>
+  <string name="immich_auth_shared_link">Спільне посилання</string>
+  <string name="immich_img_fullsize">Повнорозмірний</string>
+  <string name="immich_img_original">Оригінал</string>
+  <string name="immich_img_preview">Попередній перегляд</string>
+  <string name="immich_include_100">100 фотографій</string>
+  <string name="immich_include_200">200 фотографій</string>
+  <string name="immich_include_300">300 фотографій</string>
+  <string name="immich_include_400">400 фотографій</string>
+  <string name="immich_include_disabled">Вимкнено</string>
+  <string name="immich_vid_original">Оригінал</string>
+  <string name="immich_vid_transcoded">Перекодовано</string>
   <string-array name="limit_Longer_videos_summaries">
     <item>Дотримуйтесь ліміту - переходьте до наступного відео, коли ліміт буде досягнутий</item>
     <item>Ігнорувати обмеження-якщо відео довше встановленого обмеження, воно буде відтворюватися до кінця</item>
     <item>Випадковий сегмент - якщо відео довше встановленого ліміту, буде відтворена випадкова частина відео
 (наприклад, при обмеженні в 2 хвилини 6-хвилинне відео може складатися з 3 сегментів - один з них буде відтворений випадковим чином)</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>Медіа-сканер</item>
-    <item>Доступ до папок (застарілий)</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>Лише відео</item>
-    <item>Лише зображення</item>
-    <item>Відео та зображення</item>
-  </string-array>
-  <string-array name="metadata_folder_level_entries">
-    <item>\"Італія / Захід сонця\" - 1 рівень</item>
-    <item>\"2025 / Італія / Захід сонця\" - 2 рівні</item>
-    <item>\"Мальовничий / 2025 / Італія / Захід сонця\" - 3 рівні</item>
-    <item>\'Фото / Пейзаж / 2025 / Італія / Захід сонця\' - 4 рівні</item>
-    <item>\'Медіа / Фото / Мальовничі / 2025 / Італія / Захід сонця\' - 5 рівнів</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>Вимкнено</item>
-    <item>Пісня · Виконавець</item>
-    <item>Виконавець · Пісня</item>
-    <item>Виконавець</item>
-    <item>Пісня</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>Ніколи не приховувати (за замовчуванням)</item>
-    <item>Завжди прихований</item>
-    <item>2 секунди</item>
-    <item>4 секунди</item>
-    <item>6 секунд</item>
-    <item>8 секунд</item>
-    <item>10 секунд</item>
-  </string-array>
-  <string-array name="overlay_fade_corners_entries">
-    <item>Вгорі ліворуч</item>
-    <item>Вгорі праворуч</item>
-    <item>Внизу ліворуч</item>
-    <item>Внизу праворуч</item>
-  </string-array>
-  <string-array name="overlay_metadata_photo_location_entries">
-    <item>Місто</item>
-    <item>Місто, штат</item>
-    <item>Місто, країна</item>
-    <item>Місто, штат, країна</item>
-    <item>Країна</item>
-  </string-array>
-  <string-array name="overlay_metadata_photos_entries">
-    <item>Місцезнаходження (EXIF/Immich)</item>
-    <item>Дата зйомки (EXIF/Immich)</item>
-    <item>Опис (EXIF/Immich)</item>
-    <item>Використовувати ім\'я файлу як є</item>
-    <item>"Ім\'я папки та файлу"</item>
-    <item>"Тільки ім\'я папки"</item>
-  </string-array>
-  <string-array name="overlay_metadata_videos_entries">
-    <item>Динамічні пам\'ятки</item>
-    <item>Короткий опис</item>
-    <item>Місцезнаходження (Immich)</item>
-    <item>Опис (Immich)</item>
-    <item>Використовувати ім\'я файлу як є</item>
-    <item>Ім\'я папки та файлу</item>
-    <item>Тільки ім\'я папки</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 секунди</item>
-    <item>4 секунди (за замовчуванням)</item>
-    <item>6 секунд</item>
-    <item>8 секунд</item>
-    <item>10 секунд</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Заповнення (за замовчуванням)</item>
-    <item>Центр</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>Без обмежень*</item>
-    <item>10 секунд</item>
-    <item>20 секунд</item>
-    <item>30 секунд</item>
-    <item>1 хвилина</item>
-    <item>2 хвилини</item>
-    <item>3 хвилини</item>
-    <item>4 хвилини</item>
-    <item>5 хвилин</item>
-    <item>6 хвилин</item>
-    <item>7 хвилин</item>
-    <item>8 хвилин</item>
-    <item>9 хвилин</item>
-    <item>10 хвилин</item>
-    <item>20 хвилин</item>
-    <item>30 хвилин</item>
-    <item>60 хвилин</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>Вимкнено</item>
-    <item>Верхня частина екрану</item>
-    <item>Нижня частина екрану</item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>Відео та фотографії</item>
-    <item>Лише відео</item>
-    <item>Лише фотографії</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>Відео Apple</item>
-    <item>Відео Amazon</item>
-    <item>Відео від Jetson Creative</item>
-    <item>Відео Робіна Фуркада</item>
-  </string-array>
-  <string-array name="seek_interval_entries">
-    <item>10 секунд</item>
-    <item>20 секунд</item>
-    <item>30 секунд</item>
-    <item>1 хвилина</item>
-    <item>2 хвилини</item>
-    <item>5 хвилин</item>
-  </string-array>
-  <string-array name="sleep_timer_entries">
-    <item>Вимкнено (за замовчуванням)</item>
-    <item>1 хвилина</item>
-    <item>2 хвилини</item>
-    <item>3 хвилини</item>
-    <item>4 хвилини</item>
-    <item>5 хвилин</item>
-    <item>10 хвилин</item>
-    <item>15 хвилин</item>
-    <item>20 хвилин</item>
-    <item>25 хвилин</item>
-    <item>30 хвилин</item>
-    <item>35 хвилин</item>
-    <item>40 хвилин</item>
-    <item>45 хвилин</item>
-    <item>50 хвилин</item>
-    <item>55 хвилин</item>
-    <item>60 хвилин</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 секунд</item>
-    <item>10 секунд</item>
-    <item>15 секунд</item>
-    <item>20 секунд</item>
-    <item>25 секунд</item>
-    <item>30 секунд*</item>
-    <item>1 хвилина</item>
-    <item>2 хвилини</item>
-    <item>3 хвилини</item>
-    <item>5 хвилин</item>
-    <item>10 хвилин</item>
-    <item>20 хвилин</item>
-    <item>30 хвилин</item>
-    <item>1 година</item>
-    <item>6 годин</item>
-    <item>12 годин</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>Порожньо</item>
-    <item>Годинник</item>
-    <item>Метадані #1</item>
-    <item>Метадані #2</item>
-    <item>Метадані #3</item>
-    <item>Метадані #4</item>
-    <item>Погода #1</item>
-    <item>Зараз грає #1</item>
-    <item>Зараз грає #2</item>
-    <item>Дата</item>
-    <item>Повідомлення #1</item>
-    <item>Повідомлення #2</item>
-    <item>Повідомлення #3</item>
-    <item>Повідомлення #4</item>
-    <item>Зворотний відлік</item>
-  </string-array>
-  <string-array name="temperature_units_entries">
-    <item>C° / Цельсія</item>
-    <item>F° / Фаренгейта</item>
-  </string-array>
-  <string-array name="text_weight_entries">
-    <item>100/Тонка</item>
-    <item>200/Надлегкий</item>
-    <item>300/Світло*</item>
-    <item>400/Нормальна</item>
-    <item>500/Середня</item>
-    <item>600/Напівжирна</item>
-    <item>700/Жирна</item>
-    <item>800/Додатковий жирний</item>
-    <item>900/Важка</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>Заповнення з кадруванням (за замовчуванням)</item>
-    <item>Заповнення без кадрування</item>
-  </string-array>
-  <string-array name="video_scene_type_entries">
-    <item>Природа</item>
-    <item>Сільська місцевість</item>
-    <item>Пляж</item>
-    <item>Місто</item>
-    <item>Море</item>
-    <item>Космос</item>
-  </string-array>
+  <string name="local_search_media_scanner">Медіа-сканер</string>
+  <string name="longervideo_finish">Дозвольте завершити довші відео</string>
+  <string name="longervideo_segments">Відтворення випадкових фрагментів довгих відеороликів</string>
+  <string name="longervideo_skip">Пропустити при досягненні ліміту</string>
+  <string name="maxvid_10_min">10 хвилин</string>
+  <string name="maxvid_10_sec">10 секунд</string>
+  <string name="maxvid_1_min">1 хвилина</string>
+  <string name="maxvid_20_min">20 хвилин</string>
+  <string name="maxvid_20_sec">20 секунд</string>
+  <string name="maxvid_2_min">2 хвилини</string>
+  <string name="maxvid_30_min">30 хвилин</string>
+  <string name="maxvid_30_sec">30 секунд</string>
+  <string name="maxvid_3_min">3 хвилини</string>
+  <string name="maxvid_4_min">4 хвилини</string>
+  <string name="maxvid_5_min">5 хвилин</string>
+  <string name="maxvid_60_min">60 хвилин</string>
+  <string name="maxvid_6_min">6 хвилин</string>
+  <string name="maxvid_7_min">7 хвилин</string>
+  <string name="maxvid_8_min">8 хвилин</string>
+  <string name="maxvid_9_min">9 хвилин</string>
+  <string name="maxvid_no_limit">Без обмежень*</string>
+  <string name="media_photos_only">Лише фотографії</string>
+  <string name="media_videos_only">Лише відео</string>
+  <string name="media_videos_photos">Відео та фотографії</string>
+  <string name="nowplaying_artist">Виконавець</string>
+  <string name="nowplaying_artist_song">Виконавець · Пісня</string>
+  <string name="nowplaying_disabled">Вимкнено</string>
+  <string name="nowplaying_song">Пісня</string>
+  <string name="nowplaying_song_artist">Пісня · Виконавець</string>
+  <string name="overlay_hide_10s">10 секунд</string>
+  <string name="overlay_hide_2s">2 секунди</string>
+  <string name="overlay_hide_4s">4 секунди</string>
+  <string name="overlay_hide_6s">6 секунд</string>
+  <string name="overlay_hide_8s">8 секунд</string>
+  <string name="overlay_hide_always">Завжди прихований</string>
+  <string name="overlay_meta_loc_city">Місто</string>
+  <string name="overlay_meta_loc_city_country">Місто, країна</string>
+  <string name="overlay_meta_loc_city_state">Місто, штат</string>
+  <string name="overlay_meta_loc_city_state_country">Місто, штат, країна</string>
+  <string name="overlay_meta_loc_country">Країна</string>
+  <string name="overlay_meta_photo_date">Дата зйомки (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_description">Опис (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_filename">Використовувати ім\'я файлу як є</string>
+  <string name="overlay_meta_photo_folder_filename">Ім\'я папки та файлу</string>
+  <string name="overlay_meta_photo_folder_only">Тільки ім\'я папки</string>
+  <string name="overlay_meta_photo_location">Місцезнаходження (EXIF/Immich)</string>
+  <string name="overlay_meta_vid_description">Опис (Immich)</string>
+  <string name="overlay_meta_vid_filename">Використовувати ім\'я файлу як є</string>
+  <string name="overlay_meta_vid_folder_filename">Ім\'я папки та файлу</string>
+  <string name="overlay_meta_vid_folder_only">Тільки ім\'я папки</string>
+  <string name="overlay_meta_vid_location">Місцезнаходження (Immich)</string>
+  <string name="overlay_meta_vid_poi">Динамічні пам\'ятки</string>
+  <string name="overlay_meta_vid_short_desc">Короткий опис</string>
+  <string name="overlay_reveal_10s">10 секунд</string>
+  <string name="overlay_reveal_2s">2 секунди</string>
+  <string name="overlay_reveal_6s">6 секунд</string>
+  <string name="overlay_reveal_8s">8 секунд</string>
+  <string name="photo_scale_no_crop">Заповнення без кадрування</string>
+  <string name="progressbar_loc_bottom">Нижня частина екрану</string>
+  <string name="progressbar_loc_disabled">Вимкнено</string>
+  <string name="progressbar_loc_top">Верхня частина екрану</string>
+  <string name="progressbar_type_photos_only">Лише фотографії</string>
+  <string name="progressbar_type_videos_only">Лише відео</string>
+  <string name="progressbar_type_videos_photos">Відео та фотографії</string>
+  <string name="projectivy_amazon">Відео Amazon</string>
+  <string name="projectivy_apple">Відео Apple</string>
+  <string name="projectivy_jetson">Відео від Jetson Creative</string>
+  <string name="projectivy_robin">Відео Робіна Фуркада</string>
+  <string name="scene_beach">Пляж</string>
+  <string name="scene_city">Місто</string>
+  <string name="scene_countryside">Сільська місцевість</string>
+  <string name="scene_nature">Природа</string>
+  <string name="scene_sea">Море</string>
+  <string name="seek_10_seconds">10 секунд</string>
+  <string name="seek_1_minute">1 хвилина</string>
+  <string name="seek_20_seconds">20 секунд</string>
+  <string name="seek_2_minutes">2 хвилини</string>
+  <string name="seek_30_seconds">30 секунд</string>
+  <string name="seek_5_minutes">5 хвилин</string>
+  <string name="sleep_10_min">10 хвилин</string>
+  <string name="sleep_15_min">15 хвилин</string>
+  <string name="sleep_1_min">1 хвилина</string>
+  <string name="sleep_20_min">20 хвилин</string>
+  <string name="sleep_25_min">25 хвилин</string>
+  <string name="sleep_2_min">2 хвилини</string>
+  <string name="sleep_30_min">30 хвилин</string>
+  <string name="sleep_35_min">35 хвилин</string>
+  <string name="sleep_3_min">3 хвилини</string>
+  <string name="sleep_40_min">40 хвилин</string>
+  <string name="sleep_45_min">45 хвилин</string>
+  <string name="sleep_4_min">4 хвилини</string>
+  <string name="sleep_50_min">50 хвилин</string>
+  <string name="sleep_55_min">55 хвилин</string>
+  <string name="sleep_5_min">5 хвилин</string>
+  <string name="sleep_60_min">60 хвилин</string>
+  <string name="sleep_disabled">Вимкнено (за замовчуванням)</string>
+  <string name="slideshow_10m">10 хвилин</string>
+  <string name="slideshow_10s">10 секунд</string>
+  <string name="slideshow_12h">12 годин</string>
+  <string name="slideshow_15s">15 секунд</string>
+  <string name="slideshow_1h">1 година</string>
+  <string name="slideshow_1m">1 хвилина</string>
+  <string name="slideshow_20m">20 хвилин</string>
+  <string name="slideshow_20s">20 секунд</string>
+  <string name="slideshow_25s">25 секунд</string>
+  <string name="slideshow_2m">2 хвилини</string>
+  <string name="slideshow_30m">30 хвилин</string>
+  <string name="slideshow_30s">30 секунд*</string>
+  <string name="slideshow_3m">3 хвилини</string>
+  <string name="slideshow_5m">5 хвилин</string>
+  <string name="slideshow_5s">5 секунд</string>
+  <string name="slideshow_6h">6 годин</string>
+  <string name="slot_clock">Годинник</string>
+  <string name="slot_countdown">Зворотний відлік</string>
+  <string name="slot_date">Дата</string>
+  <string name="slot_empty">Порожньо</string>
+  <string name="slot_message_1">Повідомлення #1</string>
+  <string name="slot_message_2">Повідомлення #2</string>
+  <string name="slot_message_3">Повідомлення #3</string>
+  <string name="slot_message_4">Повідомлення #4</string>
+  <string name="slot_metadata_1">Метадані #1</string>
+  <string name="slot_metadata_2">Метадані #2</string>
+  <string name="slot_metadata_3">Метадані #3</string>
+  <string name="slot_metadata_4">Метадані #4</string>
+  <string name="slot_now_playing_1">Зараз грає #1</string>
+  <string name="slot_now_playing_2">Зараз грає #2</string>
+  <string name="time_of_day_day">День</string>
+  <string name="time_of_day_night">Ніч</string>
+  <string name="time_of_day_sunrise">Схід сонця</string>
+  <string name="time_of_day_sunset">Захід сонця</string>
+  <string name="video_scale_no_crop">Заповнення без кадрування</string>
   <string-array name="video_time_of_day_entries">
     <item>Схід сонця</item>
     <item>День</item>
     <item>Захід сонця</item>
     <item>Ніч</item>
   </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>Порожній</item>
-    <item>Місто</item>
-    <item>Температура</item>
-    <item>Значок</item>
-    <item>Короткий зміст</item>
-  </string-array>
-  <string-array name="weather_type_entries">
-    <item>Порожній</item>
-    <item>Прогноз</item>
-    <item>Вітер</item>
-    <item>Вологість</item>
-    <item>Схід сонця</item>
-  </string-array>
+  <string name="weather_detail_city">Місто</string>
+  <string name="weather_detail_empty">Порожньо</string>
+  <string name="weather_detail_icon">Значок</string>
+  <string name="weather_detail_summary">Короткий зміст</string>
+  <string name="weather_detail_temperature">Температура</string>
+  <string name="weather_empty">Порожньо</string>
+  <string name="weather_forecast">Прогноз</string>
+  <string name="weather_humidity">Вологість</string>
+  <string name="weather_sunrise">Схід сонця</string>
+  <string name="weather_wind">Вітер</string>
+  <string name="weight_100_thin">100/Тонка</string>
+  <string name="weight_200_extra_light">200/Надлегкий</string>
+  <string name="weight_300_light">300/Світло*</string>
+  <string name="weight_400_normal">400/Нормальна</string>
+  <string name="weight_500_medium">500/Середня</string>
+  <string name="weight_600_semi_bold">600/Напівжирна</string>
+  <string name="weight_700_bold">700/Жирна</string>
+  <string name="weight_800_extra_bold">800/Додатковий жирний</string>
+  <string name="weight_900_heavy">900/Важка</string>
 </resources>

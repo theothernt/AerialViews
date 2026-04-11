@@ -11,6 +11,7 @@ import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -59,6 +60,9 @@ class SambaVideosFragment :
     }
 
     private fun updateSummary() {
+        val mediaSelection = findPreference<MultiSelectListPreference>("samba_media_selection")
+        mediaSelection?.setSummaryFromValues(SambaMediaPrefs.mediaSelection)
+
         val dialects = findPreference<MultiSelectListPreference>("samba_videos_smb_dialects")
         dialects?.setSummaryFromValues(dialects.values)
 
@@ -136,13 +140,17 @@ class SambaVideosFragment :
         progressDialog.show()
 
         val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
-        val result = provider.fetchTest()
+        val result = provider.fetch()
+        val message = when (result) {
+            is ProviderFetchResult.Success -> result.summary
+            is ProviderFetchResult.Error -> result.message
+        }
 
         progressDialog.dismiss()
         DialogHelper.showOnMain(
             requireContext(),
             resources.getString(R.string.samba_videos_test_results),
-            result,
+            message,
         )
     }
 }

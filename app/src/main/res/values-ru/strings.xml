@@ -12,6 +12,7 @@
   <string name="advanced_locale_restart_app_summary">Для изменения языка, приложение необходимо перезапустить</string>
   <string name="advanced_locale_restart_app_title">Перезапустить приложение</string>
   <string name="advanced_locale_screensaver_title">Язык текста заставки (часы, местоположение)</string>
+  <string name="advanced_log_capture_error_title">Ошибка</string>
   <string name="advanced_philips_dolby_vision_fix_summary">Исправляет воспроизведение в Dolby Vision на некоторых старых телевизорах Philips</string>
   <string name="advanced_philips_dolby_vision_fix_title">Использовать альтернативный анализ медиакодека</string>
   <string name="advanced_refresh_rate_switching_summary">Изменять частоту обновления дисплея в соответствии с частотой кадров видео</string>
@@ -213,7 +214,6 @@
   <string name="category_feeds">Каналы</string>
   <string name="category_filters">Фильтры</string>
   <string name="category_folder_access_options">Параметры доступа к папкам</string>
-  <string name="category_forecast">Прогноз</string>
   <string name="category_gradient">Градиент</string>
   <string name="category_import_settings">Импорт настроек</string>
   <string name="category_line1">Строка 1</string>
@@ -381,7 +381,6 @@
   <string name="location_not_set">Не установлено</string>
   <string name="location_search_dialog_title">Поиск местоположения или ввод GPS-координат</string>
   <string name="location_selection_title">Выберите местоположение</string>
-  <string name="location_summary">Ваше местоположение используется только для прогноза погоды и автоматической фильтрации по времени суток</string>
   <string name="location_unknown">Неизвестный</string>
   <string name="message_media_searching">Поиск медиа…</string>
   <string name="none_selected">Не выбрано</string>
@@ -555,14 +554,12 @@
   <string name="weather_forecast_slot2">Слот 2</string>
   <string name="weather_forecast_slot3">Слот 3</string>
   <string name="weather_forecast_slot4">Слот 4</string>
-  <string name="weather_forecast_summary">Изменить расположение информации о прогнозе</string>
-  <string name="weather_forecast_temperature_units_title">Единицы измерения температуры</string>
-  <string name="weather_forecast_title">Текущий прогноз</string>
   <string name="weather_location_custom_name_summary">Если местоположение, используемое для отображения погоды, указано неверно, используйте пользовательское имя</string>
   <string name="weather_location_custom_summary">Пользовательское название местоположения (например, Дублин). Если оставить пустым, будет использоваться название из поиска</string>
   <string name="weather_location_custom_title">Пользовательское имя (необязательно)</string>
   <string name="weather_location_search_hint">Введите название города (например, Токио) или GPS-координаты</string>
   <string name="weather_location_searching">Поиск локации…</string>
+  <string name="weather_location_summary">Ваше местоположение используется только для прогноза погоды и автоматической фильтрации по времени суток</string>
   <string name="weather_location_title">Местоположение</string>
   <string name="webdav_media2_enabled_title">Использовать дополнительные учетные данные WebDAV</string>
   <string name="webdav_media2_options_summary">Настройте дополнительные учетные данные WebDAV</string>

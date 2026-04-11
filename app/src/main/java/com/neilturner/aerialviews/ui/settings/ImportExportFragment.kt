@@ -116,9 +116,9 @@ class ImportExportFragment :
 
                 val message =
                     if (success) {
-                        res.getString(R.string.settings_export_successful)
+                        res.getString(R.string.settings_import_successful)
                     } else {
-                        res.getString(R.string.settings_export_failed)
+                        res.getString(R.string.settings_import_failed)
                     }
 
                 DialogHelper

@@ -36,6 +36,9 @@ proguard/
 # Android Studio captures folder
 captures/
 
+# Agents
+.qwen/
+
 # IntelliJ
 *.iml
 .idea/

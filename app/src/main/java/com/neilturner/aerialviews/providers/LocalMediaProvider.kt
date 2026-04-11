@@ -3,17 +3,20 @@ package com.neilturner.aerialviews.providers
 import android.content.Context
 import androidx.core.net.toUri
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.enums.SearchType
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.LocalProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.io.File
 
 class LocalMediaProvider(
@@ -25,21 +28,29 @@ class LocalMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetchMedia(): List<AerialMedia> =
-        if (prefs.searchType == SearchType.MEDIA_STORE) {
-            mediaStoreFetch().first
-        } else {
-            folderAccessFetch().first
+    override suspend fun fetch(): ProviderFetchResult {
+        val result =
+            if (prefs.searchType == SearchType.MEDIA_STORE) {
+                mediaStoreFetch()
+            } else {
+                folderAccessFetch()
+            }
+        return ProviderFetchResult.Success(media = result.first, summary = result.second)
+    }
+
+    override suspend fun fetchMusic(): List<MusicTrack> {
+        if (!prefs.musicEnabled) {
+            return emptyList()
         }
 
-    override suspend fun fetchTest(): String =
-        if (prefs.searchType == SearchType.MEDIA_STORE) {
-            mediaStoreFetch().second
+        return if (prefs.searchType == SearchType.FOLDER_ACCESS) {
+            folderAccessMusic()
         } else {
-            folderAccessFetch().second
+            mediaStoreMusic()
         }
+    }
 
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
     private suspend fun folderAccessFetch(): Pair<List<AerialMedia>, String> {
         val res = context.resources
@@ -63,7 +74,7 @@ class LocalMediaProvider(
         }
 
         // Only pick videos
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -73,7 +84,7 @@ class LocalMediaProvider(
         val videos = selected.size
 
         // Only pick images
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -97,10 +108,10 @@ class LocalMediaProvider(
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary6), media.size.toString())
@@ -182,7 +193,7 @@ class LocalMediaProvider(
         val files = mediaStoreVideosAndImages()
 
         // Add video
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedVideoType(file)
@@ -192,7 +203,7 @@ class LocalMediaProvider(
         videos = selected.size
 
         // Add images
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             selected.addAll(
                 files.filter { file ->
                     FileHelper.isSupportedImageType(file)
@@ -222,10 +233,10 @@ class LocalMediaProvider(
 
         var message = String.format(res.getString(R.string.local_media_test_summary1), files.size.toString()) + "\n"
         message += String.format(res.getString(R.string.local_media_test_summary2), excluded.toString()) + "\n"
-        if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+        if (prefs.includeVideos) {
             message += String.format(res.getString(R.string.local_media_test_summary3), videos.toString()) + "\n"
         }
-        if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+        if (prefs.includePhotos) {
             message += String.format(res.getString(R.string.local_media_test_summary4), images.toString()) + "\n"
         }
         message += String.format(res.getString(R.string.local_media_test_summary5), filtered.toString()) + "\n"
@@ -245,4 +256,107 @@ class LocalMediaProvider(
                 .sortedByDescending { it.lastModified() }
                 .map { it.absolutePath }
         }
+
+    private suspend fun mediaStoreMusic(): List<MusicTrack> =
+        withContext(Dispatchers.IO) {
+            val tracks = mutableListOf<MusicTrack>()
+
+            val projection =
+                arrayOf(
+                    android.provider.MediaStore.Audio.Media.DATA,
+                )
+
+            try {
+                context.contentResolver
+                    .query(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null)
+                    ?.use { cursor ->
+                        val dataIndex = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Audio.Media.DATA)
+
+                        while (cursor.moveToNext()) {
+                            val filePath = cursor.getString(dataIndex)
+                            if (!FileHelper.isSupportedAudioType(filePath)) {
+                                continue
+                            }
+
+                            val uri = filePath.toUri()
+                            if (prefs.filterEnabled && FileHelper.shouldFilter(uri, prefs.filterFolder)) {
+                                continue
+                            }
+
+                            tracks.add(
+                                MusicTrack(
+                                    uri = uri,
+                                    source = AerialMediaSource.LOCAL,
+                                ),
+                            )
+                        }
+                    }
+            } catch (ex: Exception) {
+                Timber.e(ex, "Exception querying MediaStore for audio files: ${ex.message}")
+            }
+
+            return@withContext tracks
+        }
+
+    private suspend fun folderAccessMusic(): List<MusicTrack> =
+        withContext(Dispatchers.IO) {
+            val folders = mutableListOf<String>()
+            val found = mutableListOf<File>()
+
+            if (prefs.legacyVolume.isEmpty() || prefs.legacyFolder.isEmpty()) {
+                return@withContext emptyList()
+            }
+
+            if (prefs.legacyVolume.contains("/all", false)) {
+                val vols = StorageHelper.getStoragePaths(context)
+                vols.keys.forEach { entry ->
+                    folders.add("$entry${prefs.legacyFolder}")
+                }
+            } else {
+                folders.add("${prefs.legacyVolume}${prefs.legacyFolder}")
+            }
+
+            for (folder in folders) {
+                val directory = File(folder)
+                if (!directory.exists() || !directory.isDirectory) {
+                    continue
+                }
+
+                if (prefs.legacySearchSubfolders) {
+                    found.addAll(listAudioFilesRecursively(directory))
+                } else {
+                    directory.listFiles()?.forEach { file ->
+                        if (!file.isDirectory && !FileHelper.isDotOrHiddenFile(file.name)) {
+                            found.add(file)
+                        }
+                    }
+                }
+            }
+
+            return@withContext found
+                .filter { FileHelper.isSupportedAudioType(it.name) }
+                .sortedByDescending { it.lastModified() }
+                .map { file ->
+                    MusicTrack(
+                        uri = file.toUri(),
+                        source = AerialMediaSource.LOCAL,
+                    )
+                }
+        }
+
+    private fun listAudioFilesRecursively(directory: File): List<File> {
+        val files = mutableListOf<File>()
+        directory.listFiles()?.forEach { file ->
+            if (FileHelper.isDotOrHiddenFile(file.name)) {
+                return@forEach
+            }
+
+            if (file.isDirectory) {
+                files.addAll(listAudioFilesRecursively(file))
+            } else {
+                files.add(file)
+            }
+        }
+        return files
+    }
 }

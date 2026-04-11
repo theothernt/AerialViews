@@ -6,6 +6,7 @@ import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
@@ -20,6 +21,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.VideoScale
+import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -63,6 +65,26 @@ object VideoPlayerHelper {
         }
 
     @OptIn(UnstableApi::class)
+    fun buildAudioPlayer(
+        context: Context,
+    ): ExoPlayer {
+        val loadControl =
+            DefaultLoadControl
+                .Builder()
+                .setBufferDurationsMs(
+                    10_000,
+                    20_000,
+                    3_000,
+                    5_000,
+                ).build()
+
+        return ExoPlayer
+            .Builder(context)
+            .setLoadControl(loadControl)
+            .build()
+    }
+
+    @OptIn(UnstableApi::class)
     fun buildPlayer(
         context: Context,
         prefs: GeneralPrefs,
@@ -94,7 +116,9 @@ object VideoPlayerHelper {
                     20_000, // Maximum buffer duration
                     3_000, // Buffer before initial playback
                     5_000, // Buffer after rebuffering
-                ).build()
+                )
+                .setTargetBufferBytes(C.LENGTH_UNSET)
+                .build()
 
         val player =
             ExoPlayer
@@ -126,27 +150,47 @@ object VideoPlayerHelper {
 
     @OptIn(UnstableApi::class)
     fun setupMediaSource(
+        context: Context,
         player: ExoPlayer,
         media: AerialMedia,
     ) {
-        val mediaItem = MediaItem.fromUri(media.uri)
-        when (media.source) {
+        player.setMediaSource(createMediaSource(context, MediaItem.fromUri(media.uri), media.source))
+    }
+
+    @OptIn(UnstableApi::class)
+    fun setupAudioSource(
+        context: Context,
+        player: ExoPlayer,
+        track: MusicTrack,
+    ) {
+        player.setMediaSource(createMediaSource(context, MediaItem.fromUri(track.uri), track.source))
+        player.prepare()
+    }
+
+    @OptIn(UnstableApi::class)
+    fun createAudioMediaSource(
+        context: Context,
+        track: MusicTrack,
+    ) = createMediaSource(context, MediaItem.fromUri(track.uri), track.source)
+
+    @OptIn(UnstableApi::class)
+    private fun createMediaSource(
+        context: Context,
+        mediaItem: MediaItem,
+        source: AerialMediaSource,
+    ) = when (source) {
             AerialMediaSource.SAMBA -> {
-                val mediaSource =
-                    ProgressiveMediaSource
-                        .Factory(SambaDataSourceFactory())
-                        .createMediaSource(mediaItem)
-                player.setMediaSource(mediaSource)
+                ProgressiveMediaSource
+                    .Factory(SambaDataSourceFactory())
+                    .createMediaSource(mediaItem)
             }
 
             AerialMediaSource.RTSP -> {
-                val mediaSource =
-                    RtspMediaSource
-                        .Factory()
-                        .setDebugLoggingEnabled(true)
-                        .setForceUseRtpTcp(true)
-                        .createMediaSource(mediaItem)
-                player.setMediaSource(mediaSource)
+                RtspMediaSource
+                    .Factory()
+                    .setDebugLoggingEnabled(true)
+                    .setForceUseRtpTcp(true)
+                    .createMediaSource(mediaItem)
             }
 
             AerialMediaSource.IMMICH -> {
@@ -169,28 +213,25 @@ object VideoPlayerHelper {
                     System.setProperty("javax.net.ssl.trustAll", "true")
                 }
 
-                val mediaSource =
-                    ProgressiveMediaSource
-                        .Factory(dataSourceFactory)
-                        .createMediaSource(mediaItem)
-
-                player.setMediaSource(mediaSource)
-                Timber.d("Setting up Immich media source with URI: ${media.uri}")
+                Timber.d("Setting up Immich media source with URI: ${mediaItem.localConfiguration?.uri}")
+                ProgressiveMediaSource
+                    .Factory(dataSourceFactory)
+                    .createMediaSource(mediaItem)
             }
 
             AerialMediaSource.WEBDAV -> {
-                val mediaSource =
-                    ProgressiveMediaSource
-                        .Factory(WebDavDataSourceFactory())
-                        .createMediaSource(mediaItem)
-                player.setMediaSource(mediaSource)
+                ProgressiveMediaSource
+                    .Factory(WebDavDataSourceFactory())
+                    .createMediaSource(mediaItem)
             }
 
             else -> {
-                player.setMediaItem(mediaItem)
+                val dataSourceFactory = DefaultDataSource.Factory(context)
+                ProgressiveMediaSource
+                    .Factory(dataSourceFactory)
+                    .createMediaSource(mediaItem)
             }
         }
-    }
 
     fun calculatePlaybackParameters(
         player: ExoPlayer,

@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
         targetSdk = 36
-        versionCode = 111
+        versionCode = 114
         versionName = "1.8.3"
-        betaVersion = "-beta1"
+        betaVersion = "-beta2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -167,11 +167,13 @@ android {
 
 dependencies {
     // Support all favors except F-Droid
-    "githubImplementation"(libs.bundles.firebase)
-    "betaImplementation"(libs.bundles.firebase)
-    "googleplayImplementation"(libs.bundles.firebase)
-    "googleplaybetaImplementation"(libs.bundles.firebase)
-    "amazonImplementation"(libs.bundles.firebase)
+    val firebaseFlavors = listOf(
+        "github", "beta", "googleplay", "googleplaybeta", "amazon"
+    )
+    firebaseFlavors.forEach { flavor ->
+        "${flavor}Implementation"(platform(libs.firebase.bom))
+        "${flavor}Implementation"(libs.bundles.firebase)
+    }
 
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.androidx)

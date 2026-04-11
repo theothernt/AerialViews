@@ -15,8 +15,8 @@ import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 
 class OverlayHelper(
     private val context: Context,

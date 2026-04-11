@@ -52,6 +52,7 @@ class BackgroundBlurHelper(
     fun cancel() {
         backgroundJobToken++
         backgroundImageView.setImageBitmap(null)
+        clearRenderEffect()
         backgroundImageView.visibility = GONE
     }
 
@@ -74,8 +75,15 @@ class BackgroundBlurHelper(
             }
         } else {
             backgroundImageView.setImageDrawable(null)
+            clearRenderEffect()
             backgroundImageView.visibility = GONE
             onReady(token)
+        }
+    }
+
+    private fun clearRenderEffect() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            backgroundImageView.setRenderEffect(null)
         }
     }
 

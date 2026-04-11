@@ -6,6 +6,7 @@ import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.UrlParser
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -26,11 +27,12 @@ class ImmichMediaProvider(
     private val repository = ImmichRepository(prefs, urlBuilder)
     private val mapper = ImmichAssetMapper(prefs, urlBuilder)
 
-    override suspend fun fetchMedia(): List<AerialMedia> = fetchImmichMedia().first
+    override suspend fun fetch(): ProviderFetchResult {
+        val result = fetchImmichMedia()
+        return ProviderFetchResult.Success(media = result.first, summary = result.second)
+    }
 
-    override suspend fun fetchTest(): String = fetchImmichMedia().second
-
-    override suspend fun fetchMetadata(): MutableMap<String, Pair<String, Map<Int, String>>> = mutableMapOf()
+    override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
     /**
      * Cleans up exception messages for display to users, making them more readable.

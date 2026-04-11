@@ -20,26 +20,34 @@ object UrlParser {
     fun parseServerUrl(input: String): String {
         if (input.isBlank()) return ""
 
-        // Remove any leading/trailing whitespace
         var processedUrl = input.trim()
 
-        // Check if the URL starts with a protocol
-        if (!processedUrl.startsWith("http://", ignoreCase = true) &&
-            !processedUrl.startsWith("https://", ignoreCase = true)
-        ) {
-            // If no protocol is specified, prepend http://
-            processedUrl = "http://$processedUrl"
+        // Check if the original URL had https before stripping
+        val originallyHttps = processedUrl.startsWith("https://", ignoreCase = true) ||
+                processedUrl.startsWith("https:/", ignoreCase = true) ||
+                processedUrl.startsWith("https:", ignoreCase = true)
+
+        // Strip any number of leading protocol prefixes, including mangled ones
+        // Handles cases like "http://http://...", "http://ttp//...", "https://https://..." etc.
+        // First strip well-formed protocols, then strip any remaining partial protocol
+        processedUrl = processedUrl.replace(Regex("^(https?://?)+", RegexOption.IGNORE_CASE), "")
+        // Also handle mangled protocols like "http://ttp//", "https://tps//", etc.
+        processedUrl = processedUrl.replace(Regex("^(https?://)?[a-z]*//+", RegexOption.IGNORE_CASE), "")
+
+        // Now determine the correct protocol to prepend based on original URL
+        processedUrl = if (originallyHttps) {
+            "https://$processedUrl"
+        } else {
+            "http://$processedUrl"
         }
 
         try {
             val uri = URI(processedUrl)
 
-            // Validate basic URL components
             if (uri.host == null) {
                 throw IllegalArgumentException("Invalid URL")
             }
 
-            // Ensure only supported protocols are accepted
             if (uri.scheme !in setOf("http", "https")) {
                 throw IllegalArgumentException("Invalid URL")
             }

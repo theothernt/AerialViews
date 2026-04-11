@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
+import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceManager
+import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.LocalMediaPrefs
@@ -29,8 +31,14 @@ class MainFragment :
         setMenuLocale()
         setPreferencesFromResource(R.xml.main, rootKey)
         lifecycleScope.launch {
+            updateAppNameWithVersion()
             resetLocalPermissionIfNeeded()
         }
+    }
+
+    private fun updateAppNameWithVersion() {
+        findPreference<PreferenceCategory>("app_name_category")
+            ?.title = "${getString(R.string.app_name)} ${BuildConfig.VERSION_NAME}"
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -71,8 +79,9 @@ class MainFragment :
     }
 
     private fun resetLocalPermissionIfNeeded() {
-        // Check if we still have permission on startup as they can be revoked outside the app
-        val canReadImagesVideos = PermissionHelper.hasMediaReadPermission(requireContext())
+        // Check if we still have permission on startup as they can be revoked outside the app.
+        // Only require photo+video — audio is optional (music won't play without it).
+        val canReadImagesVideos = PermissionHelper.hasVideoImagePermission(requireContext())
         if (LocalMediaPrefs.enabled &&
             !canReadImagesVideos
         ) {
@@ -98,14 +107,14 @@ class MainFragment :
                 Intent.ACTION_MAIN,
             ).setClassName("com.android.tv.settings", "com.android.tv.settings.device.display.daydream.DaydreamActivity")
         intents += Intent(SCREENSAVER_SETTINGS)
-        intents += Intent(SETTINGS)
+        // intents += Intent(SETTINGS)
 
         intents.forEach { intent ->
             if (intentAvailable(intent)) {
                 try {
                     Timber.i("Trying... $intent")
                     startActivity(intent)
-                    return
+                    // return
                 } catch (ex: Exception) {
                     Timber.e(ex)
                 }

@@ -91,6 +91,7 @@ data class Asset(
     val localDateTime: String? = null,
     val description: String? = null,
     val exifInfo: ExifInfo? = null,
+    val albumName: String? = null,
 )
 
 @Serializable

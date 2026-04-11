@@ -1,348 +1,272 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string-array name="amazon_video_scene_type_entries">
-    <item>Doğa</item>
-    <item>Sahil</item>
-    <item>Şehir</item>
-    <item>Deniz</item>
-    <item>Uzay</item>
-    <item>Desenler</item>
-    <item>Ateş</item>
-  </string-array>
-  <string-array name="background_colour_entries">
-    <item>Siyah</item>
-    <item>Beyaz</item>
-  </string-array>
-  <string-array name="button_action_entries">
-    <item>Eylemi görmezden gel</item>
-    <item>Sonraki videoya/fotoğrafa geç</item>
-    <item>Önceki videoya/fotoğrafa geç</item>
-    <item>Sonraki müzik parçasına geç</item>
-    <item>Önceki müzik parçasına geç</item>
-    <item>Video oynatma hızını artırın</item>
-    <item>Video oynatma hızını düşürün</item>
-    <item>Videoda ileri sarma</item>
-    <item>Videoda geriye doğru arama yapın</item>
-    <item>Parlaklığı artırın</item>
-    <item>Parlaklığı azaltın</item>
-    <item>Ekran koruyucudan çık</item>
-    <item>Ayarlar ekranına geri dön</item>
-    <item>Gizliyse katmanları göster</item>
-    <item>Ekran kararması, medya ve bindirmelerin yavaşça kaybolması</item>
-    <item>Sesi açma/kapatma</item>
-    <item>Video veya fotoğraf zamanlayıcısını duraklat/devam ettir</item>
-    <item>Geçerli video için döngü özelliğini açıp kapat</item>
-  </string-array>
-  <string-array name="clock_format_entries">
-    <item>Sistem varsayılanı</item>
-    <item>12 Saat</item>
-    <item>24 Saat</item>
-  </string-array>
-  <string-array name="comm2_videos_scene_type_entries">
-    <item>Doğa</item>
-    <item>Şelale</item>
-    <item>Sahil</item>
-    <item>Deniz</item>
-  </string-array>
-  <string-array name="comm2_videos_time_of_day_entries">
-    <item>Gün</item>
-    <item>Gün batımı</item>
-  </string-array>
-  <string-array name="date_format_entries">
-    <item>Kompakt</item>
-    <item>Tam dolu</item>
-    <item>Gelenek</item>
-  </string-array>
-  <string-array name="description_filename_entries">
-    <item>Engelli</item>
-    <item>Dosya adını olduğu gibi kullanın.</item>
-    <item>Klasör ve dosya adı</item>
-    <item>Sadece klasör adı</item>
-  </string-array>
-  <string-array name="description_photo_filename_entries">
-    <item>Engelli</item>
-    <item>\'Japan - Deep snow in Hokkaido.jpg\' \'Japan - Deep snow in Hokkaido\' haline geliyor.</item>
-    <item>\'Photos/Italy/Dolomites.jpg\' dosyası \'Italy / Dolomites\' olarak değiştirilir.</item>
-    <item>\'Photos/Dublin/Temple Bar.png\' \'Dublin\' haline geliyor.</item>
-  </string-array>
-  <string-array name="description_video_entries">
-    <item>Devre dışı</item>
-    <item>Kısa açıklama</item>
-    <item>Dinamik ilgi noktaları</item>
-  </string-array>
-  <string-array name="description_video_filename_entries">
-    <item>Engelli</item>
-    <item>\'Flying towards Mount Pilatus.mp4\' dosyası \'Flying towards Mount Pilatus\' haline geliyor.</item>
-    <item>\'Videos/Grand Canyon/Sunset.mp4\' dosyası \'Grand Canyon / Sunset\' olarak değiştirildi.</item>
-    <item>\'Videos/Ireland/Cliffs of Moher.mp4\' dosyası \'Ireland\' olarak değiştirildi.</item>
-  </string-array>
+  <string name="amazon_scene_beach">Sahil</string>
+  <string name="amazon_scene_city">Şehir</string>
+  <string name="amazon_scene_fire">Ateş</string>
+  <string name="amazon_scene_nature">Doğa</string>
+  <string name="amazon_scene_patterns">Desenler</string>
+  <string name="amazon_scene_sea">Deniz</string>
+  <string name="amazon_scene_space">Uzay</string>
+  <string name="bg_color_black">Siyah</string>
+  <string name="bg_color_white">Beyaz</string>
+  <string name="btn_blackout">Ekran kararması, medya ve bindirmelerin yavaşça kaybolması</string>
+  <string name="btn_brightness_decrease">Parlaklığı azaltın</string>
+  <string name="btn_brightness_increase">Parlaklığı artırın</string>
+  <string name="btn_exit">Ekran koruyucudan çık</string>
+  <string name="btn_exit_settings">Ayarlar ekranına geri dön</string>
+  <string name="btn_ignore">Eylemi görmezden gel</string>
+  <string name="btn_music_next">Sonraki müzik parçasına geç</string>
+  <string name="btn_music_previous">Önceki müzik parçasına geç</string>
+  <string name="btn_seek_backward">Videoda geriye doğru arama yapın</string>
+  <string name="btn_seek_forward">Videoda ileri sarma</string>
+  <string name="btn_show_overlays">Gizliyse katmanları göster</string>
+  <string name="btn_skip_next">Sonraki videoya/fotoğrafa geç</string>
+  <string name="btn_skip_previous">Önceki videoya/fotoğrafa geç</string>
+  <string name="btn_speed_decrease">Video oynatma hızını düşürün</string>
+  <string name="btn_speed_increase">Video oynatma hızını artırın</string>
+  <string name="btn_toggle_looping">Geçerli video için döngü özelliğini açıp kapat</string>
+  <string name="btn_toggle_mute">Sesi açma/kapatma</string>
+  <string name="btn_toggle_pause">Video veya fotoğraf zamanlayıcısını duraklat/devam ettir</string>
+  <string name="clock_12hour">12 Saat</string>
+  <string name="clock_24hour">24 Saat</string>
+  <string name="clock_system_default">Sistem varsayılanı</string>
+  <string name="comm2_scene_beach">Sahil</string>
+  <string name="comm2_scene_nature">Doğa</string>
+  <string name="comm2_scene_sea">Deniz</string>
+  <string name="comm2_scene_waterfall">Şelale</string>
+  <string name="comm2_time_of_day_day">Gün</string>
+  <string name="comm2_time_of_day_sunset">Gün batımı</string>
+  <string name="date_compact">Kompakt</string>
+  <string name="date_custom">Gelenek</string>
+  <string name="date_full">Tam dolu</string>
+  <string name="desc_disabled">Engelli</string>
+  <string name="desc_filename_disabled">Engelli</string>
+  <string name="desc_filename_photo_1">\'Japan - Deep snow in Hokkaido.jpg\' \'Japan - Deep snow in Hokkaido\' haline geliyor.</string>
+  <string name="desc_filename_photo_2">\'Photos/Italy/Dolomites.jpg\' dosyası \'Italy / Dolomites\' olarak değiştirilir.</string>
+  <string name="desc_filename_photo_3">\'Photos/Dublin/Temple Bar.png\' \'Dublin\' haline geliyor.</string>
+  <string name="desc_filename_video_1">\'Flying towards Mount Pilatus.mp4\' dosyası \'Flying towards Mount Pilatus\' haline geliyor.</string>
+  <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' dosyası \'Grand Canyon / Sunset\' olarak değiştirildi.</string>
+  <string name="desc_filename_video_3">\'Videos/Ireland/Cliffs of Moher.mp4\' dosyası \'Ireland\' olarak değiştirildi.</string>
+  <string name="desc_poi">Dinamik ilgi noktaları</string>
+  <string name="desc_short">Kısa açıklama</string>
   <string-array name="description_video_manifest_entries">
     <item>Devre dışı</item>
     <item>Yer adı veya kısa açıklama</item>
     <item>Videoda birçok dil seçeneği mevcuttur ve video oynatıldıkça diller değişir</item>
   </string-array>
-  <string-array name="duration_entries">
-    <item>Devre dışı</item>
-    <item>200 ms</item>
-    <item>400 ms</item>
-    <item>600 ms</item>
-    <item>800 ms</item>
-    <item>1 saniye</item>
-    <item>1,2 saniye</item>
-    <item>1,4 saniye</item>
-    <item>1,6 saniye</item>
-    <item>1,8 saniye</item>
-    <item>2 saniye</item>
-    <item>4 saniye</item>
-    <item>6 saniye</item>
-    <item>8 saniye</item>
-    <item>10 saniye</item>
-  </string-array>
-  <string-array name="immich_auth_type_entries">
-    <item>Paylaşılan Bağlantı</item>
-    <item>API Anahtarı</item>
-  </string-array>
-  <string-array name="immich_image_type_entries">
-    <item>Önizleme</item>
-    <item>Tam boyutlu</item>
-    <item>Orijinal</item>
-  </string-array>
-  <string-array name="immich_include_entries">
-    <item>Devre dışı</item>
-    <item>100 fotoğraf</item>
-    <item>200 fotoğraf</item>
-    <item>300 fotoğraf</item>
-    <item>400 fotoğraf</item>
-  </string-array>
-  <string-array name="immich_video_type_entries">
-    <item>Dönüştürülmüş</item>
-    <item>Orijinal</item>
-  </string-array>
-  <string-array name="limit_Longer_videos_entries">
-    <item>Sınır aşıldığında atla</item>
-    <item>Daha uzun videoların bitmesine izin verin</item>
-    <item>Uzun videoların rastgele bölümlerini oynatın</item>
-  </string-array>
+  <string name="duration_10s">10 saniye</string>
+  <string name="duration_1_2s">1,2 saniye</string>
+  <string name="duration_1_4s">1,4 saniye</string>
+  <string name="duration_1_6s">1,6 saniye</string>
+  <string name="duration_1_8s">1,8 saniye</string>
+  <string name="duration_1s">1 saniye</string>
+  <string name="duration_200ms">200 ms</string>
+  <string name="duration_2s">2 saniye</string>
+  <string name="duration_400ms">400 ms</string>
+  <string name="duration_4s">4 saniye</string>
+  <string name="duration_600ms">600 ms</string>
+  <string name="duration_6s">6 saniye</string>
+  <string name="duration_800ms">800 ms</string>
+  <string name="duration_8s">8 saniye</string>
+  <string name="duration_disabled">Engelli</string>
+  <string name="fade_corner_bottom_left">Sol alt</string>
+  <string name="fade_corner_bottom_right">Sağ alt</string>
+  <string name="fade_corner_top_left">Sol üst</string>
+  <string name="fade_corner_top_right">Sağ üst</string>
+  <string name="filename_as_is">Dosya adını olduğu gibi kullanın.</string>
+  <string name="filename_disabled">Engelli</string>
+  <string name="filename_folder_and_file">Klasör ve dosya adı</string>
+  <string name="filename_folder_only">Sadece klasör adı</string>
+  <string name="folder_level_1">\'İtalya / Gün Batımı\' - 1. Seviye</string>
+  <string name="folder_level_2">\'2025 / İtalya / Gün Batımı\' - 2 Seviye</string>
+  <string name="folder_level_3">\'Manzaralı / 2025 / İtalya / Gün Batımı\' - 3 Seviye</string>
+  <string name="folder_level_4">\'Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 4 Seviye</string>
+  <string name="folder_level_5">\'Medya / Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 5 Seviye</string>
+  <string name="immich_auth_api_key">API Anahtarı</string>
+  <string name="immich_auth_shared_link">Paylaşılan Bağlantı</string>
+  <string name="immich_img_fullsize">Tam boyutlu</string>
+  <string name="immich_img_original">Orijinal</string>
+  <string name="immich_img_preview">Önizleme</string>
+  <string name="immich_include_100">100 fotoğraf</string>
+  <string name="immich_include_200">200 fotoğraf</string>
+  <string name="immich_include_300">300 fotoğraf</string>
+  <string name="immich_include_400">400 fotoğraf</string>
+  <string name="immich_include_disabled">Engelli</string>
+  <string name="immich_vid_original">Orijinal</string>
+  <string name="immich_vid_transcoded">Dönüştürülmüş</string>
   <string-array name="limit_Longer_videos_summaries">
     <item>Sınırı aşmayın - sınıra ulaşıldığında bir sonraki videoya geçin.</item>
     <item>Süre sınırını dikkate alma - eğer bir video belirlenen süre sınırından uzunsa, sonuna kadar oynatılacaktır.</item>
     <item>Rastgele bölüm - eğer bir video belirlenen süreden daha uzunsa, videonun rastgele bir bölümü oynatılacaktır (örneğin, 2 dakikalık bir süre sınırı varsa, 6 dakikalık bir videonun 3 bölümü olabilir - bunlardan biri rastgele oynatılacaktır).</item>
   </string-array>
-  <string-array name="local_videos_search_type_entries">
-    <item>Medya tarayıcı</item>
-    <item>Klasör erişimi</item>
-  </string-array>
-  <string-array name="media_type_entries">
-    <item>Sadece videolar</item>
-    <item>Sadece fotoğraflar</item>
-    <item>Videolar ve Fotoğraflar</item>
-  </string-array>
-  <string-array name="metadata_folder_level_entries">
-    <item>\'İtalya / Gün Batımı\' - 1. Seviye</item>
-    <item>\'2025 / İtalya / Gün Batımı\' - 2 Seviye</item>
-    <item>\'Manzaralı / 2025 / İtalya / Gün Batımı\' - 3 Seviye</item>
-    <item>\'Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 4 Seviye</item>
-    <item>\'Medya / Fotoğraflar / Manzara / 2025 / İtalya / Gün Batımı\' - 5 Seviye</item>
-  </string-array>
-  <string-array name="nowplaying_format_entries">
-    <item>Devre dışı</item>
-    <item>Şarkı · Sanatçı</item>
-    <item>Sanatçı · Şarkı</item>
-    <item>Sanatçı</item>
-    <item>Şarkı</item>
-  </string-array>
-  <string-array name="overlay_auto_hide_entries">
-    <item>Asla gizleme*</item>
-    <item>Her zaman gizli</item>
-    <item>2 saniye</item>
-    <item>4 saniye</item>
-    <item>6 saniye</item>
-    <item>8 saniye</item>
-    <item>10 saniye</item>
-  </string-array>
-  <string-array name="overlay_fade_corners_entries">
-    <item>Sol üst</item>
-    <item>Sağ üst</item>
-    <item>Sol alt</item>
-    <item>Sağ alt</item>
-  </string-array>
-  <string-array name="overlay_metadata_photo_location_entries">
-    <item>Şehir</item>
-    <item>Şehir, Eyalet</item>
-    <item>Şehir, Ülke</item>
-    <item>Şehir, Eyalet, Ülke</item>
-    <item>Ülke</item>
-  </string-array>
-  <string-array name="overlay_metadata_photos_entries">
-    <item>Konum (EXIF/Immich)</item>
-    <item>Çekim tarihi (EXIF/Immich)</item>
-    <item>Açıklama (EXIF/Immich)</item>
-    <item>Dosya adını olduğu gibi kullanın</item>
-    <item>Klasör ve dosya adı</item>
-    <item>Sadece klasör adı</item>
-  </string-array>
-  <string-array name="overlay_metadata_videos_entries">
-    <item>Dinamik İlgi Çekici Noktalar</item>
-    <item>Kısa Açıklama</item>
-    <item>Konum (Immich)</item>
-    <item>Açıklama (Immich)</item>
-    <item>Dosya adını olduğu gibi kullanın</item>
-    <item>Klasör ve dosya adı</item>
-    <item>Sadece klasör adı</item>
-  </string-array>
-  <string-array name="overlay_reveal_timeout_entries">
-    <item>2 saniye</item>
-    <item>4 saniye*</item>
-    <item>6 saniye</item>
-    <item>8 saniye</item>
-    <item>10 saniye</item>
-  </string-array>
-  <string-array name="photo_scale_entries">
-    <item>Kırpma ile doldurun*</item>
-    <item>Kırpmadan ölçekle</item>
-  </string-array>
-  <string-array name="playback_max_video_length_entries">
-    <item>Sınır yok*</item>
-    <item>10 saniye</item>
-    <item>20 saniye</item>
-    <item>30 saniye</item>
-    <item>1 dakika</item>
-    <item>2 dakika</item>
-    <item>3 dakika</item>
-    <item>4 dakika</item>
-    <item>5 dakika</item>
-    <item>6 dakika</item>
-    <item>7 dakika</item>
-    <item>8 dakika</item>
-    <item>9 dakika</item>
-    <item>10 dakika</item>
-    <item>20 dakika</item>
-    <item>30 dakika</item>
-    <item>60 dakika</item>
-  </string-array>
-  <string-array name="progress_bar_location_entries">
-    <item>Devre dışı</item>
-    <item>Ekranın üst kısmı</item>
-    <item>Ekranın alt kısmı</item>
-  </string-array>
-  <string-array name="progress_bar_type_entries">
-    <item>Videolar ve Fotoğraflar</item>
-    <item>Sadece videolar</item>
-    <item>Sadece fotoğraflar</item>
-  </string-array>
-  <string-array name="projectivy_shared_providers_entries">
-    <item>Apple Videoları</item>
-    <item>Amazon Videoları</item>
-    <item>Jetson Yaratıcı Videoları</item>
-    <item>Robin Fourcade Videoları</item>
-  </string-array>
-  <string-array name="seek_interval_entries">
-    <item>10 saniye</item>
-    <item>20 saniye</item>
-    <item>30 saniye</item>
-    <item>1 dakika</item>
-    <item>2 dakika</item>
-    <item>5 dakika</item>
-  </string-array>
-  <string-array name="sleep_timer_entries">
-    <item>Devre dışı*</item>
-    <item>1 dakika</item>
-    <item>2 dakika</item>
-    <item>3 dakika</item>
-    <item>4 dakika</item>
-    <item>5 dakika</item>
-    <item>10 dakika</item>
-    <item>15 dakika</item>
-    <item>20 dakika</item>
-    <item>25 dakika</item>
-    <item>30 dakika</item>
-    <item>35 dakika</item>
-    <item>40 dakika</item>
-    <item>45 dakika</item>
-    <item>50 dakika</item>
-    <item>55 dakika</item>
-    <item>60 dakika</item>
-  </string-array>
-  <string-array name="slideshow_speed_entries">
-    <item>5 saniye</item>
-    <item>10 saniye</item>
-    <item>15 saniye</item>
-    <item>20 saniye</item>
-    <item>25 saniye</item>
-    <item>30 saniye*</item>
-    <item>1 dakika</item>
-    <item>2 dakika</item>
-    <item>3 dakika</item>
-    <item>5 dakika</item>
-    <item>10 dakika</item>
-    <item>20 dakika</item>
-    <item>30 dakika</item>
-    <item>1 saat</item>
-    <item>6 saat</item>
-    <item>12 saat</item>
-  </string-array>
-  <string-array name="slot_entries">
-    <item>Boş</item>
-    <item>Saat</item>
-    <item>Meta Veri #1</item>
-    <item>Meta Veri #2</item>
-    <item>Meta Veri #3</item>
-    <item>Meta Veri #4</item>
-    <item>Hava Durumu #1</item>
-    <item>Şimdi Oynatılıyor #1</item>
-    <item>Şimdi Oynatılıyor #2</item>
-    <item>Tarih</item>
-    <item>Mesaj #1</item>
-    <item>Mesaj #2</item>
-    <item>Mesaj #3</item>
-    <item>Mesaj #4</item>
-    <item>Geri sayım</item>
-  </string-array>
-  <string-array name="temperature_units_entries">
-    <item>C° / Derece</item>
-    <item>F° / Fahrenhayt</item>
-  </string-array>
-  <string-array name="text_weight_entries">
-    <item>100/İnce</item>
-    <item>200/Ekstra Hafif</item>
-    <item>300/Hafif*</item>
-    <item>400/Normal</item>
-    <item>500/Orta</item>
-    <item>600/Yarı Kalın</item>
-    <item>700/Kalın</item>
-    <item>800/Ekstra Kalın</item>
-    <item>900/Ağır</item>
-  </string-array>
-  <string-array name="video_scale_entries">
-    <item>Kırparak doldur*</item>
-    <item>Kırpma yapmadan ölçekle</item>
-  </string-array>
-  <string-array name="video_scene_type_entries">
-    <item>Doğa</item>
-    <item>Kırsal kesim</item>
-    <item>Sahil</item>
-    <item>Şehir</item>
-    <item>Deniz</item>
-    <item>Uzay</item>
-  </string-array>
+  <string name="local_search_folder_access">Klasör erişimi</string>
+  <string name="local_search_media_scanner">Medya tarayıcı</string>
+  <string name="longervideo_finish">Daha uzun videoların bitmesine izin verin</string>
+  <string name="longervideo_segments">Uzun videoların rastgele bölümlerini oynatın</string>
+  <string name="longervideo_skip">Sınır aşıldığında atla</string>
+  <string name="maxvid_10_min">10 dakika</string>
+  <string name="maxvid_10_sec">10 saniye</string>
+  <string name="maxvid_1_min">1 dakika</string>
+  <string name="maxvid_20_min">20 dakika</string>
+  <string name="maxvid_20_sec">20 saniye</string>
+  <string name="maxvid_2_min">2 dakika</string>
+  <string name="maxvid_30_min">30 dakika</string>
+  <string name="maxvid_30_sec">30 saniye</string>
+  <string name="maxvid_3_min">3 dakika</string>
+  <string name="maxvid_4_min">4 dakika</string>
+  <string name="maxvid_5_min">5 dakika</string>
+  <string name="maxvid_60_min">60 dakika</string>
+  <string name="maxvid_6_min">6 dakika</string>
+  <string name="maxvid_7_min">7 dakika</string>
+  <string name="maxvid_8_min">8 dakika</string>
+  <string name="maxvid_9_min">9 dakika</string>
+  <string name="maxvid_no_limit">Sınır yok*</string>
+  <string name="media_photos_only">Sadece fotoğraflar</string>
+  <string name="media_videos_only">Sadece videolar</string>
+  <string name="media_videos_photos">Videolar ve Fotoğraflar</string>
+  <string name="nowplaying_artist">Sanatçı</string>
+  <string name="nowplaying_artist_song">Sanatçı · Şarkı</string>
+  <string name="nowplaying_disabled">Engelli</string>
+  <string name="nowplaying_song">Şarkı</string>
+  <string name="nowplaying_song_artist">Şarkı · Sanatçı</string>
+  <string name="overlay_hide_10s">10 saniye</string>
+  <string name="overlay_hide_2s">2 saniye</string>
+  <string name="overlay_hide_4s">4 saniye</string>
+  <string name="overlay_hide_6s">6 saniye</string>
+  <string name="overlay_hide_8s">8 saniye</string>
+  <string name="overlay_hide_always">Her zaman gizli</string>
+  <string name="overlay_hide_never">Asla gizleme*</string>
+  <string name="overlay_meta_loc_city">Şehir</string>
+  <string name="overlay_meta_loc_city_country">Şehir, Ülke</string>
+  <string name="overlay_meta_loc_city_state">Şehir, Eyalet</string>
+  <string name="overlay_meta_loc_city_state_country">Şehir, Eyalet, Ülke</string>
+  <string name="overlay_meta_loc_country">Ülke</string>
+  <string name="overlay_meta_photo_album_name">Albüm Adı (Immich)</string>
+  <string name="overlay_meta_photo_date">Çekim tarihi (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_description">Açıklama (EXIF/Immich)</string>
+  <string name="overlay_meta_photo_filename">Dosya adını olduğu gibi kullanın.</string>
+  <string name="overlay_meta_photo_folder_filename">Klasör ve dosya adı</string>
+  <string name="overlay_meta_photo_folder_only">Sadece klasör adı</string>
+  <string name="overlay_meta_photo_location">Konum (EXIF/Immich)</string>
+  <string name="overlay_meta_vid_album_name">Albüm Adı (Immich)</string>
+  <string name="overlay_meta_vid_description">Açıklama (Immich)</string>
+  <string name="overlay_meta_vid_filename">Dosya adını olduğu gibi kullanın.</string>
+  <string name="overlay_meta_vid_folder_filename">Klasör ve dosya adı</string>
+  <string name="overlay_meta_vid_folder_only">Sadece klasör adı</string>
+  <string name="overlay_meta_vid_location">Konum (Immich)</string>
+  <string name="overlay_meta_vid_poi">Dinamik İlgi Çekici Noktalar</string>
+  <string name="overlay_meta_vid_short_desc">Kısa Açıklama</string>
+  <string name="overlay_reveal_10s">10 saniye</string>
+  <string name="overlay_reveal_2s">2 saniye</string>
+  <string name="overlay_reveal_4s">4 saniye*</string>
+  <string name="overlay_reveal_6s">6 saniye</string>
+  <string name="overlay_reveal_8s">8 saniye</string>
+  <string name="photo_scale_fill_crop">Kırpma ile doldurun*</string>
+  <string name="photo_scale_no_crop">Kırpmadan ölçekle</string>
+  <string name="progressbar_loc_bottom">Ekranın alt kısmı</string>
+  <string name="progressbar_loc_disabled">Engelli</string>
+  <string name="progressbar_loc_top">Ekranın üst kısmı</string>
+  <string name="progressbar_type_photos_only">Sadece fotoğraflar</string>
+  <string name="progressbar_type_videos_only">Sadece videolar</string>
+  <string name="progressbar_type_videos_photos">Videolar ve Fotoğraflar</string>
+  <string name="projectivy_amazon">Amazon Videoları</string>
+  <string name="projectivy_apple">Apple Videoları</string>
+  <string name="projectivy_jetson">Jetson Yaratıcı Videoları</string>
+  <string name="projectivy_robin">Robin Fourcade Videoları</string>
+  <string name="scene_beach">Sahil</string>
+  <string name="scene_city">Şehir</string>
+  <string name="scene_countryside">Kırsal kesim</string>
+  <string name="scene_nature">Doğa</string>
+  <string name="scene_sea">Deniz</string>
+  <string name="scene_space">Uzay</string>
+  <string name="seek_10_seconds">10 saniye</string>
+  <string name="seek_1_minute">1 dakika</string>
+  <string name="seek_20_seconds">20 saniye</string>
+  <string name="seek_2_minutes">2 dakika</string>
+  <string name="seek_30_seconds">30 saniye</string>
+  <string name="seek_5_minutes">5 dakika</string>
+  <string name="sleep_10_min">10 dakika</string>
+  <string name="sleep_15_min">15 dakika</string>
+  <string name="sleep_1_min">1 dakika</string>
+  <string name="sleep_20_min">20 dakika</string>
+  <string name="sleep_25_min">25 dakika</string>
+  <string name="sleep_2_min">2 dakika</string>
+  <string name="sleep_30_min">30 dakika</string>
+  <string name="sleep_35_min">35 dakika</string>
+  <string name="sleep_3_min">3 dakika</string>
+  <string name="sleep_40_min">40 dakika</string>
+  <string name="sleep_45_min">45 dakika</string>
+  <string name="sleep_4_min">4 dakika</string>
+  <string name="sleep_50_min">50 dakika</string>
+  <string name="sleep_55_min">55 dakika</string>
+  <string name="sleep_5_min">5 dakika</string>
+  <string name="sleep_60_min">60 dakika</string>
+  <string name="sleep_disabled">Devre dışı*</string>
+  <string name="slideshow_10m">10 dakika</string>
+  <string name="slideshow_10s">10 saniye</string>
+  <string name="slideshow_12h">12 saat</string>
+  <string name="slideshow_15s">15 saniye</string>
+  <string name="slideshow_1h">1 saat</string>
+  <string name="slideshow_1m">1 dakika</string>
+  <string name="slideshow_20m">20 dakika</string>
+  <string name="slideshow_20s">20 saniye</string>
+  <string name="slideshow_25s">25 saniye</string>
+  <string name="slideshow_2m">2 dakika</string>
+  <string name="slideshow_30m">30 dakika</string>
+  <string name="slideshow_30s">30 saniye*</string>
+  <string name="slideshow_3m">3 dakika</string>
+  <string name="slideshow_5m">5 dakika</string>
+  <string name="slideshow_5s">5 saniye</string>
+  <string name="slideshow_6h">6 saat</string>
+  <string name="slot_clock">Saat</string>
+  <string name="slot_countdown">Geri sayım</string>
+  <string name="slot_date">Tarih</string>
+  <string name="slot_empty">Boş</string>
+  <string name="slot_message_1">Mesaj #1</string>
+  <string name="slot_message_2">Mesaj #2</string>
+  <string name="slot_message_3">Mesaj #3</string>
+  <string name="slot_message_4">Mesaj #4</string>
+  <string name="slot_metadata_1">Meta Veri #1</string>
+  <string name="slot_metadata_2">Meta Veri #2</string>
+  <string name="slot_metadata_3">Meta Veri #3</string>
+  <string name="slot_metadata_4">Meta Veri #4</string>
+  <string name="slot_now_playing_1">Şimdi Oynatılıyor #1</string>
+  <string name="slot_now_playing_2">Şimdi Oynatılıyor #2</string>
+  <string name="slot_weather_1">Hava Durumu: Şimdi</string>
+  <string name="slot_weather_2">Hava tahmini</string>
+  <string name="temp_celsius">Santigrat / C</string>
+  <string name="temp_fahrenheit">Fahrenheit / F</string>
+  <string name="time_of_day_day">Gün</string>
+  <string name="time_of_day_night">Gece</string>
+  <string name="time_of_day_sunrise">Gün doğumu</string>
+  <string name="time_of_day_sunset">Gün batımı</string>
+  <string name="video_scale_fill_crop">Kırpma ile doldurun*</string>
+  <string name="video_scale_no_crop">Kırpmadan ölçekle</string>
   <string-array name="video_time_of_day_entries">
     <item>Gün doğumu</item>
     <item>Gün</item>
     <item>Gün batımı</item>
     <item>Gece</item>
   </string-array>
-  <string-array name="weather_forecast_type_entries">
-    <item>Boş</item>
-    <item>Şehir</item>
-    <item>Sıcaklık</item>
-    <item>Simge</item>
-    <item>Özet</item>
-  </string-array>
-  <string-array name="weather_type_entries">
-    <item>Boş</item>
-    <item>Tahmin</item>
-    <item>Rüzgâr</item>
-    <item>Nem</item>
-    <item>Gün doğumu</item>
-  </string-array>
+  <string name="weather_days_3">3 gün</string>
+  <string name="weather_days_5">5 gün</string>
+  <string name="weather_detail_city">Şehir</string>
+  <string name="weather_detail_empty">Boş</string>
+  <string name="weather_detail_icon">Simge</string>
+  <string name="weather_detail_summary">Özet</string>
+  <string name="weather_detail_temperature">Sıcaklık</string>
+  <string name="weather_empty">Boş</string>
+  <string name="weather_forecast">Tahmin</string>
+  <string name="weather_humidity">Nem</string>
+  <string name="weather_sunrise">Gün doğumu</string>
+  <string name="weather_wind">Rüzgâr</string>
+  <string name="weight_100_thin">100/İnce</string>
+  <string name="weight_200_extra_light">200/Ekstra Hafif</string>
+  <string name="weight_300_light">300/Hafif*</string>
+  <string name="weight_400_normal">400/Normal</string>
+  <string name="weight_500_medium">500/Orta</string>
+  <string name="weight_600_semi_bold">600/Yarı Kalın</string>
+  <string name="weight_700_bold">700/Kalın</string>
+  <string name="weight_800_extra_bold">800/Ekstra Kalın</string>
+  <string name="weight_900_heavy">900/Ağır</string>
 </resources>

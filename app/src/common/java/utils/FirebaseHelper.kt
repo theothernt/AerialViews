@@ -2,9 +2,9 @@ package com.neilturner.aerialviews.utils
 
 import android.os.Bundle
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.analytics
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.analytics.analytics
+import com.google.firebase.crashlytics.crashlytics
+import com.google.firebase.Firebase
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -23,13 +23,16 @@ object FirebaseHelper {
         screenName: String,
         screenClass: Any,
     ) {
-        val parameters =
-            Bundle().apply {
-                putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-                putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName)
-            }
-
-        Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
+        try {
+            val parameters =
+                Bundle().apply {
+                    putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+                    putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName)
+                }
+            Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
+        } catch (e: Exception) {
+            // Firebase analytics not initialized - ignore
+        }
     }
 
     fun analyticsEvent(
@@ -38,7 +41,11 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            Firebase.analytics.logEvent(eventName, parameters)
+            try {
+                Firebase.analytics.logEvent(eventName, parameters)
+            } catch (e: Exception) {
+                // Firebase analytics not initialized - ignore
+            }
         }
     }
 
@@ -48,7 +55,11 @@ object FirebaseHelper {
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
             ex?.let {
-                Firebase.crashlytics.recordException(ex)
+                try {
+                    Firebase.crashlytics.recordException(ex)
+                } catch (e: NullPointerException) {
+                    // FirebaseCrashlytics not initialized - ignore
+                }
             }
         }
     }
@@ -58,7 +69,11 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            Firebase.crashlytics.log(error)
+            try {
+                Firebase.crashlytics.log(error)
+            } catch (e: NullPointerException) {
+                // FirebaseCrashlytics not initialized - ignore
+            }
         }
     }
 
@@ -68,14 +83,18 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            when (value) {
-                is String -> Firebase.crashlytics.setCustomKey(key, value)
-                is Int -> Firebase.crashlytics.setCustomKey(key, value)
-                is Long -> Firebase.crashlytics.setCustomKey(key, value)
-                is Float -> Firebase.crashlytics.setCustomKey(key, value)
-                is Double -> Firebase.crashlytics.setCustomKey(key, value)
-                is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
-                else -> Firebase.crashlytics.setCustomKey(key, value.toString())
+            try {
+                when (value) {
+                    is String -> Firebase.crashlytics.setCustomKey(key, value)
+                    is Int -> Firebase.crashlytics.setCustomKey(key, value)
+                    is Long -> Firebase.crashlytics.setCustomKey(key, value)
+                    is Float -> Firebase.crashlytics.setCustomKey(key, value)
+                    is Double -> Firebase.crashlytics.setCustomKey(key, value)
+                    is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
+                    else -> Firebase.crashlytics.setCustomKey(key, value.toString())
+                }
+            } catch (e: NullPointerException) {
+                // FirebaseCrashlytics not initialized - ignore
             }
         }
     }

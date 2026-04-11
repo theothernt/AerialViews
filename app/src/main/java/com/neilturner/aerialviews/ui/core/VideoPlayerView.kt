@@ -1,10 +1,10 @@
 package com.neilturner.aerialviews.ui.core
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
+import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -24,6 +24,7 @@ import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
 import com.neilturner.aerialviews.utils.ToastHelper
+import com.neilturner.aerialviews.utils.VolumeHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -61,7 +62,11 @@ class VideoPlayerView
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
-        private var volumeFadeAnimator: ValueAnimator? = null
+        private val volumeHelper = VolumeHelper(
+            getVolume = { exoPlayer.volume },
+            setVolume = { v -> exoPlayer.volume = v },
+        )
+        private var forcedMuted = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
@@ -120,22 +125,18 @@ class VideoPlayerView
                 PhilipsMediaCodecAdapterFactory.mediaUrl = media.uri.toString()
             }
 
-            VideoPlayerHelper.setupMediaSource(exoPlayer, media)
-
-            val shouldMute = GeneralPrefs.muteVideos || isMuted
-            if (shouldMute) {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
-                exoPlayer.volume = 0f
-            } else {
-                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
-                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
-            }
-            isMuted = shouldMute
+            VideoPlayerHelper.setupMediaSource(context, exoPlayer, media)
+            applyMuteState()
 
             // Disable subtitles/text tracks by default
             VideoPlayerHelper.disableTextTrack(exoPlayer)
 
             player?.prepare()
+        }
+
+        fun setForcedMute(enabled: Boolean) {
+            forcedMuted = enabled
+            applyMuteState()
         }
 
         fun increaseSpeed() = changeSpeed(true)
@@ -148,6 +149,10 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
+            if (forcedMuted) {
+                applyMuteState()
+                return
+            }
             if (isMuted) {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
@@ -160,25 +165,20 @@ class VideoPlayerView
         }
 
         fun fadeOutAudio(duration: Long) {
-            if (isMuted) return
-            val startVolume = exoPlayer.volume
-            if (startVolume <= 0f) return
+            if (isMuted || forcedMuted) return
+            volumeHelper.fadeOut(durationMs = duration)
+        }
 
-            cancelVolumeFade()
-
-            if (duration <= 0L) {
+        private fun applyMuteState() {
+            val shouldMute = forcedMuted || GeneralPrefs.muteVideos || isMuted
+            if (shouldMute) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 exoPlayer.volume = 0f
-                return
+            } else {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
+                exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
-
-            volumeFadeAnimator =
-                ValueAnimator.ofFloat(startVolume, 0f).apply {
-                    this.duration = duration
-                    addUpdateListener { animator ->
-                        exoPlayer.volume = animator.animatedValue as Float
-                    }
-                    start()
-                }
+            isMuted = shouldMute
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
@@ -239,12 +239,13 @@ class VideoPlayerView
                 state.startPosition = result.first
                 state.endPosition = result.second
 
+                state.prepared = true
+
                 if (state.startPosition > 0) {
                     Timber.i("Seeking to ${state.startPosition.milliseconds}")
                     player?.seekTo(state.startPosition)
+                    return // Let the next STATE_READY (post-seek) handle the rest
                 }
-
-                state.prepared = true
             }
 
             // Video is buffered, ready to play
@@ -318,6 +319,11 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
+        override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
+            super.onMediaMetadataChanged(mediaMetadata)
+            listener?.onVideoMetadataExtracted(mediaMetadata)
+        }
+
         private fun seek(backward: Boolean = false) {
             val interval = GeneralPrefs.seekInterval.toLong() * 1000
             val position = exoPlayer.currentPosition
@@ -385,8 +391,7 @@ class VideoPlayerView
         }
 
         private fun cancelVolumeFade() {
-            volumeFadeAnimator?.cancel()
-            volumeFadeAnimator = null
+            volumeHelper.cancel()
         }
 
         private fun setupAlmostFinishedRunnable() {
@@ -445,6 +450,8 @@ class VideoPlayerView
             fun onVideoPrepared()
 
             fun onVideoPlaybackSpeedChanged()
+
+            fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata)
         }
 
         companion object {

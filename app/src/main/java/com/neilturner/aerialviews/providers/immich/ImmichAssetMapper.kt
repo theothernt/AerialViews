@@ -2,16 +2,15 @@ package com.neilturner.aerialviews.providers.immich
 
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.AerialMediaType
-import com.neilturner.aerialviews.models.enums.ProviderMediaType
-import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.prefs.ImmichAssetPrefs
 import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import timber.log.Timber
-
+ 
 class ImmichAssetMapper(
-    private val prefs: ImmichMediaPrefs,
+    private val prefs: ImmichAssetPrefs,
     private val urlBuilder: ImmichUrlBuilder,
 ) {
     data class ProcessResults(
@@ -25,8 +24,8 @@ class ImmichAssetMapper(
         assets.filter { asset ->
             val filename = asset.originalPath
             when {
-                FileHelper.isSupportedVideoType(filename) -> prefs.mediaType != ProviderMediaType.PHOTOS
-                FileHelper.isSupportedImageType(filename) -> prefs.mediaType != ProviderMediaType.VIDEOS
+                FileHelper.isSupportedVideoType(filename) -> prefs.includeVideos
+                FileHelper.isSupportedImageType(filename) -> prefs.includePhotos
                 else -> false // Exclude unsupported files
             }
         }
@@ -62,6 +61,7 @@ class ImmichAssetMapper(
                         uri,
                         metadata =
                             AerialMediaMetadata(
+                                albumName = asset.albumName.orEmpty(),
                                 exif = exif,
                             ),
                     ).apply {
@@ -71,12 +71,12 @@ class ImmichAssetMapper(
 
                 if (isVideo) {
                     videos++
-                    if (prefs.mediaType != ProviderMediaType.PHOTOS) {
+                    if (prefs.includeVideos) {
                         media.add(item)
                     }
                 } else {
                     images++
-                    if (prefs.mediaType != ProviderMediaType.VIDEOS) {
+                    if (prefs.includePhotos) {
                         media.add(item)
                     }
                 }
