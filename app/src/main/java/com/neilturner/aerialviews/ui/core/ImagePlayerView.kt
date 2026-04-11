@@ -198,7 +198,7 @@ class ImagePlayerView : FrameLayout {
                         },
                         onSuccess = { image ->
                             val drawable = image.asDrawable(resources)
-                            blurHelper.update(drawable.takeUnless { shouldSkipBlurBackground(media, it) })
+                            blurHelper.update(drawable.takeIf { shouldShowBlurBackground(media, it) })
                             setForegroundDrawable(drawable)
                         },
                     ).listener(
@@ -260,6 +260,40 @@ class ImagePlayerView : FrameLayout {
         drawable: Drawable,
     ): Boolean = media.uri.filename.endsWith(".gif", ignoreCase = true) || drawable is Animatable
 
+    private fun shouldShowBlurBackground(
+        media: AerialMedia,
+        drawable: Drawable,
+    ): Boolean {
+        if (shouldSkipBlurBackground(media, drawable)) {
+            return false
+        }
+
+        val imageWidth = drawable.intrinsicWidth
+        val imageHeight = drawable.intrinsicHeight
+        if (imageWidth <= 0 || imageHeight <= 0) {
+            return false
+        }
+
+        if (resolveForegroundScaleType(imageWidth, imageHeight) != ImageView.ScaleType.FIT_CENTER) {
+            return false
+        }
+
+        val (containerWidth, containerHeight) = resolveTargetSize()
+        if (containerWidth <= 0 || containerHeight <= 0) {
+            return false
+        }
+
+        val scale = minOf(
+            containerWidth.toFloat() / imageWidth.toFloat(),
+            containerHeight.toFloat() / imageHeight.toFloat(),
+        )
+        val displayedWidth = imageWidth * scale
+        val displayedHeight = imageHeight * scale
+        val epsilon = 0.5f
+
+        return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
+    }
+
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
@@ -314,13 +348,19 @@ class ImagePlayerView : FrameLayout {
         width: Int,
         height: Int,
     ) {
+        foregroundImageView.scaleType = resolveForegroundScaleType(width, height)
+    }
+
+    private fun resolveForegroundScaleType(
+        width: Int,
+        height: Int,
+    ): ImageView.ScaleType {
         val aspect = AspectRatio.fromDimensions(width, height)
         Timber.i("Aspect ratio: $aspect")
-        foregroundImageView.scaleType =
-            when (aspect) {
-                AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
-                AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
-            }
+        return when (aspect) {
+            AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
+            AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
+        }
     }
 
     private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =
