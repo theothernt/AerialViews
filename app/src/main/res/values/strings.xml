@@ -304,7 +304,8 @@
 
     <string name="webdav_media_scheme_title">Scheme</string>
     <string name="webdav_media_hostname_title">Hostname &amp; port</string>
-    <string name="webdav_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:5005</string>
+    <string name="webdav_media_hostname_summary">IP address or domain name of the server. Port optional; defaults to 80 for HTTP or 443 for HTTPS, e.g. 192.168.1.2:5005</string>
+    <string name="webdav_media_hostname_invalid">Enter only a hostname or IP address, with an optional port, e.g. example.com or 192.168.1.2:5005</string>
     <string name="webdav_media_pathname_title">Path name (case sensitive)</string>
     <string name="webdav_media_pathname_summary">The name of the folder containing videos &amp; photos e.g. /media/aerial</string>
     <string name="webdav_media_username_title">Username</string>
