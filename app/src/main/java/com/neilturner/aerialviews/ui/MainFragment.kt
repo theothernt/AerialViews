@@ -34,6 +34,13 @@ class MainFragment :
             updateAppNameWithVersion()
             resetLocalPermissionIfNeeded()
         }
+        hideSystemOptionsIfNeeded()
+    }
+
+    private fun hideSystemOptionsIfNeeded() {
+        if (DeviceHelper.isFireTV()) {
+            findPreference<Preference>("system_options")?.isVisible = false
+        }
     }
 
     private fun updateAppNameWithVersion() {
