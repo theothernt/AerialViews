@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.0"
+agp = "9.1.1"
 kotlin = "2.3.20"
 kotlin-serialization = "1.11.0"
 google-services = "4.4.4"
