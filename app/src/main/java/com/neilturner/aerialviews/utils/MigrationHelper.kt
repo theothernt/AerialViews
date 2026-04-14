@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.utils
 import android.content.Context
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import timber.log.Timber
 
 @Suppress("SameParameterValue")
@@ -49,6 +50,7 @@ class MigrationHelper(
         if (lastKnownVersion < 77) release77()
         if (lastKnownVersion < 92) release92()
         if (lastKnownVersion < 113) release113()
+        if (lastKnownVersion < 114) release114()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -579,6 +581,38 @@ class MigrationHelper(
             musicEnabledKeys = emptyList(),
         )
     }
+
+    private fun release114() {
+        Timber.i("Migrating settings for release 114")
+
+        if (prefs.contains("playlist_audio_mode")) {
+            Timber.i("playlist_audio_mode already exists, skipping migration")
+            return
+        }
+
+        val mode =
+            when {
+                !prefs.getBoolean("mute_videos", true) -> PlaylistAudioMode.VIDEO_AUDIO
+                hasConfiguredMusicSource() -> PlaylistAudioMode.BACKGROUND_MUSIC
+                else -> PlaylistAudioMode.VIDEO_MUTED
+            }
+
+        prefs.edit {
+            putString("playlist_audio_mode", mode.name)
+        }
+    }
+
+    private fun hasConfiguredMusicSource(): Boolean =
+        (prefs.getBoolean("local_videos_enabled", false) &&
+            prefs.getStringSet("local_media_selection", emptySet())?.contains("MUSIC") == true) ||
+            (prefs.getBoolean("samba_videos_enabled", false) &&
+                prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true) ||
+            (prefs.getBoolean("samba_videos2_enabled", false) &&
+                prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true) ||
+            (prefs.getBoolean("webdav_media_enabled", false) &&
+                prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true) ||
+            (prefs.getBoolean("webdav_media2_enabled", false) &&
+                prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true)
 
     private fun migrateCombinedMediaSelection(
         selectionKey: String,
