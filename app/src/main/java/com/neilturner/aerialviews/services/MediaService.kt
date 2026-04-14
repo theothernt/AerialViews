@@ -236,6 +236,11 @@ class MediaService(
                 settingsHash = settingsHash,
                 shuffleEnabled = config.shuffleVideos
             )
+            
+            val cachedResult = cacheRepo.getCachedPlaylist()
+            if (cachedResult != null) {
+                return@withContext cachedResult
+            }
 
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),

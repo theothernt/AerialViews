@@ -20,6 +20,9 @@ interface PlaylistCacheDao {
     @Query("SELECT * FROM cached_media ORDER BY playlistOrder ASC")
     fun getAllMediaItemsOrdered(): List<CachedMediaEntity>
 
+    @Query("SELECT * FROM cached_media ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset")
+    fun getMediaItemsChunk(limit: Int, offset: Int): List<CachedMediaEntity>
+
     @Query("SELECT * FROM cached_music_tracks ORDER BY playlistOrder ASC")
     fun getAllMusicTracksOrdered(): List<CachedMusicTrackEntity>
 

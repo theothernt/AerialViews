@@ -58,42 +58,18 @@ class PlaylistCacheRepository(context: Context) {
 
     suspend fun getCachedPlaylist(): MediaFetchResult? = withContext(Dispatchers.IO) {
         val state = dao.getPlaylistState() ?: return@withContext null
-        val cachedMedia = dao.getAllMediaItemsOrdered()
+        if (state.totalMediaItems == 0) return@withContext null
+        
+        // Initial window: around current position. Memory playlist should only be 50 items.
+        val windowLimit = 50
+        val windowOffset = Math.max(0, state.mediaPosition - 5)
+        val cachedMedia = dao.getMediaItemsChunk(windowLimit, windowOffset)
+        
         val cachedMusic = dao.getAllMusicTracksOrdered()
 
         if (cachedMedia.isEmpty()) return@withContext null
 
-        val mediaList = cachedMedia.map { entity ->
-            val pointsMap = try {
-                Json.decodeFromString<Map<Int, String>>(entity.pointsOfInterest)
-            } catch (e: Exception) {
-                emptyMap()
-            }
-
-            AerialMedia(
-                uri = Uri.parse(entity.uri),
-                type = enumValueOf<AerialMediaType>(entity.type),
-                source = enumValueOf<AerialMediaSource>(entity.source),
-                metadata = AerialMediaMetadata(
-                    shortDescription = entity.shortDescription,
-                    pointsOfInterest = pointsMap,
-                    timeOfDay = enumValueOf<TimeOfDay>(entity.timeOfDay),
-                    scene = enumValueOf<SceneType>(entity.scene),
-                    albumName = entity.albumName,
-                    title = entity.title,
-                    exif = AerialExifMetadata(
-                        date = entity.exifDate,
-                        offset = entity.exifOffset,
-                        latitude = entity.exifLatitude,
-                        longitude = entity.exifLongitude,
-                        city = entity.exifCity,
-                        state = entity.exifState,
-                        country = entity.exifCountry,
-                        description = entity.exifDescription
-                    )
-                )
-            )
-        }
+        val mediaList = cachedMedia.map { mapEntityToMedia(it) }
 
         val musicList = cachedMusic.map { entity ->
             MusicTrack(
@@ -113,9 +89,52 @@ class PlaylistCacheRepository(context: Context) {
         }
 
         MediaFetchResult(
-            mediaPlaylist = MediaPlaylist(mediaList, state.mediaPosition),
+            mediaPlaylist = MediaPlaylist(
+                initialVideos = mediaList,
+                startPosition = state.mediaPosition,
+                size = state.totalMediaItems,
+                windowOffset = windowOffset,
+                fetchChunk = { offset, limit -> getMediaChunkSync(offset, limit) }
+            ),
             musicPlaylist = musicPlaylist,
             musicResumeIndex = state.musicTrackIndex
+        )
+    }
+
+    fun getMediaChunkSync(offset: Int, limit: Int): List<AerialMedia> {
+        val cachedMedia = dao.getMediaItemsChunk(limit, offset)
+        return cachedMedia.map { mapEntityToMedia(it) }
+    }
+
+    private fun mapEntityToMedia(entity: CachedMediaEntity): AerialMedia {
+        val pointsMap = try {
+            Json.decodeFromString<Map<Int, String>>(entity.pointsOfInterest)
+        } catch (e: Exception) {
+            emptyMap()
+        }
+
+        return AerialMedia(
+            uri = Uri.parse(entity.uri),
+            type = enumValueOf<AerialMediaType>(entity.type),
+            source = enumValueOf<AerialMediaSource>(entity.source),
+            metadata = AerialMediaMetadata(
+                shortDescription = entity.shortDescription,
+                pointsOfInterest = pointsMap,
+                timeOfDay = enumValueOf<TimeOfDay>(entity.timeOfDay),
+                scene = enumValueOf<SceneType>(entity.scene),
+                albumName = entity.albumName,
+                title = entity.title,
+                exif = AerialExifMetadata(
+                    date = entity.exifDate,
+                    offset = entity.exifOffset,
+                    latitude = entity.exifLatitude,
+                    longitude = entity.exifLongitude,
+                    city = entity.exifCity,
+                    state = entity.exifState,
+                    country = entity.exifCountry,
+                    description = entity.exifDescription
+                )
+            )
         )
     }
 
