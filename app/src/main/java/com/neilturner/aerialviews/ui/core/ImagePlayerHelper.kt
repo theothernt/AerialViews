@@ -101,7 +101,12 @@ internal object ImagePlayerHelper {
                 }
 
                 "content" -> {
-                    context.contentResolver.openInputStream(uri)
+                    val finalUri = if (SDK_INT >= 29) {
+                        android.provider.MediaStore.setRequireOriginal(uri)
+                    } else {
+                        uri
+                    }
+                    context.contentResolver.openInputStream(finalUri)
                 }
 
                 else -> {

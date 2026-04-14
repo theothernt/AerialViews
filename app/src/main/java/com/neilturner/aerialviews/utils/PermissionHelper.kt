@@ -47,6 +47,12 @@ object PermissionHelper {
                 Manifest.permission.READ_MEDIA_VIDEO,
                 Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.READ_MEDIA_AUDIO,
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
+            )
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.ACCESS_MEDIA_LOCATION,
             )
         } else {
             arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
