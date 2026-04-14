@@ -27,7 +27,7 @@ class MediaPlaylist(
         position = calculateNext(++position)
         if (position == 0 && size > 0) _hasReachedEnd = true
         
-        Timber.v("MediaPlaylist: nextItem() -> pos $position / $size")
+        Timber.v("MediaPlaylist: nextItem() -> pos $position / $size (window: ${windowVideos.size})")
         checkAndRefillWindow()
         
         return getItemAt(position)
@@ -36,7 +36,7 @@ class MediaPlaylist(
     fun previousItem(): AerialMedia {
         position = calculateNext(--position)
         
-        Timber.v("MediaPlaylist: previousItem() -> pos $position / $size")
+        Timber.v("MediaPlaylist: previousItem() -> pos $position / $size (window: ${windowVideos.size})")
         checkAndRefillWindow()
         
         return getItemAt(position)
@@ -46,14 +46,15 @@ class MediaPlaylist(
         if (fetchChunk == null) return
         
         val relativeIndex = position - windowOffset
+        val remaining = windowVideos.size - relativeIndex - 1
         
-        // Refill when we go down to 5 items remaining in either direction
-        if (relativeIndex >= windowVideos.size - 5 || relativeIndex < 5) {
+        // Refill when 5 or fewer items remaining ahead in the window
+        if (remaining <= 5 && position + remaining < size - 1) {
             val newOffset = Math.max(0, position - 5)
             val limit = 50
             
-            // Only fetch if offset has moved significantly
-            if (Math.abs(newOffset - windowOffset) > 5) {
+            // Only fetch if the window would actually shift
+            if (newOffset != windowOffset) {
                 Timber.i("MediaPlaylist: Refilling window. Position: $position, Window: $windowOffset..${windowOffset + windowVideos.size}. New Offset: $newOffset")
                 scope.launch {
                     val freshData = fetchChunk.invoke(newOffset, limit)

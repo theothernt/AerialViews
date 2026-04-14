@@ -64,7 +64,26 @@ class MediaService(
         val useCustomStreams: Boolean
     ) {
         fun buildHash(): String {
-            return hashCode().toString()
+            val parts = buildList {
+                add(removeDuplicates.toString())
+                add(ignoreNonManifestVideos.toString())
+                add(autoTimeOfDay.toString())
+                add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
+                add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
+                add(shuffleVideos.toString())
+                add(shuffleMusic.toString())
+                add(repeatMusic.toString())
+                add(useAppleVideos.toString())
+                add(useAmazonVideos.toString())
+                add(useComm1Videos.toString())
+                add(useComm2Videos.toString())
+                add(useLocalVideos.toString())
+                add(useSambaVideos.toString())
+                add(useWebDavVideos.toString())
+                add(useImmichVideos.toString())
+                add(useCustomStreams.toString())
+            }
+            return parts.joinToString("|").hashCode().toString()
         }
         
         companion object {
@@ -233,19 +252,27 @@ class MediaService(
                     }
 
             Timber.i("Total media items: ${filteredMedia.size}")
-            
-            cacheRepo.cachePlaylist(
-                media = filteredMedia,
-                musicPlaylist = musicPlaylist,
-                settingsHash = settingsHash,
-                shuffleEnabled = config.shuffleVideos
-            )
-            
-            val cachedResult = cacheRepo.getCachedPlaylist()
-            if (cachedResult != null) {
-                return@withContext cachedResult
+
+            if (GeneralPrefs.enablePlaylistCache) {
+                // Cache enabled: save to DB, return windowed playlist that streams from DB
+                cacheRepo.cachePlaylist(
+                    media = filteredMedia,
+                    musicPlaylist = musicPlaylist,
+                    settingsHash = settingsHash,
+                    shuffleEnabled = config.shuffleVideos
+                )
+                
+                val cachedResult = cacheRepo.getCachedPlaylist()
+                if (cachedResult != null) {
+                    Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
+                    return@withContext cachedResult
+                }
+                Timber.w("MediaService: Failed to read back cached playlist, falling back to in-memory")
+            } else {
+                Timber.i("MediaService: Cache disabled, using full in-memory playlist (${filteredMedia.size} items)")
             }
 
+            // Cache disabled or cache read-back failed: all items in memory, no DB
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,
