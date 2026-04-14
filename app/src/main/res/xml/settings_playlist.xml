@@ -55,23 +55,28 @@
                     app:dialogTitle="@string/playlist_slideshow_speed_summary" />
         </PreferenceCategory>
 
-        <PreferenceCategory app:title="@string/category_videos">
-                <CheckBoxPreference
-                    app:disableDependentsState="true"
-                    app:defaultValue="true"
-                    app:key="mute_videos"
-                    app:summary="@string/playlist_mute_videos_summary"
-                    app:title="@string/playlist_mute_videos_title" />
+        <PreferenceCategory app:title="@string/category_sound_background_music">
+                <ListPreference
+                    app:defaultValue="VIDEO_MUTED"
+                    app:entries="@array/playlist_audio_mode_entries"
+                    app:entryValues="@array/playlist_audio_mode_values"
+                    app:key="playlist_audio_mode"
+                    app:title="@string/playlist_audio_mode_title"
+                    app:summary="@string/playlist_audio_mode_summary"
+                    app:useSimpleSummaryProvider="true"
+                    app:dialogTitle="@string/playlist_audio_mode_title" />
 
                 <ListPreference
-                    app:dependency="mute_videos"
                     app:defaultValue="@string/volume_default"
                     app:entries="@array/percentage1_entries"
                     app:entryValues="@array/percentage1_values"
                     app:key="video_volume"
-                    app:title="@string/playlist_video_volume_title"
+                    app:title="@string/playlist_sound_volume_title"
                     app:useSimpleSummaryProvider="true"
-                    app:dialogTitle="@string/playlist_video_volume_summary" />
+                    app:dialogTitle="@string/playlist_sound_volume_summary" />
+        </PreferenceCategory>
+
+        <PreferenceCategory app:title="@string/category_videos">
 
                 <CheckBoxPreference
                     app:defaultValue="false"

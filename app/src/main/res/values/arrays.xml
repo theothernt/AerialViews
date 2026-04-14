@@ -387,6 +387,20 @@
     </string-array>
     <string name="playback_speed_default" translatable="false">1</string>
 
+    <string name="audio_mode_mute_videos">Mute audio from videos</string>
+    <string name="audio_mode_play_video_audio">Play audio from videos</string>
+    <string name="audio_mode_play_background_music">Play background music</string>
+    <string-array name="playlist_audio_mode_entries">
+        <item>@string/audio_mode_mute_videos</item>
+        <item>@string/audio_mode_play_video_audio</item>
+        <item>@string/audio_mode_play_background_music</item>
+    </string-array>
+    <string-array name="playlist_audio_mode_values" translatable="false">
+        <item>VIDEO_MUTED</item>
+        <item>VIDEO_AUDIO</item>
+        <item>BACKGROUND_MUSIC</item>
+    </string-array>
+
     <!-- Text sizes -->
     <string-array name="text_size_entries" translatable="false">
         <item>72sp</item>

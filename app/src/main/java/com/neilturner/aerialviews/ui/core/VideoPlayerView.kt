@@ -71,7 +71,7 @@ class VideoPlayerView
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
-        private var isMuted = GeneralPrefs.muteVideos
+        private var isMuted = !GeneralPrefs.playsVideoAudio
 
         init {
             exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
@@ -149,7 +149,7 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
-            if (forcedMuted) {
+            if (forcedMuted || !GeneralPrefs.playsVideoAudio) {
                 applyMuteState()
                 return
             }
@@ -170,7 +170,14 @@ class VideoPlayerView
         }
 
         private fun applyMuteState() {
-            val shouldMute = forcedMuted || GeneralPrefs.muteVideos || isMuted
+            if (!GeneralPrefs.playsVideoAudio) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                exoPlayer.volume = 0f
+                isMuted = false
+                return
+            }
+
+            val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 exoPlayer.volume = 0f
@@ -178,7 +185,7 @@ class VideoPlayerView
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
-            isMuted = shouldMute
+            isMuted = shouldMute && !forcedMuted
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {

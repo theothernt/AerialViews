@@ -297,13 +297,19 @@ class ScreenController(
     }
 
     private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?) {
-        if (musicPlaylist == null || musicPlaylist.size == 0) {
-            Timber.i("MusicPlayer: no music playlist available, skipping")
-            videoPlayer.setForcedMute(false)
+        val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
+        videoPlayer.setForcedMute(backgroundMusicSelected)
+
+        if (!backgroundMusicSelected) {
+            Timber.i("MusicPlayer: background music not selected, skipping")
             return
         }
 
-        videoPlayer.setForcedMute(true)
+        if (musicPlaylist == null || musicPlaylist.size == 0) {
+            Timber.i("MusicPlayer: no music playlist available, skipping")
+            return
+        }
+
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
         musicPlayer?.play()
