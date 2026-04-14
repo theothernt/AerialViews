@@ -12,27 +12,23 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.toStringOrEmpty
-import com.thegrizzlylabs.sardineandroid.Sardine
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.net.URLEncoder
 
-class WebDavMediaProvider(
+internal class WebDavMediaProvider(
     context: Context,
     private val prefs: WebDavProviderPreferences,
+    private val clientFactory: () -> WebDavListingClient = { SardineWebDavClient() },
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
 
-    override suspend fun fetch(): ProviderFetchResult {
-        val result = fetchWebDavMedia()
-        return ProviderFetchResult.Success(media = result.first, summary = result.second)
-    }
+    override suspend fun fetch(): ProviderFetchResult = fetchWebDavMedia()
 
     override suspend fun fetchMusic(): List<MusicTrack> {
         if (!prefs.musicEnabled || prefs.hostName.isEmpty() || prefs.pathName.isEmpty()) {
@@ -42,7 +38,7 @@ class WebDavMediaProvider(
         return withContext(Dispatchers.IO) {
             val client =
                 try {
-                    OkHttpSardine().apply {
+                    clientFactory().apply {
                         setCredentials(prefs.userName, prefs.password, true)
                     }
                 } catch (ex: Exception) {
@@ -50,7 +46,15 @@ class WebDavMediaProvider(
                     return@withContext emptyList<MusicTrack>()
                 }
 
-            val baseUrl = prefs.scheme.toString().lowercase() + "://" + prefs.hostName + prefs.pathName
+            val endpoint =
+                try {
+                    buildWebDavEndpoint(prefs.scheme, prefs.hostName, prefs.pathName)
+                } catch (ex: IllegalArgumentException) {
+                    Timber.e(ex, "WebDavMediaProvider: failed to build endpoint for music")
+                    return@withContext emptyList<MusicTrack>()
+                }
+
+            val baseUrl = endpoint.baseUrl
             listFilesAndFoldersRecursively(client, baseUrl)
                 .filter { FileHelper.isSupportedAudioType(it.first) }
                 .map { fileInfo ->
@@ -65,98 +69,85 @@ class WebDavMediaProvider(
 
     override suspend fun fetchMetadata(media: List<AerialMedia>): List<AerialMedia> = media
 
-    private suspend fun fetchWebDavMedia(): Pair<List<AerialMedia>, String> {
-        val media = mutableListOf<AerialMedia>()
+    private suspend fun fetchWebDavMedia(): ProviderFetchResult {
+        return when (val testResult = testConnectionInternal()) {
+            is WebDavConnectionTestResult.SuccessSummary -> {
+                val media = testResult.files.mapNotNull { url ->
+                    val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
+                    val item = AerialMedia(uri)
 
-        // Check hostname
-        // Validate IP address or hostname?
-        if (prefs.hostName.isEmpty()) {
-            return Pair(media, "Hostname and port not specified")
+                    when {
+                        FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
+                        FileHelper.isSupportedImageType(url) -> item.type = AerialMediaType.IMAGE
+                        else -> return@mapNotNull null
+                    }
+
+                    item.source = AerialMediaSource.WEBDAV
+                    item
+                }
+
+                Timber.i("Media found: ${media.size}")
+                ProviderFetchResult.Success(media = media, summary = testResult.summary)
+            }
+
+            is WebDavConnectionTestResult.ValidationError -> ProviderFetchResult.Error(testResult.message)
+            is WebDavConnectionTestResult.ConnectionError -> ProviderFetchResult.Error(testResult.message)
+            is WebDavConnectionTestResult.AuthError -> ProviderFetchResult.Error(testResult.message)
+            is WebDavConnectionTestResult.PathError -> ProviderFetchResult.Error(testResult.message)
         }
+    }
 
-        // Check path name
-        if (prefs.pathName.isEmpty()) {
-            return Pair(media, "Path name not specified")
-        }
-
-        val webDavMedia =
+    private suspend fun testConnectionInternal(): WebDavConnectionTestResult {
+        val endpoint =
             try {
-                findWebDavMedia(
-                    prefs.scheme.toStringOrEmpty(),
-                    prefs.hostName,
-                    prefs.pathName,
-                    prefs.userName,
-                    prefs.password,
-                )
-            } catch (ex: Exception) {
-                Timber.e(ex)
-                return Pair(emptyList(), ex.message.toString())
+                buildWebDavEndpoint(prefs.scheme, prefs.hostName, prefs.pathName)
+            } catch (ex: IllegalArgumentException) {
+                return WebDavConnectionTestResult.ValidationError(ex.message ?: "Invalid WebDAV settings")
             }
 
-        // Create WebDAV URL, add to media list, adding media type
-        webDavMedia.first.forEach { url ->
-            val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-            val item = AerialMedia(uri)
-
-            if (FileHelper.isSupportedVideoType(url)) {
-                item.type = AerialMediaType.VIDEO
-            } else if (FileHelper.isSupportedImageType(url)) {
-                item.type = AerialMediaType.IMAGE
-            }
-            item.source = AerialMediaSource.WEBDAV
-            media.add(item)
-        }
-
-        Timber.i("Media found: ${media.size}")
-        return Pair(media, webDavMedia.second)
+        return findWebDavMedia(
+            endpoint = endpoint,
+            userName = prefs.userName,
+            password = prefs.password,
+        )
     }
 
     private suspend fun findWebDavMedia(
-        scheme: String,
-        hostName: String,
-        pathName: String,
+        endpoint: WebDavEndpoint,
         userName: String,
         password: String,
-    ): Pair<List<String>, String> =
+    ): WebDavConnectionTestResult =
         withContext(Dispatchers.IO) {
             val res = context.resources
             val selected = mutableListOf<String>()
             val excluded: Int
             val images: Int
 
-            // WebDAV client
-            val client: OkHttpSardine
-            try {
-                client = OkHttpSardine()
-                client.setCredentials(userName, password, true)
-            } catch (ex: Exception) {
-                Timber.e(ex)
-                return@withContext Pair(
-                    selected,
-                    "Failed to create WebDAV client",
-                )
-            }
+            val client =
+                try {
+                    clientFactory().apply {
+                        setCredentials(userName, password, true)
+                    }
+                } catch (ex: Exception) {
+                    Timber.e(ex)
+                    return@withContext WebDavConnectionTestResult.ConnectionError("Failed to create WebDAV client")
+                }
 
-            val baseUrl = scheme.lowercase() + "://" + hostName + pathName
-            val files = listFilesAndFoldersRecursively(client, baseUrl).map { it.first }
+            val files =
+                try {
+                    listFilesAndFoldersRecursively(client, endpoint.baseUrl).map { it.first }
+                } catch (ex: Exception) {
+                    Timber.e(ex)
+                    return@withContext formatWebDavConnectionError(endpoint, ex)
+                }
 
-            // Only pick videos
             if (prefs.includeVideos) {
-                selected.addAll(
-                    files.filter { item ->
-                        FileHelper.isSupportedVideoType(item)
-                    },
-                )
+                selected.addAll(files.filter { FileHelper.isSupportedVideoType(it) })
             }
             val videos = selected.size
 
-            // Only pick images
             if (prefs.includePhotos) {
-                selected.addAll(
-                    files.filter { item ->
-                        FileHelper.isSupportedImageType(item)
-                    },
-                )
+                selected.addAll(files.filter { FileHelper.isSupportedImageType(it) })
             }
             images = selected.size - videos
             excluded = files.size - selected.size
@@ -187,25 +178,29 @@ class WebDavMediaProvider(
                     res.getString(R.string.webdav_media_test_summary5),
                     selected.size.toString(),
                 )
-            return@withContext Pair(selected, message)
+
+            return@withContext WebDavConnectionTestResult.SuccessSummary(
+                files = selected,
+                summary = message,
+            )
         }
 
     private fun listFilesAndFoldersRecursively(
-        client: Sardine,
+        client: WebDavListingClient,
         url: String = "",
     ): List<Pair<String, Long>> {
         val filesWithDates = mutableListOf<Pair<String, Long>>()
         val directories = ArrayDeque<String>()
+        var rootVerified = false
 
-        // Start with the initial URL
         directories.add(url)
 
-        // Process directories until the queue is empty
         while (directories.isNotEmpty()) {
             val currentUrl = directories.removeFirst()
 
             try {
                 val resources = client.list(currentUrl).drop(1)
+                rootVerified = true
                 for (resource in resources) {
                     if (FileHelper.isDotOrHiddenFile(resource.name)) {
                         continue
@@ -214,11 +209,13 @@ class WebDavMediaProvider(
                     if (resource.isDirectory && prefs.searchSubfolders) {
                         directories.add("$currentUrl/${resource.name}")
                     } else if (!resource.isDirectory) {
-                        val modifiedTime = resource.modified?.time ?: 0L
-                        filesWithDates.add(Pair("$currentUrl/${resource.name}", modifiedTime))
+                        filesWithDates.add(Pair("$currentUrl/${resource.name}", resource.modifiedTimeMs))
                     }
                 }
             } catch (ex: Exception) {
+                if (!rootVerified) {
+                    throw ex
+                }
                 Timber.e(ex)
             }
         }
@@ -247,4 +244,43 @@ class WebDavMediaProvider(
         val suffix = url.substring(schemeSeparatorIndex + 3)
         return prefix + userInfo + suffix
     }
+}
+
+internal data class WebDavResourceInfo(
+    val name: String,
+    val isDirectory: Boolean,
+    val modifiedTimeMs: Long = 0L,
+)
+
+internal interface WebDavListingClient {
+    fun setCredentials(
+        userName: String,
+        password: String,
+        preemptive: Boolean,
+    )
+
+    fun list(url: String): List<WebDavResourceInfo>
+}
+
+internal class SardineWebDavClient(
+    private val delegate: OkHttpSardine = OkHttpSardine(),
+) : WebDavListingClient {
+    override fun setCredentials(
+        userName: String,
+        password: String,
+        preemptive: Boolean,
+    ) {
+        delegate.setCredentials(userName, password, preemptive)
+    }
+
+    override fun list(url: String): List<WebDavResourceInfo> =
+        delegate
+            .list(url)
+            .map { resource ->
+                WebDavResourceInfo(
+                    name = resource.name,
+                    isDirectory = resource.isDirectory,
+                    modifiedTimeMs = resource.modified?.time ?: 0L,
+                )
+            }
 }

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -9,6 +10,7 @@ import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
+import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
@@ -29,6 +31,7 @@ class WebDavVideos2Fragment :
 
         limitTextInput()
         updateSummary()
+        setupValidation()
     }
 
     override fun onDestroy() {
@@ -96,6 +99,25 @@ class WebDavVideos2Fragment :
         preferenceScreen.findPreference<EditTextPreference>("webdav_media2_pathname")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media2_username")?.setOnBindEditTextListener { it.setSingleLine() }
         preferenceScreen.findPreference<EditTextPreference>("webdav_media2_password")?.setOnBindEditTextListener { it.setSingleLine() }
+    }
+
+    private fun setupValidation() {
+        findPreference<EditTextPreference>("webdav_media2_hostname")?.setOnPreferenceChangeListener { _, newValue ->
+            try {
+                val value = newValue.toString().trim()
+                if (value.isNotEmpty()) {
+                    WebDavHostParser.parse(value)
+                }
+                true
+            } catch (_: IllegalArgumentException) {
+                AlertDialog
+                    .Builder(requireContext())
+                    .setMessage(getString(R.string.webdav_media_hostname_invalid))
+                    .setPositiveButton(R.string.button_ok, null)
+                    .show()
+                false
+            }
+        }
     }
 
     private suspend fun testWebDavConnection() {
