@@ -26,15 +26,19 @@ class PlaylistCacheRepository(context: Context) {
     suspend fun isCacheValid(settingsHash: String): Boolean = withContext(Dispatchers.IO) {
         val cacheEnabled = GeneralPrefs.enablePlaylistCache
         if (!cacheEnabled) {
+            Timber.d("PlaylistCache: Cache disabled in settings")
             clearCache()
             return@withContext false
         }
         
-        val state = dao.getPlaylistState() ?: return@withContext false
+        val state = dao.getPlaylistState() ?: run {
+            Timber.d("PlaylistCache: No existing cache state found")
+            return@withContext false
+        }
 
         // Check hash
         if (state.settingsHash != settingsHash) {
-            Timber.i("Cache invalidated: settings hash changed")
+            Timber.i("PlaylistCache: Cache invalidated (settings changed). Hash: ${state.settingsHash} -> $settingsHash")
             return@withContext false
         }
 
@@ -43,8 +47,12 @@ class PlaylistCacheRepository(context: Context) {
 
         if (intervalWeeks == -1) {
             // Valid until end of playlist
-            val isValid = state.mediaPosition < state.totalMediaItems
-            if (!isValid) Timber.i("Cache invalidated: reached end of playlist")
+            val isValid = state.mediaPosition < state.totalMediaItems - 1
+            if (!isValid) {
+                Timber.i("PlaylistCache: Cache invalidated (reached end of playlist: ${state.mediaPosition}/${state.totalMediaItems})")
+            } else {
+                Timber.d("PlaylistCache: Cache valid (position ${state.mediaPosition}/${state.totalMediaItems})")
+            }
             return@withContext isValid
         } else {
             // Time based validity
@@ -60,16 +68,21 @@ class PlaylistCacheRepository(context: Context) {
         val state = dao.getPlaylistState() ?: return@withContext null
         if (state.totalMediaItems == 0) return@withContext null
         
-        // Initial window: around current position. Memory playlist should only be 50 items.
+        Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
+        
         val windowLimit = 50
         val windowOffset = Math.max(0, state.mediaPosition - 5)
-        val cachedMedia = dao.getMediaItemsChunk(windowLimit, windowOffset)
+        Timber.d("PlaylistCache: Loading initial window. Offset: $windowOffset, Limit: $windowLimit")
+        val cachedMediaChunks = dao.getMediaItemsChunk(windowLimit, windowOffset)
         
         val cachedMusic = dao.getAllMusicTracksOrdered()
 
-        if (cachedMedia.isEmpty()) return@withContext null
+        if (cachedMediaChunks.isEmpty()) {
+            Timber.w("PlaylistCache: DB state exists but no media items found")
+            return@withContext null
+        }
 
-        val mediaList = cachedMedia.map { mapEntityToMedia(it) }
+        val mediaList = cachedMediaChunks.map { mapEntityToMedia(it) }
 
         val musicList = cachedMusic.map { entity ->
             MusicTrack(
@@ -88,13 +101,17 @@ class PlaylistCacheRepository(context: Context) {
             null
         }
 
+        Timber.i("PlaylistCache: Cache restored successfully. Music track: ${state.musicTrackIndex}/${state.totalMusicTracks}")
         MediaFetchResult(
             mediaPlaylist = MediaPlaylist(
                 initialVideos = mediaList,
                 startPosition = state.mediaPosition,
                 size = state.totalMediaItems,
                 windowOffset = windowOffset,
-                fetchChunk = { offset, limit -> getMediaChunkSync(offset, limit) }
+                fetchChunk = { offset, limit -> 
+                    Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
+                    getMediaChunkSync(offset, limit) 
+                }
             ),
             musicPlaylist = musicPlaylist,
             musicResumeIndex = state.musicTrackIndex
@@ -198,6 +215,7 @@ class PlaylistCacheRepository(context: Context) {
         dao.insertMediaItems(mediaEntities)
         dao.insertMusicTracks(musicEntities)
         dao.insertOrUpdateState(state)
+        Timber.i("PlaylistCache: Saved new cache. Media: ${media.size}, Music: ${music.size}, Hash: $settingsHash")
     }
 
     suspend fun saveMediaPosition(position: Int) = withContext(Dispatchers.IO) {

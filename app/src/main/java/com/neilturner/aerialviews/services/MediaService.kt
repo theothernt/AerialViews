@@ -116,9 +116,13 @@ class MediaService(
             if (cacheRepo.isCacheValid(settingsHash)) {
                 val cached = cacheRepo.getCachedPlaylist()
                 if (cached != null) {
-                    Timber.i("Loaded playlist from cache: ${cached.mediaPlaylist.size} media, ${cached.musicPlaylist?.size ?: 0} music")
+                    Timber.i("MediaService: USING CACHED PLAYLIST")
                     return@withContext cached
+                } else {
+                    Timber.w("MediaService: Cache reported valid but failed to load")
                 }
+            } else {
+                Timber.i("MediaService: Cache INVALID or DISABLED, fetching fresh items")
             }
 
             val (media, tracks) = buildProviderContent(providers)
