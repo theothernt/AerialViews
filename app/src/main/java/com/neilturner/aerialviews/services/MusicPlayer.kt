@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import com.neilturner.aerialviews.utils.VolumeHelper
 import timber.log.Timber
@@ -48,7 +49,10 @@ class MusicPlayer(
 
         player.volume = 0f
         player.play()
-        volumeHelper.fadeIn(durationMs = 500)
+        volumeHelper.fadeIn(
+            durationMs = 500,
+            targetVolume = GeneralPrefs.videoVolume.toFloat() / 100,
+        )
         Timber.i("MusicPlayer: playing ${playlist.size} tracks, repeat=${playlist.repeat}")
     }
 

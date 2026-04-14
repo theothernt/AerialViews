@@ -17,17 +17,16 @@ class VolumeHelper(
     private var animator: ValueAnimator? = null
 
     /**
-     * Fades volume from 0 → 1 over [durationMs].
-     * If duration is ≤ 0, volume is set to 1 instantly.
+     * Fades volume from 0 → [targetVolume] over [durationMs].
+     * If duration is ≤ 0, volume is set to [targetVolume] instantly.
      */
-    fun fadeIn(durationMs: Long = 500) {
+    fun fadeIn(durationMs: Long = 500, targetVolume: Float = 1f) {
         cancel()
         if (durationMs <= 0L) {
-            setVolume(1f)
+            setVolume(targetVolume)
             return
         }
         val startVolume = 0f
-        val targetVolume = 1f
         animator = ValueAnimator.ofFloat(startVolume, targetVolume).apply {
             duration = durationMs
             addUpdateListener { setVolume(it.animatedValue as Float) }

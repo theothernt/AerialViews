@@ -5,6 +5,7 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
@@ -41,6 +42,14 @@ class PlaylistFragment : MenuStateFragment() {
             }
 
         updateLocationEnabledState(autoTimeOfDayPref?.isChecked ?: false)
+
+        val audioModePref = findPreference<ListPreference>("playlist_audio_mode")
+        audioModePref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                updateSoundControls(newValue as String)
+                true
+            }
+        updateSoundControls(audioModePref?.value ?: PlaylistAudioMode.VIDEO_MUTED.name)
 
         val randomStartPref = findPreference<ListPreference>("random_start_position_range")
         randomStartPref?.onPreferenceChangeListener =
@@ -87,6 +96,11 @@ class PlaylistFragment : MenuStateFragment() {
             longVideosPref?.isEnabled = true
             randomStartPref?.isEnabled = false
         }
+    }
+
+    private fun updateSoundControls(value: String) {
+        val volumePref = findPreference<ListPreference>("video_volume")
+        volumePref?.isEnabled = value != PlaylistAudioMode.VIDEO_MUTED.name
     }
 
     private fun setupSummaryUpdater(

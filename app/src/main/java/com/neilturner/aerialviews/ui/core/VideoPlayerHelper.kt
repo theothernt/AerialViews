@@ -132,7 +132,7 @@ object VideoPlayerHelper {
             player.addAnalyticsListener(EventLogger())
         }
 
-        if (!prefs.muteVideos) {
+        if (prefs.playsVideoAudio) {
             player.volume =
                 prefs.videoVolume.toFloat() / 100
         } else {

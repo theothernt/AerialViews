@@ -65,6 +65,7 @@
     <string name="category_gradient">Gradient</string>
     <string name="category_startup">Startup</string>
     <string name="category_videos">Videos</string>
+    <string name="category_sound_background_music">Sound and background music</string>
     <string name="category_photos">Photos</string>
     <string name="category_weather">Weather</string>
     <string name="category_weather_forecast">Weather Forecast</string>
@@ -642,10 +643,14 @@
     <!-- Main / Settings / Playlist -->
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
+    <string name="playlist_audio_mode_title">Audio mode</string>
+    <string name="playlist_audio_mode_summary">Choose whether to mute videos, play video audio, or play background music</string>
 
     <string name="playlist_sleep_timer_title">Sleep timer</string>
     <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
 
+    <string name="playlist_sound_volume_title">Volume</string>
+    <string name="playlist_sound_volume_summary">Choose a volume level for video audio or background music</string>
     <string name="playlist_video_volume_title">Video volume</string>
     <string name="playlist_video_volume_summary">Choose a video volume level</string>
 
