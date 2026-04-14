@@ -383,6 +383,23 @@
     <string name="settings_playlist_title">Playlist</string>
     <string name="settings_playlist_summary">Change volume, mute videos, shuffle, video length, looping, etc</string>
 
+    <string name="category_playlist_cache">Playlist Cache</string>
+    <string name="settings_playlist_cache_summary">Resume where you left off, caching.</string>
+    <string name="settings_playlist_cache_title">Playlist Cache</string>
+
+    <string name="playlist_cache_enable_summary">Save the playlist so you can resume where you left off across sessions.</string>
+    <string name="playlist_cache_enable_title">Enable playlist cache</string>
+    
+    <string name="playlist_cache_refresh_title">Refresh cache</string>
+    <string name="playlist_cache_clear_title">Clear cache now</string>
+    <string name="playlist_cache_clear_summary">Forces a new playlist to be built on next start.</string>
+    
+    <string name="playlist_cache_status_title">Cache Status</string>
+    <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks cached.</string>
+    <string name="playlist_cache_status_empty">No cache data.</string>
+    <string name="playlist_cache_status_unknown">Unknown.</string>
+    <string name="playlist_cache_cleared">Cache cleared.</string>
+
     <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
     <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 

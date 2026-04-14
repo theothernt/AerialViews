@@ -58,8 +58,8 @@
         <PreferenceCategory app:title="@string/category_sound_background_music">
                 <ListPreference
                     app:defaultValue="VIDEO_MUTED"
-                    app:entries="@array/playlist_audio_mode_entries"
-                    app:entryValues="@array/playlist_audio_mode_values"
+                    app:entries="@array/audio_mode_entries"
+                    app:entryValues="@array/audio_mode_values"
                     app:key="playlist_audio_mode"
                     app:title="@string/playlist_audio_mode_title"
                     app:summary="@string/playlist_audio_mode_summary"

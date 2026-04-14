@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/category_playlist_cache">
+        <CheckBoxPreference
+            app:defaultValue="false"
+            app:key="enable_playlist_cache"
+            app:summary="@string/playlist_cache_enable_summary"
+            app:title="@string/playlist_cache_enable_title" />
+
+        <ListPreference
+            app:defaultValue="-1"
+            app:dependency="enable_playlist_cache"
+            app:entries="@array/cache_refresh_entries"
+            app:entryValues="@array/cache_refresh_values"
+            app:key="playlist_cache_refresh_interval"
+            app:title="@string/playlist_cache_refresh_title"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="@string/playlist_cache_refresh_title" />
+
+        <Preference
+            app:key="clear_playlist_cache"
+            app:title="@string/playlist_cache_clear_title"
+            app:summary="@string/playlist_cache_clear_summary" />
+
+        <Preference
+            app:key="playlist_cache_status"
+            app:title="@string/playlist_cache_status_title"
+            app:summary="@string/playlist_cache_status_unknown" />
+    </PreferenceCategory>
+</PreferenceScreen>

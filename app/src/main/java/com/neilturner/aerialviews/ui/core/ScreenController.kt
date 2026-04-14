@@ -256,7 +256,7 @@ class ScreenController(
             }
 
             // Setup music service
-            setupMusicPlayer(mediaResult.musicPlaylist)
+            setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
 
             // Setup weather service
             val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
@@ -296,7 +296,7 @@ class ScreenController(
             }
     }
 
-    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?) {
+    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?, resumeIndex: Int = 0) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
         videoPlayer.setForcedMute(backgroundMusicSelected)
 
@@ -312,6 +312,9 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
+        if (resumeIndex > 0) {
+            musicPlayer?.seekToTrack(resumeIndex)
+        }
         musicPlayer?.play()
         Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
@@ -599,6 +602,15 @@ class ScreenController(
     }
 
     fun stop() {
+        if (this::playlist.isInitialized) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val cacheRepository = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
+                cacheRepository.saveMediaPosition(playlist.currentPosition)
+                musicPlayer?.let {
+                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
+                }
+            }
+        }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
         videoPlayer.release()

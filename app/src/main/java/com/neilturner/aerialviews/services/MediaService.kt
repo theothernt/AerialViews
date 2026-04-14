@@ -53,7 +53,20 @@ class MediaService(
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
+        val useAppleVideos: Boolean,
+        val useAmazonVideos: Boolean,
+        val useComm1Videos: Boolean,
+        val useComm2Videos: Boolean,
+        val useLocalVideos: Boolean,
+        val useSambaVideos: Boolean,
+        val useWebDavVideos: Boolean,
+        val useImmichVideos: Boolean,
+        val useCustomStreams: Boolean
     ) {
+        fun buildHash(): String {
+            return hashCode().toString()
+        }
+        
         companion object {
             fun fromPreferences() =
                 Config(
@@ -65,6 +78,15 @@ class MediaService(
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
+                    useAppleVideos = AppleVideoPrefs.enabled,
+                    useAmazonVideos = AmazonVideoPrefs.enabled,
+                    useComm1Videos = Comm1VideoPrefs.enabled,
+                    useComm2Videos = Comm2VideoPrefs.enabled,
+                    useLocalVideos = LocalMediaPrefs.enabled,
+                    useSambaVideos = SambaMediaPrefs.enabled || SambaMediaPrefs2.enabled,
+                    useWebDavVideos = WebDavMediaPrefs.enabled || WebDavMediaPrefs2.enabled,
+                    useImmichVideos = ImmichMediaPrefs.enabled,
+                    useCustomStreams = CustomFeedPrefs.enabled
                 )
         }
     }
@@ -88,6 +110,17 @@ class MediaService(
 
     suspend fun fetchMedia(): MediaFetchResult =
         withContext(Dispatchers.IO) {
+            val settingsHash = config.buildHash()
+            val cacheRepo = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
+            
+            if (cacheRepo.isCacheValid(settingsHash)) {
+                val cached = cacheRepo.getCachedPlaylist()
+                if (cached != null) {
+                    Timber.i("Loaded playlist from cache: ${cached.mediaPlaylist.size} media, ${cached.musicPlaylist?.size ?: 0} music")
+                    return@withContext cached
+                }
+            }
+
             val (media, tracks) = buildProviderContent(providers)
 
             // Split into videos and photos
@@ -196,6 +229,14 @@ class MediaService(
                     }
 
             Timber.i("Total media items: ${filteredMedia.size}")
+            
+            cacheRepo.cachePlaylist(
+                media = filteredMedia,
+                musicPlaylist = musicPlaylist,
+                settingsHash = settingsHash,
+                shuffleEnabled = config.shuffleVideos
+            )
+
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,

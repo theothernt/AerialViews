@@ -208,6 +208,10 @@ object GeneralPrefs : KotprefModel() {
         setOf("SUNSET")
     }
 
+    // Playlist Cache
+    var enablePlaylistCache by booleanPref(false, "enable_playlist_cache")
+    var playlistCacheRefreshInterval by stringPref("-1", "playlist_cache_refresh_interval")
+
     // Playlist - Videos
     var playlistAudioMode by nullableEnumValuePref(PlaylistAudioMode.VIDEO_MUTED, "playlist_audio_mode")
     var videoVolume by stringPref("100", "video_volume")
