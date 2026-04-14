@@ -103,6 +103,7 @@ class LocalMediaProvider(
             } else if (FileHelper.isSupportedImageType(file)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
 
@@ -227,6 +228,7 @@ class LocalMediaProvider(
             } else if (FileHelper.isSupportedImageType(uri.filename)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
         filtered = selected.size - media.size

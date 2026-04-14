@@ -95,7 +95,7 @@ internal object ImagePlayerHelper {
         try {
             // Handle file:// URIs directly, content:// URIs via ContentResolver
             return when (uri.scheme) {
-                "file" -> {
+                null, "file" -> {
                     val path = uri.path ?: return null
                     java.io.File(path).inputStream()
                 }
