@@ -1,9 +1,10 @@
 package com.neilturner.aerialviews.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "cached_media")
+@Entity(tableName = "cached_media", indices = [Index("playlistOrder")])
 data class CachedMediaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,

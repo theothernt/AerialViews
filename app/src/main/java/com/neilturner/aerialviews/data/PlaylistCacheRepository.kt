@@ -15,6 +15,7 @@ import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -108,9 +109,9 @@ class PlaylistCacheRepository(context: Context) {
                 startPosition = state.mediaPosition,
                 size = state.totalMediaItems,
                 windowOffset = windowOffset,
-                fetchChunk = { offset, limit -> 
+fetchChunk = { offset, limit ->
                     Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
-                    getMediaChunkSync(offset, limit) 
+                    runBlocking { getMediaChunkSync(offset, limit) }
                 }
             ),
             musicPlaylist = musicPlaylist,
@@ -118,9 +119,9 @@ class PlaylistCacheRepository(context: Context) {
         )
     }
 
-    fun getMediaChunkSync(offset: Int, limit: Int): List<AerialMedia> {
+    suspend fun getMediaChunkSync(offset: Int, limit: Int): List<AerialMedia> = withContext(Dispatchers.IO) {
         val cachedMedia = dao.getMediaItemsChunk(limit, offset)
-        return cachedMedia.map { mapEntityToMedia(it) }
+        cachedMedia.map { mapEntityToMedia(it) }
     }
 
     private fun mapEntityToMedia(entity: CachedMediaEntity): AerialMedia {
