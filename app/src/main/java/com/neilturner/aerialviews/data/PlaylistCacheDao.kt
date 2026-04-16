@@ -1,8 +1,6 @@
 package com.neilturner.aerialviews.data
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Upsert
@@ -44,6 +42,20 @@ interface PlaylistCacheDao {
 
     @Query("DELETE FROM playlist_state")
     suspend fun clearState()
+
+    @Transaction
+    suspend fun updateCache(
+        media: List<CachedMediaEntity>,
+        music: List<CachedMusicTrackEntity>,
+        state: PlaylistStateEntity
+    ) {
+        clearMediaItems()
+        clearMusicTracks()
+        clearState()
+        insertMediaItems(media)
+        insertMusicTracks(music)
+        insertOrUpdateState(state)
+    }
 
     @Transaction
     suspend fun clearAll() {

@@ -486,17 +486,18 @@ class ScreenController(
                 isPaused = false
                 pauseStartTime = 0
 
-                // Pick next/previous video
-                val media =
-                    if (!previousItem) {
-                        playlist.nextItem()
-                    } else {
-                        playlist.previousItem()
-                    }
-                previousItem = false
-
                 if (!blackOutMode) {
-                    loadItem(media)
+                    mainScope.launch {
+                        val media = if (!previousItem) {
+                            playlist.nextItem()
+                        } else {
+                            playlist.previousItem()
+                        }
+                        previousItem = false
+                        loadItem(media)
+                    }
+                } else {
+                    previousItem = false
                 }
             }.start()
     }
@@ -643,7 +644,9 @@ class ScreenController(
             fadeOutCurrentItem()
         } else {
             blackOutMode = false
-            loadItem(playlist.nextItem())
+            mainScope.launch {
+                loadItem(playlist.nextItem())
+            }
             // Restart sleep timer if preference still enabled
             scheduleSleepTimer()
         }

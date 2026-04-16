@@ -109,9 +109,9 @@ class PlaylistCacheRepository(context: Context) {
                 startPosition = state.mediaPosition,
                 size = state.totalMediaItems,
                 windowOffset = windowOffset,
-fetchChunk = { offset, limit ->
+                fetchChunk = { offset, limit -> 
                     Timber.d("PlaylistCache: Lazy fetching chunk: offset $offset, limit $limit")
-                    runBlocking { getMediaChunkSync(offset, limit) }
+                    getMediaChunk(offset, limit) 
                 }
             ),
             musicPlaylist = musicPlaylist,
@@ -119,7 +119,7 @@ fetchChunk = { offset, limit ->
         )
     }
 
-    suspend fun getMediaChunkSync(offset: Int, limit: Int): List<AerialMedia> = withContext(Dispatchers.IO) {
+    suspend fun getMediaChunk(offset: Int, limit: Int): List<AerialMedia> = withContext(Dispatchers.IO) {
         val cachedMedia = dao.getMediaItemsChunk(limit, offset)
         cachedMedia.map { mapEntityToMedia(it) }
     }
@@ -212,10 +212,7 @@ fetchChunk = { offset, limit ->
             musicRepeatEnabled = musicPlaylist?.repeat ?: false
         )
 
-        dao.clearAll()
-        dao.insertMediaItems(mediaEntities)
-        dao.insertMusicTracks(musicEntities)
-        dao.insertOrUpdateState(state)
+        dao.updateCache(mediaEntities, musicEntities, state)
         Timber.i("PlaylistCache: Saved new cache. Media: ${media.size}, Music: ${music.size}, Hash: $settingsHash")
     }
 
