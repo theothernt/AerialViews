@@ -106,6 +106,7 @@ class ScreenController(
     private val overlayView: View
     private var loadingText: TextView
     private var loadingSpinner: View
+    private var loadingContainer: View
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
@@ -136,6 +137,7 @@ class ScreenController(
         loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
         loadingSpinner = binding.loadingView.loadingSpinner
+        loadingContainer = binding.loadingView.loadingContainer
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
@@ -393,13 +395,14 @@ class ScreenController(
     }
 
     private fun fadeOutLoadingText() {
-        // Fade out TextView
-        loadingText
+        // Fade out container (text + spinner)
+        loadingContainer
             .animate()
             .alpha(0f)
             .setDuration(LOADING_FADE_OUT)
+            .withLayer()
             .withEndAction {
-                loadingText.visibility = TextView.GONE
+                loadingContainer.visibility = View.GONE
             }.start()
     }
 
@@ -408,8 +411,8 @@ class ScreenController(
         var startDelay: Long = 0
         val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
 
-        // If first video (ie. screensaver startup), fade out 'loading...' text
-        if (loadingText.isVisible) {
+        // If first video (ie. screensaver startup), fade out 'loading...' text/spinner
+        if (loadingContainer.isVisible) {
             fadeOutLoadingText()
             startDelay = LOADING_DELAY
         }
@@ -458,6 +461,7 @@ class ScreenController(
             .alpha(0f)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
+            .withLayer()
             .withEndAction {
                 loadingView.alpha = 0f
                 loadingView.visibility = View.INVISIBLE
@@ -481,8 +485,8 @@ class ScreenController(
         loadingView
             .animate()
             .alpha(1f)
-            .setStartDelay(0)
             .setDuration(mediaFadeOut)
+            .withLayer()
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
                 loadingView.alpha = 0f
