@@ -41,10 +41,16 @@ class PlaylistCacheFragment : MenuStateFragment() {
 
     private fun clearCache() {
         lifecycleScope.launch {
-            cacheRepository.clearCache()
-            withContext(Dispatchers.Main) {
-                Toast.makeText(requireContext(), R.string.playlist_cache_cleared, Toast.LENGTH_SHORT).show()
-                updateStatus()
+            try {
+                cacheRepository.clearCache()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(requireContext(), R.string.playlist_cache_cleared, Toast.LENGTH_SHORT).show()
+                    updateStatus()
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    updateStatus()
+                }
             }
         }
     }

@@ -15,14 +15,12 @@ import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import timber.log.Timber
 
-class PlaylistCacheRepository(context: Context) {
-    private val dao = AerialDatabase.getInstance(context).playlistCacheDao()
+class PlaylistCacheRepository(private val appContext: Context) {
+    private val dao = AerialDatabase.getInstance(appContext).playlistCacheDao()
 
     suspend fun isCacheValid(settingsHash: String): Boolean = withContext(Dispatchers.IO) {
         val cacheEnabled = GeneralPrefs.enablePlaylistCache
@@ -229,6 +227,16 @@ class PlaylistCacheRepository(context: Context) {
     }
 
     suspend fun clearCache() = withContext(Dispatchers.IO) {
-        dao.clearAll()
+        try {
+            dao.clearAll()
+        } catch (e: Exception) {
+            Timber.e(e, "PlaylistCache: Room clear failed, attempting file deletion")
+            try {
+                AerialDatabase.getInstance(appContext).close()
+                appContext.deleteDatabase("aerial_database")
+            } catch (e2: Exception) {
+                Timber.e(e2, "PlaylistCache: Failed to delete database file")
+            }
+        }
     }
 }
