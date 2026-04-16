@@ -23,7 +23,9 @@ abstract class AerialDatabase : RoomDatabase() {
                     context.applicationContext,
                     AerialDatabase::class.java,
                     "aerial_database"
-                ).build()
+                    )
+                    .fallbackToDestructiveMigration(dropAllTables = true)
+                    .build()
                 INSTANCE = instance
                 instance
             }

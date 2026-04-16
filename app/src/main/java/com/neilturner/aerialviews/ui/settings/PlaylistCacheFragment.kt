@@ -52,8 +52,12 @@ class PlaylistCacheFragment : MenuStateFragment() {
     private fun updateStatus() {
         lifecycleScope.launch {
             val state = withContext(Dispatchers.IO) {
-                val db = AerialDatabase.getInstance(requireContext())
-                db.playlistCacheDao().getPlaylistState()
+                try {
+                    val db = AerialDatabase.getInstance(requireContext())
+                    db.playlistCacheDao().getPlaylistState()
+                } catch (e: Exception) {
+                    null
+                }
             }
             
             withContext(Dispatchers.Main) {
