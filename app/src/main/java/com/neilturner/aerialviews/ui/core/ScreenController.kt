@@ -105,6 +105,7 @@ class ScreenController(
     private val loadingView: View
     private val overlayView: View
     private var loadingText: TextView
+    private var loadingSpinner: View
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
@@ -134,6 +135,7 @@ class ScreenController(
         loadingView = binding.loadingView.root
         loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
+        loadingSpinner = binding.loadingView.loadingSpinner
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
@@ -245,7 +247,17 @@ class ScreenController(
             }
 
             // Build playlist and start screensaver
-            val mediaResult = MediaService(context).fetchMedia()
+            val mediaResult = MediaService(context).fetchMedia { isCached ->
+                mainScope.launch {
+                    if (isCached) {
+                        loadingText.text = resources.getString(R.string.loading_resuming)
+                        loadingSpinner.visibility = View.GONE
+                    } else {
+                        loadingText.text = resources.getString(R.string.loading_building)
+                        loadingSpinner.visibility = View.VISIBLE
+                    }
+                }
+            }
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
@@ -504,6 +516,7 @@ class ScreenController(
 
     private fun showLoadingError() {
         loadingText.text = resources.getString(R.string.loading_error)
+        loadingSpinner.visibility = View.GONE
     }
 
     private fun hideOverlays(delay: Long = 0L) {

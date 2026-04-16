@@ -127,7 +127,7 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaFetchResult =
+    suspend fun fetchMedia(onStatus: (isCached: Boolean) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
             val settingsHash = config.buildHash()
             val cacheRepo = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
@@ -135,6 +135,7 @@ class MediaService(
             if (cacheRepo.isCacheValid(settingsHash)) {
                 val cached = cacheRepo.getCachedPlaylist()
                 if (cached != null) {
+                    onStatus(true)
                     Timber.i("MediaService: USING CACHED PLAYLIST")
                     return@withContext cached
                 } else {
@@ -143,6 +144,8 @@ class MediaService(
             } else {
                 Timber.i("MediaService: Cache INVALID or DISABLED, fetching fresh items")
             }
+            
+            onStatus(false)
 
             val (media, tracks) = buildProviderContent(providers)
 
