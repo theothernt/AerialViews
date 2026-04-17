@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "01570f4832473e12b6228bdfefee56f1",
+    "identityHash": "b848679a5999ff43d12bc12e9c1ce35e",
     "entities": [
       {
         "tableName": "cached_media",
@@ -120,7 +120,18 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_cached_media_playlistOrder",
+            "unique": false,
+            "columnNames": [
+              "playlistOrder"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cached_media_playlistOrder` ON `${TABLE_NAME}` (`playlistOrder`)"
+          }
+        ]
       },
       {
         "tableName": "cached_music_tracks",
@@ -156,7 +167,18 @@
           "columnNames": [
             "id"
           ]
-        }
+        },
+        "indices": [
+          {
+            "name": "index_cached_music_tracks_playlistOrder",
+            "unique": false,
+            "columnNames": [
+              "playlistOrder"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cached_music_tracks_playlistOrder` ON `${TABLE_NAME}` (`playlistOrder`)"
+          }
+        ]
       },
       {
         "tableName": "playlist_state",
@@ -233,7 +255,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '01570f4832473e12b6228bdfefee56f1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b848679a5999ff43d12bc12e9c1ce35e')"
     ]
   }
 }
