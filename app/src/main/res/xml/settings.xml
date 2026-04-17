@@ -20,7 +20,7 @@
         <Preference
             app:title="@string/settings_playlist_cache_title"
             app:summary="@string/settings_playlist_cache_summary"
-            app:fragment="com.neilturner.aerialviews.ui.settings.PlaylistCacheFragment"/>
+            app:fragment="com.neilturner.aerialviews.ui.settings.CacheFragment"/>
 
         <Preference
             app:title="@string/settings_dpad_title"

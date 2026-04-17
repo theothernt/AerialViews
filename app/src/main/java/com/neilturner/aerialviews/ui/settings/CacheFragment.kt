@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.widget.Toast
 
-class PlaylistCacheFragment : MenuStateFragment() {
+class CacheFragment : MenuStateFragment() {
     private lateinit var cacheRepository: PlaylistCacheRepository
 
     override fun onCreatePreferences(
