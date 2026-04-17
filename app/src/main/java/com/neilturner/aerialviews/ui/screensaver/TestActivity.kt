@@ -45,6 +45,13 @@ class TestActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (this::screenController.isInitialized) {
+            screenController.stop()
+        }
+    }
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
