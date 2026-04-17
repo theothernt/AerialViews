@@ -27,6 +27,9 @@ import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.VolumeHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -40,7 +43,7 @@ class VideoPlayerView
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
-    ) : PlayerView(context, attrs, defStyleAttr),
+    ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
         Player.Listener {
         @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
@@ -57,7 +60,8 @@ class VideoPlayerView
                 listener?.onVideoError()
             }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
-        private val mainScope = CoroutineScope(Dispatchers.Main)
+        private val mainScope = CoroutineScope(Dispatchers.Main + Job())
+        private var isDestroyed = false
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
@@ -74,7 +78,9 @@ class VideoPlayerView
         private var isMuted = !GeneralPrefs.playsVideoAudio
 
         init {
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
+            // Use applicationContext to prevent activity context leaks
+            val appContext = context.applicationContext
+            exoPlayer = VideoPlayerHelper.buildPlayer(appContext, GeneralPrefs)
 
             player = exoPlayer
             player?.addListener(this)
@@ -91,28 +97,41 @@ class VideoPlayerView
         }
 
         fun release() {
+            isDestroyed = true
             pause()
             exoPlayer.setVideoSurface(null)
+            // Release ExoPlayer to stop internal threads
+            exoPlayer.release()
             player?.release()
-            cancelVolumeFade()
-
+            // Clear surface view to break context reference chain
+            player = null
+            // Cancel coroutine scope to prevent lambda callbacks from leaking
+            mainScope.cancel()
+            // Clear all callbacks to prevent context references
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)
             removeCallbacks(onErrorRunnable)
-
+            // Clear listener
             listener = null
+            cancelVolumeFade()
         }
 
         fun toggleLooping() {
+            if (isDestroyed) return
+            
             if (player?.repeatMode == Player.REPEAT_MODE_ALL) {
                 player?.repeatMode = Player.REPEAT_MODE_OFF
-                mainScope.launch {
-                    ToastHelper.show(context, "Looping disabled")
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        ToastHelper.show(context, "Looping disabled")
+                    }
                 }
             } else {
                 player?.repeatMode = Player.REPEAT_MODE_ALL
-                mainScope.launch {
-                    ToastHelper.show(context, "Looping enabled")
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        ToastHelper.show(context, "Looping enabled")
+                    }
                 }
             }
         }
@@ -312,10 +331,12 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.crashlyticsException(error.cause)
 
-            if (GeneralPrefs.showMediaErrorToasts) {
-                mainScope.launch {
-                    val errorMessage = error.localizedMessage ?: "Video playback error occurred"
-                    ToastHelper.show(context, errorMessage)
+            if (GeneralPrefs.showMediaErrorToasts && !isDestroyed) {
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        val errorMessage = error.localizedMessage ?: "Video playback error occurred"
+                        ToastHelper.show(context, errorMessage)
+                    }
                 }
             }
 

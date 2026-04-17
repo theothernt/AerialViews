@@ -158,7 +158,9 @@ class ScreenController(
             if (videoParent != null) {
                 val index = videoParent.indexOfChild(initialVideoRoot)
                 videoParent.removeView(initialVideoRoot)
-                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
+                // Use applicationContext to prevent activity context leaks in parent views
+                val appContextInflater = LayoutInflater.from(context.applicationContext)
+                val replacementVideoRoot = appContextInflater.inflate(videoLayoutRes, videoParent, false)
                 videoParent.addView(replacementVideoRoot, index)
                 VideoViewBinding.bind(replacementVideoRoot)
             } else {
@@ -632,6 +634,9 @@ class ScreenController(
         }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
+        // Remove video view from parent to break context reference chain
+        val videoParent = videoViewBinding.root.parent as? ViewGroup
+        videoParent?.removeView(videoViewBinding.root)
         videoPlayer.release()
         imagePlayer.release()
         ktorServer?.stop()
