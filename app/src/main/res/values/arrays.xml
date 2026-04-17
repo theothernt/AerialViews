@@ -390,15 +390,36 @@
     <string name="audio_mode_mute_videos">Mute audio from videos</string>
     <string name="audio_mode_play_video_audio">Play audio from videos</string>
     <string name="audio_mode_play_background_music">Play background music</string>
-    <string-array name="playlist_audio_mode_entries">
+    <string-array name="audio_mode_entries">
         <item>@string/audio_mode_mute_videos</item>
         <item>@string/audio_mode_play_video_audio</item>
         <item>@string/audio_mode_play_background_music</item>
     </string-array>
-    <string-array name="playlist_audio_mode_values" translatable="false">
+    <string-array name="audio_mode_values" translatable="false">
         <item>VIDEO_MUTED</item>
         <item>VIDEO_AUDIO</item>
         <item>BACKGROUND_MUSIC</item>
+    </string-array>
+
+    <string name="cache_refresh_all">When all media viewed</string>
+    <string name="cache_refresh_1_week">Every week</string>
+    <string name="cache_refresh_2_weeks">Every 2 weeks</string>
+    <string name="cache_refresh_3_weeks">Every 3 weeks</string>
+    <string name="cache_refresh_4_weeks">Every 4 weeks</string>
+    <string-array name="cache_refresh_entries">
+        <item>@string/cache_refresh_all</item>
+        <item>@string/cache_refresh_1_week</item>
+        <item>@string/cache_refresh_2_weeks</item>
+        <item>@string/cache_refresh_3_weeks</item>
+        <item>@string/cache_refresh_4_weeks</item>
+    </string-array>
+
+    <string-array name="cache_refresh_values" translatable="false">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
     <!-- Text sizes -->

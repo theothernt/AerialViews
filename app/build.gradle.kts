@@ -49,6 +49,10 @@ android {
         buildConfig = true
     }
 
+    ksp {
+        arg("room.schemaLocation", "$projectDir/schemas")
+    }
+
     lint {
         abortOnError = false
     }
@@ -183,6 +187,8 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.room)
+    ksp(libs.room.compiler)
     implementation(libs.bundles.exoplayer)
     implementation(libs.sardine.android)
     implementation(libs.smbj)

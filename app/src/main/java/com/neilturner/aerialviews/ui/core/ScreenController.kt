@@ -105,6 +105,8 @@ class ScreenController(
     private val loadingView: View
     private val overlayView: View
     private var loadingText: TextView
+    private var loadingSpinner: View
+    private var loadingContainer: View
     private var videoPlayer: VideoPlayerView
     private var imagePlayer: ImagePlayerView
     private val brightnessView: View
@@ -134,6 +136,8 @@ class ScreenController(
         loadingView = binding.loadingView.root
         loadingView.setBackgroundColor(backgroundLoading)
         loadingText = binding.loadingView.loadingText
+        loadingSpinner = binding.loadingView.loadingSpinner
+        loadingContainer = binding.loadingView.loadingContainer
 
         overlayViewBinding = binding.overlayView
         overlayView = overlayViewBinding.root
@@ -245,7 +249,17 @@ class ScreenController(
             }
 
             // Build playlist and start screensaver
-            val mediaResult = MediaService(context).fetchMedia()
+            val mediaResult = MediaService(context).fetchMedia { isCached ->
+                mainScope.launch {
+                    if (isCached) {
+                        loadingText.text = resources.getString(R.string.loading_resuming)
+                        loadingSpinner.visibility = View.GONE
+                    } else {
+                        loadingText.text = resources.getString(R.string.loading_building)
+                        loadingSpinner.visibility = View.VISIBLE
+                    }
+                }
+            }
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
@@ -256,7 +270,7 @@ class ScreenController(
             }
 
             // Setup music service
-            setupMusicPlayer(mediaResult.musicPlaylist)
+            setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
 
             // Setup weather service
             val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
@@ -296,7 +310,7 @@ class ScreenController(
             }
     }
 
-    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?) {
+    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?, resumeIndex: Int = 0) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
         videoPlayer.setForcedMute(backgroundMusicSelected)
 
@@ -312,6 +326,9 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.createPlayer()
+        if (resumeIndex > 0) {
+            musicPlayer?.seekToTrack(resumeIndex)
+        }
         musicPlayer?.play()
         Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
@@ -378,13 +395,14 @@ class ScreenController(
     }
 
     private fun fadeOutLoadingText() {
-        // Fade out TextView
-        loadingText
+        // Fade out container (text + spinner)
+        loadingContainer
             .animate()
             .alpha(0f)
             .setDuration(LOADING_FADE_OUT)
+            .withLayer()
             .withEndAction {
-                loadingText.visibility = TextView.GONE
+                loadingContainer.visibility = View.GONE
             }.start()
     }
 
@@ -393,8 +411,8 @@ class ScreenController(
         var startDelay: Long = 0
         val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
 
-        // If first video (ie. screensaver startup), fade out 'loading...' text
-        if (loadingText.isVisible) {
+        // If first video (ie. screensaver startup), fade out 'loading...' text/spinner
+        if (loadingContainer.isVisible) {
             fadeOutLoadingText()
             startDelay = LOADING_DELAY
         }
@@ -443,6 +461,7 @@ class ScreenController(
             .alpha(0f)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
+            .withLayer()
             .withEndAction {
                 loadingView.alpha = 0f
                 loadingView.visibility = View.INVISIBLE
@@ -466,8 +485,8 @@ class ScreenController(
         loadingView
             .animate()
             .alpha(1f)
-            .setStartDelay(0)
             .setDuration(mediaFadeOut)
+            .withLayer()
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
                 loadingView.alpha = 0f
@@ -483,23 +502,25 @@ class ScreenController(
                 isPaused = false
                 pauseStartTime = 0
 
-                // Pick next/previous video
-                val media =
-                    if (!previousItem) {
-                        playlist.nextItem()
-                    } else {
-                        playlist.previousItem()
-                    }
-                previousItem = false
-
                 if (!blackOutMode) {
-                    loadItem(media)
+                    mainScope.launch {
+                        val media = if (!previousItem) {
+                            playlist.nextItem()
+                        } else {
+                            playlist.previousItem()
+                        }
+                        previousItem = false
+                        loadItem(media)
+                    }
+                } else {
+                    previousItem = false
                 }
             }.start()
     }
 
     private fun showLoadingError() {
         loadingText.text = resources.getString(R.string.loading_error)
+        loadingSpinner.visibility = View.GONE
     }
 
     private fun hideOverlays(delay: Long = 0L) {
@@ -599,6 +620,15 @@ class ScreenController(
     }
 
     fun stop() {
+        if (this::playlist.isInitialized) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val cacheRepository = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
+                cacheRepository.saveMediaPosition(playlist.currentPosition)
+                musicPlayer?.let {
+                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
+                }
+            }
+        }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
         videoPlayer.release()
@@ -631,7 +661,9 @@ class ScreenController(
             fadeOutCurrentItem()
         } else {
             blackOutMode = false
-            loadItem(playlist.nextItem())
+            mainScope.launch {
+                loadItem(playlist.nextItem())
+            }
             // Restart sleep timer if preference still enabled
             scheduleSleepTimer()
         }

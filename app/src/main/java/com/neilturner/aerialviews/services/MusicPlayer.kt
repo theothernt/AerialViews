@@ -25,6 +25,16 @@ class MusicPlayer(
     }
 
     fun getPlayer(): ExoPlayer? = player
+    
+    fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
+    
+    // Support resume capability
+    fun seekToTrack(index: Int) {
+        if (index > 0 && index < playlist.size) {
+            player?.seekTo(index, 0L)
+            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $index")
+        }
+    }
 
     fun play() {
         val player = player ?: run {

@@ -53,7 +53,39 @@ class MediaService(
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
+        val useAppleVideos: Boolean,
+        val useAmazonVideos: Boolean,
+        val useComm1Videos: Boolean,
+        val useComm2Videos: Boolean,
+        val useLocalVideos: Boolean,
+        val useSambaVideos: Boolean,
+        val useWebDavVideos: Boolean,
+        val useImmichVideos: Boolean,
+        val useCustomStreams: Boolean
     ) {
+        fun buildHash(): String {
+            val parts = buildList {
+                add(removeDuplicates.toString())
+                add(ignoreNonManifestVideos.toString())
+                add(autoTimeOfDay.toString())
+                add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
+                add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
+                add(shuffleVideos.toString())
+                add(shuffleMusic.toString())
+                add(repeatMusic.toString())
+                add(useAppleVideos.toString())
+                add(useAmazonVideos.toString())
+                add(useComm1Videos.toString())
+                add(useComm2Videos.toString())
+                add(useLocalVideos.toString())
+                add(useSambaVideos.toString())
+                add(useWebDavVideos.toString())
+                add(useImmichVideos.toString())
+                add(useCustomStreams.toString())
+            }
+            return parts.joinToString("|").hashCode().toString()
+        }
+        
         companion object {
             fun fromPreferences() =
                 Config(
@@ -65,6 +97,15 @@ class MediaService(
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
+                    useAppleVideos = AppleVideoPrefs.enabled,
+                    useAmazonVideos = AmazonVideoPrefs.enabled,
+                    useComm1Videos = Comm1VideoPrefs.enabled,
+                    useComm2Videos = Comm2VideoPrefs.enabled,
+                    useLocalVideos = LocalMediaPrefs.enabled,
+                    useSambaVideos = SambaMediaPrefs.enabled || SambaMediaPrefs2.enabled,
+                    useWebDavVideos = WebDavMediaPrefs.enabled || WebDavMediaPrefs2.enabled,
+                    useImmichVideos = ImmichMediaPrefs.enabled,
+                    useCustomStreams = CustomFeedPrefs.enabled
                 )
         }
     }
@@ -86,8 +127,26 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaFetchResult =
+    suspend fun fetchMedia(onStatus: (isCached: Boolean) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
+            val settingsHash = config.buildHash()
+            val cacheRepo = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
+            
+            if (cacheRepo.isCacheValid(settingsHash)) {
+                val cached = cacheRepo.getCachedPlaylist()
+                if (cached != null) {
+                    onStatus(true)
+                    Timber.i("MediaService: USING CACHED PLAYLIST")
+                    return@withContext cached
+                } else {
+                    Timber.w("MediaService: Cache reported valid but failed to load")
+                }
+            } else {
+                Timber.i("MediaService: Cache INVALID or DISABLED, fetching fresh items")
+            }
+            
+            onStatus(false)
+
             val (media, tracks) = buildProviderContent(providers)
 
             // Split into videos and photos
@@ -196,6 +255,27 @@ class MediaService(
                     }
 
             Timber.i("Total media items: ${filteredMedia.size}")
+
+            if (GeneralPrefs.enablePlaylistCache) {
+                // Cache enabled: save to DB, return windowed playlist that streams from DB
+                cacheRepo.cachePlaylist(
+                    media = filteredMedia,
+                    musicPlaylist = musicPlaylist,
+                    settingsHash = settingsHash,
+                    shuffleEnabled = config.shuffleVideos
+                )
+                
+                val cachedResult = cacheRepo.getCachedPlaylist()
+                if (cachedResult != null) {
+                    Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
+                    return@withContext cachedResult
+                }
+                Timber.w("MediaService: Failed to read back cached playlist, falling back to in-memory")
+            } else {
+                Timber.i("MediaService: Cache disabled, using full in-memory playlist (${filteredMedia.size} items)")
+            }
+
+            // Cache disabled or cache read-back failed: all items in memory, no DB
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,

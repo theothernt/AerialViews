@@ -109,5 +109,14 @@ internal class MediaServiceTest {
             shuffleVideos = false,
             shuffleMusic = false,
             repeatMusic = false,
+            useAppleVideos = false,
+            useAmazonVideos = false,
+            useComm1Videos = false,
+            useComm2Videos = false,
+            useLocalVideos = false,
+            useSambaVideos = false,
+            useWebDavVideos = false,
+            useImmichVideos = false,
+            useCustomStreams = false
         )
 }
