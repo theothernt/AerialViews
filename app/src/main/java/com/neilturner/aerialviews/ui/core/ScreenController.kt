@@ -65,9 +65,10 @@ import timber.log.Timber
 import kotlin.math.abs
 
 class ScreenController(
-    private val context: Context,
+    context: Context,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
+    private val context = context.applicationContext
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper

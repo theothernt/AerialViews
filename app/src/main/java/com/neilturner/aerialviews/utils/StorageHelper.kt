@@ -21,7 +21,7 @@ object StorageHelper {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private fun getStoragePaths24(context: Context): LinkedHashMap<String, String> {
         val paths = LinkedHashMap<String, String>()
-        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+        val storageManager = context.applicationContext.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
             val volumes = storageManager.storageVolumes
             for (vol in volumes) {
@@ -56,7 +56,7 @@ object StorageHelper {
 
     private fun getStoragePathsLow(context: Context): LinkedHashMap<String, String> {
         val paths = LinkedHashMap<String, String>()
-        val storageManager = context.getSystemService(Context.STORAGE_SERVICE) as StorageManager
+        val storageManager = context.applicationContext.getSystemService(Context.STORAGE_SERVICE) as StorageManager
         try {
             val storageVolumeClazz = Class.forName("android.os.storage.StorageVolume")
             val getVolumeList = storageManager.javaClass.getMethod("getVolumeList")
