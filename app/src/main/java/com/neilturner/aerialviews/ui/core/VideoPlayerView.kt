@@ -92,6 +92,7 @@ class VideoPlayerView
 
         fun release() {
             pause()
+            exoPlayer.setVideoSurface(null)
             player?.release()
             cancelVolumeFade()
 
