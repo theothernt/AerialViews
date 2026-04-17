@@ -15,6 +15,7 @@ import androidx.media3.exoplayer.rtsp.RtspMediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector.Parameters
+import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
 import androidx.media3.exoplayer.util.EventLogger
 import androidx.media3.ui.AspectRatioFrameLayout
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -80,6 +81,7 @@ object VideoPlayerHelper {
 
         return ExoPlayer
             .Builder(context)
+            .setBandwidthMeter(DefaultBandwidthMeter.Builder(context).build())
             .setLoadControl(loadControl)
             .build()
     }
