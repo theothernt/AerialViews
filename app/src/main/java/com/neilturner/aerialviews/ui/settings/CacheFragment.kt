@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
@@ -11,7 +12,6 @@ import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.widget.Toast
 
 class CacheFragment : MenuStateFragment() {
     private lateinit var cacheRepository: PlaylistCacheRepository
@@ -20,7 +20,7 @@ class CacheFragment : MenuStateFragment() {
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
-        setPreferencesFromResource(R.xml.settings_playlist_cache, rootKey)
+        setPreferencesFromResource(R.xml.settings_cache, rootKey)
         cacheRepository = PlaylistCacheRepository(requireContext())
     }
 
