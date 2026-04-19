@@ -17,7 +17,7 @@ import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
 import com.neilturner.aerialviews.utils.FontHelper
 import timber.log.Timber
 
-class WeatherCurrentOverlay
+class WeatherNowOverlay
     @JvmOverloads
     constructor(
         context: Context,

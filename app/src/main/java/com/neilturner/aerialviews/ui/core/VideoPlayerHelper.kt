@@ -66,9 +66,7 @@ object VideoPlayerHelper {
         }
 
     @OptIn(UnstableApi::class)
-    fun buildAudioPlayer(
-        context: Context,
-    ): ExoPlayer {
+    fun buildAudioPlayer(context: Context): ExoPlayer {
         val loadControl =
             DefaultLoadControl
                 .Builder()
@@ -118,8 +116,7 @@ object VideoPlayerHelper {
                     20_000, // Maximum buffer duration
                     3_000, // Buffer before initial playback
                     5_000, // Buffer after rebuffering
-                )
-                .setTargetBufferBytes(C.LENGTH_UNSET)
+                ).setTargetBufferBytes(C.LENGTH_UNSET)
                 .build()
 
         val player =
@@ -181,59 +178,59 @@ object VideoPlayerHelper {
         mediaItem: MediaItem,
         source: AerialMediaSource,
     ) = when (source) {
-            AerialMediaSource.SAMBA -> {
-                ProgressiveMediaSource
-                    .Factory(SambaDataSourceFactory())
-                    .createMediaSource(mediaItem)
-            }
-
-            AerialMediaSource.RTSP -> {
-                RtspMediaSource
-                    .Factory()
-                    .setDebugLoggingEnabled(true)
-                    .setForceUseRtpTcp(true)
-                    .createMediaSource(mediaItem)
-            }
-
-            AerialMediaSource.IMMICH -> {
-                val dataSourceFactory =
-                    DefaultHttpDataSource
-                        .Factory()
-                        .setAllowCrossProtocolRedirects(true)
-                        .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-                        .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
-
-                // Add necessary headers for Immich
-                if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
-                    dataSourceFactory.setDefaultRequestProperties(
-                        mapOf("X-API-Key" to ImmichMediaPrefs.apiKey),
-                    )
-                }
-
-                // If SSL validation is disabled, we need to set the appropriate flags
-                if (!ImmichMediaPrefs.validateSsl) {
-                    System.setProperty("javax.net.ssl.trustAll", "true")
-                }
-
-                Timber.d("Setting up Immich media source with URI: ${mediaItem.localConfiguration?.uri}")
-                ProgressiveMediaSource
-                    .Factory(dataSourceFactory)
-                    .createMediaSource(mediaItem)
-            }
-
-            AerialMediaSource.WEBDAV -> {
-                ProgressiveMediaSource
-                    .Factory(WebDavDataSourceFactory())
-                    .createMediaSource(mediaItem)
-            }
-
-            else -> {
-                val dataSourceFactory = DefaultDataSource.Factory(context)
-                ProgressiveMediaSource
-                    .Factory(dataSourceFactory)
-                    .createMediaSource(mediaItem)
-            }
+        AerialMediaSource.SAMBA -> {
+            ProgressiveMediaSource
+                .Factory(SambaDataSourceFactory())
+                .createMediaSource(mediaItem)
         }
+
+        AerialMediaSource.RTSP -> {
+            RtspMediaSource
+                .Factory()
+                .setDebugLoggingEnabled(true)
+                .setForceUseRtpTcp(true)
+                .createMediaSource(mediaItem)
+        }
+
+        AerialMediaSource.IMMICH -> {
+            val dataSourceFactory =
+                DefaultHttpDataSource
+                    .Factory()
+                    .setAllowCrossProtocolRedirects(true)
+                    .setConnectTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+                    .setReadTimeoutMs(TimeUnit.SECONDS.toMillis(30).toInt())
+
+            // Add necessary headers for Immich
+            if (ImmichMediaPrefs.authType == ImmichAuthType.API_KEY) {
+                dataSourceFactory.setDefaultRequestProperties(
+                    mapOf("X-API-Key" to ImmichMediaPrefs.apiKey),
+                )
+            }
+
+            // If SSL validation is disabled, we need to set the appropriate flags
+            if (!ImmichMediaPrefs.validateSsl) {
+                System.setProperty("javax.net.ssl.trustAll", "true")
+            }
+
+            Timber.d("Setting up Immich media source with URI: ${mediaItem.localConfiguration?.uri}")
+            ProgressiveMediaSource
+                .Factory(dataSourceFactory)
+                .createMediaSource(mediaItem)
+        }
+
+        AerialMediaSource.WEBDAV -> {
+            ProgressiveMediaSource
+                .Factory(WebDavDataSourceFactory())
+                .createMediaSource(mediaItem)
+        }
+
+        else -> {
+            val dataSourceFactory = DefaultDataSource.Factory(context)
+            ProgressiveMediaSource
+                .Factory(dataSourceFactory)
+                .createMediaSource(mediaItem)
+        }
+    }
 
     fun calculatePlaybackParameters(
         player: ExoPlayer,

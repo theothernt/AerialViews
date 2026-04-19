@@ -33,10 +33,11 @@ class CacheFragment : MenuStateFragment() {
 
     private fun setupPreferences() {
         val clearCachePref = findPreference<Preference>("clear_playlist_cache")
-        clearCachePref?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-            clearCache()
-            true
-        }
+        clearCachePref?.onPreferenceClickListener =
+            Preference.OnPreferenceClickListener {
+                clearCache()
+                true
+            }
     }
 
     private fun clearCache() {
@@ -57,23 +58,25 @@ class CacheFragment : MenuStateFragment() {
 
     private fun updateStatus() {
         lifecycleScope.launch {
-            val state = withContext(Dispatchers.IO) {
-                try {
-                    val db = AerialDatabase.getInstance(requireContext())
-                    db.playlistCacheDao().getPlaylistState()
-                } catch (e: Exception) {
-                    null
+            val state =
+                withContext(Dispatchers.IO) {
+                    try {
+                        val db = AerialDatabase.getInstance(requireContext())
+                        db.playlistCacheDao().getPlaylistState()
+                    } catch (e: Exception) {
+                        null
+                    }
                 }
-            }
-            
+
             withContext(Dispatchers.Main) {
                 val statusPref = findPreference<Preference>("playlist_cache_status")
                 if (state != null) {
-                    val statusText = getString(
-                        R.string.playlist_cache_status_active, 
-                        state.totalMediaItems, 
-                        state.totalMusicTracks
-                    )
+                    val statusText =
+                        getString(
+                            R.string.playlist_cache_status_active,
+                            state.totalMediaItems,
+                            state.totalMusicTracks,
+                        )
                     statusPref?.summary = statusText
                 } else {
                     statusPref?.summary = getString(R.string.playlist_cache_status_empty)

@@ -14,10 +14,11 @@ class MusicPlayer(
     private val playlist: MusicPlaylist,
 ) {
     private var player: ExoPlayer? = null
-    private val volumeHelper = VolumeHelper(
-        getVolume = { player?.volume ?: 0f },
-        setVolume = { v -> player?.volume = v },
-    )
+    private val volumeHelper =
+        VolumeHelper(
+            getVolume = { player?.volume ?: 0f },
+            setVolume = { v -> player?.volume = v },
+        )
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context)
@@ -25,9 +26,9 @@ class MusicPlayer(
     }
 
     fun getPlayer(): ExoPlayer? = player
-    
+
     fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
-    
+
     // Support resume capability
     fun seekToTrack(index: Int) {
         if (index > 0 && index < playlist.size) {
@@ -37,10 +38,11 @@ class MusicPlayer(
     }
 
     fun play() {
-        val player = player ?: run {
-            Timber.w("MusicPlayer: play() called but player not created")
-            return
-        }
+        val player =
+            player ?: run {
+                Timber.w("MusicPlayer: play() called but player not created")
+                return
+            }
 
         // Load all tracks into ExoPlayer's queue with correct data source per track
         playlist.tracks.forEach { track ->

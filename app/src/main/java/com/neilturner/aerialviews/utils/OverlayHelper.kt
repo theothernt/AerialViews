@@ -15,8 +15,8 @@ import com.neilturner.aerialviews.ui.overlays.DateOverlay
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 
 class OverlayHelper(
     private val context: Context,
@@ -227,7 +227,7 @@ class OverlayHelper(
             }
 
             OverlayType.WEATHER1 -> {
-                WeatherCurrentOverlay(context).apply {
+                WeatherNowOverlay(context).apply {
                     type = overlay
                     style(prefs.fontTypeface, prefs.weatherLine1Size.toFloat(), prefs.weatherLine1Weight)
                     // layout(prefs.weatherLine1)

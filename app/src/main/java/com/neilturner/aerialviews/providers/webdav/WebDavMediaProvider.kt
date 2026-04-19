@@ -72,28 +72,40 @@ internal class WebDavMediaProvider(
     private suspend fun fetchWebDavMedia(): ProviderFetchResult {
         return when (val testResult = testConnectionInternal()) {
             is WebDavConnectionTestResult.SuccessSummary -> {
-                val media = testResult.files.mapNotNull { url ->
-                    val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
-                    val item = AerialMedia(uri)
+                val media =
+                    testResult.files.mapNotNull { url ->
+                        val uri = addCredentialsToUrl(url, prefs.userName, prefs.password).toUri()
+                        val item = AerialMedia(uri)
 
-                    when {
-                        FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
-                        FileHelper.isSupportedImageType(url) -> item.type = AerialMediaType.IMAGE
-                        else -> return@mapNotNull null
+                        when {
+                            FileHelper.isSupportedVideoType(url) -> item.type = AerialMediaType.VIDEO
+                            FileHelper.isSupportedImageType(url) -> item.type = AerialMediaType.IMAGE
+                            else -> return@mapNotNull null
+                        }
+
+                        item.source = AerialMediaSource.WEBDAV
+                        item
                     }
-
-                    item.source = AerialMediaSource.WEBDAV
-                    item
-                }
 
                 Timber.i("Media found: ${media.size}")
                 ProviderFetchResult.Success(media = media, summary = testResult.summary)
             }
 
-            is WebDavConnectionTestResult.ValidationError -> ProviderFetchResult.Error(testResult.message)
-            is WebDavConnectionTestResult.ConnectionError -> ProviderFetchResult.Error(testResult.message)
-            is WebDavConnectionTestResult.AuthError -> ProviderFetchResult.Error(testResult.message)
-            is WebDavConnectionTestResult.PathError -> ProviderFetchResult.Error(testResult.message)
+            is WebDavConnectionTestResult.ValidationError -> {
+                ProviderFetchResult.Error(testResult.message)
+            }
+
+            is WebDavConnectionTestResult.ConnectionError -> {
+                ProviderFetchResult.Error(testResult.message)
+            }
+
+            is WebDavConnectionTestResult.AuthError -> {
+                ProviderFetchResult.Error(testResult.message)
+            }
+
+            is WebDavConnectionTestResult.PathError -> {
+                ProviderFetchResult.Error(testResult.message)
+            }
         }
     }
 

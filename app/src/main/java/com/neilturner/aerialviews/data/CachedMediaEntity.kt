@@ -25,5 +25,5 @@ data class CachedMediaEntity(
     val exifCity: String?,
     val exifState: String?,
     val exifCountry: String?,
-    val exifDescription: String?
+    val exifDescription: String?,
 )

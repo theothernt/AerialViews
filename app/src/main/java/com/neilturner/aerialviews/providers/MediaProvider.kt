@@ -11,7 +11,9 @@ sealed class ProviderFetchResult {
         val summary: String,
     ) : ProviderFetchResult()
 
-    data class Error(val message: String) : ProviderFetchResult()
+    data class Error(
+        val message: String,
+    ) : ProviderFetchResult()
 }
 
 abstract class MediaProvider(

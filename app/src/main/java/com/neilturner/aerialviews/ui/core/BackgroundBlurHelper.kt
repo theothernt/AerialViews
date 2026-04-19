@@ -105,13 +105,14 @@ class BackgroundBlurHelper(
         // For animated drawables (GIFs/MovieDrawable), toBitmap() must be called
         // while the bitmap is still valid — capturing it here avoids the race where
         // Coil recycles the frame between scheduling and execution on ioScope.
-        val sourceBitmap = try {
-            drawable.toBitmap(width = downscaledWidth, height = downscaledHeight, config = Bitmap.Config.ARGB_8888)
-        } catch (e: RuntimeException) {
-            Timber.w(e, "Could not snapshot drawable for blur (bitmap may already be recycled), skipping")
-            onReady(token)
-            return
-        }
+        val sourceBitmap =
+            try {
+                drawable.toBitmap(width = downscaledWidth, height = downscaledHeight, config = Bitmap.Config.ARGB_8888)
+            } catch (e: RuntimeException) {
+                Timber.w(e, "Could not snapshot drawable for blur (bitmap may already be recycled), skipping")
+                onReady(token)
+                return
+            }
 
         ioScope.launch {
             val mutable = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true)

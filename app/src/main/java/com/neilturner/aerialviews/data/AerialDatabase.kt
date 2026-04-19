@@ -8,27 +8,26 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [CachedMediaEntity::class, CachedMusicTrackEntity::class, PlaylistStateEntity::class],
     version = 1,
-    exportSchema = true
+    exportSchema = true,
 )
 abstract class AerialDatabase : RoomDatabase() {
     abstract fun playlistCacheDao(): PlaylistCacheDao
 
     companion object {
-        @Volatile
         private var INSTANCE: AerialDatabase? = null
 
-        fun getInstance(context: Context): AerialDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AerialDatabase::class.java,
-                    "aerial_database"
-                    )
-                    .fallbackToDestructiveMigration(dropAllTables = true)
-                    .build()
+        fun getInstance(context: Context): AerialDatabase =
+            INSTANCE ?: synchronized(this) {
+                val instance =
+                    Room
+                        .databaseBuilder(
+                            context.applicationContext,
+                            AerialDatabase::class.java,
+                            "aerial_database",
+                        ).fallbackToDestructiveMigration(dropAllTables = true)
+                        .build()
                 INSTANCE = instance
                 instance
             }
-        }
     }
 }

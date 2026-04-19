@@ -283,10 +283,11 @@ class ImagePlayerView : FrameLayout {
             return false
         }
 
-        val scale = minOf(
-            containerWidth.toFloat() / imageWidth.toFloat(),
-            containerHeight.toFloat() / imageHeight.toFloat(),
-        )
+        val scale =
+            minOf(
+                containerWidth.toFloat() / imageWidth.toFloat(),
+                containerHeight.toFloat() / imageHeight.toFloat(),
+            )
         val displayedWidth = imageWidth * scale
         val displayedHeight = imageHeight * scale
         val epsilon = 0.5f

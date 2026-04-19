@@ -117,6 +117,6 @@ internal class MediaServiceTest {
             useSambaVideos = false,
             useWebDavVideos = false,
             useImmichVideos = false,
-            useCustomStreams = false
+            useCustomStreams = false,
         )
 }

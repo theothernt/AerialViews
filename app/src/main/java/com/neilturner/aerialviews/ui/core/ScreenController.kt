@@ -39,8 +39,8 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.ProgressBar
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.ui.overlays.WeatherCurrentOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
+import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
@@ -252,17 +252,18 @@ class ScreenController(
             }
 
             // Build playlist and start screensaver
-            val mediaResult = MediaService(context).fetchMedia { isCached ->
-                mainScope.launch {
-                    if (isCached) {
-                        loadingText.text = resources.getString(R.string.loading_resuming)
-                        loadingSpinner.visibility = View.GONE
-                    } else {
-                        loadingText.text = resources.getString(R.string.loading_building)
-                        loadingSpinner.visibility = View.VISIBLE
+            val mediaResult =
+                MediaService(context).fetchMedia { isCached ->
+                    mainScope.launch {
+                        if (isCached) {
+                            loadingText.text = resources.getString(R.string.loading_resuming)
+                            loadingSpinner.visibility = View.GONE
+                        } else {
+                            loadingText.text = resources.getString(R.string.loading_building)
+                            loadingSpinner.visibility = View.VISIBLE
+                        }
                     }
                 }
-            }
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
@@ -276,13 +277,13 @@ class ScreenController(
             setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
 
             // Setup weather service
-            val hasWeatherCurrentOverlay = overlayHelper.findOverlay<WeatherCurrentOverlay>().isNotEmpty()
+            val hasWeatherNowOverlay = overlayHelper.findOverlay<WeatherNowOverlay>().isNotEmpty()
             val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
-            if (hasWeatherCurrentOverlay || hasForecastOverlay) {
+            if (hasWeatherNowOverlay || hasForecastOverlay) {
                 weatherService =
                     WeatherService(context).apply {
                         startUpdates(
-                            fetchCurrentWeather = hasWeatherCurrentOverlay,
+                            fetchCurrentWeather = hasWeatherNowOverlay,
                             fetchForecast = hasForecastOverlay,
                         )
                     }
@@ -313,7 +314,10 @@ class ScreenController(
             }
     }
 
-    private fun setupMusicPlayer(musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?, resumeIndex: Int = 0) {
+    private fun setupMusicPlayer(
+        musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?,
+        resumeIndex: Int = 0,
+    ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
         videoPlayer.setForcedMute(backgroundMusicSelected)
 
@@ -507,11 +511,12 @@ class ScreenController(
 
                 if (!blackOutMode) {
                     mainScope.launch {
-                        val media = if (!previousItem) {
-                            playlist.nextItem()
-                        } else {
-                            playlist.previousItem()
-                        }
+                        val media =
+                            if (!previousItem) {
+                                playlist.nextItem()
+                            } else {
+                                playlist.previousItem()
+                            }
                         previousItem = false
                         loadItem(media)
                     }
@@ -625,7 +630,9 @@ class ScreenController(
     fun stop() {
         if (this::playlist.isInitialized) {
             CoroutineScope(Dispatchers.IO).launch {
-                val cacheRepository = com.neilturner.aerialviews.data.PlaylistCacheRepository(context)
+                val cacheRepository =
+                    com.neilturner.aerialviews.data
+                        .PlaylistCacheRepository(context)
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
                 musicPlayer?.let {
                     cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
@@ -987,7 +994,7 @@ class ScreenController(
             it.render(state.nowPlaying)
         }
 
-        overlayHelper.findOverlay<WeatherCurrentOverlay>().forEach {
+        overlayHelper.findOverlay<WeatherNowOverlay>().forEach {
             it.render(state.weather)
         }
 

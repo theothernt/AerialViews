@@ -183,10 +183,13 @@ internal class MetadataResolver(
                             poi = emptyMap(),
                             metadataType = MetadataType.STATIC,
                         )
-                    } else null
-                } else null
+                    } else {
+                        null
+                    }
+                } else {
+                    null
+                }
             }
-
 
             "DESCRIPTION" -> {
                 media.metadata.exif.description

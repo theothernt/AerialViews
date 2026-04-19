@@ -10,5 +10,5 @@ data class CachedMusicTrackEntity(
     val id: Int = 0,
     val playlistOrder: Int,
     val uri: String,
-    val source: String
+    val source: String,
 )

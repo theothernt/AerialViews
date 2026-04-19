@@ -10,8 +10,8 @@ import com.neilturner.aerialviews.models.enums.LimitLongerVideos
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale

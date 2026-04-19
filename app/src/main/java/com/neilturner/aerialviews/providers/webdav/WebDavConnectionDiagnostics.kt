@@ -134,7 +134,12 @@ internal fun formatWebDavConnectionError(
             )
         }
 
-        rootCause is ConnectException || rootCause is SocketTimeoutException || message.contains("connection refused", ignoreCase = true) -> {
+        rootCause is ConnectException || rootCause is SocketTimeoutException ||
+            message.contains(
+                "connection refused",
+                ignoreCase = true,
+            )
+        -> {
             if (endpoint.hasExplicitPort) {
                 WebDavConnectionTestResult.ConnectionError(
                     "Could not connect to ${endpoint.host}:${endpoint.effectivePort}. Please check the hostname, scheme, port, and that the server is running.",
@@ -146,7 +151,8 @@ internal fun formatWebDavConnectionError(
             }
         }
 
-        message.contains("401") || message.contains("403") || message.contains("unauthorized", ignoreCase = true) || message.contains("forbidden", ignoreCase = true) -> {
+        message.contains("401") || message.contains("403") || message.contains("unauthorized", ignoreCase = true) ||
+            message.contains("forbidden", ignoreCase = true) -> {
             WebDavConnectionTestResult.AuthError(
                 "Authentication failed. Please check the username, password, and server permissions.",
             )

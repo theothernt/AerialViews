@@ -15,5 +15,5 @@ data class PlaylistStateEntity(
     val totalMusicTracks: Int,
     val shuffleEnabled: Boolean,
     val musicShuffleEnabled: Boolean,
-    val musicRepeatEnabled: Boolean
+    val musicRepeatEnabled: Boolean,
 )

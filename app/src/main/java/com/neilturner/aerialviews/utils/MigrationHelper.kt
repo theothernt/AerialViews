@@ -603,16 +603,26 @@ class MigrationHelper(
     }
 
     private fun hasConfiguredMusicSource(): Boolean =
-        (prefs.getBoolean("local_videos_enabled", false) &&
-            prefs.getStringSet("local_media_selection", emptySet())?.contains("MUSIC") == true) ||
-            (prefs.getBoolean("samba_videos_enabled", false) &&
-                prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true) ||
-            (prefs.getBoolean("samba_videos2_enabled", false) &&
-                prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true) ||
-            (prefs.getBoolean("webdav_media_enabled", false) &&
-                prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true) ||
-            (prefs.getBoolean("webdav_media2_enabled", false) &&
-                prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true)
+        (
+            prefs.getBoolean("local_videos_enabled", false) &&
+                prefs.getStringSet("local_media_selection", emptySet())?.contains("MUSIC") == true
+        ) ||
+            (
+                prefs.getBoolean("samba_videos_enabled", false) &&
+                    prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true
+            ) ||
+            (
+                prefs.getBoolean("samba_videos2_enabled", false) &&
+                    prefs.getStringSet("samba_media_selection", emptySet())?.contains("MUSIC") == true
+            ) ||
+            (
+                prefs.getBoolean("webdav_media_enabled", false) &&
+                    prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true
+            ) ||
+            (
+                prefs.getBoolean("webdav_media2_enabled", false) &&
+                    prefs.getStringSet("webdav_media_selection", emptySet())?.contains("MUSIC") == true
+            )
 
     private fun migrateCombinedMediaSelection(
         selectionKey: String,

@@ -66,10 +66,11 @@ class VideoPlayerView
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
-        private val volumeHelper = VolumeHelper(
-            getVolume = { exoPlayer.volume },
-            setVolume = { v -> exoPlayer.volume = v },
-        )
+        private val volumeHelper =
+            VolumeHelper(
+                getVolume = { exoPlayer.volume },
+                setVolume = { v -> exoPlayer.volume = v },
+            )
         private var forcedMuted = false
 
         private val progressBar =
@@ -118,7 +119,7 @@ class VideoPlayerView
 
         fun toggleLooping() {
             if (isDestroyed) return
-            
+
             if (player?.repeatMode == Player.REPEAT_MODE_ALL) {
                 player?.repeatMode = Player.REPEAT_MODE_OFF
                 if (mainScope.coroutineContext[Job]?.isActive == true) {

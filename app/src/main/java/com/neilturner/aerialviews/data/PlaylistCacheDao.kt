@@ -20,7 +20,10 @@ interface PlaylistCacheDao {
     suspend fun getAllMediaItemsOrdered(): List<CachedMediaEntity>
 
     @Query("SELECT * FROM cached_media ORDER BY playlistOrder ASC LIMIT :limit OFFSET :offset")
-    suspend fun getMediaItemsChunk(limit: Int, offset: Int): List<CachedMediaEntity>
+    suspend fun getMediaItemsChunk(
+        limit: Int,
+        offset: Int,
+    ): List<CachedMediaEntity>
 
     @Query("SELECT * FROM cached_music_tracks ORDER BY playlistOrder ASC")
     suspend fun getAllMusicTracksOrdered(): List<CachedMusicTrackEntity>
@@ -47,7 +50,7 @@ interface PlaylistCacheDao {
     suspend fun updateCache(
         media: List<CachedMediaEntity>,
         music: List<CachedMusicTrackEntity>,
-        state: PlaylistStateEntity
+        state: PlaylistStateEntity,
     ) {
         clearMediaItems()
         clearMusicTracks()

@@ -19,9 +19,7 @@ object NetworkHelpers {
     private val offlineCacheTimeout = 2.hours.inWholeSeconds.toInt()
     private val onlineCacheTimeout = 60 // Minutes
 
-    fun isNetworkAvailable(context: Context): Boolean {
-        return NetworkHelper.isNetworkAvailable(context)
-    }
+    fun isNetworkAvailable(context: Context): Boolean = NetworkHelper.isNetworkAvailable(context)
 
     fun buildOkHttpClient(context: Context): OkHttpClient {
         val cache = Cache(File(context.cacheDir, "weather_cache"), cacheSize)
