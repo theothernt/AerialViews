@@ -254,8 +254,8 @@ class PlaylistCacheRepository(
             } catch (e: Exception) {
                 Timber.e(e, "PlaylistCache: Room clear failed, attempting file deletion")
                 try {
-                    AerialDatabase.getInstance(appContext).close()
-                    appContext.deleteDatabase("aerial_database")
+                    AerialDatabase.closeAndReset()
+                    appContext.deleteDatabase(AerialDatabase.dbName())
                 } catch (e2: Exception) {
                     Timber.e(e2, "PlaylistCache: Failed to delete database file")
                 }
