@@ -51,6 +51,7 @@
     <string name="category_brightness">Brightness</string>
     <string name="category_animation">Animation</string>
     <string name="category_about">About</string>
+    <string name="category_quality">Quality</string>
     <string name="category_quality_and_scene_types">Quality &amp; Scene types</string>
     <string name="category_filters">Filters</string>
     <string name="category_scaling">Scaling</string>
@@ -187,8 +188,6 @@
     <!-- Main / Video Sources / Custom feeds -->
     <string name="custom_media_enabled">Use custom feeds</string>
     <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansion packs, custom feeds (entries.json), HLS, and RTSP streams</string>
-
-    <string name="custom_media_filters_notice">Filters will work with Jetson Creative expansion packs. Custom feeds can support the filters by adding extra metadata.</string>
 
     <string name="custom_media_urls_title">Feed URLs</string>
     <string name="custom_media_urls_summary">Separate multiple URLs with a comma</string>

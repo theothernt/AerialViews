@@ -389,13 +389,7 @@ class CustomFeedProvider(
                 val customVideos = apiService.getVideos(url)
 
                 customVideos.assets?.forEach { asset ->
-                    val timeOfDay = TimeOfDay.fromString(asset.timeOfDay)
-                    val scene = SceneType.fromString(asset.scene)
-
-                    val timeOfDayMatches = prefs.timeOfDay.contains(timeOfDay.toString())
-                    val sceneMatches = prefs.scene.contains(scene.toString())
-
-                    if (timeOfDayMatches && sceneMatches && prefs.enabled) {
+                    if (prefs.enabled) {
                         videos.add(
                             AerialMedia(
                                 asset.uriAtQuality(quality),
@@ -403,13 +397,11 @@ class CustomFeedProvider(
                                 source = AerialMediaSource.CUSTOM,
                                 metadata =
                                     AerialMediaMetadata(
-                                        timeOfDay = timeOfDay,
-                                        scene = scene,
+                                        timeOfDay = TimeOfDay.UNKNOWN,
+                                        scene = SceneType.UNKNOWN,
                                     ),
                             ),
                         )
-                    } else if (prefs.enabled) {
-                        Timber.d("Filtering out video: ${asset.description}")
                     }
 
                     val data =

@@ -13,6 +13,7 @@ class Comm1Video : AbstractVideo() {
             when (quality) {
                 VideoQuality.VIDEO_1080_SDR -> video1080sdr
                 VideoQuality.VIDEO_4K_SDR -> video4ksdr
+                VideoQuality.VIDEO_1080_H264 -> video1080h264
                 else -> video1080h264
             }.toString()
         return url.toUri()

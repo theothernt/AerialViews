@@ -34,6 +34,13 @@
         <item>~.8GB</item>
         <item>~1.5GB</item>
     </string-array>
+
+    <!-- Custom Feed Data Usage -->
+    <string-array name="custom_feed_data_usage_values" translatable="false">
+        <item>~3GB</item>
+        <item>~2GB</item>
+        <item>~4GB</item>
+    </string-array>
     <string-array name="comm2_videos_data_usage_values" translatable="false">
         <item>~4GB</item>
         <item>~3GB</item>
@@ -191,6 +198,19 @@
         <item>VIDEO_4K_SDR</item>
     </string-array>
     <string name="amazon_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
+    <!-- Custom Feed Video Options -->
+    <string-array name="custom_feed_quality_entries" translatable="false">
+        <item>1080p H.264</item>
+        <item>1080p HEVC</item>
+        <item>4K HEVC</item>
+    </string-array>
+    <string-array name="custom_feed_quality_values" translatable="false">
+        <item>VIDEO_1080_H264</item>
+        <item>VIDEO_1080_SDR</item>
+        <item>VIDEO_4K_SDR</item>
+    </string-array>
+    <string name="custom_feed_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
     <!-- Clock format -->
     <string name="clock_system_default">System default</string>
