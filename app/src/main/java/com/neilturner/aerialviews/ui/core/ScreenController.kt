@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.databinding.VideoViewBinding
+import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
@@ -186,7 +187,7 @@ class ScreenController(
                 typeface = FontHelper.getTypeface(context, GeneralPrefs.fontTypeface, GeneralPrefs.loadingTextWeight)
             }
         } else {
-            loadingText.visibility = View.INVISIBLE
+            loadingContainer.visibility = View.INVISIBLE
         }
 
         // Setup overlays and set initial positions
@@ -253,15 +254,15 @@ class ScreenController(
 
             // Build playlist and start screensaver
             val mediaResult =
-                MediaService(context).fetchMedia { isCached ->
+                MediaService(context).fetchMedia { status ->
                     mainScope.launch {
-                        if (isCached) {
-                            loadingText.text = resources.getString(R.string.loading_resuming)
-                            loadingSpinner.visibility = View.GONE
-                        } else {
-                            loadingText.text = resources.getString(R.string.loading_building)
-                            loadingSpinner.visibility = View.VISIBLE
-                        }
+                        loadingText.text =
+                            when (status) {
+                                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
+                                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
+                                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
+                            }
+                        loadingSpinner.visibility = View.VISIBLE
                     }
                 }
             playlist = mediaResult.mediaPlaylist

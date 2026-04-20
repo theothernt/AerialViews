@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -128,27 +129,31 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(onStatus: (isCached: Boolean) -> Unit = {}): MediaFetchResult =
+    suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
             val settingsHash = config.buildHash()
             val cacheRepo =
                 com.neilturner.aerialviews.data
                     .PlaylistCacheRepository(context)
 
-            if (cacheRepo.isCacheValid(settingsHash)) {
-                val cached = cacheRepo.getCachedPlaylist()
-                if (cached != null) {
-                    onStatus(true)
-                    Timber.i("MediaService: USING CACHED PLAYLIST")
-                    return@withContext cached
+            if (GeneralPrefs.enablePlaylistCache) {
+                if (cacheRepo.isCacheValid(settingsHash)) {
+                    val cached = cacheRepo.getCachedPlaylist()
+                    if (cached != null) {
+                        onStatus(LoadingStatus.RESUMING)
+                        Timber.i("MediaService: USING CACHED PLAYLIST")
+                        return@withContext cached
+                    } else {
+                        Timber.w("MediaService: Cache reported valid but failed to load")
+                    }
                 } else {
-                    Timber.w("MediaService: Cache reported valid but failed to load")
+                    Timber.i("MediaService: Cache INVALID or missing, fetching fresh items")
                 }
+                onStatus(LoadingStatus.BUILDING)
             } else {
-                Timber.i("MediaService: Cache INVALID or DISABLED, fetching fresh items")
+                Timber.i("MediaService: Cache DISABLED, fetching fresh items")
+                onStatus(LoadingStatus.LOADING)
             }
-
-            onStatus(false)
 
             val (media, tracks) = buildProviderContent(providers)
 

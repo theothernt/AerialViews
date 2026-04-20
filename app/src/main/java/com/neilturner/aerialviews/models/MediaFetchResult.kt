@@ -7,3 +7,9 @@ data class MediaFetchResult(
     val musicPlaylist: MusicPlaylist?,
     val musicResumeIndex: Int = 0,
 )
+
+enum class LoadingStatus {
+    LOADING,
+    BUILDING,
+    RESUMING
+}
