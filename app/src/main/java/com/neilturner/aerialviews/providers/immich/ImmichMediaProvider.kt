@@ -90,8 +90,28 @@ class ImmichMediaProvider(
             return Pair(media, "No files found")
         }
 
+        val assetsForMapping =
+            if (prefs.smartSlideshowEnabled) {
+                val gap = prefs.smartSlideshowGapMinutes.toIntOrNull() ?: 30
+                val exemptPattern =
+                    prefs.smartSlideshowExemptAlbumPattern
+                        .takeIf { it.isNotBlank() }
+                        ?.let {
+                            try {
+                                Regex(it)
+                            } catch (e: Exception) {
+                                Timber.w(e, "Invalid exempt album pattern: '%s'", it)
+                                null
+                            }
+                        }
+                val exemptKeep = (prefs.smartSlideshowExemptPercent.toIntOrNull() ?: 100).coerceIn(0, 100) / 100.0
+                ImmichClusterer.cluster(assetResults.allAssets, gap, exemptPattern, exemptKeep)
+            } else {
+                assetResults.allAssets
+            }
+
         // Process assets and create media list
-        val processResults = mapper.processAssets(assetResults.allAssets)
+        val processResults = mapper.processAssets(assetsForMapping)
         media.addAll(processResults.media)
 
         // Build summary message
