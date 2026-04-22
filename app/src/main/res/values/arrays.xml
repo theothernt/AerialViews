@@ -260,10 +260,14 @@
         <item>POI</item>
     </string-array>
     <string name="description_video_default" translatable="false">POI</string>
+
+    <string name="desc_manifest_disabled">Disabled</string>
+    <string name="desc_manifest_short">Place name or short description</string>
+    <string name="desc_manifest_poi">Available in many languages, which change as the video plays</string>
     <string-array name="description_video_manifest_entries">
-        <item>Disabled</item>
-        <item>Place name or short description</item>
-        <item>Available in many languages, which change as the video plays</item>
+        <item>@string/desc_manifest_disabled</item>
+        <item>@string/desc_manifest_short</item>
+        <item>@string/desc_manifest_poi</item>
     </string-array>
 
     <!-- Use filename as description -->
