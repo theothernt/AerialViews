@@ -1171,6 +1171,21 @@
         <item>1440</item>
     </string-array>
 
+    <string-array name="photo_scale_face_off_screen_entries" translatable="false">
+        <item>Face fully in view</item>
+        <item>Up to 10% off-screen</item>
+        <item>Up to 20% off-screen</item>
+        <item>Up to 30% off-screen</item>
+        <item>Up to 40% off-screen</item>
+    </string-array>
+    <string-array name="photo_scale_face_off_screen_values" translatable="false">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+
     <string-array name="immich_smart_slideshow_exempt_percent_entries" translatable="false">
         <item>100% (keep all)</item>
         <item>75%</item>

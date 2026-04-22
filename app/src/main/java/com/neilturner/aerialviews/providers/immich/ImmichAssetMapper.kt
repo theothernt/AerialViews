@@ -6,6 +6,8 @@ import com.neilturner.aerialviews.models.prefs.ImmichAssetPrefs
 import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
+import com.neilturner.aerialviews.models.videos.ClusterAlternate
+import com.neilturner.aerialviews.models.videos.NormalizedRect
 import com.neilturner.aerialviews.utils.FileHelper
 import timber.log.Timber
 
@@ -33,6 +35,7 @@ class ImmichAssetMapper(
     fun processAssets(
         assets: List<Asset>,
         alternatesByPrimaryId: Map<String, List<Asset>> = emptyMap(),
+        faceRectByAssetId: Map<String, NormalizedRect> = emptyMap(),
     ): ProcessResults {
         val media = mutableListOf<AerialMedia>()
         var excluded = 0
@@ -59,11 +62,17 @@ class ImmichAssetMapper(
 
                 val exif = extractExifMetadata(asset)
                 val uri = urlBuilder.getAssetUri(asset.id, isVideo)
-                val altUris =
+                val face = faceRectByAssetId[asset.id]
+                val altEntries =
                     alternatesByPrimaryId[asset.id]
                         ?.filter { FileHelper.isSupportedImageType(it.originalPath) == isImage &&
                                    FileHelper.isSupportedVideoType(it.originalPath) == isVideo }
-                        ?.map { urlBuilder.getAssetUri(it.id, isVideo) }
+                        ?.map { altAsset ->
+                            ClusterAlternate(
+                                uri = urlBuilder.getAssetUri(altAsset.id, isVideo),
+                                subjectRect = faceRectByAssetId[altAsset.id],
+                            )
+                        }
                         .orEmpty()
                 val item =
                     AerialMedia(
@@ -72,8 +81,9 @@ class ImmichAssetMapper(
                             AerialMediaMetadata(
                                 albumName = asset.albumName.orEmpty(),
                                 exif = exif,
+                                subjectRect = face,
                             ),
-                        clusterAlternates = altUris,
+                        clusterAlternates = altEntries,
                     ).apply {
                         source = AerialMediaSource.IMMICH
                         type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE

@@ -11,11 +11,16 @@ data class AerialMedia(
     var type: AerialMediaType = AerialMediaType.VIDEO,
     var source: AerialMediaSource = AerialMediaSource.UNKNOWN,
     var metadata: AerialMediaMetadata = AerialMediaMetadata(),
-    // Alternate URIs that belong to the same logical slot (e.g. other members of a
-    // temporal cluster from the Immich smart slideshow). When non-empty, the renderer
-    // picks one at random — including `uri` itself — every time the slot is shown,
-    // so across playlist loops the user sees variety within the cluster.
-    var clusterAlternates: List<Uri> = emptyList(),
+    // Other members of the same logical slot (e.g. temporal-cluster siblings from the
+    // Immich smart slideshow). Each carries its own URI plus — when face-aware crop is
+    // enabled — its own per-photo subject rectangle, so the renderer can randomize
+    // across cluster members without inheriting a mis-aligned face bbox from the primary.
+    var clusterAlternates: List<ClusterAlternate> = emptyList(),
+)
+
+data class ClusterAlternate(
+    val uri: Uri,
+    val subjectRect: NormalizedRect? = null,
 )
 
 data class AerialMediaMetadata(
@@ -26,7 +31,22 @@ data class AerialMediaMetadata(
     var exif: AerialExifMetadata = AerialExifMetadata(),
     var albumName: String = "",
     var title: String = "",
+    // Normalized (0..1 of image width/height) rect around a primary subject in the photo,
+    // used by portrait crop/pan logic to keep the subject on-screen.
+    var subjectRect: NormalizedRect? = null,
 )
+
+/** Rectangle in normalized image coordinates where each field is 0..1 of image width/height. */
+data class NormalizedRect(
+    val left: Float,
+    val top: Float,
+    val right: Float,
+    val bottom: Float,
+) {
+    val centerY: Float get() = (top + bottom) / 2f
+    val height: Float get() = bottom - top
+    val area: Float get() = (right - left) * (bottom - top)
+}
 
 data class AerialExifMetadata(
     var date: String? = null,

@@ -654,6 +654,10 @@
     <string name="appearance_video_scale_title">Video scaling</string>
     <string name="appearance_photo_scale_landscape_title">Landscape Photo scaling</string>
     <string name="appearance_photo_scale_portrait_title">Portrait Photo scaling</string>
+    <string name="appearance_photo_scale_face_aware_title">Face-aware portrait crop</string>
+    <string name="appearance_photo_scale_face_aware_summary">Use detected face bounding boxes (Immich only) to bias portrait center-crop placement and narrow Ken Burns pan so the largest face stays on-screen. Landscape photos unaffected.</string>
+    <string name="appearance_photo_scale_face_off_screen_title">Face off-screen at pan extremes</string>
+    <string name="appearance_photo_scale_face_off_screen_summary">How much of the face is allowed to slip off the viewport at the ends of a Ken Burns pan. Larger values give a wider, more cinematic pan at the cost of face not always being fully visible.</string>
     <string name="category_background_blur">Background blur</string>
     <string name="appearance_photo_background_blur_title">Enable background blur</string>
     <string name="appearance_photo_background_blur_summary">Show a blurred version of the photo behind the foreground image to fill empty areas</string>
