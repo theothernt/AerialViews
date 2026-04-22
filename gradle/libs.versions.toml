@@ -1,5 +1,5 @@
 [versions]
-agp = "9.1.1"
+agp = "9.2.0"
 kotlin = "2.3.20"
 kotlin-serialization = "1.11.0"
 google-services = "4.4.4"
@@ -17,7 +17,7 @@ firebase-bom = "34.12.0"
 firebase-crashlytics-plugin = "3.0.7"
 firebase-perf-plugin = "2.0.2"
 
-ktor = "3.4.2"
+ktor = "3.4.3"
 gradle-doctor = "0.12.1"
 kotlinter-gradle = "5.4.2"
 leakcanary = "3.0-alpha-8"
