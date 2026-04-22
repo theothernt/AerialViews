@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
@@ -35,9 +36,20 @@ class CacheFragment : MenuStateFragment() {
         val clearCachePref = findPreference<Preference>("clear_playlist_cache")
         clearCachePref?.onPreferenceClickListener =
             Preference.OnPreferenceClickListener {
-                clearCache()
+                showClearCacheConfirmation()
                 true
             }
+    }
+
+    private fun showClearCacheConfirmation() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.playlist_cache_clear_title)
+            .setMessage(R.string.playlist_cache_clear_confirmation)
+            .setPositiveButton(R.string.button_ok) { _, _ ->
+                clearCache()
+            }
+            .setNegativeButton(R.string.button_cancel, null)
+            .show()
     }
 
     private fun clearCache() {

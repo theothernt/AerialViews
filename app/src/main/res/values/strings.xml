@@ -728,6 +728,7 @@
     <string name="playlist_cache_status_empty">No cache data.</string>
     <string name="playlist_cache_status_unknown">Unknown.</string>
     <string name="playlist_cache_cleared">Cache cleared.</string>
+    <string name="playlist_cache_clear_confirmation">Are you sure you want to clear the playlist cache?</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="dpad_button_press_title">D-Pad or Button Press</string>
