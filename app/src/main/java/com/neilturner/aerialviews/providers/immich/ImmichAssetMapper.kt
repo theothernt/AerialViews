@@ -30,7 +30,10 @@ class ImmichAssetMapper(
             }
         }
 
-    fun processAssets(assets: List<Asset>): ProcessResults {
+    fun processAssets(
+        assets: List<Asset>,
+        alternatesByPrimaryId: Map<String, List<Asset>> = emptyMap(),
+    ): ProcessResults {
         val media = mutableListOf<AerialMedia>()
         var excluded = 0
         var videos = 0
@@ -56,6 +59,12 @@ class ImmichAssetMapper(
 
                 val exif = extractExifMetadata(asset)
                 val uri = urlBuilder.getAssetUri(asset.id, isVideo)
+                val altUris =
+                    alternatesByPrimaryId[asset.id]
+                        ?.filter { FileHelper.isSupportedImageType(it.originalPath) == isImage &&
+                                   FileHelper.isSupportedVideoType(it.originalPath) == isVideo }
+                        ?.map { urlBuilder.getAssetUri(it.id, isVideo) }
+                        .orEmpty()
                 val item =
                     AerialMedia(
                         uri,
@@ -64,6 +73,7 @@ class ImmichAssetMapper(
                                 albumName = asset.albumName.orEmpty(),
                                 exif = exif,
                             ),
+                        clusterAlternates = altUris,
                     ).apply {
                         source = AerialMediaSource.IMMICH
                         type = if (isVideo) AerialMediaType.VIDEO else AerialMediaType.IMAGE

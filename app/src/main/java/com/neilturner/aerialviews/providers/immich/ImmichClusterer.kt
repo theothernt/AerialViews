@@ -13,13 +13,24 @@ object ImmichClusterer {
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"),
         )
 
+    data class Result(
+        val representatives: List<Asset>,
+        /**
+         * Per-cluster alternate members, keyed by representative asset id.
+         * Callers can use this to present variety across playlist loops —
+         * pick a random alternate each time the slot is rendered instead of
+         * freezing the choice at fetch time.
+         */
+        val alternatesByPrimaryId: Map<String, List<Asset>> = emptyMap(),
+    )
+
     fun cluster(
         assets: List<Asset>,
         gapMinutes: Int,
         exemptPattern: Regex? = null,
         exemptKeepFraction: Double = 1.0,
-    ): List<Asset> {
-        if (assets.isEmpty() || gapMinutes <= 0) return assets
+    ): Result {
+        if (assets.isEmpty() || gapMinutes <= 0) return Result(assets)
 
         val exemptAll = mutableListOf<Asset>()
         val dated = mutableListOf<Pair<Asset, Long>>()
@@ -48,12 +59,17 @@ object ImmichClusterer {
 
         val gapSeconds = gapMinutes.toLong() * 60
         val representatives = mutableListOf<Asset>()
+        val alternates = mutableMapOf<String, List<Asset>>()
         var clusterStart = 0
         for (i in 1..dated.size) {
             val breakHere = i == dated.size || (dated[i].second - dated[i - 1].second) > gapSeconds
             if (breakHere) {
-                val cluster = dated.subList(clusterStart, i)
-                representatives += cluster.random().first
+                val clusterAssets = dated.subList(clusterStart, i).map { it.first }
+                val rep = clusterAssets.random()
+                representatives += rep
+                if (clusterAssets.size > 1) {
+                    alternates[rep.id] = clusterAssets.filter { it.id != rep.id }
+                }
                 clusterStart = i
             }
         }
@@ -62,9 +78,10 @@ object ImmichClusterer {
         representatives += exemptKept
 
         Timber.i(
-            "ImmichClusterer: %d in → %d clusters + %d undated + %d/%d exempt (gap=%d min, keep=%.2f)",
+            "ImmichClusterer: %d in → %d clusters (with %d alternates-carrying) + %d undated + %d/%d exempt (gap=%d min, keep=%.2f)",
             assets.size,
             representatives.size - undated.size - exemptKept.size,
+            alternates.size,
             undated.size,
             exemptKept.size,
             exemptAll.size,
@@ -72,7 +89,7 @@ object ImmichClusterer {
             exemptKeepFraction,
         )
 
-        return representatives
+        return Result(representatives, alternates)
     }
 
     private fun parseEpochSeconds(raw: String): Long? {

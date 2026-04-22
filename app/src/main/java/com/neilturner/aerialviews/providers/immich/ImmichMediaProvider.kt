@@ -90,7 +90,7 @@ class ImmichMediaProvider(
             return Pair(media, "No files found")
         }
 
-        val assetsForMapping =
+        val clusterResult =
             if (prefs.smartSlideshowEnabled) {
                 val gap = prefs.smartSlideshowGapMinutes.toIntOrNull() ?: 30
                 val exemptPattern =
@@ -107,11 +107,15 @@ class ImmichMediaProvider(
                 val exemptKeep = (prefs.smartSlideshowExemptPercent.toIntOrNull() ?: 100).coerceIn(0, 100) / 100.0
                 ImmichClusterer.cluster(assetResults.allAssets, gap, exemptPattern, exemptKeep)
             } else {
-                assetResults.allAssets
+                ImmichClusterer.Result(assetResults.allAssets)
             }
 
         // Process assets and create media list
-        val processResults = mapper.processAssets(assetsForMapping)
+        val processResults =
+            mapper.processAssets(
+                clusterResult.representatives,
+                clusterResult.alternatesByPrimaryId,
+            )
         media.addAll(processResults.media)
 
         // Build summary message
