@@ -1,9 +1,12 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Matrix
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
@@ -57,6 +60,11 @@ class ImagePlayerView : FrameLayout {
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
+
+    private var kenBurnsAnimator: ValueAnimator? = null
+    private var pendingKenBurns: KenBurnsSetup? = null
+
+    private data class KenBurnsSetup(val scale: Float, val overflow: Float)
 
     /**
      * Two-token sync gate: ensures [runSetupFinishedRunnable] fires only after *both*
@@ -332,6 +340,9 @@ class ImagePlayerView : FrameLayout {
 
     fun stop() {
         removeCallbacks(finishedRunnable)
+        kenBurnsAnimator?.cancel()
+        kenBurnsAnimator = null
+        pendingKenBurns = null
         setForegroundDrawable(null)
         pausedTimestamp = 0
         remainingDuration = 0
@@ -341,6 +352,7 @@ class ImagePlayerView : FrameLayout {
     fun pauseTimer() {
         pausedTimestamp = System.currentTimeMillis()
         removeCallbacks(finishedRunnable)
+        kenBurnsAnimator?.takeIf { it.isRunning }?.pause()
     }
 
     fun resumeTimer(pauseDuration: Long) {
@@ -348,6 +360,7 @@ class ImagePlayerView : FrameLayout {
             remainingDuration = maxOf(0, remainingDuration - pauseDuration)
             if (remainingDuration > 0) {
                 postDelayed(finishedRunnable, remainingDuration)
+                kenBurnsAnimator?.takeIf { it.isPaused }?.resume()
             } else {
                 // If time has expired, finish immediately
                 listener?.onImageFinished()
@@ -360,6 +373,26 @@ class ImagePlayerView : FrameLayout {
         width: Int,
         height: Int,
     ) {
+        kenBurnsAnimator?.cancel()
+        pendingKenBurns = null
+
+        val aspect = AspectRatio.fromDimensions(width, height)
+        Timber.i("Aspect ratio: $aspect")
+        val pref =
+            when (aspect) {
+                AspectRatio.SQUARE, AspectRatio.PORTRAIT -> GeneralPrefs.photoScalePortrait
+                AspectRatio.LANDSCAPE -> GeneralPrefs.photoScaleLandscape
+            }
+
+        if (pref == PhotoScale.KEN_BURNS_VERTICAL) {
+            val setup = prepareVerticalPan(width, height)
+            if (setup != null) {
+                foregroundImageView.scaleType = ImageView.ScaleType.MATRIX
+                applyVerticalPanMatrix(setup, 0f)
+                pendingKenBurns = setup
+                return
+            }
+        }
         foregroundImageView.scaleType = resolveForegroundScaleType(width, height)
     }
 
@@ -368,7 +401,6 @@ class ImagePlayerView : FrameLayout {
         height: Int,
     ): ImageView.ScaleType {
         val aspect = AspectRatio.fromDimensions(width, height)
-        Timber.i("Aspect ratio: $aspect")
         return when (aspect) {
             AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
             AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
@@ -376,12 +408,58 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =
-        try {
-            ImageView.ScaleType.valueOf(scale.toString())
-        } catch (e: Exception) {
-            Timber.e(e)
-            ImageView.ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+        when (scale) {
+            PhotoScale.CENTER_CROP -> ImageView.ScaleType.CENTER_CROP
+            PhotoScale.FIT_CENTER -> ImageView.ScaleType.FIT_CENTER
+            // KEN_BURNS_VERTICAL on images that don't qualify (landscape, square, or container
+            // not yet measured) falls back to center-crop so playback never breaks.
+            PhotoScale.KEN_BURNS_VERTICAL, null -> ImageView.ScaleType.CENTER_CROP
         }
+
+    /**
+     * Compute the matrix scale factor and vertical overflow needed to pan a taller-than-container
+     * image vertically with the image-width matching the container width. Returns null when the
+     * container isn't measured yet or the image doesn't actually overflow vertically.
+     */
+    private fun prepareVerticalPan(
+        imageWidth: Int,
+        imageHeight: Int,
+    ): KenBurnsSetup? {
+        val view = foregroundImageView
+        val containerW = view.width
+        val containerH = view.height
+        if (containerW <= 0 || containerH <= 0 || imageWidth <= 0 || imageHeight <= 0) return null
+        val scale = containerW.toFloat() / imageWidth.toFloat()
+        val overflow = imageHeight.toFloat() * scale - containerH.toFloat()
+        if (overflow <= 0f) return null
+        return KenBurnsSetup(scale = scale, overflow = overflow)
+    }
+
+    private fun applyVerticalPanMatrix(
+        setup: KenBurnsSetup,
+        translateY: Float,
+    ) {
+        val m = Matrix()
+        m.setScale(setup.scale, setup.scale)
+        m.postTranslate(0f, translateY)
+        foregroundImageView.imageMatrix = m
+    }
+
+    private fun startKenBurnsIfPending(durationMs: Long) {
+        val setup = pendingKenBurns ?: return
+        if (durationMs <= 0) return
+        // Alternate start direction per slot for visual variety.
+        val downward = (System.currentTimeMillis() / 1000L) % 2L == 0L
+        val startY = if (downward) 0f else -setup.overflow
+        val endY = if (downward) -setup.overflow else 0f
+        kenBurnsAnimator =
+            ValueAnimator.ofFloat(startY, endY).apply {
+                duration = durationMs
+                interpolator = LinearInterpolator()
+                addUpdateListener { applyVerticalPanMatrix(setup, it.animatedValue as Float) }
+                start()
+            }
+    }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
@@ -405,6 +483,7 @@ class ImagePlayerView : FrameLayout {
 
         Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
+        startKenBurnsIfPending(duration)
         postDelayed(finishedRunnable, durationMinusFade)
     }
 

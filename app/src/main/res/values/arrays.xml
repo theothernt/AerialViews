@@ -759,13 +759,16 @@
     <!-- Photo scale/fill options -->
     <string name="photo_scale_fill_crop">Fill with crop*</string>
     <string name="photo_scale_no_crop">Scale without crop</string>
+    <string name="photo_scale_ken_burns_vertical">Pan vertically*</string>
     <string-array name="photo_scale_entries" translatable="false">
         <item>@string/photo_scale_fill_crop</item>
         <item>@string/photo_scale_no_crop</item>
+        <item>@string/photo_scale_ken_burns_vertical</item>
     </string-array>
     <string-array name="photo_scale_values" translatable="false">
         <item>CENTER_CROP</item>
         <item>FIT_CENTER</item>
+        <item>KEN_BURNS_VERTICAL</item>
     </string-array>
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
