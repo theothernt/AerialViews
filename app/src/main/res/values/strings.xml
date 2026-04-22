@@ -727,6 +727,12 @@
     <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks cached.</string>
     <string name="playlist_cache_status_empty">No cache data.</string>
     <string name="playlist_cache_status_unknown">Unknown.</string>
+    <string name="playlist_cache_status_index">Current index: %1$d</string>
+    <string name="playlist_cache_status_expiry_d">%1$d day(s)</string>
+    <string name="playlist_cache_status_expiry_h">%1$d hour(s)</string>
+    <string name="playlist_cache_status_expiry_m">%1$d minute(s)</string>
+    <string name="playlist_cache_status_expiry_d_h">%1$d day(s), %2$d hour(s)</string>
+    <string name="playlist_cache_status_expiry_h_m">%1$d hour(s), %2$d minute(s)</string>
     <string name="playlist_cache_cleared">Cache cleared.</string>
     <string name="playlist_cache_clear_confirmation">Are you sure you want to clear the playlist cache?</string>
 

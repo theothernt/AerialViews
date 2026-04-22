@@ -8,11 +8,14 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.AerialDatabase
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
+import com.neilturner.aerialviews.data.PlaylistStateEntity
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 
 class CacheFragment : MenuStateFragment() {
     private lateinit var cacheRepository: PlaylistCacheRepository
@@ -83,15 +86,66 @@ class CacheFragment : MenuStateFragment() {
             withContext(Dispatchers.Main) {
                 val statusPref = findPreference<Preference>("playlist_cache_status")
                 if (state != null) {
-                    val statusText =
-                        getString(
-                            R.string.playlist_cache_status_active,
-                            state.totalMediaItems,
-                            state.totalMusicTracks,
-                        )
+                    val statusText = buildStatusText(state)
                     statusPref?.summary = statusText
                 } else {
                     statusPref?.summary = getString(R.string.playlist_cache_status_empty)
+                }
+            }
+        }
+    }
+
+    private fun buildStatusText(state: PlaylistStateEntity): String {
+        val baseText = getString(
+            R.string.playlist_cache_status_active,
+            state.totalMediaItems,
+            state.totalMusicTracks,
+        )
+
+        val indexText = getString(R.string.playlist_cache_status_index, state.mediaPosition + 1) // 1-based for display
+
+        val refreshIntervalStr = GeneralPrefs.playlistCacheRefreshInterval
+        val intervalWeeks = refreshIntervalStr.toIntOrNull() ?: -1
+
+        return when {
+            intervalWeeks == -1 -> {
+                // No time-based expiry (until end of playlist)
+                "$baseText. $indexText"
+            }
+            else -> {
+                // Time-based expiry
+                val cacheAgeMs = System.currentTimeMillis() - state.cachedAt
+                val maxAgeMs = intervalWeeks * 7L * 24L * 60L * 60L * 1000L
+                val remainingMs = maxAgeMs - cacheAgeMs
+                
+                if (remainingMs <= 0) {
+                    // Cache has expired
+                    "$baseText. $indexText (Expired)"
+                } else {
+                    // Format remaining time
+                    val remainingDays = TimeUnit.MILLISECONDS.toDays(remainingMs)
+                    val remainingHours = TimeUnit.MILLISECONDS.toHours(remainingMs) % 24
+                    val remainingMinutes = TimeUnit.MILLISECONDS.toMinutes(remainingMs) % 60
+                    
+                    val timeText = when {
+                        remainingDays.compareTo(0) > 0 -> {
+                            if (remainingHours.compareTo(0) > 0) {
+                                getString(R.string.playlist_cache_status_expiry_d_h, remainingDays, remainingHours)
+                            } else {
+                                getString(R.string.playlist_cache_status_expiry_d, remainingDays)
+                            }
+                        }
+                        remainingHours.compareTo(0) > 0 -> {
+                            if (remainingMinutes.compareTo(0) > 0) {
+                                getString(R.string.playlist_cache_status_expiry_h_m, remainingHours, remainingMinutes)
+                            } else {
+                                getString(R.string.playlist_cache_status_expiry_h, remainingHours)
+                            }
+                        }
+                        else -> getString(R.string.playlist_cache_status_expiry_m, remainingMinutes)
+                    }
+                    
+                    "$baseText. $indexText ($timeText)"
                 }
             }
         }
