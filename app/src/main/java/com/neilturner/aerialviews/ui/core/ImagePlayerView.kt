@@ -2,8 +2,10 @@ package com.neilturner.aerialviews.ui.core
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.Animatable
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.animation.LinearInterpolator
@@ -30,6 +32,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.SplashCache
 import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
@@ -63,6 +66,8 @@ class ImagePlayerView : FrameLayout {
 
     private var kenBurnsAnimator: ValueAnimator? = null
     private var pendingKenBurns: KenBurnsSetup? = null
+
+    private var splashSaveCountdown: Int = SPLASH_SAVE_EVERY_N_SLOTS
 
     /**
      * Precomputed state for one vertical pan. Start/end translate-Y are the matrix
@@ -335,6 +340,9 @@ class ImagePlayerView : FrameLayout {
 
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
+        // How often (in displayed photos) to save a loading-splash snapshot.
+        // ~50 slots at slideshow_speed=25s ≈ one write per 20 min — gentle on flash.
+        private const val SPLASH_SAVE_EVERY_N_SLOTS = 50
     }
 
     private fun resolveTargetSize(): Pair<Int, Int> {
@@ -602,6 +610,33 @@ class ImagePlayerView : FrameLayout {
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
         startKenBurnsIfPending(duration)
         postDelayed(finishedRunnable, durationMinusFade)
+        maybeSaveSplashSnapshot()
+    }
+
+    /**
+     * Periodically persist the currently-shown bitmap as the next-launch splash so the
+     * loading screen shows something meaningful instead of a black rectangle. Runs at
+     * most once every [SPLASH_SAVE_EVERY_N_SLOTS] rendered photos, and is a best-effort
+     * IO-scope job — failures are swallowed so playback is never affected.
+     */
+    private fun maybeSaveSplashSnapshot() {
+        if (--splashSaveCountdown > 0) return
+        splashSaveCountdown = SPLASH_SAVE_EVERY_N_SLOTS
+        val bmp = (foregroundImageView.drawable as? BitmapDrawable)?.bitmap ?: return
+        if (bmp.isRecycled) return
+        val appContext = context.applicationContext
+        ioScope.launch { SplashCache.save(appContext, bmp) }
+    }
+
+    /**
+     * Set the given bitmap as the foreground image without starting any timer or
+     * triggering playback callbacks. Used by the screensaver init to paint the
+     * previously-cached snapshot behind the loading UI instead of a black screen.
+     * The next real image load replaces this bitmap on arrival.
+     */
+    fun showSplashBitmap(bitmap: Bitmap) {
+        foregroundImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        setForegroundDrawable(BitmapDrawable(resources, bitmap))
     }
 
     private fun markBackgroundReady(token: Long) {

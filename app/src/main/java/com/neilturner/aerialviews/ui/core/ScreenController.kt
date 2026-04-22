@@ -52,6 +52,7 @@ import com.neilturner.aerialviews.utils.GradientHelper
 import com.neilturner.aerialviews.utils.OverlayHelper
 import com.neilturner.aerialviews.utils.PermissionHelper
 import com.neilturner.aerialviews.utils.RefreshRateHelper
+import com.neilturner.aerialviews.utils.SplashCache
 import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.WindowHelper
 import kotlinx.coroutines.CoroutineScope
@@ -235,6 +236,9 @@ class ScreenController(
             gradientBottomView.background = GradientHelper.smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
             gradientBottomView.visibility = View.VISIBLE
         }
+
+        // Show a previously-cached photo behind the loading UI instead of a black screen.
+        SplashCache.loadBitmap(context)?.let(imagePlayer::showSplashBitmap)
 
         mainScope.launch {
             // Launch if we have permission
