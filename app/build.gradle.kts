@@ -190,6 +190,7 @@ dependencies {
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
     implementation(libs.bundles.exoplayer)
+    implementation(libs.media3.container)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
     implementation(libs.timber)

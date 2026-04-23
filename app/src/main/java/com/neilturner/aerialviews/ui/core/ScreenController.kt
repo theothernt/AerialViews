@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
-import androidx.media3.common.MediaMetadata
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
@@ -852,10 +851,10 @@ class ScreenController(
 
     override fun onVideoError() = handleError()
 
-    override fun onVideoMetadataExtracted(mediaMetadata: MediaMetadata) {
+    override fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata) {
         val media = currentMedia ?: return
-        Timber.i("Video metadata: %s", formatVideoMetadataForLog(mediaMetadata))
-        val changed = applyVideoMetadataToMedia(media, mediaMetadata)
+        Timber.i("Video metadata: %s", formatVideoMetadataForLog(metadata))
+        val changed = applyVideoMetadataToMedia(media, metadata)
 
         if (changed) {
             updateMetadataOverlayData(media)

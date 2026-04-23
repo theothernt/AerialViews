@@ -141,9 +141,6 @@ internal class MetadataResolver(
 
         return when (entry) {
             "LOCATION" -> {
-                if (media.type == AerialMediaType.VIDEO && media.source != AerialMediaSource.IMMICH) {
-                    return null
-                }
                 when (val location = resolveMediaLocation(context, media, locationType)) {
                     is MediaLocationResolution.Resolved -> {
                         ResolvedMetadata(

@@ -99,6 +99,7 @@ media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", versi
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-exoplayer" }
 media3-rtsp = { group = "androidx.media3", name = "media3-exoplayer-rtsp", version.ref = "media3-exoplayer" }
 media3-hls = { group = "androidx.media3", name = "media3-exoplayer-hls", version.ref = "media3-exoplayer" }
+media3-container = { group = "androidx.media3", name = "media3-container", version.ref = "media3-exoplayer" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }

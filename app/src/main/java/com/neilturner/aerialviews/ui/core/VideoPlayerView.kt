@@ -29,7 +29,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -351,7 +350,8 @@ class VideoPlayerView
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
-            listener?.onVideoMetadataExtracted(mediaMetadata)
+            val extractedMetadata = extractVideoMetadataFromTracks(exoPlayer.currentTracks)
+            listener?.onVideoMetadataExtracted(extractedMetadata)
         }
 
         private fun seek(backward: Boolean = false) {
@@ -481,7 +481,7 @@ class VideoPlayerView
 
             fun onVideoPlaybackSpeedChanged()
 
-            fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata)
+            fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata)
         }
 
         companion object {

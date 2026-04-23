@@ -1427,7 +1427,7 @@
 
     <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
     <string name="overlay_meta_vid_short_desc">Short Description</string>
-    <string name="overlay_meta_vid_location">Location (Immich)</string>
+    <string name="overlay_meta_vid_location">Location (Media/Immich)</string>
     <string name="overlay_meta_vid_date">Date taken (Media/Immich)</string>
     <string name="overlay_meta_vid_title">Title (Media)</string>
     <string name="overlay_meta_vid_description">Description (Media/Immich)</string>
