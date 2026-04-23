@@ -14,11 +14,6 @@ internal fun applyVideoMetadataToMedia(
         changed = true
     }
 
-    if (supportsEmbeddedVideoFileMetadata(media) && !extractedMetadata.description.isNullOrBlank()) {
-        media.metadata.exif.description = extractedMetadata.description
-        changed = true
-    }
-
     val shouldIgnoreFileDate =
         media.source == AerialMediaSource.IMMICH &&
             !media.metadata.exif.date

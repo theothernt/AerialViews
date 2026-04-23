@@ -51,7 +51,6 @@ internal fun extractVideoMetadataFromTrackFormats(
     var state: String? = null
     var country: String? = null
     var parsedTitle: String? = null
-    var parsedDescription: String? = null
 
     formats.forEach { format ->
         val metadata = format.metadata ?: return@forEach
@@ -89,9 +88,6 @@ internal fun extractVideoMetadataFromTrackFormats(
                     if (parsedTitle == null && !mdtaData.title.isNullOrBlank()) {
                         parsedTitle = mdtaData.title
                     }
-                    if (parsedDescription == null && !mdtaData.description.isNullOrBlank()) {
-                        parsedDescription = mdtaData.description
-                    }
                 }
 
                 is Mp4TimestampData -> {
@@ -118,7 +114,7 @@ internal fun extractVideoMetadataFromTrackFormats(
 
     return ExtractedVideoMetadata(
         title = mediaMetadata.title.normalize() ?: parsedTitle,
-        description = mediaMetadata.description.normalize() ?: parsedDescription,
+        description = null,
         date = creationDate?.date,
         offset = creationDate?.offset,
         latitude = latitude,
@@ -142,7 +138,6 @@ private data class ParsedMdtaData(
     val state: String? = null,
     val country: String? = null,
     val title: String? = null,
-    val description: String? = null,
 )
 
 @OptIn(UnstableApi::class)
@@ -176,8 +171,6 @@ private fun parseMdtaMetadataEntry(entry: MdtaMetadataEntry): ParsedMdtaData {
         key.contains("city") -> ParsedMdtaData(city = value)
         key.contains("state") || key.contains("province") -> ParsedMdtaData(state = value)
         key.contains("country") -> ParsedMdtaData(country = value)
-        key.contains("description") || key.contains("comment") || key.contains("synopsis") ->
-            ParsedMdtaData(description = value)
         key.contains("title") || key.endsWith(".name") ->
             ParsedMdtaData(title = value)
         else -> ParsedMdtaData()

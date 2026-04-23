@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets
 
 internal class TrackMetadataExtractorTest {
     @Test
-    fun `extracts title and description from track metadata entries`() {
+    fun `extracts title from track metadata entries`() {
         val extracted =
             extractVideoMetadataFromTrackFormats(
                 createFormats(
@@ -23,7 +23,7 @@ internal class TrackMetadataExtractorTest {
             )
 
         assertEquals("Sea Cliffs", extracted.title)
-        assertEquals("Atlantic coast", extracted.description)
+        assertNull(extracted.description)
     }
 
     @Test
@@ -54,22 +54,6 @@ internal class TrackMetadataExtractorTest {
 
         assertEquals("1970:01:01 00:00:00", extracted.date)
         assertEquals("+00:00", extracted.offset)
-    }
-
-    @Test
-    fun `extracts description from mdta comment key`() {
-        val extracted =
-            extractVideoMetadataFromTrackFormats(
-                createFormats(
-                    MdtaMetadataEntry(
-                        "com.apple.quicktime.comment",
-                        "Golden hour over cliffs".toByteArray(StandardCharsets.UTF_8),
-                        MdtaMetadataEntry.TYPE_INDICATOR_STRING,
-                    ),
-                ),
-            )
-
-        assertEquals("Golden hour over cliffs", extracted.description)
     }
 
     @Test

@@ -29,7 +29,7 @@ internal class VideoMetadataHandlerTest {
 
         assertTrue(changed)
         assertEquals("Cliffs", media.metadata.title)
-        assertEquals("Ocean lookout", media.metadata.exif.description)
+        assertEquals(null, media.metadata.exif.description)
         assertEquals("2024:02:09 11:22:33", media.metadata.exif.date)
         assertEquals("+01:00", media.metadata.exif.offset)
         assertEquals(48.8566, media.metadata.exif.latitude)
