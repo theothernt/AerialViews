@@ -7,6 +7,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -258,6 +259,10 @@ class VideoPlayerView
                 }
             }
 
+            if (playbackState == Player.STATE_READY) {
+                emitTrackMetadata()
+            }
+
             if (!state.prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
 
@@ -350,6 +355,15 @@ class VideoPlayerView
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
+            emitTrackMetadata()
+        }
+
+        override fun onTracksChanged(tracks: Tracks) {
+            super.onTracksChanged(tracks)
+            emitTrackMetadata()
+        }
+
+        private fun emitTrackMetadata() {
             val extractedMetadata = extractVideoMetadataFromTracks(exoPlayer.currentTracks)
             listener?.onVideoMetadataExtracted(extractedMetadata)
         }

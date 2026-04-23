@@ -7,10 +7,13 @@ import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.container.MdtaMetadataEntry
 import androidx.media3.container.Mp4LocationData
+import androidx.media3.container.Mp4TimestampData
 import java.nio.charset.StandardCharsets
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -27,14 +30,13 @@ data class ExtractedVideoMetadata(
 )
 
 internal fun extractVideoMetadataFromTracks(tracks: Tracks): ExtractedVideoMetadata {
-    val selectedFormats = mutableListOf<Format>()
+    val formats = mutableListOf<Format>()
     tracks.groups.forEach { group ->
         for (trackIndex in 0 until group.length) {
-            if (!group.isTrackSelected(trackIndex)) continue
-            selectedFormats.add(group.getTrackFormat(trackIndex))
+            formats.add(group.getTrackFormat(trackIndex))
         }
     }
-    return extractVideoMetadataFromTrackFormats(selectedFormats)
+    return extractVideoMetadataFromTrackFormats(formats)
 }
 
 @OptIn(UnstableApi::class)
@@ -48,6 +50,8 @@ internal fun extractVideoMetadataFromTrackFormats(
     var city: String? = null
     var state: String? = null
     var country: String? = null
+    var parsedTitle: String? = null
+    var parsedDescription: String? = null
 
     formats.forEach { format ->
         val metadata = format.metadata ?: return@forEach
@@ -82,6 +86,20 @@ internal fun extractVideoMetadataFromTrackFormats(
                     if (country == null && !mdtaData.country.isNullOrBlank()) {
                         country = mdtaData.country
                     }
+                    if (parsedTitle == null && !mdtaData.title.isNullOrBlank()) {
+                        parsedTitle = mdtaData.title
+                    }
+                    if (parsedDescription == null && !mdtaData.description.isNullOrBlank()) {
+                        parsedDescription = mdtaData.description
+                    }
+                }
+
+                is Mp4TimestampData -> {
+                    if (creationDate == null) {
+                        parseMp4TimestampData(entry)?.let { parsed ->
+                            creationDate = parsed
+                        }
+                    }
                 }
             }
         }
@@ -99,8 +117,8 @@ internal fun extractVideoMetadataFromTrackFormats(
     }
 
     return ExtractedVideoMetadata(
-        title = mediaMetadata.title.normalize(),
-        description = mediaMetadata.description.normalize(),
+        title = mediaMetadata.title.normalize() ?: parsedTitle,
+        description = mediaMetadata.description.normalize() ?: parsedDescription,
         date = creationDate?.date,
         offset = creationDate?.offset,
         latitude = latitude,
@@ -123,6 +141,8 @@ private data class ParsedMdtaData(
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
+    val title: String? = null,
+    val description: String? = null,
 )
 
 @OptIn(UnstableApi::class)
@@ -156,8 +176,29 @@ private fun parseMdtaMetadataEntry(entry: MdtaMetadataEntry): ParsedMdtaData {
         key.contains("city") -> ParsedMdtaData(city = value)
         key.contains("state") || key.contains("province") -> ParsedMdtaData(state = value)
         key.contains("country") -> ParsedMdtaData(country = value)
+        key.contains("description") || key.contains("comment") || key.contains("synopsis") ->
+            ParsedMdtaData(description = value)
+        key.contains("title") || key.endsWith(".name") ->
+            ParsedMdtaData(title = value)
         else -> ParsedMdtaData()
     }
+}
+
+@OptIn(UnstableApi::class)
+private fun parseMp4TimestampData(timestampData: Mp4TimestampData): ParsedExifDate? {
+    val secondsSince1904 = timestampData.creationTimestampSeconds
+    if (secondsSince1904 <= 0) return null
+
+    val unixSeconds = secondsSince1904 - MP4_EPOCH_TO_UNIX_DELTA_SECONDS
+    if (unixSeconds < 0) return null
+
+    val formattedDate =
+        Instant
+            .ofEpochSecond(unixSeconds)
+            .atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss", Locale.ROOT))
+
+    return ParsedExifDate(date = formattedDate, offset = "+00:00")
 }
 
 private fun parseCreationDate(rawValue: String): ParsedExifDate? {
@@ -219,3 +260,4 @@ private fun parseIso6709(value: String): Pair<Double, Double>? {
 private fun CharSequence?.normalize(): String? = this?.toString()?.trim()?.takeIf { it.isNotBlank() }
 
 private val ISO_6709_REGEX = Regex("""([+-]\d+(?:\.\d+)?)([+-]\d+(?:\.\d+)?)/?""")
+private const val MP4_EPOCH_TO_UNIX_DELTA_SECONDS = 2_082_844_800L

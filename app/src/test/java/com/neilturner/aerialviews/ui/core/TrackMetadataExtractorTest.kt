@@ -6,6 +6,7 @@ import androidx.media3.common.Metadata
 import androidx.media3.common.MimeTypes
 import androidx.media3.container.MdtaMetadataEntry
 import androidx.media3.container.Mp4LocationData
+import androidx.media3.container.Mp4TimestampData
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
@@ -40,6 +41,35 @@ internal class TrackMetadataExtractorTest {
 
         assertEquals("2024:02:09 11:22:33", extracted.date)
         assertEquals("+01:00", extracted.offset)
+    }
+
+    @Test
+    fun `extracts creation date from mp4 timestamp data when mdta is absent`() {
+        val extracted =
+            extractVideoMetadataFromTrackFormats(
+                createFormats(
+                    Mp4TimestampData(2_082_844_800L, 2_082_844_800L),
+                ),
+            )
+
+        assertEquals("1970:01:01 00:00:00", extracted.date)
+        assertEquals("+00:00", extracted.offset)
+    }
+
+    @Test
+    fun `extracts description from mdta comment key`() {
+        val extracted =
+            extractVideoMetadataFromTrackFormats(
+                createFormats(
+                    MdtaMetadataEntry(
+                        "com.apple.quicktime.comment",
+                        "Golden hour over cliffs".toByteArray(StandardCharsets.UTF_8),
+                        MdtaMetadataEntry.TYPE_INDICATOR_STRING,
+                    ),
+                ),
+            )
+
+        assertEquals("Golden hour over cliffs", extracted.description)
     }
 
     @Test
