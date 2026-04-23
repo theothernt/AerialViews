@@ -14,9 +14,9 @@
             app:entries="@array/cache_refresh_entries"
             app:entryValues="@array/cache_refresh_values"
             app:key="playlist_cache_refresh_interval"
-            app:title="@string/playlist_cache_refresh_title"
+            app:title="@string/playlist_cache_interval_title"
             app:useSimpleSummaryProvider="true"
-            app:dialogTitle="@string/playlist_cache_refresh_title" />
+            app:dialogTitle="@string/playlist_cache_interval_title" />
 
         <Preference
             app:key="clear_playlist_cache"

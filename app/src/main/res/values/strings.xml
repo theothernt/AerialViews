@@ -716,24 +716,26 @@
     <string name="location_error_format">Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)</string>
 
     <!-- Main / Settings / Cache -->
-    <string name="playlist_cache_enable_summary">Save the playlist so you can resume where you left off across sessions.</string>
+    <string name="playlist_cache_enable_summary">Save the playlist so you can resume where you left off across sessions</string>
     <string name="playlist_cache_enable_title">Enable playlist cache</string>
 
-    <string name="playlist_cache_refresh_title">Refresh cache</string>
+    <string name="playlist_cache_interval_title">Refresh interval</string>
     <string name="playlist_cache_clear_title">Clear cache now</string>
-    <string name="playlist_cache_clear_summary">Forces a new playlist to be built on next start.</string>
+    <string name="playlist_cache_clear_summary">Forces a new playlist to be built on next start</string>
 
     <string name="playlist_cache_status_title">Cache Status</string>
-    <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks cached.</string>
-    <string name="playlist_cache_status_empty">No cache data.</string>
-    <string name="playlist_cache_status_unknown">Unknown.</string>
-    <string name="playlist_cache_status_index">Current index: %1$d</string>
+    <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks,</string>
+    <string name="playlist_cache_status_empty">No cache data</string>
+    <string name="playlist_cache_status_unknown">Unknown</string>
+    <string name="playlist_cache_expires">Expires:</string>
+    <string name="playlist_cache_expired">(Expired)</string>
+    <string name="playlist_cache_status_index">position: %1$d</string>
     <string name="playlist_cache_status_expiry_d">%1$d day(s)</string>
     <string name="playlist_cache_status_expiry_h">%1$d hour(s)</string>
     <string name="playlist_cache_status_expiry_m">%1$d minute(s)</string>
     <string name="playlist_cache_status_expiry_d_h">%1$d day(s), %2$d hour(s)</string>
     <string name="playlist_cache_status_expiry_h_m">%1$d hour(s), %2$d minute(s)</string>
-    <string name="playlist_cache_cleared">Cache cleared.</string>
+    <string name="playlist_cache_cleared">Cache cleared</string>
     <string name="playlist_cache_clear_confirmation">Are you sure you want to clear the playlist cache?</string>
 
     <!-- Main / Settings / D-Pad/Remote -->

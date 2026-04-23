@@ -110,7 +110,7 @@ class CacheFragment : MenuStateFragment() {
         return when {
             intervalWeeks == -1 -> {
                 // No time-based expiry (until end of playlist)
-                "$baseText. $indexText"
+                "$baseText $indexText"
             }
             else -> {
                 // Time-based expiry
@@ -120,32 +120,34 @@ class CacheFragment : MenuStateFragment() {
                 
                 if (remainingMs <= 0) {
                     // Cache has expired
-                    "$baseText. $indexText (Expired)"
+                    val expiredText = getString(R.string.playlist_cache_expired)
+                    "$baseText $indexText $expiredText"
                 } else {
                     // Format remaining time
                     val remainingDays = TimeUnit.MILLISECONDS.toDays(remainingMs)
                     val remainingHours = TimeUnit.MILLISECONDS.toHours(remainingMs) % 24
                     val remainingMinutes = TimeUnit.MILLISECONDS.toMinutes(remainingMs) % 60
-                    
+
+                    val expiresText = getString(R.string.playlist_cache_expires)
                     val timeText = when {
-                        remainingDays.compareTo(0) > 0 -> {
-                            if (remainingHours.compareTo(0) > 0) {
-                                getString(R.string.playlist_cache_status_expiry_d_h, remainingDays, remainingHours)
+                        remainingDays > 0 -> {
+                            if (remainingHours > 0) {
+                                "$expiresText " + getString(R.string.playlist_cache_status_expiry_d_h, remainingDays, remainingHours)
                             } else {
-                                getString(R.string.playlist_cache_status_expiry_d, remainingDays)
+                                "$expiresText " + getString(R.string.playlist_cache_status_expiry_d, remainingDays)
                             }
                         }
-                        remainingHours.compareTo(0) > 0 -> {
-                            if (remainingMinutes.compareTo(0) > 0) {
-                                getString(R.string.playlist_cache_status_expiry_h_m, remainingHours, remainingMinutes)
+                        remainingHours > 0 -> {
+                            if (remainingMinutes > 0) {
+                                "$expiresText " + getString(R.string.playlist_cache_status_expiry_h_m, remainingHours, remainingMinutes)
                             } else {
-                                getString(R.string.playlist_cache_status_expiry_h, remainingHours)
+                                "$expiresText " + getString(R.string.playlist_cache_status_expiry_h, remainingHours)
                             }
                         }
-                        else -> getString(R.string.playlist_cache_status_expiry_m, remainingMinutes)
+                        else -> "$expiresText " + getString(R.string.playlist_cache_status_expiry_m, remainingMinutes)
                     }
-                    
-                    "$baseText. $indexText ($timeText)"
+
+                    "$baseText $indexText\n$timeText"
                 }
             }
         }
