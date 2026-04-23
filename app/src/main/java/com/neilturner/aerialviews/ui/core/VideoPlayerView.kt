@@ -355,12 +355,12 @@ class VideoPlayerView
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
-            emitTrackMetadata()
+            //emitTrackMetadata()
         }
 
         override fun onTracksChanged(tracks: Tracks) {
             super.onTracksChanged(tracks)
-            emitTrackMetadata()
+            //emitTrackMetadata()
         }
 
         private fun emitTrackMetadata() {

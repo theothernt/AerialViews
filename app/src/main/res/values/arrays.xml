@@ -1430,7 +1430,7 @@
     <string name="overlay_meta_vid_location">Location (Media/Immich)</string>
     <string name="overlay_meta_vid_date">Date taken (Media/Immich)</string>
     <string name="overlay_meta_vid_title">Title (Media)</string>
-    <string name="overlay_meta_vid_description">Description (Media/Immich)</string>
+    <string name="overlay_meta_vid_description">Description (Immich)</string>
     <string name="overlay_meta_vid_album_name">Album Name (Immich)</string>
     <string name="overlay_meta_vid_filename">Use filename as-is</string>
     <string name="overlay_meta_vid_folder_filename">Folder &amp; filename</string>
