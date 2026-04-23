@@ -78,6 +78,23 @@ internal class VideoMetadataHandlerTest {
         assertEquals(null, media.metadata.exif.date)
     }
 
+    @Test
+    fun `format video metadata for log only includes non-blank values`() {
+        val metadata =
+            MediaMetadata
+                .Builder()
+                .setTitle("Cliffs")
+                .setArtist("  ") // Blank, should be ignored
+                .setRecordingYear(2024)
+                .setRecordingMonth(2)
+                .setRecordingDay(9)
+                .build()
+
+        val log = formatVideoMetadataForLog(metadata)
+
+        assertEquals("title=Cliffs, recordingDate=2024:02:09 00:00:00", log)
+    }
+
     private fun createMedia(
         source: AerialMediaSource,
         description: String? = null,

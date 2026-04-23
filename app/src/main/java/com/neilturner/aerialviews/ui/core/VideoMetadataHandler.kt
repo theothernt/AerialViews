@@ -38,35 +38,35 @@ internal fun applyVideoMetadataToMedia(
     return changed
 }
 
-internal fun formatVideoMetadataForLog(mediaMetadata: MediaMetadata): String =
-    buildString {
-        append("title=")
-        append(formatTextValue(mediaMetadata.title))
-        append(", artist=")
-        append(formatTextValue(mediaMetadata.artist))
-        append(", album=")
-        append(formatTextValue(mediaMetadata.albumTitle))
-        append(", albumArtist=")
-        append(formatTextValue(mediaMetadata.albumArtist))
-        append(", description=")
-        append(formatTextValue(mediaMetadata.description))
-        append(", recordingDate=")
-        append(
-            buildMetadataDate(
-                year = mediaMetadata.recordingYear,
-                month = mediaMetadata.recordingMonth,
-                day = mediaMetadata.recordingDay,
-            ) ?: "<blank>",
-        )
-        append(", releaseDate=")
-        append(
-            buildMetadataDate(
-                year = mediaMetadata.releaseYear,
-                month = mediaMetadata.releaseMonth,
-                day = mediaMetadata.releaseDay,
-            ) ?: "<blank>",
-        )
+internal fun formatVideoMetadataForLog(mediaMetadata: MediaMetadata): String {
+    val logEntries = mutableListOf<String>()
+
+    fun addEntry(label: String, value: CharSequence?) {
+        value?.toString()?.trim()?.takeIf { it.isNotBlank() }?.let {
+            logEntries.add("$label=$it")
+        }
     }
+
+    addEntry("title", mediaMetadata.title)
+    addEntry("artist", mediaMetadata.artist)
+    addEntry("album", mediaMetadata.albumTitle)
+    addEntry("albumArtist", mediaMetadata.albumArtist)
+    addEntry("description", mediaMetadata.description)
+
+    buildMetadataDate(
+        year = mediaMetadata.recordingYear,
+        month = mediaMetadata.recordingMonth,
+        day = mediaMetadata.recordingDay,
+    )?.let { logEntries.add("recordingDate=$it") }
+
+    buildMetadataDate(
+        year = mediaMetadata.releaseYear,
+        month = mediaMetadata.releaseMonth,
+        day = mediaMetadata.releaseDay,
+    )?.let { logEntries.add("releaseDate=$it") }
+
+    return logEntries.joinToString(", ")
+}
 
 private fun buildMetadataDate(
     year: Int?,
@@ -78,13 +78,6 @@ private fun buildMetadataDate(
     val safeDay = day?.toString()?.padStart(2, '0') ?: "01"
     return "$safeYear:$safeMonth:$safeDay 00:00:00"
 }
-
-private fun formatTextValue(value: CharSequence?): String =
-    value
-        ?.toString()
-        ?.trim()
-        ?.takeIf { it.isNotBlank() }
-        ?: "<blank>"
 
 internal fun supportsEmbeddedVideoFileMetadata(media: AerialMedia): Boolean =
     media.source in
