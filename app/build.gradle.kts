@@ -49,10 +49,6 @@ android {
         buildConfig = true
     }
 
-    ksp {
-        arg("room.schemaLocation", "$projectDir/schemas")
-    }
-
     lint {
         abortOnError = false
     }
@@ -167,6 +163,10 @@ android {
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
     }
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
