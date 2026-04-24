@@ -26,6 +26,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MusicPlayer
@@ -99,6 +100,7 @@ class ScreenController(
     private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
+    private val cacheRepository = PlaylistCacheRepository(context)
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -332,6 +334,7 @@ class ScreenController(
         }
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
+        musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
         musicPlayer?.createPlayer()
         if (resumeIndex > 0) {
             musicPlayer?.seekToTrack(resumeIndex)
@@ -519,6 +522,7 @@ class ScreenController(
                             }
                         previousItem = false
                         loadItem(media)
+                        savePlaybackPosition()
                     }
                 } else {
                     previousItem = false
@@ -627,17 +631,28 @@ class ScreenController(
         }
     }
 
-    fun stop() {
-        if (this::playlist.isInitialized) {
-            CoroutineScope(Dispatchers.IO).launch {
-                val cacheRepository =
-                    com.neilturner.aerialviews.data
-                        .PlaylistCacheRepository(context)
+    private fun savePlaybackPosition() {
+        if (this::playlist.isInitialized && GeneralPrefs.enablePlaylistCache) {
+            mainScope.launch {
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
+            }
+        }
+    }
+
+    private fun saveMusicTrackPosition() {
+        if (GeneralPrefs.enablePlaylistCache) {
+            mainScope.launch {
                 musicPlayer?.let {
                     cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
                 }
             }
+        }
+    }
+
+    fun stop() {
+        if (this::playlist.isInitialized) {
+            savePlaybackPosition()
+            saveMusicTrackPosition()
         }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
@@ -686,6 +701,7 @@ class ScreenController(
         val music = musicPlayer
         if (music != null && music.hasMusic()) {
             music.nextTrack()
+            saveMusicTrackPosition()
         } else {
             nowPlayingService?.nextTrack()
         }
@@ -695,6 +711,7 @@ class ScreenController(
         val music = musicPlayer
         if (music != null && music.hasMusic()) {
             music.previousTrack()
+            saveMusicTrackPosition()
         } else {
             nowPlayingService?.previousTrack()
         }

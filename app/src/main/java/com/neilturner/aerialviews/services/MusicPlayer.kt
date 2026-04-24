@@ -20,8 +20,15 @@ class MusicPlayer(
             setVolume = { v -> player?.volume = v },
         )
 
+    var onMediaItemChanged: (() -> Unit)? = null
+
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context)
+        player?.addListener(object : Player.Listener {
+            override fun onMediaItemTransition(mediaItem: androidx.media3.common.MediaItem?, reason: Int) {
+                onMediaItemChanged?.invoke()
+            }
+        })
         return player!!
     }
 
