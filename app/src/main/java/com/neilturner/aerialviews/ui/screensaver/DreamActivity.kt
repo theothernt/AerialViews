@@ -59,6 +59,17 @@ class DreamActivity : DreamService() {
         if (exitApp) wakeUp()
     }
 
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        return try {
+            super.dispatchTouchEvent(event)
+        } catch (e: SecurityException) {
+            // Android bug: DreamService internally reads a restricted settings key
+            // on Android 12+. Safe to swallow — touch handling may be degraded
+            // but the dream will continue running.
+            true
+        }
+    }
+
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&
             InputHelper.handleKeyEvent(event, screenController, ::altWakeUp)
