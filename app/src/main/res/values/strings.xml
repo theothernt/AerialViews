@@ -703,6 +703,7 @@
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
     <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+    <string name="playlist_playback_speed_reset">Playback speed reset to 1x (no actions assigned)</string>
 
     <!-- Main / Settings / Playlist / Weather + Time of Day Location -->
     <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
