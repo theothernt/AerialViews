@@ -381,6 +381,54 @@ class ImmichRepository(
         }
     }
 
+    /**
+     * For each portrait-aspect asset (height > width according to the supplied hint),
+     * fetch `/api/assets/{id}` in parallel and extract the largest detected face
+     * bounding box, normalized to 0..1 against the ML-preview frame that Immich used
+     * for detection (asset_face.imageWidth/imageHeight — NOT asset.width/height).
+     *
+     * Returns a map from asset id to normalized (left, top, right, bottom). Assets
+     * with no detected face, or where the fetch fails, are simply absent from the map.
+     * Never throws — failure to fetch any given asset is logged and skipped.
+     */
+    suspend fun enrichPortraitsWithFaces(
+        assetsNeedingFaces: List<Asset>,
+    ): Map<String, com.neilturner.aerialviews.models.videos.NormalizedRect> =
+        coroutineScope {
+            if (assetsNeedingFaces.isEmpty()) return@coroutineScope emptyMap()
+
+            val deferreds =
+                assetsNeedingFaces.map { a ->
+                    async {
+                        try {
+                            val resp = immichClient.getAssetDetail(prefs.apiKey, a.id)
+                            if (!resp.isSuccessful) return@async null
+                            val detail = resp.body() ?: return@async null
+                            val faces = detail.people.orEmpty().flatMap { it.faces }
+                            val largest =
+                                faces
+                                    .filter { it.imageWidth > 0 && it.imageHeight > 0 }
+                                    .maxByOrNull { (it.boundingBoxX2 - it.boundingBoxX1).toLong() *
+                                                   (it.boundingBoxY2 - it.boundingBoxY1).toLong() }
+                                    ?: return@async null
+                            a.id to com.neilturner.aerialviews.models.videos.NormalizedRect(
+                                left = largest.boundingBoxX1.toFloat() / largest.imageWidth.toFloat(),
+                                top = largest.boundingBoxY1.toFloat() / largest.imageHeight.toFloat(),
+                                right = largest.boundingBoxX2.toFloat() / largest.imageWidth.toFloat(),
+                                bottom = largest.boundingBoxY2.toFloat() / largest.imageHeight.toFloat(),
+                            )
+                        } catch (e: Exception) {
+                            Timber.d(e, "face-enrichment: failed for asset ${a.id}")
+                            null
+                        }
+                    }
+                }
+
+            val resolved = deferreds.awaitAll().filterNotNull().toMap()
+            Timber.i("Immich face enrichment: %d / %d portrait assets have a detected face", resolved.size, assetsNeedingFaces.size)
+            resolved
+        }
+
     suspend fun fetchAlbums(): Result<List<Album>> =
         coroutineScope {
             try {

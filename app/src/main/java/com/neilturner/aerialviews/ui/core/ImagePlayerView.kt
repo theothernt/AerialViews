@@ -1,9 +1,14 @@
 package com.neilturner.aerialviews.ui.core
 
+import android.animation.ValueAnimator
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.drawable.Animatable
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
@@ -27,6 +32,7 @@ import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.utils.SplashCache
 import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +63,23 @@ class ImagePlayerView : FrameLayout {
     private var pausedTimestamp: Long = 0
     private var totalDuration: Long = 0
     private var remainingDuration: Long = 0
+
+    private var kenBurnsAnimator: ValueAnimator? = null
+    private var pendingKenBurns: KenBurnsSetup? = null
+
+    private var splashSaveCountdown: Int = SPLASH_SAVE_EVERY_N_SLOTS
+
+    /**
+     * Precomputed state for one vertical pan. Start/end translate-Y are the matrix
+     * translation values at the beginning and end of the animation respectively
+     * (0 = image top at container top, negative = image scrolled up / pan shows lower part).
+     */
+    private data class KenBurnsSetup(
+        val scale: Float,
+        val overflow: Float,
+        val startTranslateY: Float,
+        val endTranslateY: Float,
+    )
 
     /**
      * Two-token sync gate: ensures [runSetupFinishedRunnable] fires only after *both*
@@ -119,7 +142,27 @@ class ImagePlayerView : FrameLayout {
                 add(buildGifDecoder())
             }.build()
 
-    fun setImage(media: AerialMedia) {
+    fun setImage(mediaParam: AerialMedia) {
+        // If this logical slot carries alternates (e.g. other members of a temporal
+        // cluster from the Immich smart slideshow), pick one at random every time
+        // the slot is rendered so the user sees variety across playlist loops.
+        // Each alternate carries its own per-photo subjectRect — cluster gap can span
+        // a full day, so inheriting the primary's face bbox would be geometrically wrong.
+        val media =
+            if (mediaParam.clusterAlternates.isNotEmpty()) {
+                val pick = (0..mediaParam.clusterAlternates.size).random()
+                if (pick == 0) {
+                    mediaParam
+                } else {
+                    val alt = mediaParam.clusterAlternates[pick - 1]
+                    mediaParam.copy(
+                        uri = alt.uri,
+                        metadata = mediaParam.metadata.copy(subjectRect = alt.subjectRect),
+                    )
+                }
+            } else {
+                mediaParam
+            }
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
@@ -203,7 +246,7 @@ class ImagePlayerView : FrameLayout {
                         },
                     ).listener(
                         onSuccess = { _, result ->
-                            setScaleMode(result.image.width, result.image.height)
+                            setScaleMode(result.image.width, result.image.height, media.metadata.subjectRect)
                             setupFinishedRunnable()
                         },
                         onError = { _, result ->
@@ -297,6 +340,9 @@ class ImagePlayerView : FrameLayout {
 
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
+        // How often (in displayed photos) to save a loading-splash snapshot.
+        // ~50 slots at slideshow_speed=25s ≈ one write per 20 min — gentle on flash.
+        private const val SPLASH_SAVE_EVERY_N_SLOTS = 50
     }
 
     private fun resolveTargetSize(): Pair<Int, Int> {
@@ -321,6 +367,9 @@ class ImagePlayerView : FrameLayout {
 
     fun stop() {
         removeCallbacks(finishedRunnable)
+        kenBurnsAnimator?.cancel()
+        kenBurnsAnimator = null
+        pendingKenBurns = null
         setForegroundDrawable(null)
         pausedTimestamp = 0
         remainingDuration = 0
@@ -330,6 +379,7 @@ class ImagePlayerView : FrameLayout {
     fun pauseTimer() {
         pausedTimestamp = System.currentTimeMillis()
         removeCallbacks(finishedRunnable)
+        kenBurnsAnimator?.takeIf { it.isRunning }?.pause()
     }
 
     fun resumeTimer(pauseDuration: Long) {
@@ -337,6 +387,7 @@ class ImagePlayerView : FrameLayout {
             remainingDuration = maxOf(0, remainingDuration - pauseDuration)
             if (remainingDuration > 0) {
                 postDelayed(finishedRunnable, remainingDuration)
+                kenBurnsAnimator?.takeIf { it.isPaused }?.resume()
             } else {
                 // If time has expired, finish immediately
                 listener?.onImageFinished()
@@ -348,7 +399,39 @@ class ImagePlayerView : FrameLayout {
     private fun setScaleMode(
         width: Int,
         height: Int,
+        subjectRect: com.neilturner.aerialviews.models.videos.NormalizedRect? = null,
     ) {
+        kenBurnsAnimator?.cancel()
+        pendingKenBurns = null
+
+        val aspect = AspectRatio.fromDimensions(width, height)
+        val pref =
+            when (aspect) {
+                AspectRatio.SQUARE, AspectRatio.PORTRAIT -> GeneralPrefs.photoScalePortrait
+                AspectRatio.LANDSCAPE -> GeneralPrefs.photoScaleLandscape
+            }
+
+        // Face-aware logic only applies to true portraits (h > w) so landscape/square
+        // behavior stays exactly as it was.
+        val faceRect =
+            if (aspect == AspectRatio.PORTRAIT && GeneralPrefs.photoScaleFaceAware) subjectRect else null
+        Timber.i("Aspect ratio: $aspect")
+
+        if (pref == PhotoScale.KEN_BURNS_VERTICAL) {
+            val setup = prepareVerticalPan(width, height, faceRect)
+            if (setup != null) {
+                foregroundImageView.scaleType = ImageView.ScaleType.MATRIX
+                applyVerticalPanMatrix(setup, setup.startTranslateY)
+                pendingKenBurns = setup
+                return
+            }
+        }
+
+        // Static face-biased center-crop (rule-of-thirds) for portraits when face-aware is on.
+        if (pref == PhotoScale.CENTER_CROP && faceRect != null) {
+            if (applyFaceBiasedCenterCropMatrix(width, height, faceRect)) return
+        }
+
         foregroundImageView.scaleType = resolveForegroundScaleType(width, height)
     }
 
@@ -357,7 +440,6 @@ class ImagePlayerView : FrameLayout {
         height: Int,
     ): ImageView.ScaleType {
         val aspect = AspectRatio.fromDimensions(width, height)
-        Timber.i("Aspect ratio: $aspect")
         return when (aspect) {
             AspectRatio.SQUARE, AspectRatio.PORTRAIT -> getScaleType(GeneralPrefs.photoScalePortrait)
             AspectRatio.LANDSCAPE -> getScaleType(GeneralPrefs.photoScaleLandscape)
@@ -365,12 +447,144 @@ class ImagePlayerView : FrameLayout {
     }
 
     private fun getScaleType(scale: PhotoScale?): ImageView.ScaleType =
-        try {
-            ImageView.ScaleType.valueOf(scale.toString())
-        } catch (e: Exception) {
-            Timber.e(e)
-            ImageView.ScaleType.valueOf(PhotoScale.CENTER_CROP.toString())
+        when (scale) {
+            PhotoScale.CENTER_CROP -> ImageView.ScaleType.CENTER_CROP
+            PhotoScale.FIT_CENTER -> ImageView.ScaleType.FIT_CENTER
+            // KEN_BURNS_VERTICAL on images that don't qualify (landscape, square, or container
+            // not yet measured) falls back to center-crop so playback never breaks.
+            PhotoScale.KEN_BURNS_VERTICAL, null -> ImageView.ScaleType.CENTER_CROP
         }
+
+    /**
+     * Compute matrix scale + start/end translate-Y for a vertical pan on a taller-than-container
+     * image. When [subjectRect] is provided, the pan range is narrowed so subject + margin stays
+     * in view throughout, and direction is chosen so the pan starts from the side where the
+     * subject lives. Otherwise the full overflow is traversed with direction alternating per slot.
+     */
+    private fun prepareVerticalPan(
+        imageWidth: Int,
+        imageHeight: Int,
+        subjectRect: com.neilturner.aerialviews.models.videos.NormalizedRect? = null,
+    ): KenBurnsSetup? {
+        val view = foregroundImageView
+        val containerW = view.width
+        val containerH = view.height
+        if (containerW <= 0 || containerH <= 0 || imageWidth <= 0 || imageHeight <= 0) return null
+        val scale = containerW.toFloat() / imageWidth.toFloat()
+        val overflow = imageHeight.toFloat() * scale - containerH.toFloat()
+        if (overflow <= 0f) return null
+
+        val (startY, endY) =
+            if (subjectRect != null) {
+                computeFaceBiasedPanRange(overflow, imageWidth.toFloat(), imageHeight.toFloat(), subjectRect)
+            } else {
+                val downward = (System.currentTimeMillis() / 1000L) % 2L == 0L
+                if (downward) Pair(0f, -overflow) else Pair(-overflow, 0f)
+            }
+        return KenBurnsSetup(scale = scale, overflow = overflow, startTranslateY = startY, endTranslateY = endY)
+    }
+
+    /**
+     * Work out pan start/end translate-Y around the face subject, starting from whichever
+     * end the face sits closer to. The allowed face-off-screen fraction (0..1 of face
+     * height) is read from [GeneralPrefs.photoScaleFaceOffScreenPercent]: 0 keeps face
+     * fully in view at pan extremes, larger values relax the constraint and widen the
+     * pan for a more cinematic "face enters / face leaves" feel.
+     */
+    private fun computeFaceBiasedPanRange(
+        overflowPx: Float,
+        imageWidthF: Float,
+        imageHeightF: Float,
+        face: com.neilturner.aerialviews.models.videos.NormalizedRect,
+    ): Pair<Float, Float> {
+        val offScreenFrac = (GeneralPrefs.photoScaleFaceOffScreenPercent.toIntOrNull() ?: 0)
+            .coerceIn(0, 100) / 100f
+        val marginFrac = -offScreenFrac * face.height
+        val view = foregroundImageView
+        val containerW = view.width.toFloat()
+        val containerH = view.height.toFloat()
+        // Band of the image (in image-y pixels) that fits in the container at any instant.
+        val bandImgY = containerH * imageWidthF / containerW
+        val total = imageHeightF // image-y total range (pixels)
+        val slide = total - bandImgY // how many image-y pixels the band can slide
+        if (slide <= 0f) return Pair(0f, 0f)
+
+        val faceTopPx = (face.top - marginFrac).coerceIn(0f, 1f) * total
+        val faceBotPx = (face.bottom + marginFrac).coerceIn(0f, 1f) * total
+        val faceCenterFrac = (face.top + face.bottom) / 2f
+
+        // Solve constraint: visible band [P*slide, P*slide+bandImgY] contains [faceTop, faceBot].
+        val pMinRaw = (faceBotPx - bandImgY) / slide
+        val pMaxRaw = faceTopPx / slide
+        val pMin = pMinRaw.coerceIn(0f, 1f)
+        val pMax = pMaxRaw.coerceIn(0f, 1f)
+
+        // If face + margin is bigger than the band, center the band on the face center.
+        val (pStart, pEnd) =
+            if (pMin > pMax) {
+                val pCenter = ((faceCenterFrac * total - bandImgY / 2f) / slide).coerceIn(0f, 1f)
+                Pair(pCenter, pCenter)
+            } else if (faceCenterFrac < 0.5f) {
+                Pair(pMin, pMax)
+            } else {
+                Pair(pMax, pMin)
+            }
+        // translateY = -P * overflow (because larger P means image scrolled up more)
+        return Pair(-pStart * overflowPx, -pEnd * overflowPx)
+    }
+
+    /**
+     * Place the portrait image with MATRIX scale type biased toward the face — subject's
+     * eye-line near the rule-of-thirds mark (1/3 from top of visible band). Returns false
+     * if the container isn't measured yet, so the caller can fall back to plain CENTER_CROP.
+     */
+    private fun applyFaceBiasedCenterCropMatrix(
+        imageWidth: Int,
+        imageHeight: Int,
+        face: com.neilturner.aerialviews.models.videos.NormalizedRect,
+    ): Boolean {
+        val view = foregroundImageView
+        val containerW = view.width
+        val containerH = view.height
+        if (containerW <= 0 || containerH <= 0 || imageWidth <= 0 || imageHeight <= 0) return false
+        val scale = containerW.toFloat() / imageWidth.toFloat()
+        val overflow = imageHeight.toFloat() * scale - containerH.toFloat()
+        if (overflow <= 0f) return false
+
+        val bandImgY = containerH.toFloat() * imageWidth.toFloat() / containerW.toFloat()
+        val slide = imageHeight.toFloat() - bandImgY
+        // Target: face center at 1/3 from top of visible band.
+        val faceCy = (face.top + face.bottom) / 2f
+        val p = ((faceCy * imageHeight.toFloat() - bandImgY / 3f) / slide).coerceIn(0f, 1f)
+
+        val setup = KenBurnsSetup(scale = scale, overflow = overflow, startTranslateY = 0f, endTranslateY = 0f)
+        foregroundImageView.scaleType = ImageView.ScaleType.MATRIX
+        applyVerticalPanMatrix(setup, -p * overflow)
+        return true
+    }
+
+    private fun applyVerticalPanMatrix(
+        setup: KenBurnsSetup,
+        translateY: Float,
+    ) {
+        val m = Matrix()
+        m.setScale(setup.scale, setup.scale)
+        m.postTranslate(0f, translateY)
+        foregroundImageView.imageMatrix = m
+    }
+
+    private fun startKenBurnsIfPending(durationMs: Long) {
+        val setup = pendingKenBurns ?: return
+        if (durationMs <= 0) return
+        if (setup.startTranslateY == setup.endTranslateY) return // face too big to pan — stay static
+        kenBurnsAnimator =
+            ValueAnimator.ofFloat(setup.startTranslateY, setup.endTranslateY).apply {
+                duration = durationMs
+                interpolator = LinearInterpolator()
+                addUpdateListener { applyVerticalPanMatrix(setup, it.animatedValue as Float) }
+                start()
+            }
+    }
 
     private fun setupFinishedRunnable() {
         removeCallbacks(finishedRunnable)
@@ -394,7 +608,35 @@ class ImagePlayerView : FrameLayout {
 
         Timber.i("Delay: ${durationMinusFade.milliseconds}")
         if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.START, 0, duration))
+        startKenBurnsIfPending(duration)
         postDelayed(finishedRunnable, durationMinusFade)
+        maybeSaveSplashSnapshot()
+    }
+
+    /**
+     * Periodically persist the currently-shown bitmap as the next-launch splash so the
+     * loading screen shows something meaningful instead of a black rectangle. Runs at
+     * most once every [SPLASH_SAVE_EVERY_N_SLOTS] rendered photos, and is a best-effort
+     * IO-scope job — failures are swallowed so playback is never affected.
+     */
+    private fun maybeSaveSplashSnapshot() {
+        if (--splashSaveCountdown > 0) return
+        splashSaveCountdown = SPLASH_SAVE_EVERY_N_SLOTS
+        val bmp = (foregroundImageView.drawable as? BitmapDrawable)?.bitmap ?: return
+        if (bmp.isRecycled) return
+        val appContext = context.applicationContext
+        ioScope.launch { SplashCache.save(appContext, bmp) }
+    }
+
+    /**
+     * Set the given bitmap as the foreground image without starting any timer or
+     * triggering playback callbacks. Used by the screensaver init to paint the
+     * previously-cached snapshot behind the loading UI instead of a black screen.
+     * The next real image load replaces this bitmap on arrival.
+     */
+    fun showSplashBitmap(bitmap: Bitmap) {
+        foregroundImageView.scaleType = ImageView.ScaleType.CENTER_CROP
+        setForegroundDrawable(BitmapDrawable(resources, bitmap))
     }
 
     private fun markBackgroundReady(token: Long) {

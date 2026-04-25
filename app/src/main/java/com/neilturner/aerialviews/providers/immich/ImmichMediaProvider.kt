@@ -90,8 +90,55 @@ class ImmichMediaProvider(
             return Pair(media, "No files found")
         }
 
+        val clusterResult =
+            if (prefs.smartSlideshowEnabled) {
+                val gap = prefs.smartSlideshowGapMinutes.toIntOrNull() ?: 30
+                val exemptPattern =
+                    prefs.smartSlideshowExemptAlbumPattern
+                        .takeIf { it.isNotBlank() }
+                        ?.let {
+                            try {
+                                Regex(it)
+                            } catch (e: Exception) {
+                                Timber.w(e, "Invalid exempt album pattern: '%s'", it)
+                                null
+                            }
+                        }
+                val exemptKeep = (prefs.smartSlideshowExemptPercent.toIntOrNull() ?: 100).coerceIn(0, 100) / 100.0
+                ImmichClusterer.cluster(assetResults.allAssets, gap, exemptPattern, exemptKeep)
+            } else {
+                ImmichClusterer.Result(assetResults.allAssets)
+            }
+
+        // Optionally enrich ALL portrait assets (not just cluster representatives) with
+        // face bounding boxes so the renderer can bias center-crop / Ken Burns pan toward
+        // the subject — for whichever cluster member is randomly chosen at render time,
+        // not just the designated primary.
+        val faceRectByAssetId =
+            if (com.neilturner.aerialviews.models.prefs.GeneralPrefs.photoScaleFaceAware) {
+                val portraits =
+                    assetResults.allAssets.filter { a ->
+                        val w = a.width ?: 0
+                        val h = a.height ?: 0
+                        w > 0 && h > w
+                    }
+                try {
+                    repository.enrichPortraitsWithFaces(portraits)
+                } catch (e: Exception) {
+                    Timber.w(e, "Immich face enrichment failed; continuing without")
+                    emptyMap()
+                }
+            } else {
+                emptyMap()
+            }
+
         // Process assets and create media list
-        val processResults = mapper.processAssets(assetResults.allAssets)
+        val processResults =
+            mapper.processAssets(
+                clusterResult.representatives,
+                clusterResult.alternatesByPrimaryId,
+                faceRectByAssetId,
+            )
         media.addAll(processResults.media)
 
         // Build summary message

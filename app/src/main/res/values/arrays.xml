@@ -763,13 +763,16 @@
     <!-- Photo scale/fill options -->
     <string name="photo_scale_fill_crop">Fill with crop*</string>
     <string name="photo_scale_no_crop">Scale without crop</string>
+    <string name="photo_scale_ken_burns_vertical">Pan vertically*</string>
     <string-array name="photo_scale_entries" translatable="false">
         <item>@string/photo_scale_fill_crop</item>
         <item>@string/photo_scale_no_crop</item>
+        <item>@string/photo_scale_ken_burns_vertical</item>
     </string-array>
     <string-array name="photo_scale_values" translatable="false">
         <item>CENTER_CROP</item>
         <item>FIT_CENTER</item>
+        <item>KEN_BURNS_VERTICAL</item>
     </string-array>
     <string name="photo_scale_default" translatable="false">CENTER_CROP</string>
 
@@ -1154,6 +1157,53 @@
     <string name="immich_include_random_default" translatable="false">DISABLED</string>
     <string name="immich_include_recent_default" translatable="false">DISABLED</string>
     <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
+
+    <string-array name="immich_smart_slideshow_gap_entries" translatable="false">
+        <item>1 minute</item>
+        <item>10 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>6 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="immich_smart_slideshow_gap_values" translatable="false">
+        <item>1</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>360</item>
+        <item>1440</item>
+    </string-array>
+
+    <string-array name="photo_scale_face_off_screen_entries" translatable="false">
+        <item>Face fully in view</item>
+        <item>Up to 10% off-screen</item>
+        <item>Up to 20% off-screen</item>
+        <item>Up to 30% off-screen</item>
+        <item>Up to 40% off-screen</item>
+    </string-array>
+    <string-array name="photo_scale_face_off_screen_values" translatable="false">
+        <item>0</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+    </string-array>
+
+    <string-array name="immich_smart_slideshow_exempt_percent_entries" translatable="false">
+        <item>100% (keep all)</item>
+        <item>75%</item>
+        <item>50%</item>
+        <item>25%</item>
+        <item>10%</item>
+    </string-array>
+    <string-array name="immich_smart_slideshow_exempt_percent_values" translatable="false">
+        <item>100</item>
+        <item>75</item>
+        <item>50</item>
+        <item>25</item>
+        <item>10</item>
+    </string-array>
 
     <string name="immich_img_preview">Preview</string>
     <string name="immich_img_fullsize">Fullsize</string>

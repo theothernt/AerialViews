@@ -26,6 +26,23 @@
                     app:key="photo_scale_portrait"
                     app:title="@string/appearance_photo_scale_portrait_title"
                     app:useSimpleSummaryProvider="true" />
+
+                <SwitchPreferenceCompat
+                    app:defaultValue="false"
+                    app:key="photo_scale_face_aware"
+                    app:title="@string/appearance_photo_scale_face_aware_title"
+                    app:summary="@string/appearance_photo_scale_face_aware_summary" />
+
+                <ListPreference
+                    app:dependency="photo_scale_face_aware"
+                    app:disableDependentsState="false"
+                    app:defaultValue="0"
+                    app:entries="@array/photo_scale_face_off_screen_entries"
+                    app:entryValues="@array/photo_scale_face_off_screen_values"
+                    app:key="photo_scale_face_off_screen_percent"
+                    app:title="@string/appearance_photo_scale_face_off_screen_title"
+                    app:summary="@string/appearance_photo_scale_face_off_screen_summary"
+                    app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_background_blur">

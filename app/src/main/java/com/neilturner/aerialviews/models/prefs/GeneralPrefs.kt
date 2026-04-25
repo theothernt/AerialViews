@@ -237,6 +237,8 @@ object GeneralPrefs : KotprefModel() {
     var slideshowSpeed by stringPref("30", "slideshow_speed")
     var photoScalePortrait by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_portrait")
     var photoScaleLandscape by nullableEnumValuePref(PhotoScale.CENTER_CROP, "photo_scale_landscape")
+    var photoScaleFaceAware by booleanPref(false, "photo_scale_face_aware")
+    var photoScaleFaceOffScreenPercent by stringPref("0", "photo_scale_face_off_screen_percent")
     var photoBackgroundBlurEnabled by booleanPref(true, "photo_background_blur_enabled")
     var photoBackgroundBlurOpacity by stringPref("40", "photo_background_blur_opacity")
     var photoBackgroundBlurIntensity by stringPref("80", "photo_background_blur_intensity")

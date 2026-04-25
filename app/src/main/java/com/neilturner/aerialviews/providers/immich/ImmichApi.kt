@@ -53,6 +53,12 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
+
+    @GET("/api/assets/{id}")
+    suspend fun getAssetDetail(
+        @Header("x-api-key") apiKey: String,
+        @Path("id") assetId: String,
+    ): Response<Asset>
 }
 
 @Serializable
@@ -92,6 +98,34 @@ data class Asset(
     val description: String? = null,
     val exifInfo: ExifInfo? = null,
     val albumName: String? = null,
+    // Pixel dimensions of the asset as stored by Immich (post-orientation). Present on
+    // album/search responses, useful for deciding whether an asset is a portrait before
+    // any per-asset detail fetch.
+    val width: Int? = null,
+    val height: Int? = null,
+    // Populated only by GET /api/assets/{id}; list endpoints return an empty array
+    // in Immich 2.7.5 even when withPeople/withFaces is requested.
+    val people: List<ImmichPerson>? = null,
+)
+
+@Serializable
+data class ImmichPerson(
+    val id: String = "",
+    val name: String = "",
+    val faces: List<ImmichFace> = emptyList(),
+)
+
+@Serializable
+data class ImmichFace(
+    val id: String = "",
+    val boundingBoxX1: Int = 0,
+    val boundingBoxY1: Int = 0,
+    val boundingBoxX2: Int = 0,
+    val boundingBoxY2: Int = 0,
+    // Frame the face detection ran on — usually smaller than the original asset.
+    // Normalize bbox against these (NOT against asset.width/height).
+    val imageWidth: Int = 0,
+    val imageHeight: Int = 0,
 )
 
 @Serializable
