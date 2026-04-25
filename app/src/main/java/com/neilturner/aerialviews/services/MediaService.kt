@@ -61,8 +61,12 @@ class MediaService(
         val useLocalVideos: Boolean,
         val useSambaVideos: Boolean,
         val useWebDavVideos: Boolean,
+        val webDavPath: String,
         val useImmichVideos: Boolean,
+        val immichUrl: String,
+        val immichPath: String,
         val useCustomStreams: Boolean,
+        val customUrls: String,
     ) {
         fun buildHash(): String {
             val parts =
@@ -82,8 +86,12 @@ class MediaService(
                     add(useLocalVideos.toString())
                     add(useSambaVideos.toString())
                     add(useWebDavVideos.toString())
+                    add(webDavPath)
                     add(useImmichVideos.toString())
+                    add(immichUrl)
+                    add(immichPath)
                     add(useCustomStreams.toString())
+                    add(customUrls)
                 }
             return parts.joinToString("|").hashCode().toString()
         }
@@ -106,8 +114,12 @@ class MediaService(
                     useLocalVideos = LocalMediaPrefs.enabled,
                     useSambaVideos = SambaMediaPrefs.enabled || SambaMediaPrefs2.enabled,
                     useWebDavVideos = WebDavMediaPrefs.enabled || WebDavMediaPrefs2.enabled,
+                    webDavPath = "${WebDavMediaPrefs.hostName}|${WebDavMediaPrefs.pathName}|${WebDavMediaPrefs2.hostName}|${WebDavMediaPrefs2.pathName}",
                     useImmichVideos = ImmichMediaPrefs.enabled,
+                    immichUrl = ImmichMediaPrefs.url,
+                    immichPath = ImmichMediaPrefs.pathName,
                     useCustomStreams = CustomFeedPrefs.enabled,
+                    customUrls = CustomFeedPrefs.urls,
                 )
         }
     }
