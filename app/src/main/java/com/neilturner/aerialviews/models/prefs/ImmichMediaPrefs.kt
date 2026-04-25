@@ -45,4 +45,8 @@ object ImmichMediaPrefs : KotprefModel(), ImmichUrlPrefs, ImmichAssetPrefs {
     var includeRecent by stringPref("DISABLED", "immich_media_include_recent")
     override var imageType by nullableEnumValuePref(ImmichImageType.PREVIEW, "immich_media_image_type")
     override var videoType by nullableEnumValuePref(ImmichVideoType.TRANSCODED, "immich_media_video_type")
+    var smartSlideshowEnabled by booleanPref(false, "immich_smart_slideshow_enabled")
+    var smartSlideshowGapMinutes by stringPref("30", "immich_smart_slideshow_gap_minutes")
+    var smartSlideshowExemptAlbumPattern by stringPref("", "immich_smart_slideshow_exempt_pattern")
+    var smartSlideshowExemptPercent by stringPref("100", "immich_smart_slideshow_exempt_percent")
 }
