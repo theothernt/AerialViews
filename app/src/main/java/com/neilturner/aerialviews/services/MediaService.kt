@@ -148,7 +148,7 @@ class MediaService(
                 com.neilturner.aerialviews.data
                     .PlaylistCacheRepository(context)
 
-            if (GeneralPrefs.enablePlaylistCache) {
+            if (GeneralPrefs.playlistCache) {
                 if (cacheRepo.isCacheValid(settingsHash)) {
                     val cached = cacheRepo.getCachedPlaylist()
                     if (cached != null) {
@@ -276,7 +276,7 @@ class MediaService(
 
             Timber.i("Total media items: ${filteredMedia.size}")
 
-            if (GeneralPrefs.enablePlaylistCache) {
+            if (GeneralPrefs.playlistCache) {
                 // Cache enabled: save to DB, return windowed playlist that streams from DB
                 cacheRepo.cachePlaylist(
                     media = filteredMedia,

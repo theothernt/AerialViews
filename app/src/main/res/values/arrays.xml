@@ -425,20 +425,19 @@
         <item>BACKGROUND_MUSIC</item>
     </string-array>
 
-    <string name="cache_refresh_all">When all media viewed</string>
-    <string name="cache_refresh_1_week">Every week</string>
-    <string name="cache_refresh_2_weeks">Every 2 weeks</string>
-    <string name="cache_refresh_3_weeks">Every 3 weeks</string>
-    <string name="cache_refresh_4_weeks">Every 4 weeks</string>
-    <string-array name="cache_refresh_entries">
-        <item>@string/cache_refresh_all</item>
-        <item>@string/cache_refresh_1_week</item>
-        <item>@string/cache_refresh_2_weeks</item>
-        <item>@string/cache_refresh_3_weeks</item>
-        <item>@string/cache_refresh_4_weeks</item>
+    <string name="playlist_cache_refresh_all">When all media viewed</string>
+    <string name="playlist_cache_refresh_1_week">Every week</string>
+    <string name="playlist_cache_refresh_2_weeks">Every 2 weeks</string>
+    <string name="playlist_cache_refresh_3_weeks">Every 3 weeks</string>
+    <string name="playlist_cache_refresh_4_weeks">Every 4 weeks</string>
+    <string-array name="playlist_cache_refresh_entries">
+        <item>@string/playlist_cache_refresh_all</item>
+        <item>@string/playlist_cache_refresh_1_week</item>
+        <item>@string/playlist_cache_refresh_2_weeks</item>
+        <item>@string/playlist_cache_refresh_3_weeks</item>
+        <item>@string/playlist_cache_refresh_4_weeks</item>
     </string-array>
-
-    <string-array name="cache_refresh_values" translatable="false">
+    <string-array name="playlist_cache_refresh_values" translatable="false">
         <item>-1</item>
         <item>1</item>
         <item>2</item>

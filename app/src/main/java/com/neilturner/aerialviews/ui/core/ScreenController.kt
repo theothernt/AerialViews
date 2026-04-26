@@ -12,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.databinding.AerialActivityBinding
 import com.neilturner.aerialviews.databinding.ImageViewBinding
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
@@ -26,7 +27,6 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MusicPlayer
@@ -632,7 +632,7 @@ class ScreenController(
     }
 
     private fun savePlaybackPosition() {
-        if (this::playlist.isInitialized && GeneralPrefs.enablePlaylistCache) {
+        if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
                 cacheRepository.saveMediaPosition(playlist.currentPosition)
             }
@@ -640,7 +640,7 @@ class ScreenController(
     }
 
     private fun saveMusicTrackPosition() {
-        if (GeneralPrefs.enablePlaylistCache) {
+        if (GeneralPrefs.playlistCache) {
             mainScope.launch {
                 musicPlayer?.let {
                     cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())

@@ -26,7 +26,7 @@ class PlaylistCacheRepository(
 
     suspend fun isCacheValid(settingsHash: String): Boolean =
         withContext(Dispatchers.IO) {
-            val cacheEnabled = GeneralPrefs.enablePlaylistCache
+            val cacheEnabled = GeneralPrefs.playlistCache
             if (!cacheEnabled) {
                 Timber.d("PlaylistCache: Cache disabled in settings")
                 clearCache()
@@ -45,7 +45,7 @@ class PlaylistCacheRepository(
                 return@withContext false
             }
 
-            val refreshIntervalStr = GeneralPrefs.playlistCacheRefreshInterval
+            val refreshIntervalStr = GeneralPrefs.playlistCacheRefresh
             val intervalWeeks = refreshIntervalStr.toIntOrNull() ?: -1
 
             if (intervalWeeks == -1) {
@@ -235,14 +235,14 @@ class PlaylistCacheRepository(
 
     suspend fun saveMediaPosition(position: Int) =
         withContext(Dispatchers.IO) {
-            if (GeneralPrefs.enablePlaylistCache) {
+            if (GeneralPrefs.playlistCache) {
                 dao.updateMediaPosition(position)
             }
         }
 
     suspend fun saveMusicTrackIndex(index: Int) =
         withContext(Dispatchers.IO) {
-            if (GeneralPrefs.enablePlaylistCache) {
+            if (GeneralPrefs.playlistCache) {
                 dao.updateMusicTrackIndex(index)
             }
         }

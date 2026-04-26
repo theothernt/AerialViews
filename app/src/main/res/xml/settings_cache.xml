@@ -3,17 +3,17 @@
 
     <PreferenceCategory app:title="@string/category_playlist_cache">
         <SwitchPreference
-            app:defaultValue="false"
-            app:key="enable_playlist_cache"
+            app:defaultValue="true"
+            app:key="playlist_cache"
             app:summary="@string/playlist_cache_enable_summary"
             app:title="@string/playlist_cache_enable_title" />
 
         <ListPreference
             app:defaultValue="-1"
-            app:dependency="enable_playlist_cache"
-            app:entries="@array/cache_refresh_entries"
-            app:entryValues="@array/cache_refresh_values"
-            app:key="playlist_cache_refresh_interval"
+            app:dependency="playlist_cache"
+            app:entries="@array/playlist_cache_refresh_entries"
+            app:entryValues="@array/playlist_cache_refresh_values"
+            app:key="playlist_cache_refresh"
             app:title="@string/playlist_cache_interval_title"
             app:useSimpleSummaryProvider="true"
             app:dialogTitle="@string/playlist_cache_interval_title" />

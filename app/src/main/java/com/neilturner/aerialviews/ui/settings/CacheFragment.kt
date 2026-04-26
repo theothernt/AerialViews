@@ -104,7 +104,7 @@ class CacheFragment : MenuStateFragment() {
 
         val indexText = getString(R.string.playlist_cache_status_index, state.mediaPosition + 1) // 1-based for display
 
-        val refreshIntervalStr = GeneralPrefs.playlistCacheRefreshInterval
+        val refreshIntervalStr = GeneralPrefs.playlistCacheRefresh
         val intervalWeeks = refreshIntervalStr.toIntOrNull() ?: -1
 
         return when {
