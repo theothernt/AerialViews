@@ -52,6 +52,7 @@ class MediaService(
         val autoTimeOfDay: Boolean,
         val playlistTimeOfDayDayIncludes: Set<String>,
         val playlistTimeOfDayNightIncludes: Set<String>,
+        val playlistCache: Boolean,
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
@@ -77,6 +78,7 @@ class MediaService(
                     add(autoTimeOfDay.toString())
                     add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
                     add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
+                    add(playlistCache.toString())
                     add(shuffleVideos.toString())
                     add(shuffleMusic.toString())
                     add(repeatMusic.toString())
@@ -105,6 +107,7 @@ class MediaService(
                     autoTimeOfDay = GeneralPrefs.autoTimeOfDay,
                     playlistTimeOfDayDayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes,
                     playlistTimeOfDayNightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes,
+                    playlistCache = GeneralPrefs.playlistCache,
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
@@ -146,11 +149,15 @@ class MediaService(
         withContext(Dispatchers.IO) {
             val settingsHash = config.buildHash()
             val cacheRepo =
-                com.neilturner.aerialviews.data
-                    .PlaylistCacheRepository(context)
+                if (config.playlistCache) {
+                    com.neilturner.aerialviews.data
+                        .PlaylistCacheRepository(context)
+                } else {
+                    null
+                }
 
-            if (GeneralPrefs.playlistCache) {
-                if (cacheRepo.isCacheValid(settingsHash)) {
+            if (config.playlistCache) {
+                if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
                     val cached = cacheRepo.getCachedPlaylist()
                     if (cached != null) {
                         onStatus(LoadingStatus.RESUMING)
@@ -273,11 +280,11 @@ class MediaService(
                             shuffle = config.shuffleMusic,
                             repeat = config.repeatMusic,
                         )
-                    }
+            }
 
             Timber.i("Total media items: ${filteredMedia.size}")
 
-            if (GeneralPrefs.playlistCache) {
+            if (config.playlistCache && cacheRepo != null) {
                 // Cache enabled: save to DB, return windowed playlist that streams from DB
                 cacheRepo.cachePlaylist(
                     media = filteredMedia,

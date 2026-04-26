@@ -132,6 +132,7 @@ internal class MediaServiceTest {
             autoTimeOfDay = false,
             playlistTimeOfDayDayIncludes = emptySet(),
             playlistTimeOfDayNightIncludes = emptySet(),
+            playlistCache = false,
             shuffleVideos = false,
             shuffleMusic = false,
             repeatMusic = false,

@@ -232,13 +232,14 @@ private class FakeOpenWeatherApi : OpenWeatherApi {
         language: String,
     ): Response<FiveDayForecastResponse> {
         forecastCalls++
+        val today = LocalDate.now(ZoneOffset.UTC)
         return Response.success(
             FiveDayForecastResponse(
                 list =
                     listOf(
-                        fakeForecastItem("2026-04-13T12:00:00", 15.0, 9.0),
-                        fakeForecastItem("2026-04-14T12:00:00", 17.0, 10.0),
-                        fakeForecastItem("2026-04-15T12:00:00", 14.0, 8.0),
+                        fakeForecastItem(today.atTime(12, 0).toString(), 15.0, 9.0),
+                        fakeForecastItem(today.plusDays(1).atTime(12, 0).toString(), 17.0, 10.0),
+                        fakeForecastItem(today.plusDays(2).atTime(12, 0).toString(), 14.0, 8.0),
                     ),
                 city = City(name = "Dublin", country = "IE", timezone = 0),
             ),
