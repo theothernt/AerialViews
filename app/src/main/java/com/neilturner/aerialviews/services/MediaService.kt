@@ -34,6 +34,7 @@ import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
+import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
 import com.neilturner.aerialviews.utils.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
@@ -258,8 +259,8 @@ class MediaService(
             }
 
             if (config.shuffleVideos) {
-                filteredMedia = filteredMedia.shuffled()
-                Timber.i("Shuffling media items")
+                filteredMedia = weightedInterleavedShuffle(filteredMedia)
+                Timber.i("Shuffling media items with weighted source interleaving")
             }
 
             val musicPlaylist =

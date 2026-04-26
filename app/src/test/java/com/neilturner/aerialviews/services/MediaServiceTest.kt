@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
+import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ProviderSourceType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.videos.AerialMedia
@@ -11,7 +12,9 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import kotlin.random.Random
 
 internal class MediaServiceTest {
     private val context = mockk<Context>(relaxed = true)
@@ -84,6 +87,29 @@ internal class MediaServiceTest {
             assertNull(result.musicPlaylist)
         }
 
+    @Test
+    fun `weighted interleaved shuffle preserves all items and mixes sources`() {
+        val media =
+            listOf(
+                testMedia("apple-1", AerialMediaSource.APPLE),
+                testMedia("apple-2", AerialMediaSource.APPLE),
+                testMedia("apple-3", AerialMediaSource.APPLE),
+                testMedia("apple-4", AerialMediaSource.APPLE),
+                testMedia("amazon-1", AerialMediaSource.AMAZON),
+                testMedia("amazon-2", AerialMediaSource.AMAZON),
+                testMedia("local-1", AerialMediaSource.LOCAL),
+            )
+
+        val shuffled = MediaServiceHelper.weightedInterleavedShuffle(media, Random(0))
+
+        assertEquals(media.size, shuffled.size)
+        assertEquals(media.toSet(), shuffled.toSet())
+        assertEquals(4, shuffled.count { it.source == AerialMediaSource.APPLE })
+        assertEquals(2, shuffled.count { it.source == AerialMediaSource.AMAZON })
+        assertEquals(1, shuffled.count { it.source == AerialMediaSource.LOCAL })
+        assertTrue(shuffled.take(4).map { it.source }.toSet().size > 1)
+    }
+
     private class FakeMediaProvider(
         context: Context,
         private val media: List<AerialMedia> = emptyList(),
@@ -116,7 +142,16 @@ internal class MediaServiceTest {
             useLocalVideos = false,
             useSambaVideos = false,
             useWebDavVideos = false,
+            webDavPath = "",
             useImmichVideos = false,
+            immichUrl = "",
+            immichPath = "",
             useCustomStreams = false,
+            customUrls = "",
         )
+
+    private fun testMedia(
+        id: String,
+        source: AerialMediaSource,
+    ) = AerialMedia(uri = mockk(relaxed = true, name = id), source = source)
 }
