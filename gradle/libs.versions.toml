@@ -1,6 +1,6 @@
 [versions]
 agp = "9.2.0"
-kotlin = "2.3.20"
+kotlin = "2.3.21"
 kotlin-serialization = "1.11.0"
 google-services = "4.4.4"
 ksp = "2.3.7"
