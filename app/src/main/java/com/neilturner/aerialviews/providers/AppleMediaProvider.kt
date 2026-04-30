@@ -47,7 +47,7 @@ class AppleMediaProvider(
 
     private suspend fun buildVideoAndMetadata() {
         val quality = prefs.quality
-        val strings = parseJsonMap(context, R.raw.tvos15_strings)
+        val strings = parseJsonMap(context, R.raw.tvos26_strings)
         val wrapper = parseJson<Apple2018Videos>(context, R.raw.tvos26)
 
         wrapper.assets?.forEach { asset ->
