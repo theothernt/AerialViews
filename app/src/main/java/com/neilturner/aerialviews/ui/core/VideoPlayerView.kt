@@ -86,10 +86,10 @@ class VideoPlayerView
             player = exoPlayer
             player?.addListener(this)
 
-            if (GeneralPrefs.loopUntilSkipped || GeneralPrefs.loopShortVideos) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+            if (GeneralPrefs.loopUntilSkipped) {
+                player?.repeatMode = Player.REPEAT_MODE_ALL
             } else {
-                player?.repeatMode = Player.REPEAT_MODE_OFF // No looping
+                player?.repeatMode = Player.REPEAT_MODE_OFF
             }
 
             controllerAutoShow = false
@@ -271,6 +271,18 @@ class VideoPlayerView
                 state.startPosition = result.first
                 state.endPosition = result.second
 
+                // Dynamically set repeat mode based on whether it's a short video that should loop
+                if (!GeneralPrefs.loopUntilSkipped) {
+                    val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+                    val isLengthLimited = maxVideoLength >= 10000
+                    val isShortVideo = exoPlayer.duration > 0 && exoPlayer.duration < maxVideoLength
+                    if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                        player?.repeatMode = Player.REPEAT_MODE_ALL
+                    } else {
+                        player?.repeatMode = Player.REPEAT_MODE_OFF
+                    }
+                }
+
                 state.prepared = true
 
                 if (state.startPosition > 0) {
@@ -326,6 +338,9 @@ class VideoPlayerView
                 Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
                     state.loopCount++
                     Timber.i("Reason: Looping video, count: ${state.loopCount}")
+                    if (exoPlayer.isPlaying) {
+                        setupAlmostFinishedRunnable()
+                    }
                 }
             }
             super.onMediaItemTransition(mediaItem, reason)
@@ -452,7 +467,13 @@ class VideoPlayerView
 
             // Basic duration and progress
             val duration = state.endPosition - state.startPosition
-            val progress = exoPlayer.currentPosition - state.startPosition
+            
+            val loopDuration = if (exoPlayer.duration != androidx.media3.common.C.TIME_UNSET && exoPlayer.duration > 0) {
+                state.loopCount * exoPlayer.duration
+            } else {
+                0L
+            }
+            val progress = loopDuration + exoPlayer.currentPosition - state.startPosition
             val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
 
             // Duration taking into account...
