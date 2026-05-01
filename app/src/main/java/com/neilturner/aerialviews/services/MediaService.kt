@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.services
 
 import android.content.Context
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
@@ -321,12 +321,12 @@ class MediaService(
         val sourcesCounts = media.groupBy { it.source }.mapValues { it.value.size }
 
         // Build parameters with individual source counts
-        val params = mutableListOf<Pair<String, String>>()
+        val bundle = Bundle()
         
         // Add count for each source (generalised)
         sourcesCounts.forEach { (source, count) ->
             if (source != AerialMediaSource.UNKNOWN) {
-                params.add(Pair("source_${source.name.lowercase()}", generalizeCount(count)))
+                bundle.putString("source_${source.name.lowercase()}", generalizeCount(count))
             }
         }
 
@@ -335,17 +335,17 @@ class MediaService(
         val photoCount = media.count { it.type == AerialMediaType.IMAGE }
 
         // Add generalised video and photo counts
-        params.add(Pair("total_videos", generalizeCount(videoCount)))
-        params.add(Pair("total_photos", generalizeCount(photoCount)))
-        params.add(Pair("total_sources", sourcesCounts.size.toString()))
+        bundle.putString("total_videos", generalizeCount(videoCount))
+        bundle.putString("total_photos", generalizeCount(photoCount))
+        bundle.putString("total_sources", sourcesCounts.size.toString())
 
         // Log analytics event
         FirebaseHelper.analyticsEvent(
             "media_sources_usage",
-            bundleOf(*params.toTypedArray()),
+            bundle,
         )
 
-        Timber.d("Media usage tracked: ${params.joinToString(", ") { "${it.first}=${it.second}" }}")
+        Timber.d("Media usage tracked: ${bundle.keySet().joinToString(", ") { "$it=${bundle.getString(it)}" }}")
     }
 
     private fun generalizeCount(count: Int): String =
