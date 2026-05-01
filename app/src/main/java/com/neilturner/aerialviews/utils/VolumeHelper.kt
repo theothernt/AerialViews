@@ -17,29 +17,35 @@ class VolumeHelper(
     private var animator: ValueAnimator? = null
 
     /**
-     * Fades volume from 0 → 1 over [durationMs].
-     * If duration is ≤ 0, volume is set to 1 instantly.
+     * Fades volume from 0 → [targetVolume] over [durationMs].
+     * If duration is ≤ 0, volume is set to [targetVolume] instantly.
      */
-    fun fadeIn(durationMs: Long = 500) {
+    fun fadeIn(
+        durationMs: Long = 500,
+        targetVolume: Float = 1f,
+    ) {
         cancel()
         if (durationMs <= 0L) {
-            setVolume(1f)
+            setVolume(targetVolume)
             return
         }
         val startVolume = 0f
-        val targetVolume = 1f
-        animator = ValueAnimator.ofFloat(startVolume, targetVolume).apply {
-            duration = durationMs
-            addUpdateListener { setVolume(it.animatedValue as Float) }
-            start()
-        }
+        animator =
+            ValueAnimator.ofFloat(startVolume, targetVolume).apply {
+                duration = durationMs
+                addUpdateListener { setVolume(it.animatedValue as Float) }
+                start()
+            }
     }
 
     /**
      * Fades volume from current → 0 over [durationMs], then calls [onComplete].
      * If duration is ≤ 0, volume is set to 0 instantly and [onComplete] fires immediately.
      */
-    fun fadeOut(durationMs: Long = 500, onComplete: (() -> Unit)? = null) {
+    fun fadeOut(
+        durationMs: Long = 500,
+        onComplete: (() -> Unit)? = null,
+    ) {
         cancel()
         val startVolume = getVolume()
         if (startVolume <= 0f || durationMs <= 0L) {
@@ -47,19 +53,20 @@ class VolumeHelper(
             onComplete?.invoke()
             return
         }
-        animator = ValueAnimator.ofFloat(startVolume, 0f).apply {
-            duration = durationMs
-            addUpdateListener { setVolume(it.animatedValue as Float) }
-            addListener(
-                object : android.animation.AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: android.animation.Animator) {
-                        animator = null
-                        onComplete?.invoke()
-                    }
-                },
-            )
-            start()
-        }
+        animator =
+            ValueAnimator.ofFloat(startVolume, 0f).apply {
+                duration = durationMs
+                addUpdateListener { setVolume(it.animatedValue as Float) }
+                addListener(
+                    object : android.animation.AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: android.animation.Animator) {
+                            animator = null
+                            onComplete?.invoke()
+                        }
+                    },
+                )
+                start()
+            }
     }
 
     fun cancel() {

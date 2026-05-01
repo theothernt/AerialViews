@@ -8,7 +8,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.utils.FileHelper
 import timber.log.Timber
- 
+
 class ImmichAssetMapper(
     private val prefs: ImmichAssetPrefs,
     private val urlBuilder: ImmichUrlBuilder,

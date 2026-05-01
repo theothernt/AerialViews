@@ -181,10 +181,11 @@ class LocalVideosFragment :
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
             val result = provider.fetch()
-            val message = when (result) {
-                is ProviderFetchResult.Success -> result.summary
-                is ProviderFetchResult.Error -> result.message
-            }
+            val message =
+                when (result) {
+                    is ProviderFetchResult.Success -> result.summary
+                    is ProviderFetchResult.Error -> result.message
+                }
             ensureActive()
             DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), message)
         }
@@ -212,7 +213,10 @@ class LocalVideosFragment :
         val current = LocalMediaPrefs.mediaSelection
         if (MediaSelection.MUSIC in current) {
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
-            LocalMediaPrefs.preferences.edit().putStringSet("local_media_selection", updated).apply()
+            LocalMediaPrefs.preferences
+                .edit()
+                .putStringSet("local_media_selection", updated)
+                .apply()
             updateMediaSelectionSummary()
         }
     }

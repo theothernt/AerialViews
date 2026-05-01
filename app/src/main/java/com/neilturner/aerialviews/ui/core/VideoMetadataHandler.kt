@@ -1,34 +1,52 @@
 package com.neilturner.aerialviews.ui.core
 
-import androidx.media3.common.MediaMetadata
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.videos.AerialMedia
 
 internal fun applyVideoMetadataToMedia(
     media: AerialMedia,
-    mediaMetadata: MediaMetadata,
+    extractedMetadata: ExtractedVideoMetadata,
 ): Boolean {
     var changed = false
 
-    if (supportsEmbeddedVideoFileMetadata(media) && !mediaMetadata.title.isNullOrBlank()) {
-        media.metadata.title = mediaMetadata.title.toString()
-        changed = true
-    }
-
-    if (supportsEmbeddedVideoFileMetadata(media) && !mediaMetadata.description.isNullOrBlank()) {
-        media.metadata.exif.description = mediaMetadata.description.toString()
+    if (supportsEmbeddedVideoFileMetadata(media) && !extractedMetadata.title.isNullOrBlank()) {
+        media.metadata.title = extractedMetadata.title
         changed = true
     }
 
     val shouldIgnoreFileDate =
-        media.source == AerialMediaSource.IMMICH && !media.metadata.exif.date.isNullOrBlank()
+        media.source == AerialMediaSource.IMMICH &&
+            !media.metadata.exif.date
+                .isNullOrBlank()
     if (supportsEmbeddedVideoFileMetadata(media) && !shouldIgnoreFileDate) {
-        buildMetadataDate(
-            year = mediaMetadata.recordingYear,
-            month = mediaMetadata.recordingMonth,
-            day = mediaMetadata.recordingDay,
-        )?.let { extractedDate ->
+        extractedMetadata.date?.let { extractedDate ->
             media.metadata.exif.date = extractedDate
+            if (!extractedMetadata.offset.isNullOrBlank()) {
+                media.metadata.exif.offset = extractedMetadata.offset
+            }
+            changed = true
+        }
+    }
+
+    if (supportsEmbeddedVideoFileMetadata(media)) {
+        if (extractedMetadata.latitude != null) {
+            media.metadata.exif.latitude = extractedMetadata.latitude
+            changed = true
+        }
+        if (extractedMetadata.longitude != null) {
+            media.metadata.exif.longitude = extractedMetadata.longitude
+            changed = true
+        }
+        if (!extractedMetadata.city.isNullOrBlank()) {
+            media.metadata.exif.city = extractedMetadata.city
+            changed = true
+        }
+        if (!extractedMetadata.state.isNullOrBlank()) {
+            media.metadata.exif.state = extractedMetadata.state
+            changed = true
+        }
+        if (!extractedMetadata.country.isNullOrBlank()) {
+            media.metadata.exif.country = extractedMetadata.country
             changed = true
         }
     }
@@ -36,37 +54,29 @@ internal fun applyVideoMetadataToMedia(
     return changed
 }
 
-internal fun formatVideoMetadataForLog(mediaMetadata: MediaMetadata): String =
-    buildString {
-        append("title=")
-        append(formatTextValue(mediaMetadata.title))
-        append(", artist=")
-        append(formatTextValue(mediaMetadata.artist))
-        append(", album=")
-        append(formatTextValue(mediaMetadata.albumTitle))
-        append(", albumArtist=")
-        append(formatTextValue(mediaMetadata.albumArtist))
-        append(", description=")
-        append(formatTextValue(mediaMetadata.description))
-        append(", recordingDate=")
-        append(
-            buildMetadataDate(
-                year = mediaMetadata.recordingYear,
-                month = mediaMetadata.recordingMonth,
-                day = mediaMetadata.recordingDay,
-            ) ?: "<blank>",
-        )
-        append(", releaseDate=")
-        append(
-            buildMetadataDate(
-                year = mediaMetadata.releaseYear,
-                month = mediaMetadata.releaseMonth,
-                day = mediaMetadata.releaseDay,
-            ) ?: "<blank>",
-        )
+internal fun formatVideoMetadataForLog(metadata: ExtractedVideoMetadata): String {
+    val logEntries = mutableListOf<String>()
+
+    fun addEntry(label: String, value: String?) {
+        value?.trim()?.takeIf { it.isNotBlank() }?.let {
+            logEntries.add("$label=$it")
+        }
     }
 
-private fun buildMetadataDate(
+    addEntry("title", metadata.title)
+    addEntry("description", metadata.description)
+    addEntry("recordingDate", metadata.date)
+    addEntry("recordingOffset", metadata.offset)
+    metadata.latitude?.let { logEntries.add("latitude=$it") }
+    metadata.longitude?.let { logEntries.add("longitude=$it") }
+    addEntry("city", metadata.city)
+    addEntry("state", metadata.state)
+    addEntry("country", metadata.country)
+
+    return logEntries.joinToString(", ")
+}
+
+internal fun buildMetadataDate(
     year: Int?,
     month: Int?,
     day: Int?,
@@ -77,17 +87,9 @@ private fun buildMetadataDate(
     return "$safeYear:$safeMonth:$safeDay 00:00:00"
 }
 
-private fun formatTextValue(value: CharSequence?): String =
-    value
-        ?.toString()
-        ?.trim()
-        ?.takeIf { it.isNotBlank() }
-        ?: "<blank>"
-
 internal fun supportsEmbeddedVideoFileMetadata(media: AerialMedia): Boolean =
     media.source in
         setOf(
-            AerialMediaSource.UNKNOWN,
             AerialMediaSource.LOCAL,
             AerialMediaSource.SAMBA,
             AerialMediaSource.WEBDAV,

@@ -11,6 +11,7 @@ import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.NowPlayingFormat
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PhotoScale
+import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
 import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.enums.VideoScale
@@ -207,12 +208,22 @@ object GeneralPrefs : KotprefModel() {
         setOf("SUNSET")
     }
 
+    // Playlist Cache
+    var playlistCache by booleanPref(false, "playlist_cache")
+    var playlistCacheRefresh by stringPref("-1", "playlist_cache_refresh")
+
     // Playlist - Videos
-    var muteVideos by booleanPref(true, "mute_videos")
+    var playlistAudioMode by nullableEnumValuePref(PlaylistAudioMode.VIDEO_MUTED, "playlist_audio_mode")
     var videoVolume by stringPref("100", "video_volume")
     var videoScale by nullableEnumValuePref(VideoScale.SCALE_TO_FIT_WITH_CROPPING, "video_scale")
     var playbackSpeed by stringPref("1", "playback_speed")
     var ignoreNonManifestVideos by booleanPref(false, "any_videos_ignore_non_manifest_videos")
+
+    val playsVideoAudio: Boolean
+        get() = playlistAudioMode == PlaylistAudioMode.VIDEO_AUDIO
+
+    val playsBackgroundMusic: Boolean
+        get() = playlistAudioMode == PlaylistAudioMode.BACKGROUND_MUSIC
 
     // Playlist - Videos Advanced
     var maxVideoLength by stringPref("0", "playback_max_video_length")

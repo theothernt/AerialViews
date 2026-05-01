@@ -15,9 +15,10 @@ import com.neilturner.aerialviews.BuildConfig
 import timber.log.Timber
 
 class RefreshRateHelper(
-    private val context: Context,
+    context: Context,
 ) {
-    private val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    private val context = context.applicationContext
+    private val displayManager = this.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     private val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
 
     fun setRefreshRate(fps: Float?) {
@@ -154,7 +155,7 @@ class RefreshRateHelper(
             // View must be added/removed for refresh rate to change reliably
             if (overlayView == null) {
                 Timber.i("Using NEW Overlay view...")
-                windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
+                windowManager = context.applicationContext.getSystemService(WINDOW_SERVICE) as WindowManager
                 overlayView = View(context)
                 overlayView?.setBackgroundColor(Color.argb(0, 0, 0, 0))
                 val params = buildViewParams()

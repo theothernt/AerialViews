@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services
 
 import android.content.Context
 import androidx.core.os.bundleOf
+import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -36,6 +37,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
 import com.neilturner.aerialviews.utils.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
@@ -53,10 +55,53 @@ class MediaService(
         val autoTimeOfDay: Boolean,
         val playlistTimeOfDayDayIncludes: Set<String>,
         val playlistTimeOfDayNightIncludes: Set<String>,
+        val playlistCache: Boolean,
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
+        val useAppleVideos: Boolean,
+        val useAmazonVideos: Boolean,
+        val useComm1Videos: Boolean,
+        val useComm2Videos: Boolean,
+        val useLocalVideos: Boolean,
+        val useSambaVideos: Boolean,
+        val useWebDavVideos: Boolean,
+        val webDavPath: String,
+        val useImmichVideos: Boolean,
+        val immichUrl: String,
+        val immichPath: String,
+        val useCustomStreams: Boolean,
+        val customUrls: String,
     ) {
+        fun buildHash(): String {
+            val parts =
+                buildList {
+                    add(removeDuplicates.toString())
+                    add(ignoreNonManifestVideos.toString())
+                    add(autoTimeOfDay.toString())
+                    add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
+                    add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
+                    add(playlistCache.toString())
+                    add(shuffleVideos.toString())
+                    add(shuffleMusic.toString())
+                    add(repeatMusic.toString())
+                    add(useAppleVideos.toString())
+                    add(useAmazonVideos.toString())
+                    add(useComm1Videos.toString())
+                    add(useComm2Videos.toString())
+                    add(useLocalVideos.toString())
+                    add(useSambaVideos.toString())
+                    add(useWebDavVideos.toString())
+                    add(webDavPath)
+                    add(useImmichVideos.toString())
+                    add(immichUrl)
+                    add(immichPath)
+                    add(useCustomStreams.toString())
+                    add(customUrls)
+                }
+            return parts.joinToString("|").hashCode().toString()
+        }
+
         companion object {
             fun fromPreferences() =
                 Config(
@@ -65,9 +110,23 @@ class MediaService(
                     autoTimeOfDay = GeneralPrefs.autoTimeOfDay,
                     playlistTimeOfDayDayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes,
                     playlistTimeOfDayNightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes,
+                    playlistCache = GeneralPrefs.playlistCache,
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
+                    useAppleVideos = AppleVideoPrefs.enabled,
+                    useAmazonVideos = AmazonVideoPrefs.enabled,
+                    useComm1Videos = Comm1VideoPrefs.enabled,
+                    useComm2Videos = Comm2VideoPrefs.enabled,
+                    useLocalVideos = LocalMediaPrefs.enabled,
+                    useSambaVideos = SambaMediaPrefs.enabled || SambaMediaPrefs2.enabled,
+                    useWebDavVideos = WebDavMediaPrefs.enabled || WebDavMediaPrefs2.enabled,
+                    webDavPath = "${WebDavMediaPrefs.hostName}|${WebDavMediaPrefs.pathName}|${WebDavMediaPrefs2.hostName}|${WebDavMediaPrefs2.pathName}",
+                    useImmichVideos = ImmichMediaPrefs.enabled,
+                    immichUrl = ImmichMediaPrefs.url,
+                    immichPath = ImmichMediaPrefs.pathName,
+                    useCustomStreams = CustomFeedPrefs.enabled,
+                    customUrls = CustomFeedPrefs.urls,
                 )
         }
     }
@@ -89,8 +148,36 @@ class MediaService(
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 
-    suspend fun fetchMedia(): MediaFetchResult =
+    suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
+            val settingsHash = config.buildHash()
+            val cacheRepo =
+                if (config.playlistCache) {
+                    com.neilturner.aerialviews.data
+                        .PlaylistCacheRepository(context)
+                } else {
+                    null
+                }
+
+            if (config.playlistCache) {
+                if (cacheRepo != null && cacheRepo.isCacheValid(settingsHash)) {
+                    val cached = cacheRepo.getCachedPlaylist()
+                    if (cached != null) {
+                        onStatus(LoadingStatus.RESUMING)
+                        Timber.i("MediaService: USING CACHED PLAYLIST")
+                        return@withContext cached
+                    } else {
+                        Timber.w("MediaService: Cache reported valid but failed to load")
+                    }
+                } else {
+                    Timber.i("MediaService: Cache INVALID or missing, fetching fresh items")
+                }
+                onStatus(LoadingStatus.BUILDING)
+            } else {
+                Timber.i("MediaService: Cache DISABLED, fetching fresh items")
+                onStatus(LoadingStatus.LOADING)
+            }
+
             val (media, tracks) = buildProviderContent(providers)
 
             // Split into videos and photos
@@ -182,8 +269,8 @@ class MediaService(
             }
 
             if (config.shuffleVideos) {
-                filteredMedia = filteredMedia.shuffled()
-                Timber.i("Shuffling media items")
+                filteredMedia = weightedInterleavedShuffle(filteredMedia)
+                Timber.i("Shuffling media items with weighted source interleaving")
             }
 
             val musicPlaylist =
@@ -196,13 +283,33 @@ class MediaService(
                             shuffle = config.shuffleMusic,
                             repeat = config.repeatMusic,
                         )
-                    }
+            }
 
             Timber.i("Total media items: ${filteredMedia.size}")
 
             // Track enabled media sources and media counts
             trackMediaUsage(filteredMedia)
 
+            if (config.playlistCache && cacheRepo != null) {
+                // Cache enabled: save to DB, return windowed playlist that streams from DB
+                cacheRepo.cachePlaylist(
+                    media = filteredMedia,
+                    musicPlaylist = musicPlaylist,
+                    settingsHash = settingsHash,
+                    shuffleEnabled = config.shuffleVideos,
+                )
+
+                val cachedResult = cacheRepo.getCachedPlaylist()
+                if (cachedResult != null) {
+                    Timber.i("MediaService: Fresh playlist cached and loaded from DB (${filteredMedia.size} items)")
+                    return@withContext cachedResult
+                }
+                Timber.w("MediaService: Failed to read back cached playlist, falling back to in-memory")
+            } else {
+                Timber.i("MediaService: Cache disabled, using full in-memory playlist (${filteredMedia.size} items)")
+            }
+
+            // Cache disabled or cache read-back failed: all items in memory, no DB
             return@withContext MediaFetchResult(
                 mediaPlaylist = MediaPlaylist(filteredMedia),
                 musicPlaylist = musicPlaylist,

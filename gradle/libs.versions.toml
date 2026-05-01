@@ -1,9 +1,9 @@
 [versions]
-agp = "9.1.0"
-kotlin = "2.3.20"
+agp = "9.2.0"
+kotlin = "2.3.21"
 kotlin-serialization = "1.11.0"
 google-services = "4.4.4"
-ksp = "2.3.6"
+ksp = "2.3.7"
 coroutines = "1.10.2"
 core-ktx = "1.18.0"
 activity-ktx = "1.13.0"
@@ -11,12 +11,13 @@ constraintlayout = "2.2.1"
 appcompat = "1.7.1"
 exifinterface = "1.4.2"
 desugar-jdk-libs = "2.1.5"
+room = "2.8.4"
 
 firebase-bom = "34.12.0"
 firebase-crashlytics-plugin = "3.0.7"
 firebase-perf-plugin = "2.0.2"
 
-ktor = "3.4.2"
+ktor = "3.4.3"
 gradle-doctor = "0.12.1"
 kotlinter-gradle = "5.4.2"
 leakcanary = "3.0-alpha-8"
@@ -64,6 +65,10 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
+room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
@@ -94,6 +99,7 @@ media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", versi
 media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3-exoplayer" }
 media3-rtsp = { group = "androidx.media3", name = "media3-exoplayer-rtsp", version.ref = "media3-exoplayer" }
 media3-hls = { group = "androidx.media3", name = "media3-exoplayer-hls", version.ref = "media3-exoplayer" }
+media3-container = { group = "androidx.media3", name = "media3-container", version.ref = "media3-exoplayer" }
 
 coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
@@ -128,6 +134,7 @@ kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logging"]
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
+room = ["room-runtime", "room-ktx"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

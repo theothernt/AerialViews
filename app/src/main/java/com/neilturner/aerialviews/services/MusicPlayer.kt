@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
 import com.neilturner.aerialviews.utils.VolumeHelper
 import timber.log.Timber
@@ -13,23 +14,42 @@ class MusicPlayer(
     private val playlist: MusicPlaylist,
 ) {
     private var player: ExoPlayer? = null
-    private val volumeHelper = VolumeHelper(
-        getVolume = { player?.volume ?: 0f },
-        setVolume = { v -> player?.volume = v },
-    )
+    private val volumeHelper =
+        VolumeHelper(
+            getVolume = { player?.volume ?: 0f },
+            setVolume = { v -> player?.volume = v },
+        )
+
+    var onMediaItemChanged: (() -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
         player = VideoPlayerHelper.buildAudioPlayer(context)
+        player?.addListener(object : Player.Listener {
+            override fun onMediaItemTransition(mediaItem: androidx.media3.common.MediaItem?, reason: Int) {
+                onMediaItemChanged?.invoke()
+            }
+        })
         return player!!
     }
 
     fun getPlayer(): ExoPlayer? = player
 
-    fun play() {
-        val player = player ?: run {
-            Timber.w("MusicPlayer: play() called but player not created")
-            return
+    fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
+
+    // Support resume capability
+    fun seekToTrack(index: Int) {
+        if (index > 0 && index < playlist.size) {
+            player?.seekTo(index, 0L)
+            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $index")
         }
+    }
+
+    fun play() {
+        val player =
+            player ?: run {
+                Timber.w("MusicPlayer: play() called but player not created")
+                return
+            }
 
         // Load all tracks into ExoPlayer's queue with correct data source per track
         playlist.tracks.forEach { track ->
@@ -48,7 +68,10 @@ class MusicPlayer(
 
         player.volume = 0f
         player.play()
-        volumeHelper.fadeIn(durationMs = 500)
+        volumeHelper.fadeIn(
+            durationMs = 500,
+            targetVolume = GeneralPrefs.videoVolume.toFloat() / 100,
+        )
         Timber.i("MusicPlayer: playing ${playlist.size} tracks, repeat=${playlist.repeat}")
     }
 

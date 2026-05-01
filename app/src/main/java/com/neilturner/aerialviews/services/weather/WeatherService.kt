@@ -28,9 +28,10 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class WeatherService(
-    val context: Context,
+    context: Context,
     private val apiOverride: OpenWeatherApi? = null,
 ) {
+    private val context = context.applicationContext
     private var updateJob: Job? = null
     private val maxRetries = 3
     private var totalUpdates = 0

@@ -129,10 +129,11 @@ class ProjectivyLocalVideosFragment :
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), ProjectivyLocalMediaPrefs)
             val result = provider.fetch()
-            val message = when (result) {
-                is ProviderFetchResult.Success -> result.summary
-                is ProviderFetchResult.Error -> result.message
-            }
+            val message =
+                when (result) {
+                    is ProviderFetchResult.Success -> result.summary
+                    is ProviderFetchResult.Error -> result.message
+                }
             ensureActive()
             DialogHelper.showOnMain(requireContext(), resources.getString(R.string.local_videos_test_results), message)
         }
@@ -157,7 +158,10 @@ class ProjectivyLocalVideosFragment :
         val current = ProjectivyLocalMediaPrefs.mediaSelection
         if (MediaSelection.MUSIC in current) {
             val updated = (current - MediaSelection.MUSIC).toMutableSet()
-            ProjectivyLocalMediaPrefs.preferences.edit().putStringSet("projectivy_local_media_selection", updated).apply()
+            ProjectivyLocalMediaPrefs.preferences
+                .edit()
+                .putStringSet("projectivy_local_media_selection", updated)
+                .apply()
             updateMediaSelectionSummary()
         }
     }

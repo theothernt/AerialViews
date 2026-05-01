@@ -1,0 +1,261 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "b848679a5999ff43d12bc12e9c1ce35e",
+    "entities": [
+      {
+        "tableName": "cached_media",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `playlistOrder` INTEGER NOT NULL, `uri` TEXT NOT NULL, `type` TEXT NOT NULL, `source` TEXT NOT NULL, `shortDescription` TEXT NOT NULL, `pointsOfInterest` TEXT NOT NULL, `timeOfDay` TEXT NOT NULL, `scene` TEXT NOT NULL, `albumName` TEXT NOT NULL, `title` TEXT NOT NULL, `exifDate` TEXT, `exifOffset` TEXT, `exifLatitude` REAL, `exifLongitude` REAL, `exifCity` TEXT, `exifState` TEXT, `exifCountry` TEXT, `exifDescription` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playlistOrder",
+            "columnName": "playlistOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uri",
+            "columnName": "uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shortDescription",
+            "columnName": "shortDescription",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pointsOfInterest",
+            "columnName": "pointsOfInterest",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeOfDay",
+            "columnName": "timeOfDay",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "scene",
+            "columnName": "scene",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "albumName",
+            "columnName": "albumName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exifDate",
+            "columnName": "exifDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "exifOffset",
+            "columnName": "exifOffset",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "exifLatitude",
+            "columnName": "exifLatitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "exifLongitude",
+            "columnName": "exifLongitude",
+            "affinity": "REAL"
+          },
+          {
+            "fieldPath": "exifCity",
+            "columnName": "exifCity",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "exifState",
+            "columnName": "exifState",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "exifCountry",
+            "columnName": "exifCountry",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "exifDescription",
+            "columnName": "exifDescription",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_cached_media_playlistOrder",
+            "unique": false,
+            "columnNames": [
+              "playlistOrder"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cached_media_playlistOrder` ON `${TABLE_NAME}` (`playlistOrder`)"
+          }
+        ]
+      },
+      {
+        "tableName": "cached_music_tracks",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `playlistOrder` INTEGER NOT NULL, `uri` TEXT NOT NULL, `source` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playlistOrder",
+            "columnName": "playlistOrder",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "uri",
+            "columnName": "uri",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_cached_music_tracks_playlistOrder",
+            "unique": false,
+            "columnNames": [
+              "playlistOrder"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_cached_music_tracks_playlistOrder` ON `${TABLE_NAME}` (`playlistOrder`)"
+          }
+        ]
+      },
+      {
+        "tableName": "playlist_state",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `mediaPosition` INTEGER NOT NULL, `musicTrackIndex` INTEGER NOT NULL, `cachedAt` INTEGER NOT NULL, `settingsHash` TEXT NOT NULL, `totalMediaItems` INTEGER NOT NULL, `totalMusicTracks` INTEGER NOT NULL, `shuffleEnabled` INTEGER NOT NULL, `musicShuffleEnabled` INTEGER NOT NULL, `musicRepeatEnabled` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mediaPosition",
+            "columnName": "mediaPosition",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "musicTrackIndex",
+            "columnName": "musicTrackIndex",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "cachedAt",
+            "columnName": "cachedAt",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "settingsHash",
+            "columnName": "settingsHash",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalMediaItems",
+            "columnName": "totalMediaItems",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalMusicTracks",
+            "columnName": "totalMusicTracks",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "shuffleEnabled",
+            "columnName": "shuffleEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "musicShuffleEnabled",
+            "columnName": "musicShuffleEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "musicRepeatEnabled",
+            "columnName": "musicRepeatEnabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b848679a5999ff43d12bc12e9c1ce35e')"
+    ]
+  }
+}

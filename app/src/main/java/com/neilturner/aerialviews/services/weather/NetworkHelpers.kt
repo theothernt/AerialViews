@@ -1,8 +1,7 @@
 package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
+import com.neilturner.aerialviews.utils.NetworkHelper
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor
@@ -20,13 +19,7 @@ object NetworkHelpers {
     private val offlineCacheTimeout = 2.hours.inWholeSeconds.toInt()
     private val onlineCacheTimeout = 60 // Minutes
 
-    @Suppress("DEPRECATION")
-    fun isNetworkAvailable(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return false
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
-        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
+    fun isNetworkAvailable(context: Context): Boolean = NetworkHelper.isNetworkAvailable(context)
 
     fun buildOkHttpClient(context: Context): OkHttpClient {
         val cache = Cache(File(context.cacheDir, "weather_cache"), cacheSize)

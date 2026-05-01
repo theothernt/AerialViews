@@ -7,6 +7,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.parallelForEach
 import timber.log.Timber
 import java.util.concurrent.CopyOnWriteArrayList
+import kotlin.random.Random
 
 internal object MediaServiceHelper {
     suspend fun addMetadataToManifestVideos(
@@ -57,7 +58,39 @@ internal object MediaServiceHelper {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")
                     // FirebaseHelper.logExceptionIfRecent(ex)
                 }
-            }
+        }
         return Pair(media, tracks)
+    }
+
+    fun weightedInterleavedShuffle(
+        media: List<AerialMedia>,
+        random: Random = Random.Default,
+    ): List<AerialMedia> {
+        if (media.size < 2) return media
+
+        val queues =
+            media
+                .groupBy { it.source }
+                .values
+                .map { items -> items.shuffled(random).toCollection(ArrayDeque()) }
+                .filter { it.isNotEmpty() }
+
+        val result = ArrayList<AerialMedia>(media.size)
+
+        while (queues.any { it.isNotEmpty() }) {
+            val totalRemaining = queues.sumOf { it.size }
+            var selection = random.nextInt(totalRemaining)
+
+            for (queue in queues) {
+                if (queue.isEmpty()) continue
+                if (selection < queue.size) {
+                    result += queue.removeFirst()
+                    break
+                }
+                selection -= queue.size
+            }
+        }
+
+        return result
     }
 }

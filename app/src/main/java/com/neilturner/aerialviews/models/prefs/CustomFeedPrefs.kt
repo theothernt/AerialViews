@@ -14,12 +14,4 @@ object CustomFeedPrefs : KotprefModel() {
     var urls by stringPref("", "custom_media_urls")
     var urlsCache by stringPref("", "custom_media_urls_cache")
     var urlsSummary by stringPref("", "custom_media_urls_summary")
-
-    val scene by stringSetPref("custom_media_scene_type") {
-        context.resources.getStringArray(R.array.video_scene_type_default).toSet()
-    }
-
-    val timeOfDay by stringSetPref("custom_media_time_of_day") {
-        context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
-    }
 }

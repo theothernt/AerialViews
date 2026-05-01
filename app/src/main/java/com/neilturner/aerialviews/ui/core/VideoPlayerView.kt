@@ -7,6 +7,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -27,6 +28,8 @@ import com.neilturner.aerialviews.utils.ToastHelper
 import com.neilturner.aerialviews.utils.VolumeHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
@@ -40,7 +43,7 @@ class VideoPlayerView
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
-    ) : PlayerView(context, attrs, defStyleAttr),
+    ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
         Player.Listener {
         @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
@@ -57,32 +60,36 @@ class VideoPlayerView
                 listener?.onVideoError()
             }
         private val refreshRateHelper by lazy { RefreshRateHelper(context) }
-        private val mainScope = CoroutineScope(Dispatchers.Main)
+        private val mainScope = CoroutineScope(Dispatchers.Main + Job())
+        private var isDestroyed = false
         private var canChangePlaybackSpeed = true
         private var playbackSpeed = GeneralPrefs.playbackSpeed
         private var pausedTimestamp: Long = 0
         private var wasPlaying = false
-        private val volumeHelper = VolumeHelper(
-            getVolume = { exoPlayer.volume },
-            setVolume = { v -> exoPlayer.volume = v },
-        )
+        private val volumeHelper =
+            VolumeHelper(
+                getVolume = { exoPlayer.volume },
+                setVolume = { v -> exoPlayer.volume = v },
+            )
         private var forcedMuted = false
 
         private val progressBar =
             GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED && GeneralPrefs.progressBarType != ProgressBarType.PHOTOS
 
-        private var isMuted = GeneralPrefs.muteVideos
+        private var isMuted = !GeneralPrefs.playsVideoAudio
 
         init {
-            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
+            // Use applicationContext to prevent activity context leaks
+            val appContext = context.applicationContext
+            exoPlayer = VideoPlayerHelper.buildPlayer(appContext, GeneralPrefs)
 
             player = exoPlayer
             player?.addListener(this)
 
-            if (GeneralPrefs.loopUntilSkipped || GeneralPrefs.loopShortVideos) {
-                player?.repeatMode = Player.REPEAT_MODE_ALL // Used for looping short videos
+            if (GeneralPrefs.loopUntilSkipped) {
+                player?.repeatMode = Player.REPEAT_MODE_ALL
             } else {
-                player?.repeatMode = Player.REPEAT_MODE_OFF // No looping
+                player?.repeatMode = Player.REPEAT_MODE_OFF
             }
 
             controllerAutoShow = false
@@ -91,27 +98,41 @@ class VideoPlayerView
         }
 
         fun release() {
+            isDestroyed = true
             pause()
+            exoPlayer.setVideoSurface(null)
+            // Release ExoPlayer to stop internal threads
+            exoPlayer.release()
             player?.release()
-            cancelVolumeFade()
-
+            // Clear surface view to break context reference chain
+            player = null
+            // Cancel coroutine scope to prevent lambda callbacks from leaking
+            mainScope.cancel()
+            // Clear all callbacks to prevent context references
             removeCallbacks(almostFinishedRunnable)
             removeCallbacks(canChangePlaybackSpeedRunnable)
             removeCallbacks(onErrorRunnable)
-
+            // Clear listener
             listener = null
+            cancelVolumeFade()
         }
 
         fun toggleLooping() {
+            if (isDestroyed) return
+
             if (player?.repeatMode == Player.REPEAT_MODE_ALL) {
                 player?.repeatMode = Player.REPEAT_MODE_OFF
-                mainScope.launch {
-                    ToastHelper.show(context, "Looping disabled")
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        ToastHelper.show(context, "Looping disabled")
+                    }
                 }
             } else {
                 player?.repeatMode = Player.REPEAT_MODE_ALL
-                mainScope.launch {
-                    ToastHelper.show(context, "Looping enabled")
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        ToastHelper.show(context, "Looping enabled")
+                    }
                 }
             }
         }
@@ -149,7 +170,7 @@ class VideoPlayerView
 
         fun toggleMute() {
             cancelVolumeFade()
-            if (forcedMuted) {
+            if (forcedMuted || !GeneralPrefs.playsVideoAudio) {
                 applyMuteState()
                 return
             }
@@ -170,7 +191,14 @@ class VideoPlayerView
         }
 
         private fun applyMuteState() {
-            val shouldMute = forcedMuted || GeneralPrefs.muteVideos || isMuted
+            if (!GeneralPrefs.playsVideoAudio) {
+                VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
+                exoPlayer.volume = 0f
+                isMuted = false
+                return
+            }
+
+            val shouldMute = forcedMuted || isMuted
             if (shouldMute) {
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, true)
                 exoPlayer.volume = 0f
@@ -178,7 +206,7 @@ class VideoPlayerView
                 VideoPlayerHelper.toggleAudioTrack(exoPlayer, false)
                 exoPlayer.volume = GeneralPrefs.videoVolume.toFloat() / 100
             }
-            isMuted = shouldMute
+            isMuted = shouldMute && !forcedMuted
         }
 
         fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
@@ -231,6 +259,10 @@ class VideoPlayerView
                 }
             }
 
+            if (playbackState == Player.STATE_READY) {
+                emitTrackMetadata()
+            }
+
             if (!state.prepared && playbackState == Player.STATE_READY) {
                 Timber.i("Preparing...")
 
@@ -238,6 +270,18 @@ class VideoPlayerView
                 val result = VideoPlayerHelper.calculatePlaybackParameters(exoPlayer, GeneralPrefs, state.type)
                 state.startPosition = result.first
                 state.endPosition = result.second
+
+                // Dynamically set repeat mode based on whether it's a short video that should loop
+                if (!GeneralPrefs.loopUntilSkipped) {
+                    val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+                    val isLengthLimited = maxVideoLength >= 10000
+                    val isShortVideo = exoPlayer.duration > 0 && exoPlayer.duration < maxVideoLength
+                    if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                        player?.repeatMode = Player.REPEAT_MODE_ALL
+                    } else {
+                        player?.repeatMode = Player.REPEAT_MODE_OFF
+                    }
+                }
 
                 state.prepared = true
 
@@ -294,6 +338,9 @@ class VideoPlayerView
                 Player.MEDIA_ITEM_TRANSITION_REASON_REPEAT -> {
                     state.loopCount++
                     Timber.i("Reason: Looping video, count: ${state.loopCount}")
+                    if (exoPlayer.isPlaying) {
+                        setupAlmostFinishedRunnable()
+                    }
                 }
             }
             super.onMediaItemTransition(mediaItem, reason)
@@ -304,10 +351,12 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.crashlyticsException(error.cause)
 
-            if (GeneralPrefs.showMediaErrorToasts) {
-                mainScope.launch {
-                    val errorMessage = error.localizedMessage ?: "Video playback error occurred"
-                    ToastHelper.show(context, errorMessage)
+            if (GeneralPrefs.showMediaErrorToasts && !isDestroyed) {
+                if (mainScope.coroutineContext[Job]?.isActive == true) {
+                    mainScope.launch {
+                        val errorMessage = error.localizedMessage ?: "Video playback error occurred"
+                        ToastHelper.show(context, errorMessage)
+                    }
                 }
             }
 
@@ -321,7 +370,17 @@ class VideoPlayerView
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
-            listener?.onVideoMetadataExtracted(mediaMetadata)
+            //emitTrackMetadata()
+        }
+
+        override fun onTracksChanged(tracks: Tracks) {
+            super.onTracksChanged(tracks)
+            //emitTrackMetadata()
+        }
+
+        private fun emitTrackMetadata() {
+            val extractedMetadata = extractVideoMetadataFromTracks(exoPlayer.currentTracks)
+            listener?.onVideoMetadataExtracted(extractedMetadata)
         }
 
         private fun seek(backward: Boolean = false) {
@@ -408,7 +467,13 @@ class VideoPlayerView
 
             // Basic duration and progress
             val duration = state.endPosition - state.startPosition
-            val progress = exoPlayer.currentPosition - state.startPosition
+            
+            val loopDuration = if (exoPlayer.duration != androidx.media3.common.C.TIME_UNSET && exoPlayer.duration > 0) {
+                state.loopCount * exoPlayer.duration
+            } else {
+                0L
+            }
+            val progress = loopDuration + exoPlayer.currentPosition - state.startPosition
             val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
 
             // Duration taking into account...
@@ -451,7 +516,7 @@ class VideoPlayerView
 
             fun onVideoPlaybackSpeedChanged()
 
-            fun onVideoMetadataExtracted(mediaMetadata: androidx.media3.common.MediaMetadata)
+            fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata)
         }
 
         companion object {

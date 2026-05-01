@@ -184,9 +184,9 @@ class Display(
 }
 
 fun getDisplay(activity: Activity?): Display {
-    val displayManager = activity?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    val appContext = activity?.applicationContext
+    val displayManager = appContext?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     val display = displayManager.displays[0]
-    val context = activity.applicationContext
     val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    return Display(display, windowManager, context)
+    return Display(display, windowManager, appContext)
 }

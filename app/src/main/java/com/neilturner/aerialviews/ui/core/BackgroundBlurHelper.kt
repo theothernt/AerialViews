@@ -3,18 +3,17 @@ package com.neilturner.aerialviews.ui.core
 import android.graphics.Bitmap
 import android.graphics.RenderEffect
 import android.graphics.Shader
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.scale
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FastBlurCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 /**
@@ -102,13 +101,22 @@ class BackgroundBlurHelper(
     ) {
         val (downscaledWidth, downscaledHeight) = resolveLegacyBlurTargetSize()
 
-        ioScope.launch {
-            val (sourceBitmap, recycleSource) = drawableToSoftwareBitmap(drawable, downscaledWidth, downscaledHeight)
-            // Always blur a mutable copy to avoid mutating shared bitmaps.
-            val mutable = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true)
-            if (mutable !== sourceBitmap && recycleSource) {
-                sourceBitmap.recycle()
+        // Snapshot the drawable on the main thread BEFORE jumping to ioScope.
+        // For animated drawables (GIFs/MovieDrawable), toBitmap() must be called
+        // while the bitmap is still valid — capturing it here avoids the race where
+        // Coil recycles the frame between scheduling and execution on ioScope.
+        val sourceBitmap =
+            try {
+                drawable.toBitmap(width = downscaledWidth, height = downscaledHeight, config = Bitmap.Config.ARGB_8888)
+            } catch (e: RuntimeException) {
+                Timber.w(e, "Could not snapshot drawable for blur (bitmap may already be recycled), skipping")
+                onReady(token)
+                return
             }
+
+        ioScope.launch {
+            val mutable = sourceBitmap.copy(Bitmap.Config.ARGB_8888, true)
+            sourceBitmap.recycle()
 
             FastBlurCompat.applyBlur(mutable, resolveLegacyBlurRadius())
 
@@ -126,33 +134,6 @@ class BackgroundBlurHelper(
             }
         }
     }
-
-    private fun drawableToSoftwareBitmap(
-        drawable: Drawable,
-        width: Int,
-        height: Int,
-    ): Pair<Bitmap, Boolean> =
-        when (drawable) {
-            is BitmapDrawable -> {
-                val bitmap = drawable.bitmap
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
-                    bitmap.config == Bitmap.Config.HARDWARE
-                ) {
-                    val copied = bitmap.copy(Bitmap.Config.ARGB_8888, false)
-                    Pair(copied, true)
-                } else if (bitmap.width != width || bitmap.height != height) {
-                    val scaled = bitmap.scale(width, height)
-                    Pair(scaled, true)
-                } else {
-                    Pair(bitmap, false)
-                }
-            }
-
-            else -> {
-                val bitmap = drawable.toBitmap(width = width, height = height, config = Bitmap.Config.ARGB_8888)
-                Pair(bitmap, true)
-            }
-        }
 
     private fun resolveLegacyBlurTargetSize(): Pair<Int, Int> {
         val (targetWidth, targetHeight) = resolveTargetSize()

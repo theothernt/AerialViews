@@ -34,6 +34,13 @@
         <item>~.8GB</item>
         <item>~1.5GB</item>
     </string-array>
+
+    <!-- Custom Feed Data Usage -->
+    <string-array name="custom_feed_data_usage_values" translatable="false">
+        <item>~3GB</item>
+        <item>~2GB</item>
+        <item>~4GB</item>
+    </string-array>
     <string-array name="comm2_videos_data_usage_values" translatable="false">
         <item>~4GB</item>
         <item>~3GB</item>
@@ -192,6 +199,19 @@
     </string-array>
     <string name="amazon_videos_quality_default" translatable="false">VIDEO_1080_SDR</string>
 
+    <!-- Custom Feed Video Options -->
+    <string-array name="custom_feed_quality_entries" translatable="false">
+        <item>1080p H.264</item>
+        <item>1080p HEVC</item>
+        <item>4K HEVC</item>
+    </string-array>
+    <string-array name="custom_feed_quality_values" translatable="false">
+        <item>VIDEO_1080_H264</item>
+        <item>VIDEO_1080_SDR</item>
+        <item>VIDEO_4K_SDR</item>
+    </string-array>
+    <string name="custom_feed_quality_default" translatable="false">VIDEO_1080_SDR</string>
+
     <!-- Clock format -->
     <string name="clock_system_default">System default</string>
     <string name="clock_12hour">12-Hour</string>
@@ -240,10 +260,14 @@
         <item>POI</item>
     </string-array>
     <string name="description_video_default" translatable="false">POI</string>
+
+    <string name="desc_manifest_disabled">Disabled</string>
+    <string name="desc_manifest_short">Place name or short description</string>
+    <string name="desc_manifest_poi">Available in many languages, which change as the video plays</string>
     <string-array name="description_video_manifest_entries">
-        <item>Disabled</item>
-        <item>Place name or short description</item>
-        <item>Available in many languages, which change as the video plays</item>
+        <item>@string/desc_manifest_disabled</item>
+        <item>@string/desc_manifest_short</item>
+        <item>@string/desc_manifest_poi</item>
     </string-array>
 
     <!-- Use filename as description -->
@@ -386,6 +410,40 @@
         <item>2</item>
     </string-array>
     <string name="playback_speed_default" translatable="false">1</string>
+
+    <string name="audio_mode_mute_videos">Mute audio from videos</string>
+    <string name="audio_mode_play_video_audio">Play audio from videos</string>
+    <string name="audio_mode_play_background_music">Play background music</string>
+    <string-array name="audio_mode_entries">
+        <item>@string/audio_mode_mute_videos</item>
+        <item>@string/audio_mode_play_video_audio</item>
+        <item>@string/audio_mode_play_background_music</item>
+    </string-array>
+    <string-array name="audio_mode_values" translatable="false">
+        <item>VIDEO_MUTED</item>
+        <item>VIDEO_AUDIO</item>
+        <item>BACKGROUND_MUSIC</item>
+    </string-array>
+
+    <string name="playlist_cache_refresh_all">When all media viewed</string>
+    <string name="playlist_cache_refresh_1_week">Every week</string>
+    <string name="playlist_cache_refresh_2_weeks">Every 2 weeks</string>
+    <string name="playlist_cache_refresh_3_weeks">Every 3 weeks</string>
+    <string name="playlist_cache_refresh_4_weeks">Every 4 weeks</string>
+    <string-array name="playlist_cache_refresh_entries">
+        <item>@string/playlist_cache_refresh_all</item>
+        <item>@string/playlist_cache_refresh_1_week</item>
+        <item>@string/playlist_cache_refresh_2_weeks</item>
+        <item>@string/playlist_cache_refresh_3_weeks</item>
+        <item>@string/playlist_cache_refresh_4_weeks</item>
+    </string-array>
+    <string-array name="playlist_cache_refresh_values" translatable="false">
+        <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
 
     <!-- Text sizes -->
     <string-array name="text_size_entries" translatable="false">
@@ -1368,10 +1426,10 @@
 
     <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
     <string name="overlay_meta_vid_short_desc">Short Description</string>
-    <string name="overlay_meta_vid_location">Location (Immich)</string>
+    <string name="overlay_meta_vid_location">Location (Media/Immich)</string>
     <string name="overlay_meta_vid_date">Date taken (Media/Immich)</string>
     <string name="overlay_meta_vid_title">Title (Media)</string>
-    <string name="overlay_meta_vid_description">Description (Media/Immich)</string>
+    <string name="overlay_meta_vid_description">Description (Immich)</string>
     <string name="overlay_meta_vid_album_name">Album Name (Immich)</string>
     <string name="overlay_meta_vid_filename">Use filename as-is</string>
     <string name="overlay_meta_vid_folder_filename">Folder &amp; filename</string>

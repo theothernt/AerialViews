@@ -4,6 +4,8 @@
     <string name="app_name" translatable="false">Aerial Views</string>
     <string name="plugin_uuid" translatable="false">163adf9b-34bb-43df-915c-e8fe4a020bc2</string>
     <string name="loading_title">Loading…</string>
+    <string name="loading_building">Building playlist…</string>
+    <string name="loading_resuming">Resuming playlist…</string>
     <string name="loading_error">No videos or photos found, please check your settings</string>
 
     <!-- Projectivy Integration -->
@@ -27,6 +29,7 @@
     <string name="dialog_error_search_message">Failed to search for location: %1$s</string>
 
     <!-- All Categories -->
+    <string name="category_playlist_cache">Cache</string>
     <string name="category_actions">Actions</string>
     <string name="category_advanced">Advanced</string>
     <string name="category_media">Media</string>
@@ -49,6 +52,7 @@
     <string name="category_brightness">Brightness</string>
     <string name="category_animation">Animation</string>
     <string name="category_about">About</string>
+    <string name="category_quality">Quality</string>
     <string name="category_quality_and_scene_types">Quality &amp; Scene types</string>
     <string name="category_filters">Filters</string>
     <string name="category_scaling">Scaling</string>
@@ -65,6 +69,7 @@
     <string name="category_gradient">Gradient</string>
     <string name="category_startup">Startup</string>
     <string name="category_videos">Videos</string>
+    <string name="category_sound_background_music">Sound and background music</string>
     <string name="category_photos">Photos</string>
     <string name="category_weather">Weather</string>
     <string name="category_weather_forecast">Weather Forecast</string>
@@ -185,8 +190,6 @@
     <string name="custom_media_enabled">Use custom feeds</string>
     <string name="custom_media_feeds_notice">Add URLs for Jetson Creative expansion packs, custom feeds (entries.json), HLS, and RTSP streams</string>
 
-    <string name="custom_media_filters_notice">Filters will work with Jetson Creative expansion packs. Custom feeds can support the filters by adding extra metadata.</string>
-
     <string name="custom_media_urls_title">Feed URLs</string>
     <string name="custom_media_urls_summary">Separate multiple URLs with a comma</string>
     <string name="custom_media_urls_invalid">One or more URLs are invalid</string>
@@ -304,8 +307,9 @@
 
     <string name="webdav_media_scheme_title">Scheme</string>
     <string name="webdav_media_hostname_title">Hostname &amp; port</string>
-    <string name="webdav_media_hostname_summary">IP address and port of the server e.g. 192.168.1.2:5005</string>
-    <string name="webdav_media_pathname_title">Path name (case sensitive)</string>
+    <string name="webdav_media_hostname_summary">IP address or domain name of the server. Port optional; defaults to 80 or 443, e.g. 192.168.1.2:5005</string>
+    <string name="webdav_media_hostname_invalid">Enter only a hostname or IP address, with an optional port, e.g. example.com or 192.168.1.2:5005</string>
+    <string name="webdav_media_pathname_title">Path name (case-sensitive)</string>
     <string name="webdav_media_pathname_summary">The name of the folder containing videos &amp; photos e.g. /media/aerial</string>
     <string name="webdav_media_username_title">Username</string>
     <string name="webdav_media_username_summary">Not set. Optional</string>
@@ -382,6 +386,9 @@
     <string name="settings_playlist_title">Playlist</string>
     <string name="settings_playlist_summary">Change volume, mute videos, shuffle, video length, looping, etc</string>
 
+    <string name="settings_cache_title">Caching</string>
+    <string name="settings_cache_summary">Configure playlist caching options</string>
+
     <string name="settings_dpad_title">D-Pad/Remote, Tap &amp; Swipe Gestures</string>
     <string name="settings_dpad_summary">Customise actions for your d-pad remote or gestures on your phone screen</string>
 
@@ -390,9 +397,6 @@
 
     <string name="settings_projectivy_title">Projectivy Integration</string>
     <string name="settings_projectivy_summary">Share videos to use with Projectivy\'s live wallpapers</string>
-
-    <string name="projectivy_select_videos_title">Select video sources</string>
-    <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy launcher</string>
 
     <string name="settings_capabilities_title">Device Capabilities</string>
     <string name="settings_capabilities_summary">View video codecs, resolution support, and other capabilities</string>
@@ -404,6 +408,8 @@
     <string name="settings_about_summary">Version, build info, etc</string>
 
     <!-- Main / Settings / Projectivy Integration -->
+    <string name="projectivy_select_videos_title">Select video sources</string>
+    <string name="projectivy_select_videos_summary">Choose which video providers to share with Projectivy launcher</string>
     <string name="projectivy_shuffle_videos_title">Shuffle videos</string>
     <string name="projectivy_shuffle_videos_summary">Randomize the order of videos</string>
     <string name="projectivy_apple_videos_options_title">Apple video options</string>
@@ -642,10 +648,14 @@
     <!-- Main / Settings / Playlist -->
     <string name="playlist_mute_videos_title">Mute videos</string>
     <string name="playlist_mute_videos_summary">Mute the sound of all videos</string>
+    <string name="playlist_audio_mode_title">Audio mode</string>
+    <string name="playlist_audio_mode_summary">Choose whether to mute videos, play video audio, or play background music</string>
 
     <string name="playlist_sleep_timer_title">Sleep timer</string>
     <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
 
+    <string name="playlist_sound_volume_title">Volume</string>
+    <string name="playlist_sound_volume_summary">Choose a volume level for video audio or background music</string>
     <string name="playlist_video_volume_title">Video volume</string>
     <string name="playlist_video_volume_summary">Choose a video volume level</string>
 
@@ -693,8 +703,9 @@
     <string name="playlist_slideshow_speed_summary">Choose a duration</string>
 
     <string name="playlist_playback_speed_changed">Playback speed changed to: %1$s</string>
+    <string name="playlist_playback_speed_reset">Playback speed reset to 1x (no actions assigned)</string>
 
-    <!-- Weather + Time of Day Location -->
+    <!-- Main / Settings / Playlist / Weather + Time of Day Location -->
     <string name="location_lookup_coordinates">Looking up location for coordinates…</string>
     <string name="location_search_dialog_title">Search for a location or enter GPS coordinates</string>
     <string name="location_selection_title">Select Location</string>
@@ -704,6 +715,29 @@
     <string name="location_unknown">Unknown</string>
     <string name="location_error_invalid_coordinates">Please enter valid coordinates. Latitude must be between -90 and 90, longitude between -180 and 180.</string>
     <string name="location_error_format">Please enter coordinates in the format: latitude,longitude (e.g., 40.7128,-74.0060)</string>
+
+    <!-- Main / Settings / Cache -->
+    <string name="playlist_cache_enable_summary">Save the playlist so you can resume where you left off across sessions</string>
+    <string name="playlist_cache_enable_title">Enable playlist cache</string>
+
+    <string name="playlist_cache_interval_title">Refresh interval</string>
+    <string name="playlist_cache_clear_title">Clear cache now</string>
+    <string name="playlist_cache_clear_summary">Forces a new playlist to be built on next start</string>
+
+    <string name="playlist_cache_status_title">Cache Status</string>
+    <string name="playlist_cache_status_active">%1$d media items, %2$d music tracks,</string>
+    <string name="playlist_cache_status_empty">No cache data</string>
+    <string name="playlist_cache_status_unknown">Unknown</string>
+    <string name="playlist_cache_expires">Expires:</string>
+    <string name="playlist_cache_expired">(Expired)</string>
+    <string name="playlist_cache_status_index">position: %1$d</string>
+    <string name="playlist_cache_status_expiry_d">%1$d day(s)</string>
+    <string name="playlist_cache_status_expiry_h">%1$d hour(s)</string>
+    <string name="playlist_cache_status_expiry_m">%1$d minute(s)</string>
+    <string name="playlist_cache_status_expiry_d_h">%1$d day(s), %2$d hour(s)</string>
+    <string name="playlist_cache_status_expiry_h_m">%1$d hour(s), %2$d minute(s)</string>
+    <string name="playlist_cache_cleared">Cache cleared</string>
+    <string name="playlist_cache_clear_confirmation">Are you sure you want to clear the playlist cache?</string>
 
     <!-- Main / Settings / D-Pad/Remote -->
     <string name="dpad_button_press_title">D-Pad or Button Press</string>

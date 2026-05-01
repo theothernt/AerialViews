@@ -24,9 +24,9 @@ android {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
         targetSdk = 36
-        versionCode = 114
+        versionCode = 117
         versionName = "1.8.3"
-        betaVersion = "-beta2"
+        betaVersion = "-beta5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -165,6 +165,10 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
+
 dependencies {
     // Support all favors except F-Droid
     val firebaseFlavors = listOf(
@@ -183,7 +187,10 @@ dependencies {
     implementation(libs.bundles.retrofit)
 
     implementation(libs.bundles.ktor)
+    implementation(libs.bundles.room)
+    ksp(libs.room.compiler)
     implementation(libs.bundles.exoplayer)
+    implementation(libs.media3.container)
     implementation(libs.sardine.android)
     implementation(libs.smbj)
     implementation(libs.timber)

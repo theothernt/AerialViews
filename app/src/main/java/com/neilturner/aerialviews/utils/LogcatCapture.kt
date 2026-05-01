@@ -33,7 +33,7 @@ object LogcatCapture {
         try {
             val command = arrayOf("logcat", "-v", "threadtime")
             process = Runtime.getRuntime().exec(command)
-            
+
             // Use a separate thread to read from logcat output and write to file
             Thread {
                 try {
@@ -81,9 +81,9 @@ object LogcatCapture {
                 context,
                 arrayOf(destFile.absolutePath),
                 null,
-                null
+                null,
             )
-            
+
             Timber.i("Saved logcat copy to ${destFile.absolutePath}")
             return destFile
         } catch (e: Exception) {

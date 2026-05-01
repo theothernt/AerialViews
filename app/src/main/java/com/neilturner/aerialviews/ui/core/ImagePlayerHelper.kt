@@ -95,13 +95,19 @@ internal object ImagePlayerHelper {
         try {
             // Handle file:// URIs directly, content:// URIs via ContentResolver
             return when (uri.scheme) {
-                "file" -> {
+                null, "file" -> {
                     val path = uri.path ?: return null
                     java.io.File(path).inputStream()
                 }
 
                 "content" -> {
-                    context.contentResolver.openInputStream(uri)
+                    val finalUri =
+                        if (SDK_INT >= 29) {
+                            android.provider.MediaStore.setRequireOriginal(uri)
+                        } else {
+                            uri
+                        }
+                    context.contentResolver.openInputStream(finalUri)
                 }
 
                 else -> {

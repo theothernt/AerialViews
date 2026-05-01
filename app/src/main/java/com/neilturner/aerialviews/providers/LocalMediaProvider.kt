@@ -10,10 +10,10 @@ import com.neilturner.aerialviews.models.enums.SearchType
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.LocalProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.utils.FileHelper
 import com.neilturner.aerialviews.utils.StorageHelper
 import com.neilturner.aerialviews.utils.filename
-import com.neilturner.aerialviews.providers.ProviderFetchResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -103,6 +103,7 @@ class LocalMediaProvider(
             } else if (FileHelper.isSupportedImageType(file)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
 
@@ -227,6 +228,7 @@ class LocalMediaProvider(
             } else if (FileHelper.isSupportedImageType(uri.filename)) {
                 item.type = AerialMediaType.IMAGE
             }
+            item.source = AerialMediaSource.LOCAL
             media.add(item)
         }
         filtered = selected.size - media.size

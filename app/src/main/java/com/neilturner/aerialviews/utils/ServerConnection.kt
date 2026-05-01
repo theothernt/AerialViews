@@ -23,7 +23,8 @@ object UrlParser {
         var processedUrl = input.trim()
 
         // Check if the original URL had https before stripping
-        val originallyHttps = processedUrl.startsWith("https://", ignoreCase = true) ||
+        val originallyHttps =
+            processedUrl.startsWith("https://", ignoreCase = true) ||
                 processedUrl.startsWith("https:/", ignoreCase = true) ||
                 processedUrl.startsWith("https:", ignoreCase = true)
 
@@ -35,11 +36,12 @@ object UrlParser {
         processedUrl = processedUrl.replace(Regex("^(https?://)?[a-z]*//+", RegexOption.IGNORE_CASE), "")
 
         // Now determine the correct protocol to prepend based on original URL
-        processedUrl = if (originallyHttps) {
-            "https://$processedUrl"
-        } else {
-            "http://$processedUrl"
-        }
+        processedUrl =
+            if (originallyHttps) {
+                "https://$processedUrl"
+            } else {
+                "http://$processedUrl"
+            }
 
         try {
             val uri = URI(processedUrl)

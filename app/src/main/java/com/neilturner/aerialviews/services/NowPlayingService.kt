@@ -21,9 +21,10 @@ import timber.log.Timber
 // Thanks to @Spocky for his help with this feature!
 // Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
 class NowPlayingService(
-    private val context: Context,
+    context: Context,
 ) : MediaController.Callback(),
     MediaSessionManager.OnActiveSessionsChangedListener {
+    private val context = context.applicationContext
     private val notificationListener = ComponentName(context, NotificationService::class.java)
     private val hasPermission = PermissionHelper.hasNotificationListenerPermission(context)
     private var sessionManager: MediaSessionManager? = null

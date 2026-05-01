@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.view.KeyEvent
+import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
@@ -235,6 +236,34 @@ object InputHelper {
     private fun anyOkButtonActionsEnabled(): Boolean =
         GeneralPrefs.buttonOkPress != ButtonType.IGNORE ||
             GeneralPrefs.buttonOkHold != ButtonType.IGNORE
+
+    fun isPlaybackSpeedActionAssigned(): Boolean {
+        val speedActions = listOf(ButtonType.SPEED_INCREASE, ButtonType.SPEED_DECREASE)
+        return GeneralPrefs.buttonLeftPress in speedActions ||
+            GeneralPrefs.buttonRightPress in speedActions ||
+            GeneralPrefs.buttonUpPress in speedActions ||
+            GeneralPrefs.buttonDownPress in speedActions ||
+            GeneralPrefs.buttonOkPress in speedActions ||
+            GeneralPrefs.buttonLeftHold in speedActions ||
+            GeneralPrefs.buttonRightHold in speedActions ||
+            GeneralPrefs.buttonUpHold in speedActions ||
+            GeneralPrefs.buttonDownHold in speedActions ||
+            GeneralPrefs.buttonOkHold in speedActions ||
+            GeneralPrefs.gestureLeft in speedActions ||
+            GeneralPrefs.gestureRight in speedActions ||
+            GeneralPrefs.gestureUp in speedActions ||
+            GeneralPrefs.gestureDown in speedActions ||
+            GeneralPrefs.gestureTap in speedActions ||
+            GeneralPrefs.gestureDoubleTap in speedActions ||
+            GeneralPrefs.gestureTapHold in speedActions
+    }
+
+    suspend fun checkAndResetPlaybackSpeed(context: Context) {
+        if (!isPlaybackSpeedActionAssigned() && GeneralPrefs.playbackSpeed != "1") {
+            GeneralPrefs.playbackSpeed = "1"
+            ToastHelper.show(context, R.string.playlist_playback_speed_reset)
+        }
+    }
 
     private fun executeAction(
         action: ButtonType?,

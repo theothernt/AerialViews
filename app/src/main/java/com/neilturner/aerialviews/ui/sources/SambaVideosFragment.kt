@@ -10,8 +10,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
+import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.utils.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import com.neilturner.aerialviews.utils.SambaHelper
@@ -141,10 +141,11 @@ class SambaVideosFragment :
 
         val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
         val result = provider.fetch()
-        val message = when (result) {
-            is ProviderFetchResult.Success -> result.summary
-            is ProviderFetchResult.Error -> result.message
-        }
+        val message =
+            when (result) {
+                is ProviderFetchResult.Success -> result.summary
+                is ProviderFetchResult.Error -> result.message
+            }
 
         progressDialog.dismiss()
         DialogHelper.showOnMain(
