@@ -31,7 +31,6 @@ class WebDavVideosFragment :
         setPreferencesFromResource(R.xml.sources_webdav_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        limitTextInput()
         updateSummary()
         setupValidation()
     }
@@ -99,13 +98,6 @@ class WebDavVideosFragment :
         } else {
             password?.summary = getString(R.string.webdav_media_password_summary)
         }
-    }
-
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_hostname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_pathname")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_username")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("webdav_media_password")?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private fun setupValidation() {

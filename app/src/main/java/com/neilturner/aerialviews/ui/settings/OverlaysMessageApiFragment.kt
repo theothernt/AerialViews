@@ -22,7 +22,6 @@ class OverlaysMessageApiFragment : MenuStateFragment() {
         FirebaseHelper.analyticsScreenView("Message API", this)
 
         updateIPAddressDisplay()
-        limitTextInput()
     }
 
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -45,10 +44,4 @@ class OverlaysMessageApiFragment : MenuStateFragment() {
         }
     }
 
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("message_api_port")?.setOnBindEditTextListener { editText ->
-            editText.setSingleLine()
-            editText.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-        }
-    }
 }

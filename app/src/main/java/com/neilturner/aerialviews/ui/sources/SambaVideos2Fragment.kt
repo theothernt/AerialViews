@@ -27,7 +27,6 @@ class SambaVideos2Fragment :
         setPreferencesFromResource(R.xml.sources_samba_videos2, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        limitTextInput()
         updateSummary()
     }
 
@@ -98,17 +97,7 @@ class SambaVideos2Fragment :
         }
     }
 
-    private fun limitTextInput() {
-        listOf(
-            "samba_videos2_hostname",
-            "samba_videos2_domainname",
-            "samba_videos2_sharename",
-            "samba_videos2_username",
-            "samba_videos2_password",
-        ).forEach { key ->
-            findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
-        }
-    }
+
 
     private suspend fun testSambaConnection() {
         val loadingMessage = getString(R.string.message_media_searching)

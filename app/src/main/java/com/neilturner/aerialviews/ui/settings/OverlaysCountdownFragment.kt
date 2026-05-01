@@ -22,7 +22,6 @@ class OverlaysCountdownFragment :
         super.onResume()
         FirebaseHelper.analyticsScreenView("Countdown", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        limitTextInput()
         updateSummary()
     }
 
@@ -56,8 +55,4 @@ class OverlaysCountdownFragment :
         }
     }
 
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("countdown_target_time")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("countdown_target_message")?.setOnBindEditTextListener { it.setSingleLine() }
-    }
 }

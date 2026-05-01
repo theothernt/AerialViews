@@ -14,6 +14,7 @@ class TvEditTextPreferenceDialogFragmentCompat : EditTextPreferenceDialogFragmen
         super.onBindDialogView(view)
         val editText = view.findViewById<EditText>(android.R.id.edit)
         editText?.apply {
+            isSingleLine = true
             imeOptions = EditorInfo.IME_ACTION_DONE
             setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {

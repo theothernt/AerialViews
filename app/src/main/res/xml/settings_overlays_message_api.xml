@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/category_api_settings">
@@ -13,6 +14,7 @@
             app:key="message_api_port"
             app:title="@string/appearance_message_api_port_title"
             app:defaultValue="8081"
+            android:inputType="number"
             app:useSimpleSummaryProvider="true"
             app:dependency="message_api_enabled" />
     </PreferenceCategory>
