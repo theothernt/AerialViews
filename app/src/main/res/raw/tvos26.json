@@ -3352,6 +3352,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "F390FE3B-FA61-483D-BADC-2447F89951BA",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "W014_C018_F01",
             "accessibilityLabel": "California Wildflowers",
             "showInTopLevel": true,
@@ -3378,6 +3380,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "4A3590EC-FF30-41E7-85FE-210FF6112917",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "W015_C010_F01",
             "accessibilityLabel": "California State Route 58, Carrizo Plain, California",
             "showInTopLevel": true,
@@ -3404,6 +3408,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "473C2FDC-0B75-497A-B1FE-AA1863C9C885",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "W015_C006_F01",
             "accessibilityLabel": "California Wildflowers",
             "showInTopLevel": true,
@@ -3430,6 +3436,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "AA5E82B9-289A-480C-A14B-242989107275",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "R010_C003_F01",
             "accessibilityLabel": "Del Norte Coast Redwoods State Park, California",
             "showInTopLevel": true,
@@ -3456,6 +3464,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "97447D85-960C-4B2A-A101-048284D95853",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "R013_C039_F01",
             "accessibilityLabel": "Redwoods",
             "showInTopLevel": true,
@@ -3482,6 +3492,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "8A57476A-E177-4AAD-B317-643F681584E1",
+            "timeOfDay": "sunset",
+            "scene": "beach",
             "shotID": "R006_C013_S05",
             "accessibilityLabel": "China Beach, Curry County, Oregon",
             "showInTopLevel": true,
@@ -3508,6 +3520,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "15A8BC97-45AC-45DC-9AF9-313808C578BC",
+            "timeOfDay": "day",
+            "scene": "beach",
             "shotID": "R004_C012_F01",
             "accessibilityLabel": "Secret Beach, Brookings, Oregon",
             "showInTopLevel": true,
@@ -3535,6 +3549,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "AB7FC3C3-8853-45CD-AB6E-89F0985C2922",
+            "timeOfDay": "sunset",
+            "scene": "nature",
             "shotID": "M012_C065_S04",
             "accessibilityLabel": "Monument Valley, Utah",
             "showInTopLevel": true,
@@ -3563,6 +3579,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "47BC0599-72E7-43C4-8BE1-CBCE2432E2A5",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "M013_C012_F01",
             "accessibilityLabel": "Coal Mine Canyon, Arizona",
             "showInTopLevel": true,
@@ -3589,6 +3607,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "7530C83C-8F7B-42C6-BB71-5FA2ED070BEC",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "M010_C005_F01",
             "accessibilityLabel": "Cathedral Canyon, Lake Powell, Utah",
             "showInTopLevel": true,
@@ -3616,6 +3636,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "100858D2-FE01-4B70-8E2D-3FCF20AFE6B5",
+            "timeOfDay": "sunset",
+            "scene": "nature",
             "shotID": "M007_C007_F01",
             "accessibilityLabel": "Monument Valley, Utah",
             "showInTopLevel": true,
@@ -3642,6 +3664,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "1A17ED86-9E0D-4DF2-8CF3-5AB5DB67A348",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "M012_C023_S04",
             "accessibilityLabel": "Factory Butte, Wayne County, Utah",
             "showInTopLevel": true,
@@ -3668,6 +3692,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "D759828B-4BAB-456B-AD75-225BA238F925",
+            "timeOfDay": "sunset",
+            "scene": "nature",
             "shotID": "M010_C009_F01",
             "accessibilityLabel": "Twilight, Forbidding, and Cascade Canyon, Lake Powell, Utah",
             "showInTopLevel": true,
@@ -3696,6 +3722,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "A168628E-11EE-4456-AD66-E7E3E47D1B21",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "M005_C017_F01",
             "accessibilityLabel": "Olympia Bar, Lake Powell, Utah",
             "showInTopLevel": true,
@@ -3723,6 +3751,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "5929F26F-992D-4729-AFCC-BCDF23D15C32",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0010",
             "accessibilityLabel": "Ghansali from Above",
             "showInTopLevel": true,
@@ -3748,6 +3778,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "73120738-3D8D-47E7-B6E9-8AAC4D352577",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0020",
             "accessibilityLabel": "Through Himalayas",
             "showInTopLevel": true,
@@ -3773,6 +3805,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "9C77AC8C-B23D-4ED9-ABD5-73D3CAD38317",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0040",
             "accessibilityLabel": "Tea Gardens from Above",
             "showInTopLevel": true,
@@ -3798,6 +3832,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "B13D40FC-C033-436D-A197-185900EC3552",
+            "timeOfDay": "day",
+            "scene": "beach",
             "shotID": "ANN0060",
             "accessibilityLabel": "Goa Beaches",
             "showInTopLevel": true,
@@ -3823,6 +3859,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "20633C28-FF90-4C54-B828-BB7F1669F7B4",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0070",
             "accessibilityLabel": "Reservoir Day",
             "showInTopLevel": true,
@@ -3848,6 +3886,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "8A51AAE4-6ED6-432B-A222-4081D1F29D24",
+            "timeOfDay": "sunset",
+            "scene": "beach",
             "shotID": "ANN0080",
             "accessibilityLabel": "Goa Coast",
             "showInTopLevel": true,
@@ -3874,6 +3914,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "0FA98CA1-0005-4C98-8DCF-8BE7A6B159CE",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0090",
             "accessibilityLabel": "Himalayas Day",
             "showInTopLevel": true,
@@ -3899,6 +3941,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "4E9FE515-65B1-4677-B1A0-CAB75BDA1480",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0100",
             "accessibilityLabel": "Tea Gardens Day",
             "showInTopLevel": true,
@@ -3924,6 +3968,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "B6461ECC-44F5-4BC9-877F-484A605D0D10",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0110",
             "accessibilityLabel": "The Ganges",
             "showInTopLevel": true,
@@ -3949,6 +3995,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "A63179A7-BC32-4307-89F0-112694889A03",
+            "timeOfDay": "day",
+            "scene": "nature",
             "shotID": "ANN0120",
             "accessibilityLabel": "Himalayan Peaks",
             "showInTopLevel": true,
@@ -3974,6 +4022,8 @@
                 "A33A55D9-EDEA-4596-A850-6C10B54FBBB5"
             ],
             "id": "A92E4A3F-9BFC-4772-B3A7-025B54AB1D3D",
+            "timeOfDay": "sunset",
+            "scene": "nature",
             "shotID": "ANN0130",
             "accessibilityLabel": "Tea Gardens Mist",
             "showInTopLevel": true,
