@@ -126,6 +126,46 @@
                     app:useSimpleSummaryProvider="true" />
         </PreferenceCategory>
 
+        <PreferenceCategory app:title="@string/category_immich_smart_slideshow">
+                <SwitchPreference
+                    app:dependency="immich_media_enabled"
+                    app:defaultValue="false"
+                    app:key="immich_smart_slideshow_enabled"
+                    app:title="@string/immich_smart_slideshow_title"
+                    app:summary="@string/immich_smart_slideshow_summary" />
+
+                <ListPreference
+                    app:dependency="immich_smart_slideshow_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="30"
+                    app:entries="@array/immich_smart_slideshow_gap_entries"
+                    app:entryValues="@array/immich_smart_slideshow_gap_values"
+                    app:key="immich_smart_slideshow_gap_minutes"
+                    app:title="@string/immich_smart_slideshow_gap_title"
+                    app:summary="@string/immich_smart_slideshow_gap_summary"
+                    app:useSimpleSummaryProvider="true" />
+
+                <EditTextPreference
+                    app:dependency="immich_smart_slideshow_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue=""
+                    app:key="immich_smart_slideshow_exempt_pattern"
+                    app:title="@string/immich_smart_slideshow_exempt_title"
+                    app:summary="@string/immich_smart_slideshow_exempt_summary"
+                    android:selectAllOnFocus="true" />
+
+                <ListPreference
+                    app:dependency="immich_smart_slideshow_enabled"
+                    app:disableDependentsState="false"
+                    app:defaultValue="100"
+                    app:entries="@array/immich_smart_slideshow_exempt_percent_entries"
+                    app:entryValues="@array/immich_smart_slideshow_exempt_percent_values"
+                    app:key="immich_smart_slideshow_exempt_percent"
+                    app:title="@string/immich_smart_slideshow_exempt_percent_title"
+                    app:summary="@string/immich_smart_slideshow_exempt_percent_summary"
+                    app:useSimpleSummaryProvider="true" />
+        </PreferenceCategory>
+
         <PreferenceCategory app:title="@string/category_advanced">
                 <ListPreference
                     app:dependency="immich_media_enabled"
