@@ -58,7 +58,6 @@ class ImmichVideosFragment :
         includeRecentPreference = findPreference("immich_media_include_recent")!!
 
         lifecycleScope.launch {
-            limitTextInput()
             updateAuthTypeVisibility()
             updateSummary()
             setupPreferenceClickListeners()
@@ -150,7 +149,7 @@ class ImmichVideosFragment :
                     ImmichMediaPrefs.selectedAlbumIds.size,
                 )
             }
-
+        
         // Include Ratings
         includeRatedPreference.summary =
             if (ImmichMediaPrefs.includeRatings.isEmpty()) {
@@ -188,15 +187,6 @@ class ImmichVideosFragment :
         }
     }
 
-    private fun limitTextInput() {
-        listOf(
-            "immich_media_url",
-            "immich_media_password",
-            "immich_media_api_key",
-        ).forEach { key ->
-            findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
-        }
-    }
 
     private suspend fun testImmichConnection() {
         val loadingMessage = getString(R.string.message_media_searching)

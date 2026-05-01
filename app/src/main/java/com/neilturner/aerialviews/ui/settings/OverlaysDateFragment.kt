@@ -31,7 +31,6 @@ class OverlaysDateFragment : MenuStateFragment() {
     override fun onResume() {
         super.onResume()
         FirebaseHelper.analyticsScreenView("Date", this)
-        limitTextInput()
         updateSummary()
     }
 
@@ -64,10 +63,6 @@ class OverlaysDateFragment : MenuStateFragment() {
             Timber.e(e)
             DateType.COMPACT
         }
-
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("date_custom")?.setOnBindEditTextListener { it.setSingleLine() }
-    }
 
     private fun dateFormatting(
         type: DateType,

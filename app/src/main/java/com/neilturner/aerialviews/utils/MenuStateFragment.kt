@@ -1,7 +1,10 @@
 package com.neilturner.aerialviews.utils
 
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.EditTextPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.neilturner.aerialviews.ui.controls.TvEditTextPreferenceDialogFragmentCompat
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -57,6 +60,22 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
             } catch (ex: Exception) {
                 FirebaseHelper.crashlyticsException(ex)
             }
+        }
+    }
+
+    override fun onDisplayPreferenceDialog(preference: Preference) {
+        if (preference is EditTextPreference && DeviceHelper.isTV(requireContext())) {
+            val dialogFragmentTag = "androidx.preference.PreferenceFragment.DIALOG"
+            if (parentFragmentManager.findFragmentByTag(dialogFragmentTag) != null) {
+                return
+            }
+
+            val dialogFragment = TvEditTextPreferenceDialogFragmentCompat.newInstance(preference.key)
+            @Suppress("DEPRECATION")
+            dialogFragment.setTargetFragment(this, 0)
+            dialogFragment.show(parentFragmentManager, dialogFragmentTag)
+        } else {
+            super.onDisplayPreferenceDialog(preference)
         }
     }
 }

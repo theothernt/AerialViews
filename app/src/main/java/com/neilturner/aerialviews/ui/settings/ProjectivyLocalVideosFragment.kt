@@ -64,7 +64,6 @@ class ProjectivyLocalVideosFragment :
             }
 
         lifecycleScope.launch {
-            limitTextInput()
             showNvidiaShieldNoticeIfNeeded()
             enableMediaStoreOptions()
             updateMediaSelectionSummary()
@@ -111,12 +110,6 @@ class ProjectivyLocalVideosFragment :
     private fun enableMediaStoreOptions() {
         // Many preferences depend on this notice preference. Keep it enabled so dependents stay enabled.
         preferenceScreen.findPreference<Preference>("projectivy_local_videos_media_store_notice")?.isEnabled = true
-    }
-
-    private fun limitTextInput() {
-        preferenceScreen
-            .findPreference<EditTextPreference>("projectivy_local_videos_media_store_filter_folder")
-            ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private fun updateMediaSelectionSummary() {

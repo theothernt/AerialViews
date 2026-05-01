@@ -71,7 +71,6 @@ class LocalVideosFragment :
             }
 
         lifecycleScope.launch {
-            limitTextInput()
             showNvidiaShieldNoticeIfNeeded()
             updateEnabledOptions()
             updateMediaSelectionSummary()
@@ -159,16 +158,6 @@ class LocalVideosFragment :
                 legacyOptions?.isEnabled = false
             }
         }
-    }
-
-    private fun limitTextInput() {
-        preferenceScreen
-            .findPreference<EditTextPreference>("local_videos_media_store_filter_folder")
-            ?.setOnBindEditTextListener { it.setSingleLine() }
-
-        preferenceScreen
-            .findPreference<EditTextPreference>("local_videos_legacy_folder")
-            ?.setOnBindEditTextListener { it.setSingleLine() }
     }
 
     private fun updateMediaSelectionSummary() {

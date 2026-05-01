@@ -38,7 +38,6 @@ class SambaVideosWolFragment :
             }
         }
 
-        limitTextInput()
         updateSummary()
     }
 
@@ -149,9 +148,5 @@ class SambaVideosWolFragment :
         }
     }
 
-    private fun limitTextInput() {
-        listOf("samba_media_wake_on_lan_mac_address", "samba_media_wake_on_lan_timeout").forEach { key ->
-            findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
-        }
-    }
+
 }

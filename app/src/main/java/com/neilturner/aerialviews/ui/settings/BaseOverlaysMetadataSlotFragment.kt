@@ -40,8 +40,7 @@ abstract class BaseOverlaysMetadataSlotFragment : MenuStateFragment() {
     ) {
         setPreferencesFromResource(getPreferenceResource(), rootKey)
         dateTypeEntries = findEntriesAndValues(R.array.date_format_values, R.array.date_format_entries)
-        findPreference<EditTextPreference>(prefKeyPhotoDateCustom)
-            ?.setOnBindEditTextListener { it.setSingleLine() }
+
     }
 
     protected abstract fun getPreferenceResource(): Int

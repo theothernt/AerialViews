@@ -22,7 +22,6 @@ class OverlaysMessageFragment :
         super.onResume()
         FirebaseHelper.analyticsScreenView("Message", this)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
-        limitTextInput()
         updateSummary()
     }
 
@@ -72,10 +71,4 @@ class OverlaysMessageFragment :
         }
     }
 
-    private fun limitTextInput() {
-        preferenceScreen.findPreference<EditTextPreference>("message_line1")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("message_line2")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("message_line3")?.setOnBindEditTextListener { it.setSingleLine() }
-        preferenceScreen.findPreference<EditTextPreference>("message_line4")?.setOnBindEditTextListener { it.setSingleLine() }
-    }
 }

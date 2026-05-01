@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
@@ -30,7 +31,6 @@ class SambaVideosFragment :
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
-        limitTextInput()
         updateSummary()
     }
 
@@ -118,17 +118,6 @@ class SambaVideosFragment :
         encryption?.isChecked = SambaMediaPrefs.enableEncryption
     }
 
-    private fun limitTextInput() {
-        listOf(
-            "samba_videos_hostname",
-            "samba_videos_domainname",
-            "samba_videos_sharename",
-            "samba_videos_username",
-            "samba_videos_password",
-        ).forEach { key ->
-            findPreference<EditTextPreference>(key)?.setOnBindEditTextListener { it.setSingleLine() }
-        }
-    }
 
     private suspend fun testSambaConnection() {
         val loadingMessage = getString(R.string.message_media_searching)
