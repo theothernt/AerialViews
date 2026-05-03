@@ -16,14 +16,14 @@ plugins {
 
 android {
     namespace = "com.neilturner.aerialviews"
-    compileSdk = 36
+    compileSdk = 37
 
     var betaVersion = ""
     val keyProps = loadProperties("secrets.properties")
     defaultConfig {
         applicationId = "com.neilturner.aerialviews"
         minSdk = 23 // Android v6
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 117
         versionName = "1.8.3"
         betaVersion = "-beta5"
