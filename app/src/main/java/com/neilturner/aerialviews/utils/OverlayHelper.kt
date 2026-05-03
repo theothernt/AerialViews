@@ -126,16 +126,6 @@ class OverlayHelper(
             it.updateFormat(prefs.dateFormat, prefs.dateCustom)
         }
 
-//        findOverlay<MessageOverlay>().forEach {
-//            Timber.i("Found MessageOverlay: ${it.type}")
-//            when (it.type) {
-//                OverlayType.MESSAGE1 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE1, prefs.messageLine1))
-//                OverlayType.MESSAGE2 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE2, prefs.messageLine2))
-//                OverlayType.MESSAGE3 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE3, prefs.messageLine3))
-//                OverlayType.MESSAGE4 -> GlobalBus.post(MessageEvent(OverlayType.MESSAGE4, prefs.messageLine4))
-//                else -> {}
-//            }
-//        }
 
         findOverlay<NowPlayingOverlay>().forEach {
             if (it.type == OverlayType.MUSIC1) {

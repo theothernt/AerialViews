@@ -14,7 +14,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.GlobalBus
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.time.Instant
@@ -35,6 +37,12 @@ class WeatherService(
     private var updateJob: Job? = null
     private val maxRetries = 3
     private var totalUpdates = 0
+
+    private val _weatherEvent = MutableStateFlow<WeatherEvent?>(null)
+    val weatherEvent: StateFlow<WeatherEvent?> = _weatherEvent.asStateFlow()
+
+    private val _forecastEvent = MutableStateFlow<ForecastEvent?>(null)
+    val forecastEvent: StateFlow<ForecastEvent?> = _forecastEvent.asStateFlow()
 
     private val lookupDelay = 1.seconds
     private val errorDelay = 3.seconds // Slow down response when there is an error
@@ -156,8 +164,8 @@ class WeatherService(
                                 displayConfig = buildDisplayConfig(),
                             )
                         }
-                    if (result.weather != null) GlobalBus.post(result.weather)
-                    if (result.forecast != null) GlobalBus.post(result.forecast)
+                    if (result.weather != null) _weatherEvent.value = result.weather
+                    if (result.forecast != null) _forecastEvent.value = result.forecast
                     Timber.i("Next weather update in ${updateDelay.inWholeMinutes} minutes")
                     delay(updateDelay)
                 }

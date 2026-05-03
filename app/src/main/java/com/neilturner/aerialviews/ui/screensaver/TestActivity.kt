@@ -8,16 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ScreenViewModel
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.PreferenceHelper
 import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
+    private val viewModel: ScreenViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,10 +64,10 @@ class TestActivity : AppCompatActivity() {
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
+                ScreenController(this, viewModel)
             } else {
                 val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
+                ScreenController(altContext, viewModel)
             }
         setContentView(screenController.view)
 

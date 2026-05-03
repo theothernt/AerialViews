@@ -181,7 +181,6 @@ dependencies {
 
     implementation(libs.bundles.kotlin)
     implementation(libs.bundles.androidx)
-    implementation(libs.bundles.flowbus)
     implementation(libs.bundles.kotpref)
     implementation(libs.bundles.coil)
     implementation(libs.bundles.retrofit)
@@ -195,6 +194,7 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.timber)
     implementation(libs.slf4j.simple)
+    implementation(libs.koin.android)
 
     debugImplementation(libs.leakcanary)
 

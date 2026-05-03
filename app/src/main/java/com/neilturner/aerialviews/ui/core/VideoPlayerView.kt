@@ -31,7 +31,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.GlobalBus
+import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import com.neilturner.aerialviews.services.PlaybackProgressRepository
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -44,7 +47,9 @@ class VideoPlayerView
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0,
     ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
-        Player.Listener {
+        Player.Listener, KoinComponent {
+        
+        private val progressRepository: PlaybackProgressRepository by inject()
         @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
@@ -255,7 +260,7 @@ class VideoPlayerView
 
                 Player.STATE_BUFFERING -> {
                     Timber.i("Buffering...")
-                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
+                    if (progressBar) progressRepository.post(ProgressBarEvent(ProgressState.PAUSE))
                 }
             }
 
@@ -458,7 +463,7 @@ class VideoPlayerView
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
                 postDelayed(almostFinishedRunnable, 2 * 1000)
-                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                if (progressBar) progressRepository.post(ProgressBarEvent(ProgressState.RESET))
                 return
             }
 
@@ -490,7 +495,7 @@ class VideoPlayerView
             )
 
             if (progressBar) {
-                GlobalBus.post(
+                progressRepository.post(
                     ProgressBarEvent(
                         ProgressState.START,
                         progress,

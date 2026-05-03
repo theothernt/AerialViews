@@ -11,13 +11,20 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.di.appModule
 import com.neilturner.aerialviews.utils.DeviceHelper
 import com.neilturner.aerialviews.utils.LogcatCapture
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class AerialApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        startKoin {
+            androidContext(this@AerialApp)
+            modules(appModule)
+        }
         configureLogging()
 
         if (GeneralPrefs.enableLogCapture) {

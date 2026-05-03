@@ -15,7 +15,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.GlobalBus
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import timber.log.Timber
 
 // Thanks to @Spocky for his help with this feature!
@@ -35,6 +37,9 @@ class NowPlayingService(
     private val serviceJob = SupervisorJob()
     private val scope = CoroutineScope(Dispatchers.Main + serviceJob)
     private var updateActiveSessionJob: Job? = null
+
+    private val _musicEvent = MutableStateFlow(MusicEvent())
+    val musicEvent: StateFlow<MusicEvent> = _musicEvent.asStateFlow()
 
     init {
         if (hasPermission) {
@@ -205,7 +210,7 @@ class NowPlayingService(
         }
         lastMusicEvent = event
         Timber.i("Posting music event ($reason): $event")
-        GlobalBus.post(event)
+        _musicEvent.value = event
     }
 
     private fun logControllers(

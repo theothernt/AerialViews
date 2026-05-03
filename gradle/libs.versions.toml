@@ -32,11 +32,11 @@ sardine-android = "0.0.3"
 
 smbj = "0.13.0"
 media3-exoplayer = "1.10.0"
-flowbus = "1.1"
 kotpref = "2.13.2"
 coil3 = "3.4.0"
 timber = "5.0.1"
 slf4j = "2.0.17"
+koin = "4.1.0"
 
 junit-jupiter = "6.0.3"
 junit5 = "2.0.1"
@@ -83,8 +83,6 @@ leanback = { group = "androidx.leanback", name = "leanback", version.ref = "lean
 leanback-preference = { group = "androidx.leanback", name = "leanback-preference", version.ref = "leanback-preference" }
 preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "preference-ktx" }
 
-flowbus = { group = "com.github.Kosert.FlowBus", name = "FlowBus", version.ref = "flowbus" }
-flowbus-android = { group = "com.github.Kosert.FlowBus", name = "FlowBus-android", version.ref = "flowbus" }
 
 kotpref = { group = "com.chibatching.kotpref", name = "kotpref", version.ref = "kotpref" }
 kotpref-initializer = { group = "com.chibatching.kotpref", name = "initializer", version.ref = "kotpref" }
@@ -110,6 +108,8 @@ sardine-android = { group = "com.github.nova-video-player", name = "sardine-andr
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
@@ -129,7 +129,6 @@ kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "kotlinx-ser
 androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat", "exifinterface"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui", "media3-rtsp", "media3-hls"]
-flowbus = ["flowbus", "flowbus-android"]
 kotpref = ["kotpref", "kotpref-enum-support", "kotpref-initializer"]
 retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logging"]
 coil = ["coil", "coil-okhttp", "coil-gif"]

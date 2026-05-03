@@ -6,13 +6,17 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ScreenViewModel
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.InputHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
 import com.neilturner.aerialviews.utils.WindowHelper.hideSystemUI
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
+    private val viewModel: ScreenViewModel by inject()
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
@@ -27,10 +31,10 @@ class DreamActivity : DreamService() {
         // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
+                ScreenController(this, viewModel)
             } else {
                 val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
+                ScreenController(altContext, viewModel)
             }
         setContentView(screenController.view)
 

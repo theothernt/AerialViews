@@ -43,8 +43,6 @@ import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
-import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
-import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.ColourHelper
 import com.neilturner.aerialviews.utils.FontHelper
@@ -61,26 +59,19 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
 
 class ScreenController(
-    context: Context,
+    private val context: Context,
+    private val viewModel: ScreenViewModel,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-    private val context = context.applicationContext
+    private val contextApp = context.applicationContext
     private val mainScope = CoroutineScope(Dispatchers.Main)
-    private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources by lazy { context.resources }
 
-    private var nowPlayingService: NowPlayingService? = null
-    private var weatherService: WeatherService? = null
-    private var ktorServer: KtorServer? = null
-    private var musicPlayer: MusicPlayer? = null
-    private val overlayStateStore = OverlayStateStore()
-    private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
@@ -97,10 +88,8 @@ class ScreenController(
     private var canSkip = false
     private var isPaused = false
     private var pauseStartTime: Long = 0
-    private var sleepTimerJob: Job? = null
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
-    private val cacheRepository = PlaylistCacheRepository(context)
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -198,8 +187,7 @@ class ScreenController(
         this.bottomRightIds = overlayIds.bottomRightIds
         this.topLeftIds = overlayIds.topLeftIds
         this.topRightIds = overlayIds.topRightIds
-        bindOverlayState()
-        overlayEventBridge.start()
+        // Removed bindOverlayState and bridge start
 
         // Setup progress bar
         if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
@@ -238,117 +226,45 @@ class ScreenController(
         }
 
         mainScope.launch {
-            // Launch if we have permission
-            // Used for a) Skip music tracks b) music info widget
-            if (PermissionHelper.hasNotificationListenerPermission(context)) {
-                nowPlayingService = NowPlayingService(context)
-            }
-
-            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
-                ktorServer =
-                    KtorServer(context) { messageEvent ->
-                        GlobalBus.post(messageEvent)
-                    }.apply {
-                        start()
-                    }
-            }
-
-            // Build playlist and start screensaver
-            val mediaResult =
-                MediaService(context).fetchMedia { status ->
-                    mainScope.launch {
-                        loadingText.text =
-                            when (status) {
-                                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
-                                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
-                                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
-                            }
-                        loadingSpinner.visibility = View.VISIBLE
-                    }
+            viewModel.uiState.collectLatest { state ->
+                if (state.currentMedia != currentMedia) {
+                    currentMedia = state.currentMedia
+                    currentMedia?.let { loadItemIntoPlayer(it) }
                 }
-            playlist = mediaResult.mediaPlaylist
-            if (playlist.size > 0) {
-                Timber.i("Playlist size: ${playlist.size}")
-                loadItem(playlist.nextItem())
-                scheduleSleepTimer()
-            } else {
-                showLoadingError()
-            }
-
-            // Setup music service
-            setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
-
-            // Setup weather service
-            val hasWeatherNowOverlay = overlayHelper.findOverlay<WeatherNowOverlay>().isNotEmpty()
-            val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
-            if (hasWeatherNowOverlay || hasForecastOverlay) {
-                weatherService =
-                    WeatherService(context).apply {
-                        startUpdates(
-                            fetchCurrentWeather = hasWeatherNowOverlay,
-                            fetchForecast = hasForecastOverlay,
-                        )
-                    }
-            }
-        }
-        // 1. Load playlist
-        // 2. load video, setup location/POI, start playback call
-        // 3. playback started callback, fade out loading text, fade out loading view
-        // 4. when video is almost finished - or skip - fade in loading view
-        // 5. goto 2
-    }
-
-    private fun scheduleSleepTimer() {
-        sleepTimerJob?.cancel()
-        val minutes = GeneralPrefs.sleepTimer.toLongOrNull() ?: 0L
-        if (minutes <= 0L) {
-            Timber.i("Sleep timer disabled")
-            return
-        }
-        Timber.i("Scheduling sleep timer for $minutes minute(s)")
-        sleepTimerJob =
-            mainScope.launch {
-                delay(minutes * 60_000L)
-                if (!blackOutMode) {
-                    Timber.i("Sleep timer finished - toggling blackout mode")
-                    toggleBlackOutMode()
+                
+                if (state.isPaused != isPaused) {
+                    if (state.isPaused) pauseMedia() else resumeMedia()
                 }
+                
+                canSkip = state.canSkip
+                
+                if (state.blackOutMode != blackOutMode) {
+                    toggleBlackOutModeVisuals(state.blackOutMode)
+                }
+
+                if (state.loadingStatus != null) {
+                    loadingText.text = when (state.loadingStatus) {
+                        LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
+                        LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
+                        LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
+                    }
+                    loadingSpinner.visibility = View.VISIBLE
+                }
+                
+                if (state.error != null) {
+                    showLoadingError()
+                }
+                
+                alternate = state.alternate
+                updateOverlays(state.overlayState)
             }
+        }
     }
 
-    private fun setupMusicPlayer(
-        musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?,
-        resumeIndex: Int = 0,
-    ) {
-        val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        videoPlayer.setForcedMute(backgroundMusicSelected)
 
-        if (!backgroundMusicSelected) {
-            Timber.i("MusicPlayer: background music not selected, skipping")
-            return
-        }
-
-        if (musicPlaylist == null || musicPlaylist.size == 0) {
-            Timber.i("MusicPlayer: no music playlist available, skipping")
-            return
-        }
-
-        musicPlayer = MusicPlayer(context, musicPlaylist)
-        musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
-        musicPlayer?.createPlayer()
-        if (resumeIndex > 0) {
-            musicPlayer?.seekToTrack(resumeIndex)
-        }
-        musicPlayer?.play()
-        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
-    }
-
-    private fun loadItem(media: AerialMedia) {
-        // Reset pause state when loading new item
-        isPaused = false
+    private fun loadItemIntoPlayer(media: AerialMedia) {
+        // Reset pause state visually
         pauseStartTime = 0
-        currentMedia = media
-        overlayStateStore.resetForNextMedia()
 
         if (media.uri.toString().contains("smb://")) {
             val pattern = Regex("(smb://)([^:]+):([^@]+)@([\\d.]+)/")
@@ -377,32 +293,24 @@ class ScreenController(
             topRightIds,
             alternate,
         )
-
-        if (shouldAlternateOverlays) {
-            alternate = !alternate
-        }
-
-        // Videos
-        if (media.type == AerialMediaType.VIDEO) {
-            videoPlayer.setVideo(media)
-            videoViewBinding.root.visibility = View.VISIBLE
-            imageViewBinding.root.visibility = View.INVISIBLE
-        }
-
-        // Images
-        if (media.type == AerialMediaType.IMAGE) {
-            imagePlayer.setImage(media)
-            imageViewBinding.root.visibility = View.VISIBLE
-            videoViewBinding.root.visibility = View.INVISIBLE
-        }
-
-        // Best to rest progress bar (if enabled) before media playback
-        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
-        }
-
-        videoPlayer.start()
     }
+
+    private fun updateOverlays(state: OverlayUiState) {
+        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
+            val metadataState = state.metadata[overlay.type]
+            if (metadataState != null) {
+                overlay.render(metadataState, videoPlayer)
+            }
+        }
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach { it.render(state.nowPlaying) }
+        overlayHelper.findOverlay<WeatherNowOverlay>().forEach { it.render(state.weather) }
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.render(state.forecast) }
+        overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
+            overlay.render(state.message[overlay.type] ?: MessageOverlayState())
+        }
+        progressBarView.render(state.progress)
+    }
+
 
     private fun fadeOutLoadingText() {
         // Fade out container (text + spinner)
@@ -482,6 +390,7 @@ class ScreenController(
     private fun fadeOutCurrentItem() {
         if (!canSkip) return
         canSkip = false
+        viewModel.canSkip(false)
 
         overlayHelper.findOverlay<MetadataOverlay>().forEach {
             it.isFadingOutMedia = true
@@ -508,23 +417,8 @@ class ScreenController(
                 imageViewBinding.root.visibility = View.INVISIBLE
                 imageViewBinding.imagePlayer.stop()
 
-                // Reset pause state when transitioning between items
-                isPaused = false
-                pauseStartTime = 0
-
                 if (!blackOutMode) {
-                    mainScope.launch {
-                        val media =
-                            if (!previousItem) {
-                                playlist.nextItem()
-                            } else {
-                                playlist.previousItem()
-                            }
-                        previousItem = false
-                        loadItem(media)
-                        savePlaybackPosition()
-                    }
-                } else {
+                    viewModel.skipItem(previousItem)
                     previousItem = false
                 }
             }.start()
@@ -578,95 +472,14 @@ class ScreenController(
         }
     }
 
-    fun showOverlays() {
-        // Overlay auto hide pref must be enabled
-        if (autoHideOverlayDelay < 0) return
-
-        // If blackout mode is on, exit
-        if (blackOutMode) return
-
-        // If media fading in/out
-        if (!canSkip) return
-
-        // Are overlays already visible
-        if (!canShowOverlays) return
-
-        val overlaysToFade = overlayHelper.getOverlaysToFade()
-
-        if (overlaysToFade.isEmpty()) return
-
-        canShowOverlays = false
-
-        overlaysToFade.forEachIndexed { index, view ->
-            val animator =
-                view
-                    .animate()
-                    .alpha(1f)
-                    .setStartDelay(0)
-                    .setDuration(overlayFadeIn)
-
-            // Only set the end action on the last overlay
-            if (index == overlaysToFade.lastIndex) {
-                animator.withEndAction { hideOverlays(overlayRevealTimeout * 1000) }
-            }
-            animator.start()
-        }
-
-        // Fade in gradients if their corresponding region has fading overlays
-        if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-            gradientTopView
-                .animate()
-                .alpha(1f)
-                .setStartDelay(0)
-                .setDuration(overlayFadeIn)
-                .start()
-        }
-        if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-            gradientBottomView
-                .animate()
-                .alpha(1f)
-                .setStartDelay(0)
-                .setDuration(overlayFadeIn)
-                .start()
-        }
-    }
-
-    private fun savePlaybackPosition() {
-        if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
-            mainScope.launch {
-                cacheRepository.saveMediaPosition(playlist.currentPosition)
-            }
-        }
-    }
-
-    private fun saveMusicTrackPosition() {
-        if (GeneralPrefs.playlistCache) {
-            mainScope.launch {
-                musicPlayer?.let {
-                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
-                }
-            }
-        }
-    }
 
     fun stop() {
-        if (this::playlist.isInitialized) {
-            savePlaybackPosition()
-            saveMusicTrackPosition()
-        }
         RefreshRateHelper.restoreOriginalMode(context)
-        overlayEventBridge.stop()
         // Remove video view from parent to break context reference chain
         val videoParent = videoViewBinding.root.parent as? ViewGroup
         videoParent?.removeView(videoViewBinding.root)
         videoPlayer.release()
         imagePlayer.release()
-        ktorServer?.stop()
-        nowPlayingService?.stop()
-        weatherService?.stop()
-        musicPlayer?.pause()
-        musicPlayer?.release()
-        sleepTimerJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
         mainScope.cancel()
@@ -677,44 +490,25 @@ class ScreenController(
         fadeOutCurrentItem()
     }
 
-    fun toggleBlackOutMode() {
-        if (!this::playlist.isInitialized || playlist.size == 0) {
-            return
-        }
-
-        if (!blackOutMode) {
+    private fun toggleBlackOutModeVisuals(enabled: Boolean) {
+        if (enabled) {
             blackOutMode = true
-            // Cancel any pending sleep timer as we've already entered blackout
-            sleepTimerJob?.cancel()
             fadeOutCurrentItem()
         } else {
             blackOutMode = false
-            mainScope.launch {
-                loadItem(playlist.nextItem())
-            }
-            // Restart sleep timer if preference still enabled
-            scheduleSleepTimer()
         }
+    }
+
+    fun toggleBlackOutMode() {
+        viewModel.toggleBlackOutMode()
     }
 
     fun nextTrack() {
-        val music = musicPlayer
-        if (music != null && music.hasMusic()) {
-            music.nextTrack()
-            saveMusicTrackPosition()
-        } else {
-            nowPlayingService?.nextTrack()
-        }
+        viewModel.nextTrack()
     }
 
     fun previousTrack() {
-        val music = musicPlayer
-        if (music != null && music.hasMusic()) {
-            music.previousTrack()
-            saveMusicTrackPosition()
-        } else {
-            nowPlayingService?.previousTrack()
-        }
+        viewModel.previousTrack()
     }
 
     fun increaseSpeed() {
@@ -746,11 +540,7 @@ class ScreenController(
     }
 
     fun togglePause() {
-        if (isPaused) {
-            resumeMedia()
-        } else {
-            pauseMedia()
-        }
+        viewModel.togglePause()
     }
 
     fun toggleLooping() {
@@ -800,6 +590,18 @@ class ScreenController(
         videoPlayer.toggleMute()
     }
 
+    fun showOverlays() {
+        if (blackOutMode) return
+        val overlaysToFade = overlayHelper.getOverlaysToFade()
+        overlaysToFade.forEach {
+            it.animate()
+                .alpha(1f)
+                .setDuration(300)
+                .withLayer()
+                .start()
+        }
+    }
+
     private fun pauseMedia() {
         if (isPaused) return
 
@@ -816,10 +618,7 @@ class ScreenController(
             imagePlayer.pauseTimer()
         }
 
-        // Pause progress bar
-        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.PAUSE))
-        }
+        // Progress bar state is now managed via ViewModel's uiState
     }
 
     private fun resumeMedia() {
@@ -838,17 +637,14 @@ class ScreenController(
             imagePlayer.resumeTimer(pauseDuration)
         }
 
-        // Resume progress bar
-        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(ProgressBarEvent(ProgressState.RESUME))
-        }
+        // Progress bar state is now managed via ViewModel's uiState
     }
 
     private fun handleError() {
         mainScope.launch {
             delay(ERROR_DELAY)
             if (loadingView.isVisible) {
-                loadItem(playlist.nextItem())
+                viewModel.loadNextItem()
             } else {
                 fadeOutCurrentItem()
             }
@@ -900,7 +696,7 @@ class ScreenController(
                         val resolved = metadataResolver.resolve(context, media, preferences)
                         if (currentMedia !== media) return@launch
 
-                        overlayStateStore.setMetadata(
+                        viewModel.setMetadata(
                             slot,
                             resolved.text,
                             resolved.poi,
@@ -909,7 +705,7 @@ class ScreenController(
                     } catch (e: Exception) {
                         Timber.e(e, "Metadata slot $slot resolver failed")
                         if (currentMedia === media) {
-                            overlayStateStore.setMetadata(slot, "", emptyMap(), MetadataType.STATIC)
+                            viewModel.setMetadata(slot, "", emptyMap(), MetadataType.STATIC)
                         }
                     }
                 }
@@ -991,40 +787,6 @@ class ScreenController(
         fadeInNextItem()
     }
 
-    private fun bindOverlayState() {
-        mainScope.launch {
-            overlayStateStore.uiState.collectLatest { state ->
-                renderOverlayState(state)
-            }
-        }
-    }
-
-    private fun renderOverlayState(state: OverlayUiState) {
-        overlayHelper.findOverlay<MetadataOverlay>().forEach { overlay ->
-            val locationState = state.metadata[overlay.type]
-            if (locationState != null) {
-                overlay.render(locationState, videoPlayer)
-            }
-        }
-
-        overlayHelper.findOverlay<NowPlayingOverlay>().forEach {
-            it.render(state.nowPlaying)
-        }
-
-        overlayHelper.findOverlay<WeatherNowOverlay>().forEach {
-            it.render(state.weather)
-        }
-
-        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach {
-            it.render(state.forecast)
-        }
-
-        overlayHelper.findOverlay<MessageOverlay>().forEach { overlay ->
-            overlay.render(state.message[overlay.type] ?: MessageOverlayState())
-        }
-
-        progressBarView.render(state.progress)
-    }
 
     companion object {
         const val LOADING_FADE_OUT: Long = 300 // Fade out loading text
