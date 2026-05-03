@@ -874,13 +874,13 @@
     <string name="duration_overlay_fade_default" translatable="false">600</string>
 
     <!-- Longer videos limit -->
-    <string name="longervideo_skip">Skip when limit is reached</string>
-    <string name="longervideo_finish">Allow longer videos to finish</string>
-    <string name="longervideo_segments">Play random segments of long videos</string>
+    <string name="limit_Longer_videos_skip">Skip when limit is reached</string>
+    <string name="limit_Longer_videos_finish">Allow longer videos to finish</string>
+    <string name="limit_Longer_videos_segment">Play random segments of long videos</string>
     <string-array name="limit_Longer_videos_entries" translatable="false">
-        <item>@string/longervideo_skip</item>
-        <item>@string/longervideo_finish</item>
-        <item>@string/longervideo_segments</item>
+        <item>@string/limit_Longer_videos_skip</item>
+        <item>@string/limit_Longer_videos_finish</item>
+        <item>@string/limit_Longer_videos_segment</item>
     </string-array>
     <string-array name="limit_Longer_videos_values" translatable="false">
         <item>LIMIT</item>
@@ -888,13 +888,13 @@
         <item>SEGMENT</item>
     </string-array>
     <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
-    <string name="limit_Longer_videos_summary_skip" translatable="false">Obey limit - skip to the next video when the limit is reached</string>
-    <string name="limit_Longer_videos_summary_finish" translatable="false">Ignore limit - if a video is longer than the set limit, it will be played until the end</string>
-    <string name="limit_Longer_videos_summary_segment" translatable="false">Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</string>
+    <string name="limit_Longer_videos_skip_summary">Obey limit - skip to the next video when the limit is reached</string>
+    <string name="limit_Longer_videos_finish_summary">Ignore limit - if a video is longer than the set limit, it will be played until the end</string>
+    <string name="limit_Longer_videos_segment_summary">Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</string>
     <string-array name="limit_Longer_videos_summaries" translatable="false">
-        <item>@string/limit_Longer_videos_summary_skip</item>
-        <item>@string/limit_Longer_videos_summary_finish</item>
-        <item>@string/limit_Longer_videos_summary_segment</item>
+        <item>@string/limit_Longer_videos_skip_summary</item>
+        <item>@string/limit_Longer_videos_finish_summary</item>
+        <item>@string/limit_Longer_videos_segment_summary</item>
     </string-array>
 
     <!-- Overlay auto hide -->
