@@ -209,7 +209,7 @@ object GeneralPrefs : KotprefModel() {
     }
 
     // Playlist Cache
-    var playlistCache by booleanPref(false, "playlist_cache")
+    var playlistCache by booleanPref(true, "playlist_cache")
     var playlistCacheRefresh by stringPref("-1", "playlist_cache_refresh")
 
     // Playlist - Videos
