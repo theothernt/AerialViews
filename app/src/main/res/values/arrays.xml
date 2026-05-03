@@ -52,7 +52,7 @@
     <string name="time_of_day_day">Day</string>
     <string name="time_of_day_sunset">Sunset</string>
     <string name="time_of_day_night">Night</string>
-    <string-array name="video_time_of_day_entries">
+    <string-array name="video_time_of_day_entries" translatable="false">
         <item>@string/time_of_day_sunrise</item>
         <item>@string/time_of_day_day</item>
         <item>@string/time_of_day_sunset</item>
@@ -264,7 +264,7 @@
     <string name="desc_manifest_disabled">Disabled</string>
     <string name="desc_manifest_short">Place name or short description</string>
     <string name="desc_manifest_poi">Available in many languages, which change as the video plays</string>
-    <string-array name="description_video_manifest_entries">
+    <string-array name="description_video_manifest_entries" translatable="false">
         <item>@string/desc_manifest_disabled</item>
         <item>@string/desc_manifest_short</item>
         <item>@string/desc_manifest_poi</item>
@@ -414,7 +414,7 @@
     <string name="audio_mode_mute_videos">Mute audio from videos</string>
     <string name="audio_mode_play_video_audio">Play audio from videos</string>
     <string name="audio_mode_play_background_music">Play background music</string>
-    <string-array name="audio_mode_entries">
+    <string-array name="audio_mode_entries" translatable="false">
         <item>@string/audio_mode_mute_videos</item>
         <item>@string/audio_mode_play_video_audio</item>
         <item>@string/audio_mode_play_background_music</item>
@@ -430,7 +430,7 @@
     <string name="playlist_cache_refresh_2_weeks">Every 2 weeks</string>
     <string name="playlist_cache_refresh_3_weeks">Every 3 weeks</string>
     <string name="playlist_cache_refresh_4_weeks">Every 4 weeks</string>
-    <string-array name="playlist_cache_refresh_entries">
+    <string-array name="playlist_cache_refresh_entries" translatable="false">
         <item>@string/playlist_cache_refresh_all</item>
         <item>@string/playlist_cache_refresh_1_week</item>
         <item>@string/playlist_cache_refresh_2_weeks</item>
@@ -888,10 +888,13 @@
         <item>SEGMENT</item>
     </string-array>
     <string name="limit_Longer_videos_default" translatable="false">LIMIT</string>
-    <string-array name="limit_Longer_videos_summaries">
-        <item>Obey limit - skip to the next video when the limit is reached</item>
-        <item>Ignore limit - if a video is longer than the set limit, it will be played until the end</item>
-        <item>Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</item>
+    <string name="limit_Longer_videos_summary_skip" translatable="false">Obey limit - skip to the next video when the limit is reached</string>
+    <string name="limit_Longer_videos_summary_finish" translatable="false">Ignore limit - if a video is longer than the set limit, it will be played until the end</string>
+    <string name="limit_Longer_videos_summary_segment" translatable="false">Random segment - if a video is longer than the limit, a random part of the video will be played\n(eg. with a 2min limit, a 6min video can have 3 segments - one will be randomly played)</string>
+    <string-array name="limit_Longer_videos_summaries" translatable="false">
+        <item>@string/limit_Longer_videos_summary_skip</item>
+        <item>@string/limit_Longer_videos_summary_finish</item>
+        <item>@string/limit_Longer_videos_summary_segment</item>
     </string-array>
 
     <!-- Overlay auto hide -->
