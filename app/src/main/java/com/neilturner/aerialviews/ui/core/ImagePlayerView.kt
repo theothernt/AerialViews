@@ -123,7 +123,7 @@ class ImagePlayerView : FrameLayout, KoinComponent {
                 add(buildGifDecoder())
             }.build()
 
-    fun setImage(media: AerialMedia) {
+    fun load(media: AerialMedia) {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
@@ -332,13 +332,14 @@ class ImagePlayerView : FrameLayout, KoinComponent {
         blurHelper.cancel()
     }
 
-    fun pauseTimer() {
+    fun pause() {
         pausedTimestamp = System.currentTimeMillis()
         removeCallbacks(finishedRunnable)
     }
 
-    fun resumeTimer(pauseDuration: Long) {
+    fun play() {
         if (pausedTimestamp > 0) {
+            val pauseDuration = System.currentTimeMillis() - pausedTimestamp
             remainingDuration = maxOf(0, remainingDuration - pauseDuration)
             if (remainingDuration > 0) {
                 postDelayed(finishedRunnable, remainingDuration)

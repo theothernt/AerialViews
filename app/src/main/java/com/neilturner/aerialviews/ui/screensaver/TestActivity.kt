@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ExtractedVideoMetadata
 import com.neilturner.aerialviews.ui.core.ScreenViewModel
 import com.neilturner.aerialviews.ui.core.ScreenUiState
+import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import com.neilturner.aerialviews.utils.SlotHelper
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -334,6 +335,10 @@ class TestActivity : AppCompatActivity(),
 
     override fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata) {
         viewModel.onVideoMetadataExtracted(metadata)
+    }
+
+    override fun onVideoPlaybackSpeedChanged() {
+        // Overlays might need to update if they show playback speed
     }
 
     override fun onImagePrepared() {

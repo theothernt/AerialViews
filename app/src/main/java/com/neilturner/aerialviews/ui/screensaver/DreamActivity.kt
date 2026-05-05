@@ -327,6 +327,10 @@ class DreamActivity : DreamService(),
         viewModel.onVideoMetadataExtracted(metadata)
     }
 
+    override fun onVideoPlaybackSpeedChanged() {
+        // Overlays might need to update if they show playback speed
+    }
+
     override fun onImagePrepared() {
         fadeInNextItem()
         viewModel.onImagePrepared()

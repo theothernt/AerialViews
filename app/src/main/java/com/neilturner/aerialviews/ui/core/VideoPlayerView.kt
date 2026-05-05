@@ -143,19 +143,27 @@ class VideoPlayerView
         }
 
         fun play() {
+            if (isDestroyed) return
             exoPlayer.playWhenReady = true
-            exoPlayer.play()
+            setupAlmostFinishedRunnable()
         }
 
         fun pause() {
-            exoPlayer.pause()
+            if (isDestroyed) return
+            wasPlaying = exoPlayer.playWhenReady
+            exoPlayer.playWhenReady = false
+            pausedTimestamp = System.currentTimeMillis()
+            removeCallbacks(almostFinishedRunnable)
         }
 
         fun stop() {
+            if (isDestroyed) return
+            removeCallbacks(almostFinishedRunnable)
             exoPlayer.stop()
         }
 
-        fun setVideo(media: AerialMedia) {
+        fun load(media: AerialMedia) {
+            if (isDestroyed) return
             state = VideoState() // Reset params for each video
             state.type = media.source
             cancelVolumeFade()
@@ -181,6 +189,12 @@ class VideoPlayerView
         fun increaseSpeed() = changeSpeed(true)
 
         fun decreaseSpeed() = changeSpeed(false)
+
+        fun updatePlaybackSpeed() {
+            playbackSpeed = GeneralPrefs.playbackSpeed
+            exoPlayer.setPlaybackSpeed(playbackSpeed.toFloat())
+            setupAlmostFinishedRunnable()
+        }
 
         fun seekForward() = seek()
 
@@ -227,32 +241,8 @@ class VideoPlayerView
             isMuted = shouldMute && !forcedMuted
         }
 
-        fun setOnPlayerListener(listener: OnVideoPlayerEventListener?) {
+        fun setListener(listener: OnVideoPlayerEventListener?) {
             this.listener = listener
-        }
-
-        fun start() {
-            exoPlayer.playWhenReady = true
-        }
-
-        fun pause() {
-            wasPlaying = exoPlayer.playWhenReady
-            exoPlayer.playWhenReady = false
-            pausedTimestamp = System.currentTimeMillis()
-            removeCallbacks(almostFinishedRunnable)
-        }
-
-        fun resume() {
-            if (wasPlaying) {
-                exoPlayer.playWhenReady = true
-                // Recalculate remaining time and restart timer
-                setupAlmostFinishedRunnable()
-            }
-        }
-
-        fun stop() {
-            removeCallbacks(almostFinishedRunnable)
-            exoPlayer.stop()
         }
 
         val currentPosition

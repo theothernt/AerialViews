@@ -35,7 +35,15 @@ class ScreenViewModelTest {
     private val nowPlayingService = mockk<NowPlayingService>(relaxed = true)
     private val weatherService = mockk<WeatherService>(relaxed = true)
     private val cacheRepository = mockk<PlaylistCacheRepository>(relaxed = true)
+    private val messageRepository = mockk<com.neilturner.aerialviews.services.MessageRepository>(relaxed = true)
+    private val progressRepository = mockk<com.neilturner.aerialviews.services.PlaybackProgressRepository>(relaxed = true)
     
+    private val musicEventFlow = kotlinx.coroutines.flow.MutableStateFlow(com.neilturner.aerialviews.services.MusicEvent())
+    private val weatherEventFlow = kotlinx.coroutines.flow.MutableStateFlow<com.neilturner.aerialviews.services.weather.WeatherEvent?>(null)
+    private val forecastEventFlow = kotlinx.coroutines.flow.MutableStateFlow<com.neilturner.aerialviews.services.weather.ForecastEvent?>(null)
+    private val messageEventFlow = kotlinx.coroutines.flow.MutableSharedFlow<com.neilturner.aerialviews.services.MessageEvent>()
+    private val progressEventFlow = kotlinx.coroutines.flow.MutableSharedFlow<com.neilturner.aerialviews.ui.overlays.ProgressBarEvent>()
+
     private val testDispatcher = StandardTestDispatcher()
 
     @BeforeEach
@@ -49,6 +57,12 @@ class ScreenViewModelTest {
         every { GeneralPrefs.sleepTimer } returns "0"
         every { GeneralPrefs.messageApiEnabled } returns false
         every { GeneralPrefs.playsBackgroundMusic } returns false
+
+        every { nowPlayingService.musicEvent } returns musicEventFlow
+        every { weatherService.weatherEvent } returns weatherEventFlow
+        every { weatherService.forecastEvent } returns forecastEventFlow
+        every { messageRepository.messageEvent } returns messageEventFlow
+        every { progressRepository.progressEvent } returns progressEventFlow
         
         Dispatchers.setMain(testDispatcher)
     }
@@ -68,7 +82,7 @@ class ScreenViewModelTest {
         
         coEvery { mediaService.fetchMedia(any()) } returns loadingResult
         
-        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository)
+        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository, messageRepository, progressRepository)
         
         advanceUntilIdle()
         
@@ -78,7 +92,7 @@ class ScreenViewModelTest {
 
     @Test
     fun `togglePause updates state`() = runTest {
-        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository)
+        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository, messageRepository, progressRepository)
         
         viewModel.togglePause()
         assertTrue(viewModel.uiState.value.isPaused)
@@ -93,7 +107,7 @@ class ScreenViewModelTest {
         val mockPlaylist = MediaPlaylist(listOf(mockMedia))
         coEvery { mediaService.fetchMedia(any()) } returns MediaFetchResult(mockPlaylist, null, 0)
         
-        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository)
+        val viewModel = ScreenViewModel(context, mediaService, nowPlayingService, weatherService, cacheRepository, messageRepository, progressRepository)
         advanceUntilIdle()
         
         viewModel.toggleBlackOutMode()
