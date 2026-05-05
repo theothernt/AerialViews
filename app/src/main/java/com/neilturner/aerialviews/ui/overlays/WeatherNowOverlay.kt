@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastType
 import com.neilturner.aerialviews.services.weather.WeatherEvent
 import com.neilturner.aerialviews.ui.overlays.state.WeatherOverlayState
-import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.ui.helpers.FontHelper
 import timber.log.Timber
 
 class WeatherNowOverlay

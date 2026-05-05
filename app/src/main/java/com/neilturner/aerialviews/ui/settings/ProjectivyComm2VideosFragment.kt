@@ -7,7 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.MediaPreferenceHelper
+import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 
 class ProjectivyComm2VideosFragment : MenuStateFragment() {

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.network
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers

@@ -6,7 +6,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.VideoPlayerHelper
-import com.neilturner.aerialviews.utils.VolumeHelper
+import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import timber.log.Timber
 
 class MusicPlayer(

@@ -4,7 +4,7 @@ import android.content.Context
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.JsonHelper
+import com.neilturner.aerialviews.data.network.JsonHelper
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json

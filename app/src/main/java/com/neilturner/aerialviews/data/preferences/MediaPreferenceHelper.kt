@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.preferences
 
 import android.content.Context
 import androidx.lifecycle.LifecycleCoroutineScope

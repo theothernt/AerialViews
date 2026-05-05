@@ -8,8 +8,8 @@ import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.DateHelper
-import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.GeocoderHelper
+import com.neilturner.aerialviews.data.storage.FileHelper
+import com.neilturner.aerialviews.ui.helpers.GeocoderHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import java.util.Locale
 

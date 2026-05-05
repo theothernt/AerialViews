@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
 import android.widget.Toast

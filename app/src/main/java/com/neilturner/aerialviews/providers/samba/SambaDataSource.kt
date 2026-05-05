@@ -14,7 +14,7 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.common.SMBRuntimeException
 import com.hierynomus.smbj.share.DiskShare
 import com.hierynomus.smbj.share.File
-import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.data.network.SambaHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
 import java.io.EOFException

@@ -10,7 +10,7 @@ import android.view.View.VISIBLE
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.drawable.toBitmap
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.FastBlurCompat
+import com.neilturner.aerialviews.ui.helpers.FastBlurCompat
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import timber.log.Timber

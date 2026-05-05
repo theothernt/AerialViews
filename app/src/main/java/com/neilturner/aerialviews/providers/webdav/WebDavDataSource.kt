@@ -6,7 +6,7 @@ import androidx.media3.common.C
 import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
-import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.data.network.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Headers
 import okhttp3.OkHttpClient

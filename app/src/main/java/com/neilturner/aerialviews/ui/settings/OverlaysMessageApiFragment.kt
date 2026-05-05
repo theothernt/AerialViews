@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.NetworkHelper
+import com.neilturner.aerialviews.data.network.NetworkHelper
 
 class OverlaysMessageApiFragment : MenuStateFragment() {
     override fun onCreatePreferences(

@@ -5,6 +5,7 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.neilturner.aerialviews.ui.controls.TvEditTextPreferenceDialogFragmentCompat
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber

@@ -10,7 +10,7 @@ import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.videos.AerialExifMetadata
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
-import com.neilturner.aerialviews.utils.GeocoderHelper
+import com.neilturner.aerialviews.ui.helpers.GeocoderHelper
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

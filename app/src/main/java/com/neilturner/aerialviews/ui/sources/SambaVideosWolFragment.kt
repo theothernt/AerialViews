@@ -10,9 +10,9 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.utils.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.NetworkHelper
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

@@ -11,8 +11,8 @@ import com.neilturner.aerialviews.models.prefs.ProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.models.videos.Apple2018Videos
-import com.neilturner.aerialviews.utils.JsonHelper.parseJson
-import com.neilturner.aerialviews.utils.JsonHelper.parseJsonMap
+import com.neilturner.aerialviews.data.network.JsonHelper.parseJson
+import com.neilturner.aerialviews.data.network.JsonHelper.parseJsonMap
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import timber.log.Timber
 

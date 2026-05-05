@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getDisplay
-import com.neilturner.aerialviews.utils.MediaPreferenceHelper
+import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

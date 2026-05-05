@@ -1,9 +1,11 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.preferences
 
 import android.content.Context
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
+import com.neilturner.aerialviews.ui.helpers.PackageHelper
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
 
 @Suppress("SameParameterValue")

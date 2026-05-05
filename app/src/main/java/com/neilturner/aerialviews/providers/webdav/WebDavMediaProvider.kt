@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.models.prefs.WebDavProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.neilturner.aerialviews.utils.FileHelper
+import com.neilturner.aerialviews.data.storage.FileHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

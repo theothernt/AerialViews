@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.NetworkHelpers.buildOkHttpClient
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
+import com.neilturner.aerialviews.data.network.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.utils.capitalise
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

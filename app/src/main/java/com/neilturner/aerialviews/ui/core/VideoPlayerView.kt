@@ -22,10 +22,10 @@ import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.LocaleHelper
-import com.neilturner.aerialviews.utils.PermissionHelper
-import com.neilturner.aerialviews.utils.RefreshRateHelper
-import com.neilturner.aerialviews.utils.ToastHelper
-import com.neilturner.aerialviews.utils.VolumeHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
+import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
+import com.neilturner.aerialviews.ui.helpers.ToastHelper
+import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

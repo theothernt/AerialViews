@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.preferences
 
 import android.content.Context
 import android.net.Uri
@@ -6,6 +6,7 @@ import android.os.Environment
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream

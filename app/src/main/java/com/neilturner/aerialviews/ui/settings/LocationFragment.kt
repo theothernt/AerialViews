@@ -9,7 +9,7 @@ import com.neilturner.aerialviews.databinding.DialogLocationSearchBinding
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.LocationResponse
 import com.neilturner.aerialviews.services.weather.WeatherService
-import com.neilturner.aerialviews.utils.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
 import kotlinx.coroutines.Dispatchers

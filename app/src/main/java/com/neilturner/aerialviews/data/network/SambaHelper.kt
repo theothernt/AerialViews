@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.network
 
 import android.net.Uri
 import com.hierynomus.mssmb2.SMB2Dialect

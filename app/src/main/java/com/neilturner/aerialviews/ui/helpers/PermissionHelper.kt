@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.Manifest
 import android.content.Context

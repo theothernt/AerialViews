@@ -18,9 +18,9 @@ import com.neilturner.aerialviews.models.prefs.SambaProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.NetworkHelper
-import com.neilturner.aerialviews.utils.SambaHelper
+import com.neilturner.aerialviews.data.storage.FileHelper
+import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.data.network.SambaHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

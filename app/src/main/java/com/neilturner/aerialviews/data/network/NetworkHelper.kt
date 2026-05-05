@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager

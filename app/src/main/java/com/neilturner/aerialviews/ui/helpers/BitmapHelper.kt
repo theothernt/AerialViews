@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import androidx.exifinterface.media.ExifInterface
 import io.ktor.utils.io.charsets.forName

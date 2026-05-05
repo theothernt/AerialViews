@@ -13,8 +13,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import com.neilturner.aerialviews.providers.MediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.neilturner.aerialviews.utils.JsonHelper
-import com.neilturner.aerialviews.utils.UrlValidator
+import com.neilturner.aerialviews.data.network.JsonHelper
+import com.neilturner.aerialviews.data.network.UrlValidator
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

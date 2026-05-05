@@ -11,8 +11,8 @@ import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.LocalProviderPreferences
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.neilturner.aerialviews.utils.FileHelper
-import com.neilturner.aerialviews.utils.StorageHelper
+import com.neilturner.aerialviews.data.storage.FileHelper
+import com.neilturner.aerialviews.data.storage.StorageHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

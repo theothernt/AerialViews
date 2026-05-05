@@ -2,10 +2,10 @@ package com.neilturner.aerialviews.providers.immich
 
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
-import com.neilturner.aerialviews.utils.JsonHelper.buildSerializer
-import com.neilturner.aerialviews.utils.ServerConfig
-import com.neilturner.aerialviews.utils.SslHelper
-import com.neilturner.aerialviews.utils.UrlParser
+import com.neilturner.aerialviews.data.network.JsonHelper.buildSerializer
+import com.neilturner.aerialviews.data.network.ServerConfig
+import com.neilturner.aerialviews.data.network.SslHelper
+import com.neilturner.aerialviews.data.network.UrlParser
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope

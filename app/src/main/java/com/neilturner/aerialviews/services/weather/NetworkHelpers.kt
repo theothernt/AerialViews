@@ -1,7 +1,7 @@
 package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
-import com.neilturner.aerialviews.utils.NetworkHelper
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import okhttp3.Cache
 import okhttp3.CacheControl
 import okhttp3.Interceptor

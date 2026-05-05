@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -12,6 +12,7 @@ import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.utils.roundTo
 import timber.log.Timber
 
 class RefreshRateHelper(

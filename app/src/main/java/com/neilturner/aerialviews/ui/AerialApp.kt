@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm1VideoPrefs
 import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.LogcatCapture
 import timber.log.Timber
 

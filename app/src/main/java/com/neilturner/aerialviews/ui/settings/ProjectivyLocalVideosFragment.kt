@@ -15,10 +15,10 @@ import com.neilturner.aerialviews.models.prefs.MediaSelection
 import com.neilturner.aerialviews.models.prefs.ProjectivyLocalMediaPrefs
 import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
-import com.neilturner.aerialviews.utils.DeviceHelper
-import com.neilturner.aerialviews.utils.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ensureActive

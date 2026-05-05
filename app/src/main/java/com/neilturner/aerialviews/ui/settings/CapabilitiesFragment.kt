@@ -13,10 +13,10 @@ import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.OutputDescription
 import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
-import com.neilturner.aerialviews.utils.DeviceHelper
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.roundTo
 import kotlinx.coroutines.launch
 import timber.log.Timber

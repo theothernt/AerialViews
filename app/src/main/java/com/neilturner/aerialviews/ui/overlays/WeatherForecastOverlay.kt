@@ -15,7 +15,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.weather.ForecastDay
 import com.neilturner.aerialviews.ui.overlays.state.ForecastOverlayState
-import com.neilturner.aerialviews.utils.FontHelper
+import com.neilturner.aerialviews.ui.helpers.FontHelper
 import timber.log.Timber
 
 class WeatherForecastOverlay

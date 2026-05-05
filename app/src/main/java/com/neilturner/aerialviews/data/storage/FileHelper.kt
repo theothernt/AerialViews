@@ -1,8 +1,11 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.storage
 
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
+import com.neilturner.aerialviews.utils.filenameWithoutExtension
+import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
 
 object FileHelper {

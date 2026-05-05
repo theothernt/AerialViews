@@ -1,9 +1,10 @@
 @file:Suppress("unused")
 
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
 import android.content.pm.PackageManager
+import com.neilturner.aerialviews.utils.getPackageInfoCompat
 
 object PackageHelper {
     // https://stackoverflow.com/a/34194960/247257

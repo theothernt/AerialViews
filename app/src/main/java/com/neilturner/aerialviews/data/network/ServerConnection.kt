@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.network
 
 import android.annotation.SuppressLint
 import okhttp3.OkHttpClient

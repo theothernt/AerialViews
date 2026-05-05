@@ -8,7 +8,7 @@ import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Bundle
 import androidx.core.content.getSystemService
-import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

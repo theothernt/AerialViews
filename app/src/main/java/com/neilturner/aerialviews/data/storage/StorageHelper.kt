@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.data.storage
 
 import android.content.Context
 import android.os.Build

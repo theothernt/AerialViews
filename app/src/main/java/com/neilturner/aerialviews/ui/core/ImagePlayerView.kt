@@ -25,9 +25,9 @@ import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
 import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
 import com.neilturner.aerialviews.ui.overlays.ProgressState
-import com.neilturner.aerialviews.utils.BitmapHelper
+import com.neilturner.aerialviews.ui.helpers.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.ToastHelper
+import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

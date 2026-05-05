@@ -7,9 +7,9 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import androidx.lifecycle.lifecycleScope
-import com.neilturner.aerialviews.utils.InputHelper
+import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.utils.MenuStateFragment
-import com.neilturner.aerialviews.utils.PermissionHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
