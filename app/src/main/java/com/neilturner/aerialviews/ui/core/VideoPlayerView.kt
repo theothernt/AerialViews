@@ -142,6 +142,19 @@ class VideoPlayerView
             }
         }
 
+        fun play() {
+            exoPlayer.playWhenReady = true
+            exoPlayer.play()
+        }
+
+        fun pause() {
+            exoPlayer.pause()
+        }
+
+        fun stop() {
+            exoPlayer.stop()
+        }
+
         fun setVideo(media: AerialMedia) {
             state = VideoState() // Reset params for each video
             state.type = media.source

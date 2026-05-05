@@ -8,9 +8,12 @@ import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.models.enums.AerialMediaType
+import com.neilturner.aerialviews.models.enums.DateType
+import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
+import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.MediaService
 import com.neilturner.aerialviews.services.MessageRepository
@@ -45,7 +48,16 @@ data class ScreenUiState(
     val isPlaylistLoaded: Boolean = false,
     val error: String? = null,
     val alternate: Boolean = false,
-    val overlayState: OverlayUiState = OverlayUiState()
+    val overlayState: OverlayUiState = OverlayUiState(),
+    val brightness: Float = 1.0f,
+    val isMuted: Boolean = false,
+    val isLooping: Boolean = false,
+    val playbackSpeed: String = "1",
+    val showOverlaysEvent: Long = 0,
+    val seekForwardEvent: Long = 0,
+    val seekBackwardEvent: Long = 0,
+    val playbackSpeedChangedEvent: Long = 0,
+    val brightnessChangedEvent: Long = 0
 )
 
 class ScreenViewModel(
@@ -56,7 +68,7 @@ class ScreenViewModel(
     private val cacheRepository: PlaylistCacheRepository,
     private val messageRepository: MessageRepository,
     private val progressRepository: PlaybackProgressRepository
-) : ViewModel() {
+) : ViewModel(), ScreenInteractionHandler {
 
     private val _uiState = MutableStateFlow(ScreenUiState())
     val uiState: StateFlow<ScreenUiState> = _uiState.asStateFlow()
@@ -65,8 +77,11 @@ class ScreenViewModel(
     private var musicPlayer: MusicPlayer? = null
     private var ktorServer: KtorServer? = null
     private var sleepTimerJob: Job? = null
+    private val metadataResolver = MetadataResolver()
+    private val metadataJobs = mutableMapOf<OverlayType, Job>()
     
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
+    private val brightnessValues = context.resources.getStringArray(com.neilturner.aerialviews.R.array.percentage1_values)
 
     init {
         loadPlaylist()
@@ -124,7 +139,7 @@ class ScreenViewModel(
             if (playlist.size > 0) {
                 _uiState.update { it.copy(isPlaylistLoaded = true) }
                 
-                // Initialize services that were previously in ScreenController init/launch
+                // Initialize services that were previously in Legacy Controller init/launch
                 setupNotificationService()
                 setupKtorServer()
                 setupWeatherUpdates()
@@ -188,6 +203,7 @@ class ScreenViewModel(
                 isPaused = false,
                 alternate = if (shouldAlternateOverlays) !it.alternate else it.alternate
             ) }
+            updateMetadataOverlayData(media)
             savePlaybackPosition()
         }
     }
@@ -201,15 +217,16 @@ class ScreenViewModel(
                 isPaused = false,
                 alternate = if (shouldAlternateOverlays) !it.alternate else it.alternate
             ) }
+            updateMetadataOverlayData(media)
             savePlaybackPosition()
         }
     }
 
-    fun togglePause() {
+    override fun togglePause() {
         _uiState.update { it.copy(isPaused = !it.isPaused) }
     }
 
-    fun toggleBlackOutMode() {
+    override fun toggleBlackOutMode() {
         val newMode = !_uiState.value.blackOutMode
         _uiState.update { it.copy(blackOutMode = newMode) }
         if (newMode) {
@@ -220,11 +237,129 @@ class ScreenViewModel(
         }
     }
 
-    fun skipItem(previous: Boolean = false) {
+    fun onVideoMetadataExtracted(metadata: ExtractedVideoMetadata) {
+        val media = _uiState.value.currentMedia ?: return
+        Timber.i("Video metadata: %s", formatVideoMetadataForLog(metadata))
+        val changed = applyVideoMetadataToMedia(media, metadata)
+
+        if (changed) {
+            updateMetadataOverlayData(media)
+        }
+    }
+
+    fun onImagePrepared() {
+        val media = _uiState.value.currentMedia ?: return
+        if (media.type == AerialMediaType.IMAGE) {
+            updateMetadataOverlayData(media)
+        }
+    }
+
+    private fun updateMetadataOverlayData(media: AerialMedia) {
+        val metadataSlots =
+            listOf(
+                OverlayType.METADATA1,
+                OverlayType.METADATA2,
+                OverlayType.METADATA3,
+                OverlayType.METADATA4,
+            )
+
+        metadataSlots.forEach { slot ->
+            metadataJobs[slot]?.cancel()
+            metadataJobs[slot] =
+                viewModelScope.launch {
+                    try {
+                        val preferences = getMetadataPreferences(slot)
+                        val resolved = metadataResolver.resolve(context, media, preferences)
+                        if (_uiState.value.currentMedia !== media) return@launch
+
+                        setMetadata(
+                            slot,
+                            resolved.text,
+                            resolved.poi,
+                            resolved.metadataType,
+                        )
+                    } catch (e: Exception) {
+                        Timber.e(e, "Metadata slot $slot resolver failed")
+                        if (_uiState.value.currentMedia === media) {
+                            setMetadata(slot, "", emptyMap(), MetadataType.STATIC)
+                        }
+                    }
+                }
+        }
+    }
+
+    private fun getMetadataPreferences(slot: OverlayType): MetadataResolver.Preferences =
+        when (slot) {
+            OverlayType.METADATA1 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata1Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata1VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata1VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata1Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata1PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata1PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata1PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata1PhotosDateCustom,
+                )
+            }
+
+            OverlayType.METADATA2 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata2Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata2VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata2VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata2Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata2PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata2PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata2PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata2PhotosDateCustom,
+                )
+            }
+
+            OverlayType.METADATA3 -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata3Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata3VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata3VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata3Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata3PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata3PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata3PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata3PhotosDateCustom,
+                )
+            }
+
+            else -> {
+                MetadataResolver.Preferences(
+                    videoSelection = GeneralPrefs.overlayMetadata4Videos,
+                    videoFolderDepth = GeneralPrefs.overlayMetadata4VideosFolderLevel.toIntOrNull() ?: 1,
+                    videoLocationType =
+                        GeneralPrefs.overlayMetadata4VideosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoSelection = GeneralPrefs.overlayMetadata4Photos,
+                    photoFolderDepth = GeneralPrefs.overlayMetadata4PhotosFolderLevel.toIntOrNull() ?: 1,
+                    photoLocationType =
+                        GeneralPrefs.overlayMetadata4PhotosLocationType ?: LocationType.CITY_COUNTRY,
+                    photoDateType =
+                        GeneralPrefs.overlayMetadata4PhotosDateType ?: DateType.COMPACT,
+                    photoDateCustom = GeneralPrefs.overlayMetadata4PhotosDateCustom,
+                )
+            }
+        }
+
+    override fun skipItem(previous: Boolean) {
         if (previous) loadPreviousItem() else loadNextItem()
     }
 
-    fun nextTrack() {
+    override fun nextTrack() {
         if (musicPlayer?.hasMusic() == true) {
             musicPlayer?.nextTrack()
             saveMusicTrackPosition()
@@ -233,7 +368,7 @@ class ScreenViewModel(
         }
     }
 
-    fun previousTrack() {
+    override fun previousTrack() {
         if (musicPlayer?.hasMusic() == true) {
             musicPlayer?.previousTrack()
             saveMusicTrackPosition()
@@ -280,6 +415,8 @@ class ScreenViewModel(
         musicPlayer?.pause()
         musicPlayer?.release()
         sleepTimerJob?.cancel()
+        metadataJobs.values.forEach { it.cancel() }
+        metadataJobs.clear()
     }
 
     // Pass-through methods for player controls that don't need state in VM yet
@@ -299,13 +436,72 @@ class ScreenViewModel(
     }
 
     // Delegate methods for InputHelper
-    fun increaseSpeed() { /* TODO: Implement in VM if needed */ }
-    fun decreaseSpeed() { /* TODO: Implement in VM if needed */ }
-    fun seekForward() { /* TODO: Implement in VM if needed */ }
-    fun seekBackward() { /* TODO: Implement in VM if needed */ }
-    fun increaseBrightness() { /* TODO: Implement in VM if needed */ }
-    fun decreaseBrightness() { /* TODO: Implement in VM if needed */ }
-    fun showOverlays() { /* TODO: Implement in VM if needed */ }
-    fun toggleMute() { /* TODO: Implement in VM if needed */ }
-    fun toggleLooping() { /* TODO: Implement in VM if needed */ }
+    // Interaction methods
+    override fun increaseSpeed() {
+        _uiState.update { it.copy(playbackSpeedChangedEvent = System.currentTimeMillis()) }
+    }
+
+    override fun decreaseSpeed() {
+        _uiState.update { it.copy(playbackSpeedChangedEvent = System.currentTimeMillis()) }
+    }
+
+    override fun seekForward() {
+        _uiState.update { it.copy(seekForwardEvent = System.currentTimeMillis()) }
+    }
+
+    override fun seekBackward() {
+        _uiState.update { it.copy(seekBackwardEvent = System.currentTimeMillis()) }
+    }
+
+    override fun increaseBrightness() = changeBrightness(true)
+    override fun decreaseBrightness() = changeBrightness(false)
+
+    private fun changeBrightness(increase: Boolean) {
+        val currentBrightness = GeneralPrefs.videoBrightness
+        val currentIndex = brightnessValues.indexOf(currentBrightness)
+        if (currentIndex == -1) return
+        if (increase && currentIndex == brightnessValues.size - 1) return
+        if (!increase && currentIndex == 0) return
+
+        val newIndex = if (increase) currentIndex + 1 else currentIndex - 1
+        val newBrightness = brightnessValues[newIndex]
+        GeneralPrefs.videoBrightness = newBrightness
+        
+        _uiState.update { it.copy(
+            brightness = (newBrightness.toFloatOrNull() ?: 100f) / 100f,
+            brightnessChangedEvent = System.currentTimeMillis()
+        ) }
+    }
+
+    override fun showOverlays() {
+        _uiState.update { it.copy(showOverlaysEvent = System.currentTimeMillis()) }
+    }
+
+    override fun toggleMute() {
+        _uiState.update { it.copy(isMuted = !it.isMuted) }
+    }
+
+    override fun toggleLooping() {
+        _uiState.update { it.copy(isLooping = !it.isLooping) }
+    }
+
+    override fun getBlackOutMode(): Boolean = _uiState.value.blackOutMode
+}
+
+interface ScreenInteractionHandler {
+    fun skipItem(previous: Boolean = false)
+    fun nextTrack()
+    fun previousTrack()
+    fun increaseSpeed()
+    fun decreaseSpeed()
+    fun seekForward()
+    fun seekBackward()
+    fun togglePause()
+    fun toggleBlackOutMode()
+    fun increaseBrightness()
+    fun decreaseBrightness()
+    fun showOverlays()
+    fun toggleMute()
+    fun toggleLooping()
+    fun getBlackOutMode(): Boolean
 }

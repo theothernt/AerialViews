@@ -1,7 +1,11 @@
 package com.neilturner.aerialviews.utils
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.view.View
+import com.neilturner.aerialviews.databinding.AerialActivityBinding
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import kotlin.math.pow
 
 object GradientHelper {
@@ -34,5 +38,20 @@ object GradientHelper {
 
         gradientDrawable.gradientType = GradientDrawable.LINEAR_GRADIENT
         return gradientDrawable
+    }
+
+    fun setupGradients(
+        context: Context,
+        binding: AerialActivityBinding,
+        isAlternate: Boolean
+    ) {
+        if (GeneralPrefs.showTopGradient) {
+            binding.overlayView.gradientTop.background = smoothBackgroundAlt(GradientDrawable.Orientation.TOP_BOTTOM)
+            binding.overlayView.gradientTop.visibility = View.VISIBLE
+        }
+        if (GeneralPrefs.showBottomGradient) {
+            binding.overlayView.gradientBottom.background = smoothBackgroundAlt(GradientDrawable.Orientation.BOTTOM_TOP)
+            binding.overlayView.gradientBottom.visibility = View.VISIBLE
+        }
     }
 }

@@ -51,7 +51,7 @@ class WeatherNowOverlay
 
         init {
             orientation = HORIZONTAL
-            // Start visible by default. ScreenController owns auto-hide and will
+            // Start visible by default. The host Activity or Service owns auto-hide and will
             // fade this view when that feature is enabled.
             alpha = 1f
         }

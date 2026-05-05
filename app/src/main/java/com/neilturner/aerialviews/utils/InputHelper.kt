@@ -5,7 +5,8 @@ import android.view.KeyEvent
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.ButtonType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ScreenInteractionHandler
+import android.view.View
 import timber.log.Timber
 
 object InputHelper {
@@ -14,7 +15,7 @@ object InputHelper {
 
     fun handleKeyEvent(
         event: KeyEvent,
-        controller: ScreenController?,
+        handler: ScreenInteractionHandler?,
         exit: (shouldExit: Boolean) -> Unit,
     ): Boolean {
         var result = false
@@ -29,13 +30,13 @@ object InputHelper {
                     previousEvent?.repeatCount == 0
             )
         ) {
-            result = eventToAction(event, controller, exit)
+            result = eventToAction(event, handler, exit)
         }
 
         if (event.action == KeyEvent.ACTION_DOWN &&
             event.isLongPress
         ) {
-            result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS)
+            result = eventToAction(event, handler, exit, ButtonPressType.LONG_PRESS)
             longPressEvent = true
         }
 
@@ -43,7 +44,7 @@ object InputHelper {
             event.repeatCount.rem(10) == 0 &&
             longPressEvent
         ) {
-            result = eventToAction(event, controller, exit, ButtonPressType.LONG_PRESS_HOLD)
+            result = eventToAction(event, handler, exit, ButtonPressType.LONG_PRESS_HOLD)
         }
 
         previousEvent = event
@@ -52,28 +53,28 @@ object InputHelper {
 
     fun setupGestureListener(
         context: Context,
-        controller: ScreenController,
+        view: View,
+        handler: ScreenInteractionHandler,
         exit: (shouldExit: Boolean) -> Unit,
     ) {
-        controller
-            .view
+        view
             .setOnTouchListener(
                 SwipeGestureListener(
                     context = context,
-                    onSwipeUp = { gestureToAction(GestureType.UP, controller, exit) },
-                    onSwipeDown = { gestureToAction(GestureType.DOWN, controller, exit) },
-                    onSwipeLeft = { gestureToAction(GestureType.LEFT, controller, exit) },
-                    onSwipeRight = { gestureToAction(GestureType.RIGHT, controller, exit) },
-                    onTap = { gestureToAction(GestureType.TAP, controller, exit) },
-                    onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, controller, exit) },
-                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, controller, exit) },
+                    onSwipeUp = { gestureToAction(GestureType.UP, handler, exit) },
+                    onSwipeDown = { gestureToAction(GestureType.DOWN, handler, exit) },
+                    onSwipeLeft = { gestureToAction(GestureType.LEFT, handler, exit) },
+                    onSwipeRight = { gestureToAction(GestureType.RIGHT, handler, exit) },
+                    onTap = { gestureToAction(GestureType.TAP, handler, exit) },
+                    onDoubleTap = { gestureToAction(GestureType.DOUBLE_TAP, handler, exit) },
+                    onLongTap = { gestureToAction(GestureType.TAP_HOLD, handler, exit) },
                 ),
             )
     }
 
     private fun gestureToAction(
         gesture: GestureType,
-        controller: ScreenController?,
+        handler: ScreenInteractionHandler?,
         exit: (shouldExit: Boolean) -> Unit,
     ) {
         val action =
@@ -91,9 +92,9 @@ object InputHelper {
 
         // Check if any swipe or screen tap should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
-            controller?.blackOutMode == true
+            handler?.getBlackOutMode() == true
         ) {
-            controller.toggleBlackOutMode()
+            handler.toggleBlackOutMode()
             return
         }
 
@@ -102,21 +103,21 @@ object InputHelper {
         }
 
         when (action) {
-            ButtonType.SKIP_NEXT -> controller?.skipItem()
-            ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-            ButtonType.MUSIC_NEXT -> controller?.nextTrack()
-            ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
-            ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
-            ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
-            ButtonType.SEEK_FORWARD -> controller?.seekForward()
-            ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
-            ButtonType.BRIGHTNESS_INCREASE -> controller?.increaseBrightness()
-            ButtonType.BRIGHTNESS_DECREASE -> controller?.decreaseBrightness()
-            ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
-            ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-            ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
-            ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
-            ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
+            ButtonType.SKIP_NEXT -> handler?.skipItem()
+            ButtonType.SKIP_PREVIOUS -> handler?.skipItem(true)
+            ButtonType.MUSIC_NEXT -> handler?.nextTrack()
+            ButtonType.MUSIC_PREVIOUS -> handler?.previousTrack()
+            ButtonType.SPEED_INCREASE -> handler?.increaseSpeed()
+            ButtonType.SPEED_DECREASE -> handler?.decreaseSpeed()
+            ButtonType.SEEK_FORWARD -> handler?.seekForward()
+            ButtonType.SEEK_BACKWARD -> handler?.seekBackward()
+            ButtonType.BRIGHTNESS_INCREASE -> handler?.increaseBrightness()
+            ButtonType.BRIGHTNESS_DECREASE -> handler?.decreaseBrightness()
+            ButtonType.SHOW_OVERLAYS -> handler?.showOverlays()
+            ButtonType.BLACK_OUT_MODE -> handler?.toggleBlackOutMode()
+            ButtonType.TOGGLE_MUTE -> handler?.toggleMute()
+            ButtonType.TOGGLE_PAUSE -> handler?.togglePause()
+            ButtonType.TOGGLE_LOOPING -> handler?.toggleLooping()
             ButtonType.EXIT_TO_SETTINGS -> exit(false)
             else -> exit(true)
         }
@@ -124,7 +125,7 @@ object InputHelper {
 
     private fun eventToAction(
         event: KeyEvent,
-        controller: ScreenController?,
+        handler: ScreenInteractionHandler?,
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType = ButtonPressType.PRESS,
     ): Boolean {
@@ -220,7 +221,7 @@ object InputHelper {
             return false
         }
 
-        return executeAction(action, controller, exit, type)
+        return executeAction(action, handler, exit, type)
     }
 
     private fun anyDpadActionsEnabled(): Boolean =
@@ -267,7 +268,7 @@ object InputHelper {
 
     private fun executeAction(
         action: ButtonType?,
-        controller: ScreenController?,
+        handler: ScreenInteractionHandler?,
         exit: (shouldExit: Boolean) -> Unit,
         type: ButtonPressType,
     ): Boolean {
@@ -275,11 +276,11 @@ object InputHelper {
 
         // Check if any direction/button press should wake from black out mode
         if (GeneralPrefs.wakeOnAnyButtonPress &&
-            controller?.blackOutMode == true &&
+            handler?.getBlackOutMode() == true &&
             type != ButtonPressType.LONG_PRESS_HOLD
         ) {
             // Timber.i("Action: toggleBlackOutMode")
-            controller.toggleBlackOutMode()
+            handler.toggleBlackOutMode()
             return true
         }
 
@@ -296,21 +297,21 @@ object InputHelper {
         } else {
             // Timber.i("Action: $action")
             when (action) {
-                ButtonType.SKIP_NEXT -> controller?.skipItem()
-                ButtonType.SKIP_PREVIOUS -> controller?.skipItem(true)
-                ButtonType.MUSIC_NEXT -> controller?.nextTrack()
-                ButtonType.MUSIC_PREVIOUS -> controller?.previousTrack()
-                ButtonType.SPEED_INCREASE -> controller?.increaseSpeed()
-                ButtonType.SPEED_DECREASE -> controller?.decreaseSpeed()
-                ButtonType.SEEK_FORWARD -> controller?.seekForward()
-                ButtonType.SEEK_BACKWARD -> controller?.seekBackward()
-                ButtonType.BRIGHTNESS_INCREASE -> controller?.increaseBrightness()
-                ButtonType.BRIGHTNESS_DECREASE -> controller?.decreaseBrightness()
-                ButtonType.SHOW_OVERLAYS -> controller?.showOverlays()
-                ButtonType.BLACK_OUT_MODE -> controller?.toggleBlackOutMode()
-                ButtonType.TOGGLE_MUTE -> controller?.toggleMute()
-                ButtonType.TOGGLE_PAUSE -> controller?.togglePause()
-                ButtonType.TOGGLE_LOOPING -> controller?.toggleLooping()
+                ButtonType.SKIP_NEXT -> handler?.skipItem()
+                ButtonType.SKIP_PREVIOUS -> handler?.skipItem(true)
+                ButtonType.MUSIC_NEXT -> handler?.nextTrack()
+                ButtonType.MUSIC_PREVIOUS -> handler?.previousTrack()
+                ButtonType.SPEED_INCREASE -> handler?.increaseSpeed()
+                ButtonType.SPEED_DECREASE -> handler?.decreaseSpeed()
+                ButtonType.SEEK_FORWARD -> handler?.seekForward()
+                ButtonType.SEEK_BACKWARD -> handler?.seekBackward()
+                ButtonType.BRIGHTNESS_INCREASE -> handler?.increaseBrightness()
+                ButtonType.BRIGHTNESS_DECREASE -> handler?.decreaseBrightness()
+                ButtonType.SHOW_OVERLAYS -> handler?.showOverlays()
+                ButtonType.BLACK_OUT_MODE -> handler?.toggleBlackOutMode()
+                ButtonType.TOGGLE_MUTE -> handler?.toggleMute()
+                ButtonType.TOGGLE_PAUSE -> handler?.togglePause()
+                ButtonType.TOGGLE_LOOPING -> handler?.toggleLooping()
                 ButtonType.EXIT_TO_SETTINGS -> exit(false)
                 else -> exit(true)
             }

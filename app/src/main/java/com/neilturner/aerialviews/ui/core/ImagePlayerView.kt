@@ -301,6 +301,7 @@ class ImagePlayerView : FrameLayout, KoinComponent {
 
     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
+        private const val ERROR_DELAY = 5000L
     }
 
     private fun resolveTargetSize(): Pair<Int, Int> {
@@ -411,10 +412,10 @@ class ImagePlayerView : FrameLayout, KoinComponent {
 
     private fun onPlayerError() {
         removeCallbacks(finishedRunnable)
-        postDelayed(errorRunnable, ScreenController.ERROR_DELAY)
+        postDelayed(errorRunnable, ERROR_DELAY)
     }
 
-    fun setOnPlayerListener(listener: ScreenController) {
+    fun setListener(listener: OnImagePlayerEventListener?) {
         this.listener = listener
     }
 

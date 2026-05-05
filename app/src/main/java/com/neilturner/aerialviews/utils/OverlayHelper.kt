@@ -18,10 +18,17 @@ import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 
+import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState
+import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
+import com.neilturner.aerialviews.ui.core.VideoPlayerView
+import com.neilturner.aerialviews.ui.overlays.ProgressBar
+
 class OverlayHelper(
     private val context: Context,
-    private val prefs: GeneralPrefs,
+    private val binding: OverlayViewBinding,
+    private val viewModel: com.neilturner.aerialviews.ui.core.ScreenViewModel,
 ) {
+    private val prefs = GeneralPrefs
     var overlays = mutableListOf<View?>()
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
@@ -309,4 +316,19 @@ class OverlayHelper(
                 null
             }
         }
+
+    fun render(state: OverlayUiState, videoPlayer: VideoPlayerView) {
+        findOverlay<MetadataOverlay>().forEach { overlay ->
+            val metadataState = state.metadata[overlay.type]
+            if (metadataState != null) {
+                overlay.render(metadataState, videoPlayer)
+            }
+        }
+        findOverlay<NowPlayingOverlay>().forEach { it.render(state.nowPlaying) }
+        findOverlay<WeatherNowOverlay>().forEach { it.render(state.weather) }
+        findOverlay<WeatherForecastOverlay>().forEach { it.render(state.forecast) }
+        findOverlay<MessageOverlay>().forEach { overlay ->
+            overlay.render(state.message[overlay.type] ?: MessageOverlayState())
+        }
+    }
 }
