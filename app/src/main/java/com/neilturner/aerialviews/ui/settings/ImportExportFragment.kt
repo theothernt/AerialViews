@@ -18,7 +18,7 @@ import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
-import com.neilturner.aerialviews.data.preferences.PreferenceHelper
+import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import kotlinx.coroutines.launch
 
 class ImportExportFragment :

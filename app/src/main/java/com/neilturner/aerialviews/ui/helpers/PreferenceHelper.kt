@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.data.preferences
+package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
 import android.net.Uri
@@ -26,7 +26,7 @@ object PreferenceHelper {
 
         prefs.all.forEach { (key, value) ->
             if (ignorePrefs.contains(key)) {
-                Timber.i("Ignoring key: $key")
+                Timber.Forest.i("Ignoring key: $key")
                 return@forEach
             }
 
@@ -94,25 +94,25 @@ object PreferenceHelper {
                         )
                     }
 
-                    Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
+                    Timber.Forest.i("Settings exported successfully to: ${outputFile.absolutePath}")
                     return outputFile.absolutePath
                 } else {
-                    Timber.w("Directory not writable: ${folder.absolutePath}")
+                    Timber.Forest.w("Directory not writable: ${folder.absolutePath}")
                 }
             } catch (e: Exception) {
-                Timber.e(e, "Failed to export settings to: ${folder.absolutePath}")
+                Timber.Forest.e(e, "Failed to export settings to: ${folder.absolutePath}")
                 // Continue to next candidate
             }
         }
 
-        Timber.e("Failed to export settings to any location.")
+        Timber.Forest.e("Failed to export settings to any location.")
         return null
     }
 
     fun importPreferences(
-        context: Context,
-        uri: Uri,
-        clearExisting: Boolean = false,
+	    context: Context,
+	    uri: Uri,
+	    clearExisting: Boolean = false,
     ): Boolean =
         try {
             val properties =

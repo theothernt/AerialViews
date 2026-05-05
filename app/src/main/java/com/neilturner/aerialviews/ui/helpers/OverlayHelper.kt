@@ -9,7 +9,7 @@ import com.neilturner.aerialviews.models.OverlayIds
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.SlotType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.data.preferences.SlotHelper
+import com.neilturner.aerialviews.ui.helpers.SlotHelper
 import com.neilturner.aerialviews.ui.overlays.ClockOverlay
 import com.neilturner.aerialviews.ui.overlays.CountdownOverlay
 import com.neilturner.aerialviews.ui.overlays.DateOverlay

@@ -12,7 +12,7 @@ import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
-import com.neilturner.aerialviews.data.preferences.PreferenceHelper
+import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import timber.log.Timber
 
