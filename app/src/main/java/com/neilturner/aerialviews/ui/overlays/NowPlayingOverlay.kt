@@ -16,7 +16,7 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.ui.overlays.state.NowPlayingOverlayState
-import com.neilturner.aerialviews.utils.TrackNameShortener
+import com.neilturner.aerialviews.ui.overlays.utils.TrackNameShortener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

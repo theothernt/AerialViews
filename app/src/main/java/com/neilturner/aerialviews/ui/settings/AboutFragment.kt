@@ -7,7 +7,7 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

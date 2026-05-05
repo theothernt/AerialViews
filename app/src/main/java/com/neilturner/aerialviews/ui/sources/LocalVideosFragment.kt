@@ -21,7 +21,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.data.storage.FileHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.data.storage.StorageHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues

@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.content.Context
 import com.neilturner.aerialviews.R
@@ -20,9 +20,9 @@ import java.util.TimeZone
 
 object DateHelper {
     fun formatDate(
-        context: Context,
-        type: DateType,
-        custom: String?,
+	    context: Context,
+	    type: DateType,
+	    custom: String?,
     ): String =
         when (type) {
             DateType.FULL -> {
@@ -39,17 +39,17 @@ object DateHelper {
                     val formatter = SimpleDateFormat(custom, Locale.getDefault())
                     formatter.format(today)
                 } catch (e: Exception) {
-                    Timber.e(e)
+                    Timber.Forest.e(e)
                     context.resources.getString(R.string.appearance_date_custom_error)
                 }
             }
         }
 
     fun formatExifDate(
-        date: String,
-        offset: String?,
-        type: DateType,
-        custom: String?,
+	    date: String,
+	    offset: String?,
+	    type: DateType,
+	    custom: String?,
     ): String? {
         val parsedOffset = parseZoneOffset(offset)
         val parsedDate = parseExifDate(date, offset) ?: return null

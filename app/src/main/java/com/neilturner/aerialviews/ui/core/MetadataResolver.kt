@@ -7,7 +7,7 @@ import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.utils.DateHelper
+import com.neilturner.aerialviews.ui.helpers.DateHelper
 import com.neilturner.aerialviews.data.storage.FileHelper
 import com.neilturner.aerialviews.ui.helpers.GeocoderHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension

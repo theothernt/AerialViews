@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.ui.overlays
+package com.neilturner.aerialviews.ui.controls
 
 import android.animation.ValueAnimator
 import android.content.Context

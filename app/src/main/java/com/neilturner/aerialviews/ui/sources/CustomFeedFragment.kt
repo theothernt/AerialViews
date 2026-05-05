@@ -10,7 +10,7 @@ import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.launch
 
 class CustomFeedFragment : MenuStateFragment() {

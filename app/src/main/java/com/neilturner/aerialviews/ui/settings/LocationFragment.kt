@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.services.weather.LocationResponse
 import com.neilturner.aerialviews.services.weather.WeatherService
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

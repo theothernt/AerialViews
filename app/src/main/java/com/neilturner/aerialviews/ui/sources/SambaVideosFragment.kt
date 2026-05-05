@@ -14,7 +14,7 @@ import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.data.network.SambaHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty

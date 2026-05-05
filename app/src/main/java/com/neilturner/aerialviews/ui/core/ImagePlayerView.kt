@@ -23,8 +23,8 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.InputStreamFetcher
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildGifDecoder
 import com.neilturner.aerialviews.ui.core.ImagePlayerHelper.buildOkHttpClient
-import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
-import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
+import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.BitmapHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.helpers.ToastHelper

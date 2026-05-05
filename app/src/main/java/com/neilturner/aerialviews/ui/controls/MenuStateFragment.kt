@@ -1,11 +1,12 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.controls
 
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.neilturner.aerialviews.ui.controls.TvEditTextPreferenceDialogFragmentCompat
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -34,7 +35,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
             }
         } catch (ex: Exception) {
             FirebaseHelper.crashlyticsException(ex)
-            Timber.e(ex)
+            Timber.Forest.e(ex)
         }
     }
 
@@ -50,8 +51,8 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
             try {
                 var view = it
                 // Walk up the view hierarchy until we find a view that's a direct child of the RecyclerView
-                while (view.parent != null && view.parent !== listView && view.parent is android.view.View) {
-                    view = view.parent as android.view.View
+                while (view.parent != null && view.parent !== listView && view.parent is View) {
+                    view = view.parent as View
                 }
 
                 // Only try to get position if the view is a direct child of the RecyclerView

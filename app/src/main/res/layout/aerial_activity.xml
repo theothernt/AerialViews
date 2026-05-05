@@ -16,7 +16,7 @@
         android:id="@+id/overlay_view"
         layout="@layout/overlay_view" />
 
-    <com.neilturner.aerialviews.ui.overlays.ProgressBar
+    <com.neilturner.aerialviews.ui.controls.ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="0dp"
         android:layout_height="1dp"

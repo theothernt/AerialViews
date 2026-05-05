@@ -35,7 +35,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
 import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
-import com.neilturner.aerialviews.utils.TimeOfDayHelper
+import com.neilturner.aerialviews.services.TimeOfDayHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -6,7 +6,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.widget.TextViewCompat
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.utils.DateHelper
+import com.neilturner.aerialviews.ui.helpers.DateHelper
 
 class DateOverlay : AppCompatTextView {
     private var refreshDateHandler: (() -> Unit)? = null

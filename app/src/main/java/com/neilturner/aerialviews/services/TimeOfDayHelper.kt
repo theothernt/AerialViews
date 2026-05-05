@@ -1,9 +1,7 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.services
 
 import com.neilturner.aerialviews.models.enums.TimeOfDay
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import java.lang.Math.toDegrees
-import java.lang.Math.toRadians
 import java.util.Calendar
 import java.util.TimeZone
 import kotlin.math.acos
@@ -48,10 +46,10 @@ object TimeOfDayHelper {
      * Algorithm based on "Solar Calculation" by NOAA.
      */
     private fun calculateSunriseSunset(
-        calendar: Calendar,
-        latitude: Double,
-        longitude: Double,
-        isSunrise: Boolean,
+	    calendar: Calendar,
+	    latitude: Double,
+	    longitude: Double,
+	    isSunrise: Boolean,
     ): Int? {
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
         val zenith = 90.8333 // Official zenith for sunrise/sunset
@@ -67,12 +65,12 @@ object TimeOfDayHelper {
         val m = (0.9856 * t) - 3.289
 
         // 4. calculate the Sun's true longitude
-        var l = m + (1.916 * sin(toRadians(m))) + (0.020 * sin(toRadians(2 * m))) + 282.634
+        var l = m + (1.916 * sin(Math.toRadians(m))) + (0.020 * sin(Math.toRadians(2 * m))) + 282.634
         l %= 360
         if (l < 0) l += 360
 
         // 5. calculate the Sun's right ascension
-        var ra = toDegrees(atan(tan(toRadians(l)) * 0.91764))
+        var ra = Math.toDegrees(atan(tan(Math.toRadians(l)) * 0.91764))
         ra %= 360
         if (ra < 0) ra += 360
 
@@ -85,17 +83,19 @@ object TimeOfDayHelper {
         ra /= 15.0
 
         // 6. calculate the Sun's declination
-        val sinDec = 0.39782 * sin(toRadians(l))
+        val sinDec = 0.39782 * sin(Math.toRadians(l))
         val cosDec = cos(asin(sinDec))
 
         // 7. calculate the Sun's local hour angle
-        val cosH = (cos(toRadians(zenith)) - (sinDec * sin(toRadians(latitude)))) / (cosDec * cos(toRadians(latitude)))
+        val cosH = (cos(Math.toRadians(zenith)) - (sinDec * sin(Math.toRadians(latitude)))) / (cosDec * cos(
+	        Math.toRadians(latitude)
+        ))
 
         if (cosH > 1) return if (isSunrise) null else null // always night
         if (cosH < -1) return if (isSunrise) 0 else 1439 // always day
 
         // 8. finish calculating H and convert into hours
-        var h = if (isSunrise) 360.0 - toDegrees(acos(cosH)) else toDegrees(acos(cosH))
+        var h = if (isSunrise) 360.0 - Math.toDegrees(acos(cosH)) else Math.toDegrees(acos(cosH))
         h /= 15.0
 
         // 9. calculate local mean time of rising/setting

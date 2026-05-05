@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.utils
 
+import com.neilturner.aerialviews.ui.overlays.utils.TrackNameShortener
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

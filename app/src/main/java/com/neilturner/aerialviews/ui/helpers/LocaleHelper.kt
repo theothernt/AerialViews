@@ -1,6 +1,4 @@
-@file:Suppress("unused")
-
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.helpers
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -18,9 +16,9 @@ object LocaleHelper {
     // https://stackoverflow.com/a/44145807/247257
     @SuppressLint("AppBundleLocaleChanges")
     fun localeString(
-        requestedLocale: Locale?,
-        resourceId: Int,
-        context: Context,
+	    requestedLocale: Locale?,
+	    resourceId: Int,
+	    context: Context,
     ): String {
         val config = Configuration(context.resources.configuration)
         config.setLocale(requestedLocale)
@@ -28,9 +26,9 @@ object LocaleHelper {
     }
 
     fun localeResource(
-        requestedLocale: Locale?,
-        @RawRes res: Int,
-        context: Context,
+	    requestedLocale: Locale?,
+	    @RawRes res: Int,
+	    context: Context,
     ): InputStream {
         val config = Configuration(context.resources.configuration)
         config.setLocale(requestedLocale)
@@ -44,7 +42,7 @@ object LocaleHelper {
                 Locale.of(parts[0])
             } else {
                 @Suppress("DEPRECATION")
-                Locale(parts[0])
+                (Locale(parts[0]))
             }
         }
         if (parts.size == 2) {
@@ -52,7 +50,7 @@ object LocaleHelper {
                 Locale.of(parts[0], parts[1])
             } else {
                 @Suppress("DEPRECATION")
-                Locale(parts[0], parts[1])
+                (Locale(parts[0], parts[1]))
             }
         }
         if (parts.size == 3) {
@@ -60,7 +58,7 @@ object LocaleHelper {
                 Locale.of(parts[0], parts[1], parts[2])
             } else {
                 @Suppress("DEPRECATION")
-                Locale(parts[0], parts[1], parts[2])
+                (Locale(parts[0], parts[1], parts[2]))
             }
         }
         return Locale.ENGLISH
@@ -69,8 +67,8 @@ object LocaleHelper {
     fun isLtrText(text: String): Boolean = Bidi(text, Bidi.DIRECTION_DEFAULT_LEFT_TO_RIGHT).isLeftToRight
 
     fun alternateLocale(
-        context: Context,
-        locale: String,
+	    context: Context,
+	    locale: String,
     ): Context {
         val altLocale =
             if (locale.startsWith("random")) {

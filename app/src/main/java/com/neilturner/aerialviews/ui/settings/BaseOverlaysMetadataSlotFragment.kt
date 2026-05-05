@@ -6,9 +6,9 @@ import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.DateType
-import com.neilturner.aerialviews.utils.DateHelper
+import com.neilturner.aerialviews.ui.helpers.DateHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 
 abstract class BaseOverlaysMetadataSlotFragment : MenuStateFragment() {
     private val folderFieldValues = setOf("FOLDER_FILENAME", "FOLDER_ONLY")

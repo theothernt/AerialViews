@@ -37,9 +37,9 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
 import com.neilturner.aerialviews.ui.overlays.NowPlayingOverlay
-import com.neilturner.aerialviews.ui.overlays.ProgressBar
-import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
-import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.ui.controls.ProgressBar
+import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
+import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.overlays.state.MessageOverlayState

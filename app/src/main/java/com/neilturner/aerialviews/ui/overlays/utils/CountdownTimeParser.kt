@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.overlays.utils
 
 import timber.log.Timber
 import java.time.LocalDateTime
@@ -9,8 +9,8 @@ object CountdownTimeParser {
     private val DATE_TIME_REGEX = Regex("""^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{2})$""")
 
     fun parseTargetTime(
-        timeString: String,
-        currentDateTime: LocalDateTime = LocalDateTime.now(),
+	    timeString: String,
+	    currentDateTime: LocalDateTime = LocalDateTime.now(),
         // For dependency injection/testing, though passed instance is usually sufficient
     ): LocalDateTime? {
         if (timeString.isEmpty()) return null
@@ -71,7 +71,7 @@ object CountdownTimeParser {
                 }
             }
         } catch (e: Exception) {
-            Timber.e("Error parsing target time: $e")
+            Timber.Forest.e("Error parsing target time: $e")
             null
         }
     }

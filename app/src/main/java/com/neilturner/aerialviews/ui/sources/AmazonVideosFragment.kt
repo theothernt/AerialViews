@@ -11,7 +11,7 @@ import com.neilturner.aerialviews.models.prefs.AmazonVideoPrefs
 import com.neilturner.aerialviews.providers.AmazonMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

@@ -15,7 +15,7 @@ import com.neilturner.aerialviews.services.getCodecs
 import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.roundTo
 import kotlinx.coroutines.launch

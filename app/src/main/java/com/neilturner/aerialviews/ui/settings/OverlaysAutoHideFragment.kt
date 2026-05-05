@@ -6,7 +6,7 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 
 class OverlaysAutoHideFragment : MenuStateFragment() {
     override fun onCreatePreferences(

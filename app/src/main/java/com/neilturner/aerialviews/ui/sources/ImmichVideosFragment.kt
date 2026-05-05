@@ -15,7 +15,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.immich.Album
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.data.network.UrlParser
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.launch

@@ -18,10 +18,10 @@ import com.neilturner.aerialviews.models.enums.ProgressBarType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFactory
-import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
-import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
+import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.ToastHelper

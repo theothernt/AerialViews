@@ -3,7 +3,7 @@ package com.neilturner.aerialviews.ui.settings
 import android.os.Bundle
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 
 class DpadRemoteFragment : MenuStateFragment() {
     override fun onCreatePreferences(

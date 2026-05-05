@@ -9,7 +9,7 @@ import androidx.preference.PreferenceManager
 import androidx.preference.SwitchPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import timber.log.Timber
 

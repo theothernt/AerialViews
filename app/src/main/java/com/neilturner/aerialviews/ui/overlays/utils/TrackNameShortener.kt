@@ -1,4 +1,4 @@
-package com.neilturner.aerialviews.utils
+package com.neilturner.aerialviews.ui.overlays.utils
 
 /**
  * Utility class for shortening track names by removing common suffixes.

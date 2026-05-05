@@ -6,7 +6,7 @@ import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.services.weather.ForecastEvent
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.ui.overlays.ProgressState
+import com.neilturner.aerialviews.ui.controls.ProgressState
 
 data class OverlayUiState(
     val metadata: Map<OverlayType, MetadataOverlayState> = emptyMap(),

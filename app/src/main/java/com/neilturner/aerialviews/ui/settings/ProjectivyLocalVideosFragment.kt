@@ -17,7 +17,7 @@ import com.neilturner.aerialviews.providers.LocalMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
-import com.neilturner.aerialviews.utils.MenuStateFragment
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.Dispatchers

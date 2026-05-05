@@ -8,7 +8,7 @@ import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.helpers.InputHelper
-import com.neilturner.aerialviews.utils.LocaleHelper
+import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 
 class DreamActivity : DreamService() {

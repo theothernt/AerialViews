@@ -4,7 +4,7 @@ import com.neilturner.aerialviews.services.MessageEvent
 import com.neilturner.aerialviews.services.MusicEvent
 import com.neilturner.aerialviews.services.weather.ForecastEvent
 import com.neilturner.aerialviews.services.weather.WeatherEvent
-import com.neilturner.aerialviews.ui.overlays.ProgressBarEvent
+import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import me.kosert.flowbus.EventsReceiver
 import me.kosert.flowbus.subscribe
 
