@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.settings
 
 import android.os.Bundle
-import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.network.NetworkHelper

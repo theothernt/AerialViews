@@ -2,7 +2,6 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
@@ -128,9 +127,8 @@ class SambaVideosFragment :
         progressDialog.show()
 
         val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs)
-        val result = provider.fetch()
-        val message =
-            when (result) {
+	    val message =
+            when (val result = provider.fetch()) {
                 is ProviderFetchResult.Success -> result.summary
                 is ProviderFetchResult.Error -> result.message
             }

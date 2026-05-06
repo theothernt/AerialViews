@@ -169,9 +169,8 @@ class LocalVideosFragment :
     private suspend fun testLocalVideosFilter() =
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), LocalMediaPrefs)
-            val result = provider.fetch()
-            val message =
-                when (result) {
+	        val message =
+                when (val result = provider.fetch()) {
                     is ProviderFetchResult.Success -> result.summary
                     is ProviderFetchResult.Error -> result.message
                 }

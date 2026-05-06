@@ -1,3 +1,5 @@
+package com.neilturner.aerialviews.ui.settings
+
 import android.Manifest
 import android.content.SharedPreferences
 import android.os.Build
@@ -5,7 +7,6 @@ import android.os.Bundle
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.EditTextPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
@@ -121,9 +122,8 @@ class ProjectivyLocalVideosFragment :
     private suspend fun testLocalVideosFilter() =
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), ProjectivyLocalMediaPrefs)
-            val result = provider.fetch()
-            val message =
-                when (result) {
+	        val message =
+                when (val result = provider.fetch()) {
                     is ProviderFetchResult.Success -> result.summary
                     is ProviderFetchResult.Error -> result.message
                 }

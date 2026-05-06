@@ -71,7 +71,7 @@ object CountdownTimeParser {
                 }
             }
         } catch (e: Exception) {
-            Timber.Forest.e("Error parsing target time: $e")
+            Timber.e("Error parsing target time: $e")
             null
         }
     }

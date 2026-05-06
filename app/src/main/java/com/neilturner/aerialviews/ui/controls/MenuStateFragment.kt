@@ -35,7 +35,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
             }
         } catch (ex: Exception) {
             FirebaseHelper.crashlyticsException(ex)
-            Timber.Forest.e(ex)
+            Timber.e(ex)
         }
     }
 

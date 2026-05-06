@@ -48,8 +48,7 @@ internal object MediaServiceHelper {
             .parallelForEach {
                 try {
                     it.prepare()
-                    val result = it.fetch()
-                    when (result) {
+	                when (val result = it.fetch()) {
                         is ProviderFetchResult.Success -> media.addAll(result.media)
                         is ProviderFetchResult.Error -> Timber.w("Provider ${it.type} returned error: ${result.message}")
                     }

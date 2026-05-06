@@ -45,7 +45,7 @@ class WebDavDataSource : BaseDataSource(true) {
         readLength: Int,
     ): Int = readInternal(buffer, offset, readLength)
 
-    override fun getUri(): Uri? = dataSpec.uri
+    override fun getUri(): Uri = dataSpec.uri
 
     @SuppressLint("UnsafeOptInUsageError")
     override fun close() {

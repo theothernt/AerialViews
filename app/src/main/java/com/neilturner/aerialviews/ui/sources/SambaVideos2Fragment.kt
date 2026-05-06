@@ -107,9 +107,8 @@ class SambaVideos2Fragment :
         progressDialog.show()
 
         val provider = SambaMediaProvider(requireContext(), SambaMediaPrefs2)
-        val result = provider.fetch()
-        val message =
-            when (result) {
+	    val message =
+            when (val result = provider.fetch()) {
                 is ProviderFetchResult.Success -> result.summary
                 is ProviderFetchResult.Error -> result.message
             }

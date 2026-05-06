@@ -4,10 +4,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
-import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
-import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
@@ -274,7 +272,7 @@ class VideoPlayerView
                 if (!GeneralPrefs.loopUntilSkipped) {
                     val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
                     val isLengthLimited = maxVideoLength >= 10000
-                    val isShortVideo = exoPlayer.duration > 0 && exoPlayer.duration < maxVideoLength
+                    val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
                     if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
                         player?.repeatMode = Player.REPEAT_MODE_ALL
                     } else {
@@ -367,17 +365,7 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
-        override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
-            super.onMediaMetadataChanged(mediaMetadata)
-            // emitTrackMetadata()
-        }
-
-        override fun onTracksChanged(tracks: Tracks) {
-            super.onTracksChanged(tracks)
-            // emitTrackMetadata()
-        }
-
-        private fun emitTrackMetadata() {
+	private fun emitTrackMetadata() {
             val extractedMetadata = extractVideoMetadataFromTracks(exoPlayer.currentTracks)
             listener?.onVideoMetadataExtracted(extractedMetadata)
         }

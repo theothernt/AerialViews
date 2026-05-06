@@ -75,7 +75,7 @@ class PlaylistCacheRepository(
             Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
 
             val windowLimit = 50
-            val windowOffset = Math.max(0, state.mediaPosition - 5)
+            val windowOffset = 0.coerceAtLeast(state.mediaPosition - 5)
             Timber.d("PlaylistCache: Loading initial window. Offset: $windowOffset, Limit: $windowLimit")
             val cachedMediaChunks = dao.getMediaItemsChunk(windowLimit, windowOffset)
 

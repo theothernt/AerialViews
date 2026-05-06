@@ -26,7 +26,7 @@ object PreferenceHelper {
 
         prefs.all.forEach { (key, value) ->
             if (ignorePrefs.contains(key)) {
-                Timber.Forest.i("Ignoring key: $key")
+                Timber.i("Ignoring key: $key")
                 return@forEach
             }
 
@@ -94,18 +94,18 @@ object PreferenceHelper {
                         )
                     }
 
-                    Timber.Forest.i("Settings exported successfully to: ${outputFile.absolutePath}")
+                    Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
                     return outputFile.absolutePath
                 } else {
-                    Timber.Forest.w("Directory not writable: ${folder.absolutePath}")
+                    Timber.w("Directory not writable: ${folder.absolutePath}")
                 }
             } catch (e: Exception) {
-                Timber.Forest.e(e, "Failed to export settings to: ${folder.absolutePath}")
+                Timber.e(e, "Failed to export settings to: ${folder.absolutePath}")
                 // Continue to next candidate
             }
         }
 
-        Timber.Forest.e("Failed to export settings to any location.")
+        Timber.e("Failed to export settings to any location.")
         return null
     }
 

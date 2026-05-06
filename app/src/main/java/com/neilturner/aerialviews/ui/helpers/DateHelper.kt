@@ -39,7 +39,7 @@ object DateHelper {
                     val formatter = SimpleDateFormat(custom, Locale.getDefault())
                     formatter.format(today)
                 } catch (e: Exception) {
-                    Timber.Forest.e(e)
+                    Timber.e(e)
                     context.resources.getString(R.string.appearance_date_custom_error)
                 }
             }
