@@ -3,6 +3,7 @@ package com.neilturner.aerialviews.ui
 import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
+import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.PlaylistAudioMode
@@ -109,7 +110,7 @@ class AerialApp : Application() {
                 else -> PlaylistAudioMode.VIDEO_MUTED
             }
 
-        prefs.edit().putString("playlist_audio_mode", mode.name).apply()
+        prefs.edit { putString("playlist_audio_mode", mode.name) }
     }
 
     private fun setupStrictMode() {

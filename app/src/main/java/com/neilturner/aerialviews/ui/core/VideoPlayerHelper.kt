@@ -157,16 +157,6 @@ object VideoPlayerHelper {
     }
 
     @OptIn(UnstableApi::class)
-    fun setupAudioSource(
-        context: Context,
-        player: ExoPlayer,
-        track: MusicTrack,
-    ) {
-        player.setMediaSource(createMediaSource(context, MediaItem.fromUri(track.uri), track.source))
-        player.prepare()
-    }
-
-    @OptIn(UnstableApi::class)
     fun createAudioMediaSource(
         context: Context,
         track: MusicTrack,

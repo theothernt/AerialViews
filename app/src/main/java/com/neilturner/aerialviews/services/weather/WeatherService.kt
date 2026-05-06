@@ -392,19 +392,6 @@ class WeatherService(
         return fetchForecastResponse(config, attempt + 1)
     }
 
-    internal fun processCurrentWeatherResponse(response: CurrentWeatherResponse): WeatherEvent {
-        val city = GeneralPrefs.weatherLocationCustomName.ifEmpty { response.name }
-        return mapCurrentWeatherResponse(response, city)
-    }
-
-    internal fun processForecastResponse(response: FiveDayForecastResponse): ForecastEvent {
-        val timezoneOffset = response.city.timezone.toLong()
-        val today = ZonedDateTime.now(ZoneId.ofOffset("UTC", java.time.ZoneOffset.ofTotalSeconds(timezoneOffset.toInt()))).toLocalDate()
-        val city = GeneralPrefs.weatherLocationCustomName.ifEmpty { response.city.name }
-        val maxDays = GeneralPrefs.weatherLine2Days.toIntOrNull() ?: 5
-        return mapForecastResponse(response, today, city, maxDays)
-    }
-
     internal fun mapCurrentWeatherResponse(
         response: CurrentWeatherResponse,
         city: String,

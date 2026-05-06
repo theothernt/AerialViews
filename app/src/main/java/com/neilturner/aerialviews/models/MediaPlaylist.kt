@@ -21,7 +21,6 @@ class MediaPlaylist(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     val currentPosition: Int get() = position
-    val hasReachedEnd: Boolean get() = _hasReachedEnd
 
     suspend fun nextItem(): AerialMedia {
         position = calculateNext(++position)

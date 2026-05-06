@@ -37,8 +37,6 @@ class MusicPlayer(
         return player!!
     }
 
-    fun getPlayer(): ExoPlayer? = player
-
     fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
 
     // Support resume capability

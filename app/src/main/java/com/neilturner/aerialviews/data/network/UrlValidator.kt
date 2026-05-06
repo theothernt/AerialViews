@@ -1,10 +1,7 @@
 package com.neilturner.aerialviews.data.network
 
 import androidx.core.net.toUri
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
-import okhttp3.Request
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -41,95 +38,6 @@ object UrlValidator {
         } catch (_: Exception) {
             false
         }
-
-    /**
-     * Validates a single URL with network testing and JSON validation
-     */
-    suspend fun validateUrlWithNetworkTest(url: String): UrlValidationResult {
-        return withContext(Dispatchers.IO) {
-            try {
-                // RTSP URLs cannot be validated with HTTP network tests
-                if (url.startsWith("rtsp://", ignoreCase = true)) {
-                    val uri = url.toUri()
-                    return@withContext if (uri.host != null) {
-                        UrlValidationResult(
-                            isValid = true,
-                            isAccessible = true,
-                            containsJson = false,
-                        )
-                    } else {
-                        UrlValidationResult(
-                            isValid = false,
-                            error = "Invalid RTSP URL: no host",
-                        )
-                    }
-                }
-
-                // First check URL format
-                val parsedUrl = UrlParser.parseServerUrl(url)
-
-                // Then test network accessibility
-                val request =
-                    Request
-                        .Builder()
-                        .url(parsedUrl)
-                        .head() // Use HEAD request first to avoid downloading large content
-                        .build()
-
-                val response = okHttpClient.newCall(request).execute()
-
-                if (!response.isSuccessful) {
-                    return@withContext UrlValidationResult(
-                        isValid = true,
-                        isAccessible = false,
-                        error = "HTTP ${response.code}: ${response.message}",
-                    )
-                }
-
-                // Check if content type suggests JSON
-                val contentType = response.header("content-type")?.lowercase()
-                val mightBeJson = contentType?.contains("json") == true || contentType?.contains("text") == true
-
-                if (mightBeJson) {
-                    // If it might be JSON, make a GET request to verify
-                    val getRequest =
-                        Request
-                            .Builder()
-                            .url(parsedUrl)
-                            .get()
-                            .build()
-
-                    val getResponse = okHttpClient.newCall(getRequest).execute()
-
-                    if (getResponse.isSuccessful) {
-                        val body = getResponse.body.string()
-                        val containsJson = isValidJson(body)
-
-                        return@withContext UrlValidationResult(
-                            isValid = true,
-                            isAccessible = true,
-                            containsJson = containsJson,
-                            error = if (!containsJson) "Response is not valid JSON" else null,
-                        )
-                    }
-                }
-
-                UrlValidationResult(
-                    isValid = true,
-                    isAccessible = true,
-                    containsJson = false,
-                    error = "Content does not appear to be JSON (Content-Type: $contentType)",
-                )
-            } catch (e: Exception) {
-                Timber.w("URL validation failed: $url - ${e.message}")
-                UrlValidationResult(
-                    isValid = false,
-                    isAccessible = false,
-                    error = e.message,
-                )
-            }
-        }
-    }
 
     /**
      * Validates a comma-separated list of URLs (format only)
