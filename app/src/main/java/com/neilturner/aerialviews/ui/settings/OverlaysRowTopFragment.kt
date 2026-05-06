@@ -6,9 +6,9 @@ import androidx.preference.ListPreference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.SlotHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class OverlaysRowTopFragment :
     MenuStateFragment(),

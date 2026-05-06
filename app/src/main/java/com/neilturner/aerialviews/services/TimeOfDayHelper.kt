@@ -46,10 +46,10 @@ object TimeOfDayHelper {
      * Algorithm based on "Solar Calculation" by NOAA.
      */
     private fun calculateSunriseSunset(
-	    calendar: Calendar,
-	    latitude: Double,
-	    longitude: Double,
-	    isSunrise: Boolean,
+        calendar: Calendar,
+        latitude: Double,
+        longitude: Double,
+        isSunrise: Boolean,
     ): Int? {
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
         val zenith = 90.8333 // Official zenith for sunrise/sunset
@@ -87,9 +87,13 @@ object TimeOfDayHelper {
         val cosDec = cos(asin(sinDec))
 
         // 7. calculate the Sun's local hour angle
-        val cosH = (cos(Math.toRadians(zenith)) - (sinDec * sin(Math.toRadians(latitude)))) / (cosDec * cos(
-	        Math.toRadians(latitude)
-        ))
+        val cosH =
+            (cos(Math.toRadians(zenith)) - (sinDec * sin(Math.toRadians(latitude)))) / (
+                cosDec *
+                    cos(
+                        Math.toRadians(latitude),
+                    )
+            )
 
         if (cosH > 1) return if (isSunrise) null else null // always night
         if (cosH < -1) return if (isSunrise) 0 else 1439 // always day

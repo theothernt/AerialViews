@@ -280,7 +280,7 @@ class MediaService(
                             shuffle = config.shuffleMusic,
                             repeat = config.repeatMusic,
                         )
-            }
+                    }
 
             Timber.i("Total media items: ${filteredMedia.size}")
 

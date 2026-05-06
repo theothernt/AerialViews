@@ -15,14 +15,14 @@ import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.auth.AuthenticationContext
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.data.network.SambaHelper
+import com.neilturner.aerialviews.data.network.ServerConfig
+import com.neilturner.aerialviews.data.network.SslHelper
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.data.network.SambaHelper
-import com.neilturner.aerialviews.data.network.ServerConfig
-import com.neilturner.aerialviews.data.network.SslHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

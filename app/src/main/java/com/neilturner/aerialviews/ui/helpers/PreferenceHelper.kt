@@ -110,9 +110,9 @@ object PreferenceHelper {
     }
 
     fun importPreferences(
-	    context: Context,
-	    uri: Uri,
-	    clearExisting: Boolean = false,
+        context: Context,
+        uri: Uri,
+        clearExisting: Boolean = false,
     ): Boolean =
         try {
             val properties =

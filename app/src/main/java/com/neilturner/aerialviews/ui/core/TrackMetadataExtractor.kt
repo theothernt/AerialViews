@@ -40,9 +40,7 @@ internal fun extractVideoMetadataFromTracks(tracks: Tracks): ExtractedVideoMetad
 }
 
 @OptIn(UnstableApi::class)
-internal fun extractVideoMetadataFromTrackFormats(
-    formats: List<Format>,
-): ExtractedVideoMetadata {
+internal fun extractVideoMetadataFromTrackFormats(formats: List<Format>): ExtractedVideoMetadata {
     val builder = MediaMetadata.Builder()
     var creationDate: ParsedExifDate? = null
     var latitude: Double? = null
@@ -168,12 +166,25 @@ private fun parseMdtaMetadataEntry(entry: MdtaMetadataEntry): ParsedMdtaData {
     }
 
     return when {
-        key.contains("city") -> ParsedMdtaData(city = value)
-        key.contains("state") || key.contains("province") -> ParsedMdtaData(state = value)
-        key.contains("country") -> ParsedMdtaData(country = value)
-        key.contains("title") || key.endsWith(".name") ->
+        key.contains("city") -> {
+            ParsedMdtaData(city = value)
+        }
+
+        key.contains("state") || key.contains("province") -> {
+            ParsedMdtaData(state = value)
+        }
+
+        key.contains("country") -> {
+            ParsedMdtaData(country = value)
+        }
+
+        key.contains("title") || key.endsWith(".name") -> {
             ParsedMdtaData(title = value)
-        else -> ParsedMdtaData()
+        }
+
+        else -> {
+            ParsedMdtaData()
+        }
     }
 }
 

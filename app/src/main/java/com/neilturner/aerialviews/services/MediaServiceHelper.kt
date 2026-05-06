@@ -58,7 +58,7 @@ internal object MediaServiceHelper {
                     Timber.e(ex, "Exception while fetching media from ${it.type}")
                     // FirebaseHelper.logExceptionIfRecent(ex)
                 }
-        }
+            }
         return Pair(media, tracks)
     }
 

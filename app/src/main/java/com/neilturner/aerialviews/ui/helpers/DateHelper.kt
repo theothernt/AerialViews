@@ -20,9 +20,9 @@ import java.util.TimeZone
 
 object DateHelper {
     fun formatDate(
-	    context: Context,
-	    type: DateType,
-	    custom: String?,
+        context: Context,
+        type: DateType,
+        custom: String?,
     ): String =
         when (type) {
             DateType.FULL -> {
@@ -46,10 +46,10 @@ object DateHelper {
         }
 
     fun formatExifDate(
-	    date: String,
-	    offset: String?,
-	    type: DateType,
-	    custom: String?,
+        date: String,
+        offset: String?,
+        type: DateType,
+        custom: String?,
     ): String? {
         val parsedOffset = parseZoneOffset(offset)
         val parsedDate = parseExifDate(date, offset) ?: return null

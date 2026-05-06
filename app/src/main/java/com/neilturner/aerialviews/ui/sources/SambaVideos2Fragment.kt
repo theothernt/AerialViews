@@ -7,12 +7,12 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.network.SambaHelper
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs2
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
-import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
-import com.neilturner.aerialviews.data.network.SambaHelper
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
@@ -96,8 +96,6 @@ class SambaVideos2Fragment :
             password?.summary = getString(R.string.samba_videos_password_summary)
         }
     }
-
-
 
     private suspend fun testSambaConnection() {
         val loadingMessage = getString(R.string.message_media_searching)

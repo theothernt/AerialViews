@@ -57,7 +57,10 @@ internal fun applyVideoMetadataToMedia(
 internal fun formatVideoMetadataForLog(metadata: ExtractedVideoMetadata): String {
     val logEntries = mutableListOf<String>()
 
-    fun addEntry(label: String, value: String?) {
+    fun addEntry(
+        label: String,
+        value: String?,
+    ) {
         value?.trim()?.takeIf { it.isNotBlank() }?.let {
             logEntries.add("$label=$it")
         }

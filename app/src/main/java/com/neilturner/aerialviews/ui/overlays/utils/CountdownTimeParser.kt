@@ -9,8 +9,8 @@ object CountdownTimeParser {
     private val DATE_TIME_REGEX = Regex("""^(\d{4})-(\d{1,2})-(\d{1,2}) (\d{1,2}):(\d{2})$""")
 
     fun parseTargetTime(
-	    timeString: String,
-	    currentDateTime: LocalDateTime = LocalDateTime.now(),
+        timeString: String,
+        currentDateTime: LocalDateTime = LocalDateTime.now(),
         // For dependency injection/testing, though passed instance is usually sufficient
     ): LocalDateTime? {
         if (timeString.isEmpty()) return null

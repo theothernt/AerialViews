@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.FirebaseHelper
-import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.models.prefs.GeneralPrefs
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class OverlaysMessageApiFragment : MenuStateFragment() {
     override fun onCreatePreferences(
@@ -43,5 +43,4 @@ class OverlaysMessageApiFragment : MenuStateFragment() {
             ipPreference.summary = "API URL: http://$ipAddress:$port"
         }
     }
-
 }

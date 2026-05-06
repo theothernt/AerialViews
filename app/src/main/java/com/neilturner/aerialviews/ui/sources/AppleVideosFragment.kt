@@ -8,13 +8,13 @@ import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.services.Display
 import com.neilturner.aerialviews.services.HDRFormat
 import com.neilturner.aerialviews.services.getDisplay
-import com.neilturner.aerialviews.data.preferences.MediaPreferenceHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

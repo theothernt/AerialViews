@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class OverlaysWeatherFragment : MenuStateFragment() {
     private var locationPreference: Preference? = null

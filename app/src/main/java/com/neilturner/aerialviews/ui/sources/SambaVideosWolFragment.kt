@@ -9,10 +9,10 @@ import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
-import com.neilturner.aerialviews.ui.helpers.DialogHelper
-import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.data.network.NetworkHelper
+import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
+import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -147,6 +147,4 @@ class SambaVideosWolFragment :
             timeout?.summary = getString(R.string.advanced_wol_timeout_summary)
         }
     }
-
-
 }

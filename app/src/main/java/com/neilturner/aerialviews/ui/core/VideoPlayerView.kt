@@ -20,12 +20,12 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.philips.PhilipsMediaCodecAdapterFactory
 import com.neilturner.aerialviews.ui.controls.ProgressBarEvent
 import com.neilturner.aerialviews.ui.controls.ProgressState
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -45,7 +45,6 @@ class VideoPlayerView
         defStyleAttr: Int = 0,
     ) : PlayerView(context.applicationContext, attrs, defStyleAttr),
         Player.Listener {
-        @Suppress("JoinDeclarationAndAssignment")
         private val exoPlayer: ExoPlayer
         private var state = VideoState()
 
@@ -370,12 +369,12 @@ class VideoPlayerView
 
         override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
             super.onMediaMetadataChanged(mediaMetadata)
-            //emitTrackMetadata()
+            // emitTrackMetadata()
         }
 
         override fun onTracksChanged(tracks: Tracks) {
             super.onTracksChanged(tracks)
-            //emitTrackMetadata()
+            // emitTrackMetadata()
         }
 
         private fun emitTrackMetadata() {
@@ -467,12 +466,13 @@ class VideoPlayerView
 
             // Basic duration and progress
             val duration = state.endPosition - state.startPosition
-            
-            val loopDuration = if (exoPlayer.duration != androidx.media3.common.C.TIME_UNSET && exoPlayer.duration > 0) {
-                state.loopCount * exoPlayer.duration
-            } else {
-                0L
-            }
+
+            val loopDuration =
+                if (exoPlayer.duration != androidx.media3.common.C.TIME_UNSET && exoPlayer.duration > 0) {
+                    state.loopCount * exoPlayer.duration
+                } else {
+                    0L
+                }
             val progress = loopDuration + exoPlayer.currentPosition - state.startPosition
             val fadeDuration = GeneralPrefs.mediaFadeOutDuration.toLong()
 

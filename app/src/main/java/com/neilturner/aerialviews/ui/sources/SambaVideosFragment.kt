@@ -10,12 +10,12 @@ import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.network.SambaHelper
 import com.neilturner.aerialviews.models.prefs.SambaMediaPrefs
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
-import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
-import com.neilturner.aerialviews.data.network.SambaHelper
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
@@ -117,7 +117,6 @@ class SambaVideosFragment :
         val encryption = findPreference<CheckBoxPreference>("samba_videos_enable_encryption")
         encryption?.isChecked = SambaMediaPrefs.enableEncryption
     }
-
 
     private suspend fun testSambaConnection() {
         val loadingMessage = getString(R.string.message_media_searching)

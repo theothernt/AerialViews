@@ -15,6 +15,7 @@ abstract class AerialDatabase : RoomDatabase() {
 
     companion object {
         private const val DATABASE_NAME = "aerial_database"
+
         @Volatile
         private var db: AerialDatabase? = null
 

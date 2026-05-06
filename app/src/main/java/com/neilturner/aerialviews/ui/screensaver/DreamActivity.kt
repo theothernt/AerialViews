@@ -6,10 +6,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
+import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class DreamActivity : DreamService() {
     private lateinit var screenController: ScreenController
@@ -59,8 +59,8 @@ class DreamActivity : DreamService() {
         if (exitApp) wakeUp()
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        return try {
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean =
+        try {
             super.dispatchTouchEvent(event)
         } catch (e: SecurityException) {
             // Android bug: DreamService internally reads a restricted settings key
@@ -68,7 +68,6 @@ class DreamActivity : DreamService() {
             // but the dream will continue running.
             true
         }
-    }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         if (this::screenController.isInitialized &&

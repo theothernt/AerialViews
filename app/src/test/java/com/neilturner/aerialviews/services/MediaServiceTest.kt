@@ -107,7 +107,13 @@ internal class MediaServiceTest {
         assertEquals(4, shuffled.count { it.source == AerialMediaSource.APPLE })
         assertEquals(2, shuffled.count { it.source == AerialMediaSource.AMAZON })
         assertEquals(1, shuffled.count { it.source == AerialMediaSource.LOCAL })
-        assertTrue(shuffled.take(4).map { it.source }.toSet().size > 1)
+        assertTrue(
+            shuffled
+                .take(4)
+                .map { it.source }
+                .toSet()
+                .size > 1,
+        )
     }
 
     private class FakeMediaProvider(

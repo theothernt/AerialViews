@@ -9,14 +9,14 @@ import androidx.preference.ListPreference
 import androidx.preference.MultiSelectListPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.network.UrlParser
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.immich.Album
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
-import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
-import com.neilturner.aerialviews.data.network.UrlParser
+import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -149,7 +149,7 @@ class ImmichVideosFragment :
                     ImmichMediaPrefs.selectedAlbumIds.size,
                 )
             }
-        
+
         // Include Ratings
         includeRatedPreference.summary =
             if (ImmichMediaPrefs.includeRatings.isEmpty()) {
@@ -186,7 +186,6 @@ class ImmichVideosFragment :
             }
         }
     }
-
 
     private suspend fun testImmichConnection() {
         val loadingMessage = getString(R.string.message_media_searching)

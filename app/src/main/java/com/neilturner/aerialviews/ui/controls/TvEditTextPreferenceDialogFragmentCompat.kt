@@ -9,7 +9,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
 
 class TvEditTextPreferenceDialogFragmentCompat : EditTextPreferenceDialogFragmentCompat() {
-
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
         val editText = view.findViewById<EditText>(android.R.id.edit)
@@ -21,7 +20,9 @@ class TvEditTextPreferenceDialogFragmentCompat : EditTextPreferenceDialogFragmen
                     val alertDialog = dialog as? AlertDialog
                     alertDialog?.getButton(DialogInterface.BUTTON_POSITIVE)?.performClick()
                     true
-                } else false
+                } else {
+                    false
+                }
             }
         }
     }

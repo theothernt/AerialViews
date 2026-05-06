@@ -4,8 +4,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.EditTextPreference
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
+import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 
 class OverlaysMessageFragment :
@@ -70,5 +70,4 @@ class OverlaysMessageFragment :
             line4?.summary = getString(R.string.appearance_message_line1_summary)
         }
     }
-
 }
