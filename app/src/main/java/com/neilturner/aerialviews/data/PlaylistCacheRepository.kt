@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.data
 
 import android.content.Context
-import android.net.Uri
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -18,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import timber.log.Timber
+import androidx.core.net.toUri
 
 class PlaylistCacheRepository(
     private val appContext: Context,
@@ -91,7 +91,7 @@ class PlaylistCacheRepository(
             val musicList =
                 cachedMusic.map { entity ->
                     MusicTrack(
-                        uri = Uri.parse(entity.uri),
+                        uri = entity.uri.toUri(),
                         source = enumValueOf<AerialMediaSource>(entity.source),
                     )
                 }
@@ -143,7 +143,7 @@ class PlaylistCacheRepository(
             }
 
         return AerialMedia(
-            uri = Uri.parse(entity.uri),
+            uri = entity.uri.toUri(),
             type = enumValueOf<AerialMediaType>(entity.type),
             source = enumValueOf<AerialMediaSource>(entity.source),
             metadata =
