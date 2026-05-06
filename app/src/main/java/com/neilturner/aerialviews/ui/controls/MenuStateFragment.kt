@@ -72,7 +72,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
                 return
             }
 
-            val dialogFragment = TvEditTextPreferenceDialogFragmentCompat.newInstance(preference.key)
+            val dialogFragment = TvEditTextPreference.newInstance(preference.key)
             @Suppress("DEPRECATION")
             dialogFragment.setTargetFragment(this, 0)
             dialogFragment.show(parentFragmentManager, dialogFragmentTag)

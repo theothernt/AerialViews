@@ -8,7 +8,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
 
-class TvEditTextPreferenceDialogFragmentCompat : EditTextPreferenceDialogFragmentCompat() {
+class TvEditTextPreference : EditTextPreferenceDialogFragmentCompat() {
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
         val editText = view.findViewById<EditText>(android.R.id.edit)
@@ -28,8 +28,8 @@ class TvEditTextPreferenceDialogFragmentCompat : EditTextPreferenceDialogFragmen
     }
 
     companion object {
-        fun newInstance(key: String): TvEditTextPreferenceDialogFragmentCompat {
-            val fragment = TvEditTextPreferenceDialogFragmentCompat()
+        fun newInstance(key: String): TvEditTextPreference {
+            val fragment = TvEditTextPreference()
             val b = Bundle(1)
             b.putString(ARG_KEY, key)
             fragment.arguments = b
