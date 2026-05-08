@@ -42,6 +42,14 @@ class CacheFragment : MenuStateFragment() {
                 showClearCacheConfirmation()
                 true
             }
+
+        val cacheEnabledPref = findPreference<androidx.preference.SwitchPreference>("playlist_cache")
+        cacheEnabledPref?.setOnPreferenceChangeListener { _, newValue ->
+            if (newValue == false) {
+                clearCache()
+            }
+            true
+        }
     }
 
     private fun showClearCacheConfirmation() {

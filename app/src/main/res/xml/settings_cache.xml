@@ -20,11 +20,13 @@
 
         <Preference
             app:key="clear_playlist_cache"
+            app:dependency="playlist_cache"
             app:title="@string/playlist_cache_clear_title"
             app:summary="@string/playlist_cache_clear_summary" />
 
         <Preference
             app:key="playlist_cache_status"
+            app:dependency="playlist_cache"
             app:title="@string/playlist_cache_status_title"
             app:summary="@string/playlist_cache_status_unknown" />
     </PreferenceCategory>
