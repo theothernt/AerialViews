@@ -13,7 +13,7 @@ data class CachedMediaEntity(
     val type: String,
     val source: String,
     val shortDescription: String,
-    val pointsOfInterest: String, // JSON Map<Int, String>
+    val pointsOfInterest: Map<Int, String>,
     val timeOfDay: String,
     val scene: String,
     val albumName: String,
