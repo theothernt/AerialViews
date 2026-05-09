@@ -1157,6 +1157,38 @@
     <string name="immich_include_recent_default" translatable="false">DISABLED</string>
     <string name="immich_include_favorites_default" translatable="false">DISABLED</string>
 
+    <string-array name="immich_smart_slideshow_gap_entries" translatable="false">
+        <item>1 minute</item>
+        <item>10 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>6 hours</item>
+        <item>1 day</item>
+    </string-array>
+    <string-array name="immich_smart_slideshow_gap_values" translatable="false">
+        <item>1</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>360</item>
+        <item>1440</item>
+    </string-array>
+
+    <string-array name="immich_smart_slideshow_exempt_percent_entries" translatable="false">
+        <item>100% (keep all)</item>
+        <item>75%</item>
+        <item>50%</item>
+        <item>25%</item>
+        <item>10%</item>
+    </string-array>
+    <string-array name="immich_smart_slideshow_exempt_percent_values" translatable="false">
+        <item>100</item>
+        <item>75</item>
+        <item>50</item>
+        <item>25</item>
+        <item>10</item>
+    </string-array>
+
     <string name="immich_img_preview">Preview</string>
     <string name="immich_img_fullsize">Fullsize</string>
     <string name="immich_img_original">Original</string>

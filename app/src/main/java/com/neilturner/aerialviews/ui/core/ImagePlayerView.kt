@@ -119,7 +119,18 @@ class ImagePlayerView : FrameLayout {
                 add(buildGifDecoder())
             }.build()
 
-    fun setImage(media: AerialMedia) {
+    fun setImage(mediaParam: AerialMedia) {
+        // If this logical slot carries alternates (e.g. other members of a temporal
+        // cluster from the Immich smart slideshow), pick one at random every time
+        // the slot is rendered so the user sees variety across playlist loops.
+        val media =
+            if (mediaParam.clusterAlternates.isNotEmpty()) {
+                val all = listOf(mediaParam.uri) + mediaParam.clusterAlternates
+                val chosen = all.random()
+                if (chosen == mediaParam.uri) mediaParam else mediaParam.copy(uri = chosen)
+            } else {
+                mediaParam
+            }
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
