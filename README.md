@@ -513,6 +513,7 @@ Aerial Views includes a built-in HTTP API that allows you to display custom mess
 
 <details>
 <summary>Enabling the Message API</summary>
+&nbsp;
 
 1. Navigate to `Settings > Overlays > Message Overlay`
 2. Enable **Message API** and configure the port (default: `8081`)
@@ -690,6 +691,8 @@ The app supports the "community" video format, which is a JSON file (typically n
   ]
 }
 ```
+
+Another example [can be found on GitHub](https://github.com/AerialScreensaver/AerialCommunity/blob/master/entries.json).
 
 </details>
 
