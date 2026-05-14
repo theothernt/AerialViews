@@ -19,6 +19,7 @@ import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
+import okhttp3.Request
 import retrofit2.Retrofit
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -81,6 +82,12 @@ class CustomFeedProvider(
                 // Check if this is an HLS stream
                 if (url.endsWith(".m3u8", ignoreCase = true) || url.contains(".m3u8?", ignoreCase = true)) {
                     processHlsStream(url)
+                    continue
+                }
+
+                // Check if this is a CSV media list
+                if (isCsvUrl(url)) {
+                    processCsvUrl(okHttpClient, url)
                     continue
                 }
 
@@ -168,6 +175,7 @@ class CustomFeedProvider(
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
         val validHlsUrls = mutableListOf<String>()
+        val validCsvUrls = mutableListOf<String>()
         val errorMessages = mutableMapOf<String, String>()
 
         val okHttpClient =
@@ -202,6 +210,22 @@ class CustomFeedProvider(
                 if (url.endsWith(".m3u8", ignoreCase = true) || url.contains(".m3u8?", ignoreCase = true)) {
                     validHlsUrls.add(url)
                     Timber.i("Valid HLS stream: $url")
+                    continue
+                }
+
+                // Check if this is a CSV media list
+                if (isCsvUrl(url)) {
+                    try {
+                        val csvItems = fetchCsvMediaItems(okHttpClient, url)
+                        if (csvItems.isNotEmpty()) {
+                            validCsvUrls.add(url)
+                            Timber.i("Found ${csvItems.size} media items in CSV: $url")
+                        } else {
+                            errorMessages[url] = "CSV contains no supported media items"
+                        }
+                    } catch (e: Exception) {
+                        errorMessages[url] = "Failed to parse CSV: ${e.message}"
+                    }
                     continue
                 }
 
@@ -257,13 +281,32 @@ class CustomFeedProvider(
                 Timber.w(e, "Failed to count videos from: $entriesUrl")
             }
         }
+        var totalCsvVideos = 0
+        var totalCsvPhotos = 0
+        for (csvUrl in validCsvUrls) {
+            try {
+                val csvItems = fetchCsvMediaItems(okHttpClient, csvUrl)
+                totalCsvVideos += csvItems.count { it.type == AerialMediaType.VIDEO }
+                totalCsvPhotos += csvItems.count { it.type == AerialMediaType.IMAGE }
+                Timber.d("Found ${csvItems.size} media items in $csvUrl")
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to count media items from: $csvUrl")
+            }
+        }
+        totalVideos += totalCsvVideos
 
         // Save valid URLs to cache
-        val allValidUrls = (validEntriesUrls + validRtspUrls + validHlsUrls).joinToString(",")
+        val allValidUrls =
+            (validEntriesUrls + validRtspUrls + validHlsUrls + validCsvUrls)
+                .joinToString(",")
         prefs.urlsCache = allValidUrls
 
         // Build result message
-        if (validEntriesUrls.isNotEmpty() || validRtspUrls.isNotEmpty() || validHlsUrls.isNotEmpty()) {
+        if (validEntriesUrls.isNotEmpty() ||
+            validRtspUrls.isNotEmpty() ||
+            validHlsUrls.isNotEmpty() ||
+            validCsvUrls.isNotEmpty()
+        ) {
             val message =
                 buildString {
                     append("✅ Validation successful!\n\n")
@@ -280,6 +323,12 @@ class CustomFeedProvider(
                     if (validHlsUrls.isNotEmpty()) {
                         append("• ${validHlsUrls.size} HLS streams\n")
                     }
+                    if (validCsvUrls.isNotEmpty()) {
+                        append("• ${validCsvUrls.size} CSV media lists\n")
+                    }
+                    if (totalCsvPhotos > 0) {
+                        append("• $totalCsvPhotos photos found\n")
+                    }
 
                     if (errorMessages.isNotEmpty()) {
                         append("\n⚠️ Some URLs had issues (${errorMessages.size}):\n")
@@ -289,7 +338,7 @@ class CustomFeedProvider(
                     }
                 }
 
-            val totalUrls = validEntriesUrls.size + validRtspUrls.size + validHlsUrls.size
+            val totalUrls = validEntriesUrls.size + validRtspUrls.size + validHlsUrls.size + validCsvUrls.size
             val summary =
                 buildString {
                     append("$totalUrls URL${if (totalUrls != 1) "s" else ""}: ")
@@ -300,7 +349,12 @@ class CustomFeedProvider(
                             "${validRtspUrls.size} RTSP stream${if (validRtspUrls.size != 1) "s" else ""}",
                         )
                     }
-                    if (validHlsUrls.isNotEmpty()) parts.add("${validHlsUrls.size} HLS stream${if (validHlsUrls.size != 1) "s" else ""}")
+                    if (validHlsUrls.isNotEmpty()) {
+                        parts.add("${validHlsUrls.size} HLS stream${if (validHlsUrls.size != 1) "s" else ""}")
+                    }
+                    if (totalCsvPhotos > 0) {
+                        parts.add("$totalCsvPhotos photo${if (totalCsvPhotos != 1) "s" else ""}")
+                    }
                     append(parts.joinToString(", "))
                 }
 
@@ -379,6 +433,8 @@ class CustomFeedProvider(
             return@withContext manifestUrls
         }
 
+    private fun isCsvUrl(url: String): Boolean = url.endsWith(".csv", ignoreCase = true) || url.contains(".csv?", ignoreCase = true)
+
     private suspend fun processEntriesUrl(
         apiService: CustomFeedApi,
         url: String,
@@ -420,6 +476,50 @@ class CustomFeedProvider(
             } catch (e: Exception) {
                 Timber.w(e, "Failed to parse entries from URL: $url")
             }
+        }
+    }
+
+    private suspend fun processCsvUrl(
+        okHttpClient: OkHttpClient,
+        url: String,
+    ) {
+        withContext(Dispatchers.IO) {
+            try {
+                val csvItems = fetchCsvMediaItems(okHttpClient, url)
+                csvItems.forEach { item ->
+                    videos.add(
+                        AerialMedia(
+                            item.url.toUri(),
+                            type = item.type,
+                            source = AerialMediaSource.CUSTOM,
+                            metadata =
+                                AerialMediaMetadata(
+                                    shortDescription = item.description,
+                                    timeOfDay = TimeOfDay.UNKNOWN,
+                                    scene = SceneType.UNKNOWN,
+                                ),
+                        ),
+                    )
+                }
+
+                Timber.d("Processed ${csvItems.size} media items from CSV $url")
+            } catch (e: Exception) {
+                Timber.w(e, "Failed to parse CSV from URL: $url")
+            }
+        }
+    }
+
+    private fun fetchCsvMediaItems(
+        okHttpClient: OkHttpClient,
+        url: String,
+    ): List<CustomFeedCsvParser.CsvMediaItem> {
+        val request = Request.Builder().url(url).build()
+        okHttpClient.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) {
+                throw IllegalStateException("HTTP ${response.code}")
+            }
+            val body = response.body.string()
+            return CustomFeedCsvParser.parse(body)
         }
     }
 
