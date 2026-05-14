@@ -58,6 +58,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -270,6 +271,7 @@ class ScreenController(
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadItem(playlist.nextItem())
+                savePlaybackPosition()
                 scheduleSleepTimer()
             } else {
                 showLoadingError()
@@ -651,8 +653,14 @@ class ScreenController(
 
     fun stop() {
         if (this::playlist.isInitialized) {
-            savePlaybackPosition()
-            saveMusicTrackPosition()
+            if (GeneralPrefs.playlistCache) {
+                runBlocking(Dispatchers.IO) {
+                    cacheRepository.saveMediaPosition(playlist.currentPosition)
+                    musicPlayer?.let {
+                        cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
+                    }
+                }
+            }
         }
         RefreshRateHelper.restoreOriginalMode(context)
         overlayEventBridge.stop()
