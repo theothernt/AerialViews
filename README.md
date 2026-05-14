@@ -513,18 +513,15 @@ Aerial Views includes a built-in HTTP API that allows you to display custom mess
 
 <details>
 <summary>Enabling the Message API</summary>
-&nbsp;
 
-1. Open Aerial Views settings on your TV
-2. Navigate to **Overlays** → **Message Overlay**
-3. Enable **Message API** and configure the port (default: `8081`)
-4. Note the IP address of your TV device (found in network settings)
+1. Navigate to `Settings > Overlays > Message Overlay`
+2. Enable **Message API** and configure the port (default: `8081`)
+3. Take note of the IP address listed on the screen
 
 </details>
 
 <details>
 <summary>API Endpoints</summary>
-&nbsp;
 
 #### Check API Status
 
@@ -662,8 +659,6 @@ curl -X POST "http://$TV_IP:8081/message/1" \
 - Valid `textWeight` values: `[100, 200, 300, 400, 500, 600, 700, 800, 900]`
 
 </details>
-
-
 
 ## Custom feeds
 
