@@ -24,7 +24,7 @@ Inspired by Apple TV's beautiful video screensaver!
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
 * Many playlist options to limit media length or loop certain videos
 * Use the D-Pad or swipe (on phones, tablets, etc) to skip media, skip songs, change speed, seek, pause and more
-* Refresh rate switching for 24fps, 50fps content
+* Refresh rate switching for 24fps, 30fps, 50fps, 60fps content
 
 ## Support the project
 
