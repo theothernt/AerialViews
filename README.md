@@ -663,6 +663,74 @@ curl -X POST "http://$TV_IP:8081/message/1" \
 
 </details>
 
+
+
+## Custom feeds
+
+Aerial Views supports adding custom media feeds, allowing you to stream your own videos, expansion packs, or simple media lists from third-party providers.
+
+<details>
+<summary>JSON Feed (entries.json)</summary>
+&nbsp;
+
+The app supports the "community" video format, which is a JSON file (typically named `entries.json`) containing metadata and URLs for different video qualities.
+
+**Example `entries.json`:**
+
+```json
+{
+  "assets": [
+    {
+      "id": "sunset_beach",
+      "accessibilityLabel": "Beautiful sunset over a tropical beach",
+      "type": "aerial",
+      "timeOfDay": "sunset",
+      "url-1080-SDR": "https://example.com/videos/sunset_1080p.mp4",
+      "url-4K-SDR": "https://example.com/videos/sunset_4k.mp4",
+      "pointsOfInterest": {
+        "0": "The setting sun",
+        "30": "Palm trees swaying in the breeze"
+      }
+    }
+  ]
+}
+```
+
+</details>
+
+<details>
+<summary>CSV Media List (.csv)</summary>
+&nbsp;
+
+For simple collections of images and videos, you can use a plain CSV file. Each line should contain a URL and an optional description, separated by a comma.
+
+The app automatically determines if an item is a video or a photo based on the file extension.
+
+**Example `media_list.csv`:**
+
+```csv
+url,description
+"https://example.com/photos/landscape.jpg","Mountains at sunset"
+"https://example.com/videos/ocean_waves.mp4","Relaxing ocean waves"
+https://example.com/photos/forest.webp,"A dense green forest"
+```
+
+*Note: Wrapping quotes are optional but recommended for descriptions containing commas.*
+
+</details>
+
+<details>
+<summary>Direct Video Streams</summary>
+&nbsp;
+
+You can also add direct links to video streams. Separate multiple URLs with a comma in the **Custom Media URLs** setting.
+
+Supported formats:
+* **HLS (.m3u8)**: Commonly used for live streams and IPTV.
+* **RTSP**: Used for security cameras and low-latency streaming.
+
+</details>
+
 ## Weather data
 
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
