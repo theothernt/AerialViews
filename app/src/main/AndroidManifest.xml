@@ -128,7 +128,7 @@
         </service>
 
         <!-- Called when app is updated so migration code can run -->
-        <receiver android:name=".utils.PackageReplacedReceiver"
+        <receiver android:name=".data.preferences.PackageReplacedReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>
