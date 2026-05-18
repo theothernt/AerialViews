@@ -75,6 +75,7 @@ class ScreenController(
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
     private val resources by lazy { context.resources }
+    private var isStopped = false
 
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
@@ -652,6 +653,9 @@ class ScreenController(
     }
 
     fun stop() {
+        if (isStopped) return
+        isStopped = true
+
         if (this::playlist.isInitialized) {
             if (GeneralPrefs.playlistCache) {
                 runBlocking(Dispatchers.IO) {

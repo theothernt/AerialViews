@@ -95,11 +95,14 @@ class VideoPlayerView
         }
 
         fun release() {
+            if (isDestroyed) return
+
+            Timber.i("Releasing VideoPlayerView...")
             isDestroyed = true
             pause()
             exoPlayer.setVideoSurface(null)
             // Release ExoPlayer to stop internal threads
-            exoPlayer.release()
+            //exoPlayer.release()
             player?.release()
             // Clear surface view to break context reference chain
             player = null
