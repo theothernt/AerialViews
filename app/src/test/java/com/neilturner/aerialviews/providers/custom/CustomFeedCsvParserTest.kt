@@ -58,6 +58,18 @@ class CustomFeedCsvParserTest {
     }
 
     @Test
+    fun `parses single uppercase image url row`() {
+        val result = CustomFeedCsvParser.parse("https://eol.jsc.nasa.gov/DatabaseImages/ESC/large/ART002/ART002-E-30001.JPG")
+
+        assertEquals(1, result.size)
+        assertEquals(
+            "https://eol.jsc.nasa.gov/DatabaseImages/ESC/large/ART002/ART002-E-30001.JPG",
+            result.single().url,
+        )
+        assertEquals(AerialMediaType.IMAGE, result.single().type)
+    }
+
+    @Test
     fun `ignores headers blank lines and unsupported media rows`() {
         val result =
             CustomFeedCsvParser.parse(

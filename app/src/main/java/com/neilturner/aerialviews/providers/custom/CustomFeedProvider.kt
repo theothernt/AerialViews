@@ -105,16 +105,24 @@ class CustomFeedProvider(
     }
 
     suspend fun fetchTest(): String {
+        Timber.i("Custom feed validation started. Raw URLs: ${prefs.urls}")
+
         // Step 1: Simple validation of URLs
         val simpleValidation = performSimpleValidation()
         if (simpleValidation.hasErrors) {
+            prefs.urlsCache = ""
             prefs.urlsSummary = simpleValidation.summary
+            Timber.w("Custom feed simple validation failed. Summary: ${simpleValidation.summary}")
             return simpleValidation.message
         }
 
         // Step 2: Advanced validation - fetch and parse each URL
         val advancedValidation = performAdvancedValidation()
         prefs.urlsSummary = advancedValidation.summary
+        Timber.i(
+            "Custom feed validation finished. Has errors: ${advancedValidation.hasErrors}. " +
+                "Summary: ${advancedValidation.summary}. Cached URLs: ${prefs.urlsCache}",
+        )
         return advancedValidation.message
     }
 
@@ -130,6 +138,10 @@ class CustomFeedProvider(
         val validationResults = UrlValidator.validateUrls(prefs.urls)
         val validUrls = validationResults.filter { it.first }
         val invalidUrls = validationResults.filter { !it.first }
+        Timber.d(
+            "Custom feed format validation complete. Valid: ${validUrls.size}, " +
+                "invalid: ${invalidUrls.size}, results: $validationResults",
+        )
 
         if (invalidUrls.isEmpty()) {
             // All URLs are valid format
@@ -172,6 +184,7 @@ class CustomFeedProvider(
 
     private suspend fun performAdvancedValidation(): ValidationResult {
         val urls = UrlValidator.parseUrls(prefs.urls)
+        Timber.i("Custom feed advanced validation parsed ${urls.size} URL(s): $urls")
         val validEntriesUrls = mutableListOf<String>()
         val validRtspUrls = mutableListOf<String>()
         val validHlsUrls = mutableListOf<String>()
@@ -215,16 +228,23 @@ class CustomFeedProvider(
 
                 // Check if this is a CSV media list
                 if (isCsvUrl(url)) {
+                    Timber.i("Custom feed URL detected as CSV: $url")
                     try {
                         val csvItems = fetchCsvMediaItems(okHttpClient, url)
                         if (csvItems.isNotEmpty()) {
                             validCsvUrls.add(url)
-                            Timber.i("Found ${csvItems.size} media items in CSV: $url")
+                            Timber.i(
+                                "Found ${csvItems.size} media items in CSV: $url. " +
+                                    "Videos: ${csvItems.count { it.type == AerialMediaType.VIDEO }}, " +
+                                    "photos: ${csvItems.count { it.type == AerialMediaType.IMAGE }}",
+                            )
                         } else {
                             errorMessages[url] = "CSV contains no supported media items"
+                            Timber.w("CSV parsed successfully but contained no supported media items: $url")
                         }
                     } catch (e: Exception) {
                         errorMessages[url] = "Failed to parse CSV: ${e.message}"
+                        Timber.w(e, "CSV validation failed for URL: $url")
                     }
                     continue
                 }
@@ -300,6 +320,11 @@ class CustomFeedProvider(
             (validEntriesUrls + validRtspUrls + validHlsUrls + validCsvUrls)
                 .joinToString(",")
         prefs.urlsCache = allValidUrls
+        Timber.i(
+            "Custom feed valid URL cache updated. Entries: ${validEntriesUrls.size}, " +
+                "RTSP: ${validRtspUrls.size}, HLS: ${validHlsUrls.size}, CSV: ${validCsvUrls.size}, " +
+                "cache: $allValidUrls",
+        )
 
         // Build result message
         if (validEntriesUrls.isNotEmpty() ||
@@ -509,17 +534,53 @@ class CustomFeedProvider(
         }
     }
 
-    private fun fetchCsvMediaItems(
+    private suspend fun fetchCsvMediaItems(
         okHttpClient: OkHttpClient,
         url: String,
-    ): List<CustomFeedCsvParser.CsvMediaItem> {
+    ): List<CustomFeedCsvParser.CsvMediaItem> =
+        withContext(Dispatchers.IO) {
+        Timber.i("Fetching custom feed CSV: $url")
         val request = Request.Builder().url(url).build()
         okHttpClient.newCall(request).execute().use { response ->
+            val contentType = response.body.contentType()
+            val contentLength = response.body.contentLength()
+            Timber.i(
+                "Custom feed CSV response for $url: HTTP ${response.code}, " +
+                    "contentType=$contentType, contentLength=$contentLength",
+            )
             if (!response.isSuccessful) {
                 throw IllegalStateException("HTTP ${response.code}")
             }
             val body = response.body.string()
-            return CustomFeedCsvParser.parse(body)
+            Timber.d(
+                "Custom feed CSV body received from $url: chars=${body.length}, " +
+                    "lines=${body.lineSequence().count()}, preview=${body.logPreview()}",
+            )
+            val items = CustomFeedCsvParser.parse(body)
+            Timber.i(
+                "Custom feed CSV parse result for $url: items=${items.size}, " +
+                    "videos=${items.count { it.type == AerialMediaType.VIDEO }}, " +
+                    "photos=${items.count { it.type == AerialMediaType.IMAGE }}",
+            )
+            items.take(5).forEachIndexed { index, item ->
+                Timber.d(
+                    "Custom feed CSV item ${index + 1} for $url: " +
+                        "type=${item.type}, mediaUrl=${item.url}, description=${item.description}",
+                )
+            }
+            if (items.size > 5) {
+                Timber.d("Custom feed CSV item log truncated for $url. Remaining items: ${items.size - 5}")
+            }
+            return@withContext items
+        }
+    }
+
+    private fun String.logPreview(maxLength: Int = 300): String {
+        val singleLine = replace(Regex("\\s+"), " ").trim()
+        return if (singleLine.length <= maxLength) {
+            singleLine
+        } else {
+            "${singleLine.take(maxLength)}..."
         }
     }
 

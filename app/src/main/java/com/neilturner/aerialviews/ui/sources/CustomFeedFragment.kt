@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.network.UrlValidator
 import com.neilturner.aerialviews.models.prefs.CustomFeedPrefs
 import com.neilturner.aerialviews.providers.custom.CustomFeedProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
@@ -27,11 +28,37 @@ class CustomFeedFragment : MenuStateFragment() {
         urls?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 val urlsString = newValue as String
-                val previousValue = (preference as EditTextPreference).text ?: ""
+                val urlsPreference = preference as EditTextPreference
+                val previousValue = urlsPreference.text ?: ""
+                val previousCache = CustomFeedPrefs.urlsCache
+                val previousSummary = CustomFeedPrefs.urlsSummary
 
                 if (urlsString.isNotBlank() && urlsString != previousValue) {
+                    val invalidUrls =
+                        UrlValidator
+                            .validateUrls(urlsString)
+                            .filter { !it.first }
+                    if (invalidUrls.isNotEmpty()) {
+                        DialogHelper.show(
+                            requireContext(),
+                            resources.getString(R.string.samba_videos_test_results),
+                            resources.getString(R.string.custom_media_urls_invalid),
+                        )
+                        updateUrlsSummary(previousSummary)
+                        return@OnPreferenceChangeListener false
+                    }
+
                     CustomFeedPrefs.urls = urlsString
-                    lifecycleScope.launch { validateUrls() }
+                    lifecycleScope.launch {
+                        val isValid = validateUrls()
+                        if (!isValid) {
+                            CustomFeedPrefs.urls = previousValue
+                            CustomFeedPrefs.urlsCache = previousCache
+                            CustomFeedPrefs.urlsSummary = previousSummary
+                            urlsPreference.text = previousValue
+                            updateUrlsSummary(previousSummary)
+                        }
+                    }
                 } else if (urlsString.isBlank()) {
                     CustomFeedPrefs.urlsCache = ""
                     CustomFeedPrefs.urlsSummary = ""
@@ -53,7 +80,7 @@ class CustomFeedFragment : MenuStateFragment() {
             }
     }
 
-    private suspend fun validateUrls() {
+    private suspend fun validateUrls(): Boolean {
         val loadingMessage = getString(R.string.message_media_searching)
         val progressDialog =
             DialogHelper.progressDialog(
@@ -73,5 +100,6 @@ class CustomFeedFragment : MenuStateFragment() {
         )
 
         updateUrlsSummary(CustomFeedPrefs.urlsSummary)
+        return CustomFeedPrefs.urlsCache.isNotBlank()
     }
 }
