@@ -25,6 +25,7 @@ import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.ProgressBarLocation
+import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
@@ -161,9 +162,8 @@ class ScreenController(
             if (videoParent != null) {
                 val index = videoParent.indexOfChild(initialVideoRoot)
                 videoParent.removeView(initialVideoRoot)
-                // Use applicationContext to prevent activity context leaks in parent views
-                val appContextInflater = LayoutInflater.from(context)
-                val replacementVideoRoot = appContextInflater.inflate(videoLayoutRes, videoParent, false)
+                val inflater = LayoutInflater.from(context)
+                val replacementVideoRoot = inflater.inflate(videoLayoutRes, videoParent, false)
                 videoParent.addView(replacementVideoRoot, index)
                 VideoViewBinding.bind(replacementVideoRoot)
             } else {
@@ -319,7 +319,7 @@ class ScreenController(
     }
 
     private fun setupMusicPlayer(
-        musicPlaylist: com.neilturner.aerialviews.models.music.MusicPlaylist?,
+        musicPlaylist: MusicPlaylist?,
         resumeIndex: Int = 0,
     ) {
         val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
