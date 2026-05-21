@@ -73,7 +73,6 @@ class Display(
     val id: Int = source.displayId
     val mode: NativeDisplay.Mode?
 
-    // val valid: Boolean = source.isValid
     val state: PowerState = displayStateToPowerState(source.state)
 
     // flags
@@ -184,9 +183,9 @@ class Display(
 }
 
 fun getDisplay(activity: Activity?): Display {
-    val appContext = activity?.applicationContext
-    val displayManager = appContext?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    val context = activity?.applicationContext
+    val displayManager = context?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     val display = displayManager.displays[0]
     val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    return Display(display, windowManager, appContext)
+    return Display(display, windowManager, context)
 }

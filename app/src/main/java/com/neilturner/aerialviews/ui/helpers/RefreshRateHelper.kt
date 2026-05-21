@@ -16,10 +16,9 @@ import com.neilturner.aerialviews.utils.roundTo
 import timber.log.Timber
 
 class RefreshRateHelper(
-    context: Context,
+    val context: Context,
 ) {
-    private val context = context.applicationContext
-    private val displayManager = this.context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    private val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     private val display = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
 
     fun setRefreshRate(fps: Float?) {

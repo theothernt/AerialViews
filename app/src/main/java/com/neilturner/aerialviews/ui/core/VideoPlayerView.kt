@@ -77,8 +77,7 @@ class VideoPlayerView
 
         init {
             // Use applicationContext to prevent activity context leaks
-            val appContext = context.applicationContext
-            exoPlayer = VideoPlayerHelper.buildPlayer(appContext, GeneralPrefs)
+            exoPlayer = VideoPlayerHelper.buildPlayer(context, GeneralPrefs)
 
             player = exoPlayer
             player?.addListener(this)

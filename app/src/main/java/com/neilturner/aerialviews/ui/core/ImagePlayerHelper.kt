@@ -13,6 +13,7 @@ import com.hierynomus.mssmb2.SMB2CreateDisposition
 import com.hierynomus.mssmb2.SMB2ShareAccess
 import com.hierynomus.smbj.SMBClient
 import com.hierynomus.smbj.auth.AuthenticationContext
+import com.hierynomus.smbj.session.Session
 import com.hierynomus.smbj.share.DiskShare
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.data.network.SambaHelper
@@ -213,7 +214,7 @@ internal object ImagePlayerHelper {
         shareName: String,
         authContext: AuthenticationContext,
         startTime: Long,
-    ): Pair<com.hierynomus.smbj.session.Session, DiskShare> {
+    ): Pair<Session, DiskShare> {
         val connectStartTime = System.currentTimeMillis()
         val connection = smbClient.connect(hostName)
         val session = connection.authenticate(authContext)

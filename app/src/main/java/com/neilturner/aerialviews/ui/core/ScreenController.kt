@@ -67,10 +67,9 @@ import timber.log.Timber
 import kotlin.math.abs
 
 class ScreenController(
-    context: Context,
+    val context: Context,
 ) : OnVideoPlayerEventListener,
     OnImagePlayerEventListener {
-    private val context = context.applicationContext
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
     private var overlayHelper: OverlayHelper
@@ -163,7 +162,7 @@ class ScreenController(
                 val index = videoParent.indexOfChild(initialVideoRoot)
                 videoParent.removeView(initialVideoRoot)
                 // Use applicationContext to prevent activity context leaks in parent views
-                val appContextInflater = LayoutInflater.from(context.applicationContext)
+                val appContextInflater = LayoutInflater.from(context)
                 val replacementVideoRoot = appContextInflater.inflate(videoLayoutRes, videoParent, false)
                 videoParent.addView(replacementVideoRoot, index)
                 VideoViewBinding.bind(replacementVideoRoot)
