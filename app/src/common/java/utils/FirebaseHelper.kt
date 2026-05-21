@@ -10,7 +10,7 @@ import java.util.Calendar
 import java.util.Locale
 
 object FirebaseHelper {
-    private const val LOGGING_END_DATE = "2026-05-01"
+    private const val LOGGING_END_DATE = "2026-07-01"
 
     private fun isWithinLoggingPeriod(): Boolean {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -23,16 +23,12 @@ object FirebaseHelper {
         screenName: String,
         screenClass: Any,
     ) {
-        try {
-            val parameters =
-                Bundle().apply {
-                    putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
-                    putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName)
-                }
-            Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
-        } catch (e: Exception) {
-            // Firebase analytics not initialized - ignore
-        }
+        val parameters =
+            Bundle().apply {
+                putString(FirebaseAnalytics.Param.SCREEN_NAME, screenName)
+                putString(FirebaseAnalytics.Param.SCREEN_CLASS, screenClass::class.java.simpleName)
+            }
+        Firebase.analytics.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, parameters)
     }
 
     fun analyticsEvent(
@@ -41,11 +37,7 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            try {
-                Firebase.analytics.logEvent(eventName, parameters)
-            } catch (e: Exception) {
-                // Firebase analytics not initialized - ignore
-            }
+            Firebase.analytics.logEvent(eventName, parameters)
         }
     }
 
@@ -55,11 +47,7 @@ object FirebaseHelper {
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
             ex?.let {
-                try {
-                    Firebase.crashlytics.recordException(ex)
-                } catch (e: NullPointerException) {
-                    // FirebaseCrashlytics not initialized - ignore
-                }
+                Firebase.crashlytics.recordException(ex)
             }
         }
     }
@@ -69,11 +57,7 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            try {
-                Firebase.crashlytics.log(error)
-            } catch (e: NullPointerException) {
-                // FirebaseCrashlytics not initialized - ignore
-            }
+            Firebase.crashlytics.log(error)
         }
     }
 
@@ -83,18 +67,14 @@ object FirebaseHelper {
         alwaysLog: Boolean = false,
     ) {
         if (isWithinLoggingPeriod() || alwaysLog) {
-            try {
-                when (value) {
-                    is String -> Firebase.crashlytics.setCustomKey(key, value)
-                    is Int -> Firebase.crashlytics.setCustomKey(key, value)
-                    is Long -> Firebase.crashlytics.setCustomKey(key, value)
-                    is Float -> Firebase.crashlytics.setCustomKey(key, value)
-                    is Double -> Firebase.crashlytics.setCustomKey(key, value)
-                    is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
-                    else -> Firebase.crashlytics.setCustomKey(key, value.toString())
-                }
-            } catch (e: NullPointerException) {
-                // FirebaseCrashlytics not initialized - ignore
+            when (value) {
+                is String -> Firebase.crashlytics.setCustomKey(key, value)
+                is Int -> Firebase.crashlytics.setCustomKey(key, value)
+                is Long -> Firebase.crashlytics.setCustomKey(key, value)
+                is Float -> Firebase.crashlytics.setCustomKey(key, value)
+                is Double -> Firebase.crashlytics.setCustomKey(key, value)
+                is Boolean -> Firebase.crashlytics.setCustomKey(key, value)
+                else -> Firebase.crashlytics.setCustomKey(key, value.toString())
             }
         }
     }
