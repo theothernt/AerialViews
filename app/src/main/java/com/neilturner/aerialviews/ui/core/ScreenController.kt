@@ -412,7 +412,6 @@ class ScreenController(
             .animate()
             .alpha(0f)
             .setDuration(LOADING_FADE_OUT)
-            .withLayer()
             .withEndAction {
                 loadingContainer.visibility = View.GONE
             }.start()
@@ -473,7 +472,6 @@ class ScreenController(
             .alpha(0f)
             .setStartDelay(startDelay)
             .setDuration(mediaFadeIn)
-            .withLayer()
             .withEndAction {
                 loadingView.alpha = 0f
                 loadingView.visibility = View.INVISIBLE
@@ -498,7 +496,6 @@ class ScreenController(
             .animate()
             .alpha(1f)
             .setDuration(mediaFadeOut)
-            .withLayer()
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
                 loadingView.alpha = 0f
