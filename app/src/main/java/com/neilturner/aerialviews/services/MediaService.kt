@@ -49,6 +49,7 @@ class MediaService(
         val removeDuplicates: Boolean,
         val ignoreNonManifestVideos: Boolean,
         val autoTimeOfDay: Boolean,
+        val currentTimePeriod: String,
         val playlistTimeOfDayDayIncludes: Set<String>,
         val playlistTimeOfDayNightIncludes: Set<String>,
         val playlistCache: Boolean,
@@ -75,6 +76,8 @@ class MediaService(
                     add(removeDuplicates.toString())
                     add(ignoreNonManifestVideos.toString())
                     add(autoTimeOfDay.toString())
+                    // Include the active time period so a daytime cache is invalidated at night
+                    if (autoTimeOfDay) add(currentTimePeriod)
                     add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
                     add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
                     add(playlistCache.toString())
@@ -104,6 +107,7 @@ class MediaService(
                     removeDuplicates = GeneralPrefs.removeDuplicates,
                     ignoreNonManifestVideos = GeneralPrefs.ignoreNonManifestVideos,
                     autoTimeOfDay = GeneralPrefs.autoTimeOfDay,
+                    currentTimePeriod = if (GeneralPrefs.autoTimeOfDay) TimeOfDayHelper.getCurrentTimePeriod().name else "",
                     playlistTimeOfDayDayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes,
                     playlistTimeOfDayNightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes,
                     playlistCache = GeneralPrefs.playlistCache,
