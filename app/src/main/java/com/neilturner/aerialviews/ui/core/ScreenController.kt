@@ -59,10 +59,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
@@ -257,15 +257,13 @@ class ScreenController(
             // Build playlist and start screensaver
             val mediaResult =
                 MediaService(context).fetchMedia { status ->
-                    mainScope.launch {
-                        loadingText.text =
-                            when (status) {
-                                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
-                                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
-                                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
-                            }
-                        loadingSpinner.visibility = View.VISIBLE
-                    }
+                    loadingText.text =
+                        when (status) {
+                            LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
+                            LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
+                            LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
+                        }
+                    loadingSpinner.visibility = View.VISIBLE
                 }
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
