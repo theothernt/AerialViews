@@ -731,7 +731,7 @@ Supported formats:
 
 ## Immich Server Setup
 
-Aerial Views supports streaming photos and videos from your self-hosted [Immich](https://immich.app/) server. When setting up API Key authentication in the app, you will need to generate an API key via your Immich web interface under **User Settings > API Keys**.
+Aerial Views supports streaming photos and videos from your self-hosted [Immich](https://immich.app/) server. When setting up API Key authentication in the app, you will need to generate an API key via your Immich web interface under **Account Settings > API Keys**.
 
 ### Required API Permissions
 
