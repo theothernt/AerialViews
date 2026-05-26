@@ -740,8 +740,7 @@ To ensure Aerial Views can successfully query your albums, retrieve media list m
 * **Album:** `album.read` (required to list and retrieve album metadata)
 * **Asset:** `asset.read`, `asset.view`, `asset.download` (required to search and read metadata, load thumbnails/previews, and stream/download original files)
 
-> [!TIP]
-> If you encounter `403 Forbidden` errors, verification failures, or blank screens during playback, double-check that the generated API key has all of these permissions active.
+:information_source: If you encounter `403 Forbidden` errors, verification failures, or blank screens during playback, double-check that the generated API key has all of these permissions active.
 
 ## Weather data
 
