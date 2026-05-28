@@ -222,14 +222,6 @@ class ImagePlayerView : FrameLayout {
                 }
             }
 
-            // Show toast if preference is enabled
-            if (GeneralPrefs.showMediaErrorToasts) {
-                mainScope.launch {
-                    val errorMessage = ex.localizedMessage ?: "Photo loading error occurred"
-                    ToastHelper.show(context, errorMessage)
-                }
-            }
-
             listener?.onImageError()
         }
     }
@@ -308,13 +300,6 @@ class ImagePlayerView : FrameLayout {
     private fun handleImageError(throwable: Throwable) {
         Timber.e(throwable, "Exception while loading image: ${throwable.message}")
         FirebaseHelper.crashlyticsException(throwable)
-
-        if (GeneralPrefs.showMediaErrorToasts) {
-            mainScope.launch {
-                val errorMessage = throwable.localizedMessage ?: "Photo loading error occurred"
-                ToastHelper.show(context, errorMessage)
-            }
-        }
 
         onPlayerError()
     }
