@@ -119,19 +119,27 @@ class VideoPlayerView
         fun toggleLooping() {
             if (isDestroyed) return
 
-            if (player?.repeatMode == Player.REPEAT_MODE_ALL) {
-                player?.repeatMode = Player.REPEAT_MODE_OFF
-                if (mainScope.coroutineContext[Job]?.isActive == true) {
-                    mainScope.launch {
-                        ToastHelper.show(context, "Looping disabled")
-                    }
-                }
-            } else {
+            GeneralPrefs.loopUntilSkipped = !GeneralPrefs.loopUntilSkipped
+
+            if (GeneralPrefs.loopUntilSkipped) {
                 player?.repeatMode = Player.REPEAT_MODE_ALL
-                if (mainScope.coroutineContext[Job]?.isActive == true) {
-                    mainScope.launch {
-                        ToastHelper.show(context, "Looping enabled")
-                    }
+            } else {
+                val maxVideoLength = GeneralPrefs.maxVideoLength.toLong() * 1000
+                val isLengthLimited = maxVideoLength >= 10000
+                val isShortVideo = exoPlayer.duration in 1..<maxVideoLength
+                if (isShortVideo && isLengthLimited && GeneralPrefs.loopShortVideos) {
+                    player?.repeatMode = Player.REPEAT_MODE_ALL
+                } else {
+                    player?.repeatMode = Player.REPEAT_MODE_OFF
+                }
+            }
+
+            setupAlmostFinishedRunnable()
+
+            if (mainScope.coroutineContext[Job]?.isActive == true) {
+                mainScope.launch {
+                    val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+                    ToastHelper.show(context, message)
                 }
             }
         }
@@ -248,6 +256,9 @@ class VideoPlayerView
 
                 Player.STATE_ENDED -> {
                     Timber.i("Playback ended...")
+                    if (player?.repeatMode == Player.REPEAT_MODE_OFF) {
+                        listener?.onVideoAlmostFinished()
+                    }
                 }
 
                 Player.STATE_READY -> {}
