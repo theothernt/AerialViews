@@ -125,7 +125,7 @@ object VideoPlayerHelper {
                 .setRenderersFactory(rendererFactory)
                 .build()
 
-        if (prefs.enablePlaybackLogging) {
+        if (prefs.enableLogCapture) {
             player.addAnalyticsListener(EventLogger())
             player.addAnalyticsListener(PlaybackDiagnosticsListener(context))
         }
