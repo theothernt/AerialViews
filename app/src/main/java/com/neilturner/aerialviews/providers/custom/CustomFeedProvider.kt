@@ -539,41 +539,41 @@ class CustomFeedProvider(
         url: String,
     ): List<CustomFeedCsvParser.CsvMediaItem> =
         withContext(Dispatchers.IO) {
-        Timber.i("Fetching custom feed CSV: $url")
-        val request = Request.Builder().url(url).build()
-        okHttpClient.newCall(request).execute().use { response ->
-            val contentType = response.body.contentType()
-            val contentLength = response.body.contentLength()
-            Timber.i(
-                "Custom feed CSV response for $url: HTTP ${response.code}, " +
-                    "contentType=$contentType, contentLength=$contentLength",
-            )
-            if (!response.isSuccessful) {
-                throw IllegalStateException("HTTP ${response.code}")
-            }
-            val body = response.body.string()
-            Timber.d(
-                "Custom feed CSV body received from $url: chars=${body.length}, " +
-                    "lines=${body.lineSequence().count()}, preview=${body.logPreview()}",
-            )
-            val items = CustomFeedCsvParser.parse(body)
-            Timber.i(
-                "Custom feed CSV parse result for $url: items=${items.size}, " +
-                    "videos=${items.count { it.type == AerialMediaType.VIDEO }}, " +
-                    "photos=${items.count { it.type == AerialMediaType.IMAGE }}",
-            )
-            items.take(5).forEachIndexed { index, item ->
-                Timber.d(
-                    "Custom feed CSV item ${index + 1} for $url: " +
-                        "type=${item.type}, mediaUrl=${item.url}, description=${item.description}",
+            Timber.i("Fetching custom feed CSV: $url")
+            val request = Request.Builder().url(url).build()
+            okHttpClient.newCall(request).execute().use { response ->
+                val contentType = response.body.contentType()
+                val contentLength = response.body.contentLength()
+                Timber.i(
+                    "Custom feed CSV response for $url: HTTP ${response.code}, " +
+                        "contentType=$contentType, contentLength=$contentLength",
                 )
+                if (!response.isSuccessful) {
+                    throw IllegalStateException("HTTP ${response.code}")
+                }
+                val body = response.body.string()
+                Timber.d(
+                    "Custom feed CSV body received from $url: chars=${body.length}, " +
+                        "lines=${body.lineSequence().count()}, preview=${body.logPreview()}",
+                )
+                val items = CustomFeedCsvParser.parse(body)
+                Timber.i(
+                    "Custom feed CSV parse result for $url: items=${items.size}, " +
+                        "videos=${items.count { it.type == AerialMediaType.VIDEO }}, " +
+                        "photos=${items.count { it.type == AerialMediaType.IMAGE }}",
+                )
+                items.take(5).forEachIndexed { index, item ->
+                    Timber.d(
+                        "Custom feed CSV item ${index + 1} for $url: " +
+                            "type=${item.type}, mediaUrl=${item.url}, description=${item.description}",
+                    )
+                }
+                if (items.size > 5) {
+                    Timber.d("Custom feed CSV item log truncated for $url. Remaining items: ${items.size - 5}")
+                }
+                return@withContext items
             }
-            if (items.size > 5) {
-                Timber.d("Custom feed CSV item log truncated for $url. Remaining items: ${items.size - 5}")
-            }
-            return@withContext items
         }
-    }
 
     private fun String.logPreview(maxLength: Int = 300): String {
         val singleLine = replace(Regex("\\s+"), " ").trim()

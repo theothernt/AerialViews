@@ -197,7 +197,7 @@ class ImmichVideosFragment :
         progressDialog.show()
 
         val provider = ImmichMediaProvider(requireContext(), ImmichMediaPrefs)
-	    val message =
+        val message =
             when (val result = provider.fetch()) {
                 is ProviderFetchResult.Success -> result.summary
                 is ProviderFetchResult.Error -> result.message

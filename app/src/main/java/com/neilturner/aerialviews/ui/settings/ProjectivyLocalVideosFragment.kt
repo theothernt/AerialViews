@@ -122,7 +122,7 @@ class ProjectivyLocalVideosFragment :
     private suspend fun testLocalVideosFilter() =
         withContext(Dispatchers.IO) {
             val provider = LocalMediaProvider(requireContext(), ProjectivyLocalMediaPrefs)
-	        val message =
+            val message =
                 when (val result = provider.fetch()) {
                     is ProviderFetchResult.Success -> result.summary
                     is ProviderFetchResult.Error -> result.message

@@ -42,11 +42,17 @@ object DeviceHelper {
     }
 
     fun getDisplayInfo(context: Context): String {
-        val display = com.neilturner.aerialviews.services.getDisplay(context)
+        val display =
+            com.neilturner.aerialviews.services
+                .getDisplay(context)
         val metrics = context.resources.displayMetrics
         val resolution = "${metrics.widthPixels}x${metrics.heightPixels} (${metrics.densityDpi}dpi)"
-        
-        val refreshRates = display.supportedModes.map { "${it.refreshRate}Hz" }.distinct().joinToString(", ")
+
+        val refreshRates =
+            display.supportedModes
+                .map { "${it.refreshRate}Hz" }
+                .distinct()
+                .joinToString(", ")
         val hdrTypes = display.hdrFormats.joinToString(", ")
 
         return "Resolution: $resolution, Refresh Rates: [$refreshRates], HDR: [$hdrTypes]"

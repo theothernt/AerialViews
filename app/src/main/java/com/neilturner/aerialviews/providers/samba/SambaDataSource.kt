@@ -145,7 +145,7 @@ class SambaDataSource : BaseDataSource(true) {
         val connection = smbClient?.connect(hostName)
         val dialect = connection?.connectionContext?.negotiatedProtocol?.dialect
         Timber.i("Negotiated SMB Dialect: $dialect")
-        
+
         val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare

@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.data
 
 import android.content.Context
+import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.MediaFetchResult
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
@@ -16,7 +17,6 @@ import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import androidx.core.net.toUri
 import kotlin.time.Duration.Companion.days
 
 class PlaylistCacheRepository(
@@ -86,26 +86,28 @@ class PlaylistCacheRepository(
                 return@withContext null
             }
 
-            val mediaList = try {
-                cachedMediaChunks.map { mapEntityToMedia(it) }
-            } catch (e: Exception) {
-                Timber.e(e, "PlaylistCache: Failed to map cached media entities")
-                clearCache()
-                return@withContext null
-            }
-
-            val musicList = try {
-                cachedMusic.map { entity ->
-                    MusicTrack(
-                        uri = entity.uri.toUri(),
-                        source = enumValueOf<AerialMediaSource>(entity.source),
-                    )
+            val mediaList =
+                try {
+                    cachedMediaChunks.map { mapEntityToMedia(it) }
+                } catch (e: Exception) {
+                    Timber.e(e, "PlaylistCache: Failed to map cached media entities")
+                    clearCache()
+                    return@withContext null
                 }
-            } catch (e: Exception) {
-                Timber.e(e, "PlaylistCache: Failed to map cached music entities")
-                clearCache()
-                return@withContext null
-            }
+
+            val musicList =
+                try {
+                    cachedMusic.map { entity ->
+                        MusicTrack(
+                            uri = entity.uri.toUri(),
+                            source = enumValueOf<AerialMediaSource>(entity.source),
+                        )
+                    }
+                } catch (e: Exception) {
+                    Timber.e(e, "PlaylistCache: Failed to map cached music entities")
+                    clearCache()
+                    return@withContext null
+                }
 
             val musicPlaylist =
                 if (musicList.isNotEmpty()) {
@@ -156,8 +158,8 @@ class PlaylistCacheRepository(
             }
         }
 
-    private fun mapEntityToMedia(entity: CachedMediaEntity): AerialMedia {
-        return AerialMedia(
+    private fun mapEntityToMedia(entity: CachedMediaEntity): AerialMedia =
+        AerialMedia(
             uri = entity.uri.toUri(),
             type = enumValueOf<AerialMediaType>(entity.type),
             source = enumValueOf<AerialMediaSource>(entity.source),
@@ -182,7 +184,6 @@ class PlaylistCacheRepository(
                         ),
                 ),
         )
-    }
 
     suspend fun cachePlaylist(
         media: List<AerialMedia>,

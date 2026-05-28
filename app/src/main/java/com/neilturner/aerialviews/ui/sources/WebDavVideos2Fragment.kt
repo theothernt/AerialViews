@@ -122,7 +122,7 @@ class WebDavVideos2Fragment :
         progressDialog.show()
 
         val provider = WebDavMediaProvider(requireContext(), WebDavMediaPrefs2)
-	    val message =
+        val message =
             when (val result = provider.fetch()) {
                 is ProviderFetchResult.Success -> result.summary
                 is ProviderFetchResult.Error -> result.message

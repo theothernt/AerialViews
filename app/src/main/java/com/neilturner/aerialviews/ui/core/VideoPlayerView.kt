@@ -101,7 +101,7 @@ class VideoPlayerView
             pause()
             exoPlayer.setVideoSurface(null)
             // Release ExoPlayer to stop internal threads
-            //exoPlayer.release()
+            // exoPlayer.release()
             player?.release()
             // Clear surface view to break context reference chain
             player = null
@@ -369,7 +369,7 @@ class VideoPlayerView
             error?.let { Timber.e(it) }
         }
 
-	private fun emitTrackMetadata() {
+        private fun emitTrackMetadata() {
             val extractedMetadata = extractVideoMetadataFromTracks(exoPlayer.currentTracks)
             listener?.onVideoMetadataExtracted(extractedMetadata)
         }

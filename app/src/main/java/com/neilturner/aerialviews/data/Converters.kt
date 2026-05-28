@@ -7,20 +7,18 @@ class Converters {
     private val json = Json { ignoreUnknownKeys = true }
 
     @TypeConverter
-    fun fromPointsMap(map: Map<Int, String>): String {
-        return try {
+    fun fromPointsMap(map: Map<Int, String>): String =
+        try {
             json.encodeToString(map)
         } catch (e: Exception) {
             "{}"
         }
-    }
 
     @TypeConverter
-    fun toPointsMap(data: String): Map<Int, String> {
-        return try {
+    fun toPointsMap(data: String): Map<Int, String> =
+        try {
             json.decodeFromString<Map<Int, String>>(data)
         } catch (e: Exception) {
             emptyMap()
         }
-    }
 }
