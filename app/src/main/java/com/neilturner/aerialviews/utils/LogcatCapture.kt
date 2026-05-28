@@ -2,7 +2,11 @@ package com.neilturner.aerialviews.utils
 
 import android.content.Context
 import android.media.MediaScannerConnection
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Environment
+import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
@@ -30,6 +34,8 @@ object LogcatCapture {
         val filename = "AerialViews_log_$timestamp.txt"
         logFile = File(logsDir, filename)
 
+        writeDiagnosticHeader(context)
+
         try {
             val command = arrayOf("logcat", "-v", "threadtime")
             process = Runtime.getRuntime().exec(command)
@@ -38,7 +44,7 @@ object LogcatCapture {
             Thread {
                 try {
                     process?.inputStream?.use { input ->
-                        FileOutputStream(logFile).use { output ->
+                        FileOutputStream(logFile, true).use { output ->
                             input.copyTo(output)
                         }
                     }
@@ -51,6 +57,46 @@ object LogcatCapture {
         } catch (e: IOException) {
             Timber.e(e, "Failed to start logcat process")
         }
+    }
+
+    private fun writeDiagnosticHeader(context: Context) {
+        val header = StringBuilder().apply {
+            append("=== AerialViews Diagnostic Log ===\n")
+            append("Timestamp: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date())}\n")
+            append("App Version: ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE}) - ${BuildConfig.FLAVOR} ${BuildConfig.BUILD_TYPE}\n")
+            append("Device: ${DeviceHelper.deviceName()}\n")
+            append("Android: ${DeviceHelper.androidVersion()}\n")
+            append("CPU: ${DeviceHelper.getCpuInfo()}\n")
+            append("Memory: ${DeviceHelper.getMemoryInfo(context)}\n")
+            append("Display: ${DeviceHelper.getDisplayInfo(context)}\n")
+            append("Network: ${getNetworkInfo(context)}\n")
+            append("==================================\n\n")
+        }.toString()
+
+        try {
+            FileOutputStream(logFile).use { it.write(header.toByteArray()) }
+        } catch (e: IOException) {
+            Timber.e(e, "Failed to write diagnostic header")
+        }
+    }
+
+    private fun getNetworkInfo(context: Context): String {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return "Disconnected"
+        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return "Unknown"
+
+        val type = when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
+            else -> "Other"
+        }
+
+        val linkSpeed = if (capabilities.linkDownstreamBandwidthKbps > 0) {
+            ", Down: ${capabilities.linkDownstreamBandwidthKbps / 1000}Mbps, Up: ${capabilities.linkUpstreamBandwidthKbps / 1000}Mbps"
+        } else ""
+
+        return "$type$linkSpeed"
     }
 
     fun stop() {

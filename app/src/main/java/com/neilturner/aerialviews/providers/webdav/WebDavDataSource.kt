@@ -32,7 +32,10 @@ class WebDavDataSource : BaseDataSource(true) {
         this.dataSpec = dataSpec
         bytesRead = dataSpec.position
 
+        val startTime = System.currentTimeMillis()
         openWebDavFile(bytesRead)
+        val connectionTime = System.currentTimeMillis() - startTime
+        Timber.i("WebDAV connection established in ${connectionTime}ms (Size: ${bytesToRead} bytes)")
 
         transferStarted(dataSpec)
         return bytesToRead

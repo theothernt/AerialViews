@@ -127,6 +127,7 @@ object VideoPlayerHelper {
 
         if (prefs.enablePlaybackLogging) {
             player.addAnalyticsListener(EventLogger())
+            player.addAnalyticsListener(PlaybackDiagnosticsListener(context))
         }
 
         if (prefs.playsVideoAudio) {

@@ -53,8 +53,11 @@ class SambaDataSource : BaseDataSource(true) {
         bytesRead = dataSpec.position
 
         val remoteFile: File
+        val startTime = System.currentTimeMillis()
         try {
             remoteFile = openSambaFile()
+            val connectionTime = System.currentTimeMillis() - startTime
+            Timber.i("SMB connection established in ${connectionTime}ms")
         } catch (e: TransportException) {
             Timber.e(e, "SMB transport error opening file")
             throw IOException("SMB transport failed", e)
@@ -140,6 +143,9 @@ class SambaDataSource : BaseDataSource(true) {
     private fun openSambaFile(): File {
         smbClient = SMBClient(SambaHelper.buildSmbConfig(enableEncryption, smbDialects))
         val connection = smbClient?.connect(hostName)
+        val dialect = connection?.connectionContext?.negotiatedProtocol?.dialect
+        Timber.i("Negotiated SMB Dialect: $dialect")
+        
         val authContext = SambaHelper.buildAuthContext(userName, password, domainName)
         val session = connection?.authenticate(authContext)
         val share = session?.connectShare(shareName) as DiskShare
