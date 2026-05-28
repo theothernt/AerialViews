@@ -182,10 +182,15 @@ class Display(
     }
 }
 
-fun getDisplay(activity: Activity?): Display {
-    val context = activity?.applicationContext
-    val displayManager = context?.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-    val display = displayManager.displays[0]
-    val windowManager = activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+fun getDisplay(activity: Activity?): Display = getDisplay(activity as Context)
+
+fun getDisplay(context: Context): Display {
+    val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+    val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        context.display
+    } else {
+        displayManager.displays[0]
+    }
+    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     return Display(display, windowManager, context)
 }

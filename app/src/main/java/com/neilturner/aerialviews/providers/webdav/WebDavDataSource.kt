@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.data.network.SambaHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Headers
 import okhttp3.OkHttpClient
+import timber.log.Timber
 import java.io.EOFException
 import java.io.IOException
 import java.io.InputStream

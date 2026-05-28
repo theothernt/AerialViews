@@ -42,29 +42,12 @@ object DeviceHelper {
     }
 
     fun getDisplayInfo(context: Context): String {
-        val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display
-        } else {
-            @Suppress("DEPRECATION")
-            (context.getSystemService(Context.WINDOW_SERVICE) as android.view.WindowManager).defaultDisplay
-        } ?: return "Unknown"
-
+        val display = com.neilturner.aerialviews.services.getDisplay(context)
         val metrics = context.resources.displayMetrics
         val resolution = "${metrics.widthPixels}x${metrics.heightPixels} (${metrics.densityDpi}dpi)"
         
-        val modes = display.supportedModes
-        val refreshRates = modes.map { "${it.refreshRate}Hz" }.distinct().joinToString(", ")
-        
-        val hdrCapabilities = display.hdrCapabilities
-        val hdrTypes = hdrCapabilities.supportedHdrTypes.map {
-            when (it) {
-                android.view.Display.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> "Dolby Vision"
-                android.view.Display.HdrCapabilities.HDR_TYPE_HDR10 -> "HDR10"
-                android.view.Display.HdrCapabilities.HDR_TYPE_HLG -> "HLG"
-                android.view.Display.HdrCapabilities.HDR_TYPE_HDR10_PLUS -> "HDR10+"
-                else -> "Type $it"
-            }
-        }.joinToString(", ")
+        val refreshRates = display.supportedModes.map { "${it.refreshRate}Hz" }.distinct().joinToString(", ")
+        val hdrTypes = display.hdrFormats.joinToString(", ")
 
         return "Resolution: $resolution, Refresh Rates: [$refreshRates], HDR: [$hdrTypes]"
     }

@@ -6,6 +6,7 @@ import android.net.NetworkCapabilities
 import androidx.annotation.OptIn
 import androidx.media3.common.Format
 import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.DecoderCounters
 import androidx.media3.exoplayer.analytics.AnalyticsListener
@@ -20,7 +21,7 @@ class PlaybackDiagnosticsListener(private val context: Context) : AnalyticsListe
     private var lastBufferingStartTimeMs: Long = 0
     private var videoDecoderName: String = "Unknown"
     private var audioDecoderName: String = "Unknown"
-    private var totalBytesLoaded: Long = 0
+    private var totalTransferTime: Long = 0
     private var lastBandwidthEstimate: Long = 0
 
     private var videoDecoderCounters: DecoderCounters? = null
@@ -36,7 +37,7 @@ class PlaybackDiagnosticsListener(private val context: Context) : AnalyticsListe
 
     override fun onPlaybackStateChanged(eventTime: AnalyticsListener.EventTime, state: Int) {
         when (state) {
-            AnalyticsListener.STATE_READY -> {
+            Player.STATE_READY -> {
                 if (startTimeMs == 0L) startTimeMs = System.currentTimeMillis()
                 if (lastBufferingStartTimeMs != 0L) {
                     totalBufferingTimeMs += (System.currentTimeMillis() - lastBufferingStartTimeMs)
@@ -44,11 +45,11 @@ class PlaybackDiagnosticsListener(private val context: Context) : AnalyticsListe
                 }
                 Timber.d("Playback State: READY (Total Buffering: ${totalBufferingTimeMs}ms)")
             }
-            AnalyticsListener.STATE_BUFFERING -> {
+            Player.STATE_BUFFERING -> {
                 lastBufferingStartTimeMs = System.currentTimeMillis()
                 Timber.d("Playback State: BUFFERING (Network: ${getNetworkType()})")
             }
-            AnalyticsListener.STATE_ENDED -> {
+            Player.STATE_ENDED -> {
                 logSessionSummary()
             }
         }
@@ -94,13 +95,13 @@ class PlaybackDiagnosticsListener(private val context: Context) : AnalyticsListe
     }
 
     override fun onBandwidthEstimate(
-        eventTime: AnalyticsListener.EventTime,
-        totalBytesTransferred: Long,
-        totalTransferTimeMs: Long,
-        bitrateEstimate: Long
+	    eventTime: AnalyticsListener.EventTime,
+	    totalLoadTimeMs: Int,
+	    totalTransferTimeMs: Long,
+	    bitrateEstimate: Long
     ) {
         lastBandwidthEstimate = bitrateEstimate
-        totalBytesLoaded = totalBytesTransferred
+        totalTransferTime = totalTransferTimeMs
     }
 
     override fun onPlayerError(eventTime: AnalyticsListener.EventTime, error: PlaybackException) {
