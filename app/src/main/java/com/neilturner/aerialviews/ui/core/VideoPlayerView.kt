@@ -361,15 +361,6 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
             FirebaseHelper.crashlyticsException(error.cause)
 
-            if (GeneralPrefs.showMediaErrorToasts && !isDestroyed) {
-                if (mainScope.coroutineContext[Job]?.isActive == true) {
-                    mainScope.launch {
-                        val errorMessage = error.localizedMessage ?: "Video playback error occurred"
-                        ToastHelper.show(context, errorMessage)
-                    }
-                }
-            }
-
             post(onErrorRunnable)
         }
 
