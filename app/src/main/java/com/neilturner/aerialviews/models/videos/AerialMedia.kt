@@ -11,6 +11,11 @@ data class AerialMedia(
     var type: AerialMediaType = AerialMediaType.VIDEO,
     var source: AerialMediaSource = AerialMediaSource.UNKNOWN,
     var metadata: AerialMediaMetadata = AerialMediaMetadata(),
+    // Alternate URIs that belong to the same logical slot (e.g. other members of a
+    // temporal cluster from the Immich smart slideshow). When non-empty, the renderer
+    // picks one at random — including `uri` itself — every time the slot is shown,
+    // so across playlist loops the user sees variety within the cluster.
+    var clusterAlternates: List<Uri> = emptyList(),
 )
 
 data class AerialMediaMetadata(

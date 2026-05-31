@@ -359,6 +359,16 @@
     <string name="immich_media_include_random_title">Include random photos</string>
     <string name="immich_media_include_recent_title">Include recent photos</string>
 
+    <string name="immich_smart_slideshow_title">Smart slideshow</string>
+    <string name="immich_smart_slideshow_summary">Collapse photos taken close in time into one slot so bursts and event photos don\'t dominate the mix</string>
+    <string name="immich_smart_slideshow_gap_title">Clustering window</string>
+    <string name="immich_smart_slideshow_gap_summary">Photos within this time window are treated as one moment (one random representative is shown)</string>
+    <string name="immich_smart_slideshow_exempt_title">Exempt album name pattern (regex)</string>
+    <string name="immich_smart_slideshow_exempt_summary">Albums whose names match this regex will bypass clustering (use for film scans etc. where timestamps lie)</string>
+    <string name="immich_smart_slideshow_exempt_percent_title">Keep exempt photos</string>
+    <string name="immich_smart_slideshow_exempt_percent_summary">How many of the exempt-album photos to keep in the playlist (random sample)</string>
+    <string name="category_immich_smart_slideshow">Smart slideshow</string>
+
     <string name="immich_media_test_summary1">Files found: %1$s</string>
     <string name="immich_media_test_summary2">Unsupported files: %1$s</string>
     <string name="immich_media_test_summary3">Videos found: %1$s</string>
