@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.models
 
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,14 +14,15 @@ class MediaPlaylist(
     val size: Int = initialVideos.size,
     windowOffset: Int = 0,
     fetchChunk: (suspend (offset: Int, limit: Int) -> List<AerialMedia>)? = null,
+    dispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private var position = startPosition
     private val inMemoryVideos = initialVideos
-    private val windowedPlaylist = fetchChunk?.let { WindowedPlaylist(initialVideos, windowOffset, it) }
+    private val windowedPlaylist = fetchChunk?.let { WindowedPlaylist(initialVideos, windowOffset, it, dispatcher) }
 
     val currentPosition: Int get() = position
 
-    suspend fun nextItem(): AerialMedia {
+    fun nextItem(): AerialMedia {
         position = calculateNext(++position)
 
         Timber.v("MediaPlaylist: nextItem() -> pos $position / $size")
@@ -28,7 +30,7 @@ class MediaPlaylist(
         return getItemAt(position)
     }
 
-    suspend fun previousItem(): AerialMedia {
+    fun previousItem(): AerialMedia {
         position = calculateNext(--position)
 
         Timber.v("MediaPlaylist: previousItem() -> pos $position / $size")
@@ -36,7 +38,7 @@ class MediaPlaylist(
         return getItemAt(position)
     }
 
-    private suspend fun getItemAt(index: Int): AerialMedia =
+    internal fun getItemAt(index: Int): AerialMedia =
         windowedPlaylist?.getItemAt(index)
             ?: inMemoryVideos.getOrNull(index)
             ?: throw IllegalStateException("Playlist is empty")
@@ -56,9 +58,10 @@ class MediaPlaylist(
         initialVideos: List<AerialMedia>,
         windowOffset: Int,
         private val fetchChunk: suspend (offset: Int, limit: Int) -> List<AerialMedia>,
+        dispatcher: CoroutineDispatcher,
     ) {
         private val windowVideos = ConcurrentHashMap<Int, AerialMedia>()
-        private val scope = CoroutineScope(Dispatchers.IO)
+        private val scope = CoroutineScope(dispatcher)
 
         @Volatile
         private var currentWindowOffset = windowOffset
@@ -72,7 +75,7 @@ class MediaPlaylist(
             }
         }
 
-        suspend fun getItemAt(absoluteIndex: Int): AerialMedia {
+        fun getItemAt(absoluteIndex: Int): AerialMedia {
             checkAndRefillWindow()
 
             val cached = windowVideos[absoluteIndex]
@@ -80,20 +83,11 @@ class MediaPlaylist(
                 return cached
             }
 
-            // Cache miss fallback (happens if fetch hasn't completed or we jumped significantly)
-            Timber.w("Sync fetching chunk due to buffer miss at index $absoluteIndex")
-            val newOffset = 0.coerceAtLeast(absoluteIndex - 5)
-            val freshData = fetchChunk.invoke(newOffset, WINDOW_LIMIT)
-
-            updateWindow(newOffset, freshData)
-
-            val fallback = windowVideos[absoluteIndex]
-            if (fallback != null) {
-                return fallback
-            }
+            // Cache miss fallback
+            Timber.w("MediaPlaylist: Cache miss at index $absoluteIndex, returning first available")
 
             return windowVideos.values.firstOrNull()
-                ?: throw IllegalStateException("Playlist is empty and fetch failed")
+                ?: throw IllegalStateException("Playlist is empty")
         }
 
         private fun checkAndRefillWindow() {

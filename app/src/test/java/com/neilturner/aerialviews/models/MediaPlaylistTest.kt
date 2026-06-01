@@ -4,6 +4,8 @@ import android.net.Uri
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.models.videos.AerialMediaMetadata
 import io.mockk.mockk
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -54,6 +56,7 @@ class MediaPlaylistTest {
     @Test
     fun `windowed playlist fetches chunk when item is outside initial window`() =
         runTest {
+            val testDispatcher = StandardTestDispatcher(testScheduler)
             var fetchCount = 0
             val playlist =
                 MediaPlaylist(
@@ -65,9 +68,13 @@ class MediaPlaylistTest {
                         fetchCount++
                         mediaRange(offset, limit)
                     },
+                    dispatcher = testDispatcher
                 )
 
-            assertEquals("25", playlist.nextItem().metadata.title)
+            playlist.nextItem() // This triggers the fetch in background
+            advanceUntilIdle() // Wait for fetch
+
+            assertEquals("25", playlist.getItemAt(25).metadata.title)
             assertTrue(fetchCount >= 1)
         }
 
