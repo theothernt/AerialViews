@@ -285,7 +285,7 @@ object VideoPlayerHelper {
     ): Pair<Long, Long> {
         if (duration <= 0 || range < 5) {
             Timber.e("Invalid duration or range: duration=$duration, range=$range%")
-            return Pair(0, 0)
+            return Pair(0, duration)
         }
         val seekPosition = (duration * range / 100.0).toLong()
         val randomPosition = Random.nextLong(seekPosition)
@@ -330,7 +330,7 @@ object VideoPlayerHelper {
     ): Pair<Long, Long> {
         if (duration <= 0 || maxLength < TEN_SECONDS) {
             Timber.e("Invalid duration or max length: duration=$duration, maxLength=$maxLength%")
-            return Pair(0, 0)
+            return Pair(0, duration)
         }
         val loopCount = ceil(maxLength / duration.toDouble()).toInt()
         val targetDuration = duration * loopCount

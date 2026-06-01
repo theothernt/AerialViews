@@ -23,7 +23,7 @@ class MusicPlayer(
     var onMediaItemChanged: (() -> Unit)? = null
 
     fun createPlayer(): ExoPlayer {
-        player = VideoPlayerHelper.buildAudioPlayer(context)
+        player = VideoPlayerHelper.buildAudioPlayer(context.applicationContext)
         player?.addListener(
             object : Player.Listener {
                 override fun onMediaItemTransition(
@@ -56,7 +56,7 @@ class MusicPlayer(
 
         // Load all tracks into ExoPlayer's queue with correct data source per track
         playlist.tracks.forEach { track ->
-            val mediaSource = VideoPlayerHelper.createAudioMediaSource(context, track)
+            val mediaSource = VideoPlayerHelper.createAudioMediaSource(context.applicationContext, track)
             player.addMediaSource(mediaSource)
         }
         player.prepare()
