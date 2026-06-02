@@ -84,6 +84,7 @@ class ImmichVideosFragment :
         urlPreference.setOnPreferenceChangeListener { _, newValue ->
             try {
                 UrlParser.parseServerUrl(newValue.toString())
+                clearSelectedAlbumsIfChanged(urlPreference.text.orEmpty(), newValue.toString())
                 true
             } catch (e: IllegalArgumentException) {
                 AlertDialog
@@ -95,6 +96,11 @@ class ImmichVideosFragment :
             }
         }
 
+        apiKeyPreference.setOnPreferenceChangeListener { _, newValue ->
+            clearSelectedAlbumsIfChanged(apiKeyPreference.text.orEmpty(), newValue.toString())
+            true
+        }
+
         findPreference<Preference>("immich_media_test_connection")?.setOnPreferenceClickListener {
             lifecycleScope.launch { testImmichConnection() }
             true
@@ -103,6 +109,15 @@ class ImmichVideosFragment :
         selectAlbumsPreference.setOnPreferenceClickListener {
             lifecycleScope.launch { pickAlbums() }
             true
+        }
+    }
+
+    private fun clearSelectedAlbumsIfChanged(
+        currentValue: String,
+        newValue: String,
+    ) {
+        if (currentValue != newValue && ImmichMediaPrefs.selectedAlbumIds.isNotEmpty()) {
+            ImmichMediaPrefs.selectedAlbumIds.clear()
         }
     }
 
@@ -255,7 +270,8 @@ class ImmichVideosFragment :
 
         val albumNames = albums.map { "${it.name} (${it.assetCount} assets)" }.toTypedArray()
         val albumIds = albums.map { it.id }.toTypedArray()
-        val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds
+        val availableAlbumIds = albumIds.toSet()
+        val currentSelectedAlbumIds = ImmichMediaPrefs.selectedAlbumIds.intersect(availableAlbumIds)
         val tempSelectedAlbumIds = currentSelectedAlbumIds.toMutableSet()
         val checkedItems =
             BooleanArray(albums.size) { index ->

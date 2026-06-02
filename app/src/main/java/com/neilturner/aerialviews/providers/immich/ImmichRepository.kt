@@ -180,7 +180,7 @@ class ImmichRepository(
                 Timber.d("API Key (first 5 chars): ${prefs.apiKey.take(5)}...")
 
                 val allAssets = mutableListOf<Asset>()
-                var combinedAlbumName = ""
+                val successfulAlbumNames = mutableListOf<String>()
                 val albumNamesByAssetId = mutableMapOf<String, MutableSet<String>>()
 
                 val albumDeferreds =
@@ -192,7 +192,7 @@ class ImmichRepository(
 
                 val albumResponses = albumDeferreds.awaitAll()
 
-                for ((index, albumResponse) in albumResponses.withIndex()) {
+                for (albumResponse in albumResponses) {
                     val albumId = albumResponse.first
                     val response = albumResponse.second
                     Timber.d("API Request for album $albumId - URL: ${response.raw().request.url}")
@@ -201,12 +201,12 @@ class ImmichRepository(
                         val album = response.body()
                         if (album != null) {
                             Timber.d("Successfully fetched album: ${album.name}, assets: ${album.assets.size}")
+                            successfulAlbumNames.add(album.name)
                             val albumAssets = album.assets.map { it.copy(albumName = album.name) }
                             allAssets.addAll(albumAssets)
                             albumAssets.forEach { asset ->
                                 albumNamesByAssetId.getOrPut(asset.id) { mutableSetOf() }.add(album.name)
                             }
-                            combinedAlbumName += if (index == 0) album.name else ", ${album.name}"
                         } else {
                             Timber.e("Received null album from successful response for album ID: $albumId")
                         }
@@ -222,7 +222,8 @@ class ImmichRepository(
                 }
 
                 // Remove duplicate assets based on ID
-                val isSingleAlbumSelection = selectedAlbumIds.size == 1
+                val successfulAlbumCount = successfulAlbumNames.size
+                val isSingleAlbumSelection = successfulAlbumCount == 1
                 val uniqueAssets =
                     allAssets
                         .distinctBy { it.id }
@@ -233,16 +234,19 @@ class ImmichRepository(
                                     isSingleAlbumSelection -> albumNames.singleOrNull()
                                     albumNames.size == 1 -> albumNames.first()
                                     else -> null
-                                }
+                            }
                             asset.copy(albumName = resolvedAlbumName)
                         }
-                Timber.d("Combined ${allAssets.size} assets from ${selectedAlbumIds.size} albums, ${uniqueAssets.size} unique assets")
+                Timber.d(
+                    "Combined ${allAssets.size} assets from $successfulAlbumCount successful albums " +
+                        "(${selectedAlbumIds.size} selected), ${uniqueAssets.size} unique assets",
+                )
 
                 // Return a combined album with all assets
                 return@coroutineScope Album(
                     id = "combined", // Use a special ID for the combined album
-                    name = combinedAlbumName,
-                    description = "Combined album from ${selectedAlbumIds.size} selected albums",
+                    name = successfulAlbumNames.joinToString(", "),
+                    description = "Combined album from $successfulAlbumCount selected albums",
                     assetCount = uniqueAssets.size,
                     assets = uniqueAssets,
                 )
