@@ -22,7 +22,7 @@ class MediaPlaylist(
 
     val currentPosition: Int get() = position
 
-    suspend fun nextItem(): AerialMedia {
+    fun nextItem(): AerialMedia {
         position = calculateNext(++position)
         if (position == 0 && size > 0) _hasReachedEnd = true
 
@@ -32,7 +32,7 @@ class MediaPlaylist(
         return getItemAt(position)
     }
 
-    suspend fun previousItem(): AerialMedia {
+    fun previousItem(): AerialMedia {
         position = calculateNext(--position)
 
         Timber.v("MediaPlaylist: previousItem() -> pos $position / $size (window: ${windowVideos.size})")
@@ -70,7 +70,7 @@ class MediaPlaylist(
         }
     }
 
-    private suspend fun getItemAt(absoluteIndex: Int): AerialMedia {
+    private fun getItemAt(absoluteIndex: Int): AerialMedia {
         synchronized(windowLock) {
             val relativeIndex = absoluteIndex - windowOffset
             if (relativeIndex in 0 until windowVideos.size) {
@@ -78,25 +78,11 @@ class MediaPlaylist(
             }
         }
 
-        // Cache miss fallback (happens if fetch hasn't completed or we jumped significantly)
-        if (fetchChunk != null) {
-            Timber.w("Sync fetching chunk due to buffer miss at index $absoluteIndex")
-            val newOffset = 0.coerceAtLeast(absoluteIndex - 5)
-            val freshData = fetchChunk.invoke(newOffset, 50)
-            synchronized(windowLock) {
-                windowOffset = newOffset
-                windowVideos.clear()
-                windowVideos.addAll(freshData)
-
-                val newRelative = absoluteIndex - windowOffset
-                if (newRelative in 0 until windowVideos.size) {
-                    return windowVideos[newRelative]
-                }
-            }
-        }
+        Timber.w("MediaPlaylist: Cache miss at index $absoluteIndex, returning first available")
 
         synchronized(windowLock) {
-            return windowVideos.first()
+            return windowVideos.firstOrNull()
+                ?: throw IllegalStateException("Playlist is empty")
         }
     }
 
