@@ -188,7 +188,13 @@ fun getDisplay(context: Context): Display {
     val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
     val display =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            context.display
+            try {
+                context.display
+            } catch (e: UnsupportedOperationException) {
+                // Application or other non-visual context has no associated display.
+                // Fall back to the default display via DisplayManager instead.
+                displayManager.getDisplay(NativeDisplay.DEFAULT_DISPLAY)
+            }
         } else {
             displayManager.displays[0]
         }
