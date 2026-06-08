@@ -1,74 +1,53 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
-
 package com.neilturner.aerialviews.services
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.WindowManager
+import androidx.annotation.OptIn
+import androidx.media3.common.util.UnstableApi
 import androidx.media3.common.util.Util
 import android.view.Display as NativeDisplay
 
 // https://github.com/technogeek00/android-device-media-information/blob/master/app/src/main/java/com/zacharycava/devicemediainspector/sources/Displays.kt
 
-enum class HDRFormat {
-    DOLBY_VISION,
-    HDR10,
-    HDR10_PLUS,
-    HLG,
-    UNKNOWN,
-}
-
-fun hdrTypeToFormat(value: Int): HDRFormat =
-    when (value) {
-        NativeDisplay.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> HDRFormat.DOLBY_VISION
-        NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10 -> HDRFormat.HDR10
-        NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10_PLUS -> HDRFormat.HDR10_PLUS
-        NativeDisplay.HdrCapabilities.HDR_TYPE_HLG -> HDRFormat.HLG
-        else -> HDRFormat.UNKNOWN
-    }
-
-enum class PowerState {
-    OFF,
-    ON,
-    DOZE,
-    DOZE_SUSPEND,
-    ON_SUSPEND,
-    UNKNOWN,
-}
-
-fun displayStateToPowerState(value: Int): PowerState =
-    when (value) {
-        NativeDisplay.STATE_OFF -> PowerState.OFF
-        NativeDisplay.STATE_ON -> PowerState.ON
-        NativeDisplay.STATE_DOZE -> PowerState.DOZE
-        NativeDisplay.STATE_DOZE_SUSPEND -> PowerState.DOZE_SUSPEND
-        NativeDisplay.STATE_ON_SUSPEND -> PowerState.ON_SUSPEND
-        else -> PowerState.UNKNOWN
-    }
-
-class OutputDescription(
-    val id: Int,
-    val width: Int,
-    val height: Int,
-    val refreshRate: Float,
-) {
-    override fun toString(): String {
-        val formattedRefreshRate = "%.2f".format(refreshRate.toDouble())
-        return "${width}x$height @ ${formattedRefreshRate}hz"
-    }
-}
-
-@Suppress("DEPRECATION")
-@SuppressLint("UnsafeOptInUsageError")
-class Display(
+class Display @OptIn(UnstableApi::class)
+private constructor(
     source: NativeDisplay,
     windowManager: WindowManager,
     context: Context,
 ) {
+    enum class HDRFormat {
+        DOLBY_VISION,
+        HDR10,
+        HDR10_PLUS,
+        HLG,
+        UNKNOWN,
+    }
+
+    enum class PowerState {
+        OFF,
+        ON,
+        DOZE,
+        DOZE_SUSPEND,
+        ON_SUSPEND,
+        UNKNOWN,
+    }
+
+    class OutputDescription(
+        val id: Int,
+        val width: Int,
+        val height: Int,
+        val refreshRate: Float,
+    ) {
+        override fun toString(): String {
+            val formattedRefreshRate = "%.2f".format(refreshRate.toDouble())
+            return "${width}x$height @ ${formattedRefreshRate}hz"
+        }
+    }
+
     val name: String = source.name
     val id: Int = source.displayId
     val mode: NativeDisplay.Mode?
@@ -180,24 +159,47 @@ class Display(
             wideColorGamut = null
         }
     }
-}
 
-fun getDisplay(activity: Activity?): Display = getDisplay(activity as Context)
-
-fun getDisplay(context: Context): Display {
-    val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
-    val display =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            try {
-                context.display
-            } catch (e: UnsupportedOperationException) {
-                // Application or other non-visual context has no associated display.
-                // Fall back to the default display via DisplayManager instead.
-                displayManager.getDisplay(NativeDisplay.DEFAULT_DISPLAY)
-            }
-        } else {
-            displayManager.displays[0]
+    companion object {
+        @JvmStatic
+        fun get(context: Context): Display {
+            val displayManager = context.getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
+            val display =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    try {
+                        context.display
+                    } catch (e: UnsupportedOperationException) {
+                        // Application or other non-visual context has no associated display.
+                        // Fall back to the default display via DisplayManager instead.
+                        displayManager.getDisplay(NativeDisplay.DEFAULT_DISPLAY)
+                    }
+                } else {
+                    displayManager.displays[0]
+                }
+            val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            return Display(display, windowManager, context)
         }
-    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    return Display(display, windowManager, context)
+
+        @JvmStatic
+        fun get(activity: Activity?): Display = get(activity as Context)
+
+        private fun hdrTypeToFormat(value: Int): HDRFormat =
+            when (value) {
+                NativeDisplay.HdrCapabilities.HDR_TYPE_DOLBY_VISION -> HDRFormat.DOLBY_VISION
+                NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10 -> HDRFormat.HDR10
+                NativeDisplay.HdrCapabilities.HDR_TYPE_HDR10_PLUS -> HDRFormat.HDR10_PLUS
+                NativeDisplay.HdrCapabilities.HDR_TYPE_HLG -> HDRFormat.HLG
+                else -> HDRFormat.UNKNOWN
+            }
+
+        private fun displayStateToPowerState(value: Int): PowerState =
+            when (value) {
+                NativeDisplay.STATE_OFF -> PowerState.OFF
+                NativeDisplay.STATE_ON -> PowerState.ON
+                NativeDisplay.STATE_DOZE -> PowerState.DOZE
+                NativeDisplay.STATE_DOZE_SUSPEND -> PowerState.DOZE_SUSPEND
+                NativeDisplay.STATE_ON_SUSPEND -> PowerState.ON_SUSPEND
+                else -> PowerState.UNKNOWN
+            }
+    }
 }

@@ -2,10 +2,12 @@
 
 package com.neilturner.aerialviews.ui.helpers
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.util.TypedValue
+import com.neilturner.aerialviews.services.Display
 import java.util.Locale
 import kotlin.math.min
 
@@ -33,8 +35,8 @@ object DeviceHelper {
     fun getCpuInfo(): String = Build.SUPPORTED_ABIS.joinToString(", ")
 
     fun getMemoryInfo(context: Context): String {
-        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as android.app.ActivityManager
-        val memoryInfo = android.app.ActivityManager.MemoryInfo()
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
         val totalMemory = memoryInfo.totalMem / (1024 * 1024)
         val availableMemory = memoryInfo.availMem / (1024 * 1024)
@@ -42,9 +44,7 @@ object DeviceHelper {
     }
 
     fun getDisplayInfo(context: Context): String {
-        val display =
-            com.neilturner.aerialviews.services
-                .getDisplay(context)
+        val display = Display.get(context)
         val metrics = context.resources.displayMetrics
         val resolution = "${metrics.widthPixels}x${metrics.heightPixels} (${metrics.densityDpi}dpi)"
 

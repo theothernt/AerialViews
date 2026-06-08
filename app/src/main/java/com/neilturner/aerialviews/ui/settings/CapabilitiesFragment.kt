@@ -9,10 +9,9 @@ import androidx.preference.Preference
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.services.CodecType
 import com.neilturner.aerialviews.services.Display
-import com.neilturner.aerialviews.services.HDRFormat
-import com.neilturner.aerialviews.services.OutputDescription
+import com.neilturner.aerialviews.services.Display.HDRFormat
+import com.neilturner.aerialviews.services.Display.OutputDescription
 import com.neilturner.aerialviews.services.getCodecs
-import com.neilturner.aerialviews.services.getDisplay
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
@@ -33,7 +32,7 @@ class CapabilitiesFragment : MenuStateFragment() {
 
         lifecycleScope.launch {
             resources = context?.resources!!
-            display = getDisplay(activity)
+            display = Display.get(activity)
         }
     }
 

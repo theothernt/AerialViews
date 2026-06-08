@@ -13,8 +13,7 @@ import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
 import com.neilturner.aerialviews.providers.AppleMediaProvider
 import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.services.Display
-import com.neilturner.aerialviews.services.HDRFormat
-import com.neilturner.aerialviews.services.getDisplay
+import com.neilturner.aerialviews.services.Display.HDRFormat
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,7 +28,7 @@ class AppleVideosFragment : MenuStateFragment() {
         setPreferencesFromResource(R.xml.sources_apple_videos, rootKey)
 
         lifecycleScope.launch {
-            display = getDisplay(activity)
+            display = Display.get(activity)
             setupQualityPreference()
             updateDolbyVisionNoticeVisibility()
         }
