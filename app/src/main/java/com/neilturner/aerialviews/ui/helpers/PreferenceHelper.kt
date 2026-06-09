@@ -1,8 +1,11 @@
 package com.neilturner.aerialviews.ui.helpers
 
+import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.core.content.edit
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -58,55 +61,93 @@ object PreferenceHelper {
             }
         }
 
-        val candidates = mutableListOf<File>()
-
-        // 1. Try public Documents folder
-        val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-        candidates.add(documentsFolder)
-
-        // 2. Try App-Specific External Storage
-        val appExternalFolder = context.getExternalFilesDir(null)
-        if (appExternalFolder != null) {
-            candidates.add(appExternalFolder)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            exportViaMediaStore(context, properties)
+        } else {
+            exportViaLegacyFile(properties)
         }
+    }
 
-        // 3. Try App-Specific Internal Storage (Files Dir)
-        candidates.add(context.filesDir)
+    // Android 12+ (API 31+): write to public Documents via MediaStore (no permission needed)
+    private fun exportViaMediaStore(
+        context: Context,
+        properties: Properties,
+    ): String? {
+        return try {
+            val contentResolver = context.contentResolver
+            val externalUri = MediaStore.Files.getContentUri("external")
 
-        for (folder in candidates) {
-            try {
-                if (!folder.exists()) {
-                    folder.mkdirs()
+            // Delete any existing backup file to avoid duplicates
+            val selection =
+                "${MediaStore.MediaColumns.DISPLAY_NAME} = ? AND " +
+                    "${MediaStore.MediaColumns.RELATIVE_PATH} = ?"
+            val selectionArgs =
+                arrayOf(
+                    BACKUP_FILENAME,
+                    "${Environment.DIRECTORY_DOCUMENTS}/",
+                )
+            contentResolver.delete(externalUri, selection, selectionArgs)
+
+            // Insert new entry into the public Documents folder
+            val values =
+                ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, BACKUP_FILENAME)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/octet-stream")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOCUMENTS)
+                }
+            val insertedUri =
+                contentResolver.insert(externalUri, values) ?: run {
+                    Timber.e("MediaStore insert returned null URI")
+                    return null
                 }
 
-                if (folder.canWrite()) {
-                    val outputFile = File(folder, BACKUP_FILENAME)
-                    // If file exists, try to delete it first to avoid EEXIST if that was part of the issue
-                    // though FileOutputStream usually overwrites.
-                    if (outputFile.exists()) {
-                        outputFile.delete()
-                    }
-
-                    FileOutputStream(outputFile).use { fos ->
-                        properties.store(
-                            fos,
-                            "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
-                        )
-                    }
-
-                    Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
-                    return outputFile.absolutePath
-                } else {
-                    Timber.w("Directory not writable: ${folder.absolutePath}")
-                }
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to export settings to: ${folder.absolutePath}")
-                // Continue to next candidate
+            contentResolver.openOutputStream(insertedUri)?.use { os ->
+                properties.store(
+                    os,
+                    "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
+                )
             }
-        }
 
-        Timber.e("Failed to export settings to any location.")
-        return null
+            val displayPath = "${Environment.DIRECTORY_DOCUMENTS}/$BACKUP_FILENAME"
+            Timber.i("Settings exported via MediaStore to: $displayPath")
+            displayPath
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to export settings via MediaStore")
+            null
+        }
+    }
+
+    // Android 11 and below (API 30-): write via legacy File API to public Documents folder
+    private fun exportViaLegacyFile(properties: Properties): String? {
+        return try {
+            val documentsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+            if (!documentsFolder.exists()) {
+                documentsFolder.mkdirs()
+            }
+
+            if (!documentsFolder.canWrite()) {
+                Timber.e("Documents folder not writable: ${documentsFolder.absolutePath}")
+                return null
+            }
+
+            val outputFile = File(documentsFolder, BACKUP_FILENAME)
+            if (outputFile.exists()) {
+                outputFile.delete()
+            }
+
+            FileOutputStream(outputFile).use { fos ->
+                properties.store(
+                    fos,
+                    "Settings backup for Aerial Views ${BuildConfig.VERSION_NAME} (${BuildConfig.FLAVOR}.${BuildConfig.BUILD_TYPE})",
+                )
+            }
+
+            Timber.i("Settings exported successfully to: ${outputFile.absolutePath}")
+            outputFile.absolutePath
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to export settings to Documents folder")
+            null
+        }
     }
 
     fun importPreferences(

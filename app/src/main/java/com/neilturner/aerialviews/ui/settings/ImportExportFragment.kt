@@ -24,7 +24,20 @@ import kotlinx.coroutines.launch
 class ImportExportFragment :
     MenuStateFragment(),
     PreferenceManager.OnPreferenceTreeClickListener {
-    private lateinit var requestWritePermission: ActivityResultLauncher<String>
+    private val requestWritePermission =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                exportSettings()
+            } else {
+                DialogHelper.show(
+                    requireContext(),
+                    "",
+                    requireContext().resources.getString(R.string.settings_export_failed),
+                )
+            }
+        }
 
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
@@ -34,13 +47,6 @@ class ImportExportFragment :
 
         lifecycleScope.launch {
             processDataUri()
-
-            requestWritePermission =
-                registerForActivityResult(
-                    ActivityResultContracts.RequestPermission(),
-                ) { isGranted: Boolean ->
-                    exportSettings()
-                }
         }
     }
 
