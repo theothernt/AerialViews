@@ -731,9 +731,10 @@ Supported formats:
 
 ## Immich Server Setup
 
-Aerial Views supports streaming photos and videos from your self-hosted [Immich](https://immich.app/) server. When setting up API Key authentication in the app, you will need to generate an API key via your Immich web interface under **Account Settings > API Keys**.
+Aerial Views supports streaming photos and videos from your self-hosted [Immich](https://immich.app/) server. When setting up API Key authentication, you will need to generate an API key first via the Immich web interface. Look in **Account Settings** then **API Keys** for this option.
 
-### Required API Permissions
+<details>
+<summary>Required API Permissions</summary>
 
 To ensure Aerial Views can successfully query your albums, retrieve media list metadata (for favorites, recent, or random filters), and stream your video and photo files, your API key must have the following permissions selected:
 
@@ -742,6 +743,8 @@ To ensure Aerial Views can successfully query your albums, retrieve media list m
 
 :information_source: If you encounter `403 Forbidden` errors, verification failures, or blank screens during playback, double-check that the generated API key has all of these permissions active.
 
+</details>
+  
 ## Weather data
 
 Thanks to [OpenWeather](https://openweathermap.org/) for providing weather data to this and other open-source projects.
