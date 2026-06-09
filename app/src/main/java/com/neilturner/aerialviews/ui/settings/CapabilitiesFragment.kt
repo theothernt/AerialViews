@@ -226,10 +226,7 @@ class CapabilitiesFragment : MenuStateFragment() {
         } else {
             val extReadGranted = if (PermissionHelper.hasDocumentReadPermission(ctx)) granted else denied
             lines.add(String.format(resources.getString(R.string.capabilities_permission_read_external), extReadGranted))
-        }
 
-        // External storage write (only meaningful below R / 30)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
             val writeGranted = if (PermissionHelper.hasDocumentWritePermission(ctx)) granted else denied
             lines.add(String.format(resources.getString(R.string.capabilities_permission_write_external), writeGranted))
         }
