@@ -82,3 +82,6 @@ lint/tmp/
 
 # macOS
 *.DS_Store
+
+# Secrets file for Act
+.secrets
