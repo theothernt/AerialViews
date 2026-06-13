@@ -6,6 +6,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Environment
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import timber.log.Timber
 import java.io.File
@@ -89,13 +90,7 @@ object LogcatCapture {
         val network = connectivityManager.activeNetwork ?: return "Disconnected"
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return "Unknown"
 
-        val type =
-            when {
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
-                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
-                else -> "Other"
-            }
+        val type = NetworkHelper.getNetworkType(context)
 
         val linkSpeed =
             if (capabilities.linkDownstreamBandwidthKbps > 0) {

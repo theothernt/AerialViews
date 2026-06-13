@@ -212,6 +212,9 @@ object GeneralPrefs : KotprefModel() {
     var playlistCache by booleanPref(false, "playlist_cache")
     var playlistCacheRefresh by stringPref("-1", "playlist_cache_refresh")
 
+    // WiFi only
+    var wifiOnly by booleanPref(false, "wifi_only")
+
     // Playlist - Videos
     var playlistAudioMode by nullableEnumValuePref(PlaylistAudioMode.VIDEO_MUTED, "playlist_audio_mode")
     var videoVolume by stringPref("100", "video_volume")

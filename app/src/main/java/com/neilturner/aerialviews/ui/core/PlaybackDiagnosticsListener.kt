@@ -1,10 +1,9 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.annotation.OptIn
 import androidx.media3.common.Format
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -175,15 +174,5 @@ class PlaybackDiagnosticsListener(
             TimeUnit.MILLISECONDS.toSeconds(ms) % 60,
         )
 
-    private fun getNetworkType(): String {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val network = connectivityManager.activeNetwork ?: return "Disconnected"
-        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return "Unknown"
-        return when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
-            else -> "Other"
-        }
-    }
+    private fun getNetworkType(): String = NetworkHelper.getNetworkType(context)
 }

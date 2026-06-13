@@ -36,6 +36,7 @@ import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManif
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
 import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
 import com.neilturner.aerialviews.utils.filename
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -43,7 +44,7 @@ import timber.log.Timber
 class MediaService(
     val context: Context,
     private val providers: MutableList<MediaProvider> = mutableListOf(),
-    private val config: Config = Config.fromPreferences(),
+    private val config: Config = Config.fromPreferences(context),
 ) {
     data class Config(
         val removeDuplicates: Boolean,
@@ -69,6 +70,8 @@ class MediaService(
         val immichPath: String,
         val useCustomStreams: Boolean,
         val customUrls: String,
+        val wifiOnly: Boolean,
+        val isOnWifi: Boolean,
     ) {
         fun buildHash(): String {
             val parts =
@@ -97,12 +100,14 @@ class MediaService(
                     add(immichPath)
                     add(useCustomStreams.toString())
                     add(customUrls)
+                    add(wifiOnly.toString())
+                    add(isOnWifi.toString())
                 }
             return parts.joinToString("|").hashCode().toString()
         }
 
         companion object {
-            fun fromPreferences() =
+            fun fromPreferences(context: Context) =
                 Config(
                     removeDuplicates = GeneralPrefs.removeDuplicates,
                     ignoreNonManifestVideos = GeneralPrefs.ignoreNonManifestVideos,
@@ -127,6 +132,8 @@ class MediaService(
                     immichPath = ImmichMediaPrefs.pathName,
                     useCustomStreams = CustomFeedPrefs.enabled,
                     customUrls = CustomFeedPrefs.urls,
+                    wifiOnly = GeneralPrefs.wifiOnly,
+                    isOnWifi = NetworkHelper.isOnWifi(context),
                 )
         }
     }
@@ -145,6 +152,17 @@ class MediaService(
             providers.add(AppleMediaProvider(context, AppleVideoPrefs))
             providers.add(CustomFeedProvider(context, CustomFeedPrefs))
         }
+
+        if (GeneralPrefs.wifiOnly && !NetworkHelper.isOnWifi(context)) {
+            providers.removeAll { provider ->
+                provider is AppleMediaProvider ||
+                    provider is AmazonMediaProvider ||
+                    provider is Comm1MediaProvider ||
+                    provider is Comm2MediaProvider
+            }
+            Timber.i("MediaService: WiFi-only mode - filtered internet streaming providers")
+        }
+
         providers.sortBy { it.type == ProviderSourceType.REMOTE }
     }
 

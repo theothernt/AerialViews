@@ -668,6 +668,9 @@
     <string name="playlist_remove_duplicates_title">Remove duplicate videos &amp; photos</string>
     <string name="playlist_remove_duplicates_summary">Remove duplicate videos &amp; photos from the playlist based on filename only</string>
 
+    <string name="playlist_wifi_only_title">WiFi only</string>
+    <string name="playlist_wifi_only_summary">Skip internet streaming sources (Apple, Amazon, Community) when not on WiFi to save mobile data</string>
+
     <string name="playlist_ignore_unmatched_videos_title">Ignore non-Apple, non-community videos</string>
     <string name="playlist_ignore_unmatched_videos_summary">Skip videos not recognised as Apple or community videos</string>
 

@@ -14,6 +14,12 @@
                     app:summary="@string/playlist_remove_duplicates_summary"
                     app:title="@string/playlist_remove_duplicates_title" />
 
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="wifi_only"
+                    app:summary="@string/playlist_wifi_only_summary"
+                    app:title="@string/playlist_wifi_only_title" />
+
                 <!-- Sleep timer -->
                 <ListPreference
                     app:defaultValue="@string/sleep_timer_default"
