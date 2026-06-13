@@ -48,6 +48,11 @@ object NetworkHelper {
         return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
+    fun isOnWifi(context: Context): Boolean {
+        val capabilities = getActiveNetworkCapabilities(context) ?: return false
+        return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
+
     fun getIPAddress(context: Context): String {
         // Try modern method first (Android 10+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

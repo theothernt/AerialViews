@@ -156,6 +156,7 @@ internal class MediaServiceTest {
             immichPath = "",
             useCustomStreams = false,
             customUrls = "",
+            wifiOnly = false,
         )
 
     private fun testMedia(

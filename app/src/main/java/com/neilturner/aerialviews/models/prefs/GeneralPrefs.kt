@@ -192,6 +192,9 @@ object GeneralPrefs : KotprefModel() {
     // Ignore system animation override
     var ignoreAnimationScale by booleanPref(true, "ignore_animation_scale")
 
+    // WiFi-only mode
+    var wifiOnly by booleanPref(false, "wifi_only")
+
     // Locale
     var localeMenu by stringPref("default", "locale_menu")
     var localeScreensaver by stringPref("default", "locale_screensaver")

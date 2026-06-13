@@ -809,6 +809,9 @@
     <string name="advanced_locale_restart_app_title">Restart App</string>
     <string name="advanced_locale_restart_app_summary">The app must be restarted to change the menu locale</string>
 
+    <string name="advanced_wifi_only_title">WiFi-only for streaming</string>
+    <string name="advanced_wifi_only_summary">Only stream videos from remote sources (Apple, Amazon, etc.) when connected to WiFi. Local and LAN sources are not affected.</string>
+
     <string name="advanced_log_capture_title">Enable log capture</string>
     <string name="advanced_log_capture_summary">Capture all app logs via a background service. Logs are saved when stopped.</string>
     <string name="advanced_save_logs_title">Save logs</string>

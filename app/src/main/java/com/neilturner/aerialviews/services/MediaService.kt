@@ -35,6 +35,7 @@ import com.neilturner.aerialviews.providers.webdav.WebDavMediaProvider
 import com.neilturner.aerialviews.services.MediaServiceHelper.addMetadataToManifestVideos
 import com.neilturner.aerialviews.services.MediaServiceHelper.buildProviderContent
 import com.neilturner.aerialviews.services.MediaServiceHelper.weightedInterleavedShuffle
+import com.neilturner.aerialviews.data.network.NetworkHelper
 import com.neilturner.aerialviews.utils.filename
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -69,6 +70,7 @@ class MediaService(
         val immichPath: String,
         val useCustomStreams: Boolean,
         val customUrls: String,
+        val wifiOnly: Boolean,
     ) {
         fun buildHash(): String {
             val parts =
@@ -97,6 +99,7 @@ class MediaService(
                     add(immichPath)
                     add(useCustomStreams.toString())
                     add(customUrls)
+                    add(wifiOnly.toString())
                 }
             return parts.joinToString("|").hashCode().toString()
         }
@@ -127,6 +130,7 @@ class MediaService(
                     immichPath = ImmichMediaPrefs.pathName,
                     useCustomStreams = CustomFeedPrefs.enabled,
                     customUrls = CustomFeedPrefs.urls,
+                    wifiOnly = GeneralPrefs.wifiOnly,
                 )
         }
     }
@@ -178,7 +182,15 @@ class MediaService(
                 onStatus(LoadingStatus.LOADING)
             }
 
-            val (media, tracks) = buildProviderContent(providers)
+            val activeProviders =
+                if (config.wifiOnly && !NetworkHelper.isOnWifi(context)) {
+                    Timber.i("MediaService: WiFi-only mode enabled, filtering out REMOTE providers")
+                    providers.filter { it.type != ProviderSourceType.REMOTE }
+                } else {
+                    providers
+                }
+
+            val (media, tracks) = buildProviderContent(activeProviders)
 
             // Split into videos and photos
             var (videos, photos) = media.partition { it.type == AerialMediaType.VIDEO }
