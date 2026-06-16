@@ -4,11 +4,19 @@
 
         <PreferenceCategory app:title="@string/category_options">
                 <ListPreference
-                    app:defaultValue="@string/overlay_auto_hide_default"
-                    app:entries="@array/overlay_auto_hide_entries"
-                    app:entryValues="@array/overlay_auto_hide_values"
-                    app:key="overlay_auto_hide"
-                    app:title="@string/appearance_auto_hide_title"
+                    app:defaultValue="ALWAYS_VISIBLE"
+                    app:entries="@array/overlay_visibility_entries"
+                    app:entryValues="@array/overlay_visibility_values"
+                    app:key="overlay_visibility"
+                    app:title="@string/overlay_visibility_title"
+                    app:useSimpleSummaryProvider="true" />
+
+                <ListPreference
+                    app:defaultValue="4"
+                    app:entries="@array/overlay_visibility_delay_entries"
+                    app:entryValues="@array/overlay_visibility_delay_values"
+                    app:key="overlay_visibility_delay"
+                    app:title="@string/overlay_visibility_delay_title"
                     app:useSimpleSummaryProvider="true" />
 
                 <ListPreference
