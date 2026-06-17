@@ -651,8 +651,8 @@ class ScreenController(
     }
 
     fun detachViewsForCompose() {
-        (videoViewBinding.root.parent as? ViewGroup)?.removeView(videoViewBinding.root)
-        (imageViewBinding.root.parent as? ViewGroup)?.removeView(imageViewBinding.root)
+        (videoPlayer.parent as? ViewGroup)?.removeView(videoPlayer)
+        (imagePlayer.parent as? ViewGroup)?.removeView(imagePlayer)
         (loadingView.parent as? ViewGroup)?.removeView(loadingView)
         (brightnessView.parent as? ViewGroup)?.removeView(brightnessView)
     }
