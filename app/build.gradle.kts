@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlin.parcelize)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.android.junit5)
     alias(libs.plugins.firebase.crashlytics)
@@ -47,6 +48,7 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+        compose = true
     }
 
     lint {
@@ -195,6 +197,14 @@ dependencies {
     implementation(libs.smbj)
     implementation(libs.timber)
     implementation(libs.slf4j.simple)
+
+    // Compose
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.compose.lifecycle)
+    implementation(libs.compose.activity)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
 
     debugImplementation(libs.leakcanary)
 

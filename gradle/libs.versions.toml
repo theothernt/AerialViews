@@ -38,6 +38,11 @@ coil3 = "3.4.0"
 timber = "5.0.1"
 slf4j = "2.0.18"
 
+compose-bom = "2025.06.00"
+compose-activity = "1.10.1"
+compose-lifecycle = "2.9.1"
+compose-navigation = "2.9.0"
+
 junit-jupiter = "6.1.0"
 junit5 = "2.0.1"
 mockk = "1.14.11"
@@ -105,6 +110,18 @@ coil = { group = "io.coil-kt.coil3", name = "coil", version.ref = "coil3" }
 coil-okhttp = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil3" }
 coil-gif = { group = "io.coil-kt.coil3", name = "coil-gif", version.ref = "coil3" }
 
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
+compose-activity = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+compose-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "compose-lifecycle" }
+compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "compose-lifecycle" }
+
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
@@ -135,12 +152,15 @@ retrofit = ["okhttp", "retrofit", "converter-kotlin-serialization", "okhttp-logg
 coil = ["coil", "coil-okhttp", "coil-gif"]
 ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation", "ktor-serialization-kotlinx-json"]
 room = ["room-runtime", "room-ktx"]
+compose = ["compose-ui", "compose-ui-graphics", "compose-material3", "compose-foundation", "compose-runtime"]
+compose-lifecycle = ["compose-lifecycle-runtime", "compose-lifecycle-viewmodel"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlinter-gradle = { id = "org.jmailen.kotlinter", version.ref = "kotlinter-gradle" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

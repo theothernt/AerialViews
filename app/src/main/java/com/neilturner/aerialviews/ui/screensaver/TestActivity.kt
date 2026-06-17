@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.WindowManager
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -13,6 +14,7 @@ import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
+import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverScreen
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import timber.log.Timber
 
@@ -66,7 +68,21 @@ class TestActivity : AppCompatActivity() {
                 val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
                 ScreenController(altContext)
             }
-        setContentView(screenController.view)
+
+        if (GeneralPrefs.useComposeScreensaver) {
+            screenController.detachViewsForCompose()
+            setContent {
+                ScreensaverScreen(
+                    overlayStateStore = screenController.overlayStateStore,
+                    videoPlayer = screenController.videoPlayer,
+                    imagePlayer = screenController.imagePlayer,
+                    loadingView = screenController.loadingView,
+                    brightnessView = screenController.brightnessView,
+                )
+            }
+        } else {
+            setContentView(screenController.view)
+        }
 
         InputHelper.setupGestureListener(
             context = this,

@@ -81,7 +81,7 @@ class ScreenController(
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
     private var musicPlayer: MusicPlayer? = null
-    private val overlayStateStore = OverlayStateStore()
+    val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataResolver = MetadataResolver()
 
@@ -104,17 +104,17 @@ class ScreenController(
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
 
-    private val videoViewBinding: VideoViewBinding
-    private val imageViewBinding: ImageViewBinding
+    val videoViewBinding: VideoViewBinding
+    val imageViewBinding: ImageViewBinding
     private val overlayViewBinding: OverlayViewBinding
-    private val loadingView: View
+    val loadingView: View
     private val overlayView: View
     private var loadingText: TextView
     private var loadingSpinner: View
     private var loadingContainer: View
-    private var videoPlayer: VideoPlayerView
-    private var imagePlayer: ImagePlayerView
-    private val brightnessView: View
+    val videoPlayer: VideoPlayerView
+    val imagePlayer: ImagePlayerView
+    val brightnessView: View
     private val gradientTopView: View
     private val gradientBottomView: View
     private val progressBarView: ProgressBar
@@ -648,6 +648,13 @@ class ScreenController(
                 }
             }
         }
+    }
+
+    fun detachViewsForCompose() {
+        (videoViewBinding.root.parent as? ViewGroup)?.removeView(videoViewBinding.root)
+        (imageViewBinding.root.parent as? ViewGroup)?.removeView(imageViewBinding.root)
+        (loadingView.parent as? ViewGroup)?.removeView(loadingView)
+        (brightnessView.parent as? ViewGroup)?.removeView(brightnessView)
     }
 
     fun stop() {

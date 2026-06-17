@@ -1,7 +1,6 @@
 package com.neilturner.aerialviews.ui.screensaver
 
 import android.annotation.SuppressLint
-import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -9,9 +8,10 @@ import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
+import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverScreen
 import com.neilturner.aerialviews.utils.FirebaseHelper
 
-class DreamActivity : DreamService() {
+class DreamActivity : DreamServiceCompat() {
     private lateinit var screenController: ScreenController
 
     @SuppressLint("AppBundleLocaleChanges")
@@ -32,7 +32,21 @@ class DreamActivity : DreamService() {
                 val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
                 ScreenController(altContext)
             }
-        setContentView(screenController.view)
+
+        if (GeneralPrefs.useComposeScreensaver) {
+            screenController.detachViewsForCompose()
+            setContent {
+                ScreensaverScreen(
+                    overlayStateStore = screenController.overlayStateStore,
+                    videoPlayer = screenController.videoPlayer,
+                    imagePlayer = screenController.imagePlayer,
+                    loadingView = screenController.loadingView,
+                    brightnessView = screenController.brightnessView,
+                )
+            }
+        } else {
+            setContentView(screenController.view)
+        }
 
         InputHelper.setupGestureListener(
             context = this,
