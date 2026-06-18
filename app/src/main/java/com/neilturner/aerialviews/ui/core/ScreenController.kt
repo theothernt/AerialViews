@@ -60,6 +60,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -84,6 +87,15 @@ class ScreenController(
     val overlayStateStore = OverlayStateStore()
     private val overlayEventBridge = OverlayEventBridge(overlayStateStore)
     private val metadataResolver = MetadataResolver()
+
+    data class LoadingState(
+        val visible: Boolean = true,
+        val text: String = "",
+        val spinnerVisible: Boolean = false,
+    )
+
+    private val _loadingState = MutableStateFlow(LoadingState())
+    val loadingState: StateFlow<LoadingState> = _loadingState.asStateFlow()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
     private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
@@ -258,13 +270,14 @@ class ScreenController(
             val mediaResult =
                 MediaService(context).fetchMedia { status ->
                     mainScope.launch {
-                        loadingText.text =
-                            when (status) {
-                                LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
-                                LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
-                                LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
-                            }
+                        val text = when (status) {
+                            LoadingStatus.RESUMING -> resources.getString(R.string.loading_resuming)
+                            LoadingStatus.BUILDING -> resources.getString(R.string.loading_building)
+                            LoadingStatus.LOADING -> resources.getString(R.string.loading_title)
+                        }
+                        loadingText.text = text
                         loadingSpinner.visibility = View.VISIBLE
+                        _loadingState.value = LoadingState(visible = true, text = text, spinnerVisible = true)
                     }
                 }
             playlist = mediaResult.mediaPlaylist
@@ -413,6 +426,7 @@ class ScreenController(
             .setDuration(LOADING_FADE_OUT)
             .withEndAction {
                 loadingContainer.visibility = View.GONE
+                _loadingState.value = _loadingState.value.copy(visible = false)
             }.start()
     }
 
@@ -474,6 +488,7 @@ class ScreenController(
             .withEndAction {
                 loadingView.alpha = 0f
                 loadingView.visibility = View.INVISIBLE
+                _loadingState.value = _loadingState.value.copy(visible = false)
                 canSkip = true
             }.start()
     }
@@ -521,8 +536,10 @@ class ScreenController(
     }
 
     private fun showLoadingError() {
-        loadingText.text = resources.getString(R.string.loading_error)
+        val errorText = resources.getString(R.string.loading_error)
+        loadingText.text = errorText
         loadingSpinner.visibility = View.GONE
+        _loadingState.value = LoadingState(visible = true, text = errorText, spinnerVisible = false)
     }
 
     private fun hideOverlays(delay: Long = 0L) {

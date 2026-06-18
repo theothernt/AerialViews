@@ -6,6 +6,8 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
@@ -72,12 +74,14 @@ class TestActivity : AppCompatActivity() {
         if (GeneralPrefs.useComposeScreensaver) {
             screenController.detachViewsForCompose()
             setContent {
+                val loadingState by screenController.loadingState.collectAsState()
                 ScreensaverScreen(
                     overlayStateStore = screenController.overlayStateStore,
                     videoPlayer = screenController.videoPlayer,
                     imagePlayer = screenController.imagePlayer,
-                    loadingView = screenController.loadingView,
-                    brightnessView = screenController.brightnessView,
+                    loadingVisible = loadingState.visible,
+                    loadingText = loadingState.text,
+                    loadingSpinnerVisible = loadingState.spinnerVisible,
                 )
             }
         } else {

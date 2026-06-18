@@ -7,6 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,10 +27,12 @@ import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.overlays.state.OverlayUiState
 import kotlinx.coroutines.delay
+import kotlin.math.pow
 
 @Composable
 fun OverlayLayout(
     state: OverlayUiState,
+    loadingComplete: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val prefs = GeneralPrefs
@@ -62,15 +66,23 @@ fun OverlayLayout(
     val bottomFades = bottomLeftFades || bottomRightFades
     val topFades = topLeftFades || topRightFades
 
-    // Visibility state for each region
-    var bottomLeftVisible by remember { mutableStateOf(shouldStartVisible(autoHideValue)) }
-    var bottomRightVisible by remember { mutableStateOf(shouldStartVisible(autoHideValue)) }
-    var topLeftVisible by remember { mutableStateOf(shouldStartVisible(autoHideValue)) }
-    var topRightVisible by remember { mutableStateOf(shouldStartVisible(autoHideValue)) }
+    // Visibility state for each region - start hidden until loading completes
+    var bottomLeftVisible by remember { mutableStateOf(false) }
+    var bottomRightVisible by remember { mutableStateOf(false) }
+    var topLeftVisible by remember { mutableStateOf(false) }
+    var topRightVisible by remember { mutableStateOf(false) }
     var canShowOverlays by remember { mutableStateOf(false) }
 
-    // Auto-hide logic
-    LaunchedEffect(autoHideValue) {
+    // Show overlays once loading completes, then apply auto-hide logic
+    LaunchedEffect(loadingComplete, autoHideValue) {
+        if (!loadingComplete) {
+            bottomLeftVisible = false
+            bottomRightVisible = false
+            topLeftVisible = false
+            topRightVisible = false
+            return@LaunchedEffect
+        }
+
         when {
             autoHideValue == -1L -> {
                 // Always visible
@@ -125,7 +137,8 @@ fun OverlayLayout(
                 visible = bottomGradientVisible,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .height(200.dp),
                 enter = fadeIn(animationSpec = androidx.compose.animation.core.tween(fadeDuration.toInt())),
                 exit = fadeOut(animationSpec = androidx.compose.animation.core.tween(fadeOutDuration.toInt())),
             ) {
@@ -134,7 +147,7 @@ fun OverlayLayout(
                         .fillMaxSize()
                         .background(
                             Brush.verticalGradient(
-                                colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.6f)),
+                                colors = easeInGradientColors().reversed(),
                             ),
                         ),
                 )
@@ -147,7 +160,8 @@ fun OverlayLayout(
                 visible = topGradientVisible,
                 modifier = Modifier
                     .align(Alignment.TopCenter)
-                    .fillMaxSize(),
+                    .fillMaxWidth()
+                    .height(200.dp),
                 enter = fadeIn(animationSpec = androidx.compose.animation.core.tween(fadeDuration.toInt())),
                 exit = fadeOut(animationSpec = androidx.compose.animation.core.tween(fadeOutDuration.toInt())),
             ) {
@@ -156,7 +170,7 @@ fun OverlayLayout(
                         .fillMaxSize()
                         .background(
                             Brush.verticalGradient(
-                                colors = listOf(Color.Black.copy(alpha = 0.6f), Color.Transparent),
+                                colors = easeInGradientColors(),
                             ),
                         ),
                 )
@@ -249,10 +263,6 @@ fun OverlayLayout(
     }
 }
 
-private fun shouldStartVisible(autoHideValue: Long): Boolean {
-    return autoHideValue != 0L
-}
-
 @Composable
 private fun OverlayContent(
     type: OverlayType,
@@ -317,4 +327,25 @@ private fun OverlayContent(
 
         else -> { /* EMPTY or unknown — render nothing */ }
     }
+}
+
+// Cubic ease-in gradient matching GradientHelper.smoothBackgroundAlt
+private fun easeInGradientColors(): List<Color> {
+    val equation: (Double) -> Double = { x ->
+        if (x < 0.5) 4 * x * x * x else 1 - (-2 * x + 2).pow(3.0) / 2
+    }
+
+    val colors = mutableListOf<Color>()
+    val min = 0.3
+    val max = 1.0
+    val steps = 20.0
+
+    var i = min
+    while (i <= max) {
+        val alpha = (1 - equation(i)).toFloat()
+        colors.add(Color(0f, 0f, 0f, alpha))
+        i += max / steps
+    }
+
+    return colors
 }

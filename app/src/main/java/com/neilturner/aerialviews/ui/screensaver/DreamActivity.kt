@@ -3,6 +3,9 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.annotation.SuppressLint
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.activity.compose.setContent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
@@ -36,12 +39,14 @@ class DreamActivity : DreamServiceCompat() {
         if (GeneralPrefs.useComposeScreensaver) {
             screenController.detachViewsForCompose()
             setContent {
+                val loadingState by screenController.loadingState.collectAsState()
                 ScreensaverScreen(
                     overlayStateStore = screenController.overlayStateStore,
                     videoPlayer = screenController.videoPlayer,
                     imagePlayer = screenController.imagePlayer,
-                    loadingView = screenController.loadingView,
-                    brightnessView = screenController.brightnessView,
+                    loadingVisible = loadingState.visible,
+                    loadingText = loadingState.text,
+                    loadingSpinnerVisible = loadingState.spinnerVisible,
                 )
             }
         } else {
