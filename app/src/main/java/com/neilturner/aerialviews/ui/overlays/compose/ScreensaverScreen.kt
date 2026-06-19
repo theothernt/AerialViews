@@ -32,6 +32,9 @@ fun ScreensaverScreen(
     loadingVisible: Boolean = true,
     loadingText: String = "",
     loadingSpinnerVisible: Boolean = false,
+    onSkipNext: () -> Unit = {},
+    onSkipPrevious: () -> Unit = {},
+    onPause: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val state by overlayStateStore.uiState.collectAsState()

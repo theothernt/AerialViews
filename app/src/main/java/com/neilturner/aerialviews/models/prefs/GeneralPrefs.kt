@@ -273,7 +273,6 @@ object GeneralPrefs : KotprefModel() {
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")
-    var useComposeScreensaver by booleanPref(true, "use_compose_screensaver")
 
     // Old devices
     var checkForHevcSupport by booleanPref(false, "check_for_hevc_support")

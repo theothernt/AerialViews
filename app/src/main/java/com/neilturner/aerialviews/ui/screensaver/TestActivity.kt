@@ -8,9 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModelProvider
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ScreensaverViewModel
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
@@ -22,13 +24,15 @@ import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
+    private lateinit var viewModel: ScreensaverViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setup
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
         supportActionBar?.hide()
+
+        viewModel = ViewModelProvider(this)[ScreensaverViewModel::class.java]
     }
 
     override fun onResume() {
@@ -41,8 +45,6 @@ class TestActivity : AppCompatActivity() {
         super.onPause()
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
-        // Using OSD TV menus calls suspend but the screensaver is still running
-        // So only stop if on phone or tablet
         if (!DeviceHelper.isTV(this) && this::screenController.isInitialized) {
             screenController.stop()
             finishWithResult()
@@ -51,6 +53,8 @@ class TestActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.stopOverlayEventBridge()
+        viewModel.stopServices()
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
@@ -59,10 +63,8 @@ class TestActivity : AppCompatActivity() {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
-        // Hide system UI on phones
         hideSystemUI(window)
 
-        // Start playback, etc
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
                 ScreenController(this)
@@ -71,21 +73,24 @@ class TestActivity : AppCompatActivity() {
                 ScreenController(altContext)
             }
 
-        if (GeneralPrefs.useComposeScreensaver) {
-            screenController.detachViewsForCompose()
-            setContent {
-                val loadingState by screenController.loadingState.collectAsState()
-                ScreensaverScreen(
-                    overlayStateStore = screenController.overlayStateStore,
-                    videoPlayer = screenController.videoPlayer,
-                    imagePlayer = screenController.imagePlayer,
-                    loadingVisible = loadingState.visible,
-                    loadingText = loadingState.text,
-                    loadingSpinnerVisible = loadingState.spinnerVisible,
-                )
-            }
-        } else {
-            setContentView(screenController.view)
+        screenController.detachViewsForCompose()
+        viewModel.startOverlayEventBridge()
+        viewModel.startServices(screenController.overlayHelper)
+        screenController.onScheduleSleepTimer = { viewModel.scheduleSleepTimer() }
+
+        setContent {
+            val loadingState by viewModel.loadingState.collectAsState()
+            ScreensaverScreen(
+                overlayStateStore = viewModel.overlayStateStore,
+                videoPlayer = screenController.videoPlayer,
+                imagePlayer = screenController.imagePlayer,
+                loadingVisible = loadingState.visible,
+                loadingText = loadingState.text,
+                loadingSpinnerVisible = loadingState.spinnerVisible,
+                onSkipNext = { screenController.skipItem() },
+                onSkipPrevious = { screenController.skipItem(previous = true) },
+                onPause = { screenController.togglePause() },
+            )
         }
 
         InputHelper.setupGestureListener(
@@ -107,8 +112,6 @@ class TestActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        // Stop playback, animations, etc
-        // Stop here in TV, already stopped in onPause if phone
         window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (this::screenController.isInitialized && DeviceHelper.isTV(this)) {
             screenController.stop()

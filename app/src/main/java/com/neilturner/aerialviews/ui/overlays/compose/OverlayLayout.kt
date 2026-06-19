@@ -139,7 +139,7 @@ fun OverlayLayout(
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth()
                     .height(200.dp),
-                enter = fadeIn(animationSpec = androidx.compose.animation.core.tween(fadeDuration.toInt())),
+                enter = androidx.compose.animation.EnterTransition.None,
                 exit = fadeOut(animationSpec = androidx.compose.animation.core.tween(fadeOutDuration.toInt())),
             ) {
                 Box(
@@ -162,7 +162,7 @@ fun OverlayLayout(
                     .align(Alignment.TopCenter)
                     .fillMaxWidth()
                     .height(200.dp),
-                enter = fadeIn(animationSpec = androidx.compose.animation.core.tween(fadeDuration.toInt())),
+                enter = androidx.compose.animation.EnterTransition.None,
                 exit = fadeOut(animationSpec = androidx.compose.animation.core.tween(fadeOutDuration.toInt())),
             ) {
                 Box(

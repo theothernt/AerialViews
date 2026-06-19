@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.activity.compose.setContent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
+import com.neilturner.aerialviews.ui.core.ScreensaverViewModel
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
@@ -16,18 +17,18 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 
 class DreamActivity : DreamServiceCompat() {
     private lateinit var screenController: ScreenController
+    private lateinit var viewModel: ScreensaverViewModel
 
     @SuppressLint("AppBundleLocaleChanges")
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        // Setup
         isFullscreen = true
         isInteractive = true
 
-        // Hide system UI on phones
         hideSystemUI(window)
 
-        // Start playback, etc
+        viewModel = ScreensaverViewModel(application)
+
         screenController =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
                 ScreenController(this)
@@ -36,21 +37,25 @@ class DreamActivity : DreamServiceCompat() {
                 ScreenController(altContext)
             }
 
-        if (GeneralPrefs.useComposeScreensaver) {
-            screenController.detachViewsForCompose()
-            setContent {
-                val loadingState by screenController.loadingState.collectAsState()
-                ScreensaverScreen(
-                    overlayStateStore = screenController.overlayStateStore,
-                    videoPlayer = screenController.videoPlayer,
-                    imagePlayer = screenController.imagePlayer,
-                    loadingVisible = loadingState.visible,
-                    loadingText = loadingState.text,
-                    loadingSpinnerVisible = loadingState.spinnerVisible,
-                )
-            }
-        } else {
-            setContentView(screenController.view)
+        screenController.detachViewsForCompose()
+        viewModel.startOverlayEventBridge()
+        viewModel.startServices(screenController.overlayHelper)
+        screenController.onScheduleSleepTimer = { viewModel.scheduleSleepTimer() }
+
+        setContent {
+            val loadingState by viewModel.loadingState.collectAsState()
+            val overlayState by viewModel.overlayStateStore.uiState.collectAsState()
+            ScreensaverScreen(
+                overlayStateStore = viewModel.overlayStateStore,
+                videoPlayer = screenController.videoPlayer,
+                imagePlayer = screenController.imagePlayer,
+                loadingVisible = loadingState.visible,
+                loadingText = loadingState.text,
+                loadingSpinnerVisible = loadingState.spinnerVisible,
+                onSkipNext = { screenController.skipItem() },
+                onSkipPrevious = { screenController.skipItem(previous = true) },
+                onPause = { screenController.togglePause() },
+            )
         }
 
         InputHelper.setupGestureListener(
@@ -64,14 +69,12 @@ class DreamActivity : DreamServiceCompat() {
         try {
             super.onWakeUp()
         } catch (e: Exception) {
-            // Doesn't matter
         }
     }
 
     override fun onDreamingStarted() {
         super.onDreamingStarted()
         FirebaseHelper.analyticsScreenView("Screensaver", this)
-        // Start playback, etc
     }
 
     private fun altWakeUp(exitApp: Boolean) {
@@ -82,9 +85,6 @@ class DreamActivity : DreamServiceCompat() {
         try {
             super.dispatchTouchEvent(event)
         } catch (e: SecurityException) {
-            // Android bug: DreamService internally reads a restricted settings key
-            // on Android 12+. Safe to swallow — touch handling may be degraded
-            // but the dream will continue running.
             true
         }
 
@@ -102,13 +102,13 @@ class DreamActivity : DreamServiceCompat() {
         try {
             super.dispatchGenericMotionEvent(event)
         } catch (e: SecurityException) {
-            // Ignore the restricted setting access error
             false
         }
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
-        // Stop playback, animations, etc
+        viewModel.stopOverlayEventBridge()
+        viewModel.stopServices()
         if (this::screenController.isInitialized) {
             screenController.stop()
         }
