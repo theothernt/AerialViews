@@ -3,23 +3,15 @@ package com.neilturner.aerialviews.ui.core
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.neilturner.aerialviews.data.PlaylistCacheRepository
-import com.neilturner.aerialviews.models.LoadingStatus
-import com.neilturner.aerialviews.models.MediaPlaylist
-import com.neilturner.aerialviews.models.enums.AerialMediaType
 import com.neilturner.aerialviews.models.enums.DateType
 import com.neilturner.aerialviews.models.enums.LocationType
 import com.neilturner.aerialviews.models.enums.MetadataType
 import com.neilturner.aerialviews.models.enums.OverlayType
-import com.neilturner.aerialviews.models.enums.ProgressBarLocation
-import com.neilturner.aerialviews.models.music.MusicPlaylist
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
-import com.neilturner.aerialviews.services.MediaService
-import com.neilturner.aerialviews.services.MusicPlayer
+import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
-import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.ui.helpers.OverlayHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
@@ -27,8 +19,6 @@ import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
 import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
-import com.neilturner.aerialviews.ui.overlays.state.ProgressOverlayState
-import com.neilturner.aerialviews.ui.controls.ProgressState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,11 +30,8 @@ import timber.log.Timber
 
 class ScreensaverViewModel(application: Application) : AndroidViewModel(application) {
     private val context = application
-    private val cacheRepository = PlaylistCacheRepository(application)
 
-    private var playlist: MediaPlaylist? = null
     private var currentMedia: AerialMedia? = null
-    private var musicPlayer: MusicPlayer? = null
     private var nowPlayingService: NowPlayingService? = null
     private var weatherService: WeatherService? = null
     private var ktorServer: KtorServer? = null
@@ -60,15 +47,6 @@ class ScreensaverViewModel(application: Application) : AndroidViewModel(applicat
 
     private val _loadingState = MutableStateFlow(LoadingState())
     val loadingState: StateFlow<LoadingState> = _loadingState.asStateFlow()
-
-    private val _currentMedia = MutableStateFlow<AerialMedia?>(null)
-    val currentMediaState: StateFlow<AerialMedia?> = _currentMedia.asStateFlow()
-
-    private val _isVideoVisible = MutableStateFlow(false)
-    val isVideoVisible: StateFlow<Boolean> = _isVideoVisible.asStateFlow()
-
-    private val _isImageVisible = MutableStateFlow(false)
-    val isImageVisible: StateFlow<Boolean> = _isImageVisible.asStateFlow()
 
     private val _blackOutMode = MutableStateFlow(false)
     val blackOutMode: StateFlow<Boolean> = _blackOutMode.asStateFlow()
@@ -123,73 +101,17 @@ class ScreensaverViewModel(application: Application) : AndroidViewModel(applicat
             delay(minutes * 60_000L)
             if (!_blackOutMode.value) {
                 Timber.i("Sleep timer finished - toggling blackout mode")
-                toggleBlackOutMode()
+                _blackOutMode.value = true
             }
         }
     }
 
-    fun loadPlaylist() {
-        viewModelScope.launch {
-            val mediaResult = MediaService(context).fetchMedia { status ->
-                val text = when (status) {
-                    LoadingStatus.RESUMING -> context.getString(com.neilturner.aerialviews.R.string.loading_resuming)
-                    LoadingStatus.BUILDING -> context.getString(com.neilturner.aerialviews.R.string.loading_building)
-                    LoadingStatus.LOADING -> context.getString(com.neilturner.aerialviews.R.string.loading_title)
-                }
-                _loadingState.value = LoadingState(visible = true, text = text, spinnerVisible = true)
-            }
-
-            playlist = mediaResult.mediaPlaylist
-            if (playlist != null && playlist!!.size > 0) {
-                Timber.i("Playlist size: ${playlist!!.size}")
-                loadNextItem()
-            } else {
-                _loadingState.value = LoadingState(visible = true, text = context.getString(com.neilturner.aerialviews.R.string.loading_error), spinnerVisible = false)
-            }
-
-            // Setup music player
-            setupMusicPlayer(mediaResult.musicPlaylist, mediaResult.musicResumeIndex)
-        }
-    }
-
-    private fun setupMusicPlayer(musicPlaylist: MusicPlaylist?, resumeIndex: Int) {
-        val backgroundMusicSelected = GeneralPrefs.playsBackgroundMusic
-        if (!backgroundMusicSelected || musicPlaylist == null || musicPlaylist.size == 0) {
-            return
-        }
-
-        musicPlayer = MusicPlayer(context, musicPlaylist)
-        musicPlayer?.createPlayer()
-        if (resumeIndex > 0) {
-            musicPlayer?.seekToTrack(resumeIndex)
-        }
-        musicPlayer?.play()
-        Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
-    }
-
-    fun loadNextItem(previous: Boolean = false) {
-        val p = playlist ?: return
-        val media = if (previous) p.previousItem() else p.nextItem()
-        loadItem(media)
-        savePlaybackPosition()
-    }
-
-    private fun loadItem(media: AerialMedia) {
-        currentMedia = media
-        _currentMedia.value = media
+    fun onOverlayReset() {
         _overlayStateStore.resetForNextMedia()
+    }
 
-        // Update visibility
-        _isVideoVisible.value = media.type == AerialMediaType.VIDEO
-        _isImageVisible.value = media.type == AerialMediaType.IMAGE
-
-        // Update metadata overlays
-        updateMetadataOverlayData(media)
-
-        // Post progress bar reset
-        if (GeneralPrefs.progressBarLocation != ProgressBarLocation.DISABLED) {
-            GlobalBus.post(com.neilturner.aerialviews.ui.controls.ProgressBarEvent(ProgressState.RESET))
-        }
+    fun onLoadingStateUpdate(visible: Boolean, text: String, spinnerVisible: Boolean) {
+        _loadingState.value = LoadingState(visible = visible, text = text, spinnerVisible = spinnerVisible)
     }
 
     fun updateMetadataOverlayData(media: AerialMedia) {
@@ -260,55 +182,11 @@ class ScreensaverViewModel(application: Application) : AndroidViewModel(applicat
             )
         }
 
-    private fun savePlaybackPosition() {
-        if (GeneralPrefs.playlistCache && playlist != null) {
-            viewModelScope.launch {
-                cacheRepository.saveMediaPosition(playlist!!.currentPosition)
-            }
-        }
-    }
-
-    fun skipItem(previous: Boolean = false) {
-        loadNextItem(previous)
-    }
-
-    fun toggleBlackOutMode() {
-        val p = playlist ?: return
-        if (p.size == 0) return
-
-        _blackOutMode.value = !_blackOutMode.value
-        if (_blackOutMode.value) {
-            // Enter blackout
-        } else {
-            // Exit blackout
-            loadNextItem()
-        }
-    }
-
-    fun nextTrack() {
-        musicPlayer?.nextTrack()
-        saveMusicTrackPosition()
-    }
-
-    fun previousTrack() {
-        musicPlayer?.previousTrack()
-        saveMusicTrackPosition()
-    }
-
-    private fun saveMusicTrackPosition() {
-        if (GeneralPrefs.playlistCache) {
-            viewModelScope.launch {
-                musicPlayer?.let {
-                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
-                }
-            }
-        }
-    }
-
     override fun onCleared() {
         super.onCleared()
         stopServices()
-        musicPlayer?.pause()
-        musicPlayer?.release()
+        sleepTimerJob?.cancel()
+        metadataJobs.values.forEach { it.cancel() }
+        metadataJobs.clear()
     }
 }

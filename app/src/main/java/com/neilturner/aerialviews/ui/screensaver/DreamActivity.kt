@@ -37,10 +37,16 @@ class DreamActivity : DreamServiceCompat() {
                 ScreenController(altContext)
             }
 
+        screenController.onMetadataUpdate = { media -> viewModel.updateMetadataOverlayData(media) }
+        screenController.onOverlayReset = { viewModel.onOverlayReset() }
+        screenController.onLoadingStateUpdate = { visible, text, spinnerVisible ->
+            viewModel.onLoadingStateUpdate(visible, text, spinnerVisible)
+        }
+
         screenController.detachViewsForCompose()
         viewModel.startOverlayEventBridge()
         viewModel.startServices(screenController.overlayHelper)
-        screenController.onScheduleSleepTimer = { viewModel.scheduleSleepTimer() }
+        viewModel.scheduleSleepTimer()
 
         setContent {
             val loadingState by viewModel.loadingState.collectAsState()
