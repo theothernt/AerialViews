@@ -513,6 +513,7 @@ class ScreenController(
             .withStartAction {
                 loadingView.visibility = View.VISIBLE
                 loadingView.alpha = 0f
+                _loadingState.value = _loadingState.value.copy(visible = true)
             }.withEndAction {
                 // Hide content views after faded out
                 videoViewBinding.root.visibility = View.INVISIBLE
