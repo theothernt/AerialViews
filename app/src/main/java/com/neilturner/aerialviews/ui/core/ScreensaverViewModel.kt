@@ -12,11 +12,7 @@ import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.services.KtorServer
 import com.neilturner.aerialviews.services.NowPlayingService
 import com.neilturner.aerialviews.services.weather.WeatherService
-import com.neilturner.aerialviews.ui.helpers.OverlayHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
-import com.neilturner.aerialviews.ui.overlays.MessageOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherForecastOverlay
-import com.neilturner.aerialviews.ui.overlays.WeatherNowOverlay
 import com.neilturner.aerialviews.ui.overlays.state.OverlayEventBridge
 import com.neilturner.aerialviews.ui.overlays.state.OverlayStateStore
 import kotlinx.coroutines.Job
@@ -63,21 +59,28 @@ class ScreensaverViewModel(application: Application) : AndroidViewModel(applicat
         overlayEventBridge.stop()
     }
 
-    fun startServices(overlayHelper: OverlayHelper) {
+    fun startServices() {
         viewModelScope.launch {
             if (PermissionHelper.hasNotificationListenerPermission(context)) {
                 nowPlayingService = NowPlayingService(context)
             }
 
-            val hasWeatherNowOverlay = overlayHelper.findOverlay<WeatherNowOverlay>().isNotEmpty()
-            val hasForecastOverlay = overlayHelper.findOverlay<WeatherForecastOverlay>().isNotEmpty()
+            val slots = listOf(
+                GeneralPrefs.slotBottomLeft1, GeneralPrefs.slotBottomLeft2,
+                GeneralPrefs.slotBottomRight1, GeneralPrefs.slotBottomRight2,
+                GeneralPrefs.slotTopLeft1, GeneralPrefs.slotTopLeft2,
+                GeneralPrefs.slotTopRight1, GeneralPrefs.slotTopRight2,
+            )
+            val hasWeatherNowOverlay = slots.any { it == OverlayType.WEATHER1 }
+            val hasForecastOverlay = slots.any { it == OverlayType.WEATHER2 }
             if (hasWeatherNowOverlay || hasForecastOverlay) {
                 weatherService = WeatherService(context).apply {
                     startUpdates(fetchCurrentWeather = hasWeatherNowOverlay, fetchForecast = hasForecastOverlay)
                 }
             }
 
-            if (overlayHelper.findOverlay<MessageOverlay>().isNotEmpty() && GeneralPrefs.messageApiEnabled) {
+            val hasMessageOverlay = slots.any { it == OverlayType.MESSAGE1 || it == OverlayType.MESSAGE2 || it == OverlayType.MESSAGE3 || it == OverlayType.MESSAGE4 }
+            if (hasMessageOverlay && GeneralPrefs.messageApiEnabled) {
                 ktorServer = KtorServer(context) { event -> GlobalBus.post(event) }.apply { start() }
             }
         }

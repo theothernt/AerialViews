@@ -81,7 +81,7 @@ class TestActivity : AppCompatActivity() {
 
         screenController.detachViewsForCompose()
         viewModel.startOverlayEventBridge()
-        viewModel.startServices(screenController.overlayHelper)
+        viewModel.startServices()
         viewModel.scheduleSleepTimer()
 
         setContent {

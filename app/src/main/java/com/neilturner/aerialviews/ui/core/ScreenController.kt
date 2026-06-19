@@ -4,11 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import com.neilturner.aerialviews.R
-import com.neilturner.aerialviews.databinding.AerialActivityBinding
-import com.neilturner.aerialviews.databinding.ImageViewBinding
-import com.neilturner.aerialviews.databinding.VideoViewBinding
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -22,7 +20,6 @@ import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.core.ImagePlayerView.OnImagePlayerEventListener
 import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventListener
 import com.neilturner.aerialviews.ui.helpers.ColourHelper
-import com.neilturner.aerialviews.ui.helpers.OverlayHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
 import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
@@ -40,7 +37,6 @@ class ScreenController(
     OnImagePlayerEventListener {
     private val mainScope = CoroutineScope(Dispatchers.Main)
     private lateinit var playlist: MediaPlaylist
-    val overlayHelper: OverlayHelper
     private val resources by lazy { context.resources }
     private var isStopped = false
 
@@ -64,44 +60,35 @@ class ScreenController(
         private set
 
     init {
-        val inflater = LayoutInflater.from(context)
-        val binding = AerialActivityBinding.inflate(inflater)
-
         val backgroundVideos = ColourHelper.colourFromString(GeneralPrefs.backgroundVideos)
         val backgroundPhotos = ColourHelper.colourFromString(GeneralPrefs.backgroundPhotos)
 
-        view = binding.root
+        val rootLayout = FrameLayout(context).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT,
+            )
+            keepScreenOn = true
+        }
+        view = rootLayout
 
-        val initialVideoRoot = binding.videoView.root
-        val videoParent = initialVideoRoot.parent as? ViewGroup
         val videoLayoutRes =
             if (GeneralPrefs.useTextureViewForVideo) {
                 R.layout.video_view_texture
             } else {
                 R.layout.video_view
             }
-
-        val videoViewBinding =
-            if (videoParent != null) {
-                val index = videoParent.indexOfChild(initialVideoRoot)
-                videoParent.removeView(initialVideoRoot)
-                val replacementVideoRoot = LayoutInflater.from(context).inflate(videoLayoutRes, videoParent, false)
-                videoParent.addView(replacementVideoRoot, index)
-                VideoViewBinding.bind(replacementVideoRoot)
-            } else {
-                binding.videoView
-            }
-
-        videoViewBinding.root.setBackgroundColor(backgroundVideos)
-        videoPlayer = videoViewBinding.videoPlayer
+        val videoContainer = LayoutInflater.from(context).inflate(videoLayoutRes, rootLayout, false) as FrameLayout
+        videoContainer.setBackgroundColor(backgroundVideos)
+        videoPlayer = videoContainer.findViewById(R.id.video_player)
         videoPlayer.setOnPlayerListener(this)
+        rootLayout.addView(videoContainer)
 
-        val imageViewBinding = binding.imageView
-        imageViewBinding.root.setBackgroundColor(backgroundPhotos)
-        imagePlayer = imageViewBinding.imagePlayer
+        val imageContainer = LayoutInflater.from(context).inflate(R.layout.image_view, rootLayout, false) as FrameLayout
+        imageContainer.setBackgroundColor(backgroundPhotos)
+        imagePlayer = imageContainer.findViewById(R.id.image_player)
         imagePlayer.setOnPlayerListener(this)
-
-        overlayHelper = OverlayHelper(context, GeneralPrefs)
+        rootLayout.addView(imageContainer)
 
         if (GeneralPrefs.ignoreAnimationScale) {
             WindowHelper.resetSystemAnimationDuration(context)
@@ -216,18 +203,24 @@ class ScreenController(
 
         onLoadingStateUpdate?.invoke(true, "", false)
 
-        videoPlayer.stop()
-        imagePlayer.stop()
+        // Wait for loading overlay to fully fade in before swapping content
+        val fadeOutDuration = GeneralPrefs.mediaFadeOutDuration.toLongOrNull() ?: 800L
+        mainScope.launch {
+            delay(fadeOutDuration)
 
-        isPaused = false
-        pauseStartTime = 0
+            videoPlayer.stop()
+            imagePlayer.stop()
 
-        if (!blackOutMode) {
-            val loadPreviousItem = previousItem
-            previousItem = false
-            loadNextItem(loadPreviousItem)
-        } else {
-            previousItem = false
+            isPaused = false
+            pauseStartTime = 0
+
+            if (!blackOutMode) {
+                val loadPreviousItem = previousItem
+                previousItem = false
+                loadNextItem(loadPreviousItem)
+            } else {
+                previousItem = false
+            }
         }
     }
 

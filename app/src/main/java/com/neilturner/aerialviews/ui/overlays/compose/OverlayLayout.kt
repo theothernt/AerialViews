@@ -32,7 +32,6 @@ import kotlin.math.pow
 @Composable
 fun OverlayLayout(
     state: OverlayUiState,
-    loadingComplete: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val prefs = GeneralPrefs
@@ -63,26 +62,16 @@ fun OverlayLayout(
     val bottomRightFades = fadeCorners.contains("BOTTOM_RIGHT") && hasBottomRight
     val topLeftFades = fadeCorners.contains("TOP_LEFT") && hasTopLeft
     val topRightFades = fadeCorners.contains("TOP_RIGHT") && hasTopRight
-    val bottomFades = bottomLeftFades || bottomRightFades
-    val topFades = topLeftFades || topRightFades
 
-    // Visibility state for each region - start hidden until loading completes
+    // Visibility state for each region
     var bottomLeftVisible by remember { mutableStateOf(false) }
     var bottomRightVisible by remember { mutableStateOf(false) }
     var topLeftVisible by remember { mutableStateOf(false) }
     var topRightVisible by remember { mutableStateOf(false) }
     var canShowOverlays by remember { mutableStateOf(false) }
 
-    // Show overlays once loading completes, then apply auto-hide logic
-    LaunchedEffect(loadingComplete, autoHideValue) {
-        if (!loadingComplete) {
-            bottomLeftVisible = false
-            bottomRightVisible = false
-            topLeftVisible = false
-            topRightVisible = false
-            return@LaunchedEffect
-        }
-
+    // Apply auto-hide logic on first composition
+    LaunchedEffect(autoHideValue) {
         when {
             autoHideValue == -1L -> {
                 // Always visible

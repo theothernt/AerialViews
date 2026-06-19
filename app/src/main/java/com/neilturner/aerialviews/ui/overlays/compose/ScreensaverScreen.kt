@@ -57,18 +57,17 @@ fun ScreensaverScreen(
             modifier = Modifier.fillMaxSize(),
         )
 
-        // Loading overlay
+        // Overlay layer
+        OverlayLayout(
+            state = state,
+            modifier = Modifier.fillMaxSize(),
+        )
+
+        // Loading overlay - on top of everything
         LoadingOverlay(
             visible = loadingVisible,
             text = loadingText,
             showSpinner = loadingSpinnerVisible,
-        )
-
-        // Overlay layer - hidden until loading completes
-        OverlayLayout(
-            state = state,
-            loadingComplete = !loadingVisible,
-            modifier = Modifier.fillMaxSize(),
         )
 
         // Progress bar
