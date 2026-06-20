@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.lifecycle.ViewModelProvider
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
@@ -20,19 +19,20 @@ import com.neilturner.aerialviews.ui.helpers.PreferenceHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverScreen
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import org.koin.android.ext.android.getKoin
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
     private lateinit var screenController: ScreenController
-    private lateinit var viewModel: ScreensaverViewModel
+    private val viewModel: ScreensaverViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         setTitle(R.string.app_name)
         supportActionBar?.hide()
-
-        viewModel = ViewModelProvider(this)[ScreensaverViewModel::class.java]
     }
 
     override fun onResume() {
@@ -65,13 +65,13 @@ class TestActivity : AppCompatActivity() {
 
         hideSystemUI(window)
 
-        screenController =
+        val controllerContext =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
+                this
             } else {
-                val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
+                LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
             }
+        screenController = getKoin().get { parametersOf(controllerContext) }
 
         screenController.onMetadataUpdate = { media -> viewModel.updateMetadataOverlayData(media) }
         screenController.onOverlayReset = { viewModel.onOverlayReset() }

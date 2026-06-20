@@ -206,6 +206,9 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
 
+    // Koin
+    implementation(libs.bundles.koin)
+
     debugImplementation(libs.leakcanary)
 
     testImplementation(libs.junit.jupiter.api)

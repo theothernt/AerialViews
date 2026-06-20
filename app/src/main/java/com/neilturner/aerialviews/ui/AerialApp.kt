@@ -4,6 +4,7 @@ import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.VmPolicy
 import com.neilturner.aerialviews.BuildConfig
+import com.neilturner.aerialviews.di.screensaverModule
 import com.neilturner.aerialviews.models.enums.OverlayType
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.models.prefs.AppleVideoPrefs
@@ -12,11 +13,21 @@ import com.neilturner.aerialviews.models.prefs.Comm2VideoPrefs
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.LogcatCapture
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class AerialApp : Application() {
     override fun onCreate() {
         super.onCreate()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@AerialApp)
+            modules(screensaverModule)
+        }
+
         configureLogging()
 
         if (GeneralPrefs.enableLogCapture) {

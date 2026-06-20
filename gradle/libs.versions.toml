@@ -42,6 +42,7 @@ compose-bom = "2025.06.00"
 compose-activity = "1.10.1"
 compose-lifecycle = "2.9.1"
 compose-navigation = "2.9.0"
+koin = "4.2.2"
 
 junit-jupiter = "6.1.0"
 junit5 = "2.0.1"
@@ -125,6 +126,10 @@ compose-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-
 smbj = { group = "com.hierynomus", name = "smbj", version.ref = "smbj" }
 sardine-android = { group = "com.github.nova-video-player", name = "sardine-android", version.ref = "sardine-android" }
 
+koin = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
+koin-compose-viewmodel = { group = "io.insert-koin", name = "koin-compose-viewmodel", version.ref = "koin" }
+
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 leakcanary = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
@@ -154,6 +159,7 @@ ktor = ["ktor-server-core", "ktor-server-cio", "ktor-server-content-negotiation"
 room = ["room-runtime", "room-ktx"]
 compose = ["compose-ui", "compose-ui-graphics", "compose-material3", "compose-foundation", "compose-runtime"]
 compose-lifecycle = ["compose-lifecycle-runtime", "compose-lifecycle-viewmodel"]
+koin = ["koin", "koin-compose", "koin-compose-viewmodel"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

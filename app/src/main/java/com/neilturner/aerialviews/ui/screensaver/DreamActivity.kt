@@ -3,20 +3,21 @@ package com.neilturner.aerialviews.ui.screensaver
 import android.annotation.SuppressLint
 import android.view.KeyEvent
 import android.view.MotionEvent
+import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.activity.compose.setContent
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
-import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.core.ScreensaverViewModel
 import com.neilturner.aerialviews.ui.helpers.InputHelper
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper.hideSystemUI
 import com.neilturner.aerialviews.ui.overlays.compose.ScreensaverScreen
 import com.neilturner.aerialviews.utils.FirebaseHelper
+import org.koin.android.ext.android.getKoin
+import org.koin.core.parameter.parametersOf
 
 class DreamActivity : DreamServiceCompat() {
-    private lateinit var screenController: ScreenController
+    private lateinit var screenController: com.neilturner.aerialviews.ui.core.ScreenController
     private lateinit var viewModel: ScreensaverViewModel
 
     @SuppressLint("AppBundleLocaleChanges")
@@ -27,15 +28,15 @@ class DreamActivity : DreamServiceCompat() {
 
         hideSystemUI(window)
 
-        viewModel = ScreensaverViewModel(application)
+        viewModel = koinViewModel()
 
-        screenController =
+        val controllerContext =
             if (GeneralPrefs.localeScreensaver.startsWith("default")) {
-                ScreenController(this)
+                this
             } else {
-                val altContext = LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
-                ScreenController(altContext)
+                LocaleHelper.alternateLocale(this, GeneralPrefs.localeScreensaver)
             }
+        screenController = getKoin().get { parametersOf(controllerContext) }
 
         screenController.onMetadataUpdate = { media -> viewModel.updateMetadataOverlayData(media) }
         screenController.onOverlayReset = { viewModel.onOverlayReset() }
