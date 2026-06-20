@@ -15,6 +15,7 @@ class MediaPlaylist(
 ) {
     private var position = startPosition
     private var _hasReachedEnd = false
+    var onPositionChanged: ((Int) -> Unit)? = null
 
     private val windowVideos = initialVideos.toMutableList()
     private val windowLock = Any()
@@ -24,6 +25,7 @@ class MediaPlaylist(
 
     fun nextItem(): AerialMedia {
         position = calculateNext(++position)
+        onPositionChanged?.invoke(position)
         if (position == 0 && size > 0) _hasReachedEnd = true
 
         Timber.v("MediaPlaylist: nextItem() -> pos $position / $size (window: ${windowVideos.size})")
@@ -34,6 +36,7 @@ class MediaPlaylist(
 
     fun previousItem(): AerialMedia {
         position = calculateNext(--position)
+        onPositionChanged?.invoke(position)
 
         Timber.v("MediaPlaylist: previousItem() -> pos $position / $size (window: ${windowVideos.size})")
         checkAndRefillWindow()

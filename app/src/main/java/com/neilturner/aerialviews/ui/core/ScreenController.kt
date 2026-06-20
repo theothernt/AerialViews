@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import com.neilturner.aerialviews.R
+import com.neilturner.aerialviews.data.PlaylistCacheRepository
 import com.neilturner.aerialviews.models.LoadingStatus
 import com.neilturner.aerialviews.models.MediaPlaylist
 import com.neilturner.aerialviews.models.enums.AerialMediaType
@@ -41,6 +42,8 @@ class ScreenController(
     private var isStopped = false
 
     private var musicPlayer: MusicPlayer? = null
+    private val playlistCacheRepository =
+        if (GeneralPrefs.playlistCache) PlaylistCacheRepository(context) else null
 
     var onMetadataUpdate: ((AerialMedia) -> Unit)? = null
     var onOverlayReset: (() -> Unit)? = null
@@ -108,6 +111,11 @@ class ScreenController(
                     }
                 }
             playlist = mediaResult.mediaPlaylist
+            playlist.onPositionChanged = { position ->
+                playlistCacheRepository?.let { repo ->
+                    mainScope.launch { repo.saveMediaPosition(position) }
+                }
+            }
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
                 loadNextItem()
