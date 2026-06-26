@@ -448,8 +448,12 @@ class VideoPlayerView
             removeCallbacks(almostFinishedRunnable)
 
             if (state.startPosition <= 0 && state.endPosition <= 0 && state.type != AerialMediaSource.RTSP) {
-                postDelayed(almostFinishedRunnable, 2 * 1000)
-                if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                if (GeneralPrefs.loopUntilSkipped) {
+                    Timber.i("The video will only finish when skipped manually")
+                } else {
+                    postDelayed(almostFinishedRunnable, 2 * 1000)
+                    if (progressBar) GlobalBus.post(ProgressBarEvent(ProgressState.RESET))
+                }
                 return
             }
 

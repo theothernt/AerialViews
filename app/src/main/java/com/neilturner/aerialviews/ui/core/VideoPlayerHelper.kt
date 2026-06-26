@@ -228,7 +228,7 @@ object VideoPlayerHelper {
     ): Pair<Long, Long> {
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val isLengthLimited = maxVideoLength >= TEN_SECONDS
-        val isShortVideo = player.duration < maxVideoLength
+        val isShortVideo = player.duration in 1..<maxVideoLength
 
         if (type == AerialMediaSource.RTSP) {
             Timber.i("Calculating RTSP stream length...")
