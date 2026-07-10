@@ -1,6 +1,10 @@
 package com.neilturner.aerialviews.ui.helpers
 
-import androidx.exifinterface.media.ExifInterface
+import com.drew.imaging.ImageMetadataReader
+import com.drew.metadata.Metadata
+import com.drew.metadata.exif.ExifDirectoryBase
+import com.drew.metadata.exif.ExifIFD0Directory
+import com.drew.metadata.exif.GpsDirectory
 import io.ktor.utils.io.charsets.forName
 import timber.log.Timber
 import java.io.ByteArrayInputStream
@@ -10,17 +14,22 @@ import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
 import java.util.Locale
 
+private const val ORIENTATION_UNDEFINED = 0
+
 data class ExifMetadata(
     val date: String? = null,
     val offset: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
     val description: String? = null,
-    val orientation: Int = ExifInterface.ORIENTATION_UNDEFINED,
+    val orientation: Int = ORIENTATION_UNDEFINED,
 )
 
 object BitmapHelper {
     internal const val HEADER_BUFFER_SIZE = 512 * 1024 // 512KB - enough for EXIF and image header
+
+    private const val TAG_OFFSET_TIME_ORIGINAL = 36880 // 0x9010
+    private const val TAG_OFFSET_TIME = 36881 // 0x9011
 
     fun extractExifMetadataFromHeader(
         headerBytes: ByteArray,
@@ -37,26 +46,30 @@ object BitmapHelper {
     private fun extractMetadata(openInputStream: () -> InputStream?): ExifMetadata =
         try {
             openInputStream()?.use { stream ->
-                val exif = ExifInterface(stream)
-                val description = extractExifDescription(exif)
+                val metadata = ImageMetadataReader.readMetadata(stream)
+                val exifDir = metadata.getFirstDirectoryOfType(ExifDirectoryBase::class.java)
+                val gpsDir = metadata.getFirstDirectoryOfType(GpsDirectory::class.java)
+                val description = extractExifDescription(metadata)
                 ExifMetadata(
-                    date = exif.getAttribute(ExifInterface.TAG_DATETIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_DATETIME),
-                    offset = exif.getAttribute(ExifInterface.TAG_OFFSET_TIME_ORIGINAL) ?: exif.getAttribute(ExifInterface.TAG_OFFSET_TIME),
-                    latitude = exif.latLong?.getOrNull(0),
-                    longitude = exif.latLong?.getOrNull(1),
+                    date = exifDir?.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
+                        ?: metadata.getFirstDirectoryOfType(ExifIFD0Directory::class.java)?.getString(ExifDirectoryBase.TAG_DATETIME),
+                    offset = exifDir?.getString(TAG_OFFSET_TIME_ORIGINAL)
+                        ?: exifDir?.getString(TAG_OFFSET_TIME),
+                    latitude = gpsDir?.geoLocation?.latitude,
+                    longitude = gpsDir?.geoLocation?.longitude,
                     description = description,
-                    orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED),
+                    orientation = exifDir?.getInt(ExifDirectoryBase.TAG_ORIENTATION) ?: ORIENTATION_UNDEFINED,
                 )
             } ?: ExifMetadata()
         } catch (_: Exception) {
             ExifMetadata()
         }
 
-    private fun extractExifDescription(exif: ExifInterface): String? {
+    private fun extractExifDescription(metadata: Metadata): String? {
         val imageDescription =
             decodeExifText(
-                exif = exif,
-                tag = ExifInterface.TAG_IMAGE_DESCRIPTION,
+                metadata = metadata,
+                exifTag = ExifDirectoryBase.TAG_IMAGE_DESCRIPTION,
                 hasUserCommentPrefix = false,
             )
         sanitizeExifDescription(imageDescription)?.let { return it }
@@ -65,8 +78,8 @@ object BitmapHelper {
 
         val userComment =
             decodeExifText(
-                exif = exif,
-                tag = ExifInterface.TAG_USER_COMMENT,
+                metadata = metadata,
+                exifTag = ExifDirectoryBase.TAG_USER_COMMENT,
                 hasUserCommentPrefix = true,
             )
         return sanitizeExifDescription(userComment)
@@ -85,16 +98,17 @@ object BitmapHelper {
     }
 
     private fun decodeExifText(
-        exif: ExifInterface,
-        tag: String,
+        metadata: Metadata,
+        exifTag: Int,
         hasUserCommentPrefix: Boolean,
     ): String? {
-        val rawBytes = exif.getAttributeBytes(tag)
+        val exifDir = metadata.getFirstDirectoryOfType(ExifDirectoryBase::class.java)
+        val rawBytes = exifDir?.getByteArray(exifTag)
         val decoded =
             if (rawBytes != null) {
                 if (hasUserCommentPrefix) decodeUserComment(rawBytes) else decodeBestEffort(rawBytes)
             } else {
-                exif.getAttribute(tag)
+                exifDir?.getString(exifTag)
             }
         return decoded?.trim()?.trimEnd('\u0000')?.takeIf { it.isNotBlank() }
     }
