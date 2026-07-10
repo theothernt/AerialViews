@@ -4,6 +4,7 @@ import com.drew.imaging.ImageMetadataReader
 import com.drew.metadata.Metadata
 import com.drew.metadata.exif.ExifDirectoryBase
 import com.drew.metadata.exif.ExifIFD0Directory
+import com.drew.metadata.exif.ExifSubIFDDirectory
 import com.drew.metadata.exif.GpsDirectory
 import io.ktor.utils.io.charsets.forName
 import timber.log.Timber
@@ -48,17 +49,18 @@ object BitmapHelper {
             openInputStream()?.use { stream ->
                 val metadata = ImageMetadataReader.readMetadata(stream)
                 val exifDir = metadata.getFirstDirectoryOfType(ExifDirectoryBase::class.java)
+                val subDir = metadata.getFirstDirectoryOfType(ExifSubIFDDirectory::class.java)
                 val gpsDir = metadata.getFirstDirectoryOfType(GpsDirectory::class.java)
                 val description = extractExifDescription(metadata)
                 ExifMetadata(
-                    date = exifDir?.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
+                    date = subDir?.getString(ExifDirectoryBase.TAG_DATETIME_ORIGINAL)
                         ?: metadata.getFirstDirectoryOfType(ExifIFD0Directory::class.java)?.getString(ExifDirectoryBase.TAG_DATETIME),
-                    offset = exifDir?.getString(TAG_OFFSET_TIME_ORIGINAL)
-                        ?: exifDir?.getString(TAG_OFFSET_TIME),
+                    offset = subDir?.getString(TAG_OFFSET_TIME_ORIGINAL)
+                        ?: subDir?.getString(TAG_OFFSET_TIME),
                     latitude = gpsDir?.geoLocation?.latitude,
                     longitude = gpsDir?.geoLocation?.longitude,
                     description = description,
-                    orientation = exifDir?.getInt(ExifDirectoryBase.TAG_ORIENTATION) ?: ORIENTATION_UNDEFINED,
+                    orientation = exifDir?.getInteger(ExifDirectoryBase.TAG_ORIENTATION) ?: ORIENTATION_UNDEFINED,
                 )
             } ?: ExifMetadata()
         } catch (_: Exception) {
