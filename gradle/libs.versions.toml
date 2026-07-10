@@ -9,7 +9,7 @@ core-ktx = "1.19.0"
 activity-ktx = "1.13.0"
 constraintlayout = "2.2.1"
 appcompat = "1.7.1"
-exifinterface = "1.4.2"
+metadata-extractor = "2.19.0"
 desugar-jdk-libs = "2.1.5"
 room = "2.8.4"
 
@@ -62,7 +62,7 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity-ktx" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+metadata-extractor = { group = "com.drewnoakes", name = "metadata-extractor", version.ref = "metadata-extractor" }
 desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
 
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
@@ -126,7 +126,7 @@ benchmark-junit4 = { group = "androidx.benchmark", name = "benchmark-junit4", ve
 
 [bundles]
 kotlin = ["kotlin-stdlib", "coroutines-core", "coroutines-android", "kotlinx-serialization-json"]
-androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat", "exifinterface"]
+androidx = ["core-ktx", "leanback", "leanback-preference", "preference-ktx", "activity-ktx", "constraintlayout", "appcompat", "metadata-extractor"]
 firebase = ["firebase-analytics", "firebase-crashlytics", "firebase-perf"]
 exoplayer = ["media3-exoplayer", "media3-ui", "media3-rtsp", "media3-hls"]
 flowbus = ["flowbus", "flowbus-android"]
