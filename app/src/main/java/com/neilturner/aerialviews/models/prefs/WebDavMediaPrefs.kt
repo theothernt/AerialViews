@@ -25,6 +25,8 @@ object WebDavMediaPrefs : KotprefModel(), WebDavProviderPreferences {
     override var userName by stringPref("", "webdav_media_username")
     override var password by stringPref("", "webdav_media_password")
     override var searchSubfolders by booleanPref(false, "webdav_media_search_subfolders")
+
+    override fun settingsHash(): String = settingsHashWithPrefix("webdav_media_")
 }
 
 object WebDavMediaPrefs2 : KotprefModel(), WebDavProviderPreferences {
@@ -81,4 +83,6 @@ object WebDavMediaPrefs2 : KotprefModel(), WebDavProviderPreferences {
         set(value) {
             WebDavMediaPrefs.searchSubfolders = value
         }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("webdav_media2_", "webdav_media_")
 }

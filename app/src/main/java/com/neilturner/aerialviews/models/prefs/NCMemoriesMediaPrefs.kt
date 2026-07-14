@@ -49,4 +49,6 @@ object NCMemoriesMediaPrefs : KotprefModel(), NCMemoriesUrlPrefs, NCMemoriesImag
         "ncmemories_media_video_type"
     )
     var isTestConnection: Boolean = false
+
+    fun settingsHash(): String = settingsHashWithPrefix("ncmemories_media_")
 }

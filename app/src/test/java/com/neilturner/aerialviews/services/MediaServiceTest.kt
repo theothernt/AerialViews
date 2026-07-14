@@ -33,6 +33,7 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
@@ -56,6 +57,7 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
@@ -79,6 +81,7 @@ internal class MediaServiceTest {
                             ),
                         ),
                     config = defaultConfig(),
+                    hashFn = { "test-hash" },
                 )
 
             val result = service.fetchMedia()
@@ -136,29 +139,12 @@ internal class MediaServiceTest {
             removeDuplicates = false,
             ignoreNonManifestVideos = false,
             autoTimeOfDay = false,
-            currentTimePeriod = "",
             playlistTimeOfDayDayIncludes = emptySet(),
             playlistTimeOfDayNightIncludes = emptySet(),
             playlistCache = false,
             shuffleVideos = false,
             shuffleMusic = false,
             repeatMusic = false,
-            useAppleVideos = false,
-            useAmazonVideos = false,
-            useComm1Videos = false,
-            useComm2Videos = false,
-            useLocalVideos = false,
-            useSambaVideos = false,
-            useWebDavVideos = false,
-            webDavPath = "",
-            useImmichVideos = false,
-            immichUrl = "",
-            immichPath = "",
-            useNCMemoriesVideos = false,
-            ncmemoriesUrl = "",
-            ncmemoriesUsername = "",
-            useCustomStreams = false,
-            customUrls = "",
         )
 
     private fun testMedia(

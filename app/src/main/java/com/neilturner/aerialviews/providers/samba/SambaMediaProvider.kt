@@ -36,6 +36,8 @@ class SambaMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     override suspend fun prepare() {
         if (prefs.wakeOnLanEnabled && prefs.hostName.isNotEmpty()) {
             val maxWaitSeconds = (prefs.wakeOnLanTimeout.toLongOrNull() ?: 120L).coerceAtLeast(0L)
