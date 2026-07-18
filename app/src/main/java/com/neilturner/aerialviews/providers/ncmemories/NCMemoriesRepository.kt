@@ -61,7 +61,7 @@ class NCMemoriesRepository(
                                 album,
                                 client.getDays(
                                     credential = credential,
-                                    cluster_id = album.cluster_id,
+                                    clusterId = album.clusterId,
                                     vid = getTypeFilter(),
                                 )
                             )
@@ -84,8 +84,8 @@ class NCMemoriesRepository(
                                 albumDaysResponse.first.name,
                                 client.getImages(
                                     credential = credential,
-                                    cluster_id = albumDaysResponse.first.cluster_id,
-                                    dayids = albumDaysResponse.second.body()?.map { it.dayid }
+                                    clusterId = albumDaysResponse.first.clusterId,
+                                    dayIds = albumDaysResponse.second.body()?.map { it.dayId }
                                         ?.joinToString(",") ?: "",
                                     vid = getTypeFilter(),
                                 )
@@ -117,7 +117,7 @@ class NCMemoriesRepository(
 
                             // Save album name for image ID lookup
                             albumImages.forEach { image ->
-                                albumNamesByImageId.getOrPut(image.fileid) { mutableSetOf() }
+                                albumNamesByImageId.getOrPut(image.fileId) { mutableSetOf() }
                                     .add(albumName)
                             }
                         } else {
@@ -140,10 +140,10 @@ class NCMemoriesRepository(
 
                 val uniqueImages =
                     allImages
-                        .distinctBy { it.fileid }
+                        .distinctBy { it.fileId }
                         .map { image ->
                             // Album name lookup for remaining unique images
-                            val albumNamesLookup = albumNamesByImageId[image.fileid].orEmpty()
+                            val albumNamesLookup = albumNamesByImageId[image.fileId].orEmpty()
                             val resolvedAlbumName =
                                 when {
                                     isSingleAlbumSelection -> albumNamesLookup.singleOrNull()
@@ -219,8 +219,8 @@ class NCMemoriesRepository(
                     val allImagesResponseDeferred = async {
                         client.getImages(
                             credential = credential,
-                            dayids = allDays
-                                .map { it.dayid }
+                            dayIds = allDays
+                                .map { it.dayId }
                                 .joinToString(","),
                             fav = fav,
                             vid = getTypeFilter(),
@@ -279,7 +279,7 @@ class NCMemoriesRepository(
                             image,
                             client.getFullImageInfo(
                                 credential = credential,
-                                fileid = image.fileid
+                                fileId = image.fileId
                             )
                         )
                     }
@@ -288,7 +288,7 @@ class NCMemoriesRepository(
             val imageInfoResponses = imageInfoDeferreds.awaitAll()
 
             for (imageInfoResponsePair in imageInfoResponses) {
-                val imageId = imageInfoResponsePair.first.fileid
+                val imageId = imageInfoResponsePair.first.fileId
                 val albumName = imageInfoResponsePair.first.albumName
                 val imageInfoResponse = imageInfoResponsePair.second
                 Timber.d("API Request for image $imageId - URL: ${imageInfoResponse.raw().request.url}")
@@ -296,7 +296,7 @@ class NCMemoriesRepository(
                 if (imageInfoResponse.isSuccessful) {
                     val exifResponse = imageInfoResponse.body()
                     if (exifResponse != null) {
-                        Timber.d("Successfully fetched image EXIF: ${exifResponse.basename}")
+                        Timber.d("Successfully fetched image EXIF: ${exifResponse.baseName}")
 
                         // reapply album name after EXIF request
                         imagesWithExif.add(exifResponse.copy(albumName = albumName))
@@ -352,7 +352,7 @@ class NCMemoriesRepository(
                 if (albumListQuery.isSuccessful) {
                     val serverAlbumList = albumListQuery.body() ?: emptyList()
                     val selectedAlbumList = if (!serverAlbumList.isEmpty()) {
-                            serverAlbumList.filter { it.album_id.toString() in selectedAlbumIDs }
+                            serverAlbumList.filter { it.albumId.toString() in selectedAlbumIDs }
                         } else {
                             emptyList()
                         }

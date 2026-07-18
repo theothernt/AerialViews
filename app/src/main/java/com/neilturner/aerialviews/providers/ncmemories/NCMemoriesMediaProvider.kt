@@ -167,7 +167,7 @@ class NCMemoriesMediaProvider(
             // Combine and deduplicate all filtered images
             val allImages =
                 (filteredAlbumsImages + favoriteImages + recentImages)
-                    .distinctBy { it.fileid }
+                    .distinctBy { it.fileId }
 
             return@coroutineScope ImageFetchResults(
                 allImages = allImages,

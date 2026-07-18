@@ -229,7 +229,7 @@ class NCMemoriesVideosFragment :
         }
 
         val albumNames = albums.map { "${it.name} (${it.count} files)" }.toTypedArray()
-        val albumIds = albums.map { it.album_id.toString() }.toTypedArray()
+        val albumIds = albums.map { it.albumId.toString() }.toTypedArray()
         val availableAlbumIds = albumIds.toSet()
         val currentSelectedAlbumIds =
             NCMemoriesMediaPrefs.selectedAlbumIds.intersect(availableAlbumIds)

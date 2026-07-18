@@ -16,24 +16,24 @@ class NCMemoriesUrlBuilder(
     private val screenHeight = Resources.getSystem().displayMetrics.heightPixels
 
     fun getImageUri(
-        fileID: Int,
-        isVideo: Boolean,
-        etag: String,
+		fileId: Int,
+	    isVideo: Boolean,
+	    etag: String,
     ): Uri {
-		val fileIDString = fileID.toString()
+		val fileIdString = fileId.toString()
 	    val url: String = if (isVideo) {
 	            if (prefs.videoType == NCMemoriesVideoType.TRANSCODED) {
 	                val client = "aerialviews"
 	                val filename = "index.m3u8"
-	                "$server/apps/memories/api/video/transcode/$client/$fileIDString/$filename"
+	                "$server/apps/memories/api/video/transcode/$client/$fileIdString/$filename"
 	            } else {
-	                "$server/apps/memories/api/stream/$fileID"
+	                "$server/apps/memories/api/stream/$fileId"
 	            }
 	        } else {
 	            if (prefs.imageType == NCMemoriesImageType.ORIGINAL) {
-	                "$server/apps/memories/api/image/decodable/$fileID?etag=$etag"
+	                "$server/apps/memories/api/image/decodable/$fileId?etag=$etag"
 	            } else {
-	                "$server/apps/memories/api/image/preview/$fileID?x=$screenWidth&y=$screenHeight"
+	                "$server/apps/memories/api/image/preview/$fileId?x=$screenWidth&y=$screenHeight"
 	            }
 	        }
         return uriFactory(url)

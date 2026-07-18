@@ -23,7 +23,7 @@ class NCMemoriesImageMapper(
 
     fun filterImagesByMediaType(images: List<Image>): List<Image> =
         images.filter { image ->
-            val filename = image.basename
+            val filename = image.baseName
             when {
                 FileHelper.isSupportedVideoType(filename) -> prefs.includeVideos
                 FileHelper.isSupportedImageType(filename) -> prefs.includePhotos
@@ -38,7 +38,7 @@ class NCMemoriesImageMapper(
         var photosCount = 0
 
         images.forEach { image ->
-            val filename = image.basename
+            val filename = image.baseName
             val isVideo = FileHelper.isSupportedVideoType(filename)
             val isImage = FileHelper.isSupportedImageType(filename)
 
@@ -46,7 +46,7 @@ class NCMemoriesImageMapper(
                 val rawExif = image.exif
                 val exif = extractExifMetadata(image)
 
-                val uri = urlBuilder.getImageUri(image.fileid, isVideo, image.etag)
+                val uri = urlBuilder.getImageUri(image.fileId, isVideo, image.etag)
                 Timber.i(
                     "Immich EXIF: basename=%s album=%s",
                     filename,
@@ -59,8 +59,8 @@ class NCMemoriesImageMapper(
                             AerialMediaMetadata(
                                 exif = exif,
                                 albumName = image.albumName.orEmpty(),
-                                title = rawExif?.Title.orEmpty(),
-                                shortDescription = image.filename.orEmpty(),
+                                title = rawExif?.title.orEmpty(),
+                                shortDescription = image.fileName.orEmpty(),
                             ),
                     ).apply {
                         source = AerialMediaSource.NCMEMORIES
@@ -93,14 +93,14 @@ class NCMemoriesImageMapper(
 
     private fun extractExifMetadata(image: Image): AerialExifMetadata {
         val exifInfo = image.exif
-        val imageEpoch = image.epoch ?: exifInfo?.DateTimeEpoch
+        val imageEpoch = image.epoch ?: exifInfo?.dateTimeEpoch
 
         return AerialExifMetadata(
             date = imageEpoch?.let { Instant.fromEpochSeconds(it) }.toString(),
-            offset = exifInfo?.OffsetTimeOriginal,
-            latitude = exifInfo?.GPSLatitude?.toDoubleOrNull(),
-            longitude = exifInfo?.GPSLongitude?.toDoubleOrNull(),
-            description = exifInfo?.Description,
+            offset = exifInfo?.offsetTimeOriginal,
+            latitude = exifInfo?.gpsLatitude?.toDoubleOrNull(),
+            longitude = exifInfo?.gpsLongitude?.toDoubleOrNull(),
+            description = exifInfo?.description,
         )
     }
 

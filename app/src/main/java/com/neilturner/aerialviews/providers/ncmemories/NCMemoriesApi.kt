@@ -20,7 +20,7 @@ interface NCMemoriesApi {
     @GET("/apps/memories/api/days")
     suspend fun getDays(
         @Header("Authorization") credential: String,
-        @Query("albums") cluster_id: String? = null,
+        @Query("albums") clusterId: String? = null,
         @Query("fav") fav: Int? = null,
         @Query("vid") vid: Int? = null,
     ): Response<List<Day>>
@@ -29,8 +29,8 @@ interface NCMemoriesApi {
     @GET("/apps/memories/api/days/{dayids}")
     suspend fun getImages(
         @Header("Authorization") credential: String,
-        @Path("dayids") dayids: String,
-        @Query("albums") cluster_id: String? = null,
+        @Path("dayids") dayIds: String,
+        @Query("albums") clusterId: String? = null,
         @Query("fav") fav: Int? = null,
         @Query("vid") vid: Int? = null,
         ): Response<List<Image>>
@@ -39,50 +39,54 @@ interface NCMemoriesApi {
     @GET("/apps/memories/api/image/info/{fileid}")
     suspend fun getFullImageInfo(
         @Header("Authorization") credential: String,
-        @Path("fileid") fileid: Int,
+        @Path("fileid") fileId: Int,
     ): Response<Image>
 }
 
 @Serializable
 data class Album(
     @SerialName("album_id")
-    val album_id: Int,
+    val albumId: Int,
     @SerialName("cluster_id")
-    val cluster_id: String,
-    @SerialName("name")
+    val clusterId: String,
     val name: String,
-    @SerialName("count")
     val count: Int,
 )
 
 @Serializable
 data class Day(
     @SerialName("dayid")
-    val dayid: Int,
+    val dayId: Int,
 )
 
 @Serializable
 data class Image(
     @SerialName("fileid")
-    val fileid: Int,
+    val fileId: Int,
     val etag: String,
     @SerialName("basename")
-    val basename: String,
+    val baseName: String,
     val epoch: Long? = null,
-    val filename: String? = null,
+    @SerialName("filename")
+    val fileName: String? = null,
     val exif: ExifInfo? = null,
-    @SerialName("albumName")
     val albumName: String? = "",
 )
 
 @Serializable
 data class ExifInfo(
-    val DateTimeEpoch: Long? = null,
-    val OffsetTimeOriginal: String? = null,
-    val GPSLatitude: String? = null,
-    val GPSLongitude: String? = null,
-    val Title: String? = null,
-    val Description: String? = null,
+    @SerialName("DateTimeEpoch")
+    val dateTimeEpoch: Long? = null,
+    @SerialName("OffsetTimeOriginal")
+    val offsetTimeOriginal: String? = null,
+    @SerialName("GPSLatitude")
+    val gpsLatitude: String? = null,
+    @SerialName("GPSLongitude")
+    val gpsLongitude: String? = null,
+    @SerialName("Title")
+    val title: String? = null,
+    @SerialName("Description")
+    val description: String? = null,
 )
 
 @Serializable
