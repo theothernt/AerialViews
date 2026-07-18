@@ -439,6 +439,8 @@ class ScreenController(
 
         // Hide overlays immediately
         if (autoHideOverlayDelay.toInt() == 0) {
+            overlayHelper.isHidden = true
+            setOverlayInstancesHidden(true)
             overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
             // Also hide gradients immediately if they have fading overlays
             // AND no persistent overlays
@@ -535,6 +537,9 @@ class ScreenController(
             return
         }
 
+        overlayHelper.isHidden = true
+        setOverlayInstancesHidden(true)
+
         overlaysToFade.forEachIndexed { index, view ->
             val animator =
                 view
@@ -570,6 +575,12 @@ class ScreenController(
         }
     }
 
+    private fun setOverlayInstancesHidden(hidden: Boolean) {
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherNowOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.isHidden = hidden }
+    }
+
     fun showOverlays() {
         // Overlay auto hide pref must be enabled
         if (autoHideOverlayDelay < 0) return
@@ -588,6 +599,8 @@ class ScreenController(
         if (overlaysToFade.isEmpty()) return
 
         canShowOverlays = false
+        overlayHelper.isHidden = false
+        setOverlayInstancesHidden(false)
 
         overlaysToFade.forEachIndexed { index, view ->
             val animator =

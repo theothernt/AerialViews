@@ -32,6 +32,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
+    var isHidden = false
     private val minVisibleAlphaForFade = 0.95f
     private val prefs = GeneralPrefs
     private var scopeJob = SupervisorJob()
@@ -111,6 +112,11 @@ class NowPlayingOverlay : AppCompatTextView {
             },
         )
 
+        if (isHidden) {
+            Timber.i("$type: Skipping visibility change, overlay is hidden")
+            return
+        }
+
         if (!isGone && text.isNullOrBlank()) {
             Timber.i("$type: Transition... GONE")
             visibility = GONE
@@ -130,6 +136,10 @@ class NowPlayingOverlay : AppCompatTextView {
     }
 
     private suspend fun fadeIn() {
+        if (isHidden) {
+            Timber.i("$type: Skipping fade-in, overlay is hidden")
+            return
+        }
         animate()
             .alpha(1f)
             .setDuration(300)
