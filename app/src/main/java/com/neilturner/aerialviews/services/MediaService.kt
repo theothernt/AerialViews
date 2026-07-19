@@ -285,29 +285,18 @@ class MediaService(
         }
 
     private fun trackMediaUsage(media: List<AerialMedia>) {
-        // Count media by source
-        val sourcesCounts = media.groupBy { it.source }.mapValues { it.value.size }
-
-        // Build parameters with individual source counts
-        val bundle = Bundle()
-        
-        // Add count for each source (generalised)
-        sourcesCounts.forEach { (source, count) ->
-            if (source != AerialMediaSource.UNKNOWN) {
-                bundle.putString("source_${source.name.lowercase()}", generalizeCount(count))
-            }
-        }
+        // Count distinct sources
+        val sourceCount = media.map { it.source }.distinct().size
 
         // Count videos and photos
         val videoCount = media.count { it.type == AerialMediaType.VIDEO }
         val photoCount = media.count { it.type == AerialMediaType.IMAGE }
 
-        // Add generalised video and photo counts
+        val bundle = Bundle()
         bundle.putString("total_videos", generalizeCount(videoCount))
         bundle.putString("total_photos", generalizeCount(photoCount))
-        bundle.putString("total_sources", sourcesCounts.size.toString())
+        bundle.putString("total_sources", sourceCount.toString())
 
-        // Log analytics event
         FirebaseHelper.analyticsEvent(
             "media_sources_usage",
             bundle,
