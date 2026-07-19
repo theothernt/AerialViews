@@ -25,6 +25,7 @@ class OverlayHelper(
     private val prefs: GeneralPrefs,
 ) {
     var overlays = mutableListOf<View?>()
+    var isHidden = false
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
