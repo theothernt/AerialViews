@@ -23,4 +23,6 @@ interface SambaProviderPreferences {
     var wakeOnLanEnabled: Boolean
     var wakeOnLanMacAddress: String
     var wakeOnLanTimeout: String
+
+    fun settingsHash(): String
 }

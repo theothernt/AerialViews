@@ -19,4 +19,6 @@ object AmazonVideoPrefs : KotprefModel(), ProviderPreferences {
     override val timeOfDay by stringSetPref("amazon_videos_time_of_day") {
         context.resources.getStringArray(R.array.video_time_of_day_default).toSet()
     }
+
+    override fun settingsHash(): String = settingsHashWithPrefix("amazon_videos_")
 }

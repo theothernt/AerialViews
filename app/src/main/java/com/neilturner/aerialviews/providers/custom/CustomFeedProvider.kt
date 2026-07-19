@@ -36,6 +36,8 @@ class CustomFeedProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     override suspend fun fetch(): ProviderFetchResult {
         videos.clear()
         metadata.clear()

@@ -22,6 +22,8 @@ class ImmichMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     private val serverUrl by lazy { UrlParser.parseServerUrl(prefs.url) }
     private val urlBuilder = ImmichUrlBuilder(serverUrl, prefs)
     private val repository = ImmichRepository(prefs, urlBuilder)

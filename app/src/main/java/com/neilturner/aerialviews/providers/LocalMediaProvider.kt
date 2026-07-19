@@ -27,6 +27,8 @@ class LocalMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     override suspend fun fetch(): ProviderFetchResult {
         val result =
             if (prefs.searchType == SearchType.MEDIA_STORE) {

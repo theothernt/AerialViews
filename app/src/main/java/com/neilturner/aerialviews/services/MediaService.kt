@@ -49,102 +49,53 @@ class MediaService(
     val context: Context,
     private val providers: MutableList<MediaProvider> = mutableListOf(),
     private val config: Config = Config.fromPreferences(),
+    private val hashFn: (() -> String)? = null,
 ) {
     data class Config(
         val removeDuplicates: Boolean,
         val ignoreNonManifestVideos: Boolean,
         val autoTimeOfDay: Boolean,
-        val currentTimePeriod: String,
         val playlistTimeOfDayDayIncludes: Set<String>,
         val playlistTimeOfDayNightIncludes: Set<String>,
         val playlistCache: Boolean,
         val shuffleVideos: Boolean,
         val shuffleMusic: Boolean,
         val repeatMusic: Boolean,
-        val useAppleVideos: Boolean,
-        val useAmazonVideos: Boolean,
-        val useComm1Videos: Boolean,
-        val useComm2Videos: Boolean,
-        val useLocalVideos: Boolean,
-        val useSambaVideos: Boolean,
-        val useWebDavVideos: Boolean,
-        val webDavPath: String,
-        val useImmichVideos: Boolean,
-        val immichUrl: String,
-        val immichPath: String,
-        val useNCMemoriesVideos: Boolean,
-        val ncmemoriesUrl: String,
-        val ncmemoriesUsername: String,
-        val useCustomStreams: Boolean,
-        val customUrls: String,
     ) {
-        fun buildHash(): String {
-            val parts =
-                buildList {
-                    add(removeDuplicates.toString())
-                    add(ignoreNonManifestVideos.toString())
-                    add(autoTimeOfDay.toString())
-                    // Include the active time period so a daytime cache is invalidated at night
-                    if (autoTimeOfDay) add(currentTimePeriod)
-                    add(playlistTimeOfDayDayIncludes.sorted().joinToString(","))
-                    add(playlistTimeOfDayNightIncludes.sorted().joinToString(","))
-                    add(playlistCache.toString())
-                    add(shuffleVideos.toString())
-                    add(shuffleMusic.toString())
-                    add(repeatMusic.toString())
-                    add(useAppleVideos.toString())
-                    add(useAmazonVideos.toString())
-                    add(useComm1Videos.toString())
-                    add(useComm2Videos.toString())
-                    add(useLocalVideos.toString())
-                    add(useSambaVideos.toString())
-                    add(useWebDavVideos.toString())
-                    add(webDavPath)
-                    add(useImmichVideos.toString())
-                    add(immichUrl)
-                    add(immichPath)
-                    add(useNCMemoriesVideos.toString())
-                    add(ncmemoriesUrl)
-                    add(ncmemoriesUsername)
-                    add(useCustomStreams.toString())
-                    add(customUrls)
-                }
-            return parts.joinToString("|").hashCode().toString()
-        }
-
         companion object {
             fun fromPreferences() =
                 Config(
                     removeDuplicates = GeneralPrefs.removeDuplicates,
                     ignoreNonManifestVideos = GeneralPrefs.ignoreNonManifestVideos,
                     autoTimeOfDay = GeneralPrefs.autoTimeOfDay,
-                    currentTimePeriod = if (GeneralPrefs.autoTimeOfDay) TimeOfDayHelper.getCurrentTimePeriod().name else "",
                     playlistTimeOfDayDayIncludes = GeneralPrefs.playlistTimeOfDayDayIncludes,
                     playlistTimeOfDayNightIncludes = GeneralPrefs.playlistTimeOfDayNightIncludes,
                     playlistCache = GeneralPrefs.playlistCache,
                     shuffleVideos = GeneralPrefs.shuffleVideos,
                     shuffleMusic = MusicPrefs.shuffle,
                     repeatMusic = MusicPrefs.repeat,
-                    useAppleVideos = AppleVideoPrefs.enabled,
-                    useAmazonVideos = AmazonVideoPrefs.enabled,
-                    useComm1Videos = Comm1VideoPrefs.enabled,
-                    useComm2Videos = Comm2VideoPrefs.enabled,
-                    useLocalVideos = LocalMediaPrefs.enabled,
-                    useSambaVideos = SambaMediaPrefs.enabled || SambaMediaPrefs2.enabled,
-                    useWebDavVideos = WebDavMediaPrefs.enabled || WebDavMediaPrefs2.enabled,
-                    webDavPath =
-                        "${WebDavMediaPrefs.hostName}|${WebDavMediaPrefs.pathName}" +
-                            "|${WebDavMediaPrefs2.hostName}|${WebDavMediaPrefs2.pathName}",
-                    useImmichVideos = ImmichMediaPrefs.enabled,
-                    immichUrl = ImmichMediaPrefs.url,
-                    immichPath = ImmichMediaPrefs.pathName,
-                    useNCMemoriesVideos = NCMemoriesMediaPrefs.enabled,
-                    ncmemoriesUrl = NCMemoriesMediaPrefs.url,
-                    ncmemoriesUsername = NCMemoriesMediaPrefs.username,
-                    useCustomStreams = CustomFeedPrefs.enabled,
-                    customUrls = CustomFeedPrefs.urls,
                 )
         }
+    }
+
+    private fun buildCompositeHash(): String {
+        val generalParts =
+            buildList {
+                add(GeneralPrefs.removeDuplicates.toString())
+                add(GeneralPrefs.ignoreNonManifestVideos.toString())
+                add(GeneralPrefs.autoTimeOfDay.toString())
+                if (GeneralPrefs.autoTimeOfDay) add(TimeOfDayHelper.getCurrentTimePeriod().name)
+                add(GeneralPrefs.playlistTimeOfDayDayIncludes.sorted().joinToString(","))
+                add(GeneralPrefs.playlistTimeOfDayNightIncludes.sorted().joinToString(","))
+                add(GeneralPrefs.playlistCache.toString())
+                add(GeneralPrefs.shuffleVideos.toString())
+                add(MusicPrefs.shuffle.toString())
+                add(MusicPrefs.repeat.toString())
+            }
+        val generalHash = generalParts.joinToString("|")
+
+        val providerHashes = providers.map { "${it.type}:${it.settingsHash()}" }
+        return (listOf(generalHash) + providerHashes).joinToString("||").hashCode().toString()
     }
 
     init {
@@ -167,7 +118,7 @@ class MediaService(
 
     suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
-            val settingsHash = config.buildHash()
+            val settingsHash = hashFn?.invoke() ?: buildCompositeHash()
             val cacheRepo =
                 if (config.playlistCache) {
                     com.neilturner.aerialviews.data

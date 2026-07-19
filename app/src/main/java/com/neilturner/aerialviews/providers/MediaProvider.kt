@@ -23,6 +23,8 @@ abstract class MediaProvider(
 
     abstract val enabled: Boolean
 
+    open fun settingsHash(): String = "0"
+
     open suspend fun prepare() {}
 
     abstract suspend fun fetch(): ProviderFetchResult
