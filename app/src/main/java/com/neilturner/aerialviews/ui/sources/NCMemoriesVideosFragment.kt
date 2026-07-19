@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -15,6 +17,7 @@ import com.neilturner.aerialviews.providers.ncmemories.Album
 import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -22,6 +25,7 @@ import timber.log.Timber
 class NCMemoriesVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
+    private lateinit var requestLocalNetworkPermission: ActivityResultLauncher<String>
     private lateinit var urlPreference: EditTextPreference
     private lateinit var mediaSelectionPreference: MultiSelectListPreference
     private lateinit var validateSslPreference: Preference
@@ -35,8 +39,13 @@ class NCMemoriesVideosFragment :
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
+        requestLocalNetworkPermission =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
         setPreferencesFromResource(R.xml.sources_ncmemories_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+
+        checkForLocalNetworkPermission()
 
         urlPreference = findPreference("ncmemories_media_url")!!
         mediaSelectionPreference = findPreference("ncmemories_media_selection")!!
@@ -63,6 +72,13 @@ class NCMemoriesVideosFragment :
         key: String?,
     ) {
         updateSummary()
+    }
+
+    private fun checkForLocalNetworkPermission() {
+        if (PermissionHelper.hasLocalNetworkPermission(requireContext())) {
+            return
+        }
+        requestLocalNetworkPermission.launch(PermissionHelper.getLocalNetworkPermission())
     }
 
     private fun setupPreferenceClickListeners() {

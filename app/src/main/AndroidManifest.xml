@@ -29,6 +29,9 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="29" />
 
+    <!-- Local network access (Samba, WebDAV, Immich, Nextcloud Memories) -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
+
     <!-- Overlay permission for refresh rate matching -->
     <uses-permission
         android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />

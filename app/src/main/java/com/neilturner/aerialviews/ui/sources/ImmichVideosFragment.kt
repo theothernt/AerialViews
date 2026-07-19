@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
@@ -17,6 +19,7 @@ import com.neilturner.aerialviews.providers.immich.Album
 import com.neilturner.aerialviews.providers.immich.ImmichMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -25,6 +28,7 @@ import timber.log.Timber
 class ImmichVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
+    private lateinit var requestLocalNetworkPermission: ActivityResultLauncher<String>
     private lateinit var urlPreference: EditTextPreference
     private lateinit var mediaSelectionPreference: MultiSelectListPreference
     private lateinit var authTypePreference: ListPreference
@@ -42,8 +46,13 @@ class ImmichVideosFragment :
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
+        requestLocalNetworkPermission =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
         setPreferencesFromResource(R.xml.sources_immich_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
+
+        checkForLocalNetworkPermission()
 
         urlPreference = findPreference("immich_media_url")!!
         mediaSelectionPreference = findPreference("immich_media_selection")!!
@@ -79,6 +88,13 @@ class ImmichVideosFragment :
         }
 
         updateSummary()
+    }
+
+    private fun checkForLocalNetworkPermission() {
+        if (PermissionHelper.hasLocalNetworkPermission(requireContext())) {
+            return
+        }
+        requestLocalNetworkPermission.launch(PermissionHelper.getLocalNetworkPermission())
     }
 
     private fun setupPreferenceClickListeners() {
