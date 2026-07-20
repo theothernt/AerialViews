@@ -889,6 +889,7 @@
     <string name="capabilities_permission_write_external">External access (Write): %1$s</string>
     <string name="capabilities_permission_overlay">Overlay access (Frame rate matching): %1$s</string>
     <string name="capabilities_permission_notification_access">Notification access (Now Playing info): %1$s</string>
+    <string name="capabilities_permission_local_network">Local network access (Samba, WebDAV, Immich): %1$s</string>
 
     <!-- Main / Settings / Import / Export settings -->
     <string name="settings_export_title">Export settings to Documents folder</string>
