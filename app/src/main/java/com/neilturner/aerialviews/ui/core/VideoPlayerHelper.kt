@@ -112,10 +112,10 @@ object VideoPlayerHelper {
             DefaultLoadControl
                 .Builder()
                 .setBufferDurationsMs(
-                    10_000, // Minimum buffer duration
-                    20_000, // Maximum buffer duration
-                    3_000, // Buffer before initial playback
-                    5_000, // Buffer after rebuffering
+                    if (prefs.reduceBufferMemory) 2_000 else 10_000,
+                    if (prefs.reduceBufferMemory) 10_000 else 20_000,
+                    if (prefs.reduceBufferMemory) 500 else 3_000,
+                    if (prefs.reduceBufferMemory) 1_000 else 5_000,
                 ).setTargetBufferBytes(C.LENGTH_UNSET)
                 .build()
 
