@@ -134,6 +134,7 @@ internal class WebDavMediaProviderTest {
             override var userName: String = ""
             override var password: String = ""
             override var searchSubfolders: Boolean = searchSubfolders
+            override fun settingsHash(): String = "test"
         }
 
     private class FakeWebDavListingClient(
