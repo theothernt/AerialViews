@@ -670,10 +670,10 @@ class ScreenController(
         isStopped = true
 
         if (GeneralPrefs.playlistCache) {
+            // ExoPlayer must be accessed on the main thread
+            val trackIndex = musicPlayer?.getCurrentTrackIndex() ?: 0
             runBlocking(Dispatchers.IO) {
-                musicPlayer?.let {
-                    cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
-                }
+                cacheRepository.saveMusicTrackIndex(trackIndex)
             }
         }
         RefreshRateHelper.restoreOriginalMode(context)
