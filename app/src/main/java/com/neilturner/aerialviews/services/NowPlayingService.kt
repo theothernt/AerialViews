@@ -267,4 +267,5 @@ class NowPlayingService(
 data class MusicEvent(
     val artist: String = "",
     val song: String = "",
+    val albumArtUri: String = "",
 )

@@ -513,6 +513,29 @@
 
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
+    <!-- Main / Settings / Overlays / Sonos -->
+    <string name="category_sonos">Sonos (local network)</string>
+    <string name="sonos_enabled_title">Enable Sonos</string>
+    <string name="sonos_enabled_summary">Show the currently playing track from your Sonos speakers</string>
+    <string name="sonos_ip_title">Speaker IP address</string>
+    <string name="sonos_ip_not_set">Not configured</string>
+    <string name="sonos_test_title">Test connection</string>
+    <string name="sonos_test_default">Tap to test the connection</string>
+    <string name="sonos_test_no_ip">Enter an IP address first</string>
+    <string name="sonos_test_testing">Testing…</string>
+    <string name="sonos_test_nothing_playing">Nothing playing</string>
+    <string name="sonos_test_no_local_network_permission">Local network permission not granted. Go to Settings > Apps > Aerial Views > Permissions and enable Local Network access.</string>
+    <string name="sonos_test_not_sonos">Port 1400 responded but this doesn\'t look like a Sonos device</string>
+    <string name="sonos_test_paused">Paused</string>
+    <string name="sonos_test_stopped">Stopped</string>
+    <string name="sonos_discover_title">Discover speakers</string>
+    <string name="sonos_discover_summary">Search for Sonos speakers on the local network</string>
+    <string name="sonos_discover_searching">Searching… (up to 4 seconds)</string>
+    <string name="sonos_discover_no_devices">No Sonos speakers found</string>
+    <string name="sonos_discover_dialog_title">Sonos speakers found</string>
+    <string name="sonos_discover_selected">Selected: %s</string>
+    <string name="sonos_discover_no_permission">Local network permission not granted</string>
+
     <!-- Main / Settings / Overlays / Weather -->
     <string name="weather_location_title">Location</string>
     <string name="weather_temperature_units_title">Units</string>
