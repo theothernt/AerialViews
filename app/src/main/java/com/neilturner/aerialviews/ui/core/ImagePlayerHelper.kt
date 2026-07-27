@@ -23,6 +23,7 @@ import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
 import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.models.videos.AerialMedia
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
@@ -61,6 +62,10 @@ internal object ImagePlayerHelper {
 
                     AerialMediaSource.NCMEMORIES -> {
                         builder.addInterceptor(NCMemoriesAuthInterceptor())
+                    }
+
+                    AerialMediaSource.WEBDAV -> {
+                        builder.addInterceptor(WebDavAuthInterceptor())
                     }
 
                     else -> {
@@ -102,7 +107,7 @@ internal object ImagePlayerHelper {
 
                     val credential = Credentials.basic(
                         NCMemoriesMediaPrefs.username,
-                        NCMemoriesMediaPrefs.password
+                        NCMemoriesMediaPrefs.password,
                     )
 
                     originalRequest
@@ -119,6 +124,44 @@ internal object ImagePlayerHelper {
         }
     }
 
+    internal class WebDavAuthInterceptor : Interceptor {
+        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+            val originalRequest = chain.request()
+            val newRequest =
+                if (WebDavMediaPrefs2.enabled && WebDavMediaPrefs2.userName.isNotEmpty()) {
+                    Timber.d("Adding WebDAV Authorization header")
+
+                    val credential = Credentials.basic(
+                        WebDavMediaPrefs2.userName,
+                        WebDavMediaPrefs2.password,
+                    )
+
+                    originalRequest
+                        .newBuilder()
+                        .addHeader("Authorization", credential)
+                        .build()
+                }
+                else {
+                    Timber.d("Skipping WebDAV Authorization header")
+                    originalRequest
+                }
+            return chain.proceed(newRequest)
+        }
+    }
+
+    private fun stripUserinfo(url: String): String {
+        val withoutScheme = url.substringAfter("://")
+        val atIndex = withoutScheme.indexOf('@')
+        if (atIndex == -1) return url
+        val hostAndPath = withoutScheme.substringAfter('@')
+        return "${url.substringBefore("://")}://$hostAndPath"
+    }
+
+    fun stripUserinfoFromUri(uri: Uri): Uri {
+        val url = uri.toString()
+        return Uri.parse(stripUserinfo(url))
+    }
+
     fun streamFromWebDavFile(uri: Uri): InputStream? {
         val baseClient = buildOkHttpClient()
         val okHttpClient = baseClient.newBuilder().build()
@@ -126,7 +169,8 @@ internal object ImagePlayerHelper {
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
             client.setCredentials(userName, password)
-            return client.get(uri.toString())
+            val cleanUrl = stripUserinfo(uri.toString())
+            return client.get(cleanUrl)
         } catch (ex: Exception) {
             Timber.e(ex, "Exception while creating WebDav client: ${ex.message}")
             FirebaseHelper.crashlyticsException(ex)
@@ -177,7 +221,7 @@ internal object ImagePlayerHelper {
         try {
             val client = buildOkHttpClient(
                 validateSsl = ImmichMediaPrefs.validateSsl,
-                source = AerialMediaSource.IMMICH
+                source = AerialMediaSource.IMMICH,
             )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()
@@ -201,7 +245,7 @@ internal object ImagePlayerHelper {
         try {
             val client = buildOkHttpClient(
                 validateSsl = NCMemoriesMediaPrefs.validateSsl,
-                source = AerialMediaSource.NCMEMORIES
+                source = AerialMediaSource.NCMEMORIES,
             )
             val request = Request.Builder().url(uri.toString()).build()
             val response = client.newCall(request).execute()

@@ -1,6 +1,7 @@
 package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
+import android.net.Uri
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Build
@@ -124,7 +125,7 @@ class ImagePlayerView : FrameLayout {
         ioScope.launch {
             val baseStream = ImagePlayerHelper.streamFromMedia(context, media)
             if (baseStream == null) {
-                loadImage(media, media.uri)
+                loadImage(media, stripCredentialsForCoil(media))
                 return@launch
             }
 
@@ -146,11 +147,11 @@ class ImagePlayerView : FrameLayout {
             try {
                 val headerBytes = ByteArray(BitmapHelper.HEADER_BUFFER_SIZE)
                 val headerLength = readUpTo(stream, headerBytes, headerBytes.size)
-                if (headerLength <= 0) {
-                    stream.close()
-                    loadImage(media, media.uri)
-                    return@launch
-                }
+if (headerLength <= 0) {
+                     stream.close()
+                     loadImage(media, stripCredentialsForCoil(media))
+                     return@launch
+                 }
                 stream.unread(headerBytes, 0, headerLength)
 
                 val exifMetadata = BitmapHelper.extractExifMetadataFromHeader(headerBytes, headerLength)
@@ -287,10 +288,17 @@ class ImagePlayerView : FrameLayout {
         val displayedHeight = imageHeight * scale
         val epsilon = 0.5f
 
-        return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
-    }
+return displayedWidth < containerWidth - epsilon || displayedHeight < containerHeight - epsilon
+     }
 
-    companion object {
+     private fun stripCredentialsForCoil(media: AerialMedia): Uri {
+         if (media.source != AerialMediaSource.WEBDAV) {
+             return media.uri
+         }
+         return ImagePlayerHelper.stripUserinfoFromUri(media.uri)
+     }
+
+     companion object {
         private const val STREAM_BUFFER_SIZE = 64 * 1024 // 64KB - helps reduce network round-trips
     }
 
