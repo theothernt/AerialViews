@@ -5,6 +5,7 @@ import androidx.core.net.toUri
 import com.neilturner.aerialviews.models.enums.VideoQuality
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import kotlinx.serialization.Serializable
+import kotlin.enums.enumEntries
 
 @Serializable
 class Comm1Video : AbstractVideo() {
@@ -21,7 +22,7 @@ class Comm1Video : AbstractVideo() {
 
     override fun allUrls(): List<String> {
         val urls = mutableSetOf<String>()
-        enumValues<VideoQuality>().forEach { quality ->
+        enumEntries<VideoQuality>().forEach { quality ->
             uriAtQuality(quality).let { uri -> urls.add(uri.filenameWithoutExtension.lowercase()) }
         }
         return urls.toList()

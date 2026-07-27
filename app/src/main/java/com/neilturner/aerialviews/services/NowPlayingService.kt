@@ -17,6 +17,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 // Thanks to @Spocky for his help with this feature!
 // Based on code from https://github.com/jathak/musicwidget/blob/master/app/src/main/java/xyz/jathak/musicwidget/NotificationListener.java
@@ -117,7 +118,7 @@ class NowPlayingService(
             scope.launch {
                 // Check every 500ms for 3 seconds (6 times)
                 repeat(6) {
-                    delay(500)
+                    delay(500.milliseconds)
                     Timber.i("Delayed check for active sessions")
                     val freshControllers = sessionManager?.getActiveSessions(notificationListener)
                     logControllers("delayedCheck[$it]", freshControllers)

@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.ui.core
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.ViewGroup
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
@@ -21,7 +22,7 @@ import com.neilturner.aerialviews.ui.controls.ProgressState
 import com.neilturner.aerialviews.ui.helpers.LocaleHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
-import com.neilturner.aerialviews.ui.helpers.ToastHelper
+import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.VolumeHelper
 import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +34,7 @@ import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.time.Duration.Companion.milliseconds
 
-@Suppress("SameParameterValue")
+@Suppress("SameParameterValue", "JoinDeclarationAndAssignment")
 class VideoPlayerView
     @OptIn(UnstableApi::class)
     @JvmOverloads
@@ -136,11 +137,16 @@ class VideoPlayerView
 
             setupAlmostFinishedRunnable()
 
-            if (mainScope.coroutineContext[Job]?.isActive == true) {
-                mainScope.launch {
-                    val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
-                    ToastHelper.show(context, message)
-                }
+            // Traverse up to root view to find notification container
+            var viewGroup = parent as? ViewGroup
+            var notificationContainer: ViewGroup? = null
+            while (viewGroup != null && notificationContainer == null) {
+                notificationContainer = viewGroup.findViewById(R.id.notification_container)
+                viewGroup = viewGroup.parent as? ViewGroup
+            }
+            if (notificationContainer != null) {
+                val message = if (GeneralPrefs.loopUntilSkipped) "Looping enabled" else "Looping disabled"
+                NotificationHelper.show(notificationContainer, message)
             }
         }
 

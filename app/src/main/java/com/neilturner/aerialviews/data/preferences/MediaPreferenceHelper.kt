@@ -10,6 +10,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Helper class for common media preference operations
@@ -53,7 +54,7 @@ object MediaPreferenceHelper {
             quality.onPreferenceChangeListener =
                 Preference.OnPreferenceChangeListener { _, _ ->
                     scope.launch {
-                        delay(100)
+                        delay(100.milliseconds)
                         onChangeCallback()
                     }
                     true

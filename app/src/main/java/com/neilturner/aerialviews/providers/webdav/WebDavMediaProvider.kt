@@ -28,6 +28,8 @@ internal class WebDavMediaProvider(
     override val enabled: Boolean
         get() = prefs.enabled
 
+    override fun settingsHash(): String = prefs.settingsHash()
+
     override suspend fun fetch(): ProviderFetchResult = fetchWebDavMedia()
 
     override suspend fun fetchMusic(): List<MusicTrack> {

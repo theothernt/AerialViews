@@ -20,6 +20,7 @@ internal class ImmichUrlBuilderTest {
         password: String = "",
         videoType: ImmichVideoType? = null,
         imageType: ImmichImageType? = null,
+        isV3: Boolean = false,
     ): ImmichUrlBuilder {
         val prefs = mockk<ImmichUrlPrefs>()
         every { prefs.authType } returns authType
@@ -34,7 +35,7 @@ internal class ImmichUrlBuilderTest {
             every { mockUri.toString() } returns urlString
             mockUri
         }
-        return ImmichUrlBuilder(server, prefs, uriFactory = uriFactory)
+        return ImmichUrlBuilder(server, prefs, isV3 = isV3, uriFactory = uriFactory)
     }
 
     @Test
@@ -52,17 +53,34 @@ internal class ImmichUrlBuilderTest {
     }
 
     @Test
-    fun `shared link video original with password`() {
+    fun `shared link video original with password (v2)`() {
         val builder =
             createBuilder(
                 authType = ImmichAuthType.SHARED_LINK,
                 pathName = "/s/slug678/",
                 videoType = ImmichVideoType.ORIGINAL,
                 password = "secret",
+                isV3 = false,
             )
 
         val result = builder.getAssetUri("asset2", isVideo = true)
         assertEquals("$server/api/assets/asset2/original?key=slug678&password=secret", result.toString())
+    }
+
+    @Test
+    fun `shared link video original - v3 omits password`() {
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "/s/slug678/",
+                videoType = ImmichVideoType.ORIGINAL,
+                password = "secret",
+                isV3 = true,
+            )
+
+        val result = builder.getAssetUri("asset2", isVideo = true)
+        // v3: password must NOT be appended to the URL
+        assertEquals("$server/api/assets/asset2/original?key=slug678", result.toString())
     }
 
     @Test
@@ -140,5 +158,41 @@ internal class ImmichUrlBuilderTest {
         assertThrows<IllegalStateException> {
             builder.getAssetUri("asset7", isVideo = true)
         }
+    }
+
+    @Test
+    fun `v3 shared link image thumbnail - no password appended`() {
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "12345",
+                imageType = ImmichImageType.PREVIEW,
+                password = "hunter2",
+                isV3 = true,
+            )
+
+        val result = builder.getAssetUri("asset8", isVideo = false)
+        assertEquals("$server/api/assets/asset8/thumbnail?size=preview&key=12345", result.toString())
+    }
+
+    @Test
+    fun `setServerV3 updates password behaviour`() {
+        val builder =
+            createBuilder(
+                authType = ImmichAuthType.SHARED_LINK,
+                pathName = "12345",
+                videoType = ImmichVideoType.ORIGINAL,
+                password = "mypass",
+                isV3 = false,
+            )
+
+        // Before upgrade: password should be present (v2)
+        val beforeResult = builder.getAssetUri("assetA", isVideo = true)
+        assertEquals("$server/api/assets/assetA/original?key=12345&password=mypass", beforeResult.toString())
+
+        // After upgrading to v3: password should be absent
+        builder.setServerV3(true)
+        val afterResult = builder.getAssetUri("assetA", isVideo = true)
+        assertEquals("$server/api/assets/assetA/original?key=12345", afterResult.toString())
     }
 }

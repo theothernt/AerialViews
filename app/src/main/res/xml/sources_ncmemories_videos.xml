@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/category_video_source">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="ncmemories_media_enabled"
+            app:title="@string/ncmemories_media_enabled_title" />
+
+        <MultiSelectListPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            app:defaultValue="@array/media_selection_default"
+            app:entries="@array/ncmemories_media_selection_entries"
+            app:entryValues="@array/ncmemories_media_selection_values"
+            app:key="ncmemories_media_selection"
+            app:title="@string/ncmemories_media_type_title"
+            app:dialogTitle="@string/ncmemories_media_type_title" />
+
+        <Preference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            android:title="@string/ncmemories_media_test_connection"
+            android:key="ncmemories_media_test_connection" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_server_details">
+        <EditTextPreference
+            app:dependency="ncmemories_media_enabled"
+            app:key="ncmemories_media_url"
+            app:title="@string/ncmemories_media_url_title"
+            app:summary="@string/ncmemories_media_url_summary"
+            android:selectAllOnFocus="true" />
+
+        <SwitchPreference
+            app:dependency="ncmemories_media_enabled"
+            app:key="ncmemories_media_validate_ssl"
+            app:title="@string/ncmemories_media_validate_ssl_title"
+            app:summary="@string/ncmemories_media_validate_ssl_summary"
+            app:defaultValue="true" />
+
+        <EditTextPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            android:summary="@string/ncmemories_media_username_summary"
+            android:key="ncmemories_media_username"
+            android:title="@string/ncmemories_media_username_title" />
+
+        <EditTextPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            android:summary="@string/ncmemories_media_password_summary"
+            android:key="ncmemories_media_password"
+            android:title="@string/ncmemories_media_password_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_albums">
+        <!-- Albums -->
+        <Preference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            android:title="@string/ncmemories_media_select_albums"
+            android:key="ncmemories_media_selected_album_ids"
+            android:summary="@string/ncmemories_media_select_albums_summary" />
+
+        <!-- Favorite Photos -->
+        <ListPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            app:defaultValue="@string/immich_include_favorites_default"
+            app:entries="@array/ncmemories_include_entries"
+            app:entryValues="@array/ncmemories_include_values"
+            app:key="ncmemories_media_include_favorites"
+            app:title="@string/ncmemories_media_include_favorites_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <!-- Recent Photos -->
+        <ListPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            app:defaultValue="@string/ncmemories_include_recent_default"
+            app:entries="@array/ncmemories_include_entries"
+            app:entryValues="@array/ncmemories_include_values"
+            app:key="ncmemories_media_include_recent"
+            app:title="@string/ncmemories_media_include_recent_title"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/category_advanced">
+        <ListPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            app:defaultValue="@string/ncmemories_image_type_default"
+            app:entries="@array/ncmemories_image_type_entries"
+            app:entryValues="@array/ncmemories_image_type_values"
+            app:key="ncmemories_media_image_type"
+            app:title="Image type"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:dependency="ncmemories_media_enabled"
+            app:disableDependentsState="false"
+            app:defaultValue="@string/ncmemories_video_type_default"
+            app:entries="@array/ncmemories_video_type_entries"
+            app:entryValues="@array/ncmemories_video_type_values"
+            app:key="ncmemories_media_video_type"
+            app:title="Video type"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

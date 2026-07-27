@@ -24,9 +24,12 @@
 -keep class com.neilturner.aerialviews.data.** { *; }
 -keep class com.neilturner.aerialviews.providers.** { *; }
 
-# Sardine Android / XmlPullParser
+# Sardine Android / XmlPullParser / Simple XML
 -keep class org.xmlpull.v1.** { *; }
 -dontwarn android.content.res.XmlResourceParser
+-keep class javax.xml.namespace.QName { *; }
+-keep class com.thegrizzlylabs.sardineandroid.** { *; }
+-keep class org.simpleframework.xml.** { *; }
 
 -dontwarn org.apache.log4j.Level
 -dontwarn org.apache.log4j.Logger

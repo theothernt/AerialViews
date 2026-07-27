@@ -620,6 +620,14 @@
         <item>VIDEOS</item>
         <item>PHOTOS</item>
     </string-array>
+    <string-array name="ncmemories_media_selection_entries" translatable="false">
+        <item>@string/media_videos</item>
+        <item>@string/media_photos</item>
+    </string-array>
+    <string-array name="ncmemories_media_selection_values" translatable="false">
+        <item>VIDEOS</item>
+        <item>PHOTOS</item>
+    </string-array>
 
     <!-- Samba Video Options -->
     <string-array name="samba_videos_smb_dialects_entries" translatable="false">
@@ -1184,6 +1192,52 @@
     </string-array>
     <string name="immich_video_type_default" translatable="false">TRANSCODED</string>
 
+    <!-- Nextcloud Memories include photos -->
+    <string name="ncmemories_include_disabled">Disabled</string>
+    <string name="ncmemories_include_100">100 photos</string>
+    <string name="ncmemories_include_200">200 photos</string>
+    <string name="ncmemories_include_300">300 photos</string>
+    <string name="ncmemories_include_400">400 photos</string>
+    <string-array name="ncmemories_include_entries" translatable="false">
+        <item>@string/ncmemories_include_disabled</item>
+        <item>@string/ncmemories_include_100</item>
+        <item>@string/ncmemories_include_200</item>
+        <item>@string/ncmemories_include_300</item>
+        <item>@string/ncmemories_include_400</item>
+    </string-array>
+    <string-array name="ncmemories_include_values" translatable="false">
+        <item>DISABLED</item>
+        <item>100</item>
+        <item>200</item>
+        <item>300</item>
+        <item>400</item>
+    </string-array>
+    <string name="ncmemories_include_recent_default" translatable="false">DISABLED</string>
+
+    <string name="ncmemories_img_preview">Preview</string>
+    <string name="ncmemories_img_original">Original</string>
+    <string-array name="ncmemories_image_type_entries" translatable="false">
+        <item>@string/ncmemories_img_preview</item>
+        <item>@string/ncmemories_img_original</item>
+    </string-array>
+    <string-array name="ncmemories_image_type_values" translatable="false">
+        <item>PREVIEW</item>
+        <item>ORIGINAL</item>
+    </string-array>
+    <string name="ncmemories_image_type_default" translatable="false">PREVIEW</string>
+
+    <string name="ncmemories_vid_transcoded">Transcoded</string>
+    <string name="ncmemories_vid_original">Original</string>
+    <string-array name="ncmemories_video_type_entries" translatable="false">
+        <item>@string/ncmemories_vid_transcoded</item>
+        <item>@string/ncmemories_vid_original</item>
+    </string-array>
+    <string-array name="ncmemories_video_type_values" translatable="false">
+        <item>TRANSCODED</item>
+        <item>ORIGINAL</item>
+    </string-array>
+    <string name="ncmemories_video_type_default" translatable="false">TRANSCODED</string>
+
     <!-- Progress Bar -->
     <string name="progressbar_loc_disabled">Disabled</string>
     <string name="progressbar_loc_top">Top of the screen</string>
@@ -1429,11 +1483,11 @@
 
     <string name="overlay_meta_vid_poi">Dynamic Points of Interest</string>
     <string name="overlay_meta_vid_short_desc">Short Description</string>
-    <string name="overlay_meta_vid_location">Location (Media/Immich)</string>
-    <string name="overlay_meta_vid_date">Date taken (Media/Immich)</string>
+    <string name="overlay_meta_vid_location">Location (Media/Immich/NC Memories)</string>
+    <string name="overlay_meta_vid_date">Date taken (Media/Immich/NC Memories)</string>
     <string name="overlay_meta_vid_title">Title (Media)</string>
-    <string name="overlay_meta_vid_description">Description (Immich)</string>
-    <string name="overlay_meta_vid_album_name">Album Name (Immich)</string>
+    <string name="overlay_meta_vid_description">Description (Immich/NC Memories)</string>
+    <string name="overlay_meta_vid_album_name">Album Name (Immich/NC Memories)</string>
     <string name="overlay_meta_vid_filename">Use filename as-is</string>
     <string name="overlay_meta_vid_folder_filename">Folder &amp; filename</string>
     <string name="overlay_meta_vid_folder_only">Folder name only</string>
@@ -1463,10 +1517,10 @@
     </string-array>
     <string name="overlay_metadata_videos_default" translatable="false">POI</string>
 
-    <string name="overlay_meta_photo_location">Location (EXIF/Immich)</string>
-    <string name="overlay_meta_photo_date">Date taken (EXIF/Immich)</string>
-    <string name="overlay_meta_photo_description">Description (EXIF/Immich)</string>
-    <string name="overlay_meta_photo_album_name">Album Name (Immich)</string>
+    <string name="overlay_meta_photo_location">Location (EXIF/Immich/NC Memories)</string>
+    <string name="overlay_meta_photo_date">Date taken (EXIF/Immich/NC Memories)</string>
+    <string name="overlay_meta_photo_description">Description (EXIF/Immich/NC Memories)</string>
+    <string name="overlay_meta_photo_album_name">Album Name (Immich/NC Memories)</string>
     <string name="overlay_meta_photo_filename">Use filename as-is</string>
     <string name="overlay_meta_photo_folder_filename">Folder &amp; filename</string>
     <string name="overlay_meta_photo_folder_only">Folder name only</string>

@@ -16,6 +16,7 @@ import com.neilturner.aerialviews.ui.helpers.DialogHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class SambaVideosWolFragment :
     MenuStateFragment(),
@@ -82,13 +83,13 @@ class SambaVideosWolFragment :
 
         val progressDialog = DialogHelper.progressDialog(requireContext(), "Checking host status...")
         progressDialog.show()
-        delay(smallDelay)
+        delay(smallDelay.milliseconds)
 
         val isReachable = NetworkHelper.isHostReachable(hostName, 445)
 
         if (!isReachable) {
             DialogHelper.updateProgressMessage(progressDialog, "Host is down. Sending magic packet...")
-            delay(smallDelay)
+            delay(smallDelay.milliseconds)
             NetworkHelper.sendWakeOnLan(macAddress)
 
             var waitedSeconds = 0L
@@ -99,7 +100,7 @@ class SambaVideosWolFragment :
                     progressDialog,
                     "Waiting for host to wake up... (${waitedSeconds}s/${maxWaitSeconds}s)",
                 )
-                delay(sleepSeconds * 1_000L)
+                delay((sleepSeconds * 1_000L).milliseconds)
                 waitedSeconds += sleepSeconds
                 isReachableAfter = NetworkHelper.isHostReachable(hostName, 445)
                 if (isReachableAfter) break

@@ -27,6 +27,7 @@ class WeatherForecastOverlay
     ) : LinearLayout(context, attrs, defStyleAttr) {
         var type = OverlayType.WEATHER2
         private var previousDays: List<ForecastDay>? = null
+        var isHidden = false
 
         // Layout constants
         private val fadeAnimationDuration = 300L
@@ -82,7 +83,7 @@ class WeatherForecastOverlay
             if (previousDays == null) {
                 previousDays = days
                 updateForecastContent(days)
-                if (allowFadeAnimation) {
+                if (allowFadeAnimation && !isHidden) {
                     animate().alpha(1f).setDuration(fadeAnimationDuration).start()
                 }
                 return
@@ -90,7 +91,7 @@ class WeatherForecastOverlay
 
             previousDays = days
 
-            if (!allowFadeAnimation) {
+            if (!allowFadeAnimation || isHidden) {
                 updateForecastContent(days)
                 return
             }
@@ -100,7 +101,9 @@ class WeatherForecastOverlay
                 .setDuration(fadeAnimationDuration)
                 .withEndAction {
                     updateForecastContent(days)
-                    animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                    if (!isHidden) {
+                        animate().alpha(1f).setDuration(fadeAnimationDuration).start()
+                    }
                 }.start()
         }
 

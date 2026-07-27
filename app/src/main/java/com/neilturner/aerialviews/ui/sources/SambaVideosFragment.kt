@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
@@ -15,6 +17,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.setSummaryFromValues
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
@@ -23,13 +26,19 @@ class SambaVideosFragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
+    private lateinit var requestLocalNetworkPermission: ActivityResultLauncher<String>
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
+        requestLocalNetworkPermission =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
         setPreferencesFromResource(R.xml.sources_samba_videos, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        checkForLocalNetworkPermission()
         updateSummary()
     }
 
@@ -56,6 +65,13 @@ class SambaVideosFragment :
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun checkForLocalNetworkPermission() {
+        if (PermissionHelper.hasLocalNetworkPermission(requireContext())) {
+            return
+        }
+        requestLocalNetworkPermission.launch(PermissionHelper.getLocalNetworkPermission())
     }
 
     private fun updateSummary() {

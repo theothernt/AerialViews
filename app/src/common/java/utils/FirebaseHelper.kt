@@ -10,7 +10,7 @@ import java.util.Calendar
 import java.util.Locale
 
 object FirebaseHelper {
-    private const val LOGGING_END_DATE = "2026-07-01"
+    private const val LOGGING_END_DATE = "2026-09-01"
 
     private fun isWithinLoggingPeriod(): Boolean {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())

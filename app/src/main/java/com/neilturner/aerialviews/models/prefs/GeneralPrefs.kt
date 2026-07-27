@@ -270,6 +270,7 @@ object GeneralPrefs : KotprefModel() {
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
+    var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

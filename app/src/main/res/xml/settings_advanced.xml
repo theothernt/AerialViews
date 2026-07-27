@@ -41,6 +41,12 @@
                     app:key="use_texture_view_for_video"
                     app:summary="@string/advanced_use_texture_view_summary"
                     app:title="@string/advanced_use_texture_view_title" />
+
+                <CheckBoxPreference
+                    app:defaultValue="false"
+                    app:key="reduce_buffer_memory"
+                    app:summary="@string/advanced_reduce_buffer_memory_summary"
+                    app:title="@string/advanced_reduce_buffer_memory_title" />
         </PreferenceCategory>
 
         <PreferenceCategory app:title="@string/category_animation">

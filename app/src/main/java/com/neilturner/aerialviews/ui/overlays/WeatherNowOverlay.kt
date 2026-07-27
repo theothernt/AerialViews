@@ -28,6 +28,7 @@ class WeatherNowOverlay
         private var overlayItems: List<OverlayItem> = emptyList()
         private var layout = ""
         private var previousWeather: WeatherEvent? = null
+        var isHidden = false
 
         // Layout constants
         private val fadeAnimationDuration = 300L
@@ -91,7 +92,7 @@ class WeatherNowOverlay
             if (previousWeather == null) {
                 previousWeather = weather
                 updateOverlayContent(weather)
-                if (allowFadeAnimation) {
+                if (allowFadeAnimation && !isHidden) {
                     animate()
                         .alpha(1f)
                         .setDuration(fadeAnimationDuration)
@@ -104,7 +105,7 @@ class WeatherNowOverlay
             previousWeather = weather
 
             // Fade out
-            if (!allowFadeAnimation) {
+            if (!allowFadeAnimation || isHidden) {
                 updateOverlayContent(weather)
                 return
             }
@@ -117,10 +118,12 @@ class WeatherNowOverlay
                     updateOverlayContent(weather)
 
                     // Fade back in
-                    animate()
-                        .alpha(1f)
-                        .setDuration(fadeAnimationDuration)
-                        .start()
+                    if (!isHidden) {
+                        animate()
+                            .alpha(1f)
+                            .setDuration(fadeAnimationDuration)
+                            .start()
+                    }
                 }.start()
         }
 

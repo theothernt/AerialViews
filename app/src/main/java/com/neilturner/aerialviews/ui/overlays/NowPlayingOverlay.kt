@@ -23,6 +23,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 class NowPlayingOverlay : AppCompatTextView {
     var type = OverlayType.MUSIC1
@@ -31,6 +32,7 @@ class NowPlayingOverlay : AppCompatTextView {
     private var trackInfo = MusicEvent()
     private var shouldUpdate = false
     private var isUpdating = false
+    var isHidden = false
     private val minVisibleAlphaForFade = 0.95f
     private val prefs = GeneralPrefs
     private var scopeJob = SupervisorJob()
@@ -110,6 +112,11 @@ class NowPlayingOverlay : AppCompatTextView {
             },
         )
 
+        if (isHidden) {
+            Timber.i("$type: Skipping visibility change, overlay is hidden")
+            return
+        }
+
         if (!isGone && text.isNullOrBlank()) {
             Timber.i("$type: Transition... GONE")
             visibility = GONE
@@ -125,16 +132,20 @@ class NowPlayingOverlay : AppCompatTextView {
             .setDuration(300)
             .start()
         Timber.i("$type: Fading out...")
-        delay(300)
+        delay(300.milliseconds)
     }
 
     private suspend fun fadeIn() {
+        if (isHidden) {
+            Timber.i("$type: Skipping fade-in, overlay is hidden")
+            return
+        }
         animate()
             .alpha(1f)
             .setDuration(300)
             .start()
         Timber.i("$type: Fading in...")
-        delay(300)
+        delay(300.milliseconds)
     }
 
     private fun updateText(): Boolean {

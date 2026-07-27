@@ -12,5 +12,6 @@ enum class AerialMediaSource {
     SAMBA,
     WEBDAV,
     IMMICH,
+    NCMEMORIES,
     HLS,
 }

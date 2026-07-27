@@ -17,6 +17,7 @@ import com.neilturner.aerialviews.services.Display.HDRFormat
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class AppleVideosFragment : MenuStateFragment() {
     private lateinit var display: Display
@@ -68,7 +69,7 @@ class AppleVideosFragment : MenuStateFragment() {
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
                 lifecycleScope.launch {
-                    delay(100)
+                    delay(100.milliseconds)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true
@@ -80,7 +81,7 @@ class AppleVideosFragment : MenuStateFragment() {
             Preference.OnPreferenceChangeListener { preference, newValue ->
                 updateMultiSelectSummary(preference as MultiSelectListPreference, newValue as Set<String>)
                 lifecycleScope.launch {
-                    delay(100)
+                    delay(100.milliseconds)
                     updateVideoCount(forceRecalculate = true)
                 }
                 true

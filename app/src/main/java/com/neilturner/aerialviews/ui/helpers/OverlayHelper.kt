@@ -3,6 +3,8 @@ package com.neilturner.aerialviews.ui.helpers
 import android.content.Context
 import android.util.TypedValue
 import android.view.View
+import android.widget.TextView
+import com.neilturner.aerialviews.R
 import androidx.constraintlayout.helper.widget.Flow
 import com.neilturner.aerialviews.databinding.OverlayViewBinding
 import com.neilturner.aerialviews.models.OverlayIds
@@ -23,6 +25,7 @@ class OverlayHelper(
     private val prefs: GeneralPrefs,
 ) {
     var overlays = mutableListOf<View?>()
+    var isHidden = false
 
     inline fun <reified T : View> findOverlay(): List<T> = overlays.filterIsInstance<T>()
 
@@ -115,6 +118,11 @@ class OverlayHelper(
             overlays.add(view)
             if (view != null) {
                 root.layout.addView(view)
+                if (view is TextView) {
+                    val marginPx = context.resources.getDimensionPixelSize(R.dimen.screen_border_padding)
+                    val screenWidth = context.resources.displayMetrics.widthPixels
+                    view.maxWidth = screenWidth - marginPx * 2
+                }
             }
         }
 

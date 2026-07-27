@@ -24,7 +24,9 @@ import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesDataSourceFactory
 import com.neilturner.aerialviews.providers.samba.SambaDataSourceFactory
 import com.neilturner.aerialviews.providers.webdav.WebDavDataSourceFactory
 import com.neilturner.aerialviews.services.philips.CustomRendererFactory
@@ -110,10 +112,10 @@ object VideoPlayerHelper {
             DefaultLoadControl
                 .Builder()
                 .setBufferDurationsMs(
-                    10_000, // Minimum buffer duration
-                    20_000, // Maximum buffer duration
-                    3_000, // Buffer before initial playback
-                    5_000, // Buffer after rebuffering
+                    if (prefs.reduceBufferMemory) 2_000 else 10_000,
+                    if (prefs.reduceBufferMemory) 10_000 else 20_000,
+                    if (prefs.reduceBufferMemory) 500 else 3_000,
+                    if (prefs.reduceBufferMemory) 1_000 else 5_000,
                 ).setTargetBufferBytes(C.LENGTH_UNSET)
                 .build()
 
@@ -204,6 +206,18 @@ object VideoPlayerHelper {
             Timber.d("Setting up Immich media source with URI: ${mediaItem.localConfiguration?.uri}")
             ProgressiveMediaSource
                 .Factory(dataSourceFactory)
+                .createMediaSource(mediaItem)
+        }
+
+        AerialMediaSource.NCMEMORIES -> {
+            // If SSL validation is disabled, we need to set the appropriate flags
+            if (!NCMemoriesMediaPrefs.validateSsl) {
+                System.setProperty("javax.net.ssl.trustAll", "true")
+            }
+
+            Timber.d("Setting up Nextcloud Memories media source with URI: ${mediaItem.localConfiguration?.uri}")
+            ProgressiveMediaSource
+                .Factory(NCMemoriesDataSourceFactory())
                 .createMediaSource(mediaItem)
         }
 

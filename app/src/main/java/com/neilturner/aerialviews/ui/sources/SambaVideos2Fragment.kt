@@ -2,6 +2,8 @@ package com.neilturner.aerialviews.ui.sources
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -13,6 +15,7 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.neilturner.aerialviews.providers.samba.SambaMediaProvider
 import com.neilturner.aerialviews.ui.controls.MenuStateFragment
 import com.neilturner.aerialviews.ui.helpers.DialogHelper
+import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import kotlinx.coroutines.launch
 
@@ -20,13 +23,19 @@ class SambaVideos2Fragment :
     MenuStateFragment(),
     SharedPreferences.OnSharedPreferenceChangeListener,
     PreferenceManager.OnPreferenceTreeClickListener {
+    private lateinit var requestLocalNetworkPermission: ActivityResultLauncher<String>
+
     override fun onCreatePreferences(
         savedInstanceState: Bundle?,
         rootKey: String?,
     ) {
+        requestLocalNetworkPermission =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
+
         setPreferencesFromResource(R.xml.sources_samba_videos2, rootKey)
         preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
 
+        checkForLocalNetworkPermission()
         updateSummary()
     }
 
@@ -53,6 +62,13 @@ class SambaVideos2Fragment :
         }
 
         return super.onPreferenceTreeClick(preference)
+    }
+
+    private fun checkForLocalNetworkPermission() {
+        if (PermissionHelper.hasLocalNetworkPermission(requireContext())) {
+            return
+        }
+        requestLocalNetworkPermission.launch(PermissionHelper.getLocalNetworkPermission())
     }
 
     private fun updateSummary() {

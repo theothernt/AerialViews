@@ -11,10 +11,17 @@ class ImmichUrlBuilder(
     private val server: String,
     private val prefs: ImmichUrlPrefs,
     private var resolvedSharedKey: String? = null,
+    /** Set to true once the connected server is confirmed to be Immich v3+. */
+    private var isV3: Boolean = false,
     private val uriFactory: (String) -> Uri = { it.toUri() },
 ) {
     fun setResolvedSharedKey(key: String?) {
         resolvedSharedKey = key
+    }
+
+    /** Mark this builder as targeting an Immich v3+ server. */
+    fun setServerV3(v3: Boolean) {
+        isV3 = v3
     }
 
     fun getAssetUri(
@@ -40,7 +47,8 @@ class ImmichUrlBuilder(
                                 "$server/api/assets/$id/thumbnail?size=$size&key=$cleanedKey"
                             }
                         }
-                    if (prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
+                    // v3: password query param is no longer accepted; skip it
+                    if (!isV3 && prefs.password.isNotEmpty()) "$base&password=${prefs.password}" else base
                 }
 
                 // "fullsize" will use fullsize or reencoded pic as configured within Immich

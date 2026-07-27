@@ -102,7 +102,14 @@ class DreamActivity : DreamServiceCompat() {
             return true
         }
 
-        return super.dispatchKeyEvent(event)
+        return try {
+            super.dispatchKeyEvent(event)
+        } catch (e: SecurityException) {
+            // Android bug: some OEM builds require BROADCAST_CLOSE_SYSTEM_DIALOGS
+            // for the fallback event handler's sendCloseSystemWindows() call.
+            // Safe to swallow — this only fires for keys we don't already handle.
+            true
+        }
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
