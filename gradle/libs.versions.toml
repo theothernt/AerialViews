@@ -38,7 +38,7 @@ coil3 = "3.5.0"
 timber = "5.0.1"
 slf4j = "2.0.18"
 
-compose-bom = "2026.06.00"
+compose-bom = "2026.06.01"
 compose-activity = "1.13.0"
 compose-lifecycle = "2.11.0"
 koin = "4.2.2"
