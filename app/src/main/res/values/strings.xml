@@ -329,6 +329,9 @@
     <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
     <string name="webdav_media_test_results">Test results</string>
 
+    <string name="webdav_media_validate_ssl_title">Validate SSL Certificates</string>
+    <string name="webdav_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+
     <!-- Main / Video Sources / Immich videos -->
     <string name="immich_media_enabled_title">Use Immich share media</string>
     <string name="immich_media_type_title">Choose media type</string>
