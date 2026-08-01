@@ -67,10 +67,6 @@ internal object ImagePlayerHelper {
                         builder.addInterceptor(NCMemoriesAuthInterceptor())
                     }
 
-                    AerialMediaSource.WEBDAV -> {
-                        builder.addInterceptor(WebDavAuthInterceptor())
-                    }
-
                     else -> {
                         // no additional headers
                     }
@@ -127,30 +123,6 @@ internal object ImagePlayerHelper {
         }
     }
 
-    internal class WebDavAuthInterceptor : Interceptor {
-        override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-            val originalRequest = chain.request()
-            val newRequest =
-                if (WebDavMediaPrefs2.enabled && WebDavMediaPrefs2.userName.isNotEmpty()) {
-                    Timber.d("Adding WebDAV Authorization header")
-
-                    val credential = Credentials.basic(
-                        WebDavMediaPrefs2.userName,
-                        WebDavMediaPrefs2.password,
-                    )
-
-                    originalRequest
-                        .newBuilder()
-                        .addHeader("Authorization", credential)
-                        .build()
-                }
-                else {
-                    Timber.d("Skipping WebDAV Authorization header")
-                    originalRequest
-                }
-            return chain.proceed(newRequest)
-        }
-    }
 
     private fun stripUserinfo(url: String): String {
         val withoutScheme = url.substringAfter("://")
