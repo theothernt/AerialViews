@@ -72,7 +72,7 @@ class SslHelper {
 
         val logging =
             HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY
+                level = HttpLoggingInterceptor.Level.HEADERS
             }
 
         builder.addInterceptor(logging)
