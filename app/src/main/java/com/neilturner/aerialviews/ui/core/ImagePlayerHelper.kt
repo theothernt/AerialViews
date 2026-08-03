@@ -143,7 +143,7 @@ internal object ImagePlayerHelper {
         val client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(uri)
         try {
-            client.setCredentials(userName, password)
+            client.setCredentials(userName, password, true)
             val cleanUrl = stripUserinfo(uri.toString())
             return client.get(cleanUrl)
         } catch (ex: Exception) {
