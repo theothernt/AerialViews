@@ -25,6 +25,7 @@ object WebDavMediaPrefs : KotprefModel(), WebDavProviderPreferences {
     override var userName by stringPref("", "webdav_media_username")
     override var password by stringPref("", "webdav_media_password")
     override var searchSubfolders by booleanPref(false, "webdav_media_search_subfolders")
+    override var validateSsl by booleanPref(true, "webdav_media_validate_ssl")
 
     override fun settingsHash(): String = settingsHashWithPrefix("webdav_media_")
 }
@@ -37,6 +38,7 @@ object WebDavMediaPrefs2 : KotprefModel(), WebDavProviderPreferences {
     private var pathNameRaw by stringPref("", "webdav_media2_pathname")
     private var userNameRaw by stringPref("", "webdav_media2_username")
     private var passwordRaw by stringPref("", "webdav_media2_password")
+    private var validateSslRaw by booleanPref(true, "webdav_media2_validate_ssl")
 
     override var enabled by booleanPref(false, "webdav_media2_enabled")
     override val mediaSelection: Set<String>
@@ -82,6 +84,11 @@ object WebDavMediaPrefs2 : KotprefModel(), WebDavProviderPreferences {
         get() = WebDavMediaPrefs.searchSubfolders
         set(value) {
             WebDavMediaPrefs.searchSubfolders = value
+        }
+    override var validateSsl: Boolean
+        get() = validateSslRaw
+        set(value) {
+            validateSslRaw = value
         }
 
     override fun settingsHash(): String = settingsHashWithPrefix("webdav_media2_", "webdav_media_")
