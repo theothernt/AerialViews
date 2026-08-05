@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.providers.immich
 
 import com.neilturner.aerialviews.models.enums.ProviderMediaType
 import com.neilturner.aerialviews.models.prefs.ImmichRepositoryPrefs
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -26,6 +27,7 @@ internal class ImmichRepositoryTest {
 
     @BeforeEach
     fun setUp() {
+        clearAllMocks()
         api = mockk(relaxed = true)
         prefs = mockk(relaxed = true)
         urlBuilder = mockk(relaxed = true)
@@ -36,8 +38,8 @@ internal class ImmichRepositoryTest {
     private fun <T> errorResponse(code: Int): Response<T> =
         Response.error(code, mockk<ResponseBody>(relaxed = true))
 
-    private fun serverVersionResponse(major: Int): ServerVersionResponse =
-        ServerVersionResponse(major = major, minor = 0, patch = 0)
+    private fun serverVersionResponse(major: Int, minor: Int = 0): ServerVersionResponse =
+        ServerVersionResponse(major = major, minor = minor, patch = 0)
 
     // -----------------------------------------------------------------------
     // Server version detection
@@ -52,6 +54,24 @@ internal class ImmichRepositoryTest {
             val result = repository.getServerVersion()
 
             assertEquals(3, result)
+        }
+
+        @Test
+        fun `v1 with minor 118 is treated as v3`() = runTest {
+            coEvery { api.getServerVersion() } returns Response.success(ServerVersionResponse(major = 1, minor = 118, patch = 0))
+
+            val result = repository.getServerVersion()
+
+            assertEquals(3, result)
+        }
+
+        @Test
+        fun `v1 with minor 105 is treated as v2`() = runTest {
+            coEvery { api.getServerVersion() } returns Response.success(serverVersionResponse(1, 105))
+
+            val result = repository.getServerVersion()
+
+            assertEquals(1, result)
         }
 
         @Test
@@ -298,6 +318,45 @@ internal class ImmichRepositoryTest {
             assertEquals("Vacation", result.name)
             assertEquals(2, result.assets.size)
         }
+
+        @Test
+        fun `v2 - falls back to search metadata when inline assets are empty`() = runTest {
+            every { prefs.pathName } returns "share/12345"
+            every { prefs.password } returns ""
+            every { prefs.apiKey } returns ""
+            every { prefs.mediaType } returns ProviderMediaType.VIDEOS_PHOTOS
+            coEvery { api.getServerVersion() } returns Response.success(serverVersionResponse(2))
+
+            val sharedResponse = SharedLinkResponse(
+                id = "shared-1",
+                key = "resolved-key",
+                type = "ALBUM",
+                description = "Shared Album",
+                album = Album(id = "album-1", name = "Vacation"),
+                assets = emptyList(),
+            )
+            val emptyAlbum = Album(id = "album-1", name = "Vacation", assets = emptyList())
+            val searchAssets = listOf(
+                Asset(id = "a1", type = "IMAGE", originalPath = "/photo1.jpg"),
+                Asset(id = "a2", type = "IMAGE", originalPath = "/photo2.jpg"),
+            )
+            val searchResponse = SearchAssetsResponse(assets = AssetsResult(items = searchAssets))
+
+            coEvery { api.getSharedAlbum(key = "12345", slug = null, password = null) } returns Response.success(sharedResponse)
+            coEvery { api.getSharedAlbumById(albumId = "album-1", key = "resolved-key", password = null) } returns Response.success(emptyAlbum)
+            coEvery {
+                api.getSharedAlbumAssets(
+                    key = "resolved-key",
+                    searchRequest = match { it.albumIds == listOf("album-1") },
+                )
+            } returns Response.success(searchResponse)
+
+            val result = repository.getSharedAlbumFromAPI()
+
+            assertEquals("album-1", result.id)
+            assertEquals("Vacation", result.name)
+            assertEquals(2, result.assets.size)
+        }
     }
 
     // -----------------------------------------------------------------------
@@ -379,6 +438,35 @@ internal class ImmichRepositoryTest {
             assertThrows<Exception> {
                 repository.getSelectedAlbumFromAPI()
             }
+        }
+
+        @Test
+        fun `falls back to search metadata when inline assets are empty (v2)`() = runTest {
+
+            every { prefs.selectedAlbumIds } returns mutableSetOf("album-1")
+            every { prefs.apiKey } returns "test-api-key"
+            every { prefs.mediaType } returns ProviderMediaType.VIDEOS_PHOTOS
+            coEvery { api.getServerVersion() } returns Response.success(serverVersionResponse(2))
+
+            val emptyAlbum = Album(id = "album-1", name = "My Album", assets = emptyList())
+            val searchAssets = listOf(
+                Asset(id = "a1", type = "IMAGE", originalPath = "/photo1.jpg"),
+                Asset(id = "a2", type = "IMAGE", originalPath = "/photo2.jpg"),
+            )
+            val searchResponse = SearchAssetsResponse(assets = AssetsResult(items = searchAssets))
+
+            coEvery { api.getAlbum(apiKey = "test-api-key", albumId = "album-1") } returns Response.success(emptyAlbum)
+            coEvery {
+                api.getAlbumAssets(
+                    apiKey = "test-api-key",
+                    searchRequest = match { it.albumIds == listOf("album-1") },
+                )
+            } returns Response.success(searchResponse)
+
+            val result = repository.getSelectedAlbumFromAPI()
+
+            assertEquals(2, result.assets.size)
+            assertEquals("My Album", result.assets[0].albumName)
         }
 
         @Test
