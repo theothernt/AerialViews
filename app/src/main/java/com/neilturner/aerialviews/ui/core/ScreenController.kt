@@ -104,6 +104,7 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
+    var onMusicPlayingChanged: ((Boolean) -> Unit)? = null
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -339,6 +340,7 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
+        musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
         if (resumeIndex > 0) {
             musicPlayer?.seekToTrack(resumeIndex)
