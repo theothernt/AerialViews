@@ -183,8 +183,8 @@ class MediaService(
             }
 
             val activeProviders =
-                if (config.wifiOnly && !NetworkHelper.isOnWifi(context)) {
-                    Timber.i("MediaService: WiFi-only mode enabled, filtering out REMOTE providers")
+                if (config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)) {
+                    Timber.i("MediaService: WiFi-only mode enabled, filtering out REMOTE providers (not on WiFi/Ethernet)")
                     providers.filter { it.type != ProviderSourceType.REMOTE }
                 } else {
                     providers
