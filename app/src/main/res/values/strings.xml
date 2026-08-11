@@ -661,6 +661,13 @@
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
     <string name="appearance_fade_corners_title">Corners to fade</string>
 
+    <string name="overlay_visibility_title">Overlay visibility</string>
+    <string name="overlay_visibility_always_visible">Always visible</string>
+    <string name="overlay_visibility_always_hidden">Always hidden</string>
+    <string name="overlay_visibility_hide_after">Hide after delay</string>
+    <string name="overlay_visibility_show_after">Show after delay</string>
+    <string name="overlay_visibility_delay_title">Delay</string>
+
     <string name="appearance_fade_in_title">Fade in</string>
     <string name="appearance_fade_out_title">Fade out</string>
 

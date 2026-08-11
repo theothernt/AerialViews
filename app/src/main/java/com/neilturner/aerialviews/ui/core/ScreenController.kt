@@ -86,7 +86,8 @@ class ScreenController(
     private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
-    private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
+    private val overlayVisibilityMode = GeneralPrefs.overlayVisibility
+    private val overlayVisibilityDelay = GeneralPrefs.overlayVisibilityDelay.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
     private val overlayFadeOut: Long = GeneralPrefs.overlayFadeOutDuration.toLong()
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
@@ -421,7 +422,7 @@ class ScreenController(
     private fun fadeInNextItem() {
         canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
+        val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text/spinner
         if (loadingContainer.isVisible) {
@@ -430,42 +431,78 @@ class ScreenController(
         }
 
         // Reset any overlay animations
-        if (autoHideOverlayDelay >= 0) {
-            overlayHelper.getOverlaysToFade().forEach { view ->
-                view.animate()?.cancel()
-                view.clearAnimation()
-            }
+        overlayHelper.getOverlaysToFade().forEach { view ->
+            view.animate()?.cancel()
+            view.clearAnimation()
         }
 
         // Hide overlays immediately
-        if (autoHideOverlayDelay.toInt() == 0) {
-            overlayHelper.isHidden = true
-            setOverlayInstancesHidden(true)
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-            // Also hide gradients immediately if they have fading overlays
-            // AND no persistent overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-                gradientTopView.alpha = 0f
+//        if (autoHideOverlayDelay.toInt() == 0) {
+//            overlayHelper.isHidden = true
+//            setOverlayInstancesHidden(true)
+//            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+//            // Also hide gradients immediately if they have fading overlays
+//            // AND no persistent overlays
+//            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+//                gradientTopView.alpha = 0f
+        when (overlayVisibilityMode) {
+            "ALWAYS_VISIBLE" -> {
+                // Overlays stay visible, no hiding
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
-                !overlayHelper.hasBottomPersistentOverlays()
-            ) {
-                gradientBottomView.alpha = 0f
-            }
-            canShowOverlays = true
-        }
 
-        // Hide overlays after a delay
-        if (autoHideOverlayDelay > 0) {
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
-            // Also show gradients initially if they have fading overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                gradientTopView.alpha = 1f
+            "ALWAYS_HIDDEN" -> {
+                // Hide overlays immediately, only show on user reveal
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                    gradientBottomView.alpha = 0f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                gradientBottomView.alpha = 1f
+
+            "HIDE_AFTER_DELAY" -> {
+                // Show overlays, then hide after delay
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                hideOverlays(overlayDelay)
             }
-            hideOverlays(overlayDelay)
+
+            "SHOW_AFTER_DELAY" -> {
+                // Hide overlays initially, show after delay, stay visible
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                    gradientBottomView.alpha = 0f
+                }
+                mainScope.launch {
+                    delay(overlayDelay.milliseconds)
+                    overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                    if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                        gradientTopView.alpha = 1f
+                    }
+                    if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                        gradientBottomView.alpha = 1f
+                    }
+                    canShowOverlays = true
+                }
+            }
         }
 
         // Fade out LoadingView
@@ -582,8 +619,8 @@ class ScreenController(
     }
 
     fun showOverlays() {
-        // Overlay auto hide pref must be enabled
-        if (autoHideOverlayDelay < 0) return
+        // Only allow reveal when overlays can be hidden
+        if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
 
         // If blackout mode is on, exit
         if (blackOutMode) return
