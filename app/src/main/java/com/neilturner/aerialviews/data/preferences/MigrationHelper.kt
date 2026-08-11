@@ -53,7 +53,7 @@ class MigrationHelper(
         if (lastKnownVersion < 92) release92()
         if (lastKnownVersion < 113) release113()
         if (lastKnownVersion < 114) release114()
-        if (lastKnownVersion < 126) release126()
+        if (lastKnownVersion < 138) release138()
 
         // After all migrations, set version to latest
         updateKnownVersion(latestVersion)
@@ -605,8 +605,8 @@ class MigrationHelper(
         }
     }
 
-    private fun release126() {
-        Timber.i("Migrating settings for release 126")
+    private fun release138() {
+        Timber.i("Migrating settings for release 138")
 
         val autoHideUsed = prefs.contains("overlay_auto_hide")
         if (!autoHideUsed) {
