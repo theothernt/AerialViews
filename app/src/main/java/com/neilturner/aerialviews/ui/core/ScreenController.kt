@@ -342,10 +342,7 @@ class ScreenController(
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
         musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
-        if (resumeIndex > 0) {
-            musicPlayer?.seekToTrack(resumeIndex)
-        }
-        musicPlayer?.play()
+        musicPlayer?.play(resumeIndex)
         Timber.i("MusicPlayer: playing ${musicPlaylist.size} tracks")
     }
 

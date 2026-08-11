@@ -46,16 +46,8 @@ class MusicPlayer(
 
     fun getCurrentTrackIndex(): Int = player?.currentMediaItemIndex ?: 0
 
-    // Support resume capability
-    fun seekToTrack(index: Int) {
-        if (index > 0 && index < playlist.size) {
-            player?.seekTo(index, 0L)
-            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $index")
-        }
-    }
-
     @OptIn(UnstableApi::class)
-    fun play() {
+    fun play(startTrackIndex: Int = 0) {
         val player =
             player ?: run {
                 Timber.w("MusicPlayer: play() called but player not created")
@@ -68,6 +60,11 @@ class MusicPlayer(
             player.addMediaSource(mediaSource)
         }
         player.prepare()
+
+        if (startTrackIndex in playlist.tracks.indices) {
+            player.seekTo(startTrackIndex, 0L)
+            Timber.i("MusicPlayer: array size is ${playlist.size}, seeking to index $startTrackIndex")
+        }
 
         // Apply repeat mode
         player.repeatMode =
