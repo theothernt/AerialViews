@@ -265,4 +265,20 @@ internal class MetadataResolverTest {
             assertEquals("Fallback Description", result.text)
             assertEquals(MetadataType.STATIC, result.metadataType)
         }
+
+    @Test
+    fun `resolve photo with blank description falls back to filename`(): Unit =
+        runTest {
+            val media =
+                createMedia(
+                    type = AerialMediaType.IMAGE,
+                    description = null,
+                )
+            val prefs = defaultPrefs.copy(photoSelection = "DESCRIPTION,FILENAME")
+
+            val result = resolver.resolve(context, media, prefs)
+
+            assertEquals("video", result.text)
+            assertEquals(MetadataType.STATIC, result.metadataType)
+        }
 }

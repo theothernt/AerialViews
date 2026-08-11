@@ -38,6 +38,8 @@ object SambaMediaPrefs : KotprefModel(), SambaProviderPreferences {
     override var wakeOnLanEnabled by booleanPref(false, "samba_media_wake_on_lan_enabled")
     override var wakeOnLanMacAddress by stringPref("", "samba_media_wake_on_lan_mac_address")
     override var wakeOnLanTimeout by stringPref("120", "samba_media_wake_on_lan_timeout")
+
+    override fun settingsHash(): String = settingsHashWithPrefix("samba_videos_", "samba_media_")
 }
 
 object SambaMediaPrefs2 : KotprefModel(), SambaProviderPreferences {
@@ -102,4 +104,6 @@ object SambaMediaPrefs2 : KotprefModel(), SambaProviderPreferences {
     override var wakeOnLanEnabled by booleanPref(false, "samba_media_wake_on_lan_enabled")
     override var wakeOnLanMacAddress by stringPref("", "samba_media_wake_on_lan_mac_address")
     override var wakeOnLanTimeout by stringPref("120", "samba_media_wake_on_lan_timeout")
+
+    override fun settingsHash(): String = settingsHashWithPrefix("samba_videos2_", "samba_videos_", "samba_media_")
 }

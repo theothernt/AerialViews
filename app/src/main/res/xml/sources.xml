@@ -51,6 +51,11 @@
             app:title="@string/sources_immich_title"
             app:summary="@string/sources_immich_summary"
             app:fragment="com.neilturner.aerialviews.ui.sources.ImmichVideosFragment"/>
+
+        <Preference
+            app:title="@string/sources_ncmemories_title"
+            app:summary="@string/sources_ncmemories_summary"
+            app:fragment="com.neilturner.aerialviews.ui.sources.NCMemoriesVideosFragment" />
     </PreferenceCategory>
 
 </PreferenceScreen>

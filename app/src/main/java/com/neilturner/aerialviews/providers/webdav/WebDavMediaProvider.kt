@@ -15,18 +15,24 @@ import com.neilturner.aerialviews.providers.ProviderFetchResult
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.OkHttpClient
 import timber.log.Timber
 import java.net.URLEncoder
 
 internal class WebDavMediaProvider(
     context: Context,
     private val prefs: WebDavProviderPreferences,
-    private val clientFactory: () -> WebDavListingClient = { SardineWebDavClient() },
+    private val clientFactory: () -> WebDavListingClient = {
+        val okHttpClient = WebDavSslHelper.createOkHttpClient(prefs.validateSsl)
+        SardineWebDavClient(okHttpClient = okHttpClient)
+    },
 ) : MediaProvider(context) {
     override val type = ProviderSourceType.LOCAL
 
     override val enabled: Boolean
         get() = prefs.enabled
+
+    override fun settingsHash(): String = prefs.settingsHash()
 
     override suspend fun fetch(): ProviderFetchResult = fetchWebDavMedia()
 
@@ -275,8 +281,10 @@ internal interface WebDavListingClient {
 }
 
 internal class SardineWebDavClient(
-    private val delegate: OkHttpSardine = OkHttpSardine(),
+    okHttpClient: OkHttpClient = OkHttpClient.Builder().build(),
 ) : WebDavListingClient {
+    private val delegate = OkHttpSardine(okHttpClient)
+
     override fun setCredentials(
         userName: String,
         password: String,

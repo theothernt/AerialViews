@@ -18,7 +18,9 @@ Inspired by Apple TV's beautiful video screensaver!
 
 * 4K Dolby Vision (HDR) videos, if your TV supports it
 * Over 250 videos from Apple, Amazon, Jetson Creative and Robin Fourcade
-* Show videos & photos from USB storage, [Immich server](https://immich.app/), Samba, WebDAV or custom feeds
+* Show videos & photos from USB
+  storage, [Immich server](https://immich.app/), [Nextcloud Memories server](https://memories.gallery/),
+  Samba, WebDAV or custom feeds
 * Place overlays in the corners of the screen such as metadata from videos and photos like location or date taken, clock, music playing, date, countdown timer
 * Message overlay API - Send custom messages to display on your TV from any device on your network (eg. Home Assistant)
 * Alternate the position of overlays to avoid burn-in on QD/OLED TVs
@@ -736,14 +738,27 @@ Aerial Views supports streaming photos and videos from your self-hosted [Immich]
 <details>
 <summary>Required API Permissions</summary>
 
-To ensure Aerial Views can successfully query your albums, retrieve media list metadata (for favorites, recent, or random filters), and stream your video and photo files, your API key must have the following permissions selected:
+To ensure Aerial Views can successfully query your albums, retrieve media list metadata (for
+favorites, recent, or random filters), and stream your video and photo files, your API key must have
+the following permissions selected:
 
 * **Album:** `album.read` (required to list and retrieve album metadata)
-* **Asset:** `asset.read`, `asset.view`, `asset.download` (required to search and read metadata, load thumbnails/previews, and stream/download original files)
+* **Asset:** `asset.read`, `asset.view`, `asset.download` (required to search and read metadata,
+  load thumbnails/previews, and stream/download original files)
 
-:information_source: If you encounter `403 Forbidden` errors, verification failures, or blank screens during playback, double-check that the generated API key has all of these permissions active.
-
+:information_source: If you encounter `403 Forbidden` errors, verification failures, or blank
+screens during playback, double-check that the generated API key has all of these permissions
+active.
 </details>
+
+## Nextcloud Memories Setup
+
+You can use either user password or app password in Aerial Views. We strongly suggest app password
+for enhanced security.
+
+You can generate an app password via your Nextcloud web interface under **User Menu > Personal
+Settings > Security (tab) > Devices & Sessions (section)**. Just enter any app name (e.g. "Aerial
+Views") and press "Create new app password" button.
   
 ## Weather data
 

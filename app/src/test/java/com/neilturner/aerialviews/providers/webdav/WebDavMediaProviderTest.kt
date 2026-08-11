@@ -120,6 +120,7 @@ internal class WebDavMediaProviderTest {
         hostName: String,
         pathName: String,
         searchSubfolders: Boolean = false,
+        validateSsl: Boolean = true,
     ): WebDavProviderPreferences =
         object : WebDavProviderPreferences {
             override var enabled: Boolean = true
@@ -134,6 +135,8 @@ internal class WebDavMediaProviderTest {
             override var userName: String = ""
             override var password: String = ""
             override var searchSubfolders: Boolean = searchSubfolders
+            override var validateSsl: Boolean = validateSsl
+            override fun settingsHash(): String = "test"
         }
 
     private class FakeWebDavListingClient(

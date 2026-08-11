@@ -47,6 +47,7 @@ object GeneralPrefs : KotprefModel() {
     var nowPlayingSize2 by stringPref("18", "nowplaying_size2")
     var nowPlayingWeight2 by stringPref("300", "nowplaying_weight2")
     var nowPlayingShortenTrackName by booleanPref(false, "nowplaying_shorten_track_name")
+    var keepScreenOnWhileMusicPlaying by booleanPref(false, "keep_screen_on_while_music_playing")
 
     // Date
     var dateFormat by nullableEnumValuePref(DateType.COMPACT, "date_format")
@@ -161,7 +162,8 @@ object GeneralPrefs : KotprefModel() {
     var mediaFadeOutDuration by stringPref("800", "media_fade_out_duration")
 
     // Overlay Auto hide/reveal
-    var overlayAutoHide by stringPref("-1", "overlay_auto_hide")
+    var overlayVisibility by stringPref("ALWAYS_VISIBLE", "overlay_visibility")
+    var overlayVisibilityDelay by stringPref("4", "overlay_visibility_delay")
     var overlayRevealTimeout by stringPref("4", "overlay_reveal_timeout")
 
     // Per-corner fade settings (which corners should fade when auto-hide is enabled)
@@ -273,6 +275,7 @@ object GeneralPrefs : KotprefModel() {
     var allowFallbackDecoders by booleanPref(false, "allow_fallback_decoders")
     var philipsDolbyVisionFix by booleanPref(false, "philips_dolby_vision_fix")
     var useTextureViewForVideo by booleanPref(false, "use_texture_view_for_video")
+    var reduceBufferMemory by booleanPref(false, "reduce_buffer_memory")
 
     // Advanced
     var enableLogCapture by booleanPref(false, "enable_log_capture")

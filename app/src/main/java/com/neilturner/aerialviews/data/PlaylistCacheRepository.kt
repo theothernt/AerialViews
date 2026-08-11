@@ -122,10 +122,10 @@ class PlaylistCacheRepository(
 
             Timber.i("PlaylistCache: Cache restored successfully. Music track: ${state.musicTrackIndex}/${state.totalMusicTracks}")
 
-            // Subtract 1 so that nextItem()'s pre-increment resumes at the saved position.
-            // Clamp to -1 so the very first nextItem() call always returns index 0 as a fallback.
-            val resumePosition = maxOf(-1, state.mediaPosition - 1)
-            Timber.d("PlaylistCache: Resuming at position ${state.mediaPosition}, startPosition set to $resumePosition")
+            // The saved media position is the last visual item that started.
+            // nextItem() pre-increments, so restoring from this value starts the following item.
+            val resumePosition = state.mediaPosition.coerceIn(-1, state.totalMediaItems - 1)
+            Timber.d("PlaylistCache: Last started position ${state.mediaPosition}, startPosition set to $resumePosition")
 
             MediaFetchResult(
                 mediaPlaylist =

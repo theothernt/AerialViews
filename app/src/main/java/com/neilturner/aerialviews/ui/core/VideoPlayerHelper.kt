@@ -20,13 +20,20 @@ import androidx.media3.ui.AspectRatioFrameLayout
 import com.neilturner.aerialviews.models.enums.AerialMediaSource
 import com.neilturner.aerialviews.models.enums.ImmichAuthType
 import com.neilturner.aerialviews.models.enums.LimitLongerVideos
+import com.neilturner.aerialviews.models.enums.SchemeType
 import com.neilturner.aerialviews.models.enums.VideoScale
 import com.neilturner.aerialviews.models.music.MusicTrack
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.models.prefs.ImmichMediaPrefs
+import com.neilturner.aerialviews.models.prefs.NCMemoriesMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.neilturner.aerialviews.models.videos.AerialMedia
+import com.neilturner.aerialviews.providers.ncmemories.NCMemoriesDataSourceFactory
 import com.neilturner.aerialviews.providers.samba.SambaDataSourceFactory
 import com.neilturner.aerialviews.providers.webdav.WebDavDataSourceFactory
+import com.neilturner.aerialviews.providers.webdav.WebDavHostParser
+import com.neilturner.aerialviews.providers.webdav.defaultPortFor
 import com.neilturner.aerialviews.services.philips.CustomRendererFactory
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
@@ -110,10 +117,10 @@ object VideoPlayerHelper {
             DefaultLoadControl
                 .Builder()
                 .setBufferDurationsMs(
-                    10_000, // Minimum buffer duration
-                    20_000, // Maximum buffer duration
-                    3_000, // Buffer before initial playback
-                    5_000, // Buffer after rebuffering
+                    if (prefs.reduceBufferMemory) 2_000 else 10_000,
+                    if (prefs.reduceBufferMemory) 10_000 else 20_000,
+                    if (prefs.reduceBufferMemory) 500 else 3_000,
+                    if (prefs.reduceBufferMemory) 1_000 else 5_000,
                 ).setTargetBufferBytes(C.LENGTH_UNSET)
                 .build()
 
@@ -207,9 +214,22 @@ object VideoPlayerHelper {
                 .createMediaSource(mediaItem)
         }
 
-        AerialMediaSource.WEBDAV -> {
+        AerialMediaSource.NCMEMORIES -> {
+            // If SSL validation is disabled, we need to set the appropriate flags
+            if (!NCMemoriesMediaPrefs.validateSsl) {
+                System.setProperty("javax.net.ssl.trustAll", "true")
+            }
+
+            Timber.d("Setting up Nextcloud Memories media source with URI: ${mediaItem.localConfiguration?.uri}")
             ProgressiveMediaSource
-                .Factory(WebDavDataSourceFactory())
+                .Factory(NCMemoriesDataSourceFactory())
+                .createMediaSource(mediaItem)
+        }
+
+        AerialMediaSource.WEBDAV -> {
+            val validateSsl = getWebDavValidateSslFromUri(mediaItem.localConfiguration!!.uri)
+            ProgressiveMediaSource
+                .Factory(WebDavDataSourceFactory(validateSsl))
                 .createMediaSource(mediaItem)
         }
 
@@ -228,7 +248,7 @@ object VideoPlayerHelper {
     ): Pair<Long, Long> {
         val maxVideoLength = prefs.maxVideoLength.toLong() * 1000
         val isLengthLimited = maxVideoLength >= TEN_SECONDS
-        val isShortVideo = player.duration < maxVideoLength
+        val isShortVideo = player.duration in 1..<maxVideoLength
 
         if (type == AerialMediaSource.RTSP) {
             Timber.i("Calculating RTSP stream length...")
@@ -324,12 +344,35 @@ object VideoPlayerHelper {
         return Pair(segmentStart, segmentEnd)
     }
 
+    private fun getWebDavValidateSslFromUri(uri: android.net.Uri): Boolean {
+        val host = uri.host?.lowercase() ?: return true
+        val port = if (uri.port == -1) null else uri.port
+
+        if (WebDavMediaPrefs.hostName.isNotBlank()) {
+            val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs.hostName) }.getOrNull()
+            if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
+                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs.scheme ?: SchemeType.HTTP)
+                if (port == null || port == prefPort) return WebDavMediaPrefs.validateSsl
+            }
+        }
+
+        if (WebDavMediaPrefs2.hostName.isNotBlank()) {
+            val parsed = runCatching { WebDavHostParser.parse(WebDavMediaPrefs2.hostName) }.getOrNull()
+            if (parsed != null && parsed.host.equals(host, ignoreCase = true)) {
+                val prefPort = parsed.port ?: defaultPortFor(WebDavMediaPrefs2.scheme ?: SchemeType.HTTP)
+                if (port == null || port == prefPort) return WebDavMediaPrefs2.validateSsl
+            }
+        }
+
+        return true
+    }
+
     private fun calculateLoopingVideo(
         duration: Long,
         maxLength: Long,
     ): Pair<Long, Long> {
         if (duration <= 0 || maxLength < TEN_SECONDS) {
-            Timber.e("Invalid duration or max length: duration=$duration, maxLength=$maxLength%")
+            Timber.e("Invalid duration or video length: duration=$duration, maxLength=$maxLength%")
             return Pair(0, duration)
         }
         val loopCount = ceil(maxLength / duration.toDouble()).toInt()

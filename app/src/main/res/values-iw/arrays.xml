@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">דפוסים</string>
   <string name="amazon_scene_sea">ים</string>
   <string name="amazon_scene_space">חלל</string>
+  <string name="audio_mode_mute_videos">השתקת אודיו מסרטונים</string>
+  <string name="audio_mode_play_background_music">השמעת מוזיקת ​​רקע</string>
+  <string name="audio_mode_play_video_audio">הפעלת אודיו מסרטונים</string>
   <string name="bg_color_black">שחור</string>
   <string name="bg_color_white">לבן</string>
   <string name="btn_blackout">מסך חושך, מדיה דהייה ושכבות-על</string>
@@ -41,13 +44,17 @@
   <string name="date_full">מלא</string>
   <string name="desc_disabled">נָכֶה</string>
   <string name="desc_filename_disabled">נָכֶה</string>
+  <string name="desc_filename_photo_1">\'יפן - שלג עמוק בהוקאידו.jpg\' הופך ל\'יפן - שלג עמוק בהוקאידו\'</string>
+  <string name="desc_filename_photo_2">\'תמונות/איטליה/הדולומיטים.jpg\' הופך ל\'איטליה / הדולומיטים\'</string>
+  <string name="desc_filename_photo_3">\'תמונות/דבלין/טמפל בר.png\' הופך ל\'דבלין\'</string>
+  <string name="desc_filename_video_1">\'\'טס לעבר הר פילאטוס.mp4\' הופך ל\'טס לעבר הר פילאטוס\'</string>
+  <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' הופך ל-\'Grand Canyon / Sunset\'</string>
+  <string name="desc_filename_video_3">\'סרטונים/אירלנד/צוקי מוהר.mp4\' הופך ל\'אירלנד\'</string>
+  <string name="desc_manifest_disabled">נָכֶה</string>
+  <string name="desc_manifest_poi">זמין בשפות רבות, אשר משתנות במהלך הפעלת הסרטון</string>
+  <string name="desc_manifest_short">שם מקום או תיאור קצר</string>
   <string name="desc_poi">נקודות עניין דינמיות</string>
   <string name="desc_short">תיאור קצר</string>
-  <string-array name="description_video_manifest_entries">
-    <item>מבוטל</item>
-    <item>תיאור קצר או מיקום</item>
-    <item>נקודות עניין דינמיות, זמינות בהרבה שפות, שמתעדכנות בזמן ניגון הוידאו</item>
-  </string-array>
   <string name="duration_10s">10 שניות</string>
   <string name="duration_1_2s">1.2 שניות</string>
   <string name="duration_1_4s">1.4 שניות</string>
@@ -88,16 +95,15 @@
   <string name="immich_include_disabled">נָכֶה</string>
   <string name="immich_vid_original">מקורי</string>
   <string name="immich_vid_transcoded">קידוד מומר</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>ציית למגבלה - דלג לסרטון הבא כאשר מגיעים למגבלה</item>
-    <item>התעלם ממגבלה - אם סרטון ארוך מהמגבלה שהוגדרה, הוא יופעל עד סופו</item>
-    <item>קטע אקראי - אם הסרטון ארוך מהמגבלה, יופעל חלק אקראי מהסרטון
-(למשל, עם מגבלה של 2 דקות, סרטון של 6 דקות יכול להכיל 3 קטעים - אחד יושמע באופן אקראי)</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">אפשר לסרטונים ארוכים יותר להסתיים</string>
+  <string name="limit_Longer_videos_finish_summary">התעלם ממגבלה - אם סרטון ארוך מהמגבלה שהוגדרה, הוא יופעל עד סופו</string>
+  <string name="limit_Longer_videos_segment">הפעל קטעים אקראיים של סרטונים ארוכים</string>
+  <string name="limit_Longer_videos_segment_summary">קטע אקראי - אם הסרטון ארוך מהמגבלה, יופעל חלק אקראי מהסרטון
+(למשל, עם מגבלה של 2 דקות, סרטון של 6 דקות יכול להכיל 3 קטעים - אחד יושמע באופן אקראי)</string>
+  <string name="limit_Longer_videos_skip">דלג כשמגיעים למגבלה</string>
+  <string name="limit_Longer_videos_skip_summary">ציית למגבלה - דלג לסרטון הבא כאשר מגיעים למגבלה</string>
+  <string name="local_search_folder_access">גישה לתיקיות</string>
   <string name="local_search_media_scanner">סורק מדיה</string>
-  <string name="longervideo_finish">אפשר לסרטונים ארוכים יותר להסתיים</string>
-  <string name="longervideo_segments">הפעל קטעים אקראיים של סרטונים ארוכים</string>
-  <string name="longervideo_skip">דלג כשמגיעים למגבלה</string>
   <string name="maxvid_10_min">10 דקות</string>
   <string name="maxvid_10_sec">10 שניות</string>
   <string name="maxvid_1_min">דקה אחת</string>
@@ -114,9 +120,10 @@
   <string name="maxvid_7_min">7 דקות</string>
   <string name="maxvid_8_min">8 דקות</string>
   <string name="maxvid_9_min">9 דקות</string>
-  <string name="media_photos_only">תמונות בלבד</string>
-  <string name="media_videos_only">סרטונים בלבד</string>
-  <string name="media_videos_photos">סרטונים ותמונות</string>
+  <string name="maxvid_no_limit">אין הגבלה*</string>
+  <string name="media_music">מוסיקה</string>
+  <string name="media_photos">תמונות</string>
+  <string name="media_videos">סרטונים</string>
   <string name="nowplaying_artist">אמן</string>
   <string name="nowplaying_artist_song">אמן · שיר</string>
   <string name="nowplaying_disabled">נָכֶה</string>
@@ -128,17 +135,21 @@
   <string name="overlay_hide_6s">6 שניות</string>
   <string name="overlay_hide_8s">8 שניות</string>
   <string name="overlay_hide_always">תמיד מוסתר</string>
+  <string name="overlay_hide_never">לעולם אל תסתיר*</string>
   <string name="overlay_meta_loc_city">עיר</string>
   <string name="overlay_meta_loc_city_country">עיר, ארץ</string>
   <string name="overlay_meta_loc_city_state">עיר, מדינה</string>
   <string name="overlay_meta_loc_city_state_country">עיר, מדינה, ארץ</string>
   <string name="overlay_meta_loc_country">ארץ</string>
+  <string name="overlay_meta_photo_album_name">שם האלבום (אימיך)</string>
   <string name="overlay_meta_photo_date">תאריך צילום (EXIF/Immich)</string>
   <string name="overlay_meta_photo_description">תיאור (EXIF/Immich)</string>
   <string name="overlay_meta_photo_filename">השתמש בשם הקובץ כפי שהוא</string>
   <string name="overlay_meta_photo_folder_filename">תיקייה ושם קובץ</string>
   <string name="overlay_meta_photo_folder_only">שם התיקייה בלבד</string>
   <string name="overlay_meta_photo_location">מיקום (EXIF/Immich)</string>
+  <string name="overlay_meta_vid_album_name">שם האלבום (אימיך)</string>
+  <string name="overlay_meta_vid_date">תאריך צילום (מדיה/אימיץ\')</string>
   <string name="overlay_meta_vid_description">תיאור (אימיך)</string>
   <string name="overlay_meta_vid_filename">השתמש בשם הקובץ כפי שהוא</string>
   <string name="overlay_meta_vid_folder_filename">תיקייה ושם קובץ</string>
@@ -146,11 +157,19 @@
   <string name="overlay_meta_vid_location">מיקום (אימיך)</string>
   <string name="overlay_meta_vid_poi">נקודות עניין דינמיות</string>
   <string name="overlay_meta_vid_short_desc">תיאור קצר</string>
+  <string name="overlay_meta_vid_title">כותרת (מדיה)</string>
   <string name="overlay_reveal_10s">10 שניות</string>
   <string name="overlay_reveal_2s">2 שניות</string>
+  <string name="overlay_reveal_4s">4 שניות*</string>
   <string name="overlay_reveal_6s">6 שניות</string>
   <string name="overlay_reveal_8s">8 שניות</string>
+  <string name="photo_scale_fill_crop">מילוי עם חיתוך*</string>
   <string name="photo_scale_no_crop">שינוי קנה מידה ללא חיתוך</string>
+  <string name="playlist_cache_refresh_1_week">כל שבוע</string>
+  <string name="playlist_cache_refresh_2_weeks">כל שבועיים</string>
+  <string name="playlist_cache_refresh_3_weeks">כל 3 שבועות</string>
+  <string name="playlist_cache_refresh_4_weeks">כל 4 שבועות</string>
+  <string name="playlist_cache_refresh_all">כאשר כל המדיה נצפתה</string>
   <string name="progressbar_loc_bottom">תחתית המסך</string>
   <string name="progressbar_loc_disabled">נָכֶה</string>
   <string name="progressbar_loc_top">החלק העליון של המסך</string>
@@ -220,17 +239,18 @@
   <string name="slot_metadata_4">מטא-דאטה #4</string>
   <string name="slot_now_playing_1">עכשיו מתנגן #1</string>
   <string name="slot_now_playing_2">עכשיו מתנגן #2</string>
+  <string name="slot_weather_1">מזג אוויר: עכשיו</string>
+  <string name="slot_weather_2">מזג אוויר: תחזית</string>
+  <string name="temp_celsius">C° / צלזיוס</string>
+  <string name="temp_fahrenheit">F° / פרנהייט</string>
   <string name="time_of_day_day">יְוֹם</string>
   <string name="time_of_day_night">לַיְלָה</string>
   <string name="time_of_day_sunrise">זְרִיחָה</string>
   <string name="time_of_day_sunset">שְׁקִיעַת הַשֶׁמֶשׁ</string>
+  <string name="video_scale_fill_crop">מילוי עם חיתוך*</string>
   <string name="video_scale_no_crop">שינוי קנה מידה ללא חיתוך</string>
-  <string-array name="video_time_of_day_entries">
-    <item>זְרִיחָה</item>
-    <item>יְוֹם</item>
-    <item>שְׁקִיעַת הַשֶׁמֶשׁ</item>
-    <item>לַיְלָה</item>
-  </string-array>
+  <string name="weather_days_3">3 ימים</string>
+  <string name="weather_days_5">5 ימים</string>
   <string name="weather_detail_city">עיר</string>
   <string name="weather_detail_empty">רֵיק</string>
   <string name="weather_detail_icon">סמל</string>

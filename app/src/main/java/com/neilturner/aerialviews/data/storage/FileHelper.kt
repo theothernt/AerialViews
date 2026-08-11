@@ -7,6 +7,8 @@ import com.neilturner.aerialviews.ui.helpers.DeviceHelper
 import com.neilturner.aerialviews.utils.filenameWithoutExtension
 import com.neilturner.aerialviews.utils.toStringOrEmpty
 import timber.log.Timber
+import kotlin.text.lastIndexOf
+import kotlin.text.take
 
 object FileHelper {
     fun findLocalVideos(context: Context): List<String> = findLocalMedia(context, MediaStore.Video.Media.EXTERNAL_CONTENT_URI, "videos")
@@ -120,6 +122,46 @@ object FileHelper {
             filename
         } else {
             path
+        }
+    }
+
+    fun formatFolderAndFilenameFromPath(
+        path: String,
+        includeFilename: Boolean = false,
+        pathDepth: Int = 1,
+    ): String {
+        val filename = extractFilenameFromPath(path)
+
+        val segments = path.split("/").toMutableList()
+        segments.removeAt(segments.lastIndex) // Remove filename at the end of the list
+        val segmentCount = segments.size
+        var path = ""
+
+        if (segmentCount > 0) {
+            val effectiveDepth = pathDepth.coerceIn(1, minOf(5, segmentCount))
+            val relevantSegments = segments.takeLast(effectiveDepth)
+            path = relevantSegments.joinToString(" / ")
+        }
+
+        return if (includeFilename && path.isNotBlank()) {
+            "$path / $filename"
+        } else if (includeFilename && path.isBlank()) {
+            filename
+        } else {
+            path
+        }
+    }
+
+    fun extractFilenameFromPath(
+        path: String
+    ): String {
+        val segments = path.split("/").toMutableList()
+        val filename = segments[segments.lastIndex].toStringOrEmpty()
+        val index = filename.lastIndexOf(".")
+        return if (index > 0) {
+            filename.take(index)
+        } else {
+            filename
         }
     }
 

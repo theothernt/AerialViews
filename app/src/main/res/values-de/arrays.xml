@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">Muster</string>
   <string name="amazon_scene_sea">Meer</string>
   <string name="amazon_scene_space">Weltraum</string>
+  <string name="audio_mode_mute_videos">Ton von Videos stummschalten</string>
+  <string name="audio_mode_play_background_music">Hintergrundmusik abspielen</string>
+  <string name="audio_mode_play_video_audio">Audio aus Videos abspielen</string>
   <string name="bg_color_black">Schwarz</string>
   <string name="bg_color_white">Weiß</string>
   <string name="btn_blackout">Blackout-Bildschirm, Ausblenden von Medien und Overlays</string>
@@ -47,13 +50,11 @@
   <string name="desc_filename_video_1">\'Flug in Richtung Mount Pilatus.mp4\' wird zu \'Flug in Richtung Mount Pilatus\'</string>
   <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sonnenuntergang.mp4\' wird zu \'Grand Canyon/Sonnenuntergang\'</string>
   <string name="desc_filename_video_3">\'Videos/Irland/Klippen von Moher.mp4\' wird zu \'Irland\'</string>
+  <string name="desc_manifest_disabled">Deaktiviert</string>
+  <string name="desc_manifest_poi">Verfügbar in vielen Sprachen, ändern sich während der Wiedergabe</string>
+  <string name="desc_manifest_short">Ortsname oder Kurzbeschreibung</string>
   <string name="desc_poi">Dynamische Sehenswürdigkeiten</string>
   <string name="desc_short">Kurze Beschreibung</string>
-  <string-array name="description_video_manifest_entries">
-    <item>Deaktiviert</item>
-    <item>Eine kurze Beschreibung oder ein Standort</item>
-    <item>Verfügbar in vielen Sprachen, ändern sich während der Wiedergabe</item>
-  </string-array>
   <string name="duration_10s">10 Sekunden</string>
   <string name="duration_1_2s">1,2 Sekunden</string>
   <string name="duration_1_4s">1,4 Sekunden</string>
@@ -94,16 +95,14 @@
   <string name="immich_include_disabled">Deaktiviert</string>
   <string name="immich_vid_original">Original</string>
   <string name="immich_vid_transcoded">Transkodiert</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Limit einhalten - zum nächsten Video springen, wenn das Limit erreicht ist</item>
-    <item>Limit ignorieren - wenn ein Video länger als das eingestellte Limit ist, wird es bis zum Ende abgespielt</item>
-    <item>Zufälliges Segment – wenn ein Video länger als das Limit ist, wird ein zufälliger Videoteil abgespielt (z. B. kann ein 6-minütiges Video mit einem 2-Minuten-Limit 3 Segmente haben – eines wird zufällig abgespielt)</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">Längere Videos beenden lassen</string>
+  <string name="limit_Longer_videos_finish_summary">Limit ignorieren - wenn ein Video länger als das eingestellte Limit ist, wird es bis zum Ende abgespielt</string>
+  <string name="limit_Longer_videos_segment">Zufallsabschnitte langer Videos abspielen</string>
+  <string name="limit_Longer_videos_segment_summary">Zufälliges Segment – wenn ein Video länger als das Limit ist, wird ein zufälliger Videoteil abgespielt (z. B. kann ein 6-minütiges Video mit einem 2-Minuten-Limit 3 Segmente haben – eines wird zufällig abgespielt)</string>
+  <string name="limit_Longer_videos_skip">Überspringen, wenn das Limit erreicht ist</string>
+  <string name="limit_Longer_videos_skip_summary">Limit einhalten - zum nächsten Video springen, wenn das Limit erreicht ist</string>
   <string name="local_search_folder_access">Ordnerzugriff</string>
   <string name="local_search_media_scanner">Medien-Scanner</string>
-  <string name="longervideo_finish">Längere Videos beenden lassen</string>
-  <string name="longervideo_segments">Zufallsabschnitte langer Videos abspielen</string>
-  <string name="longervideo_skip">Überspringen, wenn das Limit erreicht ist</string>
   <string name="maxvid_10_min">10 Minuten</string>
   <string name="maxvid_10_sec">10 Sekunden</string>
   <string name="maxvid_1_min">1 Minute</string>
@@ -121,9 +120,9 @@
   <string name="maxvid_8_min">8 Minuten</string>
   <string name="maxvid_9_min">9 Minuten</string>
   <string name="maxvid_no_limit">Keine Begrenzung*</string>
-  <string name="media_photos_only">Nur Fotos</string>
-  <string name="media_videos_only">Nur Videos</string>
-  <string name="media_videos_photos">Fotos &amp; Videos</string>
+  <string name="media_music">Musik</string>
+  <string name="media_photos">Fotos</string>
+  <string name="media_videos">Videos</string>
   <string name="nowplaying_artist">Interpret</string>
   <string name="nowplaying_artist_song">Interpret · Lied</string>
   <string name="nowplaying_disabled">Deaktiviert</string>
@@ -149,6 +148,7 @@
   <string name="overlay_meta_photo_folder_only">Nur Ordnername</string>
   <string name="overlay_meta_photo_location">Standort (EXIF/Immich)</string>
   <string name="overlay_meta_vid_album_name">Albumname (Immich)</string>
+  <string name="overlay_meta_vid_date">Aufnahmedatum (Media/Immich)</string>
   <string name="overlay_meta_vid_description">Beschreibung (Immich)</string>
   <string name="overlay_meta_vid_filename">Dateinamen unverändert verwenden</string>
   <string name="overlay_meta_vid_folder_filename">Ordner- &amp; Dateiname</string>
@@ -156,6 +156,7 @@
   <string name="overlay_meta_vid_location">Standort (Immich)</string>
   <string name="overlay_meta_vid_poi">Dynamische Punkte von Interesse</string>
   <string name="overlay_meta_vid_short_desc">Kurzbeschreibung</string>
+  <string name="overlay_meta_vid_title">Titel (Medien)</string>
   <string name="overlay_reveal_10s">10 Sekunden</string>
   <string name="overlay_reveal_2s">2 Sekunden</string>
   <string name="overlay_reveal_4s">4 Sekunden*</string>
@@ -163,6 +164,11 @@
   <string name="overlay_reveal_8s">8 Sekunden</string>
   <string name="photo_scale_fill_crop">Mit Ernte füllen*</string>
   <string name="photo_scale_no_crop">Skalieren ohne Zuschneiden</string>
+  <string name="playlist_cache_refresh_1_week">Jede Woche</string>
+  <string name="playlist_cache_refresh_2_weeks">Alle 2 Wochen</string>
+  <string name="playlist_cache_refresh_3_weeks">Alle 3 Wochen</string>
+  <string name="playlist_cache_refresh_4_weeks">Alle 4 Wochen</string>
+  <string name="playlist_cache_refresh_all">Wenn alle Medien betrachtet</string>
   <string name="progressbar_loc_bottom">Unterer Bildschirmrand</string>
   <string name="progressbar_loc_disabled">Deaktiviert</string>
   <string name="progressbar_loc_top">Oberer Bildschirmrand</string>
@@ -242,12 +248,6 @@
   <string name="time_of_day_sunset">Sonnenuntergang</string>
   <string name="video_scale_fill_crop">Mit Ernte füllen*</string>
   <string name="video_scale_no_crop">Skalieren ohne Zuschneiden</string>
-  <string-array name="video_time_of_day_entries">
-    <item>Sonnenaufgang</item>
-    <item>Tag</item>
-    <item>Sonnenuntergang</item>
-    <item>Nacht</item>
-  </string-array>
   <string name="weather_days_3">3 Tage</string>
   <string name="weather_days_5">5 Tage</string>
   <string name="weather_detail_city">Stadt</string>

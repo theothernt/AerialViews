@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "tv.projectivy.plugin.wallpaperprovider.api"
-    compileSdk = 36
+    compileSdk = 37
     defaultConfig {
         minSdk = 22
     }

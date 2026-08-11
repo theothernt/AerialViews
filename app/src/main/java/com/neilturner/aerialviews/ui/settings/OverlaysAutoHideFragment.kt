@@ -23,13 +23,13 @@ class OverlaysAutoHideFragment : MenuStateFragment() {
     }
 
     private fun updateAllSummaries() {
-        val autoHidePref = findPreference<ListPreference>("overlay_auto_hide")
-        autoHidePref?.onPreferenceChangeListener =
+        val visibilityPref = findPreference<ListPreference>("overlay_visibility")
+        visibilityPref?.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
                 toggleOverlaySettings(newValue as String)
                 true
             }
-        toggleOverlaySettings(autoHidePref?.value ?: "-1")
+        toggleOverlaySettings(visibilityPref?.value ?: "ALWAYS_VISIBLE")
 
         val fadeCornersPref = findPreference<MultiSelectListPreference>("overlay_fade_corners_selection")
         fadeCornersPref?.onPreferenceChangeListener =
@@ -41,14 +41,18 @@ class OverlaysAutoHideFragment : MenuStateFragment() {
         fadeCornersPref?.let { updateMultiSelectSummary(it, it.values) }
     }
 
-    private fun toggleOverlaySettings(value: String) {
-        val isAutoHideEnabled = value != "-1"
+    private fun toggleOverlaySettings(mode: String) {
+        val needsDelay = mode == "HIDE_AFTER_DELAY" || mode == "SHOW_AFTER_DELAY"
+        val needsReveal = mode != "ALWAYS_VISIBLE"
+
+        val delayPref = findPreference<ListPreference>("overlay_visibility_delay")
+        delayPref?.isEnabled = needsDelay
 
         val revealTimeoutPref = findPreference<ListPreference>("overlay_reveal_timeout")
-        revealTimeoutPref?.isEnabled = isAutoHideEnabled
+        revealTimeoutPref?.isEnabled = needsReveal
 
         val fadeCornersPref = findPreference<MultiSelectListPreference>("overlay_fade_corners_selection")
-        fadeCornersPref?.isEnabled = isAutoHideEnabled
+        fadeCornersPref?.isEnabled = needsReveal
     }
 
     private fun updateMultiSelectSummary(

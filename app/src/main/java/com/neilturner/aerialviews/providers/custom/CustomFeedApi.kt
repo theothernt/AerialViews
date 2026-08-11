@@ -1,5 +1,6 @@
 package com.neilturner.aerialviews.providers.custom
 
+import com.neilturner.aerialviews.models.videos.Comm1Photo
 import com.neilturner.aerialviews.models.videos.Comm1Video
 import kotlinx.serialization.Serializable
 import retrofit2.http.GET
@@ -25,6 +26,7 @@ interface CustomFeedApi {
 @Serializable
 data class FeedVideos(
     val assets: List<Comm1Video>? = null,
+    val photos: List<Comm1Photo>? = null,
 )
 
 @Serializable

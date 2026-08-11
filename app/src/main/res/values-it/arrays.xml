@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">Modelli</string>
   <string name="amazon_scene_sea">Mare</string>
   <string name="amazon_scene_space">Spazio</string>
+  <string name="audio_mode_mute_videos">Disattiva l\'audio dei video</string>
+  <string name="audio_mode_play_background_music">Riproduci musica di sottofondo</string>
+  <string name="audio_mode_play_video_audio">Riproduci l\'audio dai video</string>
   <string name="bg_color_black">Nero</string>
   <string name="bg_color_white">Bianco</string>
   <string name="btn_blackout">Oscura lo schermo, rimuovendo video e overlay</string>
@@ -47,13 +50,11 @@
   <string name="desc_filename_video_1">\'Volo verso il Monte Pilatus.mp4\' diventa \'Volo verso il Monte Pilatus\'</string>
   <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' diventa \'Grand Canyon / Tramonto\'</string>
   <string name="desc_filename_video_3">\'Video/Irlanda/Scogliere di Moher.mp4\' diventa \'Irlanda\'</string>
+  <string name="desc_manifest_disabled">Disabilitato</string>
+  <string name="desc_manifest_poi">Disponibile in molte lingue, che cambiano durante la riproduzione del video.</string>
+  <string name="desc_manifest_short">Nome del luogo o breve descrizione</string>
   <string name="desc_poi">Punti di interesse dinamici</string>
   <string name="desc_short">Breve descrizione</string>
-  <string-array name="description_video_manifest_entries">
-    <item>Disabilitato</item>
-    <item>Una breve descrizione o località</item>
-    <item>Punti di interesse dinamici, disponibili in molte lingue, che cambiano durante la riproduzione del video</item>
-  </string-array>
   <string name="duration_10s">10 secondi</string>
   <string name="duration_1_2s">1,2 secondi</string>
   <string name="duration_1_4s">1,4 secondi</string>
@@ -94,17 +95,15 @@
   <string name="immich_include_disabled">Disabilitato</string>
   <string name="immich_vid_original">Originale</string>
   <string name="immich_vid_transcoded">Transcodificato</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Rispetta il limite - passa al video successivo quando il limite è raggiunto</item>
-    <item>Ignora limite - se un video è più lungo del limite impostato, verrà riprodotto fino alla fine</item>
-    <item>Segmento casuale - se un video è più lungo del limite, verrà riprodotta una parte casuale del video.
-(ad esempio, con un limite di 2 minuti, un video di 6 minuti può avere 3 segmenti - uno sarà riprodotto in modo casuale)</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">Consenti il completamento dei video più lunghi</string>
+  <string name="limit_Longer_videos_finish_summary">Ignora limite - se un video è più lungo del limite impostato, verrà riprodotto fino alla fine</string>
+  <string name="limit_Longer_videos_segment">Riproduci segmenti casuali dei video lunghi</string>
+  <string name="limit_Longer_videos_segment_summary">Segmento casuale - se un video è più lungo del limite, verrà riprodotta una parte casuale del video.
+(ad esempio, con un limite di 2 minuti, un video di 6 minuti può avere 3 segmenti - uno sarà riprodotto in modo casuale)</string>
+  <string name="limit_Longer_videos_skip">Salta quando viene raggiunto il limite</string>
+  <string name="limit_Longer_videos_skip_summary">Rispetta il limite - passa al video successivo quando il limite è raggiunto</string>
   <string name="local_search_folder_access">Accesso alla cartella</string>
   <string name="local_search_media_scanner">Media scanner</string>
-  <string name="longervideo_finish">Consenti il completamento dei video più lunghi</string>
-  <string name="longervideo_segments">Riproduci segmenti casuali dei video lunghi</string>
-  <string name="longervideo_skip">Salta quando viene raggiunto il limite</string>
   <string name="maxvid_10_min">10 minuti</string>
   <string name="maxvid_10_sec">10 secondi</string>
   <string name="maxvid_1_min">1 minuto</string>
@@ -122,9 +121,9 @@
   <string name="maxvid_8_min">8 minuti</string>
   <string name="maxvid_9_min">9 minuti</string>
   <string name="maxvid_no_limit">Nessun limite*</string>
-  <string name="media_photos_only">Solo immagini</string>
-  <string name="media_videos_only">Solo video</string>
-  <string name="media_videos_photos">Video e immagini</string>
+  <string name="media_music">Musica</string>
+  <string name="media_photos">Foto</string>
+  <string name="media_videos">Video</string>
   <string name="nowplaying_artist">Artista</string>
   <string name="nowplaying_artist_song">Artista · Canzone</string>
   <string name="nowplaying_disabled">Disabilitato</string>
@@ -150,6 +149,7 @@
   <string name="overlay_meta_photo_folder_only">Solo nome della cartella</string>
   <string name="overlay_meta_photo_location">Luogo (EXIF/immich)</string>
   <string name="overlay_meta_vid_album_name">Nome dell\'album (Immich)</string>
+  <string name="overlay_meta_vid_date">Data dello scatto (Media/Immich)</string>
   <string name="overlay_meta_vid_description">Descrizione (Immich)</string>
   <string name="overlay_meta_vid_filename">Usa il nome del file</string>
   <string name="overlay_meta_vid_folder_filename">Cartella &amp; nome del file</string>
@@ -157,6 +157,7 @@
   <string name="overlay_meta_vid_location">Posizione (Immich)</string>
   <string name="overlay_meta_vid_poi">Punti di interesse dinamici</string>
   <string name="overlay_meta_vid_short_desc">Descrizione breve</string>
+  <string name="overlay_meta_vid_title">Titolo (Media)</string>
   <string name="overlay_reveal_10s">10 secondi</string>
   <string name="overlay_reveal_2s">2 secondi</string>
   <string name="overlay_reveal_4s">4 secondi*</string>
@@ -164,6 +165,11 @@
   <string name="overlay_reveal_8s">8 secondi</string>
   <string name="photo_scale_fill_crop">Riempire con il raccolto*</string>
   <string name="photo_scale_no_crop">Scala senza ritaglio</string>
+  <string name="playlist_cache_refresh_1_week">Ogni settimana</string>
+  <string name="playlist_cache_refresh_2_weeks">Ogni 2 settimane</string>
+  <string name="playlist_cache_refresh_3_weeks">Ogni 3 settimane</string>
+  <string name="playlist_cache_refresh_4_weeks">Ogni 4 settimane</string>
+  <string name="playlist_cache_refresh_all">Quando tutti i media hanno visto</string>
   <string name="progressbar_loc_bottom">Parte inferiore dello schermo</string>
   <string name="progressbar_loc_disabled">Disabilitato</string>
   <string name="progressbar_loc_top">Parte superiore dello schermo</string>
@@ -243,12 +249,6 @@
   <string name="time_of_day_sunset">Tramonto</string>
   <string name="video_scale_fill_crop">Riempire con il raccolto*</string>
   <string name="video_scale_no_crop">Scala senza ritaglio</string>
-  <string-array name="video_time_of_day_entries">
-    <item>Alba</item>
-    <item>Giorno</item>
-    <item>Tramonto</item>
-    <item>Notte</item>
-  </string-array>
   <string name="weather_days_3">3 giorni</string>
   <string name="weather_days_5">5 giorni</string>
   <string name="weather_detail_city">Città</string>

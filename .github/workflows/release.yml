@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+env:
+  VERSION: ''
+  APK_PATH: app/build/outputs/apk/
+  BUNDLE_PATH: app/build/outputs/bundle/
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        flavor: [ github, googleplay, amazon ]
+
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Save release version
+      run: |
+        VERSION=${{ github.ref_name }}
+        echo "VERSION=${VERSION:1}" >> $GITHUB_ENV
+
+    - id: flavorString
+      uses: ASzc/change-string-case-action@v6
+      with:
+        string: ${{ matrix.flavor }}
+
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Checkout keystore repo
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ secrets.KEYSTORE_GIT_REPOSITORY }}
+        token: ${{ secrets.KEYSTORE_ACCESS_TOKEN }}
+        path: app/keystore
+
+    - name: Prepare signing properties
+      run: |
+        mkdir signing && touch signing/release.properties
+        echo "storeFile=${{ secrets.KEYSTORE_FILE }}" >> signing/release.properties
+        echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing/release.properties
+        echo "keyAlias=${{ secrets.RELEASE_SIGN_KEY_ALIAS }}" >> signing/release.properties
+        echo "keyPassword=${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}" >> signing/release.properties
+
+        touch signing/legacy.properties
+        echo "storeFile=${{ secrets.KEYSTORE_FILE }}" >> signing/legacy.properties
+        echo "storePassword=${{ secrets.KEYSTORE_PASSWORD }}" >> signing/legacy.properties
+        echo "keyAlias=${{ secrets.RELEASE_SIGN_KEY_ALIAS }}" >> signing/legacy.properties
+        echo "keyPassword=${{ secrets.RELEASE_SIGN_KEY_PASSWORD }}" >> signing/legacy.properties
+
+    - name: Run ${{ steps.flavorString.outputs.capitalized }} Build
+      if: matrix.flavor == 'github'
+      run: ./gradlew assemble${{ steps.flavorString.outputs.capitalized }}Release --stacktrace
+
+    - name: Run ${{ steps.flavorString.outputs.capitalized }} Build
+      if: matrix.flavor != 'github'
+      run: ./gradlew bundle${{ steps.flavorString.outputs.capitalized }}Release
+
+    - name: Upload ${{ steps.flavorString.outputs.capitalized }} Release APK
+      if: matrix.flavor == 'github'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.flavor }}-release.apk
+        path: ${{ env.APK_PATH }}${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release.apk
+
+    - name: Upload ${{ steps.flavorString.outputs.capitalized }} Bundle
+      if: matrix.flavor != 'github'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.flavor }}-release.aab
+        path: ${{ env.BUNDLE_PATH }}${{ matrix.flavor }}Release/app-${{ matrix.flavor }}-release.aab
+
+    - name: Upload ${{ steps.flavorString.outputs.capitalized }} apk to GH release
+      if: matrix.flavor == 'github'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{ github.ref }}
+        file: ${{ env.APK_PATH }}${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release.apk
+        asset_name: aerial-views-${{ env.VERSION }}.apk

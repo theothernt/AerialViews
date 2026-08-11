@@ -40,7 +40,8 @@ object DeviceHelper {
         activityManager.getMemoryInfo(memoryInfo)
         val totalMemory = memoryInfo.totalMem / (1024 * 1024)
         val availableMemory = memoryInfo.availMem / (1024 * 1024)
-        return "Total: ${totalMemory}MB, Available: ${availableMemory}MB (Threshold: ${memoryInfo.threshold / (1024 * 1024)}MB, Low Memory: ${memoryInfo.lowMemory})"
+        return "Total: ${totalMemory}MB, Available: ${availableMemory}MB" +
+            "(Threshold: ${memoryInfo.threshold / (1024 * 1024)}MB, Low Memory: ${memoryInfo.lowMemory})"
     }
 
     fun getDisplayInfo(context: Context): String {

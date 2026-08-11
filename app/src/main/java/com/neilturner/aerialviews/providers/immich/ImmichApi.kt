@@ -10,6 +10,9 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ImmichApi {
+    @GET("/api/server/version")
+    suspend fun getServerVersion(): Response<ServerVersionResponse>
+
     @GET("/api/shared-links/me")
     suspend fun getSharedAlbum(
         @Query("key") key: String? = null,
@@ -17,10 +20,24 @@ interface ImmichApi {
         @Query("password") password: String? = null,
     ): Response<SharedLinkResponse>
 
+    // v3: no password query param on shared-links/me
+    @GET("/api/shared-links/me")
+    suspend fun getSharedAlbumV3(
+        @Query("key") key: String? = null,
+        @Query("slug") slug: String? = null,
+    ): Response<SharedLinkResponse>
+
     @GET("/api/albums")
     suspend fun getAlbums(
         @Header("x-api-key") apiKey: String,
         @Query("shared") shared: Boolean? = null,
+    ): Response<List<Album>>
+
+    // v3: renamed param from `shared` to `isShared`
+    @GET("/api/albums")
+    suspend fun getAlbumsV3(
+        @Header("x-api-key") apiKey: String,
+        @Query("isShared") isShared: Boolean? = null,
     ): Response<List<Album>>
 
     @GET("/api/albums/{id}")
@@ -34,6 +51,13 @@ interface ImmichApi {
         @Path("id") albumId: String,
         @Query("key") key: String,
         @Query("password") password: String? = null,
+    ): Response<Album>
+
+    // v3: no password query param; assets are not inline so just fetch metadata
+    @GET("/api/albums/{id}")
+    suspend fun getSharedAlbumByIdV3(
+        @Path("id") albumId: String,
+        @Query("key") key: String,
     ): Response<Album>
 
     @POST("/api/search/metadata")
@@ -53,7 +77,28 @@ interface ImmichApi {
         @Header("x-api-key") apiKey: String,
         @Body searchRequest: SearchMetadataRequest,
     ): Response<SearchAssetsResponse>
+
+    // v3: fetch album assets via search/metadata with albumIds filter
+    @POST("/api/search/metadata")
+    suspend fun getAlbumAssets(
+        @Header("x-api-key") apiKey: String,
+        @Body searchRequest: SearchMetadataRequest,
+    ): Response<SearchAssetsResponse>
+
+    // v3: fetch shared album assets via search/metadata with albumIds and shared link key
+    @POST("/api/search/metadata")
+    suspend fun getSharedAlbumAssets(
+        @Query("key") key: String,
+        @Body searchRequest: SearchMetadataRequest,
+    ): Response<SearchAssetsResponse>
 }
+
+@Serializable
+data class ServerVersionResponse(
+    val major: Int = 0,
+    val minor: Int = 0,
+    val patch: Int = 0,
+)
 
 @Serializable
 data class SearchAssetsResponse(
@@ -73,6 +118,8 @@ data class SearchMetadataRequest(
     val size: Int? = null,
     val withExif: Boolean? = null,
     val type: String? = null,
+    val albumIds: List<String>? = null,
+    val page: Int? = null,
 )
 
 @Serializable
@@ -132,9 +179,13 @@ data class SharedLinkResponse(
 
 @Serializable
 data class ErrorResponse(
+    // v2 fields
     val message: String = "",
     val error: String = "",
     val statusCode: Int = 0,
+    // v2 field; moved to X-Correlation-ID header in v3 but kept for backwards compat
     @SerialName("correlationId")
     val correlationId: String = "",
+    // v3 field: array of error detail strings
+    val errors: List<String> = emptyList(),
 )

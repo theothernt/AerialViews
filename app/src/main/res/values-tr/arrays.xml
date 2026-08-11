@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">Desenler</string>
   <string name="amazon_scene_sea">Deniz</string>
   <string name="amazon_scene_space">Uzay</string>
+  <string name="audio_mode_mute_videos">Videolardan sesi kapatın</string>
+  <string name="audio_mode_play_background_music">Arka plan müziği çal</string>
+  <string name="audio_mode_play_video_audio">Videolardan ses oynat</string>
   <string name="bg_color_black">Siyah</string>
   <string name="bg_color_white">Beyaz</string>
   <string name="btn_blackout">Ekran kararması, medya ve bindirmelerin yavaşça kaybolması</string>
@@ -47,13 +50,11 @@
   <string name="desc_filename_video_1">\'Flying towards Mount Pilatus.mp4\' dosyası \'Flying towards Mount Pilatus\' haline geliyor.</string>
   <string name="desc_filename_video_2">\'Videos/Grand Canyon/Sunset.mp4\' dosyası \'Grand Canyon / Sunset\' olarak değiştirildi.</string>
   <string name="desc_filename_video_3">\'Videos/Ireland/Cliffs of Moher.mp4\' dosyası \'Ireland\' olarak değiştirildi.</string>
+  <string name="desc_manifest_disabled">Engelli</string>
+  <string name="desc_manifest_poi">Videoda birçok dil seçeneği mevcuttur ve video oynatıldıkça diller değişir</string>
+  <string name="desc_manifest_short">Yer adı veya kısa açıklama</string>
   <string name="desc_poi">Dinamik ilgi noktaları</string>
   <string name="desc_short">Kısa açıklama</string>
-  <string-array name="description_video_manifest_entries">
-    <item>Devre dışı</item>
-    <item>Yer adı veya kısa açıklama</item>
-    <item>Videoda birçok dil seçeneği mevcuttur ve video oynatıldıkça diller değişir</item>
-  </string-array>
   <string name="duration_10s">10 saniye</string>
   <string name="duration_1_2s">1,2 saniye</string>
   <string name="duration_1_4s">1,4 saniye</string>
@@ -94,16 +95,14 @@
   <string name="immich_include_disabled">Engelli</string>
   <string name="immich_vid_original">Orijinal</string>
   <string name="immich_vid_transcoded">Dönüştürülmüş</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Sınırı aşmayın - sınıra ulaşıldığında bir sonraki videoya geçin.</item>
-    <item>Süre sınırını dikkate alma - eğer bir video belirlenen süre sınırından uzunsa, sonuna kadar oynatılacaktır.</item>
-    <item>Rastgele bölüm - eğer bir video belirlenen süreden daha uzunsa, videonun rastgele bir bölümü oynatılacaktır (örneğin, 2 dakikalık bir süre sınırı varsa, 6 dakikalık bir videonun 3 bölümü olabilir - bunlardan biri rastgele oynatılacaktır).</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">Daha uzun videoların bitmesine izin verin</string>
+  <string name="limit_Longer_videos_finish_summary">Süre sınırını dikkate alma - eğer bir video belirlenen süre sınırından uzunsa, sonuna kadar oynatılacaktır.</string>
+  <string name="limit_Longer_videos_segment">Uzun videoların rastgele bölümlerini oynatın</string>
+  <string name="limit_Longer_videos_segment_summary">Rastgele bölüm - eğer bir video belirlenen süreden daha uzunsa, videonun rastgele bir bölümü oynatılacaktır (örneğin, 2 dakikalık bir süre sınırı varsa, 6 dakikalık bir videonun 3 bölümü olabilir - bunlardan biri rastgele oynatılacaktır).</string>
+  <string name="limit_Longer_videos_skip">Sınıra ulaşıldığında atlayın</string>
+  <string name="limit_Longer_videos_skip_summary">Sınırı aşmayın - sınıra ulaşıldığında bir sonraki videoya geçin.</string>
   <string name="local_search_folder_access">Klasör erişimi</string>
   <string name="local_search_media_scanner">Medya tarayıcı</string>
-  <string name="longervideo_finish">Daha uzun videoların bitmesine izin verin</string>
-  <string name="longervideo_segments">Uzun videoların rastgele bölümlerini oynatın</string>
-  <string name="longervideo_skip">Sınır aşıldığında atla</string>
   <string name="maxvid_10_min">10 dakika</string>
   <string name="maxvid_10_sec">10 saniye</string>
   <string name="maxvid_1_min">1 dakika</string>
@@ -121,9 +120,9 @@
   <string name="maxvid_8_min">8 dakika</string>
   <string name="maxvid_9_min">9 dakika</string>
   <string name="maxvid_no_limit">Sınır yok*</string>
-  <string name="media_photos_only">Sadece fotoğraflar</string>
-  <string name="media_videos_only">Sadece videolar</string>
-  <string name="media_videos_photos">Videolar ve Fotoğraflar</string>
+  <string name="media_music">Müzik</string>
+  <string name="media_photos">Fotoğraflar</string>
+  <string name="media_videos">Videolar</string>
   <string name="nowplaying_artist">Sanatçı</string>
   <string name="nowplaying_artist_song">Sanatçı · Şarkı</string>
   <string name="nowplaying_disabled">Engelli</string>
@@ -149,6 +148,7 @@
   <string name="overlay_meta_photo_folder_only">Sadece klasör adı</string>
   <string name="overlay_meta_photo_location">Konum (EXIF/Immich)</string>
   <string name="overlay_meta_vid_album_name">Albüm Adı (Immich)</string>
+  <string name="overlay_meta_vid_date">Alınan tarih (Medya/Immich)</string>
   <string name="overlay_meta_vid_description">Açıklama (Immich)</string>
   <string name="overlay_meta_vid_filename">Dosya adını olduğu gibi kullanın.</string>
   <string name="overlay_meta_vid_folder_filename">Klasör ve dosya adı</string>
@@ -156,6 +156,7 @@
   <string name="overlay_meta_vid_location">Konum (Immich)</string>
   <string name="overlay_meta_vid_poi">Dinamik İlgi Çekici Noktalar</string>
   <string name="overlay_meta_vid_short_desc">Kısa Açıklama</string>
+  <string name="overlay_meta_vid_title">Başlık (Medya)</string>
   <string name="overlay_reveal_10s">10 saniye</string>
   <string name="overlay_reveal_2s">2 saniye</string>
   <string name="overlay_reveal_4s">4 saniye*</string>
@@ -163,6 +164,11 @@
   <string name="overlay_reveal_8s">8 saniye</string>
   <string name="photo_scale_fill_crop">Kırpma ile doldurun*</string>
   <string name="photo_scale_no_crop">Kırpmadan ölçekle</string>
+  <string name="playlist_cache_refresh_1_week">Her hafta</string>
+  <string name="playlist_cache_refresh_2_weeks">Her 2 haftada bir</string>
+  <string name="playlist_cache_refresh_3_weeks">Her 3 haftada bir</string>
+  <string name="playlist_cache_refresh_4_weeks">Her 4 haftada bir</string>
+  <string name="playlist_cache_refresh_all">Tüm medya görüntülendiğinde</string>
   <string name="progressbar_loc_bottom">Ekranın alt kısmı</string>
   <string name="progressbar_loc_disabled">Engelli</string>
   <string name="progressbar_loc_top">Ekranın üst kısmı</string>
@@ -242,12 +248,6 @@
   <string name="time_of_day_sunset">Gün batımı</string>
   <string name="video_scale_fill_crop">Kırpma ile doldurun*</string>
   <string name="video_scale_no_crop">Kırpmadan ölçekle</string>
-  <string-array name="video_time_of_day_entries">
-    <item>Gün doğumu</item>
-    <item>Gün</item>
-    <item>Gün batımı</item>
-    <item>Gece</item>
-  </string-array>
   <string name="weather_days_3">3 gün</string>
   <string name="weather_days_5">5 gün</string>
   <string name="weather_detail_city">Şehir</string>

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.service.dreams.DreamService
 import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.WindowManager
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
 import com.neilturner.aerialviews.ui.core.ScreenController
 import com.neilturner.aerialviews.ui.helpers.InputHelper
@@ -33,6 +34,10 @@ class DreamActivity : DreamService() {
                 ScreenController(altContext)
             }
         setContentView(screenController.view)
+
+        screenController.onMusicPlayingChanged = { isPlaying ->
+            updateKeepScreenOn(isPlaying)
+        }
 
         InputHelper.setupGestureListener(
             context = this,
@@ -76,7 +81,14 @@ class DreamActivity : DreamService() {
             return true
         }
 
-        return super.dispatchKeyEvent(event)
+        return try {
+            super.dispatchKeyEvent(event)
+        } catch (e: SecurityException) {
+            // Android bug: some OEM builds require BROADCAST_CLOSE_SYSTEM_DIALOGS
+            // for the fallback event handler's sendCloseSystemWindows() call.
+            // Safe to swallow — this only fires for keys we don't already handle.
+            true
+        }
     }
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
@@ -89,9 +101,18 @@ class DreamActivity : DreamService() {
 
     override fun onDreamingStopped() {
         super.onDreamingStopped()
+        window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Stop playback, animations, etc
         if (this::screenController.isInitialized) {
             screenController.stop()
+        }
+    }
+
+    private fun updateKeepScreenOn(musicPlaying: Boolean) {
+        if (GeneralPrefs.keepScreenOnWhileMusicPlaying && musicPlaying) {
+            window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
     }
 }

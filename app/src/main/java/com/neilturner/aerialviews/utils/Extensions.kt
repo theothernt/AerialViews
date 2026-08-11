@@ -19,6 +19,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
+import kotlin.time.Duration.Companion.milliseconds
 
 // https://stackoverflow.com/a/36795003/247257
 fun Any?.toStringOrEmpty() = this?.toString() ?: ""
@@ -83,7 +84,7 @@ fun View.delayOnLifecycle(
 ): Job? =
     findViewTreeLifecycleOwner()?.let { lifecycleOwner ->
         lifecycleOwner.lifecycle.coroutineScope.launch(dispatcher) {
-            delay(durationInMillis)
+            delay(durationInMillis.milliseconds)
             block()
         }
     }

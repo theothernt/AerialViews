@@ -2,6 +2,7 @@ package com.neilturner.aerialviews.services.weather
 
 import android.content.Context
 import android.os.Bundle
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.neilturner.aerialviews.BuildConfig
 import com.neilturner.aerialviews.data.network.JsonHelper.buildSerializer
 import com.neilturner.aerialviews.models.prefs.GeneralPrefs
@@ -469,7 +470,7 @@ class WeatherService(
         FirebaseHelper.analyticsEvent(
             "weather_updates",
             Bundle().apply {
-                putInt("per_session", totalUpdates)
+                putDouble(FirebaseAnalytics.Param.VALUE, totalUpdates.toDouble())
             },
         )
         Timber.i("Weather updates stopped, total updates for session: $totalUpdates")

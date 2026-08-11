@@ -203,6 +203,12 @@ class CapabilitiesFragment : MenuStateFragment() {
         val notificationAccess = if (PermissionHelper.hasNotificationListenerPermission(ctx)) granted else denied
         lines.add(String.format(resources.getString(R.string.capabilities_permission_notification_access), notificationAccess))
 
+        // Local network access (Android 17+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA) {
+            val localNetworkGranted = if (PermissionHelper.hasLocalNetworkPermission(ctx)) granted else denied
+            lines.add(String.format(resources.getString(R.string.capabilities_permission_local_network), localNetworkGranted))
+        }
+
         // Media / External storage read
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val videoGranted =

@@ -44,37 +44,72 @@ class MediaPlaylist(
     private fun checkAndRefillWindow() {
         if (fetchChunk == null) return
 
+        val isOutOfBounds = position < windowOffset || position >= windowOffset + windowVideos.size
         val relativeIndex = position - windowOffset
         val remaining = windowVideos.size - relativeIndex - 1
 
-        // Refill when 5 or fewer items remaining ahead in the window
-        if (remaining <= 5 && position + remaining < size - 1) {
+        val isNearEnd = remaining <= 5 && (windowOffset + windowVideos.size < size)
+        val isNearStart = relativeIndex <= 5 && windowOffset > 0
+
+        if (isOutOfBounds || isNearEnd || isNearStart) {
             val newOffset = 0.coerceAtLeast(position - 5)
             val limit = 50
 
-            // Only fetch if the window would actually shift
             if (newOffset != windowOffset) {
-                Timber.i(
-                    "MediaPlaylist: Refilling window. Position: $position, Window: $windowOffset..${windowOffset + windowVideos.size}. New Offset: $newOffset",
-                )
-                scope.launch {
-                    val freshData = fetchChunk.invoke(newOffset, limit)
-                    synchronized(windowLock) {
-                        windowOffset = newOffset
-                        windowVideos.clear()
-                        windowVideos.addAll(freshData)
-                        Timber.d("MediaPlaylist: Window refilled. New range: $windowOffset..${windowOffset + windowVideos.size}")
+                if (isOutOfBounds) {
+                    refillWindowSync(newOffset)
+                } else {
+                    Timber.i(
+                        "MediaPlaylist: Refilling window. Position: $position, Window: $windowOffset..${windowOffset + windowVideos.size}. New Offset: $newOffset",
+                    )
+                    scope.launch {
+                        val freshData = fetchChunk.invoke(newOffset, limit)
+                        synchronized(windowLock) {
+                            windowOffset = newOffset
+                            windowVideos.clear()
+                            windowVideos.addAll(freshData)
+                            Timber.d("MediaPlaylist: Window refilled. New range: $windowOffset..${windowOffset + windowVideos.size}")
+                        }
                     }
                 }
             }
         }
     }
 
+    private fun refillWindowSync(newOffset: Int) {
+        if (fetchChunk == null) return
+        val limit = 50
+        try {
+            val freshData = kotlinx.coroutines.runBlocking(kotlinx.coroutines.Dispatchers.IO) {
+                fetchChunk.invoke(newOffset, limit)
+            }
+            synchronized(windowLock) {
+                windowOffset = newOffset
+                windowVideos.clear()
+                windowVideos.addAll(freshData)
+                Timber.d("MediaPlaylist: Window refilled synchronously. New range: $windowOffset..${windowOffset + windowVideos.size}")
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "MediaPlaylist: Error refilling window synchronously")
+        }
+    }
+
     private fun getItemAt(absoluteIndex: Int): AerialMedia {
         synchronized(windowLock) {
             val relativeIndex = absoluteIndex - windowOffset
-            if (relativeIndex in 0 until windowVideos.size) {
+            if (relativeIndex in windowVideos.indices) {
                 return windowVideos[relativeIndex]
+            }
+        }
+
+        if (fetchChunk != null) {
+            Timber.w("MediaPlaylist: Cache miss at index $absoluteIndex, attempting synchronous refill")
+            refillWindowSync(0.coerceAtLeast(absoluteIndex - 5))
+            synchronized(windowLock) {
+                val relativeIndex = absoluteIndex - windowOffset
+                if (relativeIndex in windowVideos.indices) {
+                    return windowVideos[relativeIndex]
+                }
             }
         }
 

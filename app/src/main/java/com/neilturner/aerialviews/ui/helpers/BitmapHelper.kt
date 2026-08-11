@@ -6,7 +6,9 @@ import timber.log.Timber
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.nio.ByteBuffer
+import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
+import java.util.Locale
 
 data class ExifMetadata(
     val date: String? = null,
@@ -57,7 +59,9 @@ object BitmapHelper {
                 tag = ExifInterface.TAG_IMAGE_DESCRIPTION,
                 hasUserCommentPrefix = false,
             )
-        if (!imageDescription.isNullOrBlank()) return imageDescription
+        sanitizeExifDescription(imageDescription)?.let { return it }
+
+        if (!PARSE_USER_COMMENT) return null
 
         val userComment =
             decodeExifText(
@@ -65,7 +69,19 @@ object BitmapHelper {
                 tag = ExifInterface.TAG_USER_COMMENT,
                 hasUserCommentPrefix = true,
             )
-        return userComment
+        return sanitizeExifDescription(userComment)
+    }
+
+    internal fun sanitizeExifDescription(description: String?): String? {
+        val trimmed = description?.trim()?.trimEnd('\u0000') ?: return null
+        if (trimmed.isBlank()) return null
+        if (trimmed.length > MAX_HUMAN_DESCRIPTION_LENGTH && looksStructured(trimmed)) return null
+
+        val lower = trimmed.lowercase(Locale.ROOT)
+        if (VENDOR_METADATA_MARKERS.any { lower.contains(it) }) return null
+        if (structuredFragmentCount(trimmed) >= MAX_STRUCTURED_FRAGMENT_COUNT) return null
+
+        return trimmed
     }
 
     private fun decodeExifText(
@@ -113,4 +129,34 @@ object BitmapHelper {
         } catch (_: CharacterCodingException) {
             null
         }
+
+    private fun looksStructured(value: String): Boolean =
+        value.count { it == ';' || it == ',' } >= STRUCTURED_SEPARATOR_COUNT ||
+            structuredFragmentCount(value) >= MAX_STRUCTURED_FRAGMENT_COUNT
+
+    private fun structuredFragmentCount(value: String): Int =
+        value
+            .split(';', ',')
+            .count { fragment ->
+                val normalized = fragment.trim()
+                normalized.indexOf(':') in 1 until normalized.lastIndex ||
+                    normalized.indexOf('=') in 1 until normalized.lastIndex
+            }
+
+    private const val MAX_HUMAN_DESCRIPTION_LENGTH = 180
+    private const val STRUCTURED_SEPARATOR_COUNT = 5
+    private const val MAX_STRUCTURED_FRAGMENT_COUNT = 4
+    private const val PARSE_USER_COMMENT = false
+
+    private val VENDOR_METADATA_MARKERS =
+        listOf(
+            "sceneMode".lowercase(Locale.ROOT),
+            "cct_value",
+            "ai scene",
+            "weatherInfo".lowercase(Locale.ROOT),
+            "portrait-hw-remosaic",
+            "aec_lux",
+            "albedo",
+            "filterIntensity".lowercase(Locale.ROOT),
+        )
 }

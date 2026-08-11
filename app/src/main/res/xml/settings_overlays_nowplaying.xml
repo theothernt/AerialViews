@@ -82,5 +82,11 @@
                     app:key="nowplaying_shorten_track_name"
                     app:title="@string/nowplaying_shorten_track_name_title"
                     app:summary="@string/nowplaying_shorten_track_name_summary" />
+
+                <SwitchPreference
+                    app:defaultValue="false"
+                    app:key="keep_screen_on_while_music_playing"
+                    app:title="@string/nowplaying_keep_screen_on_title"
+                    app:summary="@string/nowplaying_keep_screen_on_summary" />
         </PreferenceCategory>
 </PreferenceScreen>

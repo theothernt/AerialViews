@@ -169,6 +169,9 @@
     <string name="sources_immich_title">Immich server</string>
     <string name="sources_immich_summary">Play videos &amp; photos from an Immich server</string>
 
+    <string name="sources_ncmemories_title">Nextcloud Memories server</string>
+    <string name="sources_ncmemories_summary">Play videos &amp; photos from a Nextcloud Memories server</string>
+
     <!-- Main / Video Sources / Apple videos -->
     <string name="apple_videos_enabled">Use Apple videos</string>
 
@@ -326,6 +329,9 @@
     <string name="webdav_media_search_subfolders_summary">Search all subfolders for videos &amp; photos</string>
     <string name="webdav_media_test_results">Test results</string>
 
+    <string name="webdav_media_validate_ssl_title">Validate SSL Certificates</string>
+    <string name="webdav_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+
     <!-- Main / Video Sources / Immich videos -->
     <string name="immich_media_enabled_title">Use Immich share media</string>
     <string name="immich_media_type_title">Choose media type</string>
@@ -375,6 +381,38 @@
     <string name="immich_media_validate_ssl_title">Validate SSL Certificates</string>
     <string name="immich_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
     <string name="immich_media_url_invalid">Invalid server URL</string>
+
+    <!-- Main / Video Sources / Nexcloud Memories videos -->
+    <string name="ncmemories_media_enabled_title">Use Nextcloud Memories media</string>
+    <string name="ncmemories_media_type_title">Choose media type</string>
+    <string name="ncmemories_media_test_connection">Test connection settings</string>
+    <string name="ncmemories_media_select_album">Select Album</string>
+    <string name="ncmemories_media_select_albums">Select Albums</string>
+
+    <string name="ncmemories_media_username_title">Username</string>
+    <string name="ncmemories_media_username_summary">Username or e-mail</string>
+    <string name="ncmemories_media_password_title">Password</string>
+    <string name="ncmemories_media_password_summary">App password (preferred) or user password (not recommended)</string>
+
+    <string name="ncmemories_media_select_albums_summary">No albums selected</string>
+    <string name="ncmemories_media_selected_album">Selected album: %1$s</string>
+    <string name="ncmemories_media_selected_albums">%1$d albums selected</string>
+    <string name="ncmemories_media_fetch_albums_error">Error Fetching Albums</string>
+    <string name="ncmemories_media_no_albums">No Albums Found</string>
+    <string name="ncmemories_media_no_albums_message">No albums were found in your Nextcloud Memories account. Please make sure you have at least one album created.</string>
+
+    <string name="ncmemories_media_include_favorites_title">Include favorite photos and videos</string>
+    <string name="ncmemories_media_include_recent_title">Include recent photos and videos</string>
+    <string name="ncmemories_media_favorites_name">Favorites</string>
+    <string name="ncmemories_media_recent_name">Recent</string>
+
+    <string name="ncmemories_media_test_results">Test results</string>
+
+    <string name="ncmemories_media_url_title">Server URL</string>
+    <string name="ncmemories_media_url_summary">Enter server URL (e.g., https://192.168.1.2)</string>
+    <string name="ncmemories_media_validate_ssl_title">Validate SSL Certificates</string>
+    <string name="ncmemories_media_validate_ssl_summary">Disable only if using self-signed certificates</string>
+    <string name="ncmemories_media_url_invalid">Invalid server URL</string>
 
     <!-- Main / Settings -->
     <string name="settings_overlays_title">Overlays</string>
@@ -475,6 +513,9 @@
 
     <string name="nowplaying_shorten_track_name_title">Shorten track names</string>
     <string name="nowplaying_shorten_track_name_summary">Remove common suffixes like \"- Original Mix\" or \"(Remastered)\"</string>
+
+    <string name="nowplaying_keep_screen_on_title">Stop device from sleeping while music is playing</string>
+    <string name="nowplaying_keep_screen_on_summary">Prevent the screensaver from dimming or sleeping when background music is active</string>
 
     <string name="nowplaying_toast_text">Please enable Aerial Views in: Special app access > Notification access</string>
 
@@ -622,6 +663,13 @@
     <string name="appearance_auto_hide_title">Auto hide overlays</string>
     <string name="appearance_reveal_for_title">Overlay reveal timeout</string>
     <string name="appearance_fade_corners_title">Corners to fade</string>
+
+    <string name="overlay_visibility_title">Overlay visibility</string>
+    <string name="overlay_visibility_always_visible">Always visible</string>
+    <string name="overlay_visibility_always_hidden">Always hidden</string>
+    <string name="overlay_visibility_hide_after">Hide after delay</string>
+    <string name="overlay_visibility_show_after">Show after delay</string>
+    <string name="overlay_visibility_delay_title">Delay</string>
 
     <string name="appearance_fade_in_title">Fade in</string>
     <string name="appearance_fade_out_title">Fade out</string>
@@ -800,6 +848,8 @@
     <string name="advanced_philips_dolby_vision_fix_summary">Fixes Dolby Vision playback on some older Philips TVs</string>
     <string name="advanced_use_texture_view_title">Use TextureView for video</string>
     <string name="advanced_use_texture_view_summary">Use TextureView instead of SurfaceView for video rendering</string>
+    <string name="advanced_reduce_buffer_memory_title">Reduce playback buffers and memory usage</string>
+    <string name="advanced_reduce_buffer_memory_summary">Uses smaller playback buffers which can reduce memory usage but may increase buffering on slower networks</string>
 
     <string name="advanced_ignore_animation_scale_title">Ignore system animation override</string>
     <string name="advanced_ignore_animation_scale_summary">Ignores Settings > Developer options > Animation duration scale - and uses 1x for animation duration</string>
@@ -857,6 +907,7 @@
     <string name="capabilities_permission_write_external">External access (Write): %1$s</string>
     <string name="capabilities_permission_overlay">Overlay access (Frame rate matching): %1$s</string>
     <string name="capabilities_permission_notification_access">Notification access (Now Playing info): %1$s</string>
+    <string name="capabilities_permission_local_network">Local network access (Samba, WebDAV, Immich): %1$s</string>
 
     <!-- Main / Settings / Import / Export settings -->
     <string name="settings_export_title">Export settings to Documents folder</string>

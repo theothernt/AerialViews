@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">图案</string>
   <string name="amazon_scene_sea">海洋</string>
   <string name="amazon_scene_space">太空</string>
+  <string name="audio_mode_mute_videos">将视频音频静音</string>
+  <string name="audio_mode_play_background_music">播放背景音乐</string>
+  <string name="audio_mode_play_video_audio">播放视频中的音频</string>
   <string name="bg_color_black">黑色</string>
   <string name="bg_color_white">白色</string>
   <string name="btn_blackout">熄屏模式，淡出媒体和叠加内容</string>
@@ -47,13 +50,11 @@
   <string name="desc_filename_video_1">飞向皮拉图斯山.mp4 \"变为 \"飞向皮拉图斯山</string>
   <string name="desc_filename_video_2">视频/大峡谷/日落.mp4 \"变为 \"大峡谷/日落</string>
   <string name="desc_filename_video_3">视频/爱尔兰/莫赫悬崖.mp4 \"变为 \"爱尔兰</string>
+  <string name="desc_manifest_disabled">禁用</string>
+  <string name="desc_manifest_poi">支持多种语言，播放时自动切换</string>
+  <string name="desc_manifest_short">地名或简短描述</string>
   <string name="desc_poi">动态景点</string>
   <string name="desc_short">简要说明</string>
-  <string-array name="description_video_manifest_entries">
-    <item>禁用</item>
-    <item>简短描述或地点</item>
-    <item>支持多种语言，播放时自动切换</item>
-  </string-array>
   <string name="duration_10s">10 秒</string>
   <string name="duration_1_2s">1.2 秒钟</string>
   <string name="duration_1_4s">1.4 秒钟</string>
@@ -94,17 +95,15 @@
   <string name="immich_include_disabled">禁用</string>
   <string name="immich_vid_original">原创</string>
   <string name="immich_vid_transcoded">转码</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>遵守限制 - 达到时长限制时跳至下一个视频</item>
-    <item>忽略限制 - 若视频时长超过限制，仍将完整播放至结束</item>
-    <item>随机片段 - 若视频时长超出限制，将播放该视频中的任意一个片段
-(例如，时长限制为 2 分钟时，一个 6 分钟的视频可拆分为 3 个片段，随机播放其中一段）</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">让较长的视频播放完毕</string>
+  <string name="limit_Longer_videos_finish_summary">忽略限制 - 若视频时长超过限制，仍将完整播放至结束</string>
+  <string name="limit_Longer_videos_segment">随机播放长视频片段</string>
+  <string name="limit_Longer_videos_segment_summary">随机片段 - 若视频时长超出限制，将播放该视频中的任意一个片段
+(例如，时长限制为 2 分钟时，一个 6 分钟的视频可拆分为 3 个片段，随机播放其中一段）</string>
+  <string name="limit_Longer_videos_skip">达到上限时跳过</string>
+  <string name="limit_Longer_videos_skip_summary">遵守限制 - 达到时长限制时跳至下一个视频</string>
   <string name="local_search_folder_access">文件夹访问</string>
   <string name="local_search_media_scanner">媒体扫描仪</string>
-  <string name="longervideo_finish">让较长的视频播放完毕</string>
-  <string name="longervideo_segments">随机播放长视频片段</string>
-  <string name="longervideo_skip">达到上限时跳过</string>
   <string name="maxvid_10_min">10 分钟</string>
   <string name="maxvid_10_sec">10 秒</string>
   <string name="maxvid_1_min">1 分钟</string>
@@ -122,9 +121,9 @@
   <string name="maxvid_8_min">8 分钟</string>
   <string name="maxvid_9_min">9 分钟</string>
   <string name="maxvid_no_limit">无限制*</string>
-  <string name="media_photos_only">仅限照片</string>
-  <string name="media_videos_only">仅限视频</string>
-  <string name="media_videos_photos">视频和照片</string>
+  <string name="media_music">音乐</string>
+  <string name="media_photos">照片</string>
+  <string name="media_videos">视频</string>
   <string name="nowplaying_artist">艺术家</string>
   <string name="nowplaying_artist_song">艺术家 - 歌曲</string>
   <string name="nowplaying_disabled">禁用</string>
@@ -150,6 +149,7 @@
   <string name="overlay_meta_photo_folder_only">仅文件夹名称</string>
   <string name="overlay_meta_photo_location">位置（EXIF/Immich）</string>
   <string name="overlay_meta_vid_album_name">专辑名称 (Immich)</string>
+  <string name="overlay_meta_vid_date">拍摄日期（媒体/Immich）</string>
   <string name="overlay_meta_vid_description">说明（伊米奇）</string>
   <string name="overlay_meta_vid_filename">原始文件名</string>
   <string name="overlay_meta_vid_folder_filename">文件夹和文件名</string>
@@ -157,6 +157,7 @@
   <string name="overlay_meta_vid_location">地点（伊米奇）</string>
   <string name="overlay_meta_vid_poi">动态兴趣点</string>
   <string name="overlay_meta_vid_short_desc">简要说明</string>
+  <string name="overlay_meta_vid_title">标题（媒体）</string>
   <string name="overlay_reveal_10s">10 秒</string>
   <string name="overlay_reveal_2s">2 秒钟</string>
   <string name="overlay_reveal_4s">4 秒*</string>
@@ -164,6 +165,11 @@
   <string name="overlay_reveal_8s">8 秒钟</string>
   <string name="photo_scale_fill_crop">缩放填充*</string>
   <string name="photo_scale_no_crop">缩放适应</string>
+  <string name="playlist_cache_refresh_1_week">每周</string>
+  <string name="playlist_cache_refresh_2_weeks">每两周</string>
+  <string name="playlist_cache_refresh_3_weeks">每3周</string>
+  <string name="playlist_cache_refresh_4_weeks">每 4 周</string>
+  <string name="playlist_cache_refresh_all">当所有媒体观看</string>
   <string name="progressbar_loc_bottom">屏幕底部</string>
   <string name="progressbar_loc_disabled">禁用</string>
   <string name="progressbar_loc_top">屏幕顶部</string>
@@ -243,12 +249,6 @@
   <string name="time_of_day_sunset">日落</string>
   <string name="video_scale_fill_crop">缩放填充*</string>
   <string name="video_scale_no_crop">缩放适应</string>
-  <string-array name="video_time_of_day_entries">
-    <item>日出</item>
-    <item>白天</item>
-    <item>日落</item>
-    <item>夜晚</item>
-  </string-array>
   <string name="weather_days_3">3 天</string>
   <string name="weather_days_5">5 天</string>
   <string name="weather_detail_city">城市</string>

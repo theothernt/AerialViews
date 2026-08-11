@@ -7,6 +7,9 @@
   <string name="amazon_scene_patterns">Modele</string>
   <string name="amazon_scene_sea">Mare</string>
   <string name="amazon_scene_space">Spațiu</string>
+  <string name="audio_mode_mute_videos">Dezactivează sunetul videoclipurilor</string>
+  <string name="audio_mode_play_background_music">Redă muzică de fundal</string>
+  <string name="audio_mode_play_video_audio">Redă sunetul din videoclipuri</string>
   <string name="bg_color_black">Negru</string>
   <string name="bg_color_white">Alb</string>
   <string name="btn_blackout">Ecran negru, estomparea conținutului media și a suprapunerilor</string>
@@ -47,13 +50,11 @@
   <string name="desc_filename_video_1">\'Zbor spre Muntele Pilatus.mp4\' devine \'Zbor spre Muntele Pilatus\'</string>
   <string name="desc_filename_video_2">\'Videoclipuri/Marele Canion/Apus de soare.mp4\' devine \'Marele Canion / Apus de soare\'</string>
   <string name="desc_filename_video_3">\'Videoclipuri/Irlanda/Stâncile din Moher.mp4\' devine \'Irlanda\'</string>
+  <string name="desc_manifest_disabled">Dezactivat</string>
+  <string name="desc_manifest_poi">Disponibil în mai multe limbi, care se schimbă pe măsură ce videoclipul rulează</string>
+  <string name="desc_manifest_short">Numele locului sau o scurtă descriere</string>
   <string name="desc_poi">Puncte de interes dinamice</string>
   <string name="desc_short">Scurtă descriere</string>
-  <string-array name="description_video_manifest_entries">
-    <item>Dezactivat</item>
-    <item>Numele locului sau o scurtă descriere</item>
-    <item>Disponibil în mai multe limbi, care se schimbă pe măsură ce videoclipul rulează</item>
-  </string-array>
   <string name="duration_10s">10 secunde</string>
   <string name="duration_1_2s">1.2 secunde</string>
   <string name="duration_1_4s">1.4 secunde</string>
@@ -94,16 +95,14 @@
   <string name="immich_include_disabled">Dezactivat</string>
   <string name="immich_vid_original">Original</string>
   <string name="immich_vid_transcoded">Transcodat</string>
-  <string-array name="limit_Longer_videos_summaries">
-    <item>Respectă limita - treci la următorul videoclip când se atinge limita</item>
-    <item>Ignoră limita - dacă un videoclip este mai lung decât limita setată, acesta va fi redat până la sfârșit</item>
-    <item>Segment aleatoriu – dacă un videoclip depășește limita, va fi redată o parte aleatorie din acesta (ex: la o limită de 2 min, un clip de 6 min poate avea 3 segmente, dintre care unul va fi redat aleatoriu)</item>
-  </string-array>
+  <string name="limit_Longer_videos_finish">Permite finalizarea videoclipurilor mai lungi</string>
+  <string name="limit_Longer_videos_finish_summary">Ignoră limita - dacă un videoclip este mai lung decât limita setată, acesta va fi redat până la sfârșit</string>
+  <string name="limit_Longer_videos_segment">Redă segmente aleatorii ale videoclipurilor lungi</string>
+  <string name="limit_Longer_videos_segment_summary">Segment aleatoriu – dacă un videoclip depășește limita, va fi redată o parte aleatorie din acesta (ex: la o limită de 2 min, un clip de 6 min poate avea 3 segmente, dintre care unul va fi redat aleatoriu)</string>
+  <string name="limit_Longer_videos_skip">Săriți atunci când este atinsă limita</string>
+  <string name="limit_Longer_videos_skip_summary">Respectă limita - treci la următorul videoclip când se atinge limita</string>
   <string name="local_search_folder_access">Acces la foldere</string>
   <string name="local_search_media_scanner">Scaner media</string>
-  <string name="longervideo_finish">Permite finalizarea videoclipurilor mai lungi</string>
-  <string name="longervideo_segments">Redă segmente aleatorii ale videoclipurilor lungi</string>
-  <string name="longervideo_skip">Săriți atunci când este atinsă limita</string>
   <string name="maxvid_10_min">10 minute</string>
   <string name="maxvid_10_sec">10 secunde</string>
   <string name="maxvid_1_min">1 minut</string>
@@ -121,9 +120,9 @@
   <string name="maxvid_8_min">8 minute</string>
   <string name="maxvid_9_min">9 minute</string>
   <string name="maxvid_no_limit">Fără limită*</string>
-  <string name="media_photos_only">Numai fotografii</string>
-  <string name="media_videos_only">Numai videoclipuri</string>
-  <string name="media_videos_photos">Videoclipuri și fotografii</string>
+  <string name="media_music">Muzică</string>
+  <string name="media_photos">Fotografii</string>
+  <string name="media_videos">Videoclipuri</string>
   <string name="nowplaying_artist">Artist</string>
   <string name="nowplaying_artist_song">Artist · Melodie</string>
   <string name="nowplaying_disabled">Dezactivat</string>
@@ -149,6 +148,7 @@
   <string name="overlay_meta_photo_folder_only">Numai numele folderului</string>
   <string name="overlay_meta_photo_location">Locație (EXIF/Immich)</string>
   <string name="overlay_meta_vid_album_name">Nume album (Immich)</string>
+  <string name="overlay_meta_vid_date">Data realizării (Media/Immich)</string>
   <string name="overlay_meta_vid_description">Descriere (Immich)</string>
   <string name="overlay_meta_vid_filename">Folosește numele fișierului așa cum este</string>
   <string name="overlay_meta_vid_folder_filename">Folder &amp; nume fișier</string>
@@ -156,6 +156,7 @@
   <string name="overlay_meta_vid_location">Locație (Immich)</string>
   <string name="overlay_meta_vid_poi">Puncte de interes dinamice</string>
   <string name="overlay_meta_vid_short_desc">Scurtă descriere</string>
+  <string name="overlay_meta_vid_title">Titlu (Media)</string>
   <string name="overlay_reveal_10s">10 secunde</string>
   <string name="overlay_reveal_2s">2 secunde</string>
   <string name="overlay_reveal_4s">4 secunde*</string>
@@ -163,6 +164,11 @@
   <string name="overlay_reveal_8s">8 secunde</string>
   <string name="photo_scale_fill_crop">Umplere prin decupare*</string>
   <string name="photo_scale_no_crop">Scalare fără decupare</string>
+  <string name="playlist_cache_refresh_1_week">În fiecare săptămână</string>
+  <string name="playlist_cache_refresh_2_weeks">La fiecare 2 săptămâni</string>
+  <string name="playlist_cache_refresh_3_weeks">La fiecare 3 săptămâni</string>
+  <string name="playlist_cache_refresh_4_weeks">La fiecare 4 săptămâni</string>
+  <string name="playlist_cache_refresh_all">Când toate elementele media au fost vizionate</string>
   <string name="progressbar_loc_bottom">Partea de jos a ecranului</string>
   <string name="progressbar_loc_disabled">Dezactivat</string>
   <string name="progressbar_loc_top">Partea de sus a ecranului</string>
@@ -242,12 +248,6 @@
   <string name="time_of_day_sunset">Apus de soare</string>
   <string name="video_scale_fill_crop">Umplere prin decupare*</string>
   <string name="video_scale_no_crop">Scalare fără decupare</string>
-  <string-array name="video_time_of_day_entries">
-    <item>Răsărit de soare</item>
-    <item>Zi</item>
-    <item>Apus de soare</item>
-    <item>Noapte</item>
-  </string-array>
   <string name="weather_days_3">3 zile</string>
   <string name="weather_days_5">5 zile</string>
   <string name="weather_detail_city">Oraș</string>

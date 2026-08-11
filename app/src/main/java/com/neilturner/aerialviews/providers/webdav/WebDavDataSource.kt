@@ -7,6 +7,9 @@ import androidx.media3.datasource.BaseDataSource
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DataSpec
 import com.neilturner.aerialviews.data.network.SambaHelper
+import com.neilturner.aerialviews.models.enums.SchemeType
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs
+import com.neilturner.aerialviews.models.prefs.WebDavMediaPrefs2
 import com.thegrizzlylabs.sardineandroid.impl.OkHttpSardine
 import okhttp3.Headers
 import okhttp3.OkHttpClient
@@ -18,7 +21,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.min
 
 @SuppressLint("UnsafeOptInUsageError")
-class WebDavDataSource : BaseDataSource(true) {
+class WebDavDataSource(private val validateSsl: Boolean = true) : BaseDataSource(true) {
     private lateinit var dataSpec: DataSpec
 
     private var client: OkHttpSardine? = null
@@ -65,11 +68,12 @@ class WebDavDataSource : BaseDataSource(true) {
     }
 
     private fun openWebDavFile(offset: Long) {
-        val url = dataSpec.uri.toString()
+        val urlWithUserInfo = dataSpec.uri.toString()
 
         val okHttpClient =
-            OkHttpClient
-                .Builder()
+            WebDavSslHelper
+                .createOkHttpClient(validateSsl)
+                .newBuilder()
                 .callTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .build()
@@ -77,6 +81,8 @@ class WebDavDataSource : BaseDataSource(true) {
         client = OkHttpSardine(okHttpClient)
         val (userName, password) = SambaHelper.parseUserInfo(dataSpec.uri)
         client?.setCredentials(userName, password, true)
+
+        val url = stripUserInfo(urlWithUserInfo)
 
         val resource = client?.list(url)
         if (resource?.isNotEmpty() == true) {
@@ -89,6 +95,14 @@ class WebDavDataSource : BaseDataSource(true) {
                 .add("Range", "bytes=$offset-")
                 .build()
         inputStream = client?.get(url, headers)
+    }
+
+    private fun stripUserInfo(url: String): String {
+        val withoutScheme = url.substringAfter("://")
+        val atIndex = withoutScheme.indexOf('@')
+        if (atIndex == -1) return url
+        val hostAndPath = withoutScheme.substringAfter('@')
+        return "${url.substringBefore("://")}://$hostAndPath"
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -125,7 +139,7 @@ class WebDavDataSource : BaseDataSource(true) {
     }
 }
 
-class WebDavDataSourceFactory : DataSource.Factory {
+class WebDavDataSourceFactory(private val validateSsl: Boolean = true) : DataSource.Factory {
     @SuppressLint("UnsafeOptInUsageError")
-    override fun createDataSource(): DataSource = WebDavDataSource()
+    override fun createDataSource(): DataSource = WebDavDataSource(validateSsl)
 }

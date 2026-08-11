@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.neilturner.aerialviews.R
 import com.neilturner.aerialviews.data.PlaylistCacheRepository
@@ -41,10 +40,10 @@ import com.neilturner.aerialviews.ui.core.VideoPlayerView.OnVideoPlayerEventList
 import com.neilturner.aerialviews.ui.helpers.ColourHelper
 import com.neilturner.aerialviews.ui.helpers.FontHelper
 import com.neilturner.aerialviews.ui.helpers.GradientHelper
+import com.neilturner.aerialviews.ui.helpers.NotificationHelper
 import com.neilturner.aerialviews.ui.helpers.OverlayHelper
 import com.neilturner.aerialviews.ui.helpers.PermissionHelper
 import com.neilturner.aerialviews.ui.helpers.RefreshRateHelper
-import com.neilturner.aerialviews.ui.helpers.ToastHelper
 import com.neilturner.aerialviews.ui.helpers.WindowHelper
 import com.neilturner.aerialviews.ui.overlays.MessageOverlay
 import com.neilturner.aerialviews.ui.overlays.MetadataOverlay
@@ -66,6 +65,7 @@ import kotlinx.coroutines.runBlocking
 import me.kosert.flowbus.GlobalBus
 import timber.log.Timber
 import kotlin.math.abs
+import kotlin.time.Duration.Companion.milliseconds
 
 class ScreenController(
     val context: Context,
@@ -86,7 +86,8 @@ class ScreenController(
     private val metadataResolver = MetadataResolver()
 
     private val shouldAlternateOverlays = GeneralPrefs.alternateTextPosition
-    private val autoHideOverlayDelay = GeneralPrefs.overlayAutoHide.toLong()
+    private val overlayVisibilityMode = GeneralPrefs.overlayVisibility
+    private val overlayVisibilityDelay = GeneralPrefs.overlayVisibilityDelay.toLong()
     private val overlayRevealTimeout = GeneralPrefs.overlayRevealTimeout.toLong()
     private val overlayFadeOut: Long = GeneralPrefs.overlayFadeOutDuration.toLong()
     private val overlayFadeIn: Long = GeneralPrefs.overlayFadeInDuration.toLong()
@@ -103,6 +104,7 @@ class ScreenController(
     private val metadataJobs = mutableMapOf<OverlayType, Job>()
     private var currentMedia: AerialMedia? = null
     private val cacheRepository = PlaylistCacheRepository(context)
+    var onMusicPlayingChanged: ((Boolean) -> Unit)? = null
 
     private val videoViewBinding: VideoViewBinding
     private val imageViewBinding: ImageViewBinding
@@ -118,6 +120,7 @@ class ScreenController(
     private val gradientTopView: View
     private val gradientBottomView: View
     private val progressBarView: ProgressBar
+    private val notificationContainer: ViewGroup
     val view: View
 
     private val topLeftIds: List<Int>
@@ -181,6 +184,7 @@ class ScreenController(
 
         brightnessView = binding.brightnessView
         progressBarView = binding.progressBar
+        notificationContainer = view.findViewById(R.id.notification_container)
 
         // Setup loading message or hide it
         if (GeneralPrefs.showLoadingText) {
@@ -270,8 +274,7 @@ class ScreenController(
             playlist = mediaResult.mediaPlaylist
             if (playlist.size > 0) {
                 Timber.i("Playlist size: ${playlist.size}")
-                loadItem(playlist.nextItem())
-                savePlaybackPosition()
+                loadNextItem()
                 scheduleSleepTimer()
             } else {
                 showLoadingError()
@@ -310,7 +313,7 @@ class ScreenController(
         Timber.i("Scheduling sleep timer for $minutes minute(s)")
         sleepTimerJob =
             mainScope.launch {
-                delay(minutes * 60_000L)
+                delay((minutes * 60_000L).milliseconds)
                 if (!blackOutMode) {
                     Timber.i("Sleep timer finished - toggling blackout mode")
                     toggleBlackOutMode()
@@ -337,6 +340,7 @@ class ScreenController(
 
         musicPlayer = MusicPlayer(context, musicPlaylist)
         musicPlayer?.onMediaItemChanged = { saveMusicTrackPosition() }
+        musicPlayer?.onPlayingChanged = { isPlaying -> onMusicPlayingChanged?.invoke(isPlaying) }
         musicPlayer?.createPlayer()
         if (resumeIndex > 0) {
             musicPlayer?.seekToTrack(resumeIndex)
@@ -420,7 +424,7 @@ class ScreenController(
     private fun fadeInNextItem() {
         canShowOverlays = false
         var startDelay: Long = 0
-        val overlayDelay = (autoHideOverlayDelay * 1000) + mediaFadeIn
+        val overlayDelay = (overlayVisibilityDelay * 1000) + mediaFadeIn
 
         // If first video (ie. screensaver startup), fade out 'loading...' text/spinner
         if (loadingContainer.isVisible) {
@@ -429,40 +433,78 @@ class ScreenController(
         }
 
         // Reset any overlay animations
-        if (autoHideOverlayDelay >= 0) {
-            overlayHelper.getOverlaysToFade().forEach { view ->
-                view.animate()?.cancel()
-                view.clearAnimation()
-            }
+        overlayHelper.getOverlaysToFade().forEach { view ->
+            view.animate()?.cancel()
+            view.clearAnimation()
         }
 
         // Hide overlays immediately
-        if (autoHideOverlayDelay.toInt() == 0) {
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
-            // Also hide gradients immediately if they have fading overlays
-            // AND no persistent overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
-                gradientTopView.alpha = 0f
+//        if (autoHideOverlayDelay.toInt() == 0) {
+//            overlayHelper.isHidden = true
+//            setOverlayInstancesHidden(true)
+//            overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+//            // Also hide gradients immediately if they have fading overlays
+//            // AND no persistent overlays
+//            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+//                gradientTopView.alpha = 0f
+        when (overlayVisibilityMode) {
+            "ALWAYS_VISIBLE" -> {
+                // Overlays stay visible, no hiding
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() &&
-                !overlayHelper.hasBottomPersistentOverlays()
-            ) {
-                gradientBottomView.alpha = 0f
-            }
-            canShowOverlays = true
-        }
 
-        // Hide overlays after a delay
-        if (autoHideOverlayDelay > 0) {
-            overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
-            // Also show gradients initially if they have fading overlays
-            if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
-                gradientTopView.alpha = 1f
+            "ALWAYS_HIDDEN" -> {
+                // Hide overlays immediately, only show on user reveal
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                    gradientBottomView.alpha = 0f
+                }
+                canShowOverlays = true
             }
-            if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
-                gradientBottomView.alpha = 1f
+
+            "HIDE_AFTER_DELAY" -> {
+                // Show overlays, then hide after delay
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                    gradientTopView.alpha = 1f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                    gradientBottomView.alpha = 1f
+                }
+                hideOverlays(overlayDelay)
             }
-            hideOverlays(overlayDelay)
+
+            "SHOW_AFTER_DELAY" -> {
+                // Hide overlays initially, show after delay, stay visible
+                overlayHelper.getOverlaysToFade().forEach { it.alpha = 0f }
+                if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade() && !overlayHelper.hasTopPersistentOverlays()) {
+                    gradientTopView.alpha = 0f
+                }
+                if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade() && !overlayHelper.hasBottomPersistentOverlays()) {
+                    gradientBottomView.alpha = 0f
+                }
+                mainScope.launch {
+                    delay(overlayDelay.milliseconds)
+                    overlayHelper.getOverlaysToFade().forEach { it.alpha = 1f }
+                    if (GeneralPrefs.showTopGradient && overlayHelper.hasTopOverlaysToFade()) {
+                        gradientTopView.alpha = 1f
+                    }
+                    if (GeneralPrefs.showBottomGradient && overlayHelper.hasBottomOverlaysToFade()) {
+                        gradientBottomView.alpha = 1f
+                    }
+                    canShowOverlays = true
+                }
+            }
         }
 
         // Fade out LoadingView
@@ -512,15 +554,9 @@ class ScreenController(
                 pauseStartTime = 0
 
                 if (!blackOutMode) {
-                    val media =
-                        if (!previousItem) {
-                            playlist.nextItem()
-                        } else {
-                            playlist.previousItem()
-                        }
+                    val loadPreviousItem = previousItem
                     previousItem = false
-                    loadItem(media)
-                    savePlaybackPosition()
+                    loadNextItem(loadPreviousItem)
                 } else {
                     previousItem = false
                 }
@@ -539,6 +575,9 @@ class ScreenController(
             canShowOverlays = true
             return
         }
+
+        overlayHelper.isHidden = true
+        setOverlayInstancesHidden(true)
 
         overlaysToFade.forEachIndexed { index, view ->
             val animator =
@@ -575,9 +614,15 @@ class ScreenController(
         }
     }
 
+    private fun setOverlayInstancesHidden(hidden: Boolean) {
+        overlayHelper.findOverlay<NowPlayingOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherNowOverlay>().forEach { it.isHidden = hidden }
+        overlayHelper.findOverlay<WeatherForecastOverlay>().forEach { it.isHidden = hidden }
+    }
+
     fun showOverlays() {
-        // Overlay auto hide pref must be enabled
-        if (autoHideOverlayDelay < 0) return
+        // Only allow reveal when overlays can be hidden
+        if (overlayVisibilityMode == "ALWAYS_VISIBLE") return
 
         // If blackout mode is on, exit
         if (blackOutMode) return
@@ -593,6 +638,8 @@ class ScreenController(
         if (overlaysToFade.isEmpty()) return
 
         canShowOverlays = false
+        overlayHelper.isHidden = false
+        setOverlayInstancesHidden(false)
 
         overlaysToFade.forEachIndexed { index, view ->
             val animator =
@@ -628,6 +675,17 @@ class ScreenController(
         }
     }
 
+    private fun loadNextItem(previous: Boolean = false) {
+        val media =
+            if (previous) {
+                playlist.previousItem()
+            } else {
+                playlist.nextItem()
+            }
+        loadItem(media)
+        savePlaybackPosition()
+    }
+
     private fun savePlaybackPosition() {
         if (this::playlist.isInitialized && GeneralPrefs.playlistCache) {
             mainScope.launch {
@@ -650,14 +708,11 @@ class ScreenController(
         if (isStopped) return
         isStopped = true
 
-        if (this::playlist.isInitialized) {
-            if (GeneralPrefs.playlistCache) {
-                runBlocking(Dispatchers.IO) {
-                    cacheRepository.saveMediaPosition(playlist.currentPosition)
-                    musicPlayer?.let {
-                        cacheRepository.saveMusicTrackIndex(it.getCurrentTrackIndex())
-                    }
-                }
+        if (GeneralPrefs.playlistCache) {
+            // ExoPlayer must be accessed on the main thread
+            val trackIndex = musicPlayer?.getCurrentTrackIndex() ?: 0
+            runBlocking(Dispatchers.IO) {
+                cacheRepository.saveMusicTrackIndex(trackIndex)
             }
         }
         RefreshRateHelper.restoreOriginalMode(context)
@@ -695,7 +750,7 @@ class ScreenController(
             fadeOutCurrentItem()
         } else {
             blackOutMode = false
-            loadItem(playlist.nextItem())
+            loadNextItem()
             // Restart sleep timer if preference still enabled
             scheduleSleepTimer()
         }
@@ -794,10 +849,8 @@ class ScreenController(
             view.visibility = View.VISIBLE
         }
 
-        // Show toast
-        mainScope.launch {
-            ToastHelper.show(context, "Brightness: $newBrightness%")
-        }
+        // Show notification
+        NotificationHelper.show(notificationContainer, "Brightness: $newBrightness%")
     }
 
     fun toggleMute() {
@@ -850,9 +903,9 @@ class ScreenController(
 
     private fun handleError() {
         mainScope.launch {
-            delay(ERROR_DELAY)
+            delay(ERROR_DELAY.milliseconds)
             if (loadingView.isVisible) {
-                loadItem(playlist.nextItem())
+                loadNextItem()
             } else {
                 fadeOutCurrentItem()
             }
@@ -861,7 +914,7 @@ class ScreenController(
 
     private fun handlePlaybackSpeedChanged() {
         val message = resources.getString(R.string.playlist_playback_speed_changed, GeneralPrefs.playbackSpeed + "x")
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        NotificationHelper.show(notificationContainer, message)
     }
 
     override fun onVideoPlaybackSpeedChanged() = handlePlaybackSpeedChanged()

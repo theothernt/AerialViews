@@ -10,6 +10,7 @@ import com.neilturner.aerialviews.utils.FirebaseHelper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.time.Duration.Companion.milliseconds
 
 abstract class MenuStateFragment : PreferenceFragmentCompat() {
     private var position = -1
@@ -22,7 +23,7 @@ abstract class MenuStateFragment : PreferenceFragmentCompat() {
         }
 
         lifecycleScope.launch {
-            delay(60)
+            delay(60.milliseconds)
             tryRequestFocus()
         }
     }

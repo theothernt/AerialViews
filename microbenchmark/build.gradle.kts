@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.neilturner.aerialviews.microbenchmark"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 24
