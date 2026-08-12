@@ -52,6 +52,20 @@ internal class UrlParserTest {
     }
 
     @Test
+    @DisplayName("Throws for single number host")
+    fun throwsForSingleNumberHost() {
+        assertThrows(IllegalArgumentException::class.java) {
+            UrlParser.parseServerUrl("1")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            UrlParser.parseServerUrl("http://1")
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            UrlParser.parseServerUrl("123")
+        }
+    }
+
+    @Test
     @DisplayName("Returns empty for blank input")
     fun returnsEmptyForBlankInput() {
         val parsed = UrlParser.parseServerUrl("   ")
