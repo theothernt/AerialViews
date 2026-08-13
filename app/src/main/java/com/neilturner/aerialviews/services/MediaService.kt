@@ -122,7 +122,9 @@ class MediaService(
     suspend fun fetchMedia(onStatus: (status: LoadingStatus) -> Unit = {}): MediaFetchResult =
         withContext(Dispatchers.IO) {
             val settingsHash = hashFn?.invoke() ?: buildCompositeHash()
+            val networkType = NetworkHelper.getNetworkType(context)
             val filterRemote = config.wifiOnly && !NetworkHelper.isOnWifiOrEthernet(context)
+            Timber.i("MediaService: Network: $networkType | WiFi-only mode: ${config.wifiOnly} | Filtering remote sources: $filterRemote")
             val cacheRepo =
                 if (config.playlistCache) {
                     com.neilturner.aerialviews.data

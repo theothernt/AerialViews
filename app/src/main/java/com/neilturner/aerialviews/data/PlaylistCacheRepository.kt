@@ -97,6 +97,7 @@ class PlaylistCacheRepository(
             if (state.totalMediaItems == 0) return@withContext null
 
             Timber.d("PlaylistCache: Restoring state from DB. Position: ${state.mediaPosition}, Total: ${state.totalMediaItems}")
+            Timber.i("PlaylistCache: Restoring cached playlist with filterRemote = $filterRemote")
 
             val windowLimit = 50
             val windowOffset = 0.coerceAtLeast(state.mediaPosition - 5)

@@ -56,6 +56,16 @@ object NetworkHelper {
 
     fun isOnWifi(context: Context): Boolean = isOnWifiOrEthernet(context)
 
+    fun getNetworkType(context: Context): String {
+        val capabilities = getActiveNetworkCapabilities(context) ?: return "Disconnected"
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Ethernet"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Cellular"
+            else -> "Other"
+        }
+    }
+
     fun getIPAddress(context: Context): String {
         // Try modern method first (Android 10+)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
