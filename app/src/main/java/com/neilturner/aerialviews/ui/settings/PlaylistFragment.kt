@@ -61,6 +61,26 @@ class PlaylistFragment : MenuStateFragment() {
         randomStartPref?.summary = "0%% - ${randomStartPref.value}%%"
 
         setupLocationPreference()
+        setupScheduledBlackoutSummaries()
+    }
+
+    private fun setupScheduledBlackoutSummaries() {
+        val startPref = findPreference<Preference>("scheduled_blackout_start")
+        val endPref = findPreference<Preference>("scheduled_blackout_end")
+
+        startPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                startPref.summary = newValue as String
+                true
+            }
+        startPref?.summary = GeneralPrefs.scheduledBlackoutStart
+
+        endPref?.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                endPref.summary = newValue as String
+                true
+            }
+        endPref?.summary = GeneralPrefs.scheduledBlackoutEnd
     }
 
     private fun updateLocationEnabledState(enabled: Boolean) {

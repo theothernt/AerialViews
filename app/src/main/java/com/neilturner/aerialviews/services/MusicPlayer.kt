@@ -92,6 +92,16 @@ class MusicPlayer(
         Timber.i("MusicPlayer: pausing")
     }
 
+    fun resume() {
+        val player = player ?: return
+        player.play()
+        volumeHelper.fadeIn(
+            durationMs = 500,
+            targetVolume = GeneralPrefs.videoVolume.toFloat() / 100,
+        )
+        Timber.i("MusicPlayer: resuming")
+    }
+
     fun nextTrack() {
         val player = player ?: return
         player.seekToNextMediaItem()

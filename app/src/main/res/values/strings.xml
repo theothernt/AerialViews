@@ -702,6 +702,12 @@
     <string name="playlist_sleep_timer_title">Sleep timer</string>
     <string name="playlist_sleep_timer_summary">Automatically blackout the screen after a set time</string>
 
+    <string name="category_scheduled_blackout">Scheduled blackout</string>
+    <string name="playlist_scheduled_blackout_enabled_title">Enable scheduled blackout</string>
+    <string name="playlist_scheduled_blackout_enabled_summary">Automatically turn screen black between start and end time</string>
+    <string name="playlist_scheduled_blackout_start_title">Start time</string>
+    <string name="playlist_scheduled_blackout_end_title">End time</string>
+
     <string name="playlist_sound_volume_title">Volume</string>
     <string name="playlist_sound_volume_summary">Choose a volume level for video audio or background music</string>
     <string name="playlist_video_volume_title">Video volume</string>

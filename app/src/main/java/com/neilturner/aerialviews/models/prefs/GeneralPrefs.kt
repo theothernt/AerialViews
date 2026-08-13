@@ -205,6 +205,9 @@ object GeneralPrefs : KotprefModel() {
     var removeDuplicates by booleanPref(true, "remove_duplicates") // photos & videos?
     var shuffleVideos by booleanPref(true, "shuffle_videos") // rename to media
     var sleepTimer by stringPref("0", "sleep_timer")
+    var scheduledBlackoutEnabled by booleanPref(false, "scheduled_blackout_enabled")
+    var scheduledBlackoutStart by stringPref("22:00", "scheduled_blackout_start")
+    var scheduledBlackoutEnd by stringPref("08:00", "scheduled_blackout_end")
     var autoTimeOfDay by booleanPref(false, "playlist_auto_time_of_day")
     val playlistTimeOfDayDayIncludes by stringSetPref("playlist_time_of_day_day_includes") {
         setOf("SUNRISE")

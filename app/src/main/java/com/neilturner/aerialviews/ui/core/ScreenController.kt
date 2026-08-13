@@ -67,6 +67,13 @@ import timber.log.Timber
 import kotlin.math.abs
 import kotlin.time.Duration.Companion.milliseconds
 
+enum class BlackOutSource {
+    NONE,
+    USER,
+    SLEEP_TIMER,
+    SCHEDULED,
+}
+
 class ScreenController(
     val context: Context,
 ) : OnVideoPlayerEventListener,
@@ -130,6 +137,10 @@ class ScreenController(
 
     var blackOutMode = false
         private set
+    var blackOutSource: BlackOutSource = BlackOutSource.NONE
+        private set
+    private var scheduledBlackoutJob: Job? = null
+    private var wasInScheduledBlackoutWindow: Boolean? = null
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -276,6 +287,7 @@ class ScreenController(
                 Timber.i("Playlist size: ${playlist.size}")
                 loadNextItem()
                 scheduleSleepTimer()
+                scheduleScheduledBlackout()
             } else {
                 showLoadingError()
             }
@@ -316,9 +328,76 @@ class ScreenController(
                 delay((minutes * 60_000L).milliseconds)
                 if (!blackOutMode) {
                     Timber.i("Sleep timer finished - toggling blackout mode")
-                    toggleBlackOutMode()
+                    toggleBlackOutMode(BlackOutSource.SLEEP_TIMER)
                 }
             }
+    }
+
+    private fun scheduleScheduledBlackout() {
+        scheduledBlackoutJob?.cancel()
+        wasInScheduledBlackoutWindow = null
+        if (!GeneralPrefs.scheduledBlackoutEnabled) {
+            Timber.i("Scheduled blackout disabled")
+            return
+        }
+        Timber.i("Scheduling blackout check ticker")
+        scheduledBlackoutJob =
+            mainScope.launch {
+                while (true) {
+                    checkScheduledBlackout()
+                    delay(15_000L.milliseconds)
+                }
+            }
+    }
+
+    private fun checkScheduledBlackout() {
+        if (!GeneralPrefs.scheduledBlackoutEnabled) return
+
+        val startTime = parseLocalTime(GeneralPrefs.scheduledBlackoutStart) ?: return
+        val endTime = parseLocalTime(GeneralPrefs.scheduledBlackoutEnd) ?: return
+        val now = java.time.LocalTime.now()
+
+        val isNowInWindow = isTimeInWindow(startTime, endTime, now)
+
+        if (wasInScheduledBlackoutWindow == null) {
+            wasInScheduledBlackoutWindow = isNowInWindow
+            if (isNowInWindow && !blackOutMode) {
+                Timber.i("Initial check: inside scheduled blackout window ($startTime to $endTime)")
+                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+            }
+        } else if (isNowInWindow != wasInScheduledBlackoutWindow) {
+            wasInScheduledBlackoutWindow = isNowInWindow
+            if (isNowInWindow && !blackOutMode) {
+                Timber.i("Scheduled blackout window started ($startTime to $endTime)")
+                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+            } else if (!isNowInWindow && blackOutMode && blackOutSource == BlackOutSource.SCHEDULED) {
+                Timber.i("Scheduled blackout window ended ($startTime to $endTime)")
+                toggleBlackOutMode(BlackOutSource.SCHEDULED)
+            }
+        }
+    }
+
+    private fun parseLocalTime(timeStr: String): java.time.LocalTime? {
+        return try {
+            val parts = timeStr.split(":")
+            if (parts.size == 2) {
+                java.time.LocalTime.of(parts[0].trim().toInt(), parts[1].trim().toInt())
+            } else null
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private fun isTimeInWindow(
+        start: java.time.LocalTime,
+        end: java.time.LocalTime,
+        now: java.time.LocalTime,
+    ): Boolean {
+        return if (start <= end) {
+            !now.isBefore(start) && now.isBefore(end)
+        } else {
+            !now.isBefore(start) || now.isBefore(end)
+        }
     }
 
     private fun setupMusicPlayer(
@@ -725,6 +804,7 @@ class ScreenController(
         musicPlayer?.pause()
         musicPlayer?.release()
         sleepTimerJob?.cancel()
+        scheduledBlackoutJob?.cancel()
         metadataJobs.values.forEach { it.cancel() }
         metadataJobs.clear()
         mainScope.cancel()
@@ -735,19 +815,23 @@ class ScreenController(
         fadeOutCurrentItem()
     }
 
-    fun toggleBlackOutMode() {
+    fun toggleBlackOutMode(source: BlackOutSource = BlackOutSource.USER) {
         if (!this::playlist.isInitialized || playlist.size == 0) {
             return
         }
 
         if (!blackOutMode) {
             blackOutMode = true
+            blackOutSource = source
             // Cancel any pending sleep timer as we've already entered blackout
             sleepTimerJob?.cancel()
             fadeOutCurrentItem()
+            musicPlayer?.pause()
         } else {
             blackOutMode = false
+            blackOutSource = BlackOutSource.NONE
             loadNextItem()
+            musicPlayer?.resume()
             // Restart sleep timer if preference still enabled
             scheduleSleepTimer()
         }
